@@ -1,8 +1,8 @@
 import { Camera, CameraType } from 'expo-camera';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
 
 import { useAppSelector } from '..';
 import { cancelCall, initVideoCall } from '../../../actions/videoConf';
@@ -10,12 +10,19 @@ import AvatarContainer from '../../../containers/Avatar';
 import Button from '../../../containers/Button';
 import { CallHeader } from '../../../containers/CallHeader';
 import Ringer, { ERingerSounds } from '../../../containers/Ringer';
+import { SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import useUserData from '../useUserData';
 
-export default function StartACallActionSheet({ rid }: { rid: string }): React.ReactElement {
+export default function StartACallActionSheet({
+	rid,
+	roomType
+}: {
+	rid: string;
+	roomType?: SubscriptionType;
+}): React.ReactElement {
 	const { colors } = useTheme();
 	const [mic, setMic] = useState(true);
 	const [cam, setCam] = useState(false);
@@ -42,7 +49,7 @@ export default function StartACallActionSheet({ rid }: { rid: string }): React.R
 			style={[style.actionSheetContainer, { paddingBottom: bottom }]}
 			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}
 		>
-			{calling ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
+			{calling && roomType === SubscriptionType.DIRECT ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
 				title={calling && user.direct ? i18n.t('Calling') : i18n.t('Start_a_call')}
 				cam={cam}

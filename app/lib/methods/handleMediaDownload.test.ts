@@ -55,4 +55,15 @@ describe('Test the getFilename', () => {
 		const filename = getFilename({ type: 'image', mimeType: image_type, title, url: image_url });
 		expect(filename).toBe('help-image-url.png');
 	});
+
+	it('returns the filename with the gif extension from a gif sent by tenor/giphy', () => {
+		const { image_type, image_url, title } = {
+			title: undefined,
+			image_url: 'https://media4.giphy.com/media/bGtO3RlAPHkeQ/giphy.gif',
+			image_type: undefined
+		};
+
+		const filename = getFilename({ type: 'image', mimeType: image_type, title, url: image_url });
+		expect(filename).toBe('giphy.gif');
+	});
 });

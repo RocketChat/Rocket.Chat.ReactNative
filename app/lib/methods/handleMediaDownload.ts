@@ -18,17 +18,12 @@ const defaultType = {
 
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
-const sanitizeString = (value: string) => {
-	const urlWithoutQueryString = value.split('?')[0];
-	return sanitizeLikeString(urlWithoutQueryString.substring(urlWithoutQueryString.lastIndexOf('/') + 1));
-};
-
-const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
+const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeLikeString(serverURL)}/`;
 
 const sanitizeFileName = (value: string) => {
 	const extension = value.substring(value.lastIndexOf('.') + 1);
 	const toSanitize = value.substring(0, value.lastIndexOf('.'));
-	return `${sanitizeString(toSanitize)}.${extension}`;
+	return `${sanitizeLikeString(toSanitize)}.${extension}`;
 };
 
 export const getFilename = ({
@@ -68,6 +63,10 @@ export const getFilename = ({
 };
 
 const getExtension = (type: MediaTypes, mimeType?: string, url?: string) => {
+	// support url with gif extension and mimetype undefined, ex.: using the app tenor and giphy.
+	if (url?.split('.').pop() === 'gif') {
+		return 'gif';
+	}
 	if (!mimeType) {
 		return defaultType[type];
 	}
@@ -104,9 +103,17 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
-const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeType?: string; urlToCache?: string }) => {
+export const getFilePath = ({
+	type,
+	mimeType,
+	urlToCache
+}: {
+	type: MediaTypes;
+	mimeType?: string;
+	urlToCache?: string;
+}): string | null => {
 	if (!urlToCache) {
-		return;
+		return null;
 	}
 	const folderPath = getFolderPath(urlToCache);
 	const urlWithoutQueryString = urlToCache.split('?')[0];
@@ -169,7 +176,7 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 
 const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
-export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
+export const mediaDownloadKey = (messageUrl: string) => `${sanitizeLikeString(messageUrl)}`;
 
 export function isDownloadActive(messageUrl: string): boolean {
 	return !!downloadQueue[mediaDownloadKey(messageUrl)];

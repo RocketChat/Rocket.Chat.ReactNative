@@ -10,13 +10,11 @@ import UAParser from 'ua-parser-js';
 import * as HeaderButton from '../../containers/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import { LISTENER } from '../../containers/Toast';
 import { ISubscription, IUser, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks';
 import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
@@ -29,6 +27,7 @@ import RoomInfoViewAvatar from './components/RoomInfoViewAvatar';
 import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
+import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
@@ -43,7 +42,7 @@ const RoomInfoView = (): React.ReactElement => {
 	} = useRoute<TRoomInfoViewRouteProp>();
 	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
 
-	const [room, setRoom] = useState(roomParam);
+	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
 	const [roomUser, setRoomUser] = useState(member || {});
 	const [showEdit, setShowEdit] = useState(false);
@@ -59,6 +58,7 @@ const RoomInfoView = (): React.ReactElement => {
 		subscribedRoom,
 		usersRoles,
 		roles,
+		serverVersion,
 		// permissions
 		editRoomPermission,
 		editOmnichannelContact,
@@ -68,6 +68,7 @@ const RoomInfoView = (): React.ReactElement => {
 		isMasterDetail: state.app.isMasterDetail,
 		roles: state.roles,
 		usersRoles: state.usersRoles,
+		serverVersion: state.server.version,
 		// permissions
 		editRoomPermission: state.permissions['edit-room'],
 		editOmnichannelContact: state.permissions['edit-omnichannel-contact'],
@@ -157,7 +158,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = getUidDirectMessage(room || { rid, t, itsMe });
+				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
@@ -167,9 +168,10 @@ const RoomInfoView = (): React.ReactElement => {
 			} catch {
 				// do nothing
 			}
+		} else {
+			const r = handleRoles(roomUser);
+			if (r) setRoomUser({ ...roomUser, roles: r });
 		}
-		const r = handleRoles(roomUser);
-		if (r) setRoomUser({ ...roomUser, roles: r });
 	};
 
 	const loadRoom = async () => {
@@ -212,8 +214,8 @@ const RoomInfoView = (): React.ReactElement => {
 			try {
 				const result = await Services.createDirectMessage(roomUser.username);
 				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
-			} catch {
-				reject();
+			} catch (e) {
+				reject(e);
 			}
 		});
 
@@ -222,7 +224,7 @@ const RoomInfoView = (): React.ReactElement => {
 		const params = {
 			rid: r?.rid,
 			name: getRoomTitle(r),
-			t: r?.t,
+			t: roomType,
 			roomUserId: getUidDirectMessage(r)
 		};
 
@@ -248,10 +250,8 @@ const RoomInfoView = (): React.ReactElement => {
 				if (direct) r = direct;
 			}
 			handleGoRoom(r);
-		} catch {
-			EventEmitter.emit(LISTENER, {
-				message: I18n.t('error-action-not-allowed', { action: I18n.t('Create_Direct_Messages') })
-			});
+		} catch (e: any) {
+			emitErrorCreateDirectMessage(e?.data);
 		}
 	};
 
@@ -272,6 +272,14 @@ const RoomInfoView = (): React.ReactElement => {
 		const r = roomFromRid || room;
 		const isIgnored = r?.ignored?.includes?.(roomUser._id);
 		if (r?.rid) handleIgnore(roomUser._id, !isIgnored, r?.rid);
+	};
+
+	const handleReportUser = () => {
+		navigate('ReportUserView', {
+			name: roomUser?.name,
+			userId: roomUser?._id,
+			username: roomUser.username
+		});
 	};
 
 	return (
@@ -300,10 +308,13 @@ const RoomInfoView = (): React.ReactElement => {
 						handleBlockUser={handleBlockUser}
 						handleCreateDirectMessage={handleCreateDirectMessage}
 						handleIgnoreUser={handleIgnoreUser}
+						handleReportUser={handleReportUser}
 						isDirect={isDirect}
 						room={room || roomUser}
 						roomUserId={roomUser?._id}
 						roomFromRid={roomFromRid}
+						serverVersion={serverVersion}
+						itsMe={itsMe}
 					/>
 				</View>
 				<RoomInfoViewBody isDirect={isDirect} room={room} roomUser={roomUser} />

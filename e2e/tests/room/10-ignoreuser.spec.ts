@@ -47,11 +47,12 @@ describe('Ignore/Block User', () => {
 				await navigateToInfoView();
 			});
 			it('should block user', async () => {
-				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user'))))
+				await sleep(300);
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block'))))
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('room-info-view-ignore')).tap();
-				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unblock user'))))
+				await waitFor(element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Unblock'))))
 					.toExist()
 					.withTimeout(2000);
 				await tapBack();
@@ -67,7 +68,7 @@ describe('Ignore/Block User', () => {
 				await sleep(300); // wait for navigation animation
 				await tapAndWaitFor(
 					element(by.id('room-info-view-ignore')),
-					element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block user'))),
+					element(by.id('room-info-view-ignore').withDescendant(by[textMatcher]('Block'))),
 					2000
 				);
 				await tapBack();
@@ -75,7 +76,7 @@ describe('Ignore/Block User', () => {
 					.toBeVisible()
 					.withTimeout(5000);
 				await tapBack();
-				await waitFor(element(by.id('messagebox')))
+				await waitFor(element(by.id('message-composer')))
 					.toBeVisible()
 					.withTimeout(2000);
 				await tapBack();
@@ -122,6 +123,60 @@ describe('Ignore/Block User', () => {
 				await waitFor(element(by[textMatcher]('message-02')).atIndex(0))
 					.toBeVisible()
 					.withTimeout(2000);
+			});
+		});
+		describe('Report user', () => {
+			it('should go to user info view from a DM', async () => {
+				await tapBack();
+				await sleep(300);
+				await navigateToRoom(otherUser.username);
+				await navigateToInfoView();
+			});
+			it('should report a user from a DM', async () => {
+				await waitFor(element(by.id('room-info-view-warning').withDescendant(by[textMatcher]('Report'))))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('room-info-view-warning')).tap();
+				await sleep(300);
+				await waitFor(element(by.id('report-user-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.id('report-user-view-input')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('report-user-view-input')).replaceText('e2e test');
+				await element(by.id('report-user-view-submit')).tap();
+				await sleep(500);
+				await checkRoomTitle(otherUser.username);
+			});
+			it('should go to user info view from a channel', async () => {
+				await tapBack();
+				await sleep(300);
+				await navigateToRoom(room);
+				await waitFor(element(by[textMatcher](otherUser.username)).atIndex(0))
+					.toExist()
+					.withTimeout(30000);
+				await element(by[textMatcher](otherUser.username)).atIndex(0).tap();
+				await waitFor(element(by.id('room-info-view')))
+					.toExist()
+					.withTimeout(2000);
+			});
+			it('should report a user from a channel', async () => {
+				await waitFor(element(by.id('room-info-view-warning').withDescendant(by[textMatcher]('Report'))))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('room-info-view-warning')).tap();
+				await sleep(300);
+				await waitFor(element(by.id('report-user-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.id('report-user-view-input')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('report-user-view-input')).replaceText('e2e test');
+				await element(by.id('report-user-view-submit')).tap();
+				await sleep(500);
+				await checkRoomTitle(room);
 			});
 		});
 	});

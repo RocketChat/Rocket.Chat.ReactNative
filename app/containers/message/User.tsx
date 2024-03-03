@@ -112,7 +112,7 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<TouchableOpacity style={styles.titleContainer} onPress={onUserPress}>
+					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
 						<Text style={[styles.username, { color: colors.titleText }]} numberOfLines={1}>
 							{textContent}
 						</Text>

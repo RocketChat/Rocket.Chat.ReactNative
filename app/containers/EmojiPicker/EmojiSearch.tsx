@@ -44,10 +44,10 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 			textContentType='none'
 			blurOnSubmit
 			placeholder={I18n.t('Search_emoji')}
-			placeholderTextColor={colors.auxiliaryText}
+			placeholderTextColor={colors.fontAnnotation}
 			underlineColorAndroid='transparent'
 			onChangeText={handleTextChange}
-			inputStyle={[styles.input, { backgroundColor: colors.textInputSecondaryBackground }]}
+			inputStyle={[styles.input, { backgroundColor: colors.surfaceNeutral }]}
 			containerStyle={styles.textInputContainer}
 			value={searchText}
 			onClearInput={() => handleTextChange('')}
