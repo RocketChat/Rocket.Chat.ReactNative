@@ -29,8 +29,8 @@ const RightIcons = ({ type, msg, isEdited, hasError, isReadReceiptEnabled, unrea
 		<Encrypted type={type} />
 		<Edited testID={`${msg}-edited`} isEdited={isEdited} />
 		<MessageError hasError={hasError} />
-		<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
 		<Translated isTranslated={isTranslated} />
+		<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
 	</View>
 );
 
