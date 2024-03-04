@@ -905,6 +905,12 @@ export const removePushToken = (): Promise<boolean | void> => {
 	return Promise.resolve();
 };
 
+// RC 6.6.0
+export const pushTest = () => sdk.post('push.test');
+
+// RC 6.5.0
+export const pushInfo = () => sdk.get('push.info');
+
 export const sendEmailCode = () => {
 	const { username } = reduxStore.getState().login.user as IUser;
 	// RC 3.1.0
