@@ -460,7 +460,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const t = room?.t;
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
-
+		const iSubRoom = room as ISubscription;
 		navigation.setOptions({
 			headerShown: true,
 			headerTitleAlign: 'left',
@@ -517,6 +517,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					toggleFollowThread={this.toggleFollowThread}
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
+					notificationsDisabled={iSubRoom?.disableNotifications}
 				/>
 			)
 		});
