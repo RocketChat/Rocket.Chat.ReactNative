@@ -7,22 +7,23 @@ struct ClientSSL: Codable {
 
 extension MMKV {
 	func clientSSL(for url: URL) -> ClientSSL? {
-		guard let host = url.host?.removeTrailingSlash() else {
+		let server = url.absoluteString.removeTrailingSlash()
+		let host = url.host ?? ""
+		
+		guard let name = string(forKey: "RC_CERTIFICATE_KEY-\(server)") else {
 			return nil
 		}
 		
-		guard let rawClientSSL = string(forKey: host) else {
+		guard let data = data(forKey: host), let certificate = try? JSONDecoder().decode(ClientSSL.self, from: data) else {
 			return nil
 		}
 		
-		guard let data = rawClientSSL.data(using: .utf8) else {
-			return nil
-		}
-		
-		guard let clientSSL = try? JSONDecoder().decode(ClientSSL.self, from: data) else {
-			return nil
-		}
-		
-		return clientSSL
+		return .init(path: getFilePath(forName: name), password: certificate.password)
+	}
+	
+	private func getFilePath(forName name: String) -> String {
+		let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+		let documentsDirectory = paths[0]
+		return documentsDirectory.path + "/" + name
 	}
 }

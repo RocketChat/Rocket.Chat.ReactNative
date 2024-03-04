@@ -80,6 +80,10 @@
 		1E2F615D25128FA300871711 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F615C25128FA300871711 /* Response.swift */; };
 		1E2F61642512955D00871711 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61632512955D00871711 /* HTTPMethod.swift */; };
 		1E2F61662512958900871711 /* Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F61652512958900871711 /* Push.swift */; };
+		1E388ABE2B934C64006FBDB0 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E388ABD2B934C64006FBDB0 /* ImageLoader.swift */; };
+		1E388ABF2B934C64006FBDB0 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E388ABD2B934C64006FBDB0 /* ImageLoader.swift */; };
+		1E388AC12B934CD4006FBDB0 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E388AC02B934CD4006FBDB0 /* RemoteImage.swift */; };
+		1E388AC22B934CD4006FBDB0 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E388AC02B934CD4006FBDB0 /* RemoteImage.swift */; };
 		1E470E832513A71E00E3DD1D /* RocketChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E470E822513A71E00E3DD1D /* RocketChat.swift */; };
 		1E4AFC152B5AF09800E2AA7D /* Dependency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC142B5AF09800E2AA7D /* Dependency.swift */; };
 		1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4AFC162B5AF09C00E2AA7D /* Store.swift */; };
@@ -494,6 +498,8 @@
 		1E2F615C25128FA300871711 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		1E2F61632512955D00871711 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		1E2F61652512958900871711 /* Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Push.swift; sourceTree = "<group>"; };
+		1E388ABD2B934C64006FBDB0 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		1E388AC02B934CD4006FBDB0 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 		1E470E822513A71E00E3DD1D /* RocketChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RocketChat.swift; sourceTree = "<group>"; };
 		1E4AFC142B5AF09800E2AA7D /* Dependency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dependency.swift; sourceTree = "<group>"; };
 		1E4AFC162B5AF09C00E2AA7D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
@@ -930,6 +936,7 @@
 				1EDB30F12B5B453A00532C7E /* LoggedInView.swift */,
 				1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */,
 				1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */,
+				1E388AC02B934CD4006FBDB0 /* RemoteImage.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1004,6 +1011,7 @@
 				1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */,
 				1E9A71682B59B6E100477BA2 /* MessageSender.swift */,
 				1E8979462B6063FC001D99F0 /* WatchSession.swift */,
+				1E388ABD2B934C64006FBDB0 /* ImageLoader.swift */,
 			);
 			path = Loaders;
 			sourceTree = "<group>";
@@ -2073,6 +2081,8 @@
 				1E29A2FF2B585B070093C03C /* TokenAdapter.swift in Sources */,
 				1E29A3052B585B070093C03C /* Request.swift in Sources */,
 				1E9A71772B59FCA900477BA2 /* URLSessionCertificateHandling.swift in Sources */,
+				1E388AC12B934CD4006FBDB0 /* RemoteImage.swift in Sources */,
+				1E388ABE2B934C64006FBDB0 /* ImageLoader.swift in Sources */,
 				1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */,
 				1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
@@ -2149,6 +2159,8 @@
 				1ED1ECB72B86997F00F6620C /* TokenAdapter.swift in Sources */,
 				1ED1ECB82B86997F00F6620C /* Request.swift in Sources */,
 				1ED1ECB92B86997F00F6620C /* URLSessionCertificateHandling.swift in Sources */,
+				1E388AC22B934CD4006FBDB0 /* RemoteImage.swift in Sources */,
+				1E388ABF2B934C64006FBDB0 /* ImageLoader.swift in Sources */,
 				1ED1ECBA2B86997F00F6620C /* RocketChatClient.swift in Sources */,
 				1ED1ECBB2B86997F00F6620C /* AppView.swift in Sources */,
 				1ED1ECBC2B86997F00F6620C /* MessagesRequest.swift in Sources */,

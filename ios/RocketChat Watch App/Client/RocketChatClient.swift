@@ -2,6 +2,8 @@ import Combine
 import Foundation
 
 protocol RocketChatClientProtocol {
+	var session: URLSession { get }
+	
 	func authorizedURL(url: URL) -> URL
 	func getRooms(updatedSince: Date?) -> AnyPublisher<RoomsResponse, RocketChatError>
 	func getSubscriptions(updatedSince: Date?) -> AnyPublisher<SubscriptionsResponse, RocketChatError>
@@ -20,7 +22,7 @@ final class RocketChatClient: NSObject {
 		self.server = server
 	}
 	
-	private lazy var session = URLSession(
+	lazy var session = URLSession(
 		configuration: .default,
 		delegate: URLSesionClientCertificateHandling(
 			certificate: server.certificate,

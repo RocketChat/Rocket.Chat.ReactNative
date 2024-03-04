@@ -187,6 +187,7 @@ final class RocketChatDatabase: Database {
 		
 		let attachment = attachment(identifier: identifier) ?? createAttachment(identifier: identifier)
 		
+		attachment.imageURL = updatedAttachment.imageURL
 		attachment.msg = updatedAttachment.description
 		attachment.message = message
 		attachment.width = updatedAttachment.dimensions?.width ?? 0
