@@ -22,7 +22,7 @@ struct ServerListView: View {
 	@ViewBuilder
 	private var serverList: some View {
 		List {
-			ForEach(servers) { server in
+			ForEach(servers.sort()) { server in
 				ServerView(server: server)
 					.onTapGesture {
 						router.route(to: .roomList(server))
@@ -85,5 +85,17 @@ extension ServerListView {
 		case loading
 		case loaded
 		case error(ServersLoadingError)
+	}
+}
+
+private extension Collection where Element == Server {
+	func sort() -> [Element] {
+		sorted { $0.host < $1.host }
+	}
+}
+
+private extension Server {
+	var host: String {
+		url.host ?? ""
 	}
 }
