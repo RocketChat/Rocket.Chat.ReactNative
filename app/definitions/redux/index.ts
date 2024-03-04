@@ -40,6 +40,8 @@ import { IEnterpriseModules } from '../../reducers/enterpriseModules';
 import { IVideoConf } from '../../reducers/videoConf';
 import { TActionUsersRoles } from '../../actions/usersRoles';
 import { TUsersRoles } from '../../reducers/usersRoles';
+import { ITroubleshootingNotification } from '../../reducers/troubleshootingNotification';
+import { TActionTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { ISupportedVersionsState } from '../../reducers/supportedVersions';
 import { IInAppFeedbackState } from '../../reducers/inAppFeedback';
 
@@ -67,6 +69,7 @@ export interface IApplicationState {
 	roles: IRoles;
 	videoConf: IVideoConf;
 	usersRoles: TUsersRoles;
+	troubleshootingNotification: ITroubleshootingNotification;
 	supportedVersions: ISupportedVersionsState;
 	inAppFeedback: IInAppFeedbackState;
 }
@@ -90,5 +93,6 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionEnterpriseModules &
 	TActionVideoConf &
 	TActionUsersRoles &
+	TActionTroubleshootingNotification &
 	TActionSupportedVersions &
 	TInAppFeedbackAction;
