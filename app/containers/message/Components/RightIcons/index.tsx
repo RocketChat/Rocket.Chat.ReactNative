@@ -7,6 +7,7 @@ import Encrypted from './Encrypted';
 import MessageError from './MessageError';
 import Pinned from './Pinned';
 import ReadReceipt from './ReadReceipt';
+import Translated from './Translated';
 
 const styles = StyleSheet.create({
 	actionIcons: {
@@ -21,15 +22,26 @@ interface IRightIcons {
 	isReadReceiptEnabled?: boolean;
 	unread?: boolean;
 	hasError: boolean;
+	isTranslated: boolean;
 	pinned?: boolean;
 }
 
-const RightIcons = ({ type, msg, isEdited, hasError, isReadReceiptEnabled, unread, pinned }: IRightIcons): React.ReactElement => (
+const RightIcons = ({
+	type,
+	msg,
+	isEdited,
+	hasError,
+	isReadReceiptEnabled,
+	unread,
+	isTranslated,
+	pinned
+}: IRightIcons): React.ReactElement => (
 	<View style={styles.actionIcons}>
 		<Pinned pinned={pinned} testID={`${msg}-pinned`} />
 		<Encrypted type={type} />
 		<Edited testID={`${msg}-edited`} isEdited={isEdited} />
 		<MessageError hasError={hasError} />
+		<Translated isTranslated={isTranslated} />
 		<ReadReceipt isReadReceiptEnabled={isReadReceiptEnabled} unread={unread} />
 	</View>
 );
