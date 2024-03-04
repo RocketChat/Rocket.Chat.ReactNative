@@ -6,7 +6,6 @@ struct AttachmentView: View {
 	private let attachment: Attachment
 	
 	init(attachment: Attachment) {
-		print(attachment)
 		self.attachment = attachment
 	}
 	

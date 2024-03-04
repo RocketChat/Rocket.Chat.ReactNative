@@ -84,6 +84,22 @@
         }
       }
     },
+    "Could not load rooms." : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "部屋を読み込めませんでした。"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível carregar as salas."
+          }
+        }
+      }
+    },
     "Could not reach your iPhone." : {
       "localizations" : {
         "ja" : {

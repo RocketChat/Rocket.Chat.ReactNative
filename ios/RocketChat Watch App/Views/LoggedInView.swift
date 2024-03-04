@@ -18,12 +18,12 @@ struct LoggedInView: View {
 		Store.register(RocketChatClientProtocol.self, factory: RocketChatClient(server: server))
 		Store.register(MessageSending.self, factory: MessageSender(server: server))
 		Store.register(ErrorActionHandling.self, factory: ErrorActionHandler(server: server))
-		Store.register(RoomsLoading.self, factory: RoomsLoader(server: server))
 		Store.register(MessagesLoading.self, factory: MessagesLoader())
 	}
 	
 	var body: some View {
 		RoomListView(server: server)
+			.environmentObject(RoomsLoader(server: server))
 			.environment(\.managedObjectContext, database.viewContext)
 	}
 }

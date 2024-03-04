@@ -2,10 +2,11 @@ import SwiftUI
 
 struct RoomListView: View {
 	@Dependency private var database: Database
-	@Dependency private var roomsLoader: RoomsLoading
 	@Dependency private var router: AppRouting
 	
 	@ObservedObject private var server: Server
+	
+	@EnvironmentObject private var roomsLoader: RoomsLoader
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -52,8 +53,11 @@ struct RoomListView: View {
 			}
 		}
 		.overlay {
-			if server.updatedSince == nil {
+			if roomsLoader.state == .loading {
 				ProgressView()
+			} else if roomsLoader.state == .error {
+				Text("Could not load rooms.")
+					.multilineTextAlignment(.center)
 			}
 		}
 	}
