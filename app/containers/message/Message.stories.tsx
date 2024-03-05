@@ -70,6 +70,7 @@ export default {
 export const Message = (props: any) => (
 	<MessageComponent
 		baseUrl={baseUrl}
+		key={baseUrl}
 		user={user}
 		author={author}
 		ts={date}

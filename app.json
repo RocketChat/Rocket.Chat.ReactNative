@@ -1,5 +1,7 @@
 {
 	"name": "RocketChatRN",
 	"share": "ShareRocketChatRN",
-	"displayName": "RocketChatRN"
-}
+	"displayName": "T1D Reachout",
+	"appGroup": "group.com.t1dreachout.app",
+	"appStoreID": "1272915472"
+  }
