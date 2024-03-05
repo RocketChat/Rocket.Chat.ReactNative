@@ -837,5 +837,7 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
-  "you_were_mentioned": "you were mentioned"
+  "you_were_mentioned": "you were mentioned",
+  "encrypted_room_title": "This room is encrypted",
+  "encrypted_room_description": "Enter your end-to-end encryption password to access."
 }

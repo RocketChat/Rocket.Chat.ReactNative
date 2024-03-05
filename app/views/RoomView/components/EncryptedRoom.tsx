@@ -36,8 +36,8 @@ export const EncryptedRoom = ({
 					<View style={styles.icon}>
 						<CustomIcon name='encrypted' size={42} color={colors.fontSecondaryInfo} />
 					</View>
-					<Text style={styles.title}>This room is encrypted</Text>
-					<Text style={styles.description}>To view its contents you must enter your encryption password.</Text>
+					<Text style={styles.title}>{I18n.t('encrypted_room_title')}</Text>
+					<Text style={styles.description}>{I18n.t('encrypted_room_description')}</Text>
 				</View>
 				<Button title={I18n.t('Enter_Your_E2E_Password')} onPress={navigate} />
 				<Button
