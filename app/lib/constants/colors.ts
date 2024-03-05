@@ -115,7 +115,7 @@ const newColors = {
 	buttonSuccessDisabled: '#FFFFFF'
 };
 const newColorsDark = {
-	surfaceLight: '#262931',
+	Surfacelight: '#262931',
 	surfaceTint: '#1F2329',
 	surfaceRoom: '#1F2329',
 	surfaceNeutral: '#2D3039',
@@ -211,10 +211,19 @@ const callButtons = {
 	acceptCallButton: '#158D65'
 };
 
+
+export const themeColors = {
+	magenta: '#CB007B',
+	mossGreen: '#799A79',
+	dreamBlue: '#9ABAF3',
+	creamsicleYellow: '#FDCA7D',
+	pink: '#F283BF',
+	superGray: '#494949',
+	forestGreen: '#567156'
+};
+
 export const colors = {
 	light: {
-		...newColors,
-
 		backgroundColor: '#ffffff',
 		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
@@ -239,19 +248,19 @@ export const colors = {
 		headerBorder: '#B2B2B2',
 		headerBackground: '#EEEFF1',
 		headerSecondaryBackground: '#ffffff',
-		headerTintColor: '#6C727A',
+		headerTintColor: '#8FCEA7',
 		headerTitleColor: '#0C0D0F',
 		headerSecondaryText: '#1d74f5',
 		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
+		messageboxBackground: '#ffffff',
 		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
 		buttonText: '#ffffff',
 		passcodeBackground: '#EEEFF1',
 		passcodeButtonActive: '#E4E7EA',
-		editAndUploadButtonAvatar: '#E4E7EA',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#2F343D',
 		passcodeSecondary: '#6C727A',
@@ -281,21 +290,10 @@ export const colors = {
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
 		textInputSecondaryBackground: '#E4E7EA',
-		dotBg: '#a9cbff',
-		dotActiveBg: '#1d74f5',
-		gray300: '#5f656e',
-		gray100: '#CBCED1',
-		n900: '#1F2329',
-		statusBackgroundWarning: '#FFECAD',
-		overlayColor: '#1F2329CC',
-		taskBoxColor: '#9297a2',
 		...mentions,
-		...callButtons
+		...themeColors
 	},
 	dark: {
-		...newColorsDark,
-		surfaceLight: '#0b182c',
-
 		backgroundColor: '#030b1b',
 		focusedBackground: '#0b182c',
 		chatComponentBackground: '#192132',
@@ -323,16 +321,16 @@ export const colors = {
 		headerTintColor: '#f9f9f9',
 		headerTitleColor: '#f9f9f9',
 		headerSecondaryText: '#9297a2',
-		toastBackground: '#54585e',
+		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
+		messageboxBackground: '#0b182c',
 		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
 		buttonText: '#ffffff',
 		passcodeBackground: '#030C1B',
 		passcodeButtonActive: '#0B182C',
-		editAndUploadButtonAvatar: '#0B182C',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#FFFFFF',
 		passcodeSecondary: '#CBCED1',
@@ -361,22 +359,11 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
-		textInputSecondaryBackground: '#030b1b',
-		dotBg: '#a9cbff',
-		dotActiveBg: '#1d74f5',
-		gray300: '#5f656e',
-		gray100: '#CBCED1',
-		n900: '#FFFFFF',
-		statusBackgroundWarning: '#FFECAD',
-		overlayColor: '#1F2329CC',
-		taskBoxColor: '#9297a2',
+		textInputSecondaryBackground: '#030b1b', // backgroundColor
 		...mentions,
-		...callButtons
+		...themeColors
 	},
 	black: {
-		...newColorsDark,
-		surfaceLight: '#0d0d0d',
-
 		backgroundColor: '#000000',
 		focusedBackground: '#0d0d0d',
 		chatComponentBackground: '#16181a',
@@ -404,16 +391,16 @@ export const colors = {
 		headerTintColor: '#f9f9f9',
 		headerTitleColor: '#f9f9f9',
 		headerSecondaryText: '#b2b8c6',
-		toastBackground: '#54585e',
+		toastBackground: '#0C0D0F',
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
+		messageboxBackground: '#0d0d0d',
 		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
 		buttonText: '#ffffff',
 		passcodeBackground: '#000000',
 		passcodeButtonActive: '#0E0D0D',
-		editAndUploadButtonAvatar: '#0E0D0D',
 		passcodeLockIcon: '#6C727A',
 		passcodePrimary: '#FFFFFF',
 		passcodeSecondary: '#CBCED1',
@@ -442,17 +429,9 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
-		textInputSecondaryBackground: '#000000',
-		dotBg: '#a9cbff',
-		dotActiveBg: '#1d74f5',
-		gray300: '#5f656e',
-		gray100: '#CBCED1',
-		n900: '#FFFFFF',
-		statusBackgroundWarning: '#FFECAD',
-		overlayColor: '#1F2329CC',
-		taskBoxColor: '#9297a2',
+		textInputSecondaryBackground: '#000000', // backgroundColor
 		...mentions,
-		...callButtons
+		...themeColors
 	}
 };
 
