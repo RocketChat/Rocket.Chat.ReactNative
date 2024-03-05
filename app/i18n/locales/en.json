@@ -771,6 +771,10 @@
   "deleting_room": "deleting room",
   "deleting_team": "deleting team",
   "description": "description",
+  "e2ee_disabled": "End-to-end encryption is disabled",
+  "e2ee_enabled": "End-to-end encryption is enabled",
+  "encrypted_room_description": "Enter your end-to-end encryption password to access.",
+  "encrypted_room_title": "This room is encrypted",
   "error-action-not-allowed": "{{action}} is not allowed",
   "error-avatar-invalid-url": "Invalid avatar URL: {{url}}",
   "error-duplicate-channel-name": "A channel with name {{room_name}} exists",
@@ -837,9 +841,5 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
-  "you_were_mentioned": "you were mentioned",
-  "encrypted_room_title": "This room is encrypted",
-  "encrypted_room_description": "Enter your end-to-end encryption password to access.",
-  "e2ee_enabled": "End-to-end encryption is enabled",
-  "e2ee_disabled": "End-to-end encryption is disabled"
+  "you_were_mentioned": "you were mentioned"
 }
