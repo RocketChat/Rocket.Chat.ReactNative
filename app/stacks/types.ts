@@ -286,7 +286,6 @@ export type InsideStackParamList = {
 };
 
 export type OutsideParamList = {
-	NewServerView: undefined;
 	WorkspaceView: undefined;
 	LoginView: {
 		title: string;
