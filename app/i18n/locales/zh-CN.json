@@ -446,6 +446,8 @@
   "delete": "删除",
   "deleting_room": "正在删除聊天室",
   "description": "描述",
+  "encrypted_room_description": "输入您的端到端加密密码以访问。",
+  "encrypted_room_title": "{{room_name}} 已加密",
   "error-action-not-allowed": "{{action}} 不允許",
   "error-avatar-invalid-url": "无效的头像网址：{{url}}",
   "error-duplicate-channel-name": "名为「{{room_name}}」的频道已存在",
@@ -467,6 +469,8 @@
   "members": "成员",
   "message": "信息",
   "messages": "信息",
+  "missing_room_e2ee_description": "房间的加密密钥需要更新，另一位房间成员需要在线才能进行此操作。",
+  "missing_room_e2ee_title": "过几分钟再回来检查",
   "muted": "被静音",
   "replies": "回覆",
   "reply": "回复",
@@ -480,9 +484,5 @@
   "unmuted": "静音状态",
   "unread_messages": "未读信息",
   "you": "你",
-  "you_were_mentioned": "你被提到了",
-  "missing_room_e2ee_description": "房间的加密密钥需要更新，另一位房间成员需要在线才能进行此操作。",
-  "missing_room_e2ee_title": "过几分钟再回来检查",
-  "encrypted_room_description": "输入您的端到端加密密码以访问。",
-  "encrypted_room_title": "{{room_name}} 已加密"
+  "you_were_mentioned": "你被提到了"
 }

@@ -692,6 +692,8 @@
   "deleting_room": "রুম মুছে ফেলা হচ্ছে",
   "deleting_team": "দল মুছছে",
   "description": "বর্ণনা",
+  "encrypted_room_description": "অ্যাক্সেস করতে আপনার এন্ড-টু-এন্ড এনক্রিপশন পাসওয়ার্ড লিখুন।",
+  "encrypted_room_title": "{{room_name}} এনক্রিপ্ট করা হয়েছে",
   "error-action-not-allowed": "{{action}} অনুমোদিত নয়",
   "error-avatar-invalid-url": "অবৈধ অবতার URL: {{url}}",
   "error-duplicate-channel-name": "একটি চ্যানেল নাম {{room_name}} ইতিমধ্যে বিদ্যমান",
@@ -718,6 +720,8 @@
   "members": "সদস্যগুলি",
   "message": "বার্তা",
   "messages": "বার্তা",
+  "missing_room_e2ee_description": "ঘরের জন্য এনক্রিপশন কীগুলি আপডেট করা প্রয়োজন, এর জন্য আরেকজন ঘরের সদস্যকে অনলাইনে থাকতে হবে।",
+  "missing_room_e2ee_title": "কয়েক মুহূর্তের মধ্যে পরীক্ষা করুন",
   "move": "মুভ করুন",
   "moving_channel_to_team": "চ্যানেলটি দলে নিয়ে যাচ্ছে",
   "muted": "শান্ত",
@@ -755,9 +759,5 @@
   "video-conf-provider-not-configured-body": "একটি কার্যক্ষম প্রশাসককে প্রথমে কনফারেন্স কল বৈশিষ্ট্যটি চালু করতে হবে।",
   "video-conf-provider-not-configured-header": "কনফারেন্স কল সক্ষম হয়নি",
   "you": "তুমি",
-  "you_were_mentioned": "আপনি উল্লেখ করা হয়েছিলেন",
-  "missing_room_e2ee_description": "ঘরের জন্য এনক্রিপশন কীগুলি আপডেট করা প্রয়োজন, এর জন্য আরেকজন ঘরের সদস্যকে অনলাইনে থাকতে হবে।",
-  "missing_room_e2ee_title": "কয়েক মুহূর্তের মধ্যে পরীক্ষা করুন",
-  "encrypted_room_description": "অ্যাক্সেস করতে আপনার এন্ড-টু-এন্ড এনক্রিপশন পাসওয়ার্ড লিখুন।",
-  "encrypted_room_title": "{{room_name}} এনক্রিপ্ট করা হয়েছে"
+  "you_were_mentioned": "আপনি উল্লেখ করা হয়েছিলেন"
 }

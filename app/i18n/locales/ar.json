@@ -453,6 +453,8 @@
   "delete": "حذف",
   "deleting_room": "حذف الغرفة",
   "description": "وصف",
+  "encrypted_room_description": "أدخل كلمة المرور الخاصة بالتشفير من طرف إلى طرف للوصول.",
+  "encrypted_room_title": "{{room_name}} مشفر",
   "error-action-not-allowed": "غير مسموح بالإجراء {{action}}",
   "error-avatar-invalid-url": "عنوان الصورة الرمزية غير صحيح: {{url}}",
   "error-duplicate-channel-name": "القناة {{room_name}} موجودة مسبقاً",
@@ -474,6 +476,8 @@
   "members": "أفراد",
   "message": "رسالة",
   "messages": "رسائل",
+  "missing_room_e2ee_description": "يجب تحديث مفاتيح التشفير للغرفة، ويجب أن يكون عضو آخر في الغرفة متصلاً بالإنترنت حتى يحدث ذلك.",
+  "missing_room_e2ee_title": "تحقق مرة أخرى بعد بضع لحظات",
   "move": "حرك",
   "muted": "مكتوم",
   "remove": "حذف",
@@ -489,9 +493,5 @@
   "unmuted": "إلغاء كتم",
   "unread_messages": "رسائل غير مقروءة",
   "you": "أنت",
-  "you_were_mentioned": "تمت الإشارة إليك",
-  "missing_room_e2ee_description": "يجب تحديث مفاتيح التشفير للغرفة، ويجب أن يكون عضو آخر في الغرفة متصلاً بالإنترنت حتى يحدث ذلك.",
-  "missing_room_e2ee_title": "تحقق مرة أخرى بعد بضع لحظات",
-  "encrypted_room_description": "أدخل كلمة المرور الخاصة بالتشفير من طرف إلى طرف للوصول.",
-  "encrypted_room_title": "{{room_name}} مشفر"
+  "you_were_mentioned": "تمت الإشارة إليك"
 }

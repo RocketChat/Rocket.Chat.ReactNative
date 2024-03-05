@@ -488,6 +488,8 @@
   "delete": "sil",
   "deleting_room": "oda siliniyor",
   "description": "açıklama",
+  "encrypted_room_description": "Erişmek için uçtan uca şifreleme şifrenizi girin.",
+  "encrypted_room_title": "{{room_name}} şifrelenmiştir",
   "error-action-not-allowed": "{{action}}'a izin verilmiyor!",
   "error-avatar-invalid-url": "Geçersiz avatar URL'si: {{url}}",
   "error-duplicate-channel-name": "{{room_name}} adında bir kanal var!",
@@ -509,6 +511,8 @@
   "members": "üyeler",
   "message": "ileti",
   "messages": "iletiler",
+  "missing_room_e2ee_description": "Odanın şifreleme anahtarları güncellenmelidir, bunun gerçekleşmesi için başka bir oda üyesinin çevrimiçi olması gerekmektedir.",
+  "missing_room_e2ee_title": "Birkaç an içinde tekrar kontrol edin",
   "muted": "sessize alındı",
   "replies": "yanıtlar",
   "reply": "yanıtla",
@@ -522,9 +526,5 @@
   "unmuted": "Sesi Açıldı",
   "unread_messages": "okunmamış",
   "you": "siz",
-  "you_were_mentioned": "senden bahsedildi",
-  "missing_room_e2ee_description": "Odanın şifreleme anahtarları güncellenmelidir, bunun gerçekleşmesi için başka bir oda üyesinin çevrimiçi olması gerekmektedir.",
-  "missing_room_e2ee_title": "Birkaç an içinde tekrar kontrol edin",
-  "encrypted_room_description": "Erişmek için uçtan uca şifreleme şifrenizi girin.",
-  "encrypted_room_title": "{{room_name}} şifrelenmiştir"
+  "you_were_mentioned": "senden bahsedildi"
 }

@@ -503,6 +503,8 @@
   "delete": "elimina",
   "deleting_room": "cancellazione stanza",
   "description": "descrizione",
+  "encrypted_room_description": "Inserisci la tua password di crittografia end-to-end per accedere.",
+  "encrypted_room_title": "{{room_name}} è criptato",
   "error-action-not-allowed": "{{action}} non autorizzata",
   "error-avatar-invalid-url": "URL avatar non valido: {{url}}",
   "error-duplicate-channel-name": "Esiste già un canale con nome {{room_name}}",
@@ -525,6 +527,8 @@
   "members": "membri",
   "message": "messaggio",
   "messages": "messaggi",
+  "missing_room_e2ee_description": "Le chiavi di crittografia per la stanza devono essere aggiornate, un altro membro della stanza deve essere online affinché ciò avvenga.",
+  "missing_room_e2ee_title": "Ricontrolla tra qualche istante",
   "move": "spostare",
   "muted": "silenziato",
   "replies": "risposte",
@@ -539,9 +543,5 @@
   "unmuted": "notifiche attivate",
   "unread_messages": "non letti",
   "you": "tu",
-  "you_were_mentioned": "sei stato menzionato",
-  "missing_room_e2ee_description": "Le chiavi di crittografia per la stanza devono essere aggiornate, un altro membro della stanza deve essere online affinché ciò avvenga.",
-  "missing_room_e2ee_title": "Ricontrolla tra qualche istante",
-  "encrypted_room_description": "Inserisci la tua password di crittografia end-to-end per accedere.",
-  "encrypted_room_title": "{{room_name}} è criptato"
+  "you_were_mentioned": "sei stato menzionato"
 }

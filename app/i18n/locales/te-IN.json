@@ -692,6 +692,8 @@
   "deleting_room": "కొరకుని తొలగించడం",
   "deleting_team": "టీమ్ ను తొలగిస్తోంది",
   "description": "వివరణ",
+  "encrypted_room_description": "ప్రాప్యతకు మీ అంతిమ నుండి అంతిమ ఎన్క్రిప్షన్ పాస్‌వర్డ్‌ను నమోదు చేయండి.",
+  "encrypted_room_title": "{{room_name}} ఎన్క్రిప్ట్ చేయబడింది",
   "error-action-not-allowed": "{{action}} అనుమతించబడినది కాదు",
   "error-avatar-invalid-url": "చెల్లింపు అవతార URL: {{url}}",
   "error-duplicate-channel-name": "{{room_name}} పేరుతో చానల్ ఉంది",
@@ -718,6 +720,8 @@
   "members": "సభ్యులు",
   "message": "సందేశం",
   "messages": "సందేశాలు",
+  "missing_room_e2ee_description": "గది కోసం ఎన్క్రిప్షన్ కీలు నవీకరించబడాలి, దీని జరగాలంటే మరొక గది సభ్యుడు ఆన్లైన్‌లో ఉండాలి.",
+  "missing_room_e2ee_title": "కొన్ని క్షణాల్లో తిరిగి తనిఖీ చేయండి",
   "move": "తరలించుకో",
   "moving_channel_to_team": "ఛానల్ టీమ్‌కు తరలించండి",
   "muted": "నిషేధించబడింది",
@@ -755,9 +759,5 @@
   "video-conf-provider-not-configured-body": "వార్క్‌స్పేస్ యాడ్మిన్ మొదలు కాన్ఫరెన్స్ కాల్స్ విశేషాలు ఏర్పాట్లో ఉన్నాయి.",
   "video-conf-provider-not-configured-header": "కాన్ఫరెన్స్ కాల్ అనేకంగా లేదు",
   "you": "మీరు",
-  "you_were_mentioned": "మీరు పేర్కొనబడింది",
-  "missing_room_e2ee_description": "గది కోసం ఎన్క్రిప్షన్ కీలు నవీకరించబడాలి, దీని జరగాలంటే మరొక గది సభ్యుడు ఆన్లైన్‌లో ఉండాలి.",
-  "missing_room_e2ee_title": "కొన్ని క్షణాల్లో తిరిగి తనిఖీ చేయండి",
-  "encrypted_room_description": "ప్రాప్యతకు మీ అంతిమ నుండి అంతిమ ఎన్క్రిప్షన్ పాస్‌వర్డ్‌ను నమోదు చేయండి.",
-  "encrypted_room_title": "{{room_name}} ఎన్క్రిప్ట్ చేయబడింది"
+  "you_were_mentioned": "మీరు పేర్కొనబడింది"
 }

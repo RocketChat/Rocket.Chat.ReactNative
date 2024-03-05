@@ -692,6 +692,8 @@
   "deleting_room": "कमरे को हटाएं",
   "deleting_team": "टीम हटाना",
   "description": "विवरण",
+  "encrypted_room_description": "पहुँचने के लिए अपना एंड-टू-एंड एन्क्रिप्शन पासवर्ड दर्ज करें।",
+  "encrypted_room_title": "{{room_name}} एन्क्रिप्टेड है",
   "error-action-not-allowed": "{{action}} की अनुमति नहीं है",
   "error-avatar-invalid-url": "अवैध अवतार URL: {{url}}",
   "error-duplicate-channel-name": "{{room_name}} नाम का एक चैनल मौजूद है",
@@ -718,6 +720,8 @@
   "members": "सदस्य",
   "message": "संदेश",
   "messages": "संदेश",
+  "missing_room_e2ee_description": "कमरे के लिए एन्क्रिप्शन कुंजियों को अपडेट किया जाना चाहिए, इसके लिए एक और कमरे के सदस्य को ऑनलाइन होना चाहिए।",
+  "missing_room_e2ee_title": "कुछ क्षणों में वापस जाँच करें",
   "move": "हटाएं",
   "moving_channel_to_team": "चैनल को टीम में मूव करना",
   "muted": "म्यूट किया गया",
@@ -755,9 +759,5 @@
   "video-conf-provider-not-configured-body": "कार्यक्षेत्र प्रबंधक को पहले कॉन्फ़्रेंस कॉल सुविधा सक्षम करनी होगी।",
   "video-conf-provider-not-configured-header": "कॉन्फ़्रेंस कॉल सक्षम नहीं है",
   "you": "आप",
-  "you_were_mentioned": "आपका उल्लेख किया गया था",
-  "missing_room_e2ee_description": "कमरे के लिए एन्क्रिप्शन कुंजियों को अपडेट किया जाना चाहिए, इसके लिए एक और कमरे के सदस्य को ऑनलाइन होना चाहिए।",
-  "missing_room_e2ee_title": "कुछ क्षणों में वापस जाँच करें",
-  "encrypted_room_description": "पहुँचने के लिए अपना एंड-टू-एंड एन्क्रिप्शन पासवर्ड दर्ज करें।",
-  "encrypted_room_title": "{{room_name}} एन्क्रिप्टेड है"
+  "you_were_mentioned": "आपका उल्लेख किया गया था"
 }

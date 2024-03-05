@@ -682,6 +682,8 @@
   "deleting_room": "lösche Raum",
   "deleting_team": "Team löschen",
   "description": "Beschreibung",
+  "encrypted_room_description": "Geben Sie Ihr Passwort für die Ende-zu-Ende-Verschlüsselung ein, um Zugang zu erhalten.",
+  "encrypted_room_title": "{{room_name}} ist verschlüsselt",
   "error-action-not-allowed": "{{action}} ist nicht erlaubt",
   "error-avatar-invalid-url": "Ungültige Avatar-URL: {{url}}",
   "error-duplicate-channel-name": "Ein Channel mit dem Namen {{room_name}} ist bereits vorhanden",
@@ -708,6 +710,8 @@
   "members": "Mitglieder",
   "message": "Nachricht",
   "messages": "Nachrichten",
+  "missing_room_e2ee_description": "Die Verschlüsselungsschlüssel für den Raum müssen aktualisiert werden, ein anderer Raummitglied muss online sein, damit dies geschehen kann.",
+  "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück",
   "move": "verschieben",
   "moving_channel_to_team": "Channel  zu Team verschieben",
   "muted": "stummgeschaltet",
@@ -745,9 +749,5 @@
   "video-conf-provider-not-configured-body": "Ein Arbeitsbereich-Administrator muss die Funktion für Telefonkonferenzen zuerst aktivieren.",
   "video-conf-provider-not-configured-header": "Telefonkonferenz nicht aktiviert",
   "you": "Sie",
-  "you_were_mentioned": "Sie wurden erwähnt",
-  "missing_room_e2ee_description": "Die Verschlüsselungsschlüssel für den Raum müssen aktualisiert werden, ein anderer Raummitglied muss online sein, damit dies geschehen kann.",
-  "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück",
-  "encrypted_room_description": "Geben Sie Ihr Passwort für die Ende-zu-Ende-Verschlüsselung ein, um Zugang zu erhalten.",
-  "encrypted_room_title": "{{room_name}} ist verschlüsselt"
+  "you_were_mentioned": "Sie wurden erwähnt"
 }

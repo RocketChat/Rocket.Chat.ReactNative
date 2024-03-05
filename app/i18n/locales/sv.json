@@ -659,6 +659,8 @@
   "deleting_room": "tar bort rum",
   "deleting_team": "tar bort team",
   "description": "beskrivning",
+  "encrypted_room_description": "Ange ditt lösenord för end-to-end-kryptering för att få tillgång.",
+  "encrypted_room_title": "{{room_name}} är krypterat",
   "error-action-not-allowed": "{{action}} tillåts inte",
   "error-avatar-invalid-url": "Ogiltig avatar-URL: {{url}}",
   "error-duplicate-channel-name": "Det finns redan en kanal med namnet {{room_name}} ",
@@ -684,6 +686,8 @@
   "members": "medlemmar",
   "message": "meddelande",
   "messages": "meddelanden",
+  "missing_room_e2ee_description": "Krypteringsnycklarna för rummet behöver uppdateras, en annan rummedlem måste vara online för att detta ska hända.",
+  "missing_room_e2ee_title": "Kontrollera igen om några ögonblick",
   "move": "flytta",
   "moving_channel_to_team": "flyttar kanal till team",
   "muted": "tystade",
@@ -715,9 +719,5 @@
   "unmuted": "slog på ljudet",
   "unread_messages": "oläst",
   "you": "du",
-  "you_were_mentioned": "du nämndes",
-  "missing_room_e2ee_description": "Krypteringsnycklarna för rummet behöver uppdateras, en annan rummedlem måste vara online för att detta ska hända.",
-  "missing_room_e2ee_title": "Kontrollera igen om några ögonblick",
-  "encrypted_room_description": "Ange ditt lösenord för end-to-end-kryptering för att få tillgång.",
-  "encrypted_room_title": "{{room_name}} är krypterat"
+  "you_were_mentioned": "du nämndes"
 }

@@ -591,6 +591,8 @@
   "deleting_room": "suppression du salon",
   "deleting_team": "suppression de l'équipe",
   "description": "la description",
+  "encrypted_room_description": "Entrez votre mot de passe de cryptage de bout en bout pour accéder.",
+  "encrypted_room_title": "{{room_name}} est crypté",
   "error-action-not-allowed": "{{action}} n'est pas autorisé",
   "error-avatar-invalid-url": "URL d'avatar invalide : {{url}}",
   "error-duplicate-channel-name": "Un canal avec nom {{room_name}} existe",
@@ -615,6 +617,8 @@
   "members": "membres",
   "message": "message",
   "messages": "messages",
+  "missing_room_e2ee_description": "Les clés de chiffrement de la pièce doivent être mises à jour, un autre membre de la pièce doit être en ligne pour que cela se produise.",
+  "missing_room_e2ee_title": "Revenez dans quelques instants",
   "move": "déplacer",
   "moving_channel_to_team": "transfert de canal à l'équipe",
   "muted": "muet",
@@ -636,9 +640,5 @@
   "unmuted": "rendu la parole",
   "unread_messages": "non lu",
   "you": "vous",
-  "you_were_mentioned": "vous avez été mentionné",
-  "missing_room_e2ee_description": "Les clés de chiffrement de la pièce doivent être mises à jour, un autre membre de la pièce doit être en ligne pour que cela se produise.",
-  "missing_room_e2ee_title": "Revenez dans quelques instants",
-  "encrypted_room_description": "Entrez votre mot de passe de cryptage de bout en bout pour accéder.",
-  "encrypted_room_title": "{{room_name}} est crypté"
+  "you_were_mentioned": "vous avez été mentionné"
 }

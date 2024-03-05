@@ -335,6 +335,8 @@
   "delete": "apagar",
   "deleting_room": "apagando sala",
   "description": "descrição",
+  "encrypted_room_description": "Insira a sua palavra-passe de encriptação de ponta a ponta para aceder.",
+  "encrypted_room_title": "{{room_name}} está encriptado",
   "error-action-not-allowed": "{{action}} não é permitida",
   "error-avatar-invalid-url": "URL de avatar inválido: {{url}}",
   "error-duplicate-channel-name": "Existe um canal com o nome {{room_name}}",
@@ -356,6 +358,8 @@
   "members": "membros",
   "message": "mensagem",
   "messages": "mensagens",
+  "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",
+  "missing_room_e2ee_title": "Volte a verificar daqui a alguns momentos",
   "move": "mover",
   "muted": "silenciado",
   "resetting_password": "a repor palavra-passe",
@@ -367,9 +371,5 @@
   "unmuted": "silêncio removido",
   "unread_messages": "não lidas",
   "you": "você",
-  "you_were_mentioned": "você foi mencionado",
-  "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",
-  "missing_room_e2ee_title": "Volte a verificar daqui a alguns momentos",
-  "encrypted_room_description": "Insira a sua palavra-passe de encriptação de ponta a ponta para aceder.",
-  "encrypted_room_title": "{{room_name}} está encriptado"
+  "you_were_mentioned": "você foi mencionado"
 }

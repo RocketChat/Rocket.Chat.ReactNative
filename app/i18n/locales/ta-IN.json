@@ -692,6 +692,8 @@
   "deleting_room": "அறை நீக்குதல்",
   "deleting_team": "குழுவை அழிக்கின்றன",
   "description": "விளக்கம்",
+  "encrypted_room_description": "அணுகலுக்கு உங்கள் முடிவுக்கு முடிவு குறியாக்க கடவுச்சொல்லை உள்ளிடவும்.",
+  "encrypted_room_title": "{{room_name}} குறியாக்கப்பட்டுள்ளது",
   "error-action-not-allowed": "{{action}} அனுமதி இல்லை",
   "error-avatar-invalid-url": "தவறான அவதார் URL: {{url}}",
   "error-duplicate-channel-name": "{{room_name}} என்ற பேருடைய கொருக்கை ஏற்கனவே உள்ளது",
@@ -718,6 +720,8 @@
   "members": "உறுப்பினர்கள்",
   "message": "செய்தி",
   "messages": "செய்திகள்",
+  "missing_room_e2ee_description": "அறைக்கான குறியாக்க விசைகள் புதுப்பிக்கப்பட வேண்டும், இது நடக்க மற்றொரு அறை உறுப்பினர் ஆன்லைனில் இருக்க வேண்டும்.",
+  "missing_room_e2ee_title": "சில நிமிடங்களில் மீண்டும் சரிபார்க்கவும்",
   "move": "நகலெடு",
   "moving_channel_to_team": "சேனலை குழுவிற்கு நகர்த்துக",
   "muted": "பேச்சு அமைந்தது",
@@ -755,9 +759,5 @@
   "video-conf-provider-not-configured-body": "காரிகள் ஆட்சேர்க்கலாம் என்பதற்கு முகப்பு நிர்வாகி முதலாளியின் அனுமதி தேவை.",
   "video-conf-provider-not-configured-header": "காந்ஃபரன்ஸ் கால் கொள்ளை இயக்கப்படவில்லை",
   "you": "நீங்கள்",
-  "you_were_mentioned": "உங்களுக்கு குறிக்கப்பட்டார்",
-  "missing_room_e2ee_description": "அறைக்கான குறியாக்க விசைகள் புதுப்பிக்கப்பட வேண்டும், இது நடக்க மற்றொரு அறை உறுப்பினர் ஆன்லைனில் இருக்க வேண்டும்.",
-  "missing_room_e2ee_title": "சில நிமிடங்களில் மீண்டும் சரிபார்க்கவும்",
-  "encrypted_room_description": "அணுகலுக்கு உங்கள் முடிவுக்கு முடிவு குறியாக்க கடவுச்சொல்லை உள்ளிடவும்.",
-  "encrypted_room_title": "{{room_name}} குறியாக்கப்பட்டுள்ளது"
+  "you_were_mentioned": "உங்களுக்கு குறிக்கப்பட்டார்"
 }

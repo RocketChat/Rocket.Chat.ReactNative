@@ -638,6 +638,8 @@
   "deleting_room": "удаление чата",
   "deleting_team": "удаление Команды",
   "description": "описание",
+  "encrypted_room_description": "Введите свой пароль для шифрования от конца к концу для доступа.",
+  "encrypted_room_title": "{{room_name}} зашифрован",
   "error-action-not-allowed": "{{action}} не допускается",
   "error-avatar-invalid-url": "Недопустимый URL-адрес аватара: {{url}}",
   "error-duplicate-channel-name": "Канал с именем {{room_name}} существует",
@@ -663,6 +665,8 @@
   "members": "пользователи",
   "message": "сообщение",
   "messages": "сообщения",
+  "missing_room_e2ee_description": "Ключи шифрования для комнаты должны быть обновлены, другой участник комнаты должен быть в сети, чтобы это произошло.",
+  "missing_room_e2ee_title": "Проверьте еще раз через несколько моментов",
   "move": "переместить",
   "moving_channel_to_team": "перемещение канала в Команду",
   "muted": "Заглушен",
@@ -685,9 +689,5 @@
   "unmuted": "Заглушивание отменено",
   "unread_messages": "непрочитанные",
   "you": "вы",
-  "you_were_mentioned": "вы были упомянуты",
-  "missing_room_e2ee_description": "Ключи шифрования для комнаты должны быть обновлены, другой участник комнаты должен быть в сети, чтобы это произошло.",
-  "missing_room_e2ee_title": "Проверьте еще раз через несколько моментов",
-  "encrypted_room_description": "Введите свой пароль для шифрования от конца к концу для доступа.",
-  "encrypted_room_title": "{{room_name}} зашифрован"
+  "you_were_mentioned": "вы были упомянуты"
 }

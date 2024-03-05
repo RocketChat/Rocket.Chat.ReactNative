@@ -695,6 +695,8 @@
   "deleting_room": "szoba törlése",
   "deleting_team": "csapat törlése",
   "description": "leírás",
+  "encrypted_room_description": "Adja meg a végponttól végpontig terjedő titkosítási jelszavát a hozzáféréshez.",
+  "encrypted_room_title": "{{room_name}} titkosítva van",
   "error-action-not-allowed": "A(z) {{action}} tevékenység nem engedélyezett",
   "error-avatar-invalid-url": "Érvénytelen avatar URL: {{url}}",
   "error-duplicate-channel-name": "Létezik már szoba {{room_name}} névvel",
@@ -721,6 +723,8 @@
   "members": "tagok",
   "message": "üzenet",
   "messages": "üzenetek",
+  "missing_room_e2ee_description": "A szoba titkosítási kulcsait frissíteni kell, ehhez egy másik szobatagnak online kell lennie.",
+  "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva",
   "move": "mozgatás",
   "moving_channel_to_team": "a csatorna csapatba való átköltöztetése",
   "muted": "némítva",
@@ -758,9 +762,5 @@
   "video-conf-provider-not-configured-body": "A munkaterület adminisztrátorának először engedélyeznie kell a konferenciahívások funkciót.",
   "video-conf-provider-not-configured-header": "Konferenciahívás nem engedélyezett",
   "you": "ön",
-  "you_were_mentioned": "önt megemlítették",
-  "missing_room_e2ee_description": "A szoba titkosítási kulcsait frissíteni kell, ehhez egy másik szobatagnak online kell lennie.",
-  "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva",
-  "encrypted_room_description": "Adja meg a végponttól végpontig terjedő titkosítási jelszavát a hozzáféréshez.",
-  "encrypted_room_title": "{{room_name}} titkosítva van"
+  "you_were_mentioned": "önt megemlítették"
 }

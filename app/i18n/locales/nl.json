@@ -591,6 +591,8 @@
   "deleting_room": "kamer verwijderen",
   "deleting_team": "team verwijderen",
   "description": "omschrijving",
+  "encrypted_room_description": "Voer uw end-to-end encryptiewachtwoord in om toegang te krijgen.",
+  "encrypted_room_title": "{{room_name}} is versleuteld",
   "error-action-not-allowed": "{{action}} is niet toegestaan",
   "error-avatar-invalid-url": "Ongeldige avatar-URL: {{url}}",
   "error-duplicate-channel-name": "Een kanaal met naam {{room_name}} bestaat",
@@ -615,6 +617,8 @@
   "members": "leden",
   "message": "bericht",
   "messages": "berichten",
+  "missing_room_e2ee_description": "De versleutelingssleutels voor de kamer moeten worden bijgewerkt, een ander kamerlid moet online zijn om dit te laten gebeuren.",
+  "missing_room_e2ee_title": "Kom over een paar momenten terug",
   "move": "verplaatsen",
   "moving_channel_to_team": "kanaal verplaatsen naar team",
   "muted": "gedempt",
@@ -636,9 +640,5 @@
   "unmuted": "ongedempt",
   "unread_messages": "ongelezen",
   "you": "jij",
-  "you_were_mentioned": "je bent vermeld",
-  "missing_room_e2ee_description": "De versleutelingssleutels voor de kamer moeten worden bijgewerkt, een ander kamerlid moet online zijn om dit te laten gebeuren.",
-  "missing_room_e2ee_title": "Kom over een paar momenten terug",
-  "encrypted_room_description": "Voer uw end-to-end encryptiewachtwoord in om toegang te krijgen.",
-  "encrypted_room_title": "{{room_name}} is versleuteld"
+  "you_were_mentioned": "je bent vermeld"
 }

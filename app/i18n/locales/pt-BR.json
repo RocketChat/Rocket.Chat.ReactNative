@@ -758,6 +758,8 @@
   "deleting_room": "excluindo sala",
   "deleting_team": "apagando time",
   "description": "descrição",
+  "encrypted_room_description": "Insira sua senha de criptografia de ponta a ponta para acessar.",
+  "encrypted_room_title": "{{room_name}} está criptografado",
   "error-action-not-allowed": "{{action}} não é permitido",
   "error-avatar-invalid-url": "URL inválida de avatar: {{url}}",
   "error-duplicate-channel-name": "Já existe um canal com nome {{room_name}}",
@@ -785,6 +787,8 @@
   "members": "membros",
   "message": "mensagem",
   "messages": "mensagens",
+  "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",
+  "missing_room_e2ee_title": "Verifique novamente em alguns momentos",
   "move": "mover",
   "moving_channel_to_team": "movendo canal do time",
   "muted": "mudo",
@@ -822,9 +826,5 @@
   "video-conf-provider-not-configured-body": "Um administrador do workspace precisa ativar o recurso de chamadas de conferência primeiro.",
   "video-conf-provider-not-configured-header": "Video conferência não ativada",
   "you": "você",
-  "you_were_mentioned": "você foi mencionado",
-  "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",
-  "missing_room_e2ee_title": "Verifique novamente em alguns momentos",
-  "encrypted_room_description": "Insira sua senha de criptografia de ponta a ponta para acessar.",
-  "encrypted_room_title": "{{room_name}} está criptografado"
+  "you_were_mentioned": "você foi mencionado"
 }

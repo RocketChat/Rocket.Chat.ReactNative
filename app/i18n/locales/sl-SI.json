@@ -604,6 +604,8 @@
   "deleting_room": "brisanje sobe",
   "deleting_team": "brisanje ekipe",
   "description": "opis",
+  "encrypted_room_description": "Vnesite geslo za šifriranje od konca do konca za dostop.",
+  "encrypted_room_title": "{{room_name}} je šifriran",
   "error-action-not-allowed": "{{action}} ni dovoljena",
   "error-avatar-invalid-url": "Neveljaven URL avatarja: {{url}}",
   "error-duplicate-channel-name": "Kanal z imenom  {{room_name}} obstaja",
@@ -629,6 +631,8 @@
   "members": "člani",
   "message": "sporočilo",
   "messages": "Sporočila",
+  "missing_room_e2ee_description": "Ključi za šifriranje sobe morajo biti posodobljeni, drugi član sobe mora biti na spletu, da se to zgodi.",
+  "missing_room_e2ee_title": "Ponovno preverite čez nekaj trenutkov",
   "move": "premaknite se",
   "moving_channel_to_team": "Premik kanala v ekipo",
   "muted": "utišan",
@@ -651,9 +655,5 @@
   "unmuted": "preklicati utišanje",
   "unread_messages": "neprebrano",
   "you": "ti",
-  "you_were_mentioned": "Bili ste omenjeni",
-  "missing_room_e2ee_description": "Ključi za šifriranje sobe morajo biti posodobljeni, drugi član sobe mora biti na spletu, da se to zgodi.",
-  "missing_room_e2ee_title": "Ponovno preverite čez nekaj trenutkov",
-  "encrypted_room_description": "Vnesite geslo za šifriranje od konca do konca za dostop.",
-  "encrypted_room_title": "{{room_name}} je šifriran"
+  "you_were_mentioned": "Bili ste omenjeni"
 }
