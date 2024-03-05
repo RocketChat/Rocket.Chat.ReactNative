@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
-import { selectServerRequest } from '../actions/server';
+import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
 import { APP } from '../actions/actionsTypes';
 import log from '../lib/methods/helpers/log';
@@ -15,6 +15,10 @@ import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
 
+import appConfig from '../../app.json';
+
+import SERVER_URL from './serverConfig';
+
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
@@ -24,8 +28,8 @@ const BIOMETRY_MIGRATION_KEY = 'kBiometryMigration';
 
 const restore = function* restore() {
 	try {
-		const server = UserPreferences.getString(CURRENT_SERVER);
-		let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+		const { server } = appConfig;
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 
 		// Migration biometry setting from WatermelonDB to MMKV
 		// TODO: remove it after a few versions
@@ -39,23 +43,12 @@ const restore = function* restore() {
 			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
 
-		if (!server) {
-			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-		} else if (!userId) {
+		if (!userId) {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const servers = yield serversCollection.query().fetch();
 
-			// Check if there're other logged in servers and picks first one
-			if (servers.length > 0) {
-				for (let i = 0; i < servers.length; i += 1) {
-					const newServer = servers[i].id;
-					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
-					if (userId) {
-						return yield put(selectServerRequest(newServer));
-					}
-				}
-			}
+			yield put(serverRequest(SERVER_URL));
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
 			const serversDB = database.servers;
