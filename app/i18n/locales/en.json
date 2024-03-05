@@ -839,5 +839,7 @@
   "you": "you",
   "you_were_mentioned": "you were mentioned",
   "encrypted_room_title": "This room is encrypted",
-  "encrypted_room_description": "Enter your end-to-end encryption password to access."
+  "encrypted_room_description": "Enter your end-to-end encryption password to access.",
+  "e2ee_enabled": "End-to-end encryption is enabled",
+  "e2ee_disabled": "End-to-end encryption is disabled"
 }
