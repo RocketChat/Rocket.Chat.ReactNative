@@ -67,6 +67,11 @@ const DirectoryItem = ({
 							numberOfLines={1}
 						/>
 					) : null}
+					{age ? (
+						<Text style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+							{age}
+						</Text>
+					) : null}
 				</View>
 				<DirectoryItemLabel text={rightLabel} theme={theme} />
 			</View>
