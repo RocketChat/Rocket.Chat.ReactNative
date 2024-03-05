@@ -136,9 +136,8 @@
   "Encryption_error_desc": "Non è stato possibile importare la tua chiave di cifratura.",
   "Encryption_error_title": "La tua password di cifratura sembra errata",
   "End_to_end_encrypted_room": "Stanza crittografata end to end",
-  "Enter_Your_E2E_Password": "Inserisci la tua password E2E",
-  "Enter_Your_Encryption_Password_desc1": "Potrai così accedere ai tuoi gruppi privati e messaggi privati crittografati.",
-  "Enter_Your_Encryption_Password_desc2": "Devi inserire la password per cifrare/decifrare i messaggi ovunque usi la chat.",
+  "Enter_E2EE_Password": "Inserisci la password E2EE",
+  "Enter_E2EE_Password_description": "Per accedere ai tuoi canali criptati e ai messaggi diretti, inserisci la tua password di crittografia. Questa non viene memorizzata sul server, quindi dovrai usarla su ogni dispositivo.",
   "Enter_workspace_URL": "Inserisci la url del workspace",
   "Error_uploading": "Errore nel caricamento di",
   "Everyone_can_access_this_channel": "Tutti hanno accesso a questo canale",
@@ -540,5 +539,7 @@
   "unmuted": "notifiche attivate",
   "unread_messages": "non letti",
   "you": "tu",
-  "you_were_mentioned": "sei stato menzionato"
+  "you_were_mentioned": "sei stato menzionato",
+  "missing_room_e2ee_description": "Le chiavi di crittografia per la stanza devono essere aggiornate, un altro membro della stanza deve essere online affinché ciò avvenga.",
+  "missing_room_e2ee_title": "Ricontrolla tra qualche istante"
 }

@@ -306,7 +306,7 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				// TODO: assert 'Enter Your E2E Password'
+				// TODO: assert 'Enter E2EE Password'
 				await waitFor(element(by.id('listheader-encryption')))
 					.toBeVisible()
 					.withTimeout(2000);

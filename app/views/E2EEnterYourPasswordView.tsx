@@ -22,6 +22,7 @@ import { showErrorAlert, useDebounce } from '../lib/methods/helpers';
 const styles = StyleSheet.create({
 	info: {
 		fontSize: 16,
+		lineHeight: 24,
 		marginVertical: 4,
 		...sharedStyles.textRegular
 	}
@@ -69,7 +70,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
-			title: I18n.t('Enter_Your_E2E_Password')
+			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);
 
@@ -97,8 +98,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						textContentType='password'
 					/>
 					<Button onPress={submit} title={I18n.t('Confirm')} disabled={!password} testID='e2e-enter-your-password-view-confirm' />
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Enter_Your_Encryption_Password_desc1')}</Text>
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Enter_Your_Encryption_Password_desc2')}</Text>
+					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

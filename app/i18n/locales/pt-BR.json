@@ -215,9 +215,8 @@
   "Encryption_error_desc": "Não foi possível decodificar sua chave E2E para ser importada.",
   "Encryption_error_title": "Sua senha E2E parece errada",
   "End_to_end_encrypted_room": "Sala criptografada de ponta a ponta",
-  "Enter_Your_E2E_Password": "Digite sua senha E2E",
-  "Enter_Your_Encryption_Password_desc1": "Isso permitirá que você acesse seus grupos privados e mensagens diretas criptografadas.",
-  "Enter_Your_Encryption_Password_desc2": "Você precisa inserir a senha para codificar/decodificar mensagens em todos os lugares em que usar o chat.",
+  "Enter_E2EE_Password": "Digite a senha E2EE",
+  "Enter_E2EE_Password_description": "Para acessar seus canais criptografados e mensagens diretas, insira sua senha de criptografia. Isso não é armazenado no servidor, então você precisará usá-la em cada dispositivo.",
   "Enter_the_code": "Insira o código que acabamos de enviar por e-mail.",
   "Enter_workspace_URL": "Digite a URL da sua workspace",
   "Error_Download_file": "Erro ao baixar o arquivo",
@@ -823,5 +822,7 @@
   "video-conf-provider-not-configured-body": "Um administrador do workspace precisa ativar o recurso de chamadas de conferência primeiro.",
   "video-conf-provider-not-configured-header": "Video conferência não ativada",
   "you": "você",
-  "you_were_mentioned": "você foi mencionado"
+  "you_were_mentioned": "você foi mencionado",
+  "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",
+  "missing_room_e2ee_title": "Verifique novamente em alguns momentos"
 }

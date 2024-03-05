@@ -113,9 +113,8 @@
   "Encryption_error_desc": "暗号化キーをデコードしてインポートできませんでした。",
   "Encryption_error_title": "暗号化パスワードが間違っているようです",
   "End_to_end_encrypted_room": "暗号化されたエンドツーエンドのルーム",
-  "Enter_Your_E2E_Password": "E2Eパスワードを入力してください",
-  "Enter_Your_Encryption_Password_desc1": "これにより、暗号化されたプライベートグループやダイレクトメッセージにアクセスできます。",
-  "Enter_Your_Encryption_Password_desc2": "チャットを利用するたびに、メッセージをエンコード/デコードするためのパスワードを入力する必要があります。",
+  "Enter_E2EE_Password": "E2EEパスワードを入力",
+  "Enter_E2EE_Password_description": "暗号化されたチャンネルとダイレクトメッセージにアクセスするには、暗号化パスワードを入力してください。これはサーバーに保存されないため、すべてのデバイスで使用する必要があります。",
   "Error_uploading": "アップロードエラー",
   "Everyone_can_access_this_channel": "全員このチャンネルにアクセスできます",
   "Everyone_can_access_this_team": "全員このチームにアクセスできます",
@@ -406,5 +405,7 @@
   "unmuted": "ミュート解除しました",
   "unread_messages": "未読",
   "you": "あなた",
-  "you_were_mentioned": "あなたがメンションしました"
+  "you_were_mentioned": "あなたがメンションしました",
+  "missing_room_e2ee_description": "部屋の暗号化キーを更新する必要があります。これが行われるためには、別の部屋のメンバーがオンラインである必要があります。",
+  "missing_room_e2ee_title": "数分後にもう一度確認してください"
 }

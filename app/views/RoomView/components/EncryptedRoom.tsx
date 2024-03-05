@@ -39,7 +39,7 @@ export const EncryptedRoom = ({
 					<Text style={styles.title}>{I18n.t('encrypted_room_title')}</Text>
 					<Text style={styles.description}>{I18n.t('encrypted_room_description')}</Text>
 				</View>
-				<Button title={I18n.t('Enter_Your_E2E_Password')} onPress={navigate} />
+				<Button title={I18n.t('Enter_E2EE_Password')} onPress={navigate} />
 				<Button
 					title={I18n.t('Learn_more')}
 					type='secondary'

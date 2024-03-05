@@ -188,9 +188,8 @@
   "Encryption_error_desc": "Det gick inte att avkoda krypteringsnyckeln som skulle importeras.",
   "Encryption_error_title": "Ditt krypteringslösenord verkar vara felaktigt",
   "End_to_end_encrypted_room": "End-to-end-krypterat rum",
-  "Enter_Your_E2E_Password": "Ange ditt E2E-lösenord",
-  "Enter_Your_Encryption_Password_desc1": "Det här gör att du kan komma åt dina krypterade privata grupper och direktmeddelanden.",
-  "Enter_Your_Encryption_Password_desc2": "Du måste ange lösenordet för att koda/avkoda meddelanden på varje plats där du använder chatten.",
+  "Enter_E2EE_Password": "Ange E2EE-lösenord",
+  "Enter_E2EE_Password_description": "För att komma åt dina krypterade kanaler och direkta meddelanden, ange ditt krypteringslösenord. Detta lagras inte på servern, så du måste använda det på varje enhet.",
   "Enter_workspace_URL": "Ange arbetsytans URL",
   "Error_Download_file": "Fel vid nedladdning av fil",
   "Error_uploading": "Fel vid uppladdning",
@@ -716,5 +715,7 @@
   "unmuted": "slog på ljudet",
   "unread_messages": "oläst",
   "you": "du",
-  "you_were_mentioned": "du nämndes"
+  "you_were_mentioned": "du nämndes",
+  "missing_room_e2ee_description": "Krypteringsnycklarna för rummet behöver uppdateras, en annan rummedlem måste vara online för att detta ska hända.",
+  "missing_room_e2ee_title": "Kontrollera igen om några ögonblick"
 }

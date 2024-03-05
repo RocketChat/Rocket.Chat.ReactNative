@@ -200,9 +200,8 @@
   "Encryption_error_desc": "Nem sikerült dekódolni az importálandó titkosítási kulcsot.",
   "Encryption_error_title": "A titkosítási jelszó rossznak tűnik",
   "End_to_end_encrypted_room": "Végponttól végpontig titkosított szoba",
-  "Enter_Your_E2E_Password": "Adja meg az E2E jelszavát",
-  "Enter_Your_Encryption_Password_desc1": "Ez lehetővé teszi a titkosított privát csoportok és közvetlen üzenetek elérését.",
-  "Enter_Your_Encryption_Password_desc2": "Az üzenetek kódolásához/dekódolásához mindenhol meg kell adnia a jelszót, ahol a csevegést használja.",
+  "Enter_E2EE_Password": "Adja meg az E2EE jelszót",
+  "Enter_E2EE_Password_description": "Az titkosított csatornákhoz és közvetlen üzenetekhez való hozzáféréshez írja be a titkosítási jelszavát. Ez nincs tárolva a szerveren, így minden eszközön használnia kell.",
   "Enter_workspace_URL": "Adja meg a munkaterület URL-címét",
   "Error_Download_file": "Hiba a fájl letöltése közben",
   "Error_uploading": "Hiba feltöltése",
@@ -759,5 +758,7 @@
   "video-conf-provider-not-configured-body": "A munkaterület adminisztrátorának először engedélyeznie kell a konferenciahívások funkciót.",
   "video-conf-provider-not-configured-header": "Konferenciahívás nem engedélyezett",
   "you": "ön",
-  "you_were_mentioned": "önt megemlítették"
+  "you_were_mentioned": "önt megemlítették",
+  "missing_room_e2ee_description": "A szoba titkosítási kulcsait frissíteni kell, ehhez egy másik szobatagnak online kell lennie.",
+  "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva"
 }

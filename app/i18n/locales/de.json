@@ -195,9 +195,8 @@
   "Encryption_error_desc": "Es war nicht möglich, Ihren Verschlüsselungs-Key zu importieren.",
   "Encryption_error_title": "Ihr Verschlüsselungs-Passwort scheint falsch zu sein",
   "End_to_end_encrypted_room": "Ende-zu-Ende-verschlüsselter Raum",
-  "Enter_Your_E2E_Password": "Geben Sie Ihr Ende-zu-Ende-Passwort ein",
-  "Enter_Your_Encryption_Password_desc1": "Das erlaubt Ihnen, auf Ihre verschlüsselten privaten Gruppen und Direktnachrichten zuzugreifen.",
-  "Enter_Your_Encryption_Password_desc2": "Sie müssen das Passwort zur Ver-/Entschlüsselung an jeder Stelle eingeben, an dem Sie diesen Chat verwenden.",
+  "Enter_E2EE_Password": "E2EE-Passwort eingeben",
+  "Enter_E2EE_Password_description": "Um auf Ihre verschlüsselten Kanäle und Direktnachrichten zuzugreifen, geben Sie Ihr Verschlüsselungspasswort ein. Dies wird nicht auf dem Server gespeichert, daher müssen Sie es auf jedem Gerät verwenden.",
   "Enter_workspace_URL": "Arbeitsbereich-URL",
   "Error_Download_file": "Fehler beim Herunterladen der Datei",
   "Error_uploading": "Fehler beim Hochladen",
@@ -746,5 +745,7 @@
   "video-conf-provider-not-configured-body": "Ein Arbeitsbereich-Administrator muss die Funktion für Telefonkonferenzen zuerst aktivieren.",
   "video-conf-provider-not-configured-header": "Telefonkonferenz nicht aktiviert",
   "you": "Sie",
-  "you_were_mentioned": "Sie wurden erwähnt"
+  "you_were_mentioned": "Sie wurden erwähnt",
+  "missing_room_e2ee_description": "Die Verschlüsselungsschlüssel für den Raum müssen aktualisiert werden, ein anderer Raummitglied muss online sein, damit dies geschehen kann.",
+  "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück"
 }
