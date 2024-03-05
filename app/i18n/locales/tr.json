@@ -524,5 +524,7 @@
   "you": "siz",
   "you_were_mentioned": "senden bahsedildi",
   "missing_room_e2ee_description": "Odanın şifreleme anahtarları güncellenmelidir, bunun gerçekleşmesi için başka bir oda üyesinin çevrimiçi olması gerekmektedir.",
-  "missing_room_e2ee_title": "Birkaç an içinde tekrar kontrol edin"
+  "missing_room_e2ee_title": "Birkaç an içinde tekrar kontrol edin",
+  "encrypted_room_description": "Erişmek için uçtan uca şifreleme şifrenizi girin.",
+  "encrypted_room_title": "{{room_name}} şifrelenmiştir"
 }

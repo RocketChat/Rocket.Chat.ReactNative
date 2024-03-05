@@ -15,11 +15,13 @@ export const MissingRoomE2EEKey = (): ReactElement => {
 	return (
 		<View style={styles.root}>
 			<View style={styles.container}>
-				<View style={styles.icon}>
-					<CustomIcon name='clock' size={42} color={colors.fontSecondaryInfo} />
+				<View style={styles.textView}>
+					<View style={styles.icon}>
+						<CustomIcon name='clock' size={42} color={colors.fontSecondaryInfo} />
+					</View>
+					<Text style={styles.title}>{I18n.t('missing_room_e2ee_title')}</Text>
+					<Text style={styles.description}>{I18n.t('missing_room_e2ee_description')}</Text>
 				</View>
-				<Text style={styles.title}>{I18n.t('missing_room_e2ee_title')}</Text>
-				<Text style={styles.description}>{I18n.t('missing_room_e2ee_description')}</Text>
 				<Button
 					title={I18n.t('Learn_more')}
 					type='secondary'
@@ -41,9 +43,9 @@ const useStyle = () => {
 		container: {
 			flex: 1,
 			marginHorizontal: 24,
-			alignItems: 'center',
 			justifyContent: 'center'
 		},
+		textView: { alignItems: 'center' },
 		icon: {
 			width: 58,
 			height: 58,

@@ -9,13 +9,16 @@ import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
 import { useAppSelector } from '../../../lib/hooks';
 import I18n from '../../../i18n';
+import { TNavigation } from '../../../stacks/stackType';
 
 const GAP = 32;
 
 export const EncryptedRoom = ({
+	roomName,
 	navigation
 }: {
-	navigation: StackNavigationProp<ChatsStackParamList, 'RoomView'>;
+	roomName: string;
+	navigation: StackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 }): ReactElement => {
 	const { colors } = useTheme();
 	const styles = useStyle();
@@ -36,7 +39,7 @@ export const EncryptedRoom = ({
 					<View style={styles.icon}>
 						<CustomIcon name='encrypted' size={42} color={colors.fontSecondaryInfo} />
 					</View>
-					<Text style={styles.title}>{I18n.t('encrypted_room_title')}</Text>
+					<Text style={styles.title}>{I18n.t('encrypted_room_title', { room_name: `#${roomName}` })}</Text>
 					<Text style={styles.description}>{I18n.t('encrypted_room_description')}</Text>
 				</View>
 				<Button title={I18n.t('Enter_E2EE_Password')} onPress={navigate} />

@@ -747,5 +747,7 @@
   "you": "Sie",
   "you_were_mentioned": "Sie wurden erwähnt",
   "missing_room_e2ee_description": "Die Verschlüsselungsschlüssel für den Raum müssen aktualisiert werden, ein anderer Raummitglied muss online sein, damit dies geschehen kann.",
-  "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück"
+  "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück",
+  "encrypted_room_description": "Geben Sie Ihr Passwort für die Ende-zu-Ende-Verschlüsselung ein, um Zugang zu erhalten.",
+  "encrypted_room_title": "{{room_name}} ist verschlüsselt"
 }

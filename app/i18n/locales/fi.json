@@ -719,5 +719,7 @@
   "you": "sinä",
   "you_were_mentioned": "sinut mainittiin",
   "missing_room_e2ee_description": "Huoneen salausavaimet on päivitettävä, toisen huoneen jäsenen on oltava verkossa, jotta tämä voi tapahtua.",
-  "missing_room_e2ee_title": "Tarkista uudelleen muutaman hetken kuluttua"
+  "missing_room_e2ee_title": "Tarkista uudelleen muutaman hetken kuluttua",
+  "encrypted_room_description": "Syötä päästä päähän -salauksen salasanasi päästäksesi käsiksi.",
+  "encrypted_room_title": "{{room_name}} on salattu"
 }

@@ -653,5 +653,7 @@
   "you": "ti",
   "you_were_mentioned": "Bili ste omenjeni",
   "missing_room_e2ee_description": "Ključi za šifriranje sobe morajo biti posodobljeni, drugi član sobe mora biti na spletu, da se to zgodi.",
-  "missing_room_e2ee_title": "Ponovno preverite čez nekaj trenutkov"
+  "missing_room_e2ee_title": "Ponovno preverite čez nekaj trenutkov",
+  "encrypted_room_description": "Vnesite geslo za šifriranje od konca do konca za dostop.",
+  "encrypted_room_title": "{{room_name}} je šifriran"
 }

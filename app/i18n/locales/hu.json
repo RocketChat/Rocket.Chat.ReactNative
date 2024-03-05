@@ -760,5 +760,7 @@
   "you": "ön",
   "you_were_mentioned": "önt megemlítették",
   "missing_room_e2ee_description": "A szoba titkosítási kulcsait frissíteni kell, ehhez egy másik szobatagnak online kell lennie.",
-  "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva"
+  "missing_room_e2ee_title": "Nézzen vissza néhány perc múlva",
+  "encrypted_room_description": "Adja meg a végponttól végpontig terjedő titkosítási jelszavát a hozzáféréshez.",
+  "encrypted_room_title": "{{room_name}} titkosítva van"
 }

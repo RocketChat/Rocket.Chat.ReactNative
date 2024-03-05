@@ -48,6 +48,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	colors?: TColors;
 	issuesWithNotifications: boolean;
 	notificationsDisabled?: boolean;
+	disabled: boolean;
 }
 
 interface IRigthButtonsState {
@@ -361,13 +362,18 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, disabled } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
 					<HeaderButton.Container>
-						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
+						<HeaderButton.Item
+							iconName='kebab'
+							onPress={this.showMoreActions}
+							testID='room-view-header-omnichannel-kebab'
+							disabled={disabled}
+						/>
 					</HeaderButton.Container>
 				);
 			}
@@ -380,6 +386,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
+						disabled={disabled}
 					/>
 				</HeaderButton.Container>
 			);
@@ -392,18 +399,20 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName='notification-disabled'
 						onPress={this.navigateToNotificationOrPushTroubleshoot}
 						testID='room-view-push-troubleshoot'
+						disabled={disabled}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton rid={rid} /> : null}
+				{rid ? <HeaderCallButton rid={rid} disabled={disabled} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
+						disabled={disabled}
 					/>
 				) : null}
-				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' />
+				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={disabled} />
 			</HeaderButton.Container>
 		);
 	}

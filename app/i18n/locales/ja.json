@@ -407,5 +407,7 @@
   "you": "あなた",
   "you_were_mentioned": "あなたがメンションしました",
   "missing_room_e2ee_description": "部屋の暗号化キーを更新する必要があります。これが行われるためには、別の部屋のメンバーがオンラインである必要があります。",
-  "missing_room_e2ee_title": "数分後にもう一度確認してください"
+  "missing_room_e2ee_title": "数分後にもう一度確認してください",
+  "encrypted_room_description": "エンドツーエンドの暗号化パスワードを入力してアクセスしてください。",
+  "encrypted_room_title": "{{room_name}}は暗号化されています"
 }

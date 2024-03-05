@@ -824,5 +824,7 @@
   "you": "você",
   "you_were_mentioned": "você foi mencionado",
   "missing_room_e2ee_description": "As chaves de criptografia da sala precisam ser atualizadas, outro membro da sala precisa estar online para que isso aconteça.",
-  "missing_room_e2ee_title": "Verifique novamente em alguns momentos"
+  "missing_room_e2ee_title": "Verifique novamente em alguns momentos",
+  "encrypted_room_description": "Insira sua senha de criptografia de ponta a ponta para acessar.",
+  "encrypted_room_title": "{{room_name}} está criptografado"
 }

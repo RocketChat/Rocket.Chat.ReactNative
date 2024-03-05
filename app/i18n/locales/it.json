@@ -541,5 +541,7 @@
   "you": "tu",
   "you_were_mentioned": "sei stato menzionato",
   "missing_room_e2ee_description": "Le chiavi di crittografia per la stanza devono essere aggiornate, un altro membro della stanza deve essere online affinché ciò avvenga.",
-  "missing_room_e2ee_title": "Ricontrolla tra qualche istante"
+  "missing_room_e2ee_title": "Ricontrolla tra qualche istante",
+  "encrypted_room_description": "Inserisci la tua password di crittografia end-to-end per accedere.",
+  "encrypted_room_title": "{{room_name}} è criptato"
 }

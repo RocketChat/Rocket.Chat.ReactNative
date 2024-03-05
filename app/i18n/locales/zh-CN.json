@@ -482,5 +482,7 @@
   "you": "你",
   "you_were_mentioned": "你被提到了",
   "missing_room_e2ee_description": "房间的加密密钥需要更新，另一位房间成员需要在线才能进行此操作。",
-  "missing_room_e2ee_title": "过几分钟再回来检查"
+  "missing_room_e2ee_title": "过几分钟再回来检查",
+  "encrypted_room_description": "输入您的端到端加密密码以访问。",
+  "encrypted_room_title": "{{room_name}} 已加密"
 }

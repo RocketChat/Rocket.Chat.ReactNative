@@ -773,7 +773,7 @@
   "e2ee_disabled": "End-to-end encryption is disabled",
   "e2ee_enabled": "End-to-end encryption is enabled",
   "encrypted_room_description": "Enter your end-to-end encryption password to access.",
-  "encrypted_room_title": "This room is encrypted",
+  "encrypted_room_title": "{{room_name}} is encrypted",
   "error-action-not-allowed": "{{action}} is not allowed",
   "error-avatar-invalid-url": "Invalid avatar URL: {{url}}",
   "error-duplicate-channel-name": "A channel with name {{room_name}} exists",

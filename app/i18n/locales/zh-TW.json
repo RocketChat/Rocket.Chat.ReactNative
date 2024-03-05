@@ -511,5 +511,7 @@
   "you": "你",
   "you_were_mentioned": "你被提到了",
   "missing_room_e2ee_description": "房間的加密密鑰需要更新，另一位房間成員需要在線才能進行此操作。",
-  "missing_room_e2ee_title": "過幾分鐘再回來檢查"
+  "missing_room_e2ee_title": "過幾分鐘再回來檢查",
+  "encrypted_room_description": "輸入您的端對端加密密碼以存取。",
+  "encrypted_room_title": "{{room_name}} 已加密"
 }

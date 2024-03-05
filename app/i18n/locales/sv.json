@@ -717,5 +717,7 @@
   "you": "du",
   "you_were_mentioned": "du nämndes",
   "missing_room_e2ee_description": "Krypteringsnycklarna för rummet behöver uppdateras, en annan rummedlem måste vara online för att detta ska hända.",
-  "missing_room_e2ee_title": "Kontrollera igen om några ögonblick"
+  "missing_room_e2ee_title": "Kontrollera igen om några ögonblick",
+  "encrypted_room_description": "Ange ditt lösenord för end-to-end-kryptering för att få tillgång.",
+  "encrypted_room_title": "{{room_name}} är krypterat"
 }

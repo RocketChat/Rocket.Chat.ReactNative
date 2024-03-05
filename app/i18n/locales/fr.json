@@ -638,5 +638,7 @@
   "you": "vous",
   "you_were_mentioned": "vous avez été mentionné",
   "missing_room_e2ee_description": "Les clés de chiffrement de la pièce doivent être mises à jour, un autre membre de la pièce doit être en ligne pour que cela se produise.",
-  "missing_room_e2ee_title": "Revenez dans quelques instants"
+  "missing_room_e2ee_title": "Revenez dans quelques instants",
+  "encrypted_room_description": "Entrez votre mot de passe de cryptage de bout en bout pour accéder.",
+  "encrypted_room_title": "{{room_name}} est crypté"
 }

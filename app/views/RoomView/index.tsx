@@ -414,6 +414,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return hideSystemMessages ?? [];
 	}
 
+	get missingRoomE2EEKey() {
+		const { room } = this.state;
+		const { encryptionEnabled } = this.props;
+		return (encryptionEnabled && 'encrypted' in room && room.encrypted && 'E2EKey' in room && !room.E2EKey) ?? false;
+	}
+
+	get e2eeDisabledEncryptedRoom() {
+		const { room } = this.state;
+		const { encryptionEnabled } = this.props;
+		return (!encryptionEnabled && 'encrypted' in room && room.encrypted) ?? false;
+	}
+
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
@@ -501,6 +513,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
+					disabled={this.missingRoomE2EEKey || this.e2eeDisabledEncryptedRoom || !!tmid}
 				/>
 			),
 			headerRight: () => (
@@ -518,6 +531,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
+					disabled={this.missingRoomE2EEKey || this.e2eeDisabledEncryptedRoom}
 				/>
 			)
 		});
@@ -1446,7 +1460,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, action, selectedMessages } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, encryptionEnabled, navigation } = this.props;
+		const { user, baseUrl, theme, width, serverVersion, navigation } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1455,13 +1469,13 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		// Missing room encryption key
-		if (encryptionEnabled && 'encrypted' in room && room.encrypted && 'E2EKey' in room && !room.E2EKey) {
+		if (this.missingRoomE2EEKey) {
 			return <MissingRoomE2EEKey />;
 		}
 
 		// Encrypted room, but user session is not encrypted
-		if (!encryptionEnabled && 'encrypted' in room && room.encrypted) {
-			return <EncryptedRoom navigation={navigation} />;
+		if (this.e2eeDisabledEncryptedRoom) {
+			return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
 		}
 
 		return (
