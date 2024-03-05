@@ -317,3 +317,7 @@ export type OutsideModalParamList = {
 		ssoToken?: string;
 	};
 };
+
+export type HomeStackParamList = {
+	HomeView: undefined;
+}

@@ -80,6 +80,7 @@ import {
 	DrawerParamList,
 	E2EEnterYourPasswordStackParamList,
 	E2ESaveYourPasswordStackParamList,
+	HomeStackParamList,
 	InsideStackParamList,
 	NewMessageStackParamList,
 	ProfileStackParamList,
@@ -87,6 +88,9 @@ import {
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
+
+// Home Stack
+import HomeView from '../views/HomeView';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<ChatsStackParamList & TNavigation>();
@@ -217,6 +221,19 @@ const DisplayPrefStackNavigator = () => {
 	);
 };
 
+// HomeStackNavigator
+const HomeStack = createStackNavigator<HomeStackParamList>();
+const HomeStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+
+	return (
+		<HomeStack.Navigator
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
+		>
+			<HomeStack.Screen name='HomeView' component={HomeView} />
+		</HomeStack.Navigator>
+	);
+};
 // DrawerNavigator
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const DrawerNavigator = () => {
@@ -235,6 +252,7 @@ const DrawerNavigator = () => {
 				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
 			}}
 		>
+			<Drawer.Screen name='HomeStackNavigator' component={HomeStackNavigator} />
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
