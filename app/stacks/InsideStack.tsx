@@ -91,6 +91,14 @@ import { TNavigation } from './stackType';
 
 // Home Stack
 import HomeView from '../views/HomeView';
+// Discussion Stack
+import DiscussionBoardView from '../views/DiscussionBoard/DiscussionBoardView';
+import DiscussionPostView from '../views/DiscussionBoard/PostView';
+import DiscussionHomeView from '../views/DiscussionBoard/DiscussionHomeView';
+import DiscussionNewPostView from '../views/DiscussionBoard/NewPostView';
+import DiscussionSearchView from '../views/DiscussionBoard/SearchView';
+import ConnectView from '../views/DiscussionBoard/ConnectView';
+
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<ChatsStackParamList & TNavigation>();
@@ -234,6 +242,42 @@ const HomeStackNavigator = () => {
 		</HomeStack.Navigator>
 	);
 };
+// DiscussionStackNavigator
+const DiscussionStack = createStackNavigator();
+const DiscussionStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<DiscussionStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<DiscussionStack.Screen
+				name='DiscussionHomeView'
+				component={DiscussionHomeView}
+				options={DiscussionHomeView.navigationOptions}
+			/>
+			<DiscussionStack.Screen
+				name='DiscussionBoardView'
+				component={DiscussionBoardView}
+				options={DiscussionBoardView.navigationOptions}
+			/>
+			<DiscussionStack.Screen
+				name='DiscussionPostView'
+				component={DiscussionPostView}
+				options={DiscussionPostView.navigationOptions}
+			/>
+			<DiscussionStack.Screen
+				name='DiscussionNewPostView'
+				component={DiscussionNewPostView}
+				options={DiscussionNewPostView.navigationOptions}
+			/>
+			<DiscussionStack.Screen
+				name='DiscussionSearchView'
+				component={DiscussionSearchView}
+				options={DiscussionSearchView.navigationOptions}
+			/>
+			<DiscussionStack.Screen name='ConnectView' component={ConnectView} options={{ title: 'Profile' }} />
+		</DiscussionStack.Navigator>
+	);
+};
+
 // DrawerNavigator
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const DrawerNavigator = () => {
@@ -258,6 +302,7 @@ const DrawerNavigator = () => {
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
 			<Drawer.Screen name='DisplayPrefStackNavigator' component={DisplayPrefStackNavigator} />
+			<Drawer.Screen name='DiscussionStackNavigator' component={DiscussionStackNavigator} />
 		</Drawer.Navigator>
 	);
 };
