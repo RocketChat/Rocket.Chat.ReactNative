@@ -89,6 +89,8 @@ import {
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
 
+// Profile Library Stack
+import ProfileLibraryView from '../views/ProfileLibrary';
 // Home Stack
 import HomeView from '../views/HomeView';
 // Discussion Stack
@@ -242,6 +244,24 @@ const HomeStackNavigator = () => {
 		</HomeStack.Navigator>
 	);
 };
+
+// ProfileStackNavigator
+const ProfileLibraryStack = createStackNavigator(); // causes a cyclic bug in navigation by adding ProfileLibraryStackNavigator (added for now)
+const ProfileLibraryStackNavigator = () => {
+	const { theme } = React.useContext(ThemeContext);
+	return (
+		<ProfileLibraryStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation }}>
+			<ProfileLibraryStack.Screen
+				name='ProfileLibraryView'
+				component={ProfileLibraryView}
+				options={ProfileLibraryView.navigationOptions}
+			/>
+			<ProfileLibraryStack.Screen name='ConnectView' component={ConnectView} options={{...RoomInfoView.navigationOptions, ...{title: "Profile"}}} />
+			<ProfileLibraryStack.Screen name='RoomView' component={RoomView} options={RoomView.navigationOptions} />
+		</ProfileLibraryStack.Navigator>
+	);
+};
+
 // DiscussionStackNavigator
 const DiscussionStack = createStackNavigator();
 const DiscussionStackNavigator = () => {
@@ -298,6 +318,7 @@ const DrawerNavigator = () => {
 		>
 			<Drawer.Screen name='HomeStackNavigator' component={HomeStackNavigator} />
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+			<Drawer.Screen name='ProfileLibraryNavigator' component={ProfileLibraryStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
