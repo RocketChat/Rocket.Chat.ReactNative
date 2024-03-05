@@ -465,6 +465,7 @@
   "Please_add_a_comment": "Please add a comment",
   "Please_enter_your_password": "Please enter your password",
   "Please_wait": "Please wait.",
+  "PostModeration": "Post Moderation",
   "Preferences": "Preferences",
   "Presence_Cap_Warning_Description": "Active connections have reached the limit for the workspace, thus the service that handles user status is disabled. It can be re-enabled manually in workspace settings.",
   "Presence_Cap_Warning_Title": "User status temporarily disabled",

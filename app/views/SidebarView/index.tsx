@@ -187,6 +187,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			return;
 		}
+		this.sidebarNavigate('HomeStackNavigator');
 		navigation?.closeDrawer();
 	};
 
@@ -247,11 +248,39 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
+
+	additionalPanels = (theme, iconStyle) => {
+		const iconStyles = { ...iconStyle, backgroundColor: 'black' };
+		const isPeerSupporter = this.props.user?.roles?.includes('peer-supporter');
+		const admin = this.getIsAdmin();
+
+		if (!isPeerSupporter && !admin) {
+			return null;
+		}
+
+		return (
+			<>
+				{isPeerSupporter && (
+					<SidebarItem
+						text={I18n.t('PostModeration')}
+						left={<View style={iconStyles} />}
+						onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
+						testID='sidebar-chats'
+						theme={theme!}
+						disabled={true}
+					/>
+				)}
+				<List.Separator />
+			</>
+		);
+	};
+
 	renderNavigation = () => {
 		const { theme } = this.props;
 		const iconStyles = { height: 20, width: 20, tintColor: themes[theme!].titleText, borderRadius: 10 };
 		return (
 			<>
+				{this.additionalPanels(theme, iconStyles)}
 				<SidebarItem
 					text={I18n.t('Home')}
 					left={<CustomIcon name='home' size={24} color={iconStyles.tintColor}/>}
