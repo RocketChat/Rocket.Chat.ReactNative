@@ -166,12 +166,6 @@ export type ChatsStackParamList = {
 		cannedResponse: ICannedResponse;
 		room: ISubscription;
 	};
-	JitsiMeetView: {
-		rid: string;
-		url: string;
-		onlyAudio?: boolean;
-		videoConf?: boolean;
-	};
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;

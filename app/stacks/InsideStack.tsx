@@ -62,7 +62,6 @@ import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 // InsideStackNavigator
 import AttachmentView from '../views/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
-import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';
 import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
@@ -150,11 +149,6 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
 			<ChatsStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
 			<ChatsStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
-			<ChatsStack.Screen
-				name='JitsiMeetView'
-				component={JitsiMeetView}
-				options={{ headerShown: false, animationEnabled: isIOS }}
-			/>
 		</ChatsStack.Navigator>
 	);
 };

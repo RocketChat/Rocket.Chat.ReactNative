@@ -34,7 +34,7 @@ const InAppNotification = memo(() => {
 		const state = Navigation.navigationRef.current?.getRootState();
 		const route = getActiveRoute(state);
 		if (payload?.rid || notification.customNotification) {
-			if (route?.name === 'JitsiMeetView' || payload?.message?.t === 'videoconf') return;
+			if (payload?.message?.t === 'videoconf') return;
 
 			if (payload?.rid === subscribedRoom) {
 				const msgId = payload._id;

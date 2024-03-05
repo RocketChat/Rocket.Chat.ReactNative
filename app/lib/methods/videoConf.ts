@@ -31,11 +31,7 @@ export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean
 		const result = await Services.videoConferenceJoin(callId, cam, mic);
 		if (result.success) {
 			const { url, providerName } = result;
-			if (providerName === 'jitsi') {
-				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });
-			} else {
-				openLink(url);
-			}
+			openLink(url);
 		}
 	} catch (e) {
 		if (fromPush) {

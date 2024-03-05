@@ -213,11 +213,6 @@ export type MasterDetailInsideStackParamList = {
 	ModalBlockView: {
 		data: any; // TODO: Change
 	};
-	JitsiMeetView: {
-		rid: string;
-		url: string;
-		onlyAudio?: boolean;
-	};
 	ShareView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
