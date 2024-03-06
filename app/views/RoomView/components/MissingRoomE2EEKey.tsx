@@ -1,11 +1,12 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet, Text, View } from 'react-native';
 
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import Button from '../../../containers/Button';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
+import { LEARN_MORE_E2EE_URL } from '../../../lib/encryption';
 
 const GAP = 32;
 
@@ -26,7 +27,7 @@ export const MissingRoomE2EEKey = (): ReactElement => {
 					title={I18n.t('Learn_more')}
 					type='secondary'
 					backgroundColor={colors.chatComponentBackground}
-					onPress={() => alert('learn more')} // TODO: missing url
+					onPress={() => Linking.openURL(LEARN_MORE_E2EE_URL)}
 				/>
 			</View>
 		</View>
