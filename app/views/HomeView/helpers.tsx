@@ -2,11 +2,12 @@ import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
 import database from '../../lib/database';
-import { TSubscriptionModel } from '../../definitions';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { Services } from '../../lib/services';
+import log from '../../lib/methods/helpers/log';
 
 const CHAT247ROOMID = '24-7-chatroom';
-
 const VIRTUAL_HAPPY_HOUR_ROOMID = 'virtual-happy-hours';
 const TECH_SUPPORT_USERNAME = 'tech_support';
 
@@ -75,6 +76,11 @@ export const navigateToVirtualHappyHour = async (Navigation: any, isMasterDetail
 		log(e);
 	}
 };
+
+const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
+	goRoom({ item, isMasterDetail, popToRoot: true });
+};
+
 
 let querySubscription: Subscription;
 

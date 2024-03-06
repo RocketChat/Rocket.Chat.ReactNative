@@ -34,7 +34,7 @@ export const smallTiles = [
 		size: SizeTypes.SMALL,
 		color: 'creamsicleYellow',
 		icon: require('../../static/images/happy-hour-solid.png'),
-		disabled: true
+		disabled: false
 	},
 	{
 		title: 'Calendar',
@@ -58,7 +58,7 @@ export const smallTiles = [
 		size: SizeTypes.SMALL,
 		color: 'magenta',
 		icon: require('../../static/images/support-solid.png'),
-		disabled: true
+		disabled: false
 	},
 	{
 		title: 'Settings',
