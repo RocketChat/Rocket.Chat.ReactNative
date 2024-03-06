@@ -26,6 +26,7 @@ interface IDirectoryItem {
 	style?: ViewStyle;
 	rightLabel?: string;
 	rid?: string;
+	age?: string;
 	teamMain?: boolean;
 }
 
@@ -46,6 +47,7 @@ const DirectoryItem = ({
 	rightLabel,
 	type,
 	rid,
+	age,
 	teamMain
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
