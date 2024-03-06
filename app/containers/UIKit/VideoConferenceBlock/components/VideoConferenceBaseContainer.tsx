@@ -36,7 +36,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 		},
 		issue: {
 			icon: 'phone-issue',
-			color: colors.statusFontOnWarning,
+			color: colors.statusFontWarning,
 			backgroundColor: colors.statusBackgroundWarning,
 			label: i18n.t('Call_issue')
 		}
