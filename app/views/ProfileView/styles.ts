@@ -7,7 +7,7 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 24
+		marginBottom: 10
 	},
 	avatarButtons: {
 		flexWrap: 'wrap',
@@ -22,9 +22,5 @@ export default StyleSheet.create({
 		marginRight: 15,
 		marginBottom: 15,
 		borderRadius: 4
-	},
-	inputBio: {
-		height: 100,
-		textAlignVertical: 'top'
 	}
 });
