@@ -89,7 +89,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 			setDescription(msg);
 			setLikeCount(0);
 			setHasLiked(false);
-			if (attachments?.length > 0) {
+			if (Array.isArray(attachments) && attachments?.length > 0) {
 				setBannerImage(formatAttachmentUrl(attachments[0].image_url, user.id, user.token, server));
 				setDescription(attachments[0].description);
 			}
