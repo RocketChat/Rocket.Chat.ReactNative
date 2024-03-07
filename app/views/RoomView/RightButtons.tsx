@@ -97,7 +97,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme, issuesWithNotifications, notificationsDisabled } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme, disabled, issuesWithNotifications, notificationsDisabled } =
+			this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -108,6 +109,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.disabled !== disabled) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
