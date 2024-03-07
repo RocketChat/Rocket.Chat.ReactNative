@@ -95,6 +95,10 @@ export const goRoom = async ({
 	usedCannedResponse?: string;
 	popToRoot?: boolean;
 }): Promise<void> => {
+	if (!item) {
+		console.log('item was not passed to goRoom function, probably no item was found')
+		return;
+	}
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
 		try {
