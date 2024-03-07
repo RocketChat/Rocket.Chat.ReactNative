@@ -73,7 +73,7 @@ const ConnectView: React.FC = ({ route }: { route: any }) => {
 		if (room.rid) {
 			try {
 				navigation.navigate('ChatsStackNavigator', {
-					screen: 'RoomListView'
+					screen: 'RoomsListView'
 				});
 				goRoom({ item: params, isMasterDetail, popToRoot: true });
 			} catch {}
