@@ -44,7 +44,7 @@ export const navigateToVirtualHappyHour = async (Navigation: any, isMasterDetail
        try {
            const chatRoom = await getVirtualHappyHourChat();
            await Navigation.navigate('ChatsStackNavigator', {
-               screen: 'RoomListView'
+               screen: 'RoomsListView'
            });
            goRoom({ item: chatRoom, isMasterDetail });
        } catch (error) {
@@ -61,14 +61,14 @@ export const navigateToVirtualHappyHour = async (Navigation: any, isMasterDetail
 		if (query.length > 0) {
 			const room = query[0]
 			await Navigation.navigate('ChatsStackNavigator', {
-				screen: 'RoomListView'
+				screen: 'RoomsListView'
 			});
 			handleGoRoom(room, isMasterDetail);
 		} else {
 			const result = await Services.createDirectMessage(TECH_SUPPORT_USERNAME);
 			if (result.success) {
 				await Navigation.navigate('ChatsStackNavigator', {
-					screen: 'RoomListView'
+					screen: 'RoomsListView'
 				});
 				handleGoRoom({ rid: result.room?._id as string, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT }, isMasterDetail);
 			}
