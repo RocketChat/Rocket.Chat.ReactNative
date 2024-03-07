@@ -34,7 +34,7 @@ export const EncryptedRoom = ({
 	};
 
 	return (
-		<View style={styles.root}>
+		<View style={styles.root} testID='room-view-encrypted-room'>
 			<View style={styles.container}>
 				<View style={styles.textView}>
 					<View style={styles.icon}>
