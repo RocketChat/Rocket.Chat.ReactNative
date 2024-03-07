@@ -177,10 +177,14 @@ export default class EncryptionRoom {
 
 	// Create an encrypted key for this room based on users
 	encryptRoomKey = async () => {
-		const result = await Services.e2eGetUsersOfRoomWithoutKey(this.roomId);
-		if (result.success) {
-			const { users } = result;
-			await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
+		try {
+			const result = await Services.e2eGetUsersOfRoomWithoutKey(this.roomId);
+			if (result.success) {
+				const { users } = result;
+				await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
+			}
+		} catch (e) {
+			log(e);
 		}
 	};
 

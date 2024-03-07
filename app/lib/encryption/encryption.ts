@@ -349,6 +349,9 @@ class Encryption {
 		}
 	};
 
+	// Creating the instance is enough to generate room e2ee key
+	encryptSubscription = (rid: string) => this.getRoomInstance(rid as string);
+
 	// Decrypt a subscription lastMessage
 	decryptSubscription = async (subscription: Partial<ISubscription>) => {
 		// If the subscription doesn't have a lastMessage just return
