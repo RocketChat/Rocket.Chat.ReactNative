@@ -20,7 +20,7 @@ import { onHoldLivechat, returnLivechat } from '../../lib/services/restApi';
 import { getUserSelector } from '../../selectors/login';
 import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
-import HeaderCallButton from './components/HeaderCallButton';
+import { HeaderCallButton } from './components';
 import { TColors, TSupportedThemes, withTheme } from '../../theme';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
@@ -48,6 +48,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	colors?: TColors;
 	issuesWithNotifications: boolean;
 	notificationsDisabled?: boolean;
+	disabled: boolean;
 }
 
 interface IRigthButtonsState {
@@ -96,7 +97,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme, issuesWithNotifications, notificationsDisabled } = this.props;
+		const { teamId, status, joined, omnichannelPermissions, theme, disabled, issuesWithNotifications, notificationsDisabled } =
+			this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -107,6 +109,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextProps.disabled !== disabled) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -361,13 +366,18 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, disabled } = this.props;
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
 					<HeaderButton.Container>
-						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
+						<HeaderButton.Item
+							iconName='kebab'
+							onPress={this.showMoreActions}
+							testID='room-view-header-omnichannel-kebab'
+							disabled={disabled}
+						/>
 					</HeaderButton.Container>
 				);
 			}
@@ -380,6 +390,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
+						disabled={disabled}
 					/>
 				</HeaderButton.Container>
 			);
@@ -392,18 +403,20 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName='notification-disabled'
 						onPress={this.navigateToNotificationOrPushTroubleshoot}
 						testID='room-view-push-troubleshoot'
+						disabled={disabled}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton rid={rid} /> : null}
+				{rid ? <HeaderCallButton rid={rid} disabled={disabled} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
+						disabled={disabled}
 					/>
 				) : null}
-				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' />
+				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={disabled} />
 			</HeaderButton.Container>
 		);
 	}

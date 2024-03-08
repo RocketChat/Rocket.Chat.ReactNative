@@ -74,6 +74,7 @@ interface IRoomHeader {
 	onPress: Function;
 	testID?: string;
 	sourceType?: IOmnichannelSource;
+	disabled?: boolean;
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
@@ -139,7 +140,8 @@ const Header = React.memo(
 		teamMain,
 		testID,
 		usersTyping = [],
-		sourceType
+		sourceType,
+		disabled
 	}: IRoomHeader) => {
 		const { colors } = useTheme();
 		const portrait = height > width;
@@ -177,8 +179,13 @@ const Header = React.memo(
 				testID='room-header'
 				accessibilityLabel={title}
 				onPress={handleOnPress}
-				style={styles.container}
-				disabled={!!tmid}
+				style={[
+					styles.container,
+					{
+						opacity: disabled ? 0.5 : 1
+					}
+				]}
+				disabled={disabled}
 				hitSlop={HIT_SLOP}
 			>
 				<View style={styles.titleContainer}>
