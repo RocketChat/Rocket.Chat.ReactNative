@@ -127,6 +127,13 @@ export const Edited = () => (
 	</>
 );
 
+export const Translated = () => (
+	<>
+		<Message msg='Message header' isTranslated />
+		<Message msg='Message without header' isTranslated isHeader={false} />
+	</>
+);
+
 export const Encrypted = () => (
 	<>
 		<Message msg='Message' type='e2e' />
@@ -939,6 +946,7 @@ export const LongNameUser = () => (
 	<>
 		<Message msg={'this is a normal message'} author={longNameAuthor} />
 		<Message msg={'Edited message'} author={longNameAuthor} isEdited />
+		<Message msg={'Translated message'} author={longNameAuthor} isTranslated />
 		<Message msg={'Encrypted message'} author={longNameAuthor} type={E2E_MESSAGE_TYPE} />
 		<Message msg={'Error message'} author={longNameAuthor} hasError />
 		<Message msg={'Message with read receipt'} author={longNameAuthor} isReadReceiptEnabled read />
@@ -947,6 +955,7 @@ export const LongNameUser = () => (
 			msg={'Show all icons '}
 			author={longNameAuthor}
 			isEdited
+			isTranslated
 			type={E2E_MESSAGE_TYPE}
 			hasError
 			isReadReceiptEnabled
@@ -958,6 +967,7 @@ export const LongNameUser = () => (
 			author={longNameAuthor}
 			isHeader={false}
 			isEdited
+			isTranslated
 			type={E2E_MESSAGE_TYPE}
 			hasError
 			isReadReceiptEnabled
@@ -969,6 +979,7 @@ export const LongNameUser = () => (
 			author={longNameAuthor}
 			isHeader={false}
 			isEdited
+			isTranslated
 			type={E2E_MESSAGE_TYPE}
 			hasError
 			isReadReceiptEnabled
