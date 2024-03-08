@@ -311,16 +311,22 @@
     },
     "Servers" : {
       "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workspaces"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "サーバー"
+            "value" : "ワークスペース"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Servidores"
+            "value" : "Workspaces"
           }
         }
       }
