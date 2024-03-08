@@ -39,8 +39,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	/**
 	 * If e2ee is enabled, close screen and display success toast.
-	 * Note: Debounce prevents `isFocused` from running another re-render
-	 * and triggering another toast
+	 * Note: Debounce prevents `isFocused` from running another re-render and triggering another toast
 	 */
 	const displayEncryptionEnabled = useDebounce(
 		() => {
@@ -56,14 +55,12 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 	}
 
 	// Wrong password
-	if (encryptionFailure !== prevEncryptionFailure) {
-		if (encryptionFailure && password) {
-			showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
-		}
+	if (encryptionFailure !== prevEncryptionFailure && encryptionFailure && password) {
+		showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
 	}
 
 	// If screen is closed and e2ee is still disabled, warns the user via toast
-	if (!isFocused && encryptionFailure && !encryptionEnabled) {
+	if (!isFocused && !encryptionEnabled) {
 		showToast(I18n.t('e2ee_disabled'));
 	}
 

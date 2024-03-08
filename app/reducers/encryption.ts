@@ -11,7 +11,7 @@ export interface IEncryption {
 export const initialState: IEncryption = {
 	enabled: false,
 	banner: '',
-	failure: true
+	failure: false
 };
 
 export default function encryption(state = initialState, action: TApplicationActions): IEncryption {

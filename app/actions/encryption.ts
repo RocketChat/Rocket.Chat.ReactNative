@@ -51,7 +51,7 @@ export function encryptionDecodeKey(password: string): IEncryptionDecodeKey {
 	};
 }
 
-export function encryptionDecodeKeyFailed(): Action {
+export function encryptionDecodeKeyFailure(): Action {
 	return {
 		type: ENCRYPTION.DECODE_KEY_FAILURE
 	};
