@@ -1192,10 +1192,10 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				1EC6ACF422CB9FC300A41C61 /* Embed App Extensions */,
 				1E1EA8082326CCE300E22452 /* ShellScript */,
-				7AAE9EB32891A0D20024F559 /* Upload source maps to Bugsnag */,
 				7F13D807CA5B7E43CE899DB3 /* [CP] Embed Pods Frameworks */,
 				A1315A8FDA7B970DFBDB34C7 /* [CP] Copy Pods Resources */,
 				1ED0389C2B507B4F00C007D4 /* Embed Watch Content */,
+				7AAE9EB32891A0D20024F559 /* Upload source maps to Bugsnag */,
 			);
 			buildRules = (
 			);
@@ -1294,10 +1294,10 @@
 				7AAB3E46257E6A6E00707CF6 /* Bundle React Native code and images */,
 				7AAB3E48257E6A6E00707CF6 /* Embed App Extensions */,
 				7AAB3E4B257E6A6E00707CF6 /* ShellScript */,
-				7A10288726B1D15200E47EF8 /* Upload source maps to Bugsnag */,
 				4CC99291A49CC4B7F5883239 /* [CP] Embed Pods Frameworks */,
 				B237EE54305A08A30FCABFA0 /* [CP] Copy Pods Resources */,
 				1ED1ECE32B8699DD00F6620C /* Embed Watch Content */,
+				7A10288726B1D15200E47EF8 /* Upload source maps to Bugsnag */,
 			);
 			buildRules = (
 			);
