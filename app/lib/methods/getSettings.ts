@@ -128,14 +128,27 @@ export async function setSettings(): Promise<void> {
 	const db = database.active;
 	const settingsCollection = db.get('settings');
 	const settingsRecords = await settingsCollection.query().fetch();
-	const parsed = Object.values(settingsRecords).map(item => ({
-		_id: item.id,
-		valueAsString: item.valueAsString,
-		valueAsBoolean: item.valueAsBoolean,
-		valueAsNumber: item.valueAsNumber,
-		valueAsArray: item.valueAsArray,
-		_updatedAt: item._updatedAt
-	}));
+	const parsed = Object.values(settingsRecords).map(item => {
+		// All settings except 'Assets_favicon_512' are of type ISettings & Model
+		// 'valueAsString' property check is used in order to avoid eslint error
+		if (item.id !== 'Assets_favicon_512' && 'valueAsString' in item) {
+			return {
+				_id: item.id,
+				valueAsString: item.valueAsString,
+				valueAsBoolean: item.valueAsBoolean,
+				valueAsNumber: item.valueAsNumber,
+				valueAsArray: item.valueAsArray,
+				_updatedAt: item._updatedAt
+			};
+		}
+		return {
+			_id: item.id,
+			// @ts-ignore
+			value: item.value,
+			// @ts-ignore
+			enterprise: item.enterprise
+		};
+	});
 	reduxStore.dispatch(addSettings(parseSettings(parsed.slice(0, parsed.length))));
 }
 
