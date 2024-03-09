@@ -129,10 +129,6 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		});
 		yield put(setSupportedVersions(supportedVersionsResult));
 
-		if (supportedVersionsResult.status === 'expired') {
-			disconnect();
-		}
-
 		return serverRecord;
 	} catch (e) {
 		log(e);

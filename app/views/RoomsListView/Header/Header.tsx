@@ -62,9 +62,7 @@ const Header = React.memo(
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
 		let subtitle;
-		if (supportedVersionsStatus === 'expired') {
-			subtitle = 'Cannot connect';
-		} else if (connecting) {
+		if (connecting) {
 			subtitle = I18n.t('Connecting');
 		} else if (isFetching) {
 			subtitle = I18n.t('Updating');

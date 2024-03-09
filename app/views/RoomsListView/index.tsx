@@ -456,7 +456,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							  () => navigation.toggleDrawer()
 					}
 					badge={() => getBadge()}
-					disabled={supportedVersionsStatus === 'expired'}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -475,20 +474,17 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							iconName='create'
 							onPress={this.goToNewMessage}
 							testID='rooms-list-view-create-channel'
-							disabled={supportedVersionsStatus === 'expired'}
 						/>
 					) : null}
 					<HeaderButton.Item
 						iconName='search'
 						onPress={this.initSearching}
 						testID='rooms-list-view-search'
-						disabled={supportedVersionsStatus === 'expired'}
 					/>
 					<HeaderButton.Item
 						iconName='directory'
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
-						disabled={supportedVersionsStatus === 'expired'}
 					/>
 				</HeaderButton.Container>
 			)
@@ -954,10 +950,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		if (loading) {
 			return <ActivityIndicator />;
-		}
-
-		if (supportedVersionsStatus === 'expired') {
-			return <SupportedVersionsExpired />;
 		}
 
 		return (
