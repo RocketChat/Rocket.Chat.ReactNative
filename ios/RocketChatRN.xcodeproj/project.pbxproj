@@ -1669,6 +1669,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1754,6 +1755,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}",
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
