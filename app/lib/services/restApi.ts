@@ -76,7 +76,7 @@ export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
 	// RC 0.70.0
-	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
+	sdk.methodCall('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
 export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
 	// RC 5.5
