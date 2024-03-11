@@ -54,3 +54,28 @@ index e594bbe..0f8523e 100644
  };
  
  if (__DEV__) {
+diff --git a/node_modules/react-native/jest/setup.js b/node_modules/react-native/jest/setup.js
+index 5bc6544..16498d5 100644
+--- a/node_modules/react-native/jest/setup.js
++++ b/node_modules/react-native/jest/setup.js
+@@ -17,9 +17,17 @@ jest.requireActual('@react-native/polyfills/error-guard');
+ 
+ global.__DEV__ = true;
+ 
+-global.performance = {
+-  now: jest.fn(Date.now),
+-};
++const performanceDescriptor = Object.getOwnPropertyDescriptor(global, 'performance');
++if (!performanceDescriptor || performanceDescriptor.configurable) {
++  Object.defineProperty(global, 'performance', {
++    value: {
++      now: jest.fn(Date.now),
++    },
++    writable: true,
++  });
++} else {
++  global.performance.now = jest.fn(Date.now);
++}
+ 
+ global.Promise = jest.requireActual('promise');
+ global.regeneratorRuntime = jest.requireActual('regenerator-runtime/runtime');
