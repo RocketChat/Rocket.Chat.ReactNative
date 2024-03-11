@@ -226,7 +226,7 @@ class ProfileLibraryView extends React.Component {
 					rightLabel={item?.federation && item?.federation.peer}
 					type='d'
 					icon={<CustomIcon name='pin-map' size={15} color='#161a1d' />}
-					age={`${ item?.customFields?.Age ?? '?' } years old`}
+				    age={item.customFields?.Age ? `${ item.customFields?.Age } years old` : ''}
 					{...commonProps}
 				/>
 			);
