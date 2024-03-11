@@ -813,7 +813,6 @@
   "room-name-already-exists": "Room name already exists",
   "room_allowed_reactions": "allowed reactions",
   "room_archived": "archived room",
-  "room_avatar_changed": "changed room avatar",
   "room_changed_topic_to": "changed room topic to: {{topic}}",
   "room_changed_type": "changed room to {{type}}",
   "room_disallowed_reactions": "disallowed reactions",
@@ -835,5 +834,6 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
+  "room_avatar_changed": "changed room avatar",
   "you_were_mentioned": "you were mentioned"
 }
