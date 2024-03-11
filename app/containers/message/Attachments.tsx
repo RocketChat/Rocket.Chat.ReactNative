@@ -40,7 +40,7 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 		};
 
 		if (element.type === 'button') {
-			return <Button onPress={onPress} title={element.text} />;
+			return <Button onPress={onPress} key={element.text} title={element.text} />;
 		}
 
 		return null;

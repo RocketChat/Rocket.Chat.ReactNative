@@ -87,7 +87,7 @@ const HomeView: React.FC = () => {
 			>
 				<View style={tileStyles.tileContent}>
 					<View style={tileStyles.imageContainer}>
-						<Image source={icon} style={imageStyle} resizeMode='contain' />
+						<Image source={ icon } style={imageStyle} resizeMode='contain' />
 					</View>
 					<Text style={tileStyles.text}>{title}</Text>
 				</View>
