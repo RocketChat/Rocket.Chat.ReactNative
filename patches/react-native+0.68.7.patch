@@ -1,0 +1,56 @@
+diff --git a/node_modules/react-native/index.js b/node_modules/react-native/index.js
+index e594bbe..0f8523e 100644
+--- a/node_modules/react-native/index.js
++++ b/node_modules/react-native/index.js
+@@ -444,35 +444,22 @@ module.exports = {
+         'LogBox is enabled by default so there is no need to call unstable_enableLogBox() anymore. This is a no op and will be removed in the next version.',
+       );
+   },
+-  // Deprecated Prop Types
+-  get ColorPropType(): $FlowFixMe {
+-    console.warn(
+-      'ColorPropType will be removed from React Native. Migrate to ' +
+-        "ColorPropType exported from 'deprecated-react-native-prop-types'.",
+-    );
+-    return require('deprecated-react-native-prop-types').ColorPropType;
+-  },
+-  get EdgeInsetsPropType(): $FlowFixMe {
+-    console.warn(
+-      'EdgeInsetsPropType will be removed from React Native. Migrate to ' +
+-        "EdgeInsetsPropType exported from 'deprecated-react-native-prop-types'.",
+-    );
+-    return require('deprecated-react-native-prop-types').EdgeInsetsPropType;
+-  },
+-  get PointPropType(): $FlowFixMe {
+-    console.warn(
+-      'PointPropType will be removed from React Native. Migrate to ' +
+-        "PointPropType exported from 'deprecated-react-native-prop-types'.",
+-    );
+-    return require('deprecated-react-native-prop-types').PointPropType;
+-  },
+-  get ViewPropTypes(): $FlowFixMe {
+-    console.warn(
+-      'ViewPropTypes will be removed from React Native. Migrate to ' +
+-        "ViewPropTypes exported from 'deprecated-react-native-prop-types'.",
+-    );
+-    return require('deprecated-react-native-prop-types').ViewPropTypes;
+-  },
++// Deprecated Prop Types
++get ColorPropType(): $FlowFixMe {
++  return require('deprecated-react-native-prop-types').ColorPropType;
++},
++
++get EdgeInsetsPropType(): $FlowFixMe {
++  return require('deprecated-react-native-prop-types').EdgeInsetsPropType;
++},
++
++get PointPropType(): $FlowFixMe {
++  return require('deprecated-react-native-prop-types').PointPropType;
++},
++
++get ViewPropTypes(): $FlowFixMe {
++  return require('deprecated-react-native-prop-types').ViewPropTypes;
++},
+ };
+ 
+ if (__DEV__) {

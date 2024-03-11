@@ -60,6 +60,7 @@
 		"color2k": "1.2.4",
 		"commonmark": "https://github.com/RocketChat/commonmark.js.git",
 		"commonmark-react-renderer": "git+https://github.com/RocketChat/commonmark-react-renderer.git",
+		"deprecated-react-native-prop-types": "^5.0.0",
 		"dequal": "^2.0.3",
 		"ejson": "^2.2.3",
 		"expo": "^46.0.9",
