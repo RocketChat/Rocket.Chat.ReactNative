@@ -194,12 +194,12 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 	);
 });
 
-// InsideStackNavigator
-const InsideStack = createStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
-const InsideStackNavigator = React.memo(() => {
+// MasterDetailStackNavigator
+const MasterDetailStack = createStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
+const MasterDetailStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<InsideStack.Navigator
+		<MasterDetailStack.Navigator
 			screenOptions={
 				{
 					...defaultHeader,
@@ -209,13 +209,13 @@ const InsideStackNavigator = React.memo(() => {
 				} as StackNavigationOptions
 			}
 		>
-			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
-			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
-			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
-			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen name='ShareView' component={ShareView} />
-		</InsideStack.Navigator>
+			<MasterDetailStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
+			<MasterDetailStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
+			<MasterDetailStack.Screen name='AttachmentView' component={AttachmentView} />
+			<MasterDetailStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
+			<MasterDetailStack.Screen name='ShareView' component={ShareView} />
+		</MasterDetailStack.Navigator>
 	);
 });
 
-export default InsideStackNavigator;
+export default MasterDetailStackNavigator;
