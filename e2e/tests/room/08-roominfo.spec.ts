@@ -286,7 +286,7 @@ describe('Room info screen', () => {
 					.toBeVisible()
 					.withTimeout(10000);
 				await sleep(400);
-				const textWithShowMoreRegExp = /Lorem[\s\S]+... Show more/i
+				const textWithShowMoreRegExp = /Lorem[\s\S]+... Show more/i;
 				await waitFor(element(by[textMatcher](textWithShowMoreRegExp)))
 					.toExist()
 					.withTimeout(10000);

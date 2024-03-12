@@ -158,8 +158,13 @@ export const Code = () => (
 		<Markdown
 			msg='Inline `code` has `back-ticks around` it.
 ```
-Code block
-```'
+Code block 1
+```
+And other code block in sequence
+```
+Code block 2
+```
+'
 			theme={theme}
 		/>
 	</View>

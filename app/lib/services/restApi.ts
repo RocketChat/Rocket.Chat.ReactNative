@@ -76,7 +76,7 @@ export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
 
 export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
 	// RC 0.70.0
-	sdk.methodCallWrapper('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
+	sdk.methodCall('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
 export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
 	// RC 5.5
@@ -870,8 +870,8 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
 }
 
-export const editMessage = async (message: IMessage) => {
-	const { rid, msg } = await Encryption.encryptMessage(message);
+export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0
 	return sdk.post('chat.update', { roomId: rid, msgId: message.id, text: msg });
 };
@@ -904,6 +904,12 @@ export const removePushToken = (): Promise<boolean | void> => {
 	}
 	return Promise.resolve();
 };
+
+// RC 6.6.0
+export const pushTest = () => sdk.post('push.test');
+
+// RC 6.5.0
+export const pushInfo = () => sdk.get('push.info');
 
 export const sendEmailCode = () => {
 	const { username } = reduxStore.getState().login.user as IUser;

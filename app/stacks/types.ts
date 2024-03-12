@@ -1,15 +1,21 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
-import { TThreadModel } from '../definitions';
-import { IAttachment } from '../definitions/IAttachment';
-import { ICannedResponse } from '../definitions/ICannedResponse';
-import { TDataSelect } from '../definitions/IDataSelect';
-import { ILivechatDepartment } from '../definitions/ILivechatDepartment';
-import { ILivechatTag } from '../definitions/ILivechatTag';
-import { IMessage, TAnyMessageModel, TMessageModel } from '../definitions/IMessage';
-import { IServer } from '../definitions/IServer';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../definitions/ISubscription';
-import { TChangeAvatarViewContext } from '../definitions/TChangeAvatarViewContext';
+import {
+	IAttachment,
+	ICannedResponse,
+	ILivechatDepartment,
+	ILivechatTag,
+	IMessage,
+	IServer,
+	ISubscription,
+	SubscriptionType,
+	TAnyMessageModel,
+	TChangeAvatarViewContext,
+	TDataSelect,
+	TMessageAction,
+	TSubscriptionModel,
+	TThreadModel
+} from '../definitions';
 import { ModalStackParamList } from './MasterDetailStack/types';
 import { TNavigation } from './stackType';
 
@@ -26,7 +32,7 @@ export type ChatsStackParamList = {
 				rid: string;
 				t: SubscriptionType;
 				tmid?: string;
-				message?: TMessageModel;
+				messageId?: string;
 				name?: string;
 				fname?: string;
 				prid?: string;
@@ -36,7 +42,6 @@ export type ChatsStackParamList = {
 				roomUserId?: string | null;
 				usedCannedResponse?: string;
 				status?: string;
-				replyInDM?: TAnyMessageModel;
 		  }
 		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
@@ -117,6 +122,7 @@ export type ChatsStackParamList = {
 		rid: string;
 		room: TSubscriptionModel;
 	};
+	PushTroubleshootView: undefined;
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -183,6 +189,7 @@ export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
+	PushTroubleshootView: undefined;
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
@@ -202,6 +209,7 @@ export type SettingsStackParamList = {
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
 	MediaAutoDownloadView: undefined;
+	PushTroubleshootView: undefined;
 };
 
 export type AdminPanelStackParamList = {
@@ -268,9 +276,9 @@ export type InsideStackParamList = {
 		text: string;
 		room: TSubscriptionModel;
 		thread: TThreadModel;
-		replying?: boolean;
-		replyingMessage?: IMessage;
-		closeReply?: Function;
+		action: TMessageAction;
+		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
+		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;

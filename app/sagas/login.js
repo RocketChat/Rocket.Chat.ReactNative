@@ -17,6 +17,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
+import { initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
@@ -170,10 +171,6 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	}
 };
 
-const fetchRoomsFork = function* fetchRoomsFork() {
-	yield put(roomsRequest());
-};
-
 const fetchUsersRoles = function* fetchRoomsFork() {
 	const roles = yield Services.getUsersRoles();
 	if (roles.length) {
@@ -186,7 +183,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield fork(fetchRoomsFork);
+		yield put(roomsRequest());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
@@ -242,6 +239,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(inviteLinksRequest(inviteLinkToken));
 		}
 		yield showSupportedVersionsWarning(server);
+		yield put(initTroubleshootingNotification());
 	} catch (e) {
 		log(e);
 	}

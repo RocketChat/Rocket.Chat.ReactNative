@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { delay, put, race, select, take, takeLatest, actionChannel } from 'redux-saga/effects';
+import { delay, put, race, select, take, takeLatest, actionChannel, throttle, fork, cancel } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
@@ -31,18 +31,34 @@ function* watchHistoryRequests() {
 	}
 }
 
-const watchUserTyping = function* watchUserTyping({ rid, status }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
+let inactiveTypingTask = null;
 
+const clearUserTyping = function* clearUserTyping({ rid, status }) {
 	try {
-		yield Services.emitTyping(rid, status);
-
-		if (status) {
-			yield delay(5000);
+		if (!status) {
 			yield Services.emitTyping(rid, false);
+			if (inactiveTypingTask) {
+				yield cancel(inactiveTypingTask);
+			}
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const clearInactiveTyping = function* clearInactiveTyping({ rid }) {
+	yield delay(5000);
+	yield clearUserTyping({ rid, status: false });
+};
+
+const watchUserTyping = function* watchUserTyping({ rid, status }) {
+	try {
+		if (status) {
+			yield Services.emitTyping(rid, status);
+			if (inactiveTypingTask) {
+				yield cancel(inactiveTypingTask);
+			}
+			inactiveTypingTask = yield fork(clearInactiveTyping, { rid });
 		}
 	} catch (e) {
 		log(e);
@@ -148,7 +164,8 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
+	yield takeLatest(types.ROOM.USER_TYPING, clearUserTyping);
+	yield throttle(3000, types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);

@@ -534,6 +534,11 @@ PODS:
     - React-Core
   - RNMathView (1.0.0):
     - iosMath
+  - RNNotifee (7.8.0):
+    - React-Core
+    - RNNotifee/NotifeeCore (= 7.8.0)
+  - RNNotifee/NotifeeCore (7.8.0):
+    - React-Core
   - RNReanimated (2.8.0):
     - DoubleConversion
     - FBLazyVector
@@ -666,6 +671,7 @@ DEPENDENCIES:
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNMathView (from `../node_modules/react-native-math-view/ios`)
+  - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -857,6 +863,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localize"
   RNMathView:
     :path: "../node_modules/react-native-math-view/ios"
+  RNNotifee:
+    :path: "../node_modules/@notifee/react-native"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNRootView:
@@ -972,6 +980,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
+  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
   RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: fa9b582d85ae5d62c91c66003b5278458fed7aaa
@@ -984,6 +993,6 @@ SPEC CHECKSUMS:
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 0bc4b37c3b8a345336ff601e2cf7d9704bab7e93
 
-PODFILE CHECKSUM: 0dc489a0c4bec783a132693070c2d02e2ca6b0db
+PODFILE CHECKSUM: 64d42395bfd44083a3a28acf1ade8637a43b275e
 
 COCOAPODS: 1.11.3

@@ -27,6 +27,7 @@ import MessagesView from '../../views/MessagesView';
 import AutoTranslateView from '../../views/AutoTranslateView';
 import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
+import PushTroubleshootView from '../../views/PushTroubleshootView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
 import ForwardMessageView from '../../views/ForwardMessageView';
 import CloseLivechatView from '../../views/CloseLivechatView';
@@ -116,7 +117,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 			<ModalStack.Navigator
 				screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 			>
-				<ModalStack.Screen name='RoomActionsView' component={RoomActionsView} />
+				<ModalStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} />
 				<ModalStack.Screen name='ReportUserView' component={ReportUserView} />
@@ -187,6 +188,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
 				<ModalStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
+				<ModalStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 				<ModalStack.Screen name='SupportedVersionsWarning' component={SupportedVersionsWarning} />
 			</ModalStack.Navigator>
 		</ModalContainer>

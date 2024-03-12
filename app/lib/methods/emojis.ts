@@ -51,7 +51,7 @@ export const searchEmojis = async (keyword: string): Promise<IEmoji[]> => {
 	const likeString = sanitizeLikeString(keyword);
 	const whereClause = [];
 	if (likeString) {
-		whereClause.push(Q.where('name', Q.like(`${likeString}%`)));
+		whereClause.push(Q.where('name', Q.like(`%${likeString}%`)));
 	}
 	const db = database.active;
 	const customEmojisCollection = await db

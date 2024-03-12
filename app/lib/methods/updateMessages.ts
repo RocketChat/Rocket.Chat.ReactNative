@@ -136,6 +136,12 @@ export default async function updateMessages({
 			try {
 				return message.prepareUpdate(
 					protectedFunction((m: TMessageModel) => {
+						if (newMessage && !newMessage?.blocks) {
+							newMessage.blocks = null;
+						}
+						if (newMessage && !newMessage?.md) {
+							newMessage.md = undefined;
+						}
 						Object.assign(m, newMessage);
 					})
 				);
@@ -160,6 +166,9 @@ export default async function updateMessages({
 			try {
 				return threadMessage.prepareUpdate(
 					protectedFunction((tm: TThreadMessageModel) => {
+						if (newThreadMessage && !newThreadMessage?.blocks) {
+							newThreadMessage.blocks = null;
+						}
 						Object.assign(tm, newThreadMessage);
 						if (threadMessage.tmid) {
 							tm.rid = threadMessage.tmid;

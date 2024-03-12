@@ -284,6 +284,15 @@ export default schemaMigrations({
 					columns: [{ name: 'unmuted', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 24,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'disable_notifications', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });
