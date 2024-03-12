@@ -29,7 +29,6 @@ class UserPreferences {
 
 	getBool(key: string): boolean | null {
 		try {
-			console.log(this.mmkv.getBool(key));
 			return this.mmkv.getBool(key) ?? null;
 		} catch {
 			return null;
