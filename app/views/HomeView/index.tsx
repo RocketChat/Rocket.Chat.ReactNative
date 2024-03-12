@@ -67,17 +67,13 @@ const HomeView: React.FC = () => {
 					if (screen) {
 						if (screen === '24Chat') {
 							navigateTo247Chat(Navigation, isMasterDetail);
-							return;
-						}
-						if (screen === 'VirtualHappyHour') {
+						} else if (screen === 'VirtualHappyHour') {
 							navigateToVirtualHappyHour(Navigation, isMasterDetail);
-							return;
-						}
-						if (screen === 'TechSupport') {
+						} else if (screen === 'TechSupport') {
 							navToTechSupport(Navigation, isMasterDetail);
-							return;
-						}
+						} else {
 						navigation.navigate(screen);
+						}
 					}
 				}}
 				style={{ opacity: disabled ? 0.4 : 1, ...tileStyles.tile }}

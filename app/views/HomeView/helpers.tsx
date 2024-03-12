@@ -43,10 +43,8 @@ export const navigateToVirtualHappyHour = async (Navigation: any, isMasterDetail
    if (Navigation) {
        try {
            const chatRoom = await getVirtualHappyHourChat();
-           await Navigation.navigate('ChatsStackNavigator', {
-               screen: 'RoomsListView'
-           });
-           goRoom({ item: chatRoom, isMasterDetail });
+           await Navigation.navigate('RoomView');
+           goRoom({ item: chatRoom, isMasterDetail: true });
        } catch (error) {
            console.error('error', error);
        }

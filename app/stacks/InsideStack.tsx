@@ -235,6 +235,7 @@ const HomeStackNavigator = () => {
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}
 		>
 			<HomeStack.Screen name='HomeView' component={HomeView} />
+			<HomeStack.Screen name='RoomView' component={RoomView} />
 		</HomeStack.Navigator>
 	);
 };
