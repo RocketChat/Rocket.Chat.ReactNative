@@ -53,12 +53,10 @@ final class MessageFormatter {
 	
 	func info() -> LocalizedStringKey? {
 		switch message.t {
-			case "rm":
-				return "Message Removed"
-			case "e2e":
-				return "Encrypted message"
-			default:
-				return nil
+		case .some:
+			return getInfoMessage(.init(from: message))
+		case .none:
+			return nil
 		}
 	}
 	

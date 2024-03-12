@@ -134,6 +134,8 @@
 		1E9A71772B59FCA900477BA2 /* URLSessionCertificateHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A71762B59FCA900477BA2 /* URLSessionCertificateHandling.swift */; };
 		1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB375882B55DBFB00AEC3D7 /* Server.swift */; };
 		1EB8EF722510F1EE00F352B7 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB8EF712510F1EE00F352B7 /* Storage.swift */; };
+		1EC687BA2BA0FF0D00C7BAAD /* MessageInfoMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC687B82BA0FECC00C7BAAD /* MessageInfoMapper.swift */; };
+		1EC687BB2BA0FF0D00C7BAAD /* MessageInfoMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC687B82BA0FECC00C7BAAD /* MessageInfoMapper.swift */; };
 		1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */; };
 		1EC6ACBB22CB9FC300A41C61 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1EC6ACF622CBA01500A41C61 /* ShareRocketChatRN.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EC6ACF522CBA01500A41C61 /* ShareRocketChatRN.m */; };
@@ -525,6 +527,7 @@
 		1E9A71762B59FCA900477BA2 /* URLSessionCertificateHandling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionCertificateHandling.swift; sourceTree = "<group>"; };
 		1EB375882B55DBFB00AEC3D7 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		1EB8EF712510F1EE00F352B7 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		1EC687B82BA0FECC00C7BAAD /* MessageInfoMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageInfoMapper.swift; sourceTree = "<group>"; };
 		1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareRocketChatRN.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EC6ACB622CB9FC300A41C61 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		1EC6ACB822CB9FC300A41C61 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -808,6 +811,7 @@
 		1E29A31E2B5871BE0093C03C /* Formatters */ = {
 			isa = PBXGroup;
 			children = (
+				1EC687B72BA0FEBB00C7BAAD /* Mapper */,
 				1E29A31F2B5871C80093C03C /* RoomFormatter.swift */,
 				1E29A3212B5871CE0093C03C /* MessageFormatter.swift */,
 			);
@@ -895,6 +899,14 @@
 				1E9A71702B59CC1300477BA2 /* Attachment.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		1EC687B72BA0FEBB00C7BAAD /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				1EC687B82BA0FECC00C7BAAD /* MessageInfoMapper.swift */,
+			);
+			path = Mapper;
 			sourceTree = "<group>";
 		};
 		1EC6ACB122CB9FC300A41C61 /* ShareRocketChatRN */ = {
@@ -2089,6 +2101,7 @@
 				1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
 				1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */,
+				1EC687BB2BA0FF0D00C7BAAD /* MessageInfoMapper.swift in Sources */,
 				1E29A2F62B585B070093C03C /* UserResponse.swift in Sources */,
 				1ED033AE2B55B1CC004F4930 /* Default.xcdatamodeld in Sources */,
 				1ED033BF2B55BF94004F4930 /* Storage.swift in Sources */,
@@ -2167,6 +2180,7 @@
 				1ED1ECBB2B86997F00F6620C /* AppView.swift in Sources */,
 				1ED1ECBC2B86997F00F6620C /* MessagesRequest.swift in Sources */,
 				1ED1ECBD2B86997F00F6620C /* Date+Extensions.swift in Sources */,
+				1EC687BA2BA0FF0D00C7BAAD /* MessageInfoMapper.swift in Sources */,
 				1ED1ECBE2B86997F00F6620C /* UserResponse.swift in Sources */,
 				1ED1ECBF2B86997F00F6620C /* Default.xcdatamodeld in Sources */,
 				1ED1ECC02B86997F00F6620C /* Storage.swift in Sources */,

@@ -170,6 +170,8 @@ final class RocketChatDatabase: Database {
 		message.t = updatedMessage.t
 		message.groupable = updatedMessage.groupable ?? true
 		message.editedAt = updatedMessage.editedAt
+		message.role = updatedMessage.role
+		message.comment = updatedMessage.comment
 		
 		updatedMessage.attachments?.forEach { attachment in
 			process(updatedAttachment: attachment, in: message)

@@ -13,7 +13,11 @@ extension Room {
 	var lastMessage: Message? {
 		let request = Message.fetchRequest()
 		
-		request.predicate = NSPredicate(format: "room == %@", self)
+		let thisRoomPredicate = NSPredicate(format: "room == %@", self)
+		let nonInfoMessagePredicate = NSPredicate(format: "t == nil", self)
+		request.predicate = NSCompoundPredicate(
+			andPredicateWithSubpredicates: [thisRoomPredicate, nonInfoMessagePredicate]
+		)
 		request.sortDescriptors = [NSSortDescriptor(keyPath: \Message.ts, ascending: false)]
 		request.fetchLimit = 1
 		

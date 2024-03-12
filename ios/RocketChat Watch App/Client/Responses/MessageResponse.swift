@@ -10,4 +10,6 @@ struct MessageResponse: Codable, Hashable {
 	let t: String?
 	let groupable: Bool?
 	let editedAt: Date?
+	let role: String?
+	let comment: String?
 }

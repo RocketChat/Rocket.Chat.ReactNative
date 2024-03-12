@@ -43,7 +43,7 @@ final class MessageViewModel: ObservableObject {
 	}
 	
 	var isHeader: Bool {
-		messageFormatter.isHeader()
+		messageFormatter.isHeader() && !messageHaveAuthorName(message.t ?? "")
 	}
 	
 }

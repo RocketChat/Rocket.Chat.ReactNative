@@ -78,8 +78,7 @@ struct MessageView: View {
 				}
 			}
 			if let text = viewModel.info {
-				Text(text)
-					.font(.caption.italic())
+				(Text("\(viewModel.sender ?? "") ").font(.caption.bold().italic()) + Text(text).font(.caption.italic()))
 					.foregroundStyle(.primary)
 			} else if let text = viewModel.message.msg {
 				HStack(alignment: .top) {
