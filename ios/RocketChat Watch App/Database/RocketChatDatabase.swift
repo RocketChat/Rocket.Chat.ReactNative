@@ -248,12 +248,12 @@ final class RocketChatDatabase: Database {
 	}
 	
 	func remove() {
-		guard let path = container.persistentStoreDescriptions.first?.url?.path else {
+		guard let url = container.persistentStoreDescriptions.first?.url else {
 			return
 		}
 		
 		do {
-			try FileManager.default.removeItem(atPath: path)
+			try container.persistentStoreCoordinator.destroyPersistentStore(at: url, type: .sqlite)
 		} catch {
 			print(error)
 		}
