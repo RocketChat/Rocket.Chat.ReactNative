@@ -228,7 +228,6 @@ export const colors = {
 		controlText: '#54585e',
 		infoText: '#6d6d72',
 		tintColor: '#1d74f5',
-		tintActive: '#549df9',
 		tintDisabled: '#88B4F5',
 		auxiliaryTintColor: '#6C727A',
 		actionTintColor: '#1d74f5',
@@ -300,7 +299,6 @@ export const colors = {
 		controlText: '#dadde6',
 		infoText: '#6D6D72',
 		tintColor: '#1d74f5',
-		tintActive: '#549df9',
 		tintDisabled: '#88B4F5',
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1d74f5',
@@ -372,7 +370,6 @@ export const colors = {
 		controlText: '#dadde6',
 		infoText: '#6d6d72',
 		tintColor: '#1e9bfe',
-		tintActive: '#76b7fc',
 		tintDisabled: '#88B4F5', // TODO: Evaluate this with design team
 		auxiliaryTintColor: '#f9f9f9',
 		actionTintColor: '#1e9bfe',
