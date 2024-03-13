@@ -48,6 +48,7 @@ interface IThreadMessagesViewState {
 	currentFilter: Filter;
 	isSearching: boolean;
 	searchText: string;
+	offset: number;
 }
 
 interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'> {
@@ -85,7 +86,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			showFilterDropdown: false,
 			currentFilter: Filter.All,
 			isSearching: false,
-			searchText: ''
+			searchText: '',
+			offset: 0
 		};
 		this.setHeader();
 		this.initSubscription();
@@ -308,7 +310,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	// eslint-disable-next-line react/sort-comp
 	load = debounce(async (lastThreadSync: Date) => {
-		const { loading, end, messages, searchText } = this.state;
+		const { loading, end, searchText, offset } = this.state;
 		if (end || loading || !this.mounted) {
 			return;
 		}
@@ -319,14 +321,15 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			const result = await Services.getThreadsList({
 				rid: this.rid,
 				count: API_FETCH_COUNT,
-				offset: messages.length,
+				offset,
 				text: searchText
 			});
 			if (result.success) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
 				this.setState({
 					loading: false,
-					end: result.count < API_FETCH_COUNT
+					end: result.count < API_FETCH_COUNT,
+					offset: offset + API_FETCH_COUNT
 				});
 			}
 		} catch (e) {
