@@ -36,12 +36,12 @@ final class RoomViewModel: ObservableObject {
 	
 	var lastMessage: String {
 		guard let user = room.lastMessage?.user else {
-			return String(localized: "No Message")
+			return String(localized: "No message")
 		}
 		
 		let isLastMessageSentByMe = user.username == server.loggedUser.username
 		let username = isLastMessageSentByMe ? String(localized: "You") : ((server.useRealName ? user.name : user.username) ?? "")
-		let message = room.lastMessage?.msg ?? String(localized: "No Message")
+		let message = room.lastMessage?.msg ?? String(localized: "No message")
 		
 		if room.lastMessage?.t == "jitsi_call_started" {
 			return String(localized: "Call started by: \(username)")

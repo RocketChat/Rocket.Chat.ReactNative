@@ -13,7 +13,7 @@ struct RetryView: View {
 		VStack {
 			Text(label)
 				.multilineTextAlignment(.center)
-			Button("Try Again", action: action)
+			Button("Try again", action: action)
 		}
 		.padding()
 	}

@@ -44,7 +44,7 @@ struct ServerListView: View {
 			case .loading:
 				ProgressView()
 			case .loaded where servers.isEmpty:
-				RetryView("No Connected servers.", action: loadServers)
+				RetryView("No connected servers.", action: loadServers)
 			case .loaded:
 				serverList
 			case .error(let error) where error == .locked:

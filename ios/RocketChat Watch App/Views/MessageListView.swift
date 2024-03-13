@@ -29,7 +29,7 @@ struct MessageListView: View {
 		ChatScrollView {
 			VStack(alignment: .leading, spacing: 8) {
 				if room.hasMoreMessages {
-					Button("Load More...") {
+					Button("Load more...") {
 						guard let oldestMessage = room.firstMessage?.ts else { return }
 						
 						messagesLoader.loadMore(from: oldestMessage)

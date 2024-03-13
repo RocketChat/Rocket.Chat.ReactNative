@@ -634,7 +634,7 @@
         }
       }
     },
-    "Load More..." : {
+    "Load more..." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -645,7 +645,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carregar Mais..."
+            "value" : "Carregar mais..."
           }
         }
       }
@@ -714,7 +714,7 @@
         }
       }
     },
-    "No Connected servers." : {
+    "No connected servers." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -730,8 +730,7 @@
         }
       }
     },
-    "No Message" : {
-      "extractionState" : "manual",
+    "No message" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -999,7 +998,7 @@
         }
       }
     },
-    "Try Again" : {
+    "Try again" : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1010,7 +1009,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tentar Novamente"
+            "value" : "Tentar novamente"
           }
         }
       }
