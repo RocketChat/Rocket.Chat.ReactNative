@@ -34,7 +34,7 @@ const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boo
 	return <CustomIcon name={customIconName} size={24} color={disabled ? colors.tintDisabled : colors.buttonFontPrimary} />;
 };
 
-const PlayButton = ({ onPress, disabled = false, audioState }: IButton) => {
+const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.ReactElement => {
 	const { colors } = useTheme();
 
 	return (
