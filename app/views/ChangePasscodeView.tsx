@@ -75,7 +75,7 @@ const ChangePasscodeView = React.memo(() => {
 			<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
 			{!data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' color={colors.fontDefault} size={30} />
+					<CustomIcon name='close' size={30} />
 				</Touchable>
 			) : null}
 		</Modal>
