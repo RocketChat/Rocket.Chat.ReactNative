@@ -61,7 +61,7 @@ const ListPicker = ({
 				onChangeValue({ [preference]: i.value.toString() }, () => setOption(option));
 				setOption(i);
 			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
 	return (

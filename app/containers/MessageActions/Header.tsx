@@ -81,7 +81,7 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 		onPress={(param: any) => onReaction(param)}
 		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
 	>
-		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
+		<CustomIcon name='reaction-add' size={24} />
 	</Touch>
 );
 

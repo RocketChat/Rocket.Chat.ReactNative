@@ -53,7 +53,7 @@ const ListPicker = ({
 				hideActionSheet();
 				onChangeValue(i.value);
 			},
-			right: option.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+			right: option.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
 	return (

@@ -68,7 +68,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, getCustomEmoji }: IReactio
 							style={{
 								width: tabWidth,
 								borderBottomWidth: isActiveTab ? 2 : 1,
-								borderColor: isActiveTab ? colors.tintActive : colors.separatorColor
+								borderColor: isActiveTab ? colors.strokeHighlight : colors.strokeLight
 							}}
 							key={tab.emoji}
 						>

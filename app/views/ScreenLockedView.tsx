@@ -79,7 +79,7 @@ const ScreenLockedView = (): JSX.Element => {
 			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
 			{data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' color={colors.fontDefault} size={30} />
+					<CustomIcon name='close' size={30} />
 				</Touchable>
 			) : null}
 		</Modal>

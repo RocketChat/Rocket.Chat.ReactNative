@@ -66,7 +66,7 @@ const Chip = ({ avatar, text, onPress, testID, style }: IChip) => {
 						{text}
 					</Text>
 				</View>
-				{onPress ? <CustomIcon name='close' size={16} color={colors.auxiliaryTintColor} /> : null}
+				{onPress ? <CustomIcon name='close' size={16} /> : null}
 			</View>
 		</Pressable>
 	);

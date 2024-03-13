@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		paddingHorizontal: 16,
 		paddingVertical: 10,
-		borderWidth: 1,
-		borderRadius: 4
+		borderWidth: 2,
+		borderRadius: 2
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -91,7 +91,9 @@ export const FormTextInput = ({
 	return (
 		<View style={[styles.inputContainer, containerStyle]}>
 			{label ? (
-				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.dangerColor }]}>
+					{label}
+				</Text>
 			) : null}
 
 			<View style={styles.wrap}>
@@ -102,7 +104,7 @@ export const FormTextInput = ({
 						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
 							backgroundColor: colors.backgroundColor,
-							borderColor: colors.separatorColor,
+							borderColor: colors.strokeLight,
 							color: colors.fontTitlesLabels
 						},
 						error?.error && {
@@ -121,6 +123,7 @@ export const FormTextInput = ({
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
 					value={value}
+					placeholderTextColor={colors.fontAnnotation}
 					{...inputProps}
 				/>
 
@@ -136,7 +139,7 @@ export const FormTextInput = ({
 
 				{showClearInput ? (
 					<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
-						<CustomIcon name='input-clear' size={20} color={colors.auxiliaryTintColor} />
+						<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
 					</Touchable>
 				) : null}
 
@@ -145,7 +148,7 @@ export const FormTextInput = ({
 						name={iconRight}
 						testID={testID ? `${testID}-icon-right` : undefined}
 						size={20}
-						color={colors.bodyText}
+						color={colors.fontDefault}
 						style={[styles.iconContainer, styles.iconRight]}
 					/>
 				) : null}
@@ -156,7 +159,7 @@ export const FormTextInput = ({
 							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 							testID={testID ? `${testID}-icon-password` : undefined}
 							size={20}
-							color={colors.fontSecondaryInfo}
+							color={colors.fontDefault}
 						/>
 					</Touchable>
 				) : null}
