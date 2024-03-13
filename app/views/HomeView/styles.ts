@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import { colors } from '../../lib/constants';
 
@@ -29,13 +29,19 @@ export const styles = StyleSheet.create({
 	}
 });
 
-export const createTileStyles = ({ size, color }: { size?: 'small' | 'large'; color: string }) =>
-	StyleSheet.create({
-		tile: {
-			width: size === 'small' ? 96 : 130,
-			marginVertical: 16,
-			alignItems: 'center'
-		},
+const screenWidth = Dimensions.get('window').width;
+
+const isLargeMobileScreen = screenWidth > 390;
+
+const smallTileWidth = isLargeMobileScreen ? 115 : 96;
+
+export const createTileStyles = ({ size, color, maxTileWidth }: { size?: 'small' | 'large'; color: string, maxTileWidth?: number }) =>
+    StyleSheet.create({
+        tile: {
+            width: size === 'small' ? smallTileWidth : 130,
+            marginVertical: 16,
+            alignItems: 'center'
+        },
 		tileContent: {
 			alignItems: 'center'
 		},
