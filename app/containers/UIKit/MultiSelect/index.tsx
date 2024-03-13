@@ -119,7 +119,7 @@ export const MultiSelect = React.memo(
 			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
 		) : (
 			<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
-				<Text style={[styles.pickerText, { color: currentValue ? colors.titleText : colors.fontSecondaryInfo }]}>
+				<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
 					{currentValue || placeholder.text}
 				</Text>
 			</Input>

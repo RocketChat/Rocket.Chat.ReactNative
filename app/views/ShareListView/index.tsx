@@ -343,7 +343,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		return (
 			<>
 				<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-					<Text style={[styles.headerText, { color: themes[theme].titleText }]}>{I18n.t(header)}</Text>
+					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
 				<List.Separator />
 			</>
@@ -396,7 +396,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { theme } = this.props;
 		return (
 			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+				<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
 	};
@@ -435,7 +435,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 						style={{ backgroundColor: themes[theme].backgroundColor }}
 						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
 					>
-						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{I18n.t('Read_External_Permission')}</Text>
+						<Text style={[styles.permissionTitle, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Read_External_Permission')}</Text>
 						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>
 							{I18n.t('Read_External_Permission_Message')}
 						</Text>

@@ -1367,7 +1367,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if ('onHold' in room && room.onHold) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('Chat_is_on_hold')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Chat_is_on_hold')}</Text>
 					<Touch
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -1383,7 +1383,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (!joined) {
 			return (
 				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
@@ -1399,14 +1399,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (readOnly) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_read_only')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_read_only')}</Text>
 				</View>
 			);
 		}
 		if ('id' in room && isBlocked(room)) {
 			return (
 				<View style={styles.readOnly}>
-					<Text style={[styles.previewMode, { color: themes[theme].titleText }]}>{I18n.t('This_room_is_blocked')}</Text>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_blocked')}</Text>
 				</View>
 			);
 		}

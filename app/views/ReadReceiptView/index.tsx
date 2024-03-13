@@ -125,7 +125,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 				<Avatar text={item.user.username} size={40} />
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
-						<Text style={[styles.name, { color: themes[theme].titleText }]}>{item?.user?.name}</Text>
+						<Text style={[styles.name, { color: themes[theme].fontTitlesLabels }]}>{item?.user?.name}</Text>
 						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 					</View>
 					<Text

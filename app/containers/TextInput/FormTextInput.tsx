@@ -91,7 +91,7 @@ export const FormTextInput = ({
 	return (
 		<View style={[styles.inputContainer, containerStyle]}>
 			{label ? (
-				<Text style={[styles.label, { color: colors.titleText }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
 			) : null}
 
 			<View style={styles.wrap}>
@@ -103,7 +103,7 @@ export const FormTextInput = ({
 						{
 							backgroundColor: colors.backgroundColor,
 							borderColor: colors.separatorColor,
-							color: colors.titleText
+							color: colors.fontTitlesLabels
 						},
 						error?.error && {
 							color: colors.dangerColor,

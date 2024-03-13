@@ -105,7 +105,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 						{title}
 					</Text>
 				</View>
-				<Text style={[styles.subtitleText, { color: colors.titleText }]}>{description}</Text>
+				<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text>
 				{customText}
 			</>
 			{showInput ? (

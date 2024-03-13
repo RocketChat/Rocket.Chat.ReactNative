@@ -50,7 +50,7 @@ export const SupportedVersionsExpired = () => {
 			<View style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
-			<Text style={[styles.title, { color: colors.titleText }]}>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('Supported_versions_expired_title', { workspace_name: name })}
 			</Text>
 			<Text style={[styles.description, { color: colors.bodyText }]}>{I18n.t('Supported_versions_expired_description')}</Text>

@@ -77,7 +77,7 @@ const WorkspaceView = () => {
 			<FormContainerInner>
 				<View style={styles.alignItemsCenter}>
 					<ServerAvatar url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-					<Text style={[styles.serverName, { color: colors.titleText }]}>{Site_Name}</Text>
+					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</Text>
 					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}

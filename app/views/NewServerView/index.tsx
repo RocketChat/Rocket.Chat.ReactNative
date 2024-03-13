@@ -350,7 +350,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.title,
 							{
-								color: themes[theme].titleText,
+								color: themes[theme].fontTitlesLabels,
 								fontSize: moderateScale({ size: 22, width }),
 								marginBottom: verticalScale({ size: 8, height })
 							}

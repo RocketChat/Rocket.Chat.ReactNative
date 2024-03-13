@@ -52,7 +52,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 					<FastImage source={defaultLogo} style={styles.serverIcon} />
 				)}
 				<View style={styles.serverTextContainer}>
-					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].titleText }]}>
+					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>
 						{item.name || item.id}
 					</Text>
 					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].fontSecondaryInfo }]}>

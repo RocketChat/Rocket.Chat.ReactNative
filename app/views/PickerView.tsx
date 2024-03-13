@@ -105,7 +105,7 @@ const PickerView = (): React.ReactElement => {
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
 				ListFooterComponent={List.Separator}
 				ListEmptyComponent={() => (
-					<Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_results_found')}</Text>
+					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 				)}
 			/>
 		</SafeAreaView>

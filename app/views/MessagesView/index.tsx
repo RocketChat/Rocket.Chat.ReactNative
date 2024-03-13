@@ -349,7 +349,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		const { theme } = this.props;
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID={this.content.testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{this.content.noDataMsg}</Text>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{this.content.noDataMsg}</Text>
 			</View>
 		);
 	};

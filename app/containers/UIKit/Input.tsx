@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 export const Input = ({ element, parser, label, description, error, hint, theme }: IInput) => (
 	<View style={styles.container}>
 		{label ? (
-			<Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>{label}</Text>
+			<Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].fontTitlesLabels }]}>{label}</Text>
 		) : null}
 		{description ? <Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</Text> : null}
 		{parser.renderInputs({ ...element }, BlockContext.FORM, parser)}

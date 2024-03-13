@@ -102,7 +102,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		setData({});
 	};
 
-	const color = themes[theme].titleText;
+	const color = themes[theme].fontTitlesLabels;
 	return (
 		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>

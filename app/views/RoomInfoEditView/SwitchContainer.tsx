@@ -38,10 +38,10 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
 				{leftLabelPrimary && (
 					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{leftLabelPrimary}
 						</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{leftLabelSecondary}
 						</Text>
 					</View>
@@ -56,10 +56,10 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 				/>
 				{rightLabelPrimary && (
 					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{rightLabelPrimary}
 						</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{rightLabelSecondary}
 						</Text>
 					</View>

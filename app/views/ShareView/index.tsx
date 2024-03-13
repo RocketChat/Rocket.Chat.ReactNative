@@ -395,7 +395,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (readOnly || isBlocked(room)) {
 			return (
 				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>

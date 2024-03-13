@@ -20,7 +20,7 @@ export const TextInput = React.forwardRef<RNTextInput, IThemedTextInput>(({ styl
 	return (
 		<RNTextInput
 			ref={ref}
-			style={[{ color: themes[theme].titleText }, style, styles.input]}
+			style={[{ color: themes[theme].fontTitlesLabels }, style, styles.input]}
 			placeholderTextColor={themes[theme].fontSecondaryInfo}
 			keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 			{...props}

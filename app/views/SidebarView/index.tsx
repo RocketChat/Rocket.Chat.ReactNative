@@ -225,7 +225,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<List.Separator />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='settings' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate(routeName)}
 					testID='sidebar-admin'
 					theme={theme!}
@@ -241,7 +241,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='message' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
 					theme={theme!}
@@ -249,7 +249,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='user' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
 					theme={theme!}
@@ -257,7 +257,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<SidebarItem
 					text={I18n.t('Display')}
-					left={<CustomIcon name='sort' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='sort' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					testID='sidebar-display'
 					theme={theme!}
@@ -265,7 +265,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
 					theme={theme!}
@@ -284,7 +284,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			status = 'disabled';
 		}
 
-		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].titleText} />;
+		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].fontTitlesLabels} />;
 		if (notificationPresenceCap) {
 			right = <View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />;
 		} else if (Presence_broadcast_disabled) {
@@ -342,12 +342,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].fontTitlesLabels }]}>
 										{useRealName ? user.name : user.username}
 									</Text>
 								</View>
 								<Text
-									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
+									style={[styles.currentServerText, { color: themes[theme!].fontTitlesLabels }]}
 									numberOfLines={1}
 									accessibilityLabel={`Connected to ${baseUrl}`}
 								>

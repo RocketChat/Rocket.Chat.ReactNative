@@ -62,7 +62,7 @@ const LoadMore = React.memo(
 				{loading ? (
 					<ActivityIndicator color={colors.fontSecondaryInfo} />
 				) : (
-					<Text style={[styles.text, { color: colors.titleText }]}>{I18n.t(text)}</Text>
+					<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
 				)}
 			</Touch>
 		);

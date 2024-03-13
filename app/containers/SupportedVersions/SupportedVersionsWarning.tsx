@@ -36,7 +36,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>
 			{message.title ? (
-				<Text testID='sv-warn-title' style={[styles.title, { color: colors.titleText }]}>
+				<Text testID='sv-warn-title' style={[styles.title, { color: colors.fontTitlesLabels }]}>
 					{message.title}
 				</Text>
 			) : null}

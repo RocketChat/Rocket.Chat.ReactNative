@@ -39,8 +39,8 @@ const WithoutServerView = (): React.ReactElement => {
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
-			<Text style={[styles.title, { color: colors.titleText }]}>{I18n.t('Without_Servers')}</Text>
-			<Text style={[styles.content, { color: colors.titleText }]}>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Without_Servers')}</Text>
+			<Text style={[styles.content, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}
 			</Text>
 		</View>

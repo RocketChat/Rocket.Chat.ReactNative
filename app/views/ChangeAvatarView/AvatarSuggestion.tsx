@@ -40,7 +40,7 @@ const AvatarSuggestion = ({
 
 	return (
 		<View style={styles.containerImagesUploaded}>
-			<Text style={[styles.itemLabel, { color: colors.titleText }]}>{I18n.t('Images_uploaded')}</Text>
+			<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
 				{username && resetAvatar ? (
 					<AvatarSuggestionItem text={`@${username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />

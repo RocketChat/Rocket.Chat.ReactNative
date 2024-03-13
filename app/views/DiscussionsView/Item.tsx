@@ -72,7 +72,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: colors.titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{username}
 						</Text>
 						{messageTime ? <Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</Text> : null}

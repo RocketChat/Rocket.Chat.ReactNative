@@ -102,7 +102,7 @@ const UserForm = () => {
 
 	return (
 		<>
-			<Text style={[styles.title, sharedStyles.textBold, { color: colors.titleText }]}>{I18n.t('Login')}</Text>
+			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</Text>
 			<ControlledFormTextInput
 				name='user'
 				control={control}

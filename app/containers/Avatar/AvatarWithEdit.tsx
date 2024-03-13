@@ -74,7 +74,7 @@ const AvatarWithEdit = ({
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
 					styleText={styles.textButton}
-					color={colors.titleText}
+					color={colors.fontTitlesLabels}
 					hitSlop={BUTTON_HIT_SLOP}
 				/>
 			) : null}

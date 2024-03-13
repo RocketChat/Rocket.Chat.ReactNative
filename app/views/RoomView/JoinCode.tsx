@@ -86,7 +86,7 @@ const JoinCode = React.memo(
 							{ backgroundColor: themes[theme].backgroundColor }
 						]}
 					>
-						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
+						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
 							// TODO: find a way to type this ref

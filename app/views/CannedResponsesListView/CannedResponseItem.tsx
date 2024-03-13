@@ -31,14 +31,14 @@ const CannedResponseItem = ({
 		<>
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>
-					<Text style={[styles.cannedShortcut, { color: themes[theme].titleText }]}>!{shortcut}</Text>
+					<Text style={[styles.cannedShortcut, { color: themes[theme].fontTitlesLabels }]}>!{shortcut}</Text>
 					<Text style={[styles.cannedScope, { color: themes[theme].auxiliaryTintColor }]}>{scope}</Text>
 				</View>
 
 				<Button
 					title={I18n.t('Use')}
 					fontSize={12}
-					color={themes[theme].titleText}
+					color={themes[theme].fontTitlesLabels}
 					style={[styles.cannedUseButton, { backgroundColor: themes[theme].chatComponentBackground }]}
 					onPress={onPressUse}
 				/>

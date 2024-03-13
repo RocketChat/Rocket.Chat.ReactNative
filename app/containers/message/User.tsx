@@ -104,7 +104,7 @@ const User = React.memo(
 
 			if (messageHaveAuthorName(type as MessageTypesValues)) {
 				return (
-					<Text style={[styles.usernameInfoMessage, { color: colors.titleText }]} onPress={onUserPress}>
+					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
 						{textContent}
 					</Text>
 				);
@@ -113,7 +113,7 @@ const User = React.memo(
 			return (
 				<View style={styles.container}>
 					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
-						<Text style={[styles.username, { color: colors.titleText }]} numberOfLines={1}>
+						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
 						<Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>

@@ -42,7 +42,7 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 	return (
 		<View style={[styles.switchContainer, { backgroundColor: colors.backgroundColor }]}>
 			<View style={styles.switchTextContainer}>
-				<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t(label)}</Text>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
 				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
 					{I18n.t(hint)}
 				</Text>

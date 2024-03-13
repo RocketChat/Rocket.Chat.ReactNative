@@ -808,7 +808,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 									{room.fname}
 								</Text>
 							) : (
@@ -819,7 +819,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										status={room.visitor?.status}
 										sourceType={source}
 									/>
-									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 										{getRoomTitle(room)}
 									</Text>
 								</View>
@@ -1029,7 +1029,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									params: { rid }
 								})
 							}
-							left={() => <List.Icon name='chat-forward' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='chat-forward' color={themes[theme].fontTitlesLabels} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1045,7 +1045,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.placeOnHoldLivechat
 								})
 							}
-							left={() => <List.Icon name='pause' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='pause' color={themes[theme].fontTitlesLabels} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1061,7 +1061,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.returnLivechat
 								})
 							}
-							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].fontTitlesLabels} />}
 							showActionIndicator
 						/>
 						<List.Separator />

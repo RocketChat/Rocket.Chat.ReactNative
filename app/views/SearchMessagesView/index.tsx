@@ -274,7 +274,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		const { theme } = this.props;
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
 	};

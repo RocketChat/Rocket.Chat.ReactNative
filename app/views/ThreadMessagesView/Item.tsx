@@ -83,7 +83,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{username}
 						</Text>
 						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>

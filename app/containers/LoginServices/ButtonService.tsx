@@ -20,9 +20,9 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 		>
 			<View style={styles.serviceButtonContainer}>
 				{authType === 'oauth' || authType === 'apple' ? (
-					<CustomIcon name={icon} size={24} color={colors.titleText} style={styles.serviceIcon} />
+					<CustomIcon name={icon} size={24} color={colors.fontTitlesLabels} style={styles.serviceIcon} />
 				) : null}
-				<Text style={[styles.serviceText, { color: colors.titleText }]}>{buttonText}</Text>
+				<Text style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>{buttonText}</Text>
 			</View>
 		</Touch>
 	);

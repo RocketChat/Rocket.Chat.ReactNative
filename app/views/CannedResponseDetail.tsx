@@ -79,7 +79,7 @@ interface IItem {
 const Item = ({ label, content, theme, testID }: IItem) =>
 	content ? (
 		<View style={styles.item} testID={testID}>
-			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
+			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
 				{label}
 			</Text>
 			<Markdown style={[styles.itemContent, { color: themes[theme].fontSecondaryInfo }]} msg={content} theme={theme} />
@@ -120,7 +120,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 					<Item label={I18n.t('Sharing')} content={cannedResponse?.scopeName} theme={theme} />
 
 					<View style={styles.item}>
-						<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
+						<Text style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 						<View style={styles.cannedTagContainer}>
 							{cannedResponse?.tags?.length > 0 ? (
 								cannedResponse.tags.map(t => (

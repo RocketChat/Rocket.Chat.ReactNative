@@ -92,7 +92,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 
 					{requestTags ? (
 						<>
-							<Text style={[styles.subtitleText, { color: colors.titleText }]}>{I18n.t('Tags')}</Text>
+							<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 							<MultiSelect
 								options={tagsList?.map(({ name }) => ({ text: { text: name }, value: name }))}
 								onChange={({ value }: { value: string[] }) => {
