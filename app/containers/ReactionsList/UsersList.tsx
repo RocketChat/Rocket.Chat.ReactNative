@@ -23,7 +23,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 			contentContainerStyle={styles.listContainer}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
-					<Text style={[styles.emojiName, { color: colors.auxiliaryText }]} testID='usersListEmojiName'>
+					<Text style={[styles.emojiName, { color: colors.fontSecondaryInfo }]} testID='usersListEmojiName'>
 						{emoji}
 					</Text>
 				</View>

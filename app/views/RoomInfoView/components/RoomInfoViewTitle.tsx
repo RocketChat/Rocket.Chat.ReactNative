@@ -27,7 +27,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				{username && (
 					<Text
 						testID='room-info-view-username'
-						style={[styles.roomUsername, { color: colors.auxiliaryText }]}
+						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
 					>{`@${username}`}</Text>
 				)}
 				{!!statusText && (
@@ -35,7 +35,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 						<CollapsibleText
 							linesToTruncate={2}
 							msg={statusText}
-							style={[styles.roomUsername, { color: colors.auxiliaryText }]}
+							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
 						/>
 					</View>
 				)}

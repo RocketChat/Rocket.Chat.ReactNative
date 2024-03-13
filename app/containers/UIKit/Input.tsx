@@ -37,9 +37,9 @@ export const Input = ({ element, parser, label, description, error, hint, theme 
 		{label ? (
 			<Text style={[styles.label, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>{label}</Text>
 		) : null}
-		{description ? <Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{description}</Text> : null}
+		{description ? <Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{description}</Text> : null}
 		{parser.renderInputs({ ...element }, BlockContext.FORM, parser)}
 		{error ? <Text style={[styles.error, { color: themes[theme].dangerColor }]}>{error}</Text> : null}
-		{hint ? <Text style={[styles.hint, { color: themes[theme].auxiliaryText }]}>{hint}</Text> : null}
+		{hint ? <Text style={[styles.hint, { color: themes[theme].fontSecondaryInfo }]}>{hint}</Text> : null}
 	</View>
 );

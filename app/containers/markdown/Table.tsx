@@ -59,7 +59,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 			>
 				{renderRows(false)}
 			</ScrollView>
-			<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Full_table')}</Text>
+			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Full_table')}</Text>
 		</TouchableOpacity>
 	);
 });

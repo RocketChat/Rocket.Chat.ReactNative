@@ -58,7 +58,7 @@ const JitsiAuthModal = ({
 					<Text style={[styles.regular, { color: colors.titleText }]}>{i18n.t('Jitsi_authentication_before_making_calls')}</Text>
 				)}
 				{!isAdmin ? (
-					<Text style={[styles.min, { color: colors.auxiliaryText }]}>
+					<Text style={[styles.min, { color: colors.fontSecondaryInfo }]}>
 						{i18n.t('Jitsi_authentication_before_making_calls_ask_admin')}
 					</Text>
 				) : null}

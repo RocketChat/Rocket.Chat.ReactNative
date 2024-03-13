@@ -152,7 +152,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
-						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
+						<Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
 							server={server}
 							userId={user.id}

@@ -131,7 +131,6 @@ const UserForm = () => {
 			/>
 			<Button
 				title={I18n.t('Login')}
-				type='primary'
 				onPress={handleSubmit(submit)}
 				testID='login-view-submit'
 				loading={isFetching}
@@ -144,13 +143,13 @@ const UserForm = () => {
 					type='secondary'
 					onPress={forgotPassword}
 					testID='login-view-forgot-password'
-					color={colors.auxiliaryText}
+					color={colors.fontSecondaryInfo}
 					fontSize={14}
 				/>
 			) : null}
 			{showRegistrationButton ? (
 				<View style={styles.bottomContainer}>
-					<Text style={[styles.bottomContainerText, { color: colors.auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
+					<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
 						style={[styles.bottomContainerTextBold, { color: colors.actionTintColor }]}
 						onPress={register}
@@ -160,7 +159,7 @@ const UserForm = () => {
 					</Text>
 				</View>
 			) : (
-				<Text style={[styles.registerDisabled, { color: colors.auxiliaryText }]}>
+				<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
 					{Accounts_RegistrationForm_LinkReplacementText}
 				</Text>
 			)}

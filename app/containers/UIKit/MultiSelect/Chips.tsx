@@ -38,7 +38,7 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 				<Text numberOfLines={1} style={[styles.chipText, { color: colors.titleText }]}>
 					{textParser([item.text])}
 				</Text>
-				<CustomIcon name='close' size={16} color={colors.auxiliaryText} />
+				<CustomIcon name='close' size={16} color={colors.fontSecondaryInfo} />
 			</>
 		</Touchable>
 	);

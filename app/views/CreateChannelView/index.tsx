@@ -167,7 +167,7 @@ const CreateChannelView = () => {
 					{users.length > 0 ? (
 						<>
 							<View style={styles.invitedHeader}>
-								<Text style={[styles.invitedCount, { color: colors.auxiliaryText }]}>
+								<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
 									{I18n.t('N_Selected_members', { n: users.length })}
 								</Text>
 							</View>

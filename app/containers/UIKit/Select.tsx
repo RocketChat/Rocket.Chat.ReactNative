@@ -67,7 +67,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		loading ? (
 			<ActivityIndicator style={styles.loading} />
 		) : (
-			<CustomIcon size={22} name='chevron-down' style={isAndroid && styles.icon} color={themes[theme].auxiliaryText} />
+			<CustomIcon size={22} name='chevron-down' style={isAndroid && styles.icon} color={themes[theme].fontSecondaryInfo} />
 		);
 
 	return (
@@ -89,7 +89,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			textInputProps={{
 				// style property was Omitted in lib, but can be used normally
 				// @ts-ignore
-				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText }
+				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].fontSecondaryInfo }
 			}}
 		/>
 	);

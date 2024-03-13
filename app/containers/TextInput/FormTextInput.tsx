@@ -129,7 +129,7 @@ export const FormTextInput = ({
 						name={iconLeft}
 						testID={testID ? `${testID}-icon-left` : undefined}
 						size={20}
-						color={colors.auxiliaryText}
+						color={colors.fontSecondaryInfo}
 						style={[styles.iconContainer, styles.iconLeft]}
 					/>
 				) : null}
@@ -156,7 +156,7 @@ export const FormTextInput = ({
 							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 							testID={testID ? `${testID}-icon-password` : undefined}
 							size={20}
-							color={colors.auxiliaryText}
+							color={colors.fontSecondaryInfo}
 						/>
 					</Touchable>
 				) : null}

@@ -75,7 +75,7 @@ const Item = ({ item, onPress }: IItem): React.ReactElement => {
 						<Text style={[styles.title, { color: colors.titleText }]} numberOfLines={1}>
 							{username}
 						</Text>
-						{messageTime ? <Text style={[styles.time, { color: colors.auxiliaryText }]}>{messageTime}</Text> : null}
+						{messageTime ? <Text style={[styles.time, { color: colors.fontSecondaryInfo }]}>{messageTime}</Text> : null}
 					</View>
 					<View style={styles.messageContainer}>
 						{username ? <MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} /> : null}

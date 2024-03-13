@@ -126,13 +126,13 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
 						<Text style={[styles.name, { color: themes[theme].titleText }]}>{item?.user?.name}</Text>
-						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 					</View>
 					<Text
 						style={[
 							styles.username,
 							{
-								color: themes[theme].auxiliaryText
+								color: themes[theme].fontSecondaryInfo
 							}
 						]}
 					>{`@${item.user.username}`}</Text>
@@ -161,7 +161,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 							borderColor: themes[theme].separatorColor
 						}
 					]}
-					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].auxiliaryText} />}
+					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].fontSecondaryInfo} />}
 					keyExtractor={item => item._id}
 				/>
 			</SafeAreaView>

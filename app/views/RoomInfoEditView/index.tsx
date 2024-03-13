@@ -702,7 +702,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								style={[
 									styles.buttonContainer_inverted,
 									styles.buttonInverted,
-									{ flex: 1, borderColor: themes[theme].auxiliaryText },
+									{ flex: 1, borderColor: themes[theme].fontSecondaryInfo },
 									!this.formIsChanged() && styles.buttonContainerDisabled
 								]}
 								onPress={this.reset}

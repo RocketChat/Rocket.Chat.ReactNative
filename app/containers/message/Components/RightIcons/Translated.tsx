@@ -14,7 +14,7 @@ const Translated = memo(({ isTranslated }: { isTranslated: boolean }) => {
 
 	return (
 		<View style={styles.rightIcons}>
-			<CustomIcon name='language' size={16} color={colors.auxiliaryText} />
+			<CustomIcon name='language' size={16} color={colors.fontSecondaryInfo} />
 		</View>
 	);
 });

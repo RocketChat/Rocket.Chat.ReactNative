@@ -26,7 +26,7 @@ const ListIcon = React.memo(({ name, color, style, testID, size }: IListIcon) =>
 
 	return (
 		<View style={[styles.icon, style]}>
-			<CustomIcon name={name} color={color ?? themes[theme].auxiliaryText} size={size ?? ICON_SIZE} testID={testID} />
+			<CustomIcon name={name} color={color ?? themes[theme].fontSecondaryInfo} size={size ?? ICON_SIZE} testID={testID} />
 		</View>
 	);
 });

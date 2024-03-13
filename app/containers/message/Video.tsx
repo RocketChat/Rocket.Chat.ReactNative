@@ -68,7 +68,7 @@ const CancelIndicator = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.auxiliaryText }]}>{I18n.t('Cancel')}</Text>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
 		</View>
 	);
 };

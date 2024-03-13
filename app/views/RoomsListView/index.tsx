@@ -974,7 +974,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				}
 				windowSize={9}
 				onEndReached={this.onEndReached}

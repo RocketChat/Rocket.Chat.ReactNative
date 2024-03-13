@@ -55,7 +55,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].titleText }]}>
 						{item.name || item.id}
 					</Text>
-					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>
+					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].fontSecondaryInfo }]}>
 						{item.id}
 					</Text>
 				</View>

@@ -32,8 +32,8 @@ const DropdownItem = React.memo(({ onPress, iconName, text }: IDropdownItem) => 
 	return (
 		<Touch onPress={onPress} style={{ backgroundColor: colors.backgroundColor }}>
 			<View style={styles.container}>
-				<Text style={[styles.text, { color: colors.auxiliaryText }]}>{text}</Text>
-				{iconName ? <CustomIcon name={iconName} size={22} color={colors.auxiliaryText} /> : null}
+				<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{text}</Text>
+				{iconName ? <CustomIcon name={iconName} size={22} color={colors.fontSecondaryInfo} /> : null}
 			</View>
 		</Touch>
 	);

@@ -71,7 +71,7 @@ const UrlContent = React.memo(
 					</Text>
 				) : null}
 				{description ? (
-					<Text style={[styles.description, { color: colors.auxiliaryText }]} numberOfLines={2}>
+					<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
 						{description}
 					</Text>
 				) : null}

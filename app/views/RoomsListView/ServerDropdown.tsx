@@ -213,7 +213,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 					testID='rooms-list-header-server-dropdown'
 				>
 					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme].separatorColor }]}>
-						<Text style={[styles.serverHeaderText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Server')}</Text>
+						<Text style={[styles.serverHeaderText, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
 							<Text style={[styles.serverHeaderAdd, { color: themes[theme].tintColor }]}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>

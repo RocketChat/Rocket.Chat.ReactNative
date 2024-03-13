@@ -60,7 +60,7 @@ const LoadMore = React.memo(
 		return (
 			<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
 				{loading ? (
-					<ActivityIndicator color={colors.auxiliaryText} />
+					<ActivityIndicator color={colors.fontSecondaryInfo} />
 				) : (
 					<Text style={[styles.text, { color: colors.titleText }]}>{I18n.t(text)}</Text>
 				)}

@@ -79,7 +79,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 						<CustomIcon
 							name='calendar'
 							size={20}
-							color={error ? themes[theme].dangerColor : themes[theme].auxiliaryText}
+							color={error ? themes[theme].dangerColor : themes[theme].fontSecondaryInfo}
 							style={styles.icon}
 						/>
 					)}

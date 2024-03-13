@@ -68,10 +68,10 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name='threads' size={24} color={themes[theme].auxiliaryText} />
+					<CustomIcon name='threads' size={24} color={themes[theme].fontSecondaryInfo} />
 					<Text
 						testID={`thread-count-${count}`}
-						style={[styles.detailText, { color: themes[theme].auxiliaryText }]}
+						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
 						numberOfLines={1}
 					>
 						{count}
@@ -79,8 +79,8 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name='user' size={24} color={themes[theme].auxiliaryText} />
-					<Text style={[styles.detailText, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name='user' size={24} color={themes[theme].fontSecondaryInfo} />
+					<Text style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
 						{replies}
 					</Text>
 				</View>

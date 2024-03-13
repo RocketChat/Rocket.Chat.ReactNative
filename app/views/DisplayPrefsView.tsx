@@ -95,7 +95,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderRadio = (value: boolean) => (
-		<RadioButton selected={!!value} color={value ? colors.actionTintColor : colors.auxiliaryText} size={ICON_SIZE} />
+		<RadioButton selected={!!value} color={value ? colors.actionTintColor : colors.fontSecondaryInfo} size={ICON_SIZE} />
 	);
 
 	return (

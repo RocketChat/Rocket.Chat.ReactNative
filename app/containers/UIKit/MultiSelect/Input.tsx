@@ -27,11 +27,11 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 			disabled={disabled}
 		>
 			<View style={[styles.input, styles.inputBorder, { borderColor: colors.separatorColor }, innerInputStyle]}>
-				{placeholder ? <Text style={[styles.pickerText, { color: colors.auxiliaryText }]}>{placeholder}</Text> : children}
+				{placeholder ? <Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder}</Text> : children}
 				{loading ? (
 					<ActivityIndicator style={styles.icon} />
 				) : (
-					<CustomIcon name='chevron-down' size={22} color={colors.auxiliaryText} style={styles.icon} />
+					<CustomIcon name='chevron-down' size={22} color={colors.fontSecondaryInfo} style={styles.icon} />
 				)}
 			</View>
 		</Touchable>

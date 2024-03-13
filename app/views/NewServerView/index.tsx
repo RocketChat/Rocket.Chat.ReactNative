@@ -306,7 +306,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				<Text
 					style={[
 						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
+						{ color: themes[theme].fontSecondaryInfo, fontSize: moderateScale({ size: 13, width }) }
 					]}
 				>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
@@ -316,7 +316,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					testID='new-server-choose-certificate'
 				>
 					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}
+						style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: moderateScale({ size: 13, width }) }]}
 					>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
@@ -395,7 +395,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								style={[
 									styles.description,
 									{
-										color: themes[theme].auxiliaryText,
+										color: themes[theme].fontSecondaryInfo,
 										fontSize: moderateScale({ size: 14, width }),
 										marginBottom: verticalScale({ size: 16, height })
 									}
@@ -406,7 +406,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							<Button
 								title={I18n.t('Join_our_open_workspace')}
 								type='secondary'
-								backgroundColor={themes[theme].chatComponentBackground}
 								onPress={this.connectOpen}
 								disabled={connecting}
 								loading={connectingOpen && connecting}

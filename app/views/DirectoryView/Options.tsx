@@ -100,7 +100,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 								{ borderColor: themes[theme].separatorColor }
 							]}
 						>
-							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
+							<Text style={[styles.dropdownToggleText, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Search_by')}</Text>
 							<CustomIcon
 								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}

@@ -83,7 +83,7 @@ const User = React.memo(
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
-			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.auxiliaryText }]}> @{username}</Text> : null;
+			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
 			const time = moment(ts).format(timeFormat);
 			const itsMe = author?._id === user.id;
 
@@ -116,7 +116,7 @@ const User = React.memo(
 						<Text style={[styles.username, { color: colors.titleText }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						<Text style={[messageStyles.time, { color: colors.auxiliaryText }]}>{time}</Text>
+						<Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
 					</TouchableOpacity>
 					<RightIcons
 						type={type}

@@ -24,7 +24,7 @@ const Discussion = React.memo(
 		const { onDiscussionPress } = useContext(MessageContext);
 		return (
 			<>
-				<Text style={[styles.startedDiscussion, { color: themes[theme].auxiliaryText }]}>{I18n.t('Started_discussion')}</Text>
+				<Text style={[styles.startedDiscussion, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
 				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{msg}</Text>
 				<View style={styles.buttonContainer}>
 					<Touchable
@@ -38,7 +38,7 @@ const Discussion = React.memo(
 							<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
 						</>
 					</Touchable>
-					<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+					<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 				</View>
 			</>
 		);

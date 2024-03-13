@@ -40,7 +40,7 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	};
 	return (
 		<View style={[styles.bottomContainer, styleContainer]}>
-			<Text style={[styles.bottomContainerText, { color: colors.auxiliaryText }]}>
+			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
 				{`${I18n.t('Onboarding_agree_terms')}\n`}
 				<Text
 					style={[styles.bottomContainerTextBold, { color: colors.actionTintColor }]}

@@ -33,7 +33,7 @@ const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => 
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color: themes[theme].auxiliaryText }]}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color: themes[theme].fontSecondaryInfo }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
@@ -63,7 +63,7 @@ const DirectoryItem = ({
 					{description ? (
 						<MarkdownPreview
 							msg={description}
-							style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]}
+							style={[styles.directoryItemUsername, { color: themes[theme].fontSecondaryInfo }]}
 							numberOfLines={1}
 						/>
 					) : null}

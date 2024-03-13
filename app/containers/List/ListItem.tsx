@@ -105,7 +105,7 @@ const Content = React.memo(
 						) : null}
 					</View>
 					{subtitle ? (
-						<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						<Text style={[styles.subtitle, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
 							{translateSubtitle ? I18n.t(subtitle) : subtitle}
 						</Text>
 					) : null}
