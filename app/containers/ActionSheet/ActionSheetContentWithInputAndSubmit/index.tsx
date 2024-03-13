@@ -101,7 +101,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 			<>
 				<View style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.dangerColor} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.passcodePrimary, paddingLeft: iconName ? 16 : 0 }]}>
+					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 16 : 0 }]}>
 						{title}
 					</Text>
 				</View>

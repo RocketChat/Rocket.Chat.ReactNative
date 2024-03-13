@@ -73,7 +73,7 @@ const IncomingCallHeader = React.memo(
 						}}
 						style={styles.closeButton}
 					>
-						<CustomIcon name='close' size={20} color={colors.gray300} />
+						<CustomIcon name='close' size={20} />
 					</Touchable>
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}

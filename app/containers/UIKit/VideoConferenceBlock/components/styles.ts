@@ -51,7 +51,7 @@ export default function useStyle() {
 		joined: {
 			fontSize: 12,
 			...sharedStyles.textRegular,
-			color: colors.passcodeSecondary,
+			color: colors.strokeDark,
 			marginLeft: 8
 		},
 		plusUsers: {
@@ -71,7 +71,7 @@ export default function useStyle() {
 		callBack: {
 			fontSize: 12,
 			...sharedStyles.textRegular,
-			color: colors.passcodeSecondary
+			color: colors.strokeDark
 		},
 		callToActionCallBack: {
 			backgroundColor: colors.conferenceCallPlusUsersButton,
@@ -86,7 +86,7 @@ export default function useStyle() {
 		notAnswered: {
 			fontSize: 12,
 			...sharedStyles.textRegular,
-			color: colors.passcodeSecondary
+			color: colors.strokeDark
 		},
 		enabledBackground: {
 			backgroundColor: colors.conferenceCallEnabledIconBackground

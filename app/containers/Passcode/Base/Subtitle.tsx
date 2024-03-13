@@ -16,7 +16,7 @@ const Subtitle = React.memo(({ text }: IPasscodeSubtitle) => {
 	return (
 		<Row style={styles.row}>
 			<View style={styles.subtitleView}>
-				<Text style={[styles.textSubtitle, { color: themes[theme].passcodeSecondary }]}>{text}</Text>
+				<Text style={[styles.textSubtitle, { color: themes[theme].dangerColor }]}>{text}</Text>
 			</View>
 		</Row>
 	);

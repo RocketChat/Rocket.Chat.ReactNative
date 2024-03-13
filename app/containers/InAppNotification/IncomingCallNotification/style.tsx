@@ -26,7 +26,7 @@ export const useStyle = () => {
 			marginTop: 12
 		},
 		closeButton: {
-			backgroundColor: colors.passcodeButtonActive,
+			backgroundColor: colors.buttonBackgroundSecondaryDefault,
 			marginRight: 8,
 			alignItems: 'center',
 			justifyContent: 'center',

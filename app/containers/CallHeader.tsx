@@ -97,7 +97,7 @@ function useStyle() {
 		actionSheetUsername: {
 			fontSize: 16,
 			...sharedStyles.textBold,
-			color: colors.passcodePrimary,
+			color: colors.fontDefault,
 			flexShrink: 1
 		},
 		rowContainer: { flexDirection: 'row' },

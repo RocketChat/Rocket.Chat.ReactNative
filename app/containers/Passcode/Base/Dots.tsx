@@ -15,7 +15,7 @@ interface IPasscodeDots {
 }
 
 const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	return (
 		<View style={styles.dotsContainer}>
@@ -25,9 +25,9 @@ const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
 				const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 				let backgroundColor = '';
 				if (lengthSup && passcode.length > 0) {
-					backgroundColor = themes[theme].passcodeDotFull;
+					backgroundColor = colors.strokeDark;
 				} else {
-					backgroundColor = themes[theme].passcodeDotEmpty;
+					backgroundColor = colors.strokeLight;
 				}
 				const borderRadius = lengthSup ? SIZE_FULL / 2 : SIZE_EMPTY / 2;
 				const marginRight = lengthSup ? 10 - (SIZE_FULL - SIZE_EMPTY) / 2 : 10;
