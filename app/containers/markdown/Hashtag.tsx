@@ -54,7 +54,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionOtherColor
+						color: themes[theme].badgeBackgroundLevel1
 					},
 					...style
 				]}

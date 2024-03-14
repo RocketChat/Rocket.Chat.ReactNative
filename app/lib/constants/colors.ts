@@ -1,17 +1,11 @@
 export const BACKGROUND_PUSH_COLOR = '#F5455C';
 
+
 export const SWITCH_TRACK_COLOR = {
 	false: '#f5455c',
 	true: '#2de0a5'
 };
 
-const mentions = {
-	unreadColor: '#6C727A',
-	tunreadColor: '#1d74f5',
-	mentionMeColor: '#F5455C',
-	mentionGroupColor: '#F38C39',
-	mentionOtherColor: '#F3BE08'
-};
 
 // TODO: Remove this after the new colors are implemented
 const newColors = {
@@ -271,7 +265,6 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		overlayColor: '#1F2329CC',
 		taskBoxColor: '#9297a2',
-		...mentions,
 		...callButtons
 	},
 	dark: {
@@ -342,7 +335,6 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		overlayColor: '#1F2329CC',
 		taskBoxColor: '#9297a2',
-		...mentions,
 		...callButtons
 	},
 	black: {
@@ -413,7 +405,6 @@ export const colors = {
 		statusBackgroundWarning: '#FFECAD',
 		overlayColor: '#1F2329CC',
 		taskBoxColor: '#9297a2',
-		...mentions,
 		...callButtons
 	}
 };

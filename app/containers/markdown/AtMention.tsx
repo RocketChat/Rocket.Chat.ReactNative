@@ -24,7 +24,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionGroupColor
+						color: themes[theme].badgeBackgroundLevel3
 					},
 					...style
 				]}
@@ -38,11 +38,11 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	let mentionStyle = {};
 	if (itsMe) {
 		mentionStyle = {
-			color: themes[theme].mentionMeColor
+			color: themes[theme].badgeBackgroundLevel4
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].mentionOtherColor
+			color: themes[theme].badgeBackgroundLevel1
 		};
 	}
 

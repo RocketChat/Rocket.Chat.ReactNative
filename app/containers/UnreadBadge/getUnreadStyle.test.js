@@ -15,7 +15,7 @@ const testsForTheme = theme => {
 				unread: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].unreadColor,
+			backgroundColor: themes[theme].fontAnnotation,
 			color: themes[theme].buttonText
 		});
 	});
@@ -26,7 +26,7 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].tunreadColor,
+			backgroundColor: themes[theme].fontInfo,
 			color: themes[theme].buttonText
 		});
 	});
@@ -38,7 +38,7 @@ const testsForTheme = theme => {
 				userMentions: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionMeColor,
+			backgroundColor: themes[theme].badgeBackgroundLevel4,
 			color: themes[theme].buttonText
 		});
 	});
@@ -50,7 +50,7 @@ const testsForTheme = theme => {
 				groupMentions: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionGroupColor,
+			backgroundColor: themes[theme].badgeBackgroundLevel3,
 			color: themes[theme].buttonText
 		});
 	});
@@ -64,7 +64,7 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionMeColor,
+			backgroundColor: themes[theme].badgeBackgroundLevel4,
 			color: themes[theme].buttonText
 		});
 		expect(
@@ -74,7 +74,7 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionGroupColor,
+			backgroundColor: themes[theme].badgeBackgroundLevel3,
 			color: themes[theme].buttonText
 		});
 		expect(
@@ -83,7 +83,7 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].tunreadColor,
+			backgroundColor: themes[theme].fontInfo,
 			color: themes[theme].buttonText
 		});
 	});

@@ -19,14 +19,14 @@ export const getUnreadStyle = ({
 		return {};
 	}
 
-	let backgroundColor = themes[theme].unreadColor;
+	let backgroundColor = themes[theme].fontAnnotation;
 	const color = themes[theme].buttonText;
 	if ((userMentions && userMentions > 0) || tunreadUser?.length) {
-		backgroundColor = themes[theme].mentionMeColor;
+		backgroundColor = themes[theme].badgeBackgroundLevel4;
 	} else if ((groupMentions && groupMentions > 0) || tunreadGroup?.length) {
-		backgroundColor = themes[theme].mentionGroupColor;
+		backgroundColor = themes[theme].badgeBackgroundLevel3;
 	} else if (tunread && tunread?.length > 0) {
-		backgroundColor = themes[theme].tunreadColor;
+		backgroundColor = themes[theme].fontInfo;
 	}
 
 	return {
