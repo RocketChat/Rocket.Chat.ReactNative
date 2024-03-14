@@ -122,5 +122,9 @@ export default StyleSheet.create({
 	},
 	inputLastChild: {
 		marginBottom: 15
+	},
+	notchLandscapeContainer: {
+		marginTop: -34,
+		paddingHorizontal: 30
 	}
 });

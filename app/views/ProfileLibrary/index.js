@@ -59,12 +59,22 @@ class ProfileLibraryView extends React.Component {
 			refreshing: false,
 			text: '',
 			total: -1,
+			numUsersFetched: 0,
 			showOptionsDropdown: false,
 			globalUsers: true,
 			type: props.directoryDefaultView
 		};
+		this.loadingMore = false;
+    	this.threshold = 5;
 	}
 
+	onEndReached = () => {
+		const { loading, total, searching, numUsersFetched } = this.state;
+	
+		if (!searching && numUsersFetched < total && !loading) {
+			this.load({});
+		}
+	};
 
 	componentDidMount() {
 		this.load({});
@@ -77,41 +87,47 @@ class ProfileLibraryView extends React.Component {
 
 	load = debounce(async ({ newSearch = false }) => {
 		if (newSearch) {
-			this.setState({ data: [], total: -1, loading: false });
+			this.setState({ data: [], total: -1, numUsersFetched: 0, loading: false });
 		}
 		const {
-			loading, text, total, data: { length }
+			loading, text, total, numUsersFetched, data: { length }
 		} = this.state;
-		if (loading || length === total) {
+		if (loading || (numUsersFetched >= total && total !== -1)) {
 			return;
 		}
 
 		this.setState({ loading: true });
 
 		try {
-			const { data, type, globalUsers } = this.state;
+			const { data, type, globalUsers, numUsersFetched } = this.state;
 			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 
+			//Returns 50 users based on offset, sorted by name from the directory of ALL users
 			const directories = await RocketChat.getDirectory({
 				query,
-				offset: data.length,
+				offset: numUsersFetched,
 				count: 50,
-				sort: (type === 'users') ? { username: 1 } : { usersCount: -1 }
+				sort: { name: 1 }
 			});
 			if (directories.success) {
 				const combinedResults = [];
 				const results = directories.result;
 
-				await Promise.all(results.map(async(item, index) => {
+				await Promise.all(results.map(async (item, index) => {
 					const user = await RocketChat.getUserInfo(item._id);
-					combinedResults[index] = { ...item, customFields: user.user.customFields };
+					//Only keep users that are Peer Supporters
+					if (user.user.roles.includes("Peer Supporter")) {
+					  combinedResults.push({ ...item, customFields: user.user.customFields });
+					}
 				}));
 
+				// Update total number of users in directory, and number fetched (including filtered out users)
 				this.setState({
 					data: [...data, ...combinedResults],
 					loading: false,
 					refreshing: false,
-					total: results.length
+					numUsersFetched: numUsersFetched + directories.count,
+					total: directories.total
 				});
 			} else {
 				this.setState({ loading: false, refreshing: false });
@@ -158,12 +174,12 @@ class ProfileLibraryView extends React.Component {
 		const { type } = this.state;
 		const { navigation } = this.props;
 		if (type === 'users') {
-			const navParam = {
-				rid: item._id,
-				t: 'd',
-				isPeerSupporter: true
+			const postUser = {
+				_id: item._id,
+				username: item.username,
+				name: item.name
 			};
-			navigation.navigate('RoomInfoView', navParam);
+			navigation.navigate('ConnectView', { user: postUser, fromRid: item._id });
 		} else {
 			this.goRoom({
 				rid: item._id, name: item.name, t: 'c', search: true
@@ -193,10 +209,10 @@ class ProfileLibraryView extends React.Component {
 			};
 		}
 		const commonProps = {
-			title: item.name,
+			title: item?.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `federation-view-item-${ item.name }`,
+			testID: `federation-view-item-${ item?.name }`,
 			style,
 			user,
 			theme
@@ -205,12 +221,12 @@ class ProfileLibraryView extends React.Component {
 		if (type === 'users') {
 			return (
 				<DirectoryItem
-					avatar={item.username}
-					description={item.customFields?.Location ?? ''}
-					rightLabel={item.federation && item.federation.peer}
+					avatar={item?.username}
+					description={item?.customFields?.Location ?? ''}
+					rightLabel={item?.federation && item?.federation.peer}
 					type='d'
 					icon={<CustomIcon name='pin-map' size={15} color='#161a1d' />}
-					age={`${ item.customFields?.Age ?? '?' } years old`}
+					age={`${ item?.customFields?.Age ?? '?' } years old`}
 					{...commonProps}
 				/>
 			);
@@ -233,7 +249,6 @@ class ProfileLibraryView extends React.Component {
 			data, loading, refreshing, showOptionsDropdown, type, globalUsers
 		} = this.state;
 		const { isFederationEnabled, theme } = this.props;
-
 		return (
 			<SafeAreaView
 				style={{ backgroundColor: themes[theme].backgroundColor }}
@@ -246,13 +261,13 @@ class ProfileLibraryView extends React.Component {
 					style={styles.list}
 					contentContainerStyle={styles.listContainer}
 					extraData={this.state}
-					keyExtractor={item => item._id}
+					keyExtractor={item => (item && item._id ? item._id : String(Math.random()))}
 					ListHeaderComponent={this.renderHeader}
 					renderItem={this.renderItem}
 					keyboardShouldPersistTaps='always'
 					showsVerticalScrollIndicator={false}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
-					onEndReached={() => this.load({})}
+					onEndReached={this.onEndReached}
 					refreshControl={(
 						<RefreshControl
 							refreshing={refreshing}
