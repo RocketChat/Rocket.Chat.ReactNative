@@ -10,12 +10,15 @@ import Status from '../../../containers/Status/Status';
 import { Services } from '../../../lib/services';
 import { getRoomTitle, getUidDirectMessage } from '../../../lib/methods/helpers';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import styles from './styles';
+import makeStyles from './styles';
+
+import { withTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
 
 const playIcon = require('../../../static/images/discussionboard/play_icon.png');
 const screenWidth = Dimensions.get('window').width;
 
-const ConnectView: React.FC = ({ route }: { route: any }) => {
+const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) => {
 	const navigation = useNavigation<StackNavigationProp<any>>();
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
@@ -24,6 +27,8 @@ const ConnectView: React.FC = ({ route }: { route: any }) => {
 	const [userInfo, setUserInfo] = React.useState({});
 
 	const user = route.params?.user;
+
+	const styles = makeStyles(themes, theme);
 
 	const fetchData = async (userId: string) => {
 		if (user) {
@@ -171,4 +176,4 @@ const ConnectView: React.FC = ({ route }: { route: any }) => {
 	);
 };
 
-export default ConnectView;
+export default withTheme(ConnectView);
