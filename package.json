@@ -173,7 +173,7 @@
 		"@types/i18n-js": "^3.8.3",
 		"@types/jest": "^26.0.24",
 		"@types/jsrsasign": "^10.5.8",
-		"@types/lodash": "^4.14.188",
+		"@types/lodash": "^4.14.202",
 		"@types/react": "^17.0.14",
 		"@types/react-native": "0.68.1",
 		"@types/react-native-background-timer": "^2.0.0",
