@@ -44,7 +44,7 @@ import {
 	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 
@@ -436,7 +436,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				return <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />;
 			}
 			if (notificationPresenceCap) {
-				return <HeaderButton.BadgeWarn color={STATUS_COLORS.disabled} />;
+				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
 			}
 			return null;
 		};

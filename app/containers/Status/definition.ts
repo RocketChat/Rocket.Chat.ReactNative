@@ -1,8 +1,8 @@
-import { TextProps } from 'react-native';
+import type { IconProps } from 'react-native-vector-icons/Icon';
 
 import { TUserStatus } from '../../definitions';
 
-export interface IStatus extends TextProps {
+export interface IStatus extends IconProps {
 	id: string;
 	size: number;
 	status?: TUserStatus | null;

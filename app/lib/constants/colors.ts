@@ -1,14 +1,5 @@
 export const BACKGROUND_PUSH_COLOR = '#F5455C';
 
-export const STATUS_COLORS: any = {
-	online: '#2de0a5',
-	busy: '#f5455c',
-	away: '#ffd21f',
-	offline: '#cbced1',
-	loading: '#9ea2a8',
-	disabled: '#F38C39'
-};
-
 export const SWITCH_TRACK_COLOR = {
 	false: '#f5455c',
 	true: '#2de0a5'
@@ -114,6 +105,7 @@ const newColors = {
 	buttonFontSuccess: '#FFFFFF',
 	buttonSuccessDisabled: '#FFFFFF'
 };
+
 const newColorsDark = {
 	surfaceLight: '#262931',
 	surfaceTint: '#1F2329',

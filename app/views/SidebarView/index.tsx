@@ -13,7 +13,7 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import userPreferences from '../../lib/methods/userPreferences';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { NOTIFICATION_PRESENCE_CAP, STATUS_COLORS, themes } from '../../lib/constants';
+import { NOTIFICATION_PRESENCE_CAP, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -286,7 +286,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 
 		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].fontTitlesLabels} />;
 		if (notificationPresenceCap) {
-			right = <View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />;
+			right = <View style={[styles.customStatusDisabled, { backgroundColor: themes[theme!].userPresenceDisabled }]} />;
 		} else if (Presence_broadcast_disabled) {
 			right = undefined;
 		}
