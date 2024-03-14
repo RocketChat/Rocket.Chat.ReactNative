@@ -33,7 +33,7 @@ const DiscussionBoardCard = React.memo(({ item, onPress }: DiscussionBoardCardPr
 
 	return (
 		<TouchableOpacity style={styles.mainContainer} onPress={() => onPress && onPress()}>
-			<View style={{ ...styles.iconContainer, backgroundColor: themes[theme][randomColor] }}>
+			<View style={{ ...styles.iconContainer }}>
 				<IconOrAvatar
 					displayMode={displayMode}
 					avatar={avatar}
