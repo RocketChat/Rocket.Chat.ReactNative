@@ -24,29 +24,13 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 		dispatch(setSearch(text.trim()));
 	};
 
-	onPress = () => {
-		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
-		const { showServerDropdown, dispatch } = this.props;
-		if (showServerDropdown) {
-			dispatch(closeServerDropdown());
-		} else {
-			dispatch(toggleServerDropdown());
-		}
-	};
-
 	render() {
-		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, server } = this.props;
+		const { serverName, showSearchHeader } = this.props;
 
 		return (
 			<Header
 				serverName={serverName}
-				server={server}
-				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
-				connecting={connecting}
-				connected={connected}
-				isFetching={isFetching}
-				onPress={this.onPress}
 				onSearchChangeText={this.onSearchChangeText}
 			/>
 		);

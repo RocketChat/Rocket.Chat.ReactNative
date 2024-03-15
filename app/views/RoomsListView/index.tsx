@@ -985,9 +985,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
-				{/* @ts-ignore*/}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
 			</SafeAreaView>
 		);
 	};

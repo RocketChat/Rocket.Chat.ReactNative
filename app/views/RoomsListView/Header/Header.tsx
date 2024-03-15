@@ -45,56 +45,22 @@ interface IRoomHeader {
 
 const Header = React.memo(
 	({
-		connecting,
-		connected,
-		isFetching,
-		serverName = 'Rocket.Chat',
-		server,
-		showServerDropdown,
+		serverName,
 		showSearchHeader,
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
-		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
 
 		if (showSearchHeader) {
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
-		let subtitle;
-		if (connecting) {
-			subtitle = I18n.t('Connecting');
-		} else if (isFetching) {
-			subtitle = I18n.t('Updating');
-		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
-		} else {
-			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
-		}
+
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
-					<View style={styles.button}>
-						<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
-							{serverName}
-						</Text>
-						<CustomIcon
-							name='chevron-down'
-							color={colors.headerTintColor}
-							style={[showServerDropdown && styles.upsideDown]}
-							size={18}
-						/>
-					</View>
-					{subtitle ? (
-						<Text
-							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: colors.auxiliaryText }]}
-							numberOfLines={1}
-						>
-							{subtitle}
-						</Text>
-					) : null}
-				</TouchableOpacity>
+				<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
+					{serverName}
+				</Text>
 			</View>
 		);
 	}
