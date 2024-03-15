@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
+import { StyleSheet, Text, View, SwitchProps } from 'react-native';
 
 import I18n from '../../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
+import Switch from '../../../containers/Switch';
 
 const styles = StyleSheet.create({
 	switchContainer: {
@@ -51,7 +51,6 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 				value={value}
 				onValueChange={onValueChange}
 				testID={`create-channel-${id}`}
-				trackColor={SWITCH_TRACK_COLOR}
 				disabled={disabled}
 			/>
 		</View>

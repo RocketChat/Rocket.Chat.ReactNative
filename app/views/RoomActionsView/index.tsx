@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { Share, Switch, Text, View } from 'react-native';
+import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
@@ -32,7 +32,7 @@ import Touch from '../../containers/Touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
-import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
 import { getPermalinkChannel } from '../../lib/methods';
 import {
 	canAutoTranslate as canAutoTranslateMethod,
@@ -53,6 +53,7 @@ import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
 import { TNavigation } from '../../stacks/stackType';
+import Switch from '../../containers/Switch';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -353,7 +354,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			hasPermission = canToggleEncryption;
 		}
 		return (
-			<Switch value={encrypted} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleEncrypted} disabled={!hasPermission} />
+			<Switch value={encrypted} onValueChange={this.toggleEncrypted} disabled={!hasPermission} />
 		);
 	};
 

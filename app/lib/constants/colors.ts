@@ -1,12 +1,5 @@
 export const BACKGROUND_PUSH_COLOR = '#F5455C';
 
-
-export const SWITCH_TRACK_COLOR = {
-	false: '#f5455c',
-	true: '#2de0a5'
-};
-
-
 // TODO: Remove this after the new colors are implemented
 const newColors = {
 	surfaceLight: '#FFFFFF',

@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
-import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, Easing, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 import { TSupportedThemes } from '../../theme';
+import Switch from '../../containers/Switch';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -124,7 +125,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 										{I18n.t('Search_global_users_description')}
 									</Text>
 								</View>
-								<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
+								<Switch value={globalUsers} onValueChange={toggleWorkspace} />
 							</View>
 						</>
 					) : null}

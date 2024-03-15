@@ -1,9 +1,10 @@
 import React from 'react';
-import { Switch, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { TSupportedThemes } from '../../theme';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 import styles from './styles';
+import Switch from '../../containers/Switch';
 
 interface ISwitchContainer {
 	value: boolean;
@@ -51,7 +52,6 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 					onValueChange={onValueChange}
 					value={value}
 					disabled={disabled}
-					trackColor={SWITCH_TRACK_COLOR}
 					testID={testID}
 				/>
 				{rightLabelPrimary && (

@@ -1,5 +1,4 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Switch } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
@@ -17,7 +16,8 @@ import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useUserPreferences } from '../../lib/methods';
-import { NOTIFICATION_IN_APP_VIBRATION, SWITCH_TRACK_COLOR } from '../../lib/constants';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
+import Switch from '../../containers/Switch';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
@@ -129,9 +129,7 @@ const UserNotificationPreferencesView = () => {
 							<List.Item
 								title='Vibrate'
 								testID='user-notification-preference-view-in-app-vibration'
-								right={() => (
-									<Switch value={inAppVibration} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleInAppVibration} />
-								)}
+								right={() => <Switch value={inAppVibration} onValueChange={toggleInAppVibration} />}
 							/>
 							<List.Separator />
 						</List.Section>
