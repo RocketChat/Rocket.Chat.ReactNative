@@ -113,10 +113,9 @@ export const navigateTo247Chat = async (Navigation: any, isMasterDetail: boolean
 	if (Navigation) {
 		try {
 			const chatRoom = await get247Chat();
-			await Navigation.navigate('ChatsStackNavigator', {
-				screen: 'RoomsListView'
-			});
-			goRoom({ item: chatRoom, isMasterDetail });
+
+      await Navigation.navigate('RoomView');
+			goRoom({ item: chatRoom, isMasterDetail: true });
 		} catch (error) {
 			console.error('error', error);
 		}
