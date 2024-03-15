@@ -1091,7 +1091,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			// @ts-ignore
 			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
 		} else {
-			navigation.navigate('RoomInfoView', navParam);
+			navigation.navigate('ConnectView', { user: {_id: navParam.rid}, fromRid: navParam.rid });
 		}
 	};
 

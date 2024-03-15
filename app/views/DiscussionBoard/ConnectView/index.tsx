@@ -41,6 +41,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		const result = await Services.getUserInfo(roomUserId);
 		if (result?.user) {
 			setUserInfo(result.user);
+			setUsername(result.user.username);
 		}
 	};
 
