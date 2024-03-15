@@ -85,7 +85,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			useRealName,
 			theme,
 			Presence_broadcast_disabled,
-			supportedVersionsStatus,
 			viewStatisticsPermission,
 			viewRoomAdministrationPermission,
 			viewUserAdministrationPermission,
@@ -123,9 +122,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return true;
 		}
 		if (nextProps.Presence_broadcast_disabled !== Presence_broadcast_disabled) {
-			return true;
-		}
-		if (nextProps.supportedVersionsStatus !== supportedVersionsStatus) {
 			return true;
 		}
 		if (!dequal(nextProps.viewStatisticsPermission, viewStatisticsPermission)) {
@@ -216,15 +212,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			],
 			{ cancelable: false }
 		);
-	};
-
-	onPressSupportedVersionsWarning = () => {
-		const { isMasterDetail } = this.props;
-		if (isMasterDetail) {
-			Navigation.navigate('ModalStackNavigator', { screen: 'SupportedVersionsWarning' });
-		} else {
-			showActionSheetRef({ children: <SupportedVersionsWarning /> });
-		}
 	};
 
 	renderAdmin = () => {
@@ -383,24 +370,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
-
-	renderSupportedVersionsWarn = () => {
-		const { theme, supportedVersionsStatus } = this.props;
-		if (supportedVersionsStatus === 'warn') {
-			return (
-				<SidebarItem
-					text={I18n.t('Supported_versions_warning_update_required')}
-					textColor={themes[theme!].dangerColor}
-					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
-					theme={theme!}
-					onPress={() => this.onPressSupportedVersionsWarning()}
-					testID={`sidebar-supported-versions-warn`}
-				/>
-			);
-		}
-		return null;
-	};
-
 	render() {
 		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
 
@@ -439,9 +408,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					</TouchableWithoutFeedback>
 
 					<List.Separator />
-					{this.renderSupportedVersionsWarn()}
-
-					<List.Separator />
 
 					{allowStatusMessage ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
@@ -468,7 +434,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	allowStatusMessage: state.settings.Accounts_AllowUserStatusMessageChange as boolean,
 	Presence_broadcast_disabled: state.settings.Presence_broadcast_disabled as boolean,
 	notificationPresenceCap: state.app.notificationPresenceCap,
-	supportedVersionsStatus: state.supportedVersions.status,
 	isMasterDetail: state.app.isMasterDetail,
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
