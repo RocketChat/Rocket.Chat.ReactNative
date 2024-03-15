@@ -18,7 +18,7 @@ import * as tileData from './data';
 import * as allStyles from './styles';
 import { Tileprops } from './interfaces';
 import { navToTechSupport, navigateTo247Chat, navigateToVirtualHappyHour } from './helpers';
-import Avatar from '../../containers/Avatar/Avatar';
+import Avatar from '../../containers/Avatar';
 import Navigation from '../../lib/navigation/appNavigation';
 
 const HomeView: React.FC = () => {
@@ -43,7 +43,7 @@ const HomeView: React.FC = () => {
 					<HeaderButton.Container>
 						<Touchable style={styles.profileImageContainer} onPress={() => navigation.navigate('ProfileView')}>
 							{userName ? (
-								<Avatar text={userName} style={styles.profileImage} size={24} server={server} borderRadius={12} />
+								<Avatar text={userName} style={styles.profileImage} size={24} borderRadius={12} />
 							) : (
 								<></>
 							)}
