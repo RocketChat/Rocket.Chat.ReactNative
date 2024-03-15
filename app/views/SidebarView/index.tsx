@@ -169,7 +169,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 
 	sidebarNavigate = (route: string) => {
 		// @ts-ignore
-		logEvent(events[`SIDEBAR_GO_${route.replace('StackNavigator', '').replace('View', '').toUpperCase()}`]);
+		logEvent(events[`SIDEBAR_GO_${route.replace('View', '').toUpperCase()}`]);
 		Navigation.navigate(route);
 	};
 
@@ -183,7 +183,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (isMasterDetail) {
 			return;
 		}
-		this.sidebarNavigate('HomeStackNavigator');
+		this.sidebarNavigate('HomeView');
 		navigation?.closeDrawer();
 	};
 
@@ -219,7 +219,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (!this.getIsAdmin()) {
 			return null;
 		}
-		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelStackNavigator';
+		const routeName = isMasterDetail ? 'AdminPanelView' : 'AdminPanelView';
 		return (
 			<>
 				<List.Separator />
@@ -251,7 +251,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					<SidebarItem
 						text={I18n.t('PostModeration')}
 						left={<View style={iconStyles} />}
-						onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
+						onPress={() => this.sidebarNavigate('ChatsView')}
 						testID='sidebar-chats'
 						theme={theme!}
 						disabled={true}
@@ -271,33 +271,33 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<SidebarItem
 					text={I18n.t('Home')}
 					left={<CustomIcon name='home' size={24} color={iconStyles.tintColor}/>}
-					onPress={() => this.sidebarNavigate('HomeStackNavigator')}
+					onPress={() => this.sidebarNavigate('HomeView')}
 					testID='home-screen'
 					theme={theme!}
-					current={this.currentItemKey === 'HomeStackNavigator'}
+					current={this.currentItemKey === 'HomeView'}
 				/>
 				<SidebarItem
 					text={I18n.t('Chats')}
 					left={<Image source={messagingIcon} style={iconStyles} />}
-					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
+					onPress={() => this.sidebarNavigate('RoomsListView')}
 					testID='sidebar-chats'
 					theme={theme!}
-					current={this.currentItemKey === 'ChatsStackNavigator'}
+					current={this.currentItemKey === 'ChatsView'}
 				/>
 				<SidebarItem
 					text={I18n.t('DiscussionBoards')}
 					left={<Image source={discussionIcon} style={iconStyles} />}
-					onPress={() => this.sidebarNavigate('DiscussionStackNavigator')}
+					onPress={() => this.sidebarNavigate('DiscussionHomeView')}
 					testID='sidebar-discussion'
 					theme={theme!}
-					current={this.currentItemKey === 'DiscussionStackNavigator'}
+					current={this.currentItemKey === 'DiscussionHomeView'}
 				/>
 				<SidebarItem
 					text={I18n.t('PeerSupporterLibrary')}
 					left={<Image source={peerSupportIcon} style={iconStyles} />}
-					onPress={() => this.sidebarNavigate('ProfileLibraryNavigator')}
+					onPress={() => this.sidebarNavigate('ProfileLibraryView')}
 					testID='sidebar-profile-library'
-					current={this.currentItemKey === 'ProfileLibraryNavigator'}
+					current={this.currentItemKey === 'ProfileLibraryView'}
 				/>
 				<SidebarItem
 					text={I18n.t('247ChatRoom')}
@@ -323,7 +323,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					text={I18n.t('Calendar')}
 					left={<Image source={calendarIcon} style={iconStyles} />}
 					onPress={() => {
-						// this.sidebarNavigate('DisplayPrefStackNavigator')
+						// this.sidebarNavigate('DisplayPrefView')
 					}}
 					testID='sidebar-calendar'
 					theme={theme!}
@@ -343,10 +343,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<SidebarItem
 					text={I18n.t('Settings')}
 					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
-					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
+					onPress={() => this.sidebarNavigate('SettingsView')}
 					testID='sidebar-settings'
 					theme={theme!}
-					current={this.currentItemKey === 'SettingsStackNavigator'}
+					current={this.currentItemKey === 'SettingsView'}
 				/>
 				{this.renderAdmin()}
 			</>

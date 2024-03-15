@@ -58,28 +58,17 @@ export const navigateToVirtualHappyHour = async (Navigation: any, isMasterDetail
 		const query = await subsCollection.query(Q.where('name', TECH_SUPPORT_USERNAME)).fetch();
 		if (query.length > 0) {
 			const room = query[0]
-			await Navigation.navigate('ChatsStackNavigator', {
-				screen: 'RoomsListView'
-			});
-			handleGoRoom(room, isMasterDetail);
+				await Navigation.navigate('RoomView', { tmid: room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT });
 		} else {
 			const result = await Services.createDirectMessage(TECH_SUPPORT_USERNAME);
 			if (result.success) {
-				await Navigation.navigate('ChatsStackNavigator', {
-					screen: 'RoomsListView'
-				});
-				handleGoRoom({ rid: result.room?._id as string, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT }, isMasterDetail);
+				await Navigation.navigate('RoomView', { tmid: result.room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT });
 			}
 		}
 	} catch (e) {
 		log(e);
 	}
 };
-
-const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
-	goRoom({ item, isMasterDetail, popToRoot: true });
-};
-
 
 export const get247Chat = async (): Promise<TSubscriptionModel | undefined> => {
   const db = database.active;

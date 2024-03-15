@@ -41,7 +41,7 @@ const HomeView: React.FC = () => {
 				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />,
 				headerRight: () => (
 					<HeaderButton.Container>
-						<Touchable style={styles.profileImageContainer} onPress={() => navigation.navigate('ProfileStackNavigator')}>
+						<Touchable style={styles.profileImageContainer} onPress={() => navigation.navigate('ProfileView')}>
 							{userName ? (
 								<Avatar text={userName} style={styles.profileImage} size={24} server={server} borderRadius={12} />
 							) : (

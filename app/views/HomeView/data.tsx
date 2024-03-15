@@ -22,7 +22,7 @@ export const largeTiles = [
 export const smallTiles = [
 	{
 		title: 'Discussion Boards',
-		screen: 'DiscussionStackNavigator',
+		screen: 'DiscussionHomeView',
 		size: SizeTypes.SMALL,
 		color: 'dreamBlue',
 		icon: require('../../static/images/discussion-solid.png'),
@@ -46,7 +46,7 @@ export const smallTiles = [
 	},
 	{
 		title: 'Direct Messaging',
-		screen: 'ChatsStackNavigator',
+		screen: 'RoomsListView',
 		size: SizeTypes.SMALL,
 		color: 'pink',
 		icon: require('../../static/images/messaging-solid.png'),
@@ -62,7 +62,7 @@ export const smallTiles = [
 	},
 	{
 		title: 'Settings',
-		screen: 'SettingsStackNavigator',
+		screen: 'SettingsView',
 		size: SizeTypes.SMALL,
 		color: 'creamsicleYellow',
 		icon: require('../../static/images/settings-solid.png'),
