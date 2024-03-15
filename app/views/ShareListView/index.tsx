@@ -221,9 +221,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const defaultWhereClause = [
 			Q.where('archived', false),
 			Q.where('open', true),
-			Q.experimentalSkip(0),
-			Q.experimentalTake(20),
-			Q.experimentalSortBy('room_updated_at', Q.desc)
+			Q.skip(0),
+			Q.take(20),
+			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
 			const likeString = sanitizeLikeString(text);

@@ -2,10 +2,34 @@ require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 
-plugin 'cocoapods-patch'
+# Resolve react_native_pods.rb with node to allow for hoisting
+require Pod::Executable.execute_command('node', ['-p',
+  'require.resolve(
+    "react-native/scripts/react_native_pods.rb",
+    {paths: [process.argv[1]]},
+  )', __dir__]).strip
+ 
+platform :ios, min_ios_version_supported
+prepare_react_native_project!
 
-platform :ios, '12.0'
-install! 'cocoapods', :deterministic_uuids => false
+plugin 'cocoapods-patch'
+ 
+# If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
+# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
+#
+# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
+# ```js
+# module.exports = {
+#   dependencies: {
+#     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
+# ```
+# flipper_config = FlipperConfiguration.disabled # ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
+ 
+linkage = ENV['USE_FRAMEWORKS']
+if linkage != nil
+  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
+  use_frameworks! :linkage => linkage.to_sym
+end
 
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
@@ -26,13 +50,9 @@ def all_pods
   
   use_react_native!(
     :path => config[:reactNativePath],
-    :hermes_enabled => true, # flags[:hermes_enabled],
-    :fabric_enabled => flags[:fabric_enabled],
+    # :flipper_configuration => false, # flipper_config,
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  # Enable and run pods again, if you want to use Flipper
-  # use_flipper!()
 end
 
 abstract_target 'defaults' do
@@ -46,7 +66,12 @@ abstract_target 'defaults' do
 end
 
 post_install do |installer|
-  react_native_post_install(installer)
+  # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+  react_native_post_install(
+    installer,
+    # config[:reactNativePath],
+    # :mac_catalyst_enabled => false
+  )
 
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
@@ -56,7 +81,7 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       case target.name
       when 'RCT-Folly'
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       else
         config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
       end
