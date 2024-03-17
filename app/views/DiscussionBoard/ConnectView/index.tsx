@@ -77,10 +77,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 
 		if (room.rid) {
 			try {
-				navigation.navigate('ChatsStackNavigator', {
-					screen: 'RoomsListView'
-				});
-				goRoom({ item: params, isMasterDetail, popToRoot: true });
+				goRoom({ item: params, isMasterDetail: true, popToRoot: true });
 			} catch {}
 		}
 	};
