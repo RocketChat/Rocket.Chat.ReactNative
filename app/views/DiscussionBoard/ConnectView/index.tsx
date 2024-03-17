@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Dimensions, Image, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { View, Text, Dimensions, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
@@ -98,6 +98,8 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		bio = customFields.Bio;
 		t1dSince = customFields['T1D Since'];
 		videoUrl = customFields.VideoUrl;
+		videoUrl = videoUrl.replace("https://youtu.be/", "https://www.youtube.com/embed/");
+		videoUrl = `${videoUrl}?autoplay=1`;
 		if (customFields['Glucose Monitoring Method'] !== '') {
 			devices.push(customFields['Glucose Monitoring Method']);
 		}
@@ -123,7 +125,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 								<TouchableOpacity
 									style={styles.playIconContainer}
 									onPress={() => {
-										Linking.openURL(videoUrl);
+										navigation.navigate('VideoPlayerView', { videoUrl: `${ videoUrl }` });
 									}}
 								>
 									<Image source={playIcon} style={styles.playIcon} />
