@@ -277,7 +277,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					current={this.currentItemKey === 'HomeView'}
 				/>
 				<SidebarItem
-					text={I18n.t('Chats')}
+					text={I18n.t('Direct_messaging')}
 					left={<Image source={messagingIcon} style={iconStyles} />}
 					onPress={() => this.sidebarNavigate('RoomsListView')}
 					testID='sidebar-chats'
