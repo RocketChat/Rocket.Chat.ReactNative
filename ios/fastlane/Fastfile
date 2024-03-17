@@ -61,7 +61,7 @@ platform :ios do
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
-      output_name: "Rocket.Chat"
+      output_name: "T1D Reachout"
     )
   end
 
@@ -94,7 +94,7 @@ platform :ios do
       scheme: "RocketChat",
       workspace: "RocketChatRN.xcworkspace",
       xcargs: "-allowProvisioningUpdates",
-      output_name: "Rocket.Chat"
+      output_name: "T1D Reachout"
     )
   end
 
