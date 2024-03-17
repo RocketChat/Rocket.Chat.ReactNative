@@ -32,6 +32,9 @@ import { handleStar } from '../helpers';
 // const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 // const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
+const VIRTUAL_HAPPY_HOUR = {
+	ROOM_RID: 'jRXA42HyPKpjAmZpX'
+}
 
 const DiscussionHomeView: React.FC = ({ route }) => {
 	const navigation = useNavigation<StackNavigationProp<any>>();
@@ -127,7 +130,7 @@ const DiscussionHomeView: React.FC = ({ route }) => {
 
 				const boards = formattedData.filter(d => {
 					// removing direct messages
-					return d.t !== 'd' && d.id !== 'GENERAL';
+					return d.t !== 'd' && d.id !== 'GENERAL' && (d.rid !== VIRTUAL_HAPPY_HOUR.ROOM_RID);
 					// return true;
 				});
 
