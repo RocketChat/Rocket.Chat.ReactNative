@@ -3,7 +3,7 @@ import {SizeTypes} from './interfaces'
 export const largeTiles = [
 	{
 		title: 'Peer Supporter Library',
-		screen: 'ProfileLibraryNavigator',
+		screen: 'ProfileLibraryView',
 		size: SizeTypes.LARGE,
 		color: 'mossGreen',
 		icon: require('../../static/images/peer-supporter-solid.png'),
