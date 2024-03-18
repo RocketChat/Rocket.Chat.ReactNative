@@ -9,7 +9,7 @@ export interface ITouchProps extends RectButtonProps {
 	testID?: string;
 }
 
-const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, underlayColor, ...props }, ref) => {
+const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, underlayColor, disabled, ...props }, ref) => {
 	const { colors } = useTheme();
 
 	return (
@@ -20,6 +20,7 @@ const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, un
 			underlayColor={underlayColor || colors.bannerBackground}
 			rippleColor={colors.bannerBackground}
 			{...props}
+			opacity={disabled ? 0.5 : 1}
 		>
 			{children}
 		</RectButton>
