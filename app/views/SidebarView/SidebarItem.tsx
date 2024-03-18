@@ -22,7 +22,7 @@ const Item = React.memo(({ left, right, text, onPress, testID, current, theme, t
 		key={testID}
 		testID={testID}
 		onPress={onPress}
-		style={[styles.item, current && { backgroundColor: themes[theme].borderColor }]}
+		style={[styles.item, current && { backgroundColor: themes[theme].strokeLight }]}
 	>
 		<View style={styles.itemHorizontal}>{left}</View>
 		<View style={styles.itemCenter}>

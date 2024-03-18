@@ -101,7 +101,7 @@ const AutoTranslateView = (): React.ReactElement => {
 			testID={`auto-translate-view-${language}`}
 			right={() =>
 				selectedLanguage === language ? (
-					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.tintColor} />
+					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
 				) : null
 			}
 			translateTitle={false}

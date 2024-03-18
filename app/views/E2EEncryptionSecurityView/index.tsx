@@ -78,7 +78,7 @@ const E2EEncryptionSecurityView = () => {
 
 					<List.Section>
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-						<Text style={[styles.description, { color: colors.bodyText }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
+						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
 						<Button
 							onPress={resetOwnKey}
 							title={I18n.t('E2E_encryption_reset_button')}

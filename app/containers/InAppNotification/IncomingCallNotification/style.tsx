@@ -36,7 +36,7 @@ export const useStyle = () => {
 		},
 		cancelButton: {
 			borderRadius: 4,
-			backgroundColor: colors.dangerColor,
+			backgroundColor: colors.buttonBackgroundDangerDefault,
 			marginRight: 8,
 			flex: 2,
 			alignItems: 'center',

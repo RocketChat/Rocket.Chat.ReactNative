@@ -54,7 +54,7 @@ const FooterButtons = ({
 				onPress={cancelAction}
 			/>
 			<Button
-				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.dangerColor }}
+				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.buttonBackgroundDangerDefault }}
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}
@@ -100,7 +100,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<>
 				<View style={styles.titleContainer}>
-					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.dangerColor} /> : null}
+					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
 					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 16 : 0 }]}>
 						{title}
 					</Text>
@@ -126,7 +126,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 				/>
 			) : null}
 			<FooterButtons
-				confirmBackgroundColor={confirmBackgroundColor || colors.actionTintColor}
+				confirmBackgroundColor={confirmBackgroundColor || colors.strokeHighlight}
 				cancelAction={onCancel || hideActionSheet}
 				confirmAction={() => onSubmit(inputValue)}
 				cancelTitle={i18n.t('Cancel')}

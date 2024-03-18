@@ -107,8 +107,8 @@ const E2ESaveYourPasswordView = () => {
 				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 					<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
 					<View style={styles.content}>
-						<Text style={[styles.passwordText, { color: colors.bodyText }]}>{I18n.t('Your_password_is')}</Text>
-						<Text style={[styles.password, { color: colors.bodyText }]}>{password}</Text>
+						<Text style={[styles.passwordText, { color: colors.fontDefault }]}>{I18n.t('Your_password_is')}</Text>
+						<Text style={[styles.password, { color: colors.fontDefault }]}>{password}</Text>
 						<Button
 							onPress={onCopy}
 							style={[styles.copyButton, { backgroundColor: colors.surfaceHover }]}
@@ -117,7 +117,7 @@ const E2ESaveYourPasswordView = () => {
 							fontSize={14}
 						/>
 					</View>
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
+					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
 					<Button
 						onPress={onHowItWorks}
 						style={{ backgroundColor: colors.surfaceHover }}

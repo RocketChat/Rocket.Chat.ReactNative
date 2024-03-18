@@ -310,7 +310,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<SidebarItem
 					text={I18n.t('Supported_versions_warning_update_required')}
 					textColor={themes[theme!].fontDanger}
-					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
+					left={<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
 					theme={theme!}
 					onPress={() => this.onPressSupportedVersionsWarning()}
 					testID={`sidebar-supported-versions-warn`}

@@ -433,7 +433,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		const getBadge = () => {
 			if (supportedVersionsStatus === 'warn') {
-				return <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />;
+				return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
 			}
 			if (notificationPresenceCap) {
 				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
@@ -941,7 +941,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { theme } = this.props;
 		return (
 			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
-				<Text style={[styles.groupTitle, { color: themes[theme].controlText }]}>{I18n.t(header)}</Text>
+				<Text style={[styles.groupTitle, { color: themes[theme].fontHint }]}>{I18n.t(header)}</Text>
 			</View>
 		);
 	};

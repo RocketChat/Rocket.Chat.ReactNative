@@ -22,7 +22,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const renderRows = (drawExtraBorders = true) => {
-		const tableStyle: ViewStyle[] = [styles.table, { borderColor: themes[theme].borderColor }];
+		const tableStyle: ViewStyle[] = [styles.table, { borderColor: themes[theme].strokeLight }];
 		if (drawExtraBorders) {
 			tableStyle.push(styles.tableExtraBorders);
 		}
@@ -54,7 +54,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 				showsVerticalScrollIndicator={false}
 				style={[
 					styles.containerTable,
-					{ maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT, borderColor: themes[theme].borderColor }
+					{ maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT, borderColor: themes[theme].strokeLight }
 				]}
 			>
 				{renderRows(false)}

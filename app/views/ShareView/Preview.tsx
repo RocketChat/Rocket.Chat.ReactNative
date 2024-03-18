@@ -51,9 +51,9 @@ const IconPreview = React.memo(({ iconName, title, description, theme, width, he
 		style={{ backgroundColor: themes[theme].surfaceHover }}
 		contentContainerStyle={[styles.fileContainer, { width, height }]}
 	>
-		<CustomIcon name={iconName} size={56} color={danger ? themes[theme].dangerColor : themes[theme].tintColor} />
+		<CustomIcon name={iconName} size={56} color={danger ? themes[theme].buttonBackgroundDangerDefault : themes[theme].badgeBackgroundLevel2} />
 		<Text style={[styles.fileName, { color: themes[theme].fontTitlesLabels }]}>{title}</Text>
-		{description ? <Text style={[styles.fileSize, { color: themes[theme].bodyText }]}>{description}</Text> : null}
+		{description ? <Text style={[styles.fileSize, { color: themes[theme].fontDefault }]}>{description}</Text> : null}
 	</ScrollView>
 ));
 

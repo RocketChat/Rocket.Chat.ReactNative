@@ -67,9 +67,9 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 			<Touchable
 				onPress={() => onShow(!show)}
 				style={{ backgroundColor: themes[theme].surfaceRoom }}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			>
-				<View style={[styles.input, { borderColor: error ? themes[theme].dangerColor : themes[theme].strokeLight }]}>
+				<View style={[styles.input, { borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }]}>
 					<Text style={[styles.inputText, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
 						{currentDate.toLocaleDateString(language)}
 					</Text>
@@ -79,7 +79,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 						<CustomIcon
 							name='calendar'
 							size={20}
-							color={error ? themes[theme].dangerColor : themes[theme].fontSecondaryInfo}
+							color={error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].fontSecondaryInfo}
 							style={styles.icon}
 						/>
 					)}

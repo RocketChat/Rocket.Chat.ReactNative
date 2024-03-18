@@ -31,9 +31,9 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`rooms-list-header-server-${item.id}`}
-			android_ripple={{ color: themes[theme].bannerBackground }}
+			android_ripple={{ color: themes[theme].surfaceNeutral }}
 			style={({ pressed }: { pressed: boolean }) => ({
-				backgroundColor: isIOS && pressed ? themes[theme].bannerBackground : themes[theme].surfaceRoom
+				backgroundColor: isIOS && pressed ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom
 			})}
 		>
 			<View style={styles.serverItemContainer}>

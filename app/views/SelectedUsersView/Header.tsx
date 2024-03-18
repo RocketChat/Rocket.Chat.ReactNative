@@ -45,7 +45,7 @@ const Header = ({
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>
-					<Text style={[styles.selectedText, { color: themes[theme].auxiliaryTintColor }]}>
+					<Text style={[styles.selectedText, { color: themes[theme].strokeHighlight }]}>
 						{I18n.t('N_Selected_members', { n: users.length })}
 					</Text>
 					<FlatList

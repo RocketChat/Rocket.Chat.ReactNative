@@ -67,8 +67,8 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 		return (
 			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
-					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
+					<CustomIcon name={icon} size={22} color={themes[theme].fontDefault} style={styles.dropdownItemIcon} />
+					<Text style={[styles.dropdownItemText, { color: themes[theme].fontDefault }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check /> : null}
 				</View>
 			</Touch>
@@ -106,7 +106,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 								style={[styles.dropdownItemIcon, styles.inverted]}
 								size={22}
 								name='chevron-down'
-								color={themes[theme].auxiliaryTintColor}
+								color={themes[theme].strokeHighlight}
 							/>
 						</View>
 					</Touch>
@@ -118,10 +118,10 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 							<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].strokeLight }]} />
 							<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 								<View style={styles.globalUsersTextContainer}>
-									<Text style={[styles.dropdownItemText, { color: themes[theme].infoText }]}>
+									<Text style={[styles.dropdownItemText, { color: themes[theme].fontHint }]}>
 										{I18n.t('Search_global_users')}
 									</Text>
-									<Text style={[styles.dropdownItemDescription, { color: themes[theme].infoText }]}>
+									<Text style={[styles.dropdownItemDescription, { color: themes[theme].fontHint }]}>
 										{I18n.t('Search_global_users_description')}
 									</Text>
 								</View>

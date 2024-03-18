@@ -239,7 +239,7 @@ const ChangeAvatarView = () => {
 							title={I18n.t('Delete_image')}
 							type='primary'
 							disabled={saving}
-							backgroundColor={colors.dangerColor}
+							backgroundColor={colors.buttonBackgroundDangerDefault}
 							onPress={() => dispatchAvatar({ type: AvatarStateActions.RESET_ROOM_AVATAR, payload: { data: null } })}
 							testID='change-avatar-view-delete-my-account'
 						/>

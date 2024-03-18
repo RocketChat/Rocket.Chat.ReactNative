@@ -101,7 +101,7 @@ const Content = React.memo(
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
-							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].dangerColor} style={styles.alertIcon} />
+							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].buttonBackgroundDangerDefault} style={styles.alertIcon} />
 						) : null}
 					</View>
 					{subtitle ? (

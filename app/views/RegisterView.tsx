@@ -313,7 +313,7 @@ class RegisterView extends React.Component<IProps, any> {
 							<Text style={[styles.bottomContainerText, { color: themes[theme].fontSecondaryInfo }]}>
 								{I18n.t('Do_you_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]} onPress={this.login}>
+							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].strokeHighlight }]} onPress={this.login}>
 								{I18n.t('Login')}
 							</Text>
 						</View>

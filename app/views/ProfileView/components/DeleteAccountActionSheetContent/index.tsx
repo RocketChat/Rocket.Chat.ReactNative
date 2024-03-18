@@ -63,7 +63,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			testID='profile-view-delete-account-sheet'
 			iconName='warning'
 			confirmTitle={i18n.t('Delete_Account')}
-			confirmBackgroundColor={colors.dangerColor}
+			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 		/>
 	);
 }
@@ -93,7 +93,7 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
-			confirmBackgroundColor={colors.dangerColor}
+			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 			showInput={false}
 			customText={
 				<>

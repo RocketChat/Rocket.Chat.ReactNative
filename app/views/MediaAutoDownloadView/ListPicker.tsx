@@ -61,7 +61,7 @@ const ListPicker = ({
 			title={title}
 			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => (
-				<Text style={[styles.title, { color: colors.actionTintColor }]}>
+				<Text style={[styles.title, { color: colors.strokeHighlight }]}>
 					{/* when picking an option the label should be Never 
 					but when showing among the other settings the label should be Off */}
 					{option.label === 'Never' ? I18n.t('Off') : I18n.t(option.label)}

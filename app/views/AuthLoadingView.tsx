@@ -30,7 +30,7 @@ const AuthLoadingView = React.memo((): React.ReactElement => {
 			{text ? (
 				<>
 					<ActivityIndicator color={colors.fontSecondaryInfo} size='large' />
-					<Text style={[styles.text, { color: colors.bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
+					<Text style={[styles.text, { color: colors.fontDefault }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
 				</>
 			) : null}
 		</View>

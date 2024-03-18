@@ -108,8 +108,8 @@ export const FormTextInput = ({
 							color: colors.fontTitlesLabels
 						},
 						error?.error && {
-							color: colors.dangerColor,
-							borderColor: colors.dangerColor
+							color: colors.buttonBackgroundDangerDefault,
+							borderColor: colors.buttonBackgroundDangerDefault
 						},
 						inputStyle
 					]}
@@ -167,7 +167,7 @@ export const FormTextInput = ({
 				{loading ? (
 					<ActivityIndicator
 						style={[styles.iconContainer, styles.iconRight]}
-						color={colors.bodyText}
+						color={colors.fontDefault}
 						testID={testID ? `${testID}-loading` : undefined}
 					/>
 				) : null}

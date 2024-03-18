@@ -25,12 +25,12 @@ const Discussion = React.memo(
 		return (
 			<>
 				<Text style={[styles.startedDiscussion, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
-				<Text style={[styles.text, { color: themes[theme].bodyText }]}>{msg}</Text>
+				<Text style={[styles.text, { color: themes[theme].fontDefault }]}>{msg}</Text>
 				<View style={styles.buttonContainer}>
 					<Touchable
 						onPress={onDiscussionPress}
-						background={Touchable.Ripple(themes[theme].bannerBackground)}
-						style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
+						background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+						style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
 						hitSlop={BUTTON_HIT_SLOP}
 					>
 						<>

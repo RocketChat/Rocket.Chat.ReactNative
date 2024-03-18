@@ -320,7 +320,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				key={key}
 				testID={key}
 				onPress={onPress}
-				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
+				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].strokeLight }]}
 				enabled={!disabled}
 			>
 				{child}
@@ -554,7 +554,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							<Button
 								title={I18n.t('Delete_my_account')}
 								type='primary'
-								backgroundColor={themes[theme].dangerColor}
+								backgroundColor={themes[theme].buttonBackgroundDangerDefault}
 								onPress={this.deleteOwnAccount}
 								testID='profile-view-delete-my-account'
 							/>

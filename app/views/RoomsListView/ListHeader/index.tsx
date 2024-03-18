@@ -38,7 +38,7 @@ const ListHeader = React.memo(
 							}
 							left={() => <List.Icon name='encrypted' color={themes[theme].fontWhite} />}
 							underlayColor={themes[theme].strokeHighlight}
-							backgroundColor={themes[theme].actionTintColor}
+							backgroundColor={themes[theme].strokeHighlight}
 							color={themes[theme].fontWhite}
 							onPress={goEncryption}
 							testID='listheader-encryption'

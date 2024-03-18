@@ -33,7 +33,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
 			<View style={styles.iconContainer}>
-				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
+				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			{message.title ? (
 				<Text testID='sv-warn-title' style={[styles.title, { color: colors.fontTitlesLabels }]}>
@@ -41,12 +41,12 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 				</Text>
 			) : null}
 			{message.subtitle ? (
-				<Text testID='sv-warn-subtitle' style={[styles.subtitle, { color: colors.bodyText }]}>
+				<Text testID='sv-warn-subtitle' style={[styles.subtitle, { color: colors.fontDefault }]}>
 					{message.subtitle}
 				</Text>
 			) : null}
 			{message.description ? (
-				<Text testID='sv-warn-description' style={[styles.description, { color: colors.bodyText }]}>
+				<Text testID='sv-warn-description' style={[styles.description, { color: colors.fontDefault }]}>
 					{message.description}
 				</Text>
 			) : null}

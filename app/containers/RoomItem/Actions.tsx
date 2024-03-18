@@ -38,7 +38,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
-					{ width: width * 2, backgroundColor: colors.tintColor, right: '100%' },
+					{ width: width * 2, backgroundColor: colors.badgeBackgroundLevel2, right: '100%' },
 					viewHeight,
 					animatedStyles
 				]}

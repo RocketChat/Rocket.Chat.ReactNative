@@ -710,7 +710,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								testID='room-info-edit-view-reset'
 							>
 								<Text
-									style={[styles.button, styles.button_inverted, { color: themes[theme].bodyText }]}
+									style={[styles.button, styles.button_inverted, { color: themes[theme].fontDefault }]}
 									accessibilityRole='button'
 								>
 									{I18n.t('RESET')}

@@ -66,7 +66,7 @@ const UrlContent = React.memo(
 		return (
 			<View style={styles.textContainer}>
 				{title ? (
-					<Text style={[styles.title, { color: colors.tintColor }]} numberOfLines={2}>
+					<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
 						{title}
 					</Text>
 				) : null}
@@ -124,11 +124,11 @@ const Url = React.memo(
 					styles.container,
 					{
 						backgroundColor: themes[theme].surfaceTint,
-						borderColor: themes[theme].borderColor
+						borderColor: themes[theme].strokeLight
 					},
 					imageLoadedState === 'loading' && styles.loading
 				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			>
 				<>
 					{image ? (

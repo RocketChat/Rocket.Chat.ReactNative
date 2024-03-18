@@ -75,7 +75,7 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 				username,
 				useRealName
 			})}
-			style={[styles.markdownText, { color: alert ? colors.bodyText : colors.fontSecondaryInfo }, alignSelf]}
+			style={[styles.markdownText, { color: alert ? colors.fontDefault : colors.fontSecondaryInfo }, alignSelf]}
 			numberOfLines={2}
 		/>
 	);

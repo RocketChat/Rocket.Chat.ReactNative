@@ -21,8 +21,8 @@ const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
 			<View style={styles.buttonContainer}>
 				<Touchable
 					onPress={replyBroadcast}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
+					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+					style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='message-broadcast-reply'
 				>

@@ -27,7 +27,7 @@ const Banner = React.memo(
 			return (
 				<>
 					<BorderlessButton
-						style={[styles.bannerContainer, { backgroundColor: themes[theme].bannerBackground }]}
+						style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
 						testID='room-view-banner'
 						onPress={toggleModal}
 					>
@@ -44,7 +44,7 @@ const Banner = React.memo(
 						animationIn='fadeIn'
 						animationOut='fadeOut'
 					>
-						<View style={[styles.modalView, { backgroundColor: themes[theme].bannerBackground }]}>
+						<View style={[styles.modalView, { backgroundColor: themes[theme].surfaceNeutral }]}>
 							<Text style={[styles.bannerModalTitle, { color: themes[theme].fontSecondaryInfo }]}>{title}</Text>
 							<ScrollView style={styles.modalScrollView}>
 								<Markdown msg={text} theme={theme} />

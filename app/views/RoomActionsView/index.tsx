@@ -904,9 +904,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								})
 							}
 							testID='room-actions-block-user'
-							left={() => <List.Icon name='warning' color={themes[theme].dangerColor} />}
+							left={() => <List.Icon name='warning' color={themes[theme].buttonBackgroundDangerDefault} />}
 							showActionIndicator
-							color={themes[theme].dangerColor}
+							color={themes[theme].buttonBackgroundDangerDefault}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -927,9 +927,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							})
 						}
 						testID='room-actions-leave-channel'
-						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='logout' color={themes[theme].buttonBackgroundDangerDefault} />}
 						showActionIndicator
-						color={themes[theme].dangerColor}
+						color={themes[theme].buttonBackgroundDangerDefault}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -1072,13 +1072,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<>
 					<List.Item
 						title='Close'
-						color={themes[theme].dangerColor}
+						color={themes[theme].buttonBackgroundDangerDefault}
 						onPress={() =>
 							this.onPressTouchable({
 								event: this.closeLivechat
 							})
 						}
-						left={() => <List.Icon name='chat-close' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='chat-close' color={themes[theme].buttonBackgroundDangerDefault} />}
 						showActionIndicator
 					/>
 					<List.Separator />

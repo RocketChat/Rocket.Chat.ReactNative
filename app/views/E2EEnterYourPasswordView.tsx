@@ -61,8 +61,8 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						textContentType='password'
 					/>
 					<Button onPress={submit} title={I18n.t('Confirm')} disabled={!password} testID='e2e-enter-your-password-view-confirm' />
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Enter_Your_Encryption_Password_desc1')}</Text>
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Enter_Your_Encryption_Password_desc2')}</Text>
+					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_Your_Encryption_Password_desc1')}</Text>
+					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_Your_Encryption_Password_desc2')}</Text>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

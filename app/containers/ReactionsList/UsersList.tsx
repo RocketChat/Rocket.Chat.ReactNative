@@ -32,7 +32,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 				<View style={styles.listItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
-						<Text style={[styles.usernameText, { color: colors.bodyText }]} numberOfLines={1}>
+						<Text style={[styles.usernameText, { color: colors.fontDefault }]} numberOfLines={1}>
 							{useRealName && item.name ? item.name : item.username}
 						</Text>
 					</View>

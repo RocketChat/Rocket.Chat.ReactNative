@@ -98,7 +98,7 @@ const ReportUserView = () => {
 					<Button
 						title={I18n.t('Report')}
 						type='primary'
-						backgroundColor={colors.dangerColor}
+						backgroundColor={colors.buttonBackgroundDangerDefault}
 						disabled={!isValid}
 						onPress={handleSubmit(submit)}
 						testID='report-user-view-submit'

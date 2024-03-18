@@ -40,7 +40,7 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 						{textParser([item.text])}
 					</Text>
 				</View>
-				<View style={styles.flexZ}>{selected ? <CustomIcon color={colors.tintColor} size={22} name='check' /> : null}</View>
+				<View style={styles.flexZ}>{selected ? <CustomIcon color={colors.badgeBackgroundLevel2} size={22} name='check' /> : null}</View>
 			</View>
 		</Touchable>
 	);

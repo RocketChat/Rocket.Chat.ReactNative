@@ -92,7 +92,7 @@ const Fields = React.memo(
 			<>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>
+						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
 							{field.title}
 						</Text>
 						<Markdown
@@ -161,7 +161,7 @@ const CollapsibleQuote = React.memo(
 							borderLeftWidth: 2
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<View style={styles.touchableContainer}>

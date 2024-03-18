@@ -1,8 +1,6 @@
-const fixedColors = {
-	backdropColor: '#000000'
-};
+const backdropColor = '#000000';
 
-const newColors = {
+const light = {
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
 	surfaceRoom: '#FFFFFF',
@@ -94,7 +92,7 @@ const newColors = {
 	buttonSuccessDisabled: '#FFFFFF'
 };
 
-const newColorsDark = {
+const dark = {
 	surfaceLight: '#262931',
 	surfaceTint: '#1F2329',
 	surfaceRoom: '#1F2329',
@@ -186,20 +184,20 @@ const newColorsDark = {
 	buttonSuccessDisabled: '#757575'
 };
 
-const newColorsBlack = {
+const black = {
 	surfaceLight: '#0d0d0d',
 	surfaceTint: '#16181a',
 	surfaceRoom: '#000000',
-	surfaceNeutral: '#2F343D', //#0d0d0d
-	// surfaceDisabled: '#24272E',
+	surfaceNeutral: '#1f2329',
+	surfaceDisabled: '#24272E',
 	surfaceHover: '#080808',
-	// surfaceSelected: '#3C3F44',
+	surfaceSelected: '#3C3F44',
 	surfaceDark: '#E4E7EA',
-	// surfaceFeatured: '#5F1477',
-	// surfaceFeaturedHover: '#4A105D',
+	surfaceFeatured: '#5F1477',
+	surfaceFeaturedHover: '#4A105D',
 
 	strokeExtraLight: '#2F343D',
-	strokeLight: '#333842',
+	strokeLight: '#1f2329',
 	strokeMedium: '#404754',
 	strokeDark: '#9EA2A8',
 	strokeExtraDark: '#CBCED1',
@@ -280,52 +278,23 @@ const newColorsBlack = {
 
 export const colors = {
 	light: {
-		...newColors,
-		bannerBackground: '#f1f2f4',
-		bodyText: '#2f343d',
-		dangerColor: '#f5455c',
-		successColor: '#2de0a5',
-		borderColor: '#e1e5e8',
-		controlText: '#54585e',
-		infoText: '#6d6d72',
-		tintColor: '#1d74f5',
-		tintDisabled: '#88B4F5',
-		auxiliaryTintColor: '#6C727A',
-		actionTintColor: '#1d74f5',
+		...light,
+		backdropColor,
 		backdropOpacity: 0.3,
-		attachmentLoadingOpacity: 0.7,
+		attachmentLoadingOpacity: 0.7
 	},
 	dark: {
-		...newColorsDark,
-		bannerBackground: '#0e1f38',
-		bodyText: '#cbced1',
-		dangerColor: '#f5455c',
-		successColor: '#2de0a5',
-		borderColor: '#0f213d',
-		controlText: '#dadde6',
-		infoText: '#6D6D72',
-		tintColor: '#1d74f5',
-		tintDisabled: '#88B4F5',
-		auxiliaryTintColor: '#f9f9f9',
-		actionTintColor: '#1d74f5',
+		...dark,
+		backdropColor,
 		backdropOpacity: 0.9,
-		attachmentLoadingOpacity: 0.3,
-	black: {
-		...newColorsDark,
-		bannerBackground: '#1f2329',
-		bodyText: '#cbced1',
-		dangerColor: '#f5455c',
-		successColor: '#2de0a5',
-		borderColor: '#1f2329',
-		controlText: '#dadde6',
-		infoText: '#6d6d72',
-		tintColor: '#1e9bfe',
-		tintDisabled: '#88B4F5', // TODO: Evaluate this with design team
-		auxiliaryTintColor: '#f9f9f9',
-		actionTintColor: '#1e9bfe',
-		backdropOpacity: 0.9,
-		attachmentLoadingOpacity: 0.3,
+		attachmentLoadingOpacity: 0.3
 	},
+	black: {
+		...black,
+		backdropColor,
+		backdropOpacity: 0.9,
+		attachmentLoadingOpacity: 0.3
+	}
 };
 
 export const themes = colors;

@@ -12,7 +12,7 @@ export default function useStyle() {
 			fontSize: 12,
 			marginLeft: 8,
 			...sharedStyles.textBold,
-			color: colors.auxiliaryTintColor
+			color: colors.strokeHighlight
 		},
 		iconContainer: {
 			width: 28,
@@ -39,7 +39,7 @@ export default function useStyle() {
 			color: colors.surfaceDark
 		},
 		callToActionButton: {
-			backgroundColor: colors.tintColor,
+			backgroundColor: colors.badgeBackgroundLevel2,
 			minWidth: 50,
 			alignItems: 'center',
 			justifyContent: 'center',

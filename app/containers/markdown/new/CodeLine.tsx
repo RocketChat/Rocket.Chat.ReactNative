@@ -15,7 +15,7 @@ const CodeLine = ({ value }: ICodeLineProps): React.ReactElement | null => {
 		return null;
 	}
 
-	return <Text style={[styles.codeBlockText, { color: colors.bodyText }]}>{value.value}</Text>;
+	return <Text style={[styles.codeBlockText, { color: colors.fontDefault }]}>{value.value}</Text>;
 };
 
 export default CodeLine;

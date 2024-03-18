@@ -172,7 +172,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 
 	renderIcon = () => {
 		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
+		return <List.Icon name='check' color={themes[theme].badgeBackgroundLevel2} />;
 	};
 
 	renderItem = ({ item }: { item: IItem }) => {

@@ -110,7 +110,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 						title={I18n.t('Close')}
 						onPress={submit}
 						disabled={!canSubmit()}
-						backgroundColor={colors.dangerColor}
+						backgroundColor={colors.buttonBackgroundDangerDefault}
 						type='primary'
 						style={styles.buttonMarginVertical}
 					/>

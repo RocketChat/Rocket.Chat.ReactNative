@@ -23,7 +23,7 @@ const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps
 					!hideUnreadStatus && [
 						styles.updateAlert,
 						{
-							color: colors.tintColor
+							color: colors.badgeBackgroundLevel2
 						}
 					]
 			]}

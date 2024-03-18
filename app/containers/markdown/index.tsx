@@ -156,9 +156,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={[
 					{
 						...styles.codeInline,
-						color: themes[theme!].bodyText,
-						backgroundColor: themes[theme!].bannerBackground,
-						borderColor: themes[theme!].bannerBackground
+						color: themes[theme!].fontDefault,
+						backgroundColor: themes[theme!].surfaceNeutral,
+						borderColor: themes[theme!].surfaceNeutral
 					},
 					...style
 				]}
@@ -175,13 +175,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 				style={[
 					{
 						...styles.codeBlock,
-						backgroundColor: themes[theme!].bannerBackground,
-						borderColor: themes[theme!].borderColor
+						backgroundColor: themes[theme!].surfaceNeutral,
+						borderColor: themes[theme!].strokeLight
 					},
 					...style
 				]}
 			>
-				<Text style={[styles.codeBlockText, { color: themes[theme!].bodyText }]}>{literal}</Text>
+				<Text style={[styles.codeBlockText, { color: themes[theme!].fontDefault }]}>{literal}</Text>
 			</View>
 		);
 	};
@@ -197,7 +197,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 			return null;
 		}
 		return (
-			<Text style={[styles.text, { color: themes[theme!].bodyText }, ...style]} numberOfLines={numberOfLines}>
+			<Text style={[styles.text, { color: themes[theme!].fontDefault }, ...style]} numberOfLines={numberOfLines}>
 				{children}
 			</Text>
 		);
@@ -257,7 +257,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		// @ts-ignore
 		const textStyle = styles[`heading${level}Text`];
 		return (
-			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme!].bodyText }]}>
+			<Text numberOfLines={numberOfLines} style={[textStyle, { color: themes[theme!].fontDefault }]}>
 				{children}
 			</Text>
 		);

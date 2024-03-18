@@ -29,7 +29,7 @@ interface IOrSeparator {
 }
 
 const OrSeparator = React.memo(({ theme }: IOrSeparator) => {
-	const line = { backgroundColor: themes[theme].borderColor };
+	const line = { backgroundColor: themes[theme].strokeLight };
 	const text = { color: themes[theme].fontSecondaryInfo };
 	return (
 		<View style={styles.container}>

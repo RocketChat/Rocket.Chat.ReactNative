@@ -70,7 +70,7 @@ const ListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => (
-				<Text style={[styles.title, { color: colors.actionTintColor }]}>
+				<Text style={[styles.title, { color: colors.strokeHighlight }]}>
 					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label}
 				</Text>
 			)}

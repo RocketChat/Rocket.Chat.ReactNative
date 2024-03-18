@@ -215,7 +215,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 					<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: themes[theme].strokeLight }]}>
 						<Text style={[styles.serverHeaderText, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
 						<TouchableOpacity onPress={this.addServer} testID='rooms-list-header-server-add'>
-							<Text style={[styles.serverHeaderAdd, { color: themes[theme].tintColor }]}>{I18n.t('Add_Server')}</Text>
+							<Text style={[styles.serverHeaderAdd, { color: themes[theme].badgeBackgroundLevel2 }]}>{I18n.t('Add_Server')}</Text>
 						</TouchableOpacity>
 					</View>
 					<FlatList
@@ -233,7 +233,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						onPress={this.createWorkspace}
 						testID='rooms-list-header-create-workspace-button'
 						style={styles.buttonCreateWorkspace}
-						color={themes[theme].tintColor}
+						color={themes[theme].badgeBackgroundLevel2}
 						styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 					/>
 				</Animated.View>

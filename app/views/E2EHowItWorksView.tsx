@@ -32,7 +32,7 @@ const E2EHowItWorksView = (): React.ReactElement => {
 		});
 	}, []);
 
-	const infoStyle = [styles.info, { color: colors.bodyText }];
+	const infoStyle = [styles.info, { color: colors.fontDefault }];
 
 	return (
 		<SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceRoom }]} testID='e2e-how-it-works-view'>
