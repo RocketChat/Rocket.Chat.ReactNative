@@ -432,8 +432,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			return (
 				<SafeAreaView>
 					<ScrollView
-						style={{ backgroundColor: themes[theme].backgroundColor }}
-						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+						style={{ backgroundColor: themes[theme].surfaceRoom }}
+						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}
 					>
 						<Text style={[styles.permissionTitle, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Read_External_Permission')}</Text>
 						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>
@@ -450,7 +450,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
-					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}

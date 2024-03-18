@@ -298,7 +298,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}

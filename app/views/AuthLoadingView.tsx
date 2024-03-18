@@ -25,7 +25,7 @@ const AuthLoadingView = React.memo((): React.ReactElement => {
 	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
 	return (
-		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<StatusBar />
 			{text ? (
 				<>

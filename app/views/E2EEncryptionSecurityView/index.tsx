@@ -70,7 +70,7 @@ const E2EEncryptionSecurityView = () => {
 	};
 
 	return (
-		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.backgroundColor }}>
+		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
 			<StatusBar />
 			<List.Container>
 				<View style={styles.container}>

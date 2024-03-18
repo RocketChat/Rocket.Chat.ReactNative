@@ -91,7 +91,7 @@ export const FormTextInput = ({
 	return (
 		<View style={[styles.inputContainer, containerStyle]}>
 			{label ? (
-				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.dangerColor }]}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
 					{label}
 				</Text>
 			) : null}
@@ -103,7 +103,7 @@ export const FormTextInput = ({
 						iconLeft && styles.inputIconLeft,
 						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
-							backgroundColor: colors.backgroundColor,
+							backgroundColor: colors.surfaceRoom,
 							borderColor: colors.strokeLight,
 							color: colors.fontTitlesLabels
 						},
@@ -173,7 +173,7 @@ export const FormTextInput = ({
 				) : null}
 				{left}
 			</View>
-			{error && error.reason ? <Text style={[styles.error, { color: colors.dangerColor }]}>{error.reason}</Text> : null}
+			{error && error.reason ? <Text style={[styles.error, { color: colors.fontDanger }]}>{error.reason}</Text> : null}
 		</View>
 	);
 };

@@ -1,6 +1,8 @@
-export const BACKGROUND_PUSH_COLOR = '#F5455C';
+const fixedColors = {
+	overlayColor: '#1F2329CC',
+	backdropColor: '#000000'
+};
 
-// TODO: Remove this after the new colors are implemented
 const newColors = {
 	surfaceLight: '#FFFFFF',
 	surfaceTint: '#F7F8FA',
@@ -185,22 +187,105 @@ const newColorsDark = {
 	buttonSuccessDisabled: '#757575'
 };
 
-const callButtons = {
-	cancelCallButton: '#F5455C',
-	acceptCallButton: '#158D65'
+const newColorsBlack = {
+	surfaceLight: '#0d0d0d',
+	// surfaceTint: '#1F2329',
+	surfaceRoom: '#000000'
+	// surfaceNeutral: '#2D3039',
+	// surfaceDisabled: '#24272E',
+	// surfaceHover: '#1A1E23',
+	// surfaceSelected: '#3C3F44',
+	// surfaceDark: '#E4E7EA',
+	// surfaceFeatured: '#5F1477',
+	// surfaceFeaturedHover: '#4A105D',
+
+	// strokeExtraLight: '#2F343D',
+	// strokeLight: '#333842',
+	// strokeMedium: '#404754',
+	// strokeDark: '#9EA2A8',
+	// strokeExtraDark: '#CBCED1',
+	// strokeExtraLightHighlight: '#87CBFC',
+	// strokeHighlight: '#3976D1',
+	// strokeExtraLightError: '#F49AA6',
+	// strokeError: '#BB3E4E',
+
+	// fontWhite: '#2F343D',
+	// fontDisabled: '#60646C',
+	// fontAnnotation: '#9EA2A8',
+	// fontHint: '#9EA2A8',
+	// fontSecondaryInfo: '#9EA2A8',
+	// fontDefault: '#E4E7EA',
+	// fontTitlesLabels: '#F2F3F5',
+	// fontInfo: '#739EDE',
+	// fontDanger: '#CF6E7A',
+	// fontPureBlack: '#2F343D',
+	// fontPureWhite: '#FFFFFF',
+
+	// statusBackgroundInfo: '#A8C3EB',
+	// statusBackgroundSuccess: '#C1EBDD',
+	// statusBackgroundDanger: '#FFBDC5',
+	// statusBackgroundWarning: '#FEEFBE',
+	// statusBackgroundWarning2: '#4E4731',
+	// statusBackgroundService: '#FCE3CF',
+	// statusBackgroundService2: '#EDD0F7',
+	// statusFontInfo: '#739EDE',
+	// statusFontSuccess: '#58AD90',
+	// statusFontDanger: '#D88892',
+	// statusFontWarning: '#C7AA66',
+	// statusFontWarning2: '#FFFFFF',
+	// statusFontService: '#CA9163',
+	// statusFontService2: '#C393D2',
+
+	// badgeBackgroundLevel1: '#484C51',
+	// badgeBackgroundLevel2: '#2C65BA',
+	// badgeBackgroundLevel3: '#955828',
+	// badgeBackgroundLevel4: '#B43C4C',
+
+	// userPresenceOnline: '#1CBF89',
+	// userPresenceBusy: '#C14454',
+	// userPresenceAway: '#AC892F',
+	// userPresenceOffline: '#6C727A',
+	// userPresenceDisabled: '#955828',
+
+	// buttonBackgroundPrimaryDefault: '#3976D1',
+	// buttonBackgroundPrimaryPress: '#245399',
+	// buttonBackgroundPrimaryDisabled: '#1D3963',
+
+	// buttonBackgroundSecondaryDefault: '#2F343D',
+	// buttonBackgroundSecondaryPress: '#454C59',
+	// buttonBackgroundSecondaryDisabled: '#2F343D',
+
+	// buttonBackgroundSecondaryDangerDefault: '#2F343D',
+	// buttonBackgroundSecondaryDangerPress: '#454C59',
+	// buttonBackgroundSecondaryDangerDisabled: '#2F343D',
+
+	// buttonBackgroundDangerDefault: '#BB3E4E',
+	// buttonBackgroundDangerPress: '#822C37',
+	// buttonBackgroundDangerDisabled: '#3D2126',
+
+	// buttonBackgroundSuccessDefault: '#1D7256',
+	// buttonBackgroundSuccessPress: '#134937',
+	// buttonBackgroundSuccessDisabled: '#1E4B40',
+
+	// buttonFontPrimary: '#FFFFFF',
+	// buttonPrimaryDisabled: '#6C727A',
+	// buttonFontSecondary: '#E4E7EA',
+	// buttonSecondaryDisabled: '#6C727A',
+	// buttonFontSecondaryDanger: '#C14454',
+	// buttonSecondaryDangerDisabled: '#613339',
+	// buttonFontDanger: '#FFFFFF',
+	// buttonDangerDisabled: '#757575',
+	// buttonFontSuccess: '#FFFFFF',
+	// buttonSuccessDisabled: '#757575'
 };
 
 export const colors = {
 	light: {
 		...newColors,
-
-		backgroundColor: '#ffffff',
-		focusedBackground: '#ffffff',
 		chatComponentBackground: '#f3f4f5',
 		auxiliaryBackground: '#efeff4',
 		bannerBackground: '#f1f2f4',
 		bodyText: '#2f343d',
-		backdropColor: '#000000',
 		dangerColor: '#f5455c',
 		successColor: '#2de0a5',
 		borderColor: '#e1e5e8',
@@ -255,22 +340,14 @@ export const colors = {
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
 		n900: '#1F2329',
-		statusBackgroundWarning: '#FFECAD',
-		overlayColor: '#1F2329CC',
-		taskBoxColor: '#9297a2',
-		...callButtons
+		statusBackgroundWarning: '#FFECAD'
 	},
 	dark: {
 		...newColorsDark,
-		surfaceLight: '#0b182c',
-
-		backgroundColor: '#030b1b',
-		focusedBackground: '#0b182c',
 		chatComponentBackground: '#192132',
 		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
 		bodyText: '#cbced1',
-		backdropColor: '#000000',
 		dangerColor: '#f5455c',
 		successColor: '#2de0a5',
 		borderColor: '#0f213d',
@@ -325,22 +402,14 @@ export const colors = {
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
 		n900: '#FFFFFF',
-		statusBackgroundWarning: '#FFECAD',
-		overlayColor: '#1F2329CC',
-		taskBoxColor: '#9297a2',
-		...callButtons
+		statusBackgroundWarning: '#FFECAD'
 	},
 	black: {
 		...newColorsDark,
-		surfaceLight: '#0d0d0d',
-
-		backgroundColor: '#000000',
-		focusedBackground: '#0d0d0d',
 		chatComponentBackground: '#16181a',
 		auxiliaryBackground: '#080808',
 		bannerBackground: '#1f2329',
 		bodyText: '#cbced1',
-		backdropColor: '#000000',
 		dangerColor: '#f5455c',
 		successColor: '#2de0a5',
 		borderColor: '#1f2329',
@@ -395,10 +464,7 @@ export const colors = {
 		gray300: '#5f656e',
 		gray100: '#CBCED1',
 		n900: '#FFFFFF',
-		statusBackgroundWarning: '#FFECAD',
-		overlayColor: '#1F2329CC',
-		taskBoxColor: '#9297a2',
-		...callButtons
+		statusBackgroundWarning: '#FFECAD'
 	}
 };
 

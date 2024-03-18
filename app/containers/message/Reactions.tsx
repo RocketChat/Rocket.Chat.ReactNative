@@ -35,7 +35,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			onPress={reactionInit}
 			key='message-add-reaction'
 			testID='message-add-reaction'
-			style={[styles.reactionButton, { backgroundColor: themes[theme].backgroundColor }]}
+			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 			hitSlop={BUTTON_HIT_SLOP}
 		>
@@ -57,7 +57,7 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			testID={`message-reaction-${reaction.emoji}`}
 			style={[
 				styles.reactionButton,
-				{ backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].backgroundColor }
+				{ backgroundColor: reacted ? themes[theme].bannerBackground : themes[theme].surfaceRoom }
 			]}
 			background={Touchable.Ripple(themes[theme].bannerBackground)}
 			hitSlop={BUTTON_HIT_SLOP}

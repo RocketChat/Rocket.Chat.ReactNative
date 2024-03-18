@@ -167,7 +167,7 @@ const AddExistingChannelView = () => {
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

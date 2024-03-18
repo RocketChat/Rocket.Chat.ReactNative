@@ -206,7 +206,7 @@ class ServerDropdown extends Component<IServerDropdownProps, IServerDropdownStat
 						styles.dropdownContainer,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme].backgroundColor,
+							backgroundColor: themes[theme].surfaceRoom,
 							borderColor: themes[theme].separatorColor
 						}
 					]}

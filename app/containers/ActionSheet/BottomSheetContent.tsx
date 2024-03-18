@@ -45,7 +45,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				keyExtractor={item => item.title}
 				bounces={false}
 				renderItem={renderItem}
-				style={{ backgroundColor: colors.focusedBackground }}
+				style={{ backgroundColor: colors.surfaceLight }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
 				contentContainerStyle={{ paddingBottom: bottom }}

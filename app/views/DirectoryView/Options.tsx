@@ -91,7 +91,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
 				</TouchableWithoutFeedback>
 				<Animated.View
-					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
+					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].surfaceRoom }]}
 				>
 					<Touch onPress={this.close} accessibilityLabel={I18n.t('Search_by')}>
 						<View

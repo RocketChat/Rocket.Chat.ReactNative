@@ -273,7 +273,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
 				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
@@ -313,7 +313,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			<FlatList
 				data={messages}
 				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
@@ -327,7 +327,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='search-messages-view'>
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<FormTextInput

@@ -136,7 +136,7 @@ interface IListItemButton {
 const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].surfaceRoom }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
 	>
@@ -157,7 +157,7 @@ const ListItem = React.memo(({ ...props }: IListItem) => {
 		return <Button {...props} theme={theme} onPress={onPress} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || themes[theme].backgroundColor }}>
+		<View style={{ backgroundColor: props.backgroundColor || themes[theme].surfaceRoom }}>
 			<Content {...props} theme={theme} />
 		</View>
 	);

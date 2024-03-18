@@ -30,7 +30,7 @@ interface IDropdownItem {
 const DropdownItem = React.memo(({ onPress, iconName, text }: IDropdownItem) => {
 	const { colors } = useTheme();
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: colors.backgroundColor }}>
+		<Touch onPress={onPress} style={{ backgroundColor: colors.surfaceRoom }}>
 			<View style={styles.container}>
 				<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{text}</Text>
 				{iconName ? <CustomIcon name={iconName} size={22} color={colors.fontSecondaryInfo} /> : null}

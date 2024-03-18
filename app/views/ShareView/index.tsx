@@ -376,7 +376,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return (
 			<FormTextInput
 				containerStyle={styles.inputContainer}
-				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].focusedBackground }]}
+				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].surfaceLight }]}
 				placeholder=''
 				onChangeText={this.onChangeText}
 				defaultValue=''
@@ -394,7 +394,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
 					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
@@ -402,7 +402,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
 				{this.renderContent()}
 			</SafeAreaView>

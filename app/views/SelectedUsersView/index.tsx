@@ -172,7 +172,7 @@ const SelectedUsersView = () => {
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={<List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

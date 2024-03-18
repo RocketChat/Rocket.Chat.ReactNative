@@ -38,7 +38,7 @@ const WithoutServerView = (): React.ReactElement => {
 	}, [navigation]);
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Without_Servers')}</Text>
 			<Text style={[styles.content, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('You_need_to_access_at_least_one_RocketChat_server_to_share_something')}

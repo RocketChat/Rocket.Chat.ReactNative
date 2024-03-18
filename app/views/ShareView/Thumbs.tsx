@@ -126,7 +126,7 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 				onPress={() => onRemove(item)}
 			>
 				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
-					<CustomIcon name='close' color={themes[theme].backgroundColor} size={14} />
+					<CustomIcon name='close' color={themes[theme].surfaceRoom} size={14} />
 				</View>
 			</RectButton>
 			{!item?.canUpload ? (

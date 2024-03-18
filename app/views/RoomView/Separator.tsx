@@ -35,7 +35,7 @@ const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boole
 	const { theme } = useTheme();
 	const date = ts ? moment(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].dangerColor };
-	const unreadText = { color: themes[theme].dangerColor };
+	const unreadText = { color: themes[theme].fontDanger };
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>

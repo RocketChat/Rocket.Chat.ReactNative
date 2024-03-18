@@ -309,7 +309,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return (
 				<SidebarItem
 					text={I18n.t('Supported_versions_warning_update_required')}
-					textColor={themes[theme!].dangerColor}
+					textColor={themes[theme!].fontDanger}
 					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
 					theme={theme!}
 					onPress={() => this.onPressSupportedVersionsWarning()}
@@ -327,12 +327,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].surfaceLight }} vertical={isMasterDetail}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme!].surfaceRoom : themes[theme!].surfaceLight
 						}
 					]}
 					{...scrollPersistTaps}

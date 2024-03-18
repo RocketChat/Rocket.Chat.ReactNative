@@ -50,7 +50,7 @@ const DirectoryItem = ({
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID}>
+		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
 			<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
 				<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 				<View style={styles.directoryItemTextContainer}>

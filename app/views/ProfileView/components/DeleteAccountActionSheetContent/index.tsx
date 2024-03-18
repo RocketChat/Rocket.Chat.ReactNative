@@ -70,7 +70,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 
 const AlertText = ({ text = '' }) => {
 	const { colors } = useTheme();
-	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.dangerColor }}>{text}</Text>;
+	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.fontDanger }}>{text}</Text>;
 };
 
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {

@@ -41,7 +41,7 @@ const Header = ({
 	const onContentSizeChange = () => flatlist?.current?.scrollToEnd({ animated: true });
 
 	return (
-		<View style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
 			<SearchBox onChangeText={(text: string) => onChangeText(text)} testID='select-users-view-search' />
 			{users.length === 0 ? null : (
 				<View>

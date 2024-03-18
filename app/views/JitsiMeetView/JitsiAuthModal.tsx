@@ -48,7 +48,7 @@ const JitsiAuthModal = ({
 
 	return (
 		<Modal isVisible>
-			<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+			<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{i18n.t('Jitsi_may_require_authentication')}</Text>
 				{isAdmin ? (
 					<Text style={[styles.regular, { color: colors.fontTitlesLabels }]}>

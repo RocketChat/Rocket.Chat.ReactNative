@@ -13,7 +13,7 @@ export const useStyle = () => {
 			marginHorizontal: 10,
 			borderWidth: StyleSheet.hairlineWidth,
 			borderRadius: 4,
-			backgroundColor: colors.focusedBackground,
+			backgroundColor: colors.surfaceLight,
 			borderColor: colors.separatorColor,
 			flex: 1
 		},
@@ -36,7 +36,7 @@ export const useStyle = () => {
 		},
 		cancelButton: {
 			borderRadius: 4,
-			backgroundColor: colors.cancelCallButton,
+			backgroundColor: colors.dangerColor,
 			marginRight: 8,
 			flex: 2,
 			alignItems: 'center',
@@ -48,7 +48,7 @@ export const useStyle = () => {
 		},
 		acceptButton: {
 			borderRadius: 4,
-			backgroundColor: colors.acceptCallButton,
+			backgroundColor: colors.buttonBackgroundSuccessDefault,
 			flex: 2,
 			alignItems: 'center',
 			justifyContent: 'center'

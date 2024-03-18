@@ -52,7 +52,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
 		borderColor: themes[theme].separatorColor,
-		backgroundColor: themes[theme].backgroundColor
+		backgroundColor: themes[theme].surfaceRoom
 	};
 
 	const placeholderObject = useMemo(

@@ -794,7 +794,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							}
 						})
 					}
-					style={{ backgroundColor: themes[theme].backgroundColor }}
+					style={{ backgroundColor: themes[theme].surfaceRoom }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
 					testID='room-actions-info'
@@ -802,7 +802,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
 							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+								<View style={[sharedStyles.status, { backgroundColor: themes[theme].surfaceRoom }]}>
 									<Status size={16} id={member._id} />
 								</View>
 							) : undefined}

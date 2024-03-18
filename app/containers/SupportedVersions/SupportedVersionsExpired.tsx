@@ -46,7 +46,7 @@ export const SupportedVersionsExpired = () => {
 	};
 
 	return (
-		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.focusedBackground }]}>
+		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
 			<View style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>

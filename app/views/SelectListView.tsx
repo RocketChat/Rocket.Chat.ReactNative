@@ -101,7 +101,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	renderInfoText = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
@@ -194,7 +194,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>

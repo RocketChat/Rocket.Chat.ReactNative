@@ -85,7 +85,7 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: colors.backgroundColor }}>
+		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }}>
 			<ScrollView
 				{...scrollPersistTaps}
 				style={{ backgroundColor: colors.auxiliaryBackground }}

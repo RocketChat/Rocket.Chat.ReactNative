@@ -80,7 +80,7 @@ class Dropdown extends React.Component<IDropdownProps> {
 						styles.dropdownContainer,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme!].backgroundColor,
+							backgroundColor: themes[theme!].surfaceRoom,
 							borderColor: themes[theme!].separatorColor
 						}
 					]}

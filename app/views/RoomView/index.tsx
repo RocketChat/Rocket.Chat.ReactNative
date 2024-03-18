@@ -1467,7 +1467,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText
 				}}
 			>
-				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
 					<StatusBar />
 					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 					<List

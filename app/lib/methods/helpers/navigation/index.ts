@@ -48,7 +48,7 @@ export const navigationTheme = (theme: TSupportedThemes) => {
 		...defaultNavTheme,
 		colors: {
 			...defaultNavTheme.colors,
-			background: themes[theme].backgroundColor,
+			background: themes[theme].surfaceRoom,
 			border: themes[theme].borderColor
 		}
 	};

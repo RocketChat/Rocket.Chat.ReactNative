@@ -121,7 +121,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 			return null;
 		}
 		return (
-			<View style={[styles.itemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.itemContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
 				<Avatar text={item.user.username} size={40} />
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>

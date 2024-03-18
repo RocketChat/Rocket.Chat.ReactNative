@@ -22,7 +22,7 @@ const Input = ({ children, onPress, loading, inputStyle, placeholder, disabled, 
 	return (
 		<Touchable
 			onPress={onPress}
-			style={[{ backgroundColor: colors.backgroundColor }, styles.inputBorder, inputStyle]}
+			style={[{ backgroundColor: colors.surfaceRoom }, styles.inputBorder, inputStyle]}
 			background={Touchable.Ripple(colors.bannerBackground)}
 			disabled={disabled}
 		>

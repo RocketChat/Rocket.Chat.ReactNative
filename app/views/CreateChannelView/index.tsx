@@ -140,12 +140,12 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.backgroundColor }}
+			style={{ backgroundColor: colors.surfaceRoom }}
 			contentContainerStyle={[sharedStyles.container, styles.container]}
 			keyboardVerticalOffset={128}
 		>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<View style={[styles.containerTextInput, { borderColor: colors.separatorColor }]}>
 						<ControlledFormTextInput
@@ -178,7 +178,7 @@ const CreateChannelView = () => {
 								style={[
 									styles.list,
 									{
-										backgroundColor: colors.backgroundColor,
+										backgroundColor: colors.surfaceRoom,
 										borderColor: colors.separatorColor
 									}
 								]}

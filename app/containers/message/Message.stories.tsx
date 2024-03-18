@@ -43,7 +43,7 @@ export default {
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>
+				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
 					<MessageContext.Provider
 						value={{
 							user,

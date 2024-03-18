@@ -108,12 +108,12 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme].surfaceLight }]}>
 			<FlatList
 				data={frequentlyUsed.slice(0, quantity)}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme].surfaceLight }}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

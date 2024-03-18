@@ -11,7 +11,7 @@ const theme = 'light';
 const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: 15,
-		backgroundColor: themes[theme].backgroundColor,
+		backgroundColor: themes[theme].surfaceRoom,
 		marginVertical: 50
 	}
 });

@@ -92,7 +92,7 @@ const ForwardMessageView = () => {
 						blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 						serverVersion={serverVersion}
 					/>
-					<View pointerEvents='none' style={[styles.messageContainer, { backgroundColor: colors.backgroundColor }]}>
+					<View pointerEvents='none' style={[styles.messageContainer, { backgroundColor: colors.surfaceRoom }]}>
 						<MessagePreview message={message} />
 					</View>
 				</ScrollView>

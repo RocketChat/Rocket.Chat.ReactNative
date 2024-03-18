@@ -101,11 +101,11 @@ const E2ESaveYourPasswordView = () => {
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='e2e-save-password-view'>
+		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-save-password-view'>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
-				<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
-					<Text style={[styles.warning, { color: colors.dangerColor }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
+				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
+					<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
 					<View style={styles.content}>
 						<Text style={[styles.passwordText, { color: colors.bodyText }]}>{I18n.t('Your_password_is')}</Text>
 						<Text style={[styles.password, { color: colors.bodyText }]}>{password}</Text>

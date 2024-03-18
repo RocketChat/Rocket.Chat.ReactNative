@@ -31,7 +31,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
 			<View style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
 			</View>

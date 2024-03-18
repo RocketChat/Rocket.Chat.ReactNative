@@ -191,7 +191,7 @@ const AttachmentView = (): React.ReactElement => {
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.backgroundColor, flex: 1 }}>
+		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
 			<StatusBar barStyle='light-content' backgroundColor={colors.previewBackground} />
 			<RenderContent attachment={attachment} setLoading={setLoading} />
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}

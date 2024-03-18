@@ -110,7 +110,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme].backgroundColor }
+						{ backgroundColor: themes[theme].surfaceRoom }
 					]}
 				>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>

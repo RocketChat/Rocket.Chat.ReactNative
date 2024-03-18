@@ -283,9 +283,9 @@ const RoomInfoView = (): React.ReactElement => {
 	};
 
 	return (
-		<ScrollView style={[styles.scroll, { backgroundColor: colors.backgroundColor }]}>
+		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]}>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='room-info-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-info-view'>
 				<View style={[styles.avatarContainer, { backgroundColor: colors.auxiliaryBackground }]}>
 					<RoomInfoViewAvatar
 						username={room?.name || roomUser.username}

@@ -188,7 +188,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
 				keyExtractor={(item: any) => item._id}
-				style={{ backgroundColor: colors.backgroundColor }}
+				style={{ backgroundColor: colors.surfaceRoom }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}

@@ -58,7 +58,7 @@ export const setNativeTheme = async (themePreferences: IThemePreference): Promis
 			// Do nothing
 		}
 	}
-	setRootViewColor(themes[theme].backgroundColor);
+	setRootViewColor(themes[theme].surfaceRoom);
 };
 
 export const unsubscribeTheme = () => {
