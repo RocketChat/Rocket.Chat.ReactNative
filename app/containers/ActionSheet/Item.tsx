@@ -39,7 +39,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 		<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.surfaceLight }]} testID={item.testID}>
 			{item.icon ? <CustomIcon name={item.icon} size={20} color={color} /> : null}
 			<View style={styles.titleContainer}>
-				<Text numberOfLines={1} style={[styles.title, { color: colors.fontDanger, marginLeft: item.icon ? 16 : 0 }]}>
+				<Text numberOfLines={1} style={[styles.title, { color: colors.fontDefault, marginLeft: item.icon ? 16 : 0 }]}>
 					{item.title}
 				</Text>
 			</View>
