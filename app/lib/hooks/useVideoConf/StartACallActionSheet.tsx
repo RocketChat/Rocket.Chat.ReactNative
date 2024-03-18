@@ -75,7 +75,7 @@ export default function StartACallActionSheet({
 			</View>
 			<Button
 				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
-				color={calling ? colors.gray300 : colors.conferenceCallEnabledIcon}
+				color={calling ? colors.strokeDark : colors.conferenceCallEnabledIcon}
 				onPress={() => {
 					if (calling) {
 						dispatch(cancelCall({}));

@@ -30,8 +30,8 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 
 	const handleColors = (enabled: boolean) => {
 		if (calling) {
-			if (enabled) return { button: colors.conferenceCallCallBackButton, icon: colors.gray300 };
-			return { button: 'transparent', icon: colors.gray100 };
+			if (enabled) return { button: colors.conferenceCallCallBackButton, icon: colors.strokeDark };
+			return { button: 'transparent', icon: colors.strokeLight };
 		}
 		if (enabled) return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
 		return { button: 'transparent', icon: colors.conferenceCallDisabledIcon };
@@ -81,7 +81,7 @@ function useStyle() {
 		actionSheetHeaderTitle: {
 			fontSize: 14,
 			...sharedStyles.textBold,
-			color: colors.n900
+			color: colors.surfaceHover
 		},
 		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
 		iconCallContainer: {
