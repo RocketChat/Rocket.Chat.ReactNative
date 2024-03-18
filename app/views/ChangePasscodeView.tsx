@@ -5,7 +5,6 @@ import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
-import { useTheme } from '../theme';
 import { hasNotch } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
@@ -33,7 +32,6 @@ const ChangePasscodeView = React.memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
 
-	const { colors } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {

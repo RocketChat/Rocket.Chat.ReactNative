@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import range from 'lodash/range';
 
 import styles from './styles';
-import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 
 const SIZE_EMPTY = 12;

@@ -8,7 +8,6 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
 import { CustomIcon } from '../containers/CustomIcon';
-import { useTheme } from '../theme';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
-	const { colors } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
