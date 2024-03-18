@@ -1,43 +1,63 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
+require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
-# Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
- 
-platform :ios, min_ios_version_supported
+require 'json'
+podfile_properties = JSON.parse(File.read(File.join(__dir__, 'Podfile.properties.json'))) rescue {}
+
+ENV['RCT_NEW_ARCH_ENABLED'] = podfile_properties['newArchEnabled'] == 'true' ? '1' : '0'
+ENV['EX_DEV_CLIENT_NETWORK_INSPECTOR'] = podfile_properties['EX_DEV_CLIENT_NETWORK_INSPECTOR']
+
+platform :ios, podfile_properties['ios.deploymentTarget'] || '13.4'
+install! 'cocoapods', :deterministic_uuids => false
+
 prepare_react_native_project!
 
 plugin 'cocoapods-patch'
  
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
-# because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
+# because `react-native-flipper` depends on (FlipperKit,...), which will be excluded. To fix this,
+# you can also exclude `react-native-flipper` in `react-native.config.js`
 #
-# To fix this you can also exclude `react-native-flipper` using a `react-native.config.js`
 # ```js
 # module.exports = {
 #   dependencies: {
 #     ...(process.env.NO_FLIPPER ? { 'react-native-flipper': { platforms: { ios: null } } } : {}),
+#   }
+# }
 # ```
-# flipper_config = FlipperConfiguration.disabled # ENV['NO_FLIPPER'] == "1" ? FlipperConfiguration.disabled : FlipperConfiguration.enabled
- 
-linkage = ENV['USE_FRAMEWORKS']
-if linkage != nil
-  Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
-end
+# flipper_config = FlipperConfiguration.disabled
+# if ENV['NO_FLIPPER'] == '1' then
+#   # Explicitly disabled through environment variables
+#   flipper_config = FlipperConfiguration.disabled
+# elsif podfile_properties.key?('ios.flipper') then
+#   # Configure Flipper in Podfile.properties.json
+#   if podfile_properties['ios.flipper'] == 'true' then
+#     flipper_config = FlipperConfiguration.enabled(["Debug", "Release"])
+#   elsif podfile_properties['ios.flipper'] != 'false' then
+#     flipper_config = FlipperConfiguration.enabled(["Debug", "Release"], { 'Flipper' => podfile_properties['ios.flipper'] })
+#   end
+# end
 
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
+  
+  use_expo_modules!
   config = use_native_modules!
 
-  use_expo_modules!
+  # use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
+  # use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    # Note that if you have use_frameworks! enabled, Flipper will not work if enabled
+    # :flipper_configuration => flipper_config
+  )
+
   post_integrate do |installer|
     begin
       expo_patch_react_imports!(installer)
@@ -45,14 +65,6 @@ def all_pods
       Pod::UI.warn e
     end
   end
-
-  flags = get_default_flags()
-  
-  use_react_native!(
-    :path => config[:reactNativePath],
-    # :flipper_configuration => false, # flipper_config,
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
 end
 
 abstract_target 'defaults' do

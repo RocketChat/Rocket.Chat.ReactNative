@@ -11,6 +11,8 @@
 		<key>apiKey</key>
 		<string>apiKeyValue</string>
 	</dict>
+  <key>CADisableMinimumFrameDurationOnPhone</key>
+  <true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

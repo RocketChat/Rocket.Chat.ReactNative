@@ -5,30 +5,35 @@ PODS:
   - BVLinearGradient (2.6.2):
     - React-Core
   - DoubleConversion (1.1.6)
-  - EXAV (13.2.1):
+  - EXAV (13.10.5):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
-  - EXCamera (12.3.0):
+  - Expo (50.0.13):
     - ExpoModulesCore
-  - EXFileSystem (15.2.2):
+  - ExpoAppleAuthentication (6.3.0):
     - ExpoModulesCore
-  - Expo (48.0.9):
+  - ExpoCamera (14.1.1):
     - ExpoModulesCore
-  - ExpoAppleAuthentication (6.0.1):
+    - ZXingObjC/OneD
+    - ZXingObjC/PDF417
+  - ExpoFileSystem (16.0.8):
     - ExpoModulesCore
-  - ExpoHaptics (12.2.1):
+  - ExpoHaptics (12.8.1):
     - ExpoModulesCore
-  - ExpoKeepAwake (12.0.1):
+  - ExpoKeepAwake (12.8.2):
     - ExpoModulesCore
-  - ExpoLocalAuthentication (13.3.0):
+  - ExpoLocalAuthentication (13.8.0):
     - ExpoModulesCore
-  - ExpoModulesCore (1.2.6):
+  - ExpoModulesCore (1.11.12):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
     - React-Core
+    - React-NativeModulesApple
     - React-RCTAppDelegate
     - ReactCommon/turbomodule/core
-  - ExpoVideoThumbnails (7.2.1):
+  - ExpoVideoThumbnails (7.9.0):
     - ExpoModulesCore
-  - ExpoWebBrowser (12.1.1):
+  - ExpoWebBrowser (12.8.2):
     - ExpoModulesCore
   - FBLazyVector (0.73.6)
   - FBReactNativeSpec (0.73.6):
@@ -1297,6 +1302,11 @@ PODS:
     - React
     - React-jsi
   - Yoga (1.14.0)
+  - ZXingObjC/Core (3.6.9)
+  - ZXingObjC/OneD (3.6.9):
+    - ZXingObjC/Core
+  - ZXingObjC/PDF417 (3.6.9):
+    - ZXingObjC/Core
 
 DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
@@ -1304,10 +1314,10 @@ DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAV (from `../node_modules/expo-av/ios`)
-  - EXCamera (from `../node_modules/expo-camera/ios`)
-  - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
+  - ExpoCamera (from `../node_modules/expo-camera/ios`)
+  - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
@@ -1428,6 +1438,7 @@ SPEC REPOS:
     - SDWebImageWebPCoder
     - SocketRocket
     - TOCropViewController
+    - ZXingObjC
 
 EXTERNAL SOURCES:
   boost:
@@ -1440,14 +1451,14 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAV:
     :path: "../node_modules/expo-av/ios"
-  EXCamera:
-    :path: "../node_modules/expo-camera/ios"
-  EXFileSystem:
-    :path: "../node_modules/expo-file-system/ios"
   Expo:
     :path: "../node_modules/expo"
   ExpoAppleAuthentication:
     :path: "../node_modules/expo-apple-authentication/ios"
+  ExpoCamera:
+    :path: "../node_modules/expo-camera/ios"
+  ExpoFileSystem:
+    :path: "../node_modules/expo-file-system/ios"
   ExpoHaptics:
     :path: "../node_modules/expo-haptics/ios"
   ExpoKeepAwake:
@@ -1641,17 +1652,17 @@ SPEC CHECKSUMS:
   BugsnagReactNative: fa312f53a83ca21c0afdfeaec98a9c5eeb8fc4ed
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
-  EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
-  EXCamera: 9f8303a52b2027e007174c2068c2ac76ff41d974
-  EXFileSystem: 844e86ca9b5375486ecc4ef06d3838d5597d895d
-  Expo: 863488a600a4565698a79577117c70b170054d08
-  ExpoAppleAuthentication: 7bd5e4150d59e8df37aa80b425850ae88adf9e65
-  ExpoHaptics: 5156bc5160d8e04c170dd6e645a71154951a2ad9
-  ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
-  ExpoLocalAuthentication: 32919307c66fb3661caefa07e7811a95a7539d7b
-  ExpoModulesCore: e3cfba175e188841a075871b98bb1e7b002022b3
-  ExpoVideoThumbnails: 0021303b614a89fcc5df8b59d9d37ddf14a7d4cf
-  ExpoWebBrowser: 033d34c478d9986da2f1679729041423837626e0
+  EXAV: 07e50f934907fa8274dd06fbcd20ee4b9478c619
+  Expo: a7c9bd836cb7c86e699c2539a906c9ff873f19f8
+  ExpoAppleAuthentication: 4fc9972356977f009911f2f3a5f56319c2a5b11b
+  ExpoCamera: 53f5ef81bab088b2edcf94d05e4da3bc84f46383
+  ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
+  ExpoHaptics: 28a771b630353cd6e8dcf1b1e3e693e38ad7c3c3
+  ExpoKeepAwake: 0f5cad99603a3268e50af9a6eb8b76d0d9ac956c
+  ExpoLocalAuthentication: c55ffb179683efed04cb144fc80ccf26891f0cb4
+  ExpoModulesCore: 61dc57c6e2a35f2f84baf488146db624e03af4cd
+  ExpoVideoThumbnails: 9b6c0dada0b3240dd3527e0dc688711e17842c88
+  ExpoWebBrowser: e31c97230ea93b51a2a74c6c2381b0d4fca5698c
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864
   FBReactNativeSpec: 9f2b8b243131565335437dba74923a8d3015e780
   Firebase: 5f8193dff4b5b7c5d5ef72ae54bb76c08e2b841d
@@ -1760,7 +1771,8 @@ SPEC CHECKSUMS:
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   WatermelonDB: 6ae836b52d11281d87187ff2283480e44b111771
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
+  ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: a92da39e7b5d1d92dd0b8e49a712578a49d8cd16
+PODFILE CHECKSUM: 36c87187481d2bee9db250b2fff5ac8b083907e7
 
 COCOAPODS: 1.14.3
