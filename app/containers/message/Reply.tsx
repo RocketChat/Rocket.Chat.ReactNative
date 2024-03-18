@@ -223,9 +223,9 @@ const Reply = React.memo(
 			openLink(url, theme);
 		};
 
-		let { borderColor } = themes[theme];
+		let { strokeExtraLight } = themes[theme];
 		if (attachment.color) {
-			borderColor = attachment.color;
+			strokeExtraLight = attachment.color;
 		}
 
 		return (
@@ -239,7 +239,7 @@ const Reply = React.memo(
 						index > 0 && styles.marginTop,
 						msg && styles.marginBottom,
 						{
-							borderColor
+							borderColor: strokeExtraLight
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].surfaceNeutral)}

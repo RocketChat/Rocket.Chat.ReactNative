@@ -87,7 +87,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	};
 
 	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.strokeHighlight : null} />
+		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.strokeHighlight : ''} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (

@@ -46,7 +46,7 @@ interface ISelectListViewProps {
 class SelectListView extends React.Component<ISelectListViewProps, ISelectListViewState> {
 	private title: string;
 
-	private infoText: string;
+	private fontHint: string;
 
 	private nextAction: (selected: string[]) => void;
 

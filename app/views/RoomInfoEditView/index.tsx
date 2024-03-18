@@ -517,7 +517,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			encrypted
 		} = this.state;
 		const { serverVersion, encryptionEnabled, theme } = this.props;
-		const { dangerColor } = themes[theme];
+		const { buttonBackgroundDangerDefault, fontDanger } = themes[theme];
 
 		return (
 			<KeyboardView
@@ -723,13 +723,13 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									archived
 										? !permissions['unarchive-room'] && sharedStyles.opacity5
 										: !permissions['archive-room'] && sharedStyles.opacity5,
-									{ flex: 1, marginLeft: 10, borderColor: dangerColor }
+									{ flex: 1, marginLeft: 10, borderColor: buttonBackgroundDangerDefault }
 								]}
 								onPress={this.toggleArchive}
 								disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
 								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 							>
-								<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]}>
+								<Text style={[styles.button, styles.button_inverted, { color: fontDanger }]}>
 									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 								</Text>
 							</TouchableOpacity>
@@ -740,14 +740,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								styles.buttonContainer_inverted,
 								styles.buttonContainerLastChild,
 								styles.buttonDanger,
-								{ borderColor: dangerColor },
+								{ borderColor: buttonBackgroundDangerDefault },
 								!this.hasDeletePermission() && sharedStyles.opacity5
 							]}
 							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
 							testID='room-info-edit-view-delete'
 						>
-							<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]} accessibilityRole='button'>
+							<Text style={[styles.button, styles.button_inverted, { color: fontDanger }]} accessibilityRole='button'>
 								{I18n.t('DELETE')}
 							</Text>
 						</TouchableOpacity>

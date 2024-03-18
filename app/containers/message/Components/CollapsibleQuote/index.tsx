@@ -124,8 +124,8 @@ const CollapsibleQuote = React.memo(
 		};
 
 		let {
-			borderColor,
-			chatComponentBackground: backgroundColor,
+			strokeExtraLight,
+			surfaceTint: backgroundColor,
 			strokeLight,
 			strokeDark,
 			fontSecondaryInfo
@@ -134,7 +134,7 @@ const CollapsibleQuote = React.memo(
 		try {
 			if (attachment.color) {
 				backgroundColor = transparentize(attachment.color, 0.8);
-				borderColor = attachment.color;
+				strokeExtraLight = attachment.color;
 				strokeLight = attachment.color;
 				strokeDark = attachment.color;
 				fontSecondaryInfo = fontSecondaryInfo;
@@ -155,9 +155,9 @@ const CollapsibleQuote = React.memo(
 						{
 							backgroundColor,
 							borderLeftColor: strokeLight,
-							borderTopColor: borderColor,
-							borderRightColor: borderColor,
-							borderBottomColor: borderColor,
+							borderTopColor: strokeExtraLight,
+							borderRightColor: strokeExtraLight,
+							borderBottomColor: strokeExtraLight,
 							borderLeftWidth: 2
 						}
 					]}
