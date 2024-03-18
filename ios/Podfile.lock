@@ -1,6 +1,6 @@
 PODS:
   - boost (1.83.0)
-  - BugsnagReactNative (7.22.6):
+  - BugsnagReactNative (7.19.0):
     - React-Core
   - BVLinearGradient (2.6.2):
     - React-Core
@@ -1216,7 +1216,7 @@ PODS:
     - React
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNBootSplash (4.7.5):
+  - RNBootSplash (4.6.0):
     - React-Core
   - RNCAsyncStorage (1.17.11):
     - React-Core
@@ -1247,7 +1247,7 @@ PODS:
     - Firebase/Crashlytics (= 8.15.0)
     - React-Core
     - RNFBApp
-  - RNFileViewer (2.1.5):
+  - RNFileViewer (2.1.4):
     - React-Core
   - RNGestureHandler (2.15.0):
     - glog
@@ -1638,7 +1638,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  BugsnagReactNative: 366a7e11c0bcf34842e54f40b15dd937cb267aa7
+  BugsnagReactNative: fa312f53a83ca21c0afdfeaec98a9c5eeb8fc4ed
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXAV: f1f69397ecdcf44cfacd4ff5d338cd1b96891e87
@@ -1731,7 +1731,7 @@ SPEC CHECKSUMS:
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNBootSplash: 85f6b879c080e958afdb4c62ee04497b05fd7552
+  RNBootSplash: 91e0c16bfc96703cb5b0562785b9a8cbfeb298fe
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
   RNCMaskedView: bc0170f389056201c82a55e242e5d90070e18e5a
@@ -1743,7 +1743,7 @@ SPEC CHECKSUMS:
   RNFBAnalytics: 091c8adcbb0da1e1680ce434fc6e8a0a501fe2e6
   RNFBApp: b1b5a80a676a07dea17e778bda7c1e8b69b2f5ec
   RNFBCrashlytics: 357955a1564721ca9001960e57b395c6a319f9be
-  RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
+  RNFileViewer: 83cc066ad795b1f986791d03b56fe0ee14b6a69f
   RNGestureHandler: 67fb54b3e6ca338a8044e85cd6f340265aa41091
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
