@@ -627,7 +627,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#2f343d",
+                    "color": "#2F343D",
                   },
                   Object {
                     "backgroundColor": "transparent",
@@ -1045,7 +1045,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#2f343d",
+                    "color": "#2F343D",
                   },
                   Object {
                     "backgroundColor": "transparent",
@@ -1222,7 +1222,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#2f343d",
+                    "color": "#2F343D",
                   },
                   Object {
                     "backgroundColor": "transparent",
@@ -1640,7 +1640,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#2f343d",
+                    "color": "#2F343D",
                   },
                   Object {
                     "backgroundColor": "transparent",
@@ -1817,7 +1817,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "textAlign": "left",
                   },
                   Object {
-                    "color": "#2f343d",
+                    "color": "#2F343D",
                   },
                   Object {
                     "backgroundColor": "transparent",

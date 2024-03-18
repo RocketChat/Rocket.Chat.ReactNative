@@ -480,7 +480,7 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.68.7)
   - ReactNativeART (1.2.0):
     - React
-  - ReactNativeUiLib (3.0.4):
+  - ReactNativeUiLib (4.0.0):
     - React
   - rn-extensions-share (2.4.1):
     - React
@@ -960,7 +960,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 18932e685b4893be88d1efc18f5f8ca1c9cd39d8
   ReactCommon: 29bb6fad3242e30e9d049bc9d592736fa3da9e50
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
-  ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
+  ReactNativeUiLib: 511a5eb03809a0b27f6aefa2b4d6f7c2d6ae4053
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: 7e91ea56c7010aae487489789dbe212e8c905a0c
