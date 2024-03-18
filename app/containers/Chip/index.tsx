@@ -49,7 +49,7 @@ const Chip = ({ avatar, text, onPress, testID, style }: IChip) => {
 			style={({ pressed }) => [
 				styles.pressable,
 				{
-					backgroundColor: pressed ? colors.bannerBackground : colors.auxiliaryBackground
+					backgroundColor: pressed ? colors.bannerBackground : colors.surfaceHover
 				},
 				style
 			]}

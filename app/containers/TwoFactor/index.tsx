@@ -136,7 +136,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 						<Button
 							title={I18n.t('Cancel')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
+							backgroundColor={themes[theme].surfaceTint}
 							style={styles.button}
 							onPress={onCancel}
 						/>

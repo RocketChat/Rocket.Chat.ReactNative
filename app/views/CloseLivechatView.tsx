@@ -73,7 +73,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.auxiliaryBackground }}
+			style={{ backgroundColor: colors.surfaceHover }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>

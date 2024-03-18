@@ -77,7 +77,7 @@ const ForwardMessageView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.auxiliaryBackground }}
+			style={{ backgroundColor: colors.surfaceHover }}
 			contentContainerStyle={styles.container}
 			keyboardVerticalOffset={128}
 		>

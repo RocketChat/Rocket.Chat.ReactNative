@@ -54,7 +54,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 				testID='sv-warn-button'
 				title='Learn more'
 				type='secondary'
-				backgroundColor={colors.chatComponentBackground}
+				backgroundColor={colors.surfaceTint}
 				onPress={() => Linking.openURL(message.link || LEARN_MORE_URL)}
 			/>
 		</View>

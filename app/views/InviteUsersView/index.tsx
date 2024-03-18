@@ -88,7 +88,7 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }}>
 			<ScrollView
 				{...scrollPersistTaps}
-				style={{ backgroundColor: colors.auxiliaryBackground }}
+				style={{ backgroundColor: colors.surfaceHover }}
 				showsVerticalScrollIndicator={false}
 			>
 				<StatusBar />

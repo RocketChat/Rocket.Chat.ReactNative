@@ -183,7 +183,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			style={{ backgroundColor: themes[theme].surfaceHover }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>

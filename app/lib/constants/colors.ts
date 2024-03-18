@@ -189,11 +189,11 @@ const newColorsDark = {
 
 const newColorsBlack = {
 	surfaceLight: '#0d0d0d',
-	// surfaceTint: '#1F2329',
-	surfaceRoom: '#000000'
+	surfaceTint: '#16181a',
+	surfaceRoom: '#000000',
 	// surfaceNeutral: '#2D3039',
 	// surfaceDisabled: '#24272E',
-	// surfaceHover: '#1A1E23',
+	surfaceHover: '#080808',
 	// surfaceSelected: '#3C3F44',
 	// surfaceDark: '#E4E7EA',
 	// surfaceFeatured: '#5F1477',
@@ -282,8 +282,6 @@ const newColorsBlack = {
 export const colors = {
 	light: {
 		...newColors,
-		chatComponentBackground: '#f3f4f5',
-		auxiliaryBackground: '#efeff4',
 		bannerBackground: '#f1f2f4',
 		bodyText: '#2f343d',
 		dangerColor: '#f5455c',
@@ -344,8 +342,6 @@ export const colors = {
 	},
 	dark: {
 		...newColorsDark,
-		chatComponentBackground: '#192132',
-		auxiliaryBackground: '#07101e',
 		bannerBackground: '#0e1f38',
 		bodyText: '#cbced1',
 		dangerColor: '#f5455c',
@@ -406,8 +402,6 @@ export const colors = {
 	},
 	black: {
 		...newColorsDark,
-		chatComponentBackground: '#16181a',
-		auxiliaryBackground: '#080808',
 		bannerBackground: '#1f2329',
 		bodyText: '#cbced1',
 		dangerColor: '#f5455c',

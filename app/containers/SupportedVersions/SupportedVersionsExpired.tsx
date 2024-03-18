@@ -58,7 +58,7 @@ export const SupportedVersionsExpired = () => {
 			<Button
 				title={I18n.t('Learn_more')}
 				type='secondary'
-				backgroundColor={colors.chatComponentBackground}
+				backgroundColor={colors.surfaceTint}
 				onPress={() => Linking.openURL(LEARN_MORE_URL)}
 			/>
 		</View>

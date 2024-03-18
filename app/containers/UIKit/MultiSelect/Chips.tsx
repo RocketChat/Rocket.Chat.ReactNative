@@ -29,7 +29,7 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 		<Touchable
 			key={item.value}
 			onPress={() => onSelect(item)}
-			style={[styles.chip, { backgroundColor: colors.auxiliaryBackground }, style]}
+			style={[styles.chip, { backgroundColor: colors.surfaceHover }, style]}
 			background={Touchable.Ripple(colors.bannerBackground)}
 			testID={`multi-select-chip-${item.value}`}
 		>

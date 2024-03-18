@@ -105,7 +105,7 @@ const JoinCode = React.memo(
 								title={I18n.t('Cancel')}
 								type='secondary'
 								style={styles.button}
-								backgroundColor={themes[theme].chatComponentBackground}
+								backgroundColor={themes[theme].surfaceTint}
 								testID='join-code-cancel'
 								onPress={hide}
 							/>

@@ -123,7 +123,7 @@ const Url = React.memo(
 					index > 0 && styles.marginTop,
 					styles.container,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
+						backgroundColor: themes[theme].surfaceTint,
 						borderColor: themes[theme].borderColor
 					},
 					imageLoadedState === 'loading' && styles.loading

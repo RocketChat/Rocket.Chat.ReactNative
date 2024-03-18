@@ -85,7 +85,7 @@ const WorkspaceView = () => {
 					<Button
 						title={I18n.t('Create_account')}
 						type='secondary'
-						backgroundColor={colors.chatComponentBackground}
+						backgroundColor={colors.surfaceTint}
 						onPress={register}
 						testID='workspace-view-register'
 					/>
