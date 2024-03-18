@@ -58,11 +58,14 @@ export const navigateToVirtualHappyHour = async (Navigation: any, isMasterDetail
 		const query = await subsCollection.query(Q.where('name', TECH_SUPPORT_USERNAME)).fetch();
 		if (query.length > 0) {
 			const room = query[0]
-				await Navigation.navigate('RoomView', { tmid: room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT });
+			await Navigation.navigate('RoomView');
+      goRoom({item: room, isMasterDetail: true})
 		} else {
 			const result = await Services.createDirectMessage(TECH_SUPPORT_USERNAME);
 			if (result.success) {
-				await Navigation.navigate('RoomView', { tmid: result.room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT });
+        const item = { tmid: result.room?._id, name: TECH_SUPPORT_USERNAME, t: SubscriptionType.DIRECT };
+				await Navigation.navigate('RoomView');
+        goRoom({item, isMasterDetail: true})
 			}
 		}
 	} catch (e) {
