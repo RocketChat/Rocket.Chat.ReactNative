@@ -126,8 +126,8 @@ const CollapsibleQuote = React.memo(
 		let {
 			borderColor,
 			chatComponentBackground: backgroundColor,
-			collapsibleQuoteBorder,
-			collapsibleChevron,
+			strokeLight,
+			strokeDark,
 			headerTintColor
 		} = themes[theme];
 
@@ -135,8 +135,8 @@ const CollapsibleQuote = React.memo(
 			if (attachment.color) {
 				backgroundColor = transparentize(attachment.color, 0.8);
 				borderColor = attachment.color;
-				collapsibleQuoteBorder = attachment.color;
-				collapsibleChevron = attachment.color;
+				strokeLight = attachment.color;
+				strokeDark = attachment.color;
 				headerTintColor = headerTintColor;
 			}
 		} catch (e) {
@@ -154,7 +154,7 @@ const CollapsibleQuote = React.memo(
 						attachment.description && styles.marginBottom,
 						{
 							backgroundColor,
-							borderLeftColor: collapsibleQuoteBorder,
+							borderLeftColor: strokeLight,
 							borderTopColor: borderColor,
 							borderRightColor: borderColor,
 							borderBottomColor: borderColor,
@@ -172,7 +172,7 @@ const CollapsibleQuote = React.memo(
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
-							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={collapsibleChevron} />
+							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeDark} />
 						</View>
 					</View>
 				</Touchable>

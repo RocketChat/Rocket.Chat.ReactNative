@@ -6,7 +6,7 @@ import sharedStyles from '../../../../views/Styles';
 export default function useStyle() {
 	const { colors } = useTheme();
 	const style = StyleSheet.create({
-		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.conferenceCallBorder },
+		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.surfaceHover },
 		callInfoContainer: { flex: 1, alignItems: 'center', paddingLeft: 16, flexDirection: 'row' },
 		infoContainerText: {
 			fontSize: 12,
@@ -23,7 +23,7 @@ export default function useStyle() {
 		},
 		callToActionContainer: {
 			height: 48,
-			backgroundColor: colors.conferenceCallBackground,
+			backgroundColor: colors.surfaceTint,
 			flexDirection: 'row',
 			alignItems: 'center',
 			paddingLeft: 16
@@ -36,7 +36,7 @@ export default function useStyle() {
 		callToActionCallBackText: {
 			fontSize: 12,
 			...sharedStyles.textSemibold,
-			color: colors.conferenceCallCallBackText
+			color: colors.surfaceDark
 		},
 		callToActionButton: {
 			backgroundColor: colors.tintColor,
@@ -57,7 +57,7 @@ export default function useStyle() {
 		plusUsers: {
 			width: 28,
 			height: 28,
-			backgroundColor: colors.conferenceCallPlusUsersButton,
+			backgroundColor: colors.surfaceNeutral,
 			borderRadius: 4,
 			alignItems: 'center',
 			justifyContent: 'center'
@@ -65,7 +65,7 @@ export default function useStyle() {
 		plusUsersText: {
 			fontSize: 14,
 			...sharedStyles.textSemibold,
-			color: colors.conferenceCallPlusUsersText,
+			color: colors.strokeDark,
 			alignSelf: 'center'
 		},
 		callBack: {
@@ -74,7 +74,7 @@ export default function useStyle() {
 			color: colors.strokeDark
 		},
 		callToActionCallBack: {
-			backgroundColor: colors.conferenceCallPlusUsersButton,
+			backgroundColor: colors.surfaceNeutral,
 			minWidth: 50,
 			alignItems: 'center',
 			justifyContent: 'center',
@@ -89,7 +89,7 @@ export default function useStyle() {
 			color: colors.strokeDark
 		},
 		enabledBackground: {
-			backgroundColor: colors.conferenceCallEnabledIconBackground
+			backgroundColor: colors.strokeHighlight
 		}
 	});
 

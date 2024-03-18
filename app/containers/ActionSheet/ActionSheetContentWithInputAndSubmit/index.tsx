@@ -48,7 +48,7 @@ const FooterButtons = ({
 	return (
 		<View style={styles.footerButtonsContainer}>
 			<Button
-				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.cancelButton }]}
+				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }]}
 				color={colors.backdropColor}
 				title={cancelTitle}
 				onPress={cancelAction}
