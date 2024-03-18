@@ -75,13 +75,6 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 		return null;
 	};
 
-	const getReplies = async () => {
-		const repliesList = await loadThreadMessages({ tmid: id, rid: rid });
-		if (repliesList) {
-			setReplyList(repliesList);
-		}
-	};
-
 	useEffect(() => {
 		if (item) {
 			setIsSaved(starred);
@@ -103,7 +96,6 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 				setLikeCount(count);
 				setHasLiked(likedReaction ? true : false);
 			}
-			getReplies();
 		}
 	}, [item]);
 
