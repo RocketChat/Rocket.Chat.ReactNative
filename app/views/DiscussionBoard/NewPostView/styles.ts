@@ -62,13 +62,26 @@ const styles = StyleSheet.create({
 	descriptionContainer: {
 		marginTop: 12
 	},
+	mediaContainer: {
+		marginTop: 20,
+		alignItems: 'center',
+		borderWidth: 1,
+		borderRadius: 10,
+		borderColor: '#CB007B',
+		borderStyle: 'dotted',
+		padding: 10,
+	},
+	mediaText: {
+		color: '#CB007B',
+		fontSize: 12
+	},
 	selectImageContainer: {},
 	bannerImage: {
 		borderRadius: 20
 	},
 	selectImage: {
-		height: 24,
-		width: 20
+		height: 26.67,
+    	width: 21.33
 	},
 	buttonContainer: {
 		position: 'absolute',
