@@ -20,7 +20,7 @@ export const getUnreadStyle = ({
 	}
 
 	let backgroundColor = themes[theme].fontAnnotation;
-	const color = themes[theme].buttonText;
+	const color = themes[theme].fontWhite;
 	if ((userMentions && userMentions > 0) || tunreadUser?.length) {
 		backgroundColor = themes[theme].badgeBackgroundLevel4;
 	} else if ((groupMentions && groupMentions > 0) || tunreadGroup?.length) {

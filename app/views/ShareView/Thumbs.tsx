@@ -103,7 +103,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbConten
 		return (
 			<>
 				<Image source={{ uri }} style={styles.thumb} />
-				<CustomIcon name='camera-filled' size={20} color={themes[theme].buttonText} style={styles.videoThumbIcon} />
+				<CustomIcon name='camera-filled' size={20} color={themes[theme].fontWhite} style={styles.videoThumbIcon} />
 			</>
 		);
 	}

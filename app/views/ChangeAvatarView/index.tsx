@@ -222,7 +222,7 @@ const ChangeAvatarView = () => {
 						title={I18n.t('Take_a_photo')}
 						type='secondary'
 						disabled={saving}
-						backgroundColor={colors.editAndUploadButtonAvatar}
+						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						onPress={() => pickImage(true)}
 						testID='change-avatar-view-take-a-photo'
 					/>
@@ -230,7 +230,7 @@ const ChangeAvatarView = () => {
 						title={I18n.t('Upload_image')}
 						type='secondary'
 						disabled={saving}
-						backgroundColor={colors.editAndUploadButtonAvatar}
+						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						onPress={pickImage}
 						testID='change-avatar-view-upload-image'
 					/>

@@ -693,7 +693,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							disabled={!this.formIsChanged()}
 							testID='room-info-edit-view-submit'
 						>
-							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityRole='button'>
+							<Text style={[styles.button, { color: themes[theme].fontWhite }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
 						</TouchableOpacity>

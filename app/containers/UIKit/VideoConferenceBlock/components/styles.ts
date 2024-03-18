@@ -31,7 +31,7 @@ export default function useStyle() {
 		callToActionButtonText: {
 			fontSize: 12,
 			...sharedStyles.textSemibold,
-			color: colors.buttonText
+			color: colors.fontWhite
 		},
 		callToActionCallBackText: {
 			fontSize: 12,

@@ -50,7 +50,7 @@ const CannedResponseItem = ({
 			<View style={styles.cannedTagContainer}>
 				{tags?.length > 0
 					? tags.map(t => (
-							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
+							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
 								<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
 							</View>
 					  ))

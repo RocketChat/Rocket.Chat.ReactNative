@@ -16,7 +16,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].fontAnnotation,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -27,7 +27,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].fontInfo,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -39,7 +39,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].badgeBackgroundLevel4,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -51,7 +51,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].badgeBackgroundLevel3,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -65,7 +65,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].badgeBackgroundLevel4,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 		expect(
 			getUnreadStyleUtil({
@@ -75,7 +75,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].badgeBackgroundLevel3,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 		expect(
 			getUnreadStyleUtil({
@@ -84,7 +84,7 @@ const testsForTheme = theme => {
 			})
 		).toEqual({
 			backgroundColor: themes[theme].fontInfo,
-			color: themes[theme].buttonText
+			color: themes[theme].fontWhite
 		});
 	});
 };

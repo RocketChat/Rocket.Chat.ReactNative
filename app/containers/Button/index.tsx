@@ -50,7 +50,7 @@ const Button = ({
 	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
 
-	let textColor = isPrimary ? colors.buttonText : colors.bodyText;
+	let textColor = isPrimary ? colors.fontWhite : colors.bodyText;
 	if (color) {
 		textColor = color;
 	}

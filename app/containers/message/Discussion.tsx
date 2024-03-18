@@ -34,8 +34,8 @@ const Discussion = React.memo(
 						hitSlop={BUTTON_HIT_SLOP}
 					>
 						<>
-							<CustomIcon name='discussions' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
-							<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{buttonText}</Text>
+							<CustomIcon name='discussions' size={16} style={styles.buttonIcon} color={themes[theme].fontWhite} />
+							<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{buttonText}</Text>
 						</>
 					</Touchable>
 					<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>

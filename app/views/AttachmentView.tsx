@@ -121,20 +121,20 @@ const AttachmentView = (): React.ReactElement => {
 		const options: StackNavigationOptions = {
 			title: title || '',
 			headerTitleAlign: 'center',
-			headerTitleStyle: { color: colors.previewTintColor },
-			headerTintColor: colors.previewTintColor,
+			headerTitleStyle: { color: colors.surfaceTint },
+			headerTintColor: colors.surfaceTint,
 			headerTitleContainerStyle: { flex: 1, maxWidth: undefined },
 			headerLeftContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
-				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.previewTintColor} />
+				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.surfaceTint} />
 			),
 			headerRight: () =>
 				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url) ? (
-					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.previewTintColor} />
+					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.surfaceTint} />
 				) : null,
 			headerBackground: () => (
-				<HeaderBackground style={{ backgroundColor: colors.previewBackground, shadowOpacity: 0, elevation: 0 }} />
+				<HeaderBackground style={{ backgroundColor: colors.surfaceDark, shadowOpacity: 0, elevation: 0 }} />
 			)
 		};
 		navigation.setOptions(options);
@@ -192,7 +192,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
-			<StatusBar barStyle='light-content' backgroundColor={colors.previewBackground} />
+			<StatusBar barStyle='light-content' backgroundColor={colors.surfaceDark} />
 			<RenderContent attachment={attachment} setLoading={setLoading} />
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>

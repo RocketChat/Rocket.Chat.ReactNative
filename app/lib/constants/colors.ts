@@ -1,5 +1,4 @@
 const fixedColors = {
-	overlayColor: '#1F2329CC',
 	backdropColor: '#000000'
 };
 
@@ -251,7 +250,7 @@ const newColorsBlack = {
 	buttonBackgroundPrimaryPress: '#245399',
 	buttonBackgroundPrimaryDisabled: '#1D3963',
 
-	buttonBackgroundSecondaryDefault: '#2F343D',
+	buttonBackgroundSecondaryDefault: '#0E0D0D',
 	buttonBackgroundSecondaryPress: '#454C59',
 	buttonBackgroundSecondaryDisabled: '#2F343D',
 
@@ -305,12 +304,7 @@ export const colors = {
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
-		searchboxBackground: '#E6E6E7',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff',
-		editAndUploadButtonAvatar: '#E4E7EA',
-		previewBackground: '#1F2329',
-		previewTintColor: '#f9f9f9',
 		backdropOpacity: 0.3,
 		attachmentLoadingOpacity: 0.7,
 	},
@@ -339,12 +333,7 @@ export const colors = {
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
-		searchboxBackground: '#192d4d',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff',
-		editAndUploadButtonAvatar: '#0B182C',
-		previewBackground: '#030b1b',
-		previewTintColor: '#f9f9f9',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
 	black: {
@@ -372,12 +361,7 @@ export const colors = {
 		videoBackground: '#1f2329',
 		favoriteBackground: '#ffbb00',
 		hideBackground: '#54585e',
-		searchboxBackground: '#1f1f1f',
 		buttonBackground: '#414852',
-		buttonText: '#ffffff',
-		editAndUploadButtonAvatar: '#0E0D0D',
-		previewBackground: '#000000',
-		previewTintColor: '#f9f9f9',
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3,
 	},
