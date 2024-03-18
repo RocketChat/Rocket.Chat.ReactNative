@@ -338,7 +338,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						testID='search-message-view-input'
 					/>
 					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
-					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
+					<View style={[styles.divider, { backgroundColor: themes[theme].strokeLight }]} />
 				</View>
 				{this.renderList()}
 			</SafeAreaView>

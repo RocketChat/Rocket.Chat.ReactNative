@@ -14,7 +14,7 @@ export const useStyle = () => {
 			borderWidth: StyleSheet.hairlineWidth,
 			borderRadius: 4,
 			backgroundColor: colors.surfaceLight,
-			borderColor: colors.separatorColor,
+			borderColor: colors.strokeLight,
 			flex: 1
 		},
 		small: {

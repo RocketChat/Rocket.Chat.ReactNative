@@ -221,7 +221,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
+					tintColor={themes[theme].fontSecondaryInfo}
 					testID='header-back'
 				/>
 			),

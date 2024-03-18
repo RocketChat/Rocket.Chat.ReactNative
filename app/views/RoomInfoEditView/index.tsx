@@ -649,7 +649,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						{room.broadcast
 							? [
 									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
-									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+									<View style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
 							  ]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
@@ -686,7 +686,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
-								{ backgroundColor: themes[theme].buttonBackground },
+								{ backgroundColor: themes[theme].buttonBackgroundSecondaryDefault },
 								!this.formIsChanged() && styles.buttonContainerDisabled
 							]}
 							onPress={this.submit}
@@ -734,7 +734,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								</Text>
 							</TouchableOpacity>
 						</View>
-						<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+						<View style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer_inverted,

@@ -130,7 +130,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.pop()}
-					tintColor={colors.headerTintColor}
+					tintColor={colors.fontSecondaryInfo}
 					testID='header-back'
 				/>
 			),

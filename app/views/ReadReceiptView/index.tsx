@@ -158,7 +158,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 						styles.list,
 						{
 							backgroundColor: themes[theme].surfaceTint,
-							borderColor: themes[theme].separatorColor
+							borderColor: themes[theme].strokeLight
 						}
 					]}
 					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].fontSecondaryInfo} />}

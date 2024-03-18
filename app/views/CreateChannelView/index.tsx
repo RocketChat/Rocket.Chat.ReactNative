@@ -147,7 +147,7 @@ const CreateChannelView = () => {
 			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={[styles.containerTextInput, { borderColor: colors.separatorColor }]}>
+					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							testID='create-channel-name'
@@ -179,7 +179,7 @@ const CreateChannelView = () => {
 									styles.list,
 									{
 										backgroundColor: colors.surfaceRoom,
-										borderColor: colors.separatorColor
+										borderColor: colors.strokeLight
 									}
 								]}
 								contentContainerStyle={styles.invitedList}

@@ -33,7 +33,7 @@ const HeaderExample = ({ left, right, colors, title = '' }: IHeader) => (
 		title={title}
 		headerLeft={left}
 		headerRight={right}
-		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.headerBackground }} />}
+		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.surfaceNeutral }} />}
 	/>
 );
 

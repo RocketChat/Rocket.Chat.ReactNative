@@ -77,12 +77,12 @@ const Header = React.memo(
 			<View style={styles.container}>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 					<View style={styles.button}>
-						<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{serverName}
 						</Text>
 						<CustomIcon
 							name='chevron-down'
-							color={colors.headerTintColor}
+							color={colors.fontSecondaryInfo}
 							style={[showServerDropdown && styles.upsideDown]}
 							size={18}
 						/>

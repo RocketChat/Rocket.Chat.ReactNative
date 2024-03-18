@@ -21,6 +21,8 @@ import I18n from '../../i18n';
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
+const starColor = '#f5d100';
+
 export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
@@ -118,14 +120,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					styles.actionRightButtonContainer,
 					{
 						width,
-						backgroundColor: colors.favoriteBackground,
+						backgroundColor: starColor,
 						left: '100%'
 					},
 					viewHeight,
 					animatedFavStyles
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.favoriteBackground }]} onPress={toggleFav}>
+				<RectButton style={[styles.actionButton, { backgroundColor: starColor }]} onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name={favorite ? 'star-filled' : 'star'}
@@ -138,14 +140,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					styles.actionRightButtonContainer,
 					{
 						width: width * 2,
-						backgroundColor: colors.hideBackground,
+						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
 					isCondensed && { height: ROW_HEIGHT_CONDENSED },
 					animatedHideStyles
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.hideBackground }]} onPress={onHidePress}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]} onPress={onHidePress}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name='unread-on-top-disabled'

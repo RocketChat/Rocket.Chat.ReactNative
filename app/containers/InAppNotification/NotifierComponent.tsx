@@ -104,7 +104,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				isMasterDetail && styles.small,
 				{
 					backgroundColor: themes[theme].surfaceLight,
-					borderColor: themes[theme].separatorColor,
+					borderColor: themes[theme].strokeLight,
 					marginTop: insets.top
 				}
 			]}

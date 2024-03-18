@@ -219,7 +219,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						style={[
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].separatorColor }
+							{ borderColor: themes[theme].strokeLight }
 						]}
 					>
 						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
@@ -244,7 +244,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].separatorColor
+				borderColor: themes[theme].strokeLight
 			};
 		}
 

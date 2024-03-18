@@ -51,7 +51,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 	const pickerStyle = {
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
-		borderColor: themes[theme].separatorColor,
+		borderColor: themes[theme].strokeLight,
 		backgroundColor: themes[theme].surfaceRoom
 	};
 

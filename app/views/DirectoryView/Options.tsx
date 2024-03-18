@@ -98,7 +98,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 							style={[
 								styles.dropdownContainerHeader,
 								styles.dropdownItemContainer,
-								{ borderColor: themes[theme].separatorColor }
+								{ borderColor: themes[theme].strokeLight }
 							]}
 						>
 							<Text style={[styles.dropdownToggleText, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Search_by')}</Text>
@@ -115,7 +115,7 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 					{this.renderItem('teams')}
 					{isFederationEnabled ? (
 						<>
-							<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
+							<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].strokeLight }]} />
 							<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 								<View style={styles.globalUsersTextContainer}>
 									<Text style={[styles.dropdownItemText, { color: themes[theme].infoText }]}>

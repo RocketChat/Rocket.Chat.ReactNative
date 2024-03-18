@@ -66,7 +66,7 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 				)}
 			</View>
 			{children}
-			<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+			<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
 		</>
 	)
 );

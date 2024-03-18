@@ -224,7 +224,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable
 				onPress={onPress}
-				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
+				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
 				background={Touchable.Ripple(themes[theme].bannerBackground)}
 			>
 				<Thumbnail loading={loading} cached={cached} />

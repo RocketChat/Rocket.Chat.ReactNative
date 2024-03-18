@@ -53,7 +53,7 @@ export const setNativeTheme = async (themePreferences: IThemePreference): Promis
 		const iconsLight = theme === 'light';
 		try {
 			// The late param as default is true @ react-native-navigation-bar-color/src/index.js line 8
-			await changeNavigationBarColor(themes[theme].navbarBackground, iconsLight, true);
+			await changeNavigationBarColor(themes[theme].surfaceLight, iconsLight, true);
 		} catch (error) {
 			// Do nothing
 		}

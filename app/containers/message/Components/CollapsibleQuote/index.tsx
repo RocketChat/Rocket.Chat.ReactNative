@@ -128,7 +128,7 @@ const CollapsibleQuote = React.memo(
 			chatComponentBackground: backgroundColor,
 			strokeLight,
 			strokeDark,
-			headerTintColor
+			fontSecondaryInfo
 		} = themes[theme];
 
 		try {
@@ -137,7 +137,7 @@ const CollapsibleQuote = React.memo(
 				borderColor = attachment.color;
 				strokeLight = attachment.color;
 				strokeDark = attachment.color;
-				headerTintColor = headerTintColor;
+				fontSecondaryInfo = fontSecondaryInfo;
 			}
 		} catch (e) {
 			// fallback to default
@@ -167,7 +167,7 @@ const CollapsibleQuote = React.memo(
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
-								<Text style={[styles.title, { color: headerTintColor }]}>{attachment.title}</Text>
+								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 							</View>
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
