@@ -74,7 +74,7 @@ const DirectoryItem = ({
 					) : null}
 				</View>
 				<DirectoryItemLabel text={rightLabel} theme={theme} />
-				<CustomIcon name={Platform.OS === 'ios' ? 'chevron-right' : 'clock'} size={36} color='#38b000' />
+				<CustomIcon name={'chevron-right'} size={36} color='#38b000' />
 			</View>
 		</Touch>
 	);
