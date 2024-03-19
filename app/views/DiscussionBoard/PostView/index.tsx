@@ -88,9 +88,12 @@ const PostView: React.FC = ({ route }) => {
 	useEffect(() => {
 		const post = route.params?.item;
 		if (post) {
-			setPostUser(post._raw.u);
+			// Parse post._raw.u if it's a stringified JSON
+			const postUser = typeof post._raw.u === 'string' ? JSON.parse(post._raw.u) : post._raw.u;
+			setPostUser(postUser);
 			setPost(post._raw);
 			setDescription(post?._raw?.msg);
+
 			const attachments = post?._raw?.attachments;
 			if (typeof attachments !== 'string' && attachments?.length > 0) {
 				const banner = formatAttachmentUrl(attachments[0].image_url, user.id, user.token, server);
@@ -102,11 +105,13 @@ const PostView: React.FC = ({ route }) => {
 					setBannerHeight(bannerContainerHeight);
 				});
 			}
-			if (post?._raw?.u?._id === user.id) {
+
+			if (postUser._id === user.id) {
 				setOwnPost(true);
 			}
+
 			loadComments();
-			checkPermission(post?._raw?.u?._id === user.id);
+			checkPermission(postUser._id === user.id);
 
 			const reactions = post?._raw?.reactions;
 			if (reactions && typeof reactions !== 'string') {
@@ -120,7 +125,7 @@ const PostView: React.FC = ({ route }) => {
 				setPostLiked(likedReaction);
 			}
 		}
-	}, [route.params]);
+	}, [route.params, user.id, user.token, user.username, server]);
 
 	const getCustomEmoji = (name: string) => {
 		const emoji = customEmojis[name];
