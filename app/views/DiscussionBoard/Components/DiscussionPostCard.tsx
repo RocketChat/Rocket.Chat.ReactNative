@@ -27,7 +27,9 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	const server = useSelector((state: IApplicationState) => state.server.server);
 
 	// const { theme } = useTheme();
-	const theme = 'light';
+    const theme = 'light'
+
+	const styles = makeStyles(theme, themes);
 
 	const { title, starPost, _raw, onPress, roomId } = item;
 	const { msg, id, ts, u: userObject, urls, attachments, replies, reactions, starred, rid } = _raw;
@@ -137,7 +139,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 					<Markdown
 						msg={`${description?.slice(0, 300)}${description?.length > 300 ? '...' : ''}`}
 						// style={[isReply && style]}
-						// style={[styles.description]}
+						style={[styles.description]}
 						username={user.username}
 						getCustomEmoji={getCustomEmoji}
 						theme={theme}
@@ -165,8 +167,8 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 });
 
 export default withTheme(DiscussionPostCard);
-
-const styles = StyleSheet.create({
+const makeStyles = (theme: string, themes: any) =>
+	StyleSheet.create({
 	container: {
 		width: '100%',
 		elevation: 1,
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
 		fontSize: 12,
 		lineHeight: 15,
 		marginTop: 4,
-		color: '#000000b3'
+	    color: themes[theme].bodyText
 	},
 	actionContainer: {
 		width: '100%',

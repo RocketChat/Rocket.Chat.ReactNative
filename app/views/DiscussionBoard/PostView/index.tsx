@@ -426,7 +426,7 @@ const PostView: React.FC = ({ route }) => {
 								<Markdown
 									msg={description}
 									// style={[isReply && style]}
-									// style={[styles.description]}
+									style={[styles.description]}
 									username={postUser?.username}
 									getCustomEmoji={getCustomEmoji}
 									theme={theme}
