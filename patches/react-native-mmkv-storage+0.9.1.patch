@@ -2,7 +2,7 @@ diff --git a/node_modules/react-native-mmkv-storage/ios/MMKVNative.mm b/node_mod
 index 9af089d..12ff53b 100644
 --- a/node_modules/react-native-mmkv-storage/ios/MMKVNative.mm
 +++ b/node_modules/react-native-mmkv-storage/ios/MMKVNative.mm
-@@ -37,12 +37,43 @@ - (instancetype)init
+@@ -37,12 +37,43 @@ RCT_EXPORT_MODULE()
          rPath = rootDir;
          _secureStorage = [[SecureStorage alloc] init];
          [MMKV initializeMMKV:rootDir];
@@ -50,7 +50,7 @@ diff --git a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m b/node_m
 index dbea26b..2483375 100644
 --- a/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
 +++ b/node_modules/react-native-mmkv-storage/ios/SecureStorage.m
-@@ -40,14 +40,14 @@ - (NSString *) getSecureKey:(NSString *)key
+@@ -40,14 +40,14 @@ NSString *serviceName = nil;
      @try {
          [self handleAppUninstallation];
          NSString *value = [self searchKeychainCopyMatching:key];
@@ -73,7 +73,7 @@ index dbea26b..2483375 100644
          if (value == nil) {
              NSString* errorMessage = @"key does not present";
            
-@@ -100,6 +100,9 @@ - (void) removeSecureKey:(NSString *)key
+@@ -100,6 +100,9 @@ NSString *serviceName = nil;
  
  - (NSMutableDictionary *)newSearchDictionary:(NSString *)identifier {
      NSMutableDictionary *searchDictionary = [[NSMutableDictionary alloc] init];
