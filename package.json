@@ -32,7 +32,7 @@
 		"@codler/react-native-keyboard-aware-scroll-view": "^2.0.1",
 		"@gorhom/bottom-sheet": "^4.3.1",
 		"@hookform/resolvers": "^2.9.10",
-		"@notifee/react-native": "^7.8.0",
+		"@notifee/react-native": "7.8.2",
 		"@nozbe/watermelondb": "0.23.0",
 		"@react-native-async-storage/async-storage": "^1.17.11",
 		"@react-native-camera-roll/camera-roll": "5.6.1",
