@@ -19,11 +19,13 @@ interface IEjson {
 export const onNotification = (push: INotification): void => {
 	const identifier = String(push?.payload?.action?.identifier);
 	if (identifier === 'ACCEPT_ACTION' || identifier === 'DECLINE_ACTION') {
-		if (push?.payload?.ejson) {
+		if (push?.payload && push?.payload?.ejson) {
 			const notification = EJSON.parse(push?.payload?.ejson);
 			store.dispatch(deepLinkingClickCallPush({ ...notification, event: identifier === 'ACCEPT_ACTION' ? 'accept' : 'decline' }));
+			return;
 		}
-	} else if (push?.payload) {
+	}
+	if (push?.payload) {
 		try {
 			const notification = push?.payload;
 			if (notification.ejson) {
@@ -47,13 +49,13 @@ export const onNotification = (push: INotification): void => {
 					path: `${types[type]}/${roomName}`
 				};
 				store.dispatch(deepLinkingOpen(params));
+				return;
 			}
 		} catch (e) {
 			console.warn(e);
 		}
-	} else {
-		store.dispatch(appInit());
 	}
+	store.dispatch(appInit());
 };
 
 export const getDeviceToken = (): string => deviceToken;
