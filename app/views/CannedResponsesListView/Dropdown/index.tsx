@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, FlatList, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, TouchableWithoutFeedback } from 'react-native';
+import Animated, { Easing, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import styles from '../styles';
 import { useTheme } from '../../../theme';
@@ -21,36 +22,35 @@ interface IDropdownProps {
 }
 
 const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, departments }: IDropdownProps) => {
-	const animatedValue = useRef(new Animated.Value(0)).current;
+	const animatedValue = useSharedValue(0);
 	const { colors } = useTheme();
 
 	useEffect(() => {
-		Animated.timing(animatedValue, {
-			toValue: 1,
-			duration: ANIMATION_DURATION,
-			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: true
-		}).start();
+		animatedValue.value = withTiming(1, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) });
 	}, [animatedValue]);
 
 	const close = () => {
-		Animated.timing(animatedValue, {
-			toValue: 0,
-			duration: ANIMATION_DURATION,
-			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: true
-		}).start(() => onClose());
+		const runOnClose = () => onClose();
+		animatedValue.value = withTiming(0, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) }, () =>
+			runOnJS(runOnClose)()
+		);
 	};
 
-	const translateY = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [-300, HEIGHT_DESTINATION] // approximated height of the component when closed/open
-	});
+	const animatedTranslateY = useAnimatedStyle(() => ({
+		transform: [
+			{
+				translateY: interpolate(
+					animatedValue.value,
+					[0, 1],
+					[-300, HEIGHT_DESTINATION] // approximated height of the component when closed/open
+				)
+			}
+		]
+	}));
 
-	const backdropOpacity = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, colors.backdropOpacity]
-	});
+	const animatedBackdropOpacity = useAnimatedStyle(() => ({
+		opacity: interpolate(animatedValue.value, [0, 1], [0, colors.backdropOpacity])
+	}));
 
 	return (
 		<>
@@ -60,9 +60,9 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 						styles.backdrop,
 						{
 							backgroundColor: colors.backdropColor,
-							opacity: backdropOpacity,
 							top: HEIGHT_DESTINATION
-						}
+						},
+						animatedBackdropOpacity
 					]}
 				/>
 			</TouchableWithoutFeedback>
@@ -70,10 +70,10 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 				style={[
 					styles.dropdownContainer,
 					{
-						transform: [{ translateY }],
 						backgroundColor: colors.backgroundColor,
 						borderColor: colors.separatorColor
-					}
+					},
+					animatedTranslateY
 				]}
 			>
 				<DropdownItemHeader department={currentDepartment} onPress={close} />
