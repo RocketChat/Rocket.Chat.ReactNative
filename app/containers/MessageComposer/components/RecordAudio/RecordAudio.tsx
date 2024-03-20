@@ -95,16 +95,21 @@ export const RecordAudio = (): ReactElement | null => {
 		try {
 			if (!rid) return;
 			setRecordingAudio(false);
-			const fileURI = recordingRef.current?.getURI();
-			const fileData = await getInfoAsync(fileURI as string);
-			const fileInfo = {
+			const fileURI = recordingRef.current?.getURI() as string;
+			const fileData = await getInfoAsync(fileURI);
+
+			if (!fileData.exists) {
+				return;
+			}
+
+			const fileInfo: IUpload = {
+				rid,
 				name: `${Date.now()}${RECORDING_EXTENSION}`,
-				mime: 'audio/aac',
 				type: 'audio/aac',
 				store: 'Uploads',
 				path: fileURI,
-				size: fileData.exists ? fileData.size : null
-			} as IUpload;
+				size: fileData.size
+			};
 
 			if (fileInfo) {
 				if (permissionToUpload) {

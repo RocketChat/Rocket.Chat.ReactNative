@@ -4,12 +4,14 @@ import isEmpty from 'lodash/isEmpty';
 import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
 
+import { Encryption } from '../encryption';
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import i18n from '../../i18n';
 import database from '../database';
 import FileUpload from './helpers/fileUpload';
 import { IFileUpload } from './helpers/fileUpload/interfaces';
 import log from './helpers/log';
+import { E2E_MESSAGE_TYPE } from '../constants';
 
 const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
@@ -85,6 +87,8 @@ export function sendFileMessage(
 				}
 			}
 
+			const encryptedFileInfo = await Encryption.encryptMessage(fileInfo);
+
 			const formData: IFileUpload[] = [];
 			formData.push({
 				name: 'file',
@@ -96,7 +100,7 @@ export function sendFileMessage(
 			if (fileInfo.description) {
 				formData.push({
 					name: 'description',
-					data: fileInfo.description
+					data: encryptedFileInfo.description
 				});
 			}
 
@@ -111,6 +115,17 @@ export function sendFileMessage(
 				formData.push({
 					name: 'tmid',
 					data: tmid
+				});
+			}
+
+			if (encryptedFileInfo.t === E2E_MESSAGE_TYPE) {
+				formData.push({
+					name: 't',
+					data: encryptedFileInfo.t
+				});
+				formData.push({
+					name: 'e2e',
+					data: encryptedFileInfo.e2e
 				});
 			}
 
