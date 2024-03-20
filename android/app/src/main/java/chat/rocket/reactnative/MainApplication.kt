@@ -19,7 +19,8 @@ import chat.rocket.reactnative.networking.SSLPinningPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import android.content.res.Configuration;
 
-class MainApplication : Application(), ReactApplication {
+open class MainApplication : Application(), ReactApplication {
+
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -28,6 +29,7 @@ class MainApplication : Application(), ReactApplication {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               add(RNCViewPagerPackage())
               add(SSLPinningPackage())
+              addAll(AdditionalModules().getAdditionalModules())
             }
 
         override fun getJSMainModuleName(): String = "index"
