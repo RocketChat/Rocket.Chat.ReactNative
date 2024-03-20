@@ -139,17 +139,15 @@ const PostView: React.FC = ({ route }) => {
 		const post = route.params?.item._raw;
 		const repliesList = await loadThreadMessages({ tmid: post.id, rid: post.rid });
 		if (repliesList?.length > 0) {
-			let formattedReplies = repliesList?.map(item => {
-				return {
-					user: item.u,
-					date: item.ts,
-					description: item.msg,
-					reactions: item.reactions,
-					_id: item._id,
-					rid: item.rid,
-					tmid: item.tmid
-				};
-			});
+			let formattedReplies = repliesList?.map(item => ({
+				user: item.u,
+				date: item.ts,
+				description: item.msg,
+				reactions: item.reactions,
+				_id: item._id,
+				rid: item.rid,
+				tmid: item.tmid
+			}));
 
 			formattedReplies = [...formattedReplies];
 			if (formattedReplies.length > 1) {
@@ -332,8 +330,7 @@ const PostView: React.FC = ({ route }) => {
 		const message = deleteType === DeleteType.COMMENT ? selectedComment : post;
 		try {
 			if (message) {
-				const messageId = DeleteType.COMMENT && message._id ? message._id : message.id;
-				const response = await Services.deleteMessage(messageId, message.rid);
+				const response = await Services.deleteMessage(deleteType === DeleteType.COMMENT ? message._id : message.id, message.rid);
 				if (response.success) {
 					if (deleteType === DeleteType.COMMENT) {
 						setTimeout(() => {
@@ -466,7 +463,7 @@ const PostView: React.FC = ({ route }) => {
 							</TouchableOpacity>
 						</View>
 					</View>
-					{commentSection()}
+					{replies && commentSection()}
 					<View style={{ height: textinputHeight }} />
 				</ScrollView>
 			</View>
@@ -528,7 +525,7 @@ const PostView: React.FC = ({ route }) => {
 			<PostReportModal
 				type={reportType}
 				show={showReportModal}
-				close={() => setShowReportModal(false)}
+				cancel={() => setShowReportModal(false)}
 				report={() => {
 					handleReport();
 					setShowReportModal(false);

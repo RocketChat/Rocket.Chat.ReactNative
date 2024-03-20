@@ -66,7 +66,7 @@ const DiscussionHomeView: React.FC = ({ route }) => {
 							<HeaderButton.Item
 								iconName='search'
 								color={themes[theme].superGray}
-								onPress={() => navigation.navigate('DiscussionSearchView')}
+								onPress={() => navigation.navigate('DiscussionSearchView', { roomIDs: boards.map((board: any) => board.id)})}
 							/>
 						</HeaderButton.Container>
 					</View>

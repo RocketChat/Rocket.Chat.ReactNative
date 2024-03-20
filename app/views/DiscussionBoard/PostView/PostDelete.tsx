@@ -23,7 +23,7 @@ const PostDeleteModal: React.FC<PostDeleteModalProps> = props => {
 				<Image source={trash} style={styles.trashIcon} />
 				<Text style={styles.headerText}>{`Delete ${isComment ? 'Comment' : 'Post'}`}</Text>
 			</View>
-			<Text style={styles.text}>{`Are you sure you want to delete this ${isComment ? 'comment' : 'Post'}?`}</Text>
+			<Text style={styles.text}>{`Are you sure you want to delete this ${isComment ? 'comment' : 'post'}?`}</Text>
 			<TouchableOpacity style={{ ...styles.delete, backgroundColor: themes[theme].mossGreen }} onPress={deleteAction}>
 				<Text style={styles.deleteText}>Delete</Text>
 			</TouchableOpacity>

@@ -24,10 +24,8 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 
 	// RC 0.48.0
 	const data = await sdk.get(`${apiType}.history`, params);
-	if (!data.success) {
-		return [];
-	}
-	return data.messages;
+
+	return data.success ? data.messages : [];
 }
 
 export function loadMessagesForRoom(args: {

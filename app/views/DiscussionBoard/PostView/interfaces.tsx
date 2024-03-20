@@ -29,7 +29,7 @@ export enum ReportType {
 export type PostReportModalProps = {
 	show: boolean;
 	type: ReportType;
-	close: () => void;
+	cancel: () => void;
 	report: () => void;
 	onText: (e: any) => void;
 };

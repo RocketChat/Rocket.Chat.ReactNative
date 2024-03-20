@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 
 import PopUpModal from '../Components/PopUpModal';
@@ -9,7 +9,7 @@ import { PostReportModalProps, ReportType } from './interfaces';
 const alert = require('../../../static/images/discussionboard/alert_circle.png');
 
 const PostReportModal: React.FC<PostReportModalProps> = props => {
-	const { show, type = ReportType.COMMENT, close, report, onText } = props;
+	const { show, type = ReportType.COMMENT, cancel, report, onText } = props;
 	// const { theme } = useTheme();
 	const theme = 'light';
 
@@ -17,9 +17,10 @@ const PostReportModal: React.FC<PostReportModalProps> = props => {
 	const [value, onChangeText] = React.useState('');
 
 	const isComment = type === ReportType.COMMENT;
+	const textInputRef = useRef(null);
 
 	return (
-		<PopUpModal show={show} close={close} customStyles={styles.container}>
+		<PopUpModal show={show} close={() => !show} customStyles={styles.container}>
 			<View style={styles.header}>
 				<Image source={alert} style={styles.trashIcon} />
 				<Text style={styles.headerText}>{`Report ${isComment ? 'Comment' : 'Post'}`}</Text>
@@ -28,8 +29,9 @@ const PostReportModal: React.FC<PostReportModalProps> = props => {
 			<Text style={styles.text}>Reason for reporting</Text>
 			<View style={styles.textContainer}>
 				<TextInput
+					ref={textInputRef}
 					style={styles.text}
-					placeholder='Reason'
+					placeholder={'Reason'}
 					placeholderTextColor='#000000b3'
 					multiline
 					underlineColorAndroid='transparent'
@@ -53,7 +55,7 @@ const PostReportModal: React.FC<PostReportModalProps> = props => {
 					setDisableButton(true);
 					setTimeout(() => {
 						setDisableButton(false);
-						close();
+						cancel();
 					}, 500);
 				}}
 				disabled={disableButton}
@@ -95,10 +97,10 @@ const styles = StyleSheet.create({
 		marginTop: 8
 	},
 	text: {
+		flex: 1,
 		fontSize: 14,
 		lineHeight: 20,
 		fontWeight: '400',
-		alignSelf: 'flex-start'
 	},
 	submit: {
 		borderRadius: 30,

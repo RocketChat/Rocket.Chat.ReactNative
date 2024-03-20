@@ -44,7 +44,7 @@ const CommentOptionsModal: React.FC<CommentOptionsModalProps> = props => {
 				if (room.rid) {
 					try {
 						close();
-						navigation.navigate('ChatsStackNavigator', { screen: 'RoomsListView' });
+						navigation.navigate('RoomsListView');
 						goRoom({ item: params, isMasterDetail, popToRoot: true });
 					} catch (e) {
 						console.log('err', e);

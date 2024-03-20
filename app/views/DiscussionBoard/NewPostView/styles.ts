@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 	boardIconContainer: {
 		height: 40,
 		width: 40,
+		marginLeft: 8,
 		justifyContent: 'center',
 		alignItems: 'center'
 	},

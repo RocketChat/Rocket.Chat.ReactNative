@@ -20,7 +20,12 @@ import { searchItemProps } from './interfaces';
 const leftArrow = require('../../../static/images/discussionboard/arrow_left.png');
 const rightArrow = require('../../../static/images/discussionboard/arrow_right.png');
 
-const SearchView = () => {
+
+type SearchProps = {
+	route: any
+};
+
+const SearchView: React.FC<SearchProps> = ({ route }) => {
 	const navigation = useNavigation<StackNavigationProp<any>>();
 
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
@@ -88,9 +93,15 @@ const SearchView = () => {
 
 		setIsLoading(true);
 		try {
+			const whereClause = [Q.where('msg', Q.like(`%${searchText}%`))]
+
+			if (route?.params?.roomIDs && route?.params?.roomIDs.length > 0) {
+				whereClause.push(Q.where('rid', Q.oneOf(route.params.roomIDs)))
+			}
+
 			const messagesObservable = db
 				.get('messages')
-				.query(Q.where('msg', Q.like(`%${searchText}%`)), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0))
+				.query(...whereClause, Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0))
 				.observe();
 			messagesObservable.subscribe((data: any) => {
 				setFilteredData(data);

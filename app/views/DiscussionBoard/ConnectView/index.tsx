@@ -78,7 +78,9 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		if (room.rid) {
 			try {
 				goRoom({ item: params, isMasterDetail: true, popToRoot: true });
-			} catch {}
+			} catch (e) {
+				log(e);
+			}
 		}
 	};
 
@@ -88,9 +90,8 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		t1dSince,
 		videoUrl = '';
 
-	let devices = [];
-	const customFields = userInfo?.customFields;
-	const name = userInfo.name;
+	const devices = [];
+	const {customFields, name} = userInfo || {};
 
 	if (customFields) {
 		age = customFields.Age;
@@ -136,29 +137,28 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 				</View>
 				<View style={styles.nameContainer}>
 					<Status size={20} id={user._id} />
-					<Text style={styles.profileName}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>
+					<Text style={[styles.profileName, {color: themes[theme].titleText}]}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>
 				</View>
 				<View style={styles.locationContainer}>
-					<Text style={styles.locationText}>{location ?? ''}</Text>
+					<Text style={[styles.locationText, {color: themes[theme].titleText}]}>{location ?? ''}</Text>
 				</View>
 				<View style={styles.userInfoContainer}>
 					<View style={styles.userInfoTextContainerLeft}>
-						<Text style={styles.userInfoText}>T1D Since</Text>
-						<Text style={styles.userInfoTextGrey}>{t1dSince !== '' ? t1dSince : '-'}{age? ` (${age})` : ''}</Text>
+						<Text style={[styles.userInfoText, {color: themes[theme].titleText}]}>T1D Since</Text>
+						<Text style={[styles.userInfoTextGrey, {color: themes[theme].bodyText}]}>{t1dSince !== '' ? t1dSince : '-'}</Text>
 					</View>
 					<View style={styles.userInfoTextContainerRight}>
-						<Text style={styles.userInfoText}>Devices</Text>
-						{devices.length > 0 ? (
-							devices.map((device, index) => {
-								return (
-									<Text style={styles.userInfoTextGrey} key={index}>
-										{device}
-									</Text>
-								);
-							})
-						) : (
-							<Text style={styles.userInfoTextGrey}>-</Text>
-						)}
+						<Text style={[styles.userInfoText, {color: themes[theme].titleText}]}>Devices</Text>
+						{devices.length > 0 ? 
+							devices.map((device, index) => (
+								<Text style={[styles.userInfoTextGrey, {color: themes[theme].bodyText}]} key={index}>
+									{device}
+								</Text>
+							)
+							)
+						 : (
+								<Text style={[styles.userInfoTextGrey, {color: themes[theme].bodyText}]}>-</Text>
+							)}
 					</View>
 				</View>
 				<View>
@@ -167,8 +167,8 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 					</TouchableOpacity>
 				</View>
 				<View style={styles.bioContainer}>
-					<Text style={styles.aboutTextHeader}>About</Text>
-					<Text style={styles.aboutText}>{bio ?? ''}</Text>
+					<Text style={[styles.aboutTextHeader, {color: themes[theme].titleText}]}>About</Text>
+					<Text style={[styles.aboutText, {color: themes[theme].bodyText}]}>{bio ?? ''}</Text>
 				</View>
 			</ScrollView>
 		</View>
