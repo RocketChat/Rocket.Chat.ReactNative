@@ -367,6 +367,12 @@ commands:
           working_directory: ios
       - save_cache: *save-gems-cache
 
+  create-maestro-config-file:
+    description: "Create Maestro config file"
+    steps:
+      - run:
+          command: |
+            echo "flows: \n - 'tests/assorted/*' \n - 'tests/onboarding/*' \n - 'tests/room/*' \n - 'tests/team/*'" > .maestro/config.yaml
 
 version: 2.1
 
@@ -539,6 +545,7 @@ jobs:
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
       - run: *install-maestro-cli
+      - create-maestro-config-file
       - run: mkdir ~/junit
       - android/create-avd:
           avd-name: Pixel_API_31_AOSP
@@ -620,6 +627,7 @@ jobs:
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-mac
       - run: *install-maestro-cli
+      - create-maestro-config-file
       - run:
           name: Configure Facebook IDB
           command: |
