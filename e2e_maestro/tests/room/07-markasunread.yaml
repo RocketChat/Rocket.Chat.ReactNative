@@ -1,0 +1,54 @@
+appId: ${APP_ID}
+name: Mark as unread
+env:
+  name: 'markasunread'
+  message: 'message-mark-as-unread'
+onFlowStart:
+  - runFlow: ../../init.yaml
+  - runScript: helpers/07-markasunread/init.js
+---
+- evalScript: ${output.helpers_sleep(5000)}
+- evalScript: ${output[name].user = output.helpers_data_setup.createRandomUser()}
+- evalScript: ${output[name].otherUser = output.helpers_data_setup.createRandomUser()}
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    permissions:
+      android.permission.POST_NOTIFICATIONS: allow
+- runFlow:
+    file: ../../helpers/app/navigateToLogin.yaml
+- runFlow:
+    file: ../../helpers/app/login.yaml
+    env:
+      username: ${output[name].user.username}
+      password: ${output[name].user.password}
+- runFlow:
+    file: ../../helpers/app/navigateToRoom.yaml
+    env:
+      room: ${output[name].otherUser.username}
+
+# should mark message as unread
+- evalScript: ${output.helpers_data_setup.sendMessage(output[name].otherUser,'@' + output[name].user.username, message)}
+- extendedWaitUntil:
+    visible:
+      text: ${message}
+    timeout: 30000
+- evalScript: ${output.helpers_sleep(300)}
+- longPressOn:
+    text: ${message}
+- extendedWaitUntil:
+    visible:
+      id: action-sheet-handle
+    timeout: 3000
+- swipe:
+    direction: UP
+    duration: 100
+- tapOn:
+    text: 'Mark unread'
+    index: 0
+- extendedWaitUntil:
+    visible:
+      id: rooms-list-view
+    timeout: 5000
+- assertVisible:
+    id: ${ 'rooms-list-view-item-' + output[name].otherUser.username }

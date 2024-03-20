@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 30000
+- tapOn:
+    id: 'rooms-list-view-search'
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view-search-input'
+    timeout: 1000
+- waitForAnimationToEnd:
+    timeout: 500
+- runFlow:
+    when:
+      true: ${nativeElementAction === 'replaceText'}
+    commands:
+      - tapOn:
+          id: 'rooms-list-view-search-input'
+      - inputText: ''
+- tapOn:
+    id: 'rooms-list-view-search-input'
+- inputText: ${room}
+- evalScript: ${output.helpers_sleep(500)}
+- evalScript: ${output.helpers_sleep(500)}
+- extendedWaitUntil:
+    visible:
+      id: ${roomTestId || 'rooms-list-view-item-' + room}
+    timeout: 60000

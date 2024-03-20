@@ -75,6 +75,11 @@ restore_cache: &restore-gradle-cache
   name: Restore gradle cache
   key: android-{{ checksum "android/build.gradle" }}-{{ checksum  "android/app/build.gradle" }}
 
+install-maestro-cli: &install-maestro-cli
+  name: Install Maestro CLI
+  command: | 
+    curl -Ls "https://get.maestro.mobile.dev" | bash
+  
 # COMMANDS
 commands:
 
@@ -362,13 +367,6 @@ commands:
           working_directory: ios
       - save_cache: *save-gems-cache
 
-  create-e2e-account-file:
-    description: "Create e2e account file"
-    steps:
-      - run:
-          command: |
-            echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
-          working_directory: e2e
 
 version: 2.1
 
@@ -516,8 +514,7 @@ jobs:
       - run:
           name: Build Android
           command: |
-            export RUNNING_E2E_TESTS=true
-            yarn e2e:android-build
+            yarn android
       - save_cache: *save-gradle-cache
       - store_artifacts:
           path: android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk
@@ -534,7 +531,6 @@ jobs:
       name: android/android-machine
       resource-class: large
       tag: 2022.12.1
-    parallelism: 4
     steps:
       - checkout
       - attach_workspace:
@@ -542,8 +538,8 @@ jobs:
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
+      - run: *install-maestro-cli
       - run: mkdir ~/junit
-      - create-e2e-account-file
       - android/create-avd:
           avd-name: Pixel_API_31_AOSP
           install: true
@@ -555,14 +551,13 @@ jobs:
             echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
             echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
       - run:
-          name: Run Detox Tests
+          name: Run Maestro Tests
           command: |
-            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
-            yarn e2e:android-test $TEST
+            maestro test -e APP_ID=chat.rocket.reactnative -e PLATFORM=Android e2e/ --format junit
       - store_artifacts:
           path: artifacts
       - run:
-          command: cp junit.xml ~/junit/
+          command: cp report.xml ~/junit/
           when: always
       - store_test_results:
           path: ~/junit
@@ -605,18 +600,11 @@ jobs:
       - save_cache: *save-gems-cache
       - manage-pods
       - run:
-          name: Configure Detox
-          command: |
-            brew tap wix/brew
-            brew install applesimutils
-      - run:
           name: Build
           command: |
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
-            yarn detox clean-framework-cache && yarn detox build-framework-cache
-            export RUNNING_E2E_TESTS=true
-            yarn e2e:ios-build
+            yarn ios
       - persist_to_workspace:
           root: /Users/distiller/project
           paths:
@@ -624,7 +612,6 @@ jobs:
   
   e2e-test-ios:
     executor: mac-env
-    parallelism: 5
     steps:
       - checkout
       - attach_workspace:
@@ -632,23 +619,21 @@ jobs:
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-mac
+      - run: *install-maestro-cli
+      - run:
+          name: Configure Facebook IDB
+          command: |
+            brew tap facebook/fb
+            brew install facebook/fb/idb-companion
       - run: mkdir ~/junit
       - run:
-          name: Configure Detox
+          name: Run Maestro Tests
           command: |
-            brew tap wix/brew
-            brew install applesimutils
-            yarn detox clean-framework-cache && yarn detox build-framework-cache
-      - create-e2e-account-file
-      - run:
-          name: Run tests
-          command: |
-            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
-            yarn e2e:ios-test $TEST
+            maestro test -e APP_ID=chat.rocket.reactnative -e PLATFORM=iOS e2e/ --format junit
       - store_artifacts:
           path: artifacts
       - run:
-          command: cp junit.xml ~/junit/
+          command: cp report.xml ~/junit/
           when: always
       - store_test_results:
           path: ~/junit

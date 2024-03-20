@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -153,7 +153,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
 			style={{ backgroundColor }}
 		>
-			<View>
+			<View testID='message-container'>
 				<Message {...props} />
 			</View>
 		</Touchable>
