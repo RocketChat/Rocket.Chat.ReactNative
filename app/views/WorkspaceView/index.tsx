@@ -51,7 +51,7 @@ const WorkspaceView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Your_workspace')
+			title: I18n.t('T1D_welcome')
 		});
 	}, [navigation]);
 

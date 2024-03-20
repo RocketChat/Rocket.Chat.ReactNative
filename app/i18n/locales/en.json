@@ -846,5 +846,6 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
-  "you_were_mentioned": "you were mentioned"
+  "you_were_mentioned": "you were mentioned",
+  "T1D_welcome": "Welcome to T1D Reachout",
 }
