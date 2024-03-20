@@ -169,7 +169,7 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	Assets_favicon_512: {
-		type: null
+		type: 'value'
 	},
 	Message_Read_Receipt_Enabled: {
 		type: 'valueAsBoolean'

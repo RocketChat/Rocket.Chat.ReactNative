@@ -27,4 +27,4 @@ export interface ISettingsIcon {
 	enterprise: boolean;
 }
 
-export type TSettingsModel = ISettings & Model;
+export type TSettingsModel = (ISettings | ISettingsIcon) & Model;

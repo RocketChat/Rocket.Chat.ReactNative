@@ -53,11 +53,17 @@ export async function shareExtensionInit(server: string) {
 		const settingsCollection = db.get('settings');
 		const settingsRecords = await settingsCollection.query(Q.where('id', Q.oneOf(settings))).fetch();
 		const parsed = Object.values(settingsRecords).map(item => ({
+			// it is guranteed the properties will exist as the settings list doesnt contain Assets_favicon_512 
 			_id: item.id,
+			// @ts-ignore
 			valueAsString: item.valueAsString,
+			// @ts-ignore
 			valueAsBoolean: item.valueAsBoolean,
+			// @ts-ignore
 			valueAsNumber: item.valueAsNumber,
+			// @ts-ignore
 			valueAsArray: item.valueAsArray,
+			// @ts-ignore
 			_updatedAt: item._updatedAt
 		}));
 		store.dispatch(shareSetSettings(parseSettings(parsed)));
