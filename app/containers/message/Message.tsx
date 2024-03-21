@@ -117,6 +117,7 @@ const Message = React.memo((props: IMessage) => {
 						hasError={props.hasError}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
+						pinned={props.pinned}
 						isTranslated={props.isTranslated}
 					/>
 				) : null}

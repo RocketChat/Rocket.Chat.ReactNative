@@ -127,6 +127,13 @@ export const Edited = () => (
 	</>
 );
 
+export const Pinned = () => (
+	<>
+		<Message msg='Message header' pinned />
+		<Message msg='Message without header' pinned isHeader={false} />
+	</>
+);
+
 export const Translated = () => (
 	<>
 		<Message msg='Message header' isTranslated />

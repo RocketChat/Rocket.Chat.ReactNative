@@ -64,6 +64,7 @@ export interface IMessageContent {
 	hasError: boolean;
 	isHeader: boolean;
 	isTranslated: boolean;
+	pinned?: boolean;
 }
 
 export interface IMessageEmoji {

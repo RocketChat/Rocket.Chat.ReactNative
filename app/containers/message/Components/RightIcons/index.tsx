@@ -1,12 +1,13 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import Encrypted from './Encrypted';
+import { MessageType } from '../../../../definitions';
 import Edited from './Edited';
+import Encrypted from './Encrypted';
 import MessageError from './MessageError';
+import Pinned from './Pinned';
 import ReadReceipt from './ReadReceipt';
 import Translated from './Translated';
-import { MessageType } from '../../../../definitions';
 
 const styles = StyleSheet.create({
 	actionIcons: {
@@ -22,10 +23,21 @@ interface IRightIcons {
 	unread?: boolean;
 	hasError: boolean;
 	isTranslated: boolean;
+	pinned?: boolean;
 }
 
-const RightIcons = ({ type, msg, isEdited, hasError, isReadReceiptEnabled, unread, isTranslated }: IRightIcons) => (
+const RightIcons = ({
+	type,
+	msg,
+	isEdited,
+	hasError,
+	isReadReceiptEnabled,
+	unread,
+	isTranslated,
+	pinned
+}: IRightIcons): React.ReactElement => (
 	<View style={styles.actionIcons}>
+		<Pinned pinned={pinned} testID={`${msg}-pinned`} />
 		<Encrypted type={type} />
 		<Edited testID={`${msg}-edited`} isEdited={isEdited} />
 		<MessageError hasError={hasError} />
