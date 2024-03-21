@@ -39,15 +39,19 @@ plugin 'cocoapods-patch'
 # end
 
 def all_pods
-  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
-  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  # $RNFirebaseAsStaticFramework = true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
+
   
   use_expo_modules!
   config = use_native_modules!
 
   # use_frameworks! :linkage => podfile_properties['ios.useFrameworks'].to_sym if podfile_properties['ios.useFrameworks']
-  # use_frameworks! :linkage => ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
+  # use_frameworks! :linkage => :static # ENV['USE_FRAMEWORKS'].to_sym if ENV['USE_FRAMEWORKS']
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -75,6 +79,21 @@ abstract_target 'defaults' do
   target 'Rocket.Chat' # Official app
   target 'ShareRocketChatRN'
   target 'NotificationService'
+end
+
+$static_framework = [ 
+  'WatermelonDB',
+  'simdjson',
+]
+pre_install do |installer|
+  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+    installer.pod_targets.each do |pod|
+      if $static_framework.include?(pod.name)
+        def pod.build_type;
+        Pod::BuildType.static_library # >= 1.9
+      end
+    end
+  end
 end
 
 post_install do |installer|
