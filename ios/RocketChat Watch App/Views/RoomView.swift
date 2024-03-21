@@ -19,18 +19,18 @@ struct RoomView: View {
 				Text(viewModel.title ?? "")
 					.lineLimit(1)
 					.font(.caption.weight(isUnread ? .bold : .medium))
-					.foregroundStyle(.primary)
+					.foregroundStyle(Color.default)
 				Spacer()
 				Text(viewModel.updatedAt ?? "")
 					.lineLimit(1)
 					.font(.footnote.weight(isUnread ? .bold : .medium))
-					.foregroundStyle(isUnread ? .blue : .primary)
+					.foregroundStyle(isUnread ? .blue : Color.default)
 			}
 			HStack(alignment: .top) {
 				Text(viewModel.lastMessage)
 					.lineLimit(2)
 					.font(.caption2)
-					.foregroundStyle(isUnread ? .primary : .secondary)
+					.foregroundStyle(isUnread ? Color.titleLabels : Color.default)
 				Spacer()
 				if isUnread, viewModel.room.unread > 0 {
 					Text(String(viewModel.room.unread))
@@ -40,7 +40,7 @@ struct RoomView: View {
 							Circle()
 								.fill(.blue)
 						)
-						.foregroundColor(.primary)
+						.foregroundColor(Color.default)
 				}
 			}
 		}

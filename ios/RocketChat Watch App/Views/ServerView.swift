@@ -7,10 +7,10 @@ struct ServerView: View {
 		VStack(alignment: .leading) {
 			Text(server.name)
 				.font(.caption.bold())
-				.foregroundStyle(.primary)
+				.foregroundStyle(Color.titleLabels)
 			Text(server.url.host ?? "")
 				.font(.caption)
-				.foregroundStyle(.primary)
+				.foregroundStyle(Color.default)
 		}
 	}
 }

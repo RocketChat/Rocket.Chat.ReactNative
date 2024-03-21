@@ -65,7 +65,7 @@ struct MessageView: View {
 					Text(viewModel.sender ?? "")
 						.lineLimit(1)
 						.font(.caption.bold())
-						.foregroundStyle(.primary)
+						.foregroundStyle(Color.default)
 					Text(viewModel.time ?? "")
 						.lineLimit(1)
 						.font(.footnote)
@@ -76,15 +76,16 @@ struct MessageView: View {
 							.foregroundStyle(.secondary)
 					}
 				}
+				.padding(.bottom, 4)
 			}
 			if let text = viewModel.info {
 				(Text("\(viewModel.sender ?? "") ").font(.caption.bold().italic()) + Text(text).font(.caption.italic()))
-					.foregroundStyle(.primary)
+					.foregroundStyle(Color.default)
 			} else if let text = viewModel.message.msg {
 				HStack(alignment: .top) {
 					Text(text)
 						.font(.caption)
-						.foregroundStyle(viewModel.message.status == "temp" ? .secondary : .primary)
+						.foregroundStyle(viewModel.message.status == "temp" ? Color.secondaryInfo : Color.default)
 					
 					if viewModel.message.status == "error" {
 						Button(
@@ -113,6 +114,7 @@ struct MessageView: View {
 				}
 			}
 		}
+		.padding(.top, 8)
 		.sheet(item: $message) { message in
 			MessageActionView(
 				message: message,

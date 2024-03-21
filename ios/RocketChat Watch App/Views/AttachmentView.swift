@@ -26,7 +26,7 @@ struct AttachmentView: View {
 			} else {
 				Text("Attachment not supported.")
 					.font(.caption.italic())
-					.foregroundStyle(.primary)
+					.foregroundStyle(Color.secondaryInfo)
 			}
 		}
 	}
