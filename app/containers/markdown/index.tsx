@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Image, StyleProp, Text, TextStyle, View } from 'react-native';
+import { Image, StyleProp, Text, TextStyle } from 'react-native';
 import { Parser } from 'commonmark';
 import Renderer from 'commonmark-react-renderer';
 import { MarkdownAST } from '@rocket.chat/message-parser';
@@ -171,18 +171,19 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderCodeBlock = ({ literal }: TLiteral) => {
 		const { theme, style = [] } = this.props;
 		return (
-			<View
+			<Text
 				style={[
 					{
 						...styles.codeBlock,
+						color: themes[theme!].bodyText,
 						backgroundColor: themes[theme!].bannerBackground,
-						borderColor: themes[theme!].borderColor
+						borderColor: themes[theme!].bannerBackground
 					},
 					...style
 				]}
 			>
-				<Text style={[styles.codeBlockText, { color: themes[theme!].bodyText }]}>{literal}</Text>
-			</View>
+				{literal}
+			</Text>
 		);
 	};
 
