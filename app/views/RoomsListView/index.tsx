@@ -986,16 +986,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme, navigation } = this.props;
+		const { showServerDropdown, theme } = this.props;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
-				{/* @ts-ignore*/}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
+				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	};
