@@ -76,7 +76,7 @@ struct MessageView: View {
 							.foregroundStyle(.secondary)
 					}
 				}
-				.padding(.bottom, 4)
+				.padding(.bottom, 2)
 			}
 			if let text = viewModel.info {
 				(Text("\(viewModel.sender ?? "") ").font(.caption.bold().italic()) + Text(text).font(.caption.italic()))
@@ -114,7 +114,7 @@ struct MessageView: View {
 				}
 			}
 		}
-		.padding(.top, 8)
+		.padding(.top, 4)
 		.sheet(item: $message) { message in
 			MessageActionView(
 				message: message,

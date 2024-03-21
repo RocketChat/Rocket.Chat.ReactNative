@@ -12,7 +12,7 @@ struct AppView: View {
 	}
 	
 	var body: some View {
-		NavigationView {
+		NavigationCompatibleView {
 			switch router.route {
 			case .loading:
 				ProgressView()

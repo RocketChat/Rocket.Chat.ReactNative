@@ -21,20 +21,20 @@ struct ServerListView: View {
 	
 	@ViewBuilder
 	private var serverList: some View {
-		List {
-			ForEach(servers.sort()) { server in
-				ServerView(server: server)
-					.onTapGesture {
-						router.route(to: .roomList(server))
-					}
-			}
-		}
-		.toolbar {
-			ToolbarItem(placement: .automatic) {
-				Button("Refresh") {
-					loadServers()
+		List(servers.sort()) { server in
+			ServerView(server: server)
+				.onTapGesture {
+					router.route(to: .roomList(server))
 				}
-			}
+		}
+	}
+	
+	@ViewBuilder
+	private var refreshLabel: some View {
+		if #available(watchOS 10.0, *) {
+			Image(systemName: "gobackward")
+		} else {
+			Text("Refresh")
 		}
 	}
 	
@@ -59,7 +59,19 @@ struct ServerListView: View {
 				RetryView("Unexpected error.", action: loadServers)
 			}
 		}
-		.navigationTitle("Servers")
+		.navigationTitle {
+			Text("Servers").foregroundColor(.red)
+		}
+		.navigationBarTitleDisplayMode(.inline)
+		.toolbar {
+			ToolbarItem(placement: .default) {
+				Button {
+					loadServers()
+				} label: {
+					refreshLabel
+				}
+			}
+		}
 		.onAppear {
 			loadServers()
 		}
