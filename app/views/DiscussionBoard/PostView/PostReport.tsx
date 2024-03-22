@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
 		marginTop: 8
 	},
 	text: {
-		flex: 1,
 		fontSize: 14,
 		lineHeight: 20,
 		fontWeight: '400',

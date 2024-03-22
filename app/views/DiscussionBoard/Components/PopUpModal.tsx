@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Modal, TouchableWithoutFeedback, ViewProps, StyleSheet } from 'react-native';
+import { KeyboardAvoidingView, Platform, View, Modal, TouchableWithoutFeedback, ViewProps, StyleSheet } from 'react-native';
 
 type Props = {
 	show: boolean;
@@ -19,12 +19,16 @@ const PopUpModal: React.FC<Props> = props => {
 			onRequestClose={close}
 			transparent={true}
 		>
-			<View style={styles.flexContainer}>
+			<KeyboardAvoidingView
+        		behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        		pointerEvents="box-none"
+				style={styles.flexContainer}
+			>
 				<TouchableWithoutFeedback onPress={close}>
 					<View style={[styles.flexContainer, darkBackground && styles.darkBackground]} />
 				</TouchableWithoutFeedback>
 				<View style={[styles.content, customStyles]}>{children && children}</View>
-			</View>
+			</KeyboardAvoidingView>
 		</Modal>
 	);
 };
@@ -37,16 +41,13 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	flexContainer: {
-		flex: 1
+		flex: 1,
+		justifyContent: 'flex-end',
 	},
 	darkBackground: {
 		backgroundColor: '#00000080'
 	},
 	content: {
-		position: 'absolute',
-		bottom: 0,
-		left: 0,
-		right: 0,
 		paddingVertical: 26,
 		justifyContent: 'center',
 		alignItems: 'center',
