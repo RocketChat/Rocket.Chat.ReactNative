@@ -110,6 +110,8 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		}
 	}
 
+	const isVideoUrlPresent = !!videoUrl && videoUrl !== '' && videoUrl !== '?autoplay=1';
+
 	return (
 		<View style={styles.mainContainer}>
 			<ScrollView>
@@ -123,7 +125,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 								server={server}
 								borderRadius={screenWidth * 0.05}
 							/>
-							{videoUrl && videoUrl !== '' ? (
+							{isVideoUrlPresent ? (
 								<TouchableOpacity
 									style={styles.playIconContainer}
 									onPress={() => {
