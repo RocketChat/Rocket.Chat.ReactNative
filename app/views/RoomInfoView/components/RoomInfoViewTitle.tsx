@@ -31,9 +31,15 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 	if (type === SubscriptionType.DIRECT) {
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
-				<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]}>
-					{name}
-				</Text>
+				{name && (
+					<Text
+						onLongPress={() => copyInfoToClipboard(name)}
+						testID='room-info-view-name'
+						style={[styles.roomTitle, { color: colors.titleText }]}
+					>
+						{name}
+					</Text>
+				)}
 				{username && (
 					<Text
 						onLongPress={() => copyInfoToClipboard(username)}
