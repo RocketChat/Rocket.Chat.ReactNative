@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
@@ -7,6 +8,9 @@ import { useTheme } from '../../../theme';
 import RoomTypeIcon from '../../../containers/RoomTypeIcon';
 import { getRoomTitle } from '../../../lib/methods/helpers';
 import CollapsibleText from '../../../containers/CollapsibleText';
+import EventEmitter from '../../../lib/methods/helpers/events';
+import { LISTENER } from '../../../containers/Toast';
+import I18n from '../../../i18n';
 
 interface IRoomInfoViewTitle {
 	room?: ISubscription;
@@ -18,6 +22,12 @@ interface IRoomInfoViewTitle {
 
 const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfoViewTitle): React.ReactElement => {
 	const { colors } = useTheme();
+
+	const copyInfoToClipboard = (data: string) => {
+		Clipboard.setString(data);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+	};
+
 	if (type === SubscriptionType.DIRECT) {
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
@@ -26,6 +36,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				</Text>
 				{username && (
 					<Text
+						onLongPress={() => copyInfoToClipboard(username)}
 						testID='room-info-view-username'
 						style={[styles.roomUsername, { color: colors.auxiliaryText }]}
 					>{`@${username}`}</Text>
