@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, Animated, Easing, TouchableWithoutFeedback, TouchableOpacity, FlatList, Linking } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, TouchableOpacity, FlatList, Linking } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { Easing, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import * as List from '../../containers/List';
 import Button from '../../containers/Button';
@@ -31,7 +32,7 @@ const ANIMATION_DURATION = 200;
 const MAX_ROWS = 4;
 
 const ServerDropdown = () => {
-	const animatedValue = useRef(new Animated.Value(0)).current;
+	const animatedValue = useSharedValue(0);
 	const subscription = useRef<Subscription>();
 	const newServerTimeout = useRef<ReturnType<typeof setTimeout> | false>();
 	const isMounted = useRef(false);
@@ -58,12 +59,7 @@ const ServerDropdown = () => {
 				setServers(data);
 			});
 
-			Animated.timing(animatedValue, {
-				toValue: 1,
-				duration: ANIMATION_DURATION,
-				easing: Easing.inOut(Easing.quad),
-				useNativeDriver: true
-			}).start();
+			animatedValue.value = withTiming(1, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) });
 		};
 		init();
 
@@ -79,12 +75,10 @@ const ServerDropdown = () => {
 	}, []);
 
 	const close = () => {
-		Animated.timing(animatedValue, {
-			toValue: 0,
-			duration: ANIMATION_DURATION,
-			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: true
-		}).start(() => dispatch(toggleServerDropdown()));
+		const dispatchToggleServerDropdown = () => dispatch(toggleServerDropdown());
+		animatedValue.value = withTiming(0, { duration: ANIMATION_DURATION, easing: Easing.inOut(Easing.quad) }, () =>
+			runOnJS(dispatchToggleServerDropdown)()
+		);
 	};
 
 	const createWorkspace = async () => {
@@ -160,15 +154,17 @@ const ServerDropdown = () => {
 	const statusBarHeight = insets?.top ?? 0;
 	const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
 
-	const translateY = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [-initialTop, heightDestination]
-	});
+	const animatedTranslateY = useAnimatedStyle(() => ({
+		transform: [
+			{
+				translateY: interpolate(animatedValue.value, [0, 1], [-initialTop, heightDestination])
+			}
+		]
+	}));
 
-	const backdropOpacity = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, colors.backdropOpacity]
-	});
+	const animatedBackdropOpacity = useAnimatedStyle(() => ({
+		opacity: interpolate(animatedValue.value, [0, 1], [0, colors.backdropOpacity])
+	}));
 
 	return (
 		<>
@@ -178,9 +174,9 @@ const ServerDropdown = () => {
 						styles.backdrop,
 						{
 							backgroundColor: colors.backdropColor,
-							opacity: backdropOpacity,
 							top: heightDestination
-						}
+						},
+						animatedBackdropOpacity
 					]}
 				/>
 			</TouchableWithoutFeedback>
@@ -188,10 +184,10 @@ const ServerDropdown = () => {
 				style={[
 					styles.dropdownContainer,
 					{
-						transform: [{ translateY }],
 						backgroundColor: colors.backgroundColor,
 						borderColor: colors.separatorColor
-					}
+					},
+					animatedTranslateY
 				]}
 				testID='rooms-list-header-server-dropdown'
 			>

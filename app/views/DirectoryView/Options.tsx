@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import Animated, { Easing, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
@@ -12,8 +13,7 @@ import { useTheme } from '../../theme';
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
 	duration: ANIMATION_DURATION,
-	easing: Easing.inOut(Easing.quad),
-	useNativeDriver: true
+	easing: Easing.inOut(Easing.quad)
 };
 
 interface IDirectoryOptionsProps {
@@ -33,21 +33,16 @@ const DirectoryOptions = ({
 	changeType,
 	toggleWorkspace
 }: IDirectoryOptionsProps) => {
-	const animatedValue = useRef(new Animated.Value(0)).current;
+	const animatedValue = useSharedValue(0);
 	const { colors } = useTheme();
 
 	useEffect(() => {
-		Animated.timing(animatedValue, {
-			toValue: 1,
-			...ANIMATION_PROPS
-		}).start();
+		animatedValue.value = withTiming(1, ANIMATION_PROPS);
 	}, [animatedValue]);
 
 	const close = () => {
-		Animated.timing(animatedValue, {
-			toValue: 0,
-			...ANIMATION_PROPS
-		}).start(() => onClose());
+		const runOnClose = () => onClose();
+		animatedValue.value = withTiming(0, ANIMATION_PROPS, () => runOnJS(runOnClose)());
 	};
 
 	const renderItem = (itemType: string) => {
@@ -74,22 +69,24 @@ const DirectoryOptions = ({
 		);
 	};
 
-	const translateY = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [-326, 0]
-	});
+	const animatedTranslateY = useAnimatedStyle(() => ({
+		transform: [
+			{
+				translateY: interpolate(animatedValue.value, [0, 1], [-326, 0])
+			}
+		]
+	}));
 
-	const backdropOpacity = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, colors.backdropOpacity]
-	});
+	const animatedBackdropOpacity = useAnimatedStyle(() => ({
+		opacity: interpolate(animatedValue.value, [0, 1], [0, colors.backdropOpacity])
+	}));
 
 	return (
 		<>
 			<TouchableWithoutFeedback onPress={close}>
-				<Animated.View style={[styles.backdrop, { backgroundColor: colors.backdropColor, opacity: backdropOpacity }]} />
+				<Animated.View style={[styles.backdrop, { backgroundColor: colors.backdropColor }, animatedBackdropOpacity]} />
 			</TouchableWithoutFeedback>
-			<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: colors.backgroundColor }]}>
+			<Animated.View style={[styles.dropdownContainer, { backgroundColor: colors.backgroundColor }, animatedTranslateY]}>
 				<Touch onPress={close} accessibilityLabel={I18n.t('Search_by')}>
 					<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: colors.separatorColor }]}>
 						<Text style={[styles.dropdownToggleText, { color: colors.auxiliaryText }]}>{I18n.t('Search_by')}</Text>

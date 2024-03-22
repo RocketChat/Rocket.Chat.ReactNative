@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect } from 'react';
+import { TouchableWithoutFeedback } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { Easing, interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import styles from '../styles';
 import { headerHeight } from '../../../lib/methods/helpers/navigation';
@@ -11,6 +12,10 @@ import DropdownItemHeader from './DropdownItemHeader';
 import { useTheme } from '../../../theme';
 
 const ANIMATION_DURATION = 200;
+const ANIMATION_PROPS = {
+	duration: ANIMATION_DURATION,
+	easing: Easing.inOut(Easing.quad)
+};
 
 interface IDropdownProps {
 	isMasterDetail?: boolean;
@@ -20,39 +25,36 @@ interface IDropdownProps {
 }
 
 const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: IDropdownProps) => {
-	const animatedValue = useRef(new Animated.Value(0)).current;
+	const animatedValue = useSharedValue(0);
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 
 	useEffect(() => {
-		Animated.timing(animatedValue, {
-			toValue: 1,
-			duration: ANIMATION_DURATION,
-			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: true
-		}).start();
+		animatedValue.value = withTiming(1, ANIMATION_PROPS);
 	}, [animatedValue]);
 
 	const close = () => {
-		Animated.timing(animatedValue, {
-			toValue: 0,
-			duration: ANIMATION_DURATION,
-			easing: Easing.inOut(Easing.quad),
-			useNativeDriver: true
-		}).start(() => onClose());
+		const runOnClose = () => onClose();
+		animatedValue.value = withTiming(0, ANIMATION_PROPS, () => runOnJS(runOnClose)());
 	};
 
 	const heightDestination = isMasterDetail ? headerHeight + insets.top : 0;
 
-	const translateY = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [-300, heightDestination] // approximated height of the component when closed/open
-	});
+	const animatedTranslateY = useAnimatedStyle(() => ({
+		transform: [
+			{
+				translateY: interpolate(
+					animatedValue.value,
+					[0, 1],
+					[-300, heightDestination] // approximated height of the component when closed/open
+				)
+			}
+		]
+	}));
 
-	const backdropOpacity = animatedValue.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, colors.backdropOpacity]
-	});
+	const animatedBackdropOpacity = useAnimatedStyle(() => ({
+		opacity: interpolate(animatedValue.value, [0, 1], [0, colors.backdropOpacity])
+	}));
 
 	return (
 		<>
@@ -62,9 +64,9 @@ const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: 
 						styles.backdrop,
 						{
 							backgroundColor: colors.backdropColor,
-							opacity: backdropOpacity,
 							top: heightDestination
-						}
+						},
+						animatedBackdropOpacity
 					]}
 				/>
 			</TouchableWithoutFeedback>
@@ -72,10 +74,10 @@ const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: 
 				style={[
 					styles.dropdownContainer,
 					{
-						transform: [{ translateY }],
 						backgroundColor: colors.backgroundColor,
 						borderColor: colors.separatorColor
-					}
+					},
+					animatedTranslateY
 				]}
 			>
 				<DropdownItemHeader currentFilter={currentFilter} onPress={close} />
