@@ -14,7 +14,7 @@ export function getRoomAvatar(room) {
 	return room.prid ? room.fname : room.name;
 }
 
-export function getUidDirectMessage(room) {
+export function getUidDirectMessage(room, avoidLegacy = false) {
 	const { id: userId } = reduxStore.getState().login.user;
 
 	if (!room) {
@@ -27,7 +27,7 @@ export function getUidDirectMessage(room) {
 
 	// legacy method
 	if (!room?.uids && room.rid && room.t === 'd' && userId) {
-		return room.rid.replace(userId, '').trim();
+		return avoidLegacy ? room.rid : room.rid.replace(userId, '').trim();
 	}
 
 	if (isGroupChat(room)) {

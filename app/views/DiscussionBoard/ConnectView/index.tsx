@@ -37,7 +37,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		const roomUserId = getUidDirectMessage({
 			rid: userId,
 			t: 'd'
-		});
+		}, avoidLegacy = true);
 		const result = await Services.getUserInfo(roomUserId);
 		if (result?.user) {
 			setUserInfo(result.user);
