@@ -57,6 +57,7 @@ platform :ios do
     match(type: "appstore")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
     get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp")
     # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
     gym(
       scheme: "RocketChatRN",
@@ -71,7 +72,7 @@ platform :ios do
 
     match(
       type: "appstore",
-      app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension"],
+      app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension", "chat.rocket.ios.watchkitapp"],
       readonly: true,
       output_path: './'
     )
@@ -88,6 +89,13 @@ platform :ios do
       build_configurations: "Release",
       code_sign_identity: "iPhone Distribution",
       targets: "ShareRocketChatRN",
+    )
+
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.watchkitapp",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "Rocket.Chat.Watch",
     )
 
     gym(

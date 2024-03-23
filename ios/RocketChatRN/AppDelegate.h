@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeDelegate.h>
 #import <Expo/Expo.h>
+#import <WatchConnectivity/WatchConnectivity.h>
 // https://github.com/expo/expo/issues/17705#issuecomment-1196251146
 #import "ExpoModulesCore-Swift.h"
 #import "RocketChatRN-Swift.h"
@@ -17,5 +18,6 @@
 @interface AppDelegate : EXAppDelegateWrapper <UIApplicationDelegate, RCTBridgeDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) WatchConnection *watchConnection;
 
 @end

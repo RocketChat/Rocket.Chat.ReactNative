@@ -67,6 +67,7 @@ const RCSSLPinning = Platform.select({
 					certificate = persistCertificate(name, certificate.password);
 				}
 				UserPreferences.setMap(extractHostname(server), certificate);
+				SSLPinning?.setCertificate(server, certificate.path, certificate.password);
 			}
 		}
 	},
