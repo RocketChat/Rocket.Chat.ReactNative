@@ -13,8 +13,6 @@ struct RoomListView: View {
 	
 	@FetchRequest<Room> private var rooms: FetchedResults<Room>
 	
-	@State private var roomID: String?
-	
 	init(server: Server, roomsLoader: RoomsLoader) {
 		self.server = server
 		_roomsLoader = StateObject(wrappedValue: roomsLoader)
@@ -49,6 +47,7 @@ struct RoomListView: View {
 			}
 		}
 		.navigationTitle("Rooms")
+		.navigationBarTitleDisplayMode(.inline)
 		.overlay {
 			if roomsLoader.state == .loading {
 				ProgressView()

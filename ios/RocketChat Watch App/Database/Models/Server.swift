@@ -16,6 +16,8 @@ public final class Server: NSManagedObject {
 	@NSManaged public var certificate: Data?
 	@NSManaged public var password: String?
 	
+	lazy var database: Database = RocketChatDatabase(server: self)
+	
 	@available(*, unavailable)
 	init() {
 		fatalError()

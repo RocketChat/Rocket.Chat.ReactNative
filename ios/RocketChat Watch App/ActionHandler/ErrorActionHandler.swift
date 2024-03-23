@@ -20,10 +20,10 @@ final class ErrorActionHandler {
 		case .server(let response):
 			router.present(error: response)
 		case .unauthorized:
-			router.route(to: .serverList)
-			
-			database.remove()
-			serversDB.remove(server)
+			router.route(to: [.loading, .serverList]) {
+				self.database.remove()
+				self.serversDB.remove(self.server)
+			}
 		case .unknown:
 			print("Unexpected error on Client.")
 		}

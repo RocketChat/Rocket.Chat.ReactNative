@@ -3,11 +3,10 @@ import Foundation
 protocol AppRouting {
 	func route(to route: Route)
 	func present(error: ErrorResponse)
+	func route(to routes: [Route], completion: (() -> Void)?)
 }
 
 final class AppRouter: ObservableObject {
-	@Published private(set) var route: Route = .loading
-	
 	@Published var error: ErrorResponse?
 	
 	@Published var server: Server? {
@@ -23,7 +22,7 @@ final class AppRouter: ObservableObject {
 	@Storage(.currentServer) private var currentURL: URL?
 	
 	private func registerDependencies(in server: Server) {
-		Store.register(Database.self, factory: RocketChatDatabase(server: server))
+		Store.register(Database.self, factory: server.database)
 		Store.register(RocketChatClientProtocol.self, factory: RocketChatClient(server: server))
 		Store.register(MessageSending.self, factory: MessageSender(server: server))
 		Store.register(ErrorActionHandling.self, factory: ErrorActionHandler(server: server))
@@ -51,8 +50,6 @@ extension AppRouter: AppRouting {
 			room = nil
 			server = nil
 		}
-		
-		self.route = route
 	}
 	
 	func present(error: ErrorResponse) {
@@ -61,6 +58,20 @@ extension AppRouter: AppRouting {
 		}
 		
 		self.error = error
+	}
+}
+
+extension AppRouter {
+	func route(to routes: [Route], completion: (() -> Void)? = nil) {
+		guard let routeTo = routes.first else {
+			completion?()
+			return
+		}
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+			self.route(to: routeTo)
+			self.route(to: Array(routes[1..<routes.count]), completion: completion)
+		}
 	}
 }
 
