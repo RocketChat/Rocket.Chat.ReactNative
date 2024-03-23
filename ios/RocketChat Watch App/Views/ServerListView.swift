@@ -3,14 +3,13 @@ import CoreData
 import SwiftUI
 
 struct ServerListView: View {
-	@Dependency private var router: AppRouting
+	@EnvironmentObject private var router: AppRouter
+	
 	@Dependency private var serversLoader: ServersLoading
 	
 	@State private var state: ViewState = .loading
 	
 	@FetchRequest<Server> private var servers: FetchedResults<Server>
-	
-	@Environment(\.scenePhase) private var scenePhase
 	
 	init() {
 		let fetchRequest = Server.fetchRequest()
@@ -63,6 +62,10 @@ struct ServerListView: View {
 			Text("Servers").foregroundColor(.red)
 		}
 		.navigationBarTitleDisplayMode(.inline)
+		.navigationDestination(for: $router.server) { server in
+			LoggedInView(server: server)
+				.environmentObject(router)
+		}
 		.toolbar {
 			ToolbarItem(placement: .default) {
 				Button {

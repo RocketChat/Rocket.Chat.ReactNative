@@ -257,10 +257,14 @@
 		1EDFD0FA2B589B8F002FEE5F /* MessagesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */; };
 		1EDFD1062B58A66E002FEE5F /* CancelBag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1052B58A66E002FEE5F /* CancelBag.swift */; };
 		1EDFD1082B58AA77002FEE5F /* RoomsLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */; };
-		1EE096F72BACD1E400780078 /* NavigationCompatibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096F62BACD1E400780078 /* NavigationCompatibleView.swift */; };
-		1EE096F82BACD1E400780078 /* NavigationCompatibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096F62BACD1E400780078 /* NavigationCompatibleView.swift */; };
 		1EE096FA2BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096F92BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift */; };
 		1EE096FB2BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096F92BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift */; };
+		1EE096FD2BACD58300780078 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096FC2BACD58300780078 /* LazyView.swift */; };
+		1EE096FE2BACD58300780078 /* LazyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096FC2BACD58300780078 /* LazyView.swift */; };
+		1EE097002BACD64C00780078 /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096FF2BACD64C00780078 /* Binding+Extensions.swift */; };
+		1EE097012BACD64C00780078 /* Binding+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE096FF2BACD64C00780078 /* Binding+Extensions.swift */; };
+		1EE097032BACD66900780078 /* NavigationStackModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE097022BACD66900780078 /* NavigationStackModifier.swift */; };
+		1EE097042BACD66900780078 /* NavigationStackModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE097022BACD66900780078 /* NavigationStackModifier.swift */; };
 		1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF5FBD0250C109E00614FEA /* Encryption.swift */; };
 		1EFEB5982493B6640072EDC0 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFEB5972493B6640072EDC0 /* NotificationService.swift */; };
 		1EFEB59C2493B6640072EDC0 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -570,8 +574,10 @@
 		1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesLoader.swift; sourceTree = "<group>"; };
 		1EDFD1052B58A66E002FEE5F /* CancelBag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelBag.swift; sourceTree = "<group>"; };
 		1EDFD1072B58AA77002FEE5F /* RoomsLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomsLoader.swift; sourceTree = "<group>"; };
-		1EE096F62BACD1E400780078 /* NavigationCompatibleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationCompatibleView.swift; sourceTree = "<group>"; };
 		1EE096F92BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ToolbarItemPlacement+Extensions.swift"; sourceTree = "<group>"; };
+		1EE096FC2BACD58300780078 /* LazyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyView.swift; sourceTree = "<group>"; };
+		1EE096FF2BACD64C00780078 /* Binding+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extensions.swift"; sourceTree = "<group>"; };
+		1EE097022BACD66900780078 /* NavigationStackModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackModifier.swift; sourceTree = "<group>"; };
 		1EF5FBD0250C109E00614FEA /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		1EFEB5952493B6640072EDC0 /* NotificationService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotificationService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -815,6 +821,7 @@
 				1E29A31C2B5871B60093C03C /* Date+Extensions.swift */,
 				1E675B712BAC49B000438590 /* Color+Extensions.swift */,
 				1EE096F92BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift */,
+				1EE096FF2BACD64C00780078 /* Binding+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -960,7 +967,8 @@
 				1E638E982B5F0A2900E645E4 /* ChatScrollView.swift */,
 				1E06561C2B7E9C1C0081B01F /* MessageActionView.swift */,
 				1E388AC02B934CD4006FBDB0 /* RemoteImage.swift */,
-				1EE096F62BACD1E400780078 /* NavigationCompatibleView.swift */,
+				1EE096FC2BACD58300780078 /* LazyView.swift */,
+				1EE097022BACD66900780078 /* NavigationStackModifier.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2065,15 +2073,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EE096FD2BACD58300780078 /* LazyView.swift in Sources */,
 				1E29A3242B5874FF0093C03C /* MessageComposerView.swift in Sources */,
 				1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */,
 				1E06561D2B7E9C1C0081B01F /* MessageActionView.swift in Sources */,
 				1EE096FA2BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift in Sources */,
 				1E29A3162B5868DF0093C03C /* MessageListView.swift in Sources */,
-				1EE096F72BACD1E400780078 /* NavigationCompatibleView.swift in Sources */,
 				1E4AFC172B5AF09C00E2AA7D /* Store.swift in Sources */,
 				1ED1EC8B2B86817100F6620C /* Deeplink.swift in Sources */,
 				1E29A2F42B585B070093C03C /* SubscriptionsResponse.swift in Sources */,
+				1EE097002BACD64C00780078 /* Binding+Extensions.swift in Sources */,
 				1ED1EC892B867E2400F6620C /* ExtensionDelegate.swift in Sources */,
 				1E29A2F92B585B070093C03C /* SubscriptionsRequest.swift in Sources */,
 				1E29A2F22B585B070093C03C /* HistoryResponse.swift in Sources */,
@@ -2094,6 +2103,7 @@
 				1E06561B2B7E91FB0081B01F /* ErrorActionHandler.swift in Sources */,
 				1E29A2FC2B585B070093C03C /* SendMessageRequest.swift in Sources */,
 				1E29A30C2B585D1D0093C03C /* String+Extensions.swift in Sources */,
+				1EE097032BACD66900780078 /* NavigationStackModifier.swift in Sources */,
 				1ED033CD2B55D671004F4930 /* RocketChatDatabase.swift in Sources */,
 				1E29A3122B5866090093C03C /* Room.swift in Sources */,
 				1E29A3032B585B070093C03C /* FailableDecodable.swift in Sources */,
@@ -2147,15 +2157,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1EE096FE2BACD58300780078 /* LazyView.swift in Sources */,
 				1ED1EC902B86997F00F6620C /* MessageComposerView.swift in Sources */,
 				1ED1EC912B86997F00F6620C /* Server.swift in Sources */,
 				1ED1EC922B86997F00F6620C /* MessageActionView.swift in Sources */,
 				1EE096FB2BACD1F200780078 /* ToolbarItemPlacement+Extensions.swift in Sources */,
 				1ED1EC932B86997F00F6620C /* MessageListView.swift in Sources */,
-				1EE096F82BACD1E400780078 /* NavigationCompatibleView.swift in Sources */,
 				1ED1EC942B86997F00F6620C /* Store.swift in Sources */,
 				1ED1EC952B86997F00F6620C /* Deeplink.swift in Sources */,
 				1ED1EC962B86997F00F6620C /* SubscriptionsResponse.swift in Sources */,
+				1EE097012BACD64C00780078 /* Binding+Extensions.swift in Sources */,
 				1ED1EC972B86997F00F6620C /* ExtensionDelegate.swift in Sources */,
 				1ED1EC982B86997F00F6620C /* SubscriptionsRequest.swift in Sources */,
 				1ED1EC992B86997F00F6620C /* HistoryResponse.swift in Sources */,
@@ -2176,6 +2187,7 @@
 				1ED1ECA82B86997F00F6620C /* ErrorActionHandler.swift in Sources */,
 				1ED1ECA92B86997F00F6620C /* SendMessageRequest.swift in Sources */,
 				1ED1ECAA2B86997F00F6620C /* String+Extensions.swift in Sources */,
+				1EE097042BACD66900780078 /* NavigationStackModifier.swift in Sources */,
 				1ED1ECAB2B86997F00F6620C /* RocketChatDatabase.swift in Sources */,
 				1ED1ECAC2B86997F00F6620C /* Room.swift in Sources */,
 				1ED1ECAD2B86997F00F6620C /* FailableDecodable.swift in Sources */,

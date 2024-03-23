@@ -2,11 +2,12 @@ import SwiftUI
 
 struct RoomListView: View {
 	@Dependency private var database: Database
-	@Dependency private var router: AppRouting
+	
+	@EnvironmentObject private var router: AppRouter
 	
 	@ObservedObject private var server: Server
 	
-	@EnvironmentObject private var roomsLoader: RoomsLoader
+	@StateObject private var roomsLoader: RoomsLoader
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -14,19 +15,22 @@ struct RoomListView: View {
 	
 	@State private var roomID: String?
 	
-	init(server: Server) {
+	init(server: Server, roomsLoader: RoomsLoader) {
 		self.server = server
+		_roomsLoader = StateObject(wrappedValue: roomsLoader)
 		_rooms = FetchRequest(fetchRequest: server.roomsRequest)
 	}
 	
 	var body: some View {
 		List(rooms, id: \.id) { room in
-			NavigationLink(tag: room.rid, selection: $roomID) {
-				MessageListView(room: room, server: server)
-					.environment(\.managedObjectContext, database.viewContext)
-			} label: {
-				RoomView(viewModel: .init(room: room, server: server))
-			}
+			RoomView(viewModel: .init(room: room, server: server))
+				.onTapGesture {
+					router.route(to: .room(server, room))
+				}
+		}
+		.navigationDestination(for: $router.room) { room in
+			MessageListView(room: room, server: server)
+				.environment(\.managedObjectContext, database.viewContext)
 		}
 		.onAppear {
 			roomsLoader.start()
@@ -45,13 +49,6 @@ struct RoomListView: View {
 			}
 		}
 		.navigationTitle("Rooms")
-		.toolbar {
-			ToolbarItem(placement: .automatic) {
-				Button("Servers") {
-					router.route(to: .serverList)
-				}
-			}
-		}
 		.overlay {
 			if roomsLoader.state == .loading {
 				ProgressView()

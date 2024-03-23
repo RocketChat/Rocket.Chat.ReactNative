@@ -12,16 +12,10 @@ struct AppView: View {
 	}
 	
 	var body: some View {
-		NavigationCompatibleView {
-			switch router.route {
-			case .loading:
-				ProgressView()
-			case .roomList(let server):
-				LoggedInView(server: server)
-			case .serverList:
-				ServerListView()
-					.environment(\.managedObjectContext, database.viewContext)
-			}
+		NavigationView {
+			ServerListView()
+				.environmentObject(router)
+				.environment(\.managedObjectContext, database.viewContext)
 		}
 		.onAppear {
 			loadRoute()

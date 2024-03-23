@@ -18,6 +18,11 @@ final class Deeplink: Deeplinking {
 			return
 		}
 		
-		router.route(to: .roomList(server))
+		guard let room = RocketChatDatabase(server: server).room(id: response.rid) else {
+			return
+		}
+		
+		router.route(to: .room(server, room))
+		holder.clear()
 	}
 }

@@ -42,7 +42,9 @@ extension ServersLoader: ServersLoading {
 				switch result {
 				case .success(let message):
 					for server in message.servers {
-						self.database.process(updatedServer: server)
+						DispatchQueue.main.async {						
+							self.database.process(updatedServer: server)
+						}
 					}
 					
 					promise(.success(()))
