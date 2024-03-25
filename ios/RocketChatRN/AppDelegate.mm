@@ -62,6 +62,7 @@
   self.window.rootViewController = navigationController;
   [self.window makeKeyAndVisible];
   [RNNotifications startMonitorNotifications];
+  [KeyCommandsManager setHandler:self];
   [ReplyNotification configure];
 
   // AppGroup MMKV
@@ -71,6 +72,23 @@
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
 
   return YES;
+}
+
+- (BOOL)canBecomeFirstResponder {
+  return YES;
+}
+
+- (NSArray<UIKeyCommand *> *)keyCommands {
+  if ([KeyCommandsManager shared]) {
+    return [[KeyCommandsManager shared] commands];
+  }
+  return NULL;
+}
+
+- (void)onKeyCommand:(UIKeyCommand *)keyCommand {
+  if ([KeyCommandsManager shared]) {
+    [[KeyCommandsManager shared] onKeyCommand:keyCommand];
+  }
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
