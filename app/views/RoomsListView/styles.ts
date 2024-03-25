@@ -6,6 +6,16 @@ export default StyleSheet.create({
 	container: {
 		flex: 1
 	},
+	listEmptyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginVertical: 10
+	},
+	noDataFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular
+	},
 	list: {
 		width: '100%'
 	},

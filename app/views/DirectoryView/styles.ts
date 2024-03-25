@@ -9,6 +9,16 @@ export default StyleSheet.create({
 	listContainer: {
 		paddingBottom: 30
 	},
+	listEmptyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginVertical: 10
+	},
+	noDataFound: {
+		fontSize: 14,
+		...sharedStyles.textRegular
+	},
 	separator: {
 		marginLeft: 60
 	},
