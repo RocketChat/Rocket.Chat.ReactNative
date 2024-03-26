@@ -1,3 +1,16 @@
+diff --git a/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js b/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
+index 513d6ed..f39a72b 100644
+--- a/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
++++ b/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
+@@ -2,7 +2,7 @@ import _ from 'lodash';
+ import PropTypes from 'prop-types';
+ import React, {Component} from 'react';
+ import {DeviceEventEmitter, requireNativeComponent, StyleSheet, View} from 'react-native';
+-import {Picker} from '@react-native-community/picker';
++import {Picker} from '@react-native-picker/picker';
+ import WheelPickerItem from './WheelPickerItem';
+ import {Constants} from '../../../src/helpers';
+ import {Typography, Colors} from '../../../src/style';
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
 index b3864d0..e78322f 100644
 --- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
