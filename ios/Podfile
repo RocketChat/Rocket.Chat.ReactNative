@@ -12,6 +12,8 @@ install! 'cocoapods', :deterministic_uuids => false
 
 prepare_react_native_project!
 
+use_modular_headers!
+
 plugin 'cocoapods-patch'
  
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
@@ -40,10 +42,6 @@ plugin 'cocoapods-patch'
 
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
-  pod 'Firebase', :modular_headers => true
-  pod 'FirebaseCore', :modular_headers => true
-  pod 'GoogleUtilities', :modular_headers => true
-  # $RNFirebaseAsStaticFramework = true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   

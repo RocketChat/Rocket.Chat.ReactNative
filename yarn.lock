@@ -3425,6 +3425,11 @@
   dependencies:
     invariant "^2.2.4"
 
+"@react-native-firebase/analytics@^19.0.1":
+  version "19.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-19.1.0.tgz#2e6a76fcdac61b0b3fdc7a8d3721536621fc4810"
+  integrity sha512-p6ZwpbYJRN6yCd1i0gjICyUbtxaVGINMiL4OxTJxpWaKZFGn5+qLe+p948Zww7Wnw4IiuZoUhM7K9YXOjqFYqw==
+
 "@react-native-firebase/app@^19.0.1":
   version "19.0.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-19.0.1.tgz#49ffbfc7853ebf93520a167a359b4deeac78d77c"
@@ -3432,6 +3437,18 @@
   dependencies:
     opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
+
+"@react-native-firebase/crashlytics@^19.0.1":
+  version "19.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-19.1.0.tgz#44aeecb7a20a82e312d9e0c5eaf9946d2ad2782c"
+  integrity sha512-q+rNjYWvmlR53y5x8+qe0fxozjFb6RyhM3Jwcc/WB4ZaUbiiBdtWf2DJ3VhGVgBq3qosTYjEGMVfifqD5o3LhA==
+  dependencies:
+    stacktrace-js "^2.0.2"
+
+"@react-native-firebase/messaging@^19.0.1":
+  version "19.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-19.1.0.tgz#aee9489c894e48bb12bea8f076d9e3c485064af0"
+  integrity sha512-Jao9WdzNMdPQ7SmYAyFLnzFaU/ybbC3idrS4JGM0TByJzEKUv3jAG/lvXdGW6D8FfFWICiJ7oEFESdiBq1ugXw==
 
 "@react-native-masked-view/masked-view@^0.3.1":
   version "0.3.1"
