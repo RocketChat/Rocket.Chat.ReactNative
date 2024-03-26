@@ -248,8 +248,6 @@ const makeStyles = (theme: string, themes: any) =>
 		fontFamily: 'Inter',
 		fontWeight: '400',
 		fontSize: 12,
-		lineHeight: 15,
-		marginTop: 4,
 	    color: themes[theme].bodyText
 	},
 	actionContainer: {
