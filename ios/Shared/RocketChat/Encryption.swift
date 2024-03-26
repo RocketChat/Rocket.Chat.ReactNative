@@ -37,8 +37,9 @@ final class Encryption {
   private final let encoder = JSONEncoder()
   
   init(server: String, rid: String) {
-    self.privateKey = Storage.shared.getPrivateKey(server: server)
-    self.credentials = Storage.shared.getCredentials(server: server)
+    let storage = Storage()
+    self.privateKey = storage.getPrivateKey(server: server)
+    self.credentials = storage.getCredentials(server: server)
     self.server = server
     self.rid = rid
     

@@ -3,7 +3,7 @@ import { create, MMKVLoader, MMKVInstance, ProcessingModes, IOSAccessibleStates 
 const MMKV = new MMKVLoader()
 	// MODES.MULTI_PROCESS = ACCESSIBLE BY APP GROUP (iOS)
 	.setProcessingMode(ProcessingModes.MULTI_PROCESS)
-	.setAccessibleIOS(IOSAccessibleStates.AFTER_FIRST_UNLOCK_THIS_DEVICE_ONLY)
+	.setAccessibleIOS(IOSAccessibleStates.AFTER_FIRST_UNLOCK)
 	.withEncryption()
 	.initialize();
 
