@@ -82,13 +82,7 @@ const WorkspaceView = () => {
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
 				{showRegistrationButton ? (
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						backgroundColor={colors.surfaceTint}
-						onPress={register}
-						testID='workspace-view-register'
-					/>
+					<Button title={I18n.t('Create_account')} type='secondary' onPress={register} testID='workspace-view-register' />
 				) : (
 					<RegisterDisabledComponent />
 				)}
