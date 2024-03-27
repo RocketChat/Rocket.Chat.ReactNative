@@ -159,11 +159,7 @@ const ChangeAvatarView = () => {
 	const deletingRoomAvatar = context === 'room' && state.data === null;
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
