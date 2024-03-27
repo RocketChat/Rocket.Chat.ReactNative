@@ -435,14 +435,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		} = this.props;
 
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].surfaceHover }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
+			<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
-					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
+					<ScrollView
+						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].surfaceTint }]}
+						testID='profile-view-list'
+						{...scrollPersistTaps}
+					>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<AvatarWithEdit
 								text={user.username}
