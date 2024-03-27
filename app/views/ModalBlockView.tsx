@@ -256,7 +256,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 		return (
 			<KeyboardAwareScrollView
-				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
+				style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}
 				keyboardShouldPersistTaps='always'
 			>
 				<View style={styles.content}>

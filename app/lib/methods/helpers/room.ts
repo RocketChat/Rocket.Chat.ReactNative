@@ -49,13 +49,13 @@ export const getBadgeColor = ({
 	theme: TSupportedThemes;
 }): string | undefined => {
 	if (subscription?.tunreadUser?.includes(messageId)) {
-		return themes[theme].mentionMeColor;
+		return themes[theme].badgeBackgroundLevel4;
 	}
 	if (subscription?.tunreadGroup?.includes(messageId)) {
-		return themes[theme].mentionGroupColor;
+		return themes[theme].badgeBackgroundLevel3;
 	}
 	if (subscription?.tunread?.includes(messageId)) {
-		return themes[theme].tunreadColor;
+		return themes[theme].fontInfo;
 	}
 };
 

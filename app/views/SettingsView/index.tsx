@@ -269,7 +269,7 @@ const SettingsView = (): React.ReactElement => {
 						testID='settings-view-clear-cache'
 						onPress={handleClearCache}
 						showActionIndicator
-						color={colors.dangerColor}
+						color={colors.buttonBackgroundDangerDefault}
 					/>
 					<List.Separator />
 					<List.Item
@@ -277,7 +277,7 @@ const SettingsView = (): React.ReactElement => {
 						testID='settings-logout'
 						onPress={handleLogout}
 						showActionIndicator
-						color={colors.dangerColor}
+						color={colors.buttonBackgroundDangerDefault}
 					/>
 					<List.Separator />
 				</List.Section>

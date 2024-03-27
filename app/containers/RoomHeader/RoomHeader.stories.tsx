@@ -14,7 +14,7 @@ export default {
 
 const HeaderExample = ({ title, theme = 'light' }: { title: Function; theme?: TSupportedThemes }) => (
 	// Using View directly instead of Header from react-navigation because it's easier to test.
-	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].headerBackground }}>{title()}</View>
+	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].surfaceNeutral }}>{title()}</View>
 );
 
 const RoomHeader = ({ ...props }) => (

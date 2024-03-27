@@ -22,14 +22,14 @@ const MarkdownTableView = ({ navigation, route }: IMarkdownTableViewProps): Reac
 
 	if (isIOS) {
 		return (
-			<ScrollView style={{ backgroundColor: colors.backgroundColor }} contentContainerStyle={{ width: tableWidth }}>
+			<ScrollView style={{ backgroundColor: colors.surfaceRoom }} contentContainerStyle={{ width: tableWidth }}>
 				{renderRows()}
 			</ScrollView>
 		);
 	}
 
 	return (
-		<ScrollView style={{ backgroundColor: colors.backgroundColor }}>
+		<ScrollView style={{ backgroundColor: colors.surfaceRoom }}>
 			<ScrollView horizontal>{renderRows()}</ScrollView>
 		</ScrollView>
 	);

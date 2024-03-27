@@ -4,7 +4,6 @@ import { View, StyleSheet } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { CustomIcon, TIconsName } from '../../../CustomIcon';
-import { useTheme } from '../../../../theme';
 
 export interface IBaseButton {
 	testID: string;
@@ -21,16 +20,13 @@ export const hitSlop = {
 	left: 16
 };
 
-export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
-	const { colors } = useTheme();
-	return (
-		<BorderlessButton style={styles.button} onPress={() => onPress()} testID={testID} hitSlop={hitSlop}>
-			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
-				<CustomIcon name={icon} size={24} color={color || colors.fontSecondaryInfo} />
-			</View>
-		</BorderlessButton>
-	);
-};
+export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => (
+	<BorderlessButton style={styles.button} onPress={() => onPress()} testID={testID} hitSlop={hitSlop}>
+		<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
+			<CustomIcon name={icon} size={24} color={color} />
+		</View>
+	</BorderlessButton>
+);
 
 const styles = StyleSheet.create({
 	button: {

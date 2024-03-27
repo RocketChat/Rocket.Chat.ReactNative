@@ -38,15 +38,15 @@ interface IItem {
 const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (
 	<Touch style={styles.container} onPress={() => onPress(item.url)} testID={`server-history-${item.url}`}>
 		<View style={styles.content}>
-			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].bodyText }]}>
+			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].fontDefault }]}>
 				{item.url}
 			</Text>
-			<Text numberOfLines={1} style={{ color: themes[theme].auxiliaryText }}>
+			<Text numberOfLines={1} style={{ color: themes[theme].fontSecondaryInfo }}>
 				{item.username}
 			</Text>
 		</View>
 		<BorderlessButton onPress={() => onDelete(item)} testID={`server-history-delete-${item.url}`}>
-			<CustomIcon name='delete' size={24} color={themes[theme].auxiliaryText} />
+			<CustomIcon name='delete' size={24} color={themes[theme].fontSecondaryInfo} />
 		</BorderlessButton>
 	</Touch>
 );

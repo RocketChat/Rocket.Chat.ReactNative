@@ -12,7 +12,7 @@ interface ITableRow {
 }
 
 const TableRow = React.memo(({ isLastRow, children: _children, theme }: ITableRow) => {
-	const rowStyle: ViewStyle[] = [styles.row, { borderColor: themes[theme].borderColor }];
+	const rowStyle: ViewStyle[] = [styles.row, { borderColor: themes[theme].strokeLight }];
 	if (!isLastRow) {
 		rowStyle.push(styles.rowBottomBorder);
 	}

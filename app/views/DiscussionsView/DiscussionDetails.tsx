@@ -45,15 +45,15 @@ const DiscussionDetails = ({ item, date }: IDiscussionDetails): React.ReactEleme
 		<View style={[styles.container]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name={'discussions'} size={24} color={colors.auxiliaryText} />
-					<Text style={[styles.detailText, { color: colors.auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name={'discussions'} size={24} color={colors.fontSecondaryInfo} />
+					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name={'clock'} size={24} color={colors.auxiliaryText} />
-					<Text style={[styles.detailText, { color: colors.auxiliaryText }]} numberOfLines={1}>
+					<CustomIcon name={'clock'} size={24} color={colors.fontSecondaryInfo} />
+					<Text style={[styles.detailText, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{date}
 					</Text>
 				</View>

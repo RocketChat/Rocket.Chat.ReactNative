@@ -75,7 +75,7 @@ const Item = ({
 				title={label}
 				onPress={onPress}
 				testID={`theme-view-${value}`}
-				right={() => (isSelected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+				right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
 			/>
 			<List.Separator />
 		</>

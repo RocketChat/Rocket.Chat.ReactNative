@@ -5,7 +5,7 @@ import ejson from 'ejson';
 
 import { deepLinkingClickCallPush } from '../../../actions/deepLinking';
 import i18n from '../../../i18n';
-import { BACKGROUND_PUSH_COLOR } from '../../constants';
+import { colors } from '../../constants';
 import { store } from '../../store/auxStore';
 
 const VIDEO_CONF_CHANNEL = 'video-conf-call';
@@ -86,7 +86,7 @@ const displayVideoConferenceNotification = async (notification: NotificationData
 			visibility: AndroidVisibility.PUBLIC,
 			importance: AndroidImportance.HIGH,
 			smallIcon: 'ic_notification',
-			color: BACKGROUND_PUSH_COLOR,
+			color: colors.light.badgeBackgroundLevel4,
 			actions,
 			lightUpScreen: true,
 			loopSound: true,

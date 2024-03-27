@@ -31,7 +31,7 @@ function Dot({ active }: { active: boolean }): JSX.Element {
 		width: SIZE,
 		borderRadius: SIZE / 2,
 		marginHorizontal: MARGIN,
-		backgroundColor: active ? colors.dotActiveBg : colors.dotBg
+		backgroundColor: active ? colors.badgeBackgroundLevel2 : colors.badgeBackgroundLevel1
 	};
 
 	return <Animated.View style={[style, animatedStyle]} />;

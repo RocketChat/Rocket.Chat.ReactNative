@@ -20,7 +20,7 @@ const ServicesSeparator = ({ services, separator, collapsed, onPress }: IService
 					type='secondary'
 					onPress={onPress}
 					style={styles.options}
-					color={colors.actionTintColor}
+					color={colors.strokeHighlight}
 				/>
 				<OrSeparator theme={theme} />
 			</>

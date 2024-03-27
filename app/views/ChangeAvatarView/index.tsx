@@ -159,11 +159,7 @@ const ChangeAvatarView = () => {
 	const deletingRoomAvatar = context === 'room' && state.data === null;
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.auxiliaryBackground }}
-			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
@@ -224,7 +220,7 @@ const ChangeAvatarView = () => {
 						title={I18n.t('Take_a_photo')}
 						type='secondary'
 						disabled={saving}
-						backgroundColor={colors.editAndUploadButtonAvatar}
+						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						onPress={() => pickImage(true)}
 						testID='change-avatar-view-take-a-photo'
 					/>
@@ -232,7 +228,7 @@ const ChangeAvatarView = () => {
 						title={I18n.t('Upload_image')}
 						type='secondary'
 						disabled={saving}
-						backgroundColor={colors.editAndUploadButtonAvatar}
+						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						onPress={pickImage}
 						testID='change-avatar-view-upload-image'
 					/>
@@ -241,7 +237,7 @@ const ChangeAvatarView = () => {
 							title={I18n.t('Delete_image')}
 							type='primary'
 							disabled={saving}
-							backgroundColor={colors.dangerColor}
+							backgroundColor={colors.buttonBackgroundDangerDefault}
 							onPress={() => dispatchAvatar({ type: AvatarStateActions.RESET_ROOM_AVATAR, payload: { data: null } })}
 							testID='change-avatar-view-delete-my-account'
 						/>

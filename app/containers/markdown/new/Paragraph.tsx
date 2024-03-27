@@ -32,7 +32,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 	return (
-		<Text style={[styles.text, { color: themes[theme].bodyText }]}>
+		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>
 	);

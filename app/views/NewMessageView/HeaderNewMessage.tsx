@@ -68,7 +68,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	return (
 		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+			<View style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}>
 				<View style={styles.buttonContainer}>
 					{createPublicChannelPermission || createPrivateChannelPermission ? (
 						<ButtonCreate

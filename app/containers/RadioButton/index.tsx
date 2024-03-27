@@ -10,7 +10,7 @@ export const RadioButton = ({ check, testID, size }: { check: boolean; testID?: 
 			testID={testID}
 			selected={check}
 			size={size || 20}
-			color={check ? colors.tintActive : colors.auxiliaryTintColor}
+			color={check ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled}
 		/>
 	);
 };

@@ -348,8 +348,8 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID={this.content.testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{this.content.noDataMsg}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={this.content.testID}>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{this.content.noDataMsg}</Text>
 			</View>
 		);
 	};
@@ -365,12 +365,12 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		}
 
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID={this.content.testID}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
 				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}

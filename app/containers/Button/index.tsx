@@ -50,7 +50,7 @@ const Button = ({
 	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
 
-	let textColor = isPrimary ? colors.buttonText : colors.bodyText;
+	let textColor = isPrimary ? colors.fontWhite : colors.fontDefault;
 	if (color) {
 		textColor = color;
 	}
@@ -61,7 +61,7 @@ const Button = ({
 			disabled={disabled || loading}
 			style={[
 				styles.container,
-				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.actionTintColor : colors.backgroundColor },
+				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault },
 				disabled && styles.disabled,
 				style
 			]}

@@ -13,8 +13,8 @@ export const useStyle = () => {
 			marginHorizontal: 10,
 			borderWidth: StyleSheet.hairlineWidth,
 			borderRadius: 4,
-			backgroundColor: colors.focusedBackground,
-			borderColor: colors.separatorColor,
+			backgroundColor: colors.surfaceLight,
+			borderColor: colors.strokeLight,
 			flex: 1
 		},
 		small: {
@@ -26,7 +26,7 @@ export const useStyle = () => {
 			marginTop: 12
 		},
 		closeButton: {
-			backgroundColor: colors.passcodeButtonActive,
+			backgroundColor: colors.buttonBackgroundSecondaryDefault,
 			marginRight: 8,
 			alignItems: 'center',
 			justifyContent: 'center',
@@ -36,7 +36,7 @@ export const useStyle = () => {
 		},
 		cancelButton: {
 			borderRadius: 4,
-			backgroundColor: colors.cancelCallButton,
+			backgroundColor: colors.buttonBackgroundDangerDefault,
 			marginRight: 8,
 			flex: 2,
 			alignItems: 'center',
@@ -48,7 +48,7 @@ export const useStyle = () => {
 		},
 		acceptButton: {
 			borderRadius: 4,
-			backgroundColor: colors.acceptCallButton,
+			backgroundColor: colors.buttonBackgroundSuccessDefault,
 			flex: 2,
 			alignItems: 'center',
 			justifyContent: 'center'

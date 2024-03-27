@@ -65,7 +65,7 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => (
 	<Touch
 		testID={`message-actions-emoji-${item}`}
 		onPress={() => onReaction({ emoji: item })}
-		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}
 	>
 		{typeof item === 'string' ? (
 			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item}:`)}</Text>
@@ -79,9 +79,9 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Touch
 		testID='add-reaction'
 		onPress={(param: any) => onReaction(param)}
-		style={[styles.headerItem, { backgroundColor: themes[theme].auxiliaryBackground }]}
+		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}
 	>
-		<CustomIcon name='reaction-add' size={24} color={themes[theme].bodyText} />
+		<CustomIcon name='reaction-add' size={24} />
 	</Touch>
 );
 
@@ -108,12 +108,12 @@ const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader)
 	}
 
 	return (
-		<View style={[styles.container, { backgroundColor: themes[theme].focusedBackground }]}>
+		<View style={[styles.container, { backgroundColor: themes[theme].surfaceLight }]}>
 			<FlatList
 				data={frequentlyUsed.slice(0, quantity)}
 				renderItem={renderItem}
 				ListFooterComponent={renderFooter}
-				style={{ backgroundColor: themes[theme].focusedBackground }}
+				style={{ backgroundColor: themes[theme].surfaceLight }}
 				keyExtractor={item => (typeof item === 'string' ? item : item.name)}
 				showsHorizontalScrollIndicator={false}
 				scrollEnabled={false}

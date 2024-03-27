@@ -33,7 +33,7 @@ const HeaderExample = ({ left, right, colors, title = '' }: IHeader) => (
 		title={title}
 		headerLeft={left}
 		headerRight={right}
-		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.headerBackground }} />}
+		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.surfaceNeutral }} />}
 	/>
 );
 
@@ -120,7 +120,7 @@ const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 			<HeaderExample
 				left={() => (
 					<HeaderButton.Container left>
-						<HeaderButton.Drawer badge={() => <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />} />
+						<HeaderButton.Drawer badge={() => <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />} />
 						<HeaderButton.Item iconName='threads' />
 					</HeaderButton.Container>
 				)}

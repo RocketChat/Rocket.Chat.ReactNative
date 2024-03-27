@@ -10,7 +10,6 @@ import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
-import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
@@ -41,7 +40,6 @@ const IncomingCallHeader = React.memo(
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
 		const insets = useSafeAreaInsets();
-		const { colors } = useTheme();
 
 		return (
 			<View
@@ -73,7 +71,7 @@ const IncomingCallHeader = React.memo(
 						}}
 						style={styles.closeButton}
 					>
-						<CustomIcon name='close' size={20} color={colors.gray300} />
+						<CustomIcon name='close' size={20} />
 					</Touchable>
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}

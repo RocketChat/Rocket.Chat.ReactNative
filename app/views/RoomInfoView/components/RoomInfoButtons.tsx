@@ -26,7 +26,7 @@ function BaseButton({
 	enabled?: boolean;
 }): React.ReactElement | null {
 	const { colors } = useTheme();
-	const color = danger ? colors.dangerColor : colors.actionTintColor;
+	const color = danger ? colors.buttonBackgroundDangerDefault : colors.strokeHighlight;
 
 	if (showIcon)
 		return (

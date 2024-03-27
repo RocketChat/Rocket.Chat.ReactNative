@@ -22,7 +22,7 @@ const LanguageItem = ({
 			title={label}
 			onPress={() => submit(value)}
 			testID={`language-view-${value}`}
-			right={() => (isSelected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
 			translateTitle={false}
 		/>
 	);

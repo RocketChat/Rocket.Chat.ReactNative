@@ -21,7 +21,7 @@ const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
 			barStyle = 'dark-content';
 		}
 	}
-	return <StatusBarRN backgroundColor={backgroundColor ?? colors.headerBackground} barStyle={barStyle} animated />;
+	return <StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} barStyle={barStyle} animated />;
 };
 
 export default StatusBar;

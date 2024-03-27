@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 const Title = ({ title }: { title: string }) => {
 	const { colors } = useTheme();
-	return <Text style={[styles.title, { color: colors.titleText }]}>{title}</Text>;
+	return <Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>;
 };
 
 const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }): React.ReactElement => {

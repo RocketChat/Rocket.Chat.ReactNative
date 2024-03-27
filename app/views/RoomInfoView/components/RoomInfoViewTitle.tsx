@@ -21,13 +21,13 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 	if (type === SubscriptionType.DIRECT) {
 		return (
 			<View style={styles.roomInfoViewTitleContainer}>
-				<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]}>
+				<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]}>
 					{name}
 				</Text>
 				{username && (
 					<Text
 						testID='room-info-view-username'
-						style={[styles.roomUsername, { color: colors.auxiliaryText }]}
+						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
 					>{`@${username}`}</Text>
 				)}
 				{!!statusText && (
@@ -35,7 +35,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 						<CollapsibleText
 							linesToTruncate={2}
 							msg={statusText}
-							style={[styles.roomUsername, { color: colors.auxiliaryText }]}
+							style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
 						/>
 					</View>
 				)}
@@ -51,7 +51,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				status={room?.visitor?.status}
 				sourceType={room?.source}
 			/>
-			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.titleText }]} key='room-info-name'>
+			<Text testID='room-info-view-name' style={[styles.roomTitle, { color: colors.fontTitlesLabels }]} key='room-info-name'>
 				{getRoomTitle(room)}
 			</Text>
 		</View>

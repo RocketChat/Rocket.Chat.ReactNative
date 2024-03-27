@@ -1,14 +1,12 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
-import { themes } from '../../lib/constants';
 import { CustomIcon, TIconsName } from '../CustomIcon';
-import { useTheme } from '../../theme';
 import { ICON_SIZE } from './constants';
 
 interface IListIcon {
 	name: TIconsName;
-	color?: string | null;
+	color?: string;
 	style?: StyleProp<ViewStyle>;
 	testID?: string;
 	size?: number;
@@ -21,15 +19,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListIcon = React.memo(({ name, color, style, testID, size }: IListIcon) => {
-	const { theme } = useTheme();
-
-	return (
-		<View style={[styles.icon, style]}>
-			<CustomIcon name={name} color={color ?? themes[theme].auxiliaryText} size={size ?? ICON_SIZE} testID={testID} />
-		</View>
-	);
-});
+const ListIcon = ({ name, color, style, testID, size }: IListIcon): React.ReactElement => (
+	<View style={[styles.icon, style]}>
+		<CustomIcon name={name} color={color} size={size ?? ICON_SIZE} testID={testID} />
+	</View>
+);
 
 ListIcon.displayName = 'List.Icon';
 

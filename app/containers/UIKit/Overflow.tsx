@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 const Option = ({ option: { text, value }, onOptionPress, parser, theme }: IOption) => (
 	<Touchable
 		onPress={() => onOptionPress({ value })}
-		background={Touchable.Ripple(themes[theme].bannerBackground)}
+		background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 		style={styles.option}
 	>
 		<Text>{parser.text(text)}</Text>
@@ -62,13 +62,13 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 		<>
 			<Touchable
 				ref={ref => (touchable[blockId] = ref)}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}
 				style={styles.menu}
 			>
 				{!loading ? (
-					<CustomIcon size={18} name='kebab' color={themes[theme].bodyText} />
+					<CustomIcon size={18} name='kebab' color={themes[theme].fontDefault} />
 				) : (
 					<ActivityIndicator style={styles.loading} />
 				)}

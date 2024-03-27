@@ -89,23 +89,23 @@ export const Content = () => (
 
 export const Badge = () => (
 	<>
-		<BaseItem badgeColor={themes.light.mentionMeColor} />
+		<BaseItem badgeColor={themes.light.badgeBackgroundLevel4} />
 		<List.Separator />
-		<BaseItem badgeColor={themes.light.mentionGroupColor} />
+		<BaseItem badgeColor={themes.light.badgeBackgroundLevel3} />
 		<List.Separator />
-		<BaseItem badgeColor={themes.light.tunreadColor} />
+		<BaseItem badgeColor={themes.light.fontInfo} />
 		<BaseItem
 			item={{
 				msg: longText
 			}}
-			badgeColor={themes.light.tunreadColor}
+			badgeColor={themes.light.fontInfo}
 		/>
 	</>
 );
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
-		<BaseItem badgeColor={themes[theme].mentionMeColor} />
+		<BaseItem badgeColor={themes[theme].badgeBackgroundLevel4} />
 	</ThemeContext.Provider>
 );
 

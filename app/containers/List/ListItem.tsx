@@ -97,15 +97,15 @@ const Content = React.memo(
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
-						<Text style={[styles.title, styleTitle, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
-							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].dangerColor} style={styles.alertIcon} />
+							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].buttonBackgroundDangerDefault} style={styles.alertIcon} />
 						) : null}
 					</View>
 					{subtitle ? (
-						<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						<Text style={[styles.subtitle, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
 							{translateSubtitle ? I18n.t(subtitle) : subtitle}
 						</Text>
 					) : null}
@@ -136,7 +136,7 @@ interface IListItemButton {
 const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].surfaceRoom }}
 		underlayColor={underlayColor}
 		enabled={!props.disabled}
 	>
@@ -157,7 +157,7 @@ const ListItem = React.memo(({ ...props }: IListItem) => {
 		return <Button {...props} theme={theme} onPress={onPress} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || themes[theme].backgroundColor }}>
+		<View style={{ backgroundColor: props.backgroundColor || themes[theme].surfaceRoom }}>
 			<Content {...props} theme={theme} />
 		</View>
 	);

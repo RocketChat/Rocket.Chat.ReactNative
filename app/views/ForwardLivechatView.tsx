@@ -145,7 +145,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 	};
 
 	return (
-		<View style={[styles.container, { backgroundColor: colors.auxiliaryBackground }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceHover }]}>
 			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} />
 			<OrSeparator theme={theme} />
 			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} />

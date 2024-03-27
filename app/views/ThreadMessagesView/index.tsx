@@ -139,7 +139,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
+					tintColor={themes[theme].fontSecondaryInfo}
 					testID='header-back'
 				/>
 			),
@@ -497,7 +497,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				data={displayingThreads}
 				extraData={this.state}
 				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				contentContainerStyle={styles.contentContainer}
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}

@@ -52,10 +52,10 @@ const AllReactionsListItem = ({ item, getCustomEmoji }: IAllReactionsListItemPro
 				getCustomEmoji={getCustomEmoji}
 			/>
 			<View style={styles.textContainer}>
-				<Text style={[styles.allListNPeopleReacted, { color: colors.bodyText }]}>
+				<Text style={[styles.allListNPeopleReacted, { color: colors.fontDefault }]}>
 					{count === 1 ? I18n.t('1_person_reacted') : I18n.t('N_people_reacted', { n: count })}
 				</Text>
-				<Text style={[styles.allListWhoReacted, { color: colors.auxiliaryText }]}>{displayNames}</Text>
+				<Text style={[styles.allListWhoReacted, { color: colors.fontSecondaryInfo }]}>{displayNames}</Text>
 			</View>
 		</View>
 	);

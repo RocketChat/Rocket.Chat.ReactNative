@@ -35,7 +35,7 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 
 	return (
 		<View style={styles.container}>
-			{image && <FastImage style={[styles.image, { borderColor: colors.borderColor }]} source={{ uri: `${url}/${image}` }} />}
+			{image && <FastImage style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
 		</View>
 	);
 });

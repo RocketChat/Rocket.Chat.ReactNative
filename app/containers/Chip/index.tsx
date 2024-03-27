@@ -49,24 +49,24 @@ const Chip = ({ avatar, text, onPress, testID, style }: IChip) => {
 			style={({ pressed }) => [
 				styles.pressable,
 				{
-					backgroundColor: pressed ? colors.bannerBackground : colors.auxiliaryBackground
+					backgroundColor: pressed ? colors.surfaceNeutral : colors.surfaceHover
 				},
 				style
 			]}
 			disabled={!onPress}
 			onPress={() => onPress?.()}
 			android_ripple={{
-				color: colors.bannerBackground
+				color: colors.surfaceNeutral
 			}}
 		>
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{text}
 					</Text>
 				</View>
-				{onPress ? <CustomIcon name='close' size={16} color={colors.auxiliaryTintColor} /> : null}
+				{onPress ? <CustomIcon name='close' size={16} /> : null}
 			</View>
 		</Pressable>
 	);

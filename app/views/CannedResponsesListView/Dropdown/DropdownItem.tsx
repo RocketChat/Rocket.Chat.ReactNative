@@ -34,10 +34,10 @@ const DropdownItem = React.memo(({ onPress, iconName, text }: IDropdownItem) => 
 	const { theme } = useTheme();
 
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }}>
 			<View style={styles.container}>
-				<Text style={[styles.text, { color: themes[theme].auxiliaryText }]}>{text}</Text>
-				{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].auxiliaryText} /> : null}
+				<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo }]}>{text}</Text>
+				{iconName ? <CustomIcon name={iconName} size={22} color={themes[theme].fontSecondaryInfo} /> : null}
 			</View>
 		</Touch>
 	);
