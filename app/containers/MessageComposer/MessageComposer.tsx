@@ -213,7 +213,7 @@ export const MessageComposer = ({
 			return <RecordAudio />;
 		}
 		return (
-			<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
+			<View style={[styles.container, { backgroundColor: colors.composerInputBackground, borderTopColor: colors.strokeLight }]} testID='message-composer'>
 				<View style={styles.input}>
 					<Left />
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />

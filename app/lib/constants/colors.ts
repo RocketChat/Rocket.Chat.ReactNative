@@ -97,6 +97,7 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
+		composerInputBackground: '#FFFFFF',
 		textInputSecondaryBackground: '#E4E7EA',
 		...mentions,
 		...themeColors
@@ -168,7 +169,8 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
-		textInputSecondaryBackground: '#030b1b', // backgroundColor
+		composerInputBackground: '#F9F9F9',
+		textInputSecondaryBackground: '#030b1b',
 		...mentions,
 		...themeColors
 	},
@@ -239,7 +241,8 @@ export const colors = {
 		conferenceCallEnabledIcon: '#FFFFFF',
 		conferenceCallEnabledIconBackground: '#156FF5',
 		conferenceCallPhotoBackground: '#E4E7EA',
-		textInputSecondaryBackground: '#000000', // backgroundColor
+		composerInputBackground: '#F9F9F9',
+		textInputSecondaryBackground: '#000000',
 		...mentions,
 		...themeColors
 	}
