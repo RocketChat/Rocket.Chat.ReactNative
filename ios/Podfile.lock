@@ -1282,10 +1282,16 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
+<<<<<<< HEAD
   - RNNotifee (7.8.0):
+=======
+  - RNMathView (1.0.0):
+    - iosMath
+  - RNNotifee (7.8.2):
+>>>>>>> chore.upgrade-ts-deps
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.8.0)
-  - RNNotifee/NotifeeCore (7.8.0):
+    - RNNotifee/NotifeeCore (= 7.8.2)
+  - RNNotifee/NotifeeCore (7.8.2):
     - React-Core
   - RNReanimated (3.8.1):
     - glog
@@ -1773,8 +1779,14 @@ SPEC CHECKSUMS:
   RNGestureHandler: 67fb54b3e6ca338a8044e85cd6f340265aa41091
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
+<<<<<<< HEAD
   RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
   RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
+=======
+  RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
+  RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
+  RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
+>>>>>>> chore.upgrade-ts-deps
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 17e2f657f1b09a71ec3c821368a04acbb7ebcb46
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902

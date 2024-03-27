@@ -138,11 +138,13 @@ const ChangeAvatarView = () => {
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true,
-			useFrontCamera: isCam
+			includeBase64: true
 		};
 		try {
-			const response: Image = isCam === true ? await ImagePicker.openCamera(options) : await ImagePicker.openPicker(options);
+			const response: Image =
+				isCam === true
+					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+					: await ImagePicker.openPicker(options);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
