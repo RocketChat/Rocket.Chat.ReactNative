@@ -46,7 +46,7 @@ const AvatarSuggestion = ({
 					<AvatarSuggestionItem text={`@${username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
 				) : null}
 				{avatarSuggestions.slice(0, 7).map(item => (
-					<AvatarSuggestionItem item={item} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
+					<AvatarSuggestionItem item={item} key={item?.url} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
 				))}
 			</View>
 		</View>
