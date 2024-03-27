@@ -1,0 +1,13 @@
+appId: ${APP_ID}
+---
+- runFlow:
+    file: searchRoom.yaml
+    env:
+      room: ${room}
+- tapOn:
+    text: ${room}
+    index: 1
+- runFlow:
+    file: checkRoomTitle.yaml
+    env:
+      room: ${room}

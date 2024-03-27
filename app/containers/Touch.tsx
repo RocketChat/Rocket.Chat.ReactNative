@@ -1,5 +1,6 @@
 import React from 'react';
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
+import { View } from 'react-native';
 
 import { useTheme } from '../theme';
 
@@ -9,20 +10,22 @@ export interface ITouchProps extends RectButtonProps {
 	testID?: string;
 }
 
-const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, underlayColor, ...props }, ref) => {
+const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, underlayColor, testID, ...props }, ref) => {
 	const { colors } = useTheme();
 
 	return (
-		<RectButton
-			ref={ref}
-			onPress={onPress}
-			activeOpacity={1}
-			underlayColor={underlayColor || colors.bannerBackground}
-			rippleColor={colors.bannerBackground}
-			{...props}
-		>
-			{children}
-		</RectButton>
+		<View testID={testID}>
+			<RectButton
+				ref={ref}
+				onPress={onPress}
+				activeOpacity={1}
+				underlayColor={underlayColor || colors.bannerBackground}
+				rippleColor={colors.bannerBackground}
+				{...props}
+			>
+				{children}
+			</RectButton>
+		</View>
 	);
 });
 
