@@ -12,16 +12,19 @@ export const useAutoSaveDraft = (text = '') => {
 	const oldText = useRef('');
 	const intervalRef = useRef();
 
-	const saveMessageDraft = useCallback(() => {
-		if (route.name === 'ShareView') return;
-		if (action === 'edit') return;
-
-		const draftMessage = selectedMessages?.length ? JSON.stringify({ quotes: selectedMessages, msg: text }) : text;
-		if (oldText.current !== draftMessage) {
-			oldText.current = draftMessage;
-			saveDraftMessage({ rid, tmid, draftMessage });
-		}
-	}, [action, rid, tmid, text, selectedMessages?.length]);
+	const saveMessageDraft = useCallback(
+		(back?: boolean) => {
+			if (route.name === 'ShareView') return;
+			if (action === 'edit') return;
+			if (back && oldText.current === '') return;
+			const draftMessage = selectedMessages?.length ? JSON.stringify({ quotes: selectedMessages, msg: text }) : text;
+			if (oldText.current !== draftMessage) {
+				oldText.current = draftMessage;
+				saveDraftMessage({ rid, tmid, draftMessage });
+			}
+		},
+		[action, rid, tmid, text, selectedMessages?.length, route.name]
+	);
 
 	useEffect(() => {
 		if (focused) {
@@ -32,7 +35,7 @@ export const useAutoSaveDraft = (text = '') => {
 
 		return () => {
 			clearInterval(intervalRef.current);
-			saveMessageDraft();
+			saveMessageDraft(true);
 		};
 	}, [focused, saveMessageDraft]);
 };
