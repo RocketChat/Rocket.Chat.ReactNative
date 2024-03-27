@@ -1,16 +1,19 @@
 import { useCallback, useEffect, useRef } from 'react';
+import { useRoute } from '@react-navigation/native';
 
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useFocused } from '../context';
 import { saveDraftMessage } from '../../../lib/methods/draftMessage';
 
 export const useAutoSaveDraft = (text = '') => {
+	const route = useRoute();
 	const { rid, tmid, action, selectedMessages } = useRoomContext();
 	const focused = useFocused();
 	const oldText = useRef('');
 	const intervalRef = useRef();
 
 	const saveMessageDraft = useCallback(() => {
+		if (route.name === 'ShareView') return;
 		if (action === 'edit') return;
 
 		const draftMessage = selectedMessages?.length ? JSON.stringify({ quotes: selectedMessages, msg: text }) : text;
