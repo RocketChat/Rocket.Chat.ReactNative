@@ -40,6 +40,7 @@ class FileUpload {
 
 		data.forEach(item => {
 			if (item.uri) {
+				// @ts-ignore
 				upload.formData.append(item.name, {
 					// @ts-ignore
 					uri: item.uri,
