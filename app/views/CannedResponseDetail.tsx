@@ -112,7 +112,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 
 	return (
 		<SafeAreaView>
-			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceLight }]}>
+			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceTint }]}>
 				<StatusBar />
 				<View style={styles.container}>
 					<Item label={I18n.t('Shortcut')} content={`!${cannedResponse?.shortcut}`} theme={theme} />
