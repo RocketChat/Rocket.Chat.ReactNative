@@ -143,8 +143,9 @@ const UserForm = () => {
 					type='secondary'
 					onPress={forgotPassword}
 					testID='login-view-forgot-password'
-					color={colors.fontSecondaryInfo}
+					color={colors.fontInfo}
 					fontSize={14}
+					backgroundColor='transparent'
 				/>
 			) : null}
 			{showRegistrationButton ? (
