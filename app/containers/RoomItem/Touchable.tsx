@@ -224,8 +224,7 @@ const Touchable = ({
 								testID={testID}
 								style={{
 									backgroundColor: isFocused ? colors.chatComponentBackground : colors.backgroundColor
-								}}
-							>
+								}}>
 								{children}
 							</Touch>
 						</Animated.View>

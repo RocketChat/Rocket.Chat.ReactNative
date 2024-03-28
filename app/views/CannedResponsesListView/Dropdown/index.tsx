@@ -74,8 +74,7 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 						backgroundColor: colors.backgroundColor,
 						borderColor: colors.separatorColor
 					}
-				]}
-			>
+				]}>
 				<DropdownItemHeader department={currentDepartment} onPress={close} />
 				<List.Separator />
 				<FlatList

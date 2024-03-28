@@ -3,7 +3,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, BackHandler, Linking, SafeAreaView, StyleSheet, View } from 'react-native';
-import WebView from 'react-native-webview';
+import WebView, { WebViewNavigation } from 'react-native-webview';
 
 import { userAgent } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks';
@@ -65,7 +65,7 @@ const JitsiMeetView = (): React.ReactElement => {
 	}, [rid, videoConf]);
 
 	const onNavigationStateChange = useCallback(
-		webViewState => {
+		(webViewState: WebViewNavigation) => {
 			const roomId = getRoomIdFromJitsiCallUrl(url);
 			if (webViewState.url.includes('auth-static')) {
 				setAuthModal(true);

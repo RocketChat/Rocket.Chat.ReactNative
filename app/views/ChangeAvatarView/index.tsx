@@ -162,15 +162,13 @@ const ChangeAvatarView = () => {
 		<KeyboardView
 			style={{ backgroundColor: colors.auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='change-avatar-view-list'
-					{...scrollPersistTaps}
-				>
+					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						{deletingRoomAvatar ? (
 							<AvatarPresentational

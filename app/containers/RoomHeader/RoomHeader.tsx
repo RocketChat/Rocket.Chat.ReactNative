@@ -179,8 +179,7 @@ const Header = React.memo(
 				onPress={handleOnPress}
 				style={styles.container}
 				disabled={!!tmid}
-				hitSlop={HIT_SLOP}
-			>
+				hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon

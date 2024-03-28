@@ -76,8 +76,7 @@ const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: 
 						backgroundColor: colors.backgroundColor,
 						borderColor: colors.separatorColor
 					}
-				]}
-			>
+				]}>
 				<DropdownItemHeader currentFilter={currentFilter} onPress={close} />
 				<List.Separator />
 				<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />

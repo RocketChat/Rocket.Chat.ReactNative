@@ -31,8 +31,7 @@ const ServerItem = ({
 		value={{
 			theme,
 			colors: themes[theme]
-		}}
-	>
+		}}>
 		<ServerItemComponent item={{ ...defaultItem, ...item }} onPress={onPress} onLongPress={onLongPress} hasCheck={hasCheck} />
 	</ThemeContext.Provider>
 );

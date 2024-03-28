@@ -27,8 +27,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				{username && (
 					<Text
 						testID='room-info-view-username'
-						style={[styles.roomUsername, { color: colors.auxiliaryText }]}
-					>{`@${username}`}</Text>
+						style={[styles.roomUsername, { color: colors.auxiliaryText }]}>{`@${username}`}</Text>
 				)}
 				{!!statusText && (
 					<View testID='room-info-view-custom-status'>

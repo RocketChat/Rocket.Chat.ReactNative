@@ -11,8 +11,7 @@ const Title = React.memo(({ name, hideUnreadStatus, alert }: ITitleProps) => {
 		<Text
 			style={[styles.title, alert && !hideUnreadStatus && styles.alert, { color: colors.titleText }]}
 			ellipsizeMode='tail'
-			numberOfLines={1}
-		>
+			numberOfLines={1}>
 			{name}
 		</Text>
 	);

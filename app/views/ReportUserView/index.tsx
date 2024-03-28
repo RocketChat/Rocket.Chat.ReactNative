@@ -80,8 +80,7 @@ const ReportUserView = () => {
 		<KeyboardView
 			style={{ backgroundColor: colors.auxiliaryBackground }}
 			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
 				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.auxiliaryBackground }]}>
 					<StatusBar />

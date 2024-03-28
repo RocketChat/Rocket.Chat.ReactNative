@@ -44,7 +44,7 @@ describe('Profile screen', () => {
 			await sleep(300);
 		});
 
-		it('should appear the discard alert when click the back icon ', async () => {
+		it('should appear the discard alert when click the back icon', async () => {
 			await tapBack();
 			await waitFor(element(by[textMatcher]('Discard changes?')).atIndex(0))
 				.toBeVisible()

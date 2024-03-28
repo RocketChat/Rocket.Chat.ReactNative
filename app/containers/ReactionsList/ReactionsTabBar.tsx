@@ -33,8 +33,7 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 			style={({ pressed }: { pressed: boolean }) => ({
 				opacity: pressed ? 0.7 : 1
 			})}
-			testID={`tabBarItem-${tab.emoji}`}
-		>
+			testID={`tabBarItem-${tab.emoji}`}>
 			<View style={styles.tabBarItem}>
 				{tab._id === 'All' ? (
 					<Text style={[styles.allTabItem, { color: colors.auxiliaryTintColor }]}>{I18n.t('All')}</Text>
@@ -70,8 +69,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, getCustomEmoji }: IReactio
 								borderBottomWidth: isActiveTab ? 2 : 1,
 								borderColor: isActiveTab ? colors.tintActive : colors.separatorColor
 							}}
-							key={tab.emoji}
-						>
+							key={tab.emoji}>
 							<TabBarItem tab={tab} index={index} goToPage={goToPage} getCustomEmoji={getCustomEmoji} />
 						</View>
 					);

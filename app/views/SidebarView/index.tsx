@@ -335,8 +335,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
 						}
 					]}
-					{...scrollPersistTaps}
-				>
+					{...scrollPersistTaps}>
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header}>
 							<Avatar text={user.username} style={styles.avatar} size={30} />
@@ -349,8 +348,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 								<Text
 									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
 									numberOfLines={1}
-									accessibilityLabel={`Connected to ${baseUrl}`}
-								>
+									accessibilityLabel={`Connected to ${baseUrl}`}>
 									{Site_Name}
 								</Text>
 							</View>

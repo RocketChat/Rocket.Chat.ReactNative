@@ -42,8 +42,7 @@ const PlayButton = ({ onPress, disabled = false, audioState }: IButton) => {
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 			disabled={disabled}
 			onPress={onPress}
-			hitSlop={AUDIO_BUTTON_HIT_SLOP}
-		>
+			hitSlop={AUDIO_BUTTON_HIT_SLOP}>
 			<Icon audioState={audioState} disabled={disabled} />
 		</NativeButton>
 	);

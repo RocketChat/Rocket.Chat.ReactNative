@@ -1,6 +1,3 @@
-// https://github.com/facebook/react/issues/20756#issuecomment-780927519
-import 'react-16-node-hanging-test-fix';
-
 import React from 'react';
 import '@testing-library/react-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';

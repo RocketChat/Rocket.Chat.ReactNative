@@ -332,20 +332,22 @@ index 0ba2020..0965094 100644
  };
  export default asBaseComponent<TextFieldProps, StaticMembers>(forwardRef(TextField as any), {
 diff --git a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
-index cb3d69d..5084ec8 100644
+index cb3d69d..790929c 100644
 --- a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
 +++ b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
-@@ -148,13 +148,11 @@ function TouchableOpacity(props: Props) {
+@@ -148,13 +148,13 @@ function TouchableOpacity(props: Props) {
  
    return (
      <TapGestureHandler
 -      // @ts-expect-error
++    // @ts-ignore
        onGestureEvent={tapGestureHandler}
        shouldCancelWhenOutside
        enabled={!disabled}
      >
        <Reanimated.View>
 -        {/* @ts-expect-error */}
++        {/* @ts-ignore */}
          <Container onGestureEvent={longPressGestureHandler} shouldCancelWhenOutside>
            <Reanimated.View
              {...others}
@@ -390,6 +392,34 @@ index 346d706..eb2f04e 100644
    DEFAULT_DIRECTIONS,
    DEFAULT_ANIMATION_CONFIG
  };
+diff --git a/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts b/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts
+index 0fc7cad..2d2f6d3 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts
++++ b/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts
+@@ -55,6 +55,7 @@ const DEFAULT_ANIMATION_VELOCITY = 300;
+ export const DEFAULT_ANIMATION_CONFIG = {velocity: DEFAULT_ANIMATION_VELOCITY, damping: 18, stiffness: 100, mass: 0.4};
+ const SPRING_BACK_ANIMATION_CONFIG = {velocity: DEFAULT_ANIMATION_VELOCITY, damping: 20, stiffness: 300, mass: 0.8};
+ 
++// @ts-ignore
+ const usePanGesture = (props: PanGestureProps) => {
+   const {
+     directions = DEFAULT_DIRECTIONS,
+@@ -113,12 +114,15 @@ const usePanGesture = (props: PanGestureProps) => {
+   }, [animateToOrigin]);
+ 
+   const onGestureEvent = useAnimatedGestureHandler({
++    // @ts-ignore
+     onStart: (_event: PanGestureHandlerEventPayload, context: {initialTranslation: Frame}) => {
+       context.initialTranslation = {x: translationX.value, y: translationY.value};
+     },
++    // @ts-ignore
+     onActive: (event: PanGestureHandlerEventPayload, context: {initialTranslation: Frame}) => {
+       setTranslation(event, context.initialTranslation);
+     },
++    // @ts-ignore
+     onEnd: (event: PanGestureHandlerEventPayload) => {
+       if (dismissible) {
+         const velocity = getDismissVelocity(event, directions, getTranslationOptions(), threshold);
 diff --git a/node_modules/react-native-ui-lib/src/style/index.ts b/node_modules/react-native-ui-lib/src/style/index.ts
 index da8cb97..995207b 100644
 --- a/node_modules/react-native-ui-lib/src/style/index.ts

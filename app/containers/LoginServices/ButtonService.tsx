@@ -16,8 +16,7 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 			onPress={onPress}
 			style={[styles.serviceButton, { backgroundColor }]}
 			activeOpacity={0.5}
-			underlayColor={colors.buttonText}
-		>
+			underlayColor={colors.buttonText}>
 			<View style={styles.serviceButtonContainer}>
 				{authType === 'oauth' || authType === 'apple' ? (
 					<CustomIcon name={icon} size={24} color={colors.titleText} style={styles.serviceIcon} />

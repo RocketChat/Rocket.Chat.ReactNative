@@ -87,8 +87,6 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			}}
 			Icon={Icon}
 			textInputProps={{
-				// style property was Omitted in lib, but can be used normally
-				// @ts-ignore
 				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText }
 			}}
 		/>

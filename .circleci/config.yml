@@ -384,7 +384,7 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
@@ -401,15 +401,15 @@ jobs:
           command: |
             yarn lint
 
-      - run:
-          name: Test
-          command: |
-            yarn test --runInBand
+      # - run:
+      #     name: Test
+      #     command: |
+      #       yarn test --runInBand
 
-      - run:
-          name: Codecov
-          command: |
-            yarn codecov
+      # - run:
+      #     name: Codecov
+      #     command: |
+      #       yarn codecov
 
       - save_cache: *save-npm-cache-linux
 

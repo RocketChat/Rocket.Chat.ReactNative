@@ -38,11 +38,11 @@ describe('Threads', () => {
 
 		// Render - Header
 		describe('Header', () => {
-			it('should have actions button ', async () => {
+			it('should have actions button', async () => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
 
-			it('should have threads button ', async () => {
+			it('should have threads button', async () => {
 				await expect(element(by.id('room-view-header-threads'))).toExist();
 			});
 		});

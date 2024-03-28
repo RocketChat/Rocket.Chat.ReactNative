@@ -81,8 +81,7 @@ const EmojiPicker = ({
 						keyboardShouldPersistTaps: 'always',
 						keyboardDismissMode: 'none'
 					}}
-					style={{ backgroundColor: colors.surfaceLight }}
-				>
+					style={{ backgroundColor: colors.surfaceLight }}>
 					{categories.tabs.map((tab: any, i) => renderCategory(tab.category, i, tab.tabLabel))}
 				</ScrollableTabView>
 			)}

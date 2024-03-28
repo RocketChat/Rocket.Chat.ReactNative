@@ -193,8 +193,7 @@ const ServerDropdown = () => {
 						borderColor: colors.separatorColor
 					}
 				]}
-				testID='rooms-list-header-server-dropdown'
-			>
+				testID='rooms-list-header-server-dropdown'>
 				<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: colors.separatorColor }]}>
 					<Text style={[styles.serverHeaderText, { color: colors.auxiliaryText }]}>{I18n.t('Server')}</Text>
 					<TouchableOpacity onPress={addServer} testID='rooms-list-header-server-add'>
