@@ -1,6 +1,12 @@
 defaults: &defaults
   working_directory: ~/repo
 
+android-executor: &android-executor
+  executor:
+    name: android/android-machine
+    resource-class: xlarge
+    tag: 2024.01.1
+
 orbs:
   android: circleci/android@2.1.2
 
@@ -415,12 +421,10 @@ jobs:
   # Android builds
   android-build-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2023.11-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: xlarge
     steps:
       - android-build
 
