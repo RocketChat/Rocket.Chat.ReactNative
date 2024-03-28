@@ -19,8 +19,7 @@ const Touch = React.forwardRef<RectButton, ITouchProps>(({ children, onPress, un
 			activeOpacity={1}
 			underlayColor={underlayColor || colors.bannerBackground}
 			rippleColor={colors.bannerBackground}
-			{...props}
-		>
+			{...props}>
 			{children}
 		</RectButton>
 	);

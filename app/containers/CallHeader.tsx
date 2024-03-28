@@ -49,16 +49,14 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 						onPress={() => setCam(!cam)}
 						style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}
-					>
+						disabled={calling}>
 						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
 					</Touchable>
 					<Touchable
 						onPress={() => setMic(!mic)}
 						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}
-					>
+						disabled={calling}>
 						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={24} color={handleColors(mic).icon} />
 					</Touchable>
 				</View>

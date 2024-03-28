@@ -1371,8 +1371,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					<Touch
 						onPress={this.resumeRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
-						enabled={!loading}
-					>
+						enabled={!loading}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-chat-on-hold-button'>
 							{I18n.t('Resume')}
 						</Text>
@@ -1387,8 +1386,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					<Touch
 						onPress={this.joinRoom}
 						style={[styles.joinRoomButton, { backgroundColor: themes[theme].actionTintColor }]}
-						enabled={!loading}
-					>
+						enabled={!loading}>
 						<Text style={[styles.joinRoomText, { color: themes[theme].buttonText }]} testID='room-view-join-button'>
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
@@ -1465,8 +1463,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onSendMessage: this.handleSendMessage,
 					setQuotesAndText: this.setQuotesAndText,
 					getText: this.getText
-				}}
-			>
+				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
 					<StatusBar />
 					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />

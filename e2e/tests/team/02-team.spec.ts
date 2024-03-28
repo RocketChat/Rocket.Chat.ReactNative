@@ -94,19 +94,19 @@ describe('Team', () => {
 
 	describe('Team Room', () => {
 		describe('Team Header', () => {
-			it('should have actions button ', async () => {
+			it('should have actions button', async () => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
 
-			it('should have call button ', async () => {
+			it('should have call button', async () => {
 				await expect(element(by.id('room-view-header-call'))).toExist();
 			});
 
-			it('should have threads button ', async () => {
+			it('should have threads button', async () => {
 				await expect(element(by.id('room-view-header-threads'))).toExist();
 			});
 
-			it('should have search button ', async () => {
+			it('should have search button', async () => {
 				await expect(element(by.id('room-view-search'))).toExist();
 			});
 		});
@@ -122,15 +122,15 @@ describe('Team', () => {
 		});
 
 		describe('Team Channels Header', () => {
-			it('should have actions button ', async () => {
+			it('should have actions button', async () => {
 				await expect(element(by.id('room-header')).atIndex(0)).toExist();
 			});
 
-			it('should have team channels button ', async () => {
+			it('should have team channels button', async () => {
 				await expect(element(by.id('team-channels-view-create'))).toExist();
 			});
 
-			it('should have threads button ', async () => {
+			it('should have threads button', async () => {
 				await expect(element(by.id('team-channels-view-search'))).toExist();
 			});
 		});

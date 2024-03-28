@@ -28,8 +28,7 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 			<Touch
 				onPress={hide}
 				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
-				accessibilityLabel={I18n.t('Cancel')}
-			>
+				accessibilityLabel={I18n.t('Cancel')}>
 				<Text style={[styles.text, { color: colors.bodyText }]}>{I18n.t('Cancel')}</Text>
 			</Touch>
 		) : null;

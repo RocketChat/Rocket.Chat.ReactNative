@@ -47,8 +47,7 @@ export default function StartACallActionSheet({
 	return (
 		<View
 			style={[style.actionSheetContainer, { paddingBottom: bottom }]}
-			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}
-		>
+			onLayout={e => setContainerWidth(e.nativeEvent.layout.width / 2)}>
 			{calling && roomType === SubscriptionType.DIRECT ? <Ringer ringer={ERingerSounds.DIALTONE} /> : null}
 			<CallHeader
 				title={calling && user.direct ? i18n.t('Calling') : i18n.t('Start_a_call')}
@@ -65,8 +64,7 @@ export default function StartACallActionSheet({
 				style={[
 					style.actionSheetPhotoContainer,
 					{ backgroundColor: cam ? undefined : colors.conferenceCallPhotoBackground, width: containerWidth }
-				]}
-			>
+				]}>
 				{cam ? (
 					<Camera style={[style.cameraContainer, { width: containerWidth }]} type={CameraType.front} />
 				) : (

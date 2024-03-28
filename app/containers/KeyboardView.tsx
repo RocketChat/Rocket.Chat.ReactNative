@@ -16,8 +16,7 @@ const KeyboardView = ({ style, contentContainerStyle, scrollEnabled, keyboardVer
 		contentContainerStyle={contentContainerStyle}
 		scrollEnabled={scrollEnabled}
 		alwaysBounceVertical={false}
-		extraHeight={keyboardVerticalOffset}
-	>
+		extraHeight={keyboardVerticalOffset}>
 		{children}
 	</KeyboardAwareScrollView>
 );

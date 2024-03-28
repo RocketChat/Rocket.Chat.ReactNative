@@ -268,6 +268,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			// @ts-ignore
 			logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}${params.name ? params.name.toUpperCase() : ''}`]);
 			const { navigation } = this.props;
+			// @ts-ignore
 			navigation.navigate(route, params);
 		}
 		if (event) {
@@ -796,8 +797,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					style={{ backgroundColor: themes[theme].backgroundColor }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
-					testID='room-actions-info'
-				>
+					testID='room-actions-info'>
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
 							{t === 'd' && member._id ? (

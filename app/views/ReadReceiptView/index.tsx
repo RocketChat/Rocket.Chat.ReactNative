@@ -107,8 +107,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		return (
 			<View
 				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
-				testID='read-receipt-view'
-			>
+				testID='read-receipt-view'>
 				<Text style={[styles.emptyText, { color: themes[theme].auxiliaryTintColor }]}>{I18n.t('No_Read_Receipts')}</Text>
 			</View>
 		);
@@ -134,8 +133,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 							{
 								color: themes[theme].auxiliaryText
 							}
-						]}
-					>{`@${item.user.username}`}</Text>
+						]}>{`@${item.user.username}`}</Text>
 				</View>
 			</View>
 		);

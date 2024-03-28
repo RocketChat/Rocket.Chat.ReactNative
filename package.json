@@ -110,7 +110,7 @@
 		"react-native-notifications": "4.3.3",
 		"react-native-notifier": "1.6.1",
 		"react-native-orientation-locker": "1.1.8",
-		"react-native-picker-select": "8.0.4",
+		"react-native-picker-select": "9.0.1",
 		"react-native-platform-touchable": "1.1.1",
 		"react-native-popover-view": "5.1.7",
 		"react-native-progress": "5.0.0",
@@ -152,7 +152,6 @@
 	"resolutions": {
 		"ua-parser-js": "1.0.2",
 		"jpeg-js": "0.4.4",
-		"@types/react": "18",
 		"react-native-reanimated": "3.8.1"
 	},
 	"devDependencies": {
@@ -180,12 +179,11 @@
 		"@types/jest": "^29.5.12",
 		"@types/jsrsasign": "^10.5.8",
 		"@types/lodash": "^4.14.188",
-		"@types/react": "^17.0.14",
-		"@types/react-native": "0.68.1",
+		"@types/react": "^18.2.6",
 		"@types/react-native-background-timer": "2.0.0",
 		"@types/react-native-config-reader": "4.1.0",
 		"@types/react-native-platform-touchable": "1.1.2",
-		"@types/react-native-scrollable-tab-view": "0.10.2",
+		"@types/react-native-scrollable-tab-view": "^0.10.11",
 		"@types/react-native-vector-icons": "6.4.12",
 		"@types/react-test-renderer": "18.0.0",
 		"@types/semver": "7.3.13",

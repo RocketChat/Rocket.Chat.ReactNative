@@ -17,7 +17,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 
 	const { colors } = useTheme();
 
-	const internalOnChangeText = useCallback(value => {
+	const internalOnChangeText = useCallback((value: string) => {
 		setText(value);
 		onChangeText?.(value);
 	}, []);

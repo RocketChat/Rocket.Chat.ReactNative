@@ -128,8 +128,7 @@ const Url = React.memo(
 					},
 					imageLoadedState === 'loading' && styles.loading
 				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-			>
+				background={Touchable.Ripple(themes[theme].bannerBackground)}>
 				<>
 					{image ? (
 						<FastImage

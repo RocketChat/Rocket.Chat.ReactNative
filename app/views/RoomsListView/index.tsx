@@ -155,7 +155,7 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
+const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
 	length: height,
 	offset: height * index,
 	index
@@ -847,6 +847,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			// @ts-ignore
 			navigation.navigate(screen);
 		}
 	};
