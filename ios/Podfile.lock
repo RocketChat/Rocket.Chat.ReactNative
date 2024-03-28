@@ -1,6 +1,6 @@
 PODS:
   - boost (1.83.0)
-  - BugsnagReactNative (7.19.0):
+  - BugsnagReactNative (7.22.6):
     - React-Core
   - BVLinearGradient (2.6.2):
     - React-Core
@@ -8,7 +8,7 @@ PODS:
   - EXAV (13.10.5):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
-  - Expo (50.0.13):
+  - Expo (50.0.14):
     - ExpoModulesCore
   - ExpoAppleAuthentication (6.3.0):
     - ExpoModulesCore
@@ -1282,13 +1282,7 @@ PODS:
     - TOCropViewController
   - RNLocalize (2.1.1):
     - React-Core
-<<<<<<< HEAD
-  - RNNotifee (7.8.0):
-=======
-  - RNMathView (1.0.0):
-    - iosMath
   - RNNotifee (7.8.2):
->>>>>>> chore.upgrade-ts-deps
     - React-Core
     - RNNotifee/NotifeeCore (= 7.8.2)
   - RNNotifee/NotifeeCore (7.8.2):
@@ -1668,11 +1662,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
-  BugsnagReactNative: fa312f53a83ca21c0afdfeaec98a9c5eeb8fc4ed
+  BugsnagReactNative: 366a7e11c0bcf34842e54f40b15dd937cb267aa7
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXAV: 07e50f934907fa8274dd06fbcd20ee4b9478c619
-  Expo: a7c9bd836cb7c86e699c2539a906c9ff873f19f8
+  Expo: e01a77c6fa4bc80a6d1bb949cda1d12d21044abd
   ExpoAppleAuthentication: 4fc9972356977f009911f2f3a5f56319c2a5b11b
   ExpoCamera: 53f5ef81bab088b2edcf94d05e4da3bc84f46383
   ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
@@ -1779,14 +1773,8 @@ SPEC CHECKSUMS:
   RNGestureHandler: 67fb54b3e6ca338a8044e85cd6f340265aa41091
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
-<<<<<<< HEAD
-  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
-  RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
-=======
-  RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
-  RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
->>>>>>> chore.upgrade-ts-deps
+  RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 17e2f657f1b09a71ec3c821368a04acbb7ebcb46
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
@@ -1800,6 +1788,6 @@ SPEC CHECKSUMS:
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 09db7fc44d3a1df95e8618c396cf4bafe7bed117
+PODFILE CHECKSUM: 791fe27b1b2f0ee54648bb00830607c260aa3ddb
 
 COCOAPODS: 1.14.3
