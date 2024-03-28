@@ -388,7 +388,7 @@ class Encryption {
 		}
 
 		try {
-			const batch: (Model | null | void | false | Promise<void>)[] = [];
+			const batch: (Model | null | void | false)[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
 				// Let's create the subscription with the data received

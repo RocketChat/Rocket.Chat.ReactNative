@@ -58,8 +58,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			}}
 			style={({ pressed }: any) => ({
 				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
-			})}
-		>
+			})}>
 			<View style={[styles.container, styles.button, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>

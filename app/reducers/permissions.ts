@@ -2,7 +2,7 @@ import { PERMISSIONS } from '../actions/actionsTypes';
 import { TActionPermissions } from '../actions/permissions';
 import { SUPPORTED_PERMISSIONS } from '../lib/methods/getPermissions';
 
-export type TSupportedPermissions = typeof SUPPORTED_PERMISSIONS[number];
+export type TSupportedPermissions = (typeof SUPPORTED_PERMISSIONS)[number];
 
 export type IPermissionsState = {
 	[K in TSupportedPermissions]?: string[];

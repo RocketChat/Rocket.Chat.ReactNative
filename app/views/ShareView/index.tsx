@@ -126,7 +126,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} testID='share-view-close' />;
+			options.headerLeft = () => (
+				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} testID='share-view-close' />
+			);
 		}
 
 		if (!attachments.length && !readOnly) {
@@ -348,8 +350,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}
-				>
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected

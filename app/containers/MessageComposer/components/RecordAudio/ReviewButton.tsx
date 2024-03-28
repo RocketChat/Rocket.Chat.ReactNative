@@ -17,8 +17,7 @@ export const ReviewButton = ({ onPress }: { onPress: Function }): ReactElement =
 				}
 			]}
 			onPress={() => onPress()}
-			hitSlop={hitSlop}
-		>
+			hitSlop={hitSlop}>
 			<View accessible accessibilityLabel={'Cancel_recording'} accessibilityRole='button'>
 				<CustomIcon name={'arrow-right'} size={24} color={colors.fontWhite} />
 			</View>

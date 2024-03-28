@@ -34,7 +34,7 @@ export const useEndpointData = <TPath extends PathFor<'GET'>>(
 		if (!endpoint) return;
 		setLoading(true);
 		sdk
-			.get(endpoint, params)
+			.get(endpoint, params as any)
 			.then(e => {
 				setLoading(false);
 				if (e.success) {

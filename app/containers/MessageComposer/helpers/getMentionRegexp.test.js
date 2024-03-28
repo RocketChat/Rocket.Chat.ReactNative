@@ -35,21 +35,21 @@ describe('getMentionRegexpUser', function () {
 });
 
 describe('getMentionRegexpEmoji', function () {
-	test('removing query text on emoji suggestion autocomplete ', () => {
+	test('removing query text on emoji suggestion autocomplete', () => {
 		const message = 'Hey :smiley';
 		expect(message.replace(regexp, '')).toBe('Hey :');
 	});
 });
 
 describe('getMentionRegexpCommand', function () {
-	test('removing query text on emoji suggestion autocomplete ', () => {
+	test('removing query text on slash command suggestion autocomplete', () => {
 		const message = '/archive';
 		expect(message.replace(regexp, '')).toBe('/');
 	});
 });
 
 describe('getMentionRegexpRoom', function () {
-	test('removing query text on emoji suggestion autocomplete ', () => {
+	test('removing query text on channel suggestion autocomplete', () => {
 		const message = 'Check #general';
 		expect(message.replace(regexp, '')).toBe('Check #');
 	});

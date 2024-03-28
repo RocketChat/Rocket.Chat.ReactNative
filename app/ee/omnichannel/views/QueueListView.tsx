@@ -27,7 +27,7 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data: IOmnichannelRoom[] | null | undefined, index: number) => ({
+const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => ({
 	length: ROW_HEIGHT,
 	offset: ROW_HEIGHT * index,
 	index

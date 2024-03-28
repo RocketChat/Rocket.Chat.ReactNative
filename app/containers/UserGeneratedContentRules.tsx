@@ -44,15 +44,13 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 				{`${I18n.t('Onboarding_agree_terms')}\n`}
 				<Text
 					style={[styles.bottomContainerTextBold, { color: colors.actionTintColor }]}
-					onPress={() => openContract('terms-of-service')}
-				>
+					onPress={() => openContract('terms-of-service')}>
 					{I18n.t('Terms_of_Service')}
 				</Text>{' '}
 				{I18n.t('and')}
 				<Text
 					style={[styles.bottomContainerTextBold, { color: colors.actionTintColor }]}
-					onPress={() => openContract('privacy-policy')}
-				>
+					onPress={() => openContract('privacy-policy')}>
 					{' '}
 					{I18n.t('Privacy_Policy')}
 				</Text>

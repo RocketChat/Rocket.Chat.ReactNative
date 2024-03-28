@@ -49,8 +49,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 					style={{
 						...style.iconContainer,
 						backgroundColor: iconStyle[variant].backgroundColor
-					}}
-				>
+					}}>
 					<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
 				</View>
 				<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>

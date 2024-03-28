@@ -142,8 +142,7 @@ const CreateChannelView = () => {
 		<KeyboardView
 			style={{ backgroundColor: colors.backgroundColor }}
 			contentContainerStyle={[sharedStyles.container, styles.container]}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>

@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-picker-select/index.d.ts b/node_modules/react-native-picker-select/index.d.ts
+index 33983db..64e23ce 100644
+--- a/node_modules/react-native-picker-select/index.d.ts
++++ b/node_modules/react-native-picker-select/index.d.ts
+@@ -53,7 +53,7 @@ export interface PickerStyle {
+ type CustomModalProps = Omit<ModalProps, 'visible' | 'transparent' | 'animationType'>;
+ // 'testID', 'supportedOrientations', and 'onOrientationChange' are also used, but can be overwritten safely
+ 
+-type CustomTextInputProps = Omit<TextInputProps, 'style' | 'value' | 'ref' | 'editable'>;
++type CustomTextInputProps = Omit<TextInputProps, 'value' | 'ref' | 'editable'>;
+ // 'testID' is also used, but can be overwritten safely
+ 
+ type CustomPickerProps = Omit<PickerProps, 'onValueChange' | 'selectedValue'>;

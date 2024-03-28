@@ -37,8 +37,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					{
 						bottom: viewBottom
 					}
-				]}
-			>
+				]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					data={items}

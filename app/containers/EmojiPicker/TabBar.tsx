@@ -23,8 +23,7 @@ const TabBar = ({ activeTab, tabs, goToPage }: ITabBarProps): React.ReactElement
 						{
 							backgroundColor: isIOS && pressed ? colors.buttonBackgroundSecondaryPress : 'transparent'
 						}
-					]}
-				>
+					]}>
 					<CustomIcon name={tab} size={24} color={activeTab === i ? colors.strokeHighlight : colors.fontSecondaryInfo} />
 					<View
 						style={

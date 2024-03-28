@@ -1,8 +1,8 @@
 diff --git a/node_modules/@types/ejson/index.d.ts b/node_modules/@types/ejson/index.d.ts
-index 3a35636..278ef98 100755
+index 7790dd7..f04dbc5 100644
 --- a/node_modules/@types/ejson/index.d.ts
 +++ b/node_modules/@types/ejson/index.d.ts
-@@ -17,7 +17,7 @@ export function parse(str: string): any;
+@@ -12,7 +12,7 @@ export function parse(str: string): any;
  export function stringify(obj: any, options?: StringifyOptions): string;
  
  export function toJSONValue(obj: any): string;

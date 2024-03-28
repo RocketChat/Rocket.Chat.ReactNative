@@ -49,8 +49,7 @@ export default function PushGatewayConnection(): React.ReactElement | null {
 	return (
 		<CustomListSection
 			title={!defaultPushGateway ? 'Custom_push_gateway_connection' : 'Push_gateway_connection'}
-			statusColor={statusColor}
-		>
+			statusColor={statusColor}>
 			<List.Separator />
 			<List.Item
 				title='Test_push_notification'

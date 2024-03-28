@@ -15,9 +15,9 @@ describe('Loading', () => {
 		// receive event and expect loading to be rendered
 		act(() => sendLoadingEvent({ visible: true }));
 		await waitFor(() => {
-			expect(() => getByTestId(LOADING_TEST_ID));
+			expect(() => getByTestId(LOADING_TEST_ID)).toBeTruthy();
 		});
-		expect(() => getByTestId(LOADING_IMAGE_TEST_ID));
+		expect(() => getByTestId(LOADING_IMAGE_TEST_ID)).toBeTruthy();
 		// receive event and expect loading not to be rendered
 		act(() => sendLoadingEvent({ visible: false }));
 		await waitFor(() => {
@@ -29,10 +29,10 @@ describe('Loading', () => {
 		const { getByTestId } = render(<Render />);
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		act(() => sendLoadingEvent({ visible: true }));
-		expect(() => getByTestId(LOADING_TEST_ID));
+		expect(() => getByTestId(LOADING_TEST_ID)).toBeTruthy();
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {
-			expect(() => getByTestId(LOADING_TEST_ID));
+			expect(() => getByTestId(LOADING_TEST_ID)).toBeTruthy();
 		});
 	});
 
@@ -42,7 +42,7 @@ describe('Loading', () => {
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		act(() => sendLoadingEvent({ visible: true, onCancel: mockFn }));
 		await waitFor(() => {
-			expect(() => getByTestId(LOADING_TEST_ID));
+			expect(() => getByTestId(LOADING_TEST_ID)).toBeTruthy();
 		});
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {
@@ -58,11 +58,11 @@ describe('Loading', () => {
 		getByTestIdAndThrow(getByTestId, LOADING_TEST_ID);
 		act(() => sendLoadingEvent({ visible: true, onCancel: mockFn }));
 		await waitFor(() => {
-			expect(() => getByTestId(LOADING_TEST_ID));
+			expect(() => getByTestId(LOADING_TEST_ID)).toBeTruthy();
 		});
 		act(() => sendLoadingEvent({ visible: true, onCancel: mockFn2 }));
 		await waitFor(() => {
-			expect(() => getByTestId(LOADING_TEST_ID));
+			expect(() => getByTestId(LOADING_TEST_ID)).toBeTruthy();
 		});
 		fireEvent.press(getByTestId(LOADING_BUTTON_TEST_ID));
 		await waitFor(() => {

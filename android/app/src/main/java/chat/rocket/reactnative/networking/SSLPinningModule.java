@@ -6,7 +6,7 @@ import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.network.CustomClientBuilder;
 import com.facebook.react.modules.network.ReactCookieJarContainer;
 import com.facebook.react.modules.websocket.WebSocketModule;
-import com.facebook.react.modules.fresco.ReactOkHttpNetworkFetcher;
+// import com.facebook.react.modules.fresco.ReactOkHttpNetworkFetcher;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.RNFetchBlob.RNFetchBlob;
 
-import com.reactnativecommunity.webview.RNCWebViewManager;
+// import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
 
@@ -103,11 +103,11 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         // Websocket react-native layer
         WebSocketModule.setCustomClientBuilder(new CustomClient());
         // Image networking react-native layer
-        ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
+        // ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
         // RNFetchBlob networking layer
-        RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
+        // RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
         // RNCWebView onReceivedClientCertRequest
-        RNCWebViewManager.setCertificateAlias(data);
+        // RNCWebViewManager.setCertificateAlias(data);
         // FastImage Glide network layer
         FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
         // Expo AV network layer

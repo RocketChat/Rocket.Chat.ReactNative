@@ -20,8 +20,7 @@ const PlaybackSpeed = () => {
 	return (
 		<NativeButton
 			onPress={onPress}
-			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}
-		>
+			style={[styles.containerPlaybackSpeed, { backgroundColor: colors.buttonBackgroundSecondaryDefault }]}>
 			<Text style={[styles.playbackSpeedText, { color: colors.buttonFontSecondary }]}>{playbackSpeed}x</Text>
 		</NativeButton>
 	);
