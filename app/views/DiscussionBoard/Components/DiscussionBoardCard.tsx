@@ -14,7 +14,7 @@ const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 const cardColors = ['magenta', 'mossGreen', 'dreamBlue', 'creamsicleYellow', 'pink', 'superGray', 'forestGreen'];
 
 const DiscussionBoardCard = React.memo(({ item, onPress }: DiscussionBoardCardProps) => {
-	const { title, description, saved = false, icon, color, onSaveClick, avatar, f } = item;
+	const { title, description, saved = false, icon, color, onSaveClick, avatar, f, usersCount } = item;
 	// const [savedDiscussion, setSavedDiscussion] = React.useState(saved);
 	const {
 		// sortBy, showUnread, showFavorites, groupByType,
@@ -55,12 +55,11 @@ const DiscussionBoardCard = React.memo(({ item, onPress }: DiscussionBoardCardPr
 			<View style={styles.textContainer}>
 				<Text style={styles.title}>{title}</Text>
 				{description ? (
-					<View>
 						<Text style={styles.description}>{`${description?.slice(0, 100)}${description?.length > 100 ? '...' : ''}`}</Text>
-					</View>
 				) : (
 					<></>
 				)}
+				<Text style={styles.description}>{usersCount} members</Text>
 			</View>
 			{/* 
 			Starring a chat room is not supported yet.

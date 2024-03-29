@@ -118,7 +118,8 @@ const DiscussionHomeView: React.FC = ({ route }) => {
 						_raw: { ...d._raw, uids: JSON.parse(d._raw.uids), usernames: JSON.parse(d._raw.usernames) },
 						...d._raw,
 						uids: JSON.parse(d._raw.uids),
-						usernames: JSON.parse(d._raw.usernames)
+						usernames: JSON.parse(d._raw.usernames),
+						usersCount: JSON.parse(d._raw.users_count)
 					};
 
 					return {
