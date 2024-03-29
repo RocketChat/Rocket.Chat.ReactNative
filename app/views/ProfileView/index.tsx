@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ScrollView, TextInput, View } from 'react-native';
+import { Keyboard, ScrollView, TextInput, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { sha256 } from 'js-sha256';
 import ImagePicker, { Image } from 'react-native-image-crop-picker';
@@ -203,6 +203,24 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			!avatar.data &&
 			!customFieldsChanged
 		);
+	};
+
+	isRequiredFieldEmpty = () => {
+	   	const { customFields } = this.state;
+		const { Accounts_CustomFields } = this.props;
+
+		if (!Accounts_CustomFields) {
+			return false;
+		}
+		try {
+			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
+			const filteredCustomFields = omit(parsedCustomFields, ['ConnectIds', 'VideoUrl']);
+			const requiredFields = Object.keys(filteredCustomFields).filter(key => filteredCustomFields[key].required);
+
+			return requiredFields.some(field => !customFields[field]);
+		} catch (error) {
+			return false;
+		}
 	};
 
 	handleError = (e: any, _func: string, action: string) => {
@@ -450,6 +468,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		    const filteredCustomFields = omit(parsedCustomFields, ['ConnectIds', 'VideoUrl']);
 
 			return Object.keys(filteredCustomFields).map((key, index, array) => {
+				const isFieldRequired = filteredCustomFields[key].required;
 				if (filteredCustomFields[key].type === 'select') {
 					const options = filteredCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
 					return (
@@ -467,7 +486,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 									// @ts-ignore
 									this[key] = e;
 								}}
-								label={key}
+								label={isFieldRequired ? `${key} *` : key}
 								placeholder={key}
 								value={customFields[key]}
 								testID='settings-view-language'
@@ -481,7 +500,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								this[key] = e;
 							}}
 							key={key}
-							label={key}
+							label={isFieldRequired ? `${key} *` : key}
 							placeholder={key}
 							value={customFields[key]}
 							onChangeText={value => {
@@ -508,7 +527,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							this[key] = e;
 						}}
 						key={key}
-						label={key}
+						label={isFieldRequired ? `${key} *` : key}
 						placeholder={key}
 						value={customFields[key]}
 						onChangeText={value => {
@@ -686,10 +705,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						/>
 						{this.renderAvatarButtons()}
 						<Button
-							title={I18n.t('Save_Changes')}
+							title={this.isRequiredFieldEmpty () ? I18n.t('Please_fill_all_required_fields') : I18n.t('Save_Changes')}
 							type='primary'
 							onPress={this.submit}
-							disabled={!this.formIsChanged()}
+							disabled={!this.formIsChanged() || this.isRequiredFieldEmpty()}
 							testID='profile-view-submit'
 							loading={saving}
 						/>
