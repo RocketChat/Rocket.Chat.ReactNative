@@ -446,9 +446,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 		try {
 			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
-			return Object.keys(parsedCustomFields).map((key, index, array) => {
-				if (parsedCustomFields[key].type === 'select') {
-					const options = parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
+			// filter out ConnectIds and VideoUrl keys
+		    const filteredCustomFields = omit(parsedCustomFields, ['ConnectIds', 'VideoUrl']);
+
+			return Object.keys(filteredCustomFields).map((key, index, array) => {
+				if (filteredCustomFields[key].type === 'select') {
+					const options = filteredCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
 					return (
 						<RNPickerSelect
 							key={key}
@@ -471,7 +474,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							/>
 						</RNPickerSelect>
 					);
-				} if (parsedCustomFields[key].type === 'numeric') {
+				} if (filteredCustomFields[key].type === 'numeric') {
 					return (
 						<FormTextInput
 							inputRef={e => {
