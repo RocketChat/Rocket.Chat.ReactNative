@@ -467,6 +467,7 @@
   "Place_chat_on_hold": "Place chat on hold",
   "Please_add_a_comment": "Please add a comment",
   "Please_enter_your_password": "Please enter your password",
+  "Please_fill_all_required_fields": "Please fill all required fields",
   "Please_wait": "Please wait.",
   "PostModeration": "Post Moderation",
   "Preferences": "Preferences",
@@ -614,6 +615,7 @@
   "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
   "Supported_versions_warning_update_required": "Update required",
+  "T1D_welcome": "Welcome to T1D Reachout",
   "Table": "Table",
   "Tags": "Tags",
   "Take_a_photo": "Take a photo",
@@ -846,7 +848,5 @@
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",
   "video-conf-provider-not-configured-header": "Conference call not enabled",
   "you": "you",
-  "you_were_mentioned": "you were mentioned",
-  "T1D_welcome": "Welcome to T1D Reachout",
-  "Please_fill_all_required_fields": "Please fill all required fields"
+  "you_were_mentioned": "you were mentioned"
 }
