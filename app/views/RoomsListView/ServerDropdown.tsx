@@ -217,6 +217,7 @@ const ServerDropdown = () => {
 					testID='rooms-list-header-create-workspace-button'
 					style={styles.buttonCreateWorkspace}
 					color={colors.badgeBackgroundLevel2}
+					backgroundColor={colors.surfaceRoom}
 					styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 				/>
 			</Animated.View>
