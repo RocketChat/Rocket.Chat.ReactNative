@@ -18,7 +18,7 @@ export const useAutoSaveDraft = (text = '') => {
 		if (route.name === 'ShareView') return;
 		if (action === 'edit') return;
 		const draftMessage = selectedMessages?.length ? JSON.stringify({ quotes: selectedMessages, msg: text }) : text;
-		if (oldText.current !== draftMessage) {
+		if (oldText.current !== draftMessage || (oldText.current === '' && draftMessage === '')) {
 			oldText.current = draftMessage;
 			saveDraftMessage({ rid, tmid, draftMessage });
 		}
