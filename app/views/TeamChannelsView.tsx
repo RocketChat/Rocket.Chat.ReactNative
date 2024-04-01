@@ -436,7 +436,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		} = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
-		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].strokeHighlight : themes[theme].fontDefault;
+		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].fontHint : themes[theme].fontDefault;
 
 		const options: TActionSheetOptionsItem[] = [];
 

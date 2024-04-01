@@ -66,7 +66,7 @@ const RenderListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
 			right={() => (
-				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.strokeHighlight }]}>
+				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>
 					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
 				</Text>
 			)}

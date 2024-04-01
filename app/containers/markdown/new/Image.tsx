@@ -26,7 +26,7 @@ const MessageImage = ({ img, theme }: TMessageImage) => (
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
-			color: themes[theme].strokeHighlight
+			color: themes[theme].fontHint
 		}}
 	/>
 );

@@ -67,7 +67,7 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 						{name}
 					</Text>
 				</View>
-				{icon ? <CustomIcon name={icon} size={22} color={iconColor || colors.strokeHighlight} style={styles.icon} /> : null}
+				{icon ? <CustomIcon name={icon} size={22} color={iconColor || colors.fontHint} style={styles.icon} /> : null}
 			</View>
 		</Pressable>
 	);

@@ -21,7 +21,7 @@ const OmnichannelQueue = ({ queueSize, onPress }: IOmnichannelQueue) => {
 			<List.Item
 				title='Omnichannel_queue'
 				heightContainer={50}
-				left={() => <List.Icon name='queue' size={24} color={themes[theme].strokeHighlight} />}
+				left={() => <List.Icon name='queue' size={24} color={themes[theme].fontHint} />}
 				color={themes[theme].fontDefault}
 				onPress={queueSize ? onPress : undefined}
 				styleTitle={styles.titleOmnichannelQueue}
@@ -33,7 +33,7 @@ const OmnichannelQueue = ({ queueSize, onPress }: IOmnichannelQueue) => {
 								<CustomIcon name='chevron-right' style={styles.actionIndicator} color={themes[theme].fontDefault} size={24} />
 							</>
 						) : (
-							<Text style={[styles.emptyText, { color: themes[theme].strokeHighlight }]}>{i18n.t('Empty')}</Text>
+							<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{i18n.t('Empty')}</Text>
 						)}
 					</View>
 				)}

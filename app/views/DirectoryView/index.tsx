@@ -227,7 +227,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						<CustomIcon
 							name='chevron-down'
 							size={20}
-							color={themes[theme].strokeHighlight}
+							color={themes[theme].fontHint}
 							style={styles.toggleDropdownArrow}
 						/>
 					</View>

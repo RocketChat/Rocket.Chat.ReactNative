@@ -1370,7 +1370,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Chat_is_on_hold')}</Text>
 					<Touch
 						onPress={this.resumeRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].strokeHighlight }]}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
 						enabled={!loading}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-chat-on-hold-button'>
@@ -1386,7 +1386,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('You_are_in_preview_mode')}</Text>
 					<Touch
 						onPress={this.joinRoom}
-						style={[styles.joinRoomButton, { backgroundColor: themes[theme].strokeHighlight }]}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
 						enabled={!loading}
 					>
 						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-join-button'>

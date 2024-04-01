@@ -97,7 +97,7 @@ const DirectoryOptions = ({
 							style={[styles.dropdownItemIcon, styles.inverted]}
 							size={22}
 							name='chevron-down'
-							color={colors.strokeHighlight}
+							color={colors.fontHint}
 						/>
 					</View>
 				</Touch>

@@ -37,7 +37,7 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 		>
 			<View style={styles.tabBarItem}>
 				{tab._id === 'All' ? (
-					<Text style={[styles.allTabItem, { color: colors.strokeHighlight }]}>{I18n.t('All')}</Text>
+					<Text style={[styles.allTabItem, { color: colors.fontHint }]}>{I18n.t('All')}</Text>
 				) : (
 					<>
 						<Emoji
@@ -46,7 +46,7 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 							customEmojiStyle={styles.customEmojiStyle}
 							getCustomEmoji={getCustomEmoji}
 						/>
-						<Text style={[styles.reactionCount, { color: colors.strokeHighlight }]}>{tab.usernames.length}</Text>
+						<Text style={[styles.reactionCount, { color: colors.fontHint }]}>{tab.usernames.length}</Text>
 					</>
 				)}
 			</View>

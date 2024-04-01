@@ -12,7 +12,7 @@ export default function useStyle() {
 			fontSize: 12,
 			marginLeft: 8,
 			...sharedStyles.textBold,
-			color: colors.strokeHighlight
+			color: colors.fontHint
 		},
 		iconContainer: {
 			width: 28,

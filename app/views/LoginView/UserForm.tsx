@@ -152,7 +152,7 @@ const UserForm = () => {
 				<View style={styles.bottomContainer}>
 					<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
-						style={[styles.bottomContainerTextBold, { color: colors.strokeHighlight }]}
+						style={[styles.bottomContainerTextBold, { color: colors.fontHint }]}
 						onPress={register}
 						testID='login-view-register'
 					>

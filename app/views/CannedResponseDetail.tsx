@@ -125,11 +125,11 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 							{cannedResponse?.tags?.length > 0 ? (
 								cannedResponse.tags.map(t => (
 									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
-										<Text style={[styles.cannedTag, { color: themes[theme].strokeHighlight }]}>{t}</Text>
+										<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 									</View>
 								))
 							) : (
-								<Text style={[styles.cannedText, { color: themes[theme].strokeHighlight }]}>-</Text>
+								<Text style={[styles.cannedText, { color: themes[theme].fontHint }]}>-</Text>
 							)}
 						</View>
 					</View>

@@ -109,7 +109,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceTint }]}
 				testID='read-receipt-view'
 			>
-				<Text style={[styles.emptyText, { color: themes[theme].strokeHighlight }]}>{I18n.t('No_Read_Receipts')}</Text>
+				<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{I18n.t('No_Read_Receipts')}</Text>
 			</View>
 		);
 	};

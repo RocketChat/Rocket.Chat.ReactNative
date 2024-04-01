@@ -62,7 +62,7 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 			testID={check ? `action-sheet-set-${label}-checked` : `action-sheet-set-${label}-unchecked`}
 			name={check ? 'checkbox-checked' : 'checkbox-unchecked'}
 			size={20}
-			color={check ? colors.strokeHighlight : undefined}
+			color={check ? colors.fontHint : undefined}
 		/>
 	);
 };

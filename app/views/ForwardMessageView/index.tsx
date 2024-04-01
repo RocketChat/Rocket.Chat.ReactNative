@@ -46,7 +46,7 @@ const ForwardMessageView = () => {
 				<HeaderButton.Container>
 					<HeaderButton.Item
 						title={I18n.t('Send')}
-						color={isSendButtonEnabled ? colors.strokeHighlight : colors.fontSecondaryInfo}
+						color={isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo}
 						disabled={!isSendButtonEnabled}
 						onPress={handlePostMessage}
 						testID='forward-message-view-send'
