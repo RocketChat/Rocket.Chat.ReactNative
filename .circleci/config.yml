@@ -423,23 +423,19 @@ jobs:
     # Android automatic builds
   android-automatic-build-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2023.11-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
   android-build-official:
     <<: *defaults
-    docker:
-      - image: cimg/android:2023.11-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
