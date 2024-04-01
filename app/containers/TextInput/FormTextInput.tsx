@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderRadius: 1
+		borderRadius: 2
 	},
 	inputIconLeft: {
 		paddingLeft: 45
