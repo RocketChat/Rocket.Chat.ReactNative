@@ -21,8 +21,6 @@ import I18n from '../../i18n';
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
-const starColor = '#f5d100';
-
 export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
@@ -120,14 +118,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					styles.actionRightButtonContainer,
 					{
 						width,
-						backgroundColor: starColor,
+						backgroundColor: colors.statusFontWarning,
 						left: '100%'
 					},
 					viewHeight,
 					animatedFavStyles
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: starColor }]} onPress={toggleFav}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]} onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name={favorite ? 'star-filled' : 'star'}
