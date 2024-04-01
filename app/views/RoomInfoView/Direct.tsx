@@ -19,7 +19,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 					{roles.map(role =>
 						role ? (
 							<View
-								style={[styles.roleBadge, { backgroundColor: colors.surfaceTint }]}
+								style={[styles.roleBadge, { backgroundColor: colors.surfaceSelected }]}
 								key={role}
 								testID={`user-role-${role.replace(/ /g, '-')}`}
 							>

@@ -388,7 +388,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			<HeaderButton.Container>
 				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item
-						color={issuesWithNotifications ? colors!.fontDanger : colors!.fontSecondaryInfo}
+						color={issuesWithNotifications ? colors!.fontDanger : ''}
 						iconName='notification-disabled'
 						onPress={this.navigateToNotificationOrPushTroubleshoot}
 						testID='room-view-push-troubleshoot'

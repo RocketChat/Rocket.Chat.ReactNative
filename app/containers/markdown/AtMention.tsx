@@ -42,7 +42,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		};
 	} else {
 		mentionStyle = {
-			color: themes[theme].badgeBackgroundLevel1
+			color: themes[theme].statusFontWarning
 		};
 	}
 
