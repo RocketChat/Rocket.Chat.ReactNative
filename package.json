@@ -25,7 +25,8 @@
 		"e2e:ios-test-debug": "yarn detox test -c ios.sim.debug",
 		"e2e:ios-build": "yarn detox build -c ios.sim.release",
 		"e2e:ios-test": "yarn detox test -c ios.sim.release",
-		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start"
+		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start",
+		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
@@ -162,7 +163,7 @@
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.22.5",
 		"@babel/preset-env": "^7.24.3",
 		"@babel/runtime": "^7.24.1",
-		"@bugsnag/source-maps": "^2.2.0",
+		"@bugsnag/cli": "^2.1.1",
 		"@react-native/babel-preset": "0.73.21",
 		"@react-native/eslint-config": "0.73.2",
 		"@react-native/metro-config": "0.73.5",
