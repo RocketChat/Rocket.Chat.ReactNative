@@ -54,66 +54,69 @@ struct MessageView: View {
 	}
 	
 	var body: some View {
-		VStack(alignment: .leading, spacing: 0) {
-			if viewModel.hasDateSeparator {
-				dateSeparator
-			} else if viewModel.hasUnreadSeparator {
-				unreadSeparator
-			}
-			if viewModel.isHeader {
-				HStack(alignment: .center) {
-					Text(viewModel.sender ?? "")
-						.lineLimit(1)
-						.font(.caption.bold())
+		HStack {
+			VStack(alignment: .leading, spacing: 0) {
+				if viewModel.hasDateSeparator {
+					dateSeparator
+				} else if viewModel.hasUnreadSeparator {
+					unreadSeparator
+				}
+				if viewModel.isHeader {
+					HStack(alignment: .center) {
+						Text(viewModel.sender ?? "")
+							.lineLimit(1)
+							.font(.caption.bold())
+							.foregroundStyle(Color.default)
+						Text(viewModel.time ?? "")
+							.lineLimit(1)
+							.font(.footnote)
+							.foregroundStyle(.secondary)
+						if viewModel.message.editedAt != nil {
+							Image(systemName: "pencil")
+								.font(.caption)
+								.foregroundStyle(.secondary)
+						}
+					}
+					.padding(.bottom, 2)
+					.padding(.top, 6)
+				}
+				if let text = viewModel.info {
+					(Text("\(viewModel.sender ?? "") ").font(.caption.bold().italic()) + Text(text).font(.caption.italic()))
 						.foregroundStyle(Color.default)
-					Text(viewModel.time ?? "")
-						.lineLimit(1)
-						.font(.footnote)
-						.foregroundStyle(.secondary)
-					if viewModel.message.editedAt != nil {
-						Image(systemName: "pencil")
+				} else if let text = viewModel.message.msg {
+					HStack(alignment: .top) {
+						Text(text)
 							.font(.caption)
-							.foregroundStyle(.secondary)
+							.foregroundStyle(viewModel.message.status == "temp" ? Color.secondaryInfo : Color.default)
+						
+						if viewModel.message.status == "error" {
+							Button(
+								action: {
+									message = viewModel.message
+								},
+								label: {
+									Image(systemName: "exclamationmark.circle")
+										.font(.caption)
+										.foregroundStyle(.red)
+								}
+							)
+							.buttonStyle(PlainButtonStyle())
+						}
+						
+						if viewModel.message.editedAt != nil && !viewModel.isHeader {
+							Image(systemName: "pencil")
+								.font(.caption)
+								.foregroundStyle(.secondary)
+						}
 					}
 				}
-				.padding(.bottom, 2)
-				.padding(.top, 6)
-			}
-			if let text = viewModel.info {
-				(Text("\(viewModel.sender ?? "") ").font(.caption.bold().italic()) + Text(text).font(.caption.italic()))
-					.foregroundStyle(Color.default)
-			} else if let text = viewModel.message.msg {
-				HStack(alignment: .top) {
-					Text(text)
-						.font(.caption)
-						.foregroundStyle(viewModel.message.status == "temp" ? Color.secondaryInfo : Color.default)
-					
-					if viewModel.message.status == "error" {
-						Button(
-							action: {
-								message = viewModel.message
-							},
-							label: {
-								Image(systemName: "exclamationmark.circle")
-									.font(.caption)
-									.foregroundStyle(.red)
-							}
-						)
-						.buttonStyle(PlainButtonStyle())
-					}
-					
-					if viewModel.message.editedAt != nil && !viewModel.isHeader {
-						Image(systemName: "pencil")
-							.font(.caption)
-							.foregroundStyle(.secondary)
+				if let attachments = viewModel.message.attachments?.allObjects as? Array<Attachment> {
+					ForEach(attachments) { attachment in
+						AttachmentView(attachment: attachment)
 					}
 				}
 			}
-			if let attachments = viewModel.message.attachments?.allObjects as? Array<Attachment> {
-				ForEach(attachments) { attachment in
-					AttachmentView(attachment: attachment)
-				}
-			}
+			Spacer()
 		}
 		.padding(.bottom, 2)
 		.sheet(item: $message) { message in

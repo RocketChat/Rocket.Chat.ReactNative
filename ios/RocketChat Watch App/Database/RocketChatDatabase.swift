@@ -13,6 +13,8 @@ protocol Database {
 	func process(subscription: SubscriptionsResponse.Subscription?, in updatedRoom: RoomsResponse.Room)
 	func process(updatedMessage: MessageResponse, in room: Room)
 	
+	func save()
+	
 	func remove()
 }
 
@@ -50,7 +52,7 @@ final class RocketChatDatabase: Database {
 		return container
 	}()
 	
-	private func save() {
+	func save() {
 		guard container.viewContext.hasChanges else {
 			return
 		}
@@ -176,8 +178,6 @@ final class RocketChatDatabase: Database {
 		updatedMessage.attachments?.forEach { attachment in
 			process(updatedAttachment: attachment, in: message)
 		}
-		
-		save()
 	}
 	
 	func process(updatedAttachment: AttachmentResponse, in message: Message) {

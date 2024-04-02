@@ -9,7 +9,8 @@ struct MessageListView: View {
 	
 	private let formatter: RoomFormatter
 	private let server: Server
-	private let room: Room
+	
+	@ObservedObject private var room: Room
 	
 	@State private var lastOpen: Date?
 	
@@ -27,7 +28,7 @@ struct MessageListView: View {
 	
 	var body: some View {
 		ChatScrollView {
-			VStack(alignment: .leading, spacing: 0) {
+			VStack(spacing: 0) {
 				if room.hasMoreMessages {
 					Button("Load more...") {
 						guard let oldestMessage = room.firstMessage?.ts else { return }
@@ -72,6 +73,7 @@ struct MessageListView: View {
 		.padding([.leading, .trailing])
 		.navigationTitle(formatter.title ?? "")
 		.navigationBarTitleDisplayMode(.inline)
+		.disabled(!room.synced)
 		.onAppear {
 			guard let roomID = room.id else { return }
 			

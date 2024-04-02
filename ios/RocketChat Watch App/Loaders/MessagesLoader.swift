@@ -39,11 +39,12 @@ final class MessagesLoader {
 			} receiveValue: { [weak self] messagesResponse in
 				let messages = messagesResponse.result.updated
 				
-				room.updatedSince = newUpdatedSince
-				
 				for message in messages {
 					self?.database.process(updatedMessage: message, in: room)
 				}
+				
+				room.updatedSince = newUpdatedSince
+				self?.database.save()
 				
 				self?.scheduledSyncMessages(in: room, from: newUpdatedSince)
 				
@@ -73,6 +74,9 @@ final class MessagesLoader {
 				for message in messages {
 					self?.database.process(updatedMessage: message, in: room)
 				}
+				
+				room.synced = true
+				self?.database.save()
 			}
 			.store(in: &cancellable)
 	}
