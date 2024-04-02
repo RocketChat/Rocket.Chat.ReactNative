@@ -23,7 +23,7 @@ struct RoomView: View {
 				Spacer()
 				Text(viewModel.updatedAt ?? "")
 					.lineLimit(1)
-					.font(.footnote.weight(isUnread ? .bold : .medium))
+					.font(.footnote.weight(isUnread ? .bold : .regular))
 					.foregroundStyle(isUnread ? .blue : Color.default)
 			}
 			HStack(alignment: .top) {

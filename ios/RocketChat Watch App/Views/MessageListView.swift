@@ -27,13 +27,14 @@ struct MessageListView: View {
 	
 	var body: some View {
 		ChatScrollView {
-			VStack(alignment: .leading, spacing: 8) {
+			VStack(alignment: .leading, spacing: 0) {
 				if room.hasMoreMessages {
 					Button("Load more...") {
 						guard let oldestMessage = room.firstMessage?.ts else { return }
 						
 						messagesLoader.loadMore(from: oldestMessage)
 					}
+					.padding(.bottom, 8)
 				}
 				
 				ForEach(messages.indices, id: \.self) { index in
@@ -65,6 +66,7 @@ struct MessageListView: View {
 					lastOpen = nil
 				}
 				.id(messageComposer)
+				.padding(.top, 8)
 			}
 		}
 		.padding([.leading, .trailing])

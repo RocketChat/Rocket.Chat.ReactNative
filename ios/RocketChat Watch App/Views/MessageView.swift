@@ -54,7 +54,7 @@ struct MessageView: View {
 	}
 	
 	var body: some View {
-		VStack(alignment: .leading) {
+		VStack(alignment: .leading, spacing: 0) {
 			if viewModel.hasDateSeparator {
 				dateSeparator
 			} else if viewModel.hasUnreadSeparator {
@@ -77,6 +77,7 @@ struct MessageView: View {
 					}
 				}
 				.padding(.bottom, 2)
+				.padding(.top, 6)
 			}
 			if let text = viewModel.info {
 				(Text("\(viewModel.sender ?? "") ").font(.caption.bold().italic()) + Text(text).font(.caption.italic()))
@@ -114,7 +115,7 @@ struct MessageView: View {
 				}
 			}
 		}
-		.padding(.top, 4)
+		.padding(.bottom, 2)
 		.sheet(item: $message) { message in
 			MessageActionView(
 				message: message,
