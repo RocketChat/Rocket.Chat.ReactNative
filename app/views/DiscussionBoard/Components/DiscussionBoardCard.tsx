@@ -3,6 +3,7 @@ import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { themes } from '../../../lib/constants';
+import { useTheme } from '../../../theme';
 import { DiscussionBoardCardProps } from '../DiscussionHomeView/interaces';
 import { getIcon } from '../helpers';
 import IconOrAvatar from '../../../containers/RoomItem/IconOrAvatar';
@@ -28,7 +29,7 @@ const DiscussionBoardCard = React.memo(({ item, onPress }: DiscussionBoardCardPr
 	const status = item.t === 'l' ? item.visitor?.status || item.v?.status : userStatus;
 	const randomColor = cardColors[Math.floor(Math.random() * cardColors.length)];
 
-	// const { theme } = useTheme();
+	const { colors } = useTheme();
 	const theme = 'light';
 
 	return (
@@ -59,7 +60,10 @@ const DiscussionBoardCard = React.memo(({ item, onPress }: DiscussionBoardCardPr
 				) : (
 					<></>
 				)}
-				<Text style={styles.description}>{usersCount} members</Text>
+				<View style={styles.boardMembersContainer}>
+					<Image source={getIcon('boardUsers')} style={styles.usersIcon} />
+			<Text style={{ color: colors.boardMembersText }}>{usersCount} members</Text>
+				</View>
 			</View>
 			{/* 
 			Starring a chat room is not supported yet.
@@ -124,5 +128,14 @@ const styles = StyleSheet.create({
 	saveIcon: {
 		width: 42,
 		height: 42
+	},
+	boardMembersContainer: {
+		flexDirection: 'row',
+		marginTop: 4,
+	},
+	usersIcon: {
+		width: 20,
+		height: 15,
+		marginRight: 8,
 	}
 });

@@ -40,6 +40,7 @@ export const colors = {
 		titleText: '#0d0e12',
 		bodyText: '#2f343d',
 		backdropColor: '#000000',
+		boardMembersText: '#00000080',
 		dangerColor: '#f5455c',
 		successColor: '#2de0a5',
 		borderColor: '#e1e5e8',
@@ -104,6 +105,7 @@ export const colors = {
 	},
 	dark: {
 		backgroundColor: '#030b1b',
+		boardMembersText: '#00000080',
 		focusedBackground: '#0b182c',
 		chatComponentBackground: '#192132',
 		peerSupporterBackground: "#0e182b",
@@ -176,6 +178,7 @@ export const colors = {
 	},
 	black: {
 		backgroundColor: '#000000',
+		boardMembersText: '#00000080',
 		focusedBackground: '#0d0d0d',
 		chatComponentBackground: '#16181a',
 		peerSupporterBackground: "#0d0d0d",

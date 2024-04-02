@@ -81,6 +81,9 @@ export const getIcon = (icon: string) => {
 		case 'saveMedia':
 			imagePath = require("../../static/images/discussionboard/save_media_new.png");
 			break;
+		case 'boardUsers':
+			imagePath = require('../../static/images/discussionboard/board_users.png');
+			break;
 
 		default:
 			imagePath = require('../../static/images/discussionboard/image_picker.png');
