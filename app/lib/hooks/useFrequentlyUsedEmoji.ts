@@ -31,11 +31,8 @@ export const useFrequentlyUsedEmoji = (
 					.slice(0, DEFAULT_EMOJIS.length);
 			}
 
-			// TODO: remove once we update to React 18
-			unstable_batchedUpdates(() => {
-				setFrequentlyUsed(frequentlyUsedEmojis);
-				setLoaded(true);
-			});
+			setFrequentlyUsed(frequentlyUsedEmojis);
+			setLoaded(true);
 		};
 		getFrequentlyUsedEmojis();
 	}, []);

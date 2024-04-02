@@ -14,7 +14,6 @@ import com.facebook.soloader.SoLoader
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
-// import org.wonday.orientation.OrientationActivityLifecycle;
 import chat.rocket.reactnative.networking.SSLPinningPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import android.content.res.Configuration;
@@ -47,17 +46,11 @@ open class MainApplication : Application(), ReactApplication {
     super.onCreate()
     SoLoader.init(this, false)
 
-		// need this?
-		// if (!BuildConfig.REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS) {
-    //   ReactFeatureFlags.unstable_useRuntimeSchedulerAlways = false
-    // }
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       // If you opted-in for the New Architecture, we load the native entry point for this app.
       load()
     }
-    // ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
 		ApplicationLifecycleDispatcher.onApplicationCreate(this)
-    // registerActivityLifecycleCallbacks(OrientationActivityLifecycle.getInstance());
   }
 
 	override fun onConfigurationChanged(newConfig: Configuration) {

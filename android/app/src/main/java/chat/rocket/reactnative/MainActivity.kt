@@ -37,10 +37,4 @@ class MainActivity : ReactActivity() {
 		intent.putExtra("newConfig", newConfig)
 		sendBroadcast(intent)
 	}
-
-	// need this?
-	// @Override
-  //   public void invokeDefaultOnBackPressed() {
-  //       moveTaskToBack(true);
-  //   }
 }

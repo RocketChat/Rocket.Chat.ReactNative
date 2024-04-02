@@ -94,7 +94,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
         versionName "4.48.0"
-        vectorDrawables.useSupportLibrary = true // need this?
+        vectorDrawables.useSupportLibrary = true
         if (!isFoss) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
             missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
@@ -181,19 +181,6 @@ android {
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }
-
-    // need this?
-    // bundle {
-    //     language {
-    //         enableSplit = false
-    //     }
-    //     density {
-    //         enableSplit = true
-    //     }
-    //     abi {
-    //         enableSplit = true
-    //     }
-    // }
 }
 
 dependencies {
@@ -224,14 +211,6 @@ dependencies {
     implementation 'com.facebook.soloader:soloader:0.10.4'
     implementation("com.facebook.fresco:animated-gif:2.5.0")
     implementation "com.facebook.fresco:imagepipeline-okhttp3:3.1.3"
-    
-    // need this?
-    // react-native-screens was pointing to a newer version of this lib that is currently not supported in our app
-    // implementation ('com.google.android.material:material:1.6.0') {
-    //     version {
-    //         strictly '1.6.0'
-    //     }
-    // }
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
