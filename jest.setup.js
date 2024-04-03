@@ -62,7 +62,11 @@ jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
 }));
 
-jest.mock('./app/lib/database', () => jest.fn(() => null));
+jest.mock('./app/lib/database', () => ({
+	active: {
+		get: jest.fn()
+	}
+}));
 
 jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
 
