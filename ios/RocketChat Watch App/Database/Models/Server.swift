@@ -65,7 +65,9 @@ extension Server {
 	var roomsRequest: NSFetchRequest<Room> {
 		let request = Room.fetchRequest()
 		
-		request.predicate = NSPredicate(format: "archived == false")
+		let nonArchived = NSPredicate(format: "archived == false")
+		let open = NSPredicate(format: "open == true")
+		request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [nonArchived, open])
 		request.sortDescriptors = [NSSortDescriptor(keyPath: \Room.ts, ascending: false)]
 		
 		return request

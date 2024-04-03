@@ -211,6 +211,7 @@ final class RocketChatDatabase: Database {
 		room.teamMain = updatedRoom.teamMain ?? false
 		room.archived = updatedRoom.archived ?? false
 		room.broadcast = updatedRoom.broadcast ?? false
+		room.open = subscription?.open ?? true
 		
 		if let subscription {
 			room.alert = subscription.alert
@@ -241,6 +242,7 @@ final class RocketChatDatabase: Database {
 		room.name = room.name ?? subscription.name
 		room.fname = room.fname ?? subscription.fname
 		room.unread = Int32(subscription.unread)
+		room.open = subscription.open ?? true
 		
 		if let lr = subscription.lr, let lastRoomUpdate = room.ts {
 			room.ts = max(lr, lastRoomUpdate)
