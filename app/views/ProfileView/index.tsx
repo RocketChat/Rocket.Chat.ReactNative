@@ -65,8 +65,6 @@ interface IProfileViewState {
 	name: string;
 	username: string;
 	email: string | null;
-	newPassword: string | null;
-	confirmPassword: string | null;
 	currentPassword: string | null;
 	avatarUrl: string | null;
 	avatar: IAvatar;
@@ -85,8 +83,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private username?: TextInput | null;
 	private email?: TextInput;
 	private avatarUrl?: TextInput;
-	private newPassword?: TextInput;
-	private confirmPassword?: TextInput;
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
@@ -113,8 +109,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		name: '',
 		username: '',
 		email: '',
-		newPassword: '',
-		confirmPassword: '',
 		currentPassword: '',
 		avatarUrl: '',
 		avatar: {
@@ -168,8 +162,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			name: name as string,
 			username,
 			email: emails ? emails[0].address : null,
-			newPassword: null,
-			confirmPassword: null,
 			currentPassword: null,
 			avatarUrl: null,
 			avatar: {
@@ -181,7 +173,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	formIsChanged = () => {
-		const { name, username, email, newPassword, avatar, customFields } = this.state;
+		const { name, username, email, avatar, customFields } = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
@@ -197,7 +189,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		return !(
 			user.name === name &&
 			user.username === username &&
-			!newPassword &&
 			user.emails &&
 			user.emails[0].address === email &&
 			!avatar.data &&
@@ -242,7 +233,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 		this.setState({ saving: true });
 
-		const { name, username, email, newPassword, confirmPassword, currentPassword, avatar, customFields, twoFactorCode } = this.state;
+		const { name, username, email, currentPassword, avatar, customFields, twoFactorCode } = this.state;
 		const { user, dispatch } = this.props;
 		const params = {} as IProfileParams;
 
@@ -261,22 +252,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			params.email = email;
 		}
 
-		// newPassword
-		if (newPassword) {
-			params.newPassword = newPassword;
-		}
-
 		// currentPassword
 		if (currentPassword) {
 			params.currentPassword = sha256(currentPassword);
 		}
 
-		if (confirmPassword !== newPassword) {
-			this.setState({ saving: false });
-			return showErrorAlert(I18n.t('Password_does_not_match'));
-		}
-
-		const requirePassword = !!params.email || newPassword;
+		const requirePassword = !!params.email;
 
 		if (requirePassword && !params.currentPassword) {
 			this.setState({ saving: false });
@@ -576,7 +557,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	render() {
-		const { name, username, email, newPassword, confirmPassword, avatarUrl, customFields, avatar, saving } = this.state;
+		const { name, username, email, avatarUrl, customFields, avatar, saving } = this.state;
 		const {
 			user,
 			theme,
@@ -642,50 +623,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							placeholder={I18n.t('Email')}
 							value={email || undefined}
 							onChangeText={value => this.setState({ email: value })}
-							onSubmitEditing={() => {
-								this.newPassword?.focus();
-							}}
 							testID='profile-view-email'
-						/>
-						<FormTextInput
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							inputRef={e => {
-								if (e) {
-									this.newPassword = e;
-								}
-							}}
-							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
-							value={newPassword || undefined}
-							onChangeText={value => this.setState({ newPassword: value })}
-							onSubmitEditing={() => {
-								this.confirmPassword?.focus();
-							}}
-							secureTextEntry
-							testID='profile-view-new-password'
-						/>
-						<FormTextInput
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							inputRef={e => {
-								if (e) {
-									this.confirmPassword = e;
-								}
-							}}
-							label={I18n.t('Confirm_password')}
-							placeholder={I18n.t('Confirm_password')}
-							value={confirmPassword || undefined}
-							onChangeText={value => this.setState({ confirmPassword: value })}
-							onSubmitEditing={() => {
-								if (Accounts_CustomFields && Object.keys(customFields).length) {
-									// @ts-ignore
-									return this[Object.keys(customFields)[0]].focus();
-								}
-								this.avatarUrl?.focus();
-							}}
-							secureTextEntry
-							testID='profile-view-confirm-password'
 						/>
 						{this.renderCustomFields()}
 						<FormTextInput
@@ -712,6 +650,15 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							testID='profile-view-submit'
 							loading={saving}
 						/>
+						{Accounts_AllowPasswordChange ? (
+							<Button
+								title={I18n.t('Change_password')}
+								type='primary'
+								backgroundColor={themes[theme].chatComponentBackground}
+								onPress={() => this.props.navigation.navigate('ChangePasswordView')}
+								testID='profile-view-delete-my-account'
+							/>
+						) : null}
 						<Button
 							title={I18n.t('Logout_from_other_logged_in_locations')}
 							type='secondary'

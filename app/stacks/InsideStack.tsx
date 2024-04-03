@@ -91,6 +91,7 @@ import { TNavigation } from './stackType';
 
 // Profile Library Stack
 import ProfileLibraryView from '../views/ProfileLibrary';
+import ChangePasswordView from '../views/ChangePasswordView';
 // Home Stack
 import HomeView from '../views/HomeView';
 // Discussion Stack
@@ -171,6 +172,7 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<MainStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<MainStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
+			<MainStack.Screen name='ChangePasswordView' component={ChangePasswordView} options={{ title: 'Change Password' }}/>
 			{/* SettingsStackNavigator */}
 			<MainStack.Screen name='SettingsView' component={SettingsView} />
 			<MainStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
