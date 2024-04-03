@@ -50,6 +50,15 @@ class ChangePasswordView extends React.Component<IChangePasswordViewProps, IChan
         super(props);
     }
 
+    init = () => {
+		this.setState({ saving: false,
+                        currentPassword: null,
+                        newPassword: null,
+                        confirmPassword: null,
+                        twoFactorCode: null
+                      });
+    }
+
     state = {
             saving: false,
             confirmPassword: null,
@@ -95,7 +104,7 @@ class ChangePasswordView extends React.Component<IChangePasswordViewProps, IChan
 		}
 
 		if (confirmPassword !== newPassword) {
-			this.setState({ saving: false });
+            this.init();
 			return showErrorAlert(I18n.t('Password_and_confirm_password_do_not_match'));
 		}
 
@@ -112,9 +121,9 @@ class ChangePasswordView extends React.Component<IChangePasswordViewProps, IChan
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
 				dispatch(setUser({ ...params }));
+                this.init();
 				EventEmitter.emit(LISTENER, { message: I18n.t('Password_Updated') });
 			}
-			this.setState({ saving: false, currentPassword: null });
 		} catch (e: any) {
             if (!Object.keys(e).length){
                 return;
@@ -129,7 +138,7 @@ class ChangePasswordView extends React.Component<IChangePasswordViewProps, IChan
 				}
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			this.setState({ saving: false, currentPassword: null });
+            this.init();
 			this.handleError(e, 'saving_password');
 		}
 	};
@@ -138,7 +147,6 @@ class ChangePasswordView extends React.Component<IChangePasswordViewProps, IChan
 	render() {
 		const { newPassword, confirmPassword, saving } = this.state;
 		const {
-			user,
 			theme,
 			Accounts_AllowPasswordChange,
 		} = this.props;
@@ -187,7 +195,7 @@ class ChangePasswordView extends React.Component<IChangePasswordViewProps, IChan
 							title={I18n.t('Save_New_Password')}
 							type='primary'
 							onPress={this.submit}
-							disabled={!this.isFormChanged()}
+							disabled={!Accounts_AllowPasswordChange || !this.isFormChanged()}
 							testID='changePassword-view-submit'
 							loading={saving}
 						/>

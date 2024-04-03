@@ -653,10 +653,10 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						{Accounts_AllowPasswordChange ? (
 							<Button
 								title={I18n.t('Change_password')}
-								type='primary'
+								type='secondary'
 								backgroundColor={themes[theme].chatComponentBackground}
 								onPress={() => this.props.navigation.navigate('ChangePasswordView')}
-								testID='profile-view-delete-my-account'
+								testID='profile-view-change-password'
 							/>
 						) : null}
 						<Button
