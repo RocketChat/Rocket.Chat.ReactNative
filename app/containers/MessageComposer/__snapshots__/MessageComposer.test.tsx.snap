@@ -81,6 +81,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={213}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -169,6 +170,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={214}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -273,6 +275,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={200}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -383,6 +386,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={201}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -464,12 +468,13 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
       onScrollEndDrag={[Function]}
       removeClippedSubviews={false}
       renderItem={[Function]}
-      scrollEventThrottle={50}
+      scrollEventThrottle={0.0001}
       stickyHeaderIndices={[]}
       viewabilityConfigCallbackPairs={[]}
     >
       <View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             [
@@ -530,9 +535,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
                 <Text
                   style={
                     {
@@ -545,14 +548,13 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
+                delayLongPress={600}
                 handlerTag={202}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
@@ -690,6 +692,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={203}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -800,6 +803,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={204}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -882,12 +886,13 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
       onScrollEndDrag={[Function]}
       removeClippedSubviews={false}
       renderItem={[Function]}
-      scrollEventThrottle={50}
+      scrollEventThrottle={0.0001}
       stickyHeaderIndices={[]}
       viewabilityConfigCallbackPairs={[]}
     >
       <View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             [
@@ -948,9 +953,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
                 <Text
                   style={
                     {
@@ -963,14 +966,13 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
+                delayLongPress={600}
                 handlerTag={205}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
@@ -1065,6 +1067,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           </View>
         </View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             [
@@ -1125,9 +1128,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
                 <Text
                   style={
                     {
@@ -1140,14 +1141,13 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
+                delayLongPress={600}
                 handlerTag={206}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
@@ -1285,6 +1285,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={207}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1395,6 +1396,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={208}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -1477,12 +1479,13 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
       onScrollEndDrag={[Function]}
       removeClippedSubviews={false}
       renderItem={[Function]}
-      scrollEventThrottle={50}
+      scrollEventThrottle={0.0001}
       stickyHeaderIndices={[]}
       viewabilityConfigCallbackPairs={[]}
     >
       <View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             [
@@ -1543,9 +1546,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
                 <Text
                   style={
                     {
@@ -1558,14 +1559,13 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
+                delayLongPress={600}
                 handlerTag={209}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
@@ -1660,6 +1660,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           </View>
         </View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={
             [
@@ -1720,9 +1721,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
                 <Text
                   style={
                     {
@@ -1735,14 +1734,13 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       "textAlign": "left",
                     }
                   }
-                >
-                  
-                </Text>
+                />
               </View>
               <RNGestureHandlerButton
                 activeOpacity={0.3}
                 borderless={true}
                 collapsable={false}
+                delayLongPress={600}
                 handlerTag={210}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
@@ -1915,6 +1913,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={59}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -1986,6 +1985,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={60}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2057,6 +2057,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={61}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2128,6 +2129,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={62}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2199,6 +2201,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={63}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2270,6 +2273,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={64}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2341,6 +2345,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={58}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2479,6 +2484,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={137}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2550,6 +2556,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={138}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2621,6 +2628,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={139}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2692,6 +2700,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={140}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2763,6 +2772,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={141}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2834,6 +2844,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={142}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -2905,6 +2916,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={136}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3043,6 +3055,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={163}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3114,6 +3127,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={164}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3185,6 +3199,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={165}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3256,6 +3271,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={166}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3327,6 +3343,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={167}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3398,6 +3415,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={168}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3469,6 +3487,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={162}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3607,6 +3626,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={85}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3678,6 +3698,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={86}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3749,6 +3770,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={87}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3820,6 +3842,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={88}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3891,6 +3914,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={89}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -3962,6 +3986,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={90}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4033,6 +4058,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={84}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4171,6 +4197,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={46}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4242,6 +4269,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={47}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4313,6 +4341,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={48}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4384,6 +4413,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={49}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4455,6 +4485,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={50}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4526,6 +4557,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={51}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4597,6 +4629,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={45}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4735,6 +4768,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={111}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4806,6 +4840,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={112}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4877,6 +4912,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={113}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -4948,6 +4984,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={114}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5019,6 +5056,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={115}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5090,6 +5128,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={116}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5161,6 +5200,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={110}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5299,6 +5339,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={72}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5370,6 +5411,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={73}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5441,6 +5483,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={74}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5512,6 +5555,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={75}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5583,6 +5627,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={76}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5654,6 +5699,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={77}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5725,6 +5771,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={71}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5863,6 +5910,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={150}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -5934,6 +5982,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={151}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6005,6 +6054,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={152}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6076,6 +6126,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={153}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6147,6 +6198,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={154}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6218,6 +6270,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={155}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6289,6 +6342,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={149}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6427,6 +6481,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={176}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6498,6 +6553,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={177}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6569,6 +6625,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={178}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6640,6 +6697,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={179}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6711,6 +6769,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={180}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6782,6 +6841,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={181}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6853,6 +6913,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={175}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -6991,6 +7052,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={98}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7062,6 +7124,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={99}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7133,6 +7196,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={100}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7204,6 +7268,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={101}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7275,6 +7340,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={102}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7346,6 +7412,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={103}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7417,6 +7484,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={97}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7555,6 +7623,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={124}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7626,6 +7695,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={125}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7697,6 +7767,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={126}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7768,6 +7839,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={127}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7839,6 +7911,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={128}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7910,6 +7983,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={129}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -7981,6 +8055,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={123}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8119,6 +8194,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={24}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8190,6 +8266,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={25}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8261,6 +8338,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={26}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8332,6 +8410,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={27}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8403,6 +8482,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={28}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8541,6 +8621,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={36}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8612,6 +8693,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8683,6 +8765,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={38}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -8822,6 +8905,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={184}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -8893,6 +8977,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={185}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -8964,6 +9049,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={186}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -9035,6 +9121,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={187}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -9106,6 +9193,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={188}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -9232,19 +9320,21 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
       onScrollEndDrag={[Function]}
       removeClippedSubviews={false}
       renderItem={[Function]}
-      scrollEventThrottle={50}
+      scrollEventThrottle={0.0001}
       stickyHeaderIndices={[]}
       testID="autocomplete"
       viewabilityConfigCallbackPairs={[]}
     >
       <View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={null}
         >
           <RNGestureHandlerButton
             activeOpacity={0.105}
             collapsable={false}
+            delayLongPress={600}
             handlerTag={189}
             handlerType="NativeViewGestureHandler"
             onActiveStateChange={[Function]}
@@ -9369,12 +9459,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           </RNGestureHandlerButton>
         </View>
         <View
+          onFocusCapture={[Function]}
           onLayout={[Function]}
           style={null}
         >
           <RNGestureHandlerButton
             activeOpacity={0.105}
             collapsable={false}
+            delayLongPress={600}
             handlerTag={190}
             handlerType="NativeViewGestureHandler"
             onActiveStateChange={[Function]}
@@ -9542,6 +9634,7 @@ exports[`MessageComposer renders correctly 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={1}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -9574,32 +9667,7 @@ exports[`MessageComposer renders correctly 1`] = `
             accessibilityRole="button"
             accessible={true}
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6C727A",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
+            <Text />
           </View>
         </RNGestureHandlerButton>
       </View>
@@ -9652,6 +9720,7 @@ exports[`MessageComposer renders correctly 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={2}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -9684,32 +9753,7 @@ exports[`MessageComposer renders correctly 1`] = `
             accessibilityRole="button"
             accessible={true}
           >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#6C727A",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
+            <Text />
           </View>
         </RNGestureHandlerButton>
       </View>
@@ -9756,6 +9800,7 @@ exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={3}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -9905,6 +9950,7 @@ exports[`MessageComposer renders correctly with audio recorder disabled and with
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={5}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -10054,6 +10100,7 @@ exports[`MessageComposer renders correctly without audio upload permissions 1`] 
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={4}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -10238,6 +10285,7 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={8}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -10309,6 +10357,7 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={9}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -10380,6 +10429,7 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={10}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -10451,6 +10501,7 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={11}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -10522,6 +10573,7 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         activeOpacity={0.3}
         borderless={true}
         collapsable={false}
+        delayLongPress={600}
         handlerTag={12}
         handlerType="NativeViewGestureHandler"
         hitSlop={
@@ -10625,6 +10677,7 @@ exports[`MessageComposer send message 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={20}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -10735,6 +10788,7 @@ exports[`MessageComposer send message 1`] = `
           activeOpacity={0.3}
           borderless={true}
           collapsable={false}
+          delayLongPress={600}
           handlerTag={21}
           handlerType="NativeViewGestureHandler"
           hitSlop={

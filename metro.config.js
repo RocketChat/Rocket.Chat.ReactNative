@@ -1,16 +1,20 @@
+const path = require('path');
+const { generate } = require('@storybook/react-native/scripts/generate');
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
-/**
- * Metro configuration
- * https://facebook.github.io/metro/docs/configuration
- *
- * @type {import('metro-config').MetroConfig}
- */
+generate({
+	configPath: path.resolve(__dirname, './.storybook')
+});
+
+const sourceExts = [...defaultSourceExts, 'mjs'];
+
 const config = {
+	transformer: {
+		unstable_allowRequireContext: true
+	},
 	resolver: {
-		resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main'],
-		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...defaultSourceExts] : defaultSourceExts
+		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
 	}
 };
 
