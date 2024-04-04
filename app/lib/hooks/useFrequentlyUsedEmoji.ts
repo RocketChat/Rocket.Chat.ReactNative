@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { unstable_batchedUpdates } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
 import database from '../database';
