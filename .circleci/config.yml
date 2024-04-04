@@ -4,11 +4,11 @@ defaults: &defaults
 android-executor: &android-executor
   executor:
     name: android/android-machine
-    resource-class: xlarge
+    resource-class: large
     tag: 2024.01.1
 
 orbs:
-  android: circleci/android@2.1.2
+  android: circleci/android@2.5.0
 
 macos: &macos
   macos:
@@ -474,10 +474,7 @@ jobs:
 
   e2e-build-android:
     <<: *defaults
-    executor:
-      name: android/android-machine
-      resource-class: large
-      tag: 2022.12.1
+    <<: *android-executor
     environment:
       <<: *android-env
     steps:
@@ -490,11 +487,11 @@ jobs:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
             echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
@@ -523,8 +520,8 @@ jobs:
     <<: *defaults
     executor:
       name: android/android-machine
-      resource-class: large
-      tag: 2022.12.1
+      resource-class: xlarge
+      tag: 2024.01.1
     parallelism: 4
     steps:
       - checkout
@@ -536,15 +533,15 @@ jobs:
       - run: mkdir ~/junit
       - create-e2e-account-file
       - android/create-avd:
-          avd-name: Pixel_API_31_AOSP
+          avd-name: Pixel_API_34_AOSP
           install: true
-          system-image: system-images;android-31;default;x86_64
+          system-image: system-images;android-34;default;x86_64
       - run:
           name: Setup emulator
           command: |
-            echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
-            echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
-            echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+            echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_34_AOSP.avd/config.ini
+            echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_34_AOSP.avd/config.ini
+            echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_34_AOSP.avd/config.ini
       - run:
           name: Run Detox Tests
           command: |
