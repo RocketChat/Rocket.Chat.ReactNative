@@ -16,7 +16,7 @@ store.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat' }
 const preview: Preview = {
   decorators: [
     (Story) => (
-      <GestureHandlerRootView style={{ flex: 1 }}>
+      <GestureHandlerRootView>
         <Provider store={store}>
           <MessageContext.Provider
             value={{

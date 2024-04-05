@@ -219,7 +219,7 @@ export default class Root extends React.Component<{}, IState> {
 								fontScale,
 								setDimensions: this.setDimensions
 							}}>
-							<GestureHandlerRootView style={{ flex: 1 }}>
+							<GestureHandlerRootView>
 								<ActionSheetProvider>
 									<AppContainer />
 									<TwoFactor />
