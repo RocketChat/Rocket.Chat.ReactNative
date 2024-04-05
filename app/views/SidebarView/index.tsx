@@ -362,7 +362,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 
 					<List.Separator />
 
-					{allowStatusMessage ? this.renderCustomStatus() : null}
+					{allowStatusMessage !== false ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
 						<>
 							<List.Separator />
