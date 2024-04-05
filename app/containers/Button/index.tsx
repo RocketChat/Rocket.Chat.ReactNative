@@ -9,7 +9,7 @@ import ActivityIndicator from '../ActivityIndicator';
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	onPress: () => void;
-	type?: 'primary' | 'secondary';
+	type?: string; // primary | secondary
 	backgroundColor?: string;
 	loading?: boolean;
 	color?: string;
