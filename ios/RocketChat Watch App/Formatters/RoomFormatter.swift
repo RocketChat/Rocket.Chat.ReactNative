@@ -26,7 +26,7 @@ final class RoomFormatter {
 		}
 		
 		if room.prid != nil || server.useRealName {
-			return room.fname
+			return room.fname ?? room.name
 		}
 		
 		return room.name
