@@ -1,6 +1,6 @@
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { sha256 } from 'js-sha256';
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
@@ -71,18 +71,54 @@ interface IProfileViewState {
 	};
 }
 
-class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
-	private name?: TextInput | null;
-	private username?: TextInput | null;
-	private email?: TextInput | null;
-	private avatarUrl?: TextInput | null;
-	private newPassword?: TextInput | null;
-	private nickname?: TextInput | null;
-	private bio?: TextInput | null;
-	private focusListener = () => {};
+const ProfileView: React.FC<IProfileViewProps> = ({
+	user,
+	Accounts_AllowEmailChange,
+	Accounts_AllowPasswordChange,
+	Accounts_AllowRealNameChange,
+	Accounts_AllowUserAvatarChange,
+	Accounts_AllowUsernameChange,
+	Accounts_CustomFields,
+	theme,
+	Accounts_AllowDeleteOwnAccount,
+	isMasterDetail,
+	serverVersion,
+	navigation,
+	showActionSheet,
+	hideActionSheet,
+	dispatch
+}) => { 
+	const [saving, setSaving] = useState<boolean>(false);
+	const [name, setName] = useState<string>('');
+	const [username, setUsername] = useState<string>('');
+	const [email, setEmail] = useState<string | null>('');
+	const [bio, setBio] = useState<string>('');
+	const [nickname, setNickname] = useState<string>('');
+	const [newPassword, setNewPassword] = useState<string | null>(null);
+	const [currentPassword, setCurrentPassword] = useState<string | null>(null);
+	const [customFields, setCustomFields] = useState<{ [key: string]: string }>({});
+	const [twoFactorCode, setTwoFactorCode] = useState<null | { twoFactorCode: string; twoFactorMethod: string }>(null);
 
-	setHeader = () => {
-		const { navigation, isMasterDetail } = this.props;
+	const nameRef = useRef<TextInput>(null);
+	const usernameRef = useRef<TextInput>(null);
+	const emailRef = useRef<TextInput>(null);
+	const avatarUrlRef = useRef<TextInput>(null);
+	const newPasswordRef = useRef<TextInput>(null);
+	const nicknameRef = useRef<TextInput>(null);
+	const bioRef = useRef<TextInput>(null);
+
+	    useEffect(() => {
+		const focusListener = navigation.addListener('focus', () => {
+			init(user);
+			setHeader();
+		});
+
+		return () => {
+			focusListener();
+		};
+	}, [user]);
+
+	const setHeader = () => {
 		const options: StackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
@@ -96,53 +132,20 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		navigation.setOptions(options);
 	};
 
-	constructor(props: IProfileViewProps) {
-		super(props);
-		this.setHeader();
-	}
-
-	state: IProfileViewState = {
-		saving: false,
-		name: '',
-		username: '',
-		email: '',
-		bio: '',
-		nickname: '',
-		newPassword: '',
-		currentPassword: '',
-		customFields: {},
-		twoFactorCode: null
-	};
-
-	componentDidMount() {
-		this.focusListener = this.props.navigation.addListener('focus', () => {
-			this.init();
-		});
-	}
-
-	componentWillUnmount() {
-		this.focusListener();
-	}
-
-	init = (user?: IUser) => {
-		const { user: userProps } = this.props;
+	const init = (userProps?: IUser) => {
 		const { name, username, emails, customFields, bio, nickname } = user || userProps;
 
-		this.setState({
-			name: name as string,
-			username,
-			email: emails ? emails[0].address : null,
-			newPassword: null,
-			currentPassword: null,
-			customFields: customFields || {},
-			bio,
-			nickname
-		});
+		setName(name as string);
+		setUsername(username);
+		setEmail(emails ? emails[0].address : null);
+		setNewPassword(null);
+		setCurrentPassword(null);
+		setCustomFields(customFields || {});
+		setBio(bio || '');
+		setNickname(nickname || '');
 	};
 
-	formIsChanged = () => {
-		const { name, username, email, newPassword, customFields, bio, nickname } = this.state;
-		const { user } = this.props;
+	const formIsChanged = () => {
 		let customFieldsChanged = false;
 
 		const customFieldsKeys = Object.keys(customFields);
@@ -153,7 +156,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 			});
 		}
-
+	
 		return !(
 			user.name === name &&
 			user.username === username &&
@@ -166,17 +169,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		);
 	};
 
-	submit = async (): Promise<void> => {
+	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
-		if (!this.formIsChanged()) {
+		if (!formIsChanged()) {
 			return;
 		}
 
-		this.setState({ saving: true });
-
-		const { name, username, email, newPassword, currentPassword, customFields, twoFactorCode, bio, nickname } = this.state;
-		const { user, dispatch } = this.props;
+		setSaving(true);
 		const params = {} as IProfileParams;
 
 		// Name
@@ -215,8 +215,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		const requirePassword = !!params.email || newPassword;
 
 		if (requirePassword && !params.currentPassword) {
-			this.setState({ saving: false });
-			this.props.showActionSheet({
+			setSaving(false);
+			showActionSheet({
 				children: (
 					<ActionSheetContentWithInputAndSubmit
 						title={I18n.t('Please_enter_your_password')}
@@ -224,10 +224,11 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						testID='profile-view-enter-password-sheet'
 						placeholder={I18n.t('Password')}
 						onSubmit={(p: string) => {
-							this.props.hideActionSheet();
-							this.setState({ currentPassword: p }, () => this.submit());
+							hideActionSheet();
+							setCurrentPassword(p);
+							submit();						
 						}}
-						onCancel={this.props.hideActionSheet}
+						onCancel={hideActionSheet}
 					/>
 				)
 			});
@@ -237,8 +238,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		try {
 			const twoFactorOptions = params.currentPassword
 				? {
-						twoFactorCode: params.currentPassword,
-						twoFactorMethod: TwoFactorMethods.PASSWORD
+					twoFactorCode: params.currentPassword,
+					twoFactorMethod: TwoFactorMethods.PASSWORD
 				  }
 				: null;
 
@@ -252,47 +253,55 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				}
 				if (customFields) {
 					dispatch(setUser({ customFields, ...params }));
-					this.setState({ ...this.state, customFields, ...params });
+					setCustomFields({ ...customFields, ...params });
 				} else {
 					dispatch(setUser({ ...params }));
-					this.setState({ ...this.state, ...params });
+					setName(params.name || '');
+					setUsername(params.username || '');
+					setEmail(params.email || null);
+					setBio(params.bio || '');
+					setNickname(params.nickname || '');
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
-			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
+			setSaving(false);
+			setCurrentPassword(null);
+			setTwoFactorCode(null);		
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e?.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-					return this.setState({ twoFactorCode: code }, () => this.submit());
+					setTwoFactorCode(code);
+					submit();
+					return;
 				} catch {
 					// cancelled twoFactor modal
 				}
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
-			this.handleError(e, 'saving_profile');
+			setSaving(false);
+			setCurrentPassword(null);
+			setTwoFactorCode(null);
+			handleError(e, 'saving_profile');
 		}
 	};
 
-	resetAvatar = async () => {
-		const { Accounts_AllowUserAvatarChange } = this.props;
+	const resetAvatar = async () => {
 
 		if (!Accounts_AllowUserAvatarChange) {
 			return;
 		}
 
 		try {
-			const { user } = this.props;
 			await Services.resetAvatar(user.id);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
-			this.init();
+			init();
 		} catch (e) {
-			this.handleError(e, 'changing_avatar');
+			handleError(e, 'changing_avatar');
 		}
 	};
 
-	handleError = (e: any, action: string) => {
+	const handleError = (e: any, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
 		}
@@ -308,30 +317,23 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		showErrorAlert(msg, title);
 	};
 
-	handleEditAvatar = () => {
-		const { navigation } = this.props;
+	const handleEditAvatar = () => {
 		navigation.navigate('ChangeAvatarView', { context: 'profile' });
 	};
 
-	renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => {
-		const { theme } = this.props;
-		return (
-			<Touch
-				key={key}
-				testID={key}
-				onPress={onPress}
-				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
-				enabled={!disabled}
-			>
-				{child}
-			</Touch>
-		);
-	};
+	const renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => (
+		<Touch
+			key={key}
+			testID={key}
+			onPress={onPress}
+			style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
+			enabled={!disabled}
+		>
+			{child}
+		</Touch>
+	);
 
-	renderCustomFields = () => {
-		const { customFields } = this.state;
-		const { Accounts_CustomFields } = this.props;
-
+	const renderCustomFields = () => {
 		if (!Accounts_CustomFields) {
 			return null;
 		}
@@ -347,7 +349,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							onValueChange={value => {
 								const newValue: { [key: string]: string } = {};
 								newValue[key] = value;
-								this.setState({ customFields: { ...customFields, ...newValue } });
+								setCustomFields({ ...customFields, ...newValue });
 							}}
 							value={customFields[key]}
 						>
@@ -367,10 +369,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 				return (
 					<FormTextInput
-						inputRef={e => {
-							// @ts-ignore
-							this[key] = e;
-						}}
+						inputRef={key === 'nickname' ? nicknameRef : undefined}
 						key={key}
 						label={key}
 						placeholder={key}
@@ -378,14 +377,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						onChangeText={value => {
 							const newValue: { [key: string]: string } = {};
 							newValue[key] = value;
-							this.setState({ customFields: { ...customFields, ...newValue } });
+							setCustomFields({ ...customFields, ...newValue });
 						}}
 						onSubmitEditing={() => {
 							if (array.length - 1 > index) {
 								// @ts-ignore
 								return this[array[index + 1]].focus();
 							}
-							this.avatarUrl?.focus();
+							avatarUrlRef.current?.focus();
 						}}
 					/>
 				);
@@ -395,7 +394,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 	};
 
-	logoutOtherLocations = () => {
+	const logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
 		showConfirmationAlert({
 			message: I18n.t('You_will_be_logged_out_from_other_locations'),
@@ -412,159 +411,144 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		});
 	};
 
-	deleteOwnAccount = () => {
+	const deleteOwnAccount = () => {
 		logEvent(events.DELETE_OWN_ACCOUNT);
-		this.props.showActionSheet({
+		showActionSheet({
 			children: <DeleteAccountActionSheetContent />
 		});
 	};
 
-	render() {
-		const { name, username, email, newPassword, customFields, saving, nickname, bio } = this.state;
-		const {
-			user,
-			theme,
-			Accounts_AllowEmailChange,
-			Accounts_AllowPasswordChange,
-			Accounts_AllowRealNameChange,
-			Accounts_AllowUserAvatarChange,
-			Accounts_AllowUsernameChange,
-			Accounts_CustomFields,
-			Accounts_AllowDeleteOwnAccount,
-			serverVersion
-		} = this.props;
-
-		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
-				<StatusBar />
-				<SafeAreaView testID='profile-view'>
-					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
-						<View style={styles.avatarContainer} testID='profile-view-avatar'>
-							<AvatarWithEdit
-								text={user.username}
-								handleEdit={Accounts_AllowUserAvatarChange ? this.handleEditAvatar : undefined}
-							/>
-						</View>
-						<FormTextInput
-							editable={Accounts_AllowRealNameChange}
-							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
-							inputRef={e => (this.name = e)}
-							label={I18n.t('Name')}
-							placeholder={I18n.t('Name')}
-							value={name}
-							onChangeText={(value: string) => this.setState({ name: value })}
-							onSubmitEditing={() => {
-								this.username?.focus();
-							}}
-							testID='profile-view-name'
+	return (
+		<KeyboardView
+			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			contentContainerStyle={sharedStyles.container}
+			keyboardVerticalOffset={128}
+		>
+			<StatusBar />
+			<SafeAreaView testID='profile-view'>
+				<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
+					<View style={styles.avatarContainer} testID='profile-view-avatar'>
+						<AvatarWithEdit
+							text={user.username}
+							handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined}
 						/>
+					</View>
+					<FormTextInput
+						editable={Accounts_AllowRealNameChange}
+						inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
+						inputRef={nameRef}
+						label={I18n.t('Name')}
+						placeholder={I18n.t('Name')}
+						value={name}
+						onChangeText={setName}
+						onSubmitEditing={() => {
+							usernameRef.current?.focus();
+						}}
+						testID='profile-view-name'
+					/>
+					<FormTextInput
+						editable={Accounts_AllowUsernameChange}
+						inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
+						inputRef={usernameRef}
+						label={I18n.t('Username')}
+						placeholder={I18n.t('Username')}
+						value={username}
+						onChangeText={setUsername}
+						onSubmitEditing={() => {
+							emailRef.current?.focus();
+						}}
+						testID='profile-view-username'
+					/>
+					<FormTextInput
+						editable={Accounts_AllowEmailChange}
+						inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
+						inputRef={emailRef}
+						label={I18n.t('Email')}
+						placeholder={I18n.t('Email')}
+						value={email || undefined}
+						onChangeText={setEmail}
+						onSubmitEditing={() => {
+							nicknameRef.current?.focus();
+						}}
+						testID='profile-view-email'
+					/>
+					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 						<FormTextInput
-							editable={Accounts_AllowUsernameChange}
-							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
-							inputRef={e => (this.username = e)}
-							label={I18n.t('Username')}
-							placeholder={I18n.t('Username')}
-							value={username}
-							onChangeText={value => this.setState({ username: value })}
+							inputRef={nicknameRef}
+							label={I18n.t('Nickname')}
+							value={nickname}
+							onChangeText={setNickname}
 							onSubmitEditing={() => {
-								this.email?.focus();
+								bioRef.current?.focus();
 							}}
-							testID='profile-view-username'
+							testID='profile-view-nickname'
+							maxLength={MAX_NICKNAME_LENGTH}
 						/>
+					) : null}
+					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
 						<FormTextInput
-							editable={Accounts_AllowEmailChange}
-							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
-							inputRef={e => (this.email = e)}
-							label={I18n.t('Email')}
-							placeholder={I18n.t('Email')}
-							value={email || undefined}
-							onChangeText={value => this.setState({ email: value })}
+							inputRef={bioRef}
+							label={I18n.t('Bio')}
+							inputStyle={styles.inputBio}
+							multiline
+							maxLength={MAX_BIO_LENGTH}
+							value={bio}
+							onChangeText={setBio}
 							onSubmitEditing={() => {
-								this.nickname?.focus();
+								newPasswordRef.current?.focus();
 							}}
-							testID='profile-view-email'
+							testID='profile-view-bio'
 						/>
-						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
-							<FormTextInput
-								inputRef={e => (this.nickname = e)}
-								label={I18n.t('Nickname')}
-								value={nickname}
-								onChangeText={value => this.setState({ nickname: value })}
-								onSubmitEditing={() => {
-									this.bio?.focus();
-								}}
-								testID='profile-view-nickname'
-								maxLength={MAX_NICKNAME_LENGTH}
-							/>
-						) : null}
-						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
-							<FormTextInput
-								inputRef={e => (this.bio = e)}
-								label={I18n.t('Bio')}
-								inputStyle={styles.inputBio}
-								multiline
-								maxLength={MAX_BIO_LENGTH}
-								value={bio}
-								onChangeText={value => this.setState({ bio: value })}
-								onSubmitEditing={() => {
-									this.newPassword?.focus();
-								}}
-								testID='profile-view-bio'
-							/>
-						) : null}
-						<FormTextInput
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							inputRef={e => (this.newPassword = e)}
-							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
-							value={newPassword || undefined}
-							onChangeText={value => this.setState({ newPassword: value })}
-							onSubmitEditing={() => {
-								if (Accounts_CustomFields && Object.keys(customFields).length) {
-									// @ts-ignore
-									return this[Object.keys(customFields)[0]].focus();
-								}
-								this.avatarUrl?.focus();
-							}}
-							secureTextEntry
-							testID='profile-view-new-password'
-						/>
-						{this.renderCustomFields()}
+					) : null}
+					<FormTextInput
+						editable={Accounts_AllowPasswordChange}
+						inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+						inputRef={newPasswordRef}
+						label={I18n.t('New_Password')}
+						placeholder={I18n.t('New_Password')}
+						value={newPassword || undefined}
+						onChangeText={setNewPassword}
+						onSubmitEditing={() => {
+							if (Accounts_CustomFields && Object.keys(customFields).length) {
+								// @ts-ignore
+								return this[Object.keys(customFields)[0]].focus();
+							}
+							avatarUrlRef.current?.focus();
+						}}
+						secureTextEntry
+						testID='profile-view-new-password'
+					/>
+					{renderCustomFields()}
+					<Button
+						title={I18n.t('Save_Changes')}
+						type='primary'
+						onPress={submit}
+						disabled={!formIsChanged()}
+						testID='profile-view-submit'
+						loading={saving}
+					/>
+					<Button
+						title={I18n.t('Logout_from_other_logged_in_locations')}
+						type='secondary'
+						backgroundColor={themes[theme].chatComponentBackground}
+						onPress={logoutOtherLocations}
+						testID='profile-view-logout-other-locations'
+					/>
+					{Accounts_AllowDeleteOwnAccount ? (
 						<Button
-							title={I18n.t('Save_Changes')}
+							title={I18n.t('Delete_my_account')}
 							type='primary'
-							onPress={this.submit}
-							disabled={!this.formIsChanged()}
-							testID='profile-view-submit'
-							loading={saving}
+							backgroundColor={themes[theme].dangerColor}
+							onPress={deleteOwnAccount}
+							testID='profile-view-delete-my-account'
 						/>
-						<Button
-							title={I18n.t('Logout_from_other_logged_in_locations')}
-							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
-							onPress={this.logoutOtherLocations}
-							testID='profile-view-logout-other-locations'
-						/>
-						{Accounts_AllowDeleteOwnAccount ? (
-							<Button
-								title={I18n.t('Delete_my_account')}
-								type='primary'
-								backgroundColor={themes[theme].dangerColor}
-								onPress={this.deleteOwnAccount}
-								testID='profile-view-delete-my-account'
-							/>
-						) : null}
-					</ScrollView>
-				</SafeAreaView>
-			</KeyboardView>
-		);
-	}
+					) : null}
+				</ScrollView>
+			</SafeAreaView>
+		</KeyboardView>
+	);
 }
+
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
