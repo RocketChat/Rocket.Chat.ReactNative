@@ -3,7 +3,7 @@ import { HeaderBackground, useHeaderHeight } from '@react-navigation/elements';
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { ResizeMode, Video } from 'expo-av';
 import React from 'react';
-import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
+import { PermissionsAndroid, useWindowDimensions, View, Linking } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -18,7 +18,7 @@ import { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, isIOS, showConfirmationAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
@@ -146,7 +146,7 @@ const AttachmentView = (): React.ReactElement => {
 
 	const handleSave = async () => {
 		const { title_link, image_url, image_type, video_url, video_type } = attachment;
-		// When the attachment is a video, the video_url refers to local file and the title_link to the link
+		// 	When the attachment is a video, the video_url refers to local file and the title_link to the link
 		const url = video_url || title_link || image_url;
 
 		if (!url) {
@@ -185,7 +185,24 @@ const AttachmentView = (): React.ReactElement => {
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
-			EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			const err = e as Error;
+			//	check if the error is due to permission in ios and show alert
+			if (isIOS) {
+				if (err?.message.includes('PHPhotosErrorDomain error 3311')) {
+					showConfirmationAlert({
+						title: 'Photos permission not granted',
+						message: 'Photos permission not granted,Click ok to proceed to settings and enable it',
+						confirmationText: 'Ok',
+						onPress: async () => {
+							await Linking.openURL('app-settings:').catch(() => {
+								console.error('Failed to open app settings');
+							});
+						}
+					});
+				}
+			} else {
+				EventEmitter.emit(LISTENER, { message: I18n.t(image_url ? 'error-save-image' : 'error-save-video') });
+			}
 		}
 		setLoading(false);
 	};
