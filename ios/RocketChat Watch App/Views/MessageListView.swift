@@ -13,6 +13,7 @@ struct MessageListView: View {
 	@ObservedObject private var room: Room
 	
 	@State private var lastOpen: Date?
+	@State private var info: Room?
 	
 	@Environment(\.scenePhase) private var scenePhase
 	
@@ -71,7 +72,19 @@ struct MessageListView: View {
 			}
 		}
 		.padding([.leading, .trailing])
-		.navigationTitle(formatter.title ?? "")
+		.navigationDestination(for: $info) { room in
+			RoomInfoView(room: room)
+				.environment(\.managedObjectContext, database.viewContext)
+		}
+		.navigationTitle {
+			Text(formatter.title ?? "")
+				.foregroundStyle(Color.titleLabels)
+				.onTapGesture {
+					if room.t == "d" {					
+						info = room
+					}
+				}
+		}
 		.navigationBarTitleDisplayMode(.inline)
 		.disabled(!room.synced)
 		.onAppear {

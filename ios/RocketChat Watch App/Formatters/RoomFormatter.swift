@@ -10,7 +10,7 @@ final class RoomFormatter {
 	}
 	
 	var title: String? {
-		if isGroupChat, (room.name == nil || room.name?.isEmpty == true), let usernames = room.usernames {
+		if isGroupChat, !(room.name != nil && room.name?.isEmpty == false), let usernames = room.usernames {
 			return usernames
 				.filter { $0 == server.loggedUser.username }
 				.sorted()
@@ -18,11 +18,7 @@ final class RoomFormatter {
 		}
 		
 		if room.t != "d" {
-			if let fname = room.fname {
-				return fname
-			} else if let name = room.name {
-				return name
-			}
+			return room.fname ?? room.name
 		}
 		
 		if room.prid != nil || server.useRealName {
