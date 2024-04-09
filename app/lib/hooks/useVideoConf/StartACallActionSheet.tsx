@@ -74,7 +74,7 @@ export default function StartACallActionSheet({
 				)}
 			</View>
 			<Button
-				backgroundColor={calling ? colors.buttonBackgroundSecondaryDisabled : colors.fontHint}
+				backgroundColor={calling ? colors.buttonBackgroundPrimaryDisabled : colors.buttonBackgroundPrimaryDefault}
 				color={calling ? colors.strokeDark : colors.surfaceLight}
 				onPress={() => {
 					if (calling) {

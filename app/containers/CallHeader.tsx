@@ -30,11 +30,11 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 
 	const handleColors = (enabled: boolean) => {
 		if (calling) {
-			if (enabled) return { button: colors.buttonBackgroundSecondaryDisabled, icon: colors.strokeDark };
+			if (enabled) return { button: colors.buttonBackgroundSecondaryDisabled, icon: colors.strokeExtraDark };
 			return { button: 'transparent', icon: colors.strokeLight };
 		}
 		if (enabled) return { button: colors.strokeHighlight, icon: colors.surfaceLight };
-		return { button: 'transparent', icon: colors.strokeDark };
+		return { button: 'transparent', icon: colors.strokeExtraDark };
 	};
 
 	return (
