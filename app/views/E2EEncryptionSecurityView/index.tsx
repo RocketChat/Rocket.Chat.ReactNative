@@ -83,7 +83,6 @@ const E2EEncryptionSecurityView = () => {
 							onPress={resetOwnKey}
 							title={I18n.t('E2E_encryption_reset_button')}
 							type='secondary'
-							backgroundColor={colors.surfaceTint}
 							testID='e2e-encryption-security-view-reset-key'
 						/>
 					</List.Section>
