@@ -23,7 +23,7 @@ export default function useStyle() {
 		},
 		callToActionContainer: {
 			height: 48,
-			backgroundColor: colors.surfaceTint,
+			backgroundColor: colors.surfaceHover,
 			flexDirection: 'row',
 			alignItems: 'center',
 			paddingLeft: 16
@@ -51,7 +51,7 @@ export default function useStyle() {
 		joined: {
 			fontSize: 12,
 			...sharedStyles.textRegular,
-			color: colors.strokeDark,
+			color: colors.fontDefault,
 			marginLeft: 8
 		},
 		plusUsers: {
@@ -65,16 +65,16 @@ export default function useStyle() {
 		plusUsersText: {
 			fontSize: 14,
 			...sharedStyles.textSemibold,
-			color: colors.strokeDark,
+			color: colors.fontDefault,
 			alignSelf: 'center'
 		},
 		callBack: {
 			fontSize: 12,
 			...sharedStyles.textRegular,
-			color: colors.strokeDark
+			color: colors.fontDefault
 		},
 		callToActionCallBack: {
-			backgroundColor: colors.surfaceNeutral,
+			backgroundColor: colors.surfaceSelected,
 			minWidth: 50,
 			alignItems: 'center',
 			justifyContent: 'center',
