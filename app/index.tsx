@@ -201,7 +201,7 @@ export default class Root extends React.Component<{}, IState> {
 		return (
 			<SafeAreaProvider
 				initialMetrics={initialWindowMetrics}
-				style={{ backgroundColor: themes[this.state.theme].surfaceTint }}
+				style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}
 			>
 				<Provider store={store}>
 					<ThemeContext.Provider
