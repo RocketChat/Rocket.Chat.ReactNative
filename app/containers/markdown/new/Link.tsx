@@ -39,7 +39,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontHint }]}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={[styles.link, { color: themes[theme].fontInfo }]}>
 			{(block => {
 				const blockArray = Array.isArray(block) ? block : [block];
 				return blockArray.map(blockInArray => {
