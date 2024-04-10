@@ -689,6 +689,7 @@
   "Supported_versions_expired_description": "An admin needs to update the workspace to a supported version in order to reenable access from mobile and desktop apps.",
   "Supported_versions_expired_title": "{{workspace_name}} is running an unsupported version of Rocket.Chat",
   "Supported_versions_warning_update_required": "Update required",
+  "System_default": "System default",
   "Table": "Table",
   "Tags": "Tags",
   "Take_a_photo": "Take a photo",
@@ -835,6 +836,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace",
-  "System_default": "System default"
+  "Your_workspace": "Your workspace"
 }

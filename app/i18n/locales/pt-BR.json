@@ -678,6 +678,7 @@
   "Supported_versions_expired_description": "Um administrador precisa atualizar o espaço de trabalho para uma versão suportada a fim de reabilitar o acesso a partir de aplicativos móveis e de desktop.",
   "Supported_versions_expired_title": "{{workspace_name}} está executando uma versão não suportada do Rocket.Chat",
   "Supported_versions_warning_update_required": "Atualização necessária",
+  "System_default": "Padrão do sistema",
   "Table": "Tabela",
   "Tags": "Tags",
   "Take_a_photo": "Tirar uma foto",
@@ -823,6 +824,5 @@
   "Your_invite_link_will_never_expire": "Seu link de convite nunca irá vencer.",
   "Your_password_is": "Sua senha é",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace",
-  "System_default": "Padrão do sistema"
+  "Your_workspace": "Sua workspace"
 }
