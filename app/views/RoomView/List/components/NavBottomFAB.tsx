@@ -38,7 +38,7 @@ const NavBottomFAB = memo(
 			<View style={[styles.container, positionStyle]} testID='nav-jump-to-bottom'>
 				<Touch onPress={() => onPress()} style={[styles.button, { backgroundColor: colors.surfaceRoom }]}>
 					<View style={[styles.content, { borderColor: colors.strokeLight }]}>
-						<CustomIcon name='chevron-down' color={colors.fontHint} size={36} />
+						<CustomIcon name='chevron-down' size={36} />
 					</View>
 				</Touch>
 			</View>

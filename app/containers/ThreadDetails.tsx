@@ -68,7 +68,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 		<View style={[styles.container, style]}>
 			<View style={styles.detailsContainer}>
 				<View style={styles.detailContainer}>
-					<CustomIcon name='threads' size={24} color={themes[theme].fontSecondaryInfo} />
+					<CustomIcon name='threads' size={24} />
 					<Text
 						testID={`thread-count-${count}`}
 						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
@@ -79,7 +79,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 				</View>
 
 				<View style={styles.detailContainer}>
-					<CustomIcon name='user' size={24} color={themes[theme].fontSecondaryInfo} />
+					<CustomIcon name='user' size={24} />
 					<Text style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
 						{replies}
 					</Text>
@@ -88,11 +88,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			<View style={styles.badgeContainer}>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
-					<CustomIcon
-						size={24}
-						name={isFollowing ? 'notification' : 'notification-disabled'}
-						color={themes[theme].fontHint}
-					/>
+					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />
 				</Touchable>
 			</View>
 		</View>
