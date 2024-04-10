@@ -123,7 +123,7 @@ const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsUnread = (s: TSubscriptionModel) => (s.alert || s.unread) && !s.hideUnreadStatus;
 const filterIsFavorite = (s: TSubscriptionModel) => s.f;
 const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
 const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
