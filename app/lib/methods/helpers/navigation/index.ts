@@ -37,7 +37,7 @@ export const themedHeader = (theme: TSupportedThemes) => ({
 		...borderBottom(theme),
 		backgroundColor: themes[theme].surfaceNeutral
 	},
-	headerTintColor: themes[theme].fontSecondaryInfo,
+	headerTintColor: themes[theme].fontDefault,
 	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 18 }
 });
 
