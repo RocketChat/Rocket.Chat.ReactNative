@@ -26,7 +26,7 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].fontInfo,
+			backgroundColor: theme === 'light' ? themes[theme].fontInfo : themes[theme].buttonBackgroundPrimaryPress,
 			color: themes[theme].fontWhite
 		});
 	});
@@ -83,7 +83,7 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].fontInfo,
+			backgroundColor: theme === 'light' ? themes[theme].fontInfo : themes[theme].buttonBackgroundPrimaryPress,
 			color: themes[theme].fontWhite
 		});
 	});
