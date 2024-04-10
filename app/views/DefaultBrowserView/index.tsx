@@ -25,7 +25,7 @@ const DEFAULT_BROWSERS: IBrowsersValues[] = [
 		value: 'inApp'
 	},
 	{
-		title: isIOS ? 'Safari' : 'Browser',
+		title: 'System_default',
 		value: 'systemDefault:'
 	}
 ];
