@@ -26,7 +26,7 @@ export const getUnreadStyle = ({
 	} else if ((groupMentions && groupMentions > 0) || tunreadGroup?.length) {
 		backgroundColor = themes[theme].badgeBackgroundLevel3;
 	} else if (tunread && tunread?.length > 0) {
-		backgroundColor = themes[theme].fontInfo;
+		backgroundColor = theme === 'light' ? themes[theme].fontInfo : themes[theme].buttonBackgroundPrimaryPress;
 	}
 
 	return {
