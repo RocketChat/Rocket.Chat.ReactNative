@@ -48,7 +48,7 @@ interface IIconPreview {
 
 const IconPreview = React.memo(({ iconName, title, description, theme, width, height, danger }: IIconPreview) => (
 	<ScrollView
-		style={{ backgroundColor: themes[theme].surfaceHover }}
+		style={{ backgroundColor: themes[theme].surfaceRoom }}
 		contentContainerStyle={[styles.fileContainer, { width, height }]}
 	>
 		<CustomIcon name={iconName} size={56} color={danger ? themes[theme].buttonBackgroundDangerDefault : themes[theme].badgeBackgroundLevel2} />
