@@ -84,7 +84,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			displayingThreads: [],
 			subscription: {} as TSubscriptionModel,
 			showFilterDropdown: false,
-			currentFilter: Filter.All,
+			currentFilter: Filter.Following,
 			isSearching: false,
 			searchText: '',
 			offset: 0
