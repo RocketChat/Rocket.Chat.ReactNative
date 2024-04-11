@@ -127,7 +127,7 @@ const CollapsibleQuote = React.memo(
 			strokeExtraLight,
 			surfaceTint: backgroundColor,
 			strokeLight,
-			strokeDark,
+			strokeMedium,
 			fontSecondaryInfo
 		} = themes[theme];
 
@@ -136,7 +136,7 @@ const CollapsibleQuote = React.memo(
 				backgroundColor = transparentize(attachment.color, 0.8);
 				strokeExtraLight = attachment.color;
 				strokeLight = attachment.color;
-				strokeDark = attachment.color;
+				strokeMedium = attachment.color;
 				fontSecondaryInfo = fontSecondaryInfo;
 			}
 		} catch (e) {
@@ -172,7 +172,7 @@ const CollapsibleQuote = React.memo(
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
-							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeDark} />
+							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
 						</View>
 					</View>
 				</Touchable>
