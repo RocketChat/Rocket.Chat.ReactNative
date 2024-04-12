@@ -4,13 +4,16 @@ protocol Database {
 	var viewContext: NSManagedObjectContext { get }
 	
 	func room(id: String) -> Room?
+	func rooms(ids: [String]) -> [Room]
 	func message(id: String) -> Message?
 	func createTempMessage(msg: String, in room: Room, for loggedUser: LoggedUser) -> String
 	func updateMessage(_ id: String, status: String)
 	func remove(_ message: Message)
 	
-	func process(subscription: SubscriptionsResponse.Subscription)
-	func process(subscription: SubscriptionsResponse.Subscription?, in updatedRoom: RoomsResponse.Room)
+	func insert(_ mergedRoom: MergedRoom)
+	func update(_ existingRoom: Room, _ newRoom: MergedRoom)
+	func delete(_ existingRoom: Room)
+	
 	func process(updatedMessage: MessageResponse, in room: Room)
 	
 	func save()
@@ -196,61 +199,6 @@ final class RocketChatDatabase: Database {
 		attachment.height = updatedAttachment.dimensions?.height ?? 0
 	}
 	
-	func process(subscription: SubscriptionsResponse.Subscription?, in updatedRoom: RoomsResponse.Room) {
-		let room = room(id: updatedRoom._id) ?? createRoom(id: updatedRoom._id)
-		
-		room.name = updatedRoom.name
-		room.fname = updatedRoom.fname
-		room.updatedAt = updatedRoom._updatedAt
-		room.t = updatedRoom.t
-		room.usernames = updatedRoom.usernames
-		room.uids = updatedRoom.uids
-		room.prid = updatedRoom.prid
-		room.isReadOnly = updatedRoom.ro ?? false
-		room.encrypted = updatedRoom.encrypted ?? false
-		room.teamMain = updatedRoom.teamMain ?? false
-		room.archived = updatedRoom.archived ?? false
-		room.broadcast = updatedRoom.broadcast ?? false
-		room.open = subscription?.open ?? true
-		
-		if let subscription {
-			room.alert = subscription.alert
-			room.name = room.name ?? subscription.name
-			room.fname = room.fname ?? subscription.fname
-			room.unread = Int32(subscription.unread)
-		}
-		
-		if let lastMessage = updatedRoom.lastMessage?.value {
-			process(updatedMessage: lastMessage, in: room)
-		}
-		
-		let lastRoomUpdate = updatedRoom.lm ?? updatedRoom.ts ?? updatedRoom._updatedAt
-		
-		if let lr = subscription?.lr, let lastRoomUpdate {
-			room.ts = max(lr, lastRoomUpdate)
-		} else {
-			room.ts = lastRoomUpdate
-		}
-		
-		save()
-	}
-	
-	func process(subscription: SubscriptionsResponse.Subscription) {
-		let room = room(id: subscription.rid) ?? createRoom(id: subscription.rid)
-		
-		room.alert = subscription.alert
-		room.name = room.name ?? subscription.name
-		room.fname = room.fname ?? subscription.fname
-		room.unread = Int32(subscription.unread)
-		room.open = subscription.open ?? true
-		
-		if let lr = subscription.lr, let lastRoomUpdate = room.ts {
-			room.ts = max(lr, lastRoomUpdate)
-		}
-		
-		save()
-	}
-	
 	func remove() {
 		guard let url = container.persistentStoreDescriptions.first?.url else {
 			return
@@ -261,5 +209,77 @@ final class RocketChatDatabase: Database {
 		} catch {
 			print(error)
 		}
+	}
+}
+
+extension RocketChatDatabase {
+	func insert(_ mergedRoom: MergedRoom) {
+		let room = room(id: mergedRoom.id) ?? createRoom(id: mergedRoom.id)
+		
+		update(room, mergedRoom)
+	}
+	
+	func update(_ existingRoom: Room, _ newRoom: MergedRoom) {
+		let room = room(id: newRoom.id) ?? createRoom(id: newRoom.id)
+		
+		room.name = newRoom.name ?? room.name
+		room.fname = newRoom.fname ?? room.fname
+		room.t = newRoom.t
+		room.unread = Int32(newRoom.unread)
+		room.alert = newRoom.alert
+		room.lr = newRoom.lr ?? room.lr
+		room.open = newRoom.open ?? true
+		room.rid = newRoom.rid
+		
+		room.updatedAt = newRoom.updatedAt ?? room.updatedAt
+		room.usernames = newRoom.usernames ?? room.usernames
+		room.uids = newRoom.uids ?? room.uids
+		room.prid = newRoom.prid ?? room.prid
+		room.isReadOnly = newRoom.isReadOnly ?? room.isReadOnly
+		room.encrypted = newRoom.encrypted ?? room.encrypted
+		room.teamMain = newRoom.teamMain ?? room.teamMain
+		room.archived = newRoom.archived ?? room.archived
+		room.broadcast = newRoom.broadcast ?? room.broadcast
+		room.ts = newRoom.ts ?? room.ts
+		
+		if let lastMessage = newRoom.lastMessage {
+			let message = message(id: lastMessage._id) ?? createMessage(id: lastMessage._id)
+			
+			message.status = "received"
+			message.id = lastMessage._id
+			message.msg = lastMessage.msg
+			message.room = room
+			message.ts = lastMessage.ts
+			message.t = lastMessage.t
+			message.groupable = lastMessage.groupable ?? true
+			message.editedAt = lastMessage.editedAt
+			message.role = lastMessage.role
+			message.comment = lastMessage.comment
+			
+			let user = user(id: lastMessage.u._id) ?? createUser(id: lastMessage.u._id)
+			user.name = lastMessage.u.name
+			user.username = lastMessage.u.username
+			message.user = user
+			
+			lastMessage.attachments?.forEach { lastMessageAttachment in
+				let identifier = lastMessageAttachment.imageURL ?? lastMessageAttachment.audioURL
+				
+				guard let identifier = identifier?.absoluteString ?? lastMessageAttachment.title else {
+					return
+				}
+				
+				let attachment = attachment(identifier: identifier) ?? createAttachment(identifier: identifier)
+				
+				attachment.imageURL = lastMessageAttachment.imageURL
+				attachment.msg = lastMessageAttachment.description
+				attachment.message = message
+				attachment.width = lastMessageAttachment.dimensions?.width ?? 0
+				attachment.height = lastMessageAttachment.dimensions?.height ?? 0
+			}
+		}
+	}
+	
+	func delete(_ existingRoom: Room) {
+		viewContext.delete(existingRoom)
 	}
 }

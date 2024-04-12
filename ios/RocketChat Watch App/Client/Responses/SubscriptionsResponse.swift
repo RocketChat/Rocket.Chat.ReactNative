@@ -15,6 +15,7 @@ struct SubscriptionsResponse: Codable {
 		let alert: Bool
 		let lr: Date?
 		let open: Bool?
+		let _updatedAt: Date?
 	}
 }
 

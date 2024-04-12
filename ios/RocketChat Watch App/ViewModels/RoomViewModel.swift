@@ -87,7 +87,7 @@ final class RoomViewModel: ObservableObject {
 			return dateFormatter.string(from: ts)
 		}
 		
-		if isInPreviousWeek(date: ts) {
+		if isDateFromLastWeek(ts) {
 			dateFormatter.dateFormat = "EEEE"
 			
 			return dateFormatter.string(from: ts)
@@ -99,16 +99,16 @@ final class RoomViewModel: ObservableObject {
 		return dateFormatter.string(from: ts)
 	}
 	
-	private func isInPreviousWeek(date: Date) -> Bool {
-		let oneDay = 24 * 60 * 60
+	private func isDateFromLastWeek(_ date: Date) -> Bool {
 		let calendar = Calendar.current
-		let currentDate = Date()
-		let lastWeekDate = currentDate.addingTimeInterval(TimeInterval(-7 * oneDay))
+		let now = Date()
 		
-		return calendar.isDate(
-			date,
-			equalTo: lastWeekDate,
-			toGranularity: .weekOfYear
-		)
+		let startOfCurrentWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: now))!
+		
+		guard let startOfLastWeek = calendar.date(byAdding: .day, value: -7, to: startOfCurrentWeek) else {
+			return false
+		}
+		
+		return calendar.isDate(date, inSameDayAs: startOfLastWeek) || date > startOfLastWeek
 	}
 }

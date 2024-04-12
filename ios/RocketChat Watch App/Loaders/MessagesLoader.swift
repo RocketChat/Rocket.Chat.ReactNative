@@ -26,7 +26,7 @@ final class MessagesLoader {
 	}
 	
 	private func syncMessages(in room: Room, from date: Date) {
-		guard let rid = room.id else { return }
+		guard let rid = room.rid else { return }
 		
 		let newUpdatedSince = Date()
 		
@@ -54,7 +54,7 @@ final class MessagesLoader {
 	}
 	
 	private func loadMessages(in room: Room, from date: Date) {
-		guard let rid = room.id else { return }
+		guard let rid = room.rid else { return }
 		
 		client.getHistory(rid: rid, t: room.t ?? "", latest: date)
 			.receive(on: DispatchQueue.main)
@@ -82,7 +82,7 @@ final class MessagesLoader {
 	}
 	
 	private func markAsRead(in room: Room) {
-		guard (room.unread > 0 || room.alert), let rid = room.id else {
+		guard (room.unread > 0 || room.alert), let rid = room.rid else {
 			return
 		}
 		

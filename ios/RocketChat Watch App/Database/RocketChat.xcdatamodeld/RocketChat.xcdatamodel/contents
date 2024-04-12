@@ -31,9 +31,11 @@
         <attribute name="hasMoreMessages" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isReadOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lr" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="open" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="prid" optional="YES" attributeType="String"/>
+        <attribute name="rid" optional="YES" attributeType="String"/>
         <attribute name="synced" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="t" optional="YES" attributeType="String"/>
         <attribute name="teamMain" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -44,6 +46,12 @@
         <attribute name="updatedSince" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="usernames" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="room" inverseEntity="Message"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+                <constraint value="rid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="String"/>

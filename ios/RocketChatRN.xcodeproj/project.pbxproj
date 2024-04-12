@@ -95,6 +95,12 @@
 		1E51411D2B85683C007BE94A /* SSLPinning.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E51411B2B85683C007BE94A /* SSLPinning.m */; };
 		1E51D962251263CD00DC95DE /* MessageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D961251263CD00DC95DE /* MessageType.swift */; };
 		1E51D965251263D600DC95DE /* NotificationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E51D964251263D600DC95DE /* NotificationType.swift */; };
+		1E54BA1A2BC9E7100073903D /* MergedRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA182BC9E6D60073903D /* MergedRoom.swift */; };
+		1E54BA1B2BC9E7110073903D /* MergedRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA182BC9E6D60073903D /* MergedRoom.swift */; };
+		1E54BA1D2BC9E8030073903D /* LastMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA1C2BC9E8030073903D /* LastMessageMapper.swift */; };
+		1E54BA1E2BC9E8030073903D /* LastMessageMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA1C2BC9E8030073903D /* LastMessageMapper.swift */; };
+		1E54BA202BC9E9B60073903D /* MergedRoomMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA1F2BC9E9B60073903D /* MergedRoomMapper.swift */; };
+		1E54BA212BC9E9B60073903D /* MergedRoomMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54BA1F2BC9E9B60073903D /* MergedRoomMapper.swift */; };
 		1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE32515057D002BDFBD /* Date+Extensions.swift */; };
 		1E598AE725150660002BDFBD /* Data+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE625150660002BDFBD /* Data+Extensions.swift */; };
 		1E598AE925151A63002BDFBD /* SendMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E598AE825151A63002BDFBD /* SendMessage.swift */; };
@@ -521,6 +527,9 @@
 		1E51411B2B85683C007BE94A /* SSLPinning.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SSLPinning.m; sourceTree = "<group>"; };
 		1E51D961251263CD00DC95DE /* MessageType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageType.swift; sourceTree = "<group>"; };
 		1E51D964251263D600DC95DE /* NotificationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationType.swift; sourceTree = "<group>"; };
+		1E54BA182BC9E6D60073903D /* MergedRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergedRoom.swift; sourceTree = "<group>"; };
+		1E54BA1C2BC9E8030073903D /* LastMessageMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastMessageMapper.swift; sourceTree = "<group>"; };
+		1E54BA1F2BC9E9B60073903D /* MergedRoomMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MergedRoomMapper.swift; sourceTree = "<group>"; };
 		1E598AE32515057D002BDFBD /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE625150660002BDFBD /* Data+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+Extensions.swift"; sourceTree = "<group>"; };
 		1E598AE825151A63002BDFBD /* SendMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessage.swift; sourceTree = "<group>"; };
@@ -854,6 +863,16 @@
 			path = SSLPinning;
 			sourceTree = "<group>";
 		};
+		1E54BA132BC9E6670073903D /* Merge */ = {
+			isa = PBXGroup;
+			children = (
+				1E54BA182BC9E6D60073903D /* MergedRoom.swift */,
+				1E54BA1C2BC9E8030073903D /* LastMessageMapper.swift */,
+				1E54BA1F2BC9E9B60073903D /* MergedRoomMapper.swift */,
+			);
+			path = Merge;
+			sourceTree = "<group>";
+		};
 		1E76CBC425152A7F0067298C /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -1037,6 +1056,7 @@
 		1EDFD0F82B589B82002FEE5F /* Loaders */ = {
 			isa = PBXGroup;
 			children = (
+				1E54BA132BC9E6670073903D /* Merge */,
 				1ED038C92B50A58400C007D4 /* ServersLoader.swift */,
 				1EDFD0F92B589B8F002FEE5F /* MessagesLoader.swift */,
 				1EDFD1052B58A66E002FEE5F /* CancelBag.swift */,
@@ -2073,6 +2093,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E54BA1D2BC9E8030073903D /* LastMessageMapper.swift in Sources */,
 				1EE096FD2BACD58300780078 /* LazyView.swift in Sources */,
 				1E29A3242B5874FF0093C03C /* MessageComposerView.swift in Sources */,
 				1EB375892B55DBFB00AEC3D7 /* Server.swift in Sources */,
@@ -2123,6 +2144,7 @@
 				1E388AC12B934CD4006FBDB0 /* RemoteImage.swift in Sources */,
 				1E388ABE2B934C64006FBDB0 /* ImageLoader.swift in Sources */,
 				1E29A2EF2B585B070093C03C /* RocketChatClient.swift in Sources */,
+				1E54BA202BC9E9B60073903D /* MergedRoomMapper.swift in Sources */,
 				1E4AFC212B5B1AA000E2AA7D /* AppView.swift in Sources */,
 				1E29A2FB2B585B070093C03C /* MessagesRequest.swift in Sources */,
 				1E29A31D2B5871B60093C03C /* Date+Extensions.swift in Sources */,
@@ -2135,6 +2157,7 @@
 				1E29A3012B585B070093C03C /* RequestAdapter.swift in Sources */,
 				1E29A2F52B585B070093C03C /* RoomsResponse.swift in Sources */,
 				1EDB30F22B5B453A00532C7E /* LoggedInView.swift in Sources */,
+				1E54BA1B2BC9E7110073903D /* MergedRoom.swift in Sources */,
 				1E29A2F32B585B070093C03C /* MessagesResponse.swift in Sources */,
 				1E29A2FA2B585B070093C03C /* HistoryRequest.swift in Sources */,
 				1ED038C62B50A21800C007D4 /* WatchMessage.swift in Sources */,
@@ -2157,6 +2180,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E54BA1E2BC9E8030073903D /* LastMessageMapper.swift in Sources */,
 				1EE096FE2BACD58300780078 /* LazyView.swift in Sources */,
 				1ED1EC902B86997F00F6620C /* MessageComposerView.swift in Sources */,
 				1ED1EC912B86997F00F6620C /* Server.swift in Sources */,
@@ -2207,6 +2231,7 @@
 				1E388AC22B934CD4006FBDB0 /* RemoteImage.swift in Sources */,
 				1E388ABF2B934C64006FBDB0 /* ImageLoader.swift in Sources */,
 				1ED1ECBA2B86997F00F6620C /* RocketChatClient.swift in Sources */,
+				1E54BA212BC9E9B60073903D /* MergedRoomMapper.swift in Sources */,
 				1ED1ECBB2B86997F00F6620C /* AppView.swift in Sources */,
 				1ED1ECBC2B86997F00F6620C /* MessagesRequest.swift in Sources */,
 				1ED1ECBD2B86997F00F6620C /* Date+Extensions.swift in Sources */,
@@ -2219,6 +2244,7 @@
 				1ED1ECC32B86997F00F6620C /* RequestAdapter.swift in Sources */,
 				1ED1ECC42B86997F00F6620C /* RoomsResponse.swift in Sources */,
 				1ED1ECC52B86997F00F6620C /* LoggedInView.swift in Sources */,
+				1E54BA1A2BC9E7100073903D /* MergedRoom.swift in Sources */,
 				1ED1ECC62B86997F00F6620C /* MessagesResponse.swift in Sources */,
 				1ED1ECC72B86997F00F6620C /* HistoryRequest.swift in Sources */,
 				1ED1ECC82B86997F00F6620C /* WatchMessage.swift in Sources */,

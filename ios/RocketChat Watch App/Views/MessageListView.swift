@@ -80,7 +80,7 @@ struct MessageListView: View {
 			Text(formatter.title ?? "")
 				.foregroundStyle(Color.titleLabels)
 				.onTapGesture {
-					if room.t == "d" {					
+					if room.t == "d" {
 						info = room
 					}
 				}

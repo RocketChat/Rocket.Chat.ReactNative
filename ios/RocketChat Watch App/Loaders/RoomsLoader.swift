@@ -49,14 +49,44 @@ final class RoomsLoader: ObservableObject {
 			let rooms = roomsResponse.update
 			let subscriptions = subscriptionsResponse.update
 			
-			for room in rooms {
-				let subscription = subscriptions.find(withRoomID: room._id)
+			let roomIds = rooms.filter { room in !subscriptions.contains { room._id == $0.rid } }.map { $0._id }
+			let existingSubs = self.database.rooms(ids: roomIds)
+			let mappedExistingSubs = subscriptions + existingSubs.compactMap { $0.response }
+			
+			let mergedSubscriptions = mappedExistingSubs.compactMap { subscription in
+				let index = rooms.firstIndex { $0._id == subscription.rid }
 				
-				self.database.process(subscription: subscription, in: room)
+				guard let index else {
+					return MergedRoom(subscription, nil)
+				}
+				
+				let room = rooms[index]
+				return MergedRoom(subscription, room)
 			}
 			
-			for subscription in subscriptions {
-				self.database.process(subscription: subscription)
+			let subsIds = mergedSubscriptions.compactMap { $0.id } + subscriptionsResponse.remove.compactMap { $0._id }
+			
+			if subsIds.count > 0 {
+				let existingSubscriptions = self.database.rooms(ids: subsIds)
+				let subsToUpdate = existingSubscriptions.filter { subscription in mergedSubscriptions.contains { subscription.id == $0.id } }
+				let subsToCreate = mergedSubscriptions.filter { subscription in !existingSubscriptions.contains { subscription.id == $0.id } }
+				let subsToDelete = existingSubscriptions.filter { subscription in !mergedSubscriptions.contains { subscription.id == $0.id } }
+				
+				subsToCreate.forEach { subscription in
+					self.database.insert(subscription)
+				}
+				
+				subsToUpdate.forEach { subscription in
+					if let newRoom = mergedSubscriptions.first(where: { $0.id == subscription.id }) {
+						self.database.update(subscription, newRoom)
+					}
+				}
+				
+				subsToDelete.forEach { subscription in
+					self.database.delete(subscription)
+				}
+				
+				self.database.save()
 			}
 			
 			self.scheduledLoadRooms()
@@ -79,6 +109,27 @@ extension RoomsLoader: RoomsLoading {
 	func stop() {
 		timer?.invalidate()
 		cancellable.cancelAll()
+	}
+}
+
+private extension Room {
+	var response: SubscriptionsResponse.Subscription? {
+		guard let id, let fname, let t, let rid else {
+			return nil
+		}
+		
+		return .init(
+			_id: id,
+			rid: rid,
+			name: name,
+			fname: fname,
+			t: t,
+			unread: Int(unread),
+			alert: alert,
+			lr: lr,
+			open: open,
+			_updatedAt: ts
+		)
 	}
 }
 

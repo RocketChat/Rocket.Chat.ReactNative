@@ -5,7 +5,7 @@ struct AttachmentResponse: Codable, Hashable {
 	let imageURL: URL?
 	let audioURL: URL?
 	let description: String?
-	let dimensions: Dimensions?
+	let dimensions: DimensionsResponse?
 	
 	enum CodingKeys: String, CodingKey {
 		case imageURL = "image_url"
@@ -14,9 +14,9 @@ struct AttachmentResponse: Codable, Hashable {
 		case description
 		case dimensions = "image_dimensions"
 	}
-	
-	struct Dimensions: Codable, Hashable {
-		let width: Double
-		let height: Double
-	}
+}
+
+struct DimensionsResponse: Codable, Hashable {
+	let width: Double
+	let height: Double
 }

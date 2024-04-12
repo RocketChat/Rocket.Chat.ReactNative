@@ -25,7 +25,7 @@ extension MessageSender: MessageSending {
 	}
 	
 	func resendMessage(messageID: String, msg: String, in room: Room) {
-		guard let rid = room.id else { return }
+		guard let rid = room.rid else { return }
 		
 		client.sendMessage(id: messageID, rid: rid, msg: msg)
 			.receive(on: DispatchQueue.main)
