@@ -1,0 +1,10 @@
+appId: ${APP_ID}
+---
+- runFlow:
+    file: navigateToWorkspace.yaml
+- tapOn:
+    id: 'workspace-view-login'
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 2000

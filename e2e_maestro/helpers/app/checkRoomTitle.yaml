@@ -1,0 +1,7 @@
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible:
+      id: ${'room-view-title-' + room}
+      optional: true
+    timeout: 60000

@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+name: Onboarding
+onFlowStart:
+  - runFlow: ../../init.yaml
+---
+- launchApp:
+    clearState: true
+    clearKeychain: true
+    permissions:
+      android.permission.POST_NOTIFICATIONS: allow
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 20000
+
+# should have onboarding screen
+- assertVisible:
+    id: 'new-server-view'
+
+# should enter an invalid server and get error
+- tapOn:
+    id: 'new-server-view-input'
+- inputText: 'invalidtest'
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      text: 'Oops!'
+      optional: true
+    timeout: 10000
+- tapOn:
+    text: 'OK'
+    optional: true
+
+# should enter a valid server without login services and navigate to login
+- launchApp:
+    stopApp: true
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 5000
+- tapOn:
+    id: 'new-server-view-input'
+- inputText: ${output.data.server}
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000

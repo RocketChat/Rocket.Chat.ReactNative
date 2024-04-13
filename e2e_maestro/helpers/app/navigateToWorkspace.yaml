@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+env:
+  server: ${server || output.data.server}
+---
+- extendedWaitUntil:
+    visible:
+      id: 'new-server-view'
+    timeout: 60000
+- tapOn:
+    id: 'new-server-view-input'
+- inputText: ${server}
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'workspace-view'
+    timeout: 60000
+- assertVisible:
+    id: 'workspace-view'

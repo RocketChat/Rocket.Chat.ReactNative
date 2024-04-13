@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+---
+- extendedWaitUntil:
+    visible:
+      id: 'login-view'
+    timeout: 2000
+- tapOn:
+    id: 'login-view-email'
+- inputText: ${username}
+- pressKey: enter
+- tapOn:
+    id: 'login-view-password'
+- inputText: ${password}
+- pressKey: enter
+- extendedWaitUntil:
+    visible:
+      id: 'rooms-list-view'
+    timeout: 30000
