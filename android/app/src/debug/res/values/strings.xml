@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">[DEBUG] T1D Reachout</string>
-    <string name="share_extension_name">[DEBUG] T1D Reachout</string>
+    <string name="app_name">T1D Reachout</string>
+    <string name="share_extension_name">T1D Reachout</string>
 </resources>
