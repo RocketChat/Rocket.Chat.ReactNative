@@ -40,6 +40,9 @@ import { Services } from '../../../lib/services';
 import { loadThreadMessages, sendMessage } from '../../../lib/methods';
 import RoomServices from './../../RoomView/services';
 
+import { ResizeMode, Video } from 'expo-av';
+
+
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 
 const PostView: React.FC = ({ route }) => {
@@ -83,6 +86,9 @@ const PostView: React.FC = ({ route }) => {
 	const [showDelete, setShowDelete] = useState(true);
 	const [showCreateChat, setShowCreateChat] = useState(false);
 
+	const [videoUri, setVideoUri] = useState(null);
+	const videoRef = useRef<Video>(null);
+
 	const ImageProgress = createImageProgress(FastImage);
 
 	useEffect(() => {
@@ -96,14 +102,21 @@ const PostView: React.FC = ({ route }) => {
 
 			const attachments = post?._raw?.attachments;
 			if (typeof attachments !== 'string' && attachments?.length > 0) {
-				const banner = formatAttachmentUrl(attachments[0].image_url, user.id, user.token, server);
-				setBannerImage(banner);
-				setDescription(attachments[0].description);
-				Image.getSize(banner, (width, height) => {
-					const bannerContainerWidth = Dimensions.get('window').width - 40;
-					const bannerContainerHeight = (bannerContainerWidth * height) / width;
-					setBannerHeight(bannerContainerHeight);
-				});
+				const attachment = attachments[0];
+				if (attachment.video_url) {
+					const url = formatAttachmentUrl(attachment.video_url, user.id, user.token, server);
+					const uri = encodeURI(url);
+					setVideoUri(uri);
+				} else {
+					const banner = formatAttachmentUrl(attachment.image_url, user.id, user.token, server);
+					setBannerImage(banner);
+					setDescription(attachment.description);
+					Image.getSize(banner, (width, height) => {
+						const bannerContainerWidth = Dimensions.get('window').width - 40;
+						const bannerContainerHeight = (bannerContainerWidth * height) / width;
+						setBannerHeight(bannerContainerHeight);
+					});
+				}
 			}
 
 			if (postUser._id === user.id) {
@@ -413,6 +426,22 @@ const PostView: React.FC = ({ route }) => {
 							)}
 						</View>
 						<View style={styles.content}>
+						   {videoUri &&
+							   <Video
+								source={{ uri: videoUri }}
+								rate={1.0}
+								volume={1.0}
+								isMuted={false}
+								resizeMode={ResizeMode.CONTAIN}
+								shouldPlay
+								isLooping={false}
+								style={{ aspectRatio: 16 / 9, width: '100%' }}
+								useNativeControls
+								onError={console.log}
+								ref={videoRef}
+							   />
+							 }
+
 							{bannerImage && (
 								<ImageProgress
 									style={[styles.banner, { height: bannerHeight }]}
