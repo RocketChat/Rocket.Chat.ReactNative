@@ -1,4 +1,4 @@
-package chat.rocket.reactnative.newarchitecture.components;
+package chat.rocket.reachout.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

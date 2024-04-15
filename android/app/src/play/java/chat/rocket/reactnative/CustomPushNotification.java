@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.reachout;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 

@@ -10,7 +10,7 @@
 		"prettier-lint": "prettier --write . && yarn lint",
 		"ios": "npx react-native run-ios",
 		"android": "npx react-native run-android --variant=experimentalPlayDebug",
-		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --variant=experimentalPlayDebug --appId",
+		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reachout.MainActivity --variant=experimentalPlayDebug --appId",
 		"log-android": "react-native log-android",
 		"snyk-protect": "snyk protect",
 		"generate-source-maps-ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios-release.bundle --sourcemap-output ios-release.bundle.map",

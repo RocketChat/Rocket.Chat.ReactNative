@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="chat.rocket.reactnative">
+    package="chat.rocket.reachout">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -23,7 +23,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <application
-        android:name="chat.rocket.reactnative.MainApplication"
+        android:name="chat.rocket.reachout.MainApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,7 +34,7 @@
         android:hardwareAccelerated="true"
         tools:replace="android:allowBackup">
         <activity
-            android:name="chat.rocket.reactnative.MainActivity"
+            android:name="chat.rocket.reachout.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
             android:exported="true"
             android:label="@string/app_name"
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="chat.rocket.reactnative.share.ShareActivity"
+            android:name="chat.rocket.reachout.share.ShareActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
             android:label="@string/share_extension_name"
             android:noHistory="true"

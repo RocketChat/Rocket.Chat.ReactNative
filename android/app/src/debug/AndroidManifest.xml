@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name="chat.rocket.reactnative.MainDebugApplication"
+        android:name="chat.rocket.reachout.MainDebugApplication"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:name"
         tools:targetApi="28"

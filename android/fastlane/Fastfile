@@ -26,7 +26,7 @@ platform :android do
       )
     else
       upload_to_play_store(
-        package_name: 'chat.rocket.reactnative',
+        package_name: 'chat.rocket.reachout',
         track: 'internal',
         aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
       )
@@ -36,7 +36,7 @@ platform :android do
   desc "Upload App to Internal App Sharing"
   lane :internal_app_sharing do
     upload_to_play_store_internal_app_sharing(
-      package_name: 'chat.rocket.reactnative',
+      package_name: 'chat.rocket.reachout',
       aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
     )
   end
@@ -44,7 +44,7 @@ platform :android do
   desc "Upload App to Play Store Production"
   lane :production do |options|
     upload_to_play_store(
-      package_name: 'chat.rocket.reactnative',
+      package_name: 'chat.rocket.reachout',
       track: 'production',
       aab: 'android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab'
     )
