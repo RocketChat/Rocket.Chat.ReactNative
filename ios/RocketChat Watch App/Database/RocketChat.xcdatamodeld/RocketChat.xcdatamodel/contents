@@ -29,6 +29,7 @@
         <attribute name="encrypted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="fname" optional="YES" attributeType="String"/>
         <attribute name="hasMoreMessages" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hideUnreadStatus" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="isReadOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="lr" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

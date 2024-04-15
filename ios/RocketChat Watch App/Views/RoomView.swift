@@ -4,7 +4,7 @@ struct RoomView: View {
 	@ObservedObject var viewModel: RoomViewModel
 	
 	private var isUnread: Bool {
-		viewModel.room.unread > 0 || viewModel.room.alert
+		(viewModel.room.unread > 0 || viewModel.room.alert) && viewModel.room.hideUnreadStatus != true
 	}
 	
 	var body: some View {

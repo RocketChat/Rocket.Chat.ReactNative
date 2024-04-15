@@ -230,6 +230,7 @@ extension RocketChatDatabase {
 		room.lr = newRoom.lr ?? room.lr
 		room.open = newRoom.open ?? true
 		room.rid = newRoom.rid
+		room.hideUnreadStatus = newRoom.hideUnreadStatus ?? room.hideUnreadStatus
 		
 		room.updatedAt = newRoom.updatedAt ?? room.updatedAt
 		room.usernames = newRoom.usernames ?? room.usernames

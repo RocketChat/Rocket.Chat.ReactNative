@@ -128,7 +128,8 @@ private extension Room {
 			alert: alert,
 			lr: lr,
 			open: open,
-			_updatedAt: ts
+			_updatedAt: ts,
+			hideUnreadStatus: hideUnreadStatus
 		)
 	}
 }

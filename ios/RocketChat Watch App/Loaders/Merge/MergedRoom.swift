@@ -10,6 +10,7 @@ struct MergedRoom {
 	let lr: Date?
 	let open: Bool?
 	let rid: String
+	let hideUnreadStatus: Bool?
 	
 	let archived: Bool?
 	let broadcast: Bool?

@@ -9,6 +9,7 @@ extension MergedRoom {
 		lr = subscription.lr
 		open = subscription.open
 		rid = subscription.rid
+		hideUnreadStatus = subscription.hideUnreadStatus
 
 		if let room {
 			if room._updatedAt != nil {
