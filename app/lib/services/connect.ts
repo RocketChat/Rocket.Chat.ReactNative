@@ -275,7 +275,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
-		logoutListener = sdk.current.onStreamData('stream-force-logout', () => store.dispatch(logout(true)));
+		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
