@@ -30,6 +30,10 @@ class MainActivity : ReactActivity() {
     super.onCreate(null)
   }
 
+  override fun invokeDefaultOnBackPressed() {
+    moveTaskToBack(true)
+  }
+
 	// from react-native-orientation
 	override fun onConfigurationChanged(newConfig: Configuration) {
 		super.onConfigurationChanged(newConfig)
