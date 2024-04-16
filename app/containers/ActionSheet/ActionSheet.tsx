@@ -32,14 +32,13 @@ const ActionSheet = React.memo(
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
 		const animatedContentHeight = useSharedValue(0);
-		// const animatedHandleHeight = useSharedValue(0);
+		const animatedHandleHeight = useSharedValue(0);
 		const animatedDataSnaps = useSharedValue<TActionSheetOptions['snaps']>([]);
 		const animatedSnapPoints = useDerivedValue(() => {
 			if (animatedDataSnaps.value?.length) {
 				return animatedDataSnaps.value;
 			}
-			// FIXME: review handleHeight
-			const contentWithHandleHeight = animatedContentHeight.value; // + animatedHandleHeight.value;
+			const contentWithHandleHeight = animatedContentHeight.value + animatedHandleHeight.value;
 			// Bottom sheet requires a default value to work
 			if (contentWithHandleHeight === 0) {
 				return ['25%'];
@@ -153,7 +152,7 @@ const ActionSheet = React.memo(
 						ref={bottomSheetRef}
 						// If data.options exist, we calculate snaps to be precise, otherwise we cal
 						snapPoints={data.options?.length ? snaps : animatedSnapPoints}
-						// handleHeight={animatedHandleHeight}
+						handleHeight={animatedHandleHeight}
 						// We need undefined to enable vertical swipe gesture inside the bottom sheet like in reaction picker
 						contentHeight={data.snaps?.length || data.options?.length ? undefined : animatedContentHeight}
 						animationConfigs={ANIMATION_CONFIG}
