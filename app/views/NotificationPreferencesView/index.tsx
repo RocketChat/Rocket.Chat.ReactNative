@@ -1,6 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { Switch, Text } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -91,8 +92,11 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 const NotificationPreferencesView = (): React.ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
-	const navigation = useNavigation();
-	const serverVersion = useAppSelector(state => state.server.version);
+	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
+	const { serverVersion, isMasterDetail } = useAppSelector(state => ({
+		serverVersion: state.server.version,
+		isMasterDetail: state.app.isMasterDetail
+	}));
 	const [hideUnreadStatus, setHideUnreadStatus] = useState(room.hideUnreadStatus);
 
 	useEffect(() => {
@@ -107,6 +111,14 @@ const NotificationPreferencesView = (): React.ReactElement => {
 			setHideUnreadStatus(data.hideUnreadStatus);
 		});
 	}, []);
+
+	const navigateToPushTroubleshootView = () => {
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
 
 	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
 		try {
@@ -200,6 +212,13 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Alert'
 						testID='notification-preference-view-push-notification'
 						onChangeValue={saveNotificationSettings}
+					/>
+					<List.Separator />
+					<List.Item
+						title='Troubleshooting'
+						onPress={navigateToPushTroubleshootView}
+						testID='notification-preference-view-troubleshooting'
+						showActionIndicator
 					/>
 					<List.Separator />
 					<List.Info info='Push_Notifications_Alert_Info' />

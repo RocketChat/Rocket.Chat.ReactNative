@@ -287,8 +287,8 @@ export const colors = {
 		gray100: '#CBCED1',
 		n900: '#1F2329',
 		statusBackgroundWarning: '#FFECAD',
-		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	},
@@ -368,8 +368,8 @@ export const colors = {
 		gray100: '#CBCED1',
 		n900: '#FFFFFF',
 		statusBackgroundWarning: '#FFECAD',
-		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	},
@@ -449,8 +449,8 @@ export const colors = {
 		gray100: '#CBCED1',
 		n900: '#FFFFFF',
 		statusBackgroundWarning: '#FFECAD',
-		statusFontOnWarning: '#B88D00',
 		overlayColor: '#1F2329CC',
+		taskBoxColor: '#9297a2',
 		...mentions,
 		...callButtons
 	}

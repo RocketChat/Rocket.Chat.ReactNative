@@ -182,6 +182,11 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 							s.bannerClosed = false;
 						}
 					}
+					if (sub.hideUnreadStatus) {
+						if (sub.hideUnreadStatus !== subscription.hideUnreadStatus) {
+							s.hideUnreadStatus = !!subscription.hideUnreadStatus;
+						}
+					}
 				});
 				batch.push(update);
 			} catch (e) {

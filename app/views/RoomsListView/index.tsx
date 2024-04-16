@@ -92,6 +92,7 @@ interface IRoomsListViewProps {
 	createPrivateChannelPermission: [];
 	createDiscussionPermission: [];
 	serverVersion: string;
+	issuesWithNotifications: boolean;
 }
 
 interface IRoomsListViewState {
@@ -146,6 +147,7 @@ const shouldUpdateProps = [
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
 	'createDiscussionPermission',
+	'issuesWithNotifications',
 	'supportedVersionsStatus'
 ];
 
@@ -200,7 +202,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { navigation, dispatch } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
-
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			this.animated = true;
 			// Check if there were changes with sort preference, then call getSubscription to remount the list
@@ -334,6 +335,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDiscussionPermission,
 			showAvatar,
 			displayMode,
+			issuesWithNotifications,
 			supportedVersionsStatus
 		} = this.props;
 		const { item } = this.state;
@@ -358,6 +360,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
+			issuesWithNotifications !== prevProps.issuesWithNotifications ||
 			supportedVersionsStatus !== prevProps.supportedVersionsStatus
 		) {
 			this.setHeader();
@@ -411,7 +414,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, supportedVersionsStatus, theme } = this.props;
+		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme } =
+			this.props;
 		if (searching) {
 			return {
 				headerTitleAlign: 'left',
@@ -458,6 +462,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			headerTitle: () => <RoomsListHeaderView />,
 			headerRight: () => (
 				<HeaderButton.Container>
+					{issuesWithNotifications ? (
+						<HeaderButton.Item
+							iconName='notification-disabled'
+							onPress={this.navigateToPushTroubleshootView}
+							testID='rooms-list-view-push-troubleshoot'
+							color={themes[theme].fontDanger}
+						/>
+					) : null}
 					{canCreateRoom ? (
 						<HeaderButton.Item
 							iconName='create'
@@ -775,6 +787,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
+	navigateToPushTroubleshootView = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
+
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
 		const { navigation, isMasterDetail, inquiryEnabled } = this.props;
@@ -965,16 +986,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme, navigation } = this.props;
+		const { showServerDropdown, theme } = this.props;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
-				{/* @ts-ignore*/}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
+				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	};
@@ -1008,7 +1027,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createPublicChannelPermission: state.permissions['create-c'],
 	createPrivateChannelPermission: state.permissions['create-p'],
 	createDiscussionPermission: state.permissions['start-discussion'],
-	serverVersion: state.server.version
+	serverVersion: state.server.version,
+	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));

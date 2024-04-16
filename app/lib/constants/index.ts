@@ -1,3 +1,4 @@
+export * from './audio';
 export * from './colors';
 export * from './constantDisplayMode';
 export * from './emojis';

@@ -122,6 +122,7 @@ export type ChatsStackParamList = {
 		rid: string;
 		room: TSubscriptionModel;
 	};
+	PushTroubleshootView: undefined;
 	CloseLivechatView: {
 		rid: string;
 		departmentId?: string;
@@ -188,6 +189,7 @@ export type ProfileStackParamList = {
 	ProfileView: undefined;
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
+	PushTroubleshootView: undefined;
 	ChangeAvatarView: {
 		context: TChangeAvatarViewContext;
 		titleHeader?: string;
@@ -207,6 +209,7 @@ export type SettingsStackParamList = {
 	ProfileView: undefined;
 	DisplayPrefsView: undefined;
 	MediaAutoDownloadView: undefined;
+	PushTroubleshootView: undefined;
 };
 
 export type AdminPanelStackParamList = {
@@ -274,7 +277,8 @@ export type InsideStackParamList = {
 		room: TSubscriptionModel;
 		thread: TThreadModel;
 		action: TMessageAction;
-		selectedMessages: string[];
+		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
+		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;

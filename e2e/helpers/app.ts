@@ -143,6 +143,20 @@ async function navigateToRoom(room: string) {
 	await checkRoomTitle(room);
 }
 
+async function navigateToRecentRoom(room: string) {
+	await waitFor(element(by.id('rooms-list-view')))
+		.toExist()
+		.withTimeout(10000);
+	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
+	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
+		.toBeVisible()
+		.withTimeout(10000);
+	await element(by.id(`rooms-list-view-item-${room}`)).tap();
+	await waitFor(element(by.id(`room-view-title-${room}`)))
+		.toBeVisible()
+		.withTimeout(10000);
+}
+
 async function tryTapping(
 	theElement: Detox.IndexableNativeElement | Detox.NativeElement,
 	timeout: number,
@@ -261,5 +275,6 @@ export {
 	checkServer,
 	platformTypes,
 	expectValidRegisterOrRetry,
-	jumpToQuotedMessage
+	jumpToQuotedMessage,
+	navigateToRecentRoom
 };

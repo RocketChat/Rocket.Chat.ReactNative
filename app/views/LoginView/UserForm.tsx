@@ -17,6 +17,7 @@ import sharedStyles from '../Styles';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
 import styles from './styles';
+import { handleLoginErrors } from './handleLoginErrors';
 
 interface ISubmit {
 	user: string;
@@ -75,7 +76,7 @@ const UserForm = () => {
 				const user = getValues('user');
 				navigation.navigate('SendEmailConfirmationView', { user });
 			} else {
-				Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
+				Alert.alert(I18n.t('Oops'), handleLoginErrors(error?.error));
 			}
 		}
 	}, [error?.error, failure, getValues, navigation]);

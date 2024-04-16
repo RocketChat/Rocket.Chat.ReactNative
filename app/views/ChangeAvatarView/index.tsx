@@ -25,7 +25,7 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { Image } from './ImagePicker';
+import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -138,11 +138,13 @@ const ChangeAvatarView = () => {
 			cropperAvoidEmptySpaceAroundImage: false,
 			cropperChooseText: I18n.t('Choose'),
 			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true,
-			useFrontCamera: isCam
+			includeBase64: true
 		};
 		try {
-			const response: Image = isCam === true ? await ImagePicker.openCamera(options) : await ImagePicker.openPicker(options);
+			const response: Image =
+				isCam === true
+					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+					: await ImagePicker.openPicker(options);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }

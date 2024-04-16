@@ -1,6 +1,5 @@
 import { Alert } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
@@ -12,6 +11,7 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
 import { useRoomContext } from '../../../views/RoomView/context';
+import ImagePicker, { ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 
 export const useChooseMedia = ({
 	rid,
@@ -23,7 +23,7 @@ export const useChooseMedia = ({
 	permissionToUpload: boolean;
 }) => {
 	const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
-	const { action, selectedMessages } = useRoomContext();
+	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
 	const libPickerLabels = {
@@ -115,6 +115,16 @@ export const useChooseMedia = ({
 		}
 	};
 
+	const startShareView = () => {
+		const text = getText?.() || '';
+		return {
+			selectedMessages,
+			text
+		};
+	};
+
+	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+
 	const openShareView = async (attachments: any) => {
 		if (!rid) return;
 		const room = await getSubscriptionByRoomId(rid);
@@ -129,7 +139,8 @@ export const useChooseMedia = ({
 				thread,
 				attachments,
 				action,
-				selectedMessages
+				finishShareView,
+				startShareView
 			});
 		}
 	};
