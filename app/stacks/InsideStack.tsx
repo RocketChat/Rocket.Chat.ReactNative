@@ -230,7 +230,6 @@ const DrawerNavigator = () => {
 		<Drawer.Navigator
 			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
-			// useLegacyImplementation={true}
 			screenOptions={{
 				swipeEnabled: false,
 				headerShown: false,
