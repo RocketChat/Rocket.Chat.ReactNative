@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import moment from 'moment';
 import FastImage from 'react-native-fast-image';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
 
-import { useTheme, withTheme } from '../../../theme';
+import { withTheme } from '../../../theme';
 import { SavedPostCardProps } from '../DiscussionHomeView/interaces';
 import { getDate, getIcon } from '../helpers';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers';
@@ -15,9 +14,10 @@ import { getUserSelector } from '../../../selectors/login';
 import { themes } from '../../../lib/constants';
 import Markdown from '../../../containers/markdown';
 import Avatar from '../../../containers/Avatar/Avatar';
-import { loadThreadMessages } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
 import RoomServices from './../../RoomView/services';
+
+import { ResizeMode, Video } from 'expo-av';
 
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 
@@ -37,7 +37,8 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	const [isSaved, setIsSaved] = useState(false);
 	const [replyList, setReplyList] = useState([]);
 	const [description, setDescription] = useState('');
-	const [bannerImage, setBannerImage] = useState(null);
+	const [bannerImage, setBannerImage] = useState<null | string>(null);
+	const [videoUri, setVideoUri] = useState<string | null>(null);
 	const [likeCount, setLikeCount] = useState(0);
 	const [hasLiked, setHasLiked] = useState(false);
 	let userName = userObject?.username;
@@ -69,7 +70,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 		}
 	};
 
-	const getCustomEmoji = name => {
+	const getCustomEmoji = (name: string) => {
 		const emoji = customEmojis[name];
 		if (emoji) {
 			return emoji;
@@ -85,8 +86,15 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 			setLikeCount(0);
 			setHasLiked(false);
 			if (Array.isArray(attachments) && attachments?.length > 0) {
-				setBannerImage(formatAttachmentUrl(attachments[0].image_url, user.id, user.token, server));
-				setDescription(attachments[0].description);
+				const attachment = attachments[0];
+				if (attachment.image_url) {
+					setBannerImage(formatAttachmentUrl(attachment.image_url, user.id, user.token, server));
+					setDescription(attachment.description);
+				} else if (attachment.video_url) {
+					const url = formatAttachmentUrl(attachment.video_url, user.id, user.token, server);
+					const uri = encodeURI(url);
+					setVideoUri(uri)
+				}
 			}
 			if (reactions && typeof reactions !== 'string') {
 				const likes = reactions?.filter((reaction: any) => reaction?.emoji === ':thumbsup:') || [];
@@ -121,7 +129,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 					<Image source={isSaved ? getIcon('solidSave') : getIcon('outlineSave')} style={styles.saveIcon} resizeMode='contain' />
 				</TouchableOpacity>
 			</View>
-			{typeof attachments !== 'string' && attachments?.length > 0 && (
+			{bannerImage && (
 				<ImageProgress
 					style={[styles.bannerImage]}
 					source={{ uri: encodeURI(bannerImage) }}
@@ -132,7 +140,14 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 					}}
 				/>
 			)}
-
+			{videoUri &&
+				<Video
+			 		source={{ uri: videoUri }}
+			 		resizeMode={ResizeMode.CONTAIN}
+			 		shouldPlay={false}
+			 		style={{ aspectRatio: 16 / 9, width: '100%' }}
+				/>
+			}
 			<View style={styles.textContainer}>
 				{title ? <Text style={styles.title}>{title}</Text> : <></>}
 				{description ? (

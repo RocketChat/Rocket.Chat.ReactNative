@@ -76,7 +76,7 @@ const PostView: React.FC = ({ route }) => {
 
 	const [postUser, setPostUser] = useState(null);
 	const [post, setPost] = useState(null);
-	const [bannerImage, setBannerImage] = useState(null);
+	const [bannerImage, setBannerImage] = useState<string | null>(null);
 	const [description, setDescription] = useState(null);
 	const [bannerHeight, setBannerHeight] = useState(100);
 	const [reportReason, setReportReason] = useState(null);
@@ -86,7 +86,7 @@ const PostView: React.FC = ({ route }) => {
 	const [showDelete, setShowDelete] = useState(true);
 	const [showCreateChat, setShowCreateChat] = useState(false);
 
-	const [videoUri, setVideoUri] = useState(null);
+	const [videoUri, setVideoUri] = useState<string | null>(null);
 	const videoRef = useRef<Video>(null);
 
 	const ImageProgress = createImageProgress(FastImage);
@@ -151,7 +151,7 @@ const PostView: React.FC = ({ route }) => {
 	const loadComments = async () => {
 		const post = route.params?.item._raw;
 		const repliesList = await loadThreadMessages({ tmid: post.id, rid: post.rid });
-		if (repliesList?.length > 0) {
+		if (repliesList && repliesList?.length > 0) {
 			let formattedReplies = repliesList?.map(item => ({
 				user: item.u,
 				date: item.ts,
