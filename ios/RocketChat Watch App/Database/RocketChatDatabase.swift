@@ -125,10 +125,10 @@ final class RocketChatDatabase: Database {
 	}
 	
 	func user(id: String) -> User? {
-		let user = User(context: viewContext)
-		user.id = id
+		let request = User.fetchRequest()
+		request.predicate = NSPredicate(format: "id == %@", id)
 		
-		return user
+		return try? viewContext.fetch(request).first
 	}
 	
 	func room(id: String) -> Room? {
