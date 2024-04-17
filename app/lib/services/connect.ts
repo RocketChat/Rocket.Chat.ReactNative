@@ -46,7 +46,6 @@ let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
 let notifyLoggedListener: any;
-let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
@@ -88,10 +87,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		if (notifyLoggedListener) {
 			notifyLoggedListener.then(stopListener);
-		}
-
-		if (logoutListener) {
-			logoutListener.then(stopListener);
 		}
 
 		unsubscribeRooms();
@@ -274,8 +269,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 				}
 			})
 		);
-
-		logoutListener = sdk.current.onStreamData('stream-force-logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
