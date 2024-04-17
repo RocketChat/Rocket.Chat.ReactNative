@@ -92,8 +92,11 @@ final class MessagesLoader {
 				if case .failure(let error) = completion {
 					print(error)
 				}
-			} receiveValue: { _ in
+			} receiveValue: { [weak self] _ in
+				room.alert = false
+				room.unread = 0
 				
+				self?.database.save()
 			}
 			.store(in: &cancellable)
 	}
