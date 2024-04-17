@@ -153,6 +153,10 @@ final class RocketChatDatabase: Database {
 	}
 	
 	func rooms(ids: [String]) -> [Room] {
+		guard ids.count > 0 else {
+			return []
+		}
+		
 		let request = Room.fetchRequest()
 		request.predicate = NSPredicate(format: "ANY id IN %@", ids)
 		
