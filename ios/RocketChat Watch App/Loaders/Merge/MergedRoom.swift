@@ -22,10 +22,10 @@ struct MergedRoom {
 	let uids: [String]?
 	let updatedAt: Date?
 	let usernames: [String]?
-	let lastMessage: LastMessage?
+	let lastMessage: Message?
 	let lm: Date?
 	
-	struct LastMessage {
+	struct Message {
 		let _id: String
 		let rid: String
 		let msg: String

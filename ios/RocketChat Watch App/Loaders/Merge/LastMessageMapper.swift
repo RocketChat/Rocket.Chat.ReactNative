@@ -1,24 +1,24 @@
-extension MergedRoom.LastMessage {
-	init?(from lastMessage: MessageResponse?) {
-		guard let lastMessage else {
+extension MergedRoom.Message {
+	init?(from newMessage: MessageResponse?) {
+		guard let newMessage else {
 			return nil
 		}
 		
-		_id = lastMessage._id
-		rid = lastMessage.rid
-		msg = lastMessage.msg
-		u = .init(from: lastMessage.u)
-		ts = lastMessage.ts
-		attachments = lastMessage.attachments?.map { .init(from: $0) }
-		t = lastMessage.t
-		groupable = lastMessage.groupable
-		editedAt = lastMessage.editedAt
-		role = lastMessage.role
-		comment = lastMessage.comment
+		_id = newMessage._id
+		rid = newMessage.rid
+		msg = newMessage.msg
+		u = .init(from: newMessage.u)
+		ts = newMessage.ts
+		attachments = newMessage.attachments?.map { .init(from: $0) }
+		t = newMessage.t
+		groupable = newMessage.groupable
+		editedAt = newMessage.editedAt
+		role = newMessage.role
+		comment = newMessage.comment
 	}
 }
 
-extension MergedRoom.LastMessage.User {
+extension MergedRoom.Message.User {
 	init(from user: UserResponse) {
 		_id = user._id
 		username = user.username
@@ -26,7 +26,7 @@ extension MergedRoom.LastMessage.User {
 	}
 }
 
-extension MergedRoom.LastMessage.Attachment {
+extension MergedRoom.Message.Attachment {
 	init(from attachment: AttachmentResponse) {
 		title = attachment.title
 		imageURL = attachment.imageURL
@@ -36,7 +36,7 @@ extension MergedRoom.LastMessage.Attachment {
 	}
 }
 
-extension MergedRoom.LastMessage.Attachment.Dimensions {
+extension MergedRoom.Message.Attachment.Dimensions {
 	init?(from dimensions: DimensionsResponse?) {
 		guard let dimensions else {
 			return nil

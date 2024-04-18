@@ -26,7 +26,7 @@ final class MessagesLoader {
 	}
 	
 	private func syncMessages(in room: Room, from date: Date) {
-		guard let rid = room.rid else { return }
+		guard let rid = room.rid, let roomID = room.id else { return }
 		
 		let newUpdatedSince = Date()
 		
@@ -37,14 +37,7 @@ final class MessagesLoader {
 					self?.scheduledSyncMessages(in: room, from: newUpdatedSince)
 				}
 			} receiveValue: { [weak self] messagesResponse in
-				let messages = messagesResponse.result.updated
-				
-				for message in messages {
-					self?.database.process(updatedMessage: message, in: room)
-				}
-				
-				room.updatedSince = newUpdatedSince
-				self?.database.save()
+				self?.database.handleMessagesResponse(messagesResponse, in: roomID, newUpdatedSince: newUpdatedSince)
 				
 				self?.scheduledSyncMessages(in: room, from: newUpdatedSince)
 				
@@ -54,7 +47,7 @@ final class MessagesLoader {
 	}
 	
 	private func loadMessages(in room: Room, from date: Date) {
-		guard let rid = room.rid else { return }
+		guard let rid = room.rid, let roomID = room.id else { return }
 		
 		client.getHistory(rid: rid, t: room.t ?? "", latest: date)
 			.receive(on: DispatchQueue.main)
@@ -63,20 +56,7 @@ final class MessagesLoader {
 					print(error)
 				}
 			} receiveValue: { [weak self] messagesResponse in
-				let messages = messagesResponse.messages
-				
-				if messages.count == HISTORY_MESSAGE_COUNT {
-					room.hasMoreMessages = true
-				} else {
-					room.hasMoreMessages = false
-				}
-				
-				for message in messages {
-					self?.database.process(updatedMessage: message, in: room)
-				}
-				
-				room.synced = true
-				self?.database.save()
+				self?.database.handleHistoryResponse(messagesResponse, in: roomID)
 			}
 			.store(in: &cancellable)
 	}
@@ -92,11 +72,8 @@ final class MessagesLoader {
 				if case .failure(let error) = completion {
 					print(error)
 				}
-			} receiveValue: { [weak self] _ in
-				room.alert = false
-				room.unread = 0
+			} receiveValue: { _ in
 				
-				self?.database.save()
 			}
 			.store(in: &cancellable)
 	}

@@ -19,31 +19,47 @@ final class MessageSender {
 
 extension MessageSender: MessageSending {
 	func sendMessage(_ msg: String, in room: Room) {
-		let messageID = database.createTempMessage(msg: msg, in: room, for: server.loggedUser)
+		let messageID = String.random(17)
+		let loggedUser = server.loggedUser
+		
+		guard let rid = room.rid, let roomID = room.id else {
+			return
+		}
+		
+		let newMessage = MergedRoom.Message(
+			_id: messageID,
+			rid: rid,
+			msg: msg,
+			u: .init(
+				_id: loggedUser.id,
+				username: loggedUser.username,
+				name: loggedUser.name
+			),
+			ts: Date(),
+			attachments: nil,
+			t: nil,
+			groupable: true,
+			editedAt: nil,
+			role: nil,
+			comment: nil
+		)
+		
+		database.handleSendMessageRequest(newMessage, in: roomID)
 		
 		resendMessage(messageID: messageID, msg: msg, in: room)
 	}
 	
 	func resendMessage(messageID: String, msg: String, in room: Room) {
-		guard let rid = room.rid else { return }
+		guard let rid = room.rid, let roomID = room.id else { return }
 		
 		client.sendMessage(id: messageID, rid: rid, msg: msg)
 			.receive(on: DispatchQueue.main)
 			.subscribe(Subscribers.Sink { [weak self] completion in
-				guard let self else { return }
-				
 				if case .failure = completion {
-					self.database.updateMessage(messageID, status: "error")
+					self?.database.handleSendMessageError(messageID)
 				}
 			} receiveValue: { [weak self] messageResponse in
-				guard let self else {
-					return
-				}
-				
-				let message = messageResponse.message
-				
-				self.database.process(updatedMessage: message, in: room)
-				self.database.save()
+				self?.database.handleSendMessageResponse(messageResponse, in: roomID)
 			})
 	}
 }

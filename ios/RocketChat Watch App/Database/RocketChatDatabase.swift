@@ -4,19 +4,14 @@ protocol Database {
 	var viewContext: NSManagedObjectContext { get }
 	
 	func room(id: String) -> Room?
-	func rooms(ids: [String]) -> [Room]
-	func message(id: String) -> Message?
-	func createTempMessage(msg: String, in room: Room, for loggedUser: LoggedUser) -> String
-	func updateMessage(_ id: String, status: String)
 	func remove(_ message: Message)
 	
-	func insert(_ mergedRoom: MergedRoom)
-	func update(_ existingRoom: Room, _ newRoom: MergedRoom)
-	func delete(_ existingRoom: Room)
-	
-	func process(updatedMessage: MessageResponse, in room: Room)
-	
-	func save()
+	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse)
+	func handleHistoryResponse(_ historyResponse: HistoryResponse, in roomID: String)
+	func handleMessagesResponse(_ messagesResponse: MessagesResponse, in roomID: String, newUpdatedSince: Date)
+	func handleSendMessageResponse(_ sendMessageResponse: SendMessageResponse, in roomID: String)
+	func handleSendMessageRequest(_ newMessage: MergedRoom.Message, in roomID: String)
+	func handleSendMessageError(_ messageID: String)
 	
 	func remove()
 }
@@ -51,84 +46,21 @@ final class RocketChatDatabase: Database {
 		}
 		
 		container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+		container.viewContext.automaticallyMergesChangesFromParent = true
 		
 		return container
 	}()
 	
-	func save() {
-		guard container.viewContext.hasChanges else {
-			return
-		}
-		
-		try? container.viewContext.save()
-	}
-	
-	func createUser(id: String) -> User {
-		let user = User(context: viewContext)
-		user.id = id
-		
-		return user
-	}
-	
-	func createRoom(id: String) -> Room {
-		let room = Room(context: viewContext)
-		room.id = id
-		
-		return room
-	}
-	
-	func createMessage(id: String) -> Message {
-		let message = Message(context: viewContext)
-		message.id = id
-		message.ts = Date()
-		
-		return message
-	}
-	
-	func createAttachment(identifier: String) -> Attachment {
-		let attachment = Attachment(context: viewContext)
-		attachment.id = identifier
-		
-		return attachment
-	}
-	
-	func createTempMessage(msg: String, in room: Room, for loggedUser: LoggedUser) -> String {
-		let id = String.random(17)
-		let message = message(id: id) ?? createMessage(id: id)
-		
-		message.id = id
-		message.ts = Date()
-		message.room = room
-		message.status = "temp" // TODO:
-		message.msg = msg
-		message.groupable = true
-		
-		let user = user(id: loggedUser.id) ?? createUser(id: loggedUser.id)
-		user.username = loggedUser.username
-		user.name = loggedUser.name
-		message.user = user
-		
-		return id
-	}
-	
-	func updateMessage(_ id: String, status: String) {
-		let message = message(id: id) ?? createMessage(id: id)
-		message.status = status
-		
-		save()
-	}
+	private lazy var backgroundContext = container.newBackgroundContext()
 	
 	func remove(_ message: Message) {
 		viewContext.delete(message)
 		
-		save()
-	}
-	
-	func user(id: String) -> User? {
-		let request = User.fetchRequest()
-		request.predicate = NSPredicate(format: "id == %@", id)
-		
-		return try? viewContext.fetch(request).first
+		do {
+			try viewContext.save()
+		} catch {
+			print(error)
+		}
 	}
 	
 	func room(id: String) -> Room? {
@@ -136,71 +68,6 @@ final class RocketChatDatabase: Database {
 		request.predicate = NSPredicate(format: "id == %@", id)
 		
 		return try? viewContext.fetch(request).first
-	}
-	
-	func message(id: String) -> Message? {
-		let request = Message.fetchRequest()
-		request.predicate = NSPredicate(format: "id == %@", id)
-		
-		return try? viewContext.fetch(request).first
-	}
-	
-	func attachment(identifier: String) -> Attachment? {
-		let request = Attachment.fetchRequest()
-		request.predicate = NSPredicate(format: "id == %@", identifier)
-		
-		return try? viewContext.fetch(request).first
-	}
-	
-	func rooms(ids: [String]) -> [Room] {
-		guard ids.count > 0 else {
-			return []
-		}
-		
-		let request = Room.fetchRequest()
-		request.predicate = NSPredicate(format: "ANY id IN %@", ids)
-		
-		return (try? viewContext.fetch(request)) ?? []
-	}
-	
-	func process(updatedMessage: MessageResponse, in room: Room) {
-		let message = message(id: updatedMessage._id) ?? createMessage(id: updatedMessage._id)
-		
-		let user = user(id: updatedMessage.u._id) ?? createUser(id: updatedMessage.u._id)
-		user.name = updatedMessage.u.name
-		user.username = updatedMessage.u.username
-		
-		message.status = "received" // TODO:
-		message.id = updatedMessage._id
-		message.msg = updatedMessage.msg
-		message.room = room
-		message.ts = updatedMessage.ts
-		message.user = user
-		message.t = updatedMessage.t
-		message.groupable = updatedMessage.groupable ?? true
-		message.editedAt = updatedMessage.editedAt
-		message.role = updatedMessage.role
-		message.comment = updatedMessage.comment
-		
-		updatedMessage.attachments?.forEach { attachment in
-			process(updatedAttachment: attachment, in: message)
-		}
-	}
-	
-	func process(updatedAttachment: AttachmentResponse, in message: Message) {
-		let identifier = updatedAttachment.imageURL ?? updatedAttachment.audioURL
-		
-		guard let identifier = identifier?.absoluteString ?? updatedAttachment.title else {
-			return
-		}
-		
-		let attachment = attachment(identifier: identifier) ?? createAttachment(identifier: identifier)
-		
-		attachment.imageURL = updatedAttachment.imageURL
-		attachment.msg = updatedAttachment.description
-		attachment.message = message
-		attachment.width = updatedAttachment.dimensions?.width ?? 0
-		attachment.height = updatedAttachment.dimensions?.height ?? 0
 	}
 	
 	func remove() {
@@ -217,74 +84,201 @@ final class RocketChatDatabase: Database {
 }
 
 extension RocketChatDatabase {
-	func insert(_ mergedRoom: MergedRoom) {
-		let room = room(id: mergedRoom.id) ?? createRoom(id: mergedRoom.id)
-		
-		update(room, mergedRoom)
-	}
-	
-	func update(_ existingRoom: Room, _ newRoom: MergedRoom) {
-		let room = room(id: newRoom.id) ?? createRoom(id: newRoom.id)
-		
-		room.name = newRoom.name ?? room.name
-		room.fname = newRoom.fname ?? room.fname
-		room.t = newRoom.t
-		room.unread = Int32(newRoom.unread)
-		room.alert = newRoom.alert
-		room.lr = newRoom.lr ?? room.lr
-		room.open = newRoom.open ?? true
-		room.rid = newRoom.rid
-		room.hideUnreadStatus = newRoom.hideUnreadStatus ?? room.hideUnreadStatus
-		
-		room.updatedAt = newRoom.updatedAt ?? room.updatedAt
-		room.usernames = newRoom.usernames ?? room.usernames
-		room.uids = newRoom.uids ?? room.uids
-		room.prid = newRoom.prid ?? room.prid
-		room.isReadOnly = newRoom.isReadOnly ?? room.isReadOnly
-		room.encrypted = newRoom.encrypted ?? room.encrypted
-		room.teamMain = newRoom.teamMain ?? room.teamMain
-		room.archived = newRoom.archived ?? room.archived
-		room.broadcast = newRoom.broadcast ?? room.broadcast
-		room.ts = newRoom.ts ?? room.ts
-		
-		if let lastMessage = newRoom.lastMessage {
-			let message = message(id: lastMessage._id) ?? createMessage(id: lastMessage._id)
+	func handleSendMessageError(_ messageID: String) {
+		backgroundContext.performBackgroundTask { context in
+			let messageDatabase = MessageDatabase(context: context)
 			
-			message.status = "received"
-			message.id = lastMessage._id
-			message.msg = lastMessage.msg
-			message.room = room
-			message.ts = lastMessage.ts
-			message.t = lastMessage.t
-			message.groupable = lastMessage.groupable ?? true
-			message.editedAt = lastMessage.editedAt
-			message.role = lastMessage.role
-			message.comment = lastMessage.comment
+			if let message = messageDatabase.fetch(id: messageID) {
+				message.status = "error"
+			}
 			
-			let user = user(id: lastMessage.u._id) ?? createUser(id: lastMessage.u._id)
-			user.name = lastMessage.u.name
-			user.username = lastMessage.u.username
-			message.user = user
-			
-			lastMessage.attachments?.forEach { lastMessageAttachment in
-				let identifier = lastMessageAttachment.imageURL ?? lastMessageAttachment.audioURL
-				
-				guard let identifier = identifier?.absoluteString ?? lastMessageAttachment.title else {
-					return
-				}
-				
-				let attachment = attachment(identifier: identifier) ?? createAttachment(identifier: identifier)
-				
-				attachment.imageURL = lastMessageAttachment.imageURL
-				attachment.msg = lastMessageAttachment.description
-				attachment.message = message
-				attachment.width = lastMessageAttachment.dimensions?.width ?? 0
-				attachment.height = lastMessageAttachment.dimensions?.height ?? 0
+			do {
+				try context.save()
+			} catch {
+				print(error)
 			}
 		}
 	}
 	
-	func delete(_ existingRoom: Room) {
-		viewContext.delete(existingRoom)
+	func handleSendMessageRequest(_ newMessage: MergedRoom.Message, in roomID: String) {
+		backgroundContext.performBackgroundTask { context in
+			let roomDatabase = RoomDatabase(context: context)
+			let messageDatabase = MessageDatabase(context: context)
+			
+			let room = roomDatabase.fetch(id: roomID)
+			
+			let message = messageDatabase.upsert(newMessage)
+			
+			message.status = "temp"
+			message.room = room
+			
+			do {
+				try context.save()
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
+	func handleSendMessageResponse(_ sendMessageResponse: SendMessageResponse, in roomID: String) {
+		let message = sendMessageResponse.message
+		
+		backgroundContext.performBackgroundTask { context in
+			let messageDatabase = MessageDatabase(context: context)
+			let roomDatabase = RoomDatabase(context: context)
+			
+			let room = roomDatabase.fetch(id: roomID)
+			
+			if let newMessage = MergedRoom.Message(from: message) {
+				let message = messageDatabase.upsert(newMessage)
+				
+				message.room = room
+			}
+			
+			do {
+				try context.save()
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
+	func handleMessagesResponse(_ messagesResponse: MessagesResponse, in roomID: String, newUpdatedSince: Date) {
+		let messages = messagesResponse.result.updated
+		
+		backgroundContext.performBackgroundTask { context in
+			let messageDatabase = MessageDatabase(context: context)
+			let roomDatabase = RoomDatabase(context: context)
+			
+			let room = roomDatabase.fetch(id: roomID)
+			
+			for message in messages {
+				if let newMessage = MergedRoom.Message(from: message) {
+					let message = messageDatabase.upsert(newMessage)
+					
+					message.room = room
+				}
+			}
+			
+			room.updatedSince = newUpdatedSince
+			
+			do {
+				try context.save()
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
+	func handleHistoryResponse(_ historyResponse: HistoryResponse, in roomID: String) {
+		let messages = historyResponse.messages
+		
+		backgroundContext.performBackgroundTask { context in
+			let messageDatabase = MessageDatabase(context: context)
+			let roomDatabase = RoomDatabase(context: context)
+			
+			let room = roomDatabase.fetch(id: roomID)
+			
+			room.hasMoreMessages = messages.count == HISTORY_MESSAGE_COUNT
+			room.synced = true
+			
+			for message in historyResponse.messages {
+				if let newMessage = MergedRoom.Message(from: message) {
+					let message = messageDatabase.upsert(newMessage)
+					
+					message.room = room
+				}
+			}
+			
+			do {
+				try context.save()
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
+	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse) {
+		let rooms = roomsResponse.update
+		let subscriptions = subscriptionsResponse.update
+		
+		backgroundContext.performBackgroundTask { context in
+			let roomDatabase = RoomDatabase(context: context)
+			
+			let roomIds = rooms.filter { room in !subscriptions.contains { room._id == $0.rid } }.map { $0._id }
+			
+			let existingSubs = roomDatabase.fetch(ids: roomIds)
+			let mappedExistingSubs = subscriptions + existingSubs.compactMap { $0.response }
+			
+			let mergedSubscriptions = mappedExistingSubs.compactMap { subscription in
+				let index = rooms.firstIndex { $0._id == subscription.rid }
+				
+				guard let index else {
+					return MergedRoom(subscription, nil)
+				}
+				
+				let room = rooms[index]
+				return MergedRoom(subscription, room)
+			}
+			
+			let subsIds = mergedSubscriptions.compactMap { $0.id } + subscriptionsResponse.remove.compactMap { $0._id }
+			
+			if subsIds.count > 0 {
+				let existingSubscriptions = roomDatabase.fetch(ids: subsIds)
+				let subsToUpdate = existingSubscriptions.filter { subscription in mergedSubscriptions.contains { subscription.id == $0.id } }
+				let subsToCreate = mergedSubscriptions.filter { subscription in !existingSubscriptions.contains { subscription.id == $0.id } }
+				let subsToDelete = existingSubscriptions.filter { subscription in !mergedSubscriptions.contains { subscription.id == $0.id } }
+				
+				subsToCreate.forEach { subscription in
+					roomDatabase.upsert(subscription)
+				}
+				
+				subsToUpdate.forEach { subscription in
+					if let newRoom = mergedSubscriptions.first(where: { $0.id == subscription.id }) {
+						roomDatabase.upsert(newRoom)
+					}
+				}
+				
+				subsToDelete.forEach { subscription in
+					roomDatabase.delete(subscription)
+				}
+				
+				do {
+					try context.save()
+				} catch {
+					print(error)
+				}
+			}
+		}
+	}
+}
+
+private extension Room {
+	var response: SubscriptionsResponse.Subscription? {
+		guard let id, let fname, let t, let rid else {
+			return nil
+		}
+		
+		return .init(
+			_id: id,
+			rid: rid,
+			name: name,
+			fname: fname,
+			t: t,
+			unread: Int(unread),
+			alert: alert,
+			lr: lr,
+			open: open,
+			_updatedAt: ts,
+			hideUnreadStatus: hideUnreadStatus
+		)
+	}
+}
+
+extension NSManagedObjectContext {
+	func performBackgroundTask(_ block: @escaping (NSManagedObjectContext) -> Void) {
+		perform {
+			block(self)
+		}
 	}
 }
