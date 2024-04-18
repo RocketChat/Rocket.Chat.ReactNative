@@ -84,6 +84,7 @@ final class DefaultDatabase: ServersDatabase {
 			server.loggedUser = user(from: updatedServer.loggedUser)
 			server.certificate = updatedServer.clientSSL?.certificate
 			server.password = updatedServer.clientSSL?.password
+			server.version = updatedServer.version
 		} else {
 			Server(
 				context: viewContext,
@@ -93,7 +94,8 @@ final class DefaultDatabase: ServersDatabase {
 				useRealName: updatedServer.useRealName,
 				loggedUser: user(from: updatedServer.loggedUser),
 				certificate: updatedServer.clientSSL?.certificate,
-				password: updatedServer.clientSSL?.password
+				password: updatedServer.clientSSL?.password,
+				version: updatedServer.version
 			)
 		}
 		

@@ -10,6 +10,7 @@ struct WatchMessage: Codable {
 		let useRealName: Bool
 		let loggedUser: LoggedUser
 		let clientSSL: ClientSSL?
+		let version: String
 		
 		struct LoggedUser: Codable {
 			let id: String

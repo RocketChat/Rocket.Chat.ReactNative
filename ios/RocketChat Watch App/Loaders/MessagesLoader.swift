@@ -62,7 +62,7 @@ final class MessagesLoader {
 	}
 	
 	private func markAsRead(in room: Room) {
-		guard (room.unread > 0 || room.alert), let rid = room.rid else {
+		guard (room.unread > 0 || room.alert), let rid = room.rid, let roomID = room.id else {
 			return
 		}
 		
@@ -72,8 +72,8 @@ final class MessagesLoader {
 				if case .failure(let error) = completion {
 					print(error)
 				}
-			} receiveValue: { _ in
-				
+			} receiveValue: { [weak self] readResponse in
+				self?.database.handleReadResponse(readResponse, in: roomID)
 			}
 			.store(in: &cancellable)
 	}

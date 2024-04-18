@@ -19,9 +19,13 @@ final class RoomsLoader: ObservableObject {
 	
 	private let server: Server
 	
+	private var shouldUpdatedDateOnce: Bool
+	
 	init(server: Server) {
 		self.server = server
 		self.state = server.updatedSince == nil ? .loading : .loaded
+		
+		shouldUpdatedDateOnce = !(server.version >= "4")
 	}
 	
 	private func scheduledLoadRooms() {
@@ -51,10 +55,28 @@ final class RoomsLoader: ObservableObject {
 			self.scheduledLoadRooms()
 			
 			self.state = .loaded
-			self.server.updatedSince = newUpdatedSince
-			self.serversDB.save()
+			
+			self.updateServer(to: newUpdatedSince)
 		}
 		.store(in: &cancellable)
+	}
+	
+	/// This method updates the updateSince timestamp only once in servers with versions below 4.
+	///
+	/// It is required due to missing events in the rooms and subscriptions
+	/// requests in those old versions. We get extra information
+	/// by passing a date that is older than the real updatedSince last timestamp.
+	private func updateServer(to newUpdatedSince: Date) {
+		if !(server.version >= "4") {
+			if shouldUpdatedDateOnce {
+				server.updatedSince = newUpdatedSince
+				serversDB.save()
+				shouldUpdatedDateOnce = false
+			}
+		} else {
+			server.updatedSince = newUpdatedSince
+			serversDB.save()
+		}
 	}
 }
 
@@ -76,5 +98,11 @@ extension RoomsLoader {
 		case loaded
 		case loading
 		case error
+	}
+}
+
+private extension String {
+	static func >=(lhs: String, rhs: String) -> Bool {
+		lhs.compare(rhs, options: .numeric) == .orderedDescending || lhs.compare(rhs, options: .numeric) == .orderedSame
 	}
 }

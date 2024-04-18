@@ -15,6 +15,7 @@ public final class Server: NSManagedObject {
 	@NSManaged public var loggedUser: LoggedUser
 	@NSManaged public var certificate: Data?
 	@NSManaged public var password: String?
+	@NSManaged public var version: String
 	
 	lazy var database: Database = RocketChatDatabase(server: self)
 	
@@ -42,7 +43,8 @@ public final class Server: NSManagedObject {
 		useRealName: Bool,
 		loggedUser: LoggedUser,
 		certificate: Data? = nil,
-		password: String? = nil
+		password: String? = nil,
+		version: String
 	) {
 		let entity = NSEntityDescription.entity(forEntityName: "Server", in: context)!
 		super.init(entity: entity, insertInto: context)
@@ -54,6 +56,7 @@ public final class Server: NSManagedObject {
 		self.loggedUser = loggedUser
 		self.certificate = certificate
 		self.password = password
+		self.version = version
 	}
 }
 

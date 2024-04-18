@@ -11,6 +11,7 @@ protocol Database {
 	func handleMessagesResponse(_ messagesResponse: MessagesResponse, in roomID: String, newUpdatedSince: Date)
 	func handleSendMessageResponse(_ sendMessageResponse: SendMessageResponse, in roomID: String)
 	func handleSendMessageRequest(_ newMessage: MergedRoom.Message, in roomID: String)
+	func handleReadResponse(_ readResponse: ReadResponse, in roomID: String)
 	func handleSendMessageError(_ messageID: String)
 	
 	func remove()
@@ -84,6 +85,23 @@ final class RocketChatDatabase: Database {
 }
 
 extension RocketChatDatabase {
+	func handleReadResponse(_ readResponse: ReadResponse, in roomID: String) {
+		backgroundContext.performBackgroundTask { context in
+			let roomDatabase = RoomDatabase(context: context)
+			
+			let room = roomDatabase.fetch(id: roomID)
+			
+			room.alert = false
+			room.unread = 0
+			
+			do {
+				try context.save()
+			} catch {
+				print(error)
+			}
+		}
+	}
+	
 	func handleSendMessageError(_ messageID: String) {
 		backgroundContext.performBackgroundTask { context in
 			let messageDatabase = MessageDatabase(context: context)

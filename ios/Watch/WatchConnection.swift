@@ -50,7 +50,8 @@ final class WatchConnection: NSObject {
 						certificate: $0.certificate,
 						password: $0.password
 					)
-				}
+				},
+				version: item.version
 			)
 		}
 		
