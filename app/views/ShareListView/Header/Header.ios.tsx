@@ -41,8 +41,8 @@ const Header = React.memo(({ searching, onChangeSearchText, initSearch, cancelSe
 			style={[
 				styles.container,
 				{
-					borderColor: themes[theme].separatorColor,
-					backgroundColor: themes[theme].headerBackground
+					borderColor: themes[theme].strokeLight,
+					backgroundColor: themes[theme].surfaceNeutral
 				}
 			]}
 		>

@@ -39,10 +39,10 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 	if (truncatedText && showTruncated) {
 		return (
 			<Text testID={`collapsible-text-truncated-${m}`}>
-				<Text accessibilityLabel={truncatedText} style={[styles.text, { color: colors.bodyText }, ...style]}>
+				<Text accessibilityLabel={truncatedText} style={[styles.text, { color: colors.fontDefault }, ...style]}>
 					{`${truncatedText}... `}
 				</Text>
-				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.actionTintColor }]}>
+				<Text onPress={() => setShowTruncated(false)} style={[styles.textInfo, { color: colors.fontHint }]}>
 					{I18n.t('Show_more')}
 				</Text>
 			</Text>
@@ -52,7 +52,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 	return (
 		<Text
 			accessibilityLabel={m}
-			style={[styles.text, { color: colors.bodyText, height: !showTruncated ? undefined : 0 }, ...style]}
+			style={[styles.text, { color: colors.fontDefault, height: !showTruncated ? undefined : 0 }, ...style]}
 			testID={`collapsible-text-${m}`}
 			onTextLayout={event => {
 				const { lines } = event.nativeEvent;
@@ -74,7 +74,7 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 				<Text
 					testID='collapsible-text-show-less'
 					onPress={() => setShowTruncated(true)}
-					style={[styles.textInfo, { color: colors.actionTintColor }]}
+					style={[styles.textInfo, { color: colors.fontHint }]}
 				>
 					{` ${I18n.t('Show_less')}`}
 				</Text>

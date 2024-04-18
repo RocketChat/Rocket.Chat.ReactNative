@@ -20,7 +20,7 @@ const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.Re
 				]}
 				testID='emoji-picker-search'
 			>
-				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='search' />
+				<CustomIcon size={24} name='search' />
 			</Pressable>
 
 			<Pressable
@@ -32,7 +32,7 @@ const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.Re
 				]}
 				testID='emoji-picker-backspace'
 			>
-				<CustomIcon color={colors.auxiliaryTintColor} size={24} name='backspace' />
+				<CustomIcon size={24} name='backspace' />
 			</Pressable>
 		</View>
 	);

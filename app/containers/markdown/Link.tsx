@@ -37,7 +37,7 @@ const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
 
 	// if you have a [](https://rocket.chat) render https://rocket.chat
 	return (
-		<Text onPress={handlePress} onLongPress={onLongPress} style={{ ...styles.link, color: themes[theme].actionTintColor }}>
+		<Text onPress={handlePress} onLongPress={onLongPress} style={{ ...styles.link, color: themes[theme].fontHint }}>
 			{childLength !== 0 ? children : link}
 		</Text>
 	);

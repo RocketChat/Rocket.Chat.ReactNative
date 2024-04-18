@@ -21,12 +21,12 @@ const ImageProgress = createImageProgress(FastImage);
 
 const MessageImage = ({ img, theme }: TMessageImage) => (
 	<ImageProgress
-		style={[styles.inlineImage, { borderColor: themes[theme].borderColor }]}
+		style={[styles.inlineImage, { borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
 		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
-			color: themes[theme].actionTintColor
+			color: themes[theme].fontHint
 		}}
 	/>
 );

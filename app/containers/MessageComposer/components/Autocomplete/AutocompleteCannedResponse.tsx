@@ -9,7 +9,7 @@ import { NO_CANNED_RESPONSES } from '../../constants';
 import { useStyle } from './styles';
 
 export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCannedResponse }) => {
-	const [styles, colors] = useStyle();
+	const [styles] = useStyle();
 	if (item.id === NO_CANNED_RESPONSES) {
 		return (
 			<View style={styles.canned}>
@@ -17,7 +17,7 @@ export const AutocompleteCannedResponse = ({ item }: { item: IAutocompleteCanned
 					<Text style={styles.cannedTitleText}>
 						{I18n.t('No_match_found')} <Text style={sharedStyles.textSemibold}>{I18n.t('Check_canned_responses')}</Text>
 					</Text>
-					<CustomIcon name='chevron-right' size={24} color={colors.fontHint} />
+					<CustomIcon name='chevron-right' size={24} />
 				</View>
 			</View>
 		);
