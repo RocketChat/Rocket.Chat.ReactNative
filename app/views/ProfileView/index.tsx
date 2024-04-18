@@ -320,7 +320,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				key={key}
 				testID={key}
 				onPress={onPress}
-				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
+				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].strokeLight }]}
 				enabled={!disabled}
 			>
 				{child}
@@ -435,14 +435,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		} = this.props;
 
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
+			<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
-					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
+					<ScrollView
+						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].surfaceTint }]}
+						testID='profile-view-list'
+						{...scrollPersistTaps}
+					>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<AvatarWithEdit
 								text={user.username}
@@ -546,7 +546,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<Button
 							title={I18n.t('Logout_from_other_logged_in_locations')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
 							onPress={this.logoutOtherLocations}
 							testID='profile-view-logout-other-locations'
 						/>
@@ -554,7 +553,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							<Button
 								title={I18n.t('Delete_my_account')}
 								type='primary'
-								backgroundColor={themes[theme].dangerColor}
+								backgroundColor={themes[theme].buttonBackgroundDangerDefault}
 								onPress={this.deleteOwnAccount}
 								testID='profile-view-delete-my-account'
 							/>

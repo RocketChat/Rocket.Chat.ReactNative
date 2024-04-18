@@ -19,7 +19,7 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 	return (
 		<MathView
 			math={value}
-			style={{ color: colors.bodyText }}
+			style={{ color: colors.fontDefault }}
 			renderError={() => (
 				<Katex expression={value} style={[{ flex: 1, height: DEFAULT_MESSAGE_HEIGHT }, fixAndroidWebviewCrashStyle]} />
 			)}
@@ -29,5 +29,5 @@ export const KaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 
 export const InlineKaTeX = ({ value }: IKaTeXProps): React.ReactElement | null => {
 	const { colors } = useTheme();
-	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.bodyText }} />;
+	return <MathText color value={`$$${value}$$`} direction='ltr' style={{ color: colors.fontDefault }} />;
 };

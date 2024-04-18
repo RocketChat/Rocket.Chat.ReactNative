@@ -165,14 +165,14 @@ const SelectedUsersView = () => {
 							onPress={() => _onPressItem(item)}
 							testID={`select-users-view-item-${item.name}`}
 							icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
-							iconColor={isChecked(username) ? colors.actionTintColor : colors.separatorColor}
+							iconColor={isChecked(username) ? colors.fontHint : colors.strokeLight}
 						/>
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={<List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

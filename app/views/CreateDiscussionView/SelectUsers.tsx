@@ -59,7 +59,7 @@ const SelectUsers = ({
 
 	return (
 		<>
-			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Invite_users')}</Text>
+			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onSearch={getUsers}

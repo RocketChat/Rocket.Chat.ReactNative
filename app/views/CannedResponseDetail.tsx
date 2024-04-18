@@ -79,10 +79,10 @@ interface IItem {
 const Item = ({ label, content, theme, testID }: IItem) =>
 	content ? (
 		<View style={styles.item} testID={testID}>
-			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
+			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
+			<Markdown style={[styles.itemContent, { color: themes[theme].fontSecondaryInfo }]} msg={content} theme={theme} />
 		</View>
 	) : null;
 
@@ -112,7 +112,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 
 	return (
 		<SafeAreaView>
-			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceLight }]}>
+			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceTint }]}>
 				<StatusBar />
 				<View style={styles.container}>
 					<Item label={I18n.t('Shortcut')} content={`!${cannedResponse?.shortcut}`} theme={theme} />
@@ -120,16 +120,16 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 					<Item label={I18n.t('Sharing')} content={cannedResponse?.scopeName} theme={theme} />
 
 					<View style={styles.item}>
-						<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
+						<Text style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 						<View style={styles.cannedTagContainer}>
 							{cannedResponse?.tags?.length > 0 ? (
 								cannedResponse.tags.map(t => (
-									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
-										<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
+									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
+										<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 									</View>
 								))
 							) : (
-								<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>-</Text>
+								<Text style={[styles.cannedText, { color: themes[theme].fontHint }]}>-</Text>
 							)}
 						</View>
 					</View>

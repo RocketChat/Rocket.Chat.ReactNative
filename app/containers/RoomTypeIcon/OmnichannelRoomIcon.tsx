@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { SvgUri } from 'react-native-svg';
 
-import { OmnichannelSourceType, IOmnichannelSource } from '../../definitions';
-import { STATUS_COLORS } from '../../lib/constants';
+import { OmnichannelSourceType, IOmnichannelSource, TUserStatus } from '../../definitions';
 import { useAppSelector } from '../../lib/hooks';
 import { CustomIcon, TIconsName } from '../CustomIcon';
+import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
 interface IIconMap {
 	[key: string]: TIconsName;
@@ -24,7 +24,7 @@ interface IOmnichannelRoomIconProps {
 	size: number;
 	type: string;
 	style?: StyleProp<ViewStyle>;
-	status?: string;
+	status?: TUserStatus;
 	sourceType?: IOmnichannelSource;
 }
 
@@ -33,15 +33,9 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 	const [svgError, setSvgError] = useState(false);
 	const baseUrl = useAppSelector(state => state.server?.server);
 	const connected = useAppSelector(state => state.meteor?.connected);
+	const userStatusColor = useUserStatusColor(status || 'offline');
 
-	const customIcon = (
-		<CustomIcon
-			name={iconMap[sourceType?.type || 'other']}
-			size={size}
-			style={style}
-			color={STATUS_COLORS[status || 'offline']}
-		/>
-	);
+	const customIcon = <CustomIcon name={iconMap[sourceType?.type || 'other']} size={size} style={style} color={userStatusColor} />;
 
 	if (!svgError && sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {
 		return (
@@ -49,7 +43,7 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 				<SvgUri
 					height={size}
 					width={size}
-					color={STATUS_COLORS[status || 'offline']}
+					color={userStatusColor}
 					uri={`${baseUrl}/api/apps/public/${sourceType.id}/get-sidebar-icon?icon=${sourceType.sidebarIcon}`}
 					style={style}
 					onError={() => setSvgError(true)}
