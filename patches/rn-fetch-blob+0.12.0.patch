@@ -22,3 +22,21 @@ index 602d51d..920d975 100644
      @Override
      public String getName() {
          return "RNFetchBlob";
+diff --git a/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlobReq.java b/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlobReq.java
+index a8abd71..06c02a4 100644
+--- a/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlobReq.java
++++ b/node_modules/rn-fetch-blob/android/src/main/java/com/RNFetchBlob/RNFetchBlobReq.java
+@@ -196,7 +196,12 @@ public class RNFetchBlobReq extends BroadcastReceiver implements Runnable {
+                 DownloadManager dm = (DownloadManager) appCtx.getSystemService(Context.DOWNLOAD_SERVICE);
+                 downloadManagerId = dm.enqueue(req);
+                 androidDownloadManagerTaskTable.put(taskId, Long.valueOf(downloadManagerId));
+-                appCtx.registerReceiver(this, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
++                // https://github.com/joltup/rn-fetch-blob/issues/866#issuecomment-2030940568
++                if (Build.VERSION.SDK_INT >= 34 && appCtx.getApplicationInfo().targetSdkVersion >= 34) {
++                  appCtx.registerReceiver(this, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
++                }else{
++                  appCtx.registerReceiver(this, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
++                }
+                 return;
+             }
+ 
