@@ -25,12 +25,12 @@ const AuthLoadingView = React.memo((): React.ReactElement => {
 	const text = useAppSelector(state => state.app.text);
 	const { colors } = useTheme();
 	return (
-		<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 			<StatusBar />
 			{text ? (
 				<>
-					<ActivityIndicator color={colors.auxiliaryText} size='large' />
-					<Text style={[styles.text, { color: colors.bodyText }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
+					<ActivityIndicator color={colors.fontSecondaryInfo} size='large' />
+					<Text style={[styles.text, { color: colors.fontDefault }]}>{`${text}\n${I18n.t('Please_wait')}`}</Text>
 				</>
 			) : null}
 		</View>

@@ -27,7 +27,7 @@ const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
 	const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
-			<Text style={[styles.text, { color: themes[theme].infoText }]}>{translateInfo ? I18n.t(info) : info}</Text>
+			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</Text>
 		</View>
 	);
 });

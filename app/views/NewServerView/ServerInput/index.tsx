@@ -69,7 +69,7 @@ const ServerInput = ({
 				<View
 					style={[
 						styles.serverHistory,
-						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
+						{ backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }
 					]}
 				>
 					<FlatList

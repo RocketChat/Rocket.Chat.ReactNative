@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -91,7 +91,9 @@ export const FormTextInput = ({
 	return (
 		<View style={[styles.inputContainer, containerStyle]}>
 			{label ? (
-				<Text style={[styles.label, { color: colors.titleText }, error?.error && { color: colors.dangerColor }]}>{label}</Text>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
+					{label}
+				</Text>
 			) : null}
 
 			<View style={styles.wrap}>
@@ -101,13 +103,13 @@ export const FormTextInput = ({
 						iconLeft && styles.inputIconLeft,
 						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
-							backgroundColor: colors.backgroundColor,
-							borderColor: colors.separatorColor,
-							color: colors.titleText
+							backgroundColor: colors.surfaceRoom,
+							borderColor: colors.strokeLight,
+							color: colors.fontTitlesLabels
 						},
 						error?.error && {
-							color: colors.dangerColor,
-							borderColor: colors.dangerColor
+							color: colors.buttonBackgroundDangerDefault,
+							borderColor: colors.buttonBackgroundDangerDefault
 						},
 						inputStyle
 					]}
@@ -121,6 +123,7 @@ export const FormTextInput = ({
 					accessibilityLabel={placeholder}
 					placeholder={placeholder}
 					value={value}
+					placeholderTextColor={colors.fontAnnotation}
 					{...inputProps}
 				/>
 
@@ -129,14 +132,14 @@ export const FormTextInput = ({
 						name={iconLeft}
 						testID={testID ? `${testID}-icon-left` : undefined}
 						size={20}
-						color={colors.auxiliaryText}
+						color={colors.fontSecondaryInfo}
 						style={[styles.iconContainer, styles.iconLeft]}
 					/>
 				) : null}
 
 				{showClearInput ? (
 					<Touchable onPress={onClearInput} style={[styles.iconContainer, styles.iconRight]} testID='clear-text-input'>
-						<CustomIcon name='input-clear' size={20} color={colors.auxiliaryTintColor} />
+						<CustomIcon name='input-clear' size={20} color={colors.fontDefault} />
 					</Touchable>
 				) : null}
 
@@ -145,7 +148,7 @@ export const FormTextInput = ({
 						name={iconRight}
 						testID={testID ? `${testID}-icon-right` : undefined}
 						size={20}
-						color={colors.bodyText}
+						color={colors.fontDefault}
 						style={[styles.iconContainer, styles.iconRight]}
 					/>
 				) : null}
@@ -156,7 +159,7 @@ export const FormTextInput = ({
 							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 							testID={testID ? `${testID}-icon-password` : undefined}
 							size={20}
-							color={colors.auxiliaryText}
+							color={colors.fontDefault}
 						/>
 					</Touchable>
 				) : null}
@@ -164,13 +167,13 @@ export const FormTextInput = ({
 				{loading ? (
 					<ActivityIndicator
 						style={[styles.iconContainer, styles.iconRight]}
-						color={colors.bodyText}
+						color={colors.fontDefault}
 						testID={testID ? `${testID}-loading` : undefined}
 					/>
 				) : null}
 				{left}
 			</View>
-			{error && error.reason ? <Text style={[styles.error, { color: colors.dangerColor }]}>{error.reason}</Text> : null}
+			{error && error.reason ? <Text style={[styles.error, { color: colors.fontDanger }]}>{error.reason}</Text> : null}
 		</View>
 	);
 };

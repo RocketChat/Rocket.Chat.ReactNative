@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
 const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boolean }): React.ReactElement => {
 	const { theme } = useTheme();
 	const date = ts ? moment(ts).format('LL') : null;
-	const unreadLine = { backgroundColor: themes[theme].dangerColor };
-	const unreadText = { color: themes[theme].dangerColor };
+	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
+	const unreadText = { color: themes[theme].fontDanger };
 	if (ts && unread) {
 		return (
 			<View style={styles.container}>
@@ -48,9 +48,9 @@ const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boole
 	if (ts) {
 		return (
 			<View style={styles.container}>
-				<View style={[styles.line, { backgroundColor: themes[theme].borderColor }]} />
-				<Text style={[styles.text, { color: themes[theme].auxiliaryText }, styles.marginHorizontal]}>{date}</Text>
-				<View style={[styles.line, { backgroundColor: themes[theme].borderColor }]} />
+				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
+				<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo }, styles.marginHorizontal]}>{date}</Text>
+				<View style={[styles.line, { backgroundColor: themes[theme].strokeLight }]} />
 			</View>
 		);
 	}
