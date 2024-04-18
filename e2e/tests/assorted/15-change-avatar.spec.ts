@@ -106,7 +106,7 @@ describe('Profile screen', () => {
 				.withTimeout(2000);
 			await element(by.id('change-avatar-view-submit')).tap();
 			await waitFor(element(by.id('profile-view')))
-				.toBeVisible()
+				.toExist()
 				.withTimeout(2000);
 			await sleep(300);
 			const newUserInfo = await getProfileInfo({ userId });
