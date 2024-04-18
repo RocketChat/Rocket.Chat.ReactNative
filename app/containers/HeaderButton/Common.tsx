@@ -5,19 +5,21 @@ import I18n from '../../i18n';
 import { isIOS } from '../../lib/methods/helpers';
 import Container from './HeaderButtonContainer';
 import Item, { IHeaderButtonItem } from './HeaderButtonItem';
+import { useTheme } from '../../theme';
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {
 	navigation?: any; // TODO: Evaluate proper type
 }
 
 // Left
-export const Drawer = React.memo(
-	({ navigation, testID, onPress = () => navigation?.toggleDrawer(), ...props }: IHeaderButtonCommon) => (
+export const Drawer = ({ navigation, testID, onPress = () => navigation?.toggleDrawer(), ...props }: IHeaderButtonCommon) => {
+	const { colors } = useTheme();
+	return (
 		<Container left>
-			<Item iconName='hamburguer' onPress={onPress} testID={testID} {...props} />
+			<Item iconName='hamburguer' onPress={onPress} testID={testID} color={colors.fontDefault} {...props} />
 		</Container>
-	)
-);
+	);
+};
 
 export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
 	const { dispatch } = useNavigation();

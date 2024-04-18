@@ -10,7 +10,7 @@ const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceip
 		return (
 			<CustomIcon
 				name='check'
-				color={!unread && unread !== null ? colors.tintColor : colors.auxiliaryTintColor}
+				color={!unread && unread !== null ? colors.badgeBackgroundLevel2 : colors.fontHint}
 				size={16}
 				style={styles.rightIcons}
 			/>

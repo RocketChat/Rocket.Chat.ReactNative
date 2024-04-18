@@ -37,7 +37,7 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 		>
 			<View style={styles.tabBarItem}>
 				{tab._id === 'All' ? (
-					<Text style={[styles.allTabItem, { color: colors.auxiliaryTintColor }]}>{I18n.t('All')}</Text>
+					<Text style={[styles.allTabItem, { color: colors.fontHint }]}>{I18n.t('All')}</Text>
 				) : (
 					<>
 						<Emoji
@@ -46,7 +46,7 @@ const TabBarItem = ({ tab, index, goToPage, getCustomEmoji }: ITabBarItem) => {
 							customEmojiStyle={styles.customEmojiStyle}
 							getCustomEmoji={getCustomEmoji}
 						/>
-						<Text style={[styles.reactionCount, { color: colors.auxiliaryTintColor }]}>{tab.usernames.length}</Text>
+						<Text style={[styles.reactionCount, { color: colors.fontHint }]}>{tab.usernames.length}</Text>
 					</>
 				)}
 			</View>
@@ -68,7 +68,7 @@ const ReactionsTabBar = ({ tabs, activeTab, goToPage, getCustomEmoji }: IReactio
 							style={{
 								width: tabWidth,
 								borderBottomWidth: isActiveTab ? 2 : 1,
-								borderColor: isActiveTab ? colors.tintActive : colors.separatorColor
+								borderColor: isActiveTab ? colors.strokeHighlight : colors.strokeLight
 							}}
 							key={tab.emoji}
 						>
