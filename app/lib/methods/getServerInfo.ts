@@ -1,4 +1,3 @@
-import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 import moment from 'moment';
@@ -45,11 +44,11 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
-		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, {
+		const response = await fetch(`${server}/api/info`, {
 			...RocketChatSettings.customHeaders
 		});
 		try {
-			const jsonRes: IApiServerInfo = response.json();
+			const jsonRes: IApiServerInfo = await response.json();
 			if (!jsonRes?.success) {
 				return {
 					success: false,
