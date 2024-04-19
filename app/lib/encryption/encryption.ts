@@ -10,7 +10,7 @@ import Deferred from './helpers/deferred';
 import log from '../methods/helpers/log';
 import { store } from '../store/auxStore';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
-import { EncryptionRoom } from './index';
+import EncryptionRoom from './room';
 import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
