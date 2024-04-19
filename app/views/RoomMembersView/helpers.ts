@@ -11,6 +11,7 @@ import appNavigation from '../../lib/navigation/appNavigation';
 import { Services } from '../../lib/services';
 import database from '../../lib/database';
 import { RoomTypes } from '../../lib/methods';
+import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
@@ -89,8 +90,8 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
 			}
 		}
-	} catch (e) {
-		log(e);
+	} catch (e: any) {
+		emitErrorCreateDirectMessage(e?.data);
 	}
 };
 

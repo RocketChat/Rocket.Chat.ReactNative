@@ -69,12 +69,11 @@ const AvatarWithEdit = ({
 				<Button
 					title={I18n.t('Edit')}
 					type='secondary'
-					backgroundColor={colors.editAndUploadButtonAvatar}
 					onPress={handleEdit}
 					testID='avatar-edit-button'
 					style={styles.editAvatarButton}
 					styleText={styles.textButton}
-					color={colors.titleText}
+					color={colors.fontTitlesLabels}
 					hitSlop={BUTTON_HIT_SLOP}
 				/>
 			) : null}

@@ -84,7 +84,7 @@ export const ServiceList = () => (
 				<ButtonService
 					key={service._id}
 					onPress={() => {}}
-					backgroundColor={colors[theme].chatComponentBackground}
+					backgroundColor={colors[theme].surfaceTint}
 					buttonText={buttonText}
 					icon={icon}
 					name={service.name}

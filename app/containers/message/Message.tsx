@@ -117,6 +117,7 @@ const Message = React.memo((props: IMessage) => {
 						hasError={props.hasError}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
+						isTranslated={props.isTranslated}
 					/>
 				) : null}
 			</View>
@@ -134,7 +135,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].headerBackground;
+		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
 	if (props.hasError) {

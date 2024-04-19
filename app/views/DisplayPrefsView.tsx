@@ -87,7 +87,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	};
 
 	const renderCheckBox = (value: boolean) => (
-		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.actionTintColor : null} />
+		<List.Icon name={value ? 'checkbox-checked' : 'checkbox-unchecked'} color={value ? colors.strokeHighlight : ''} />
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
@@ -95,7 +95,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderRadio = (value: boolean) => (
-		<RadioButton selected={!!value} color={value ? colors.actionTintColor : colors.auxiliaryText} size={ICON_SIZE} />
+		<RadioButton selected={!!value} color={value ? colors.fontHint : colors.fontSecondaryInfo} size={ICON_SIZE} />
 	);
 
 	return (

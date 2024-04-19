@@ -26,7 +26,7 @@ export const Basic = () => (
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
-		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
+		<ScrollView style={{ backgroundColor: themes[theme].surfaceRoom }}>
 			<LoadMore loaderId='5' type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />
 			<Message msg={longText} theme={theme} isHeader={false} />

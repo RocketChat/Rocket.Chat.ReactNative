@@ -64,7 +64,7 @@ export default function StartACallActionSheet({
 			<View
 				style={[
 					style.actionSheetPhotoContainer,
-					{ backgroundColor: cam ? undefined : colors.conferenceCallPhotoBackground, width: containerWidth }
+					{ backgroundColor: cam ? undefined : colors.surfaceNeutral, width: containerWidth }
 				]}
 			>
 				{cam ? (
@@ -74,8 +74,8 @@ export default function StartACallActionSheet({
 				)}
 			</View>
 			<Button
-				backgroundColor={calling ? colors.conferenceCallCallBackButton : colors.actionTintColor}
-				color={calling ? colors.gray300 : colors.conferenceCallEnabledIcon}
+				backgroundColor={calling ? colors.buttonBackgroundPrimaryDisabled : colors.buttonBackgroundPrimaryDefault}
+				color={calling ? colors.strokeDark : colors.surfaceLight}
 				onPress={() => {
 					if (calling) {
 						dispatch(cancelCall({}));

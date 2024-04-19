@@ -517,16 +517,16 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			encrypted
 		} = this.state;
 		const { serverVersion, encryptionEnabled, theme } = this.props;
-		const { dangerColor } = themes[theme];
+		const { buttonBackgroundDangerDefault, fontDanger } = themes[theme];
 
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
+				style={{ backgroundColor: themes[theme].surfaceRoom }}
 				contentContainerStyle={sharedStyles.container}
 				keyboardVerticalOffset={128}
 			>
 				<StatusBar />
-				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='room-info-edit-view-list'
@@ -649,7 +649,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						{room.broadcast
 							? [
 									<Text style={styles.broadcast}>{I18n.t('Broadcast')}</Text>,
-									<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+									<View style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
 							  ]
 							: null}
 						{serverVersion && !compareServerVersion(serverVersion, 'lowerThan', '3.0.0') ? (
@@ -686,14 +686,14 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer,
-								{ backgroundColor: themes[theme].buttonBackground },
+								{ backgroundColor: themes[theme].buttonBackgroundSecondaryDefault },
 								!this.formIsChanged() && styles.buttonContainerDisabled
 							]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
 							testID='room-info-edit-view-submit'
 						>
-							<Text style={[styles.button, { color: themes[theme].buttonText }]} accessibilityRole='button'>
+							<Text style={[styles.button, { color: themes[theme].fontWhite }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
 						</TouchableOpacity>
@@ -702,7 +702,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								style={[
 									styles.buttonContainer_inverted,
 									styles.buttonInverted,
-									{ flex: 1, borderColor: themes[theme].auxiliaryText },
+									{ flex: 1, borderColor: themes[theme].fontSecondaryInfo },
 									!this.formIsChanged() && styles.buttonContainerDisabled
 								]}
 								onPress={this.reset}
@@ -710,7 +710,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								testID='room-info-edit-view-reset'
 							>
 								<Text
-									style={[styles.button, styles.button_inverted, { color: themes[theme].bodyText }]}
+									style={[styles.button, styles.button_inverted, { color: themes[theme].fontDefault }]}
 									accessibilityRole='button'
 								>
 									{I18n.t('RESET')}
@@ -723,31 +723,31 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									archived
 										? !permissions['unarchive-room'] && sharedStyles.opacity5
 										: !permissions['archive-room'] && sharedStyles.opacity5,
-									{ flex: 1, marginLeft: 10, borderColor: dangerColor }
+									{ flex: 1, marginLeft: 10, borderColor: buttonBackgroundDangerDefault }
 								]}
 								onPress={this.toggleArchive}
 								disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
 								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 							>
-								<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]}>
+								<Text style={[styles.button, styles.button_inverted, { color: fontDanger }]}>
 									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 								</Text>
 							</TouchableOpacity>
 						</View>
-						<View style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+						<View style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
 						<TouchableOpacity
 							style={[
 								styles.buttonContainer_inverted,
 								styles.buttonContainerLastChild,
 								styles.buttonDanger,
-								{ borderColor: dangerColor },
+								{ borderColor: buttonBackgroundDangerDefault },
 								!this.hasDeletePermission() && sharedStyles.opacity5
 							]}
 							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
 							testID='room-info-edit-view-delete'
 						>
-							<Text style={[styles.button, styles.button_inverted, { color: dangerColor }]} accessibilityRole='button'>
+							<Text style={[styles.button, styles.button_inverted, { color: fontDanger }]} accessibilityRole='button'>
 								{I18n.t('DELETE')}
 							</Text>
 						</TouchableOpacity>
