@@ -199,10 +199,7 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider
-				initialMetrics={initialWindowMetrics}
-				style={{ backgroundColor: themes[this.state.theme].backgroundColor }}
-			>
+			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContext.Provider
 						value={{

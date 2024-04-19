@@ -48,13 +48,16 @@ const FooterButtons = ({
 	return (
 		<View style={styles.footerButtonsContainer}>
 			<Button
-				style={[styles.buttonSeparator, { flex: 1, backgroundColor: cancelBackgroundColor || colors.cancelButton }]}
+				style={[
+					styles.buttonSeparator,
+					{ flex: 1, backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }
+				]}
 				color={colors.backdropColor}
 				title={cancelTitle}
 				onPress={cancelAction}
 			/>
 			<Button
-				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.dangerColor }}
+				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.buttonBackgroundDangerDefault }}
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}
@@ -100,12 +103,10 @@ const ActionSheetContentWithInputAndSubmit = ({
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<>
 				<View style={styles.titleContainer}>
-					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.dangerColor} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.passcodePrimary, paddingLeft: iconName ? 16 : 0 }]}>
-						{title}
-					</Text>
+					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
+					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 16 : 0 }]}>{title}</Text>
 				</View>
-				<Text style={[styles.subtitleText, { color: colors.titleText }]}>{description}</Text>
+				<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text>
 				{customText}
 			</>
 			{showInput ? (
@@ -126,7 +127,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 				/>
 			) : null}
 			<FooterButtons
-				confirmBackgroundColor={confirmBackgroundColor || colors.actionTintColor}
+				confirmBackgroundColor={confirmBackgroundColor || colors.fontHint}
 				cancelAction={onCancel || hideActionSheet}
 				confirmAction={() => onSubmit(inputValue)}
 				cancelTitle={i18n.t('Cancel')}

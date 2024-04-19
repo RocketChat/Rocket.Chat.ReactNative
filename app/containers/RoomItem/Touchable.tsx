@@ -223,7 +223,7 @@ const Touchable = ({
 								onPress={handlePress}
 								testID={testID}
 								style={{
-									backgroundColor: isFocused ? colors.chatComponentBackground : colors.backgroundColor
+									backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
 								}}
 							>
 								{children}

@@ -26,7 +26,7 @@ fs.readdir(translationsPath, (err, files) => {
                 const obj = JSON.parse(data);
 
                 // Sort the object keys alphabetically
-                const sortedObj = Object.keys(obj).sort().reduce((acc, key) => {
+                const sortedObj = Object.keys(obj).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).reduce((acc, key) => {
                     acc[key] = obj[key];
                     return acc;
                 }, {});

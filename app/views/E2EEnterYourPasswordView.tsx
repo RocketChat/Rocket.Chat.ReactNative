@@ -78,13 +78,13 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.backgroundColor }}
+			style={{ backgroundColor: colors.surfaceRoom }}
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}
 		>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
-				<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='e2e-enter-your-password-view'>
+				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
 					<FormTextInput
 						placeholder={I18n.t('Password')}
 						returnKeyType='send'
@@ -95,7 +95,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						textContentType='password'
 					/>
 					<Button onPress={submit} title={I18n.t('Confirm')} disabled={!password} testID='e2e-enter-your-password-view-confirm' />
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
+					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

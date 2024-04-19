@@ -48,17 +48,19 @@ const JitsiAuthModal = ({
 
 	return (
 		<Modal isVisible>
-			<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
-				<Text style={[styles.title, { color: colors.titleText }]}>{i18n.t('Jitsi_may_require_authentication')}</Text>
+			<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{i18n.t('Jitsi_may_require_authentication')}</Text>
 				{isAdmin ? (
-					<Text style={[styles.regular, { color: colors.titleText }]}>
+					<Text style={[styles.regular, { color: colors.fontTitlesLabels }]}>
 						{i18n.t('Jitsi_authentication_before_making_calls_admin')}
 					</Text>
 				) : (
-					<Text style={[styles.regular, { color: colors.titleText }]}>{i18n.t('Jitsi_authentication_before_making_calls')}</Text>
+					<Text style={[styles.regular, { color: colors.fontTitlesLabels }]}>
+						{i18n.t('Jitsi_authentication_before_making_calls')}
+					</Text>
 				)}
 				{!isAdmin ? (
-					<Text style={[styles.min, { color: colors.auxiliaryText }]}>
+					<Text style={[styles.min, { color: colors.fontSecondaryInfo }]}>
 						{i18n.t('Jitsi_authentication_before_making_calls_ask_admin')}
 					</Text>
 				) : null}

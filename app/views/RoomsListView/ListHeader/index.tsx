@@ -34,10 +34,10 @@ const ListHeader = React.memo(
 							title={
 								encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD ? 'Enter_E2EE_Password' : 'Save_Your_Encryption_Password'
 							}
-							left={() => <List.Icon name='encrypted' color={themes[theme].buttonText} />}
-							underlayColor={themes[theme].tintActive}
-							backgroundColor={themes[theme].actionTintColor}
-							color={themes[theme].buttonText}
+							left={() => <List.Icon name='encrypted' color={themes[theme].fontWhite} />}
+							underlayColor={themes[theme].strokeHighlight}
+							backgroundColor={themes[theme].strokeHighlight}
+							color={themes[theme].fontWhite}
 							onPress={goEncryption}
 							testID='listheader-encryption'
 						/>

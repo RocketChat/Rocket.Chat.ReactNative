@@ -24,7 +24,7 @@ const Emoji = React.memo(({ literal, isMessageContainsOnlyEmoji, getCustomEmoji,
 		return <CustomEmoji style={[isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
 	return (
-		<Text style={[{ color: colors.bodyText }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
+		<Text style={[{ color: colors.fontDefault }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
 			{emojiUnicode}
 		</Text>
 	);

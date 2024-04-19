@@ -47,7 +47,7 @@ export const EncryptedRoom = ({
 				<Button
 					title={I18n.t('Learn_more')}
 					type='secondary'
-					backgroundColor={colors.chatComponentBackground}
+					backgroundColor={colors.surfaceTint}
 					onPress={() => Linking.openURL(LEARN_MORE_E2EE_URL)}
 				/>
 			</View>

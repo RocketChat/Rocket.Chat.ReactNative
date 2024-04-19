@@ -11,7 +11,7 @@ const theme = 'light';
 const styles = StyleSheet.create({
 	container: {
 		marginHorizontal: 15,
-		backgroundColor: themes[theme].backgroundColor,
+		backgroundColor: themes[theme].surfaceRoom,
 		marginVertical: 50
 	}
 });
@@ -128,9 +128,9 @@ export const Links = () => (
 		<Markdown msg='<https://rocket.chat|Formatted Link>: `<url|description>`' theme={theme} />
 		<Markdown msg='[Markdown link](https://rocket.chat) and the text with default style' theme={theme} />
 		<Markdown
-			msg='[Markdown link](https://rocket.chat) and the text with a color specific as auxiliaryText'
+			msg='[Markdown link](https://rocket.chat) and the text with a color specific as fontSecondaryInfo'
 			theme={theme}
-			style={[{ color: themes[theme].auxiliaryText }]}
+			style={[{ color: themes[theme].fontSecondaryInfo }]}
 		/>
 	</View>
 );
@@ -158,13 +158,8 @@ export const Code = () => (
 		<Markdown
 			msg='Inline `code` has `back-ticks around` it.
 ```
-Code block 1
-```
-And other code block in sequence
-```
-Code block 2
-```
-'
+Code block
+```'
 			theme={theme}
 		/>
 	</View>
