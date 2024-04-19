@@ -257,6 +257,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							return sendFileMessage(
 								room.rid,
 								{
+									rid: room.rid,
 									name,
 									description,
 									size,
