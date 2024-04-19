@@ -66,7 +66,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='openback-emoji-keyboard'
 				>
-					<CustomIcon name='chevron-left' size={24} color={colors.fontHint} />
+					<CustomIcon name='chevron-left' size={24} />
 				</Pressable>
 				<View style={styles.inputContainer}>
 					<EmojiSearch onBlur={closeEmojiKeyboard} onChangeText={handleTextChange} />

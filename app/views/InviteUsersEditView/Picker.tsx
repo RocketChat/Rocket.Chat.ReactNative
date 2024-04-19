@@ -70,7 +70,7 @@ const Picker = ({ param, first }: { param: 'days' | 'maxUses'; first: string }):
 		dispatch(inviteLinksSetParams(params));
 	};
 
-	const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: colors.actionTintColor } };
+	const textInputStyle: TextInputProps = { style: { ...styles.pickerText, color: colors.fontHint } };
 	const firstEl = [
 		{
 			label: I18n.t(first),

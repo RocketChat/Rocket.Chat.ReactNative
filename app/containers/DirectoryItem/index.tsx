@@ -33,7 +33,7 @@ const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => 
 	if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color: themes[theme].auxiliaryText }]}>{text}</Text>;
+	return <Text style={[styles.directoryItemLabel, { color: themes[theme].fontSecondaryInfo }]}>{text}</Text>;
 });
 
 const DirectoryItem = ({
@@ -50,20 +50,20 @@ const DirectoryItem = ({
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID}>
+		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
 			<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
 				<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>
 						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
-						<Text style={[styles.directoryItemName, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.directoryItemName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{title}
 						</Text>
 					</View>
 					{description ? (
 						<MarkdownPreview
 							msg={description}
-							style={[styles.directoryItemUsername, { color: themes[theme].auxiliaryText }]}
+							style={[styles.directoryItemUsername, { color: themes[theme].fontSecondaryInfo }]}
 							numberOfLines={1}
 						/>
 					) : null}
