@@ -501,6 +501,26 @@ class Encryption {
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+
+	// Missing room encryption key
+	isMissingRoomE2EEKey = ({
+		encryptionEnabled,
+		roomEncrypted,
+		E2EKey
+	}: {
+		encryptionEnabled: boolean;
+		roomEncrypted: TSubscriptionModel['encrypted'];
+		E2EKey: TSubscriptionModel['E2EKey'];
+	}) => (encryptionEnabled && roomEncrypted && !E2EKey) ?? false;
+
+	// Encrypted room, but user session is not encrypted
+	isE2EEDisabledEncryptedRoom = ({
+		encryptionEnabled,
+		roomEncrypted
+	}: {
+		encryptionEnabled: boolean;
+		roomEncrypted: TSubscriptionModel['encrypted'];
+	}) => (!encryptionEnabled && roomEncrypted) ?? false;
 }
 
 const encryption = new Encryption();
