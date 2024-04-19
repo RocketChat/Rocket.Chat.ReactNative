@@ -126,7 +126,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].surfaceTint} testID='share-view-close' />;
+			options.headerLeft = () => (
+				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].surfaceTint} testID='share-view-close' />
+			);
 		}
 
 		if (!attachments.length && !readOnly) {
@@ -255,6 +257,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							return sendFileMessage(
 								room.rid,
 								{
+									rid: room.rid,
 									name,
 									description,
 									size,
