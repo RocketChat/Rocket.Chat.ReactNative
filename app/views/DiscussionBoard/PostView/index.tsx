@@ -100,8 +100,9 @@ const PostView: React.FC = ({ route }) => {
 			setPost(post._raw);
 			setDescription(post?._raw?.msg);
 
-			const attachments = post?._raw?.attachments;
-			if (typeof attachments !== 'string' && attachments?.length > 0) {
+			const rawAttachments = post?._raw?.attachments;
+			const attachments = typeof rawAttachments === 'string' ? JSON.parse(rawAttachments) : rawAttachments;
+			if (attachments?.length) {
 				const attachment = attachments[0];
 				if (attachment.video_url) {
 					const url = formatAttachmentUrl(attachment.video_url, user.id, user.token, server);
