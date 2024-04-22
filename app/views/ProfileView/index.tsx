@@ -470,6 +470,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								label={isFieldRequired ? `${key} *` : key}
 								placeholder={key}
 								value={customFields[key]}
+								iconRight='arrow-down'
 								testID='settings-view-language'
 							/>
 						</RNPickerSelect>
