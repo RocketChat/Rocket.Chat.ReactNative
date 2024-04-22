@@ -102,7 +102,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	}
 
 	async componentDidMount() {
-		const { server, dispatch } = this.props;
+		const { dispatch } = this.props;
 		try {
 			dispatch(encryptionInit());
 			const data = (await ShareExtension.data()) as IDataFromShare[];
@@ -130,13 +130,13 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			// Do nothing
 		}
 
-		this.getSubscriptions(server);
+		this.getSubscriptions();
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps: IShareListViewProps) {
-		const { server } = this.props;
-		if (nextProps.server !== server) {
-			this.getSubscriptions(nextProps.server);
+	componentDidUpdate(previousProps: IShareListViewProps) {
+		const { server, encryptionEnabled } = this.props;
+		if (previousProps.server !== server || previousProps.encryptionEnabled !== encryptionEnabled) {
+			this.getSubscriptions();
 		}
 	}
 
@@ -149,11 +149,14 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			return true;
 		}
 
-		const { server, userId } = this.props;
+		const { server, userId, encryptionEnabled } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
 		if (userId !== nextProps.userId) {
+			return true;
+		}
+		if (encryptionEnabled !== nextProps.encryptionEnabled) {
 			return true;
 		}
 
@@ -267,7 +270,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			.filter(item => !!item);
 	};
 
-	getSubscriptions = async (server: string) => {
+	getSubscriptions = async () => {
+		const { server } = this.props;
 		const serversDB = database.servers;
 
 		if (server) {
