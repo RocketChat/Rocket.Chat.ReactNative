@@ -43,7 +43,7 @@ struct ServerListView: View {
 			case .loading:
 				ProgressView()
 			case .loaded where servers.isEmpty:
-				RetryView("No connected servers.", action: loadServers)
+				RetryView("No connected workspaces.", action: loadServers)
 			case .loaded:
 				serverList
 			case .error(let error) where error == .locked:
@@ -53,13 +53,13 @@ struct ServerListView: View {
 			case .error(let error) where error == .unreachable:
 				RetryView("Could not reach your iPhone.", action: loadServers)
 			case .error(let error) where error == .undecodable(error):
-				RetryView("Could not read servers from iPhone.", action: loadServers)
+				RetryView("Could not read workspaces from iPhone.", action: loadServers)
 			default:
 				RetryView("Unexpected error.", action: loadServers)
 			}
 		}
 		.navigationTitle {
-			Text("Servers").foregroundColor(.red)
+			Text("Workspaces").foregroundColor(.red)
 		}
 		.navigationBarTitleDisplayMode(.inline)
 		.navigationDestination(for: $router.server) { server in

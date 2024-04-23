@@ -1,6 +1,6 @@
 import CoreData
 
-final class AttachmentDatabase {
+final class AttachmentModel {
 	private let context: NSManagedObjectContext
 	
 	init(context: NSManagedObjectContext) {
@@ -25,7 +25,7 @@ final class AttachmentDatabase {
 	}
 }
 
-extension AttachmentDatabase {
+extension AttachmentModel {
 	private func attachment(id: String, in context: NSManagedObjectContext) -> Attachment {
 		let request = Attachment.fetchRequest()
 		request.predicate = NSPredicate(format: "id == %@", id)

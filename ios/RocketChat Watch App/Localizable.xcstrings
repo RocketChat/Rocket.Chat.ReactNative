@@ -405,6 +405,7 @@
       }
     },
     "Could not read servers from iPhone." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -419,6 +420,9 @@
           }
         }
       }
+    },
+    "Could not read workspaces from iPhone." : {
+
     },
     "created a snippet" : {
       "localizations" : {
@@ -715,6 +719,7 @@
       }
     },
     "No connected servers." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -729,6 +734,9 @@
           }
         }
       }
+    },
+    "No connected workspaces." : {
+
     },
     "No message" : {
       "localizations" : {
@@ -945,22 +953,17 @@
       }
     },
     "Servers" : {
+      "extractionState" : "stale",
       "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Workspaces"
-          }
-        },
         "ja" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "ワークスペース"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "Workspaces"
           }
         }
@@ -1093,6 +1096,9 @@
           }
         }
       }
+    },
+    "Workspaces" : {
+
     },
     "You" : {
       "extractionState" : "manual",

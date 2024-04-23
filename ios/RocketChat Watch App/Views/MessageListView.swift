@@ -52,8 +52,8 @@ struct MessageListView: View {
 						)
 					) { action in
 						switch action {
-						case .resend(let id, let msg):
-							messageSender.resendMessage(messageID: id, msg: msg, in: room)
+						case .resend(let message):
+							messageSender.resendMessage(message: message, in: room)
 							
 							lastOpen = nil
 						case .delete(let message):

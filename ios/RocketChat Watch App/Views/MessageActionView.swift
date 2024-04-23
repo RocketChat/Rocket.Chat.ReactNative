@@ -16,9 +16,7 @@ struct MessageActionView: View {
 			Button(action: {
 				dismiss()
 				
-				guard let messageID = message.id, let msg = message.msg else { return }
-				
-				action(.resend(messageID, msg))
+				action(.resend(message))
 			}, label: {
 				Text("Resend")
 			})

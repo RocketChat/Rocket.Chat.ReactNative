@@ -1,7 +1,7 @@
 import SwiftUI
 
 enum MessageAction {
-	case resend(String, String)
+	case resend(Message)
 	case delete(Message)
 }
 
@@ -87,7 +87,7 @@ struct MessageView: View {
 					HStack(alignment: .top) {
 						Text(text)
 							.font(.caption)
-							.foregroundStyle(viewModel.message.status == "temp" ? Color.secondaryInfo : Color.default)
+							.foregroundStyle(viewModel.message.foregroundColor)
 						
 						if viewModel.message.status == "error" {
 							Button(
@@ -125,5 +125,15 @@ struct MessageView: View {
 				action: action
 			)
 		}
+	}
+}
+
+private extension Message {
+	var foregroundColor: Color {
+		if status == "temp" || status == "error" {
+			return Color.secondaryInfo
+		}
+		
+		return Color.default
 	}
 }

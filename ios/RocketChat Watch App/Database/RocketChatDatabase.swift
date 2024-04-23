@@ -87,7 +87,7 @@ final class RocketChatDatabase: Database {
 extension RocketChatDatabase {
 	func handleReadResponse(_ readResponse: ReadResponse, in roomID: String) {
 		backgroundContext.performBackgroundTask { context in
-			let roomDatabase = RoomDatabase(context: context)
+			let roomDatabase = RoomModel(context: context)
 			
 			let room = roomDatabase.fetch(id: roomID)
 			
@@ -104,7 +104,7 @@ extension RocketChatDatabase {
 	
 	func handleSendMessageError(_ messageID: String) {
 		backgroundContext.performBackgroundTask { context in
-			let messageDatabase = MessageDatabase(context: context)
+			let messageDatabase = MessageModel(context: context)
 			
 			if let message = messageDatabase.fetch(id: messageID) {
 				message.status = "error"
@@ -120,8 +120,8 @@ extension RocketChatDatabase {
 	
 	func handleSendMessageRequest(_ newMessage: MergedRoom.Message, in roomID: String) {
 		backgroundContext.performBackgroundTask { context in
-			let roomDatabase = RoomDatabase(context: context)
-			let messageDatabase = MessageDatabase(context: context)
+			let roomDatabase = RoomModel(context: context)
+			let messageDatabase = MessageModel(context: context)
 			
 			let room = roomDatabase.fetch(id: roomID)
 			
@@ -142,8 +142,8 @@ extension RocketChatDatabase {
 		let message = sendMessageResponse.message
 		
 		backgroundContext.performBackgroundTask { context in
-			let messageDatabase = MessageDatabase(context: context)
-			let roomDatabase = RoomDatabase(context: context)
+			let messageDatabase = MessageModel(context: context)
+			let roomDatabase = RoomModel(context: context)
 			
 			let room = roomDatabase.fetch(id: roomID)
 			
@@ -165,8 +165,8 @@ extension RocketChatDatabase {
 		let messages = messagesResponse.result.updated
 		
 		backgroundContext.performBackgroundTask { context in
-			let messageDatabase = MessageDatabase(context: context)
-			let roomDatabase = RoomDatabase(context: context)
+			let messageDatabase = MessageModel(context: context)
+			let roomDatabase = RoomModel(context: context)
 			
 			let room = roomDatabase.fetch(id: roomID)
 			
@@ -192,8 +192,8 @@ extension RocketChatDatabase {
 		let messages = historyResponse.messages
 		
 		backgroundContext.performBackgroundTask { context in
-			let messageDatabase = MessageDatabase(context: context)
-			let roomDatabase = RoomDatabase(context: context)
+			let messageDatabase = MessageModel(context: context)
+			let roomDatabase = RoomModel(context: context)
 			
 			let room = roomDatabase.fetch(id: roomID)
 			
@@ -221,7 +221,7 @@ extension RocketChatDatabase {
 		let subscriptions = subscriptionsResponse.update
 		
 		backgroundContext.performBackgroundTask { context in
-			let roomDatabase = RoomDatabase(context: context)
+			let roomDatabase = RoomModel(context: context)
 			
 			let roomIds = rooms.filter { room in !subscriptions.contains { room._id == $0.rid } }.map { $0._id }
 			

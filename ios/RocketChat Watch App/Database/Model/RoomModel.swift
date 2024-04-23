@@ -1,6 +1,6 @@
 import CoreData
 
-final class RoomDatabase {
+final class RoomModel {
 	private let context: NSManagedObjectContext
 	
 	init(context: NSManagedObjectContext) {
@@ -32,7 +32,7 @@ final class RoomDatabase {
 		room.broadcast = newRoom.broadcast ?? room.broadcast
 		room.ts = newRoom.ts ?? room.ts
 		
-		let messageDatabase = MessageDatabase(context: context)
+		let messageDatabase = MessageModel(context: context)
 		
 		if let lastMessage = newRoom.lastMessage {
 			let message = messageDatabase.upsert(lastMessage)
@@ -58,7 +58,7 @@ final class RoomDatabase {
 	}
 }
 
-extension RoomDatabase {
+extension RoomModel {
 	private func room(id: String, in context: NSManagedObjectContext) -> Room {
 		let request = Room.fetchRequest()
 		request.predicate = NSPredicate(format: "id == %@", id)

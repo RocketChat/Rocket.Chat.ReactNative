@@ -1,6 +1,6 @@
 import CoreData
 
-final class MessageDatabase {
+final class MessageModel {
 	private let context: NSManagedObjectContext
 	
 	init(context: NSManagedObjectContext) {
@@ -8,8 +8,8 @@ final class MessageDatabase {
 	}
 	
 	func upsert(_ newMessage: MergedRoom.Message) -> Message {
-		let attachmentDatabase = AttachmentDatabase(context: context)
-		let userDatabase = UserDatabase(context: context)
+		let attachmentDatabase = AttachmentModel(context: context)
+		let userDatabase = UserModel(context: context)
 		
 		let user = userDatabase.upsert(newMessage.u)
 		let message = message(id: newMessage._id, in: context)
@@ -44,7 +44,7 @@ final class MessageDatabase {
 	}
 }
 
-extension MessageDatabase {
+extension MessageModel {
 	private func message(id: String, in context: NSManagedObjectContext) -> Message {
 		let request = Message.fetchRequest()
 		request.predicate = NSPredicate(format: "id == %@", id)

@@ -1,6 +1,6 @@
 import CoreData
 
-final class UserDatabase {
+final class UserModel {
 	private let context: NSManagedObjectContext
 	
 	init(context: NSManagedObjectContext) {
@@ -20,7 +20,7 @@ final class UserDatabase {
 	}
 }
 
-extension UserDatabase {
+extension UserModel {
 	private func user(id: String, in context: NSManagedObjectContext) -> User {
 		let request = User.fetchRequest()
 		request.predicate = NSPredicate(format: "id == %@", id)
