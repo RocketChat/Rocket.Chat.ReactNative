@@ -404,25 +404,21 @@
         }
       }
     },
-    "Could not read servers from iPhone." : {
-      "extractionState" : "stale",
+    "Could not read workspaces from iPhone." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iPhone からサーバーを読み取ることができませんでした。"
+            "value" : "iPhone からワークスペースを読み取ることができませんでした。"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível ler os servidores do iPhone."
+            "value" : "Não foi possível ler os workspaces do iPhone."
           }
         }
       }
-    },
-    "Could not read workspaces from iPhone." : {
-
     },
     "created a snippet" : {
       "localizations" : {
@@ -718,25 +714,21 @@
         }
       }
     },
-    "No connected servers." : {
-      "extractionState" : "stale",
+    "No connected workspaces." : {
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "接続されているサーバーがありません。"
+            "value" : "接続されたワークスペースがありません。"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nenhum servidor conectado."
+            "value" : "Sem workspaces."
           }
         }
       }
-    },
-    "No connected workspaces." : {
-
     },
     "No message" : {
       "localizations" : {
@@ -952,23 +944,6 @@
         }
       }
     },
-    "Servers" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "ワークスペース"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Workspaces"
-          }
-        }
-      }
-    },
     "set room to read only" : {
       "localizations" : {
         "ja" : {
@@ -1098,7 +1073,20 @@
       }
     },
     "Workspaces" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ワークスペース"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Workspaces"
+          }
+        }
+      }
     },
     "You" : {
       "extractionState" : "manual",
