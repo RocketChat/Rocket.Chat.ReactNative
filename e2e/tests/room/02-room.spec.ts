@@ -116,6 +116,7 @@ describe('Room screen', () => {
 	describe('Message', () => {
 		it('should copy link', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+			await sleep(300);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
@@ -126,6 +127,7 @@ describe('Room screen', () => {
 		});
 		it('should copy message', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+			await sleep(300);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
@@ -163,6 +165,7 @@ describe('Room screen', () => {
 
 		it('should search emojis in the reaction picker and react', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+			await sleep(300);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
@@ -191,6 +194,7 @@ describe('Room screen', () => {
 
 		it('should react to message with frequently used emoji', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+			await sleep(300);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);

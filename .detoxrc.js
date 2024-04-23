@@ -9,8 +9,8 @@ module.exports = {
 	},
 	artifacts: {
 		plugins: {
-			screenshot: process.env.CI ? undefined : 'failing',
-			video: process.env.CI ? undefined : 'failing',
+			screenshot: 'failing',
+			video: 'failing',
 			uiHierarchy: process.env.CI ? undefined : 'enabled'
 		}
 	},
