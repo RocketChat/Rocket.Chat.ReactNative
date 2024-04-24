@@ -746,6 +746,22 @@
         }
       }
     },
+    "No messages" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージはありません"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sem mensagens"
+          }
+        }
+      }
+    },
     "On hold chat resumed: %@" : {
       "localizations" : {
         "ja" : {
