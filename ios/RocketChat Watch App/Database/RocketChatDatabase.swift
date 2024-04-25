@@ -7,7 +7,7 @@ protocol Database {
 	func room(id: String) -> Room?
 	func remove(_ message: Message)
 	
-	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse) -> AnyPublisher<Void, Never>
+	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse)
 	func handleHistoryResponse(_ historyResponse: HistoryResponse, in roomID: String)
 	func handleMessagesResponse(_ messagesResponse: MessagesResponse, in roomID: String, newUpdatedSince: Date)
 	func handleSendMessageResponse(_ sendMessageResponse: SendMessageResponse, in roomID: String)
@@ -217,11 +217,11 @@ extension RocketChatDatabase {
 		}
 	}
 	
-	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse) -> AnyPublisher<Void, Never> {
+	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse) {
 		let rooms = roomsResponse.update
 		let subscriptions = subscriptionsResponse.update
 		
-		return backgroundContext.performTask { context in
+		backgroundContext.performBackgroundTask { context in
 			let roomDatabase = RoomModel(context: context)
 			
 			let roomIds = rooms.filter { room in !subscriptions.contains { room._id == $0.rid } }.map { $0._id }
@@ -299,16 +299,5 @@ extension NSManagedObjectContext {
 		perform {
 			block(self)
 		}
-	}
-	
-	func performTask(_ block: @escaping (NSManagedObjectContext) -> Void) -> AnyPublisher<Void, Never> {
-		Future<Void, Never> { [self] promise in
-			perform {
-				block(self)
-				
-				promise(.success(()))
-			}
-		}
-		.eraseToAnyPublisher()
 	}
 }

@@ -43,17 +43,14 @@ final class RoomsLoader: ObservableObject {
 			client.getRooms(updatedSince: updatedSince),
 			client.getSubscriptions(updatedSince: updatedSince)
 		)
-		.flatMap { (roomsResponse, subscriptionsResponse) -> AnyPublisher<Void, Never> in
-			self.database.handleRoomsResponse(subscriptionsResponse, roomsResponse)
-		}
 		.receive(on: DispatchQueue.main)
 		.sink { [weak self] completion in
 			if case .failure = completion {
 				if self?.state == .loading { self?.state = .error }
 				self?.scheduledLoadRooms()
 			}
-		} receiveValue: { _ in
-			self.state = .loaded
+		} receiveValue: { roomsResponse, subscriptionsResponse in
+			self.database.handleRoomsResponse(subscriptionsResponse, roomsResponse)
 			self.updateServer(to: newUpdatedSince)
 			self.scheduledLoadRooms()
 		}
@@ -89,6 +86,10 @@ extension RoomsLoader: RoomsLoading {
 	func stop() {
 		timer?.invalidate()
 		cancellable.cancelAll()
+	}
+	
+	func contextDidSave() {
+		state = .loaded
 	}
 }
 
