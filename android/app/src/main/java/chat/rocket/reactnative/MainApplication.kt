@@ -11,6 +11,8 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
+import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
+import com.facebook.react.bridge.JSIModulePackage;
 
 import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
@@ -19,7 +21,6 @@ import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 import android.content.res.Configuration;
 
 open class MainApplication : Application(), ReactApplication {
-
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -30,6 +31,10 @@ open class MainApplication : Application(), ReactApplication {
               add(SSLPinningPackage())
               addAll(AdditionalModules().getAdditionalModules())
             }
+
+        override fun getJSIModulePackage(): JSIModulePackage {
+            return WatermelonDBJSIPackage()
+        }
 
         override fun getJSMainModuleName(): String = "index"
 
