@@ -45,7 +45,7 @@ describe('SwitchItemEncrypted', () => {
 		const component = screen.queryByTestId(testEncrypted.testSwitchID);
 		expect(component).toBeTruthy();
 	});
-	
+
 	it('should change value of switch', () => {
 		render(
 			<SwitchItemEncrypted
@@ -62,7 +62,7 @@ describe('SwitchItemEncrypted', () => {
 			expect(onPressMock).toHaveReturnedWith({ value: !testEncrypted.encrypted });
 		}
 	});
-	
+
 	it('label when encrypted and isTeam are false and is a public channel', () => {
 		render(
 			<SwitchItemEncrypted
@@ -76,7 +76,7 @@ describe('SwitchItemEncrypted', () => {
 		const component = screen.queryByTestId(testEncrypted.testLabelID);
 		expect(component?.props.children).toBe(i18n.t('Channel_hint_encrypted_not_available'));
 	});
-	
+
 	it('label when encrypted and isTeam are true and is a private team', () => {
 		testEncrypted.isTeam = true;
 		testEncrypted.type = true;
