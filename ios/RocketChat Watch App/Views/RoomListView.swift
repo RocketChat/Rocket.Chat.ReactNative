@@ -13,8 +13,6 @@ struct RoomListView: View {
 	
 	@FetchRequest<Room> private var rooms: FetchedResults<Room>
 	
-	private let contextDidSaveNotification = NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
-	
 	init(server: Server, roomsLoader: RoomsLoader) {
 		self.server = server
 		_roomsLoader = StateObject(wrappedValue: roomsLoader)
@@ -47,9 +45,6 @@ struct RoomListView: View {
 			@unknown default:
 				break
 			}
-		}
-		.onReceive(contextDidSaveNotification.receive(on: DispatchQueue.main)) { _ in
-			roomsLoader.contextDidSave()
 		}
 		.navigationTitle("Rooms")
 		.navigationBarTitleDisplayMode(.inline)

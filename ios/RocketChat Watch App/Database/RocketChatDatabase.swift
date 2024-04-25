@@ -3,6 +3,7 @@ import CoreData
 
 protocol Database {
 	var viewContext: NSManagedObjectContext { get }
+	func has(context: NSManagedObjectContext) -> Bool
 	
 	func room(id: String) -> Room?
 	func remove(_ message: Message)
@@ -27,6 +28,10 @@ final class RocketChatDatabase: Database {
 	
 	var viewContext: NSManagedObjectContext {
 		container.viewContext
+	}
+	
+	func has(context: NSManagedObjectContext) -> Bool {
+		context == backgroundContext
 	}
 	
 	private static let model: NSManagedObjectModel = {

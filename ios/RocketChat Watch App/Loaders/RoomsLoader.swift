@@ -74,6 +74,19 @@ final class RoomsLoader: ObservableObject {
 			serversDB.save()
 		}
 	}
+	
+	private func observeContext() {
+		NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave)
+			.receive(on: DispatchQueue.main)
+			.sink { [database] notification in
+				if let context = notification.object as? NSManagedObjectContext {
+					if database.has(context: context) {
+						self.state = .loaded
+					}
+				}
+			}
+			.store(in: &cancellable)
+	}
 }
 
 extension RoomsLoader: RoomsLoading {
@@ -81,15 +94,12 @@ extension RoomsLoader: RoomsLoading {
 		stop()
 		
 		loadRooms()
+		observeContext()
 	}
 	
 	func stop() {
 		timer?.invalidate()
 		cancellable.cancelAll()
-	}
-	
-	func contextDidSave() {
-		state = .loaded
 	}
 }
 
