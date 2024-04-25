@@ -115,6 +115,7 @@ const UserForm = () => {
 				testID='login-view-email'
 				textContentType='username'
 				autoComplete='username'
+				style={{ backgroundColor: '#4c481a', borderRadius: 2, height: 50, paddingHorizontal: 10 }}
 			/>
 			<ControlledFormTextInput
 				name='password'
@@ -128,6 +129,7 @@ const UserForm = () => {
 				testID='login-view-password'
 				textContentType='password'
 				autoComplete='password'
+				style={{ backgroundColor: '#4c481a', borderRadius: 2, height: 50, paddingHorizontal: 10 }}
 			/>
 			<Button
 				title={I18n.t('Login')}

@@ -195,13 +195,19 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const { autoLock } = this.state;
 		const { Force_Screen_Lock } = this.props;
 		return (
-			<Switch value={autoLock} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleAutoLock} disabled={Force_Screen_Lock} />
+			<Switch
+				thumbColor={'#41FF8B'}
+				value={autoLock}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleAutoLock}
+				disabled={Force_Screen_Lock}
+			/>
 		);
 	};
 
 	renderBiometrySwitch = () => {
 		const { biometry } = this.state;
-		return <Switch value={biometry} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleBiometry} />;
+		return <Switch thumbColor={'#41FF8B'} value={biometry} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleBiometry} />;
 	};
 
 	renderAutoLockItems = () => {

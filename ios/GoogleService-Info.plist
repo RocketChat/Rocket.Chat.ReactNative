@@ -7,29 +7,29 @@
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDEMLMz0En0vwFBlLSQkQ9oyhmCMPcpZxc</string>
+	<string>AIzaSyBOX8Kexso9haPJlMefKrGR-g7xml6VUKo</string>
 	<key>GCM_SENDER_ID</key>
-	<string>115198584049</string>
+	<string>310332843443</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>chat.rocket.reactnative</string>
+	<string>chat.nionium.ai</string>
 	<key>PROJECT_ID</key>
-	<string>rocketchat-reactnative-test</string>
+	<string>nionium-app-de3fd</string>
 	<key>STORAGE_BUCKET</key>
-	<string>rocketchat-reactnative-test.appspot.com</string>
+	<string>nionium-app-de3fd.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:115198584049:ios:8be27b1f7c42a2ed</string>
+	<string>1:310332843443:ios:2a09ba1708ed65fcd6d7c6</string>
 	<key>DATABASE_URL</key>
 	<string>https://rocketchat-reactnative-test.firebaseio.com</string>
 </dict>

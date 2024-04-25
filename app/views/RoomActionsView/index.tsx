@@ -353,7 +353,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			hasPermission = canToggleEncryption;
 		}
 		return (
-			<Switch value={encrypted} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleEncrypted} disabled={!hasPermission} />
+			<Switch
+				thumbColor={'#41FF8B'}
+				value={encrypted}
+				trackColor={SWITCH_TRACK_COLOR}
+				onValueChange={this.toggleEncrypted}
+				disabled={!hasPermission}
+			/>
 		);
 	};
 

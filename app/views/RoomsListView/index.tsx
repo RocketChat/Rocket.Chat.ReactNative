@@ -47,6 +47,7 @@ import {
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
+import WebViewAI from '../WebViewAI/index';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -984,16 +985,24 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		);
 	};
 
+	renderAIWebView = () => {
+		const { navigation } = this.props;
+		const param = this.props.route;
+
+		return <WebViewAI header={this.getHeader} timestamp={param} navigation={navigation} />;
+	};
+
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
 		const { showServerDropdown, theme } = this.props;
 
 		return (
-			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor, position: 'relative' }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
 				{showServerDropdown ? <ServerDropdown /> : null}
+				{this.renderAIWebView()}
 			</SafeAreaView>
 		);
 	};

@@ -4,6 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 
 import moment from 'moment';
+import axios from 'axios';
 import * as types from '../actions/actionsTypes';
 import { appStart } from '../actions/app';
 import { selectServerRequest, serverFinishAdd } from '../actions/server';
@@ -114,6 +115,19 @@ const handleLoginRequest = function* handleLoginRequest({
 					log(e);
 				}
 			});
+			let token;
+			try {
+				const response = yield call(axios.post, 'https://sea-turtle-app-g4c6n.ondigitalocean.app/external_token', {
+					email: result.emails[0].address,
+					user_id: result.id
+				});
+				token = response.data.token;
+
+				result = { ...result, nionium_token: token };
+			} catch (e) {
+				result = { ...result, nionium_token: null };
+			}
+
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
 				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });

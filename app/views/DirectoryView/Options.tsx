@@ -114,7 +114,12 @@ const DirectoryOptions = ({
 									{I18n.t('Search_global_users_description')}
 								</Text>
 							</View>
-							<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
+							<Switch
+								thumbColor={'#41FF8B'}
+								value={globalUsers}
+								onValueChange={toggleWorkspace}
+								trackColor={SWITCH_TRACK_COLOR}
+							/>
 						</View>
 					</>
 				) : null}

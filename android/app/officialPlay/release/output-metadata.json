@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "chat.nionium.ai",
+  "variantName": "officialPlayRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 999999999,
+      "versionName": "1.2.0",
+      "outputFile": "app-official-play-release.apk"
+    }
+  ],
+  "elementType": "File"
+}

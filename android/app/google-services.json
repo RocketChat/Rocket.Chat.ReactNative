@@ -1,16 +1,16 @@
 {
   "project_info": {
-    "project_number": "115198584049",
     "firebase_url": "https://rocketchat-reactnative-test.firebaseio.com",
-    "project_id": "rocketchat-reactnative-test",
-    "storage_bucket": "rocketchat-reactnative-test.appspot.com"
+    "project_number": "310332843443",
+    "project_id": "nionium-app-de3fd",
+    "storage_bucket": "nionium-app-de3fd.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:115198584049:android:a79216ae48935d2c9ab550",
+        "mobilesdk_app_id": "1:310332843443:android:bd4f5c5ba58256c7d6d7c6",
         "android_client_info": {
-          "package_name": "chat.rocket.android"
+          "package_name": "chat.nionium.ai"
         }
       },
       "oauth_client": [
@@ -21,7 +21,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWwowhAfACHBw3YxmDOXY3QyakgjhJLqc"
+          "current_key": "AIzaSyCiaIe8lWURpuJK08melhG6jI4t4hnxeKo"
         }
       ],
       "services": {
@@ -35,7 +35,7 @@
               "client_id": "115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "chat.nionium.ai"
               }
             }
           ]
@@ -46,7 +46,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:115198584049:android:8be27b1f7c42a2ed",
         "android_client_info": {
-          "package_name": "chat.rocket.reactnative"
+          "package_name": "chat.nionium.ai"
         }
       },
       "oauth_client": [
@@ -57,7 +57,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAWwowhAfACHBw3YxmDOXY3QyakgjhJLqc"
+          "current_key": "AIzaSyCiaIe8lWURpuJK08melhG6jI4t4hnxeKo"
         }
       ],
       "services": {
@@ -71,7 +71,7 @@
               "client_id": "115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "chat.rocket.reactnative"
+                "bundle_id": "chat.nionium.ai"
               }
             }
           ]

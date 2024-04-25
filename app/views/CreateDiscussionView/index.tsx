@@ -185,7 +185,12 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 									title='Encrypted'
 									testID='room-actions-encrypt'
 									right={() => (
-										<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
+										<Switch
+											thumbColor={'#41FF8B'}
+											value={encrypted}
+											onValueChange={this.onEncryptedChange}
+											trackColor={SWITCH_TRACK_COLOR}
+										/>
 									)}
 								/>
 							</>

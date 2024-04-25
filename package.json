@@ -45,7 +45,7 @@
 		"@react-native-community/slider": "4.2.2",
 		"@react-native-cookies/cookies": "6.2.1",
 		"@react-native-firebase/analytics": "^14.11.0",
-		"@react-native-firebase/app": "^14.11.0",
+		"@react-native-firebase/app": "14.11.0",
 		"@react-native-firebase/crashlytics": "^14.11.0",
 		"@react-native-firebase/messaging": "^18.5.0",
 		"@react-native-masked-view/masked-view": "^0.2.8",

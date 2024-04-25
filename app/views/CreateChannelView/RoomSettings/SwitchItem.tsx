@@ -48,6 +48,7 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 				</Text>
 			</View>
 			<Switch
+				thumbColor={'#41FF8B'}
 				value={value}
 				onValueChange={onValueChange}
 				testID={`create-channel-${id}`}

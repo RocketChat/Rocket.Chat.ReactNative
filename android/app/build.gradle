@@ -147,7 +147,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.48.0"
+        versionName "1.2.0"
         vectorDrawables.useSupportLibrary = true
         if (!isFoss) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
@@ -229,14 +229,22 @@ android {
     }
 
     signingConfigs {
+       signingConfigs {
         release {
-            if (project.hasProperty('KEYSTORE')) {
-                storeFile file(KEYSTORE)
-                storePassword KEYSTORE_PASSWORD
-                keyAlias KEY_ALIAS
-                keyPassword KEY_PASSWORD
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
             }
         }
+        debug {
+                storeFile file('debug')
+                storePassword '111111'
+                keyAlias 'nioniumDebug'
+                keyPassword '111111'
+            }
+    }
     }
     splits {
         abi {

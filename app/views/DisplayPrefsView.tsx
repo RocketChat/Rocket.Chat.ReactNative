@@ -91,7 +91,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
-		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
+		<Switch thumbColor={'#41FF8B'} value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
 	const renderRadio = (value: boolean) => (

@@ -64,7 +64,7 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 				onPress={toggleLivechat}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
-						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						<Switch thumbColor={'#41FF8B'} value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
 					</View>
 				)}
 			/>

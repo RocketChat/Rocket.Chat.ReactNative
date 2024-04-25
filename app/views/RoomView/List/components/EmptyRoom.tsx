@@ -1,20 +1,23 @@
 import React from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 
-import { useTheme } from '../../../../theme';
+import EmptyPNG from '../../../../static/images/empty.png';
 
 const styles = StyleSheet.create({
 	image: {
-		width: '100%',
-		height: '100%',
-		position: 'absolute'
+		width: 300,
+		height: 300,
+		marginLeft: 'auto',
+		marginRight: 'auto',
+		alignSelf: 'center',
+		marginTop: 190
 	}
 });
 
 export const EmptyRoom = React.memo(({ length, rid }: { length: number; rid: string }) => {
-	const { theme } = useTheme();
+	// const { theme } = useTheme();
 	if (length === 0 || !rid) {
-		return <ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />;
+		return <ImageBackground source={EmptyPNG} style={styles.image} />;
 	}
 	return null;
 });

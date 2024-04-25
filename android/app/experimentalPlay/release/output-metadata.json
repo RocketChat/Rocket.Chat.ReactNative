@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "APK",
+    "kind": "Directory"
+  },
+  "applicationId": "chat.rocket.reactnative",
+  "variantName": "experimentalPlayRelease",
+  "elements": [
+    {
+      "type": "SINGLE",
+      "filters": [],
+      "attributes": [],
+      "versionCode": 999999999,
+      "versionName": "1.2.0",
+      "outputFile": "app-experimental-play-release.apk"
+    }
+  ],
+  "elementType": "File"
+}
