@@ -68,7 +68,7 @@ const CancelIndicator = () => {
 	const { colors } = useTheme();
 	return (
 		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.auxiliaryText }]}>{I18n.t('Cancel')}</Text>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
 		</View>
 	);
 };
@@ -224,8 +224,9 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable
 				onPress={onPress}
-				style={[styles.button, { backgroundColor: themes[theme].videoBackground }]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}>
+				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+			>
 				<Thumbnail loading={loading} cached={cached} />
 			</Touchable>
 		</>

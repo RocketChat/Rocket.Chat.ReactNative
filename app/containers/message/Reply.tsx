@@ -101,12 +101,12 @@ const Title = React.memo(
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
-					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].auxiliaryTintColor }]}>
+					<Text numberOfLines={1} style={[styles.author, { color: themes[theme].fontHint }]}>
 						{attachment.author_name}
 					</Text>
 				) : null}
-				{time ? <Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text> : null}
-				{attachment.title ? <Text style={[styles.title, { color: themes[theme].bodyText }]}>{attachment.title}</Text> : null}
+				{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
+				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
 			</View>
 		);
 	}
@@ -132,7 +132,7 @@ const Description = React.memo(
 		return (
 			<Markdown
 				msg={text}
-				style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14 }]}
+				style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
 				theme={theme}
@@ -187,7 +187,7 @@ const Fields = React.memo(
 			<View style={styles.fieldsContainer}>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>{field.title}</Text>
+						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
 						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
 					</View>
 				))}
@@ -223,9 +223,9 @@ const Reply = React.memo(
 			openLink(url, theme);
 		};
 
-		let { borderColor } = themes[theme];
+		let { strokeExtraLight } = themes[theme];
 		if (attachment.color) {
-			borderColor = attachment.color;
+			strokeExtraLight = attachment.color;
 		}
 
 		return (
@@ -239,11 +239,12 @@ const Reply = React.memo(
 						index > 0 && styles.marginTop,
 						msg && styles.marginBottom,
 						{
-							borderColor
+							borderColor: strokeExtraLight
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
-					disabled={loading || !!attachment.message_link}>
+					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+					disabled={loading || attachment.message_link}
+				>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
@@ -252,7 +253,7 @@ const Reply = React.memo(
 							attachments={attachment.attachments}
 							getCustomEmoji={getCustomEmoji}
 							timeFormat={timeFormat}
-							style={[{ color: themes[theme].auxiliaryTintColor, fontSize: 14, marginBottom: 8 }]}
+							style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
 							isReply
 							showAttachment={showAttachment}
 						/>
@@ -262,8 +263,9 @@ const Reply = React.memo(
 								<View
 									style={[
 										styles.backdrop,
-										{ backgroundColor: themes[theme].bannerBackground, opacity: themes[theme].attachmentLoadingOpacity }
-									]}></View>
+										{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
+									]}
+								></View>
 								<RCActivityIndicator />
 							</View>
 						) : null}

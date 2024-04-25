@@ -62,10 +62,10 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
 			return (
-				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
+				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} numberOfLines={0} />
 			);
 		}
-		return <Text style={[styles.text, { color: themes[theme].bodyText }]}>{element.text}</Text>;
+		return <Text style={[styles.text, { color: themes[theme].fontDefault }]}>{element.text}</Text>;
 	}
 
 	mrkdwn(element: IMarkdown, context: BlockContext) {
@@ -74,10 +74,10 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 		const isContext = context === BlockContext.CONTEXT;
 		if (isContext) {
 			return (
-				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].auxiliaryText }]} numberOfLines={0} />
+				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} numberOfLines={0} />
 			);
 		}
-		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].auxiliaryText }]} />;
+		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} />;
 	}
 
 	button(element: IButton, context: BlockContext) {

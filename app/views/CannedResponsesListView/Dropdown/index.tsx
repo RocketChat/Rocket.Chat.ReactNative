@@ -71,8 +71,8 @@ const Dropdown = ({ currentDepartment, onClose, onDepartmentSelected, department
 					styles.dropdownContainer,
 					{
 						transform: [{ translateY }],
-						backgroundColor: colors.backgroundColor,
-						borderColor: colors.separatorColor
+						backgroundColor: colors.surfaceRoom,
+						borderColor: colors.strokeLight
 					}
 				]}>
 				<DropdownItemHeader department={currentDepartment} onPress={close} />

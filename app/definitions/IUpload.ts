@@ -1,8 +1,10 @@
 import Model from '@nozbe/watermelondb/Model';
 
+import { E2EType, MessageType } from './IMessage';
+
 export interface IUpload {
 	id?: string;
-	rid?: string;
+	rid: string;
 	path: string;
 	name?: string;
 	tmid?: string;
@@ -14,6 +16,8 @@ export interface IUpload {
 	error?: boolean;
 	subscription?: { id: string };
 	msg?: string;
+	t?: MessageType;
+	e2e?: E2EType;
 }
 
 export type TUploadModel = IUpload & Model;

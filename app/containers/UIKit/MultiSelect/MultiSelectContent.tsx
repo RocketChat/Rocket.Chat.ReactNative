@@ -71,7 +71,7 @@ export const MultiSelectContent = React.memo(
 						testID='multi-select-search'
 						onChangeText={handleSearch}
 						placeholder={I18n.t('Search')}
-						inputStyle={{ backgroundColor: colors.focusedBackground }}
+						inputStyle={{ backgroundColor: colors.surfaceLight }}
 						bottomSheet={isIOS}
 						onSubmitEditing={() => {
 							setTimeout(() => {

@@ -18,7 +18,7 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 				style={[
 					styles.centerContainer,
 					{
-						borderColor: colors.separatorColor
+						borderColor: colors.strokeLight
 					}
 				]}>
 				{children}

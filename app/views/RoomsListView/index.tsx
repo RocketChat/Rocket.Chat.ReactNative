@@ -44,7 +44,7 @@ import {
 	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
+import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 
@@ -433,10 +433,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		const getBadge = () => {
 			if (supportedVersionsStatus === 'warn') {
-				return <HeaderButton.BadgeWarn color={colors[theme].dangerColor} />;
+				return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
 			}
 			if (notificationPresenceCap) {
-				return <HeaderButton.BadgeWarn color={STATUS_COLORS.disabled} />;
+				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
 			}
 			return null;
 		};
@@ -941,8 +941,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderSectionHeader = (header: string) => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.groupTitle, { color: themes[theme].controlText }]}>{I18n.t(header)}</Text>
+			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
+				<Text style={[styles.groupTitle, { color: themes[theme].fontHint }]}>{I18n.t(header)}</Text>
 			</View>
 		);
 	};
@@ -967,7 +967,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
 				keyExtractor={item => keyExtractor(item, searching)}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
 				getItemLayout={(data, index) => getItemLayout(data, index, height)}
@@ -975,7 +975,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				}
 				windowSize={9}
 				onEndReached={this.onEndReached}
@@ -990,7 +990,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { showServerDropdown, theme } = this.props;
 
 		return (
-			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}

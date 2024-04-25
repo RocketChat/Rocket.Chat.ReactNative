@@ -104,14 +104,14 @@ const QueueListView = React.memo(() => {
 	};
 
 	return (
-		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.backgroundColor }}>
+		<SafeAreaView testID='queue-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
 			<StatusBar />
 			<FlatList
 				ref={getScrollRef}
 				data={queued}
 				extraData={queued}
 				keyExtractor={keyExtractor}
-				style={{ backgroundColor: colors.backgroundColor }}
+				style={{ backgroundColor: colors.surfaceRoom }}
 				renderItem={renderItem}
 				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}

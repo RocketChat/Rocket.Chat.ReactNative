@@ -10,7 +10,6 @@ import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
 import { hideNotification } from '../../../lib/methods/helpers/notifications';
-import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 import { CallHeader } from '../../CallHeader';
 import { useStyle } from './style';
@@ -41,7 +40,6 @@ const IncomingCallHeader = React.memo(
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const styles = useStyle();
 		const insets = useSafeAreaInsets();
-		const { colors } = useTheme();
 
 		return (
 			<View
@@ -51,7 +49,8 @@ const IncomingCallHeader = React.memo(
 					{
 						marginTop: insets.top
 					}
-				]}>
+				]}
+			>
 				<CallHeader
 					title={i18n.t('Incoming_call_from')}
 					cam={cam}
@@ -70,8 +69,9 @@ const IncomingCallHeader = React.memo(
 							setAudio(!audio);
 							hideNotification();
 						}}
-						style={styles.closeButton}>
-						<CustomIcon name='close' size={20} color={colors.gray300} />
+						style={styles.closeButton}
+					>
+						<CustomIcon name='close' size={20} />
 					</Touchable>
 					<Touchable
 						hitSlop={BUTTON_HIT_SLOP}
@@ -80,7 +80,8 @@ const IncomingCallHeader = React.memo(
 							hideNotification();
 							dispatch(cancelCall({ callId }));
 						}}
-						style={styles.cancelButton}>
+						style={styles.cancelButton}
+					>
 						<Text style={styles.buttonText}>{i18n.t('decline')}</Text>
 					</Touchable>
 					<Touchable
@@ -90,7 +91,8 @@ const IncomingCallHeader = React.memo(
 							hideNotification();
 							dispatch(acceptCall({ callId }));
 						}}
-						style={styles.acceptButton}>
+						style={styles.acceptButton}
+					>
 						<Text style={styles.buttonText}>{i18n.t('accept')}</Text>
 					</Touchable>
 				</View>

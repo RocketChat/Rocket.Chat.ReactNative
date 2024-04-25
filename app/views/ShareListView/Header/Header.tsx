@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 });
 
 const Header = React.memo(({ searching, onChangeSearchText, theme }: IShareListHeader) => {
-	const titleColorStyle = { color: themes[theme].headerTintColor };
+	const titleColorStyle = { color: themes[theme].fontSecondaryInfo };
 	const isLight = theme === 'light';
 	if (searching) {
 		return (

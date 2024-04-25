@@ -118,9 +118,9 @@ exports[`MessageComposer Audio tap record 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -312,9 +312,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -423,9 +423,9 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -628,8 +628,8 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "fontWeight": "400",
                     "textAlign": "left",
                   },
-                  {
-                    "color": "#2f343d",
+                  Object {
+                    "color": "#2F343D",
                   },
                   {
                     "backgroundColor": "transparent",
@@ -729,9 +729,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -840,9 +840,9 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -1046,8 +1046,8 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "fontWeight": "400",
                     "textAlign": "left",
                   },
-                  {
-                    "color": "#2f343d",
+                  Object {
+                    "color": "#2F343D",
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1221,8 +1221,8 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "fontWeight": "400",
                     "textAlign": "left",
                   },
-                  {
-                    "color": "#2f343d",
+                  Object {
+                    "color": "#2F343D",
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1322,9 +1322,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -1433,9 +1433,9 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -1639,8 +1639,8 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "fontWeight": "400",
                     "textAlign": "left",
                   },
-                  {
-                    "color": "#2f343d",
+                  Object {
+                    "color": "#2F343D",
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1814,8 +1814,8 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "fontWeight": "400",
                     "textAlign": "left",
                   },
-                  {
-                    "color": "#2f343d",
+                  Object {
+                    "color": "#2F343D",
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1950,9 +1950,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2022,9 +2022,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2094,9 +2094,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2166,9 +2166,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2238,9 +2238,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2310,9 +2310,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2382,9 +2382,9 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2521,9 +2521,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2593,9 +2593,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2665,9 +2665,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2737,9 +2737,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2809,9 +2809,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2881,9 +2881,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -2953,9 +2953,9 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3092,9 +3092,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3164,9 +3164,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3236,9 +3236,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3308,9 +3308,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3380,9 +3380,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3452,9 +3452,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3524,9 +3524,9 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3663,9 +3663,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3735,9 +3735,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3807,9 +3807,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3879,9 +3879,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -3951,9 +3951,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4023,9 +4023,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4095,9 +4095,9 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4234,9 +4234,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4306,9 +4306,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4378,9 +4378,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4450,9 +4450,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4522,9 +4522,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4594,9 +4594,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4666,9 +4666,9 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4805,9 +4805,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4877,9 +4877,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -4949,9 +4949,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5021,9 +5021,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5093,9 +5093,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5165,9 +5165,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5237,9 +5237,9 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5376,9 +5376,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5448,9 +5448,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5520,9 +5520,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5592,9 +5592,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5664,9 +5664,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5736,9 +5736,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5808,9 +5808,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -5947,9 +5947,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6019,9 +6019,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6091,9 +6091,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6163,9 +6163,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6235,9 +6235,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6307,9 +6307,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6379,9 +6379,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6518,9 +6518,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6590,9 +6590,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6662,9 +6662,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6734,9 +6734,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6806,9 +6806,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6878,9 +6878,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -6950,9 +6950,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7089,9 +7089,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7161,9 +7161,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7233,9 +7233,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7305,9 +7305,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7377,9 +7377,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7449,9 +7449,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7521,9 +7521,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7660,9 +7660,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7732,9 +7732,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7804,9 +7804,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7876,9 +7876,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -7948,9 +7948,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8020,9 +8020,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8092,9 +8092,9 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8231,9 +8231,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8303,9 +8303,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8375,9 +8375,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8447,9 +8447,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8519,9 +8519,9 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8658,9 +8658,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8730,9 +8730,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8802,9 +8802,9 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -8942,9 +8942,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -9014,9 +9014,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -9086,9 +9086,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -9158,9 +9158,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -9230,9 +9230,9 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -9667,7 +9667,32 @@ exports[`MessageComposer renders correctly 1`] = `
             accessibilityRole="button"
             accessible={true}
           >
-            <Text />
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  Array [
+                    Object {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
           </View>
         </RNGestureHandlerButton>
       </View>
@@ -9753,7 +9778,32 @@ exports[`MessageComposer renders correctly 1`] = `
             accessibilityRole="button"
             accessible={true}
           >
-            <Text />
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                Array [
+                  Object {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  Array [
+                    Object {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  Object {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
           </View>
         </RNGestureHandlerButton>
       </View>
@@ -9837,9 +9887,9 @@ exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -9987,9 +10037,9 @@ exports[`MessageComposer renders correctly with audio recorder disabled and with
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -10137,9 +10187,9 @@ exports[`MessageComposer renders correctly without audio upload permissions 1`] 
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -10322,9 +10372,9 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -10394,9 +10444,9 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -10466,9 +10516,9 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -10538,9 +10588,9 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -10610,9 +10660,9 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
             allowFontScaling={false}
             selectable={false}
             style={
-              [
-                {
-                  "color": "#6C727A",
+              Array [
+                Object {
+                  "color": "#2F343D",
                   "fontSize": 24,
                 },
                 [
@@ -10714,9 +10764,9 @@ exports[`MessageComposer send message 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [
@@ -10825,9 +10875,9 @@ exports[`MessageComposer send message 1`] = `
               allowFontScaling={false}
               selectable={false}
               style={
-                [
-                  {
-                    "color": "#6C727A",
+                Array [
+                  Object {
+                    "color": "#2F343D",
                     "fontSize": 24,
                   },
                   [

@@ -43,7 +43,7 @@ export default {
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>
+				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
 					<MessageContext.Provider
 						value={{
 							user,
@@ -56,8 +56,9 @@ export default {
 							onReactionPress: () => {},
 							onDiscussionPress: () => {},
 							onReactionLongPress: () => {},
-							threadBadgeColor: themes.light.tunreadColor
-						}}>
+							threadBadgeColor: themes.light.fontInfo
+						}}
+					>
 						<Story />
 					</MessageContext.Provider>
 				</ScrollView>

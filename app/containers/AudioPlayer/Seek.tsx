@@ -102,7 +102,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		} as TextInputProps;
 	}, [timeLabel, duration, currentTime]);
 
-	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
+	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled;
 
 	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (

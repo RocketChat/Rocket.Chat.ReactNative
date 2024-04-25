@@ -135,7 +135,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].headerBackground;
+		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
 	if (props.hasError) {

@@ -102,7 +102,7 @@ const NewMessageView = () => {
 				}}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

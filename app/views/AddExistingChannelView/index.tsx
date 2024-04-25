@@ -162,12 +162,12 @@ const AddExistingChannelView = () => {
 							onPress={() => toggleChannel(item.rid)}
 							testID={`add-existing-channel-view-item-${item.name}`}
 							left={() => <List.Icon name={icon} />}
-							right={() => (isChecked(item.rid) ? <List.Icon name='check' /> : null)}
+							right={() => (isChecked(item.rid) ? <List.Icon name='check' color={colors.fontHint} /> : null)}
 						/>
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

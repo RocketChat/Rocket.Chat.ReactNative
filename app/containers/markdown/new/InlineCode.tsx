@@ -18,9 +18,9 @@ const InlineCode = ({ value }: IInlineCodeProps) => {
 			style={[
 				styles.codeInline,
 				{
-					color: themes[theme].bodyText,
-					backgroundColor: themes[theme].bannerBackground,
-					borderColor: themes[theme].borderColor
+					color: themes[theme].fontDefault,
+					backgroundColor: themes[theme].surfaceNeutral,
+					borderColor: themes[theme].strokeLight
 				}
 			]}>
 			{(block => {
