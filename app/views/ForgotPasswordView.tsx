@@ -67,7 +67,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 	return (
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.titleText }]}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>
 					{I18n.t('Forgot_password')}
 				</Text>
 				<ControlledFormTextInput

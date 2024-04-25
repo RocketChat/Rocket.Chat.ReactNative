@@ -66,6 +66,7 @@ export type ChatsStackParamList = {
 		isSearch?: boolean;
 		onSearch?: (text: string) => Promise<TDataSelect[] | any>;
 		isRadio?: boolean;
+		fontHint?: string;
 	};
 	RoomInfoView: {
 		room?: ISubscription;

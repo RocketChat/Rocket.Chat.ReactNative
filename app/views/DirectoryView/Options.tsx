@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { Animated, Easing, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import styles from './styles';
+import Switch from '../../containers/Switch';
 import { useTheme } from '../../theme';
 
 const ANIMATION_DURATION = 200;
@@ -66,8 +66,8 @@ const DirectoryOptions = ({
 		return (
 			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon name={icon} size={22} color={colors.bodyText} style={styles.dropdownItemIcon} />
-					<Text style={[styles.dropdownItemText, { color: colors.bodyText }]}>{I18n.t(text)}</Text>
+					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.dropdownItemIcon} />
+					<Text style={[styles.dropdownItemText, { color: colors.fontDefault }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check /> : null}
 				</View>
 			</Touch>
@@ -89,15 +89,15 @@ const DirectoryOptions = ({
 			<TouchableWithoutFeedback onPress={close}>
 				<Animated.View style={[styles.backdrop, { backgroundColor: colors.backdropColor, opacity: backdropOpacity }]} />
 			</TouchableWithoutFeedback>
-			<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: colors.backgroundColor }]}>
+			<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: colors.surfaceRoom }]}>
 				<Touch onPress={close} accessibilityLabel={I18n.t('Search_by')}>
-					<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: colors.separatorColor }]}>
-						<Text style={[styles.dropdownToggleText, { color: colors.auxiliaryText }]}>{I18n.t('Search_by')}</Text>
+					<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: colors.strokeLight }]}>
+						<Text style={[styles.dropdownToggleText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Search_by')}</Text>
 						<CustomIcon
 							style={[styles.dropdownItemIcon, styles.inverted]}
 							size={22}
 							name='chevron-down'
-							color={colors.auxiliaryTintColor}
+							color={colors.fontHint}
 						/>
 					</View>
 				</Touch>
@@ -106,15 +106,15 @@ const DirectoryOptions = ({
 				{renderItem('teams')}
 				{isFederationEnabled ? (
 					<>
-						<View style={[styles.dropdownSeparator, { backgroundColor: colors.separatorColor }]} />
+						<View style={[styles.dropdownSeparator, { backgroundColor: colors.strokeLight }]} />
 						<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
 							<View style={styles.globalUsersTextContainer}>
-								<Text style={[styles.dropdownItemText, { color: colors.infoText }]}>{I18n.t('Search_global_users')}</Text>
-								<Text style={[styles.dropdownItemDescription, { color: colors.infoText }]}>
+								<Text style={[styles.dropdownItemText, { color: colors.fontHint }]}>{I18n.t('Search_global_users')}</Text>
+								<Text style={[styles.dropdownItemDescription, { color: colors.fontHint }]}>
 									{I18n.t('Search_global_users_description')}
 								</Text>
 							</View>
-							<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
+							<Switch value={globalUsers} onValueChange={toggleWorkspace} />
 						</View>
 					</>
 				) : null}

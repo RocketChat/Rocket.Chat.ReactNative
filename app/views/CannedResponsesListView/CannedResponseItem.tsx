@@ -31,27 +31,27 @@ const CannedResponseItem = ({
 		<>
 			<View style={styles.cannedRow}>
 				<View style={styles.cannedWrapShortcutScope}>
-					<Text style={[styles.cannedShortcut, { color: themes[theme].titleText }]}>!{shortcut}</Text>
-					<Text style={[styles.cannedScope, { color: themes[theme].auxiliaryTintColor }]}>{scope}</Text>
+					<Text style={[styles.cannedShortcut, { color: themes[theme].fontTitlesLabels }]}>!{shortcut}</Text>
+					<Text style={[styles.cannedScope, { color: themes[theme].fontHint }]}>{scope}</Text>
 				</View>
 
 				<Button
 					title={I18n.t('Use')}
 					fontSize={12}
-					color={themes[theme].titleText}
-					style={[styles.cannedUseButton, { backgroundColor: themes[theme].chatComponentBackground }]}
+					color={themes[theme].fontTitlesLabels}
+					style={[styles.cannedUseButton, { backgroundColor: themes[theme].surfaceTint }]}
 					onPress={onPressUse}
 				/>
 			</View>
 
-			<Text ellipsizeMode='tail' numberOfLines={2} style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>
+			<Text ellipsizeMode='tail' numberOfLines={2} style={[styles.cannedText, { color: themes[theme].fontHint }]}>
 				“{text}”
 			</Text>
 			<View style={styles.cannedTagContainer}>
 				{tags?.length > 0
 					? tags.map(t => (
-							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
-								<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
+							<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
+								<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 							</View>
 					  ))
 					: null}

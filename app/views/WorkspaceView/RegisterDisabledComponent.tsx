@@ -17,7 +17,7 @@ const RegisterDisabledComponent = () => {
 		return null;
 	}
 
-	return <Text style={[styles.registrationText, { color: colors.auxiliaryText }]}>{registrationText}</Text>;
+	return <Text style={[styles.registrationText, { color: colors.fontSecondaryInfo }]}>{registrationText}</Text>;
 };
 
 export default RegisterDisabledComponent;
