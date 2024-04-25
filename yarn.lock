@@ -2316,7 +2316,7 @@
     glob "^7.1.6"
     read-pkg-up "^7.0.1"
 
-"@codler/react-native-keyboard-aware-scroll-view@^2.0.1":
+"@codler/react-native-keyboard-aware-scroll-view@2.0.1":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@codler/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-2.0.1.tgz#4ca9b9431fc9a3dcbc9ea0e148e9fed4baf7c72d"
   integrity sha512-95O4QBJQiSTYCIHvaHVfIagqR7qv3XiolKwtb+B9ZgaMsIDvPu1gUQOs+X9nnOtnihjkMDP9hsaRSmtM3sBY+A==
