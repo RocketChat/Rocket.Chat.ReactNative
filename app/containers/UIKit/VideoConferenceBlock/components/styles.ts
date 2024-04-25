@@ -6,7 +6,7 @@ import sharedStyles from '../../../../views/Styles';
 export default function useStyle() {
 	const { colors } = useTheme();
 	const style = StyleSheet.create({
-		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.surfaceHover },
+		container: { height: 108, flex: 1, borderWidth: 1, borderRadius: 4, marginTop: 8, borderColor: colors.surfaceNeutral },
 		callInfoContainer: { flex: 1, alignItems: 'center', paddingLeft: 16, flexDirection: 'row' },
 		infoContainerText: {
 			fontSize: 12,
@@ -23,7 +23,7 @@ export default function useStyle() {
 		},
 		callToActionContainer: {
 			height: 48,
-			backgroundColor: colors.surfaceHover,
+			backgroundColor: colors.surfaceNeutral,
 			flexDirection: 'row',
 			alignItems: 'center',
 			paddingLeft: 16
