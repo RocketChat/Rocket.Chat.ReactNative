@@ -31,7 +31,7 @@ extension ExtensionDelegate: UNUserNotificationCenterDelegate {
 extension ExtensionDelegate {
 	private func deeplink(from response: NotificationResponse) {
 		guard let server = database.server(url: response.host) else { return }
-		guard let room = server.database.room(id: response.rid) else { return }
+		guard let room = server.database.room(rid: response.rid) else { return }
 		
 		router.route(to: [.loading, .roomList(server), .room(server, room)])
 	}

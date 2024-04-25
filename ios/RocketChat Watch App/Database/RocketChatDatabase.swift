@@ -6,6 +6,7 @@ protocol Database {
 	func has(context: NSManagedObjectContext) -> Bool
 	
 	func room(id: String) -> Room?
+	func room(rid: String) -> Room?
 	func remove(_ message: Message)
 	
 	func handleRoomsResponse(_ subscriptionsResponse: SubscriptionsResponse, _ roomsResponse: RoomsResponse)
@@ -73,6 +74,13 @@ final class RocketChatDatabase: Database {
 	func room(id: String) -> Room? {
 		let request = Room.fetchRequest()
 		request.predicate = NSPredicate(format: "id == %@", id)
+		
+		return try? viewContext.fetch(request).first
+	}
+	
+	func room(rid: String) -> Room? {
+		let request = Room.fetchRequest()
+		request.predicate = NSPredicate(format: "rid == %@", rid)
 		
 		return try? viewContext.fetch(request).first
 	}
