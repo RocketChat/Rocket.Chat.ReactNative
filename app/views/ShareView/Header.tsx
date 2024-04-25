@@ -68,7 +68,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 		icon = 'channel-private';
 	}
 
-	const textColor = themes[theme].surfaceTint;
+	const textColor = themes[theme].fontDefault;
 
 	let title;
 	if (thread?.id) {
