@@ -102,7 +102,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		setData({});
 	};
 
-	const color = themes[theme].titleText;
+	const color = themes[theme].fontTitlesLabels;
 	return (
 		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
@@ -110,7 +110,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme].backgroundColor }
+						{ backgroundColor: themes[theme].surfaceHover }
 					]}
 				>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
@@ -136,7 +136,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 						<Button
 							title={I18n.t('Cancel')}
 							type='secondary'
-							backgroundColor={themes[theme].chatComponentBackground}
+							backgroundColor={themes[theme].surfaceTint}
 							style={styles.button}
 							onPress={onCancel}
 						/>

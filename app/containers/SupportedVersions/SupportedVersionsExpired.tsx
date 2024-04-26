@@ -46,19 +46,19 @@ export const SupportedVersionsExpired = () => {
 	};
 
 	return (
-		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.focusedBackground }]}>
+		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
 			<View style={styles.iconContainer}>
-				<CustomIcon name='warning' size={36} color={colors.dangerColor} />
+				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
-			<Text style={[styles.title, { color: colors.titleText }]}>
+			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('Supported_versions_expired_title', { workspace_name: name })}
 			</Text>
-			<Text style={[styles.description, { color: colors.bodyText }]}>{I18n.t('Supported_versions_expired_description')}</Text>
+			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Supported_versions_expired_description')}</Text>
 			<Button title={I18n.t('Check_again')} type='primary' onPress={checkAgain} loading={checking} />
 			<Button
 				title={I18n.t('Learn_more')}
 				type='secondary'
-				backgroundColor={colors.chatComponentBackground}
+				backgroundColor={colors.surfaceTint}
 				onPress={() => Linking.openURL(LEARN_MORE_URL)}
 			/>
 		</View>

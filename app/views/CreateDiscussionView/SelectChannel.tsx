@@ -56,7 +56,7 @@ const SelectChannel = ({
 
 	return (
 		<>
-			<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t('Parent_channel_or_group')}</Text>
+			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Parent_channel_or_group')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}

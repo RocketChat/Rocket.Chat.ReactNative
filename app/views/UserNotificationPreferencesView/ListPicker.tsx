@@ -45,7 +45,7 @@ const ListPicker = ({
 				hideActionSheet();
 				onChangeValue({ [preference]: i.value.toString() });
 			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
 		}));
 
 	return (
@@ -54,7 +54,7 @@ const ListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
 			right={() => (
-				<Text style={[styles.pickerText, { color: colors.actionTintColor }]}>
+				<Text style={[styles.pickerText, { color: colors.fontHint }]}>
 					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label}
 				</Text>
 			)}
