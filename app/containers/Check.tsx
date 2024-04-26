@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 
 const Check = React.memo(() => {
 	const { theme } = useTheme();
-	return <CustomIcon style={styles.icon} color={themes[theme].tintColor} size={22} name='check' />;
+	return <CustomIcon style={styles.icon} color={themes[theme].badgeBackgroundLevel2} size={22} name='check' />;
 });
 
 export default Check;

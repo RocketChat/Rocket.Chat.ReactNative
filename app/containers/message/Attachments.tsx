@@ -55,14 +55,14 @@ const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachme
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
-		const { translateLanguage } = useContext(MessageContext);
+		const { translateLanguage, isEncrypted } = useContext(MessageContext);
 
 		if (!attachments || attachments.length === 0) {
 			return null;
 		}
 
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
-			const msg = getMessageFromAttachment(file, translateLanguage);
+			const msg = isEncrypted ? '' : getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
 				return (
 					<Image

@@ -16,13 +16,13 @@ const CallButton = React.memo(({ handleEnterCall }: IMessageCallButton) => {
 		<View style={styles.buttonContainer}>
 			<Touchable
 				onPress={handleEnterCall}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-				style={[styles.button, { backgroundColor: themes[theme].tintColor }]}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
+				style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
 				hitSlop={BUTTON_HIT_SLOP}
 			>
 				<>
-					<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={themes[theme].buttonText} />
-					<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Click_to_join')}</Text>
+					<CustomIcon name='camera' size={16} style={styles.buttonIcon} color={themes[theme].fontWhite} />
+					<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{I18n.t('Click_to_join')}</Text>
 				</>
 			</Touchable>
 		</View>
