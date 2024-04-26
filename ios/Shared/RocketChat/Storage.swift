@@ -14,8 +14,6 @@ struct Credentials {
 }
 
 class Storage {
-  static let shared = Storage()
-
   final var mmkv: MMKV? = nil
 
   init() {

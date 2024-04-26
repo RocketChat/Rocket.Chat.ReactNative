@@ -122,9 +122,9 @@ PODS:
   - libwebp/sharpyuv (1.3.2)
   - libwebp/webp (1.3.2):
     - libwebp/sharpyuv
-  - MMKV (1.2.13):
-    - MMKVCore (~> 1.2.13)
-  - MMKVCore (1.2.15)
+  - MMKV (1.3.3):
+    - MMKVCore (~> 1.3.3)
+  - MMKVCore (1.3.3)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
@@ -365,7 +365,7 @@ PODS:
   - react-native-document-picker (8.1.2):
     - React-Core
   - react-native-mmkv-storage (0.8.0):
-    - MMKV (= 1.2.13)
+    - MMKV (= 1.3.3)
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
@@ -915,8 +915,8 @@ SPEC CHECKSUMS:
   iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
-  MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
-  MMKVCore: ddf41b9d9262f058419f9ba7598719af56c02cd3
+  MMKV: f902fb6719da13c2ab0965233d8963a59416f911
+  MMKVCore: d26e4d3edd5cb8588c2569222cbd8be4231374e9
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
@@ -938,7 +938,7 @@ SPEC CHECKSUMS:
   react-native-cameraroll: 2f08db1ecc9b73dbc01f89335d6d5179fac2894c
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
-  react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
+  react-native-mmkv-storage: 3c1d62e86121d281f109ad8b9b70979f5f3c0f90
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
   react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
