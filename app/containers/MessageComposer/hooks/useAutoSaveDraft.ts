@@ -1,24 +1,28 @@
+import { useRoute } from '@react-navigation/native';
 import { useCallback, useEffect, useRef } from 'react';
 
+import { saveDraftMessage } from '../../../lib/methods/draftMessage';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { useFocused } from '../context';
-import { saveDraftMessage } from '../../../lib/methods/draftMessage';
 
 export const useAutoSaveDraft = (text = '') => {
+	const route = useRoute();
 	const { rid, tmid, action, selectedMessages } = useRoomContext();
 	const focused = useFocused();
 	const oldText = useRef('');
 	const intervalRef = useRef();
 
-	const saveMessageDraft = useCallback(() => {
-		if (action === 'edit') return;
+	const mounted = useRef(true);
 
+	const saveMessageDraft = useCallback(() => {
+		if (route.name === 'ShareView') return;
+		if (action === 'edit') return;
 		const draftMessage = selectedMessages?.length ? JSON.stringify({ quotes: selectedMessages, msg: text }) : text;
-		if (oldText.current !== draftMessage) {
+		if (oldText.current !== draftMessage || (oldText.current === '' && draftMessage === '')) {
 			oldText.current = draftMessage;
 			saveDraftMessage({ rid, tmid, draftMessage });
 		}
-	}, [action, rid, tmid, text, selectedMessages?.length]);
+	}, [action, rid, tmid, text, selectedMessages?.length, route.name]);
 
 	useEffect(() => {
 		if (focused) {
@@ -29,7 +33,23 @@ export const useAutoSaveDraft = (text = '') => {
 
 		return () => {
 			clearInterval(intervalRef.current);
-			saveMessageDraft();
 		};
 	}, [focused, saveMessageDraft]);
+
+	// hack to call saveMessageDraft when component is unmounted
+	useEffect(() => {
+		() => {};
+		return () => {
+			mounted.current = false;
+		};
+	}, []);
+
+	useEffect(
+		() => () => {
+			if (!mounted.current) {
+				saveMessageDraft();
+			}
+		},
+		[saveMessageDraft]
+	);
 };
