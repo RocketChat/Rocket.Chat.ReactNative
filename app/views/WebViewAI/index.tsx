@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import WebView from 'react-native-webview';
-import { TouchableOpacity, View, Dimensions, ScrollView } from 'react-native';
+import { TouchableOpacity, View, Dimensions, ScrollView, BackHandler } from 'react-native';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { shallowEqual, useSelector } from 'react-redux';
 import { IApplicationState } from 'definitions';
@@ -28,6 +28,19 @@ const WebViewAI = ({ navigation, header }: { navigation: any; header: any; times
 	const closeWebView = () => {
 		setIsVisible(false);
 	};
+
+	useEffect(() => {
+		if (isVisible) {
+			const backAction = () => {
+				setIsVisible(false);
+				return true;
+			};
+
+			const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+			return () => backHandler.remove();
+		}
+	}, [isVisible]);
 
 	useEffect(() => {
 		if (isVisible) {
