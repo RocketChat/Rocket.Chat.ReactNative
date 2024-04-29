@@ -428,8 +428,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					threadBadgeColor,
 					toggleFollowThread,
 					replies,
-					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
-					isEncrypted: this.isEncrypted
+					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined
 				}}
 			>
 				{/* @ts-ignore*/}
