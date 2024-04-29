@@ -29,7 +29,6 @@ import {
 	E2E_STATUS
 } from '../constants';
 import { Services } from '../services';
-import { compareServerVersion } from '../methods/helpers';
 
 class Encryption {
 	ready: boolean;
@@ -468,8 +467,7 @@ class Encryption {
 
 			const roomE2E = await this.getRoomInstance(rid);
 
-			const { version: serverVersion } = store.getState().server;
-			if ('path' in message && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
+			if ('path' in message) {
 				return roomE2E.encryptUpload(message);
 			}
 			return roomE2E.encrypt(message);

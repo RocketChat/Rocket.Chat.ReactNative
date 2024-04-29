@@ -12,8 +12,6 @@ import FileUpload from './helpers/fileUpload';
 import { IFileUpload } from './helpers/fileUpload/interfaces';
 import log from './helpers/log';
 import { E2E_MESSAGE_TYPE } from '../constants';
-import { store } from '../store/auxStore';
-import { compareServerVersion } from './helpers';
 
 const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
@@ -120,8 +118,7 @@ export function sendFileMessage(
 				});
 			}
 
-			const { version: serverVersion } = store.getState().server;
-			if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
+			if (encryptedFileInfo.t === E2E_MESSAGE_TYPE) {
 				formData.push({
 					name: 't',
 					data: encryptedFileInfo.t
