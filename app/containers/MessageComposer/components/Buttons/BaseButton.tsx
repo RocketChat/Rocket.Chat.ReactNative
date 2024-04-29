@@ -26,7 +26,7 @@ export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }:
 	return (
 		<BorderlessButton style={styles.button} onPress={() => onPress()} testID={testID} hitSlop={hitSlop}>
 			<View accessible accessibilityLabel={I18n.t(accessibilityLabel)} accessibilityRole='button'>
-				<CustomIcon name={icon} size={24} color={color || colors.fontSecondaryInfo} />
+				<CustomIcon name={icon} size={24} color={color || colors.messageComposerIcons} />
 			</View>
 		</BorderlessButton>
 	);

@@ -100,6 +100,7 @@ export const colors = {
 		conferenceCallPhotoBackground: '#E4E7EA',
 		composerInputBackground: '#FFFFFF',
 		textInputSecondaryBackground: '#E4E7EA',
+		messageComposerIcons: '#6C727A',
 		...mentions,
 		...themeColors
 	},
@@ -173,6 +174,7 @@ export const colors = {
 		conferenceCallPhotoBackground: '#E4E7EA',
 		composerInputBackground: '#F9F9F9',
 		textInputSecondaryBackground: '#030b1b',
+		messageComposerIcons: '#6C727A',
 		...mentions,
 		...themeColors
 	},
@@ -246,6 +248,7 @@ export const colors = {
 		conferenceCallPhotoBackground: '#E4E7EA',
 		composerInputBackground: '#F9F9F9',
 		textInputSecondaryBackground: '#000000',
+		messageComposerIcons: '#FFFFFF',
 		...mentions,
 		...themeColors
 	}
