@@ -43,6 +43,7 @@ class Encryption {
 			handshake: Function;
 			decrypt: Function;
 			encrypt: Function;
+			encryptFile: Function;
 			encryptUpload: Function;
 			importRoomKey: Function;
 		};
@@ -514,6 +515,26 @@ class Encryption {
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+
+	// Encrypt a file
+	encryptFile = async (rid: string, path: string) => {
+		try {
+			// If the client is not ready
+			if (!this.ready) {
+				// Wait for ready status
+				await this.establishing;
+			}
+
+			const roomE2E = await this.getRoomInstance(rid);
+
+			return roomE2E.encryptFile(path);
+		} catch (e) {
+			console.error(e);
+		}
+
+		// Send a non encrypted message
+		return null;
+	};
 }
 
 const encryption = new Encryption();

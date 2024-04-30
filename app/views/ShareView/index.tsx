@@ -35,6 +35,7 @@ import {
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
+import { Encryption } from '../../lib/encryption';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -249,42 +250,51 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		try {
-			// Send attachment
-			if (attachments.length) {
-				await Promise.all(
-					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
-						if (canUpload) {
-							return sendFileMessage(
-								room.rid,
-								{
-									rid: room.rid,
-									name,
-									description,
-									size,
-									type,
-									path,
-									store: 'Uploads',
-									msg
-								},
-								thread?.id,
-								server,
-								{ id: user.id, token: user.token }
-							);
-						}
-						return Promise.resolve();
-					})
-				);
-
-				// Send text message
-			} else if (text.length) {
-				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
-			}
-		} catch {
-			if (!this.isShareExtension) {
-				const text = this.messageComposerRef.current?.getText();
-				this.finishShareView(text, this.state.selectedMessages);
-			}
+			console.log(attachments[0].path);
+			const encryptedFile = await Encryption.encryptFile(room.rid, attachments[0].path);
+			console.log('🚀 ~ ShareView ~ attachments.map ~ encryptedFile:', encryptedFile);
+		} catch (e) {
+			console.error(e);
 		}
+
+		// try {
+		// 	// Send attachment
+		// 	if (attachments.length) {
+		// 		console.log('🚀 ~ ShareView ~ send= ~ attachments:', attachments);
+		// 		await Promise.all(
+		// 			attachments.map(async ({ filename: name, mime: type, description, size, path, canUpload }) => {
+		// 				if (canUpload) {
+		// 					return sendFileMessage(
+		// 						room.rid,
+		// 						{
+		// 							rid: room.rid,
+		// 							name,
+		// 							description,
+		// 							size,
+		// 							type,
+		// 							path,
+		// 							store: 'Uploads',
+		// 							msg
+		// 						},
+		// 						thread?.id,
+		// 						server,
+		// 						{ id: user.id, token: user.token }
+		// 					);
+		// 				}
+		// 				return Promise.resolve();
+		// 			})
+		// 		);
+
+		// 		// Send text message
+		// 	} else if (text.length) {
+		// 		await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+		// 	}
+		// } catch {
+		// 	if (!this.isShareExtension) {
+		// 		const text = this.messageComposerRef.current?.getText();
+		// 		this.finishShareView(text, this.state.selectedMessages);
+		// 	}
+		// }
 
 		// if it's share extension this should close
 		if (this.isShareExtension) {
@@ -351,8 +361,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}
-				>
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected
