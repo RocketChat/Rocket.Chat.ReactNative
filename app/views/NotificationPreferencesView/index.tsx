@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
-import { Switch, Text } from 'react-native';
+import { Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
@@ -10,7 +10,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
@@ -20,6 +19,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
+import Switch from '../../containers/Switch';
 
 type TOptions = keyof typeof OPTIONS;
 type TRoomNotifications = keyof IRoomNotifications;
@@ -57,7 +57,7 @@ const RenderListPicker = ({
 			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
 			setOption(i);
 		},
-		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 	}));
 
 	return (
@@ -66,7 +66,7 @@ const RenderListPicker = ({
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
 			right={() => (
-				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.actionTintColor }]}>
+				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>
 					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
 				</Text>
 			)}
@@ -80,7 +80,6 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 		<Switch
 			value={switchValue}
 			testID={preference as string}
-			trackColor={SWITCH_TRACK_COLOR}
 			onValueChange={value => {
 				onChangeValue(preference, { [preference]: switchValue ? '1' : '0' }, () => setSwitchValue(switchValue));
 				setSwitchValue(value);

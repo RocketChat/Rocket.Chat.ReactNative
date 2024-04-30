@@ -17,15 +17,14 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 		<View>
 			{value.map(item => (
 				<View style={styles.row}>
-					<Text style={[styles.text, { color: colors.bodyText }]}>
+					<Text style={[styles.text, { color: colors.fontDefault }]}>
 						<CustomIcon
 							testID={item.status ? 'task-list-checked' : 'task-list-unchecked'}
 							name={item.status ? 'checkbox-checked' : 'checkbox-unchecked'}
 							size={24}
-							color={colors.taskBoxColor}
 						/>
 					</Text>
-					<Text style={[styles.inline, { color: colors.bodyText }]}>
+					<Text style={[styles.inline, { color: colors.fontDefault }]}>
 						<Inline value={item.value} />
 					</Text>
 				</View>

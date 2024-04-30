@@ -74,8 +74,8 @@ const ChangePassword = () => {
 	return (
 		<>
 			<List.Section>
-				<Text style={[styles.title, { color: colors.headerTitleColor }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
-				<Text style={[styles.description, { color: colors.bodyText }]}>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_change_password_title')}</Text>
+				<Text style={[styles.description, { color: colors.fontDefault }]}>
 					{I18n.t('E2E_encryption_change_password_description')}
 				</Text>
 				<FormTextInput
