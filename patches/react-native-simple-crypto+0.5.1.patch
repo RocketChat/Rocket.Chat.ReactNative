@@ -11,7 +11,7 @@ index 0000000..81a9aea
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/BuildConfig.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex
 new file mode 100644
-index 0000000..c1e68bd
+index 0000000..fb6fea0
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex
 new file mode 100644
@@ -183,7 +183,7 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..7ee1273
+index 0000000..43cad4f
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
@@ -2104,7 +2104,7 @@ index 0000000..99b9873
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..5fbd754
+index 0000000..f843161
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
@@ -2258,7 +2258,7 @@ index 0000000..99b9873
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..5fbd754
+index 0000000..f843161
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
@@ -3755,10 +3755,10 @@ index 0000000..8fc244a
 +		INJECTED from /Users/diegomello/Development/Work/Rocket.Chat.ReactNative/node_modules/react-native-simple-crypto/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..4b3e16b
+index 0000000..13556d1
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
-index 2b52abe..5c7425e 100644
+index 2b52abe..f040b43 100644
 --- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
 +++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
 @@ -1,55 +1,31 @@
@@ -3831,36 +3831,60 @@ index 2b52abe..5c7425e 100644
  
      public RCTAes(ReactApplicationContext reactContext) {
          super(reactContext);
-@@ -70,6 +46,16 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -80,6 +56,26 @@ public class RCTAes extends ReactContextBaseJavaModule {
          }
      }
  
 +    @ReactMethod
-+    public void encryptFile(String inputFile, String keyBase64, String ivBase64, Promise promise) {
++    public void encryptFile(String filePath, String keyBase64, String ivBase64, Promise promise) {
 +        try {
-+            String result = encryptFile(inputFile, keyBase64, ivBase64);
++            String result = encryptFile(filePath, keyBase64, ivBase64);
 +            promise.resolve(result);
 +        } catch (Exception e) {
 +            promise.reject("-1", e.getMessage());
 +        }
 +    }
 +
++    @ReactMethod
++    public void decryptFile(String filePath, String pwd, String iv, Promise promise) {
++        try {
++            String strs = decryptFile(filePath, pwd, iv);
++            promise.resolve(strs);
++        } catch (Exception e) {
++            promise.reject("-1", e.getMessage());
++        }
++    }
++
      @ReactMethod
-     public void decrypt(String data, String pwd, String iv, Promise promise) {
+     public void randomUuid(Promise promise) {
          try {
-@@ -119,6 +105,45 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -105,6 +101,12 @@ public class RCTAes extends ReactContextBaseJavaModule {
+ 
+     final static IvParameterSpec emptyIvSpec = new IvParameterSpec(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
+ 
++    public static IvParameterSpec generateIV() {
++        byte[] iv = new byte[16]; // AES block size
++        new SecureRandom().nextBytes(iv);
++        return new IvParameterSpec(iv);
++    }
++
+     public static String encrypt(String textBase64, String hexKey, String hexIv) throws Exception {
+         if (textBase64 == null || textBase64.length() == 0) {
+             return null;
+@@ -119,6 +121,46 @@ public class RCTAes extends ReactContextBaseJavaModule {
          return Base64.encodeToString(encrypted, Base64.NO_WRAP);
      }
  
 +    public static String encryptFile(String inputFile, String hexKey, String hexIv) throws Exception {
 +        // Decode the key and IV from hexadecimal
-+        byte[] key = Util.hexStringToByteArray(hexKey);
++        byte[] key = Hex.decode(hexKey);
 +        SecretKey secretKey = new SecretKeySpec(key, KEY_ALGORITHM);
-+        IvParameterSpec ivParameterSpec = new IvParameterSpec(Util.hexStringToByteArray(hexIv));
++//        IvParameterSpec ivParameterSpec = new IvParameterSpec(Util.hexStringToByteArray(hexIv));
++        IvParameterSpec ivParameterSpec = generateIV();
 +
 +        // Create a cipher instance for AES in CTR mode
 +        Cipher cipher = Cipher.getInstance(FILE_CIPHER_ALGORITHM);
-+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
++        cipher.init(Cipher.ENCRYPT_MODE, secretKey, emptyIvSpec);
 +
 +        String filePath = inputFile.toString().substring(7);
 +        File input = new File(filePath);
@@ -3894,6 +3918,52 @@ index 2b52abe..5c7425e 100644
      public static String decrypt(String ciphertext, String hexKey, String hexIv) throws Exception {
          if(ciphertext == null || ciphertext.length() == 0) {
              return null;
+@@ -133,4 +175,45 @@ public class RCTAes extends ReactContextBaseJavaModule {
+         return Base64.encodeToString(decrypted, Base64.NO_WRAP);
+     }
+ 
++    public static String decryptFile(String inputFile, String hexKey, String hexIv) throws Exception {
++        // Decode the key and IV from hexadecimal
++//        byte[] key = Util.hexStringToByteArray(hexKey);
++        byte[] key = Hex.decode(hexKey);
++        SecretKey secretKey = new SecretKeySpec(key, KEY_ALGORITHM);
++//        IvParameterSpec ivParameterSpec = hexIv == null ? new IvParameterSpec(new byte[16]) : new IvParameterSpec(Util.hexStringToByteArray(hexIv));
++        IvParameterSpec ivParameterSpec = generateIV();
++
++        // Initialize the cipher for decryption
++        Cipher cipher = Cipher.getInstance(FILE_CIPHER_ALGORITHM);
++        cipher.init(Cipher.DECRYPT_MODE, secretKey, emptyIvSpec);
++
++        String filePath = inputFile; // inputFile.toString().substring(7);
++        File encryptedFile = new File(filePath);
++        FileInputStream fis = new FileInputStream(encryptedFile);
++
++        // Create output file path by removing ".enc"
++        String outputFile = filePath.replace(".jpg.enc", "-new.jpg");
++        FileOutputStream fos = new FileOutputStream(outputFile);
++
++        try {
++            byte[] buffer = new byte[BUFFER_SIZE];
++            int numBytesRead;
++            while ((numBytesRead = fis.read(buffer)) != -1) {
++                byte[] output = cipher.update(buffer, 0, numBytesRead);
++                if (output != null) {
++                    fos.write(output);
++                }
++            }
++            byte[] finalBytes = cipher.doFinal();
++            if (finalBytes != null) {
++                fos.write(finalBytes);
++            }
++        } finally {
++            fis.close();
++            fos.close();
++        }
++
++        return outputFile;
++    }
++
+ }
 diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
 index 25179a9..02270b3 100644
 --- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
@@ -3914,36 +3984,47 @@ index 25179a9..02270b3 100644
 +    }
  }
 diff --git a/node_modules/react-native-simple-crypto/index.d.ts b/node_modules/react-native-simple-crypto/index.d.ts
-index b4fcde6..e4f84cc 100644
+index b4fcde6..8b957d7 100644
 --- a/node_modules/react-native-simple-crypto/index.d.ts
 +++ b/node_modules/react-native-simple-crypto/index.d.ts
-@@ -13,6 +13,11 @@ declare module "react-native-simple-crypto" {
+@@ -18,6 +18,16 @@ declare module "react-native-simple-crypto" {
        key: ArrayBuffer,
        iv: ArrayBuffer
      ): Promise<ArrayBuffer>;
 +    export function encryptFile(
-+      text: ArrayBuffer,
++      filePath: string,
 +      key: ArrayBuffer,
 +      iv: ArrayBuffer
-+    ): Promise<ArrayBuffer>;
-     export function decrypt(
-       ciphertext: ArrayBuffer,
-       key: ArrayBuffer,
++    ): Promise<string>;
++    export function decryptFile(
++      filePath: string,
++      key: ArrayBuffer,
++      iv: ArrayBuffer
++    ): Promise<string>;
+   }
+ 
+   export namespace SHA {
 diff --git a/node_modules/react-native-simple-crypto/index.js b/node_modules/react-native-simple-crypto/index.js
-index d756fbc..a87a2fb 100644
+index d756fbc..d819fe6 100644
 --- a/node_modules/react-native-simple-crypto/index.js
 +++ b/node_modules/react-native-simple-crypto/index.js
-@@ -87,6 +87,13 @@ const AES = {
+@@ -92,6 +92,19 @@ const AES = {
+     const keyHex = convertArrayBufferToHex(keyArrayBuffer);
      const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-     return convertBase64ToArrayBuffer(await NativeModules.Aes.encrypt(textBase64, keyHex, ivHex));
-   },
-+  encryptFile: async function (textArrayBuffer, keyArrayBuffer, ivArrayBuffer) {
-+    console.log('🚀 ~ textArrayBuffer:', textArrayBuffer);
-+    // const textBase64 = convertArrayBufferToBase64(textArrayBuffer);
+     return convertBase64ToArrayBuffer(await NativeModules.Aes.decrypt(cipherTextBase64, keyHex, ivHex));
++  },
++  encryptFile: async function (filePath, keyArrayBuffer, ivArrayBuffer) {
++    console.log('🚀 ~ filePath:', filePath);
++    // const textBase64 = convertArrayBufferToBase64(filePath);
 +    const keyHex = convertArrayBufferToHex(keyArrayBuffer);
 +    const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-+    return NativeModules.Aes.encryptFile(textArrayBuffer, keyHex, ivHex);
++    return NativeModules.Aes.encryptFile(filePath, keyHex, ivHex);
 +  },
-   decrypt: async function (cipherTextArrayBuffer, keyArrayBuffer, ivArrayBuffer) {
-     const cipherTextBase64 = convertArrayBufferToBase64(cipherTextArrayBuffer);
-     const keyHex = convertArrayBufferToHex(keyArrayBuffer);
++  decryptFile: async function (filePath, keyArrayBuffer, ivArrayBuffer) {
++    console.log('🚀 ~ filePath:', filePath);
++    const keyHex = convertArrayBufferToHex(keyArrayBuffer);
++    const ivHex = convertArrayBufferToHex(ivArrayBuffer);
++    return NativeModules.Aes.decryptFile(filePath, keyHex, ivHex);
+   }
+ };
+ 

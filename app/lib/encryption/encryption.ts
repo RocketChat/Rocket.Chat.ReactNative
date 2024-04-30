@@ -44,6 +44,7 @@ class Encryption {
 			decrypt: Function;
 			encrypt: Function;
 			encryptFile: Function;
+			decryptFile: Function;
 			encryptUpload: Function;
 			importRoomKey: Function;
 		};
@@ -528,6 +529,26 @@ class Encryption {
 			const roomE2E = await this.getRoomInstance(rid);
 
 			return roomE2E.encryptFile(path);
+		} catch (e) {
+			console.error(e);
+		}
+
+		// Send a non encrypted message
+		return null;
+	};
+
+	// decrypt a file
+	decryptFile = async (rid: string, path: string) => {
+		try {
+			// If the client is not ready
+			if (!this.ready) {
+				// Wait for ready status
+				await this.establishing;
+			}
+
+			const roomE2E = await this.getRoomInstance(rid);
+
+			return roomE2E.decryptFile(path);
 		} catch (e) {
 			console.error(e);
 		}

@@ -296,6 +296,32 @@ export default class EncryptionRoom {
 		return null;
 	};
 
+	decryptFile = async (p: string) => {
+		console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ p:', p);
+		if (!this.ready) {
+			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ this.ready:', this.ready);
+			return null;
+		}
+
+		try {
+			// const path = utf8ToBuffer(p);
+			const path = p;
+			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ path:', path);
+			const vector = await SimpleCrypto.utils.randomBytes(16);
+			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ vector:', vector);
+			const data = await SimpleCrypto.AES.decryptFile(path, this.roomKey as ArrayBuffer, vector);
+			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ data:', data);
+
+			// return this.keyID + bufferToB64(joinVectorData(vector, data));
+			return data;
+		} catch (e) {
+			// Do nothing
+			console.error(e);
+		}
+
+		return null;
+	};
+
 	// Decrypt text
 	decryptText = async (msg: string | ArrayBuffer) => {
 		if (!msg) {
