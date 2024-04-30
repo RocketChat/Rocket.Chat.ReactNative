@@ -254,8 +254,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			const encryptedFile = await Encryption.encryptFile(room.rid, attachments[0].path);
 			console.log('🚀 ~ ShareView ~ attachments.map ~ encryptedFile:', encryptedFile);
 
-			const decryptedFile = await Encryption.decryptFile(room.rid, encryptedFile);
-			console.log('🚀 ~ ShareView ~ attachments.map ~ decryptedFile:', decryptedFile);
+			// const decryptedFile = await Encryption.decryptFile(room.rid, encryptedFile);
+			// console.log('🚀 ~ ShareView ~ attachments.map ~ decryptedFile:', decryptedFile);
 		} catch (e) {
 			console.error(e);
 		}

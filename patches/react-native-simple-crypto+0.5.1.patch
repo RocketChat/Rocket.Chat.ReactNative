@@ -4028,3 +4028,156 @@ index d756fbc..d819fe6 100644
    }
  };
  
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTAes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTAes.m
+index 6947918..b79f101 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTAes.m
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTAes.m
+@@ -29,4 +29,26 @@ RCT_EXPORT_METHOD(decrypt:(NSString *)base64 key:(NSString *)key iv:(NSString *)
+     }
+ }
+ 
++RCT_EXPORT_METHOD(encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv
++                  resolver:(RCTPromiseResolveBlock)resolve
++                  rejecter:(RCTPromiseRejectBlock)reject) {
++    NSString *encryptedFilePath = [Aes encryptFile:filePath key:key iv:iv];
++    if (encryptedFilePath == nil) {
++        reject(@"encrypt_file_fail", @"File encryption failed", nil);
++    } else {
++        resolve(encryptedFilePath);
++    }
++}
++
++RCT_EXPORT_METHOD(decryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv
++                  resolver:(RCTPromiseResolveBlock)resolve
++                  rejecter:(RCTPromiseRejectBlock)reject) {
++    NSString *decryptedFilePath = [Aes decryptFile:filePath key:key iv:iv];
++    if (decryptedFilePath == nil) {
++        reject(@"decrypt_file_fail", @"File decryption failed", nil);
++    } else {
++        resolve(decryptedFilePath);
++    }
++}
++
+ @end
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.h b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.h
+index 650a8d7..2dab698 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.h
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.h
+@@ -9,8 +9,8 @@
+ #import <Foundation/Foundation.h>
+ #if __has_include(<React/RCTBridgeModule.h>)
+ #import <React/RCTBridgeModule.h>
+-#elif __has_include("RCTBridgeModule.h")
+-#import "RCTBridgeModule.h"
++#elif __has_include(<React/RCTBridgeModule.h>)
++#import <React/RCTBridgeModule.h>
+ #else
+ #import "React/RCTBridgeModule.h" // Required when used as a Pod in a Swift project
+ #endif
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.m
+index 2895dec..0768bfa 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.m
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RNRandomBytes.m
+@@ -9,8 +9,8 @@
+ #import "RNRandomBytes.h"
+ #if __has_include(<React/RCTBridgeModule.h>)
+ #import <React/RCTBridgeModule.h>
+-#elif __has_include("RCTBridgeModule.h")
+-#import "RCTBridgeModule.h"
++#elif __has_include(<React/RCTBridgeModule.h>)
++#import <React/RCTBridgeModule.h>
+ #else
+ #import "React/RCTBridgeModule.h" // Required when used as a Pod in a Swift project
+ #endif
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.h b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.h
+index 72432fe..8a2020b 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.h
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.h
+@@ -1,7 +1,16 @@
+ #import <Foundation/Foundation.h>
+ 
+ @interface Aes : NSObject
+-+ (NSString *) encrypt: (NSString *)clearText64  key: (NSString *)key iv: (NSString *)iv;
+-+ (NSString *) decrypt: (NSString *)cipherText key: (NSString *)key iv: (NSString *)iv;
+-+ (NSData *) AES128CBC: (NSString *)operation data: (NSData *)data key: (NSString *)key iv: (NSString *)iv;
++
++// Encrypt and decrypt methods for base64-encoded string data
+++ (NSString *)encrypt:(NSString *)clearText64 key:(NSString *)key iv:(NSString *)iv;
+++ (NSString *)decrypt:(NSString *)cipherText key:(NSString *)key iv:(NSString *)iv;
++
++// Core AES CBC encryption/decryption method
+++ (NSData *)AES128CBC:(NSString *)operation data:(NSData *)data key:(NSString *)key iv:(NSString *)iv;
++
++// File encryption and decryption methods
+++ (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv;
+++ (NSString *)decryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv;
++
+ @end
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
+index 4ef555a..fe37a14 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
+@@ -45,4 +45,63 @@
+     return [result base64EncodedStringWithOptions:0];
+ }
+ 
+++ (NSString *)processFile:(NSString *)filePath
++         outputFile:(NSString *)outputFilePath
++           operation:(CCOperation)operation
++                key:(NSString *)key
++                 iv:(NSString *)iv {
++    NSData *keyData = [Shared fromHex:key];
++    NSData *ivData = [Shared fromHex:iv];
++
++    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
++    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
++    [inputStream open];
++    [outputStream open];
++
++    size_t bufferSize = 4096; // 4KB buffer size
++    uint8_t buffer[bufferSize];
++    CCCryptorRef cryptor = NULL;
++    CCCryptorStatus status = CCCryptorCreate(operation, kCCAlgorithmAES, kCCModeCTR, keyData.bytes, keyData.length, ivData.bytes, &cryptor);
++
++    if (status != kCCSuccess) {
++        NSLog(@"Failed to create cryptor: %d", status);
++        return nil;
++    }
++
++    while ([inputStream hasBytesAvailable]) {
++        NSInteger bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)];
++        if (bytesRead > 0) {
++            size_t dataOutMoved;
++            status = CCCryptorUpdate(cryptor, buffer, bytesRead, buffer, bufferSize, &dataOutMoved);
++            if (status == kCCSuccess) {
++                [outputStream write:buffer maxLength:dataOutMoved];
++            } else {
++                NSLog(@"Cryptor update failed: %d", status);
++                break;
++            }
++        }
++    }
++
++    // No need for CCCryptorFinal with CTR mode
++    CCCryptorRelease(cryptor);
++    [inputStream close];
++    [outputStream close];
++
++    if (status == kCCSuccess) {
++        return outputFilePath;
++    } else {
++        return nil;
++    }
++}
++
+++ (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
++    NSString *outputFilePath = [filePath stringByAppendingPathExtension:@"enc"];
++    return [self processFile:filePath outputFile:outputFilePath operation:kCCEncrypt key:key iv:iv];
++}
++
+++ (NSString *)decryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
++    NSString *outputFilePath = [filePath stringByDeletingPathExtension];
++    return [self processFile:filePath outputFile:outputFilePath operation:kCCDecrypt key:key iv:iv];
++}
++
+ @end
