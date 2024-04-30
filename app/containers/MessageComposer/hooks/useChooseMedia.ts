@@ -136,7 +136,7 @@ export const useChooseMedia = ({
 			// FIXME: use useNavigation
 			Navigation.navigate('ShareView', {
 				room,
-				thread,
+				thread: thread || tmid,
 				attachments,
 				action,
 				finishShareView,
