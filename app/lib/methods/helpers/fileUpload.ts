@@ -6,7 +6,7 @@ export interface IFileUpload {
 	data?: any;
 }
 
-class Upload {
+export class Upload {
 	public xhr: XMLHttpRequest;
 	public formData: FormData;
 
@@ -34,20 +34,20 @@ class Upload {
 		}
 	}
 
-	public then(callback: (param: { respInfo: XMLHttpRequest }) => XMLHttpRequest) {
+	public then(callback: (param: { respInfo: XMLHttpRequest }) => void): void {
 		this.xhr.onload = () => callback({ respInfo: this.xhr });
 		this.xhr.send(this.formData);
 	}
 
-	public catch(callback: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null) {
+	public catch(callback: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null): void {
 		this.xhr.onerror = callback;
 	}
 
-	public uploadProgress(callback: (param: number, arg1: number) => any) {
+	public uploadProgress(callback: (param: number, arg1: number) => any): void {
 		this.xhr.upload.onprogress = ({ total, loaded }) => callback(loaded, total);
 	}
 
-	public cancel() {
+	public cancel(): Promise<void> {
 		this.xhr.abort();
 		return Promise.resolve();
 	}

@@ -10,11 +10,11 @@ import database from '../database';
 import { Encryption } from '../encryption';
 import { store } from '../store/auxStore';
 import { compareServerVersion } from './helpers';
-import type { IFileUpload } from './helpers/fileUpload';
+import type { IFileUpload, Upload } from './helpers/fileUpload';
 import FileUpload from './helpers/fileUpload';
 import log from './helpers/log';
 
-const uploadQueue: { [index: string]: any } = {};
+const uploadQueue: { [index: string]: Upload } = {};
 
 const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
@@ -51,7 +51,7 @@ export function sendFileMessage(
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
-): Promise<any | void> {
+): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
@@ -154,12 +154,11 @@ export function sendFileMessage(
 
 			uploadQueue[uploadPath].then(async response => {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
-					// If response is all good...
 					try {
 						await db.write(async () => {
 							await uploadRecord.destroyPermanently();
 						});
-						resolve(response);
+						resolve();
 					} catch (e) {
 						log(e);
 					}
