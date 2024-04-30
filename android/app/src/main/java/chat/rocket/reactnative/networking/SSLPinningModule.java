@@ -32,8 +32,6 @@ import android.security.KeyChainAliasCallback;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import com.RNFetchBlob.RNFetchBlob;
-
 import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
@@ -104,8 +102,6 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         WebSocketModule.setCustomClientBuilder(new CustomClient());
         // Image networking react-native layer
         ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
-        // RNFetchBlob networking layer
-        RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
         // RNCWebView onReceivedClientCertRequest
         RNCWebViewManager.setCertificateAlias(data);
         // FastImage Glide network layer
