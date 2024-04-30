@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
+import SimpleCrypto from 'react-native-simple-crypto';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -251,11 +252,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		try {
 			console.log(attachments[0].path);
-			const encryptedFile = await Encryption.encryptFile(room.rid, attachments[0].path);
+			const vector = await SimpleCrypto.utils.randomBytes(16);
+			const encryptedFile = await Encryption.encryptFile(room.rid, attachments[0].path, vector);
 			console.log('🚀 ~ ShareView ~ attachments.map ~ encryptedFile:', encryptedFile);
 
-			// const decryptedFile = await Encryption.decryptFile(room.rid, encryptedFile);
-			// console.log('🚀 ~ ShareView ~ attachments.map ~ decryptedFile:', decryptedFile);
+			const decryptedFile = await Encryption.decryptFile(room.rid, encryptedFile, vector);
+			console.log('🚀 ~ ShareView ~ attachments.map ~ decryptedFile:', decryptedFile);
 		} catch (e) {
 			console.error(e);
 		}

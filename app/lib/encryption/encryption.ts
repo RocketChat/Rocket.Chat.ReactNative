@@ -518,7 +518,7 @@ class Encryption {
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
 
 	// Encrypt a file
-	encryptFile = async (rid: string, path: string) => {
+	encryptFile = async (rid: string, path: string, iv: ArrayBuffer) => {
 		try {
 			// If the client is not ready
 			if (!this.ready) {
@@ -528,7 +528,7 @@ class Encryption {
 
 			const roomE2E = await this.getRoomInstance(rid);
 
-			return roomE2E.encryptFile(path);
+			return roomE2E.encryptFile(path, iv);
 		} catch (e) {
 			console.error(e);
 		}
@@ -538,7 +538,7 @@ class Encryption {
 	};
 
 	// decrypt a file
-	decryptFile = async (rid: string, path: string) => {
+	decryptFile = async (rid: string, path: string, iv: ArrayBuffer) => {
 		try {
 			// If the client is not ready
 			if (!this.ready) {
@@ -548,7 +548,7 @@ class Encryption {
 
 			const roomE2E = await this.getRoomInstance(rid);
 
-			return roomE2E.decryptFile(path);
+			return roomE2E.decryptFile(path, iv);
 		} catch (e) {
 			console.error(e);
 		}

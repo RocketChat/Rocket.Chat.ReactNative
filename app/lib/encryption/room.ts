@@ -270,7 +270,7 @@ export default class EncryptionRoom {
 	};
 
 	// Encrypt
-	encryptFile = async (p: string) => {
+	encryptFile = async (p: string, iv: ArrayBuffer) => {
 		console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ p:', p);
 		if (!this.ready) {
 			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ this.ready:', this.ready);
@@ -281,9 +281,8 @@ export default class EncryptionRoom {
 			// const path = utf8ToBuffer(p);
 			const path = p;
 			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ path:', path);
-			const vector = await SimpleCrypto.utils.randomBytes(16);
-			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ vector:', vector);
-			const data = await SimpleCrypto.AES.encryptFile(path, this.roomKey as ArrayBuffer, vector);
+			// const vector = await SimpleCrypto.utils.randomBytes(16);
+			const data = await SimpleCrypto.AES.encryptFile(path, this.roomKey as ArrayBuffer, iv);
 			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ data:', data);
 
 			// return this.keyID + bufferToB64(joinVectorData(vector, data));
@@ -296,7 +295,7 @@ export default class EncryptionRoom {
 		return null;
 	};
 
-	decryptFile = async (p: string) => {
+	decryptFile = async (p: string, iv: ArrayBuffer) => {
 		console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ p:', p);
 		if (!this.ready) {
 			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ this.ready:', this.ready);
@@ -307,9 +306,8 @@ export default class EncryptionRoom {
 			// const path = utf8ToBuffer(p);
 			const path = p;
 			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ path:', path);
-			const vector = await SimpleCrypto.utils.randomBytes(16);
-			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ vector:', vector);
-			const data = await SimpleCrypto.AES.decryptFile(path, this.roomKey as ArrayBuffer, vector);
+			// const vector = await SimpleCrypto.utils.randomBytes(16);
+			const data = await SimpleCrypto.AES.decryptFile(path, this.roomKey as ArrayBuffer, iv);
 			console.log('🚀 ~ EncryptionRoom ~ decryptFile= ~ data:', data);
 
 			// return this.keyID + bufferToB64(joinVectorData(vector, data));
