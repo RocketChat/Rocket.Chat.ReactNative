@@ -23,7 +23,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 			contentContainerStyle={styles.listContainer}
 			ListHeaderComponent={
 				<View style={styles.emojiNameContainer}>
-					<Text style={[styles.emojiName, { color: colors.auxiliaryText }]} testID='usersListEmojiName'>
+					<Text style={[styles.emojiName, { color: colors.fontSecondaryInfo }]} testID='usersListEmojiName'>
 						{emoji}
 					</Text>
 				</View>
@@ -32,7 +32,7 @@ const UsersList = ({ tabLabel }: { tabLabel: IReaction }): React.ReactElement =>
 				<View style={styles.listItemContainer} testID='userItem'>
 					<Avatar text={item.username} size={36} />
 					<View style={styles.textContainer}>
-						<Text style={[styles.usernameText, { color: colors.bodyText }]} numberOfLines={1}>
+						<Text style={[styles.usernameText, { color: colors.fontDefault }]} numberOfLines={1}>
 							{useRealName && item.name ? item.name : item.username}
 						</Text>
 					</View>

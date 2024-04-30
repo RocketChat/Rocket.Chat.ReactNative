@@ -82,11 +82,11 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbConten
 	if (type?.match(/image/)) {
 		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
 		if (allowPreview(isShareExtension, item?.size)) {
-			return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].borderColor }]} />;
+			return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].strokeLight }]} />;
 		}
 		return (
-			<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-				<CustomIcon name='image' size={30} color={themes[theme].tintColor} />
+			<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
+				<CustomIcon name='image' size={30} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		);
 	}
@@ -94,8 +94,8 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbConten
 	if (type?.match(/video/)) {
 		if (isIOS) {
 			return (
-				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon name='camera' size={30} color={themes[theme].tintColor} />
+				<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
+					<CustomIcon name='camera' size={30} color={themes[theme].badgeBackgroundLevel2} />
 				</View>
 			);
 		}
@@ -103,7 +103,7 @@ const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbConten
 		return (
 			<>
 				<Image source={{ uri }} style={styles.thumb} />
-				<CustomIcon name='camera-filled' size={20} color={themes[theme].buttonText} style={styles.videoThumbIcon} />
+				<CustomIcon name='camera-filled' size={20} color={themes[theme].fontWhite} style={styles.videoThumbIcon} />
 			</>
 		);
 	}
@@ -120,17 +120,17 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
 				hitSlop={BUTTON_HIT_SLOP}
-				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+				style={[styles.removeButton, { backgroundColor: themes[theme].fontDefault, borderColor: themes[theme].surfaceHover }]}
 				activeOpacity={1}
-				rippleColor={themes[theme].bannerBackground}
+				rippleColor={themes[theme].surfaceNeutral}
 				onPress={() => onRemove(item)}
 			>
-				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
-					<CustomIcon name='close' color={themes[theme].backgroundColor} size={14} />
+				<View style={[styles.removeView, { borderColor: themes[theme].surfaceHover }]}>
+					<CustomIcon name='close' color={themes[theme].surfaceRoom} size={14} />
 				</View>
 			</RectButton>
 			{!item?.canUpload ? (
-				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} style={styles.dangerIcon} />
+				<CustomIcon name='warning' size={20} color={themes[theme].buttonBackgroundDangerDefault} style={styles.dangerIcon} />
 			) : null}
 		</>
 	</ThumbButton>

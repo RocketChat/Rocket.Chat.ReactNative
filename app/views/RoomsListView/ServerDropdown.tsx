@@ -189,16 +189,16 @@ const ServerDropdown = () => {
 					styles.dropdownContainer,
 					{
 						transform: [{ translateY }],
-						backgroundColor: colors.backgroundColor,
-						borderColor: colors.separatorColor
+						backgroundColor: colors.surfaceRoom,
+						borderColor: colors.strokeLight
 					}
 				]}
 				testID='rooms-list-header-server-dropdown'
 			>
-				<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: colors.separatorColor }]}>
-					<Text style={[styles.serverHeaderText, { color: colors.auxiliaryText }]}>{I18n.t('Server')}</Text>
+				<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
+					<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
 					<TouchableOpacity onPress={addServer} testID='rooms-list-header-server-add'>
-						<Text style={[styles.serverHeaderAdd, { color: colors.tintColor }]}>{I18n.t('Add_Server')}</Text>
+						<Text style={[styles.serverHeaderAdd, { color: colors.badgeBackgroundLevel2 }]}>{I18n.t('Add_Server')}</Text>
 					</TouchableOpacity>
 				</View>
 				<FlatList
@@ -216,7 +216,8 @@ const ServerDropdown = () => {
 					onPress={createWorkspace}
 					testID='rooms-list-header-create-workspace-button'
 					style={styles.buttonCreateWorkspace}
-					color={colors.tintColor}
+					color={colors.badgeBackgroundLevel2}
+					backgroundColor={colors.surfaceRoom}
 					styleText={[styles.serverHeaderAdd, { textAlign: 'center' }]}
 				/>
 			</Animated.View>

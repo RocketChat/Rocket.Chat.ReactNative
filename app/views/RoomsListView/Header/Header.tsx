@@ -77,22 +77,21 @@ const Header = React.memo(
 			<View style={styles.container}>
 				{/* <TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'> */}
 				<View style={styles.button}>
-					<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}
 					</Text>
 					{/* <CustomIcon
-						name='chevron-down'
-						color={colors.headerTintColor}
-						style={[showServerDropdown && styles.upsideDown]}
-						size={18}
-					/> */}
+							name='chevron-down'
+							color={colors.fontSecondaryInfo}
+							style={[showServerDropdown && styles.upsideDown]}
+							size={18}
+						/> */}
 				</View>
 				{subtitle ? (
 					<Text
 						testID='rooms-list-header-server-subtitle'
-						style={[styles.subtitle, { color: colors.auxiliaryText }]}
-						numberOfLines={1}
-					>
+						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+						numberOfLines={1}>
 						{subtitle}
 					</Text>
 				) : null}
