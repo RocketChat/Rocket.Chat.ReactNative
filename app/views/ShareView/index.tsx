@@ -257,7 +257,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							return sendFileMessage(
 								room.rid,
 								{
-									rid: room.rid,
 									name,
 									description,
 									size,
@@ -351,8 +350,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}
-				>
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected
