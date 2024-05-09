@@ -1,8 +1,14 @@
-# Nionium Mobile
+# Nionium Mobile App
 
 - **Supported server versions:** 0.70.0+
 - **Supported iOS versions**: 12+
 - **Supported Android versions**: 6.0+
+
+
+
+## About the application
+The Nionium application represents an advanced implementation of a communication and artificial intelligence platform, incorporating all the latest innovations in the field. This comprehensive integration of state-of-the-art technologies provides a robust framework for enhancing interaction and functionality across various user interfaces and systems, leveraging the power of AI to deliver a seamless and efficient user experience.
+
 
 ## Download
 
@@ -19,12 +25,4 @@ Check [our docs](https://docs.rocket.chat/use-rocket.chat/rocket.chat-mobile) fo
 
 [Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
 
-Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
 
-
-## Whitelabel
-Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app/mobile-app-white-labelling)
-
-
-### Subscribe for Updates
-Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
