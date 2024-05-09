@@ -1,13 +1,19 @@
 # Nionium Mobile App
 
-- **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 12+
-- **Supported Android versions**: 6.0+
-
-
+<p align="center">
+  <img src="https://nionium.com/wp-content/uploads/2024/05/Page-1-scaled.jpg" alt="Page 1" width="30%"/>
+  <img src="https://nionium.com/wp-content/uploads/2024/05/Page-2-scaled.jpg" alt="Page 2" width="30%"/>
+  <img src="https://nionium.com/wp-content/uploads/2024/05/Page-3-scaled.jpg" alt="Page 3" width="30%"/>
+</p>
 
 ## About the application
 The Nionium application represents an advanced implementation of a communication and artificial intelligence platform, incorporating all the latest innovations in the field. This comprehensive integration of state-of-the-art technologies provides a robust framework for enhancing interaction and functionality across various user interfaces and systems, leveraging the power of AI to deliver a seamless and efficient user experience.
+
+
+
+- **Supported server versions:** 0.70.0+
+- **Supported iOS versions**: 12+
+- **Supported Android versions**: 6.0+
 
 
 ## Download
