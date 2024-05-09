@@ -9,8 +9,13 @@
 ## About the application
 The Nionium application represents an advanced implementation of a communication and artificial intelligence platform, incorporating all the latest innovations in the field. This comprehensive integration of state-of-the-art technologies provides a robust framework for enhancing interaction and functionality across various user interfaces and systems, leveraging the power of AI to deliver a seamless and efficient user experience.
 
+## Features
+- Custom Single Sign on via JWT
+- Integration with the Nionium AI
+- Google analytics integration
 
 
+## Supports
 - **Supported server versions:** 0.70.0+
 - **Supported iOS versions**: 12+
 - **Supported Android versions**: 6.0+
