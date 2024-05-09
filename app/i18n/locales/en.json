@@ -197,6 +197,9 @@
   "Direct_message_someone": "Direct message someone",
   "Direct_Messages": "Direct messages",
   "Directory": "Directory",
+  "Disable": "Disable",
+  "Disable_encryption_description": "Disabling E2EE compromises privacy. You can re-enable it later if needed. Proceed with caution.",
+  "Disable_encryption_title": "Disable encryption",
   "Disable_writing_in_room": "Disable writing in room",
   "Disabled_E2E_Encryption_for_this_room": "disabled E2E encryption for this room",
   "Discard": "Discard",
@@ -241,7 +244,10 @@
   "Email_Notification_Mode_All": "Every mention/DM",
   "Email_Notification_Mode_Disabled": "Disabled",
   "Empty": "Empty",
+  "Enable": "Enable",
   "Enable_Auto_Translate": "Enable auto-translate",
+  "Enable_encryption_description": "Ensure conversations are kept private",
+  "Enable_encryption_title": "Enable encryption",
   "Enable_Message_Parser": "Enable message parser",
   "Enable_writing_in_room": "Enable writing in room",
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
@@ -841,11 +847,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace",
-  "Enable": "Enable",
-  "Disable": "Disable",
-  "Disable_encryption_title": "Disable encryption",
-  "Enable_encryption_title": "Enable encryption",
-  "Disable_encryption_description": "Disabling E2EE compromises privacy. You can re-enable it later if needed. Proceed with caution.",
-  "Enable_encryption_description": "Ensure conversations are kept private"
+  "Your_workspace": "Your workspace"
 }

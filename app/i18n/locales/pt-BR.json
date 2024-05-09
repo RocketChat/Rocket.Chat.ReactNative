@@ -194,6 +194,9 @@
   "Direct_message_someone": "Enviar mensagem direta para alguém",
   "Direct_Messages": "Mensagens diretas",
   "Directory": "Diretório",
+  "Disable": "Desabilitar",
+  "Disable_encryption_description": "Desabilitar a criptografia compromete sua privacidade. Você pode reabilitá-la depois se precisar. Continue com cautela.",
+  "Disable_encryption_title": "Desabilitar criptografia",
   "Disable_writing_in_room": "Desabilitar escrita na sala",
   "Disabled_E2E_Encryption_for_this_room": "desabilitou criptografia para essa sala",
   "Discard": "Descartar",
@@ -236,7 +239,10 @@
   "Email_Notification_Mode_All": "Toda menção / mensagem direta",
   "Email_Notification_Mode_Disabled": "Desativado",
   "Empty": "Vazio",
+  "Enable": "Habilitar",
   "Enable_Auto_Translate": "Ativar a tradução automática",
+  "Enable_encryption_description": "Garante a privacidade das suas conversas",
+  "Enable_encryption_title": "Habilitar criptografia",
   "Enable_Message_Parser": "Habilita analisador de mensagem",
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Enabled_E2E_Encryption_for_this_room": "habilitou criptografia para essa sala",
@@ -827,11 +833,5 @@
   "Your_invite_link_will_never_expire": "Seu link de convite nunca irá vencer.",
   "Your_password_is": "Sua senha é",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace",
-  "Enable": "Habilitar",
-  "Disable": "Desabilitar",
-  "Disable_encryption_title": "Desabilitar criptografia",
-  "Enable_encryption_title": "Habilitar criptografia",
-  "Disable_encryption_description": "Desabilitar a criptografia compromete sua privacidade. Você pode reabilitá-la depois se precisar. Continue com cautela.",
-  "Enable_encryption_description": "Garante a privacidade das suas conversas"
+  "Your_workspace": "Sua workspace"
 }
