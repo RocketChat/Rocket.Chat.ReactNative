@@ -121,25 +121,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const options: StackNavigationOptions = {
 			headerTitle: () => <Header room={room} thread={thread} />,
 			headerTitleAlign: 'left',
-			headerTintColor: themes[theme].surfaceTint
+			headerTintColor: themes[theme].backdropColor
 		};
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
 			options.headerLeft = () => (
-				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].surfaceTint} testID='share-view-close' />
+				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
 			);
 		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].surfaceTint} />
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
 				</HeaderButton.Container>
 			);
 		}
 
-		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].surfaceDark }]} />;
+		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].surfaceNeutral }]} />;
 
 		navigation.setOptions(options);
 	};
@@ -257,7 +257,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							return sendFileMessage(
 								room.rid,
 								{
-									rid: room.rid,
 									name,
 									description,
 									size,
@@ -351,8 +350,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}
-				>
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected
@@ -405,7 +403,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>
 				<StatusBar barStyle='light-content' backgroundColor={themes[theme].surfaceDark} />
 				{this.renderContent()}
 			</SafeAreaView>

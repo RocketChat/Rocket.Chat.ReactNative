@@ -54,3 +54,15 @@ index b4d7151..429e318 100644
          let resultSet = try fmdb.executeQuery(query, values: args)
  
          return AnyIterator {
+diff --git a/node_modules/@nozbe/watermelondb/native/shared/DatabasePlatform.h b/node_modules/@nozbe/watermelondb/native/shared/DatabasePlatform.h
+index 6814d5f..fecded8 100644
+--- a/node_modules/@nozbe/watermelondb/native/shared/DatabasePlatform.h
++++ b/node_modules/@nozbe/watermelondb/native/shared/DatabasePlatform.h
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include <string>
++#include <functional>
+ 
+ namespace watermelondb {
+ namespace platform {

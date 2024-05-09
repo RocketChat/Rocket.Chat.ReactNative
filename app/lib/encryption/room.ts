@@ -5,7 +5,7 @@ import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IMessage, IUpload, IUser } from '../../definitions';
+import { IMessage, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -247,38 +247,8 @@ export default class EncryptionRoom {
 		return message;
 	};
 
-	// Encrypt upload
-	encryptUpload = async (message: IUpload) => {
-		if (!this.ready) {
-			return message;
-		}
-
-		try {
-			let description = '';
-
-			if (message.description) {
-				description = await this.encryptText(EJSON.stringify({ text: message.description }));
-			}
-
-			return {
-				...message,
-				t: E2E_MESSAGE_TYPE,
-				e2e: E2E_STATUS.PENDING,
-				description
-			};
-		} catch {
-			// Do nothing
-		}
-
-		return message;
-	};
-
 	// Decrypt text
 	decryptText = async (msg: string | ArrayBuffer) => {
-		if (!msg) {
-			return null;
-		}
-
 		msg = b64ToBuffer(msg.slice(12) as string);
 		const [vector, cipherText] = splitVectorData(msg);
 
@@ -307,10 +277,6 @@ export default class EncryptionRoom {
 				// Decrypt tmsg
 				if (tmsg) {
 					tmsg = await this.decryptText(tmsg);
-				}
-
-				if (message.attachments?.length) {
-					message.attachments[0].description = await this.decryptText(message.attachments[0].description as string);
 				}
 
 				const decryptedMessage: IMessage = {
