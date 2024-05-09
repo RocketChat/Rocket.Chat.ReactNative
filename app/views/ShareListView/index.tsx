@@ -21,13 +21,13 @@ import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import { Encryption } from '../../lib/encryption';
 import styles from './styles';
 import ShareListHeader from './Header';
 import { IApplicationState, TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
 import { encryptionInit } from '../../actions/encryption';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 
 interface IDataFromShare {
 	value: string;
@@ -246,10 +246,10 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 		return data
 			.map(item => {
-				if (Encryption.isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
+				if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
 					return null;
 				}
-				if (Encryption.isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
+				if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
 					return null;
 				}
 

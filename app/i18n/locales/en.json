@@ -841,5 +841,11 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace"
+  "Your_workspace": "Your workspace",
+  "Enable": "Enable",
+  "Disable": "Disable",
+  "Disable_encryption_title": "Disable encryption",
+  "Enable_encryption_title": "Enable encryption",
+  "Disable_encryption_description": "Disabling E2EE compromises privacy. You can re-enable it later if needed. Proceed with caution.",
+  "Enable_encryption_description": "Ensure conversations are kept private"
 }

@@ -22,6 +22,7 @@ import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
 import { TColors, TSupportedThemes, withTheme } from '../../theme';
+import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -48,7 +49,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	colors?: TColors;
 	issuesWithNotifications: boolean;
 	notificationsDisabled?: boolean;
-	disabled: boolean;
+	hasE2EEWarning: boolean;
 }
 
 interface IRigthButtonsState {
@@ -97,8 +98,16 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { teamId, status, joined, omnichannelPermissions, theme, disabled, issuesWithNotifications, notificationsDisabled } =
-			this.props;
+		const {
+			teamId,
+			status,
+			joined,
+			omnichannelPermissions,
+			theme,
+			hasE2EEWarning,
+			issuesWithNotifications,
+			notificationsDisabled
+		} = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
 		}
@@ -111,9 +120,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (nextProps.theme !== theme) {
 			return true;
 		}
-		if (nextProps.disabled !== disabled) {
-			return true;
-		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
 			return true;
 		}
@@ -121,6 +127,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.notificationsDisabled !== notificationsDisabled) {
+			return true;
+		}
+		if (nextProps.hasE2EEWarning !== hasE2EEWarning) {
 			return true;
 		}
 		if (!dequal(nextProps.omnichannelPermissions, omnichannelPermissions)) {
@@ -366,18 +375,17 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, disabled } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
+
+		if (!rid) {
+			return null;
+		}
 
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
 					<HeaderButton.Container>
-						<HeaderButton.Item
-							iconName='kebab'
-							onPress={this.showMoreActions}
-							testID='room-view-header-omnichannel-kebab'
-							disabled={disabled}
-						/>
+						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
 					</HeaderButton.Container>
 				);
 			}
@@ -390,33 +398,33 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
-						disabled={disabled}
 					/>
 				</HeaderButton.Container>
 			);
 		}
 		return (
 			<HeaderButton.Container>
+				{hasE2EEWarning ? <HeaderButton.Item iconName='encrypted' onPress={() => toggleRoomE2EE(rid)} /> : null}
 				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item
 						color={issuesWithNotifications ? colors!.fontDanger : ''}
 						iconName='notification-disabled'
 						onPress={this.navigateToNotificationOrPushTroubleshoot}
 						testID='room-view-push-troubleshoot'
-						disabled={disabled}
+						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton rid={rid} disabled={disabled} /> : null}
+				{rid ? <HeaderCallButton rid={rid} disabled={hasE2EEWarning} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
 						badge={() => <HeaderButton.BadgeUnread tunread={tunread} tunreadUser={tunreadUser} tunreadGroup={tunreadGroup} />}
-						disabled={disabled}
+						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={disabled} />
+				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={hasE2EEWarning} />
 			</HeaderButton.Container>
 		);
 	}

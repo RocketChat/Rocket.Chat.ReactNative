@@ -827,5 +827,11 @@
   "Your_invite_link_will_never_expire": "Seu link de convite nunca irá vencer.",
   "Your_password_is": "Sua senha é",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace"
+  "Your_workspace": "Sua workspace",
+  "Enable": "Habilitar",
+  "Disable": "Desabilitar",
+  "Disable_encryption_title": "Desabilitar criptografia",
+  "Enable_encryption_title": "Habilitar criptografia",
+  "Disable_encryption_description": "Desabilitar a criptografia compromete sua privacidade. Você pode reabilitá-la depois se precisar. Continue com cautela.",
+  "Enable_encryption_description": "Garante a privacidade das suas conversas"
 }

@@ -98,7 +98,7 @@ import AudioManager from '../../lib/methods/AudioManager';
 import { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
-import { Encryption } from '../../lib/encryption';
+import { hasE2EEWarning, isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
@@ -415,23 +415,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return hideSystemMessages ?? [];
 	}
 
-	hasE2EEWarning = () => {
-		const { room } = this.state;
-		const { encryptionEnabled } = this.props;
-		if ('encrypted' in room) {
-			if (Encryption.isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: room.encrypted, E2EKey: room.E2EKey })) {
-				return true;
-			}
-			if (Encryption.isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: room.encrypted })) {
-				return true;
-			}
-		}
-		return false;
-	};
-
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, route } = this.props;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
 			return;
@@ -516,7 +502,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
-					disabled={this.hasE2EEWarning() || !!tmid}
+					disabled={!!tmid}
 				/>
 			),
 			headerRight: () => (
@@ -534,7 +520,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
-					disabled={this.hasE2EEWarning()}
+					hasE2EEWarning={
+						'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
+					}
 				/>
 			)
 		});
@@ -1475,12 +1463,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if ('encrypted' in room) {
 			// Missing room encryption key
-			if (Encryption.isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: room.encrypted, E2EKey: room.E2EKey })) {
+			if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: room.encrypted, E2EKey: room.E2EKey })) {
 				return <MissingRoomE2EEKey />;
 			}
 
 			// Encrypted room, but user session is not encrypted
-			if (Encryption.isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: room.encrypted })) {
+			if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: room.encrypted })) {
 				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
 			}
 		}

@@ -6,7 +6,7 @@ import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
 import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { isGroupChat, isReadOnly } from './helpers';
-import { Encryption } from '../encryption';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
@@ -54,10 +54,10 @@ export const localSearchSubscription = async ({
 					return null;
 				}
 
-				if (Encryption.isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
+				if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
 					return null;
 				}
-				if (Encryption.isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
+				if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
 					return null;
 				}
 
