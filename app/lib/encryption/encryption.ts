@@ -43,6 +43,7 @@ class Encryption {
 			handshake: Function;
 			decrypt: Function;
 			encrypt: Function;
+			encryptText: Function;
 			encryptFile: Function;
 			decryptFile: Function;
 			encryptUpload: Function;
@@ -444,6 +445,11 @@ class Encryption {
 			...subscription,
 			lastMessage: decryptedMessage
 		};
+	};
+
+	encryptText = async (rid: string, text: string) => {
+		const roomE2E = await this.getRoomInstance(rid);
+		return roomE2E.encryptText(text);
 	};
 
 	// Encrypt a message

@@ -1,7 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
-import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
+import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
 
 import { Encryption } from '../encryption';
@@ -51,13 +51,14 @@ export function sendFileMessage(
 	tmid: string | undefined,
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
-	isForceTryAgain?: boolean
+	isForceTryAgain?: boolean,
+	getContent?: Function
 ): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
 
-			const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
+			const uploadUrl = `${server}/api/v1/rooms.media/${rid}`;
 
 			fileInfo.rid = rid;
 
@@ -89,7 +90,7 @@ export function sendFileMessage(
 				}
 			}
 
-			const encryptedFileInfo = await Encryption.encryptMessage(fileInfo);
+			// const encryptedFileInfo = await Encryption.encryptMessage(fileInfo);
 
 			const formData: IFileUpload[] = [];
 			formData.push({
@@ -99,38 +100,38 @@ export function sendFileMessage(
 				uri: fileInfo.path
 			});
 
-			if (fileInfo.description) {
-				formData.push({
-					name: 'description',
-					data: encryptedFileInfo.description
-				});
-			}
+			// if (fileInfo.description) {
+			// 	formData.push({
+			// 		name: 'description',
+			// 		data: encryptedFileInfo.description
+			// 	});
+			// }
 
-			if (fileInfo.msg) {
-				formData.push({
-					name: 'msg',
-					data: fileInfo.msg
-				});
-			}
+			// if (fileInfo.msg) {
+			// 	formData.push({
+			// 		name: 'msg',
+			// 		data: fileInfo.msg
+			// 	});
+			// }
 
-			if (tmid) {
-				formData.push({
-					name: 'tmid',
-					data: tmid
-				});
-			}
+			// if (tmid) {
+			// 	formData.push({
+			// 		name: 'tmid',
+			// 		data: tmid
+			// 	});
+			// }
 
-			const { version: serverVersion } = store.getState().server;
-			if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-				formData.push({
-					name: 't',
-					data: encryptedFileInfo.t
-				});
-				formData.push({
-					name: 'e2e',
-					data: encryptedFileInfo.e2e
-				});
-			}
+			// const { version: serverVersion } = store.getState().server;
+			// if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
+			// 	formData.push({
+			// 		name: 't',
+			// 		data: encryptedFileInfo.t
+			// 	});
+			// 	formData.push({
+			// 		name: 'e2e',
+			// 		data: encryptedFileInfo.e2e
+			// 	});
+			// }
 
 			const headers = {
 				...RocketChatSettings.customHeaders,
@@ -139,61 +140,110 @@ export function sendFileMessage(
 				'X-User-Id': id
 			};
 
-			uploadQueue[uploadPath] = FileUpload.fetch('POST', uploadUrl, headers, formData);
-
-			uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
-				try {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.progress = Math.floor((loaded / total) * 100);
-						});
-					});
-				} catch (e) {
-					log(e);
-				}
-			});
-
-			uploadQueue[uploadPath].then(async response => {
-				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
-					// If response is all good...
-					try {
-						await db.write(async () => {
-							await uploadRecord.destroyPermanently();
-						});
-						resolve(response);
-					} catch (e) {
-						log(e);
+			try {
+				const data = formData.map(item => {
+					if (item.uri) {
+						return {
+							name: item.name,
+							type: item.type,
+							filename: item.filename,
+							data: RNFetchBlob.wrap(decodeURI(item.uri))
+						};
 					}
-				} else {
-					try {
-						await db.write(async () => {
-							await uploadRecord.update(u => {
-								u.error = true;
-							});
-						});
-					} catch (e) {
-						log(e);
-					}
-					try {
-						reject(response);
-					} catch (e) {
-						reject(e);
-					}
-				}
-			});
+					return item;
+				});
+				console.log('🚀 ~ data ~ data:', data);
+				const response = await RNFetchBlob.fetch('POST', uploadUrl, headers, data);
+				console.log(response);
 
-			uploadQueue[uploadPath].catch(async error => {
-				try {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.error = true;
-						});
-					});
-				} catch (e) {
-					log(e);
+				const json = response.json();
+				console.log('🚀 ~ returnnewPromise ~ json:', json);
+
+				console.log('🚀 ~ returnnewPromise ~ getContent:', getContent);
+				let content;
+				if (getContent) {
+					content = await getContent(json.file._id, json.file.url);
+					console.log('🚀 ~ returnnewPromise ~ content:', content);
 				}
-				reject(error);
-			});
+
+				const mediaConfirm = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
+					method: 'POST',
+					headers,
+					body: JSON.stringify({
+						msg: fileInfo.msg,
+						tmid: fileInfo.tmid,
+						description: fileInfo.description,
+						t: fileInfo.t,
+						content
+					})
+				});
+				console.log('🚀 ~ returnnewPromise ~ mediaConfirm :', mediaConfirm);
+			} catch (e) {
+				console.error(e);
+			}
+
+			// uploadQueue[uploadPath] = FileUpload.fetch('POST', uploadUrl, headers, formData);
+
+			// uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
+			// 	try {
+			// 		await db.write(async () => {
+			// 			await uploadRecord.update(u => {
+			// 				u.progress = Math.floor((loaded / total) * 100);
+			// 			});
+			// 		});
+			// 	} catch (e) {
+			// 		log(e);
+			// 	}
+			// });
+
+			// uploadQueue[uploadPath].then(async response => {
+			// 	// If response is all good...
+			// 	if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
+			// 		try {
+			// 			console.log('🚀 ~ returnnewPromise ~ response:', response);
+			// 			console.log('🚀 ~ returnnewPromise ~ response:', response.data);
+			// 			// if (getContent) {
+			// 			// 	const content = getContent(response.json().file._id, response.json().file.url);
+			// 			// 	console.log('🚀 ~ returnnewPromise ~ content:', content);
+			// 			// }
+
+			// 			await db.write(async () => {
+			// 				await uploadRecord.destroyPermanently();
+			// 			});
+			// 			resolve(response);
+			// 		} catch (e) {
+			// 			log(e);
+			// 		}
+			// 	} else {
+			// 		try {
+			// 			await db.write(async () => {
+			// 				await uploadRecord.update(u => {
+			// 					u.error = true;
+			// 				});
+			// 			});
+			// 		} catch (e) {
+			// 			log(e);
+			// 		}
+			// 		try {
+			// 			reject(response);
+			// 		} catch (e) {
+			// 			reject(e);
+			// 		}
+			// 	}
+			// });
+
+			// uploadQueue[uploadPath].catch(async error => {
+			// 	try {
+			// 		await db.write(async () => {
+			// 			await uploadRecord.update(u => {
+			// 				u.error = true;
+			// 			});
+			// 		});
+			// 	} catch (e) {
+			// 		log(e);
+			// 	}
+			// 	reject(error);
+			// });
 		} catch (e) {
 			log(e);
 		}

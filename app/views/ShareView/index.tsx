@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
 import SimpleCrypto from 'react-native-simple-crypto';
+import EJSON from 'ejson';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -37,7 +38,15 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { Encryption } from '../../lib/encryption';
-import { b64URIToBuffer, decryptAESCTR, encryptAESCTR, exportAESCTR, generateAESCTRKey } from '../../lib/encryption/utils';
+import {
+	Base64,
+	b64URIToBuffer,
+	bufferToB64,
+	decryptAESCTR,
+	encryptAESCTR,
+	exportAESCTR,
+	generateAESCTRKey
+} from '../../lib/encryption/utils';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -252,63 +261,100 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		try {
-			const { path } = attachments[0];
-			const vector = await SimpleCrypto.utils.randomBytes(16);
-			const key = await generateAESCTRKey();
+			// Send attachment
+			if (attachments.length) {
+				console.log('🚀 ~ ShareView ~ send= ~ attachments:', attachments);
+				await Promise.all(
+					attachments.map(async ({ filename: name, mime: type, description, size, canUpload }) => {
+						if (!canUpload) {
+							return Promise.resolve(); // Resolve immediately if upload is not allowed
+						}
 
-			const exportedKey = exportAESCTR(key);
-			console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
+						try {
+							const { path } = attachments[0]; // Consider if you need a specific attachment or iterate over each
+							const vector = await SimpleCrypto.utils.randomBytes(16);
+							const key = await generateAESCTRKey();
 
-			const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
-			console.log('🚀 ~ ShareView ~ send= ~ exportedKeyArrayBuffer:', exportedKeyArrayBuffer);
+							const exportedKey = await exportAESCTR(key);
+							console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
 
-			const encryptedFile = await encryptAESCTR(path, exportedKeyArrayBuffer, vector);
-			console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
+							const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
+							console.log('🚀 ~ ShareView ~ send= ~ exportedKeyArrayBuffer:', exportedKeyArrayBuffer);
 
-			const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
-			console.log('🚀 ~ ShareView ~ send= ~ decryptedFile:', decryptedFile);
-		} catch (e) {
-			console.error(e);
+							const encryptedFile = await encryptAESCTR(path, exportedKeyArrayBuffer, vector);
+							console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
+
+							const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
+							console.log('🚀 ~ ShareView ~ send= ~ decryptedFile:', decryptedFile);
+
+							const getContent = async (_id: string, fileUrl: string) => {
+								console.log('🚀 ~ ShareView ~ getContent ~ _id:', _id, fileUrl);
+								const attachments = [];
+								console.log('🚀 ~ ShareView ~ getContent ~ attachment.encryption.exportedKey:', vector, exportedKey);
+
+								const attachment = {
+									title: name,
+									type: 'file',
+									description,
+									// title_link: fileUrl,
+									// title_link_download: true,
+									encryption: {
+										key: exportedKey,
+										iv: bufferToB64(vector)
+									},
+									image_url: fileUrl,
+									image_type: type,
+									image_size: size
+								};
+								attachments.push(attachment);
+
+								const data = EJSON.stringify({
+									attachments
+								});
+								console.log('🚀 ~ ShareView ~ getContent ~ attachments:', attachments, data);
+
+								return {
+									algorithm: 'rc.v1.aes-sha2',
+									ciphertext: await Encryption.encryptText(room.rid, data)
+								};
+							};
+
+							// Send the file message with the encrypted path
+							return sendFileMessage(
+								room.rid,
+								{
+									rid: room.rid,
+									// name,
+									description,
+									size,
+									type: 'file',
+									path: encryptedFile,
+									store: 'Uploads',
+									msg
+								},
+								thread?.id,
+								server,
+								{ id: user.id, token: user.token },
+								undefined,
+								getContent
+							);
+						} catch (e) {
+							console.error(e);
+							return Promise.reject(e); // Ensure that errors are propagated
+						}
+					})
+				);
+
+				// Send text message
+			} else if (text.length) {
+				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+			}
+		} catch {
+			if (!this.isShareExtension) {
+				const text = this.messageComposerRef.current?.getText();
+				this.finishShareView(text, this.state.selectedMessages);
+			}
 		}
-
-		// try {
-		// 	// Send attachment
-		// 	if (attachments.length) {
-		// 		console.log('🚀 ~ ShareView ~ send= ~ attachments:', attachments);
-		// 		await Promise.all(
-		// 			attachments.map(async ({ filename: name, mime: type, description, size, path, canUpload }) => {
-		// 				if (canUpload) {
-		// 					return sendFileMessage(
-		// 						room.rid,
-		// 						{
-		// 							rid: room.rid,
-		// 							name,
-		// 							description,
-		// 							size,
-		// 							type,
-		// 							path,
-		// 							store: 'Uploads',
-		// 							msg
-		// 						},
-		// 						thread?.id,
-		// 						server,
-		// 						{ id: user.id, token: user.token }
-		// 					);
-		// 				}
-		// 				return Promise.resolve();
-		// 			})
-		// 		);
-
-		// 		// Send text message
-		// 	} else if (text.length) {
-		// 		await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
-		// 	}
-		// } catch {
-		// 	if (!this.isShareExtension) {
-		// 		const text = this.messageComposerRef.current?.getText();
-		// 		this.finishShareView(text, this.state.selectedMessages);
-		// 	}
-		// }
 
 		// if it's share extension this should close
 		if (this.isShareExtension) {
