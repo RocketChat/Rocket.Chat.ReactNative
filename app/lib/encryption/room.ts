@@ -283,6 +283,7 @@ export default class EncryptionRoom {
 			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ path:', path);
 			// const vector = await SimpleCrypto.utils.randomBytes(16);
 			const data = await SimpleCrypto.AES.encryptFile(path, this.roomKey as ArrayBuffer, iv);
+			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ this.roomKey:', bufferToB64URI(this.roomKey));
 			console.log('🚀 ~ EncryptionRoom ~ encryptFile= ~ data:', data);
 
 			// return this.keyID + bufferToB64(joinVectorData(vector, data));
@@ -336,6 +337,24 @@ export default class EncryptionRoom {
 		return m.text;
 	};
 
+	// Decrypt content
+	decryptContent = async (msg: string | ArrayBuffer) => {
+		if (!msg) {
+			return null;
+		}
+
+		msg = b64ToBuffer(msg.slice(12) as string);
+		const [vector, cipherText] = splitVectorData(msg);
+
+		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, this.roomKey, vector);
+		console.log('🚀 ~ EncryptionRoom ~ decryptContent= ~ decrypted:', decrypted);
+
+		const m = EJSON.parse(bufferToUtf8(decrypted));
+		console.log('🚀 ~ EncryptionRoom ~ decryptContent= ~ m:', m);
+
+		return m;
+	};
+
 	// Decrypt messages
 	decrypt = async (message: IMessage) => {
 		if (!this.ready) {
@@ -356,8 +375,19 @@ export default class EncryptionRoom {
 					tmsg = await this.decryptText(tmsg);
 				}
 
-				if (message.attachments?.length) {
-					message.attachments[0].description = await this.decryptText(message.attachments[0].description as string);
+				// if (message.attachments?.length) {
+				// 	message.attachments[0].description = await this.decryptText(message.attachments[0].description as string);
+				// }
+
+				if (message.content?.ciphertext) {
+					try {
+						const content = await this.decryptContent(message.content?.ciphertext as string);
+						console.log('🚀 ~ EncryptionRoom ~ decrypt= ~ content:', content);
+						message.attachments = content.attachments;
+						console.log('🚀 ~ EncryptionRoom ~ decrypt= ~ message.attachments:', message.attachments);
+					} catch (e) {
+						console.error(e);
+					}
 				}
 
 				const decryptedMessage: IMessage = {

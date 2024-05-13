@@ -37,6 +37,7 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { Encryption } from '../../lib/encryption';
+import { b64URIToBuffer, decryptAESCTR, encryptAESCTR, exportAESCTR, generateAESCTRKey } from '../../lib/encryption/utils';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -251,13 +252,21 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 
 		try {
-			console.log(attachments[0].path);
+			const { path } = attachments[0];
 			const vector = await SimpleCrypto.utils.randomBytes(16);
-			const encryptedFile = await Encryption.encryptFile(room.rid, attachments[0].path, vector);
-			console.log('🚀 ~ ShareView ~ attachments.map ~ encryptedFile:', encryptedFile);
+			const key = await generateAESCTRKey();
 
-			const decryptedFile = await Encryption.decryptFile(room.rid, encryptedFile, vector);
-			console.log('🚀 ~ ShareView ~ attachments.map ~ decryptedFile:', decryptedFile);
+			const exportedKey = exportAESCTR(key);
+			console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
+
+			const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
+			console.log('🚀 ~ ShareView ~ send= ~ exportedKeyArrayBuffer:', exportedKeyArrayBuffer);
+
+			const encryptedFile = await encryptAESCTR(path, exportedKeyArrayBuffer, vector);
+			console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
+
+			const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
+			console.log('🚀 ~ ShareView ~ send= ~ decryptedFile:', decryptedFile);
 		} catch (e) {
 			console.error(e);
 		}
@@ -366,7 +375,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}>
+					}}
+				>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected

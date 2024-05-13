@@ -165,7 +165,8 @@ const ImageContainer = ({
 			const imageUri = await downloadMediaFile({
 				downloadUrl: imgUrlToCache,
 				type: 'image',
-				mimeType: imageCached.image_type
+				mimeType: imageCached.image_type,
+				encryption: file.encryption
 			});
 			updateImageCached(imageUri);
 		} catch (e) {

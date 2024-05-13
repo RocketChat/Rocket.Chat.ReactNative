@@ -1,10 +1,12 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
+// import { Base64 } from 'js-base64';
 
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
+import { Base64, b64ToBuffer, b64URIToBuffer, base64Decode, decryptAESCTR } from '../encryption/utils';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
@@ -106,11 +108,13 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 export const getFilePath = ({
 	type,
 	mimeType,
-	urlToCache
+	urlToCache,
+	encrypted = false
 }: {
 	type: MediaTypes;
 	mimeType?: string;
 	urlToCache?: string;
+	encrypted?: boolean;
 }): string | null => {
 	if (!urlToCache) {
 		return null;
@@ -118,7 +122,7 @@ export const getFilePath = ({
 	const folderPath = getFolderPath(urlToCache);
 	const urlWithoutQueryString = urlToCache.split('?')[0];
 	const filename = sanitizeFileName(getFilename({ type, mimeType, url: urlWithoutQueryString }));
-	const filePath = `${folderPath}${filename}`;
+	const filePath = `${folderPath}${filename}${encrypted ? '.enc' : ''}`;
 	return filePath;
 };
 
@@ -197,27 +201,49 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 export function downloadMediaFile({
 	type,
 	mimeType,
-	downloadUrl
+	downloadUrl,
+	encryption
 }: {
 	type: MediaTypes;
 	mimeType?: string;
 	downloadUrl: string;
+	encryption: any;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
 		try {
-			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
+			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl, encrypted: !!encryption });
+			console.log('🚀 ~ returnnewPromise ~ path:', path);
 			if (!path) {
 				return reject();
 			}
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
+
+			console.log('🚀 ~ returnnewPromise ~ result:', result);
+
+			// const decryptedFile = await Encryption.decryptFile(rid, result.uri.substring(7), encryption.key, encryption.iv);
+			// console.log('🚀 ~ downloadMediaFile ~ decryptedFile:', decryptedFile);
+
+			console.log('🚀 ~ returnnewPromise ~ encryption:', encryption);
+			const exportedKeyArrayBuffer = b64URIToBuffer(encryption.key.k);
+			// const vector = b64URIToBuffer(encryption.iv);
+			// const vector = b64ToBuffer(encryption.iv);
+			// const vector = Base64.decode(encryption.iv);
+			// const vector = Base64.decode(encryption.iv);
+			const vector = base64Decode(encryption.iv);
+			console.log('🚀 ~ returnnewPromise ~ vector:', vector);
+
+			const decryptedFile = await decryptAESCTR(result.uri.substring(7), exportedKeyArrayBuffer, vector);
+			console.log('🚀 ~ handleMediaDownload ~ decryptedFile:', decryptedFile);
+
 			if (result?.uri) {
 				return resolve(result.uri);
 			}
 			return reject();
-		} catch {
+		} catch (e) {
+			console.error(e);
 			return reject();
 		} finally {
 			delete downloadQueue[downloadKey];
