@@ -94,7 +94,7 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 };
 export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
 
-export const generateAESCTRKey = () => SimpleCrypto.utils.randomBytes(16);
+export const generateAESCTRKey = () => SimpleCrypto.utils.randomBytes(32);
 
 export const exportAESCTR = key => {
 	// Web Crypto format of a Secret Key
