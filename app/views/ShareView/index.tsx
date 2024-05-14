@@ -7,6 +7,7 @@ import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
 import SimpleCrypto from 'react-native-simple-crypto';
 import EJSON from 'ejson';
+import { sha256 } from 'js-sha256';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -276,21 +277,22 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							const key = await generateAESCTRKey();
 
 							const exportedKey = await exportAESCTR(key);
-							console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
+							// console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
 
 							const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
-							console.log('🚀 ~ ShareView ~ send= ~ exportedKeyArrayBuffer:', exportedKeyArrayBuffer);
+							console.log('BASE64 BASE64 BASE64 key:', exportedKey, exportedKey.k);
+							console.log('BASE64 BASE64 BASE64 vector:', bufferToB64(vector));
 
 							const encryptedFile = await encryptAESCTR(path, exportedKeyArrayBuffer, vector);
-							console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
+							// console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
 
-							const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
-							console.log('🚀 ~ ShareView ~ send= ~ decryptedFile:', decryptedFile);
+							// const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
+							// console.log('🚀 ~ ShareView ~ send= ~ decryptedFile:', decryptedFile);
 
 							const getContent = async (_id: string, fileUrl: string) => {
-								console.log('🚀 ~ ShareView ~ getContent ~ _id:', _id, fileUrl);
+								// console.log('🚀 ~ ShareView ~ getContent ~ _id:', _id, fileUrl);
 								const attachments = [];
-								console.log('🚀 ~ ShareView ~ getContent ~ attachment.encryption.exportedKey:', vector, exportedKey);
+								// console.log('🚀 ~ ShareView ~ getContent ~ attachment.encryption.exportedKey:', vector, exportedKey);
 
 								const attachment = {
 									title: name,
@@ -311,7 +313,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								const data = EJSON.stringify({
 									attachments
 								});
-								console.log('🚀 ~ ShareView ~ getContent ~ attachments:', attachments, data);
+								// console.log('🚀 ~ ShareView ~ getContent ~ attachments:', attachments, data);
 
 								return {
 									algorithm: 'rc.v1.aes-sha2',
@@ -324,7 +326,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								room.rid,
 								{
 									rid: room.rid,
-									// name,
+									name: sha256(name),
 									description,
 									size,
 									type: 'file',

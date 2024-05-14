@@ -202,22 +202,26 @@ const ImageContainer = ({
 		showAttachment(imageCached);
 	};
 
+	const image = (
+		<Button onPress={onPress}>
+			<MessageImage
+				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
+				cached={cached}
+				loading={loading}
+			/>
+		</Button>
+	);
+
 	if (msg) {
 		return (
 			<View>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-				<Button onPress={onPress}>
-					<MessageImage imgUri={img} cached={cached} loading={loading} />
-				</Button>
+				{image}
 			</View>
 		);
 	}
 
-	return (
-		<Button onPress={onPress}>
-			<MessageImage imgUri={img} cached={cached} loading={loading} />
-		</Button>
-	);
+	return image;
 };
 
 ImageContainer.displayName = 'MessageImageContainer';

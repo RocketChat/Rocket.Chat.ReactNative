@@ -123,10 +123,10 @@ export function sendFileMessage(
 
 			// const { version: serverVersion } = store.getState().server;
 			// if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-			// 	formData.push({
-			// 		name: 't',
-			// 		data: encryptedFileInfo.t
-			// 	});
+			formData.push({
+				name: 't',
+				data: 'e2e'
+			});
 			// 	formData.push({
 			// 		name: 'e2e',
 			// 		data: encryptedFileInfo.e2e
@@ -139,6 +139,7 @@ export function sendFileMessage(
 				'X-Auth-Token': token,
 				'X-User-Id': id
 			};
+			console.log('🚀 ~ returnnewPromise ~ RocketChatSettings.customHeaders:', RocketChatSettings.customHeaders);
 
 			try {
 				const data = formData.map(item => {
@@ -168,12 +169,16 @@ export function sendFileMessage(
 
 				const mediaConfirm = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
 					method: 'POST',
-					headers,
+					headers: {
+						'Content-Type': 'application/json',
+						'X-Auth-Token': token,
+						'X-User-Id': id
+					},
 					body: JSON.stringify({
-						msg: fileInfo.msg,
-						tmid: fileInfo.tmid,
-						description: fileInfo.description,
-						t: fileInfo.t,
+						msg: '',
+						// tmid: fileInfo.tmid,
+						// description: fileInfo.description,
+						t: 'e2e',
 						content
 					})
 				});

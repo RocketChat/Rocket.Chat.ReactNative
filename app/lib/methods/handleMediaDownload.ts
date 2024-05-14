@@ -232,14 +232,14 @@ export function downloadMediaFile({
 			// const vector = b64ToBuffer(encryption.iv);
 			// const vector = Base64.decode(encryption.iv);
 			// const vector = Base64.decode(encryption.iv);
-			const vector = base64Decode(encryption.iv);
+			const vector = b64ToBuffer(encryption.iv);
 			console.log('🚀 ~ returnnewPromise ~ vector:', vector);
 
 			const decryptedFile = await decryptAESCTR(result.uri.substring(7), exportedKeyArrayBuffer, vector);
 			console.log('🚀 ~ handleMediaDownload ~ decryptedFile:', decryptedFile);
 
-			if (result?.uri) {
-				return resolve(result.uri);
+			if (decryptedFile) {
+				return resolve(`file://${decryptedFile}`);
 			}
 			return reject();
 		} catch (e) {
