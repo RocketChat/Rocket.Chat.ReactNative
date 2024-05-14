@@ -227,15 +227,15 @@ export function downloadMediaFile({
 			// console.log('🚀 ~ downloadMediaFile ~ decryptedFile:', decryptedFile);
 
 			console.log('🚀 ~ returnnewPromise ~ encryption:', encryption);
-			const exportedKeyArrayBuffer = b64URIToBuffer(encryption.key.k);
+			// const exportedKeyArrayBuffer = b64URIToBuffer(encryption.key.k);
 			// const vector = b64URIToBuffer(encryption.iv);
 			// const vector = b64ToBuffer(encryption.iv);
 			// const vector = Base64.decode(encryption.iv);
 			// const vector = Base64.decode(encryption.iv);
-			const vector = b64ToBuffer(encryption.iv);
-			console.log('🚀 ~ returnnewPromise ~ vector:', vector);
+			// const vector = b64ToBuffer(encryption.iv);
+			// console.log('🚀 ~ returnnewPromise ~ vector:', vector);
 
-			const decryptedFile = await decryptAESCTR(result.uri.substring(7), exportedKeyArrayBuffer, vector);
+			const decryptedFile = await decryptAESCTR(result.uri.substring(7), encryption.key.k, encryption.iv);
 			console.log('🚀 ~ handleMediaDownload ~ decryptedFile:', decryptedFile);
 
 			if (decryptedFile) {

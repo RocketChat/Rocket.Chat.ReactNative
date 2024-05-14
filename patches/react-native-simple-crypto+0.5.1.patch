@@ -3939,7 +3939,7 @@ index b4fcde6..8b957d7 100644
  
    export namespace SHA {
 diff --git a/node_modules/react-native-simple-crypto/index.js b/node_modules/react-native-simple-crypto/index.js
-index d756fbc..d819fe6 100644
+index d756fbc..ea2022b 100644
 --- a/node_modules/react-native-simple-crypto/index.js
 +++ b/node_modules/react-native-simple-crypto/index.js
 @@ -92,6 +92,19 @@ const AES = {
@@ -3947,18 +3947,18 @@ index d756fbc..d819fe6 100644
      const ivHex = convertArrayBufferToHex(ivArrayBuffer);
      return convertBase64ToArrayBuffer(await NativeModules.Aes.decrypt(cipherTextBase64, keyHex, ivHex));
 +  },
-+  encryptFile: async function (filePath, keyArrayBuffer, ivArrayBuffer) {
++  encryptFile: async function (filePath, key, iv) {
 +    console.log('🚀 ~ filePath:', filePath);
 +    // const textBase64 = convertArrayBufferToBase64(filePath);
-+    const keyHex = convertArrayBufferToHex(keyArrayBuffer);
-+    const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-+    return NativeModules.Aes.encryptFile(filePath, keyHex, ivHex);
++    // const keyHex = convertArrayBufferToHex(keyArrayBuffer);
++    // const ivHex = convertArrayBufferToHex(ivArrayBuffer);
++    return NativeModules.Aes.encryptFile(filePath, key, iv);
 +  },
-+  decryptFile: async function (filePath, keyArrayBuffer, ivArrayBuffer) {
++  decryptFile: async function (filePath, key, iv) {
 +    console.log('🚀 ~ filePath:', filePath);
-+    const keyHex = convertArrayBufferToHex(keyArrayBuffer);
-+    const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-+    return NativeModules.Aes.decryptFile(filePath, keyHex, ivHex);
++    // const keyHex = convertArrayBufferToHex(keyArrayBuffer);
++    // const ivHex = convertArrayBufferToHex(ivArrayBuffer);
++    return NativeModules.Aes.decryptFile(filePath, key, iv);
    }
  };
  
@@ -4048,36 +4048,65 @@ index 72432fe..8a2020b 100644
 +
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 4ef555a..02c539b 100644
+index 4ef555a..b7e0bae 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-@@ -45,4 +45,63 @@
+@@ -45,4 +45,93 @@
      return [result base64EncodedStringWithOptions:0];
  }
  
+++ (NSString *)base64FromBase64URL:(NSString *)base64URL {
++    NSMutableString *base64 = [NSMutableString stringWithString:base64URL];
++    [base64 replaceOccurrencesOfString:@"-" withString:@"+" options:NSLiteralSearch range:NSMakeRange(0, base64.length)];
++    [base64 replaceOccurrencesOfString:@"_" withString:@"/" options:NSLiteralSearch range:NSMakeRange(0, base64.length)];
++    
++    // Pad with '=' to ensure the base64 string length is a multiple of 4
++    while (base64.length % 4 != 0) {
++        [base64 appendString:@"="];
++    }
++    return base64;
++}
++
 ++ (NSString *)processFile:(NSString *)filePath
 +         outputFile:(NSString *)outputFilePath
 +           operation:(CCOperation)operation
-+                key:(NSString *)key
-+                 iv:(NSString *)iv {
-+    NSData *keyData = [Shared fromHex:key];
-+    NSData *ivData = [Shared fromHex:iv];
-+
++                key:(NSString *)keyBase64URL
++                 iv:(NSString *)ivBase64 {
++    NSString *keyBase64 = [self base64FromBase64URL:keyBase64URL];
++    NSData *keyData = [[NSData alloc] initWithBase64EncodedString:keyBase64 options:0];
++    NSData *ivData = [[NSData alloc] initWithBase64EncodedString:ivBase64 options:0];
++    
++    // Check key length for AES-256
++    if (keyData.length != 32) {
++        NSLog(@"Key length is %lu bytes; expected 32 bytes for AES-256.", (unsigned long)keyData.length);
++        return nil;
++    }
++    
++    // Check IV length for AES
++    if (ivData.length != 16) {
++        NSLog(@"IV length is %lu bytes; expected 16 bytes for AES.", (unsigned long)ivData.length);
++        return nil;
++    }
++    
 +    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
 +    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
 +    [inputStream open];
 +    [outputStream open];
-+
++ 
 +    size_t bufferSize = 4096; // 4KB buffer size
 +    uint8_t buffer[bufferSize];
 +    CCCryptorRef cryptor = NULL;
-+    CCCryptorStatus status = CCCryptorCreate(operation, kCCAlgorithmAES, kCCModeCTR, keyData.bytes, keyData.length, ivData.bytes, &cryptor);
++//    CCCryptorStatus status = CCCryptorCreate(operation, kCCAlgorithmAES, kCCModeCTR | kCCOptionECBMode, keyData.bytes, keyData.length, ivData.bytes, &cryptor);
++    CCCryptorStatus status = CCCryptorCreateWithMode(operation, kCCModeCTR, kCCAlgorithmAES,
++                                                         ccNoPadding, ivData.bytes, keyData.bytes,
++                                                         keyData.length, NULL, 0, 0, kCCModeOptionCTR_BE, &cryptor);
 +
++//    status = CCCryptorUpdate(cryptor, cipherData.bytes, cipherData.length, decryptedData.mutableBytes, decryptedData.length, &outLength);
 +    if (status != kCCSuccess) {
 +        NSLog(@"Failed to create cryptor: %d", status);
 +        return nil;
 +    }
-+
++ 
 +    while ([inputStream hasBytesAvailable]) {
 +        NSInteger bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)];
 +        if (bytesRead > 0) {
@@ -4091,18 +4120,19 @@ index 4ef555a..02c539b 100644
 +            }
 +        }
 +    }
-+
++ 
 +    // No need for CCCryptorFinal with CTR mode
 +    CCCryptorRelease(cryptor);
 +    [inputStream close];
 +    [outputStream close];
-+
++ 
 +    if (status == kCCSuccess) {
 +        return outputFilePath;
 +    } else {
 +        return nil;
 +    }
 +}
++
 +
 ++ (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
 +    NSString *outputFilePath = [filePath stringByAppendingPathExtension:@"enc"];

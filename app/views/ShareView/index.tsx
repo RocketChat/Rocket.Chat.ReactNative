@@ -279,11 +279,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							const exportedKey = await exportAESCTR(key);
 							// console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
 
-							const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
-							console.log('BASE64 BASE64 BASE64 key:', exportedKey, exportedKey.k);
-							console.log('BASE64 BASE64 BASE64 vector:', bufferToB64(vector));
+							// const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
+							// console.log('BASE64 BASE64 BASE64 key:', exportedKey, exportedKey.k);
+							// console.log('BASE64 BASE64 BASE64 vector:', bufferToB64(vector));
+							// console.log('BASE64 BASE64 BASE64 vector:', bufferToB64(vector));
 
-							const encryptedFile = await encryptAESCTR(path, exportedKeyArrayBuffer, vector);
+							const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
 							// console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
 
 							// const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
