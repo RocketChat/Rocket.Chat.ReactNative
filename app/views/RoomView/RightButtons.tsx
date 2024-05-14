@@ -12,7 +12,7 @@ import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
 import database from '../../lib/database';
-import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { hasPermission, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import { closeLivechat as closeLivechatService } from '../../lib/methods/helpers/closeLivechat';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
@@ -50,6 +50,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	issuesWithNotifications: boolean;
 	notificationsDisabled?: boolean;
 	hasE2EEWarning: boolean;
+	toggleRoomE2EEncryptionPermission?: string[];
 }
 
 interface IRigthButtonsState {
@@ -57,6 +58,7 @@ interface IRigthButtonsState {
 	tunread: string[];
 	tunreadUser: string[];
 	tunreadGroup: string[];
+	canToggleEncryption: boolean;
 }
 
 class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsState> {
@@ -70,7 +72,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			isFollowingThread: true,
 			tunread: [],
 			tunreadUser: [],
-			tunreadGroup: []
+			tunreadGroup: [],
+			canToggleEncryption: false
 		};
 	}
 
@@ -94,10 +97,11 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				console.log("Can't find subscription to observe.");
 			}
 		}
+		this.setCanToggleEncryption();
 	}
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
 		const {
 			teamId,
 			status,
@@ -106,7 +110,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			theme,
 			hasE2EEWarning,
 			issuesWithNotifications,
-			notificationsDisabled
+			notificationsDisabled,
+			toggleRoomE2EEncryptionPermission
 		} = this.props;
 		if (nextProps.teamId !== teamId) {
 			return true;
@@ -118,6 +123,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return true;
 		}
 		if (nextProps.theme !== theme) {
+			return true;
+		}
+		if (nextState.canToggleEncryption !== canToggleEncryption) {
 			return true;
 		}
 		if (nextState.isFollowingThread !== isFollowingThread) {
@@ -144,7 +152,17 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (!dequal(nextState.tunreadGroup, tunreadGroup)) {
 			return true;
 		}
+		if (!dequal(nextProps.toggleRoomE2EEncryptionPermission, toggleRoomE2EEncryptionPermission)) {
+			return true;
+		}
 		return false;
+	}
+
+	componentDidUpdate(prevProps: Readonly<IRightButtonsProps>): void {
+		const { toggleRoomE2EEncryptionPermission } = this.props;
+		if (prevProps.toggleRoomE2EEncryptionPermission !== toggleRoomE2EEncryptionPermission) {
+			this.setCanToggleEncryption();
+		}
 	}
 
 	componentWillUnmount() {
@@ -317,6 +335,15 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		showActionSheet({ options });
 	};
 
+	setCanToggleEncryption = async () => {
+		const { rid } = this.props;
+		const { toggleRoomE2EEncryptionPermission } = this.props;
+		const permissions = await hasPermission([toggleRoomE2EEncryptionPermission], rid);
+
+		const canToggleEncryption = permissions[0];
+		this.setState({ canToggleEncryption });
+	};
+
 	navigateToNotificationOrPushTroubleshoot = () => {
 		const { room } = this;
 		const { rid, navigation, isMasterDetail, issuesWithNotifications } = this.props;
@@ -374,7 +401,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	render() {
-		const { isFollowingThread, tunread, tunreadUser, tunreadGroup } = this.state;
+		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
 		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
 
 		if (!rid) {
@@ -404,7 +431,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		return (
 			<HeaderButton.Container>
-				{hasE2EEWarning ? <HeaderButton.Item iconName='encrypted' onPress={() => toggleRoomE2EE(rid)} /> : null}
+				{hasE2EEWarning ? (
+					<HeaderButton.Item iconName='encrypted' onPress={() => toggleRoomE2EE(rid)} disabled={!canToggleEncryption} />
+				) : null}
 				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item
 						color={issuesWithNotifications ? colors!.fontDanger : ''}
@@ -435,7 +464,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	threadsEnabled: state.settings.Threads_enabled as boolean,
 	isMasterDetail: state.app.isMasterDetail,
 	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
-	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications
+	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications,
+	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption']
 });
 
 export default connect(mapStateToProps)(withTheme(RightButtonsContainer));
