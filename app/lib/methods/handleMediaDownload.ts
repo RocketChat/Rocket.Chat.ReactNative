@@ -213,7 +213,6 @@ export function downloadMediaFile({
 		let downloadKey = '';
 		try {
 			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl, encrypted: !!encryption });
-			console.log('🚀 ~ returnnewPromise ~ path:', path);
 			if (!path) {
 				return reject();
 			}
@@ -221,25 +220,14 @@ export function downloadMediaFile({
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 
-			console.log('🚀 ~ returnnewPromise ~ result:', result);
+			if (!result) {
+				return reject();
+			}
 
-			// const decryptedFile = await Encryption.decryptFile(rid, result.uri.substring(7), encryption.key, encryption.iv);
-			// console.log('🚀 ~ downloadMediaFile ~ decryptedFile:', decryptedFile);
-
-			console.log('🚀 ~ returnnewPromise ~ encryption:', encryption);
-			// const exportedKeyArrayBuffer = b64URIToBuffer(encryption.key.k);
-			// const vector = b64URIToBuffer(encryption.iv);
-			// const vector = b64ToBuffer(encryption.iv);
-			// const vector = Base64.decode(encryption.iv);
-			// const vector = Base64.decode(encryption.iv);
-			// const vector = b64ToBuffer(encryption.iv);
-			// console.log('🚀 ~ returnnewPromise ~ vector:', vector);
-
-			const decryptedFile = await decryptAESCTR(result.uri.substring(7), encryption.key.k, encryption.iv);
-			console.log('🚀 ~ handleMediaDownload ~ decryptedFile:', decryptedFile);
+			const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
 
 			if (decryptedFile) {
-				return resolve(`file://${decryptedFile}`);
+				return resolve(decryptedFile);
 			}
 			return reject();
 		} catch (e) {

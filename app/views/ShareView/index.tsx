@@ -39,15 +39,7 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { Encryption } from '../../lib/encryption';
-import {
-	Base64,
-	b64URIToBuffer,
-	bufferToB64,
-	decryptAESCTR,
-	encryptAESCTR,
-	exportAESCTR,
-	generateAESCTRKey
-} from '../../lib/encryption/utils';
+import { bufferToB64, encryptAESCTR, exportAESCTR, generateAESCTRKey } from '../../lib/encryption/utils';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -264,36 +256,21 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				console.log('🚀 ~ ShareView ~ send= ~ attachments:', attachments);
 				await Promise.all(
 					attachments.map(async ({ filename: name, mime: type, description, size, canUpload }) => {
 						if (!canUpload) {
-							return Promise.resolve(); // Resolve immediately if upload is not allowed
+							return Promise.resolve();
 						}
 
 						try {
-							const { path } = attachments[0]; // Consider if you need a specific attachment or iterate over each
+							const { path } = attachments[0];
 							const vector = await SimpleCrypto.utils.randomBytes(16);
 							const key = await generateAESCTRKey();
-
 							const exportedKey = await exportAESCTR(key);
-							// console.log('🚀 ~ ShareView ~ send= ~ exportedKey:', exportedKey, exportedKey.k);
-
-							// const exportedKeyArrayBuffer = b64URIToBuffer(exportedKey.k);
-							// console.log('BASE64 BASE64 BASE64 key:', exportedKey, exportedKey.k);
-							// console.log('BASE64 BASE64 BASE64 vector:', bufferToB64(vector));
-							// console.log('BASE64 BASE64 BASE64 vector:', bufferToB64(vector));
-
 							const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
-							// console.log('🚀 ~ ShareView ~ send= ~ encryptedFile:', encryptedFile);
-
-							// const decryptedFile = await decryptAESCTR(encryptedFile, exportedKeyArrayBuffer, vector);
-							// console.log('🚀 ~ ShareView ~ send= ~ decryptedFile:', decryptedFile);
 
 							const getContent = async (_id: string, fileUrl: string) => {
-								// console.log('🚀 ~ ShareView ~ getContent ~ _id:', _id, fileUrl);
 								const attachments = [];
-								// console.log('🚀 ~ ShareView ~ getContent ~ attachment.encryption.exportedKey:', vector, exportedKey);
 
 								const attachment = {
 									title: name,
@@ -314,7 +291,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								const data = EJSON.stringify({
 									attachments
 								});
-								// console.log('🚀 ~ ShareView ~ getContent ~ attachments:', attachments, data);
 
 								return {
 									algorithm: 'rc.v1.aes-sha2',
@@ -343,7 +319,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							);
 						} catch (e) {
 							console.error(e);
-							return Promise.reject(e); // Ensure that errors are propagated
+							return Promise.reject(e);
 						}
 					})
 				);

@@ -139,7 +139,6 @@ export function sendFileMessage(
 				'X-Auth-Token': token,
 				'X-User-Id': id
 			};
-			console.log('🚀 ~ returnnewPromise ~ RocketChatSettings.customHeaders:', RocketChatSettings.customHeaders);
 
 			try {
 				const data = formData.map(item => {
@@ -153,14 +152,9 @@ export function sendFileMessage(
 					}
 					return item;
 				});
-				console.log('🚀 ~ data ~ data:', data);
 				const response = await RNFetchBlob.fetch('POST', uploadUrl, headers, data);
-				console.log(response);
 
 				const json = response.json();
-				console.log('🚀 ~ returnnewPromise ~ json:', json);
-
-				console.log('🚀 ~ returnnewPromise ~ getContent:', getContent);
 				let content;
 				if (getContent) {
 					content = await getContent(json.file._id, json.file.url);

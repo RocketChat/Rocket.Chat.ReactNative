@@ -142,6 +142,10 @@ export interface IMessage extends IMessageFromServer {
 	tmsg?: string;
 	blocks?: any;
 	e2e?: E2EType;
+	content?: {
+		algorithm: 'rc.v1.aes-sha2';
+		ciphertext: string; // Encrypted subset JSON of IMessage
+	};
 	tshow?: boolean;
 	comment?: string;
 	subscription?: { id: string };
