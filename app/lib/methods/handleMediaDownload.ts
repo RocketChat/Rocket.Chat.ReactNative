@@ -122,7 +122,7 @@ export const getFilePath = ({
 	const folderPath = getFolderPath(urlToCache);
 	const urlWithoutQueryString = urlToCache.split('?')[0];
 	const filename = sanitizeFileName(getFilename({ type, mimeType, url: urlWithoutQueryString }));
-	const filePath = `${folderPath}${filename}${encrypted ? '.enc' : ''}`;
+	const filePath = `${folderPath}${filename}`;
 	return filePath;
 };
 
@@ -225,7 +225,6 @@ export function downloadMediaFile({
 			}
 
 			const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
-
 			if (decryptedFile) {
 				return resolve(decryptedFile);
 			}

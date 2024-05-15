@@ -77,7 +77,7 @@ index 0000000..0d259dd
 +o/classes
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/transformed/classes/classes.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/transformed/classes/classes.dex
 new file mode 100644
-index 0000000..b4f833b
+index 0000000..5be38a4
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/transformed/classes/classes.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/c2ec0bcb49ee954746918a6a074d37b1/results.bin b/node_modules/react-native-simple-crypto/android/build/.transforms/c2ec0bcb49ee954746918a6a074d37b1/results.bin
 new file mode 100644
@@ -162,7 +162,7 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..3a4db3a
+index 0000000..d1da98d
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
@@ -2083,7 +2083,7 @@ index 0000000..99b9873
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..c3a796f
+index 0000000..582117e
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
@@ -2155,7 +2155,7 @@ index 0000000..34450ae
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RandomBytesModule.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/Util.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/Util.class
 new file mode 100644
-index 0000000..4837fc4
+index 0000000..456051a
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/Util.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/local_only_symbol_list/debug/R-def.txt b/node_modules/react-native-simple-crypto/android/build/intermediates/local_only_symbol_list/debug/R-def.txt
 new file mode 100644
@@ -2293,7 +2293,7 @@ new file mode 100644
 index 0000000..e69de29
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..5429be9
+index 0000000..3865e39
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/react-native-simple-crypto/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
 new file mode 100644
@@ -3714,42 +3714,42 @@ index 0000000..8fc244a
 +		INJECTED from /Users/diegomello/Development/Work/Rocket.Chat.ReactNative/node_modules/react-native-simple-crypto/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..9aa8252
+index 0000000..97c1c36
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
-index 2b52abe..0ef37a6 100644
+index 2b52abe..13297d2 100644
 --- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
 +++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
-@@ -1,55 +1,31 @@
+@@ -1,55 +1,32 @@
  package com.pedrouid.crypto;
  
 -import android.widget.Toast;
--
--import java.io.IOException;
--import java.security.SecureRandom;
--import java.util.HashMap;
--import java.util.Map;
 +import android.util.Base64;
- 
--import java.util.UUID;
++
 +import com.facebook.react.bridge.Promise;
 +import com.facebook.react.bridge.ReactApplicationContext;
 +import com.facebook.react.bridge.ReactContextBaseJavaModule;
 +import com.facebook.react.bridge.ReactMethod;
  
++import org.spongycastle.util.encoders.Hex;
++
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
+ import java.io.IOException;
+ import java.security.SecureRandom;
+-import java.util.HashMap;
+-import java.util.Map;
+-
+ import java.util.UUID;
+-
 -import java.security.MessageDigest;
 -import java.security.NoSuchAlgorithmException;
 -import java.security.spec.InvalidKeySpecException;
 -import java.security.InvalidKeyException;
-+import org.spongycastle.util.encoders.Hex;
- 
+-
 -import java.nio.charset.StandardCharsets;
-+import java.io.File;
-+import java.io.FileInputStream;
-+import java.io.FileOutputStream;
-+import java.security.SecureRandom;
-+import java.util.UUID;
- 
+-
  import javax.crypto.Cipher;
  import javax.crypto.SecretKey;
 -import javax.crypto.spec.SecretKeySpec;
@@ -3780,6 +3780,7 @@ index 2b52abe..0ef37a6 100644
 -import com.facebook.react.bridge.ReactMethod;
 -import com.facebook.react.bridge.Callback;
 +import javax.crypto.spec.SecretKeySpec;
++import java.nio.channels.FileChannel;
  
  public class RCTAes extends ReactContextBaseJavaModule {
  
@@ -3790,7 +3791,7 @@ index 2b52abe..0ef37a6 100644
  
      public RCTAes(ReactApplicationContext reactContext) {
          super(reactContext);
-@@ -80,6 +56,26 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -80,6 +57,26 @@ public class RCTAes extends ReactContextBaseJavaModule {
          }
      }
  
@@ -3817,7 +3818,7 @@ index 2b52abe..0ef37a6 100644
      @ReactMethod
      public void randomUuid(Promise promise) {
          try {
-@@ -105,6 +101,12 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -105,6 +102,12 @@ public class RCTAes extends ReactContextBaseJavaModule {
  
      final static IvParameterSpec emptyIvSpec = new IvParameterSpec(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
  
@@ -3830,13 +3831,12 @@ index 2b52abe..0ef37a6 100644
      public static String encrypt(String textBase64, String hexKey, String hexIv) throws Exception {
          if (textBase64 == null || textBase64.length() == 0) {
              return null;
-@@ -133,4 +135,51 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -133,4 +136,60 @@ public class RCTAes extends ReactContextBaseJavaModule {
          return Base64.encodeToString(decrypted, Base64.NO_WRAP);
      }
  
-+    public static String processFile(String inputFile, String base64UrlKey, String base64Iv, String mode, String fileSuffix) throws Exception {
-+
-+        // Decode the key and IV
++    public static String processFile(String inputFile, String base64UrlKey, String base64Iv, String mode) throws Exception {
++        // Decode the key and IV using URL-safe and no-wrap flags
 +        byte[] key = Base64.decode(base64UrlKey, Base64.URL_SAFE | Base64.NO_WRAP);
 +        byte[] iv = Base64.decode(base64Iv, Base64.NO_WRAP);
 +        SecretKey secretKey = new SecretKeySpec(key, "AES");
@@ -3846,16 +3846,17 @@ index 2b52abe..0ef37a6 100644
 +        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 +        cipher.init(mode.equals("encrypt") ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
 +
-+        // Setup file input and output
-+        inputFile = Util.normalizeFilePath(inputFile);
-+        File inputFileObj = new File(inputFile);
-+        FileInputStream fis = new FileInputStream(inputFileObj);
-+        String outputFile = Util.addFileScheme(inputFile + fileSuffix);
-+        FileOutputStream fos = new FileOutputStream(new File(Util.normalizeFilePath(outputFile)));
++        // Normalize file paths
++        String normalizedInputFilePath = Util.normalizeFilePath(inputFile);
++        File inputFileObj = new File(normalizedInputFilePath);
++        File outputFileObj = new File(normalizedInputFilePath + ".tmp");
 +
-+        try {
-+            byte[] buffer = new byte[4096];
++        // File streams setup
++        try (FileInputStream fis = new FileInputStream(inputFileObj);
++             FileOutputStream fos = new FileOutputStream(outputFileObj)) {
++            byte[] buffer = new byte[BUFFER_SIZE];
 +            int numBytesRead;
++
 +            while ((numBytesRead = fis.read(buffer)) != -1) {
 +                byte[] output = cipher.update(buffer, 0, numBytesRead);
 +                if (output != null) {
@@ -3866,27 +3867,36 @@ index 2b52abe..0ef37a6 100644
 +            if (finalBytes != null) {
 +                fos.write(finalBytes);
 +            }
-+        } finally {
-+            fis.close();
-+            fos.close();
++        } catch (Exception ex) {
++            outputFileObj.delete(); // Ensure temporary file is removed on error
++            throw ex;
 +        }
 +
-+        return outputFile;
++        // Replace original file with the processed file
++        if (inputFileObj.delete()) {
++            if (!outputFileObj.renameTo(inputFileObj)) {
++                throw new IOException("Failed to rename output file back to original.");
++            }
++        } else {
++            throw new IOException("Failed to delete original file.");
++        }
++
++        return inputFile;
 +    }
 +
 +    public static String encryptFile(String inputFile, String base64UrlKey, String base64Iv) throws Exception {
-+        return processFile(inputFile, base64UrlKey, base64Iv, "encrypt", ".enc");
++        return processFile(inputFile, base64UrlKey, base64Iv, "encrypt");
 +    }
 +
 +    public static String decryptFile(String inputFile, String base64UrlKey, String base64Iv) throws Exception {
-+        return processFile(inputFile, base64UrlKey, base64Iv, "decrypt", "-new.jpg");
++        return processFile(inputFile, base64UrlKey, base64Iv, "decrypt");
 +    }
  }
 diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
-index 25179a9..0ca7b29 100644
+index 25179a9..2ff673b 100644
 --- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
 +++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
-@@ -11,4 +11,22 @@ public class Util {
+@@ -11,4 +11,18 @@ public class Util {
          }
          return new String(hexChars);
      }
@@ -3903,10 +3913,6 @@ index 25179a9..0ca7b29 100644
 +
 +    public static String normalizeFilePath(String filePath) {
 +        return filePath.startsWith("file://") ? filePath.substring(7) : filePath;
-+    }
-+
-+    public static String addFileScheme(String filePath) {
-+        return "file://" + filePath;
 +    }
  }
 diff --git a/node_modules/react-native-simple-crypto/index.d.ts b/node_modules/react-native-simple-crypto/index.d.ts
@@ -4033,51 +4039,37 @@ index 72432fe..8a2020b 100644
 +
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 4ef555a..a6d848d 100644
+index 4ef555a..4e9655c 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-@@ -45,4 +45,85 @@
+@@ -45,4 +45,67 @@
      return [result base64EncodedStringWithOptions:0];
  }
  
 ++ (NSString *)processFile:(NSString *)filePath
-+         outputFile:(NSString *)outputFilePath
-+           operation:(CCOperation)operation
-+                key:(NSString *)keyBase64URL
-+                 iv:(NSString *)ivBase64 {
++                 operation:(CCOperation)operation
++                      key:(NSString *)keyBase64URL
++                       iv:(NSString *)ivBase64 {
 +    NSString *keyBase64 = [Shared base64FromBase64URL:keyBase64URL];
 +    NSData *keyData = [[NSData alloc] initWithBase64EncodedString:keyBase64 options:0];
 +    NSData *ivData = [[NSData alloc] initWithBase64EncodedString:ivBase64 options:0];
-+    
-+    // Check key length for AES-256
-+    if (keyData.length != 32) {
-+        NSLog(@"Key length is %lu bytes; expected 32 bytes for AES-256.", (unsigned long)keyData.length);
-+        return nil;
-+    }
-+    
-+    // Check IV length for AES
-+    if (ivData.length != 16) {
-+        NSLog(@"IV length is %lu bytes; expected 16 bytes for AES.", (unsigned long)ivData.length);
-+        return nil;
-+    }
-+    
-+    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:filePath];
-+    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
++
++    NSString *normalizedFilePath = [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
++    NSString *tempFilePath = [normalizedFilePath stringByAppendingPathExtension:@"tmp"];
++    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:normalizedFilePath];
++    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:tempFilePath append:NO];
 +    [inputStream open];
 +    [outputStream open];
-+ 
-+    size_t bufferSize = 4096; // 4KB buffer size
++
++    size_t bufferSize = 4096;
 +    uint8_t buffer[bufferSize];
 +    CCCryptorRef cryptor = NULL;
-+    CCCryptorStatus status = CCCryptorCreateWithMode(operation, kCCModeCTR, kCCAlgorithmAES,
-+                                                         ccNoPadding, ivData.bytes, keyData.bytes,
-+                                                         keyData.length, NULL, 0, 0, kCCModeOptionCTR_BE, &cryptor);
-+
++    CCCryptorStatus status = CCCryptorCreateWithMode(operation, kCCModeCTR, kCCAlgorithmAES, ccNoPadding, ivData.bytes, keyData.bytes, keyData.length, NULL, 0, 0, kCCModeOptionCTR_BE, &cryptor);
 +    if (status != kCCSuccess) {
 +        NSLog(@"Failed to create cryptor: %d", status);
 +        return nil;
 +    }
-+ 
++
 +    while ([inputStream hasBytesAvailable]) {
 +        NSInteger bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)];
 +        if (bytesRead > 0) {
@@ -4091,34 +4083,30 @@ index 4ef555a..a6d848d 100644
 +            }
 +        }
 +    }
-+ 
-+    // No need for CCCryptorFinal with CTR mode
++
 +    CCCryptorRelease(cryptor);
 +    [inputStream close];
 +    [outputStream close];
-+ 
++
 +    if (status == kCCSuccess) {
-+        return outputFilePath;
++        // Rename temp file back to original
++        NSFileManager *fileManager = [NSFileManager defaultManager];
++        [fileManager removeItemAtPath:normalizedFilePath error:nil];
++        [fileManager moveItemAtPath:tempFilePath toPath:normalizedFilePath error:nil];
++        return filePath;
 +    } else {
++        // Clean up temp file in case of failure
++        [[NSFileManager defaultManager] removeItemAtPath:tempFilePath error:nil];
 +        return nil;
 +    }
 +}
 +
-+// TODO: remove temp files
-+// TODO: does it need to add -new file? What if there's not two extensions (file from web)?
 ++ (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
-+    NSString *normalizedFilePath = [Shared normalizeFilePath:filePath];
-+    NSString *outputFilePath = [normalizedFilePath stringByAppendingPathExtension:@"enc"];
-+    NSString *resultPath = [self processFile:normalizedFilePath outputFile:outputFilePath operation:kCCEncrypt key:key iv:iv];
-+    return [Shared restoreFilePathSchemeIfNeeded:resultPath originalPath:filePath];
++    return [self processFile:filePath operation:kCCEncrypt key:key iv:iv];
 +}
 +
 ++ (NSString *)decryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
-+    NSString *normalizedFilePath = [Shared normalizeFilePath:filePath];
-+    // Generates a new output file path by removing the last two path extensions and appending "-new.jpg"
-+    NSString *outputFilePath = [[[normalizedFilePath stringByDeletingPathExtension] stringByDeletingPathExtension] stringByAppendingFormat:@"-new.jpg"];
-+    NSString *resultPath = [self processFile:normalizedFilePath outputFile:outputFilePath operation:kCCDecrypt key:key iv:iv];
-+    return [Shared restoreFilePathSchemeIfNeeded:resultPath originalPath:filePath];
++    return [self processFile:filePath operation:kCCDecrypt key:key iv:iv];
 +}
 +
  @end
@@ -4135,10 +4123,10 @@ index f92a1a3..398444b 100644
 ++ (NSString *)restoreFilePathSchemeIfNeeded:(NSString *)filePath originalPath:(NSString *)originalPath;
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m
-index f3bc712..7c0c36c 100644
+index f3bc712..e97098b 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m
-@@ -29,4 +29,27 @@
+@@ -29,4 +29,16 @@
      return data;
  }
  
@@ -4152,17 +4140,6 @@ index f3bc712..7c0c36c 100644
 +        [base64 appendString:@"="];
 +    }
 +    return base64;
-+}
-+
-++ (NSString *)normalizeFilePath:(NSString *)filePath {
-+    return [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
-+}
-+
-++ (NSString *)restoreFilePathSchemeIfNeeded:(NSString *)filePath originalPath:(NSString *)originalPath {
-+    if ([originalPath hasPrefix:@"file://"]) {
-+        return [@"file://" stringByAppendingString:filePath];
-+    }
-+    return filePath;
 +}
 +
  @end
