@@ -161,7 +161,8 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			const videoUri = await downloadMediaFile({
 				downloadUrl: video,
 				type: 'video',
-				mimeType: file.video_type
+				mimeType: file.video_type,
+				encryption: file.encryption
 			});
 			updateVideoCached(videoUri);
 		} catch {

@@ -108,13 +108,11 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 export const getFilePath = ({
 	type,
 	mimeType,
-	urlToCache,
-	encrypted = false
+	urlToCache
 }: {
 	type: MediaTypes;
 	mimeType?: string;
 	urlToCache?: string;
-	encrypted?: boolean;
 }): string | null => {
 	if (!urlToCache) {
 		return null;
@@ -212,7 +210,7 @@ export function downloadMediaFile({
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
 		try {
-			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl, encrypted: !!encryption });
+			const path = getFilePath({ type, mimeType, urlToCache: downloadUrl });
 			if (!path) {
 				return reject();
 			}
@@ -225,6 +223,7 @@ export function downloadMediaFile({
 			}
 
 			const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
+			console.log('🚀 ~ returnnewPromise ~ decryptedFile:', decryptedFile);
 			if (decryptedFile) {
 				return resolve(decryptedFile);
 			}

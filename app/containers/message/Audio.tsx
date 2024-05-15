@@ -51,7 +51,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 				const audio = await downloadMediaFile({
 					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
-					mimeType: file.audio_type
+					mimeType: file.audio_type,
+					encryption: file.encryption
 				});
 				setFileUri(audio);
 				setDownloadState('downloaded');
