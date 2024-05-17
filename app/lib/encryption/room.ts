@@ -5,7 +5,7 @@ import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IMessage, IUpload, IUser } from '../../definitions';
+import { IMessage, IShareAttachment, IUpload, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -15,6 +15,9 @@ import {
 	bufferToB64,
 	bufferToB64URI,
 	bufferToUtf8,
+	encryptAESCTR,
+	exportAESCTR,
+	generateAESCTRKey,
 	joinVectorData,
 	splitVectorData,
 	toString,
@@ -267,6 +270,77 @@ export default class EncryptionRoom {
 		}
 
 		return message;
+	};
+
+	// Encrypt file
+	encryptFile = async (rid: string, attachment: IShareAttachment) => {
+		if (!this.ready) {
+			return attachment;
+		}
+
+		try {
+			const { path } = attachment;
+			const vector = await SimpleCrypto.utils.randomBytes(16);
+			const key = await generateAESCTRKey();
+			const exportedKey = await exportAESCTR(key);
+			const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
+
+			const getContent = async (_id: string, fileUrl: string) => {
+				const attachments = [];
+				let att = {
+					title: attachment.filename,
+					type: attachment.type,
+					mime: attachment.type,
+					size: attachment.size,
+					description: attachment.description,
+					encryption: {
+						key: exportedKey,
+						iv: bufferToB64(vector)
+					}
+				};
+				if (/^image\/.+/.test(attachment.type)) {
+					att = {
+						...att,
+						image_url: fileUrl,
+						image_type: attachment.type,
+						image_size: attachment.size
+					};
+				} else if (/^audio\/.+/.test(attachment.type)) {
+					att = {
+						...att,
+						audio_url: fileUrl,
+						audio_type: attachment.type,
+						audio_size: attachment.size
+					};
+				} else if (/^video\/.+/.test(attachment.type)) {
+					att = {
+						...att,
+						video_url: fileUrl,
+						video_type: attachment.type,
+						video_size: attachment.size
+					};
+				}
+				attachments.push(att);
+
+				const data = EJSON.stringify({
+					attachments
+				});
+
+				return {
+					algorithm: 'rc.v1.aes-sha2',
+					ciphertext: await Encryption.encryptText(rid, data)
+				};
+			};
+
+			return {
+				encryptedFile,
+				getContent
+			};
+		} catch {
+			// Do nothing
+		}
+
+		return attachment;
 	};
 
 	// Decrypt text

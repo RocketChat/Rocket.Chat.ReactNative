@@ -5,9 +5,6 @@ import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
-import SimpleCrypto from 'react-native-simple-crypto';
-import EJSON from 'ejson';
-import { sha256 } from 'js-sha256';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -38,8 +35,6 @@ import {
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
-import { Encryption } from '../../lib/encryption';
-import { bufferToB64, encryptAESCTR, exportAESCTR, generateAESCTRKey } from '../../lib/encryption/utils';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -257,70 +252,27 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Send attachment
 			if (attachments.length) {
 				await Promise.all(
-					attachments.map(async ({ filename: name, mime: type, description, size, canUpload }) => {
+					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
 						if (!canUpload) {
 							return Promise.resolve();
 						}
 
-						try {
-							const { path } = attachments[0];
-							const vector = await SimpleCrypto.utils.randomBytes(16);
-							const key = await generateAESCTRKey();
-							const exportedKey = await exportAESCTR(key);
-							const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
-
-							const getContent = async (_id: string, fileUrl: string) => {
-								const attachments = [];
-
-								const attachment = {
-									title: name,
-									type: 'file',
-									description,
-									// title_link: fileUrl,
-									// title_link_download: true,
-									encryption: {
-										key: exportedKey,
-										iv: bufferToB64(vector)
-									},
-									image_url: fileUrl,
-									image_type: type,
-									image_size: size
-								};
-								attachments.push(attachment);
-
-								const data = EJSON.stringify({
-									attachments
-								});
-
-								return {
-									algorithm: 'rc.v1.aes-sha2',
-									ciphertext: await Encryption.encryptText(room.rid, data)
-								};
-							};
-
-							// Send the file message with the encrypted path
-							return sendFileMessage(
-								room.rid,
-								{
-									rid: room.rid,
-									name: sha256(name),
-									description,
-									size,
-									type: 'file',
-									path: encryptedFile,
-									store: 'Uploads',
-									msg
-								},
-								thread?.id,
-								server,
-								{ id: user.id, token: user.token },
-								undefined,
-								getContent
-							);
-						} catch (e) {
-							console.error(e);
-							return Promise.reject(e);
-						}
+						return sendFileMessage(
+							room.rid,
+							{
+								rid: room.rid,
+								name,
+								description,
+								size,
+								type,
+								path,
+								store: 'Uploads',
+								msg
+							},
+							thread?.id,
+							server,
+							{ id: user.id, token: user.token }
+						);
 					})
 				);
 

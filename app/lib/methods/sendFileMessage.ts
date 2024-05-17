@@ -3,6 +3,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
 import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
+import { sha256 } from 'js-sha256';
 
 import { Encryption } from '../encryption';
 import { IUpload, IUser, TUploadModel } from '../../definitions';
@@ -45,59 +46,69 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
+const createUploadRecord = async ({
+	rid,
+	fileInfo,
+	tmid,
+	isForceTryAgain
+}: {
+	rid: string;
+	fileInfo: IUpload;
+	tmid: string | undefined;
+	isForceTryAgain?: boolean;
+}) => {
+	const db = database.active;
+	const uploadsCollection = db.get('uploads');
+	const uploadPath = getUploadPath(fileInfo.path, rid);
+	let uploadRecord: TUploadModel;
+	try {
+		uploadRecord = await uploadsCollection.find(uploadPath);
+		if (uploadRecord.id && !isForceTryAgain) {
+			return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
+		}
+	} catch (error) {
+		try {
+			await db.write(async () => {
+				uploadRecord = await uploadsCollection.create(u => {
+					u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
+					Object.assign(u, fileInfo);
+					if (tmid) {
+						u.tmid = tmid;
+					}
+					if (u.subscription) {
+						u.subscription.id = rid;
+					}
+				});
+			});
+		} catch (e) {
+			throw e;
+		}
+	}
+};
+
 export function sendFileMessage(
 	rid: string,
 	fileInfo: IUpload,
 	tmid: string | undefined,
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
-	isForceTryAgain?: boolean,
-	getContent?: Function
+	isForceTryAgain?: boolean
 ): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
-
-			const uploadUrl = `${server}/api/v1/rooms.media/${rid}`;
-
 			fileInfo.rid = rid;
-
-			const db = database.active;
-			const uploadsCollection = db.get('uploads');
-			const uploadPath = getUploadPath(fileInfo.path, rid);
-			let uploadRecord: TUploadModel;
-			try {
-				uploadRecord = await uploadsCollection.find(uploadPath);
-				if (uploadRecord.id && !isForceTryAgain) {
-					return Alert.alert(i18n.t('FileUpload_Error'), i18n.t('Upload_in_progress'));
-				}
-			} catch (error) {
-				try {
-					await db.write(async () => {
-						uploadRecord = await uploadsCollection.create(u => {
-							u._raw = sanitizedRaw({ id: uploadPath }, uploadsCollection.schema);
-							Object.assign(u, fileInfo);
-							if (tmid) {
-								u.tmid = tmid;
-							}
-							if (u.subscription) {
-								u.subscription.id = rid;
-							}
-						});
-					});
-				} catch (e) {
-					return log(e);
-				}
-			}
-
-			// const encryptedFileInfo = await Encryption.encryptMessage(fileInfo);
+			fileInfo.path = fileInfo.path.startsWith('file://') ? fileInfo.path.substring(7) : fileInfo.path;
+			await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+			const encryptedFileInfo = await Encryption.encryptFile(rid, fileInfo);
+			const { encryptedFile, getContent } = encryptedFileInfo;
 
 			const formData: IFileUpload[] = [];
 			formData.push({
 				name: 'file',
-				type: fileInfo.type,
-				filename: fileInfo.name || 'fileMessage',
-				uri: fileInfo.path
+				type: 'file',
+				filename: sha256(fileInfo.name || 'fileMessage'),
+				uri: encryptedFile
 			});
 
 			// if (fileInfo.description) {
@@ -152,13 +163,12 @@ export function sendFileMessage(
 					}
 					return item;
 				});
-				const response = await RNFetchBlob.fetch('POST', uploadUrl, headers, data);
+				const response = await RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, data);
 
 				const json = response.json();
 				let content;
 				if (getContent) {
 					content = await getContent(json.file._id, json.file.url);
-					console.log('🚀 ~ returnnewPromise ~ content:', content);
 				}
 
 				const mediaConfirm = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {

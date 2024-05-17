@@ -12,6 +12,7 @@ import { store } from '../store/auxStore';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import { EncryptionRoom } from './index';
 import {
+	IAttachment,
 	IMessage,
 	ISubscription,
 	IUpload,
@@ -44,6 +45,7 @@ class Encryption {
 			decrypt: Function;
 			encrypt: Function;
 			encryptText: Function;
+			encryptFile: Function;
 			encryptUpload: Function;
 			importRoomKey: Function;
 		};
@@ -512,6 +514,37 @@ class Encryption {
 		const { rid } = message;
 		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.decrypt(message);
+	};
+
+	encryptFile = async (rid: string, attachment: IAttachment) => {
+		const db = database.active;
+		const subCollection = db.get('subscriptions');
+
+		try {
+			// Find the subscription
+			const subRecord = await subCollection.find(rid);
+
+			// Subscription is not encrypted at the moment
+			if (!subRecord.encrypted) {
+				// Send a non encrypted message
+				return attachment;
+			}
+
+			// If the client is not ready
+			if (!this.ready) {
+				// Wait for ready status
+				await this.establishing;
+			}
+
+			const roomE2E = await this.getRoomInstance(rid);
+			return roomE2E.encryptFile(rid, attachment);
+		} catch {
+			// Subscription not found
+			// or client can't be initialized (missing password)
+		}
+
+		// Send a non encrypted message
+		return attachment;
 	};
 
 	// Decrypt multiple messages
