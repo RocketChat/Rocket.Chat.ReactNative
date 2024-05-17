@@ -94,6 +94,8 @@ export function sendFileMessage(
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<FetchBlobResponse | void> {
+	console.log('🚀 ~ rid: string, fileInfo, tmid, server,', rid, fileInfo, tmid, server);
+
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
@@ -111,26 +113,26 @@ export function sendFileMessage(
 				uri: encryptedFile
 			});
 
-			// if (fileInfo.description) {
-			// 	formData.push({
-			// 		name: 'description',
-			// 		data: encryptedFileInfo.description
-			// 	});
-			// }
+			if (fileInfo.description) {
+				formData.push({
+					name: 'description',
+					data: encryptedFileInfo.description
+				});
+			}
 
-			// if (fileInfo.msg) {
-			// 	formData.push({
-			// 		name: 'msg',
-			// 		data: fileInfo.msg
-			// 	});
-			// }
+			if (fileInfo.msg) {
+				formData.push({
+					name: 'msg',
+					data: fileInfo.msg
+				});
+			}
 
-			// if (tmid) {
-			// 	formData.push({
-			// 		name: 'tmid',
-			// 		data: tmid
-			// 	});
-			// }
+			if (tmid) {
+				formData.push({
+					name: 'tmid',
+					data: tmid
+				});
+			}
 
 			// const { version: serverVersion } = store.getState().server;
 			// if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
@@ -180,8 +182,8 @@ export function sendFileMessage(
 					},
 					body: JSON.stringify({
 						msg: '',
-						// tmid: fileInfo.tmid,
-						// description: fileInfo.description,
+						tmid,
+						description: fileInfo.description,
 						t: 'e2e',
 						content
 					})
