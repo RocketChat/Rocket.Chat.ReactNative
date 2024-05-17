@@ -105,47 +105,6 @@ export function sendFileMessage(
 			const encryptedFileInfo = await Encryption.encryptFile(rid, fileInfo);
 			const { encryptedFile, getContent } = encryptedFileInfo;
 
-			const formData: IFileUpload[] = [];
-			formData.push({
-				name: 'file',
-				type: 'file',
-				filename: sha256(fileInfo.name || 'fileMessage'),
-				uri: encryptedFile
-			});
-
-			if (fileInfo.description) {
-				formData.push({
-					name: 'description',
-					data: encryptedFileInfo.description
-				});
-			}
-
-			if (fileInfo.msg) {
-				formData.push({
-					name: 'msg',
-					data: fileInfo.msg
-				});
-			}
-
-			if (tmid) {
-				formData.push({
-					name: 'tmid',
-					data: tmid
-				});
-			}
-
-			// const { version: serverVersion } = store.getState().server;
-			// if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-			formData.push({
-				name: 't',
-				data: 'e2e'
-			});
-			// 	formData.push({
-			// 		name: 'e2e',
-			// 		data: encryptedFileInfo.e2e
-			// 	});
-			// }
-
 			const headers = {
 				...RocketChatSettings.customHeaders,
 				'Content-Type': 'multipart/form-data',
@@ -154,34 +113,28 @@ export function sendFileMessage(
 			};
 
 			try {
-				const data = formData.map(item => {
-					if (item.uri) {
-						return {
-							name: item.name,
-							type: item.type,
-							filename: item.filename,
-							data: RNFetchBlob.wrap(decodeURI(item.uri))
-						};
+				const data = [
+					{
+						name: 'file',
+						type: 'file',
+						filename: sha256(fileInfo.name || 'fileMessage'),
+						data: RNFetchBlob.wrap(decodeURI(encryptedFile))
 					}
-					return item;
-				});
+				];
 				const response = await RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, data);
-
 				const json = response.json();
 				let content;
 				if (getContent) {
 					content = await getContent(json.file._id, json.file.url);
 				}
-
 				const mediaConfirm = await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
 					method: 'POST',
 					headers: {
-						'Content-Type': 'application/json',
-						'X-Auth-Token': token,
-						'X-User-Id': id
+						...headers,
+						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						msg: '',
+						// msg: '', TODO: backwards compatibility
 						tmid,
 						description: fileInfo.description,
 						t: 'e2e',
