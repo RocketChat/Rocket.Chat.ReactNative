@@ -20,4 +20,7 @@ export interface IUpload {
 	e2e?: E2EType;
 }
 
-export type TUploadModel = IUpload & Model;
+export type TUploadModel = IUpload &
+	Model & {
+		asPlain: () => IUpload;
+	};

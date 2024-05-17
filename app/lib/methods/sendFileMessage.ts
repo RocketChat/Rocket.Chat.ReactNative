@@ -93,10 +93,11 @@ export function sendFileMessage(
 ): Promise<FetchBlobResponse | void> {
 	return new Promise(async (resolve, reject) => {
 		try {
+			console.log('sendFileMessage', rid, fileInfo);
 			const { id, token } = user;
-			fileInfo.rid = rid;
 			fileInfo.path = fileInfo.path.startsWith('file://') ? fileInfo.path.substring(7) : fileInfo.path;
 			const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+			console.log('🚀 ~ returnnewPromise ~ uploadPath, uploadRecord:', uploadPath, uploadRecord);
 			if (!uploadPath || !uploadRecord) {
 				return;
 			}
@@ -120,17 +121,23 @@ export function sendFileMessage(
 				}
 			];
 
-			uploadQueue[uploadPath] = RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, data);
-
-			uploadQueue[uploadPath].then(async response => {
-				// If response is all good...
-				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
+			console.log('🚀 ~ returnnewPromise ~ data:', data, rid, fileInfo);
+			// @ts-ignore
+			uploadQueue[uploadPath] = RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, data)
+				.uploadProgress(async (loaded: number, total: number) => {
+					await db.write(async () => {
+						await uploadRecord.update(u => {
+							u.progress = Math.floor((loaded / total) * 100);
+						});
+					});
+				})
+				.then(async response => {
 					const json = response.json();
 					let content;
 					if (getContent) {
 						content = await getContent(json.file._id, json.file.url);
 					}
-					await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
+					fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
 						method: 'POST',
 						headers: {
 							...headers,
@@ -138,46 +145,28 @@ export function sendFileMessage(
 						},
 						body: JSON.stringify({
 							// msg: '', TODO: backwards compatibility
-							tmid,
+							tmid: tmid ?? undefined,
 							description: fileInfo.description,
 							t: 'e2e',
 							content
 						})
-					});
-
-					await db.write(async () => {
-						await uploadRecord.destroyPermanently();
+					}).then(async () => {
+						console.log('destroy destroy destroy destroy ');
+						await db.write(async () => {
+							await uploadRecord.destroyPermanently();
+						});
 					});
 					resolve(response);
-				} else {
+				})
+				.catch(async error => {
+					console.log('catch catch catch catch catch ');
 					await db.write(async () => {
 						await uploadRecord.update(u => {
 							u.error = true;
 						});
 					});
-				}
-			});
-
-			uploadQueue[uploadPath].catch(async error => {
-				try {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.error = true;
-						});
-					});
-				} catch (e) {
-					log(e);
-				}
-				throw error;
-			});
-
-			uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
-				await db.write(async () => {
-					await uploadRecord.update(u => {
-						u.progress = Math.floor((loaded / total) * 100);
-					});
+					throw error;
 				});
-			});
 		} catch (e) {
 			reject(e);
 		}

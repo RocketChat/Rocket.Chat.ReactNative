@@ -160,7 +160,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item, item.tmid, server, user, true);
+			await sendFileMessage(rid, item.asPlain(), item.tmid, server, user, true);
 		} catch (e) {
 			log(e);
 		}
@@ -179,11 +179,19 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
-					<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.handleCancelUpload(item)} />
+					<CustomIcon
+						name='close'
+						size={20}
+						color={themes[theme!].fontSecondaryInfo}
+						onPress={() => this.handleCancelUpload(item)}
+					/>
 				</View>,
 				<View
 					key='progress'
-					style={[styles.progress, { width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].badgeBackgroundLevel2 }]}
+					style={[
+						styles.progress,
+						{ width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].badgeBackgroundLevel2 }
+					]}
 				/>
 			];
 		}
@@ -195,7 +203,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 						{I18n.t('Error_uploading')} {item.name}
 					</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>{I18n.t('Try_again')}</Text>
+						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+							{I18n.t('Try_again')}
+						</Text>
 					</TouchableOpacity>
 				</View>
 				<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
