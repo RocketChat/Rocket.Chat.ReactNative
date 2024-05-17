@@ -125,49 +125,36 @@ export function sendFileMessage(
 			uploadQueue[uploadPath].then(async response => {
 				// If response is all good...
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
-					try {
-						const json = response.json();
-						let content;
-						if (getContent) {
-							content = await getContent(json.file._id, json.file.url);
-						}
-						await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
-							method: 'POST',
-							headers: {
-								...headers,
-								'Content-Type': 'application/json'
-							},
-							body: JSON.stringify({
-								// msg: '', TODO: backwards compatibility
-								tmid,
-								description: fileInfo.description,
-								t: 'e2e',
-								content
-							})
-						});
+					const json = response.json();
+					let content;
+					if (getContent) {
+						content = await getContent(json.file._id, json.file.url);
+					}
+					await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
+						method: 'POST',
+						headers: {
+							...headers,
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({
+							// msg: '', TODO: backwards compatibility
+							tmid,
+							description: fileInfo.description,
+							t: 'e2e',
+							content
+						})
+					});
 
-						await db.write(async () => {
-							await uploadRecord.destroyPermanently();
-						});
-						resolve(response);
-					} catch (e) {
-						log(e);
-					}
+					await db.write(async () => {
+						await uploadRecord.destroyPermanently();
+					});
+					resolve(response);
 				} else {
-					try {
-						await db.write(async () => {
-							await uploadRecord.update(u => {
-								u.error = true;
-							});
+					await db.write(async () => {
+						await uploadRecord.update(u => {
+							u.error = true;
 						});
-					} catch (e) {
-						log(e);
-					}
-					try {
-						reject(response);
-					} catch (e) {
-						reject(e);
-					}
+					});
 				}
 			});
 
@@ -181,22 +168,18 @@ export function sendFileMessage(
 				} catch (e) {
 					log(e);
 				}
-				reject(error);
+				throw error;
 			});
 
 			uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
-				try {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.progress = Math.floor((loaded / total) * 100);
-						});
+				await db.write(async () => {
+					await uploadRecord.update(u => {
+						u.progress = Math.floor((loaded / total) * 100);
 					});
-				} catch (e) {
-					log(e);
-				}
+				});
 			});
 		} catch (e) {
-			log(e);
+			reject(e);
 		}
 	});
 }
