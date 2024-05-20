@@ -5,11 +5,7 @@ import { Alert } from 'react-native';
 
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import i18n from '../../i18n';
-import { E2E_MESSAGE_TYPE } from '../constants';
 import database from '../database';
-import { Encryption } from '../encryption';
-import { store } from '../store/auxStore';
-import { compareServerVersion } from './helpers';
 import type { IFileUpload, Upload } from './helpers/fileUpload';
 import FileUpload from './helpers/fileUpload';
 import log from './helpers/log';
@@ -88,8 +84,6 @@ export function sendFileMessage(
 				}
 			}
 
-			const encryptedFileInfo = await Encryption.encryptMessage(fileInfo);
-
 			const formData: IFileUpload[] = [];
 			formData.push({
 				name: 'file',
@@ -101,7 +95,7 @@ export function sendFileMessage(
 			if (fileInfo.description) {
 				formData.push({
 					name: 'description',
-					data: encryptedFileInfo.description
+					data: fileInfo.description
 				});
 			}
 
@@ -116,18 +110,6 @@ export function sendFileMessage(
 				formData.push({
 					name: 'tmid',
 					data: tmid
-				});
-			}
-
-			const { version: serverVersion } = store.getState().server;
-			if (encryptedFileInfo.t === E2E_MESSAGE_TYPE && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-				formData.push({
-					name: 't',
-					data: encryptedFileInfo.t
-				});
-				formData.push({
-					name: 'e2e',
-					data: encryptedFileInfo.e2e
 				});
 			}
 

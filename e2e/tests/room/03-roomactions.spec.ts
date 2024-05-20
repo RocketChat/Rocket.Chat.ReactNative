@@ -194,7 +194,10 @@ describe('Room actions screen', () => {
 
 				// Pin the message
 				await pinMessage(messageToPin);
-
+				// verify pin icon
+				await waitFor(element(by.id(`${messageToPin}-pinned`)))
+					.toExist()
+					.withTimeout(6000);
 				// Back into Room Actions
 				await element(by.id('room-header')).tap();
 				await waitFor(element(by.id('room-actions-view')))
@@ -218,6 +221,10 @@ describe('Room actions screen', () => {
 				await element(by[textMatcher]('Unpin')).atIndex(0).tap();
 
 				await waitFor(element(by[textMatcher](messageToPin).withAncestor(by.id('pinned-messages-view'))))
+					.not.toExist()
+					.withTimeout(6000);
+				// verify pin icon
+				await waitFor(element(by.id(`${messageToPin}-pinned`)))
 					.not.toExist()
 					.withTimeout(6000);
 				await backToActions();
