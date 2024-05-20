@@ -243,7 +243,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
+					tintColor={themes[theme].fontSecondaryInfo}
 					testID='header-back'
 				/>
 			),
@@ -303,7 +303,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			<FlatList
 				data={cannedResponsesScopeName}
 				extraData={cannedResponsesScopeName}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={({ item }) => (
 					<CannedResponseItem
 						theme={theme}

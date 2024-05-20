@@ -1,9 +1,10 @@
 import React from 'react';
-import { Switch, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { TSupportedThemes } from '../../theme';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { themes } from '../../lib/constants';
 import styles from './styles';
+import Switch from '../../containers/Switch';
 
 interface ISwitchContainer {
 	value: boolean;
@@ -38,10 +39,10 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
 				{leftLabelPrimary && (
 					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{leftLabelPrimary}
 						</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{leftLabelSecondary}
 						</Text>
 					</View>
@@ -51,22 +52,21 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 					onValueChange={onValueChange}
 					value={value}
 					disabled={disabled}
-					trackColor={SWITCH_TRACK_COLOR}
 					testID={testID}
 				/>
 				{rightLabelPrimary && (
 					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{rightLabelPrimary}
 						</Text>
-						<Text style={[styles.switchLabelSecondary, { color: themes[theme].titleText }, leftLabelStyle]}>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
 							{rightLabelSecondary}
 						</Text>
 					</View>
 				)}
 			</View>
 			{children}
-			<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].separatorColor }]} />
+			<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
 		</>
 	)
 );

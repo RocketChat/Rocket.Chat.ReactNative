@@ -219,15 +219,15 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 						style={[
 							sharedStyles.separatorVertical,
 							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].separatorColor }
+							{ borderColor: themes[theme].strokeLight }
 						]}
 					>
-						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
+						<CustomIcon name={icon} size={20} color={themes[theme].badgeBackgroundLevel2} style={styles.toggleDropdownIcon} />
+						<Text style={[styles.toggleDropdownText, { color: themes[theme].badgeBackgroundLevel2 }]}>{I18n.t(text)}</Text>
 						<CustomIcon
 							name='chevron-down'
 							size={20}
-							color={themes[theme].auxiliaryTintColor}
+							color={themes[theme].fontHint}
 							style={styles.toggleDropdownArrow}
 						/>
 					</View>
@@ -244,7 +244,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].separatorColor
+				borderColor: themes[theme].strokeLight
 			};
 		}
 
@@ -298,7 +298,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -315,7 +315,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				/>
 				{showOptionsDropdown ? (
 					<Options
-						theme={theme}
 						type={type}
 						globalUsers={globalUsers}
 						close={this.toggleDropdown}

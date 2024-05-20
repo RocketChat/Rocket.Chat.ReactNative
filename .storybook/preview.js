@@ -30,7 +30,7 @@ export const decorators = [
 					onReactionPress: () => {},
 					onDiscussionPress: () => {},
 					onReactionLongPress: () => {},
-					threadBadgeColor: themes.light.tunreadColor
+					threadBadgeColor: themes.light.fontInfo
 				}}
 			>
 				<Story />

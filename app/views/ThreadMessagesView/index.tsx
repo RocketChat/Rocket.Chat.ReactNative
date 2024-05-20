@@ -35,8 +35,10 @@ import styles from './styles';
 import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import UserPreferences from '../../lib/methods/userPreferences';
 
 const API_FETCH_COUNT = 50;
+const THREADS_FILTER = 'threadsFilter';
 
 interface IThreadMessagesViewState {
 	loading: boolean;
@@ -139,7 +141,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
+					tintColor={themes[theme].fontSecondaryInfo}
 					testID='header-back'
 				/>
 			),
@@ -216,8 +218,18 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	init = () => {
+	initFilter = () =>
+		new Promise<void>(resolve => {
+			const savedFilter = UserPreferences.getString(THREADS_FILTER);
+			if (savedFilter) {
+				this.setState({ currentFilter: savedFilter as Filter }, () => resolve());
+			}
+			resolve();
+		});
+
+	init = async () => {
 		const { subscription } = this.state;
+		await this.initFilter();
 		if (!subscription) {
 			return this.load();
 		}
@@ -414,13 +426,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		return messages;
 	};
 
-	// method to update state with filtered threads
-	filterThreads = () => {
-		const { messages, subscription } = this.state;
-		const displayingThreads = this.getFilteredThreads(messages, subscription);
-		this.setState({ displayingThreads });
-	};
-
 	showFilterDropdown = () => this.setState({ showFilterDropdown: true });
 
 	closeFilterDropdown = () => this.setState({ showFilterDropdown: false });
@@ -429,6 +434,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		const { messages, subscription } = this.state;
 		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
 		this.setState({ currentFilter: filter, displayingThreads, showFilterDropdown: false });
+		UserPreferences.setString(THREADS_FILTER, filter);
 	};
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
@@ -497,7 +503,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				data={displayingThreads}
 				extraData={this.state}
 				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				contentContainerStyle={styles.contentContainer}
 				onEndReached={this.load}
 				onEndReachedThreshold={0.5}
@@ -516,19 +522,13 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { showFilterDropdown, currentFilter } = this.state;
-		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='thread-messages-view'>
 				<StatusBar />
 				{this.renderContent()}
 				{showFilterDropdown ? (
-					<Dropdown
-						currentFilter={currentFilter}
-						onFilterSelected={this.onFilterSelected}
-						onClose={this.closeFilterDropdown}
-						theme={theme}
-					/>
+					<Dropdown currentFilter={currentFilter} onFilterSelected={this.onFilterSelected} onClose={this.closeFilterDropdown} />
 				) : null}
 			</SafeAreaView>
 		);
