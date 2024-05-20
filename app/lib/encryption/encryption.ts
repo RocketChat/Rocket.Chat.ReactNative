@@ -11,15 +11,7 @@ import log from '../methods/helpers/log';
 import { store } from '../store/auxStore';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import { EncryptionRoom } from './index';
-import {
-	IMessage,
-	ISubscription,
-	IUpload,
-	TMessageModel,
-	TSubscriptionModel,
-	TThreadMessageModel,
-	TThreadModel
-} from '../../definitions';
+import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -29,7 +21,6 @@ import {
 	E2E_STATUS
 } from '../constants';
 import { Services } from '../services';
-import { compareServerVersion } from '../methods/helpers';
 
 class Encryption {
 	ready: boolean;
@@ -43,7 +34,6 @@ class Encryption {
 			handshake: Function;
 			decrypt: Function;
 			encrypt: Function;
-			encryptUpload: Function;
 			importRoomKey: Function;
 		};
 	};
@@ -285,7 +275,7 @@ class Encryption {
 			];
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
-					const { t, msg, tmsg, attachments } = message;
+					const { t, msg, tmsg } = message;
 					let newMessage: TMessageModel = {} as TMessageModel;
 					if (message.subscription) {
 						const { id: rid } = message.subscription;
@@ -294,8 +284,7 @@ class Encryption {
 							t,
 							rid,
 							msg: msg as string,
-							tmsg,
-							attachments
+							tmsg
 						});
 					}
 
@@ -445,7 +434,7 @@ class Encryption {
 	};
 
 	// Encrypt a message
-	encryptMessage = async (message: IMessage | IUpload) => {
+	encryptMessage = async (message: IMessage) => {
 		const { rid } = message;
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -467,11 +456,6 @@ class Encryption {
 			}
 
 			const roomE2E = await this.getRoomInstance(rid);
-
-			const { version: serverVersion } = store.getState().server;
-			if ('path' in message && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-				return roomE2E.encryptUpload(message);
-			}
 			return roomE2E.encrypt(message);
 		} catch {
 			// Subscription not found
@@ -483,7 +467,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments'>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
