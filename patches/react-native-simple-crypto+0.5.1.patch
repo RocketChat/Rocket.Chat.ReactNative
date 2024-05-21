@@ -11,7 +11,7 @@ index 0000000..81a9aea
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/BuildConfig.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex
 new file mode 100644
-index 0000000..7421a74
+index 0000000..222c3a6
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex
 new file mode 100644
@@ -182,7 +182,7 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..8ec3fe7
+index 0000000..1ccdabb
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
@@ -2103,7 +2103,7 @@ index 0000000..99b9873
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..c004629
+index 0000000..bc14b0c
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
@@ -2257,7 +2257,7 @@ index 0000000..99b9873
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..c004629
+index 0000000..bc14b0c
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
@@ -3753,10 +3753,10 @@ index 0000000..8fc244a
 +		INJECTED from /Users/diegomello/Development/Work/Rocket.Chat.ReactNative/node_modules/react-native-simple-crypto/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..9b3f8a7
+index 0000000..83e05fd
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
-index 2b52abe..cf27df0 100644
+index 2b52abe..12a7750 100644
 --- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
 +++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
 @@ -1,55 +1,31 @@
@@ -3869,7 +3869,7 @@ index 2b52abe..cf27df0 100644
      public static String encrypt(String textBase64, String hexKey, String hexIv) throws Exception {
          if (textBase64 == null || textBase64.length() == 0) {
              return null;
-@@ -133,4 +135,51 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -133,4 +135,66 @@ public class RCTAes extends ReactContextBaseJavaModule {
          return Base64.encodeToString(decrypted, Base64.NO_WRAP);
      }
  
@@ -3910,7 +3910,22 @@ index 2b52abe..cf27df0 100644
 +            throw ex;
 +        }
 +
-+        return "file://" + outputFileObj.getAbsolutePath();
++        if ("decrypt".equals(mode)) {
++            // Overwrite the input file with the decrypted file
++            try (FileInputStream fis = new FileInputStream(outputFileObj);
++                 FileOutputStream fos = new FileOutputStream(inputFileObj)) {
++                byte[] buffer = new byte[BUFFER_SIZE];
++                int numBytesRead;
++
++                while ((numBytesRead = fis.read(buffer)) != -1) {
++                    fos.write(buffer, 0, numBytesRead);
++                }
++            }
++            outputFileObj.delete(); // Remove the temporary file after overwriting
++            return "file://" + normalizedInputFilePath;
++        } else {
++            return "file://" + outputFileObj.getAbsolutePath();
++        }
 +    }
 +
 +    public static String encryptFile(String inputFile, String base64UrlKey, String base64Iv) throws Exception {
@@ -4068,10 +4083,10 @@ index 72432fe..8a2020b 100644
 +
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 4ef555a..2ca3e17 100644
+index 4ef555a..6501791 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-@@ -45,4 +45,65 @@
+@@ -45,4 +45,73 @@
      return [result base64EncodedStringWithOptions:0];
  }
  
@@ -4119,7 +4134,15 @@ index 4ef555a..2ca3e17 100644
 +    [outputStream close];
 +
 +    if (status == kCCSuccess) {
-+        return [NSString stringWithFormat:@"file://%@", outputFilePath];
++        if (operation == kCCDecrypt) {
++            NSFileManager *fileManager = [NSFileManager defaultManager];
++            // Overwrite the input file with the decrypted file
++            [fileManager removeItemAtPath:normalizedFilePath error:nil];
++            [fileManager moveItemAtPath:outputFilePath toPath:normalizedFilePath error:nil];
++            return [NSString stringWithFormat:@"file://%@", normalizedFilePath];
++        } else {
++            return [NSString stringWithFormat:@"file://%@", outputFilePath];
++        }
 +    } else {
 +        // Clean up temp file in case of failure
 +        [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
