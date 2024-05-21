@@ -288,9 +288,9 @@ export default class EncryptionRoom {
 			const getContent = async (_id: string, fileUrl: string) => {
 				const attachments = [];
 				let att = {
-					title: attachment.filename,
-					type: attachment.type,
-					mime: attachment.type,
+					title: attachment.name,
+					type: 'file',
+					// mime: attachment.type,
 					size: attachment.size,
 					description: attachment.description,
 					encryption: {
