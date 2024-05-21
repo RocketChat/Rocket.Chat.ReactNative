@@ -4068,7 +4068,7 @@ index 72432fe..8a2020b 100644
 +
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 4ef555a..c0f7ce1 100644
+index 4ef555a..2ca3e17 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 @@ -45,4 +45,65 @@
@@ -4119,7 +4119,7 @@ index 4ef555a..c0f7ce1 100644
 +    [outputStream close];
 +
 +    if (status == kCCSuccess) {
-+        return outputFilePath;
++        return [NSString stringWithFormat:@"file://%@", outputFilePath];
 +    } else {
 +        // Clean up temp file in case of failure
 +        [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];

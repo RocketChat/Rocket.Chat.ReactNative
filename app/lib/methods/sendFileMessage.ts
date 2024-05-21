@@ -92,6 +92,8 @@ const createUploadRecord = async ({
 	return [uploadPath, uploadRecord] as const;
 };
 
+const normalizeFilePath = (path: string) => (path.startsWith('file://') ? path.substring(7) : path);
+
 export function sendFileMessage(
 	rid: string,
 	fileInfo: IUpload,
@@ -104,7 +106,8 @@ export function sendFileMessage(
 		try {
 			console.log('sendFileMessage', rid, fileInfo);
 			const { id, token } = user;
-			fileInfo.path = fileInfo.path.startsWith('file://') ? fileInfo.path.substring(7) : fileInfo.path;
+			fileInfo.path = normalizeFilePath(fileInfo.path);
+
 			const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
 			if (!uploadPath || !uploadRecord) {
 				return;
@@ -131,7 +134,7 @@ export function sendFileMessage(
 					name: 'file',
 					type: 'file',
 					filename: sha256(fileInfo.name || 'fileMessage'),
-					data: RNFetchBlob.wrap(decodeURI(encryptedFile))
+					data: RNFetchBlob.wrap(decodeURI(normalizeFilePath(encryptedFile)))
 				}
 			];
 
