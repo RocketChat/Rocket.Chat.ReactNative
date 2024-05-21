@@ -41,6 +41,15 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
+const persistUploadError = async (uploadRecord: TUploadModel) => {
+	const db = database.active;
+	await db.write(async () => {
+		await uploadRecord.update(u => {
+			u.error = true;
+		});
+	});
+};
+
 const createUploadRecord = async ({
 	rid,
 	fileInfo,
@@ -97,12 +106,17 @@ export function sendFileMessage(
 			const { id, token } = user;
 			fileInfo.path = fileInfo.path.startsWith('file://') ? fileInfo.path.substring(7) : fileInfo.path;
 			const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
-			console.log('🚀 ~ returnnewPromise ~ uploadPath, uploadRecord:', uploadPath, uploadRecord);
 			if (!uploadPath || !uploadRecord) {
 				return;
 			}
 			const encryptedFileInfo = await Encryption.encryptFile(rid, fileInfo);
 			const { encryptedFile, getContent } = encryptedFileInfo;
+
+			// TODO: temp until I bring back non encrypted uploads
+			if (!encryptedFile) {
+				await persistUploadError(uploadRecord);
+				throw new Error('Error while encrypting file');
+			}
 
 			const headers = {
 				...RocketChatSettings.customHeaders,
@@ -121,7 +135,6 @@ export function sendFileMessage(
 				}
 			];
 
-			console.log('🚀 ~ returnnewPromise ~ data:', data, rid, fileInfo);
 			// @ts-ignore
 			uploadQueue[uploadPath] = RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, data)
 				.uploadProgress(async (loaded: number, total: number) => {
