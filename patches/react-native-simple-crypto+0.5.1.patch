@@ -7,67 +7,88 @@ index 0000000..5ff383e
 +o/debug
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/BuildConfig.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/BuildConfig.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..81a9aea
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/BuildConfig.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..7421a74
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTAes.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..5830b9c
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTCryptoPackage.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTHmac.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTHmac.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..04f5281
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTHmac.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTPbkdf2.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTPbkdf2.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..2e8e028
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTPbkdf2.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$1.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$1.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..fec2fef
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$1.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$2.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$2.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..26eb5eb
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$2.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$3.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$3.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..930f099
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$3.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$4.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$4.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..ed53eed
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$4.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$5.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$5.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..2134bb8
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$5.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$6.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$6.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..2d7c748
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$6.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$7.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$7.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..f27ebea
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$7.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$8.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$8.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..c7f1c81
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$8.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$9.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$9.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..e662d11
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa$9.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..99d326a
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsa.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsaUtils.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsaUtils.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..6c16eed
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTRsaUtils.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTSha.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTSha.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..5cce0c2
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RCTSha.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RSA.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RSA.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..9e209ea
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RSA.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RandomBytesModule.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RandomBytesModule.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..27162a1
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/RandomBytesModule.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/Util.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/Util.dex
 new file mode 100644
-index 0000000..e69de29
+index 0000000..18b599c
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/debug/com/pedrouid/crypto/Util.dex differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/desugar_graph.bin b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/desugar_graph.bin
 new file mode 100644
-index 0000000..e69de29
+index 0000000..601f245
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/21838d36631651375b93542b09ccc170/transformed/desugar_graph.bin differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/results.bin b/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/results.bin
 new file mode 100644
 index 0000000..0d259dd
@@ -77,8 +98,7 @@ index 0000000..0d259dd
 +o/classes
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/transformed/classes/classes.dex b/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/transformed/classes/classes.dex
 new file mode 100644
-index 0000000..5be38a4
-Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/.transforms/bdbefe898e24b23c7477c1cbc3116307/transformed/classes/classes.dex differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-simple-crypto/android/build/.transforms/c2ec0bcb49ee954746918a6a074d37b1/results.bin b/node_modules/react-native-simple-crypto/android/build/.transforms/c2ec0bcb49ee954746918a6a074d37b1/results.bin
 new file mode 100644
 index 0000000..1ed65e0
@@ -162,7 +182,7 @@ index 0000000..9e26dfe
 \ No newline at end of file
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..d1da98d
+index 0000000..8ec3fe7
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_library_classes_jar/debug/classes.jar differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/compile_r_class_jar/debug/R.jar
 new file mode 100644
@@ -2063,11 +2083,11 @@ index 0000000..4f2bf34
 \ No newline at end of file
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/incremental/packageDebugResources/compile-file-map.properties b/node_modules/react-native-simple-crypto/android/build/intermediates/incremental/packageDebugResources/compile-file-map.properties
 new file mode 100644
-index 0000000..b226653
+index 0000000..a47a6f5
 --- /dev/null
 +++ b/node_modules/react-native-simple-crypto/android/build/intermediates/incremental/packageDebugResources/compile-file-map.properties
 @@ -0,0 +1 @@
-+#Tue May 14 17:20:12 BRT 2024
++#Tue May 21 17:18:27 BRT 2024
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/incremental/packageDebugResources/merger.xml b/node_modules/react-native-simple-crypto/android/build/intermediates/incremental/packageDebugResources/merger.xml
 new file mode 100644
 index 0000000..cfa498c
@@ -2083,7 +2103,7 @@ index 0000000..99b9873
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..582117e
+index 0000000..c004629
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/javac/debug/classes/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
@@ -2233,68 +2253,87 @@ index 0000000..8233e4b
 \ No newline at end of file
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/BuildConfig.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/BuildConfig.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..99b9873
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/BuildConfig.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..c004629
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTAes.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..827bef5
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTCryptoPackage.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTHmac.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTHmac.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..4170893
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTHmac.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTPbkdf2.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTPbkdf2.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..b6b34bc
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTPbkdf2.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$1.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$1.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..f4c24bb
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$1.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$2.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$2.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..909e62d
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$2.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$3.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$3.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..a68b8c3
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$3.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$4.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$4.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..352df56
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$4.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$5.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$5.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..26d1768
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$5.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$6.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$6.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..af5af41
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$6.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$7.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$7.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..89e71fb
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$7.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$8.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$8.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..8f858b0
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$8.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$9.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$9.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..415b3a0
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa$9.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..2e3003d
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsa.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsaUtils.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsaUtils.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..3462666
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTRsaUtils.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTSha.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTSha.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..360ae08
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RCTSha.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RSA.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RSA.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..01f2560
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RSA.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RandomBytesModule.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RandomBytesModule.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..34450ae
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/RandomBytesModule.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/Util.class b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/Util.class
 new file mode 100644
-index 0000000..e69de29
+index 0000000..456051a
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_dir/debug/com/pedrouid/crypto/Util.class differ
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar
 new file mode 100644
-index 0000000..3865e39
-Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/intermediates/runtime_library_classes_jar/debug/classes.jar differ
+index 0000000..e69de29
 diff --git a/node_modules/react-native-simple-crypto/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt b/node_modules/react-native-simple-crypto/android/build/intermediates/symbol_list_with_package_name/debug/package-aware-r.txt
 new file mode 100644
 index 0000000..c4821ef
@@ -3714,42 +3753,42 @@ index 0000000..8fc244a
 +		INJECTED from /Users/diegomello/Development/Work/Rocket.Chat.ReactNative/node_modules/react-native-simple-crypto/android/src/main/AndroidManifest.xml
 diff --git a/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin
 new file mode 100644
-index 0000000..97c1c36
+index 0000000..9b3f8a7
 Binary files /dev/null and b/node_modules/react-native-simple-crypto/android/build/tmp/compileDebugJavaWithJavac/previous-compilation-data.bin differ
 diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
-index 2b52abe..13297d2 100644
+index 2b52abe..cf27df0 100644
 --- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
 +++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTAes.java
-@@ -1,55 +1,32 @@
+@@ -1,55 +1,31 @@
  package com.pedrouid.crypto;
  
 -import android.widget.Toast;
+-
+-import java.io.IOException;
+-import java.security.SecureRandom;
+-import java.util.HashMap;
+-import java.util.Map;
 +import android.util.Base64;
-+
+ 
+-import java.util.UUID;
 +import com.facebook.react.bridge.Promise;
 +import com.facebook.react.bridge.ReactApplicationContext;
 +import com.facebook.react.bridge.ReactContextBaseJavaModule;
 +import com.facebook.react.bridge.ReactMethod;
  
-+import org.spongycastle.util.encoders.Hex;
-+
-+import java.io.File;
-+import java.io.FileInputStream;
-+import java.io.FileOutputStream;
- import java.io.IOException;
- import java.security.SecureRandom;
--import java.util.HashMap;
--import java.util.Map;
--
- import java.util.UUID;
--
 -import java.security.MessageDigest;
 -import java.security.NoSuchAlgorithmException;
 -import java.security.spec.InvalidKeySpecException;
 -import java.security.InvalidKeyException;
--
++import org.spongycastle.util.encoders.Hex;
+ 
 -import java.nio.charset.StandardCharsets;
--
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.security.SecureRandom;
++import java.util.UUID;
+ 
  import javax.crypto.Cipher;
  import javax.crypto.SecretKey;
 -import javax.crypto.spec.SecretKeySpec;
@@ -3780,7 +3819,6 @@ index 2b52abe..13297d2 100644
 -import com.facebook.react.bridge.ReactMethod;
 -import com.facebook.react.bridge.Callback;
 +import javax.crypto.spec.SecretKeySpec;
-+import java.nio.channels.FileChannel;
  
  public class RCTAes extends ReactContextBaseJavaModule {
  
@@ -3791,7 +3829,7 @@ index 2b52abe..13297d2 100644
  
      public RCTAes(ReactApplicationContext reactContext) {
          super(reactContext);
-@@ -80,6 +57,26 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -80,6 +56,26 @@ public class RCTAes extends ReactContextBaseJavaModule {
          }
      }
  
@@ -3818,7 +3856,7 @@ index 2b52abe..13297d2 100644
      @ReactMethod
      public void randomUuid(Promise promise) {
          try {
-@@ -105,6 +102,12 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -105,6 +101,12 @@ public class RCTAes extends ReactContextBaseJavaModule {
  
      final static IvParameterSpec emptyIvSpec = new IvParameterSpec(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
  
@@ -3831,7 +3869,7 @@ index 2b52abe..13297d2 100644
      public static String encrypt(String textBase64, String hexKey, String hexIv) throws Exception {
          if (textBase64 == null || textBase64.length() == 0) {
              return null;
-@@ -133,4 +136,60 @@ public class RCTAes extends ReactContextBaseJavaModule {
+@@ -133,4 +135,51 @@ public class RCTAes extends ReactContextBaseJavaModule {
          return Base64.encodeToString(decrypted, Base64.NO_WRAP);
      }
  
@@ -3849,7 +3887,7 @@ index 2b52abe..13297d2 100644
 +        // Normalize file paths
 +        String normalizedInputFilePath = Util.normalizeFilePath(inputFile);
 +        File inputFileObj = new File(normalizedInputFilePath);
-+        File outputFileObj = new File(normalizedInputFilePath + ".tmp");
++        File outputFileObj = new File(inputFileObj.getParent(), "processed_" + inputFileObj.getName());
 +
 +        // File streams setup
 +        try (FileInputStream fis = new FileInputStream(inputFileObj);
@@ -3872,16 +3910,7 @@ index 2b52abe..13297d2 100644
 +            throw ex;
 +        }
 +
-+        // Replace original file with the processed file
-+        if (inputFileObj.delete()) {
-+            if (!outputFileObj.renameTo(inputFileObj)) {
-+                throw new IOException("Failed to rename output file back to original.");
-+            }
-+        } else {
-+            throw new IOException("Failed to delete original file.");
-+        }
-+
-+        return inputFile;
++        return "file://" + outputFileObj.getAbsolutePath();
 +    }
 +
 +    public static String encryptFile(String inputFile, String base64UrlKey, String base64Iv) throws Exception {
@@ -4039,25 +4068,26 @@ index 72432fe..8a2020b 100644
 +
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 4ef555a..4e9655c 100644
+index 4ef555a..c0f7ce1 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-@@ -45,4 +45,67 @@
+@@ -45,4 +45,65 @@
      return [result base64EncodedStringWithOptions:0];
  }
  
 ++ (NSString *)processFile:(NSString *)filePath
-+                 operation:(CCOperation)operation
-+                      key:(NSString *)keyBase64URL
-+                       iv:(NSString *)ivBase64 {
++                operation:(CCOperation)operation
++                     key:(NSString *)keyBase64URL
++                      iv:(NSString *)ivBase64 {
 +    NSString *keyBase64 = [Shared base64FromBase64URL:keyBase64URL];
 +    NSData *keyData = [[NSData alloc] initWithBase64EncodedString:keyBase64 options:0];
 +    NSData *ivData = [[NSData alloc] initWithBase64EncodedString:ivBase64 options:0];
 +
 +    NSString *normalizedFilePath = [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
-+    NSString *tempFilePath = [normalizedFilePath stringByAppendingPathExtension:@"tmp"];
++    NSString *outputFileName = [@"processed_" stringByAppendingString:[normalizedFilePath lastPathComponent]];
++    NSString *outputFilePath = [[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName];
 +    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:normalizedFilePath];
-+    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:tempFilePath append:NO];
++    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
 +    [inputStream open];
 +    [outputStream open];
 +
@@ -4089,17 +4119,14 @@ index 4ef555a..4e9655c 100644
 +    [outputStream close];
 +
 +    if (status == kCCSuccess) {
-+        // Rename temp file back to original
-+        NSFileManager *fileManager = [NSFileManager defaultManager];
-+        [fileManager removeItemAtPath:normalizedFilePath error:nil];
-+        [fileManager moveItemAtPath:tempFilePath toPath:normalizedFilePath error:nil];
-+        return filePath;
++        return outputFilePath;
 +    } else {
 +        // Clean up temp file in case of failure
-+        [[NSFileManager defaultManager] removeItemAtPath:tempFilePath error:nil];
++        [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
 +        return nil;
 +    }
 +}
++
 +
 ++ (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
 +    return [self processFile:filePath operation:kCCEncrypt key:key iv:iv];
