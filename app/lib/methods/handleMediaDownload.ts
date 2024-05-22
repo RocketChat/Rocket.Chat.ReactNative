@@ -1,12 +1,11 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
-// import { Base64 } from 'js-base64';
 
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
-import { Base64, b64ToBuffer, b64URIToBuffer, base64Decode, decryptAESCTR } from '../encryption/utils';
+import { decryptAESCTR } from '../encryption/utils';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 
@@ -224,7 +223,6 @@ export function downloadMediaFile({
 
 			if (encryption) {
 				const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
-				console.log('🚀 ~ returnnewPromise ~ decryptedFile:', decryptedFile);
 				if (decryptedFile) {
 					return resolve(decryptedFile);
 				}

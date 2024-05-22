@@ -6,12 +6,6 @@ import { fromByteArray, toByteArray } from './helpers/base64-js';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
-// Use a lookup table to find the index.
-const lookup = new Uint8Array(256);
-for (let i = 0; i < BASE64URI.length; i++) {
-	lookup[BASE64URI.charCodeAt(i)] = i;
-}
-
 // @ts-ignore
 export const b64ToBuffer = (base64: string): ArrayBuffer => toByteArray(base64).buffer;
 export const utf8ToBuffer = SimpleCrypto.utils.convertUtf8ToArrayBuffer;
@@ -37,32 +31,6 @@ export const bufferToB64URI = (buffer: ArrayBuffer): string => {
 	}
 
 	return base64;
-};
-export const b64URIToBuffer = (base64: string): ArrayBuffer => {
-	const bufferLength = base64.length * 0.75;
-	const len = base64.length;
-	let i;
-	let p = 0;
-	let encoded1;
-	let encoded2;
-	let encoded3;
-	let encoded4;
-
-	const arraybuffer = new ArrayBuffer(bufferLength);
-	const bytes = new Uint8Array(arraybuffer);
-
-	for (i = 0; i < len; i += 4) {
-		encoded1 = lookup[base64.charCodeAt(i)];
-		encoded2 = lookup[base64.charCodeAt(i + 1)];
-		encoded3 = lookup[base64.charCodeAt(i + 2)];
-		encoded4 = lookup[base64.charCodeAt(i + 3)];
-
-		bytes[p++] = (encoded1 << 2) | (encoded2 >> 4);
-		bytes[p++] = ((encoded2 & 15) << 4) | (encoded3 >> 2);
-		bytes[p++] = ((encoded3 & 3) << 6) | (encoded4 & 63);
-	}
-
-	return arraybuffer;
 };
 // SimpleCrypto.utils.convertArrayBufferToUtf8 is not working with unicode emoji
 export const bufferToUtf8 = (buffer: ArrayBuffer): string => {

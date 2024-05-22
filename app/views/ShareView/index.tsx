@@ -266,7 +266,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								size,
 								type,
 								path,
-								store: 'Uploads',
 								msg
 							},
 							thread?.id,

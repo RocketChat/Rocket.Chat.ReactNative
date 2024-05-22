@@ -32,10 +32,6 @@ export interface IUploadFile {
 	tmid?: string;
 	description?: string;
 	size: number;
-	type: string;
-	// store?: string;
-	// progress?: number;
+	type?: string;
 	msg?: string;
-	// t?: MessageType;
-	// e2e?: E2EType;
 }

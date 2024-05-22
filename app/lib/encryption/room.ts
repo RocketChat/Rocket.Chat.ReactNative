@@ -6,7 +6,7 @@ import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IAttachment, IMessage, IShareAttachment, IUpload, IUploadFile, IUser } from '../../definitions';
+import { IAttachment, IMessage, IUpload, IUploadFile, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -32,7 +32,7 @@ import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getMessageById } from '../database/services/Message';
-import { TEncryptFile, TEncryptFileResult, TGetContent } from './definitions';
+import { TEncryptFileResult, TGetContent } from './definitions';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -293,21 +293,21 @@ export default class EncryptionRoom {
 					iv: bufferToB64(vector)
 				}
 			};
-			if (/^image\/.+/.test(file.type)) {
+			if (file.type && /^image\/.+/.test(file.type)) {
 				att = {
 					...att,
 					image_url: fileUrl,
 					image_type: file.type,
 					image_size: file.size
 				};
-			} else if (/^audio\/.+/.test(file.type)) {
+			} else if (file.type && /^audio\/.+/.test(file.type)) {
 				att = {
 					...att,
 					audio_url: fileUrl,
 					audio_type: file.type,
 					audio_size: file.size
 				};
-			} else if (/^video\/.+/.test(file.type)) {
+			} else if (file.type && /^video\/.+/.test(file.type)) {
 				att = {
 					...att,
 					video_url: fileUrl,
@@ -392,16 +392,10 @@ export default class EncryptionRoom {
 					tmsg = await this.decryptText(tmsg);
 				}
 
-				// if (message.attachments?.length) {
-				// 	message.attachments[0].description = await this.decryptText(message.attachments[0].description as string);
-				// }
-
 				if (message.content?.ciphertext) {
 					try {
 						const content = await this.decryptContent(message.content?.ciphertext as string);
-						console.log('🚀 ~ EncryptionRoom ~ decrypt= ~ content:', content);
 						message.attachments = content.attachments;
-						console.log('🚀 ~ EncryptionRoom ~ decrypt= ~ message.attachments:', message.attachments);
 					} catch (e) {
 						console.error(e);
 					}

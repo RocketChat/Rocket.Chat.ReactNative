@@ -76,8 +76,4 @@ export interface IShareAttachment {
 	canUpload: boolean;
 	error?: any;
 	uri: string;
-	encryption?: {
-		key: any;
-		iv: string;
-	};
 }
