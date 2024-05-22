@@ -222,12 +222,15 @@ export function downloadMediaFile({
 				return reject();
 			}
 
-			const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
-			console.log('🚀 ~ returnnewPromise ~ decryptedFile:', decryptedFile);
-			if (decryptedFile) {
-				return resolve(decryptedFile);
+			if (encryption) {
+				const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
+				console.log('🚀 ~ returnnewPromise ~ decryptedFile:', decryptedFile);
+				if (decryptedFile) {
+					return resolve(decryptedFile);
+				}
+				return reject();
 			}
-			return reject();
+			return resolve(result.uri);
 		} catch (e) {
 			console.error(e);
 			return reject();

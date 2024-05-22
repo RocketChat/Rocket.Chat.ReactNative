@@ -3,9 +3,10 @@ import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
+import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IMessage, IShareAttachment, IUpload, IUser } from '../../definitions';
+import { IAttachment, IMessage, IShareAttachment, IUpload, IUploadFile, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -31,6 +32,7 @@ import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getMessageById } from '../database/services/Message';
+import { TEncryptFile, TEncryptFileResult, TGetContent } from './definitions';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -272,75 +274,68 @@ export default class EncryptionRoom {
 		return message;
 	};
 
-	// Encrypt file
-	encryptFile = async (rid: string, attachment: IShareAttachment) => {
-		if (!this.ready) {
-			return attachment;
-		}
+	encryptFile = async (rid: string, file: IUploadFile): TEncryptFileResult => {
+		const { path } = file;
+		const vector = await SimpleCrypto.utils.randomBytes(16);
+		const key = await generateAESCTRKey();
+		const exportedKey = await exportAESCTR(key);
+		const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
 
-		try {
-			const { path } = attachment;
-			const vector = await SimpleCrypto.utils.randomBytes(16);
-			const key = await generateAESCTRKey();
-			const exportedKey = await exportAESCTR(key);
-			const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
-
-			const getContent = async (_id: string, fileUrl: string) => {
-				const attachments = [];
-				let att = {
-					title: attachment.name,
-					type: 'file',
-					// mime: attachment.type,
-					size: attachment.size,
-					description: attachment.description,
-					encryption: {
-						key: exportedKey,
-						iv: bufferToB64(vector)
-					}
-				};
-				if (/^image\/.+/.test(attachment.type)) {
-					att = {
-						...att,
-						image_url: fileUrl,
-						image_type: attachment.type,
-						image_size: attachment.size
-					};
-				} else if (/^audio\/.+/.test(attachment.type)) {
-					att = {
-						...att,
-						audio_url: fileUrl,
-						audio_type: attachment.type,
-						audio_size: attachment.size
-					};
-				} else if (/^video\/.+/.test(attachment.type)) {
-					att = {
-						...att,
-						video_url: fileUrl,
-						video_type: attachment.type,
-						video_size: attachment.size
-					};
+		const getContent: TGetContent = async (_id, fileUrl) => {
+			const attachments: IAttachment[] = [];
+			let att: IAttachment = {
+				title: file.name,
+				type: 'file',
+				size: file.size,
+				description: file.description,
+				encryption: {
+					key: exportedKey,
+					iv: bufferToB64(vector)
 				}
-				attachments.push(att);
-
-				const data = EJSON.stringify({
-					attachments
-				});
-
-				return {
-					algorithm: 'rc.v1.aes-sha2',
-					ciphertext: await Encryption.encryptText(rid, data)
-				};
 			};
+			if (/^image\/.+/.test(file.type)) {
+				att = {
+					...att,
+					image_url: fileUrl,
+					image_type: file.type,
+					image_size: file.size
+				};
+			} else if (/^audio\/.+/.test(file.type)) {
+				att = {
+					...att,
+					audio_url: fileUrl,
+					audio_type: file.type,
+					audio_size: file.size
+				};
+			} else if (/^video\/.+/.test(file.type)) {
+				att = {
+					...att,
+					video_url: fileUrl,
+					video_type: file.type,
+					video_size: file.size
+				};
+			}
+			attachments.push(att);
+
+			const data = EJSON.stringify({
+				attachments
+			});
 
 			return {
-				encryptedFile,
-				getContent
+				algorithm: 'rc.v1.aes-sha2',
+				ciphertext: await Encryption.encryptText(rid, data)
 			};
-		} catch {
-			// Do nothing
-		}
+		};
 
-		return attachment;
+		return {
+			file: {
+				...file,
+				type: 'file',
+				name: sha256(file.name ?? 'File message'),
+				path: encryptedFile
+			},
+			getContent
+		};
 	};
 
 	// Decrypt text

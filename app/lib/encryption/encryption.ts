@@ -4,6 +4,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
 import UserPreferences from '../methods/userPreferences';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from './helpers/deferred';
@@ -16,6 +17,7 @@ import {
 	IMessage,
 	ISubscription,
 	IUpload,
+	IUploadFile,
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadMessageModel,
@@ -31,6 +33,7 @@ import {
 } from '../constants';
 import { Services } from '../services';
 import { compareServerVersion } from '../methods/helpers';
+import { TEncryptFile } from './definitions';
 
 class Encryption {
 	ready: boolean;
@@ -45,7 +48,7 @@ class Encryption {
 			decrypt: Function;
 			encrypt: Function;
 			encryptText: Function;
-			encryptFile: Function;
+			encryptFile: TEncryptFile;
 			encryptUpload: Function;
 			importRoomKey: Function;
 		};
@@ -453,7 +456,7 @@ class Encryption {
 	};
 
 	// Encrypt a message
-	encryptMessage = async (message: IMessage | IUpload) => {
+	encryptMessage = async (message: IMessage) => {
 		const { rid } = message;
 		const db = database.active;
 		const subCollection = db.get('subscriptions');
@@ -516,35 +519,25 @@ class Encryption {
 		return roomE2E.decrypt(message);
 	};
 
-	encryptFile = async (rid: string, attachment: IAttachment) => {
-		const db = database.active;
-		const subCollection = db.get('subscriptions');
-
-		try {
-			// Find the subscription
-			const subRecord = await subCollection.find(rid);
-
-			// Subscription is not encrypted at the moment
-			if (!subRecord.encrypted) {
-				// Send a non encrypted message
-				return attachment;
-			}
-
-			// If the client is not ready
-			if (!this.ready) {
-				// Wait for ready status
-				await this.establishing;
-			}
-
-			const roomE2E = await this.getRoomInstance(rid);
-			return roomE2E.encryptFile(rid, attachment);
-		} catch {
-			// Subscription not found
-			// or client can't be initialized (missing password)
+	encryptFile = async (rid: string, file: IUploadFile) => {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (!subscription) {
+			throw new Error('Subscription not found');
 		}
 
-		// Send a non encrypted message
-		return attachment;
+		if (!subscription.encrypted) {
+			// Send a non encrypted message
+			return { file };
+		}
+
+		// If the client is not ready
+		if (!this.ready) {
+			// Wait for ready status
+			await this.establishing;
+		}
+
+		const roomE2E = await this.getRoomInstance(rid);
+		return roomE2E.encryptFile(rid, file);
 	};
 
 	// Decrypt multiple messages

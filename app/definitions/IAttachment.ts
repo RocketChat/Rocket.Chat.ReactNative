@@ -5,19 +5,23 @@ export interface IAttachment {
 	ts?: string | Date;
 	title?: string;
 	type?: string;
+	size?: number;
 	description?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
+	image_size?: number;
+	image_dimensions?: { width?: number; height?: number };
+	image_preview?: string;
 	video_url?: string;
 	video_type?: string;
+	video_size?: number;
 	audio_url?: string;
+	audio_type?: string;
+	audio_size?: number;
 	title_link_download?: boolean;
 	attachments?: IAttachment[];
 	fields?: IAttachment[];
-	image_dimensions?: { width?: number; height?: number };
-	image_preview?: string;
-	image_size?: number;
 	author_name?: string;
 	author_icon?: string;
 	actions?: { type: string; msg: string; text: string }[];
@@ -29,8 +33,11 @@ export interface IAttachment {
 	color?: string;
 	thumb_url?: string;
 	collapsed?: boolean;
-	audio_type?: string;
 	translations?: IAttachmentTranslations;
+	encryption?: {
+		iv: string;
+		key: any; // JsonWebKey
+	};
 }
 
 export interface IServerAttachment {

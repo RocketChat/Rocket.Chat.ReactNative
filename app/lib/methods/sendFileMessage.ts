@@ -3,10 +3,10 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
 import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
-import { sha256 } from 'js-sha256';
 
+import { getUploadByPath } from '../database/services/Upload';
 import { Encryption } from '../encryption';
-import { IUpload, IUser, TUploadModel } from '../../definitions';
+import { IUpload, IUploadFile, IUser, TUploadModel } from '../../definitions';
 import i18n from '../../i18n';
 import database from '../database';
 import log from './helpers/log';
@@ -41,13 +41,21 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 	}
 }
 
-const persistUploadError = async (uploadRecord: TUploadModel) => {
-	const db = database.active;
-	await db.write(async () => {
-		await uploadRecord.update(u => {
-			u.error = true;
+const persistUploadError = async (path: string, rid: string) => {
+	try {
+		const db = database.active;
+		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
+		if (!uploadRecord) {
+			return;
+		}
+		await db.write(async () => {
+			await uploadRecord.update(u => {
+				u.error = true;
+			});
 		});
-	});
+	} catch {
+		// Do nothing
+	}
 };
 
 const createUploadRecord = async ({
@@ -94,97 +102,75 @@ const createUploadRecord = async ({
 
 const normalizeFilePath = (path: string) => (path.startsWith('file://') ? path.substring(7) : path);
 
-export function sendFileMessage(
+export async function sendFileMessage(
 	rid: string,
-	fileInfo: IUpload,
+	fileInfo: IUploadFile,
 	tmid: string | undefined,
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<FetchBlobResponse | void> {
-	return new Promise(async (resolve, reject) => {
-		try {
-			console.log('sendFileMessage', rid, fileInfo);
-			const { id, token } = user;
-			fileInfo.path = normalizeFilePath(fileInfo.path);
+	try {
+		console.log('sendFileMessage', rid, fileInfo);
+		const { id, token } = user;
+		const headers = {
+			...RocketChatSettings.customHeaders,
+			'Content-Type': 'multipart/form-data',
+			'X-Auth-Token': token,
+			'X-User-Id': id
+		};
+		const db = database.active;
+		fileInfo.path = normalizeFilePath(fileInfo.path);
 
-			const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
-			if (!uploadPath || !uploadRecord) {
-				return;
-			}
-			const encryptedFileInfo = await Encryption.encryptFile(rid, fileInfo);
-			const { encryptedFile, getContent } = encryptedFileInfo;
-
-			// TODO: temp until I bring back non encrypted uploads
-			if (!encryptedFile) {
-				await persistUploadError(uploadRecord);
-				throw new Error('Error while encrypting file');
-			}
-
-			const headers = {
-				...RocketChatSettings.customHeaders,
-				'Content-Type': 'multipart/form-data',
-				'X-Auth-Token': token,
-				'X-User-Id': id
-			};
-
-			const db = database.active;
-			const data = [
-				{
-					name: 'file',
-					type: 'file',
-					filename: sha256(fileInfo.name || 'fileMessage'),
-					data: RNFetchBlob.wrap(decodeURI(normalizeFilePath(encryptedFile)))
-				}
-			];
-
-			// @ts-ignore
-			uploadQueue[uploadPath] = RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, data)
-				.uploadProgress(async (loaded: number, total: number) => {
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.progress = Math.floor((loaded / total) * 100);
-						});
-					});
-				})
-				.then(async response => {
-					const json = response.json();
-					let content;
-					if (getContent) {
-						content = await getContent(json.file._id, json.file.url);
-					}
-					fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
-						method: 'POST',
-						headers: {
-							...headers,
-							'Content-Type': 'application/json'
-						},
-						body: JSON.stringify({
-							// msg: '', TODO: backwards compatibility
-							tmid: tmid ?? undefined,
-							description: fileInfo.description,
-							t: 'e2e',
-							content
-						})
-					}).then(async () => {
-						console.log('destroy destroy destroy destroy ');
-						await db.write(async () => {
-							await uploadRecord.destroyPermanently();
-						});
-					});
-					resolve(response);
-				})
-				.catch(async error => {
-					console.log('catch catch catch catch catch ');
-					await db.write(async () => {
-						await uploadRecord.update(u => {
-							u.error = true;
-						});
-					});
-					throw error;
-				});
-		} catch (e) {
-			reject(e);
+		const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+		if (!uploadPath || !uploadRecord) {
+			throw new Error("Couldn't create upload record");
 		}
-	});
+		const { file, getContent } = await Encryption.encryptFile(rid, fileInfo);
+
+		// @ts-ignore
+		uploadQueue[uploadPath] = RNFetchBlob.fetch('POST', `${server}/api/v1/rooms.media/${rid}`, headers, [
+			{
+				name: 'file',
+				type: file.type,
+				filename: file.name,
+				data: RNFetchBlob.wrap(decodeURI(normalizeFilePath(file.path)))
+			}
+		])
+			.uploadProgress(async (loaded: number, total: number) => {
+				await db.write(async () => {
+					await uploadRecord.update(u => {
+						u.progress = Math.floor((loaded / total) * 100);
+					});
+				});
+			})
+			.then(async response => {
+				const json = response.json();
+				let content;
+				if (getContent) {
+					content = await getContent(json.file._id, json.file.url);
+				}
+				fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
+					method: 'POST',
+					headers: {
+						...headers,
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						// msg: '', TODO: backwards compatibility
+						tmid: tmid ?? undefined,
+						description: file.description,
+						t: content ? 'e2e' : undefined,
+						content
+					})
+				}).then(async () => {
+					await db.write(async () => {
+						await uploadRecord.destroyPermanently();
+					});
+				});
+			});
+	} catch (e) {
+		await persistUploadError(fileInfo.path, rid);
+		throw e;
+	}
 }
