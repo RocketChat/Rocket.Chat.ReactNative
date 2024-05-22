@@ -43,7 +43,7 @@ interface IShareViewState {
 	attachments: IShareAttachment[];
 	text: string;
 	room: TSubscriptionModel;
-	thread: TThreadModel;
+	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
 	selectedMessages: string[];
@@ -88,7 +88,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			attachments: [],
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {},
-			thread: props.route.params?.thread ?? {},
+			thread: props.route.params?.thread ?? '',
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
 			mediaAllowList: this.isShareExtension
 				? this.serverInfo?.FileUpload_MediaTypeWhiteList
@@ -257,7 +257,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							return sendFileMessage(
 								room.rid,
 								{
-									rid: room.rid,
 									name,
 									description,
 									size,
@@ -266,7 +265,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 									store: 'Uploads',
 									msg
 								},
-								thread?.id,
+								(thread as TThreadModel)?.id || (thread as string),
 								server,
 								{ id: user.id, token: user.token }
 							);
@@ -277,7 +276,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Send text message
 			} else if (text.length) {
-				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+				await sendMessage(room.rid, text, (thread as TThreadModel)?.id || (thread as string), {
+					id: user.id,
+					token: user.token
+				} as IUser);
 			}
 		} catch {
 			if (!this.isShareExtension) {
@@ -345,14 +347,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
-						tmid: thread.id,
+						tmid: (thread as TThreadModel)?.id || (thread as string),
 						sharing: true,
 						action: route.params?.action,
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}
-				>
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected

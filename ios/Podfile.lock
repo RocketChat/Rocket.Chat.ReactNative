@@ -484,8 +484,6 @@ PODS:
     - React
   - rn-extensions-share (2.4.1):
     - React
-  - rn-fetch-blob (0.12.0):
-    - React-Core
   - RNBootSplash (4.3.3):
     - React-Core
   - RNCAsyncStorage (1.17.11):
@@ -653,7 +651,6 @@ DEPENDENCIES:
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
   - rn-extensions-share (from `../node_modules/rn-extensions-share`)
-  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
@@ -827,8 +824,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ui-lib"
   rn-extensions-share:
     :path: "../node_modules/rn-extensions-share"
-  rn-fetch-blob:
-    :path: "../node_modules/rn-fetch-blob"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -962,7 +957,6 @@ SPEC CHECKSUMS:
   ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
   rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
-  rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNBootSplash: 7e91ea56c7010aae487489789dbe212e8c905a0c
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: cc054ad1e8a33d2a74cd13e565588b4ca928d8fd
