@@ -243,7 +243,7 @@ const Reply = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-					disabled={loading || attachment.message_link}
+					disabled={!!(loading || attachment.message_link)}
 				>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
