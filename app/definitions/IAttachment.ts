@@ -1,5 +1,10 @@
 import { IUser } from './IUser';
-import { IAttachmentTranslations } from './IMessage';
+import { E2EType, IAttachmentTranslations } from './IMessage';
+
+export type TAttachmentEncryption = {
+	iv: string;
+	key: any; // JsonWebKey
+};
 
 export interface IAttachment {
 	ts?: string | Date;
@@ -34,10 +39,8 @@ export interface IAttachment {
 	thumb_url?: string;
 	collapsed?: boolean;
 	translations?: IAttachmentTranslations;
-	encryption?: {
-		iv: string;
-		key: any; // JsonWebKey
-	};
+	e2e?: E2EType;
+	encryption?: TAttachmentEncryption;
 }
 
 export interface IServerAttachment {

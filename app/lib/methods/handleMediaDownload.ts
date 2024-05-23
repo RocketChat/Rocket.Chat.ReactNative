@@ -2,21 +2,19 @@ import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
 
+import { Encryption } from '../encryption';
+import { TAttachmentEncryption } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
-import { decryptAESCTR } from '../encryption/utils';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
-
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
-
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
 	video: 'mp4'
 };
-
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
 const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeLikeString(serverURL)}/`;
@@ -196,15 +194,17 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 }
 
 export function downloadMediaFile({
+	messageId,
 	type,
 	mimeType,
 	downloadUrl,
 	encryption
 }: {
+	messageId: string;
 	type: MediaTypes;
 	mimeType?: string;
 	downloadUrl: string;
-	encryption: any;
+	encryption?: TAttachmentEncryption;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
@@ -222,11 +222,10 @@ export function downloadMediaFile({
 			}
 
 			if (encryption) {
-				const decryptedFile = await decryptAESCTR(result.uri, encryption.key.k, encryption.iv);
-				if (decryptedFile) {
-					return resolve(decryptedFile);
+				const decryptedFilePath = await Encryption.decryptFile(messageId, result.uri, encryption);
+				if (decryptedFilePath) {
+					return resolve(decryptedFilePath);
 				}
-				return reject();
 			}
 			return resolve(result.uri);
 		} catch (e) {

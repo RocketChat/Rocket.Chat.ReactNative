@@ -4,20 +4,20 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
 import UserPreferences from '../methods/userPreferences';
+import { getMessageById } from '../database/services/Message';
 import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from './helpers/deferred';
 import log from '../methods/helpers/log';
 import { store } from '../store/auxStore';
-import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
+import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import { EncryptionRoom } from './index';
 import {
-	IAttachment,
 	IMessage,
 	ISubscription,
-	IUpload,
 	IUploadFile,
+	TAttachmentEncryption,
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadMessageModel,
@@ -538,6 +538,32 @@ class Encryption {
 
 		const roomE2E = await this.getRoomInstance(rid);
 		return roomE2E.encryptFile(rid, file);
+	};
+
+	decryptFile = async (messageId: string, path: string, encryption: TAttachmentEncryption): Promise<string | null> => {
+		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
+		if (decryptedFile) {
+			try {
+				const messageRecord = await getMessageById(messageId);
+				if (!messageRecord) {
+					throw new Error('Message not found');
+				}
+
+				const db = database.active;
+				await db.write(async () => {
+					await messageRecord.update(m => {
+						m.attachments = m.attachments?.map(att => ({
+							...att,
+							e2e: 'done'
+						}));
+					});
+				});
+			} catch (e) {
+				// Do nothing
+			}
+		}
+
+		return decryptedFile;
 	};
 
 	// Decrypt multiple messages

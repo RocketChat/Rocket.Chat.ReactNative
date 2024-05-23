@@ -6,7 +6,7 @@ import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IAttachment, IMessage, IUpload, IUploadFile, IUser } from '../../definitions';
+import { IAttachment, IMessage, IUpload, IUploadFile, IUser, TAttachmentEncryption } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -16,6 +16,7 @@ import {
 	bufferToB64,
 	bufferToB64URI,
 	bufferToUtf8,
+	decryptAESCTR,
 	encryptAESCTR,
 	exportAESCTR,
 	generateAESCTRKey,
@@ -354,22 +355,15 @@ export default class EncryptionRoom {
 		return m.text;
 	};
 
-	// Decrypt content
-	decryptContent = async (msg: string | ArrayBuffer) => {
-		if (!msg) {
+	decryptContent = async (contentBase64: string) => {
+		if (!contentBase64) {
 			return null;
 		}
 
-		msg = b64ToBuffer(msg.slice(12) as string);
-		const [vector, cipherText] = splitVectorData(msg);
-
+		const contentBuffer = b64ToBuffer(contentBase64.slice(12) as string);
+		const [vector, cipherText] = splitVectorData(contentBuffer);
 		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, this.roomKey, vector);
-		console.log('🚀 ~ EncryptionRoom ~ decryptContent= ~ decrypted:', decrypted);
-
-		const m = EJSON.parse(bufferToUtf8(decrypted));
-		console.log('🚀 ~ EncryptionRoom ~ decryptContent= ~ m:', m);
-
-		return m;
+		return EJSON.parse(bufferToUtf8(decrypted));
 	};
 
 	// Decrypt messages
@@ -393,12 +387,11 @@ export default class EncryptionRoom {
 				}
 
 				if (message.content?.ciphertext) {
-					try {
-						const content = await this.decryptContent(message.content?.ciphertext as string);
-						message.attachments = content.attachments;
-					} catch (e) {
-						console.error(e);
-					}
+					const content = await this.decryptContent(message.content.ciphertext);
+					message.attachments = content.attachments.map((att: IAttachment) => ({
+						...att,
+						e2e: 'pending'
+					}));
 				}
 
 				const decryptedMessage: IMessage = {

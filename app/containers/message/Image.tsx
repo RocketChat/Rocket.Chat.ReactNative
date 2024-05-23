@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
+import { Encryption } from '../../lib/encryption';
 import { IAttachment, IUserMessage } from '../../definitions';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
@@ -52,21 +53,33 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 	);
 });
 
-export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: string; cached: boolean; loading: boolean }) => {
-	const { colors } = useTheme();
-	return (
-		<>
-			<FastImage
-				style={[styles.image, { borderColor: colors.strokeLight }]}
-				source={{ uri: encodeURI(imgUri) }}
-				resizeMode={FastImage.resizeMode.cover}
-			/>
-			{!cached ? (
-				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
-			) : null}
-		</>
-	);
-});
+export const MessageImage = React.memo(
+	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
+		const { colors } = useTheme();
+
+		if (encrypted) {
+			return (
+				<>
+					<View style={styles.image} />
+					<BlurComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
+				</>
+			);
+		}
+
+		return (
+			<>
+				<FastImage
+					style={[styles.image, { borderColor: colors.strokeLight }]}
+					source={{ uri: encodeURI(imgUri) }}
+					resizeMode={FastImage.resizeMode.cover}
+				/>
+				{!cached ? (
+					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+				) : null}
+			</>
+		);
+	}
+);
 
 const ImageContainer = ({
 	file,
@@ -82,7 +95,7 @@ const ImageContainer = ({
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const { theme } = useTheme();
-	const { baseUrl, user } = useContext(MessageContext);
+	const { id, baseUrl, user } = useContext(MessageContext);
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
@@ -139,6 +152,9 @@ const ImageContainer = ({
 			urlToCache: imgUrlToCache
 		});
 		if (cachedImageResult?.exists) {
+			if (file.encryption && file.e2e === 'pending') {
+				await Encryption.decryptFile(id, cachedImageResult.uri, file.encryption);
+			}
 			updateImageCached(cachedImageResult.uri);
 			setLoading(false);
 		}
@@ -163,6 +179,7 @@ const ImageContainer = ({
 		try {
 			setLoading(true);
 			const imageUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: imgUrlToCache,
 				type: 'image',
 				mimeType: imageCached.image_type,
@@ -177,6 +194,10 @@ const ImageContainer = ({
 	};
 
 	const onPress = async () => {
+		if (file.e2e === 'pending') {
+			alert('File is encrypted. tbd');
+			return;
+		}
 		if (loading && isDownloadActive(imgUrlToCache)) {
 			cancelDownload(imgUrlToCache);
 			setLoading(false);
@@ -208,6 +229,7 @@ const ImageContainer = ({
 				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
 				cached={cached}
 				loading={loading}
+				encrypted={file.e2e === 'pending'}
 			/>
 		</Button>
 	);

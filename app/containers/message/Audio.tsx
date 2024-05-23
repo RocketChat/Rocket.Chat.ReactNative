@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
+import { Encryption } from '../../lib/encryption';
 import Markdown from '../markdown';
 import MessageContext from './Context';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -49,6 +50,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		try {
 			if (audioUrl) {
 				const audio = await downloadMediaFile({
+					messageId: id,
 					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
 					mimeType: file.audio_type,
@@ -85,6 +87,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			urlToCache: audioUrl
 		});
 		if (cachedAudioResult?.exists) {
+			if (file.encryption && file.e2e === 'pending') {
+				await Encryption.decryptFile(id, cachedAudioResult.uri, file.encryption);
+			}
 			setFileUri(cachedAudioResult.uri);
 			setDownloadState('downloaded');
 		}
@@ -130,7 +135,14 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer msgId={id} fileUri={fileUri} downloadState={downloadState} onPlayButtonPress={onPlayButtonPress} rid={rid} />
+			<AudioPlayer
+				msgId={id}
+				fileUri={fileUri}
+				downloadState={downloadState}
+				onPlayButtonPress={onPlayButtonPress}
+				rid={rid}
+				disabled={file.e2e === 'pending'}
+			/>
 		</>
 	);
 };
