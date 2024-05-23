@@ -340,10 +340,6 @@ export default class EncryptionRoom {
 
 	// Decrypt text
 	decryptText = async (msg: string | ArrayBuffer) => {
-		if (!msg) {
-			return null;
-		}
-
 		msg = b64ToBuffer(msg.slice(12) as string);
 		const [vector, cipherText] = splitVectorData(msg);
 

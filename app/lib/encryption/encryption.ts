@@ -32,7 +32,6 @@ import {
 	E2E_STATUS
 } from '../constants';
 import { Services } from '../services';
-import { compareServerVersion } from '../methods/helpers';
 import { TEncryptFile } from './definitions';
 
 class Encryption {
@@ -291,7 +290,7 @@ class Encryption {
 			];
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
-					const { t, msg, tmsg, attachments } = message;
+					const { t, msg, tmsg } = message;
 					let newMessage: TMessageModel = {} as TMessageModel;
 					if (message.subscription) {
 						const { id: rid } = message.subscription;
@@ -300,8 +299,7 @@ class Encryption {
 							t,
 							rid,
 							msg: msg as string,
-							tmsg,
-							attachments
+							tmsg
 						});
 					}
 
@@ -478,11 +476,6 @@ class Encryption {
 			}
 
 			const roomE2E = await this.getRoomInstance(rid);
-
-			const { version: serverVersion } = store.getState().server;
-			if ('path' in message && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.8.0')) {
-				return roomE2E.encryptUpload(message);
-			}
 			return roomE2E.encrypt(message);
 		} catch {
 			// Subscription not found
@@ -494,7 +487,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments'>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
