@@ -7,13 +7,8 @@
 //
 
 #import <React/RCTHTTPRequestHandler.h>
-#import "RNFetchBlobRequest.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-@interface RNFetchBlobRequest (Challenge)
-
-@end
 
 @interface RCTHTTPRequestHandler (Challenge)
 

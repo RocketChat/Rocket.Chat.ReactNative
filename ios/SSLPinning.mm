@@ -8,7 +8,6 @@
 
 #import <objc/runtime.h>
 #import "SSLPinning.h"
-#import "RNFetchBlobRequest.h"
 #import <MMKV/MMKV.h>
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
@@ -111,15 +110,6 @@
 
   completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
 }
-@end
-
-@implementation RNFetchBlobRequest (Challenge)
-
-- (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credential))completionHandler
-{
-  [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
-}
-
 @end
 
 @implementation RCTHTTPRequestHandler (Challenge)

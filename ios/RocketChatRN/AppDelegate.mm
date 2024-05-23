@@ -24,8 +24,12 @@
   [RNNotifications startMonitorNotifications];
   [ReplyNotification configure];
 
-  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
-	
+  self.moduleName = @"RocketChatRN";
+  // You can add your custom initial props in the dictionary below.
+  // They will be passed down to the ViewController used by React Native.
+  self.initialProps = @{};
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:self.window.rootViewController.view];
   [[[SSLPinning alloc] init] migrate];
   
   self.watchConnection = [[WatchConnection alloc] initWithSession:[WCSession defaultSession]];
