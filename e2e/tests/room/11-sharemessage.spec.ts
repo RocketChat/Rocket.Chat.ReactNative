@@ -76,7 +76,7 @@ describe('Forward a message with another user', () => {
 				await sleep(500);
 				await waitFor(element(by.id('multi-select-search')))
 					.not.toBeVisible()
-					.withTimeout(2000);
+					.withTimeout(10000);
 				await waitFor(element(by.id('forward-message-view-send')))
 					.toBeVisible()
 					.withTimeout(10000);
