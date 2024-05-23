@@ -6,7 +6,7 @@ import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IAttachment, IMessage, IUpload, IUploadFile, IUser, TAttachmentEncryption } from '../../definitions';
+import { IAttachment, IMessage, IUpload, IUploadFile, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -16,7 +16,6 @@ import {
 	bufferToB64,
 	bufferToB64URI,
 	bufferToUtf8,
-	decryptAESCTR,
 	encryptAESCTR,
 	exportAESCTR,
 	generateAESCTRKey,
