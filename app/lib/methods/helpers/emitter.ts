@@ -18,4 +18,5 @@ export type TKeyEmitterEvent = keyof TEmitterEvents;
 
 export const emitter = mitt<TEmitterEvents>();
 
-emitter.on('*', (type, e) => console.log(type, e));
+// uncomment the line below to log all events
+// emitter.on('*', (type, e) => console.log(type, e));

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23C64" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="LoggedUser" representedClassName=".LoggedUser" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="token" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="server" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Server" inverseName="loggedUser" inverseEntity="Server"/>
+    </entity>
+    <entity name="Server" representedClassName=".Server" syncable="YES">
+        <attribute name="certificate" optional="YES" attributeType="Binary"/>
+        <attribute name="iconURL" optional="YES" attributeType="URI"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="password" optional="YES" attributeType="String"/>
+        <attribute name="updatedSince" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="url" optional="YES" attributeType="URI"/>
+        <attribute name="useRealName" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="version" optional="YES" attributeType="String"/>
+        <relationship name="loggedUser" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LoggedUser" inverseName="server" inverseEntity="LoggedUser"/>
+    </entity>
+</model>

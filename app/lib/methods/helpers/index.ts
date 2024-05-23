@@ -18,3 +18,4 @@ export * from './image';
 export * from './askAndroidMediaPermissions';
 export * from './emitter';
 export * from './parseJson';
+export * from './fileDownload';
