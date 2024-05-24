@@ -326,7 +326,7 @@ index 72432fe..8a2020b 100644
 +
  @end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 4ef555a..6501791 100644
+index 4ef555a..067d962 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 @@ -45,4 +45,73 @@
@@ -343,7 +343,7 @@ index 4ef555a..6501791 100644
 +
 +    NSString *normalizedFilePath = [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
 +    NSString *outputFileName = [@"processed_" stringByAppendingString:[normalizedFilePath lastPathComponent]];
-+    NSString *outputFilePath = [[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName];
++    NSString *outputFilePath = [[[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName] stringByDeletingPathExtension];
 +    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:normalizedFilePath];
 +    NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
 +    [inputStream open];
