@@ -6,6 +6,7 @@ import database from '../../database';
 import { Encryption } from '../../encryption';
 import { createUploadRecord, normalizeFilePath, persistUploadError, uploadQueue } from './utils';
 import FileUpload, { IFileUpload } from '../helpers/fileUpload';
+import { TRoomsMediaResponse } from '../../../definitions/rest/v1/rooms';
 
 export async function sendFileMessageV2(
 	rid: string,
@@ -35,7 +36,7 @@ export async function sendFileMessageV2(
 		const formData: IFileUpload[] = [];
 		formData.push({
 			name: 'file',
-			type: 'image/jpeg', // file.type,
+			type: file.type,
 			filename: file.name,
 			uri: file.path
 		});
@@ -54,35 +55,30 @@ export async function sendFileMessageV2(
 			}
 		});
 
-		uploadQueue[uploadPath].then(async ({ respInfo }: { respInfo: XMLHttpRequest }) => {
-			console.log('🚀 ~ uploadQueue[uploadPath].then ~ respInfo:', respInfo);
-			// if (respInfo.status >= 200 && respInfo.status < 400) {
-			// 	const json = JSON.parse(respInfo.responseText);
-			// 	let content;
-			// 	if (getContent) {
-			// 		content = await getContent(json.file._id, json.file.url);
-			// 	}
-			// 	fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${json.file._id}`, {
-			// 		method: 'POST',
-			// 		headers: {
-			// 			...headers,
-			// 			'Content-Type': 'application/json'
-			// 		},
-			// 		body: JSON.stringify({
-			// 			msg: file.msg || undefined,
-			// 			tmid: tmid || undefined,
-			// 			description: file.description || undefined,
-			// 			t: content ? 'e2e' : undefined,
-			// 			content
-			// 		})
-			// 	}).then(async () => {
-			// 		await db.write(async () => {
-			// 			await uploadRecord.destroyPermanently();
-			// 		});
-			// 	});
-			// } else {
-			// 	throw new Error('Failed to upload');
-			// }
+		uploadQueue[uploadPath].then(async (response: TRoomsMediaResponse) => {
+			console.log('🚀 ~ uploadQueue[uploadPath].then ~ response:', response);
+			let content;
+			if (getContent) {
+				content = await getContent(response.file._id, response.file.url);
+			}
+			fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
+				method: 'POST',
+				headers: {
+					...headers,
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					msg: file.msg || undefined,
+					tmid: tmid || undefined,
+					description: file.description || undefined,
+					t: content ? 'e2e' : undefined,
+					content
+				})
+			}).then(async () => {
+				await db.write(async () => {
+					await uploadRecord.destroyPermanently();
+				});
+			});
 		});
 
 		uploadQueue[uploadPath].catch(async e => {

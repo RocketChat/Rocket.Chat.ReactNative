@@ -1,3 +1,5 @@
+import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+
 export interface IFileUpload {
 	name: string;
 	uri?: string;
@@ -34,10 +36,12 @@ export class Upload {
 		}
 	}
 
-	public then(callback: (param: { respInfo: XMLHttpRequest }) => void): void {
-		this.xhr.onload = () => callback({ respInfo: this.xhr });
-		console.log('🚀 ~ Upload ~ then ~ this.xhr:', this.xhr);
-		console.log('🚀 ~ Upload ~ then ~ this.formData:', this.formData);
+	public then(callback: (response: TRoomsMediaResponse) => void): void {
+		this.xhr.onload = () => {
+			if (this.xhr.status >= 200 && this.xhr.status < 400) {
+				callback(JSON.parse(this.xhr.responseText));
+			}
+		};
 		this.xhr.send(this.formData);
 	}
 
