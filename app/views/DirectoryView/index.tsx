@@ -216,20 +216,11 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
 				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
 					<View
-						style={[
-							sharedStyles.separatorVertical,
-							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].strokeLight }
-						]}
+						style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].strokeLight }]}
 					>
 						<CustomIcon name={icon} size={20} color={themes[theme].badgeBackgroundLevel2} style={styles.toggleDropdownIcon} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].badgeBackgroundLevel2 }]}>{I18n.t(text)}</Text>
-						<CustomIcon
-							name='chevron-down'
-							size={20}
-							color={themes[theme].fontHint}
-							style={styles.toggleDropdownArrow}
-						/>
+						<CustomIcon name='chevron-down' size={20} color={themes[theme].fontHint} style={styles.toggleDropdownArrow} />
 					</View>
 				</Touch>
 			</>

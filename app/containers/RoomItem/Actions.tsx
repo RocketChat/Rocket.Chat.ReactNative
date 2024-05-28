@@ -145,7 +145,10 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					animatedHideStyles
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]} onPress={onHidePress}>
+				<RectButton
+					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
+					onPress={onHidePress}
+				>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name='unread-on-top-disabled'

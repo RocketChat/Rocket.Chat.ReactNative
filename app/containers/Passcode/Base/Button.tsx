@@ -27,7 +27,11 @@ const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeBu
 			enabled={!disabled}
 			onPress={press}
 		>
-			{icon ? <CustomIcon name={icon} size={36} /> : <Text style={[styles.buttonText, { color: colors.fontDefault }]}>{text}</Text>}
+			{icon ? (
+				<CustomIcon name={icon} size={36} />
+			) : (
+				<Text style={[styles.buttonText, { color: colors.fontDefault }]}>{text}</Text>
+			)}
 		</Touch>
 	);
 });

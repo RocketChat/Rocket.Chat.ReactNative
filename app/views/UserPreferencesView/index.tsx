@@ -33,6 +33,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
+		// @ts-ignore
 		navigation.navigate(screen);
 	};
 

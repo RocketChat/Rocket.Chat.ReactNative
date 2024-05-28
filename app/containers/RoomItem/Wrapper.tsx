@@ -12,8 +12,7 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 	return (
 		<View
 			style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
-			accessibilityLabel={accessibilityLabel}
-		>
+			accessibilityLabel={accessibilityLabel}>
 			<IconOrAvatar displayMode={displayMode} {...props} />
 			<View
 				style={[
@@ -21,8 +20,7 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 					{
 						borderColor: colors.strokeLight
 					}
-				]}
-			>
+				]}>
 				{children}
 			</View>
 		</View>

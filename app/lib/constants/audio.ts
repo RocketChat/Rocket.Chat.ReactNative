@@ -6,22 +6,22 @@ export const RECORDING_SETTINGS: RecordingOptions = {
 	android: {
 		// Settings related to audio encoding.
 		extension: RECORDING_EXTENSION,
-		outputFormat: Audio.RECORDING_OPTION_ANDROID_OUTPUT_FORMAT_AAC_ADTS,
-		audioEncoder: Audio.RECORDING_OPTION_ANDROID_AUDIO_ENCODER_AAC,
+		outputFormat: Audio.AndroidOutputFormat.AAC_ADTS,
+		audioEncoder: Audio.AndroidAudioEncoder.AAC,
 		// Settings related to audio quality.
-		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.sampleRate,
-		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.android.bitRate
+		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.sampleRate,
+		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.android.numberOfChannels,
+		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.android.bitRate
 	},
 	ios: {
 		// Settings related to audio encoding.
 		extension: RECORDING_EXTENSION,
-		audioQuality: Audio.RECORDING_OPTION_IOS_AUDIO_QUALITY_MEDIUM,
-		outputFormat: Audio.RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
+		audioQuality: Audio.IOSAudioQuality.MEDIUM,
+		outputFormat: Audio.IOSOutputFormat.MPEG4AAC,
 		// Settings related to audio quality.
-		sampleRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.sampleRate,
-		numberOfChannels: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.numberOfChannels,
-		bitRate: Audio.RECORDING_OPTIONS_PRESET_LOW_QUALITY.ios.bitRate
+		sampleRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.sampleRate,
+		numberOfChannels: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.numberOfChannels,
+		bitRate: Audio.RecordingOptionsPresets.LOW_QUALITY.ios.bitRate
 	},
 	web: {},
 	keepAudioActiveHint: true

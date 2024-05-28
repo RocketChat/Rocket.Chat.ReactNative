@@ -120,11 +120,7 @@ class AudioManagerClass {
 		const msg = await getMessageById(msgId);
 		if (msg) {
 			const db = database.active;
-			const whereClause: Q.Clause[] = [
-				Q.experimentalSortBy('ts', Q.asc),
-				Q.where('ts', Q.gt(moment(msg.ts).valueOf())),
-				Q.experimentalTake(1)
-			];
+			const whereClause: Q.Clause[] = [Q.sortBy('ts', Q.asc), Q.where('ts', Q.gt(moment(msg.ts).valueOf())), Q.take(1)];
 
 			if (msg.tmid) {
 				whereClause.push(Q.where('tmid', msg.tmid || msg.id));
