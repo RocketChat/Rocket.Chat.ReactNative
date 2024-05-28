@@ -123,13 +123,7 @@ const CollapsibleQuote = React.memo(
 			setCollapsed(!collapsed);
 		};
 
-		let {
-			strokeExtraLight,
-			surfaceTint: backgroundColor,
-			strokeLight,
-			strokeMedium,
-			fontSecondaryInfo
-		} = themes[theme];
+		let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium, fontSecondaryInfo } = themes[theme];
 
 		try {
 			if (attachment.color) {

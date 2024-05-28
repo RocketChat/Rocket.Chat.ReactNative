@@ -58,19 +58,19 @@ async function searchMessage(msg: string, textMatcher: TTextMatcher) {
 	await sleep(10000);
 }
 
-export function waitForVisible(id: string) {
+function waitForVisible(id: string) {
 	return waitFor(element(by.id(id)))
 		.toBeVisible()
 		.withTimeout(10000);
 }
 
-export function waitForVisibleTextMatcher(msg: string, textMatcher: TTextMatcher) {
+function waitForVisibleTextMatcher(msg: string, textMatcher: TTextMatcher) {
 	return waitFor(element(by[textMatcher](msg)).atIndex(0))
 		.toExist()
 		.withTimeout(10000);
 }
 
-export function waitForNotVisible(id: string) {
+function waitForNotVisible(id: string) {
 	return waitFor(element(by.id(id)))
 		.not.toBeVisible()
 		.withTimeout(10000);

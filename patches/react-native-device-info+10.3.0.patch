@@ -32,3 +32,24 @@ index de22598..eafedfe 100644
    }
  
    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+diff --git a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
+index b01e9d2..9a6ac38 100644
+--- a/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
++++ b/node_modules/react-native-device-info/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java
+@@ -31,6 +31,7 @@ import android.hardware.Camera;
+ import android.hardware.camera2.CameraManager;
+ 
+ import androidx.annotation.Nullable;
++import androidx.core.content.ContextCompat;
+ 
+ import com.facebook.react.bridge.Arguments;
+ import com.facebook.react.bridge.ReactApplicationContext;
+@@ -130,7 +131,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
+       }
+     };
+ 
+-    getReactApplicationContext().registerReceiver(receiver, filter);
++    ContextCompat.registerReceiver(getReactApplicationContext(), receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
+     initializeHeadphoneConnectionReceiver();
+   }
+ 

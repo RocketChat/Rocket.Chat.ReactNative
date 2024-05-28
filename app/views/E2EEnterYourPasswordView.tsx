@@ -46,8 +46,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 		<KeyboardView
 			style={{ backgroundColor: colors.surfaceRoom }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>

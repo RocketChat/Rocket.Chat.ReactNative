@@ -45,7 +45,6 @@ const Toast = (): React.ReactElement => {
 	return (
 		<EasyToast
 			ref={getToastRef}
-			// @ts-ignore
 			position='center'
 			style={[styles.toast, { backgroundColor: colors.surfaceDark }]}
 			textStyle={[styles.text, { color: colors.fontWhite }]}

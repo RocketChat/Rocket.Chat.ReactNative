@@ -53,8 +53,7 @@ const Item = ({ title, iconName, onPress, testID, badge, color, disabled, ...pro
 				{
 					opacity: disabled ? 0.5 : 1
 				}
-			]}
-		>
+			]}>
 			<>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color} {...props} />

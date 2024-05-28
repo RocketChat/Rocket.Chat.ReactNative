@@ -154,8 +154,7 @@ const UserForm = () => {
 					<Text
 						style={[styles.bottomContainerTextBold, { color: colors.fontHint }]}
 						onPress={register}
-						testID='login-view-register'
-					>
+						testID='login-view-register'>
 						{I18n.t('Create_account')}
 					</Text>
 				</View>
