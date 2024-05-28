@@ -36,6 +36,8 @@ export class Upload {
 
 	public then(callback: (param: { respInfo: XMLHttpRequest }) => void): void {
 		this.xhr.onload = () => callback({ respInfo: this.xhr });
+		console.log('🚀 ~ Upload ~ then ~ this.xhr:', this.xhr);
+		console.log('🚀 ~ Upload ~ then ~ this.formData:', this.formData);
 		this.xhr.send(this.formData);
 	}
 
