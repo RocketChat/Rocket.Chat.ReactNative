@@ -21,8 +21,7 @@ const Code = ({ value }: ICodeProps): React.ReactElement => {
 					backgroundColor: colors.surfaceNeutral,
 					borderColor: colors.strokeLight
 				}
-			]}
-		>
+			]}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'CODE_LINE':

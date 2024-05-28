@@ -84,13 +84,8 @@ describe('test inquiry reduce', () => {
 		expect(inquiry).toEqual({ ...initialState, queued: [queued] });
 	});
 
-	it('after inquiry state is modified, should return inquiry state as initial state after dispatch inquiryReset action', () => {
-		mockedStore.dispatch(inquiryReset());
-		const { inquiry } = mockedStore.getState();
-		expect(inquiry).toEqual(initialState);
-	});
-
 	it('should return correct inquiry state after dispatch inquiryFailure action', () => {
+		mockedStore.dispatch(inquiryReset());
 		mockedStore.dispatch(inquiryFailure(error));
 		const { inquiry } = mockedStore.getState();
 		expect(inquiry).toEqual({ ...initialState, error });

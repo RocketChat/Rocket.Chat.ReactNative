@@ -1,7 +1,5 @@
 package chat.rocket.reactnative;
 
-import android.app.Application;
-
 import com.facebook.react.ReactPackage;
 
 import java.util.Arrays;
@@ -12,7 +10,7 @@ import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 import io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsPackage;
 
 public class AdditionalModules {
-    public List<ReactPackage> getAdditionalModules(Application application) {
+    public List<ReactPackage> getAdditionalModules() {
         return Arrays.<ReactPackage>asList(
                 new ReactNativeFirebaseAnalyticsPackage(),
                 new ReactNativeFirebaseAppPackage(),

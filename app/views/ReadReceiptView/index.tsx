@@ -105,10 +105,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 			return null;
 		}
 		return (
-			<View
-				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceTint }]}
-				testID='read-receipt-view'
-			>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceTint }]} testID='read-receipt-view'>
 				<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{I18n.t('No_Read_Receipts')}</Text>
 			</View>
 		);
@@ -161,7 +158,9 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 							borderColor: themes[theme].strokeLight
 						}
 					]}
-					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].fontSecondaryInfo} />}
+					refreshControl={
+						<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].fontSecondaryInfo} />
+					}
 					keyExtractor={item => item._id}
 				/>
 			</SafeAreaView>

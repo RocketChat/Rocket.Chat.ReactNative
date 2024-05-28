@@ -28,8 +28,7 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 			underlayColor={colors.buttonBackgroundPrimaryPress}
 			style={{ backgroundColor: colors.surfaceLight }}
 			rippleColor={colors.buttonBackgroundPrimaryPress}
-			testID={`autocomplete-item-${getTestIDSuffix(item)}`}
-		>
+			testID={`autocomplete-item-${getTestIDSuffix(item)}`}>
 			<View style={styles.item}>
 				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}

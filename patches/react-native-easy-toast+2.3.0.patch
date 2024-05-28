@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-easy-toast/index.d.ts b/node_modules/react-native-easy-toast/index.d.ts
+index 930ba7b..192c6cc 100644
+--- a/node_modules/react-native-easy-toast/index.d.ts
++++ b/node_modules/react-native-easy-toast/index.d.ts
+@@ -10,6 +10,7 @@ import { Component, ReactNode } from "react";
+ 
+ interface ToastComponentProps {
+   position?: "bottom" | "center" | "top";
++  style?: {};
+   textStyle?: {};
+   positionValue?: number;
+   fadeInDuration?: number;
