@@ -276,7 +276,7 @@ export type InsideStackParamList = {
 		serverInfo: IServer;
 		text: string;
 		room: TSubscriptionModel;
-		thread: TThreadModel;
+		thread: TThreadModel | string;
 		action: TMessageAction;
 		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
 		startShareView: () => { text: string; selectedMessages: string[] };

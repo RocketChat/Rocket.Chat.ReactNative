@@ -14,7 +14,7 @@ import {
 	isDownloadActive,
 	resumeMediaFile
 } from '../../lib/methods/handleMediaDownload';
-import { isIOS } from '../../lib/methods/helpers';
+import { fileDownload, isIOS } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../theme';
@@ -24,7 +24,6 @@ import Markdown from '../markdown';
 import BlurComponent from './Components/OverlayComponent';
 import MessageContext from './Context';
 import Touchable from './Touchable';
-import { fileDownload } from './helpers/fileDownload';
 import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
