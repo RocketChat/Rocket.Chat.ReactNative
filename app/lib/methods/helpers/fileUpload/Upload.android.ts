@@ -11,7 +11,7 @@ export class Upload {
 		name: string | undefined;
 	} | null;
 	private headers: { [key: string]: string };
-	private formData: FormData;
+	private formData: any;
 	private uploadTask: FileSystem.UploadTask | null;
 	private isCancelled: boolean;
 	private progressCallback?: (loaded: number, total: number) => void;
@@ -94,28 +94,3 @@ export class Upload {
 		}
 	}
 }
-
-class FileUpload {
-	private upload: Upload;
-
-	constructor(
-		url: string,
-		headers: { [key: string]: string },
-		data: IFormData[],
-		progressCallback?: (loaded: number, total: number) => void
-	) {
-		this.upload = new Upload();
-		this.upload.setupRequest(url, headers, progressCallback);
-		data.forEach(item => this.upload.appendFile(item));
-	}
-
-	public send(): Promise<TRoomsMediaResponse> {
-		return this.upload.send();
-	}
-
-	public cancel(): void {
-		this.upload.cancel();
-	}
-}
-
-export default FileUpload;
