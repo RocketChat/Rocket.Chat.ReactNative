@@ -6,7 +6,7 @@ import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IAttachment, IMessage, IUpload, IUploadFile, IUser } from '../../definitions';
+import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IUser } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -274,7 +274,7 @@ export default class EncryptionRoom {
 		return message;
 	};
 
-	encryptFile = async (rid: string, file: IUploadFile): TEncryptFileResult => {
+	encryptFile = async (rid: string, file: TSendFileMessageFileInfo): TEncryptFileResult => {
 		const { path } = file;
 		const vector = await SimpleCrypto.utils.randomBytes(16);
 		const key = await generateAESCTRKey();

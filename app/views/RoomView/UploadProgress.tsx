@@ -10,7 +10,7 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IUser, TUploadModel } from '../../definitions';
+import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
 import { sendFileMessage } from '../../lib/methods';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
@@ -161,7 +161,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item.asPlain(), item.tmid, server, user, true);
+			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
 		} catch (e) {
 			log(e);
 		}

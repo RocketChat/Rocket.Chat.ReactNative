@@ -162,6 +162,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 		setLoading(true);
 		try {
 			const videoUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: video,
 				type: 'video',
 				mimeType: file.video_type,
@@ -233,8 +234,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Touchable
 				onPress={onPress}
 				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			>
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
 				<Thumbnail loading={loading} cached={cached} encrypted={file.e2e === 'pending'} />
 			</Touchable>
 		</>

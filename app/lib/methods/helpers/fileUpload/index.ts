@@ -1,5 +1,5 @@
 import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-import { IFileUpload } from './definitions';
+import { IFormData } from './definitions';
 
 export class Upload {
 	private xhr: XMLHttpRequest;
@@ -27,7 +27,7 @@ export class Upload {
 		}
 	}
 
-	public appendFile(item: IFileUpload): void {
+	public appendFile(item: IFormData): void {
 		if (item.uri) {
 			this.formData.append(item.name, {
 				uri: item.uri,
@@ -75,7 +75,7 @@ class FileUpload {
 	constructor(
 		url: string,
 		headers: { [key: string]: string },
-		data: IFileUpload[],
+		data: IFormData[],
 		progressCallback?: (loaded: number, total: number) => void
 	) {
 		this.upload = new Upload();

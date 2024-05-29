@@ -1,6 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import isEmpty from 'lodash/isEmpty';
-import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
 
 import { getUploadByPath } from '../../database/services/Upload';
@@ -8,8 +7,9 @@ import { IUpload, TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';
 import log from '../helpers/log';
+import { IFileUpload } from '../helpers/fileUpload/definitions';
 
-export const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
+export const uploadQueue: { [index: string]: IFileUpload } = {};
 
 export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 

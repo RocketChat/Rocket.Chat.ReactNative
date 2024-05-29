@@ -21,13 +21,4 @@ export type TUploadModel = IUpload &
 		asPlain: () => IUpload;
 	};
 
-export interface IUploadFile {
-	rid: string;
-	path: string;
-	name?: string;
-	tmid?: string;
-	description?: string;
-	size: number;
-	type?: string;
-	msg?: string;
-}
+export type TSendFileMessageFileInfo = Pick<IUpload, 'rid' | 'path' | 'name' | 'tmid' | 'description' | 'size' | 'type' | 'msg'>;

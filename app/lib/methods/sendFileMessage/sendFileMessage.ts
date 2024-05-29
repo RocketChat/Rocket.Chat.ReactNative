@@ -2,17 +2,17 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { Alert } from 'react-native';
 
-import { IUpload, IUser, TUploadModel } from '../../../definitions';
+import { IUser, TSendFileMessageFileInfo, TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
 import log from '../helpers/log';
 import { getUploadPath, persistUploadError, uploadQueue } from './utils';
-import { IFileUpload } from '../helpers/fileUpload/definitions';
+import { IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
 	rid: string,
-	fileInfo: IUpload,
+	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
@@ -52,7 +52,7 @@ export async function sendFileMessage(
 			}
 		}
 
-		const formData: IFileUpload[] = [];
+		const formData: IFormData[] = [];
 		formData.push({
 			name: 'file',
 			type: fileInfo.type,

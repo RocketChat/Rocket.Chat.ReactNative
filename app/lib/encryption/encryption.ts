@@ -16,7 +16,7 @@ import { EncryptionRoom } from './index';
 import {
 	IMessage,
 	ISubscription,
-	IUploadFile,
+	TSendFileMessageFileInfo,
 	TAttachmentEncryption,
 	TMessageModel,
 	TSubscriptionModel,
@@ -513,7 +513,7 @@ class Encryption {
 		return roomE2E.decrypt(message);
 	};
 
-	encryptFile = async (rid: string, file: IUploadFile) => {
+	encryptFile = async (rid: string, file: TSendFileMessageFileInfo) => {
 		const subscription = await getSubscriptionByRoomId(rid);
 		if (!subscription) {
 			throw new Error('Subscription not found');

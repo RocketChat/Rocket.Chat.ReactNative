@@ -1,15 +1,15 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
-import { IUploadFile, IUser, TUploadModel } from '../../../definitions';
+import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
 import { createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
-import { IFileUpload } from '../helpers/fileUpload/definitions';
+import { IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessageV2(
 	rid: string,
-	fileInfo: IUploadFile,
+	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
@@ -34,7 +34,7 @@ export async function sendFileMessageV2(
 		}
 		const { file, getContent } = await Encryption.encryptFile(rid, fileInfo);
 
-		const formData: IFileUpload[] = [];
+		const formData: IFormData[] = [];
 		formData.push({
 			name: 'file',
 			type: file.type,
