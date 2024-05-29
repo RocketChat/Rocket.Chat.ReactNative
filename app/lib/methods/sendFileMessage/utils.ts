@@ -11,7 +11,7 @@ import log from '../helpers/log';
 
 export const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
 
-const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
+export const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
 export function isUploadActive(path: string, rid: string): boolean {
 	return !!uploadQueue[getUploadPath(path, rid)];
