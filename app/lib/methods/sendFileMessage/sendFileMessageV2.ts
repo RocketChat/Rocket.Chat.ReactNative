@@ -1,12 +1,11 @@
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-import * as FileSystem from 'expo-file-system';
 
-import { IUploadFile, IUser } from '../../../definitions';
+import { IUploadFile, IUser, TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
-import { createUploadRecord, normalizeFilePath, persistUploadError, uploadQueue } from './utils';
-import FileUpload, { IFileUpload } from '../helpers/fileUpload';
-import { TRoomsMediaResponse } from '../../../definitions/rest/v1/rooms';
+import { createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import FileUpload from '../helpers/fileUpload';
+import { IFileUpload } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessageV2(
 	rid: string,
@@ -16,6 +15,8 @@ export async function sendFileMessageV2(
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
+	let uploadPath: string | null = '';
+	let uploadRecord: TUploadModel | null;
 	try {
 		console.log('sendFileMessage', rid, fileInfo);
 		const { id, token } = user;
@@ -27,7 +28,7 @@ export async function sendFileMessageV2(
 		};
 		const db = database.active;
 
-		const [uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
+		[uploadPath, uploadRecord] = await createUploadRecord({ rid, fileInfo, tmid, isForceTryAgain });
 		if (!uploadPath || !uploadRecord) {
 			throw new Error("Couldn't create upload record");
 		}
@@ -41,12 +42,10 @@ export async function sendFileMessageV2(
 			uri: file.path
 		});
 
-		uploadQueue[uploadPath] = FileUpload.uploadFile(`${server}/api/v1/rooms.media/${rid}`, headers, formData);
-
-		uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
+		uploadQueue[uploadPath] = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
 			try {
 				await db.write(async () => {
-					await uploadRecord.update(u => {
+					await uploadRecord?.update(u => {
 						u.progress = Math.floor((loaded / total) * 100);
 					});
 				});
@@ -54,41 +53,35 @@ export async function sendFileMessageV2(
 				console.error(e);
 			}
 		});
+		const response = await uploadQueue[uploadPath].send();
 
-		uploadQueue[uploadPath].then(async (response: TRoomsMediaResponse) => {
-			console.log('🚀 ~ uploadQueue[uploadPath].then ~ response:', response);
-			let content;
-			if (getContent) {
-				content = await getContent(response.file._id, response.file.url);
-			}
-			fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
-				method: 'POST',
-				headers: {
-					...headers,
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					msg: file.msg || undefined,
-					tmid: tmid || undefined,
-					description: file.description || undefined,
-					t: content ? 'e2e' : undefined,
-					content
-				})
-			}).then(async () => {
-				await db.write(async () => {
-					await uploadRecord.destroyPermanently();
-				});
-			});
+		let content;
+		if (getContent) {
+			content = await getContent(response.file._id, response.file.url);
+		}
+		await fetch(`${server}/api/v1/rooms.mediaConfirm/${rid}/${response.file._id}`, {
+			method: 'POST',
+			headers: {
+				...headers,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				msg: file.msg || undefined,
+				tmid: tmid || undefined,
+				description: file.description || undefined,
+				t: content ? 'e2e' : undefined,
+				content
+			})
 		});
-
-		uploadQueue[uploadPath].catch(async e => {
-			console.log('catch');
+		await db.write(async () => {
+			await uploadRecord?.destroyPermanently();
+		});
+	} catch (e: any) {
+		if (uploadPath && !uploadQueue[uploadPath]) {
+			console.log('Upload cancelled');
+		} else {
 			await persistUploadError(fileInfo.path, rid);
 			throw e;
-		});
-	} catch (e) {
-		console.error(e);
-		await persistUploadError(fileInfo.path, rid);
-		throw e;
+		}
 	}
 }

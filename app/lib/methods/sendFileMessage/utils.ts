@@ -40,7 +40,6 @@ export async function cancelUpload(item: TUploadModel, rid: string): Promise<voi
 }
 
 export const persistUploadError = async (path: string, rid: string) => {
-	console.log('🚀 ~ persistUploadError ~ path:', path);
 	try {
 		const db = database.active;
 		const uploadRecord = await getUploadByPath(getUploadPath(path, rid));
@@ -71,7 +70,6 @@ export const createUploadRecord = async ({
 	const db = database.active;
 	const uploadsCollection = db.get('uploads');
 	const uploadPath = getUploadPath(fileInfo.path, rid);
-	console.log('🚀 ~ uploadPath:', uploadPath);
 	let uploadRecord: TUploadModel | null = null;
 	try {
 		uploadRecord = await uploadsCollection.find(uploadPath);

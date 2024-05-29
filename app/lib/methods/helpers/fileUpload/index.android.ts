@@ -1,90 +1,120 @@
 import * as FileSystem from 'expo-file-system';
 
 import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-
-export interface IFileUpload {
-	name: string;
-	uri?: string;
-	type?: string;
-	filename?: string;
-	data?: any;
-}
+import { IFileUpload } from './definitions';
 
 export class Upload {
 	private uploadUrl: string;
 	private headers: { [key: string]: string };
 	private files: IFileUpload[];
+	private uploadTask: FileSystem.UploadTask | null;
+	private isCancelled: boolean;
+	private progressCallback?: (loaded: number, total: number) => void;
 
 	constructor() {
 		this.uploadUrl = '';
 		this.headers = {};
 		this.files = [];
+		this.uploadTask = null;
+		this.isCancelled = false;
 	}
 
-	public setupRequest(url: string, headers: { [key: string]: string }): void {
+	public setupRequest(
+		url: string,
+		headers: { [key: string]: string },
+		progressCallback?: (loaded: number, total: number) => void
+	): void {
 		this.uploadUrl = url;
 		this.headers = headers;
+		this.progressCallback = progressCallback;
 	}
 
 	public appendFile(item: IFileUpload): void {
 		this.files.push(item);
 	}
 
-	public async then(callback: (response: TRoomsMediaResponse) => void): Promise<void> {
-		try {
-			const formData = new FormData();
-			for (const item of this.files) {
-				if (item.uri) {
-					formData.append(item.name, {
-						uri: item.uri,
-						type: item.type,
-						name: item.filename
-					} as any);
+	public send(): Promise<TRoomsMediaResponse> {
+		return new Promise(async (resolve, reject) => {
+			try {
+				const formData = new FormData();
+				for (const item of this.files) {
+					if (item.uri) {
+						formData.append(item.name, {
+							uri: item.uri,
+							type: item.type,
+							name: item.filename
+						} as any);
+					} else {
+						formData.append(item.name, item.data);
+					}
+				}
+
+				const uploadTask = FileSystem.createUploadTask(
+					this.uploadUrl,
+					this.files[0].uri!,
+					{
+						headers: this.headers,
+						httpMethod: 'POST',
+						uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+						fieldName: this.files[0].name,
+						mimeType: this.files[0].type,
+						parameters: this.headers
+					},
+					data => {
+						if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
+							this.progressCallback(data.totalBytesSent, data.totalBytesExpectedToSend);
+						}
+					}
+				);
+
+				this.uploadTask = uploadTask;
+
+				const response = await uploadTask.uploadAsync();
+
+				if (response && response.status >= 200 && response.status < 400) {
+					resolve(JSON.parse(response.body));
 				} else {
-					formData.append(item.name, item.data);
+					reject(new Error(`Error: ${response?.status}`));
+				}
+			} catch (error) {
+				if (this.isCancelled) {
+					reject(new Error('Upload cancelled'));
+				} else {
+					reject(error);
 				}
 			}
+		});
+	}
 
-			const response = await FileSystem.uploadAsync(this.uploadUrl, this.files[0].uri!, {
-				headers: this.headers,
-				httpMethod: 'POST',
-				uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-				fieldName: this.files[0].name,
-				mimeType: this.files[0].type,
-				parameters: this.headers,
-				sessionType: FileSystem.FileSystemSessionType.BACKGROUND
-			});
-
-			if (response.status >= 200 && response.status < 400) {
-				callback(JSON.parse(response.body));
-			}
-		} catch (error) {
-			console.error('Upload failed:', error);
+	public cancel(): void {
+		this.isCancelled = true;
+		if (this.uploadTask) {
+			this.uploadTask.cancelAsync();
 		}
-	}
-
-	public catch(callback: (error: any) => void): void {
-		// Error handling can be integrated here based on the needs
-	}
-
-	public uploadProgress(callback: (loaded: number, total: number) => any): void {
-		// Expo FileSystem does not natively support upload progress, so this needs custom implementation if required.
-	}
-
-	public cancel(): Promise<void> {
-		// Expo FileSystem does not natively support upload cancellation, so this needs custom implementation if required.
-		return Promise.resolve();
 	}
 }
 
 class FileUpload {
-	public uploadFile(url: string, headers: { [key: string]: string }, data: IFileUpload[]) {
-		const upload = new Upload();
-		upload.setupRequest(url, headers);
-		data.forEach(item => upload.appendFile(item));
-		return upload;
+	private upload: Upload;
+
+	constructor(
+		url: string,
+		headers: { [key: string]: string },
+		data: IFileUpload[],
+		progressCallback?: (loaded: number, total: number) => void
+	) {
+		this.upload = new Upload();
+		this.upload.setupRequest(url, headers, progressCallback);
+		data.forEach(item => this.upload.appendFile(item));
+	}
+
+	public send(): Promise<TRoomsMediaResponse> {
+		return this.upload.send();
+	}
+
+	public cancel(): void {
+		this.upload.cancel();
 	}
 }
 
-const fileUpload = new FileUpload();
-export default fileUpload;
+export default FileUpload;

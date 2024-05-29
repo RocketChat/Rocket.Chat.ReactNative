@@ -1,27 +1,30 @@
 import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-
-export interface IFileUpload {
-	name: string;
-	uri?: string;
-	type?: string;
-	filename?: string;
-	data?: any;
-}
+import { IFileUpload } from './definitions';
 
 export class Upload {
-	public xhr: XMLHttpRequest;
-	public formData: FormData;
+	private xhr: XMLHttpRequest;
+	private formData: FormData;
+	private isCancelled: boolean;
 
 	constructor() {
 		this.xhr = new XMLHttpRequest();
 		this.formData = new FormData();
+		this.isCancelled = false;
 	}
 
-	public setupRequest(url: string, headers: { [key: string]: string }): void {
+	public setupRequest(
+		url: string,
+		headers: { [key: string]: string },
+		progressCallback?: (loaded: number, total: number) => void
+	): void {
 		this.xhr.open('POST', url);
 		Object.keys(headers).forEach(key => {
 			this.xhr.setRequestHeader(key, headers[key]);
 		});
+
+		if (progressCallback) {
+			this.xhr.upload.onprogress = ({ loaded, total }) => progressCallback(loaded, total);
+		}
 	}
 
 	public appendFile(item: IFileUpload): void {
@@ -36,37 +39,57 @@ export class Upload {
 		}
 	}
 
-	public then(callback: (response: TRoomsMediaResponse) => void): void {
-		this.xhr.onload = () => {
-			if (this.xhr.status >= 200 && this.xhr.status < 400) {
-				callback(JSON.parse(this.xhr.responseText));
-			}
-		};
-		this.xhr.send(this.formData);
+	public send(): Promise<TRoomsMediaResponse> {
+		return new Promise((resolve, reject) => {
+			this.xhr.onload = () => {
+				if (this.xhr.status >= 200 && this.xhr.status < 400) {
+					resolve(JSON.parse(this.xhr.responseText));
+				} else {
+					reject(new Error(`Error: ${this.xhr.statusText}`));
+				}
+			};
+
+			this.xhr.onerror = () => {
+				reject(new Error('Network Error'));
+			};
+
+			this.xhr.onabort = () => {
+				if (this.isCancelled) {
+					reject(new Error('Upload Cancelled'));
+				}
+			};
+
+			this.xhr.send(this.formData);
+		});
 	}
 
-	public catch(callback: ((this: XMLHttpRequest, ev: ProgressEvent<EventTarget>) => any) | null): void {
-		this.xhr.onerror = callback;
-	}
-
-	public uploadProgress(callback: (param: number, arg1: number) => any): void {
-		this.xhr.upload.onprogress = ({ total, loaded }) => callback(loaded, total);
-	}
-
-	public cancel(): Promise<void> {
+	public cancel(): void {
+		this.isCancelled = true;
 		this.xhr.abort();
-		return Promise.resolve();
 	}
 }
 
 class FileUpload {
-	public uploadFile(url: string, headers: { [x: string]: string }, data: IFileUpload[]) {
-		const upload = new Upload();
-		upload.setupRequest(url, headers);
-		data.forEach(item => upload.appendFile(item));
-		return upload;
+	private upload: Upload;
+
+	constructor(
+		url: string,
+		headers: { [key: string]: string },
+		data: IFileUpload[],
+		progressCallback?: (loaded: number, total: number) => void
+	) {
+		this.upload = new Upload();
+		this.upload.setupRequest(url, headers, progressCallback);
+		data.forEach(item => this.upload.appendFile(item));
+	}
+
+	public send(): Promise<TRoomsMediaResponse> {
+		return this.upload.send();
+	}
+
+	public cancel(): void {
+		this.upload.cancel();
 	}
 }
 
-const fileUpload = new FileUpload();
-export default fileUpload;
+export default FileUpload;
