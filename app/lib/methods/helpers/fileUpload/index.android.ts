@@ -61,7 +61,7 @@ export class Upload {
 						headers: this.headers,
 						httpMethod: 'POST',
 						uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-						fieldName: this.file.name,
+						fieldName: 'file',
 						mimeType: this.file.type
 					},
 					data => {
