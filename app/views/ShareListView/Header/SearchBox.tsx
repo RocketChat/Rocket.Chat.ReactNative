@@ -55,7 +55,7 @@ const CancelButton = ({ onCancelPress }: { onCancelPress?: () => void }) => {
 	const { theme } = useTheme();
 	return (
 		<Touchable onPress={onCancelPress} style={styles.cancel}>
-			<Text style={[styles.cancelText, { color: themes[theme].headerTintColor }]}>{I18n.t('Cancel')}</Text>
+			<Text style={[styles.cancelText, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
 		</Touchable>
 	);
 };
@@ -63,14 +63,9 @@ const CancelButton = ({ onCancelPress }: { onCancelPress?: () => void }) => {
 const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<View
-			style={[
-				styles.container,
-				{ backgroundColor: isIOS ? themes[theme].headerBackground : themes[theme].headerSecondaryBackground }
-			]}
-		>
-			<View style={[styles.searchBox, { backgroundColor: themes[theme].searchboxBackground }]}>
-				<CustomIcon name='search' size={14} color={themes[theme].auxiliaryText} />
+		<View style={[styles.container, { backgroundColor: isIOS ? themes[theme].surfaceNeutral : themes[theme].surfaceLight }]}>
+			<View style={[styles.searchBox, { backgroundColor: themes[theme].strokeExtraLight }]}>
+				<CustomIcon name='search' size={14} color={themes[theme].fontSecondaryInfo} />
 				<TextInput
 					ref={inputRef}
 					autoCapitalize='none'

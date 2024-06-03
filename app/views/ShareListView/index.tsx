@@ -108,13 +108,19 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					.filter(item => item.type === 'media')
 					.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true }))
 			);
-			const attachments = info.map(file => ({
-				filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-				description: '',
-				size: file.size,
-				mime: mime.lookup(file.uri),
-				path: file.uri
-			})) as IFileToShare[];
+			const attachments = info.map(file => {
+				if (!file.exists) {
+					return null;
+				}
+
+				return {
+					filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+					description: '',
+					size: file.size,
+					mime: mime.lookup(file.uri),
+					path: file.uri
+				};
+			}) as IFileToShare[];
 			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
 			this.setState({
 				text,
@@ -221,9 +227,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const defaultWhereClause = [
 			Q.where('archived', false),
 			Q.where('open', true),
-			Q.experimentalSkip(0),
-			Q.experimentalTake(20),
-			Q.experimentalSortBy('room_updated_at', Q.desc)
+			Q.skip(0),
+			Q.take(20),
+			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
 			const likeString = sanitizeLikeString(text);
@@ -342,8 +348,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 		return (
 			<>
-				<View style={[styles.headerContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-					<Text style={[styles.headerText, { color: themes[theme].titleText }]}>{I18n.t(header)}</Text>
+				<View style={[styles.headerContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+					<Text style={[styles.headerText, { color: themes[theme].fontTitlesLabels }]}>{I18n.t(header)}</Text>
 				</View>
 				<List.Separator />
 			</>
@@ -395,8 +401,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	renderEmptyComponent = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].auxiliaryBackground }]}>
-				<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+				<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
 	};
@@ -432,11 +438,13 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			return (
 				<SafeAreaView>
 					<ScrollView
-						style={{ backgroundColor: themes[theme].backgroundColor }}
-						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}
+						style={{ backgroundColor: themes[theme].surfaceRoom }}
+						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}
 					>
-						<Text style={[styles.permissionTitle, { color: themes[theme].titleText }]}>{I18n.t('Read_External_Permission')}</Text>
-						<Text style={[styles.permissionMessage, { color: themes[theme].bodyText }]}>
+						<Text style={[styles.permissionTitle, { color: themes[theme].fontTitlesLabels }]}>
+							{I18n.t('Read_External_Permission')}
+						</Text>
+						<Text style={[styles.permissionMessage, { color: themes[theme].fontDefault }]}>
 							{I18n.t('Read_External_Permission_Message')}
 						</Text>
 					</ScrollView>
@@ -449,8 +457,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				<FlatList
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
-					style={[styles.flatlist, { backgroundColor: themes[theme].auxiliaryBackground }]}
-					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					renderItem={this.renderItem}
 					getItemLayout={getItemLayout}
 					ItemSeparatorComponent={List.Separator}

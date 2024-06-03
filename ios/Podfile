@@ -1,19 +1,31 @@
-require_relative '../node_modules/react-native/scripts/react_native_pods'
-require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
+require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
+
+platform :ios, '13.4'
+install! 'cocoapods', :deterministic_uuids => false
+
+prepare_react_native_project!
+
+use_modular_headers!
 
 plugin 'cocoapods-patch'
 
-platform :ios, '12.0'
-install! 'cocoapods', :deterministic_uuids => false
-
 def all_pods
-  pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
-  pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
+  pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
-  config = use_native_modules!
 
   use_expo_modules!
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => true,
+    # An absolute path to your application root.
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    # Note that if you have use_frameworks! enabled, Flipper will not work if enabled
+    # :flipper_configuration => flipper_config
+  )
+
   post_integrate do |installer|
     begin
       expo_patch_react_imports!(installer)
@@ -21,18 +33,6 @@ def all_pods
       Pod::UI.warn e
     end
   end
-
-  flags = get_default_flags()
-  
-  use_react_native!(
-    :path => config[:reactNativePath],
-    :hermes_enabled => true, # flags[:hermes_enabled],
-    :fabric_enabled => flags[:fabric_enabled],
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
-  )
-
-  # Enable and run pods again, if you want to use Flipper
-  # use_flipper!()
 end
 
 abstract_target 'defaults' do
@@ -45,8 +45,28 @@ abstract_target 'defaults' do
   target 'NotificationService'
 end
 
+$static_framework = [ 
+  'WatermelonDB',
+  'simdjson',
+]
+pre_install do |installer|
+  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+    installer.pod_targets.each do |pod|
+      if $static_framework.include?(pod.name)
+        def pod.build_type;
+        Pod::BuildType.static_library # >= 1.9
+      end
+    end
+  end
+end
+
 post_install do |installer|
-  react_native_post_install(installer)
+  # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+  react_native_post_install(
+    installer,
+    # config[:reactNativePath],
+    # :mac_catalyst_enabled => false
+  )
 
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
@@ -56,7 +76,7 @@ post_install do |installer|
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
       case target.name
       when 'RCT-Folly'
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
       else
         config.build_settings.delete('IPHONEOS_DEPLOYMENT_TARGET')
       end

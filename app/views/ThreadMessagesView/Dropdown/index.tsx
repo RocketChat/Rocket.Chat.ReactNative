@@ -1,47 +1,40 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, Easing, TouchableWithoutFeedback } from 'react-native';
-import { EdgeInsets, withSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from '../styles';
-import { themes } from '../../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../../theme';
 import { headerHeight } from '../../../lib/methods/helpers/navigation';
 import * as List from '../../../containers/List';
 import { Filter } from '../filters';
 import DropdownItemFilter from './DropdownItemFilter';
 import DropdownItemHeader from './DropdownItemHeader';
+import { useTheme } from '../../../theme';
 
 const ANIMATION_DURATION = 200;
 
 interface IDropdownProps {
 	isMasterDetail?: boolean;
-	theme: TSupportedThemes;
-	insets?: EdgeInsets;
 	currentFilter: Filter;
 	onClose: () => void;
 	onFilterSelected: (value: Filter) => void;
 }
 
-class Dropdown extends React.Component<IDropdownProps> {
-	private animatedValue: Animated.Value;
+const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: IDropdownProps) => {
+	const animatedValue = useRef(new Animated.Value(0)).current;
+	const { colors } = useTheme();
+	const insets = useSafeAreaInsets();
 
-	constructor(props: IDropdownProps) {
-		super(props);
-		this.animatedValue = new Animated.Value(0);
-	}
-
-	componentDidMount() {
-		Animated.timing(this.animatedValue, {
+	useEffect(() => {
+		Animated.timing(animatedValue, {
 			toValue: 1,
 			duration: ANIMATION_DURATION,
 			easing: Easing.inOut(Easing.quad),
 			useNativeDriver: true
 		}).start();
-	}
+	}, [animatedValue]);
 
-	close = () => {
-		const { onClose } = this.props;
-		Animated.timing(this.animatedValue, {
+	const close = () => {
+		Animated.timing(animatedValue, {
 			toValue: 0,
 			duration: ANIMATION_DURATION,
 			easing: Easing.inOut(Easing.quad),
@@ -49,51 +42,51 @@ class Dropdown extends React.Component<IDropdownProps> {
 		}).start(() => onClose());
 	};
 
-	render() {
-		const { isMasterDetail, insets, theme, currentFilter, onFilterSelected } = this.props;
-		const statusBarHeight = insets?.top ?? 0;
-		const heightDestination = isMasterDetail ? headerHeight + statusBarHeight : 0;
-		const translateY = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-300, heightDestination] // approximated height of the component when closed/open
-		});
-		const backdropOpacity = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, themes[theme].backdropOpacity]
-		});
-		return (
-			<>
-				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View
-						style={[
-							styles.backdrop,
-							{
-								backgroundColor: themes[theme].backdropColor,
-								opacity: backdropOpacity,
-								top: heightDestination
-							}
-						]}
-					/>
-				</TouchableWithoutFeedback>
+	const heightDestination = isMasterDetail ? headerHeight + insets.top : 0;
+
+	const translateY = animatedValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: [-300, heightDestination] // approximated height of the component when closed/open
+	});
+
+	const backdropOpacity = animatedValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, colors.backdropOpacity]
+	});
+
+	return (
+		<>
+			<TouchableWithoutFeedback onPress={close}>
 				<Animated.View
 					style={[
-						styles.dropdownContainer,
+						styles.backdrop,
 						{
 							transform: [{ translateY }],
-							backgroundColor: themes[theme].backgroundColor,
-							borderColor: themes[theme].separatorColor
+							backgroundColor: colors.surfaceRoom,
+							borderColor: colors.strokeLight,
+							opacity: backdropOpacity,
+							top: heightDestination
 						}
 					]}
-				>
-					<DropdownItemHeader currentFilter={currentFilter} onPress={this.close} />
-					<List.Separator />
-					<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Following} onPress={onFilterSelected} />
-					<DropdownItemFilter currentFilter={currentFilter} value={Filter.Unread} onPress={onFilterSelected} />
-				</Animated.View>
-			</>
-		);
-	}
-}
+				/>
+			</TouchableWithoutFeedback>
+			<Animated.View
+				style={[
+					styles.dropdownContainer,
+					{
+						transform: [{ translateY }],
+						backgroundColor: colors.surfaceRoom,
+						borderColor: colors.surfaceSelected
+					}
+				]}>
+				<DropdownItemHeader currentFilter={currentFilter} onPress={close} />
+				<List.Separator />
+				<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />
+				<DropdownItemFilter currentFilter={currentFilter} value={Filter.Following} onPress={onFilterSelected} />
+				<DropdownItemFilter currentFilter={currentFilter} value={Filter.Unread} onPress={onFilterSelected} />
+			</Animated.View>
+		</>
+	);
+};
 
-export default withTheme(withSafeAreaInsets(Dropdown));
+export default Dropdown;

@@ -43,7 +43,7 @@ interface IShareViewState {
 	attachments: IShareAttachment[];
 	text: string;
 	room: TSubscriptionModel;
-	thread: TThreadModel;
+	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
 	selectedMessages: string[];
@@ -114,6 +114,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
+	getThreadId = (thread: TThreadModel | string | undefined) => {
+		let threadId = undefined;
+		if (typeof thread === 'object') {
+			threadId = thread?.id;
+		} else if (typeof thread === 'string') {
+			threadId = thread;
+		}
+		return threadId;
+	};
+
 	setHeader = () => {
 		const { room, thread, readOnly, attachments } = this.state;
 		const { navigation, theme } = this.props;
@@ -121,23 +131,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const options: StackNavigationOptions = {
 			headerTitle: () => <Header room={room} thread={thread} />,
 			headerTitleAlign: 'left',
-			headerTintColor: themes[theme].previewTintColor
+			headerTintColor: themes[theme].backdropColor
 		};
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} testID='share-view-close' />;
+			options.headerLeft = () => (
+				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
+			);
 		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].previewTintColor} />
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
 				</HeaderButton.Container>
 			);
 		}
 
-		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].previewBackground }]} />;
+		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].surfaceNeutral }]} />;
 
 		navigation.setOptions(options);
 	};
@@ -263,7 +275,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 									store: 'Uploads',
 									msg
 								},
-								thread?.id,
+								this.getThreadId(thread),
 								server,
 								{ id: user.id, token: user.token }
 							);
@@ -274,7 +286,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Send text message
 			} else if (text.length) {
-				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+				await sendMessage(room.rid, text, this.getThreadId(thread), {
+					id: user.id,
+					token: user.token
+				} as IUser);
 			}
 		} catch {
 			if (!this.isShareExtension) {
@@ -342,14 +357,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
-						tmid: thread.id,
+						tmid: this.getThreadId(thread),
 						sharing: true,
 						action: route.params?.action,
 						selectedMessages,
 						onSendMessage: this.send,
 						onRemoveQuoteMessage: this.onRemoveQuoteMessage
-					}}
-				>
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected
@@ -376,7 +390,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return (
 			<FormTextInput
 				containerStyle={styles.inputContainer}
-				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].focusedBackground }]}
+				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].surfaceLight }]}
 				placeholder=''
 				onChangeText={this.onChangeText}
 				defaultValue=''
@@ -394,16 +408,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
+			<SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].surfaceDark} />
 				{this.renderContent()}
 			</SafeAreaView>
 		);

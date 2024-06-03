@@ -37,7 +37,7 @@ export * from './crashReport';
 export * from './parseSettings';
 export * from './subscribeRooms';
 export * from './serializeAsciiUrl';
-export * from './audioPlayer';
+export * from './AudioManager';
 export * from './isRoomFederated';
 export * from './checkSupportedVersions';
 export * from './getServerInfo';

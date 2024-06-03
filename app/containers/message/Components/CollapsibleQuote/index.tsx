@@ -92,7 +92,7 @@ const Fields = React.memo(
 			<>
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
-						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].bodyText }]}>
+						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
 							{field.title}
 						</Text>
 						<Markdown
@@ -123,21 +123,15 @@ const CollapsibleQuote = React.memo(
 			setCollapsed(!collapsed);
 		};
 
-		let {
-			borderColor,
-			chatComponentBackground: backgroundColor,
-			collapsibleQuoteBorder,
-			collapsibleChevron,
-			headerTintColor
-		} = themes[theme];
+		let { strokeExtraLight, surfaceTint: backgroundColor, strokeLight, strokeMedium, fontSecondaryInfo } = themes[theme];
 
 		try {
 			if (attachment.color) {
 				backgroundColor = transparentize(attachment.color, 0.8);
-				borderColor = attachment.color;
-				collapsibleQuoteBorder = attachment.color;
-				collapsibleChevron = attachment.color;
-				headerTintColor = headerTintColor;
+				strokeExtraLight = attachment.color;
+				strokeLight = attachment.color;
+				strokeMedium = attachment.color;
+				fontSecondaryInfo = fontSecondaryInfo;
 			}
 		} catch (e) {
 			// fallback to default
@@ -154,25 +148,25 @@ const CollapsibleQuote = React.memo(
 						attachment.description && styles.marginBottom,
 						{
 							backgroundColor,
-							borderLeftColor: collapsibleQuoteBorder,
-							borderTopColor: borderColor,
-							borderRightColor: borderColor,
-							borderBottomColor: borderColor,
+							borderLeftColor: strokeLight,
+							borderTopColor: strokeExtraLight,
+							borderRightColor: strokeExtraLight,
+							borderBottomColor: strokeExtraLight,
 							borderLeftWidth: 2
 						}
 					]}
-					background={Touchable.Ripple(themes[theme].bannerBackground)}
+					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					hitSlop={BUTTON_HIT_SLOP}
 				>
 					<View style={styles.touchableContainer}>
 						<View style={styles.attachmentContainer}>
 							<View style={styles.authorContainer}>
-								<Text style={[styles.title, { color: headerTintColor }]}>{attachment.title}</Text>
+								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 							</View>
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
-							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={collapsibleChevron} />
+							<CustomIcon name={!collapsed ? 'chevron-up' : 'chevron-down'} size={22} color={strokeMedium} />
 						</View>
 					</View>
 				</Touchable>

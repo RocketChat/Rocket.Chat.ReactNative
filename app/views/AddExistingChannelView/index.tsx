@@ -79,8 +79,8 @@ const AddExistingChannelView = () => {
 					Q.where('team_id', ''),
 					Q.where('t', Q.oneOf(['c', 'p'])),
 					Q.where('name', Q.like(`%${stringToSearch}%`)),
-					Q.experimentalTake(QUERY_SIZE),
-					Q.experimentalSortBy('room_updated_at', Q.desc)
+					Q.take(QUERY_SIZE),
+					Q.sortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
 
@@ -162,12 +162,12 @@ const AddExistingChannelView = () => {
 							onPress={() => toggleChannel(item.rid)}
 							testID={`add-existing-channel-view-item-${item.name}`}
 							left={() => <List.Icon name={icon} />}
-							right={() => (isChecked(item.rid) ? <List.Icon name='check' /> : null)}
+							right={() => (isChecked(item.rid) ? <List.Icon name='check' color={colors.fontHint} /> : null)}
 						/>
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

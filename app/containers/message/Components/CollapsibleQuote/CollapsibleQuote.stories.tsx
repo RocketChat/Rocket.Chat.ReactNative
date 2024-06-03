@@ -28,8 +28,7 @@ export const Item = () => (
 			value={{
 				onLongPress: () => {},
 				user: { username: 'Marcos' }
-			}}
-		>
+			}}>
 			<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={() => null} timeFormat='LT' />
 		</MessageContext.Provider>
 	</View>

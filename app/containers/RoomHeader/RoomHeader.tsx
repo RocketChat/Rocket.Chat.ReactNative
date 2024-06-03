@@ -88,7 +88,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 			usersText = usersTyping.join(', ');
 		}
 		return (
-			<Text style={[styles.subtitle, { fontSize, color: colors.auxiliaryText }]} numberOfLines={1}>
+			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
 				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
 			</Text>
@@ -102,7 +102,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 	// subtitle
 	if (subtitle) {
-		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.auxiliaryText }]} />;
+		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
 	return null;
@@ -110,7 +110,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
-	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.headerTitleColor };
+	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
 			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
@@ -163,7 +163,7 @@ const Header = React.memo(
 						status={status}
 						teamMain={teamMain}
 					/>
-					<Text style={[styles.subtitle, { color: colors.auxiliaryText }]} numberOfLines={1}>
+					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{parentTitle}
 					</Text>
 				</View>
@@ -179,8 +179,7 @@ const Header = React.memo(
 				onPress={handleOnPress}
 				style={styles.container}
 				disabled={!!tmid}
-				hitSlop={HIT_SLOP}
-			>
+				hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon

@@ -6,7 +6,7 @@ import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import RNFetchBlob from 'rn-fetch-blob';
+import * as FileSystem from 'expo-file-system';
 
 import { isImageBase64 } from '../lib/methods';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -18,7 +18,7 @@ import { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
@@ -121,20 +121,20 @@ const AttachmentView = (): React.ReactElement => {
 		const options: StackNavigationOptions = {
 			title: title || '',
 			headerTitleAlign: 'center',
-			headerTitleStyle: { color: colors.previewTintColor },
-			headerTintColor: colors.previewTintColor,
+			headerTitleStyle: { color: colors.fontDefault },
+			headerTintColor: colors.surfaceTint,
 			headerTitleContainerStyle: { flex: 1, maxWidth: undefined },
 			headerLeftContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
-				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.previewTintColor} />
+				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.fontDefault} />
 			),
 			headerRight: () =>
 				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url) ? (
-					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.previewTintColor} />
+					<HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
 				) : null,
 			headerBackground: () => (
-				<HeaderBackground style={{ backgroundColor: colors.previewBackground, shadowOpacity: 0, elevation: 0 }} />
+				<HeaderBackground style={{ backgroundColor: colors.surfaceNeutral, shadowOpacity: 0, elevation: 0 }} />
 			)
 		};
 		navigation.setOptions(options);
@@ -177,11 +177,9 @@ const AttachmentView = (): React.ReactElement => {
 				} else {
 					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
 				}
-				const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
-				const path = `${documentDir + filename}`;
-				const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
-				await CameraRoll.save(path, { album: 'Rocket.Chat' });
-				file.flush();
+				const file = await fileDownload(mediaAttachment, {}, filename);
+				await CameraRoll.save(file, { album: 'Rocket.Chat' });
+				FileSystem.deleteAsync(file, { idempotent: true });
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {
@@ -191,8 +189,8 @@ const AttachmentView = (): React.ReactElement => {
 	};
 
 	return (
-		<View style={{ backgroundColor: colors.backgroundColor, flex: 1 }}>
-			<StatusBar barStyle='light-content' backgroundColor={colors.previewBackground} />
+		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
+			<StatusBar barStyle='light-content' backgroundColor={colors.surfaceDark} />
 			<RenderContent attachment={attachment} setLoading={setLoading} />
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>

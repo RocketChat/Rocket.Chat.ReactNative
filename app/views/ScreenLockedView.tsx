@@ -8,7 +8,6 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { PasscodeEnter } from '../containers/Passcode';
 import { LOCAL_AUTHENTICATE_EMITTER } from '../lib/constants';
 import { CustomIcon } from '../containers/CustomIcon';
-import { useTheme } from '../theme';
 import { hasNotch } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 
@@ -30,7 +29,6 @@ const styles = StyleSheet.create({
 const ScreenLockedView = (): JSX.Element => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<IData>({});
-	const { colors } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -74,12 +72,11 @@ const ScreenLockedView = (): JSX.Element => {
 			hideModalContentWhileAnimating
 			style={{ margin: 0 }}
 			animationIn='fadeIn'
-			animationOut='fadeOut'
-		>
+			animationOut='fadeOut'>
 			<PasscodeEnter hasBiometry={!!data?.hasBiometry} finishProcess={onSubmit} />
 			{data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' color={colors.passcodePrimary} size={30} />
+					<CustomIcon name='close' size={30} />
 				</Touchable>
 			) : null}
 		</Modal>

@@ -15,6 +15,7 @@ import styles from './styles';
 import { useTheme } from '../../theme';
 import { SEEK_HIT_SLOP, THUMB_SEEK_SIZE, ACTIVE_OFFSET_X, DEFAULT_TIME_LABEL } from './constants';
 
+Animated.addWhitelistedNativeProps({ text: true });
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 interface ISeek {
@@ -101,7 +102,7 @@ const Seek = ({ currentTime, duration, loaded = false, onChangeTime }: ISeek) =>
 		} as TextInputProps;
 	}, [timeLabel, duration, currentTime]);
 
-	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.tintDisabled;
+	const thumbColor = loaded ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled;
 
 	// TouchableNativeFeedback is avoiding do a long press message when seeking the audio
 	return (
