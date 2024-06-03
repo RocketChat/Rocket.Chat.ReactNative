@@ -77,6 +77,7 @@ export async function sendFileMessageV2(
 			await uploadRecord?.destroyPermanently();
 		});
 	} catch (e: any) {
+		console.error(e);
 		if (uploadPath && !uploadQueue[uploadPath]) {
 			console.log('Upload cancelled');
 		} else {
