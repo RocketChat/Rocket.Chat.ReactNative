@@ -122,8 +122,10 @@ const handleLoginRequest = function* handleLoginRequest({
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
+			logEvent(events.LOGOUT_BY_SERVER);
 			yield put(logoutAction(true, 'Logged_out_by_server'));
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
+			logEvent(events.LOGOUT_TOKEN_EXPIRED);
 			yield put(logoutAction(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
