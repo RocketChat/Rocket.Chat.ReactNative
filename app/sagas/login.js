@@ -290,16 +290,22 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 };
 
 const handleSetUser = function* handleSetUser({ user }) {
-	if ('avatarETag' in user) {
+	if ('avatarETag' in user || 'requirePasswordChange' in user) {
 		const userId = yield select(state => state.login.user.id);
 		const serversDB = database.servers;
 		const userCollections = serversDB.get('users');
 		yield serversDB.write(async () => {
 			try {
 				const userRecord = await userCollections.find(userId);
-				await userRecord.update(record => {
-					record.avatarETag = user.avatarETag;
-				});
+				if ('avatarETag' in user) {
+					await userRecord.update(record => {
+						record.avatarETag = user.avatarETag;
+					});
+				} else if ('requirePasswordChange' in user) {
+					await userRecord.update(record => {
+						record.requirePasswordChange = user.requirePasswordChange;
+					});
+				}
 			} catch {
 				//
 			}

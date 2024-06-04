@@ -836,5 +836,10 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace"
+  "Your_workspace": "Your workspace",
+  "You_need_to_change_your_password": "You need to change your password",
+  "To_continue_using_RocketChat": "To continue using the mobile app, you need to change your password.",
+  "Change_password": "Change password",
+  "Please_Enter_your_new_password": "Please enter your new password",
+  "Confirm_your_password": "Confirm your password"
 }

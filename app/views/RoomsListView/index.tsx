@@ -316,6 +316,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.shouldUpdate = false;
 			return true;
 		}
+		if (nextProps?.user?.requirePasswordChange !== this.props?.user?.requirePasswordChange) {
+			return true;
+		}
 		return false;
 	}
 

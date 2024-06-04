@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { logout } from '../actions/login';
+import { logout, setUser } from '../actions/login';
 import I18n from '../i18n';
 import { useSetting } from '../lib/hooks/useSetting';
 import { showErrorAlert } from '../lib/methods/helpers';
@@ -28,6 +28,7 @@ export const ChangePasswordRequired = () => {
 		setLoading(true);
 		try {
 			await Services.setUserPassword(password);
+			dispatch(setUser({ requirePasswordChange: false }));
 			hideActionSheet();
 		} catch (error: any) {
 			showErrorAlert(error?.reason || error?.message, I18n.t('Oops'));
