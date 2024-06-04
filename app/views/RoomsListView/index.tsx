@@ -380,6 +380,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.handleHasPermission();
 			this.setHeader();
 		}
+		if (prevProps.user.requirePasswordChange !== this.props.user.requirePasswordChange) {
+			this.setHeader();
+		}
 	}
 
 	componentWillUnmount() {

@@ -42,7 +42,8 @@ const FooterButtons = ({
 	confirmTitle = '',
 	disabled = false,
 	cancelBackgroundColor = '',
-	confirmBackgroundColor = ''
+	confirmBackgroundColor = '',
+	testID = ''
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
@@ -55,12 +56,14 @@ const FooterButtons = ({
 				color={colors.backdropColor}
 				title={cancelTitle}
 				onPress={cancelAction}
+				testID={`${testID}-cancel`}
 			/>
 			<Button
 				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.buttonBackgroundDangerDefault }}
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}
+				testID={`${testID}-confirm`}
 			/>
 		</View>
 	);
@@ -96,7 +99,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	customText?: React.ReactElement;
 	confirmBackgroundColor?: string;
 	showInput?: boolean;
-	inputs?: { placeholder: string, secureTextEntry?: boolean }[];
+	inputs?: { placeholder: string; secureTextEntry?: boolean }[];
 	isDisabled?: (inputValues: string[]) => boolean;
 }): React.ReactElement => {
 	const { colors } = useTheme();
@@ -130,7 +133,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 						}
 					}}
 					inputRef={inputRefs.current[index] as any}
-					testID={`${testID}-${index}`}
+					testID={`${testID}-input-${index}`}
 					secureTextEntry={inputConfig.secureTextEntry}
 					bottomSheet={isIOS}
 				/>
@@ -148,7 +151,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 					}, 100);
 					if (inputValues[0]) onSubmit(inputValues[0]);
 				}}
-				testID={testID}
+				testID={`${testID}-input`}
 				secureTextEntry={secureTextEntry}
 				bottomSheet={isIOS}
 			/>
@@ -176,6 +179,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 				cancelTitle={i18n.t('Cancel')}
 				confirmTitle={confirmTitle || i18n.t('Save')}
 				disabled={disabled}
+				testID={testID}
 			/>
 		</View>
 	);
