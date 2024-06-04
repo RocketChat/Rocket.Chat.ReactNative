@@ -6,7 +6,6 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
 import Clipboard from '@react-native-clipboard/clipboard';
-
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';

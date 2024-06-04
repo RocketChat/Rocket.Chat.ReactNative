@@ -222,6 +222,7 @@ export type DisplayPrefStackParamList = {
 };
 
 export type DrawerParamList = {
+	test: undefined
 	ChatsStackNavigator: NavigatorScreenParams<ChatsStackParamList>;
 	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
 	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
@@ -319,3 +320,24 @@ export type OutsideModalParamList = {
 		ssoToken?: string;
 	};
 };
+
+export type MainParamList = {
+	MainView: {
+		user_id: string | undefined
+	};
+};
+
+export type AICreateImageParamList = {
+	AICreateImageView: undefined;
+	CreateChannelView: undefined;
+}
+
+export type MainModalParamList = {
+	MainStack: NavigatorScreenParams<MainParamList>;
+	AuthenticationWebView: {
+		authType: string;
+		url: string;
+		ssoToken?: string;
+	};
+};
+

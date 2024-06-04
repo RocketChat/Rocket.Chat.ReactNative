@@ -30,6 +30,7 @@ export default {
 	ENTER_WITH_CUSTOM_OAUTH: 'enter_with_custom_oauth',
 	ENTER_WITH_SAML: 'enter_with_saml',
 	ENTER_WITH_CAS: 'enter_with_cas',
+	ENTER_WITH_WECHAT: 'enter_with_wechat',
 	ENTER_WITH_APPLE: 'enter_with_apple',
 	ENTER_WITH_APPLE_F: 'enter_with_apple_f',
 

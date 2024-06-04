@@ -5,7 +5,7 @@ import { TSubscriptionModel } from './ISubscription';
 import { TServerModel } from './IServer';
 import { IAttachment } from './IAttachment';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
-import { OutsideParamList, InsideStackParamList } from '../stacks/types';
+import { MainParamList} from '../stacks/types';
 
 interface INavigationProps {
 	route?: any;
@@ -24,12 +24,30 @@ export type SetUsernameStackParamList = {
 };
 
 export type StackParamList = {
+	SplashScreen: undefined;
 	AuthLoading: undefined;
-	OutsideStack: NavigatorScreenParams<OutsideParamList>;
-	InsideStack: NavigatorScreenParams<InsideStackParamList>;
-	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
-	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+	MainTabs: NavigatorScreenParams<TabParamList>;
+	LoginView: {
+		title: string;
+	};
+	// InsideStack: NavigatorScreenParams<InsideStackParamList>;
+	// MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
+	// SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
 };
+export type MainTabParamList = {
+	Hot: undefined
+	Recommend: undefined
+	New:undefined
+	Like: undefined
+	// Create: NavigatorScreenParams<CreateParamList>;
+};
+
+export type TabParamList = {
+	首页: NavigatorScreenParams<MainParamList>;
+	Ai作图: undefined;
+	Profile: undefined;
+};
+
 
 export type ShareInsideStackParamList = {
 	ShareListView: undefined;

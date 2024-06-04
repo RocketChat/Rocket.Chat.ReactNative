@@ -4,6 +4,7 @@ PODS:
     - React-Core
   - BVLinearGradient (2.6.2):
     - React-Core
+  - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
   - EXAV (13.10.5):
     - ExpoModulesCore
@@ -134,6 +135,10 @@ PODS:
   - hermes-engine (0.73.6):
     - hermes-engine/Pre-built (= 0.73.6)
   - hermes-engine/Pre-built (0.73.6)
+  - KTVCocoaHTTPServer (1.0.0):
+    - CocoaAsyncSocket
+  - KTVHTTPCache (2.0.1):
+    - KTVCocoaHTTPServer
   - libevent (2.1.12)
   - libwebp (1.3.2):
     - libwebp/demux (= 1.3.2)
@@ -1049,6 +1054,10 @@ PODS:
     - React-Core
   - react-native-orientation-locker (1.1.8):
     - React
+  - react-native-pager-view (6.3.1):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - react-native-restart (0.0.22):
     - React-Core
   - react-native-safe-area-context (3.2.0):
@@ -1057,6 +1066,18 @@ PODS:
     - OpenSSL-Universal (= 1.1.1100)
     - React
   - react-native-slider (4.5.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+  - react-native-video (6.1.2):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+    - react-native-video/Video (= 6.1.2)
+  - react-native-video-cache (2.7.4):
+    - KTVHTTPCache (~> 2.0.0)
+    - React
+  - react-native-video/Video (6.1.2):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1373,10 +1394,13 @@ DEPENDENCIES:
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
   - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-crypto (from `../node_modules/react-native-simple-crypto`)
   - "react-native-slider (from `../node_modules/@react-native-community/slider`)"
+  - react-native-video (from `../node_modules/react-native-video`)
+  - react-native-video-cache (from `../node_modules/react-native-video-cache`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
   - React-NativeModulesApple (from `../node_modules/react-native/ReactCommon/react/nativemodule/core/platform/ios`)
@@ -1428,6 +1452,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - CocoaAsyncSocket
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -1441,6 +1466,8 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - KTVCocoaHTTPServer
+    - KTVHTTPCache
     - libevent
     - libwebp
     - MMKV
@@ -1553,6 +1580,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-notifications"
   react-native-orientation-locker:
     :path: "../node_modules/react-native-orientation-locker"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
@@ -1561,6 +1590,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-simple-crypto"
   react-native-slider:
     :path: "../node_modules/@react-native-community/slider"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
+  react-native-video-cache:
+    :path: "../node_modules/react-native-video-cache"
   react-native-webview:
     :path: "../node_modules/react-native-webview"
   React-nativeconfig:
@@ -1662,6 +1695,7 @@ SPEC CHECKSUMS:
   boost: d3f49c53809116a5d38da093a8aa78bf551aed09
   BugsnagReactNative: 366a7e11c0bcf34842e54f40b15dd937cb267aa7
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXAV: 07e50f934907fa8274dd06fbcd20ee4b9478c619
   Expo: e01a77c6fa4bc80a6d1bb949cda1d12d21044abd
@@ -1691,6 +1725,8 @@ SPEC CHECKSUMS:
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
   GoogleUtilities: d053d902a8edaa9904e1bd00c37535385b8ed152
   hermes-engine: 9cecf9953a681df7556b8cc9c74905de8f3293c0
+  KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
+  KTVHTTPCache: 588c3eb16f6bd1e6fde1e230dabfb7bd4e490a4d
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
@@ -1728,10 +1764,13 @@ SPEC CHECKSUMS:
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-notifications: 4601a5a8db4ced6ae7cfc43b44d35fe437ac50c4
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
+  react-native-pager-view: f1e72cb827406f1b49f007ab07400197d421b6e7
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-simple-crypto: a26121696064628b6cb92f52f653353114deb7f4
   react-native-slider: 09e5a8b7e766d3b5ae24ec15c5c4ec2679ca0f8c
+  react-native-video: 88cf186299aa6c3e4fb54aa1bc99267bf99c2b91
+  react-native-video-cache: 8300762bd3fd1c3dd19b76ba5236ca35de1f4bf7
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
   React-NativeModulesApple: cd26e56d56350e123da0c1e3e4c76cb58a05e1ee
@@ -1788,4 +1827,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 4037481efaa1c9c86740a10ac1fa6f1f1845721c
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2
