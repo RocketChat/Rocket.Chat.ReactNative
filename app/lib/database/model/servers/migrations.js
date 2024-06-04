@@ -153,7 +153,7 @@ export default schemaMigrations({
 				addColumns({
 					table: 'users',
 					columns: [
-						{ name: 'require_password_change', type: 'string', isOptional: true },
+						{ name: 'require_password_change', type: 'string', isOptional: true }
 					]
 				})
 			]
