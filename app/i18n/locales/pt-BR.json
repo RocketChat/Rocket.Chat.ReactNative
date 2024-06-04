@@ -824,5 +824,10 @@
   "Your_invite_link_will_never_expire": "Seu link de convite nunca irá vencer.",
   "Your_password_is": "Sua senha é",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace"
+  "Your_workspace": "Sua workspace",
+  "You_need_to_change_your_password": "Você precisa alterar sua senha",
+  "To_continue_using_RocketChat": "Para continuar usando o aplicativo móvel, você precisa alterar sua senha.",
+  "Change_password": "Alterar senha",
+  "Please_Enter_your_new_password": "Por favor, insira sua nova senha",
+  "Confirm_your_password": "Confirme sua senha"
 }
