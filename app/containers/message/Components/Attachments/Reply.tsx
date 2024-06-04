@@ -202,7 +202,7 @@ const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
-		const { baseUrl, user } = useContext(MessageContext);
+		const { baseUrl, user, id } = useContext(MessageContext);
 
 		if (!attachment) {
 			return null;
@@ -216,7 +216,7 @@ const Reply = React.memo(
 			if (attachment.type === 'file' && attachment.title_link) {
 				setLoading(true);
 				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
-				await fileDownloadAndPreview(url, attachment);
+				await fileDownloadAndPreview(url, attachment, id);
 				setLoading(false);
 				return;
 			}

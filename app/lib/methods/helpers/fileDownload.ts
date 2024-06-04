@@ -5,6 +5,7 @@ import { LISTENER } from '../../../containers/Toast';
 import { IAttachment } from '../../../definitions';
 import i18n from '../../../i18n';
 import EventEmitter from './events';
+import { Encryption } from '../../encryption';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
@@ -20,9 +21,14 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 	return file.uri;
 };
 
-export const fileDownloadAndPreview = async (url: string, attachment: IAttachment): Promise<void> => {
+export const fileDownloadAndPreview = async (url: string, attachment: IAttachment, messageId: string): Promise<void> => {
 	try {
 		const file = await fileDownload(url, attachment);
+
+		if (attachment.encryption) {
+			await Encryption.decryptFile(messageId, file, attachment.encryption);
+		}
+
 		FileViewer.open(file, {
 			showOpenWithDialog: true,
 			showAppsSuggestions: true

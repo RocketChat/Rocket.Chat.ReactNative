@@ -314,6 +314,11 @@ export default class EncryptionRoom {
 					video_type: file.type,
 					video_size: file.size
 				};
+			} else {
+				att = {
+					...att,
+					title_link: fileUrl
+				};
 			}
 			attachments.push(att);
 
