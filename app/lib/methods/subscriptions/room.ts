@@ -74,6 +74,7 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
+		readMessages(this.rid, new Date(), true).catch(e => console.log(e));
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
