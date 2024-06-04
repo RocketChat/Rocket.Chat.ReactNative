@@ -211,7 +211,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag,
 			bio: user.bio,
-			nickname: user.nickname
+			nickname: user.nickname,
+			requirePasswordChange: user.requirePasswordChange
 		};
 		yield serversDB.action(async () => {
 			try {
