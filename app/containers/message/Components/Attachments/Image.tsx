@@ -2,25 +2,25 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { Encryption } from '../../lib/encryption';
-import { IAttachment, IUserMessage } from '../../definitions';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { Encryption } from '../../../../lib/encryption';
+import { IAttachment, IUserMessage } from '../../../../definitions';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../theme';
-import Markdown from '../markdown';
-import BlurComponent from './Components/OverlayComponent';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import styles from './styles';
-import { isImageBase64 } from '../../lib/methods';
+} from '../../../../lib/methods/handleMediaDownload';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../theme';
+import Markdown from '../../../markdown';
+import BlurComponent from '../OverlayComponent';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import styles from '../../styles';
+import { isImageBase64 } from '../../../../lib/methods';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -46,8 +46,7 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 			disabled={disabled}
 			onPress={onPress}
 			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}
-		>
+			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			{children}
 		</Touchable>
 	);

@@ -1,22 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import { Encryption } from '../../lib/encryption';
-import Markdown from '../markdown';
-import MessageContext from './Context';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../definitions';
+import { Encryption } from '../../../../lib/encryption';
+import Markdown from '../../../markdown';
+import MessageContext from '../../Context';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { IAttachment, IUserMessage } from '../../../../definitions';
 import {
 	TDownloadState,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import AudioPlayer from '../AudioPlayer';
-import { useAudioUrl } from './hooks/useAudioUrl';
-import { getAudioUrlToCache } from '../../lib/methods/getAudioUrl';
+} from '../../../../lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
+import AudioPlayer from '../../../AudioPlayer';
+import { useAudioUrl } from '../../hooks/useAudioUrl';
+import { getAudioUrlToCache } from '../../../../lib/methods/getAudioUrl';
 
 interface IMessageAudioProps {
 	file: IAttachment;

@@ -1,31 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
-import { IAttachment } from '../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import I18n from '../../i18n';
-import { themes } from '../../lib/constants';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { IAttachment } from '../../../../definitions/IAttachment';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import I18n from '../../../../i18n';
+import { themes } from '../../../../lib/constants';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { fileDownload, isIOS } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import { LISTENER } from '../Toast';
-import Markdown from '../markdown';
-import BlurComponent from './Components/OverlayComponent';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import { DEFAULT_MESSAGE_HEIGHT } from './utils';
-import { Encryption } from '../../lib/encryption';
-import { TIconsName } from '../CustomIcon';
+} from '../../../../lib/methods/handleMediaDownload';
+import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
+import EventEmitter from '../../../../lib/methods/helpers/events';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
+import { LISTENER } from '../../../Toast';
+import Markdown from '../../../markdown';
+import BlurComponent from '../OverlayComponent';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
+import { Encryption } from '../../../../lib/encryption';
+import { TIconsName } from '../../../CustomIcon';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
