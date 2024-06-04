@@ -296,16 +296,15 @@ const handleSetUser = function* handleSetUser({ user }) {
 		const userCollections = serversDB.get('users');
 		yield serversDB.write(async () => {
 			try {
-				const userRecord = await userCollections.find(userId);
-				if ('avatarETag' in user) {
-					await userRecord.update(record => {
-						record.avatarETag = user.avatarETag;
-					});
-				} else if ('requirePasswordChange' in user) {
-					await userRecord.update(record => {
-						record.requirePasswordChange = user.requirePasswordChange;
-					});
-				}
+				const record = await userCollections.find(userId);
+				await record.update(userRecord => {
+					if ('avatarETag' in user) {
+						userRecord.avatarETag = user.avatarETag;
+					}
+					if ('requirePasswordChange' in user) {
+						userRecord.requirePasswordChange = user.requirePasswordChange;
+					}
+				});
 			} catch {
 				//
 			}
