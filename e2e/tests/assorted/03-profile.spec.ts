@@ -105,10 +105,10 @@ describe('Profile screen', () => {
 				.toExist()
 				.withTimeout(10000);
 			await element(by.id('profile-view-submit')).tap();
-			await waitFor(element(by.id('profile-view-enter-password-sheet')))
+			await waitFor(element(by.id('profile-view-enter-password-sheet-input')))
 				.toBeVisible()
 				.withTimeout(10000);
-			await element(by.id('profile-view-enter-password-sheet')).replaceText(`${user.password}`);
+			await element(by.id('profile-view-enter-password-sheet-input')).replaceText(`${user.password}`);
 			await element(by[textMatcher]('Save').withAncestor(by.id('action-sheet-content-with-input-and-submit')))
 				.atIndex(0)
 				.tap();
