@@ -3,7 +3,7 @@ import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
-import { createUploadRecord, persistUploadError, uploadQueue } from './utils';
+import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { IFormData } from '../helpers/fileUpload/definitions';
 
@@ -33,6 +33,7 @@ export async function sendFileMessageV2(
 			throw new Error("Couldn't create upload record");
 		}
 		const { file, getContent } = await Encryption.encryptFile(rid, fileInfo);
+		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
 
 		const formData: IFormData[] = [];
 		formData.push({

@@ -7,7 +7,7 @@ import i18n from '../../../i18n';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
 import log from '../helpers/log';
-import { getUploadPath, persistUploadError, uploadQueue } from './utils';
+import { copyFileToCacheDirectoryIfNeeded, getUploadPath, persistUploadError, uploadQueue } from './utils';
 import { IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessage(
@@ -51,6 +51,8 @@ export async function sendFileMessage(
 				return log(e);
 			}
 		}
+
+		fileInfo.path = await copyFileToCacheDirectoryIfNeeded(fileInfo.path, fileInfo.name);
 
 		const formData: IFormData[] = [];
 		formData.push({

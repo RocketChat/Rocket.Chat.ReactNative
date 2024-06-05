@@ -1,6 +1,7 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import isEmpty from 'lodash/isEmpty';
 import { Alert } from 'react-native';
+import * as FileSystem from 'expo-file-system';
 
 import { getUploadByPath } from '../../database/services/Upload';
 import { IUpload, TUploadModel } from '../../../definitions';
@@ -98,4 +99,14 @@ export const createUploadRecord = async ({
 	return [uploadPath, uploadRecord] as const;
 };
 
-export const normalizeFilePath = (path: string): string => (path.startsWith('file://') ? path.substring(7) : path);
+export const copyFileToCacheDirectoryIfNeeded = async (path: string, name?: string) => {
+	if (!path.startsWith('file://') && name) {
+		if (!FileSystem.cacheDirectory) {
+			throw new Error('No cache dir');
+		}
+		const newPath = `${FileSystem.cacheDirectory}/${name}`;
+		await FileSystem.copyAsync({ from: path, to: newPath });
+		return newPath;
+	}
+	return path;
+};
