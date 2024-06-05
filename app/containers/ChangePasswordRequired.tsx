@@ -61,7 +61,7 @@ export const ChangePasswordRequired = () => {
 	return (
 		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
 			<View style={styles.iconContainer}>
-				<CustomIcon name='info' size={36} color={colors.statusBackgroundWarning} />
+				<CustomIcon name='info' size={36} color={colors.statusFontWarning} />
 			</View>
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('You_need_to_change_your_password')}</Text>
 			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
