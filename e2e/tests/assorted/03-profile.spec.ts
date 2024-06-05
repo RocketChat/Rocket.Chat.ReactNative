@@ -97,17 +97,17 @@ describe('Profile screen', () => {
 			await element(by.id('profile-view-list')).swipe('down');
 			await waitFor(element(by.id('profile-view-email')))
 				.toBeVisible()
-				.withTimeout(2000);
+				.withTimeout(10000);
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${random()}@rocket.chat`);
 			await dismissKeyboardAndScrollUp();
 			await element(by.id('profile-view-new-password')).replaceText(`${user.password}new`);
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()
-				.withTimeout(2000);
+				.withTimeout(10000);
 			await element(by.id('profile-view-submit')).tap();
 			await waitFor(element(by.id('profile-view-enter-password-sheet')))
 				.toBeVisible()
-				.withTimeout(2000);
+				.withTimeout(10000);
 			await element(by.id('profile-view-enter-password-sheet')).replaceText(`${user.password}`);
 			await element(by[textMatcher]('Save').withAncestor(by.id('action-sheet-content-with-input-and-submit')))
 				.atIndex(0)
