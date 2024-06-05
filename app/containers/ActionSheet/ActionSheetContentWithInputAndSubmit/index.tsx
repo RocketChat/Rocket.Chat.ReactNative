@@ -99,7 +99,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	customText?: React.ReactElement;
 	confirmBackgroundColor?: string;
 	showInput?: boolean;
-	inputs?: { placeholder: string; secureTextEntry?: boolean }[];
+	inputs?: { placeholder: string; secureTextEntry?: boolean; key: string }[];
 	isDisabled?: (inputValues: string[]) => boolean;
 }): React.ReactElement => {
 	const { colors } = useTheme();
@@ -118,7 +118,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 		if (inputs.length > 0) {
 			return inputs.map((inputConfig, index) => (
 				<FormTextInput
-					key={index}
+					key={inputConfig.key}
 					value={inputValues[index]}
 					placeholder={inputConfig.placeholder}
 					onChangeText={value => handleInputChange(value, index)}
@@ -133,7 +133,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 						}
 					}}
 					inputRef={inputRefs.current[index] as any}
-					testID={`${testID}-input-${index}`}
+					testID={`${testID}-input-${inputConfig.key}`}
 					secureTextEntry={inputConfig.secureTextEntry}
 					bottomSheet={isIOS}
 				/>

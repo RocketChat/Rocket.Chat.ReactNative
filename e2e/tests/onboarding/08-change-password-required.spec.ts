@@ -40,8 +40,8 @@ describe('Change password required', () => {
 			await waitFor(element(by.id(`action-sheet-content-with-input-and-submit`)))
 				.toExist()
 				.withTimeout(5000);
-			await element(by.id('change-password-required-sheet-input-0')).replaceText('123456');
-			await element(by.id('change-password-required-sheet-input-1')).replaceText('123456');
+			await element(by.id('change-password-required-sheet-input-password')).replaceText('123456');
+			await element(by.id('change-password-required-sheet-input-confirm-password')).replaceText('123456');
 			await element(by.id('change-password-required-sheet-confirm')).tap();
 			await waitFor(element(by.id(`change-password-required-button`)))
 				.not.toExist()

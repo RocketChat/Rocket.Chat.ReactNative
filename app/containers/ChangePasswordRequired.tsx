@@ -37,9 +37,13 @@ export const ChangePasswordRequired = () => {
 	};
 
 	const showActionSheetPassword = () => {
-		const inputs = [{ placeholder: passwordPlaceholder || I18n.t('Password'), secureTextEntry: true }];
+		const inputs = [{ placeholder: passwordPlaceholder || I18n.t('Password'), secureTextEntry: true, key: 'password' }];
 		if (requiresPasswordConfirmation) {
-			inputs.push({ placeholder: passwordConfirmationPlaceholder || I18n.t('Confirm_your_password'), secureTextEntry: true });
+			inputs.push({
+				placeholder: passwordConfirmationPlaceholder || I18n.t('Confirm_your_password'),
+				secureTextEntry: true,
+				key: 'confirm-password'
+			});
 		}
 		showActionSheet({
 			children: (
@@ -48,7 +52,7 @@ export const ChangePasswordRequired = () => {
 					testID='change-password-required-sheet'
 					inputs={inputs}
 					onSubmit={input => changePassword(input[0])}
-					isDisabled={input => loading || input[0] === '' || requiresPasswordConfirmation ? input[0] !== input[1] : false}
+					isDisabled={input => (loading || input[0] === '' || requiresPasswordConfirmation ? input[0] !== input[1] : false)}
 				/>
 			)
 		});
@@ -61,8 +65,19 @@ export const ChangePasswordRequired = () => {
 			</View>
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('You_need_to_change_your_password')}</Text>
 			<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('To_continue_using_RocketChat')}</Text>
-			<Button testID='change-password-required-button' title={I18n.t('Change_password')} type='primary' onPress={showActionSheetPassword} />
-			<Button testID='change-password-required-logout' title={I18n.t('Logout')} type='secondary' backgroundColor={colors.surfaceTint} onPress={() => dispatch(logout())} />
+			<Button
+				testID='change-password-required-button'
+				title={I18n.t('Change_password')}
+				type='primary'
+				onPress={showActionSheetPassword}
+			/>
+			<Button
+				testID='change-password-required-logout'
+				title={I18n.t('Logout')}
+				type='secondary'
+				backgroundColor={colors.surfaceTint}
+				onPress={() => dispatch(logout())}
+			/>
 		</View>
 	);
 };
