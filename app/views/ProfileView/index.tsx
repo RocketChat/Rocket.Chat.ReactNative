@@ -223,9 +223,9 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 						testID='profile-view-enter-password-sheet'
 						placeholder={I18n.t('Password')}
-						onSubmit={(p: string) => {
+						onSubmit={p => {
 							this.props.hideActionSheet();
-							this.setState({ currentPassword: p }, () => this.submit());
+							this.setState({ currentPassword: p as string }, () => this.submit());
 						}}
 						onCancel={this.props.hideActionSheet}
 					/>
@@ -321,8 +321,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				testID={key}
 				onPress={onPress}
 				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].strokeLight }]}
-				enabled={!disabled}
-			>
+				enabled={!disabled}>
 				{child}
 			</Touch>
 		);
@@ -349,8 +348,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
-							value={customFields[key]}
-						>
+							value={customFields[key]}>
 							<FormTextInput
 								inputRef={e => {
 									// @ts-ignore
@@ -441,8 +439,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 					<ScrollView
 						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].surfaceTint }]}
 						testID='profile-view-list'
-						{...scrollPersistTaps}
-					>
+						{...scrollPersistTaps}>
 						<View style={styles.avatarContainer} testID='profile-view-avatar'>
 							<AvatarWithEdit
 								text={user.username}
