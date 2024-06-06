@@ -122,8 +122,10 @@ const handleLoginRequest = function* handleLoginRequest({
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
+			logEvent(events.LOGOUT_BY_SERVER);
 			yield put(logoutAction(true, 'Logged_out_by_server'));
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
+			logEvent(events.LOGOUT_TOKEN_EXPIRED);
 			yield put(logoutAction(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
@@ -209,7 +211,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag,
 			bio: user.bio,
-			nickname: user.nickname
+			nickname: user.nickname,
+			requirePasswordChange: user.requirePasswordChange
 		};
 		yield serversDB.action(async () => {
 			try {
@@ -287,15 +290,20 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 };
 
 const handleSetUser = function* handleSetUser({ user }) {
-	if ('avatarETag' in user) {
+	if ('avatarETag' in user || 'requirePasswordChange' in user) {
 		const userId = yield select(state => state.login.user.id);
 		const serversDB = database.servers;
 		const userCollections = serversDB.get('users');
 		yield serversDB.write(async () => {
 			try {
-				const userRecord = await userCollections.find(userId);
-				await userRecord.update(record => {
-					record.avatarETag = user.avatarETag;
+				const record = await userCollections.find(userId);
+				await record.update(userRecord => {
+					if ('avatarETag' in user) {
+						userRecord.avatarETag = user.avatarETag;
+					}
+					if ('requirePasswordChange' in user) {
+						userRecord.requirePasswordChange = user.requirePasswordChange;
+					}
 				});
 			} catch {
 				//
