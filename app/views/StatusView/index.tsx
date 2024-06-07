@@ -112,8 +112,8 @@ const StatusView = (): React.ReactElement => {
 					<HeaderButton.Container>
 						<HeaderButton.Item
 							title={I18n.t('Save')}
-							disabled={status === user.status && statusText === user.statusText}
 							onPress={submit}
+							disabled={status === user.status && statusText === user.statusText}
 							testID='status-view-submit'
 						/>
 					</HeaderButton.Container>
