@@ -66,12 +66,12 @@ const UrlContent = React.memo(
 		return (
 			<View style={styles.textContainer}>
 				{title ? (
-					<Text style={[styles.title, { color: colors.tintColor }]} numberOfLines={2}>
+					<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
 						{title}
 					</Text>
 				) : null}
 				{description ? (
-					<Text style={[styles.description, { color: colors.auxiliaryText }]} numberOfLines={2}>
+					<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
 						{description}
 					</Text>
 				) : null}
@@ -123,12 +123,12 @@ const Url = React.memo(
 					index > 0 && styles.marginTop,
 					styles.container,
 					{
-						backgroundColor: themes[theme].chatComponentBackground,
-						borderColor: themes[theme].borderColor
+						backgroundColor: themes[theme].surfaceTint,
+						borderColor: themes[theme].strokeLight
 					},
 					imageLoadedState === 'loading' && styles.loading
 				]}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			>
 				<>
 					{image ? (

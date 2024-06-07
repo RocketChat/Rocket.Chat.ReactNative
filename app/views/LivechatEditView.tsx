@@ -53,7 +53,7 @@ interface ILivechatEditViewProps {
 }
 
 const Title = ({ title, theme }: ITitle) =>
-	title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null;
+	title ? <Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{title}</Text> : null;
 
 const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
@@ -183,10 +183,9 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			style={{ backgroundColor: themes[theme].surfaceHover }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />
@@ -257,7 +256,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
-					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
+					<Text style={[styles.label, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 					<MultiSelect
 						options={tagOptions}
 						onChange={({ value }: { value: string[] }) => {

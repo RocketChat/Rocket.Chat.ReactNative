@@ -27,19 +27,19 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 		}
 	};
 
-	let textColor = colors.bodyText;
+	let color = colors.fontDefault;
 	if (item.danger) {
-		textColor = colors.dangerColor;
+		color = colors.fontDanger;
 	}
 	if (!enabled) {
-		textColor = colors.fontDisabled;
+		color = colors.fontDisabled;
 	}
 
 	return (
-		<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.focusedBackground }]} testID={item.testID}>
-			{item.icon ? <CustomIcon name={item.icon} size={20} color={textColor} /> : null}
+		<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.surfaceLight }]} testID={item.testID}>
+			{item.icon ? <CustomIcon name={item.icon} size={20} color={color} /> : null}
 			<View style={styles.titleContainer}>
-				<Text numberOfLines={1} style={[styles.title, { color: textColor, marginLeft: item.icon ? 16 : 0 }]}>
+				<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
 					{item.title}
 				</Text>
 			</View>

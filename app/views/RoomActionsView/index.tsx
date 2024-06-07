@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
-import { Share, Switch, Text, View } from 'react-native';
+import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
@@ -32,7 +32,7 @@ import Touch from '../../containers/Touch';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import { ERoomType } from '../../definitions/ERoomType';
-import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
 import { getPermalinkChannel } from '../../lib/methods';
 import {
 	canAutoTranslate as canAutoTranslateMethod,
@@ -53,6 +53,7 @@ import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
 import { TNavigation } from '../../stacks/stackType';
+import Switch from '../../containers/Switch';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -268,6 +269,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			// @ts-ignore
 			logEvent(events[`RA_GO_${route.replace('View', '').toUpperCase()}${params.name ? params.name.toUpperCase() : ''}`]);
 			const { navigation } = this.props;
+			// @ts-ignore
 			navigation.navigate(route, params);
 		}
 		if (event) {
@@ -353,7 +355,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			hasPermission = canToggleEncryption;
 		}
 		return (
-			<Switch value={encrypted} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleEncrypted} disabled={!hasPermission} />
+			<Switch value={encrypted} onValueChange={this.toggleEncrypted} disabled={!hasPermission} />
 		);
 	};
 
@@ -743,8 +745,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				.query(
 					Q.where('team_main', true),
 					Q.where('name', Q.like(`%${onChangeText}%`)),
-					Q.experimentalTake(QUERY_SIZE),
-					Q.experimentalSortBy('room_updated_at', Q.desc)
+					Q.take(QUERY_SIZE),
+					Q.sortBy('room_updated_at', Q.desc)
 				)
 				.fetch();
 
@@ -793,22 +795,21 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							}
 						})
 					}
-					style={{ backgroundColor: themes[theme].backgroundColor }}
+					style={{ backgroundColor: themes[theme].surfaceRoom }}
 					accessibilityLabel={I18n.t('Room_Info')}
 					enabled={!isGroupChatHandler}
-					testID='room-actions-info'
-				>
+					testID='room-actions-info'>
 					<View style={[styles.roomInfoContainer, { height: 72 * fontScale }]}>
 						<Avatar text={avatar} style={styles.avatar} size={50 * fontScale} type={t} rid={rid}>
 							{t === 'd' && member._id ? (
-								<View style={[sharedStyles.status, { backgroundColor: themes[theme].backgroundColor }]}>
+								<View style={[sharedStyles.status, { backgroundColor: themes[theme].surfaceRoom }]}>
 									<Status size={16} id={member._id} />
 								</View>
 							) : undefined}
 						</Avatar>
 						<View style={styles.roomTitleContainer}>
 							{room.t === 'd' ? (
-								<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+								<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 									{room.fname}
 								</Text>
 							) : (
@@ -819,19 +820,19 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 										status={room.visitor?.status}
 										sourceType={source}
 									/>
-									<Text style={[styles.roomTitle, { color: themes[theme].titleText }]} numberOfLines={1}>
+									<Text style={[styles.roomTitle, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 										{getRoomTitle(room)}
 									</Text>
 								</View>
 							)}
 							<MarkdownPreview
 								msg={t === 'd' ? `@${name}` : topic}
-								style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+								style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 							/>
 							{room.t === 'd' && (
 								<MarkdownPreview
 									msg={member.statusText}
-									style={[styles.roomDescription, { color: themes[theme].auxiliaryText }]}
+									style={[styles.roomDescription, { color: themes[theme].fontSecondaryInfo }]}
 								/>
 							)}
 						</View>
@@ -903,9 +904,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								})
 							}
 							testID='room-actions-block-user'
-							left={() => <List.Icon name='warning' color={themes[theme].dangerColor} />}
+							left={() => <List.Icon name='warning' color={themes[theme].buttonBackgroundDangerDefault} />}
 							showActionIndicator
-							color={themes[theme].dangerColor}
+							color={themes[theme].buttonBackgroundDangerDefault}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -926,9 +927,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							})
 						}
 						testID='room-actions-leave-channel'
-						left={() => <List.Icon name='logout' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='logout' color={themes[theme].buttonBackgroundDangerDefault} />}
 						showActionIndicator
-						color={themes[theme].dangerColor}
+						color={themes[theme].buttonBackgroundDangerDefault}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -1029,7 +1030,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									params: { rid }
 								})
 							}
-							left={() => <List.Icon name='chat-forward' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='chat-forward' color={themes[theme].fontTitlesLabels} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1045,7 +1046,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.placeOnHoldLivechat
 								})
 							}
-							left={() => <List.Icon name='pause' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='pause' color={themes[theme].fontTitlesLabels} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1061,7 +1062,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 									event: this.returnLivechat
 								})
 							}
-							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].titleText} />}
+							left={() => <List.Icon name='move-to-the-queue' color={themes[theme].fontTitlesLabels} />}
 							showActionIndicator
 						/>
 						<List.Separator />
@@ -1071,13 +1072,13 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<>
 					<List.Item
 						title='Close'
-						color={themes[theme].dangerColor}
+						color={themes[theme].buttonBackgroundDangerDefault}
 						onPress={() =>
 							this.onPressTouchable({
 								event: this.closeLivechat
 							})
 						}
-						left={() => <List.Icon name='chat-close' color={themes[theme].dangerColor} />}
+						left={() => <List.Icon name='chat-close' color={themes[theme].buttonBackgroundDangerDefault} />}
 						showActionIndicator
 					/>
 					<List.Separator />

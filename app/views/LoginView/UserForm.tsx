@@ -17,6 +17,7 @@ import sharedStyles from '../Styles';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
 import styles from './styles';
+import { handleLoginErrors } from './handleLoginErrors';
 
 interface ISubmit {
 	user: string;
@@ -75,7 +76,7 @@ const UserForm = () => {
 				const user = getValues('user');
 				navigation.navigate('SendEmailConfirmationView', { user });
 			} else {
-				Alert.alert(I18n.t('Oops'), I18n.t('Login_error'));
+				Alert.alert(I18n.t('Oops'), handleLoginErrors(error?.error));
 			}
 		}
 	}, [error?.error, failure, getValues, navigation]);
@@ -101,7 +102,7 @@ const UserForm = () => {
 
 	return (
 		<>
-			<Text style={[styles.title, sharedStyles.textBold, { color: colors.titleText }]}>{I18n.t('Login')}</Text>
+			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</Text>
 			<ControlledFormTextInput
 				name='user'
 				control={control}
@@ -130,7 +131,6 @@ const UserForm = () => {
 			/>
 			<Button
 				title={I18n.t('Login')}
-				type='primary'
 				onPress={handleSubmit(submit)}
 				testID='login-view-submit'
 				loading={isFetching}
@@ -143,23 +143,23 @@ const UserForm = () => {
 					type='secondary'
 					onPress={forgotPassword}
 					testID='login-view-forgot-password'
-					color={colors.auxiliaryText}
+					color={colors.fontInfo}
 					fontSize={14}
+					backgroundColor='transparent'
 				/>
 			) : null}
 			{showRegistrationButton ? (
 				<View style={styles.bottomContainer}>
-					<Text style={[styles.bottomContainerText, { color: colors.auxiliaryText }]}>{I18n.t('Dont_Have_An_Account')}</Text>
+					<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Dont_Have_An_Account')}</Text>
 					<Text
-						style={[styles.bottomContainerTextBold, { color: colors.actionTintColor }]}
+						style={[styles.bottomContainerTextBold, { color: colors.fontHint }]}
 						onPress={register}
-						testID='login-view-register'
-					>
+						testID='login-view-register'>
 						{I18n.t('Create_account')}
 					</Text>
 				</View>
 			) : (
-				<Text style={[styles.registerDisabled, { color: colors.auxiliaryText }]}>
+				<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
 					{Accounts_RegistrationForm_LinkReplacementText}
 				</Text>
 			)}

@@ -86,7 +86,7 @@ const Service = React.memo(
 			);
 		}
 
-		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.chatComponentBackground;
+		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.buttonBackgroundSecondaryDefault;
 
 		return (
 			<ButtonService

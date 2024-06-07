@@ -32,7 +32,7 @@ const Item = ({ item, selected, onItemPress }: IItem) => {
 	return (
 		<List.Item
 			title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-			right={() => (selected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			right={() => (selected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
 			onPress={onItemPress}
 			translateTitle={false}
 		/>
@@ -105,7 +105,7 @@ const PickerView = (): React.ReactElement => {
 				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
 				ListFooterComponent={List.Separator}
 				ListEmptyComponent={() => (
-					<Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_results_found')}</Text>
+					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 				)}
 			/>
 		</SafeAreaView>

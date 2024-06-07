@@ -54,20 +54,20 @@ const UserItem = ({ name, username, onPress, testID, onLongPress, style, icon, i
 			onLongPress={onLongPress}
 			testID={testID}
 			android_ripple={{
-				color: colors.bannerBackground
+				color: colors.surfaceNeutral
 			}}
 			style={({ pressed }: any) => ({
-				backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
+				backgroundColor: isIOS && pressed ? colors.surfaceNeutral : 'transparent'
 			})}
 		>
 			<View style={[styles.container, styles.button, style]}>
 				<Avatar text={username} size={30} style={styles.avatar} />
 				<View style={styles.textContainer}>
-					<Text style={[styles.name, { color: colors.bodyText }]} numberOfLines={1}>
+					<Text style={[styles.name, { color: colors.fontDefault }]} numberOfLines={1}>
 						{name}
 					</Text>
 				</View>
-				{icon ? <CustomIcon name={icon} size={22} color={iconColor || colors.actionTintColor} style={styles.icon} /> : null}
+				{icon ? <CustomIcon name={icon} size={22} color={iconColor || colors.fontHint} style={styles.icon} /> : null}
 			</View>
 		</Pressable>
 	);

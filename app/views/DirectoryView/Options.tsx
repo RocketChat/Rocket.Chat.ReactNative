@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
-import { Animated, Easing, Switch, Text, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Easing, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import Check from '../../containers/Check';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
 import styles from './styles';
-import { TSupportedThemes } from '../../theme';
+import Switch from '../../containers/Switch';
+import { useTheme } from '../../theme';
 
 const ANIMATION_DURATION = 200;
 const ANIMATION_PROPS = {
@@ -23,34 +23,34 @@ interface IDirectoryOptionsProps {
 	close: Function;
 	changeType: Function;
 	toggleWorkspace(): void;
-	theme: TSupportedThemes;
 }
 
-export default class DirectoryOptions extends PureComponent<IDirectoryOptionsProps, any> {
-	private animatedValue: Animated.Value;
+const DirectoryOptions = ({
+	type: propType,
+	globalUsers,
+	isFederationEnabled,
+	close: onClose,
+	changeType,
+	toggleWorkspace
+}: IDirectoryOptionsProps) => {
+	const animatedValue = useRef(new Animated.Value(0)).current;
+	const { colors } = useTheme();
 
-	constructor(props: IDirectoryOptionsProps) {
-		super(props);
-		this.animatedValue = new Animated.Value(0);
-	}
-
-	componentDidMount() {
-		Animated.timing(this.animatedValue, {
+	useEffect(() => {
+		Animated.timing(animatedValue, {
 			toValue: 1,
 			...ANIMATION_PROPS
 		}).start();
-	}
+	}, [animatedValue]);
 
-	close = () => {
-		const { close } = this.props;
-		Animated.timing(this.animatedValue, {
+	const close = () => {
+		Animated.timing(animatedValue, {
 			toValue: 0,
 			...ANIMATION_PROPS
-		}).start(() => close());
+		}).start(() => onClose());
 	};
 
-	renderItem = (itemType: string) => {
-		const { changeType, type: propType, theme } = this.props;
+	const renderItem = (itemType: string) => {
 		let text = 'Users';
 		let icon: TIconsName = 'user';
 		if (itemType === 'channels') {
@@ -66,70 +66,61 @@ export default class DirectoryOptions extends PureComponent<IDirectoryOptionsPro
 		return (
 			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
 				<View style={styles.dropdownItemContainer}>
-					<CustomIcon name={icon} size={22} color={themes[theme].bodyText} style={styles.dropdownItemIcon} />
-					<Text style={[styles.dropdownItemText, { color: themes[theme].bodyText }]}>{I18n.t(text)}</Text>
+					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.dropdownItemIcon} />
+					<Text style={[styles.dropdownItemText, { color: colors.fontDefault }]}>{I18n.t(text)}</Text>
 					{propType === itemType ? <Check /> : null}
 				</View>
 			</Touch>
 		);
 	};
 
-	render() {
-		const translateY = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [-326, 0]
-		});
-		const { globalUsers, toggleWorkspace, isFederationEnabled, theme } = this.props;
-		const backdropOpacity = this.animatedValue.interpolate({
-			inputRange: [0, 1],
-			outputRange: [0, themes[theme].backdropOpacity]
-		});
-		return (
-			<>
-				<TouchableWithoutFeedback onPress={this.close}>
-					<Animated.View style={[styles.backdrop, { backgroundColor: themes[theme].backdropColor, opacity: backdropOpacity }]} />
-				</TouchableWithoutFeedback>
-				<Animated.View
-					style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: themes[theme].backgroundColor }]}
-				>
-					<Touch onPress={this.close} accessibilityLabel={I18n.t('Search_by')}>
-						<View
-							style={[
-								styles.dropdownContainerHeader,
-								styles.dropdownItemContainer,
-								{ borderColor: themes[theme].separatorColor }
-							]}
-						>
-							<Text style={[styles.dropdownToggleText, { color: themes[theme].auxiliaryText }]}>{I18n.t('Search_by')}</Text>
-							<CustomIcon
-								style={[styles.dropdownItemIcon, styles.inverted]}
-								size={22}
-								name='chevron-down'
-								color={themes[theme].auxiliaryTintColor}
-							/>
-						</View>
-					</Touch>
-					{this.renderItem('channels')}
-					{this.renderItem('users')}
-					{this.renderItem('teams')}
-					{isFederationEnabled ? (
-						<>
-							<View style={[styles.dropdownSeparator, { backgroundColor: themes[theme].separatorColor }]} />
-							<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
-								<View style={styles.globalUsersTextContainer}>
-									<Text style={[styles.dropdownItemText, { color: themes[theme].infoText }]}>
-										{I18n.t('Search_global_users')}
-									</Text>
-									<Text style={[styles.dropdownItemDescription, { color: themes[theme].infoText }]}>
-										{I18n.t('Search_global_users_description')}
-									</Text>
-								</View>
-								<Switch value={globalUsers} onValueChange={toggleWorkspace} trackColor={SWITCH_TRACK_COLOR} />
+	const translateY = animatedValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: [-326, 0]
+	});
+
+	const backdropOpacity = animatedValue.interpolate({
+		inputRange: [0, 1],
+		outputRange: [0, colors.backdropOpacity]
+	});
+
+	return (
+		<>
+			<TouchableWithoutFeedback onPress={close}>
+				<Animated.View style={[styles.backdrop, { backgroundColor: colors.backdropColor, opacity: backdropOpacity }]} />
+			</TouchableWithoutFeedback>
+			<Animated.View style={[styles.dropdownContainer, { transform: [{ translateY }], backgroundColor: colors.surfaceRoom }]}>
+				<Touch onPress={close} accessibilityLabel={I18n.t('Search_by')}>
+					<View style={[styles.dropdownContainerHeader, styles.dropdownItemContainer, { borderColor: colors.strokeLight }]}>
+						<Text style={[styles.dropdownToggleText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Search_by')}</Text>
+						<CustomIcon
+							style={[styles.dropdownItemIcon, styles.inverted]}
+							size={22}
+							name='chevron-down'
+							color={colors.fontHint}
+						/>
+					</View>
+				</Touch>
+				{renderItem('channels')}
+				{renderItem('users')}
+				{renderItem('teams')}
+				{isFederationEnabled ? (
+					<>
+						<View style={[styles.dropdownSeparator, { backgroundColor: colors.strokeLight }]} />
+						<View style={[styles.dropdownItemContainer, styles.globalUsersContainer]}>
+							<View style={styles.globalUsersTextContainer}>
+								<Text style={[styles.dropdownItemText, { color: colors.fontHint }]}>{I18n.t('Search_global_users')}</Text>
+								<Text style={[styles.dropdownItemDescription, { color: colors.fontHint }]}>
+									{I18n.t('Search_global_users_description')}
+								</Text>
 							</View>
-						</>
-					) : null}
-				</Animated.View>
-			</>
-		);
-	}
-}
+							<Switch value={globalUsers} onValueChange={toggleWorkspace} />
+						</View>
+					</>
+				) : null}
+			</Animated.View>
+		</>
+	);
+};
+
+export default DirectoryOptions;

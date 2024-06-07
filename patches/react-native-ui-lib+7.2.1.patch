@@ -1,0 +1,523 @@
+diff --git a/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js b/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
+index 513d6ed..f39a72b 100644
+--- a/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
++++ b/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
+@@ -2,7 +2,7 @@ import _ from 'lodash';
+ import PropTypes from 'prop-types';
+ import React, {Component} from 'react';
+ import {DeviceEventEmitter, requireNativeComponent, StyleSheet, View} from 'react-native';
+-import {Picker} from '@react-native-community/picker';
++import {Picker} from '@react-native-picker/picker';
+ import WheelPickerItem from './WheelPickerItem';
+ import {Constants} from '../../../src/helpers';
+ import {Typography, Colors} from '../../../src/style';
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
+index b3864d0..e78322f 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomInputControllerTemp.h
+@@ -8,7 +8,7 @@
+ #if __has_include(<React/RCTEventEmitter.h>)
+ #import <React/RCTEventEmitter.h>
+ #else
+-#import "RCTEventEmitter.h"
++#import <React/RCTEventEmitter.h>
+ #endif
+
+ @interface RCTCustomInputControllerTemp : RCTEventEmitter
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
+index 4344724..2786051 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
+@@ -10,7 +10,7 @@
+ #if __has_include(<React/RCTRootView.h>)
+ #import <React/RCTRootView.h>
+ #else
+-#import "RCTRootView.h"
++#import <React/RCTRootView.h>
+ #endif
+
+ @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
+diff --git a/node_modules/react-native-ui-lib/src/commons/Constants.ts b/node_modules/react-native-ui-lib/src/commons/Constants.ts
+index c029d61..77f60f7 100644
+--- a/node_modules/react-native-ui-lib/src/commons/Constants.ts
++++ b/node_modules/react-native-ui-lib/src/commons/Constants.ts
+@@ -139,7 +139,7 @@ const constants = {
+     if (callback.remove) {
+       callback.remove();
+     } else {
+-      Dimensions.removeEventListener('change', callback);
++      // Dimensions.removeEventListener('change', callback);
+     }
+   },
+   /* Accessibility */
+diff --git a/node_modules/react-native-ui-lib/src/commons/new.ts b/node_modules/react-native-ui-lib/src/commons/new.ts
+index c1da169..8d3c3f5 100644
+--- a/node_modules/react-native-ui-lib/src/commons/new.ts
++++ b/node_modules/react-native-ui-lib/src/commons/new.ts
+@@ -1,19 +1,19 @@
+ // TODO: this file should replace commons/index.js
+ export {default as UIComponent} from './UIComponent';
+-export {default as asBaseComponent, BaseComponentInjectedProps} from './asBaseComponent';
+-export {default as forwardRef, ForwardRefInjectedProps} from './forwardRef';
+-export {default as withScrollEnabler, WithScrollEnablerProps} from './withScrollEnabler';
+-export {default as withScrollReached, WithScrollReachedProps} from './withScrollReached';
++export {default as asBaseComponent, type BaseComponentInjectedProps} from './asBaseComponent';
++export {default as forwardRef, type ForwardRefInjectedProps} from './forwardRef';
++export {default as withScrollEnabler, type WithScrollEnablerProps} from './withScrollEnabler';
++export {default as withScrollReached, type WithScrollReachedProps} from './withScrollReached';
+ export {default as Constants} from './Constants';
+ export {default as Config} from './Config';
+
+ export {
+-  ContainerModifiers,
+-  AlignmentModifiers,
+-  MarginModifiers,
+-  PaddingModifiers,
+-  TypographyModifiers,
+-  ColorsModifiers,
+-  BackgroundColorModifier,
+-  FlexModifiers
++  type ContainerModifiers,
++  type AlignmentModifiers,
++  type MarginModifiers,
++  type PaddingModifiers,
++  type TypographyModifiers,
++  type ColorsModifiers,
++  type BackgroundColorModifier,
++  type FlexModifiers
+ } from './modifiers';
+diff --git a/node_modules/react-native-ui-lib/src/components/connectionStatusBar/index.tsx b/node_modules/react-native-ui-lib/src/components/connectionStatusBar/index.tsx
+index 48884c9..76b4b43 100644
+--- a/node_modules/react-native-ui-lib/src/components/connectionStatusBar/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/connectionStatusBar/index.tsx
+@@ -7,7 +7,7 @@ import TouchableOpacity from '../touchableOpacity';
+ import View from '../view';
+ import {Constants, asBaseComponent} from '../../commons/new';
+ import {ConnectionStatusBarProps, ConnectionStatusBarState, DEFAULT_PROPS} from './Types';
+-export {ConnectionStatusBarProps};
++export {type ConnectionStatusBarProps};
+
+ /**
+  * @description: Top bar to show a "no internet" connection status. Note: Run on real device for best results
+diff --git a/node_modules/react-native-ui-lib/src/components/dialog/index.tsx b/node_modules/react-native-ui-lib/src/components/dialog/index.tsx
+index 4b51b27..7939884 100644
+--- a/node_modules/react-native-ui-lib/src/components/dialog/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/dialog/index.tsx
+@@ -10,7 +10,7 @@ import PanListenerView from '../panningViews/panListenerView';
+ import DialogDismissibleView from './DialogDismissibleView';
+ import OverlayFadingBackground from './OverlayFadingBackground';
+ import PanningProvider, {PanningDirections, PanningDirectionsEnum} from '../panningViews/panningProvider';
+-export {PanningDirections as DialogDirections, PanningDirectionsEnum as DialogDirectionsEnum};
++export {type PanningDirections as DialogDirections, PanningDirectionsEnum as DialogDirectionsEnum};
+
+ // TODO: KNOWN ISSUES
+ // 1. iOS pressing on the background while enter animation is happening will not call onDismiss
+@@ -278,6 +278,7 @@ function createStyles(props: DialogProps) {
+   const {width = '90%', height} = props;
+   const flexType = height ? {flex: 1} : {flex: 0};
+   return StyleSheet.create({
++    // @ts-ignore
+     dialogViewSize: {width, height: height ?? undefined},
+     flexType,
+     container: {
+diff --git a/node_modules/react-native-ui-lib/src/components/drawer/index.tsx b/node_modules/react-native-ui-lib/src/components/drawer/index.tsx
+index e4f5ba7..4640a05 100644
+--- a/node_modules/react-native-ui-lib/src/components/drawer/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/drawer/index.tsx
+@@ -409,7 +409,7 @@ class Drawer extends PureComponent<DrawerProps> {
+   }
+ }
+
+-export {DrawerProps, DrawerItemProps};
++export { type DrawerProps, type DrawerItemProps};
+ export default asBaseComponent<DrawerProps, typeof Drawer>(Drawer);
+
+ const styles = StyleSheet.create({
+diff --git a/node_modules/react-native-ui-lib/src/components/listItem/ListItemPart.tsx b/node_modules/react-native-ui-lib/src/components/listItem/ListItemPart.tsx
+index 5ca3490..18df0af 100644
+--- a/node_modules/react-native-ui-lib/src/components/listItem/ListItemPart.tsx
++++ b/node_modules/react-native-ui-lib/src/components/listItem/ListItemPart.tsx
+@@ -23,7 +23,7 @@ class ListItemPart extends Component<ListItemPartProps> {
+   }
+ }
+
+-export {ListItemPartProps};
++export {type ListItemPartProps};
+ export default asBaseComponent<ListItemPartProps>(ListItemPart);
+
+ function createStyles({left, right, middle, column}: ListItemPartProps) {
+diff --git a/node_modules/react-native-ui-lib/src/components/loaderScreen/index.tsx b/node_modules/react-native-ui-lib/src/components/loaderScreen/index.tsx
+index bcd8c18..d391ab5 100644
+--- a/node_modules/react-native-ui-lib/src/components/loaderScreen/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/loaderScreen/index.tsx
+@@ -39,7 +39,7 @@ class LoaderScreen extends Component<LoaderScreenProps> {
+   }
+ }
+
+-export {LoaderScreenProps};
++export {type LoaderScreenProps};
+ export default asBaseComponent<LoaderScreenProps>(LoaderScreen);
+
+ const styles = StyleSheet.create({
+diff --git a/node_modules/react-native-ui-lib/src/components/marquee/index.tsx b/node_modules/react-native-ui-lib/src/components/marquee/index.tsx
+index 9c9a7d8..a512576 100644
+--- a/node_modules/react-native-ui-lib/src/components/marquee/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/marquee/index.tsx
+@@ -101,7 +101,7 @@ function Marquee(props: MarqueeProps) {
+   );
+ }
+
+-export {MarqueeProps, MarqueeDirections};
++export {type MarqueeProps, MarqueeDirections};
+
+ export default Marquee;
+
+diff --git a/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx b/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx
+index f00f2ab..c4b1737 100644
+--- a/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx
+@@ -13,5 +13,5 @@ function MaskedInputMigrator(props: any, refToForward: any) {
+   }
+ }
+
+-export {MaskedInputProps};
++export {type MaskedInputProps};
+ export default forwardRef(MaskedInputMigrator);
+diff --git a/node_modules/react-native-ui-lib/src/components/modal/index.tsx b/node_modules/react-native-ui-lib/src/components/modal/index.tsx
+index 7847d78..79063d5 100644
+--- a/node_modules/react-native-ui-lib/src/components/modal/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/modal/index.tsx
+@@ -17,7 +17,7 @@ import View from '../../components/view';
+
+ const BlurView = BlurViewPackage?.BlurView;
+
+-export {ModalTopBarProps};
++export {type ModalTopBarProps};
+ export interface ModalProps extends RNModalProps {
+   /**
+    * Blurs the modal background when transparent (iOS only)
+diff --git a/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx b/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx
+index 542a16a..b23336e 100644
+--- a/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/segmentedControl/index.tsx
+@@ -7,7 +7,6 @@ import Reanimated, {
+   useAnimatedStyle,
+   useSharedValue,
+   withTiming,
+-  WithTimingConfig,
+   runOnJS
+ } from 'react-native-reanimated';
+ import {Colors, BorderRadiuses, Spacings} from '../../style';
+@@ -16,7 +15,7 @@ import View from '../view';
+ import Segment, {SegmentedControlItemProps as SegmentProps} from './segment';
+
+ const BORDER_WIDTH = 1;
+-const TIMING_CONFIG: WithTimingConfig = {
++const TIMING_CONFIG = {
+   duration: 300,
+   easing: Easing.bezier(0.33, 1, 0.68, 1)
+ };
+diff --git a/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx b/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx
+index 29bf95a..347a78e 100644
+--- a/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/stateScreen/index.tsx
+@@ -47,7 +47,7 @@ class StateScreen extends Component<StateScreenProps> {
+   }
+ }
+
+-export {StateScreenProps};
++export {type StateScreenProps};
+ export default asBaseComponent<StateScreenProps>(StateScreen);
+
+ function createStyles(isRemoteImage: boolean) {
+diff --git a/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx b/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
+index 7bb9245..16440be 100644
+--- a/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
++++ b/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
+@@ -99,6 +99,7 @@ export interface TabControllerItemProps {
+ interface Props extends TabControllerItemProps {
+   index: number;
+   targetPage: any; // TODO: typescript?
++  // @ts-ignore
+   currentPage: Reanimated.Adaptable<number>;
+   onLayout?: (event: LayoutChangeEvent, index: number) => void;
+ }
+diff --git a/node_modules/react-native-ui-lib/src/components/timeline/index.tsx b/node_modules/react-native-ui-lib/src/components/timeline/index.tsx
+index 158406a..456f56c 100644
+--- a/node_modules/react-native-ui-lib/src/components/timeline/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/timeline/index.tsx
+@@ -6,12 +6,12 @@ import Point from './Point';
+ import Line from './Line';
+ import {TimelineProps, PointProps, LineProps, StateTypes, PointTypes, LineTypes, Layout} from './types';
+ export {
+-  TimelineProps,
+-  PointProps as TimelinePointProps,
+-  LineProps as TimelineLineProps,
+-  StateTypes as TimelineStateTypes,
+-  PointTypes as TimelinePointTypes,
+-  LineTypes as TimelineLineTypes
++  type TimelineProps,
++  type PointProps as TimelinePointProps,
++  type LineProps as TimelineLineProps,
++  type StateTypes as TimelineStateTypes,
++  type PointTypes as TimelinePointTypes,
++  type LineTypes as TimelineLineTypes
+ };
+
+ const CONTENT_CONTAINER_PADDINGS = Spacings.s2;
+diff --git a/node_modules/react-native-ui-lib/src/components/wizard/index.tsx b/node_modules/react-native-ui-lib/src/components/wizard/index.tsx
+index 8afc8a8..c086fcb 100644
+--- a/node_modules/react-native-ui-lib/src/components/wizard/index.tsx
++++ b/node_modules/react-native-ui-lib/src/components/wizard/index.tsx
+@@ -7,7 +7,7 @@ import Shadows from '../../style/shadows';
+ import WizardStep from './WizardStep';
+ import {StatesConfig} from './WizardStates';
+ import {WizardProps, WizardStepProps, WizardStepStates, WizardStepConfig, WizardStepsConfig} from './types';
+-export {WizardProps, WizardStepProps, WizardStepStates, WizardStepConfig, WizardStepsConfig};
++export {type WizardProps, type WizardStepProps, WizardStepStates, type WizardStepConfig, type WizardStepsConfig};
+
+ interface State {
+   maxWidth: number;
+diff --git a/node_modules/react-native-ui-lib/src/incubator/Dialog/index.tsx b/node_modules/react-native-ui-lib/src/incubator/Dialog/index.tsx
+index e624b8f..12c9fe9 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/Dialog/index.tsx
++++ b/node_modules/react-native-ui-lib/src/incubator/Dialog/index.tsx
+@@ -25,7 +25,7 @@ import {extractAlignmentsValues} from '../../commons/modifiers';
+ import useHiddenLocation from '../hooks/useHiddenLocation';
+ import DialogHeader from './DialogHeader';
+ import {DialogProps, DialogDirections, DialogDirectionsEnum, DialogHeaderProps} from './types';
+-export {DialogProps, DialogDirections, DialogDirectionsEnum, DialogHeaderProps};
++export {type DialogProps, type DialogDirections, DialogDirectionsEnum, type DialogHeaderProps};
+
+ const DEFAULT_OVERLAY_BACKGROUND_COLOR = Colors.rgba(Colors.grey20, 0.65);
+ const THRESHOLD_VELOCITY = 750;
+@@ -199,6 +199,7 @@ const Dialog = (props: DialogProps, ref: ForwardedRef<DialogImperativeMethods>)
+
+   const renderDialog = () => (
+     <GestureDetector gesture={panGesture}>
++      {/* @ts-ignore */}
+       <View {...containerProps} reanimated style={style} onLayout={onLayout} ref={setRef} testID={testID}>
+         {headerProps && <DialogHeader {...headerProps}/>}
+         {children}
+diff --git a/node_modules/react-native-ui-lib/src/incubator/Dialog/types.ts b/node_modules/react-native-ui-lib/src/incubator/Dialog/types.ts
+index a556bde..73c2369 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/Dialog/types.ts
++++ b/node_modules/react-native-ui-lib/src/incubator/Dialog/types.ts
+@@ -7,7 +7,7 @@ import {TextProps} from '../../components/text';
+ import {PanningDirections, PanningDirectionsEnum} from '../panView';
+ type DialogDirections = PanningDirections;
+ const DialogDirectionsEnum = PanningDirectionsEnum;
+-export {DialogDirections, DialogDirectionsEnum};
++export {type DialogDirections, DialogDirectionsEnum};
+
+ export interface DialogHeaderProps extends ViewProps {
+   /**
+diff --git a/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx b/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx
+index 0ba2020..0965094 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx
++++ b/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx
+@@ -214,10 +214,10 @@ TextField.displayName = 'Incubator.TextField';
+ TextField.validationMessagePositions = ValidationMessagePosition;
+
+ export {
+-  TextFieldProps,
+-  FieldContextType,
+-  StaticMembers as TextFieldStaticMembers,
+-  TextFieldMethods,
++  type TextFieldProps,
++  type FieldContextType,
++  type StaticMembers as TextFieldStaticMembers,
++  type TextFieldMethods,
+   ValidationMessagePosition as TextFieldValidationMessagePosition
+ };
+ export default asBaseComponent<TextFieldProps, StaticMembers>(forwardRef(TextField as any), {
+diff --git a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
+index cb3d69d..790929c 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
++++ b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
+@@ -148,13 +148,13 @@ function TouchableOpacity(props: Props) {
+
+   return (
+     <TapGestureHandler
+-      // @ts-expect-error
++    // @ts-ignore
+       onGestureEvent={tapGestureHandler}
+       shouldCancelWhenOutside
+       enabled={!disabled}
+     >
+       <Reanimated.View>
+-        {/* @ts-expect-error */}
++        {/* @ts-ignore */}
+         <Container onGestureEvent={longPressGestureHandler} shouldCancelWhenOutside>
+           <Reanimated.View
+             {...others}
+diff --git a/node_modules/react-native-ui-lib/src/incubator/index.ts b/node_modules/react-native-ui-lib/src/incubator/index.ts
+index 916d8ab..3711486 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/index.ts
++++ b/node_modules/react-native-ui-lib/src/incubator/index.ts
+@@ -2,11 +2,11 @@
+ export {default as ExpandableOverlay} from './expandableOverlay';
+ // @ts-ignore
+ export {default as TextField, TextFieldProps, FieldContextType, TextFieldMethods, TextFieldValidationMessagePosition} from './TextField';
+-export {default as Toast, ToastProps, ToastPresets} from './toast';
+-export {default as TouchableOpacity, TouchableOpacityProps} from './TouchableOpacity';
+-export {default as PanView, PanViewProps, PanViewDirections, PanViewDismissThreshold} from './panView';
++export {default as Toast, type ToastProps, ToastPresets} from './toast';
++export {default as TouchableOpacity, type TouchableOpacityProps} from './TouchableOpacity';
++export {default as PanView, type PanViewProps, type PanViewDirections, type PanViewDismissThreshold} from './panView';
+ export {default as Slider} from './Slider';
+-export {default as Dialog, DialogProps, DialogHeaderProps, DialogStatics, DialogImperativeMethods} from './Dialog';
++export {default as Dialog, type DialogProps, type DialogHeaderProps, type DialogStatics, type DialogImperativeMethods} from './Dialog';
+ // TODO: delete exports after fully removing from private
+-export {default as ChipsInput, ChipsInputProps, ChipsInputChangeReason, ChipsInputChipProps} from '../components/chipsInput';
+-export {default as WheelPicker, WheelPickerProps, WheelPickerItemProps, WheelPickerAlign} from '../components/WheelPicker';
++export {default as ChipsInput, type ChipsInputProps, ChipsInputChangeReason, type ChipsInputChipProps} from '../components/chipsInput';
++export {default as WheelPicker, type WheelPickerProps, type WheelPickerItemProps, WheelPickerAlign} from '../components/WheelPicker';
+diff --git a/node_modules/react-native-ui-lib/src/incubator/panView/index.tsx b/node_modules/react-native-ui-lib/src/incubator/panView/index.tsx
+index 346d706..eb2f04e 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/panView/index.tsx
++++ b/node_modules/react-native-ui-lib/src/incubator/panView/index.tsx
+@@ -16,11 +16,11 @@ import usePanGesture, {
+   DEFAULT_ANIMATION_CONFIG
+ } from './usePanGesture';
+ export {
+-  PanningDirections,
++  type PanningDirections,
+   PanningDirectionsEnum,
+-  PanViewDirections,
++  type PanViewDirections,
+   PanViewDirectionsEnum,
+-  PanViewDismissThreshold,
++  type PanViewDismissThreshold,
+   DEFAULT_DIRECTIONS,
+   DEFAULT_ANIMATION_CONFIG
+ };
+diff --git a/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts b/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts
+index 0fc7cad..2d2f6d3 100644
+--- a/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts
++++ b/node_modules/react-native-ui-lib/src/incubator/panView/usePanGesture.ts
+@@ -55,6 +55,7 @@ const DEFAULT_ANIMATION_VELOCITY = 300;
+ export const DEFAULT_ANIMATION_CONFIG = {velocity: DEFAULT_ANIMATION_VELOCITY, damping: 18, stiffness: 100, mass: 0.4};
+ const SPRING_BACK_ANIMATION_CONFIG = {velocity: DEFAULT_ANIMATION_VELOCITY, damping: 20, stiffness: 300, mass: 0.8};
+
++// @ts-ignore
+ const usePanGesture = (props: PanGestureProps) => {
+   const {
+     directions = DEFAULT_DIRECTIONS,
+@@ -113,12 +114,15 @@ const usePanGesture = (props: PanGestureProps) => {
+   }, [animateToOrigin]);
+
+   const onGestureEvent = useAnimatedGestureHandler({
++    // @ts-ignore
+     onStart: (_event: PanGestureHandlerEventPayload, context: {initialTranslation: Frame}) => {
+       context.initialTranslation = {x: translationX.value, y: translationY.value};
+     },
++    // @ts-ignore
+     onActive: (event: PanGestureHandlerEventPayload, context: {initialTranslation: Frame}) => {
+       setTranslation(event, context.initialTranslation);
+     },
++    // @ts-ignore
+     onEnd: (event: PanGestureHandlerEventPayload) => {
+       if (dismissible) {
+         const velocity = getDismissVelocity(event, directions, getTranslationOptions(), threshold);
+diff --git a/node_modules/react-native-ui-lib/src/style/index.ts b/node_modules/react-native-ui-lib/src/style/index.ts
+index da8cb97..995207b 100644
+--- a/node_modules/react-native-ui-lib/src/style/index.ts
++++ b/node_modules/react-native-ui-lib/src/style/index.ts
+@@ -1,7 +1,7 @@
+ export {default as Colors} from './colors';
+ export {default as DesignTokens} from './designTokens';
+ export {default as DesignTokensDM} from './designTokensDM';
+-export {default as Scheme, SchemeType, Schemes, SchemeChangeListener} from './scheme';
++export {default as Scheme, type SchemeType, type Schemes, type SchemeChangeListener} from './scheme';
+ export {default as Typography} from './typography';
+ export {default as BorderRadiuses} from './borderRadiuses';
+ export {default as Shadows} from './shadows';
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 97255d2..4e0fe05 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -364,6 +364,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
+ - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
+ {
+     _bottomViewHeight = kBottomViewHeightTemp;
++    _ObservingInputAccessoryViewTemp.height = 0;
+     [self updateBottomViewFrame];
+ }
+ 
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
+index 1ca52e8..69ac77a 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
+@@ -111,44 +111,57 @@ - (void)setHeight:(CGFloat)height
+     _height = height;
+     
+     [self invalidateIntrinsicContentSize];
++    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
+ }
+ 
+ - (void)_keyboardWillShowNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateWillShow;
++    if (_keyboardState == KeyboardStateHidden) {
++        _keyboardState = KeyboardStateWillShow;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
+     
+-    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
+-    {
+-        [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
++        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
++        {
++            [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
++        }
+     }
+ }
+ 
+ - (void)_keyboardDidShowNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateShown;
++    if (_keyboardState == KeyboardStateWillShow) {
++        _keyboardState = KeyboardStateShown;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
++    }
+ }
+ 
+ - (void)_keyboardWillHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateWillHide;
++    if (_keyboardState == KeyboardStateShown) {
++        _keyboardState = KeyboardStateWillHide;
+         
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
+         
+-    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
+-    {
+-        [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++        
++        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
++        {
++            [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        }
+     }
+ }
+ 
+ - (void)_keyboardDidHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateHidden;
++    if (_keyboardState == KeyboardStateWillHide) {
++        _keyboardState = KeyboardStateHidden;
+         
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
++        
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++    }
+ }
+ 
+ - (void)_keyboardWillChangeFrameNotification:(NSNotification*)notification

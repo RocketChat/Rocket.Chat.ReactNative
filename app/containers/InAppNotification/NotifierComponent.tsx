@@ -103,33 +103,31 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				styles.container,
 				isMasterDetail && styles.small,
 				{
-					backgroundColor: themes[theme].focusedBackground,
-					borderColor: themes[theme].separatorColor,
+					backgroundColor: themes[theme].surfaceLight,
+					borderColor: themes[theme].strokeLight,
 					marginTop: insets.top
 				}
-			]}
-		>
+			]}>
 			<Touchable
 				style={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
 				background={Touchable.SelectableBackgroundBorderless()}
-				testID={`in-app-notification-${text}`}
-			>
+				testID={`in-app-notification-${text}`}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>
-						<Text style={[styles.roomName, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.roomName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{title}
 						</Text>
-						<Text style={[styles.message, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.message, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{text}
 						</Text>
 					</View>
 				</>
 			</Touchable>
 			<Touchable onPress={hideNotification} hitSlop={BUTTON_HIT_SLOP} background={Touchable.SelectableBackgroundBorderless()}>
-				<CustomIcon name='close' size={20} color={themes[theme].titleText} style={styles.close} />
+				<CustomIcon name='close' size={20} style={styles.close} />
 			</Touchable>
 		</View>
 	);

@@ -23,7 +23,15 @@ import Thumbs from './Thumbs';
 import Preview from './Preview';
 import Header from './Header';
 import styles from './styles';
-import { IApplicationState, IServer, IShareAttachment, IUser, TSubscriptionModel, TThreadModel } from '../../definitions';
+import {
+	IApplicationState,
+	IServer,
+	IShareAttachment,
+	IUser,
+	TMessageAction,
+	TSubscriptionModel,
+	TThreadModel
+} from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
@@ -35,9 +43,11 @@ interface IShareViewState {
 	attachments: IShareAttachment[];
 	text: string;
 	room: TSubscriptionModel;
-	thread: TThreadModel;
+	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
+	selectedMessages: string[];
+	action: TMessageAction;
 }
 
 interface IShareViewProps {
@@ -59,7 +69,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
-	private closeReply?: Function;
+	private finishShareView: (text?: string, selectedMessages?: string[]) => void;
+	private sentMessage: boolean;
 
 	constructor(props: IShareViewProps) {
 		super(props);
@@ -67,6 +78,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.files = props.route.params?.attachments ?? [];
 		this.isShareExtension = props.route.params?.isShareExtension;
 		this.serverInfo = props.route.params?.serverInfo ?? {};
+		this.finishShareView = props.route.params?.finishShareView;
+		this.sentMessage = false;
 
 		this.state = {
 			selected: {} as IShareAttachment,
@@ -77,7 +90,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
 			maxFileSize: this.isShareExtension ? this.serverInfo?.FileUpload_MaxFileSize : props.FileUpload_MaxFileSize,
-			mediaAllowList: this.isShareExtension ? this.serverInfo?.FileUpload_MediaTypeWhiteList : props.FileUpload_MediaTypeWhiteList
+			mediaAllowList: this.isShareExtension
+				? this.serverInfo?.FileUpload_MediaTypeWhiteList
+				: props.FileUpload_MediaTypeWhiteList,
+			selectedMessages: [],
+			action: props.route.params?.action
 		};
 		this.getServerInfo();
 	}
@@ -86,16 +103,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const readOnly = await this.getReadOnly();
 		const { attachments, selected } = await this.getAttachments();
 		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
+		this.startShareView();
 	};
 
 	componentWillUnmount = () => {
 		console.countReset(`${this.constructor.name}.render calls`);
-		// close reply from the RoomView
-		setTimeout(() => {
-			if (this.closeReply) {
-				this.closeReply();
-			}
-		}, 300);
+		if (this.finishShareView && !this.sentMessage) {
+			const text = this.messageComposerRef.current?.getText();
+			this.finishShareView(text, this.state.selectedMessages);
+		}
+	};
+
+	getThreadId = (thread: TThreadModel | string | undefined) => {
+		let threadId = undefined;
+		if (typeof thread === 'object') {
+			threadId = thread?.id;
+		} else if (typeof thread === 'string') {
+			threadId = thread;
+		}
+		return threadId;
 	};
 
 	setHeader = () => {
@@ -105,23 +131,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const options: StackNavigationOptions = {
 			headerTitle: () => <Header room={room} thread={thread} />,
 			headerTitleAlign: 'left',
-			headerTintColor: themes[theme].previewTintColor
+			headerTintColor: themes[theme].backdropColor
 		};
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} color={themes[theme].previewTintColor} />;
+			options.headerLeft = () => (
+				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
+			);
 		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].previewTintColor} />
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
 				</HeaderButton.Container>
 			);
 		}
 
-		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].previewBackground }]} />;
+		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].surfaceNeutral }]} />;
 
 		navigation.setOptions(options);
 	};
@@ -196,20 +224,22 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		};
 	};
 
-	send = async () => {
-		const { loading, selected } = this.state;
-		if (loading) {
-			return;
+	startShareView = () => {
+		const startShareView = this.props.route.params?.startShareView;
+		if (startShareView) {
+			const { selectedMessages, text } = startShareView();
+			this.messageComposerRef.current?.setInput(text);
+			this.setState({ selectedMessages });
 		}
+	};
 
+	send = async () => {
+		if (this.state.loading) return;
+
+		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
+		const { navigation, server, user } = this.props;
 		// update state
 		await this.selectFile(selected);
-
-		const { attachments, room, text, thread } = this.state;
-		const { navigation, server, user, route } = this.props;
-
-		const action = route.params?.action;
-		const selectedMessages = route.params?.selectedMessages ?? [];
 
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
@@ -218,6 +248,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 			// if it's not share extension this can close
 		} else {
+			this.sentMessage = true;
+			this.finishShareView('', []);
 			navigation.pop();
 		}
 
@@ -243,7 +275,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 									store: 'Uploads',
 									msg
 								},
-								thread?.id,
+								this.getThreadId(thread),
 								server,
 								{ id: user.id, token: user.token }
 							);
@@ -254,10 +286,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Send text message
 			} else if (text.length) {
-				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+				await sendMessage(room.rid, text, this.getThreadId(thread), {
+					id: user.id,
+					token: user.token
+				} as IUser);
 			}
 		} catch {
-			// Do nothing
+			if (!this.isShareExtension) {
+				const text = this.messageComposerRef.current?.getText();
+				this.finishShareView(text, this.state.selectedMessages);
+			}
 		}
 
 		// if it's share extension this should close
@@ -303,8 +341,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		this.setState({ text });
 	};
 
+	onRemoveQuoteMessage = (messageId: string) => {
+		const { selectedMessages } = this.state;
+		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
+		this.setState({ selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null });
+	};
+
 	renderContent = () => {
-		const { attachments, selected, text, room, thread } = this.state;
+		const { attachments, selected, text, room, thread, selectedMessages } = this.state;
 		const { theme, route } = this.props;
 
 		if (attachments.length) {
@@ -313,13 +357,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
-						tmid: thread.id,
+						tmid: this.getThreadId(thread),
 						sharing: true,
 						action: route.params?.action,
-						selectedMessages: route.params?.selectedMessages,
-						onSendMessage: this.send
-					}}
-				>
+						selectedMessages,
+						onSendMessage: this.send,
+						onRemoveQuoteMessage: this.onRemoveQuoteMessage
+					}}>
 					<View style={styles.container}>
 						<Preview
 							// using key just to reset zoom/move after change selected
@@ -346,7 +390,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		return (
 			<FormTextInput
 				containerStyle={styles.inputContainer}
-				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].focusedBackground }]}
+				inputStyle={[styles.input, styles.textInput, { backgroundColor: themes[theme].surfaceLight }]}
 				placeholder=''
 				onChangeText={this.onChangeText}
 				defaultValue=''
@@ -364,16 +408,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].backgroundColor }]}>
-					<Text style={[styles.title, { color: themes[theme].titleText }]}>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<StatusBar barStyle='light-content' backgroundColor={themes[theme].previewBackground} />
+			<SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>
+				<StatusBar barStyle='light-content' backgroundColor={themes[theme].surfaceDark} />
 				{this.renderContent()}
 			</SafeAreaView>
 		);

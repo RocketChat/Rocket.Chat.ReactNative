@@ -139,6 +139,9 @@ export default async function updateMessages({
 						if (newMessage && !newMessage?.blocks) {
 							newMessage.blocks = null;
 						}
+						if (newMessage && !newMessage?.md) {
+							newMessage.md = undefined;
+						}
 						Object.assign(m, newMessage);
 					})
 				);

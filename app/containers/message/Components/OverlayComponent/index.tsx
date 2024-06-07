@@ -19,9 +19,9 @@ const OverlayComponent = ({
 
 	return (
 		<>
-			<View style={[style, styles.blurView, { backgroundColor: colors.overlayColor }]} />
+			<View style={[style, styles.blurView, { backgroundColor: colors.surfaceNeutral }]} />
 			<View style={[style, styles.blurIndicator]}>
-				{loading ? <RCActivityIndicator size={54} /> : <CustomIcon color={colors.buttonText} name={iconName} size={54} />}
+				{loading ? <RCActivityIndicator size={54} /> : <CustomIcon name={iconName} size={54} />}
 			</View>
 		</>
 	);

@@ -17,6 +17,7 @@ import { inviteLinksRequest } from '../actions/inviteLinks';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
 import { encryptionInit, encryptionStop } from '../actions/encryption';
+import { initTroubleshootingNotification } from '../actions/troubleshootingNotification';
 import UserPreferences from '../lib/methods/userPreferences';
 import { inquiryRequest, inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { isOmnichannelStatusAvailable } from '../ee/omnichannel/lib';
@@ -121,8 +122,10 @@ const handleLoginRequest = function* handleLoginRequest({
 		}
 	} catch (e) {
 		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
+			logEvent(events.LOGOUT_BY_SERVER);
 			yield put(logoutAction(true, 'Logged_out_by_server'));
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
+			logEvent(events.LOGOUT_TOKEN_EXPIRED);
 			yield put(logoutAction(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
@@ -168,10 +171,6 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	}
 };
 
-const fetchRoomsFork = function* fetchRoomsFork() {
-	yield put(roomsRequest());
-};
-
 const fetchUsersRoles = function* fetchRoomsFork() {
 	const roles = yield Services.getUsersRoles();
 	if (roles.length) {
@@ -184,7 +183,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield fork(fetchRoomsFork);
+		yield put(roomsRequest());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
@@ -212,7 +211,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			showMessageInMainThread: user.showMessageInMainThread,
 			avatarETag: user.avatarETag,
 			bio: user.bio,
-			nickname: user.nickname
+			nickname: user.nickname,
+			requirePasswordChange: user.requirePasswordChange
 		};
 		yield serversDB.action(async () => {
 			try {
@@ -240,6 +240,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			yield put(inviteLinksRequest(inviteLinkToken));
 		}
 		yield showSupportedVersionsWarning(server);
+		yield put(initTroubleshootingNotification());
 	} catch (e) {
 		log(e);
 	}
@@ -289,15 +290,20 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 };
 
 const handleSetUser = function* handleSetUser({ user }) {
-	if ('avatarETag' in user) {
+	if ('avatarETag' in user || 'requirePasswordChange' in user) {
 		const userId = yield select(state => state.login.user.id);
 		const serversDB = database.servers;
 		const userCollections = serversDB.get('users');
 		yield serversDB.write(async () => {
 			try {
-				const userRecord = await userCollections.find(userId);
-				await userRecord.update(record => {
-					record.avatarETag = user.avatarETag;
+				const record = await userCollections.find(userId);
+				await record.update(userRecord => {
+					if ('avatarETag' in user) {
+						userRecord.avatarETag = user.avatarETag;
+					}
+					if ('requirePasswordChange' in user) {
+						userRecord.requirePasswordChange = user.requirePasswordChange;
+					}
 				});
 			} catch {
 				//
