@@ -4092,7 +4092,7 @@
     node-forge "^1.2.1"
     nullthrows "^1.1.1"
 
-"@expo/config-plugins@^4.0.14", "@expo/config-plugins@^4.1.5":
+"@expo/config-plugins@^4.0.14":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@expo/config-plugins/-/config-plugins-4.1.5.tgz#9d357d2cda9c095e511b51583ede8a3b76174068"
   integrity sha512-RVvU40RtZt12HavuDAe+LDIq9lHj7sheOfMEHdmpJ/uTA8pgvkbc56XF6JHQD+yRr6+uhhb+JnAasGq49dsQbw==
@@ -5471,27 +5471,25 @@
   dependencies:
     invariant "^2.2.4"
 
-"@react-native-firebase/analytics@^14.11.0":
-  version "14.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-14.11.0.tgz#99a3bb96f0ed6362907a120a40489f9a8bcf9ccd"
-  integrity sha512-hYc2avm4S1vicBdKLtBif87SFGru85LOMPqDblC9GM7cGFRR5WlkOiECvNTzzs+a5Jrfq1zPJsK1YQKxD7CRfQ==
+"@react-native-firebase/analytics@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/analytics/-/analytics-19.3.0.tgz#912e93a9a99eb9c5a8ceb7ad39dca4761274fb98"
+  integrity sha512-I+LSDvA2crn8UY78StCqatrUkBD/ZBVaQaunZYnEd4Nsm1R7HycSaW1iUzAB+3sbwLchFr4RcPc++P20m+zzHA==
 
-"@react-native-firebase/app@14.11.0":
-  version "14.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-14.11.0.tgz#41b1b7d41f51b6880ebad6a12ff87c85bcdab0d6"
-  integrity sha512-LzqgZNx+WcNGYRZG6LB9BkJAx4LE+LsbPF9p65TMSagWYd/iJafoXl4d6KWQeUMIFZQH7Ke/eJ/fIZkc+4eMRw==
+"@react-native-firebase/app@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-19.3.0.tgz#d243d31ce0ed6082292a14d42ed11d536831018b"
+  integrity sha512-Y4Jlu7s7JasCcOktAN9LC+7SvMeAG04008OxtbhDK9rpatVznJqRSkMefIIwN2yBs94MWo9b61e+7v5IRMbQdw==
   dependencies:
-    "@expo/config-plugins" "^4.1.5"
-    opencollective-postinstall "^2.0.1"
+    opencollective-postinstall "^2.0.3"
     superstruct "^0.6.2"
 
-"@react-native-firebase/crashlytics@^14.11.0":
-  version "14.11.0"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-14.11.0.tgz#73c9c02154b50bcb34b77d67c7f5e0393ec2ae2e"
-  integrity sha512-HNLJE+XvMt7dNvV5n+M+tDv7n9xER050KtayJoKjzkyFTyPTQzf1IEKqckSZS1PHSG+Sqcbe2nfoMF2GwNAAhA==
+"@react-native-firebase/crashlytics@19.3.0":
+  version "19.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/crashlytics/-/crashlytics-19.3.0.tgz#d98bd399ceb465c201867c27d6bf79434b204766"
+  integrity sha512-fcHi9+tlxmi4FNqE6ydnTSizkwRnZeDxg/CN5Ti1i9+AAdov4rKZNh3JHgg+7RqhsF3f1TvOw/hp4hHiFOfAvQ==
   dependencies:
-    "@expo/config-plugins" "^4.1.5"
-    stacktrace-js "^2.0.0"
+    stacktrace-js "^2.0.2"
 
 "@react-native-firebase/messaging@^18.5.0":
   version "18.5.0"
@@ -16370,7 +16368,7 @@ open@^8.0.4, open@^8.3.0:
     is-docker "^2.1.1"
     is-wsl "^2.2.0"
 
-opencollective-postinstall@^2.0.1:
+opencollective-postinstall@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
   integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
@@ -17744,9 +17742,9 @@ react-native-console-time-polyfill@1.2.3:
   integrity sha512-C7CUb1c6GsCssqvjtRuqVqnGwlfEHXxXDvCUuGNbq/gpZZt+9YbZD3ODmXBDxis3tDQA0k1lbT1VMTqWQw9rDg==
 
 react-native-device-info@^10.3.0:
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.3.0.tgz#6bab64d84d3415dd00cc446c73ec5e2e61fddbe7"
-  integrity sha512-/ziZN1sA1REbJTv5mQZ4tXggcTvSbct+u5kCaze8BmN//lbxcTvWsU6NQd4IihLt89VkbX+14IGc9sVApSxd/w==
+  version "10.14.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-10.14.0.tgz#3530ea7e09a0841d568fec987b8c6ae16deee763"
+  integrity sha512-9NnTGfhEU4UgQtz4p6COk2Gbqly0dpSWrJtp+dw5rNAi96KtYbaNnO5yoOHDlJ1SVIzh8+hFu3WxVbnWkFU9gA==
 
 react-native-document-picker@^8.1.2:
   version "8.1.2"
@@ -19524,7 +19522,7 @@ stacktrace-gps@^3.0.4:
     source-map "0.5.6"
     stackframe "^1.1.1"
 
-stacktrace-js@^2.0.0:
+stacktrace-js@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/stacktrace-js/-/stacktrace-js-2.0.2.tgz#4ca93ea9f494752d55709a081d400fdaebee897b"
   integrity sha512-Je5vBeY4S1r/RnLydLl0TBTi3F2qdfWmYsGvtfZgEI+SCprPppaIhQf5nGcal4gI4cGpCV/duLcAzT1np6sQqg==

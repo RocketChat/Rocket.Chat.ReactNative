@@ -47,7 +47,7 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 					</View>
 				)}
 				<Switch
-					thumbColor={'#41FF8B'}
+					thumbColor={value ? '#41FF8B' : '#f5455c'}
 					style={styles.switch}
 					onValueChange={onValueChange}
 					value={value}

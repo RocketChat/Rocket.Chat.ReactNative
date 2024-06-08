@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "861051575427",
+    "project_id": "nionium-ai",
+    "storage_bucket": "nionium-ai.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861051575427:android:420ef60e13c5069bbe8fb6",
+        "android_client_info": {
+          "package_name": "chat.nionium.ai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0GavxPEbw3vwxlWuqxZQ2L74nyc2Kgho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import { InteractionManager, KeyboardAvoidingView, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -1468,23 +1468,30 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}}
 			>
 				<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='room-view'>
-					<StatusBar />
-					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
-					<List
-						ref={this.list}
-						listRef={this.flatList}
-						rid={rid}
-						tmid={this.tmid}
-						renderRow={this.renderItem}
-						loading={loading}
-						hideSystemMessages={this.hideSystemMessages}
-						showMessageInMainThread={user.showMessageInMainThread ?? false}
-						serverVersion={serverVersion}
-					/>
-					{this.renderFooter()}
-					{this.renderActions()}
-					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+					<KeyboardAvoidingView style={{ flex: 1 }} keyboardVerticalOffset={200}>
+						<StatusBar />
+						<Banner
+							title={I18n.t('Announcement')}
+							text={announcement}
+							bannerClosed={bannerClosed}
+							closeBanner={this.closeBanner}
+						/>
+						<List
+							ref={this.list}
+							listRef={this.flatList}
+							rid={rid}
+							tmid={this.tmid}
+							renderRow={this.renderItem}
+							loading={loading}
+							hideSystemMessages={this.hideSystemMessages}
+							showMessageInMainThread={user.showMessageInMainThread ?? false}
+							serverVersion={serverVersion}
+						/>
+						{this.renderFooter()}
+						{this.renderActions()}
+						<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+						<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+					</KeyboardAvoidingView>
 				</SafeAreaView>
 			</RoomContext.Provider>
 		);

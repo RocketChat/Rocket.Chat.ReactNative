@@ -48,6 +48,7 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import WebViewAI from '../WebViewAI/index';
+import { DrawerStyleContext } from '../../stacks/MasterDetailStack/DrawerNavigationStyleProvider';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -176,6 +177,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	private querySubscription?: Subscription;
 	private scroll?: FlatList;
 	private useRealName?: boolean;
+	static contextType = DrawerStyleContext;
 
 	constructor(props: IRoomsListViewProps) {
 		super(props);
@@ -893,8 +895,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
+		const { drawerStyle } = this.context;
 		const options = this.getHeader();
-		return <Header title='' {...themedHeader(theme)} {...options} />;
+		const yo = !drawerStyle.hasOwnProperty('header') ? options : drawerStyle.header;
+		return <Header title='' {...themedHeader(theme)} {...yo} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
@@ -986,10 +990,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderAIWebView = () => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		const param = this.props.route;
 
-		return <WebViewAI header={this.getHeader} timestamp={param} navigation={navigation} />;
+		return <WebViewAI isMasterDetail={isMasterDetail} header={this.getHeader} timestamp={param} navigation={navigation} />;
 	};
 
 	render = () => {
@@ -1001,8 +1005,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showServerDropdown ? <ServerDropdown /> : null}
 				{this.renderAIWebView()}
+				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	};

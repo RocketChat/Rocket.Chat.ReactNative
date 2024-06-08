@@ -115,7 +115,7 @@ const DirectoryOptions = ({
 								</Text>
 							</View>
 							<Switch
-								thumbColor={'#41FF8B'}
+								thumbColor={globalUsers ? '#41FF8B' : '#f5455c'}
 								value={globalUsers}
 								onValueChange={toggleWorkspace}
 								trackColor={SWITCH_TRACK_COLOR}

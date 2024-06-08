@@ -124,7 +124,7 @@ const AutoTranslateView = (): React.ReactElement => {
 							title='Enable_Auto_Translate'
 							right={() => (
 								<Switch
-									thumbColor={'#41FF8B'}
+									thumbColor={enableAutoTranslate ? '#41FF8B' : '#f5455c'}
 									testID='auto-translate-view-switch'
 									value={enableAutoTranslate}
 									trackColor={SWITCH_TRACK_COLOR}

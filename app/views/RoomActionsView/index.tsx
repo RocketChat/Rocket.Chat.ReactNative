@@ -354,7 +354,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		}
 		return (
 			<Switch
-				thumbColor={'#41FF8B'}
+				thumbColor={encrypted ? '#41FF8B' : '#f5455c'}
 				value={encrypted}
 				trackColor={SWITCH_TRACK_COLOR}
 				onValueChange={this.toggleEncrypted}

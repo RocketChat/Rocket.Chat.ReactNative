@@ -57,7 +57,12 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	};
 
 	const renderMessageParserSwitch = (value: boolean) => (
-		<Switch thumbColor={'#41FF8B'} value={value} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleMessageParser} />
+		<Switch
+			thumbColor={value ? '#41FF8B' : '#f5455c'}
+			value={value}
+			trackColor={SWITCH_TRACK_COLOR}
+			onValueChange={toggleMessageParser}
+		/>
 	);
 
 	return (

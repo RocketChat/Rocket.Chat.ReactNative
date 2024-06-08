@@ -79,5 +79,8 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+           <meta-data
+        android:name="com.google.firebase.analytics.default"
+        android:value="true" />
     </application>
 </manifest>

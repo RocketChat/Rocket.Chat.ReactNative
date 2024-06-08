@@ -11,7 +11,7 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 999999999,
+      "versionCode": 2,
       "versionName": "1.2.0",
       "outputFile": "app-official-play-release.apk"
     }

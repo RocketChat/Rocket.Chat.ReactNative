@@ -117,8 +117,8 @@ const SettingsView = (): React.ReactElement => {
 
 	const sendEmail = async () => {
 		logEvent(events.SE_CONTACT_US);
-		const subject = encodeURI('Rocket.Chat Mobile App Support');
-		const email = encodeURI('support@rocket.chat');
+		const subject = encodeURI('Nionium AI Mobile App Support');
+		const email = encodeURI('support@nionium.ai');
 		const description = encodeURI(`
 			version: ${getReadableVersion}
 			device: ${getDeviceModel}
@@ -127,7 +127,7 @@ const SettingsView = (): React.ReactElement => {
 			await Linking.openURL(`mailto:${email}?subject=${subject}&body=${description}`);
 		} catch (e) {
 			logEvent(events.SE_CONTACT_US_F);
-			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
+			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@nionium.ai' }));
 		}
 	};
 
@@ -239,29 +239,6 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 				</List.Section>
-
-				<List.Section>
-					<List.Separator />
-					<List.Item title='License' onPress={onPressLicense} showActionIndicator testID='settings-view-license' />
-					<List.Separator />
-					<List.Item
-						title={I18n.t('Version_no', { version: getReadableVersion })}
-						onPress={copyAppVersion}
-						testID='settings-view-version'
-						translateTitle={false}
-					/>
-					<List.Separator />
-					<List.Item
-						title={I18n.t('Server_version', { version })}
-						onPress={copyServerVersion}
-						subtitle={`${server.split('//')[1]}`}
-						testID='settings-view-server-version'
-						translateTitle={false}
-						translateSubtitle={false}
-					/>
-					<List.Separator />
-				</List.Section>
-
 				<List.Section>
 					<List.Separator />
 					<List.Item

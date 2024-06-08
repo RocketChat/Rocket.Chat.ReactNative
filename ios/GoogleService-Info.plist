@@ -2,35 +2,29 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.115198584049-0efgfvm0oh9ap55g7epmqnjm27mq3j4e</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBOX8Kexso9haPJlMefKrGR-g7xml6VUKo</string>
+	<string>AIzaSyClfxwgC8oQGamhIMv4o8_A7HpPT7qYX74</string>
 	<key>GCM_SENDER_ID</key>
-	<string>310332843443</string>
+	<string>861051575427</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>chat.nionium.ai</string>
+	<string>com.nionium.nioniumai</string>
 	<key>PROJECT_ID</key>
-	<string>nionium-app-de3fd</string>
+	<string>nionium-ai</string>
 	<key>STORAGE_BUCKET</key>
-	<string>nionium-app-de3fd.appspot.com</string>
+	<string>nionium-ai.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:310332843443:ios:2a09ba1708ed65fcd6d7c6</string>
-	<key>DATABASE_URL</key>
-	<string>https://rocketchat-reactnative-test.firebaseio.com</string>
+	<string>1:861051575427:ios:fc3ea0a42e97a197be8fb6</string>
 </dict>
 </plist>

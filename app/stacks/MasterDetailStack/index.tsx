@@ -3,13 +3,7 @@ import { createStackNavigator, StackNavigationOptions, StackNavigationProp } fro
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
-import {
-	FadeFromCenterModal,
-	StackAnimation,
-	defaultHeader,
-	themedHeader,
-	drawerStyle
-} from '../../lib/methods/helpers/navigation';
+import { FadeFromCenterModal, StackAnimation, defaultHeader, themedHeader } from '../../lib/methods/helpers/navigation';
 // Chats Stack
 import RoomView from '../../views/RoomView';
 import RoomsListView from '../../views/RoomsListView';
@@ -79,6 +73,7 @@ import {
 import { isIOS } from '../../lib/methods/helpers';
 import { TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
+import { DrawerStyleProvider, useDrawerStyle } from './DrawerNavigationStyleProvider';
 
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
@@ -96,14 +91,17 @@ const ChatsStackNavigator = React.memo(() => {
 
 // DrawerNavigator
 const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
-const DrawerNavigator = React.memo(() => (
-	<Drawer.Navigator
-		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
-		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
-	>
-		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
-	</Drawer.Navigator>
-));
+const DrawerNavigator = React.memo(() => {
+	const { drawerStyle } = useDrawerStyle();
+	return (
+		<Drawer.Navigator
+			screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle.drawer } }}
+			drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}
+		>
+			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
+		</Drawer.Navigator>
+	);
+});
 
 export interface INavigation {
 	navigation: StackNavigationProp<ModalStackParamList>;
@@ -200,27 +198,29 @@ const InsideStack = createStackNavigator<MasterDetailInsideStackParamList & TNav
 const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
-		<InsideStack.Navigator
-			screenOptions={
-				{
-					...defaultHeader,
-					...themedHeader(theme),
-					...FadeFromCenterModal,
-					presentation: 'transparentModal'
-				} as StackNavigationOptions
-			}
-		>
-			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
-			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
-			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
-			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
-			<InsideStack.Screen
-				name='JitsiMeetView'
-				component={JitsiMeetView}
-				options={{ headerShown: false, animationEnabled: isIOS }}
-			/>
-			<InsideStack.Screen name='ShareView' component={ShareView} />
-		</InsideStack.Navigator>
+		<DrawerStyleProvider>
+			<InsideStack.Navigator
+				screenOptions={
+					{
+						...defaultHeader,
+						...themedHeader(theme),
+						...FadeFromCenterModal,
+						presentation: 'transparentModal'
+					} as StackNavigationOptions
+				}
+			>
+				<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
+				<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
+				<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
+				<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
+				<InsideStack.Screen
+					name='JitsiMeetView'
+					component={JitsiMeetView}
+					options={{ headerShown: false, animationEnabled: isIOS }}
+				/>
+				<InsideStack.Screen name='ShareView' component={ShareView} />
+			</InsideStack.Navigator>
+		</DrawerStyleProvider>
 	);
 });
 

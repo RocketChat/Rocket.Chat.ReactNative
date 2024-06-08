@@ -131,7 +131,7 @@ const UserNotificationPreferencesView = () => {
 								testID='user-notification-preference-view-in-app-vibration'
 								right={() => (
 									<Switch
-										thumbColor={'#41FF8B'}
+										thumbColor={inAppVibration ? '#41FF8B' : '#f5455c'}
 										value={inAppVibration}
 										trackColor={SWITCH_TRACK_COLOR}
 										onValueChange={toggleInAppVibration}
