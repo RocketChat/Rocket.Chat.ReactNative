@@ -45,8 +45,7 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 			disabled={disabled}
 			onPress={onPress}
 			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}
-		>
+			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			{children}
 		</Touchable>
 	);
@@ -59,7 +58,7 @@ export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: s
 			<FastImage
 				style={[styles.image, { borderColor: colors.strokeLight }]}
 				source={{ uri: encodeURI(imgUri) }}
-				resizeMode={FastImage.resizeMode.cover}
+				resizeMode={FastImage.resizeMode.contain}
 			/>
 			{!cached ? (
 				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />

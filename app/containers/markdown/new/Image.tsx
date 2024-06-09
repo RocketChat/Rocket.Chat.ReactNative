@@ -23,7 +23,7 @@ const MessageImage = ({ img, theme }: TMessageImage) => (
 	<ImageProgress
 		style={[styles.inlineImage, { borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
-		resizeMode={FastImage.resizeMode.cover}
+		resizeMode={FastImage.resizeMode.contain}
 		indicator={Progress.Pie}
 		indicatorProps={{
 			color: themes[theme].fontHint
