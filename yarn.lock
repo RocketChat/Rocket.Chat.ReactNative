@@ -7693,7 +7693,7 @@ expo-document-picker@11.10.1:
   resolved "https://registry.yarnpkg.com/expo-document-picker/-/expo-document-picker-11.10.1.tgz#03394d77842a2fd7cb0a784a60098ee1ddd1012e"
   integrity sha512-A1MiLfyXQ+KxanRO5lYxYQy3ryV+25JHe5Ai/BLV+FJU0QXByUF+Y/dn35WVPx5gpdZXC8UJ4ejg5SKSoeconw==
 
-expo-file-system@^16.0.8, expo-file-system@~16.0.0, expo-file-system@~16.0.8:
+expo-file-system@16.0.8, expo-file-system@~16.0.0, expo-file-system@~16.0.8:
   version "16.0.8"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-16.0.8.tgz#13c79a8e06e42a8e76e9297df6920597a011d989"
   integrity sha512-yDbVT0TUKd7ewQjaY5THum2VRFx2n/biskGhkUmLh3ai21xjIVtaeIzHXyv9ir537eVgt4ReqDNWi7jcXjdUcA==
