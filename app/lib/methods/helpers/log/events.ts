@@ -6,6 +6,8 @@ export default {
 	// LOGIN VIEW
 	LOGIN_DEFAULT_LOGIN: 'login_default_login',
 	LOGIN_DEFAULT_LOGIN_F: 'login_default_login_f',
+	LOGOUT_BY_SERVER: 'logout_by_server',
+	LOGOUT_TOKEN_EXPIRED: 'logout_token_expired',
 
 	// FORGOT PASSWORD VIEW
 	FP_FORGOT_PASSWORD: 'fp_forgot_password',

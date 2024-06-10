@@ -146,6 +146,17 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 16,
+			steps: [
+				addColumns({
+					table: 'users',
+					columns: [
+						{ name: 'require_password_change', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

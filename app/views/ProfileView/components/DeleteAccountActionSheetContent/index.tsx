@@ -58,7 +58,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			title={i18n.t('Are_you_sure_you_want_to_delete_your_account')}
 			description={i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 			onCancel={hideActionSheet}
-			onSubmit={password => handleDeleteAccount(password)}
+			onSubmit={password => handleDeleteAccount(password as string)}
 			placeholder={i18n.t('Password')}
 			testID='profile-view-delete-account-sheet'
 			iconName='warning'

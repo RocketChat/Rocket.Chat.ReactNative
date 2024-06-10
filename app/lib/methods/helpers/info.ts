@@ -8,7 +8,7 @@ export const showErrorAlert = (message: string, title?: string, onPress = () => 
 export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
 	let errorMessage: string = e?.data?.error;
 
-	if (errorMessage.includes('[error-too-many-requests]')) {
+	if (errorMessage?.includes('[error-too-many-requests]')) {
 		const seconds = errorMessage.replace(/\D/g, '');
 		errorMessage = I18n.t('error-too-many-requests', { seconds });
 	} else {
