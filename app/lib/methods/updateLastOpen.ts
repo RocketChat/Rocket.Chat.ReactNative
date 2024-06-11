@@ -7,13 +7,9 @@ export async function updateLastOpen(rid: string, lastOpen = new Date()): Promis
 		const db = database.active;
 		const subscription = await db.get('subscriptions').find(rid);
 		await db.write(async () => {
-			try {
-				await subscription.update((s: TSubscriptionModel) => {
-					s.lastOpen = lastOpen;
-				});
-			} catch (e) {
-				//
-			}
+			await subscription.update((s: TSubscriptionModel) => {
+				s.lastOpen = lastOpen;
+			});
 		});
 	} catch (e) {
 		log(e);
