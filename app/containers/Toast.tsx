@@ -14,8 +14,8 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		// jest error: TypeError: Cannot read property 'textRegular' of undefined
-		...sharedStyles?.textRegular,
-		...sharedStyles?.textAlignCenter
+		...sharedStyles.textRegular,
+		...sharedStyles.textAlignCenter
 	}
 });
 
