@@ -34,6 +34,7 @@ export interface ISwitch extends SwitchProps {
 	label: string;
 	hint: string;
 	onValueChange: (value: boolean) => void;
+	disabled?: boolean;
 }
 
 export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = false }: ISwitch) => {
