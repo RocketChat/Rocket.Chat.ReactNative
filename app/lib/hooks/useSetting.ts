@@ -1,6 +1,6 @@
 import { TSettingsValues, TSupportedSettings } from '../../reducers/settings';
 import { useAppSelector } from './useAppSelector';
 
-export function useSetting(key: TSupportedSettings): TSettingsValues {
-	return useAppSelector(state => state.settings[key]) as TSettingsValues;
+export function useSetting<TValue extends TSettingsValues>(key: TSupportedSettings): TValue | undefined {
+	return useAppSelector(state => state.settings[key]) as TValue;
 }
