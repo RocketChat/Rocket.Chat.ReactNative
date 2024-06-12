@@ -23,6 +23,7 @@ import { ControlledFormTextInput } from '../../containers/TextInput';
 import Chip from '../../containers/Chip';
 import { RoomSettings } from './RoomSettings';
 import { ISelectedUser } from '../../reducers/selectedUsers';
+import { useSetting } from '../../lib/hooks/useSetting';
 
 const styles = StyleSheet.create({
 	container: {
@@ -67,13 +68,13 @@ export interface IFormData {
 
 const CreateChannelView = () => {
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
+	const e2eEnabledDefaultPrivateRooms = useSetting<boolean>('E2E_Enabled_Default_PrivateRooms');
 
-	const { isFetching, useRealName, users, e2eEnabledDefaultPrivateRooms } = useAppSelector(
+	const { isFetching, useRealName, users } = useAppSelector(
 		state => ({
 			isFetching: state.createChannel.isFetching,
 			users: state.selectedUsers.users,
-			useRealName: state.settings.UI_Use_Real_Name as boolean,
-			e2eEnabledDefaultPrivateRooms: state.encryption.enabled && (state.settings.E2E_Enabled_Default_PrivateRooms as boolean)
+			useRealName: state.settings.UI_Use_Real_Name as boolean
 		}),
 		shallowEqual
 	);

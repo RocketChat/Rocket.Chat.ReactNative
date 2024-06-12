@@ -13,19 +13,20 @@ export const RoomSettings = ({
 	isTeam,
 	setValue,
 	createChannelPermission,
-	createPrivateChannelPermission
+	createPrivateChannelPermission,
+	e2eEnabledDefaultPrivateRooms
 }: {
 	isTeam: boolean;
 	setValue: UseFormSetValue<IFormData>;
 	createChannelPermission: boolean;
 	createPrivateChannelPermission: boolean;
+	e2eEnabledDefaultPrivateRooms: boolean;
 }) => {
 	const e2eEnabled = useSetting<boolean>('E2E_Enable');
-	const e2eEnabledForPrivateByDefault = useSetting<boolean>('E2E_Enabled_Default_PrivateRooms');
 
 	const [type, setType] = useState(true);
 	const [readOnly, setReadOnly] = useState(false);
-	const [encrypted, setEncrypted] = useState(e2eEnabledForPrivateByDefault);
+	const [encrypted, setEncrypted] = useState(e2eEnabledDefaultPrivateRooms);
 	const [broadcast, setBroadcast] = useState(false);
 
 	const canOnlyCreateOneType = useMemo(() => {
@@ -107,7 +108,7 @@ export const RoomSettings = ({
 				isTeam={isTeam}
 				type={type}
 				encrypted={encrypted}
-				disabled={e2eEnabledForPrivateByDefault}
+				disabled={e2eEnabledDefaultPrivateRooms}
 				onValueChangeEncrypted={onValueChangeEncrypted}
 			/>
 			<SwitchItem
