@@ -56,7 +56,7 @@ export const MessageImage = React.memo(
 	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
 		const { colors } = useTheme();
 
-		if (encrypted) {
+		if (encrypted && !loading) {
 			return (
 				<>
 					<View style={styles.image} />
@@ -112,8 +112,8 @@ const ImageContainer = ({
 					handleResumeDownload();
 					return;
 				}
-				setLoading(false);
 				await handleAutoDownload();
+				setLoading(false);
 			}
 		};
 		if (isImageBase64(imgUrlToCache)) {
@@ -155,28 +155,23 @@ const ImageContainer = ({
 				await Encryption.decryptFile(id, cachedImageResult.uri, file.encryption);
 			}
 			updateImageCached(cachedImageResult.uri);
-			setLoading(false);
 		}
 		return !!cachedImageResult?.exists;
 	};
 
 	const handleResumeDownload = async () => {
 		try {
-			setLoading(true);
 			const imageUri = await resumeMediaFile({
 				downloadUrl: imgUrlToCache
 			});
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	const handleDownload = async () => {
 		try {
-			setLoading(true);
 			const imageUri = await downloadMediaFile({
 				messageId: id,
 				downloadUrl: imgUrlToCache,
@@ -187,8 +182,6 @@ const ImageContainer = ({
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
-		} finally {
-			setLoading(false);
 		}
 	};
 
