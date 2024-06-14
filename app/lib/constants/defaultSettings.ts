@@ -249,10 +249,16 @@ export const defaultSettings = {
 	CDN_PREFIX: {
 		type: 'valueAsString'
 	},
-	Accounts_RequirePasswordConfirmation:{
+	Accounts_RequirePasswordConfirmation: {
 		type: 'valueAsBoolean'
 	},
-	Accounts_ConfirmPasswordPlaceholder:{
+	Accounts_ConfirmPasswordPlaceholder: {
+		type: 'valueAsString'
+	},
+	E2E_Enabled_Mentions: {
+		type: 'valueAsBoolean'
+	},
+	UTF8_User_Names_Validation: {
 		type: 'valueAsString'
 	},
 	...deprecatedSettings

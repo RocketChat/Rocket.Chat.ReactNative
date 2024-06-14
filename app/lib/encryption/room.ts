@@ -15,6 +15,7 @@ import {
 	bufferToB64,
 	bufferToB64URI,
 	bufferToUtf8,
+	getE2EEMentions,
 	joinVectorData,
 	splitVectorData,
 	toString,
@@ -234,7 +235,8 @@ export default class EncryptionRoom {
 				...message,
 				t: E2E_MESSAGE_TYPE,
 				e2e: E2E_STATUS.PENDING,
-				msg
+				msg,
+				e2eMentions: getE2EEMentions(message.msg)
 			};
 		} catch {
 			// Do nothing
