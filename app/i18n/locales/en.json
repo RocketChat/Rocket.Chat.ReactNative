@@ -246,6 +246,7 @@
   "Enable_writing_in_room": "Enable writing in room",
   "Enabled_E2E_Encryption_for_this_room": "enabled E2E encryption for this room",
   "Encrypted": "Encrypted",
+  "Encrypted_file": "Encrypted file",
   "Encrypted_message": "Encrypted message",
   "Encryption_error_desc": "It wasn't possible to decode your encryption key to be imported.",
   "Encryption_error_title": "Your encryption password seems wrong",

@@ -13,7 +13,7 @@ import {
 	isDownloadActive,
 	resumeMediaFile
 } from '../../../../lib/methods/handleMediaDownload';
-import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
+import { fileDownload, isIOS, showErrorAlert } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../../../theme';
@@ -178,7 +178,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 
 	const onPress = async () => {
 		if (file.e2e === 'pending') {
-			alert('File is encrypted. tbd');
+			showErrorAlert(I18n.t('Encrypted_file'));
 			return;
 		}
 		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {

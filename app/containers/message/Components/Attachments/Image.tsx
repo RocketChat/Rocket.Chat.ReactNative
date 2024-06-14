@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
+import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { Encryption } from '../../../../lib/encryption';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -21,6 +22,7 @@ import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import styles from '../../styles';
 import { isImageBase64 } from '../../../../lib/methods';
+import I18n from '../../../../i18n';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -187,7 +189,7 @@ const ImageContainer = ({
 
 	const onPress = async () => {
 		if (file.e2e === 'pending') {
-			alert('File is encrypted. tbd');
+			showErrorAlert(I18n.t('Encrypted_file'));
 			return;
 		}
 		if (loading && isDownloadActive(imgUrlToCache)) {

@@ -243,6 +243,7 @@
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Enabled_E2E_Encryption_for_this_room": "habilitou criptografia para essa sala",
   "Encrypted": "Criptografado",
+  "Encrypted_file": "Arquivo criptografado",
   "Encrypted_message": "Mensagem criptografada",
   "Encryption_error_desc": "Não foi possível decodificar sua chave E2E para ser importada.",
   "Encryption_error_title": "Sua senha E2E parece errada",
