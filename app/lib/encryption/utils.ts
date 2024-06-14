@@ -3,6 +3,7 @@ import SimpleCrypto from 'react-native-simple-crypto';
 
 import { random } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
+import { store } from '../store/auxStore';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -58,3 +59,22 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
 export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+
+// https://github.com/RocketChat/Rocket.Chat/blob/b94db45cab297a3bcbafca4d135d83c898222380/apps/meteor/app/mentions/lib/MentionsParser.ts#L50
+const userMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)@(${pattern}(@(${pattern}))?(:([0-9a-zA-Z-_.]+))?)`, 'gm');
+const channelMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)#(${pattern}(@(${pattern}))?)`, 'gm');
+
+export const getE2EEMentions = (message?: string) => {
+	const e2eEnabledMentions = store.getState().settings.E2E_Enabled_Mentions;
+	if (!e2eEnabledMentions || !message) {
+		return undefined;
+	}
+	const utf8UserNamesValidation = store.getState().settings.UTF8_User_Names_Validation as string;
+
+	return {
+		e2eUserMentions: (message.match(userMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim()),
+		e2eUserMentionse2eChannelMentions: (message.match(channelMentionRegex(utf8UserNamesValidation)) || []).map(match =>
+			match.trim()
+		)
+	};
+};
