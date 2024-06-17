@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
+import { View, Alert } from 'react-native';
 
 import I18n from '../../i18n';
 import { isGroupChat } from '../../lib/methods/helpers';
@@ -76,47 +77,68 @@ const RoomItemContainer = React.memo(
 		}
 
 		return (
-			<RoomItem
-				name={name}
-				avatar={avatar}
-				isGroupChat={isGroupChat(item)}
-				isRead={isRead}
-				onPress={handleOnPress}
-				onLongPress={handleOnLongPress}
-				date={date}
+			<View
+				accessible
 				accessibilityLabel={accessibilityLabel}
-				width={width}
-				favorite={item.f}
-				rid={item.rid}
-				userId={userId}
-				toggleFav={toggleFav}
-				toggleRead={toggleRead}
-				hideChannel={hideChannel}
-				testID={testID}
-				type={item.t}
-				isFocused={isFocused}
-				prid={item.prid}
-				hideUnreadStatus={item.hideUnreadStatus}
-				hideMentionStatus={item.hideMentionStatus}
-				alert={alert}
-				lastMessage={item.lastMessage}
-				showLastMessage={showLastMessage}
-				username={username}
-				useRealName={useRealName}
-				unread={item.unread}
-				userMentions={item.userMentions}
-				groupMentions={item.groupMentions}
-				tunread={item.tunread}
-				tunreadUser={item.tunreadUser}
-				tunreadGroup={item.tunreadGroup}
-				swipeEnabled={swipeEnabled}
-				teamMain={item.teamMain}
-				autoJoin={autoJoin}
-				showAvatar={showAvatar}
-				displayMode={displayMode}
-				status={item.t === 'l' ? item?.visitor?.status : null}
-				sourceType={item.t === 'l' ? item.source : null}
-			/>
+				accessibilityActions={[
+					{ name: 'unread', label: 'mark as unread' },
+					{ name: 'fav', label: 'toggle favorite' },
+					{ name: 'hide', label: 'hide' }
+				]}
+				onAccessibilityAction={event => {
+					switch (event.nativeEvent.actionName) {
+						case 'unread':
+							Alert.alert('Alert', 'unread action success');
+							break;
+						case 'fav':
+							Alert.alert('Alert', 'fav action success');
+							break;
+						case 'hide':
+							Alert.alert('Alert', 'hide action success');
+							break;
+					}
+				}}>
+				<RoomItem
+					name={name}
+					avatar={avatar}
+					isGroupChat={isGroupChat(item)}
+					isRead={isRead}
+					onPress={handleOnPress}
+					onLongPress={handleOnLongPress}
+					date={date}
+					width={width}
+					favorite={item.f}
+					rid={item.rid}
+					userId={userId}
+					toggleFav={toggleFav}
+					toggleRead={toggleRead}
+					hideChannel={hideChannel}
+					testID={testID}
+					type={item.t}
+					isFocused={isFocused}
+					prid={item.prid}
+					hideUnreadStatus={item.hideUnreadStatus}
+					hideMentionStatus={item.hideMentionStatus}
+					alert={alert}
+					lastMessage={item.lastMessage}
+					showLastMessage={showLastMessage}
+					username={username}
+					useRealName={useRealName}
+					unread={item.unread}
+					userMentions={item.userMentions}
+					groupMentions={item.groupMentions}
+					tunread={item.tunread}
+					tunreadUser={item.tunreadUser}
+					tunreadGroup={item.tunreadGroup}
+					swipeEnabled={swipeEnabled}
+					teamMain={item.teamMain}
+					autoJoin={autoJoin}
+					showAvatar={showAvatar}
+					displayMode={displayMode}
+					status={item.t === 'l' ? item?.visitor?.status : null}
+					sourceType={item.t === 'l' ? item.source : null}
+				/>
+			</View>
 		);
 	},
 	(props, nextProps) => attrs.every(key => props[key] === nextProps[key])
