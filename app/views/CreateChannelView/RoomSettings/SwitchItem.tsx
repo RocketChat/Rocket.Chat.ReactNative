@@ -47,12 +47,7 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 					{I18n.t(hint)}
 				</Text>
 			</View>
-			<Switch
-				value={value}
-				onValueChange={onValueChange}
-				testID={`create-channel-${id}`}
-				disabled={disabled}
-			/>
+			<Switch value={value} onValueChange={onValueChange} testID={`create-channel-${id}`} disabled={disabled} />
 		</View>
 	);
 };
