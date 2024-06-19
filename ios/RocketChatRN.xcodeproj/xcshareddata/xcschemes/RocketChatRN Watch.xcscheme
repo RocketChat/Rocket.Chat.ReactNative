@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "1ED1EC8E2B86997F00F6620C"
-               BuildableName = "Rocket.Chat Experimental Watch.app"
+               BuildableName = "Cortex Chat Watch.app"
                BlueprintName = "RocketChatRN Watch"
                ReferencedContainer = "container:RocketChatRN.xcodeproj">
             </BuildableReference>
@@ -44,7 +44,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1ED1EC8E2B86997F00F6620C"
-            BuildableName = "Rocket.Chat Experimental Watch.app"
+            BuildableName = "Cortex Chat Watch.app"
             BlueprintName = "RocketChatRN Watch"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>
@@ -61,7 +61,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "1ED1EC8E2B86997F00F6620C"
-            BuildableName = "Rocket.Chat Experimental Watch.app"
+            BuildableName = "Cortex Chat Watch.app"
             BlueprintName = "RocketChatRN Watch"
             ReferencedContainer = "container:RocketChatRN.xcodeproj">
          </BuildableReference>

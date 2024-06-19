@@ -620,7 +620,7 @@ jobs:
       - persist_to_workspace:
           root: /Users/distiller/project
           paths:
-            - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
+            - ios/build/Build/Products/Release-iphonesimulator/Cortex Chat.app
   
   e2e-test-ios:
     executor: mac-env

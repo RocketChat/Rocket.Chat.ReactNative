@@ -10,6 +10,9 @@ install! 'cocoapods', :deterministic_uuids => false
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
   config = use_native_modules!
 
