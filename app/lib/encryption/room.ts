@@ -385,27 +385,31 @@ export default class EncryptionRoom {
 
 			// If message type is e2e and it's encrypted still
 			if (t === E2E_MESSAGE_TYPE && e2e !== E2E_STATUS.DONE) {
-				let { msg, tmsg } = message;
+				const { msg, tmsg } = message;
 				// Decrypt msg
-				msg = await this.decryptText(msg as string);
+				if (msg) {
+					message.msg = await this.decryptText(msg);
+				}
 
 				// Decrypt tmsg
 				if (tmsg) {
-					tmsg = await this.decryptText(tmsg);
+					message.tmsg = await this.decryptText(tmsg);
 				}
 
 				if (message.content?.ciphertext) {
 					const content = await this.decryptContent(message.content.ciphertext);
-					message.attachments = content.attachments.map((att: IAttachment) => ({
-						...att,
-						e2e: 'pending'
-					}));
+					message = {
+						...message,
+						...content,
+						content: content.attachments?.map((att: IAttachment) => ({
+							...att,
+							e2e: 'pending'
+						}))
+					};
 				}
 
 				const decryptedMessage: IMessage = {
 					...message,
-					tmsg,
-					msg,
 					e2e: 'done'
 				};
 
