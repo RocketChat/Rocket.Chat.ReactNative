@@ -12,7 +12,6 @@ import Deferred from './helpers/deferred';
 import log from '../methods/helpers/log';
 import { store } from '../store/auxStore';
 import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
-import { EncryptionRoom } from './index';
 import {
 	IMessage,
 	ISubscription,
@@ -23,6 +22,7 @@ import {
 	TThreadMessageModel,
 	TThreadModel
 } from '../../definitions';
+import EncryptionRoom from './room';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -364,6 +364,9 @@ class Encryption {
 			log(e);
 		}
 	};
+
+	// Creating the instance is enough to generate room e2ee key
+	encryptSubscription = (rid: string) => this.getRoomInstance(rid as string);
 
 	// Decrypt a subscription lastMessage
 	decryptSubscription = async (subscription: Partial<ISubscription>) => {
