@@ -47,6 +47,7 @@ import {
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
+import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -123,7 +124,7 @@ const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsUnread = (s: TSubscriptionModel) => (s.alert || s.unread) && !s.hideUnreadStatus;
 const filterIsFavorite = (s: TSubscriptionModel) => s.f;
 const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
 const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
@@ -155,7 +156,7 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
+const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
 	length: height,
 	offset: height * index,
 	index
@@ -315,6 +316,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.shouldUpdate = false;
 			return true;
 		}
+		if (nextProps?.user?.requirePasswordChange !== this.props?.user?.requirePasswordChange) {
+			return true;
+		}
 		return false;
 	}
 
@@ -376,6 +380,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.handleHasPermission();
 			this.setHeader();
 		}
+		if (prevProps.user.requirePasswordChange !== this.props.user.requirePasswordChange) {
+			this.setHeader();
+		}
 	}
 
 	componentWillUnmount() {
@@ -414,7 +421,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): StackNavigationOptions => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme } =
+		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme, user } =
 			this.props;
 		if (searching) {
 			return {
@@ -441,6 +448,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		};
 
+		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
+
 		return {
 			headerTitleAlign: 'left',
 			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
@@ -456,7 +465,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							  () => navigation.toggleDrawer()
 					}
 					badge={() => getBadge()}
-					disabled={supportedVersionsStatus === 'expired'}
+					disabled={disabled}
 				/>
 			),
 			headerTitle: () => <RoomsListHeaderView />,
@@ -475,20 +484,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							iconName='create'
 							onPress={this.goToNewMessage}
 							testID='rooms-list-view-create-channel'
-							disabled={supportedVersionsStatus === 'expired'}
+							disabled={disabled}
 						/>
 					) : null}
-					<HeaderButton.Item
-						iconName='search'
-						onPress={this.initSearching}
-						testID='rooms-list-view-search'
-						disabled={supportedVersionsStatus === 'expired'}
-					/>
+					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
 					<HeaderButton.Item
 						iconName='directory'
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
-						disabled={supportedVersionsStatus === 'expired'}
+						disabled={disabled}
 					/>
 				</HeaderButton.Container>
 			)
@@ -537,9 +541,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 		if (sortBy === SortBy.Alphabetical) {
-			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
+			defaultWhereClause.push(Q.sortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
 		} else {
-			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+			defaultWhereClause.push(Q.sortBy('room_updated_at', Q.desc));
 		}
 
 		// When we're grouping by something
@@ -553,7 +557,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
-				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
+				.query(...defaultWhereClause, Q.skip(0), Q.take(this.count))
 				.observeWithColumns(['on_hold']);
 		}
 
@@ -847,6 +851,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			// @ts-ignore
 			navigation.navigate(screen);
 		}
 	};
@@ -948,7 +953,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode, supportedVersionsStatus } = this.props;
+		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
@@ -958,6 +963,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		if (supportedVersionsStatus === 'expired') {
 			return <SupportedVersionsExpired />;
+		}
+
+		if (user.requirePasswordChange) {
+			return <ChangePasswordRequired />;
 		}
 
 		return (

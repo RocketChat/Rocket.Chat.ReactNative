@@ -1,0 +1,25 @@
+diff --git a/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java b/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java
+index af1d952..ba056e4 100644
+--- a/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java
++++ b/node_modules/react-native-orientation-locker/android/src/main/java/org/wonday/orientation/OrientationModule.java
+@@ -22,6 +22,7 @@ import android.view.Surface;
+ import android.view.WindowManager;
+ import android.util.DisplayMetrics;
+ import android.hardware.SensorManager;
++import android.os.Build;
+ 
+ import com.facebook.common.logging.FLog;
+ import com.facebook.react.bridge.Arguments;
+@@ -345,7 +346,11 @@ public class OrientationModule extends ReactContextBaseJavaModule implements Lif
+ 
+         final Activity activity = getCurrentActivity();
+         if (activity == null) return;
+-        activity.registerReceiver(mReceiver, new IntentFilter("onConfigurationChanged"));
++        if (Build.VERSION.SDK_INT >= 34 && ctx.getApplicationInfo().targetSdkVersion >= 34) {
++            ctx.registerReceiver(mReceiver, new IntentFilter("onConfigurationChanged"), Context.RECEIVER_NOT_EXPORTED);
++        }else{
++            ctx.registerReceiver(mReceiver, new IntentFilter("onConfigurationChanged"));
++        }
+     }
+     @Override
+     public void onHostPause() {

@@ -33,4 +33,6 @@ export default class User extends Model {
 	@field('nickname') nickname;
 
 	@field('bio') bio;
+
+	@field('require_password_change') requirePasswordChange;
 }

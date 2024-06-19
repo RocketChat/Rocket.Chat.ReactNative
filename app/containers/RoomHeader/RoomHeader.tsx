@@ -186,8 +186,7 @@ const Header = React.memo(
 					}
 				]}
 				disabled={disabled}
-				hitSlop={HIT_SLOP}
-			>
+				hitSlop={HIT_SLOP}>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon

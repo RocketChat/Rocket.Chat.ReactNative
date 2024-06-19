@@ -6,7 +6,7 @@ import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
-import RNFetchBlob from 'rn-fetch-blob';
+import * as FileSystem from 'expo-file-system';
 
 import { isImageBase64 } from '../lib/methods';
 import RCActivityIndicator from '../containers/ActivityIndicator';
@@ -18,7 +18,7 @@ import { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
@@ -177,11 +177,9 @@ const AttachmentView = (): React.ReactElement => {
 				} else {
 					filename = getFilename({ title: attachment.title, type: 'video', mimeType: video_type, url });
 				}
-				const documentDir = `${RNFetchBlob.fs.dirs.DocumentDir}/`;
-				const path = `${documentDir + filename}`;
-				const file = await RNFetchBlob.config({ path }).fetch('GET', mediaAttachment);
-				await CameraRoll.save(path, { album: 'Rocket.Chat' });
-				file.flush();
+				const file = await fileDownload(mediaAttachment, {}, filename);
+				await CameraRoll.save(file, { album: 'Rocket.Chat' });
+				FileSystem.deleteAsync(file, { idempotent: true });
 			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 		} catch (e) {

@@ -114,13 +114,19 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					.filter(item => item.type === 'media')
 					.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true }))
 			);
-			const attachments = info.map(file => ({
-				filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-				description: '',
-				size: file.size,
-				mime: mime.lookup(file.uri),
-				path: file.uri
-			})) as IFileToShare[];
+			const attachments = info.map(file => {
+				if (!file.exists) {
+					return null;
+				}
+
+				return {
+					filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+					description: '',
+					size: file.size,
+					mime: mime.lookup(file.uri),
+					path: file.uri
+				};
+			}) as IFileToShare[];
 			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
 			this.setState({
 				text,
@@ -231,9 +237,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const defaultWhereClause = [
 			Q.where('archived', false),
 			Q.where('open', true),
-			Q.experimentalSkip(0),
-			Q.experimentalTake(20),
-			Q.experimentalSortBy('room_updated_at', Q.desc)
+			Q.skip(0),
+			Q.take(20),
+			Q.sortBy('room_updated_at', Q.desc)
 		] as (Q.WhereDescription | Q.Skip | Q.Take | Q.SortBy | Q.Or)[];
 		if (text) {
 			const likeString = sanitizeLikeString(text);

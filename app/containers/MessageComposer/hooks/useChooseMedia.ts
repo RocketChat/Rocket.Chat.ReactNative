@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
+import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import { forceJpgExtension } from '../helpers';
@@ -89,29 +89,28 @@ export const useChooseMedia = ({
 
 	const chooseFile = async () => {
 		try {
-			const res = await DocumentPicker.pickSingle({
-				type: [DocumentPicker.types.allFiles]
-			});
-			const file = {
-				filename: res.name,
-				size: res.size,
-				mime: res.type,
-				path: res.uri
-			} as any;
-			const canUploadResult = canUploadFile({
-				file,
-				allowList,
-				maxFileSize,
-				permissionToUploadFile: permissionToUpload
-			});
-			if (canUploadResult.success) {
-				return openShareView([file]);
+			const res = await DocumentPicker.getDocumentAsync({ copyToCacheDirectory: false });
+			if (!res.canceled) {
+				const [asset] = res.assets;
+				const file = {
+					filename: asset.name,
+					size: asset.size,
+					mime: asset.mimeType,
+					path: asset.uri
+				} as any;
+				const canUploadResult = canUploadFile({
+					file,
+					allowList,
+					maxFileSize,
+					permissionToUploadFile: permissionToUpload
+				});
+				if (canUploadResult.success) {
+					return openShareView([file]);
+				}
+				handleError(canUploadResult.error);
 			}
-			handleError(canUploadResult.error);
-		} catch (e: any) {
-			if (!DocumentPicker.isCancel(e)) {
-				log(e);
-			}
+		} catch (e) {
+			log(e);
 		}
 	};
 
@@ -136,7 +135,7 @@ export const useChooseMedia = ({
 			// FIXME: use useNavigation
 			Navigation.navigate('ShareView', {
 				room,
-				thread,
+				thread: thread || tmid,
 				attachments,
 				action,
 				finishShareView,

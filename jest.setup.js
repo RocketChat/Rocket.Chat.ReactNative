@@ -1,6 +1,3 @@
-// https://github.com/facebook/react/issues/20756#issuecomment-780927519
-import 'react-16-node-hanging-test-fix';
-
 import React from 'react';
 import '@testing-library/react-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
@@ -29,18 +26,6 @@ jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
-jest.mock('rn-fetch-blob', () => ({
-	fs: {
-		dirs: {
-			DocumentDir: '/data/com.rocket.chat/documents',
-			DownloadDir: '/data/com.rocket.chat/downloads'
-		},
-		exists: jest.fn(() => null)
-	},
-	fetch: jest.fn(() => null),
-	config: jest.fn(() => null)
-}));
-
 jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
 }));
@@ -65,7 +50,11 @@ jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
 }));
 
-jest.mock('./app/lib/database', () => jest.fn(() => null));
+jest.mock('./app/lib/database', () => ({
+	active: {
+		get: jest.fn()
+	}
+}));
 
 jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
 

@@ -533,7 +533,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
-			// @ts-ignore
 			navigation.navigate('ModalStackNavigator', {
 				screen: screen ?? 'RoomActionsView',
 				params: {
@@ -542,6 +541,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					room: room as ISubscription,
 					member,
 					showCloseModal: !!screen,
+					// @ts-ignore
 					joined,
 					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
 				}

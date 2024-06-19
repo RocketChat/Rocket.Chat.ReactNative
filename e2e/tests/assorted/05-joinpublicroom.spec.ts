@@ -35,7 +35,7 @@ describe('Join public room', () => {
 
 		// Render - Header
 		describe('Header', () => {
-			it('should have actions button ', async () => {
+			it('should have actions button', async () => {
 				await expect(element(by.id('room-header'))).toBeVisible();
 			});
 		});

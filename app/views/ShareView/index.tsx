@@ -43,7 +43,7 @@ interface IShareViewState {
 	attachments: IShareAttachment[];
 	text: string;
 	room: TSubscriptionModel;
-	thread: TThreadModel;
+	thread: TThreadModel | string;
 	maxFileSize?: number;
 	mediaAllowList?: string;
 	selectedMessages: string[];
@@ -112,6 +112,16 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			const text = this.messageComposerRef.current?.getText();
 			this.finishShareView(text, this.state.selectedMessages);
 		}
+	};
+
+	getThreadId = (thread: TThreadModel | string | undefined) => {
+		let threadId = undefined;
+		if (typeof thread === 'object') {
+			threadId = thread?.id;
+		} else if (typeof thread === 'string') {
+			threadId = thread;
+		}
+		return threadId;
 	};
 
 	setHeader = () => {
@@ -265,7 +275,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 									store: 'Uploads',
 									msg
 								},
-								thread?.id,
+								this.getThreadId(thread),
 								server,
 								{ id: user.id, token: user.token }
 							);
@@ -276,7 +286,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Send text message
 			} else if (text.length) {
-				await sendMessage(room.rid, text, thread?.id, { id: user.id, token: user.token } as IUser);
+				await sendMessage(room.rid, text, this.getThreadId(thread), {
+					id: user.id,
+					token: user.token
+				} as IUser);
 			}
 		} catch {
 			if (!this.isShareExtension) {
@@ -344,7 +357,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					value={{
 						rid: room.rid,
 						t: room.t,
-						tmid: thread.id,
+						tmid: this.getThreadId(thread),
 						sharing: true,
 						action: route.params?.action,
 						selectedMessages,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
 import { TSupportedThemes } from '../../theme';
@@ -7,6 +7,7 @@ import styles from './styles';
 import Switch from '../../containers/Switch';
 
 interface ISwitchContainer {
+	children?: ReactElement | null;
 	value: boolean;
 	disabled?: boolean;
 	leftLabelPrimary: string;
