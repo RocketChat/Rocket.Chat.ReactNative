@@ -23,6 +23,7 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	viewCannedResponsesPermission?: string[]; // TODO: Check if its the correct type
 	livechatAllowManualOnHold?: boolean;
 	inAppFeedback?: { [key: string]: string };
+	encryptionEnabled: boolean;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;

@@ -29,7 +29,10 @@ const OmnichannelQueue = ({ queueSize, onPress }: IOmnichannelQueue) => {
 					<View style={styles.omnichannelRightContainer}>
 						{queueSize ? (
 							<>
-								<UnreadBadge style={[styles.queueIcon, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]} unread={queueSize} />
+								<UnreadBadge
+									style={[styles.queueIcon, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
+									unread={queueSize}
+								/>
 								<CustomIcon name='chevron-right' style={styles.actionIndicator} color={themes[theme].fontDefault} size={24} />
 							</>
 						) : (

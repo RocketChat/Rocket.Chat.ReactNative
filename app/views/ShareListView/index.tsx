@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
@@ -22,9 +23,11 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import ShareListHeader from './Header';
-import { TServerModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
+import { encryptionInit } from '../../actions/encryption';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 
 interface IDataFromShare {
 	value: string;
@@ -61,6 +64,8 @@ interface IShareListViewProps extends INavigationOption {
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
+	encryptionEnabled: boolean;
+	dispatch: Dispatch;
 }
 
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
@@ -97,8 +102,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	}
 
 	async componentDidMount() {
-		const { server } = this.props;
+		const { dispatch } = this.props;
 		try {
+			dispatch(encryptionInit());
 			const data = (await ShareExtension.data()) as IDataFromShare[];
 			if (isAndroid) {
 				await this.askForPermission(data);
@@ -130,13 +136,13 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			// Do nothing
 		}
 
-		this.getSubscriptions(server);
+		this.getSubscriptions();
 	}
 
-	UNSAFE_componentWillReceiveProps(nextProps: IShareListViewProps) {
-		const { server } = this.props;
-		if (nextProps.server !== server) {
-			this.getSubscriptions(nextProps.server);
+	componentDidUpdate(previousProps: IShareListViewProps) {
+		const { server, encryptionEnabled } = this.props;
+		if (previousProps.server !== server || previousProps.encryptionEnabled !== encryptionEnabled) {
+			this.getSubscriptions();
 		}
 	}
 
@@ -149,11 +155,14 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			return true;
 		}
 
-		const { server, userId } = this.props;
+		const { server, userId, encryptionEnabled } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
 		if (userId !== nextProps.userId) {
+			return true;
+		}
+		if (encryptionEnabled !== nextProps.encryptionEnabled) {
 			return true;
 		}
 
@@ -223,6 +232,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	query = async (text?: string) => {
+		const { encryptionEnabled } = this.props;
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -240,22 +250,34 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			.query(...defaultWhereClause)
 			.fetch()) as TSubscriptionModel[];
 
-		return data.map(item => ({
-			rid: item.rid,
-			t: item.t,
-			name: item.name,
-			fname: item.fname,
-			blocked: item.blocked,
-			blocker: item.blocker,
-			prid: item.prid,
-			uids: item.uids,
-			usernames: item.usernames,
-			topic: item.topic,
-			teamMain: item.teamMain
-		}));
+		return data
+			.map(item => {
+				if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
+					return null;
+				}
+				if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
+					return null;
+				}
+
+				return {
+					rid: item.rid,
+					t: item.t,
+					name: item.name,
+					fname: item.fname,
+					blocked: item.blocked,
+					blocker: item.blocker,
+					prid: item.prid,
+					uids: item.uids,
+					usernames: item.usernames,
+					topic: item.topic,
+					teamMain: item.teamMain
+				};
+			})
+			.filter(item => !!item);
 	};
 
-	getSubscriptions = async (server: string) => {
+	getSubscriptions = async () => {
+		const { server } = this.props;
 		const serversDB = database.servers;
 
 		if (server) {
@@ -473,10 +495,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 }
 
-const mapStateToProps = ({ share }: any) => ({
-	userId: share.user && share.user.id,
-	token: share.user && share.user.token,
-	server: share.server.server
+const mapStateToProps = ({ share, encryption }: IApplicationState) => ({
+	userId: share.user && (share.user.id as string),
+	token: share.user && (share.user.token as string),
+	server: share.server.server as string,
+	encryptionEnabled: encryption.enabled
 });
 
 export default connect(mapStateToProps)(withTheme(ShareListView));
