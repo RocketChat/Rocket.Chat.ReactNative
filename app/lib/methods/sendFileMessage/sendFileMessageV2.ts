@@ -32,7 +32,7 @@ export async function sendFileMessageV2(
 		if (!uploadPath || !uploadRecord) {
 			throw new Error("Couldn't create upload record");
 		}
-		const { file, getContent } = await Encryption.encryptFile(rid, fileInfo);
+		const { file, getContent, fileContent } = await Encryption.encryptFile(rid, fileInfo);
 		file.path = await copyFileToCacheDirectoryIfNeeded(file.path, file.name);
 
 		const formData: IFormData[] = [];
@@ -42,6 +42,12 @@ export async function sendFileMessageV2(
 			filename: file.name,
 			uri: file.path
 		});
+		if (fileContent) {
+			formData.push({
+				name: 'content',
+				data: JSON.stringify(fileContent)
+			});
+		}
 
 		uploadQueue[uploadPath] = new FileUpload(`${server}/api/v1/rooms.media/${rid}`, headers, formData, async (loaded, total) => {
 			try {

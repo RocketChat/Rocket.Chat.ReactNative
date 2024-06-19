@@ -6,7 +6,7 @@ import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IUser } from '../../definitions';
+import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IUser, IServerAttachment } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { debounce } from '../methods/helpers';
 import database from '../database';
@@ -283,7 +283,8 @@ export default class EncryptionRoom {
 		const vector = await SimpleCrypto.utils.randomBytes(16);
 		const key = await generateAESCTRKey();
 		const exportedKey = await exportAESCTR(key);
-		const encryptedFile = await encryptAESCTR(path, exportedKey.k, bufferToB64(vector));
+		const iv = bufferToB64(vector);
+		const encryptedFile = await encryptAESCTR(path, exportedKey.k, iv);
 
 		const getContent: TGetContent = async (_id, fileUrl) => {
 			const attachments: IAttachment[] = [];
@@ -336,6 +337,21 @@ export default class EncryptionRoom {
 			};
 		};
 
+		const fileContentData = {
+			type: file.type,
+			typeGroup: file.type?.split('/')[0],
+			name: file.name,
+			encryption: {
+				key: exportedKey,
+				iv
+			}
+		};
+
+		const fileContent = {
+			algorithm: 'rc.v1.aes-sha2' as const,
+			ciphertext: await Encryption.encryptText(rid, EJSON.stringify(fileContentData))
+		};
+
 		return {
 			file: {
 				...file,
@@ -343,7 +359,8 @@ export default class EncryptionRoom {
 				name: sha256(file.name ?? 'File message'),
 				path: encryptedFile
 			},
-			getContent
+			getContent,
+			fileContent
 		};
 	};
 
@@ -361,6 +378,14 @@ export default class EncryptionRoom {
 		const m = EJSON.parse(bufferToUtf8(decrypted));
 
 		return m.text;
+	};
+
+	decryptFileContent = async (data: IServerAttachment) => {
+		if (data.content?.algorithm === 'rc.v1.aes-sha2') {
+			const content = await this.decryptContent(data.content.ciphertext);
+			Object.assign(data, content);
+		}
+		return data;
 	};
 
 	decryptContent = async (contentBase64: string) => {
@@ -396,7 +421,7 @@ export default class EncryptionRoom {
 					message.tmsg = await this.decryptText(tmsg);
 				}
 
-				if (message.content?.ciphertext) {
+				if (message.content?.algorithm === 'rc.v1.aes-sha2') {
 					const content = await this.decryptContent(message.content.ciphertext);
 					message = {
 						...message,

@@ -20,7 +20,8 @@ import {
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadMessageModel,
-	TThreadModel
+	TThreadModel,
+	IServerAttachment
 } from '../../definitions';
 import EncryptionRoom from './room';
 import {
@@ -45,6 +46,7 @@ class Encryption {
 			provideKeyToUser: Function;
 			handshake: Function;
 			decrypt: Function;
+			decryptFileContent: Function;
 			encrypt: Function;
 			encryptText: Function;
 			encryptFile: TEncryptFile;
@@ -516,6 +518,16 @@ class Encryption {
 		return roomE2E.decrypt(message);
 	};
 
+	decryptFileContent = async (file: IServerAttachment) => {
+		const roomE2E = await this.getRoomInstance(file.rid);
+
+		if (!roomE2E) {
+			return file;
+		}
+
+		return roomE2E.decryptFileContent(file);
+	};
+
 	encryptFile = async (rid: string, file: TSendFileMessageFileInfo) => {
 		const subscription = await getSubscriptionByRoomId(rid);
 		if (!subscription) {
@@ -569,6 +581,9 @@ class Encryption {
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+
+	// Decrypt multiple files
+	decryptFiles = (files: IServerAttachment[]) => Promise.all(files.map(f => this.decryptFileContent(f)));
 }
 
 const encryption = new Encryption();
