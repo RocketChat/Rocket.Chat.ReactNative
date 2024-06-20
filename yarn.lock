@@ -17850,10 +17850,10 @@ react-native-navigation-bar-color@2.0.1:
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.1.tgz#ee2be25cc37105f7da355717b0a9a32c9c059ae6"
   integrity sha512-1kE/oxWt+HYjRxdZdvke9tJ365xaee5n3+euOQA1En8zQuSbOxiE4SYEGM7TeaWnmLJ0l37mRnPHaB2H4mGh0A==
 
-react-native-notifications@^4.3.3:
-  version "4.3.3"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-4.3.3.tgz#5be05cb144127f4db518079dd202415af497dfcb"
-  integrity sha512-t7uPgpC93A4L41Jea2zet3BUqgh45gpN/ATS9gxejNH3r6kWgMdGeeZJhuMpl1gSXw1gcvgzdjzIjN7YZSOP0A==
+react-native-notifications@4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-4.3.5.tgz#90c7f3b1b248f6628c8efc8cafab4fd464ce3e5a"
+  integrity sha512-tCKkPaauN8/RIwPTeWdyezHXt5i4iDJViZGZ7/EBBuHB9kl9Oq3UjKFZeDfnM4DmJt+m7K2FQ7NaAuh3Kg1FCA==
 
 react-native-notifier@1.6.1:
   version "1.6.1"
@@ -19651,7 +19651,6 @@ string-width@^4.0.0, string-width@^4.1.0, string-width@^4.2.0:
     strip-ansi "^6.0.0"
 
 string-width@^4.2.3:
-  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -19815,7 +19814,6 @@ strip-ansi@^5.0.0, strip-ansi@^5.1.0, strip-ansi@^5.2.0:
     ansi-regex "^4.1.0"
 
 strip-ansi@^6.0.1:
-  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
