@@ -27,7 +27,7 @@ index 90969b2..4c00e69 100644
              if (notification != null) {
                  notification.onOpened();
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
-index a249c6a..5b1e9c7 100644
+index a249c6a..5992fa5 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/RNNotificationsPackage.java
 @@ -19,6 +19,7 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification;
@@ -53,7 +53,7 @@ index a249c6a..5b1e9c7 100644
              callOnOpenedIfNeed(activity);
          }
      }
-@@ -95,8 +102,7 @@ public class RNNotificationsPackage implements ReactPackage, AppLifecycleFacade.
+@@ -95,11 +102,11 @@ public class RNNotificationsPackage implements ReactPackage, AppLifecycleFacade.
          Intent intent = activity.getIntent();
          if (NotificationIntentAdapter.canHandleIntent(intent)) {
              Context appContext = mApplication.getApplicationContext();
@@ -63,36 +63,62 @@ index a249c6a..5b1e9c7 100644
              final IPushNotification pushNotification = PushNotification.get(appContext, notificationData);
              if (pushNotification != null) {
                  pushNotification.onOpened();
++                activity.setIntent(new Intent());
+             }
+         }
+     }
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/NotificationIntentAdapter.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/NotificationIntentAdapter.java
-index 70f609a..4484808 100644
+index 70f609a..718fe24 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/NotificationIntentAdapter.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/NotificationIntentAdapter.java
-@@ -14,17 +14,9 @@ public class NotificationIntentAdapter {
+@@ -13,26 +13,36 @@ public class NotificationIntentAdapter {
+     private static final String PUSH_NOTIFICATION_EXTRA_NAME = "pushNotification";
  
      @SuppressLint("UnspecifiedImmutableFlag")
-     public static PendingIntent createPendingNotificationIntent(Context appContext, PushNotificationProps notification) {
--        if (canHandleTrampolineActivity(appContext)) {
--            Intent intent = new Intent(appContext, ProxyService.class);
--            intent.putExtra(PUSH_NOTIFICATION_EXTRA_NAME, notification.asBundle());
+-    public static PendingIntent createPendingNotificationIntent(Context appContext, PushNotificationProps notification) {
++    public static PendingIntent createPendingNotificationIntent(Context appContext,
++            PushNotificationProps notification) {
+         if (canHandleTrampolineActivity(appContext)) {
+             Intent intent = new Intent(appContext, ProxyService.class);
+             intent.putExtra(PUSH_NOTIFICATION_EXTRA_NAME, notification.asBundle());
 -            return PendingIntent.getService(appContext, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_ONE_SHOT);
--        } else {
++            return PendingIntent.getService(appContext, (int) System.currentTimeMillis(), intent,
++                    PendingIntent.FLAG_ONE_SHOT);
+         } else {
 -            Intent mainActivityIntent = appContext.getPackageManager().getLaunchIntentForPackage(appContext.getPackageName());
--            mainActivityIntent.putExtra(PUSH_NOTIFICATION_EXTRA_NAME, notification.asBundle());
--            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(appContext);
--            taskStackBuilder.addNextIntentWithParentStack(mainActivityIntent);
++            Intent mainActivityIntent = appContext.getPackageManager()
++                    .getLaunchIntentForPackage(appContext.getPackageName());
+             mainActivityIntent.putExtra(PUSH_NOTIFICATION_EXTRA_NAME, notification.asBundle());
+             TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(appContext);
+             taskStackBuilder.addNextIntentWithParentStack(mainActivityIntent);
 -            return taskStackBuilder.getPendingIntent((int) System.currentTimeMillis(), PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
--        }
-+        Intent intent = appContext.getPackageManager().getLaunchIntentForPackage(appContext.getPackageName());
-+        intent.putExtra(PUSH_NOTIFICATION_EXTRA_NAME, notification.asBundle());
-+        return PendingIntent.getActivity(appContext, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
++            return taskStackBuilder.getPendingIntent((int) System.currentTimeMillis(),
++                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+         }
      }
  
      public static boolean canHandleTrampolineActivity(Context appContext) {
+-        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R || appContext.getApplicationInfo().targetSdkVersion < 31;
++        return android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R
++                || appContext.getApplicationInfo().targetSdkVersion < 31;
+     }
+ 
+     public static Bundle extractPendingNotificationDataFromIntent(Intent intent) {
+-        return intent.getBundleExtra(PUSH_NOTIFICATION_EXTRA_NAME);
++        Bundle notificationBundle = intent.getBundleExtra(PUSH_NOTIFICATION_EXTRA_NAME);
++        if (notificationBundle != null) {
++            return notificationBundle;
++        } else {
++            return intent.getExtras();
++        }
+     }
+ 
+     public static boolean canHandleIntent(Intent intent) {
 diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
-index eade08d..a9f2864 100644
+index ac04274..f2cfd00 100644
 --- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
 +++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
-@@ -28,7 +28,7 @@ public class PushNotification implements IPushNotification {
+@@ -30,7 +30,7 @@ public class PushNotification implements IPushNotification {
      final protected AppLifecycleFacade mAppLifecycleFacade;
      final protected AppLaunchHelper mAppLaunchHelper;
      final protected JsIOHelper mJsIOHelper;
@@ -116,6 +142,19 @@ index f9c858b..94ea188 100644
  
  public abstract class NotificationManagerCompatFacade {
      public static NotificationManagerCompat from(@NonNull Context context) {
+diff --git a/node_modules/react-native-notifications/lib/android/build.gradle b/node_modules/react-native-notifications/lib/android/build.gradle
+index 29d6dca..5f8df2e 100644
+--- a/node_modules/react-native-notifications/lib/android/build.gradle
++++ b/node_modules/react-native-notifications/lib/android/build.gradle
+@@ -6,7 +6,7 @@ buildscript {
+         androidGradlePluginVersion = '4.0.0'
+         kotlinVersion = "1.3.61"
+         googleServices = "4.3.3"
+-        androidSdkVersion = 31
++        androidSdkVersion = 33
+     }
+ 
+     repositories {
 diff --git a/node_modules/react-native-notifications/lib/dist/Notifications.d.ts b/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
 index 6e49fd4..5fe9515 100644
 --- a/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
