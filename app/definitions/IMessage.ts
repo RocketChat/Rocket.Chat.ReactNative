@@ -80,6 +80,11 @@ interface IMessageFile {
 	type: string;
 }
 
+export type IMessageE2EEContent = {
+	algorithm: 'rc.v1.aes-sha2';
+	ciphertext: string; // Encrypted subset JSON of IMessage
+};
+
 export interface IMessageFromServer {
 	_id: string;
 	rid: string;
@@ -107,6 +112,7 @@ export interface IMessageFromServer {
 		username: string;
 	};
 	score?: number;
+	content?: IMessageE2EEContent;
 }
 
 export interface ILoadMoreMessage {
@@ -116,11 +122,6 @@ export interface ILoadMoreMessage {
 	t: string;
 	msg: string;
 }
-
-export type IMessageE2EEContent = {
-	algorithm: 'rc.v1.aes-sha2';
-	ciphertext: string; // Encrypted subset JSON of IMessage
-};
 
 export interface IMessage extends IMessageFromServer {
 	id: string;
@@ -147,7 +148,6 @@ export interface IMessage extends IMessageFromServer {
 	tmsg?: string;
 	blocks?: any;
 	e2e?: E2EType;
-	content?: IMessageE2EEContent;
 	tshow?: boolean;
 	comment?: string;
 	subscription?: { id: string };

@@ -85,9 +85,9 @@ class Encryption {
 	};
 
 	get establishing() {
-		const { banner } = store.getState().encryption;
+		const { banner, enabled } = store.getState().encryption;
 		// If the password was not inserted yet
-		if (!banner || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
+		if (!enabled || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
 			// We can't decrypt/encrypt, so, reject this try
 			return Promise.reject();
 		}
@@ -292,7 +292,7 @@ class Encryption {
 			];
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
-					const { t, msg, tmsg, attachments } = message;
+					const { t, msg, tmsg, attachments, content } = message;
 					let newMessage: TMessageModel = {} as TMessageModel;
 					if (message.subscription) {
 						const { id: rid } = message.subscription;
@@ -302,7 +302,8 @@ class Encryption {
 							rid,
 							msg: msg as string,
 							tmsg,
-							attachments
+							attachments,
+							content
 						});
 					}
 
@@ -334,17 +335,9 @@ class Encryption {
 		try {
 			// Find all rooms that can have a lastMessage encrypted
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
-			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null))).fetch();
-			// We can't do this on database level since lastMessage is not a database object
-			const subsToDecrypt = subsEncrypted.filter(
-				(sub: ISubscription) =>
-					// Encrypted message
-					sub?.lastMessage?.t === E2E_MESSAGE_TYPE &&
-					// Message pending decrypt
-					sub?.lastMessage?.e2e === E2E_STATUS.PENDING
-			);
+			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
 			await Promise.all(
-				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
+				subsEncrypted.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
@@ -360,7 +353,7 @@ class Encryption {
 			);
 
 			await db.write(async () => {
-				await db.batch(...subsToDecrypt);
+				await db.batch(...subsEncrypted);
 			});
 		} catch (e) {
 			log(e);
@@ -493,7 +486,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments'>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
