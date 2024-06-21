@@ -19,7 +19,7 @@ describe('test roles reducer', () => {
 		expires: '2022-01-18T20:32:44.695Z',
 		uses: 0,
 		_updatedAt: '2022-01-17T20:32:44.695Z',
-		url: 'https://go.rocket.chat/invite?host=open.rocket.chat&path=invite%2FnZestg',
+		url: 'https://go.rocket.chat/invite?host=chat.cortexflex.org&path=invite%2FnZestg',
 		success: true,
 		token: ''
 	};

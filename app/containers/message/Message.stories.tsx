@@ -24,7 +24,7 @@ const longNameAuthor = {
 	username: 'Long name user looooong name user'
 };
 
-const baseUrl = 'https://open.rocket.chat';
+const baseUrl = 'https://chat.cortexflex.org';
 const date = new Date(2017, 10, 10, 10);
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';

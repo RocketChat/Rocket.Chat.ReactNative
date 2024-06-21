@@ -48,7 +48,7 @@ const MOCK: ISupportedVersionsData = {
 		}
 	],
 	exceptions: {
-		domain: 'https://open.rocket.chat',
+		domain: 'https://chat.cortexflex.org',
 		uniqueId: '123',
 		versions: [
 			{
@@ -343,7 +343,7 @@ describe('checkSupportedVersions', () => {
 				}
 			],
 			exceptions: {
-				domain: 'https://open.rocket.chat',
+				domain: 'https://chat.cortexflex.org',
 				uniqueId: '123',
 				messages: [
 					{

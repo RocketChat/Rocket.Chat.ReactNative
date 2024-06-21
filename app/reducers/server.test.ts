@@ -17,7 +17,7 @@ describe('test server reducer', () => {
 	});
 
 	it('should return modified store after serverRequest', () => {
-		const server = 'https://open.rocket.chat/';
+		const server = 'https://chat.cortexflex.org/';
 		mockedStore.dispatch(serverRequest(server));
 		const state = mockedStore.getState().server;
 		const manipulated = { ...initialState, connecting: true, failure: false };
@@ -32,14 +32,14 @@ describe('test server reducer', () => {
 	});
 
 	it('should return modified store after selectServer', () => {
-		const server = 'https://open.rocket.chat/';
+		const server = 'https://chat.cortexflex.org/';
 		mockedStore.dispatch(selectServerRequest(server));
 		const state = mockedStore.getState().server.server;
 		expect(state).toEqual(server);
 	});
 
 	it('should return modified store after selectServerSucess', () => {
-		const server = 'https://open.rocket.chat/';
+		const server = 'https://chat.cortexflex.org/';
 		const version = '4.1.0';
 		const name = 'Rocket.Chat';
 		mockedStore.dispatch(selectServerSuccess({ server, version, name: 'Rocket.Chat' }));

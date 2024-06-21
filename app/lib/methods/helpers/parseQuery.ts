@@ -1,10 +1,10 @@
 /**
  *
  * @example
- * parseQuery("host=open.rocket.chat&path=channel/general/thread/meRK2nfjR99MjLn55")
+ * parseQuery("host=chat.cortexflex.org&path=channel/general/thread/meRK2nfjR99MjLn55")
  * // the return will be
  * {
- * 	host: "open.rocket.chat",
+ * 	host: "chat.cortexflex.org",
  * 	path: "channel/general/thread/meRK2nfjR99MjLn55"
  * }
  */

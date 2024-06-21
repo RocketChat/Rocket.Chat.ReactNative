@@ -21,7 +21,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		// @ts-ignore
 		(value?.[0]?.value?.label?.value?.toString().trim() === '' || value?.[0]?.value?.label?.[0]?.value?.toString().trim() === '')
 	) {
-		// We are returning null when we receive a message like this: `[ ](https://open.rocket.chat/)\nplain_text`
+		// We are returning null when we receive a message like this: `[ ](https://chat.cortexflex.org/)\nplain_text`
 		// to avoid render a line empty above the the message
 		if (value.length === 1) {
 			return null;

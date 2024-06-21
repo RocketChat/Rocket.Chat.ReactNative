@@ -10,19 +10,19 @@ describe('Format preview message', () => {
 	test('Format <http://link|Text> to be Text', () => {
 		expect(previewFormatText('<http://link|Text>')).toBe('Text');
 	});
-	test('Format "[ ](https://open.rocket.chat/) Test" to be Test', () => {
-		expect(previewFormatText('[ ](https://open.rocket.chat/) Test')).toEqual('Test');
+	test('Format "[ ](https://chat.cortexflex.org/) Test" to be Test', () => {
+		expect(previewFormatText('[ ](https://chat.cortexflex.org/) Test')).toEqual('Test');
 	});
-	test('Format "[Open](https://open.rocket.chat/) Test" to be Test', () => {
-		expect(previewFormatText('[Open](https://open.rocket.chat/) Test')).toBe('Open Test');
+	test('Format "[Open](https://chat.cortexflex.org/) Test" to be Test', () => {
+		expect(previewFormatText('[Open](https://chat.cortexflex.org/) Test')).toBe('Open Test');
 	});
 	test('render test (arabic)', () => {
-		expect(previewFormatText('[ ](https://open.rocket.chat/) اختبا')).toBe('اختبا');
+		expect(previewFormatText('[ ](https://chat.cortexflex.org/) اختبا')).toBe('اختبا');
 	});
 	test('render test (russian)', () => {
-		expect(previewFormatText('[ ](https://open.rocket.chat/) тест123')).toBe('тест123');
+		expect(previewFormatText('[ ](https://chat.cortexflex.org/) тест123')).toBe('тест123');
 	});
-	test('Format a quote message as last message "You: [ ](https://open.rocket.chat/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest"', () => {
-		expect(previewFormatText('You: [ ](https://open.rocket.chat/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest')).toBe('You: Test');
+	test('Format a quote message as last message "You: [ ](https://chat.cortexflex.org/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest"', () => {
+		expect(previewFormatText('You: [ ](https://chat.cortexflex.org/group/channel?msg=nrTDSw96IhtF3iN4K) \nTest')).toBe('You: Test');
 	});
 });

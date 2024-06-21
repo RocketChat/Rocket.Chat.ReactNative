@@ -10,7 +10,7 @@ describe('test share reducer', () => {
 
 	it('should return modified store after shareSelectServer', () => {
 		const server = {
-			server: 'https://open.rocket.chat',
+			server: 'https://chat.cortexflex.org',
 			version: '4.4.0'
 		};
 		mockedStore.dispatch(shareSelectServer(server));

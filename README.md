@@ -19,7 +19,7 @@ Check [our docs](https://docs.rocket.chat/use-rocket.chat/rocket.chat-mobile) fo
 
 [Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
 
-Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
+Also check the [#react-native](https://chat.cortexflex.org/channel/react-native) community on [chat.cortexflex.org](https://chat.cortexflex.org). We'd like to help.
 
 ## Contributing
 

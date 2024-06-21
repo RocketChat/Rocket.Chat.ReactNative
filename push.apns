@@ -7,5 +7,5 @@
 		},
 		"category": "MESSAGE"
 	},
-	"ejson": "{ \"host\": \"https://open.rocket.chat/\", \"rid\": \"GENERAL\", \"type\": \"c\", \"name\": \"general\" }"
+	"ejson": "{ \"host\": \"https://chat.cortexflex.org/\", \"rid\": \"GENERAL\", \"type\": \"c\", \"name\": \"general\" }"
 }

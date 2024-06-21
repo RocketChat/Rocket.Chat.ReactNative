@@ -21,7 +21,7 @@ const user = {
 	token: 'abc'
 };
 
-const baseUrl = 'https://open.rocket.chat';
+const baseUrl = 'https://chat.cortexflex.org';
 
 export default {
 	title: 'UIKit/UiKitMessage',

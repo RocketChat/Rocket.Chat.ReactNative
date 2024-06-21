@@ -1,7 +1,7 @@
 /*
 	Extract hostname from url
-	url = 'https://open.rocket.chat/method'
-	hostname = 'open.rocket.chat'
+	url = 'https://chat.cortexflex.org/method'
+	hostname = 'chat.cortexflex.org'
 */
 export const extractHostname = (url: string): string => {
 	let hostname;

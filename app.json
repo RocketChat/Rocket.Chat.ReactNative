@@ -2,7 +2,7 @@
 	"name": "RocketChatRN",
 	"share": "ShareRocketChatRN",
 	"displayName": "RocketChatRN",
-	"server": "https://open.rocket.chat",
+	"server": "https://chat.cortexflex.org",
 	"appGroup": "group.ios.chat.rocket",
 	"appStoreID": "1272915472"
 }

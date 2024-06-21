@@ -839,7 +839,7 @@ const messageQuote = {
 				{
 					type: 'LINK',
 					value: {
-						src: { type: 'PLAIN_TEXT', value: 'https://open.rocket.chat/direct/subaru123?msg=QB42gWcaO6BgqtLTo' },
+						src: { type: 'PLAIN_TEXT', value: 'https://chat.cortexflex.org/direct/subaru123?msg=QB42gWcaO6BgqtLTo' },
 						label: { type: 'PLAIN_TEXT', value: ' ' }
 					}
 				},
@@ -875,7 +875,7 @@ const messageQuote = {
 					value: {
 						src: {
 							type: 'PLAIN_TEXT',
-							value: 'https://open.rocket.chat/group/quoteeee9798789?msg=ZZp6t2dCRX4TqExht'
+							value: 'https://chat.cortexflex.org/group/quoteeee9798789?msg=ZZp6t2dCRX4TqExht'
 						},
 						// format of label for servers greater or equal than 6.0
 						label: [

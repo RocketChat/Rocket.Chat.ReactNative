@@ -4,13 +4,13 @@ import { buildImageURL } from './buildImageURL';
 describe('buildImageURL', () => {
 	const testCases = [
 		[
-			'https://open.rocket.chat/avatar/rocket.cat',
-			'https://open.rocket.chat/avatar/rocket.cat',
-			'https://open.rocket.chat/direct/NNNNnnnnNNNNnnnnfrocket.cat'
+			'https://chat.cortexflex.org/avatar/rocket.cat',
+			'https://chat.cortexflex.org/avatar/rocket.cat',
+			'https://chat.cortexflex.org/direct/NNNNnnnnNNNNnnnnfrocket.cat'
 		],
-		['https://open.rocket.chat/assets/favicon_512.png', 'assets/favicon_512.png', 'https://open.rocket.chat/channel/general'],
-		['https://open.rocket.chat/assets/favicon_512.png', '/assets/favicon_512.png', 'https://open.rocket.chat/channel/general'],
-		['https://open.rocket.chat/assets/favicon_512.png', '//assets/favicon_512.png', 'https://open.rocket.chat/channel/general/']
+		['https://chat.cortexflex.org/assets/favicon_512.png', 'assets/favicon_512.png', 'https://chat.cortexflex.org/channel/general'],
+		['https://chat.cortexflex.org/assets/favicon_512.png', '/assets/favicon_512.png', 'https://chat.cortexflex.org/channel/general'],
+		['https://chat.cortexflex.org/assets/favicon_512.png', '//assets/favicon_512.png', 'https://chat.cortexflex.org/channel/general/']
 	] as const;
 	it.each(testCases)('should return %s for %s', (expectedResult, metaImgUrl, linkUrl) => {
 		const result = buildImageURL(linkUrl, metaImgUrl);

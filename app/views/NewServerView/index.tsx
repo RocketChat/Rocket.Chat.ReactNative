@@ -220,7 +220,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
 		this.setState({ connectingOpen: true });
 		const { dispatch } = this.props;
-		dispatch(serverRequest('https://open.rocket.chat'));
+		dispatch(serverRequest('https://chat.cortexflex.org'));
 	};
 
 	basicAuth = (server: string, text: string) => {
