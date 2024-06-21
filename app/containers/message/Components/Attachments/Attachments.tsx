@@ -1,57 +1,16 @@
 import React, { useContext } from 'react';
 import { dequal } from 'dequal';
 
-import { IMessageAttachments } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
 import Reply from './Reply';
-import Button from '../Button';
-import MessageContext from './Context';
-import { IAttachment, TGetCustomEmoji } from '../../definitions';
-import CollapsibleQuote from './Components/CollapsibleQuote';
-import openLink from '../../lib/methods/helpers/openLink';
-import Markdown from '../markdown';
-import { getMessageFromAttachment } from './utils';
-
-export type TElement = {
-	type: string;
-	msg?: string;
-	url?: string;
-	text: string;
-};
-
-const AttachedActions = ({ attachment, getCustomEmoji }: { attachment: IAttachment; getCustomEmoji: TGetCustomEmoji }) => {
-	const { onAnswerButtonPress } = useContext(MessageContext);
-
-	if (!attachment.actions) {
-		return null;
-	}
-
-	const attachedButtons = attachment.actions.map((element: TElement) => {
-		const onPress = () => {
-			if (element.msg) {
-				onAnswerButtonPress(element.msg);
-			}
-
-			if (element.url) {
-				openLink(element.url);
-			}
-		};
-
-		if (element.type === 'button') {
-			return <Button onPress={onPress} title={element.text} />;
-		}
-
-		return null;
-	});
-	return (
-		<>
-			<Markdown msg={attachment.text} getCustomEmoji={getCustomEmoji} />
-			{attachedButtons}
-		</>
-	);
-};
+import CollapsibleQuote from './CollapsibleQuote';
+import AttachedActions from './AttachedActions';
+import MessageContext from '../../Context';
+import { IMessageAttachments } from '../../interfaces';
+import { IAttachment } from '../../../../definitions';
+import { getMessageFromAttachment } from '../../utils';
 
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {

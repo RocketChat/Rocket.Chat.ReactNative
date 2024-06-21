@@ -263,24 +263,25 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			if (attachments.length) {
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload }) => {
-						if (canUpload) {
-							return sendFileMessage(
-								room.rid,
-								{
-									name,
-									description,
-									size,
-									type,
-									path,
-									store: 'Uploads',
-									msg
-								},
-								this.getThreadId(thread),
-								server,
-								{ id: user.id, token: user.token }
-							);
+						if (!canUpload) {
+							return Promise.resolve();
 						}
-						return Promise.resolve();
+
+						return sendFileMessage(
+							room.rid,
+							{
+								rid: room.rid,
+								name,
+								description,
+								size,
+								type,
+								path,
+								msg
+							},
+							this.getThreadId(thread),
+							server,
+							{ id: user.id, token: user.token }
+						);
 					})
 				);
 

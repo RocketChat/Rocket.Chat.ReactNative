@@ -1,21 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import Markdown from '../markdown';
-import MessageContext from './Context';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../definitions';
+import { Encryption } from '../../../../lib/encryption';
+import Markdown from '../../../markdown';
+import MessageContext from '../../Context';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { IAttachment, IUserMessage } from '../../../../definitions';
 import {
 	TDownloadState,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import AudioPlayer from '../AudioPlayer';
-import { useAudioUrl } from './hooks/useAudioUrl';
-import { getAudioUrlToCache } from '../../lib/methods/getAudioUrl';
+} from '../../../../lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
+import AudioPlayer from '../../../AudioPlayer';
+import { useAudioUrl } from '../../hooks/useAudioUrl';
+import { getAudioUrlToCache } from '../../../../lib/methods/getAudioUrl';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -49,9 +50,11 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		try {
 			if (audioUrl) {
 				const audio = await downloadMediaFile({
+					messageId: id,
 					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
-					mimeType: file.audio_type
+					mimeType: file.audio_type,
+					encryption: file.encryption
 				});
 				setFileUri(audio);
 				setDownloadState('downloaded');
@@ -84,6 +87,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			urlToCache: audioUrl
 		});
 		if (cachedAudioResult?.exists) {
+			if (file.encryption && file.e2e === 'pending') {
+				await Encryption.decryptFile(id, cachedAudioResult.uri, file.encryption);
+			}
 			setFileUri(cachedAudioResult.uri);
 			setDownloadState('downloaded');
 		}
@@ -129,7 +135,14 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer msgId={id} fileUri={fileUri} downloadState={downloadState} onPlayButtonPress={onPlayButtonPress} rid={rid} />
+			<AudioPlayer
+				msgId={id}
+				fileUri={fileUri}
+				downloadState={downloadState}
+				onPlayButtonPress={onPlayButtonPress}
+				rid={rid}
+				disabled={file.e2e === 'pending'}
+			/>
 		</>
 	);
 };

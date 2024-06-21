@@ -1,30 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
-import { IAttachment } from '../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import I18n from '../../i18n';
-import { themes } from '../../lib/constants';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { IAttachment } from '../../../../definitions/IAttachment';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import I18n from '../../../../i18n';
+import { themes } from '../../../../lib/constants';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { fileDownload, isIOS } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import { LISTENER } from '../Toast';
-import Markdown from '../markdown';
-import BlurComponent from './Components/OverlayComponent';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import { DEFAULT_MESSAGE_HEIGHT } from './utils';
+} from '../../../../lib/methods/handleMediaDownload';
+import { fileDownload, isIOS, showErrorAlert } from '../../../../lib/methods/helpers';
+import EventEmitter from '../../../../lib/methods/helpers/events';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
+import { LISTENER } from '../../../Toast';
+import Markdown from '../../../markdown';
+import BlurComponent from '../OverlayComponent';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
+import { Encryption } from '../../../../lib/encryption';
+import { TIconsName } from '../../../CustomIcon';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -46,11 +47,6 @@ const styles = StyleSheet.create({
 	text: {
 		...sharedStyles.textRegular,
 		fontSize: 12
-	},
-	thumbnailImage: {
-		borderRadius: 4,
-		width: '100%',
-		height: '100%'
 	}
 });
 
@@ -72,20 +68,25 @@ const CancelIndicator = () => {
 	);
 };
 
-// TODO: Wait backend send the thumbnailUrl as prop
-const Thumbnail = ({ loading, thumbnailUrl, cached }: { loading: boolean; thumbnailUrl?: string; cached: boolean }) => (
-	<>
-		{thumbnailUrl ? <FastImage style={styles.thumbnailImage} source={{ uri: thumbnailUrl }} /> : null}
-		<BlurComponent iconName={cached ? 'play-filled' : 'arrow-down-circle'} loading={loading} style={styles.button} />
-		{loading ? <CancelIndicator /> : null}
-	</>
-);
+const Thumbnail = ({ loading, cached, encrypted = false }: { loading: boolean; cached: boolean; encrypted: boolean }) => {
+	let icon: TIconsName = cached ? 'play-filled' : 'arrow-down-circle';
+	if (encrypted) {
+		icon = 'encrypted';
+	}
+
+	return (
+		<>
+			<BlurComponent iconName={icon} loading={loading} style={styles.button} />
+			{loading ? <CancelIndicator /> : null}
+		</>
+	);
+};
 
 const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IMessageVideo): React.ReactElement | null => {
 	const [videoCached, setVideoCached] = useState(file);
 	const [loading, setLoading] = useState(true);
 	const [cached, setCached] = useState(false);
-	const { baseUrl, user } = useContext(MessageContext);
+	const { id, baseUrl, user } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
@@ -134,6 +135,9 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			urlToCache: video
 		});
 		if (cachedVideoResult?.exists) {
+			if (file.encryption && file.e2e === 'pending') {
+				await Encryption.decryptFile(id, cachedVideoResult.uri, file.encryption);
+			}
 			updateVideoCached(cachedVideoResult.uri);
 			setLoading(false);
 		}
@@ -158,9 +162,11 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 		setLoading(true);
 		try {
 			const videoUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: video,
 				type: 'video',
-				mimeType: file.video_type
+				mimeType: file.video_type,
+				encryption: file.encryption
 			});
 			updateVideoCached(videoUri);
 		} catch {
@@ -171,6 +177,10 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	};
 
 	const onPress = async () => {
+		if (file.e2e === 'pending') {
+			showErrorAlert(I18n.t('Encrypted_file'));
+			return;
+		}
 		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {
 			showAttachment(videoCached);
 			return;
@@ -224,9 +234,8 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Touchable
 				onPress={onPress}
 				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			>
-				<Thumbnail loading={loading} cached={cached} />
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
+				<Thumbnail loading={loading} cached={cached} encrypted={file.e2e === 'pending'} />
 			</Touchable>
 		</>
 	);

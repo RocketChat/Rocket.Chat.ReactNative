@@ -2,24 +2,27 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { IAttachment, IUserMessage } from '../../definitions';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
+import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { Encryption } from '../../../../lib/encryption';
+import { IAttachment, IUserMessage } from '../../../../definitions';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import {
 	cancelDownload,
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
 	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../theme';
-import Markdown from '../markdown';
-import BlurComponent from './Components/OverlayComponent';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import styles from './styles';
-import { isImageBase64 } from '../../lib/methods';
+} from '../../../../lib/methods/handleMediaDownload';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../theme';
+import Markdown from '../../../markdown';
+import BlurComponent from '../OverlayComponent';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import styles from '../../styles';
+import { isImageBase64 } from '../../../../lib/methods';
+import I18n from '../../../../i18n';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -45,28 +48,39 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 			disabled={disabled}
 			onPress={onPress}
 			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}
-		>
+			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			{children}
 		</Touchable>
 	);
 });
 
-export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: string; cached: boolean; loading: boolean }) => {
-	const { colors } = useTheme();
-	return (
-		<>
-			<FastImage
-				style={[styles.image, { borderColor: colors.strokeLight }]}
-				source={{ uri: encodeURI(imgUri) }}
-				resizeMode={FastImage.resizeMode.cover}
-			/>
-			{!cached ? (
-				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
-			) : null}
-		</>
-	);
-});
+export const MessageImage = React.memo(
+	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
+		const { colors } = useTheme();
+
+		if (encrypted && !loading) {
+			return (
+				<>
+					<View style={styles.image} />
+					<BlurComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
+				</>
+			);
+		}
+
+		return (
+			<>
+				<FastImage
+					style={[styles.image, { borderColor: colors.strokeLight }]}
+					source={{ uri: encodeURI(imgUri) }}
+					resizeMode={FastImage.resizeMode.cover}
+				/>
+				{!cached ? (
+					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+				) : null}
+			</>
+		);
+	}
+);
 
 const ImageContainer = ({
 	file,
@@ -82,7 +96,7 @@ const ImageContainer = ({
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const { theme } = useTheme();
-	const { baseUrl, user } = useContext(MessageContext);
+	const { id, baseUrl, user } = useContext(MessageContext);
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
@@ -100,8 +114,8 @@ const ImageContainer = ({
 					handleResumeDownload();
 					return;
 				}
-				setLoading(false);
 				await handleAutoDownload();
+				setLoading(false);
 			}
 		};
 		if (isImageBase64(imgUrlToCache)) {
@@ -139,43 +153,45 @@ const ImageContainer = ({
 			urlToCache: imgUrlToCache
 		});
 		if (cachedImageResult?.exists) {
+			if (file.encryption && file.e2e === 'pending') {
+				await Encryption.decryptFile(id, cachedImageResult.uri, file.encryption);
+			}
 			updateImageCached(cachedImageResult.uri);
-			setLoading(false);
 		}
 		return !!cachedImageResult?.exists;
 	};
 
 	const handleResumeDownload = async () => {
 		try {
-			setLoading(true);
 			const imageUri = await resumeMediaFile({
 				downloadUrl: imgUrlToCache
 			});
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	const handleDownload = async () => {
 		try {
-			setLoading(true);
 			const imageUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: imgUrlToCache,
 				type: 'image',
-				mimeType: imageCached.image_type
+				mimeType: imageCached.image_type,
+				encryption: file.encryption
 			});
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	const onPress = async () => {
+		if (file.e2e === 'pending') {
+			showErrorAlert(I18n.t('Encrypted_file'));
+			return;
+		}
 		if (loading && isDownloadActive(imgUrlToCache)) {
 			cancelDownload(imgUrlToCache);
 			setLoading(false);
@@ -201,22 +217,27 @@ const ImageContainer = ({
 		showAttachment(imageCached);
 	};
 
+	const image = (
+		<Button onPress={onPress}>
+			<MessageImage
+				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
+				cached={cached}
+				loading={loading}
+				encrypted={file.e2e === 'pending'}
+			/>
+		</Button>
+	);
+
 	if (msg) {
 		return (
 			<View>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-				<Button onPress={onPress}>
-					<MessageImage imgUri={img} cached={cached} loading={loading} />
-				</Button>
+				{image}
 			</View>
 		);
 	}
 
-	return (
-		<Button onPress={onPress}>
-			<MessageImage imgUri={img} cached={cached} loading={loading} />
-		</Button>
-	);
+	return image;
 };
 
 ImageContainer.displayName = 'MessageImageContainer';

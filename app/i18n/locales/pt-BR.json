@@ -249,6 +249,7 @@
   "Enable_writing_in_room": "Permitir escrita na sala",
   "Enabled_E2E_Encryption_for_this_room": "habilitou criptografia para essa sala",
   "Encrypted": "Criptografado",
+  "Encrypted_file": "Arquivo criptografado",
   "Encrypted_message": "Mensagem criptografada",
   "encrypted_room_description": "Insira sua senha de criptografia de ponta a ponta para acessar.",
   "encrypted_room_title": "{{room_name}} está criptografado",

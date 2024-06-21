@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import MessageContext from '../../Context';
+import MessageContext from '../../../Context';
 import CollapsibleQuote from '.';
 
 const testAttachment = {

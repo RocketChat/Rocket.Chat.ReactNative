@@ -4,14 +4,26 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
 
 import UserPreferences from '../methods/userPreferences';
+import { getMessageById } from '../database/services/Message';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import database from '../database';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import Deferred from './helpers/deferred';
 import log from '../methods/helpers/log';
 import { store } from '../store/auxStore';
-import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
+import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
+import {
+	IMessage,
+	ISubscription,
+	TSendFileMessageFileInfo,
+	TAttachmentEncryption,
+	TMessageModel,
+	TSubscriptionModel,
+	TThreadMessageModel,
+	TThreadModel,
+	IServerAttachment
+} from '../../definitions';
 import EncryptionRoom from './room';
-import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -21,6 +33,7 @@ import {
 	E2E_STATUS
 } from '../constants';
 import { Services } from '../services';
+import { TEncryptFile } from './definitions';
 
 class Encryption {
 	ready: boolean;
@@ -33,7 +46,11 @@ class Encryption {
 			provideKeyToUser: Function;
 			handshake: Function;
 			decrypt: Function;
+			decryptFileContent: Function;
 			encrypt: Function;
+			encryptText: Function;
+			encryptFile: TEncryptFile;
+			encryptUpload: Function;
 			importRoomKey: Function;
 		};
 	};
@@ -68,9 +85,9 @@ class Encryption {
 	};
 
 	get establishing() {
-		const { banner } = store.getState().encryption;
+		const { banner, enabled } = store.getState().encryption;
 		// If the password was not inserted yet
-		if (!banner || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
+		if (!enabled || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
 			// We can't decrypt/encrypt, so, reject this try
 			return Promise.reject();
 		}
@@ -275,7 +292,7 @@ class Encryption {
 			];
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
-					const { t, msg, tmsg } = message;
+					const { t, msg, tmsg, attachments, content } = message;
 					let newMessage: TMessageModel = {} as TMessageModel;
 					if (message.subscription) {
 						const { id: rid } = message.subscription;
@@ -284,7 +301,9 @@ class Encryption {
 							t,
 							rid,
 							msg: msg as string,
-							tmsg
+							tmsg,
+							attachments,
+							content
 						});
 					}
 
@@ -316,17 +335,9 @@ class Encryption {
 		try {
 			// Find all rooms that can have a lastMessage encrypted
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
-			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null))).fetch();
-			// We can't do this on database level since lastMessage is not a database object
-			const subsToDecrypt = subsEncrypted.filter(
-				(sub: ISubscription) =>
-					// Encrypted message
-					sub?.lastMessage?.t === E2E_MESSAGE_TYPE &&
-					// Message pending decrypt
-					sub?.lastMessage?.e2e === E2E_STATUS.PENDING
-			);
+			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
 			await Promise.all(
-				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
+				subsEncrypted.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
@@ -342,7 +353,7 @@ class Encryption {
 			);
 
 			await db.write(async () => {
-				await db.batch(...subsToDecrypt);
+				await db.batch(...subsEncrypted);
 			});
 		} catch (e) {
 			log(e);
@@ -436,6 +447,11 @@ class Encryption {
 		};
 	};
 
+	encryptText = async (rid: string, text: string) => {
+		const roomE2E = await this.getRoomInstance(rid);
+		return roomE2E.encryptText(text);
+	};
+
 	// Encrypt a message
 	encryptMessage = async (message: IMessage) => {
 		const { rid } = message;
@@ -470,7 +486,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
@@ -495,12 +511,72 @@ class Encryption {
 		return roomE2E.decrypt(message);
 	};
 
+	decryptFileContent = async (file: IServerAttachment) => {
+		const roomE2E = await this.getRoomInstance(file.rid);
+
+		if (!roomE2E) {
+			return file;
+		}
+
+		return roomE2E.decryptFileContent(file);
+	};
+
+	encryptFile = async (rid: string, file: TSendFileMessageFileInfo) => {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (!subscription) {
+			throw new Error('Subscription not found');
+		}
+
+		if (!subscription.encrypted) {
+			// Send a non encrypted message
+			return { file };
+		}
+
+		// If the client is not ready
+		if (!this.ready) {
+			// Wait for ready status
+			await this.establishing;
+		}
+
+		const roomE2E = await this.getRoomInstance(rid);
+		return roomE2E.encryptFile(rid, file);
+	};
+
+	decryptFile = async (messageId: string, path: string, encryption: TAttachmentEncryption): Promise<string | null> => {
+		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
+		if (decryptedFile) {
+			try {
+				const messageRecord = await getMessageById(messageId);
+				if (!messageRecord) {
+					throw new Error('Message not found');
+				}
+
+				const db = database.active;
+				await db.write(async () => {
+					await messageRecord.update(m => {
+						m.attachments = m.attachments?.map(att => ({
+							...att,
+							e2e: 'done'
+						}));
+					});
+				});
+			} catch (e) {
+				// Do nothing
+			}
+		}
+
+		return decryptedFile;
+	};
+
 	// Decrypt multiple messages
 	decryptMessages = (messages: Partial<IMessage>[]) =>
 		Promise.all(messages.map((m: Partial<IMessage>) => this.decryptMessage(m as IMessage)));
 
 	// Decrypt multiple subscriptions
 	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+
+	// Decrypt multiple files
+	decryptFiles = (files: IServerAttachment[]) => Promise.all(files.map(f => this.decryptFileContent(f)));
 }
 
 const encryption = new Encryption();

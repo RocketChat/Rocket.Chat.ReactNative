@@ -290,9 +290,10 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by[textMatcher](mockedMessageText)).atIndex(0))
 					.not.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by.id('room-view-encrypted-room')))
-					.toBeVisible()
-					.withTimeout(2000);
+				// await waitFor(element(by.id('room-view-encrypted-room')))
+				// 	.toBeVisible()
+				// 	.withTimeout(2000);
+				await expect(element(by.label('Encrypted message')).atIndex(0)).toExist();
 			});
 
 			it('should enter new e2e password and messages should be decrypted', async () => {

@@ -1,7 +1,7 @@
 import { fireEvent, render, within } from '@testing-library/react-native';
 import React from 'react';
 
-import MessageContext from '../../Context';
+import MessageContext from '../../../Context';
 import CollapsibleQuote from '.';
 
 const testAttachment = {
