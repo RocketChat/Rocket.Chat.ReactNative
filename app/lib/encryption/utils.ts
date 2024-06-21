@@ -1,9 +1,10 @@
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import { random } from '../methods/helpers';
+import { compareServerVersion, random } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
 import { TSubscriptionModel } from '../../definitions';
+import { store } from '../store/auxStore';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -102,7 +103,13 @@ export const isMissingRoomE2EEKey = ({
 	encryptionEnabled: boolean;
 	roomEncrypted: TSubscriptionModel['encrypted'];
 	E2EKey: TSubscriptionModel['E2EKey'];
-}): boolean => (encryptionEnabled && roomEncrypted && !E2EKey) ?? false;
+}): boolean => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	return (encryptionEnabled && roomEncrypted && !E2EKey) ?? false;
+};
 
 // Encrypted room, but user session is not encrypted
 export const isE2EEDisabledEncryptedRoom = ({
@@ -111,7 +118,13 @@ export const isE2EEDisabledEncryptedRoom = ({
 }: {
 	encryptionEnabled: boolean;
 	roomEncrypted: TSubscriptionModel['encrypted'];
-}): boolean => (!encryptionEnabled && roomEncrypted) ?? false;
+}): boolean => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	return (!encryptionEnabled && roomEncrypted) ?? false;
+};
 
 export const hasE2EEWarning = ({
 	encryptionEnabled,
