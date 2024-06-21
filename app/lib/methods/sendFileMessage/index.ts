@@ -13,7 +13,7 @@ export const sendFileMessage = (
 	isForceTryAgain?: boolean
 ): Promise<void> => {
 	const { version: serverVersion } = store.getState().server;
-	if (compareServerVersion(serverVersion, 'lowerThan', '6.9.0')) {
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
 		return sendFileMessageV1(rid, fileInfo as IUpload, tmid, server, user, isForceTryAgain);
 	}
 
