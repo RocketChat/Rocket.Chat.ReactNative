@@ -243,7 +243,15 @@ export default class EncryptionRoom {
 				...message,
 				t: E2E_MESSAGE_TYPE,
 				e2e: E2E_STATUS.PENDING,
-				msg
+				msg,
+				content: {
+					algorithm: 'rc.v1.aes-sha2' as const,
+					ciphertext: await this.encryptText(
+						EJSON.stringify({
+							msg: message.msg
+						})
+					)
+				}
 			};
 		} catch {
 			// Do nothing
