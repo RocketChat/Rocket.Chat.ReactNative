@@ -13,7 +13,7 @@ import { TSupportedThemes, useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import RCActivityIndicator from '../ActivityIndicator';
 import Markdown from '../markdown';
-import Attachments from './Attachments';
+import { Attachments } from './components';
 import MessageContext from './Context';
 import Touchable from './Touchable';
 import messageStyles from './styles';
@@ -243,8 +243,7 @@ const Reply = React.memo(
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-					disabled={!!(loading || attachment.message_link)}
-				>
+					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
 						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
@@ -264,8 +263,7 @@ const Reply = React.memo(
 									style={[
 										styles.backdrop,
 										{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
-									]}
-								></View>
+									]}></View>
 								<RCActivityIndicator />
 							</View>
 						) : null}
