@@ -18,11 +18,10 @@ const Code = ({ value }: ICodeProps): React.ReactElement => {
 			style={[
 				styles.codeBlock,
 				{
-					backgroundColor: colors.bannerBackground,
-					borderColor: colors.borderColor
+					backgroundColor: colors.surfaceNeutral,
+					borderColor: colors.strokeLight
 				}
-			]}
-		>
+			]}>
 			{value.map(block => {
 				switch (block.type) {
 					case 'CODE_LINE':

@@ -56,7 +56,7 @@ const SelectPersonOrChannel = ({
 
 	return (
 		<View style={styles.inputContainer}>
-			<Text style={[styles.label, { color: colors.bodyText }]}>{I18n.t('Person_or_channel')}</Text>
+			<Text style={[styles.label, { color: colors.fontDefault }]}>{I18n.t('Person_or_channel')}</Text>
 			<MultiSelect
 				onSearch={getRooms}
 				onChange={onRoomSelect}

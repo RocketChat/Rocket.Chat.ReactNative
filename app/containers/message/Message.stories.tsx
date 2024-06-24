@@ -43,7 +43,7 @@ export default {
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>
+				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
 					<MessageContext.Provider
 						value={{
 							user,
@@ -56,7 +56,7 @@ export default {
 							onReactionPress: () => {},
 							onDiscussionPress: () => {},
 							onReactionLongPress: () => {},
-							threadBadgeColor: themes.light.tunreadColor
+							threadBadgeColor: themes.light.fontInfo
 						}}
 					>
 						<Story />
@@ -124,6 +124,13 @@ export const Edited = () => (
 	<>
 		<Message msg='Message header' isEdited />
 		<Message msg='Message without header' isEdited isHeader={false} />
+	</>
+);
+
+export const Pinned = () => (
+	<>
+		<Message msg='Message header' pinned />
+		<Message msg='Message without header' pinned isHeader={false} />
 	</>
 );
 

@@ -1,0 +1,56 @@
+diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
+index ca31e20..1c1bc24 100644
+--- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
++++ b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
+@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase
+ import android.database.sqlite.SQLiteQuery
+ import java.io.File
+ 
+-class Database(
++public class Database(
+     private val name: String,
+     private val context: Context,
+     private val openFlags: Int = SQLiteDatabase.CREATE_IF_NECESSARY or SQLiteDatabase.ENABLE_WRITE_AHEAD_LOGGING
+@@ -49,7 +49,7 @@ class Database(
+ 
+     fun delete(query: SQL, args: QueryArgs) = db.execSQL(query, args)
+ 
+-    fun rawQuery(sql: SQL, args: QueryArgs = emptyArray()): Cursor {
++    public fun rawQuery(sql: SQL, args: QueryArgs = emptyArray()): Cursor {
+         // HACK: db.rawQuery only supports String args, and there's no clean way AFAIK to construct
+         // a query with arbitrary args (like with execSQL). However, we can misuse cursor factory
+         // to get the reference of a SQLiteQuery before it's executed
+diff --git a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+index b4d7151..429e318 100644
+--- a/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
++++ b/node_modules/@nozbe/watermelondb/native/ios/WatermelonDB/Database.swift
+@@ -1,15 +1,15 @@
+ import Foundation
+ import SQLite3
+ 
+-class Database {
+-    typealias SQL = String
+-    typealias TableName = String
+-    typealias QueryArgs = [Any]
++public class Database {
++    public typealias SQL = String
++    public typealias TableName = String
++    public typealias QueryArgs = [Any]
+ 
+     private let fmdb: FMDatabase
+     private let path: String
+ 
+-    init(path: String) {
++    public init(path: String) {
+         self.path = path
+         fmdb = FMDatabase(path: path)
+         open()
+@@ -54,7 +54,7 @@ class Database {
+         }
+     }
+ 
+-    func queryRaw(_ query: SQL, _ args: QueryArgs = []) throws -> AnyIterator<FMResultSet> {
++    public func queryRaw(_ query: SQL, _ args: QueryArgs = []) throws -> AnyIterator<FMResultSet> {
+         let resultSet = try fmdb.executeQuery(query, values: args)
+ 
+         return AnyIterator {

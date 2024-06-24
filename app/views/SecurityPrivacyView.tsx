@@ -1,13 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useEffect, useState } from 'react';
-import { Switch } from 'react-native';
 
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import I18n from '../i18n';
-import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild, SWITCH_TRACK_COLOR } from '../lib/constants';
+import { ANALYTICS_EVENTS_KEY, CRASH_REPORT_KEY, isFDroidBuild } from '../lib/constants';
 import { useAppSelector } from '../lib/hooks';
 import useServer from '../lib/methods/useServer';
 import { SettingsStackParamList } from '../stacks/types';
@@ -20,6 +19,7 @@ import {
 	toggleAnalyticsEventsReport,
 	toggleCrashErrorsReport
 } from '../lib/methods/helpers/log';
+import Switch from '../containers/Switch';
 
 interface ISecurityPrivacyViewProps {
 	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -98,17 +98,13 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 							<List.Item
 								title='Log_analytics_events'
 								testID='security-privacy-view-analytics-events'
-								right={() => (
-									<Switch value={analyticsEventsState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleAnalyticsEvents} />
-								)}
+								right={() => <Switch value={analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
 							/>
 							<List.Separator />
 							<List.Item
 								title='Send_crash_report'
 								testID='security-privacy-view-crash-report'
-								right={() => (
-									<Switch value={crashReportState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleCrashReport} />
-								)}
+								right={() => <Switch value={crashReportState} onValueChange={toggleCrashReport} />}
 							/>
 							<List.Separator />
 							<List.Info info='Crash_report_disclaimer' />

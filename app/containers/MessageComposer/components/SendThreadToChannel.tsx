@@ -70,15 +70,14 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 		<TouchableWithoutFeedback
 			style={styles.container}
 			onPress={() => setAlsoSendThreadToChannel(!alsoSendThreadToChannel)}
-			testID='message-composer-send-to-channel'
-		>
+			testID='message-composer-send-to-channel'>
 			<CustomIcon
 				testID={alsoSendThreadToChannel ? 'send-to-channel-checked' : 'send-to-channel-unchecked'}
 				name={alsoSendThreadToChannel ? 'checkbox-checked' : 'checkbox-unchecked'}
 				size={24}
-				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.strokeDark}
+				color={alsoSendThreadToChannel ? colors.buttonBackgroundPrimaryDefault : colors.fontDefault}
 			/>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
+			<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Message_composer_Send_to_channel')}</Text>
 		</TouchableWithoutFeedback>
 	);
 };

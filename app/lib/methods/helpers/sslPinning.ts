@@ -1,5 +1,5 @@
 import { Alert, NativeModules, Platform } from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
+import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
 import UserPreferences from '../userPreferences';
@@ -29,13 +29,13 @@ const RCSSLPinning = Platform.select({
 		pickCertificate: () =>
 			new Promise(async (resolve, reject) => {
 				try {
-					const res = await DocumentPicker.pickSingle({
-						type: ['com.rsa.pkcs-12']
+					const res = await DocumentPicker.getDocumentAsync({
+						type: 'application/x-pkcs12'
 					});
-					const { uri, name } = res;
-					if (!name) {
+					if (res.canceled) {
 						return reject();
 					}
+					const { uri, name } = res.assets[0];
 					Alert.prompt(
 						I18n.t('Certificate_password'),
 						I18n.t('Whats_the_password_for_your_certificate'),
@@ -67,6 +67,7 @@ const RCSSLPinning = Platform.select({
 					certificate = persistCertificate(name, certificate.password);
 				}
 				UserPreferences.setMap(extractHostname(server), certificate);
+				SSLPinning?.setCertificate(server, certificate.path, certificate.password);
 			}
 		}
 	},

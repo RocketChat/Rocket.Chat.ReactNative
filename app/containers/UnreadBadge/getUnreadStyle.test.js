@@ -15,8 +15,8 @@ const testsForTheme = theme => {
 				unread: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].unreadColor,
-			color: themes[theme].buttonText
+			backgroundColor: themes[theme].fontAnnotation,
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -26,8 +26,8 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].tunreadColor,
-			color: themes[theme].buttonText
+			backgroundColor: theme === 'light' ? themes[theme].fontInfo : themes[theme].buttonBackgroundPrimaryPress,
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -38,8 +38,8 @@ const testsForTheme = theme => {
 				userMentions: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionMeColor,
-			color: themes[theme].buttonText
+			backgroundColor: themes[theme].badgeBackgroundLevel4,
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -50,8 +50,8 @@ const testsForTheme = theme => {
 				groupMentions: 1
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionGroupColor,
-			color: themes[theme].buttonText
+			backgroundColor: themes[theme].badgeBackgroundLevel3,
+			color: themes[theme].fontWhite
 		});
 	});
 
@@ -64,8 +64,8 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionMeColor,
-			color: themes[theme].buttonText
+			backgroundColor: themes[theme].badgeBackgroundLevel4,
+			color: themes[theme].fontWhite
 		});
 		expect(
 			getUnreadStyleUtil({
@@ -74,8 +74,8 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].mentionGroupColor,
-			color: themes[theme].buttonText
+			backgroundColor: themes[theme].badgeBackgroundLevel3,
+			color: themes[theme].fontWhite
 		});
 		expect(
 			getUnreadStyleUtil({
@@ -83,12 +83,18 @@ const testsForTheme = theme => {
 				tunread: [1]
 			})
 		).toEqual({
-			backgroundColor: themes[theme].tunreadColor,
-			color: themes[theme].buttonText
+			backgroundColor: theme === 'light' ? themes[theme].fontInfo : themes[theme].buttonBackgroundPrimaryPress,
+			color: themes[theme].fontWhite
 		});
 	});
 };
 
-describe('getUnreadStyle light theme', () => testsForTheme('light'));
-describe('getUnreadStyle dark theme', () => testsForTheme('dark'));
-describe('getUnreadStyle black theme', () => testsForTheme('black'));
+describe('getUnreadStyle light theme', () => {
+	testsForTheme('light');
+});
+describe('getUnreadStyle dark theme', () => {
+	testsForTheme('dark');
+});
+describe('getUnreadStyle black theme', () => {
+	testsForTheme('black');
+});

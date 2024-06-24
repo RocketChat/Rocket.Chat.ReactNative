@@ -10,7 +10,7 @@ import Deferred from './helpers/deferred';
 import log from '../methods/helpers/log';
 import { store } from '../store/auxStore';
 import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
-import { EncryptionRoom } from './index';
+import EncryptionRoom from './room';
 import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
@@ -349,6 +349,9 @@ class Encryption {
 		}
 	};
 
+	// Creating the instance is enough to generate room e2ee key
+	encryptSubscription = (rid: string) => this.getRoomInstance(rid as string);
+
 	// Decrypt a subscription lastMessage
 	decryptSubscription = async (subscription: Partial<ISubscription>) => {
 		// If the subscription doesn't have a lastMessage just return
@@ -388,7 +391,7 @@ class Encryption {
 		}
 
 		try {
-			const batch: (Model | null | void | false | Promise<void>)[] = [];
+			const batch: (Model | null | void | false)[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
 				// Let's create the subscription with the data received

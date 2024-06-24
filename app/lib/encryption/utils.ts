@@ -3,6 +3,7 @@ import SimpleCrypto from 'react-native-simple-crypto';
 
 import { random } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
+import { TSubscriptionModel } from '../../definitions';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -58,3 +59,41 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
 export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+
+// Missing room encryption key
+export const isMissingRoomE2EEKey = ({
+	encryptionEnabled,
+	roomEncrypted,
+	E2EKey
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+	E2EKey: TSubscriptionModel['E2EKey'];
+}): boolean => (encryptionEnabled && roomEncrypted && !E2EKey) ?? false;
+
+// Encrypted room, but user session is not encrypted
+export const isE2EEDisabledEncryptedRoom = ({
+	encryptionEnabled,
+	roomEncrypted
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+}): boolean => (!encryptionEnabled && roomEncrypted) ?? false;
+
+export const hasE2EEWarning = ({
+	encryptionEnabled,
+	roomEncrypted,
+	E2EKey
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+	E2EKey: TSubscriptionModel['E2EKey'];
+}): boolean => {
+	if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted, E2EKey })) {
+		return true;
+	}
+	if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted })) {
+		return true;
+	}
+	return false;
+};

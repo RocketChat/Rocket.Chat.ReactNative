@@ -61,7 +61,9 @@ const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: 
 					style={[
 						styles.backdrop,
 						{
-							backgroundColor: colors.backdropColor,
+							transform: [{ translateY }],
+							backgroundColor: colors.surfaceRoom,
+							borderColor: colors.strokeLight,
 							opacity: backdropOpacity,
 							top: heightDestination
 						}
@@ -73,11 +75,10 @@ const Dropdown = ({ isMasterDetail, currentFilter, onClose, onFilterSelected }: 
 					styles.dropdownContainer,
 					{
 						transform: [{ translateY }],
-						backgroundColor: colors.backgroundColor,
-						borderColor: colors.separatorColor
+						backgroundColor: colors.surfaceRoom,
+						borderColor: colors.surfaceSelected
 					}
-				]}
-			>
+				]}>
 				<DropdownItemHeader currentFilter={currentFilter} onPress={close} />
 				<List.Separator />
 				<DropdownItemFilter currentFilter={currentFilter} value={Filter.All} onPress={onFilterSelected} />

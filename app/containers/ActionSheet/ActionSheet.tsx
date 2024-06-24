@@ -1,9 +1,9 @@
 import { useBackHandler } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
-import { Keyboard, useWindowDimensions } from 'react-native';
+import { Keyboard, LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';
@@ -51,7 +51,7 @@ const ActionSheet = React.memo(
 				nativeEvent: {
 					layout: { height }
 				}
-			}) => {
+			}: LayoutChangeEvent) => {
 				/**
 				 * This logic is only necessary to prevent the action sheet from
 				 * occupying the entire screen when the dynamic content is too big.
@@ -126,7 +126,7 @@ const ActionSheet = React.memo(
 		};
 
 		const renderBackdrop = useCallback(
-			props => (
+			(props: BottomSheetBackdropProps) => (
 				<BottomSheetBackdrop
 					{...props}
 					appearsOnIndex={0}
@@ -161,12 +161,11 @@ const ActionSheet = React.memo(
 						handleComponent={renderHandle}
 						enablePanDownToClose
 						style={{ ...styles.container, ...bottomSheet }}
-						backgroundStyle={{ backgroundColor: colors.focusedBackground }}
+						backgroundStyle={{ backgroundColor: colors.surfaceLight }}
 						onChange={index => index === -1 && onClose()}
 						// We need this to allow horizontal swipe gesture inside the bottom sheet like in reaction picker
 						enableContentPanningGesture={data?.enableContentPanningGesture ?? true}
-						{...androidTablet}
-					>
+						{...androidTablet}>
 						<BottomSheetContent
 							options={data?.options}
 							hide={hide}

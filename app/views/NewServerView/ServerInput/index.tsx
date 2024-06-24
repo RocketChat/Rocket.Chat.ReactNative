@@ -67,10 +67,7 @@ const ServerInput = ({
 			/>
 			{focused && serversHistory?.length ? (
 				<View
-					style={[
-						styles.serverHistory,
-						{ backgroundColor: themes[theme].backgroundColor, borderColor: themes[theme].separatorColor }
-					]}
+					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}
 				>
 					<FlatList
 						data={serversHistory}

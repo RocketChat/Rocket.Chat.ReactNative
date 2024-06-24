@@ -176,8 +176,7 @@ class RegisterView extends React.Component<IProps, any> {
 										newValue[key] = value;
 										this.setState({ customFields: { ...customFields, ...newValue } });
 									}}
-									value={customFields[key]}
-								>
+									value={customFields[key]}>
 									<FormTextInput
 										inputRef={e => {
 											// @ts-ignore
@@ -231,7 +230,9 @@ class RegisterView extends React.Component<IProps, any> {
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
 					<LoginServices separator />
-					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
+					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].fontTitlesLabels }]}>
+						{I18n.t('Sign_Up')}
+					</Text>
 					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
@@ -310,10 +311,10 @@ class RegisterView extends React.Component<IProps, any> {
 
 					{showLoginButton ? (
 						<View style={styles.bottomContainer}>
-							<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
+							<Text style={[styles.bottomContainerText, { color: themes[theme].fontSecondaryInfo }]}>
 								{I18n.t('Do_you_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]} onPress={this.login}>
+							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].fontHint }]} onPress={this.login}>
 								{I18n.t('Login')}
 							</Text>
 						</View>

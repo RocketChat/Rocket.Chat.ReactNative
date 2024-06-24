@@ -6,6 +6,7 @@ import { store as reduxStore } from '../store/auxStore';
 import { spotlight } from '../services/restApi';
 import { ISearch, ISearchLocal, IUserMessage, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { isGroupChat, isReadOnly } from './helpers';
+import { isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../encryption/utils';
 
 export type TSearch = ISearchLocal | IUserMessage | ISearch;
 
@@ -34,7 +35,7 @@ export const localSearchSubscription = async ({
 				Q.where('name', Q.like(`%${likeString}%`)),
 				Q.where('fname', Q.like(`%${likeString}%`))
 			),
-			Q.experimentalSortBy('room_updated_at', Q.desc)
+			Q.sortBy('room_updated_at', Q.desc)
 		)
 		.fetch();
 
@@ -46,10 +47,21 @@ export const localSearchSubscription = async ({
 
 	if (filterMessagingAllowed) {
 		const username = reduxStore.getState().login.user.username as string;
+		const encryptionEnabled = reduxStore.getState().encryption.enabled as boolean;
 		const filteredSubscriptions = await Promise.all(
 			subscriptions.map(async item => {
-				const isItemReadOnly = await isReadOnly(item, username);
-				return isItemReadOnly ? null : item;
+				if (await isReadOnly(item, username)) {
+					return null;
+				}
+
+				if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: item.encrypted, E2EKey: item.E2EKey })) {
+					return null;
+				}
+				if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: item.encrypted })) {
+					return null;
+				}
+
+				return item;
 			})
 		);
 		subscriptions = filteredSubscriptions.filter(item => item !== null) as TSubscriptionModel[];
@@ -83,8 +95,8 @@ export const localSearchUsersMessageByRid = async ({ text = '', rid = '' }): Pro
 		.get('messages')
 		.query(
 			Q.and(Q.where('rid', rid), Q.where('u', Q.notLike(`%${userId}%`)), Q.where('t', null)),
-			Q.experimentalSortBy('ts', Q.desc),
-			Q.experimentalTake(50)
+			Q.sortBy('ts', Q.desc),
+			Q.take(50)
 		)
 		.fetch();
 

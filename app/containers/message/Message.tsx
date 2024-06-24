@@ -117,6 +117,7 @@ const Message = React.memo((props: IMessage) => {
 						hasError={props.hasError}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
+						pinned={props.pinned}
 						isTranslated={props.isTranslated}
 					/>
 				) : null}
@@ -135,7 +136,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].headerBackground;
+		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
 	if (props.hasError) {
@@ -151,8 +152,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}
-		>
+			style={{ backgroundColor }}>
 			<View>
 				<Message {...props} />
 			</View>

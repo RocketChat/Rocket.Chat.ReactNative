@@ -1,17 +1,16 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import isEmpty from 'lodash/isEmpty';
-import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob';
 import { Alert } from 'react-native';
 
 import { IUpload, IUser, TUploadModel } from '../../definitions';
 import i18n from '../../i18n';
 import database from '../database';
+import type { IFileUpload, Upload } from './helpers/fileUpload';
 import FileUpload from './helpers/fileUpload';
-import { IFileUpload } from './helpers/fileUpload/interfaces';
 import log from './helpers/log';
 
-const uploadQueue: { [index: string]: StatefulPromise<FetchBlobResponse> } = {};
+const uploadQueue: { [index: string]: Upload } = {};
 
 const getUploadPath = (path: string, rid: string) => `${path}-${rid}`;
 
@@ -48,7 +47,7 @@ export function sendFileMessage(
 	server: string,
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
-): Promise<FetchBlobResponse | void> {
+): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const { id, token } = user;
@@ -121,7 +120,7 @@ export function sendFileMessage(
 				'X-User-Id': id
 			};
 
-			uploadQueue[uploadPath] = FileUpload.fetch('POST', uploadUrl, headers, formData);
+			uploadQueue[uploadPath] = FileUpload.uploadFile(uploadUrl, headers, formData);
 
 			uploadQueue[uploadPath].uploadProgress(async (loaded: number, total: number) => {
 				try {
@@ -137,12 +136,11 @@ export function sendFileMessage(
 
 			uploadQueue[uploadPath].then(async response => {
 				if (response.respInfo.status >= 200 && response.respInfo.status < 400) {
-					// If response is all good...
 					try {
 						await db.write(async () => {
 							await uploadRecord.destroyPermanently();
 						});
-						resolve(response);
+						resolve();
 					} catch (e) {
 						log(e);
 					}

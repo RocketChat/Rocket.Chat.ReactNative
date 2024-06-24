@@ -32,10 +32,10 @@ const E2EHowItWorksView = (): React.ReactElement => {
 		});
 	}, []);
 
-	const infoStyle = [styles.info, { color: colors.bodyText }];
+	const infoStyle = [styles.info, { color: colors.fontDefault }];
 
 	return (
-		<SafeAreaView style={[styles.container, { backgroundColor: colors.backgroundColor }]} testID='e2e-how-it-works-view'>
+		<SafeAreaView style={[styles.container, { backgroundColor: colors.surfaceRoom }]} testID='e2e-how-it-works-view'>
 			<Markdown msg={I18n.t('E2E_How_It_Works_info1')} style={infoStyle} />
 			<Markdown msg={I18n.t('E2E_How_It_Works_info2')} style={infoStyle} />
 			<Markdown msg={I18n.t('E2E_How_It_Works_info3')} style={infoStyle} />

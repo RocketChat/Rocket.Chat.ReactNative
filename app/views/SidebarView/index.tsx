@@ -13,7 +13,7 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import userPreferences from '../../lib/methods/userPreferences';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { NOTIFICATION_PRESENCE_CAP, STATUS_COLORS, themes } from '../../lib/constants';
+import { NOTIFICATION_PRESENCE_CAP, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -225,7 +225,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<List.Separator />
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='settings' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate(routeName)}
 					testID='sidebar-admin'
 					theme={theme!}
@@ -241,7 +241,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<>
 				<SidebarItem
 					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='message' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					testID='sidebar-chats'
 					theme={theme!}
@@ -249,7 +249,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<SidebarItem
 					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='user' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					testID='sidebar-profile'
 					theme={theme!}
@@ -257,7 +257,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<SidebarItem
 					text={I18n.t('Display')}
-					left={<CustomIcon name='sort' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='sort' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					testID='sidebar-display'
 					theme={theme!}
@@ -265,7 +265,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<SidebarItem
 					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
+					left={<CustomIcon name='administration' size={20} color={themes[theme!].fontTitlesLabels} />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					testID='sidebar-settings'
 					theme={theme!}
@@ -284,9 +284,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			status = 'disabled';
 		}
 
-		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].titleText} />;
+		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].fontTitlesLabels} />;
 		if (notificationPresenceCap) {
-			right = <View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />;
+			right = <View style={[styles.customStatusDisabled, { backgroundColor: themes[theme!].userPresenceDisabled }]} />;
 		} else if (Presence_broadcast_disabled) {
 			right = undefined;
 		}
@@ -309,8 +309,8 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return (
 				<SidebarItem
 					text={I18n.t('Supported_versions_warning_update_required')}
-					textColor={themes[theme!].dangerColor}
-					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
+					textColor={themes[theme!].fontDanger}
+					left={<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
 					theme={theme!}
 					onPress={() => this.onPressSupportedVersionsWarning()}
 					testID={`sidebar-supported-versions-warn`}
@@ -327,30 +327,28 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
+			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].surfaceLight }} vertical={isMasterDetail}>
 				<ScrollView
 					style={[
 						styles.container,
 						{
-							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
+							backgroundColor: isMasterDetail ? themes[theme!].surfaceRoom : themes[theme!].surfaceLight
 						}
 					]}
-					{...scrollPersistTaps}
-				>
+					{...scrollPersistTaps}>
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={styles.header}>
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].fontTitlesLabels }]}>
 										{useRealName ? user.name : user.username}
 									</Text>
 								</View>
 								<Text
-									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
+									style={[styles.currentServerText, { color: themes[theme!].fontTitlesLabels }]}
 									numberOfLines={1}
-									accessibilityLabel={`Connected to ${baseUrl}`}
-								>
+									accessibilityLabel={`Connected to ${baseUrl}`}>
 									{Site_Name}
 								</Text>
 							</View>

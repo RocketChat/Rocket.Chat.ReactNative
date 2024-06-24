@@ -18,20 +18,20 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 	const iconStyle: { [key: string]: { icon: TIconsName; color: string; backgroundColor: string; label: string } } = {
 		ended: {
 			icon: 'phone-end',
-			color: colors.conferenceCallEndedPhoneIcon,
-			backgroundColor: colors.conferenceCallEndedPhoneBackground,
+			color: colors.fontSecondaryInfo,
+			backgroundColor: colors.surfaceNeutral,
 			label: i18n.t('Call_ended')
 		},
 		incoming: {
 			icon: 'phone-in',
-			color: colors.conferenceCallIncomingPhoneIcon,
-			backgroundColor: colors.conferenceCallIncomingPhoneBackground,
+			color: colors.fontInfo,
+			backgroundColor: colors.buttonBackgroundPrimaryDisabled,
 			label: i18n.t('Calling')
 		},
 		outgoing: {
 			icon: 'phone',
-			color: colors.conferenceCallOngoingPhoneIcon,
-			backgroundColor: colors.conferenceCallOngoingPhoneBackground,
+			color: colors.buttonBackgroundSuccessDefault,
+			backgroundColor: colors.buttonBackgroundSuccessDisabled,
 			label: i18n.t('Call_ongoing')
 		},
 		issue: {
@@ -49,8 +49,7 @@ export const VideoConferenceBaseContainer = ({ variant, children }: VideoConfMes
 					style={{
 						...style.iconContainer,
 						backgroundColor: iconStyle[variant].backgroundColor
-					}}
-				>
+					}}>
 					<CustomIcon name={iconStyle[variant].icon} size={24} color={iconStyle[variant].color} />
 				</View>
 				<Text style={style.infoContainerText}>{iconStyle[variant].label}</Text>

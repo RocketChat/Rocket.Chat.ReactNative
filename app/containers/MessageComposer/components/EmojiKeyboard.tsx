@@ -21,8 +21,7 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 				value={{
 					theme,
 					colors: colors[theme]
-				}}
-			>
+				}}>
 				<View style={{ flex: 1 }} testID='message-composer-keyboard-emoji'>
 					<EmojiPicker onItemClicked={onItemClicked} isEmojiKeyboard={true} />
 				</View>
