@@ -230,7 +230,9 @@ class RegisterView extends React.Component<IProps, any> {
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
 					<LoginServices separator />
-					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Sign_Up')}</Text>
+					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].fontTitlesLabels }]}>
+						{I18n.t('Sign_Up')}
+					</Text>
 					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}

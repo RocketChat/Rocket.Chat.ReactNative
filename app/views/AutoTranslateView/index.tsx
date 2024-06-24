@@ -122,11 +122,7 @@ const AutoTranslateView = (): React.ReactElement => {
 						<List.Item
 							title='Enable_Auto_Translate'
 							right={() => (
-								<Switch
-									testID='auto-translate-view-switch'
-									value={enableAutoTranslate}
-									onValueChange={toggleAutoTranslate}
-								/>
+								<Switch testID='auto-translate-view-switch' value={enableAutoTranslate} onValueChange={toggleAutoTranslate} />
 							)}
 						/>
 						<List.Separator />
