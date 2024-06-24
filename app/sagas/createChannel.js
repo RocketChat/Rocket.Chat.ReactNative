@@ -9,6 +9,7 @@ import I18n from '../i18n';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { Services } from '../lib/services';
+import { Encryption } from '../lib/encryption';
 
 const handleRequest = function* handleRequest({ data }) {
 	try {
@@ -65,6 +66,10 @@ const handleRequest = function* handleRequest({ data }) {
 					Object.assign(s, sub);
 				});
 			});
+
+			if (data.encrypted) {
+				Encryption.encryptSubscription(sub.rid);
+			}
 		} catch {
 			// do nothing
 		}

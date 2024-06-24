@@ -401,7 +401,9 @@ const RoomMembersView = (): React.ReactElement => {
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers(state.allUsers)}
 				ListEmptyComponent={() =>
-					state.end ? <Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text> : null
+					state.end ? (
+						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
+					) : null
 				}
 				{...scrollPersistTaps}
 			/>
