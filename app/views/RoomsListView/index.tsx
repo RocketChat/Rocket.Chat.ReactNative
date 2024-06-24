@@ -451,9 +451,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
+			// headerTitleAlign: 'left',
+			// headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
+			// headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.Drawer
 					navigation={navigation}

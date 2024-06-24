@@ -51,6 +51,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	notificationsDisabled?: boolean;
 	hasE2EEWarning: boolean;
 	toggleRoomE2EEncryptionPermission?: string[];
+	onLayout: Function;
 }
 
 interface IRigthButtonsState {
@@ -400,6 +401,11 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return status === 'queued';
 	};
 
+	onLayout = (l: any) => {
+		const { onLayout } = this.props;
+		onLayout(l);
+	};
+
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
 		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
@@ -430,7 +436,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			);
 		}
 		return (
-			<HeaderButton.Container>
+			<HeaderButton.Container onLayout={this.onLayout}>
 				{hasE2EEWarning ? (
 					<HeaderButton.Item iconName='encrypted' onPress={() => toggleRoomE2EE(rid)} disabled={!canToggleEncryption} />
 				) : null}

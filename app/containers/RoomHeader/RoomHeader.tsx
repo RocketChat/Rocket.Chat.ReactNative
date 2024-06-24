@@ -22,7 +22,6 @@ const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	titleContainer: {
@@ -75,6 +74,7 @@ interface IRoomHeader {
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
+	rightButtonsWidth?: number;
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
@@ -141,8 +141,10 @@ const Header = React.memo(
 		testID,
 		usersTyping = [],
 		sourceType,
-		disabled
+		disabled,
+		rightButtonsWidth = 0
 	}: IRoomHeader) => {
+		console.log('🚀 ~ rightButtonsWidth:', rightButtonsWidth);
 		const { colors } = useTheme();
 		const portrait = height > width;
 		let scale = 1;
@@ -182,7 +184,8 @@ const Header = React.memo(
 				style={[
 					styles.container,
 					{
-						opacity: disabled ? 0.5 : 1
+						opacity: disabled ? 0.5 : 1,
+						width: width - rightButtonsWidth - 60
 					}
 				]}
 				disabled={disabled}

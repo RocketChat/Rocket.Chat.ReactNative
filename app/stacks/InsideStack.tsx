@@ -1,10 +1,10 @@
 import React from 'react';
 import { I18nManager } from 'react-native';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../theme';
-import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import Sidebar from '../views/SidebarView';
 // Chats Stack
 import RoomView from '../views/RoomView';
@@ -88,6 +88,9 @@ import {
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
 
+const createStackNavigator = createNativeStackNavigator;
+type StackNavigationOptions = NativeStackNavigationOptions;
+
 // ChatsStackNavigator
 const ChatsStack = createStackNavigator<ChatsStackParamList & TNavigation>();
 const ChatsStackNavigator = () => {
@@ -97,7 +100,12 @@ const ChatsStackNavigator = () => {
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
-			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
+			<ChatsStack.Screen
+				name='RoomActionsView'
+				component={RoomActionsView}
+				// @ts-ignore
+				options={RoomActionsView.navigationOptions}
+			/>
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='SelectListView' component={SelectListView} options={SelectListView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} />
@@ -112,6 +120,7 @@ const ChatsStackNavigator = () => {
 				name='SearchMessagesView'
 				// @ts-ignore
 				component={SearchMessagesView}
+				// @ts-ignore
 				options={SearchMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
@@ -146,7 +155,11 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen
 				name='JitsiMeetView'
 				component={JitsiMeetView}
-				options={{ headerShown: false, animationEnabled: isIOS }}
+				options={{
+					headerShown: false,
+					// @ts-ignore
+					animationEnabled: isIOS
+				}}
 			/>
 		</ChatsStack.Navigator>
 	);
@@ -159,7 +172,12 @@ const ProfileStackNavigator = () => {
 	return (
 		<ProfileStack.Navigator
 			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
-			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
+			<ProfileStack.Screen
+				name='ProfileView'
+				component={ProfileView}
+				// @ts-ignore
+				options={ProfileView.navigationOptions}
+			/>
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
@@ -189,6 +207,7 @@ const SettingsStackNavigator = () => {
 				name='ScreenLockConfigView'
 				// @ts-ignore
 				component={ScreenLockConfigView}
+				// @ts-ignore
 				options={ScreenLockConfigView.navigationOptions}
 			/>
 		</SettingsStack.Navigator>
@@ -297,8 +316,7 @@ const InsideStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<InsideStack.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
+		<InsideStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), presentation: 'transparentModal' }}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen
