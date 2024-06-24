@@ -5,7 +5,7 @@ import { IMessageAttachments } from './interfaces';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-import Reply from './Reply';
+import { Reply } from './components';
 import Button from '../Button';
 import MessageContext from './Context';
 import { IAttachment, TGetCustomEmoji } from '../../definitions';
