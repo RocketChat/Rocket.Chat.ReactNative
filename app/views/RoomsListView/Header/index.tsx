@@ -16,6 +16,7 @@ interface IRoomsListHeaderViewProps {
 	isFetching: boolean;
 	server: string;
 	dispatch: Dispatch;
+	width?: number;
 }
 
 class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {
@@ -35,7 +36,7 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	};
 
 	render() {
-		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, server } = this.props;
+		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, server, width } = this.props;
 
 		return (
 			<Header
@@ -48,6 +49,7 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 				isFetching={isFetching}
 				onPress={this.onPress}
 				onSearchChangeText={this.onSearchChangeText}
+				width={width}
 			/>
 		);
 	}

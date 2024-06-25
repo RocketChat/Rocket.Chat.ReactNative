@@ -18,8 +18,7 @@ const styles = StyleSheet.create({
 		})
 	},
 	avatar: {
-		borderRadius: 10,
-		marginHorizontal: 15
+		borderRadius: 10
 	}
 });
 

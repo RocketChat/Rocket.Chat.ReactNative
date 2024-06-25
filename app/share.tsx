@@ -37,6 +37,7 @@ const InsideStack = () => {
 		...defaultHeader,
 		...themedHeader(theme)
 	};
+	// @ts-ignore
 	screenOptions.headerStyle = { ...screenOptions.headerStyle, height: 57 };
 
 	return (

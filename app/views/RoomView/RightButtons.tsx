@@ -417,7 +417,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
-					<HeaderButton.Container>
+					<HeaderButton.Container onLayout={this.onLayout}>
 						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
 					</HeaderButton.Container>
 				);
@@ -426,7 +426,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		if (tmid) {
 			return (
-				<HeaderButton.Container>
+				<HeaderButton.Container onLayout={this.onLayout}>
 					<HeaderButton.Item
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
