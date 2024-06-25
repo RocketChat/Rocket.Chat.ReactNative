@@ -10,10 +10,10 @@ import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
-		marginLeft: -10,
+		marginLeft: -2,
 		...Platform.select({
 			ios: {
-				minWidth: 30
+				minWidth: 34
 			}
 		})
 	},

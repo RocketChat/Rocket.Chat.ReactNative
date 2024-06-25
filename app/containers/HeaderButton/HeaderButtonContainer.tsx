@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, ViewProps } from 'react-native';
 
+import { isAndroid } from '../../lib/methods/helpers';
+
 interface IHeaderButtonContainer {
 	children?: React.ReactElement | (React.ReactElement | null)[] | null;
 	left?: boolean;
@@ -14,10 +16,11 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	left: {
-		marginLeft: 0
+		marginLeft: -5,
+		marginRight: isAndroid ? 25 : 0
 	},
 	right: {
-		marginRight: 0
+		marginRight: -5
 	}
 });
 

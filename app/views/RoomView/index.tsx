@@ -483,21 +483,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			// 	// maxWidth: undefined
 			// },
 			// headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
-			headerLeft: () => (
-				<LeftButtons
-					rid={rid}
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					theme={theme}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
-				/>
-			),
+			headerLeft: () =>
+				isIOS ? (
+					<LeftButtons
+						rid={rid}
+						tmid={tmid}
+						unreadsCount={unreadsCount}
+						baseUrl={baseUrl}
+						userId={userId}
+						token={token}
+						title={avatar}
+						theme={theme}
+						t={t}
+						goRoomActionsView={this.goRoomActionsView}
+						isMasterDetail={isMasterDetail}
+					/>
+				) : undefined,
 			headerTitle: () => (
 				<RoomHeader
 					prid={prid}

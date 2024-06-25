@@ -8,6 +8,7 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
+import { isIOS } from '../../lib/methods/helpers';
 
 const HIT_SLOP = {
 	top: 5,
@@ -185,7 +186,7 @@ const Header = React.memo(
 					styles.container,
 					{
 						opacity: disabled ? 0.5 : 1,
-						width: width - rightButtonsWidth - 60
+						width: width - rightButtonsWidth - (isIOS ? 60 : 80)
 					}
 				]}
 				disabled={disabled}
