@@ -10,7 +10,6 @@ import { useAppSelector } from '../../../lib/hooks';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	button: {
@@ -74,7 +73,7 @@ const Header = React.memo(
 			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 		}
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, { width: 250, backgroundColor: 'red' }]}>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 					<View style={styles.button}>
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
@@ -91,8 +90,7 @@ const Header = React.memo(
 						<Text
 							testID='rooms-list-header-server-subtitle'
 							style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-							numberOfLines={1}
-						>
+							numberOfLines={1}>
 							{subtitle}
 						</Text>
 					) : null}

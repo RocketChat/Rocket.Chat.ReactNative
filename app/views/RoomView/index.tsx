@@ -473,16 +473,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 		const iSubRoom = room as ISubscription;
 		navigation.setOptions({
-			// headerShown: true,
-			// // headerTitleAlign: 'left',
-			// headerTitleStyle: {
-			// 	flex: 1,
-			// 	backgroundColor: 'blue'
-			// 	// marginLeft: 0,
-			// 	// marginRight: 4,
-			// 	// maxWidth: undefined
-			// },
-			// headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () =>
 				isIOS ? (
 					<LeftButtons

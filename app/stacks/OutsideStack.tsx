@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
@@ -14,6 +14,9 @@ import RegisterView from '../views/RegisterView';
 import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
 import { OutsideModalParamList, OutsideParamList } from './types';
+
+const createStackNavigator = createNativeStackNavigator;
+type StackNavigationOptions = NativeStackNavigationOptions;
 
 // Outside
 const Outside = createStackNavigator<OutsideParamList>();

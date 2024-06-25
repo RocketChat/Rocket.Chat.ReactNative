@@ -145,7 +145,6 @@ const Header = React.memo(
 		disabled,
 		rightButtonsWidth = 0
 	}: IRoomHeader) => {
-		console.log('🚀 ~ rightButtonsWidth:', rightButtonsWidth);
 		const { colors } = useTheme();
 		const portrait = height > width;
 		let scale = 1;

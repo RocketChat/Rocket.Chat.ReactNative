@@ -238,18 +238,17 @@ const DisplayPrefStackNavigator = () => {
 // DrawerNavigator
 const Drawer = createDrawerNavigator<DrawerParamList>();
 const DrawerNavigator = () => {
-	const { theme } = React.useContext(ThemeContext);
+	const { colors } = React.useContext(ThemeContext);
 
 	return (
 		<Drawer.Navigator
 			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			screenOptions={{
-				swipeEnabled: false,
 				headerShown: false,
 				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
 				drawerType: 'slide',
-				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
+				overlayColor: `rgba(0,0,0,${colors.backdropOpacity})`
 			}}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
