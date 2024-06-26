@@ -129,9 +129,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { navigation, theme } = this.props;
 
 		const options: NativeStackNavigationOptions = {
-			headerTitle: () => <Header room={room} thread={thread} />,
-			headerTitleAlign: 'left',
-			headerTintColor: themes[theme].backdropColor
+			headerTitle: () => <Header room={room} thread={thread} />
 		};
 
 		// if is share extension show default back button
@@ -148,8 +146,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				</HeaderButton.Container>
 			);
 		}
-
-		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].surfaceNeutral }]} />;
 
 		navigation.setOptions(options);
 	};

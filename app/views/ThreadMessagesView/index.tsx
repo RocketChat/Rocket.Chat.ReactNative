@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { HeaderBackButton } from '@react-navigation/elements';
 import { Observable, Subscription } from 'rxjs';
 
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -113,13 +112,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	getHeader = (): NativeStackNavigationOptions => {
 		const { isSearching } = this.state;
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 
 		if (isSearching) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -133,18 +129,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerTitleAlign: 'center',
+			headerLeft: () => null,
 			headerTitle: I18n.t('Threads'),
-			headerTitleContainerStyle: {},
-			headerRightContainerStyle: { flexGrow: 1 },
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].fontSecondaryInfo}
-					testID='header-back'
-				/>
-			),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />

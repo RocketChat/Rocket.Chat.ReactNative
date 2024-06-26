@@ -1,6 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { HeaderBackButton } from '@react-navigation/elements';
 import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
@@ -187,7 +186,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	setHeader = () => {
 		const { isSearching, showCreate } = this.state;
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { navigation } = this.props;
 
 		const { team } = this;
 		if (!team) {
@@ -210,14 +209,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].fontSecondaryInfo}
-					testID='header-back'
-				/>
-			),
+			headerLeft: () => null,
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
 			),
@@ -234,10 +226,6 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				</HeaderButton.Container>
 			)
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
 
 		navigation.setOptions(options);
 	};

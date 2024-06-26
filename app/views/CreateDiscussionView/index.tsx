@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Text } from 'react-native';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
@@ -84,9 +83,9 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
 						</HeaderButton.Container>
 				  )
-				: null,
+				: () => null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
-		} as NativeStackNavigationOptions);
+		});
 	};
 
 	submit = () => {

@@ -474,7 +474,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const iSubRoom = room as ISubscription;
 		navigation.setOptions({
 			headerLeft: () =>
-				isIOS ? (
+				isIOS && (unreadsCount || isMasterDetail) ? (
 					<LeftButtons
 						rid={rid}
 						tmid={tmid}

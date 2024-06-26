@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { HeaderBackButton } from '@react-navigation/elements';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -212,12 +211,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
-	const getHeader = (): NativeStackNavigationOptions => {
+	const getHeader = () => {
 		if (isSearching) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item
@@ -235,28 +231,14 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerTitleAlign: undefined,
+			headerLeft: () => null,
 			headerTitle: I18n.t('Canned_Responses'),
-			headerTitleContainerStyle: { maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: 1 },
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].fontSecondaryInfo}
-					testID='header-back'
-				/>
-			),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
 				</HeaderButton.Container>
 			)
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
 
 		return options;
 	};
