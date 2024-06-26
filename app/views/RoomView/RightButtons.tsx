@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -35,7 +35,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	status?: string;
 	dispatch: Dispatch;
 	encrypted?: boolean;
-	navigation: StackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 	omnichannelPermissions: {
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;

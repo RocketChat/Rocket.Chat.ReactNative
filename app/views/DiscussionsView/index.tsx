@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { RouteProp } from '@react-navigation/core';
 
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 });
 
 interface IDiscussionsViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
 	route: RouteProp<ChatsStackParamList, 'DiscussionsView'>;
 	item: TThreadModel;
 }
@@ -102,12 +102,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	};
 
 	const setHeader = () => {
-		let options: Partial<StackNavigationOptions>;
+		let options: Partial<NativeStackNavigationOptions>;
 		if (isSearching) {
 			options = {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
+				// headerTitleAlign: 'left',
+				// headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				// headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -122,10 +122,10 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 
 		options = {
-			headerTitleAlign: 'center',
-			headerTitle: I18n.t('Discussions'),
-			headerTitleContainerStyle: {},
-			headerRightContainerStyle: { flexGrow: 1 },
+			// headerTitleAlign: 'center',
+			// headerTitle: I18n.t('Discussions'),
+			// headerTitleContainerStyle: {},
+			// headerRightContainerStyle: { flexGrow: 1 },
 			headerLeft: () => (
 				<HeaderBackButton
 					labelVisible={false}

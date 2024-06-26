@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { Observable, Subscription } from 'rxjs';
 
@@ -111,7 +111,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	}
 
-	getHeader = (): StackNavigationOptions => {
+	getHeader = (): NativeStackNavigationOptions => {
 		const { isSearching } = this.state;
 		const { navigation, isMasterDetail, theme } = this.props;
 
@@ -132,7 +132,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			};
 		}
 
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitleAlign: 'center',
 			headerTitle: I18n.t('Threads'),
 			headerTitleContainerStyle: {},

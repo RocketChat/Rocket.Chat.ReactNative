@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-	createNativeStackNavigator,
-	NativeStackNavigationOptions,
-	NativeStackNavigationProp
-} from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
@@ -78,16 +74,13 @@ import { isIOS } from '../../lib/methods/helpers';
 import { TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
-const createStackNavigator = createNativeStackNavigator;
-type StackNavigationOptions = NativeStackNavigationOptions;
-
 // ChatsStackNavigator
-const ChatsStack = createStackNavigator<MasterDetailChatsStackParamList>();
+const ChatsStack = createNativeStackNavigator<MasterDetailChatsStackParamList>();
 const ChatsStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
+		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ChatsStack.Screen name='RoomView' component={RoomView} options={{ title: '' }} />
 		</ChatsStack.Navigator>
 	);
@@ -107,12 +100,12 @@ export interface INavigation {
 	navigation: NativeStackNavigationProp<ModalStackParamList>;
 }
 
-const ModalStack = createStackNavigator<ModalStackParamList & TNavigation>();
+const ModalStack = createNativeStackNavigator<ModalStackParamList & TNavigation>();
 const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
-			<ModalStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
+			<ModalStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 				<ModalStack.Screen
 					name='RoomActionsView'
 					component={RoomActionsView}
@@ -208,18 +201,16 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 });
 
 // InsideStackNavigator
-const InsideStack = createStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
+const InsideStack = createNativeStackNavigator<MasterDetailInsideStackParamList & TNavigation>();
 const InsideStackNavigator = React.memo(() => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<InsideStack.Navigator
-			screenOptions={
-				{
-					...defaultHeader,
-					...themedHeader(theme),
-					presentation: 'transparentModal'
-				} as StackNavigationOptions
-			}>
+			screenOptions={{
+				...defaultHeader,
+				...themedHeader(theme),
+				presentation: 'transparentModal'
+			}}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='ModalStackNavigator' component={ModalStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />

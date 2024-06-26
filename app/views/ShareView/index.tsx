@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -51,7 +51,7 @@ interface IShareViewState {
 }
 
 interface IShareViewProps {
-	navigation: StackNavigationProp<InsideStackParamList, 'ShareView'>;
+	navigation: NativeStackNavigationProp<InsideStackParamList, 'ShareView'>;
 	route: RouteProp<InsideStackParamList, 'ShareView'>;
 	theme: TSupportedThemes;
 	user: {
@@ -128,7 +128,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { room, thread, readOnly, attachments } = this.state;
 		const { navigation, theme } = this.props;
 
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitle: () => <Header room={room} thread={thread} />,
 			headerTitleAlign: 'left',
 			headerTintColor: themes[theme].backdropColor

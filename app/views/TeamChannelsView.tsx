@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
@@ -195,10 +195,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 
 		if (isSearching) {
-			const options: StackNavigationOptions = {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
+			const options: NativeStackNavigationOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -212,11 +209,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			return navigation.setOptions(options);
 		}
 
-		const options: StackNavigationOptions = {
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginLeft: 0, marginRight: 4, maxWidth: undefined },
-			headerLeftContainerStyle: { minWidth: 60 },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
+		const options: NativeStackNavigationOptions = {
 			headerLeft: () => (
 				<HeaderBackButton
 					labelVisible={false}

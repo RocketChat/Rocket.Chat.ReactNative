@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { CompositeNavigationProp } from '@react-navigation/core';
@@ -15,18 +15,18 @@ import { IApplicationState } from '../definitions';
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
-	CompositeNavigationProp<StackNavigationProp<NewMessageStackParamList>, StackNavigationProp<DrawerParamList>>
+	NativeStackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
+	CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 const setHeader = ({
 	navigation,
 	isMasterDetail
 }: {
-	navigation: StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>;
 	isMasterDetail: boolean;
 }) => {
-	const options: StackNavigationOptions = {
+	const options: NativeStackNavigationOptions = {
 		headerTitle: I18n.t('Add_Channel_to_Team')
 	};
 

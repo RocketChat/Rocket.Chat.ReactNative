@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
@@ -50,8 +50,8 @@ import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -425,7 +425,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
-	getHeader = (): StackNavigationOptions => {
+	getHeader = (): any => {
 		const { searching, canCreateRoom, headerTitleWidth } = this.state;
 		console.log('🚀 ~ RoomsListView ~ headerTitleWidth:', headerTitleWidth);
 		const {
@@ -440,9 +440,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		if (searching) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
+				// headerTitleAlign: 'left',
+				// headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				// headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />

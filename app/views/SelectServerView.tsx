@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
 
@@ -22,7 +22,7 @@ const SelectServerView = () => {
 	const [servers, setServers] = React.useState<TServerModel[]>([]);
 
 	const server = useAppSelector(state => state.share.server.server);
-	const navigation = useNavigation<StackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({

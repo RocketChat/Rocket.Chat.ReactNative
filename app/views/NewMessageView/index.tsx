@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
@@ -31,7 +31,7 @@ const NewMessageView = () => {
 
 	const { colors } = useTheme();
 
-	const navigation = useNavigation<StackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 
 	const { isMasterDetail, maxUsers, useRealName } = useAppSelector(
 		state => ({

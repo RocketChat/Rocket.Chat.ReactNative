@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
@@ -15,16 +15,13 @@ import LegalView from '../views/LegalView';
 import AuthenticationWebView from '../views/AuthenticationWebView';
 import { OutsideModalParamList, OutsideParamList } from './types';
 
-const createStackNavigator = createNativeStackNavigator;
-type StackNavigationOptions = NativeStackNavigationOptions;
-
 // Outside
-const Outside = createStackNavigator<OutsideParamList>();
+const Outside = createNativeStackNavigator<OutsideParamList>();
 const _OutsideStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
+		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
@@ -48,7 +45,7 @@ const mapStateToProps = (state: any) => ({
 const OutsideStack = connect(mapStateToProps)(_OutsideStack);
 
 // OutsideStackModal
-const OutsideModal = createStackNavigator<OutsideModalParamList>();
+const OutsideModal = createNativeStackNavigator<OutsideModalParamList>();
 const OutsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
 import database from '../../lib/database';
@@ -47,7 +47,7 @@ const fixedScopes = [
 ] as ILivechatDepartment[];
 
 interface ICannedResponsesListViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponsesListView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'CannedResponsesListView'>;
 	route: RouteProp<ChatsStackParamList, 'CannedResponsesListView'>;
 }
 
@@ -212,7 +212,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		await getListCannedResponse({ text: searchText, department: scope, depId: departmentId, debounced: false });
 	};
 
-	const getHeader = (): StackNavigationOptions => {
+	const getHeader = (): NativeStackNavigationOptions => {
 		if (isSearching) {
 			return {
 				headerTitleAlign: 'left',
@@ -234,7 +234,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			};
 		}
 
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitleAlign: undefined,
 			headerTitle: I18n.t('Canned_Responses'),
 			headerTitleContainerStyle: { maxWidth: undefined },

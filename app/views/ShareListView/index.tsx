@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dispatch } from 'redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
@@ -56,7 +56,7 @@ interface IState {
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
+	navigation: NativeStackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
 }
 
 interface IShareListViewProps extends INavigationOption {
@@ -461,8 +461,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				<SafeAreaView>
 					<ScrollView
 						style={{ backgroundColor: themes[theme].surfaceRoom }}
-						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}
-					>
+						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
 						<Text style={[styles.permissionTitle, { color: themes[theme].fontTitlesLabels }]}>
 							{I18n.t('Read_External_Permission')}
 						</Text>

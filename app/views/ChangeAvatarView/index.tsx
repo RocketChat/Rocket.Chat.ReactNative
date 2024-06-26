@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 
 import KeyboardView from '../../containers/KeyboardView';
@@ -74,7 +74,7 @@ const ChangeAvatarView = () => {
 		shallowEqual
 	);
 	const isDirty = useRef<boolean>(false);
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
 
 	useLayoutEffect(() => {
@@ -165,8 +165,7 @@ const ChangeAvatarView = () => {
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='change-avatar-view-list'
-					{...scrollPersistTaps}
-				>
+					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						{deletingRoomAvatar ? (
 							<AvatarPresentational

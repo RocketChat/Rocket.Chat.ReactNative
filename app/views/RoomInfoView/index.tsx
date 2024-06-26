@@ -1,5 +1,5 @@
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import React, { useEffect, useRef, useState } from 'react';
@@ -30,8 +30,8 @@ import styles from './styles';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;

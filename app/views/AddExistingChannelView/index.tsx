@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -22,7 +22,7 @@ import { getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/help
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 
-type TNavigation = StackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
+type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
 
 const QUERY_SIZE = 50;
@@ -52,7 +52,7 @@ const AddExistingChannelView = () => {
 	}, []);
 
 	const setHeader = () => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitle: I18n.t('Add_Existing_Channel')
 		};
 
