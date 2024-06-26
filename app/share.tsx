@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { getTheme, setNativeTheme, initialTheme as initialThemeFunction, unsubscribeTheme } from './lib/methods/helpers/theme';
 import UserPreferences from './lib/methods/userPreferences';
@@ -26,6 +27,8 @@ import { DimensionsContext } from './dimensions';
 import { ShareInsideStackParamList, ShareOutsideStackParamList, ShareAppStackParamList } from './definitions/navigationTypes';
 import { colors, CURRENT_SERVER } from './lib/constants';
 import Loading from './containers/Loading';
+
+const createStackNavigator = createNativeStackNavigator;
 
 initStore(store);
 
@@ -65,7 +68,7 @@ const OutsideStack = () => {
 // App
 const Stack = createStackNavigator<ShareAppStackParamList>();
 export const App = ({ root }: { root: string }): React.ReactElement => (
-	<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+	<Stack.Navigator screenOptions={{ headerShown: false }}>
 		<>
 			{!root ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
 			{root === 'outside' ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
@@ -112,33 +115,35 @@ const Root = (): React.ReactElement => {
 	}, []);
 
 	return (
-		<Provider store={store}>
-			<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
-				<DimensionsContext.Provider
-					value={{
-						width,
-						height,
-						scale,
-						fontScale
-					}}>
-					<NavigationContainer
-						theme={navTheme}
-						ref={Navigation.navigationRef}
-						onStateChange={state => {
-							const previousRouteName = Navigation.routeNameRef.current;
-							const currentRouteName = getActiveRouteName(state);
-							if (previousRouteName !== currentRouteName) {
-								setCurrentScreen(currentRouteName);
-							}
-							Navigation.routeNameRef.current = currentRouteName;
+		<GestureHandlerRootView>
+			<Provider store={store}>
+				<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
+					<DimensionsContext.Provider
+						value={{
+							width,
+							height,
+							scale,
+							fontScale
 						}}>
-						<App root={root} />
-						<Loading />
-					</NavigationContainer>
-					<ScreenLockedView />
-				</DimensionsContext.Provider>
-			</ThemeContext.Provider>
-		</Provider>
+						<NavigationContainer
+							theme={navTheme}
+							ref={Navigation.navigationRef}
+							onStateChange={state => {
+								const previousRouteName = Navigation.routeNameRef.current;
+								const currentRouteName = getActiveRouteName(state);
+								if (previousRouteName !== currentRouteName) {
+									setCurrentScreen(currentRouteName);
+								}
+								Navigation.routeNameRef.current = currentRouteName;
+							}}>
+							<App root={root} />
+							<Loading />
+						</NavigationContainer>
+						<ScreenLockedView />
+					</DimensionsContext.Provider>
+				</ThemeContext.Provider>
+			</Provider>
+		</GestureHandlerRootView>
 	);
 };
 

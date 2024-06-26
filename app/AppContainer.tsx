@@ -1,6 +1,6 @@
 import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
@@ -16,6 +16,8 @@ import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
+
+const createStackNavigator = createNativeStackNavigator;
 
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();
@@ -56,7 +58,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 				}
 				Navigation.routeNameRef.current = currentRouteName;
 			}}>
-			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+			<Stack.Navigator screenOptions={{ headerShown: false }}>
 				{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
 				{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
 				{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (

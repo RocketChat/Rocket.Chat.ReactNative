@@ -12,6 +12,7 @@ import { IShareListHeaderIos } from './interface';
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
+		paddingLeft: 15,
 		...sharedStyles.separatorBottom
 	}
 });
