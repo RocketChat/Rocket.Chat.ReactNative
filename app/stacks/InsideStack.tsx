@@ -98,12 +98,7 @@ const ChatsStackNavigator = () => {
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
-			<ChatsStack.Screen
-				name='RoomActionsView'
-				component={RoomActionsView}
-				// @ts-ignore
-				options={RoomActionsView.navigationOptions}
-			/>
+			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='SelectListView' component={SelectListView} options={SelectListView.navigationOptions} />
 			<ChatsStack.Screen name='RoomInfoView' component={RoomInfoView} />
@@ -118,7 +113,6 @@ const ChatsStackNavigator = () => {
 				name='SearchMessagesView'
 				// @ts-ignore
 				component={SearchMessagesView}
-				// @ts-ignore
 				options={SearchMessagesView.navigationOptions}
 			/>
 			<ChatsStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
@@ -155,8 +149,7 @@ const ChatsStackNavigator = () => {
 				component={JitsiMeetView}
 				options={{
 					headerShown: false,
-					// @ts-ignore
-					animationEnabled: isIOS
+					animation: isIOS ? 'default' : 'none'
 				}}
 			/>
 		</ChatsStack.Navigator>
@@ -169,12 +162,7 @@ const ProfileStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) } as StackNavigationOptions}>
-			<ProfileStack.Screen
-				name='ProfileView'
-				component={ProfileView}
-				// @ts-ignore
-				options={ProfileView.navigationOptions}
-			/>
+			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
@@ -203,7 +191,6 @@ const SettingsStackNavigator = () => {
 				name='ScreenLockConfigView'
 				// @ts-ignore
 				component={ScreenLockConfigView}
-				// @ts-ignore
 				options={ScreenLockConfigView.navigationOptions}
 			/>
 		</SettingsStack.Navigator>

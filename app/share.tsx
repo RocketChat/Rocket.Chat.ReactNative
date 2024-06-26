@@ -68,7 +68,7 @@ const OutsideStack = () => {
 // App
 const Stack = createStackNavigator<ShareAppStackParamList>();
 export const App = ({ root }: { root: string }): React.ReactElement => (
-	<Stack.Navigator screenOptions={{ headerShown: false }}>
+	<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
 		<>
 			{!root ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
 			{root === 'outside' ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}

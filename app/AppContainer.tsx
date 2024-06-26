@@ -58,7 +58,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 				}
 				Navigation.routeNameRef.current = currentRouteName;
 			}}>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
+			<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
 				{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
 				{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
 				{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (

@@ -131,7 +131,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					name='SearchMessagesView'
 					// @ts-ignore
 					component={SearchMessagesView}
-					// @ts-ignore
 					options={SearchMessagesView.navigationOptions}
 				/>
 				<ModalStack.Screen name='SelectedUsersView' component={SelectedUsersView} />
@@ -146,7 +145,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					name='DirectoryView'
 					// @ts-ignore
 					component={DirectoryView}
-					// @ts-ignore
 					options={props => DirectoryView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='QueueListView' component={QueueListView} />
@@ -166,7 +164,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
@@ -174,7 +171,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					name='ReadReceiptsView'
 					// @ts-ignore
 					component={ReadReceiptsView}
-					// @ts-ignore
 					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='SettingsView' component={SettingsView} />
@@ -185,7 +181,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					name='ScreenLockConfigView'
 					// @ts-ignore
 					component={ScreenLockConfigView}
-					// @ts-ignore
 					options={ScreenLockConfigView.navigationOptions}
 				/>
 				<ModalStack.Screen name='StatusView' component={StatusView} />
@@ -235,8 +230,7 @@ const InsideStackNavigator = React.memo(() => {
 				component={JitsiMeetView}
 				options={{
 					headerShown: false,
-					// @ts-ignore
-					animationEnabled: isIOS
+					animation: isIOS ? 'default' : 'none'
 				}}
 			/>
 			{/* @ts-ignore */}
