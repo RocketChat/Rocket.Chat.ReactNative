@@ -228,6 +228,7 @@ const DrawerNavigator = () => {
 			// @ts-ignore
 			drawerContent={({ navigation, state }) => <Sidebar navigation={navigation} state={state} />}
 			screenOptions={{
+				swipeEnabled: false,
 				headerShown: false,
 				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
 				drawerType: 'slide',
