@@ -2,7 +2,7 @@ import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@re
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { uniq } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
@@ -76,6 +76,11 @@ const RoomInfoView = (): React.ReactElement => {
 	}));
 
 	const { colors } = useTheme();
+
+	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
+	useLayoutEffect(() => {
+		setHeader(false);
+	});
 
 	useEffect(() => {
 		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
