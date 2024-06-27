@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
@@ -79,7 +80,15 @@ const ChangeAvatarView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: titleHeader || I18n.t('Avatar')
+			title: titleHeader || I18n.t('Avatar'),
+			headerLeft: () => (
+				<HeaderBackButton
+					labelVisible={false}
+					onPress={() => navigation.goBack()}
+					tintColor={colors.fontSecondaryInfo}
+					testID='header-back'
+				/>
+			)
 		});
 	}, [titleHeader, navigation]);
 
