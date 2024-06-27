@@ -80,4 +80,6 @@ export interface IShareAttachment {
 	canUpload: boolean;
 	error?: any;
 	uri: string;
+	width?: number;
+	height?: number;
 }

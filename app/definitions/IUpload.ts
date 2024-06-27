@@ -14,6 +14,8 @@ export interface IUpload {
 	error?: boolean;
 	subscription?: { id: string };
 	msg?: string;
+	width?: number;
+	height?: number;
 }
 
 export type TUploadModel = IUpload &
@@ -21,4 +23,7 @@ export type TUploadModel = IUpload &
 		asPlain: () => IUpload;
 	};
 
-export type TSendFileMessageFileInfo = Pick<IUpload, 'rid' | 'path' | 'name' | 'tmid' | 'description' | 'size' | 'type' | 'msg'>;
+export type TSendFileMessageFileInfo = Pick<
+	IUpload,
+	'rid' | 'path' | 'name' | 'tmid' | 'description' | 'size' | 'type' | 'msg' | 'width' | 'height'
+>;

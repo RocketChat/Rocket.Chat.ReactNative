@@ -311,7 +311,14 @@ export default class EncryptionRoom {
 					...att,
 					image_url: fileUrl,
 					image_type: file.type,
-					image_size: file.size
+					image_size: file.size,
+					...(file.width &&
+						file.height && {
+							image_dimensions: {
+								width: file.width,
+								height: file.height
+							}
+						})
 				};
 			} else if (file.type && /^audio\/.+/.test(file.type)) {
 				att = {
@@ -335,8 +342,19 @@ export default class EncryptionRoom {
 			}
 			attachments.push(att);
 
+			const files = [
+				{
+					_id,
+					name: file.name,
+					type: file.type,
+					size: file.size
+				}
+			];
+
 			const data = EJSON.stringify({
-				attachments
+				attachments,
+				files,
+				file: files[0]
 			});
 
 			return {
