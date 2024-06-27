@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -51,7 +51,7 @@ const SetUsernameView = () => {
 	const dispatch = useDispatch();
 	const { server, token } = useAppSelector(state => ({ server: state.server.server, token: getUserSelector(state).token }));
 
-	const navigation = useNavigation<StackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>>();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: server });

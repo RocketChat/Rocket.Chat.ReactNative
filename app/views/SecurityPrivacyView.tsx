@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
 
 import * as List from '../containers/List';
@@ -22,7 +22,7 @@ import {
 import Switch from '../containers/Switch';
 
 interface ISecurityPrivacyViewProps {
-	navigation: StackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
+	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
 }
 
 const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Element => {

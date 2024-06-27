@@ -21,6 +21,7 @@ interface IRoomHeaderContainerProps {
 	sourceType?: IOmnichannelSource;
 	visitor?: IVisitor;
 	disabled?: boolean;
+	rightButtonsWidth?: number;
 }
 
 const RoomHeaderContainer = React.memo(
@@ -38,7 +39,8 @@ const RoomHeaderContainer = React.memo(
 		type,
 		sourceType,
 		visitor,
-		disabled
+		disabled,
+		rightButtonsWidth
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
@@ -89,6 +91,7 @@ const RoomHeaderContainer = React.memo(
 				onPress={onPress}
 				sourceType={sourceType}
 				disabled={disabled}
+				rightButtonsWidth={rightButtonsWidth}
 			/>
 		);
 	}

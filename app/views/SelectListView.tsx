@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { RadioButton } from 'react-native-ui-lib';
@@ -37,7 +37,7 @@ interface ISelectListViewState {
 }
 
 interface ISelectListViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'SelectListView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'SelectListView'>;
 	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
@@ -81,7 +81,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitle: I18n.t(this.title)
 		};
 

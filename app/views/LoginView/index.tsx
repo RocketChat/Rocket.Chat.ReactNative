@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAppSelector } from '../../lib/hooks';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
@@ -10,7 +10,7 @@ import { OutsideParamList } from '../../stacks/types';
 import UserForm from './UserForm';
 
 const LoginView = () => {
-	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'LoginView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		params: { title }

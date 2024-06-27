@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
@@ -50,8 +50,8 @@ import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -105,6 +105,7 @@ interface IRoomsListViewState {
 	chats?: IRoomItem[];
 	item?: ISubscription;
 	canCreateRoom?: boolean;
+	headerTitleWidth?: number;
 }
 
 interface IRoomItem extends ISubscription {
@@ -193,7 +194,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
-			canCreateRoom: false
+			canCreateRoom: false,
+			headerTitleWidth: 0
 		};
 		this.setHeader();
 		this.getSubscriptions();
@@ -294,9 +296,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return false;
 		}
 
-		const { loading, search } = this.state;
+		const { loading, search, headerTitleWidth } = this.state;
 		const { width, insets, subscribedRoom } = this.props;
 		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.headerTitleWidth !== headerTitleWidth) {
 			return true;
 		}
 		if (nextProps.width !== width) {
@@ -322,7 +327,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IRoomsListViewProps) {
+	componentDidUpdate(prevProps: IRoomsListViewProps, prevState: IRoomsListViewState) {
 		const {
 			sortBy,
 			groupByType,
@@ -342,7 +347,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			issuesWithNotifications,
 			supportedVersionsStatus
 		} = this.props;
-		const { item } = this.state;
+		const { item, headerTitleWidth } = this.state;
 
 		if (
 			!(
@@ -363,6 +368,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
+			headerTitleWidth !== prevState.headerTitleWidth ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
 			issuesWithNotifications !== prevProps.issuesWithNotifications ||
 			supportedVersionsStatus !== prevProps.supportedVersionsStatus
@@ -419,15 +425,24 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
-	getHeader = (): StackNavigationOptions => {
-		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme, user } =
-			this.props;
+	getHeader = (): any => {
+		const { searching, canCreateRoom, headerTitleWidth } = this.state;
+		console.log('🚀 ~ RoomsListView ~ headerTitleWidth:', headerTitleWidth);
+		const {
+			navigation,
+			isMasterDetail,
+			notificationPresenceCap,
+			issuesWithNotifications,
+			supportedVersionsStatus,
+			theme,
+			user,
+			width
+		} = this.props;
 		if (searching) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
+				// headerTitleAlign: 'left',
+				// headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				// headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
@@ -451,9 +466,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.Drawer
 					navigation={navigation}
@@ -468,9 +480,16 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					disabled={disabled}
 				/>
 			),
-			headerTitle: () => <RoomsListHeaderView />,
+			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
 			headerRight: () => (
-				<HeaderButton.Container>
+				<HeaderButton.Container
+					onLayout={
+						isTablet
+							? undefined
+							: ({ nativeEvent }: { nativeEvent: any }) => {
+									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+							  }
+					}>
 					{issuesWithNotifications ? (
 						<HeaderButton.Item
 							iconName='notification-disabled'
@@ -897,7 +916,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
-		const options = this.getHeader();
+		let options = this.getHeader();
+		options = {
+			...options,
+			headerTitleAlign: 'left',
+			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
+		};
 		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 

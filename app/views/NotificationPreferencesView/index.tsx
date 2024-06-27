@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -91,7 +91,7 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 const NotificationPreferencesView = (): React.ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { serverVersion, isMasterDetail } = useAppSelector(state => ({
 		serverVersion: state.server.version,
 		isMasterDetail: state.app.isMasterDetail

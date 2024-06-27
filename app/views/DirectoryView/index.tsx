@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, ListRenderItem, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../../stacks/types';
@@ -31,8 +31,8 @@ import { getSubscriptionByRoomId } from '../../lib/database/services/Subscriptio
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
+		NativeStackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
@@ -54,7 +54,7 @@ interface IDirectoryViewState {
 
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
 	static navigationOptions = ({ navigation, isMasterDetail }: IDirectoryViewProps) => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Directory')
 		};
 		if (isMasterDetail) {
@@ -216,8 +216,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
 				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
 					<View
-						style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].strokeLight }]}
-					>
+						style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].strokeLight }]}>
 						<CustomIcon name={icon} size={20} color={themes[theme].badgeBackgroundLevel2} style={styles.toggleDropdownIcon} />
 						<Text style={[styles.toggleDropdownText, { color: themes[theme].badgeBackgroundLevel2 }]}>{I18n.t(text)}</Text>
 						<CustomIcon name='chevron-down' size={20} color={themes[theme].fontHint} style={styles.toggleDropdownArrow} />

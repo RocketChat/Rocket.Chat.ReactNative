@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { ScrollView, StatusBar } from 'react-native';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,8 +23,8 @@ import { Services } from '../../lib/services';
 import KeyboardView from '../../containers/KeyboardView';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TReportUserViewRouteProp = RouteProp<ChatsStackParamList, 'ReportUserView'>;
@@ -80,8 +80,7 @@ const ReportUserView = () => {
 		<KeyboardView
 			style={{ backgroundColor: colors.surfaceHover }}
 			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.strokeExtraDark }]} testID='report-user-view'>
 				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceHover }]}>
 					<StatusBar />

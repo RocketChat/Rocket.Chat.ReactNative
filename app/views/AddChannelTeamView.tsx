@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import React, { useLayoutEffect } from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { CompositeNavigationProp } from '@react-navigation/core';
 
 import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
-import * as HeaderButton from '../containers/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import I18n from '../i18n';
 import { ChatsStackParamList, DrawerParamList, NewMessageStackParamList } from '../stacks/types';
@@ -15,27 +14,9 @@ import { IApplicationState } from '../definitions';
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
-	CompositeNavigationProp<StackNavigationProp<NewMessageStackParamList>, StackNavigationProp<DrawerParamList>>
+	NativeStackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
+	CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
-
-const setHeader = ({
-	navigation,
-	isMasterDetail
-}: {
-	navigation: StackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>;
-	isMasterDetail: boolean;
-}) => {
-	const options: StackNavigationOptions = {
-		headerTitle: I18n.t('Add_Channel_to_Team')
-	};
-
-	if (isMasterDetail) {
-		options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-	}
-
-	navigation.setOptions(options);
-};
 
 const AddChannelTeamView = () => {
 	const navigation = useNavigation<TNavigation>();
@@ -44,9 +25,9 @@ const AddChannelTeamView = () => {
 		params: { teamId }
 	} = useRoute<TRoute>();
 
-	useEffect(() => {
-		setHeader({ navigation, isMasterDetail });
-	}, [isMasterDetail, navigation]);
+	useLayoutEffect(() => {
+		navigation.setOptions({ title: I18n.t('Add_Channel_to_Team') });
+	}, [navigation]);
 
 	return (
 		<SafeAreaView testID='add-channel-team-view'>

@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -44,8 +44,8 @@ interface IMessagesViewProps {
 	};
 	baseUrl: string;
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'MessagesView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: ICustomEmoji };

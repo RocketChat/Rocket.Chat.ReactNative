@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { Dispatch } from 'redux';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { TNavigation } from '../stacks/stackType';
 import { TColors, TSupportedThemes } from '../theme';
@@ -40,7 +40,7 @@ export * from './IDataSelect';
 export * from './TUserStatus';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
-	navigation: StackNavigationProp<T & TNavigation, S>;
+	navigation: NativeStackNavigationProp<T & TNavigation, S>;
 	route: RouteProp<T, S>;
 	dispatch: Dispatch;
 	isMasterDetail: boolean;
