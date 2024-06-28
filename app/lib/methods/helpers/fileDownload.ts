@@ -29,7 +29,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			await Encryption.decryptFile(messageId, file, attachment.encryption);
 		}
 
-		FileViewer.open(file, {
+		await FileViewer.open(file, {
 			showOpenWithDialog: true,
 			showAppsSuggestions: true
 		});
