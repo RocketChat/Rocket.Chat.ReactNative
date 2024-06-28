@@ -222,7 +222,7 @@ export function downloadMediaFile({
 			}
 
 			if (encryption) {
-				const decryptedFilePath = await Encryption.decryptFile(messageId, result.uri, encryption);
+				const decryptedFilePath = await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption);
 				if (decryptedFilePath) {
 					return resolve(decryptedFilePath);
 				}

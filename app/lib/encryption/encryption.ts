@@ -35,6 +35,16 @@ import {
 import { Services } from '../services';
 import { TEncryptFile } from './definitions';
 
+const MAX_CONCURRENT_QUEUE = 5;
+
+type TDecryptFile = (messageId: string, path: string, encryption: TAttachmentEncryption) => Promise<string | null>;
+
+interface IDecryptionFileQueue {
+	params: Parameters<TDecryptFile>;
+	resolve: (value: string | null | PromiseLike<string | null>) => void;
+	reject: (reason?: any) => void;
+}
+
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
@@ -54,6 +64,8 @@ class Encryption {
 			importRoomKey: Function;
 		};
 	};
+	decryptionFileQueue: IDecryptionFileQueue[];
+	decryptionFileQueueActiveCount: number;
 
 	constructor() {
 		this.userId = '';
@@ -68,6 +80,8 @@ class Encryption {
 			.catch(() => {
 				this.ready = false;
 			});
+		this.decryptionFileQueue = [];
+		this.decryptionFileQueueActiveCount = 0;
 	}
 
 	// Initialize Encryption client
@@ -542,7 +556,7 @@ class Encryption {
 		return roomE2E.encryptFile(rid, file);
 	};
 
-	decryptFile = async (messageId: string, path: string, encryption: TAttachmentEncryption): Promise<string | null> => {
+	decryptFile: TDecryptFile = async (messageId, path, encryption) => {
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
 			try {
@@ -567,6 +581,40 @@ class Encryption {
 
 		return decryptedFile;
 	};
+
+	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption) =>
+		new Promise((resolve, reject) => {
+			this.decryptionFileQueue.push({
+				params: [messageId, path, encryption],
+				resolve,
+				reject
+			});
+			this.processFileQueue();
+		});
+
+	async processFileQueue() {
+		if (this.decryptionFileQueueActiveCount >= MAX_CONCURRENT_QUEUE || this.decryptionFileQueue.length === 0) {
+			return;
+		}
+
+		const queueItem = this.decryptionFileQueue.shift();
+		// FIXME: TS not getting decryptionFileQueue is not empty. TS 5.5 fix?
+		if (!queueItem) {
+			return;
+		}
+		const { params, resolve, reject } = queueItem;
+		this.decryptionFileQueueActiveCount += 1;
+
+		try {
+			const result = await this.decryptFile(...params);
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		} finally {
+			this.decryptionFileQueueActiveCount -= 1;
+			this.processFileQueue();
+		}
+	}
 
 	// Decrypt multiple messages
 	decryptMessages = (messages: Partial<IMessage>[]) =>
