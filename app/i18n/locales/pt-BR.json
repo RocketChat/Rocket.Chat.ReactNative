@@ -261,6 +261,7 @@
   "Enter_the_code": "Insira o código que acabamos de enviar por e-mail.",
   "Enter_workspace_URL": "Digite a URL da sua workspace",
   "Error_Download_file": "Erro ao baixar o arquivo",
+  "Error_play_video": "Houve um erro ao reproduzir esse vídeo",
   "Error_uploading": "Erro subindo",
   "error-action-not-allowed": "{{action}} não é permitido",
   "error-avatar-invalid-url": "URL inválida de avatar: {{url}}",
@@ -839,6 +840,5 @@
   "Your_invite_link_will_never_expire": "Seu link de convite nunca irá vencer.",
   "Your_password_is": "Sua senha é",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace",
-  "Error_play_video": "Houve um erro ao reproduzir esse vídeo"
+  "Your_workspace": "Sua workspace"
 }

@@ -266,6 +266,7 @@
   "Enter_the_code": "Enter the code we just emailed you.",
   "Enter_workspace_URL": "Enter workspace URL",
   "Error_Download_file": "Error while downloading file",
+  "Error_play_video": "There was an error while playing this video",
   "Error_uploading": "Error uploading",
   "error-action-not-allowed": "{{action}} is not allowed",
   "error-avatar-invalid-url": "Invalid avatar URL: {{url}}",
@@ -853,6 +854,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace",
-  "Error_play_video": "There was an error while playing this video"
+  "Your_workspace": "Your workspace"
 }
