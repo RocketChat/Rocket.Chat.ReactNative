@@ -143,3 +143,18 @@ export const hasE2EEWarning = ({
 	}
 	return false;
 };
+
+// https://github.com/RocketChat/Rocket.Chat/blob/7a57f3452fd26a603948b70af8f728953afee53f/apps/meteor/lib/utils/getFileExtension.ts#L1
+export const getFileExtension = (fileName?: string): string => {
+	if (!fileName) {
+		return 'file';
+	}
+
+	const arr = fileName.split('.');
+
+	if (arr.length < 2 || (arr[0] === '' && arr.length === 2)) {
+		return 'file';
+	}
+
+	return arr.pop()?.toLocaleUpperCase() || 'file';
+};

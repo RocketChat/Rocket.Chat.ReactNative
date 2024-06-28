@@ -19,6 +19,7 @@ import {
 	encryptAESCTR,
 	exportAESCTR,
 	generateAESCTRKey,
+	getFileExtension,
 	joinVectorData,
 	splitVectorData,
 	toString,
@@ -299,8 +300,9 @@ export default class EncryptionRoom {
 			let att: IAttachment = {
 				title: file.name,
 				type: 'file',
-				size: file.size,
 				description: file.description,
+				title_link: fileUrl,
+				title_link_download: true,
 				encryption: {
 					key: exportedKey,
 					iv: bufferToB64(vector)
@@ -337,7 +339,8 @@ export default class EncryptionRoom {
 			} else {
 				att = {
 					...att,
-					title_link: fileUrl
+					size: file.size,
+					format: getFileExtension(file.path)
 				};
 			}
 			attachments.push(att);

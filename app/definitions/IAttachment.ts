@@ -41,6 +41,7 @@ export interface IAttachment {
 	translations?: IAttachmentTranslations;
 	e2e?: E2EType;
 	encryption?: TAttachmentEncryption;
+	format?: string;
 }
 
 export interface IServerAttachment {
