@@ -1,4 +1,4 @@
-import { TSendFileMessageFileInfo } from '../../definitions';
+import { TAttachmentEncryption, TSendFileMessageFileInfo } from '../../definitions';
 
 export type TGetContentResult = {
 	algorithm: 'rc.v1.aes-sha2';
@@ -14,3 +14,11 @@ export type TEncryptFileResult = Promise<{
 }>;
 
 export type TEncryptFile = (rid: string, file: TSendFileMessageFileInfo) => TEncryptFileResult;
+
+export type TDecryptFile = (messageId: string, path: string, encryption: TAttachmentEncryption) => Promise<string | null>;
+
+export interface IDecryptionFileQueue {
+	params: Parameters<TDecryptFile>;
+	resolve: (value: string | null | PromiseLike<string | null>) => void;
+	reject: (reason?: any) => void;
+}

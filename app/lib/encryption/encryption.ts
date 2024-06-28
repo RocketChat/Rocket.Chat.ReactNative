@@ -16,7 +16,6 @@ import {
 	IMessage,
 	ISubscription,
 	TSendFileMessageFileInfo,
-	TAttachmentEncryption,
 	TMessageModel,
 	TSubscriptionModel,
 	TThreadMessageModel,
@@ -33,17 +32,8 @@ import {
 	E2E_STATUS
 } from '../constants';
 import { Services } from '../services';
-import { TEncryptFile } from './definitions';
-
-const MAX_CONCURRENT_QUEUE = 5;
-
-type TDecryptFile = (messageId: string, path: string, encryption: TAttachmentEncryption) => Promise<string | null>;
-
-interface IDecryptionFileQueue {
-	params: Parameters<TDecryptFile>;
-	resolve: (value: string | null | PromiseLike<string | null>) => void;
-	reject: (reason?: any) => void;
-}
+import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import { MAX_CONCURRENT_QUEUE } from './constants';
 
 class Encryption {
 	ready: boolean;
