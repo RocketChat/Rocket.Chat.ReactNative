@@ -3,21 +3,23 @@ import React from 'react';
 import { SwitchItem } from './SwitchItem';
 
 export interface ISwitchItemEncrypted {
-	encryptionEnabled: boolean;
+	encryptionDisabled: boolean;
 	isTeam: boolean;
 	type: boolean;
-	encrypted: boolean;
+	encrypted?: boolean;
 	onValueChangeEncrypted: (value: boolean) => void;
+	disabled?: boolean;
 }
 
 export const SwitchItemEncrypted = ({
-	encryptionEnabled,
+	encryptionDisabled,
 	isTeam,
 	type,
 	encrypted,
-	onValueChangeEncrypted
+	onValueChangeEncrypted,
+	disabled
 }: ISwitchItemEncrypted) => {
-	if (!encryptionEnabled) {
+	if (encryptionDisabled) {
 		return null;
 	}
 
@@ -42,7 +44,7 @@ export const SwitchItemEncrypted = ({
 			label={'Encrypted'}
 			hint={hint}
 			onValueChange={onValueChangeEncrypted}
-			disabled={!type}
+			disabled={disabled || !type}
 		/>
 	);
 };
