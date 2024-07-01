@@ -462,7 +462,7 @@ export default class EncryptionRoom {
 					message = {
 						...message,
 						...content,
-						content: content.attachments?.map((att: IAttachment) => ({
+						attachments: content.attachments?.map((att: IAttachment) => ({
 							...att,
 							e2e: 'pending'
 						}))
