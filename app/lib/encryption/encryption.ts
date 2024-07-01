@@ -546,10 +546,15 @@ class Encryption {
 		return roomE2E.encryptFile(rid, file);
 	};
 
-	decryptFile: TDecryptFile = async (messageId, path, encryption) => {
+	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
 			try {
+				const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
+				if (checksum !== originalChecksum) {
+					throw new Error('File corrupted');
+				}
+
 				const messageRecord = await getMessageById(messageId);
 				if (!messageRecord) {
 					throw new Error('Message not found');
@@ -565,6 +570,7 @@ class Encryption {
 					});
 				});
 			} catch (e) {
+				console.error(e);
 				// Do nothing
 			}
 		}
@@ -572,10 +578,10 @@ class Encryption {
 		return decryptedFile;
 	};
 
-	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption) =>
+	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption, originalChecksum) =>
 		new Promise((resolve, reject) => {
 			this.decryptionFileQueue.push({
-				params: [messageId, path, encryption],
+				params: [messageId, path, encryption, originalChecksum],
 				resolve,
 				reject
 			});

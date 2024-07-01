@@ -42,6 +42,9 @@ export interface IAttachment {
 	e2e?: E2EType;
 	encryption?: TAttachmentEncryption;
 	format?: string;
+	hashes?: {
+		sha256: string;
+	};
 }
 
 export interface IServerAttachment {

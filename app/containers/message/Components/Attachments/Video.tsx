@@ -136,7 +136,10 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 		});
 		if (cachedVideoResult?.exists) {
 			if (file.encryption && file.e2e === 'pending') {
-				await Encryption.decryptFile(id, cachedVideoResult.uri, file.encryption);
+				if (!file.hashes?.sha256) {
+					return false;
+				}
+				await Encryption.decryptFile(id, cachedVideoResult.uri, file.encryption, file.hashes?.sha256);
 			}
 			updateVideoCached(cachedVideoResult.uri);
 			setLoading(false);
@@ -166,7 +169,8 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				downloadUrl: video,
 				type: 'video',
 				mimeType: file.video_type,
-				encryption: file.encryption
+				encryption: file.encryption,
+				originalChecksum: file.hashes?.sha256
 			});
 			updateVideoCached(videoUri);
 		} catch {

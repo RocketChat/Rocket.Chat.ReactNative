@@ -154,7 +154,10 @@ const ImageContainer = ({
 		});
 		if (cachedImageResult?.exists) {
 			if (file.encryption && file.e2e === 'pending') {
-				await Encryption.decryptFile(id, cachedImageResult.uri, file.encryption);
+				if (!file.hashes?.sha256) {
+					return false;
+				}
+				await Encryption.decryptFile(id, cachedImageResult.uri, file.encryption, file.hashes?.sha256);
 			}
 			updateImageCached(cachedImageResult.uri);
 		}
@@ -179,7 +182,8 @@ const ImageContainer = ({
 				downloadUrl: imgUrlToCache,
 				type: 'image',
 				mimeType: imageCached.image_type,
-				encryption: file.encryption
+				encryption: file.encryption,
+				originalChecksum: file.hashes?.sha256
 			});
 			updateImageCached(imageUri);
 		} catch (e) {

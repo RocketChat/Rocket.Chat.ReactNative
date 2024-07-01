@@ -15,7 +15,12 @@ export type TEncryptFileResult = Promise<{
 
 export type TEncryptFile = (rid: string, file: TSendFileMessageFileInfo) => TEncryptFileResult;
 
-export type TDecryptFile = (messageId: string, path: string, encryption: TAttachmentEncryption) => Promise<string | null>;
+export type TDecryptFile = (
+	messageId: string,
+	path: string,
+	encryption: TAttachmentEncryption,
+	originalChecksum: string
+) => Promise<string | null>;
 
 export interface IDecryptionFileQueue {
 	params: Parameters<TDecryptFile>;

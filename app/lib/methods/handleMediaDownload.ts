@@ -198,13 +198,15 @@ export function downloadMediaFile({
 	type,
 	mimeType,
 	downloadUrl,
-	encryption
+	encryption,
+	originalChecksum
 }: {
 	messageId: string;
 	type: MediaTypes;
 	mimeType?: string;
 	downloadUrl: string;
 	encryption?: TAttachmentEncryption;
+	originalChecksum?: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
@@ -222,10 +224,14 @@ export function downloadMediaFile({
 			}
 
 			if (encryption) {
-				const decryptedFilePath = await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption);
+				if (!originalChecksum) {
+					return reject();
+				}
+				const decryptedFilePath = await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
 				if (decryptedFilePath) {
 					return resolve(decryptedFilePath);
 				}
+				return reject();
 			}
 			return resolve(result.uri);
 		} catch (e) {

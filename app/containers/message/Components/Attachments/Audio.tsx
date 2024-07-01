@@ -54,7 +54,8 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
 					mimeType: file.audio_type,
-					encryption: file.encryption
+					encryption: file.encryption,
+					originalChecksum: file.hashes?.sha256
 				});
 				setFileUri(audio);
 				setDownloadState('downloaded');
@@ -88,7 +89,10 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		});
 		if (cachedAudioResult?.exists) {
 			if (file.encryption && file.e2e === 'pending') {
-				await Encryption.decryptFile(id, cachedAudioResult.uri, file.encryption);
+				if (!file.hashes?.sha256) {
+					return false;
+				}
+				await Encryption.decryptFile(id, cachedAudioResult.uri, file.encryption, file.hashes?.sha256);
 			}
 			setFileUri(cachedAudioResult.uri);
 			setDownloadState('downloaded');

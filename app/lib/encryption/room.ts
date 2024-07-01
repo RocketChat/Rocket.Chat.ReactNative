@@ -294,6 +294,7 @@ export default class EncryptionRoom {
 		const exportedKey = await exportAESCTR(key);
 		const iv = bufferToB64(vector);
 		const encryptedFile = await encryptAESCTR(path, exportedKey.k, iv);
+		const checksum = await SimpleCrypto.utils.calculateFileChecksum(path);
 
 		const getContent: TGetContent = async (_id, fileUrl) => {
 			const attachments: IAttachment[] = [];
@@ -306,6 +307,9 @@ export default class EncryptionRoom {
 				encryption: {
 					key: exportedKey,
 					iv: bufferToB64(vector)
+				},
+				hashes: {
+					sha256: checksum
 				}
 			};
 			if (file.type && /^image\/.+/.test(file.type)) {
@@ -373,6 +377,9 @@ export default class EncryptionRoom {
 			encryption: {
 				key: exportedKey,
 				iv
+			},
+			hashes: {
+				sha256: checksum
 			}
 		};
 
