@@ -29,7 +29,7 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			if (!attachment.hashes?.sha256) {
 				throw new Error('Missing checksum');
 			}
-			await Encryption.decryptFile(messageId, file, attachment.encryption, attachment.hashes?.sha256);
+			await Encryption.addFileToDecryptFileQueue(messageId, file, attachment.encryption, attachment.hashes?.sha256);
 		}
 
 		await FileViewer.open(file, {

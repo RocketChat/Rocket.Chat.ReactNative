@@ -92,7 +92,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 				if (!file.hashes?.sha256) {
 					return false;
 				}
-				await Encryption.decryptFile(id, cachedAudioResult.uri, file.encryption, file.hashes?.sha256);
+				await Encryption.addFileToDecryptFileQueue(id, cachedAudioResult.uri, file.encryption, file.hashes?.sha256);
 			}
 			setFileUri(cachedAudioResult.uri);
 			setDownloadState('downloaded');

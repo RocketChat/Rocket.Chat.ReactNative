@@ -157,7 +157,7 @@ const ImageContainer = ({
 				if (!file.hashes?.sha256) {
 					return false;
 				}
-				await Encryption.decryptFile(id, cachedImageResult.uri, file.encryption, file.hashes?.sha256);
+				await Encryption.addFileToDecryptFileQueue(id, cachedImageResult.uri, file.encryption, file.hashes?.sha256);
 			}
 			updateImageCached(cachedImageResult.uri);
 		}

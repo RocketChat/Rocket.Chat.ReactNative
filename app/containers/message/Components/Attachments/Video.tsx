@@ -139,7 +139,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				if (!file.hashes?.sha256) {
 					return false;
 				}
-				await Encryption.decryptFile(id, cachedVideoResult.uri, file.encryption, file.hashes?.sha256);
+				await Encryption.addFileToDecryptFileQueue(id, cachedVideoResult.uri, file.encryption, file.hashes?.sha256);
 			}
 			updateVideoCached(cachedVideoResult.uri);
 			setLoading(false);
