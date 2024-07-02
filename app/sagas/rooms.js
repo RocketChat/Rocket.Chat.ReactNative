@@ -7,6 +7,7 @@ import { roomsFailure, roomsRefresh, roomsSuccess } from '../actions/rooms';
 import database from '../lib/database';
 import log from '../lib/methods/helpers/log';
 import mergeSubscriptionsRooms from '../lib/methods/helpers/mergeSubscriptionsRooms';
+import buildMessage from '../lib/methods/helpers/buildMessage';
 import { getRooms, subscribeRooms } from '../lib/methods';
 
 const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
@@ -57,6 +58,20 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			const subsToCreate = subscriptions.filter(i1 => !existingSubs.find(i2 => i1._id === i2._id));
 			const subsToDelete = existingSubs.filter(i1 => !subscriptions.find(i2 => i1._id === i2._id));
 
+			const subscribedRoom = yield select(state => state.room.subscribedRoom);
+			const lastMessages = subscriptions
+				/** Checks for opened rooms and filter them out.
+				 * It prevents this process to try persisting the same last message on the room messages fetch.
+				 * This race condition is easy to reproduce on push notification tap.
+				 */
+				.filter(sub => subscribedRoom !== sub.rid)
+				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
+				.filter(lm => lm && lm._id && lm.rid);
+			const lastMessagesIds = lastMessages.map(lm => lm._id).filter(lm => lm);
+			const existingMessages = yield messagesCollection.query(Q.where('id', Q.oneOf(lastMessagesIds))).fetch();
+			const messagesToUpdate = existingMessages.filter(i1 => lastMessages.find(i2 => i1.id === i2._id));
+			const messagesToCreate = lastMessages.filter(i1 => !existingMessages.find(i2 => i1._id === i2.id));
+
 			const allRecords = [
 				...subsToCreate.map(subscription =>
 					subCollection.prepareCreate(s => {
@@ -87,6 +102,24 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 						log(e);
 						return null;
 					}
+				}),
+				...messagesToCreate.map(message =>
+					messagesCollection.prepareCreate(m => {
+						m._raw = sanitizedRaw({ id: message._id }, messagesCollection.schema);
+						m.subscription.id = message.rid;
+						return Object.assign(m, message);
+					})
+				),
+				...messagesToUpdate.map(message => {
+					const newMessage = lastMessages.find(m => m._id === message.id);
+					return message.prepareUpdate(() => {
+						try {
+							return Object.assign(message, newMessage);
+						} catch (e) {
+							log(e);
+							return null;
+						}
+					});
 				})
 			];
 
