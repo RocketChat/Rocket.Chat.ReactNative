@@ -148,9 +148,18 @@ index 0000000..c011235
 +
 +@end
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
-index 067d962..e7c42e1 100644
+index 067d962..b24e4dd 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
 +++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
+@@ -55,7 +55,7 @@
+ 
+     NSString *normalizedFilePath = [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+     NSString *outputFileName = [@"processed_" stringByAppendingString:[normalizedFilePath lastPathComponent]];
+-    NSString *outputFilePath = [[[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName] stringByDeletingPathExtension];
++    NSString *outputFilePath = [[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName];
+     NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:normalizedFilePath];
+     NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
+     [inputStream open];
 @@ -67,6 +67,8 @@
      CCCryptorStatus status = CCCryptorCreateWithMode(operation, kCCModeCTR, kCCAlgorithmAES, ccNoPadding, ivData.bytes, keyData.bytes, keyData.length, NULL, 0, 0, kCCModeOptionCTR_BE, &cryptor);
      if (status != kCCSuccess) {
@@ -186,26 +195,43 @@ index 067d962..e7c42e1 100644
          }
      }
  
-@@ -92,8 +111,17 @@
-         if (operation == kCCDecrypt) {
-             NSFileManager *fileManager = [NSFileManager defaultManager];
-             // Overwrite the input file with the decrypted file
+@@ -89,15 +108,20 @@
+     [outputStream close];
+ 
+     if (status == kCCSuccess) {
+-        if (operation == kCCDecrypt) {
+-            NSFileManager *fileManager = [NSFileManager defaultManager];
+-            // Overwrite the input file with the decrypted file
 -            [fileManager removeItemAtPath:normalizedFilePath error:nil];
 -            [fileManager moveItemAtPath:outputFilePath toPath:normalizedFilePath error:nil];
-+            NSError *error = nil;
-+            [fileManager removeItemAtPath:normalizedFilePath error:&error];
-+            if (error) {
-+                NSLog(@"Error removing original file: %@", error);
-+                return nil;
-+            }
-+            [fileManager moveItemAtPath:outputFilePath toPath:normalizedFilePath error:&error];
-+            if (error) {
-+                NSLog(@"Error moving decrypted file: %@", error);
-+                return nil;
-+            }
-             return [NSString stringWithFormat:@"file://%@", normalizedFilePath];
-         } else {
-             return [NSString stringWithFormat:@"file://%@", outputFilePath];
+-            return [NSString stringWithFormat:@"file://%@", normalizedFilePath];
+-        } else {
+-            return [NSString stringWithFormat:@"file://%@", outputFilePath];
++        NSURL *originalFileURL = [NSURL fileURLWithPath:normalizedFilePath];
++        NSURL *outputFileURL = [NSURL fileURLWithPath:outputFilePath];
++        NSError *error = nil;
++        [[NSFileManager defaultManager] replaceItemAtURL:originalFileURL
++                                          withItemAtURL:outputFileURL
++                                         backupItemName:nil
++                                                options:NSFileManagerItemReplacementUsingNewMetadataOnly
++                                       resultingItemURL:nil
++                                                  error:&error];
++        if (error) {
++            NSLog(@"Failed to replace original file: %@", error);
++            return nil;
+         }
++        return [NSString stringWithFormat:@"file://%@", normalizedFilePath];
+     } else {
+         // Clean up temp file in case of failure
+         [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
+@@ -105,7 +129,6 @@
+     }
+ }
+ 
+-
+ + (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
+     return [self processFile:filePath operation:kCCEncrypt key:key iv:iv];
+ }
 diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h
 index 398444b..0e8e078 100644
 --- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h
