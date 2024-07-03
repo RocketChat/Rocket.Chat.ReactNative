@@ -2,8 +2,6 @@ import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
 
-import { Encryption } from '../encryption';
-import { TAttachmentEncryption } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
@@ -194,19 +192,13 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 }
 
 export function downloadMediaFile({
-	messageId,
 	type,
 	mimeType,
-	downloadUrl,
-	encryption,
-	originalChecksum
+	downloadUrl
 }: {
-	messageId: string;
 	type: MediaTypes;
 	mimeType?: string;
 	downloadUrl: string;
-	encryption?: TAttachmentEncryption;
-	originalChecksum?: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
@@ -220,17 +212,6 @@ export function downloadMediaFile({
 			const result = await downloadQueue[downloadKey].downloadAsync();
 
 			if (!result) {
-				return reject();
-			}
-
-			if (encryption) {
-				if (!originalChecksum) {
-					return reject();
-				}
-				const decryptedFilePath = await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
-				if (decryptedFilePath) {
-					return resolve(decryptedFilePath);
-				}
 				return reject();
 			}
 			return resolve(result.uri);

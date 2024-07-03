@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -23,6 +23,7 @@ import Touchable from '../../Touchable';
 import styles from '../../styles';
 import { isImageBase64 } from '../../../../lib/methods';
 import I18n from '../../../../i18n';
+import { isValidUrl } from '../../../../lib/methods/helpers/isValidUrl';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -58,6 +59,8 @@ export const MessageImage = React.memo(
 	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
 		const { colors } = useTheme();
 
+		const valid = isValidUrl(imgUri);
+
 		if (encrypted && !loading) {
 			return (
 				<>
@@ -69,11 +72,15 @@ export const MessageImage = React.memo(
 
 		return (
 			<>
-				<FastImage
-					style={[styles.image, { borderColor: colors.strokeLight }]}
-					source={{ uri: encodeURI(imgUri) }}
-					resizeMode={FastImage.resizeMode.cover}
-				/>
+				{valid ? (
+					<FastImage
+						style={[styles.image, { borderColor: colors.strokeLight }]}
+						source={{ uri: encodeURI(imgUri) }}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+				) : (
+					<View style={styles.image} />
+				)}
 				{!cached ? (
 					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
 				) : null}
@@ -102,6 +109,7 @@ const ImageContainer = ({
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
 	// And we cannot be certain whether the file.title_link actually exists.
 	const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
+	const isMounted = useRef(true);
 
 	useEffect(() => {
 		const handleCache = async () => {
@@ -111,7 +119,7 @@ const ImageContainer = ({
 					return;
 				}
 				if (isDownloadActive(imgUrlToCache)) {
-					handleResumeDownload();
+					await handleResumeDownload();
 					return;
 				}
 				await handleAutoDownload();
@@ -124,6 +132,10 @@ const ImageContainer = ({
 		} else {
 			handleCache();
 		}
+
+		return () => {
+			isMounted.current = false;
+		};
 	}, []);
 
 	if (!img) {
@@ -153,12 +165,7 @@ const ImageContainer = ({
 			urlToCache: imgUrlToCache
 		});
 		if (cachedImageResult?.exists) {
-			if (file.encryption && file.e2e === 'pending') {
-				if (!file.hashes?.sha256) {
-					return false;
-				}
-				await Encryption.addFileToDecryptFileQueue(id, cachedImageResult.uri, file.encryption, file.hashes?.sha256);
-			}
+			await decryptFileIfNeeded(cachedImageResult.uri);
 			updateImageCached(cachedImageResult.uri);
 		}
 		return !!cachedImageResult?.exists;
@@ -169,6 +176,7 @@ const ImageContainer = ({
 			const imageUri = await resumeMediaFile({
 				downloadUrl: imgUrlToCache
 			});
+			await decryptFileIfNeeded(imageUri);
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
@@ -185,9 +193,22 @@ const ImageContainer = ({
 				encryption: file.encryption,
 				originalChecksum: file.hashes?.sha256
 			});
+			await decryptFileIfNeeded(imageUri);
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
+		}
+	};
+
+	const decryptFileIfNeeded = async (imageUri: string) => {
+		if (!isMounted.current) {
+			return;
+		}
+		if (file.encryption) {
+			if (!file.hashes?.sha256) {
+				return;
+			}
+			await Encryption.addFileToDecryptFileQueue(id, imageUri, file.encryption, file.hashes?.sha256);
 		}
 	};
 

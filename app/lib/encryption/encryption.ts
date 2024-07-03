@@ -2,6 +2,7 @@ import EJSON from 'ejson';
 import SimpleCrypto from 'react-native-simple-crypto';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q, Model } from '@nozbe/watermelondb';
+import { deleteAsync } from 'expo-file-system';
 
 import UserPreferences from '../methods/userPreferences';
 import { getMessageById } from '../database/services/Message';
@@ -547,39 +548,42 @@ class Encryption {
 	};
 
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
-		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
-		if (decryptedFile) {
-			try {
-				const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
-				if (checksum !== originalChecksum) {
-					throw new Error('File corrupted');
-				}
-
-				const messageRecord = await getMessageById(messageId);
-				if (!messageRecord) {
-					throw new Error('Message not found');
-				}
-
-				const db = database.active;
-				await db.write(async () => {
-					await messageRecord.update(m => {
-						m.attachments = m.attachments?.map(att => ({
-							...att,
-							e2e: 'done'
-						}));
-					});
-				});
-			} catch (e) {
-				console.error(e);
-				// Do nothing
-			}
+		const messageRecord = await getMessageById(messageId);
+		if (!messageRecord) {
+			throw new Error('Message not found');
 		}
 
+		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
+		if (decryptedFile) {
+			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
+			if (checksum !== originalChecksum) {
+				await deleteAsync(decryptedFile);
+				throw new Error('File corrupted');
+			}
+
+			const db = database.active;
+			await db.write(async () => {
+				await messageRecord.update(m => {
+					m.attachments = m.attachments?.map(att => ({
+						...att,
+						e2e: 'done'
+					}));
+				});
+			});
+		}
 		return decryptedFile;
 	};
 
 	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption, originalChecksum) =>
-		new Promise((resolve, reject) => {
+		new Promise(async (resolve, reject) => {
+			const messageRecord = await getMessageById(messageId);
+			if (!messageRecord) {
+				return reject('Message not found');
+			}
+			if (messageRecord.attachments?.[0].e2e !== 'pending') {
+				return resolve(path);
+			}
+
 			this.decryptionFileQueue.push({
 				params: [messageId, path, encryption, originalChecksum],
 				resolve,
@@ -592,7 +596,6 @@ class Encryption {
 		if (this.decryptionFileQueueActiveCount >= MAX_CONCURRENT_QUEUE || this.decryptionFileQueue.length === 0) {
 			return;
 		}
-
 		const queueItem = this.decryptionFileQueue.shift();
 		// FIXME: TS not getting decryptionFileQueue is not empty. TS 5.5 fix?
 		if (!queueItem) {
