@@ -198,7 +198,7 @@ const ImageContainer = ({
 		}
 	};
 
-	const decryptFileIfNeeded = async (imageUri: string) => {
+	const decryptFileIfNeeded = async (uri: string) => {
 		if (!isMounted.current) {
 			return;
 		}
@@ -206,7 +206,7 @@ const ImageContainer = ({
 			if (!file.hashes?.sha256) {
 				return;
 			}
-			await Encryption.addFileToDecryptFileQueue(id, imageUri, file.encryption, file.hashes?.sha256);
+			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
 		}
 	};
 
