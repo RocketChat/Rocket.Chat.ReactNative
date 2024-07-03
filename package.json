@@ -212,7 +212,7 @@
 		"otp.js": "1.2.0",
 		"patch-package": "8.0.0",
 		"prettier": "2.8.8",
-		"react-dom": "^18.2.0",
+		"react-dom": "18.2.0",
 		"react-native-dotenv": "3.4.8",
 		"react-test-renderer": "18.2.0",
 		"reactotron-redux": "3.1.3",
