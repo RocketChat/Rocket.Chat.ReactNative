@@ -187,12 +187,9 @@ const ImageContainer = ({
 	const handleDownload = async () => {
 		try {
 			const imageUri = await downloadMediaFile({
-				messageId: id,
 				downloadUrl: imgUrlToCache,
 				type: 'image',
-				mimeType: imageCached.image_type,
-				encryption: file.encryption,
-				originalChecksum: file.hashes?.sha256
+				mimeType: imageCached.image_type
 			});
 			await decryptFileIfNeeded(imageUri);
 			updateImageCached(imageUri);
