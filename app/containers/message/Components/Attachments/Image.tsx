@@ -58,10 +58,10 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 export const MessageImage = React.memo(
 	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
 		const { colors } = useTheme();
-
+		const [hasError, setHasError] = useState(false);
 		const valid = isValidUrl(imgUri);
 
-		if (encrypted && !loading) {
+		if ((encrypted && !loading) || hasError) {
 			return (
 				<>
 					<View style={styles.image} />
@@ -77,6 +77,7 @@ export const MessageImage = React.memo(
 						style={[styles.image, { borderColor: colors.strokeLight }]}
 						source={{ uri: encodeURI(imgUri) }}
 						resizeMode={FastImage.resizeMode.cover}
+						onError={() => setHasError(true)}
 					/>
 				) : (
 					<View style={styles.image} />
