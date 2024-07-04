@@ -262,9 +262,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Send attachment
 			if (attachments.length) {
 				await Promise.all(
-					attachments.map(({ filename: name, mime: type, description, size, path, canUpload, height, width }) => {
+					attachments.map(({ filename: name, mime: type, description, size, path, canUpload, height, width, exif }) => {
 						if (!canUpload) {
 							return Promise.resolve();
+						}
+
+						if (exif?.Orientation && ['5', '6', '7', '8'].includes(exif?.Orientation)) {
+							[width, height] = [height, width];
 						}
 
 						return sendFileMessage(

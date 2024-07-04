@@ -86,4 +86,7 @@ export interface IShareAttachment {
 	uri: string;
 	width?: number;
 	height?: number;
+	exif?: {
+		Orientation: string;
+	};
 }
