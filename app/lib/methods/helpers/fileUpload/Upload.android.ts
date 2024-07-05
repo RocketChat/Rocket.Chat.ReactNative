@@ -20,7 +20,7 @@ export class Upload {
 		this.uploadUrl = '';
 		this.file = null;
 		this.headers = {};
-		this.formData = new FormData();
+		this.formData = {};
 		this.uploadTask = null;
 		this.isCancelled = false;
 	}
@@ -37,14 +37,9 @@ export class Upload {
 
 	public appendFile(item: IFormData): void {
 		if (item.uri) {
-			this.formData.append(item.name, {
-				uri: item.uri,
-				type: item.type,
-				name: item.filename
-			} as any);
 			this.file = { uri: item.uri, type: item.type, name: item.filename };
 		} else {
-			this.formData.append(item.name, item.data);
+			this.formData[item.name] = item.data;
 		}
 	}
 
@@ -62,7 +57,8 @@ export class Upload {
 						httpMethod: 'POST',
 						uploadType: FileSystem.FileSystemUploadType.MULTIPART,
 						fieldName: 'file',
-						mimeType: this.file.type
+						mimeType: this.file.type,
+						parameters: this.formData
 					},
 					data => {
 						if (data.totalBytesSent && data.totalBytesExpectedToSend && this.progressCallback) {
