@@ -1,18 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
+import { emitter } from '../../../../lib/methods/helpers';
 import { Encryption } from '../../../../lib/encryption';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { IAttachment, IUserMessage } from '../../../../definitions';
-import {
-	TDownloadState,
-	downloadMediaFile,
-	getMediaCache,
-	isDownloadActive,
-	resumeMediaFile
-} from '../../../../lib/methods/handleMediaDownload';
+import { TDownloadState, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import AudioPlayer from '../../../AudioPlayer';
 import { useAudioUrl } from '../../hooks/useAudioUrl';
@@ -50,11 +45,13 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		try {
 			if (audioUrl) {
 				const audioUri = await downloadMediaFile({
+					messageId: id,
 					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
-					mimeType: file.audio_type
+					mimeType: file.audio_type,
+					encryption: file.encryption,
+					originalChecksum: file.hashes?.sha256
 				});
-				await decryptFileIfNeeded(audioUri);
 				setFileUri(audioUri);
 				setDownloadState('downloaded');
 			}
@@ -93,21 +90,11 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		return !!cachedAudioResult?.exists;
 	};
 
-	const handleResumeDownload = async () => {
-		try {
-			setDownloadState('loading');
-			if (audioUrl) {
-				const audioUri = await resumeMediaFile({
-					downloadUrl: audioUrl
-				});
-				await decryptFileIfNeeded(audioUri);
-				setFileUri(audioUri);
-				setDownloadState('downloaded');
-			}
-		} catch (e) {
-			console.error(e);
-			setDownloadState('to-download');
-		}
+	const handleResumeDownload = () => {
+		emitter.on(`downloadMedia${id}`, uri => {
+			setFileUri(uri);
+			setDownloadState('downloaded');
+		});
 	};
 
 	const decryptFileIfNeeded = async (uri: string) => {
@@ -138,13 +125,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			handleCache();
 		}
 	}, [audioUrl]);
-
-	useEffect(
-		() => () => {
-			isMounted.current = false;
-		},
-		[]
-	);
 
 	if (!baseUrl) {
 		return null;

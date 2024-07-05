@@ -2,9 +2,12 @@ import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
 
+import { TAttachmentEncryption } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
+import { emitter } from './helpers';
+import { Encryption } from '../encryption';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
@@ -192,13 +195,19 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 }
 
 export function downloadMediaFile({
+	messageId,
 	type,
 	mimeType,
-	downloadUrl
+	downloadUrl,
+	encryption,
+	originalChecksum
 }: {
+	messageId: string;
 	type: MediaTypes;
 	mimeType?: string;
 	downloadUrl: string;
+	encryption?: TAttachmentEncryption;
+	originalChecksum?: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
@@ -214,27 +223,15 @@ export function downloadMediaFile({
 			if (!result) {
 				return reject();
 			}
+
+			if (encryption && originalChecksum) {
+				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
+			}
+
+			emitter.emit(`downloadMedia${messageId}`, result.uri);
 			return resolve(result.uri);
 		} catch (e) {
 			console.error(e);
-			return reject();
-		} finally {
-			delete downloadQueue[downloadKey];
-		}
-	});
-}
-
-export function resumeMediaFile({ downloadUrl }: { downloadUrl: string }): Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		let downloadKey = '';
-		try {
-			downloadKey = mediaDownloadKey(downloadUrl);
-			const result = await downloadQueue[downloadKey].resumeAsync();
-			if (result?.uri) {
-				return resolve(result.uri);
-			}
-			return reject();
-		} catch {
 			return reject();
 		} finally {
 			delete downloadQueue[downloadKey];

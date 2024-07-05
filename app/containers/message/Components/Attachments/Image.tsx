@@ -1,19 +1,13 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { emitter, showErrorAlert } from '../../../../lib/methods/helpers';
 import { Encryption } from '../../../../lib/encryption';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
-import {
-	cancelDownload,
-	downloadMediaFile,
-	getMediaCache,
-	isDownloadActive,
-	resumeMediaFile
-} from '../../../../lib/methods/handleMediaDownload';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../../../theme';
 import Markdown from '../../../markdown';
@@ -110,7 +104,6 @@ const ImageContainer = ({
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
 	// And we cannot be certain whether the file.title_link actually exists.
 	const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
-	const isMounted = useRef(true);
 
 	useEffect(() => {
 		const handleCache = async () => {
@@ -120,7 +113,7 @@ const ImageContainer = ({
 					return;
 				}
 				if (isDownloadActive(imgUrlToCache)) {
-					await handleResumeDownload();
+					handleResumeDownload();
 					return;
 				}
 				await handleAutoDownload();
@@ -133,10 +126,6 @@ const ImageContainer = ({
 		} else {
 			handleCache();
 		}
-
-		return () => {
-			isMounted.current = false;
-		};
 	}, []);
 
 	if (!img) {
@@ -172,26 +161,22 @@ const ImageContainer = ({
 		return !!cachedImageResult?.exists;
 	};
 
-	const handleResumeDownload = async () => {
-		try {
-			const imageUri = await resumeMediaFile({
-				downloadUrl: imgUrlToCache
-			});
-			await decryptFileIfNeeded(imageUri);
+	const handleResumeDownload = () => {
+		emitter.on(`downloadMedia${id}`, imageUri => {
 			updateImageCached(imageUri);
-		} catch (e) {
-			setCached(false);
-		}
+		});
 	};
 
 	const handleDownload = async () => {
 		try {
 			const imageUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: imgUrlToCache,
 				type: 'image',
-				mimeType: imageCached.image_type
+				mimeType: imageCached.image_type,
+				encryption: file.encryption,
+				originalChecksum: file.hashes?.sha256
 			});
-			await decryptFileIfNeeded(imageUri);
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
@@ -199,9 +184,6 @@ const ImageContainer = ({
 	};
 
 	const decryptFileIfNeeded = async (uri: string) => {
-		if (!isMounted.current) {
-			return;
-		}
 		if (file.encryption) {
 			if (!file.hashes?.sha256) {
 				return;
