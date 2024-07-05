@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View, useWindowDimensions, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
 import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
