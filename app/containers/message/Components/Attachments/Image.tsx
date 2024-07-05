@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { emitter, showErrorAlert } from '../../../../lib/methods/helpers';
+import { emitter } from '../../../../lib/methods/helpers';
 import { Encryption } from '../../../../lib/encryption';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -16,7 +16,6 @@ import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import styles from '../../styles';
 import { isImageBase64 } from '../../../../lib/methods';
-import I18n from '../../../../i18n';
 import { isValidUrl } from '../../../../lib/methods/helpers/isValidUrl';
 
 interface IMessageButton {
@@ -52,10 +51,9 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 export const MessageImage = React.memo(
 	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
 		const { colors } = useTheme();
-		const [hasError, setHasError] = useState(false);
 		const valid = isValidUrl(imgUri);
 
-		if ((encrypted && !loading) || hasError) {
+		if (encrypted && !loading && cached) {
 			return (
 				<>
 					<View style={styles.image} />
@@ -71,7 +69,6 @@ export const MessageImage = React.memo(
 						style={[styles.image, { borderColor: colors.strokeLight }]}
 						source={{ uri: encodeURI(imgUri) }}
 						resizeMode={FastImage.resizeMode.cover}
-						onError={() => setHasError(true)}
 					/>
 				) : (
 					<View style={styles.image} />
@@ -184,19 +181,16 @@ const ImageContainer = ({
 	};
 
 	const decryptFileIfNeeded = async (uri: string) => {
-		if (file.encryption) {
-			if (!file.hashes?.sha256) {
-				return;
-			}
+		if (file.encryption && file.hashes?.sha256 && imageCached.e2e === 'pending') {
 			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
+			setImageCached(prev => ({
+				...prev,
+				e2e: 'done'
+			}));
 		}
 	};
 
 	const onPress = async () => {
-		if (file.e2e === 'pending') {
-			showErrorAlert(I18n.t('Encrypted_file'));
-			return;
-		}
 		if (loading && isDownloadActive(imgUrlToCache)) {
 			cancelDownload(imgUrlToCache);
 			setLoading(false);
@@ -213,12 +207,14 @@ const ImageContainer = ({
 				handleResumeDownload();
 				return;
 			}
+			setLoading(true);
 			handleDownload();
 			return;
 		}
-		if (!showAttachment) {
+		if (!showAttachment || !imageCached.title_link) {
 			return;
 		}
+		await decryptFileIfNeeded(imageCached.title_link);
 		showAttachment(imageCached);
 	};
 
@@ -228,7 +224,7 @@ const ImageContainer = ({
 				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
 				cached={cached}
 				loading={loading}
-				encrypted={file.e2e === 'pending'}
+				encrypted={imageCached.e2e === 'pending'}
 			/>
 		</Button>
 	);

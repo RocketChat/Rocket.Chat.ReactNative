@@ -7,7 +7,7 @@ import I18n from '../../../../i18n';
 import { themes } from '../../../../lib/constants';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
 import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
-import { emitter, fileDownload, isIOS, showErrorAlert } from '../../../../lib/methods/helpers';
+import { emitter, fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import { useTheme } from '../../../../theme';
@@ -64,7 +64,7 @@ const CancelIndicator = () => {
 
 const Thumbnail = ({ loading, cached, encrypted = false }: { loading: boolean; cached: boolean; encrypted: boolean }) => {
 	let icon: TIconsName = cached ? 'play-filled' : 'arrow-down-circle';
-	if (encrypted) {
+	if (encrypted && !loading && cached) {
 		icon = 'encrypted';
 	}
 
@@ -163,26 +163,25 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	};
 
 	const decryptFileIfNeeded = async (uri: string) => {
-		if (file.encryption) {
-			if (!file.hashes?.sha256) {
-				return;
-			}
+		if (file.encryption && file.hashes?.sha256 && videoCached.e2e === 'pending') {
 			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
+			setVideoCached(prev => ({
+				...prev,
+				e2e: 'done'
+			}));
 		}
 	};
 
 	const onPress = async () => {
-		if (file.e2e === 'pending') {
-			showErrorAlert(I18n.t('Encrypted_file'));
-			return;
-		}
-		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {
+		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment && videoCached.video_url) {
+			await decryptFileIfNeeded(videoCached.video_url);
 			showAttachment(videoCached);
 			return;
 		}
 		if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
 			const isVideoCached = await handleGetMediaCache();
-			if (isVideoCached && showAttachment) {
+			if (isVideoCached && showAttachment && videoCached.video_url) {
+				await decryptFileIfNeeded(videoCached.video_url);
 				showAttachment(videoCached);
 				return;
 			}
@@ -230,7 +229,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				onPress={onPress}
 				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
 				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
-				<Thumbnail loading={loading} cached={cached} encrypted={file.e2e === 'pending'} />
+				<Thumbnail loading={loading} cached={cached} encrypted={videoCached.e2e === 'pending'} />
 			</Touchable>
 		</>
 	);

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
 import { emitter } from '../../../../lib/methods/helpers';
@@ -28,7 +28,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [fileUri, setFileUri] = useState('');
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
 	const audioUrl = useAudioUrl({ audioUrl: file.audio_url });
-	const isMounted = useRef(true);
+	const [encrypted, setEncrypted] = useState(file.e2e);
 
 	const onPlayButtonPress = async () => {
 		if (downloadState === 'to-download') {
@@ -54,6 +54,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 				});
 				setFileUri(audioUri);
 				setDownloadState('downloaded');
+				if (file.encryption) {
+					setEncrypted('done');
+				}
 			}
 		} catch {
 			setDownloadState('to-download');
@@ -98,14 +101,9 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	};
 
 	const decryptFileIfNeeded = async (uri: string) => {
-		if (!isMounted.current) {
-			return;
-		}
-		if (file.encryption) {
-			if (!file.hashes?.sha256) {
-				return;
-			}
+		if (file.encryption && file.hashes?.sha256 && encrypted !== 'pending') {
 			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
+			setEncrypted('done');
 		}
 	};
 
@@ -139,7 +137,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 				downloadState={downloadState}
 				onPlayButtonPress={onPlayButtonPress}
 				rid={rid}
-				disabled={file.e2e === 'pending'}
+				disabled={encrypted === 'pending'}
 			/>
 		</>
 	);
