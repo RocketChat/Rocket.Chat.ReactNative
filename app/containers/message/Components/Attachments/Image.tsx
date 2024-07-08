@@ -187,6 +187,7 @@ const ImageContainer = ({
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
+			setLoading(false);
 		}
 	};
 

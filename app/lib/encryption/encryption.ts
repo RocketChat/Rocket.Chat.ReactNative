@@ -550,7 +550,7 @@ class Encryption {
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
 		const messageRecord = await getMessageById(messageId);
 		if (!messageRecord) {
-			throw new Error('Message not found');
+			return null;
 		}
 
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
@@ -558,7 +558,7 @@ class Encryption {
 			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
 			if (checksum !== originalChecksum) {
 				await deleteAsync(decryptedFile);
-				throw new Error('File corrupted');
+				return null;
 			}
 
 			const db = database.active;
@@ -578,7 +578,7 @@ class Encryption {
 		new Promise(async (resolve, reject) => {
 			const messageRecord = await getMessageById(messageId);
 			if (!messageRecord) {
-				return reject('Message not found');
+				return null;
 			}
 			if (messageRecord.attachments?.[0].e2e !== 'pending') {
 				return resolve(path);
