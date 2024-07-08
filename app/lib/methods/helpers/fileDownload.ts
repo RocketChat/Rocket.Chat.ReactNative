@@ -6,16 +6,17 @@ import { IAttachment } from '../../../definitions';
 import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
+import { sanitizeFileName } from '../handleMediaDownload';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
 export const fileDownload = async (url: string, attachment?: IAttachment, fileName?: string): Promise<string> => {
 	let path = `${FileSystem.documentDirectory}`;
 	if (fileName) {
-		path = `${path}${fileName}`;
+		path = `${path}${sanitizeFileName(fileName)}`;
 	}
-	if (attachment) {
-		path = `${path}${attachment.title}`;
+	if (attachment?.title) {
+		path = `${path}${sanitizeFileName(attachment.title)}`;
 	}
 	const file = await FileSystem.downloadAsync(url, path);
 	return file.uri;

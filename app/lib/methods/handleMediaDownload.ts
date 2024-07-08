@@ -20,7 +20,7 @@ export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
 const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeLikeString(serverURL)}/`;
 
-const sanitizeFileName = (value: string) => {
+export const sanitizeFileName = (value: string) => {
 	const extension = value.substring(value.lastIndexOf('.') + 1);
 	const toSanitize = value.substring(0, value.lastIndexOf('.'));
 	return `${sanitizeLikeString(toSanitize)}.${extension}`;

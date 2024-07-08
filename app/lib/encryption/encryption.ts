@@ -549,10 +549,6 @@ class Encryption {
 
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
 		const messageRecord = await getMessageById(messageId);
-		if (!messageRecord) {
-			return null;
-		}
-
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
 			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
@@ -561,29 +557,23 @@ class Encryption {
 				return null;
 			}
 
-			const db = database.active;
-			await db.write(async () => {
-				await messageRecord.update(m => {
-					m.attachments = m.attachments?.map(att => ({
-						...att,
-						e2e: 'done'
-					}));
+			if (messageRecord) {
+				const db = database.active;
+				await db.write(async () => {
+					await messageRecord.update(m => {
+						m.attachments = m.attachments?.map(att => ({
+							...att,
+							e2e: 'done'
+						}));
+					});
 				});
-			});
+			}
 		}
 		return decryptedFile;
 	};
 
 	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption, originalChecksum) =>
-		new Promise(async (resolve, reject) => {
-			const messageRecord = await getMessageById(messageId);
-			if (!messageRecord) {
-				return null;
-			}
-			if (messageRecord.attachments?.[0].e2e !== 'pending') {
-				return resolve(path);
-			}
-
+		new Promise((resolve, reject) => {
 			this.decryptionFileQueue.push({
 				params: [messageId, path, encryption, originalChecksum],
 				resolve,
