@@ -145,6 +145,15 @@ const ImageContainer = ({
 		setCached(true);
 	};
 
+	const setDecrypted = () => {
+		if (imageCached.e2e === 'pending') {
+			setImageCached(prev => ({
+				...prev,
+				e2e: 'done'
+			}));
+		}
+	};
+
 	const handleGetMediaCache = async () => {
 		const cachedImageResult = await getMediaCache({
 			type: 'image',
@@ -174,6 +183,7 @@ const ImageContainer = ({
 				encryption: file.encryption,
 				originalChecksum: file.hashes?.sha256
 			});
+			setDecrypted();
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
@@ -183,10 +193,7 @@ const ImageContainer = ({
 	const decryptFileIfNeeded = async (uri: string) => {
 		if (file.encryption && file.hashes?.sha256 && imageCached.e2e === 'pending') {
 			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
-			setImageCached(prev => ({
-				...prev,
-				e2e: 'done'
-			}));
+			setDecrypted();
 		}
 	};
 
