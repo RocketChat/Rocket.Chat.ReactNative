@@ -4,7 +4,7 @@ import { dequal } from 'dequal';
 import Image from './Image';
 import Audio from './Audio';
 import Video from './Video';
-import Reply from './Reply';
+import { Reply } from './components';
 import CollapsibleQuote from './CollapsibleQuote';
 import AttachedActions from './AttachedActions';
 import MessageContext from '../../Context';

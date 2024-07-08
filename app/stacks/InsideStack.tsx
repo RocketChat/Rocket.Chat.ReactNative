@@ -234,7 +234,7 @@ const DrawerNavigator = () => {
 				swipeEnabled: false,
 				headerShown: false,
 				drawerPosition: I18nManager.isRTL ? 'right' : 'left',
-				drawerType: 'back',
+				drawerType: 'slide',
 				overlayColor: `rgba(0,0,0,${themes[theme].backdropOpacity})`
 			}}>
 			<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />

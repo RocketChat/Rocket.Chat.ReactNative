@@ -13,7 +13,7 @@ import { TSupportedThemes, useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown from '../../../markdown';
-import Attachments from './Attachments';
+import { Attachments } from './components';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
