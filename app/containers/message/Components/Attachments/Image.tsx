@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
@@ -152,8 +152,12 @@ const ImageContainer = ({
 		}
 
 		return () => {
-			emitter.off(`downloadMedia${id}`);
+			emitter.off(`downloadMedia${id}`, downloadMediaListener);
 		};
+	}, []);
+
+	const downloadMediaListener = useCallback((imageUri: string) => {
+		updateImageCached(imageUri);
 	}, []);
 
 	if (!img) {
@@ -196,9 +200,7 @@ const ImageContainer = ({
 	};
 
 	const handleResumeDownload = () => {
-		emitter.on(`downloadMedia${id}`, imageUri => {
-			updateImageCached(imageUri);
-		});
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
 	};
 
 	const handleDownload = async () => {
