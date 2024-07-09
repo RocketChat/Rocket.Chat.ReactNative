@@ -20,6 +20,7 @@ import Touchable from '../../Touchable';
 import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
 import { TIconsName } from '../../../CustomIcon';
 import { useFile } from '../../hooks/useFile';
+import { IUserMessage } from '../../../../definitions';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -48,6 +49,7 @@ interface IMessageVideo {
 	file: IAttachment;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
+	author?: IUserMessage;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
 	msg?: string;
@@ -76,7 +78,15 @@ const Thumbnail = ({ loading, cached, encrypted = false }: { loading: boolean; c
 	);
 };
 
-const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IMessageVideo): React.ReactElement | null => {
+const Video = ({
+	file,
+	showAttachment,
+	getCustomEmoji,
+	author,
+	style,
+	isReply,
+	msg
+}: IMessageVideo): React.ReactElement | null => {
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [videoCached, setVideoCached] = useFile(file, id);
 	const [loading, setLoading] = useState(true);
@@ -116,8 +126,9 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	}
 
 	const handleAutoDownload = async () => {
+		const isCurrentUserAuthor = author?._id === user.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled('videoPreferenceDownload');
-		if (isAutoDownloadEnabled && file.video_type && isTypeSupported(file.video_type)) {
+		if ((isAutoDownloadEnabled || isCurrentUserAuthor) && file.video_type && isTypeSupported(file.video_type)) {
 			await handleDownload();
 			return;
 		}

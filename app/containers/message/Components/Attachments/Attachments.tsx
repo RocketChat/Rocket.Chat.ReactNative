@@ -60,6 +60,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 						getCustomEmoji={getCustomEmoji}
 						style={style}
 						isReply={isReply}
+						author={author}
 						msg={msg}
 					/>
 				);
