@@ -123,6 +123,10 @@ const ImageContainer = ({
 		} else {
 			handleCache();
 		}
+
+		return () => {
+			emitter.off(`downloadMedia${id}`);
+		};
 	}, []);
 
 	if (!img) {

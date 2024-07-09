@@ -99,6 +99,10 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			}
 		};
 		handleVideoSearchAndDownload();
+
+		return () => {
+			emitter.off(`downloadMedia${id}`);
+		};
 	}, []);
 
 	if (!baseUrl) {

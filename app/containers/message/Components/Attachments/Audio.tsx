@@ -124,6 +124,10 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		}
 	}, [audioUrl]);
 
+	useEffect(() => () => {
+		emitter.off(`downloadMedia${id}`);
+	});
+
 	if (!baseUrl) {
 		return null;
 	}
