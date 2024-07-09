@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import Touch from '../Touch';
@@ -89,10 +89,23 @@ const Content = React.memo(
 	}: IListItemContent) => {
 		const { fontScale } = useDimensions();
 
+		const handleAcessibilityLabel = useMemo(() => {
+			let label = '';
+			if (title) {
+				label = translateTitle ? I18n.t(title) : title;
+			}
+			if (subtitle) {
+				label = translateSubtitle ? `${label} ${I18n.t(subtitle)}` : `${label} ${subtitle}`;
+			}
+			return label;
+		}, [title, subtitle, translateTitle, translateSubtitle]);
+
 		return (
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
-				testID={testID}>
+				testID={testID}
+				accessible
+				accessibilityLabel={handleAcessibilityLabel}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
