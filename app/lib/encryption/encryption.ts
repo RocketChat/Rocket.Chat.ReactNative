@@ -563,6 +563,7 @@ class Encryption {
 					await messageRecord.update(m => {
 						m.attachments = m.attachments?.map(att => ({
 							...att,
+							title_link: decryptedFile,
 							e2e: 'done'
 						}));
 					});
