@@ -2,7 +2,6 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { getMessageById } from '../../../../lib/database/services/Message';
 import { emitter } from '../../../../lib/methods/helpers';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -17,6 +16,7 @@ import Touchable from '../../Touchable';
 import styles from '../../styles';
 import { isImageBase64 } from '../../../../lib/methods';
 import { isValidUrl } from '../../../../lib/methods/helpers/isValidUrl';
+import { useFile } from '../../hooks/useFile';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -80,31 +80,6 @@ export const MessageImage = React.memo(
 		);
 	}
 );
-
-const useFile = (file: IAttachment, messageId: string) => {
-	console.log('🚀 ~ useFile ~ file, messageId:', file, messageId);
-	const [localFile, setLocalFile] = useState(file);
-	const [isMessagePersisted, setIsMessagePersisted] = useState(!!messageId);
-	console.log(`using ${messageId} ${isMessagePersisted ? 'DB' : 'STATE'}`, localFile);
-	useEffect(() => {
-		const checkMessage = async () => {
-			const message = await getMessageById(messageId);
-			console.log(`checking message ${messageId}`, message);
-			if (!message) {
-				setIsMessagePersisted(false);
-			}
-		};
-		checkMessage();
-	}, [messageId]);
-
-	const manageForwardedFile = (f: Partial<IAttachment>) => {
-		if (isMessagePersisted) {
-			return;
-		}
-		setLocalFile(prev => ({ ...prev, ...f }));
-	};
-	return [isMessagePersisted ? file : localFile, manageForwardedFile] as const;
-};
 
 const ImageContainer = ({
 	file,
@@ -193,10 +168,11 @@ const ImageContainer = ({
 			mimeType: imageCached.image_type,
 			urlToCache: imgUrlToCache
 		});
-		if (cachedImageResult?.exists && imageCached.e2e !== 'pending') {
+		const result = !!cachedImageResult?.exists && imageCached.e2e !== 'pending';
+		if (result) {
 			updateImageCached(cachedImageResult.uri);
 		}
-		return !!cachedImageResult?.exists && imageCached.e2e !== 'pending';
+		return result;
 	};
 
 	const handleResumeDownload = () => {

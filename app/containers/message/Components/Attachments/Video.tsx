@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import { IAttachment } from '../../../../definitions/IAttachment';
@@ -18,8 +18,8 @@ import BlurComponent from '../OverlayComponent';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
-import { Encryption } from '../../../../lib/encryption';
 import { TIconsName } from '../../../CustomIcon';
+import { useFile } from '../../hooks/useFile';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -77,10 +77,10 @@ const Thumbnail = ({ loading, cached, encrypted = false }: { loading: boolean; c
 };
 
 const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IMessageVideo): React.ReactElement | null => {
-	const [videoCached, setVideoCached] = useState(file);
+	const { id, baseUrl, user } = useContext(MessageContext);
+	const [videoCached, setVideoCached] = useFile(file, id);
 	const [loading, setLoading] = useState(true);
 	const [cached, setCached] = useState(false);
-	const { id, baseUrl, user } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
@@ -96,13 +96,19 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 					return;
 				}
 				await handleAutoDownload();
+				setLoading(false);
 			}
 		};
 		handleVideoSearchAndDownload();
 
 		return () => {
-			emitter.off(`downloadMedia${id}`);
+			emitter.off(`downloadMedia${id}`, downloadMediaListener);
 		};
+	}, []);
+
+	const downloadMediaListener = useCallback((uri: string) => {
+		updateVideoCached(uri);
+		setLoading(false);
 	}, []);
 
 	if (!baseUrl) {
@@ -119,11 +125,17 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	};
 
 	const updateVideoCached = (videoUri: string) => {
-		setVideoCached(prev => ({
-			...prev,
-			video_url: videoUri
-		}));
+		setVideoCached({ video_url: videoUri });
 		setCached(true);
+		setLoading(false);
+	};
+
+	const setDecrypted = () => {
+		if (videoCached.e2e === 'pending') {
+			setVideoCached({
+				e2e: 'done'
+			});
+		}
 	};
 
 	const handleGetMediaCache = async () => {
@@ -132,23 +144,18 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			mimeType: file.video_type,
 			urlToCache: video
 		});
-		if (cachedVideoResult?.exists) {
-			await decryptFileIfNeeded(cachedVideoResult.uri);
+		const result = !!cachedVideoResult?.exists && videoCached.e2e !== 'pending';
+		if (result) {
 			updateVideoCached(cachedVideoResult.uri);
-			setLoading(false);
 		}
-		return !!cachedVideoResult?.exists;
+		return result;
 	};
 
 	const handleResumeDownload = () => {
-		emitter.on(`downloadMedia${id}`, uri => {
-			updateVideoCached(uri);
-			setLoading(false);
-		});
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
 	};
 
 	const handleDownload = async () => {
-		setLoading(true);
 		try {
 			const videoUri = await downloadMediaFile({
 				messageId: id,
@@ -158,34 +165,21 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				encryption: file.encryption,
 				originalChecksum: file.hashes?.sha256
 			});
+			setDecrypted();
 			updateVideoCached(videoUri);
 		} catch {
 			setCached(false);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const decryptFileIfNeeded = async (uri: string) => {
-		if (file.encryption && file.hashes?.sha256 && videoCached.e2e === 'pending') {
-			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
-			setVideoCached(prev => ({
-				...prev,
-				e2e: 'done'
-			}));
 		}
 	};
 
 	const onPress = async () => {
 		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment && videoCached.video_url) {
-			await decryptFileIfNeeded(videoCached.video_url);
 			showAttachment(videoCached);
 			return;
 		}
 		if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
 			const isVideoCached = await handleGetMediaCache();
 			if (isVideoCached && showAttachment && videoCached.video_url) {
-				await decryptFileIfNeeded(videoCached.video_url);
 				showAttachment(videoCached);
 				return;
 			}
@@ -193,6 +187,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				handleResumeDownload();
 				return;
 			}
+			setLoading(true);
 			handleDownload();
 			return;
 		}

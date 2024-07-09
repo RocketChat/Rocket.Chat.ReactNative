@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
 import { emitter } from '../../../../lib/methods/helpers';
-import { Encryption } from '../../../../lib/encryption';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
@@ -28,7 +27,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [fileUri, setFileUri] = useState('');
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
 	const audioUrl = useAudioUrl({ audioUrl: file.audio_url });
-	const [encrypted, setEncrypted] = useState(file.e2e);
 
 	const onPlayButtonPress = async () => {
 		if (downloadState === 'to-download') {
@@ -54,9 +52,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 				});
 				setFileUri(audioUri);
 				setDownloadState('downloaded');
-				if (file.encryption) {
-					setEncrypted('done');
-				}
 			}
 		} catch {
 			setDownloadState('to-download');
@@ -85,26 +80,16 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			mimeType: file.audio_type,
 			urlToCache: audioUrl
 		});
-		if (cachedAudioResult?.exists) {
-			await decryptFileIfNeeded(cachedAudioResult.uri);
+		const result = cachedAudioResult?.exists && file.e2e !== 'pending';
+		if (result) {
 			setFileUri(cachedAudioResult.uri);
 			setDownloadState('downloaded');
 		}
-		return !!cachedAudioResult?.exists;
+		return result;
 	};
 
 	const handleResumeDownload = () => {
-		emitter.on(`downloadMedia${id}`, uri => {
-			setFileUri(uri);
-			setDownloadState('downloaded');
-		});
-	};
-
-	const decryptFileIfNeeded = async (uri: string) => {
-		if (file.encryption && file.hashes?.sha256 && encrypted !== 'pending') {
-			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
-			setEncrypted('done');
-		}
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
 	};
 
 	useEffect(() => {
@@ -124,8 +109,13 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		}
 	}, [audioUrl]);
 
+	const downloadMediaListener = useCallback((uri: string) => {
+		setFileUri(uri);
+		setDownloadState('downloaded');
+	}, []);
+
 	useEffect(() => () => {
-		emitter.off(`downloadMedia${id}`);
+		emitter.off(`downloadMedia${id}`, downloadMediaListener);
 	});
 
 	if (!baseUrl) {
@@ -135,14 +125,7 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	return (
 		<>
 			<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
-			<AudioPlayer
-				msgId={id}
-				fileUri={fileUri}
-				downloadState={downloadState}
-				onPlayButtonPress={onPlayButtonPress}
-				rid={rid}
-				disabled={encrypted === 'pending'}
-			/>
+			<AudioPlayer msgId={id} fileUri={fileUri} downloadState={downloadState} onPlayButtonPress={onPlayButtonPress} rid={rid} />
 		</>
 	);
 };

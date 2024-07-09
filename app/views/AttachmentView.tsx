@@ -69,7 +69,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
+		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
 		return (
 			<Video
