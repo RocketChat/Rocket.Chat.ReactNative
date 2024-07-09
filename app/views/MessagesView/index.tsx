@@ -289,7 +289,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 							return {} as IUrl;
 						});
 					}
-					return { ...message, id: message._id };
+					return { ...message };
 				});
 				this.setState({
 					messages: [...messages, ...urlRenderMessages],
