@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
+import { getMessageById } from '../../../../lib/database/services/Message';
 import { emitter } from '../../../../lib/methods/helpers';
-import { Encryption } from '../../../../lib/encryption';
 import { IAttachment, IUserMessage } from '../../../../definitions';
 import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
 import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
@@ -81,6 +81,31 @@ export const MessageImage = React.memo(
 	}
 );
 
+const useFile = (file: IAttachment, messageId: string) => {
+	console.log('🚀 ~ useFile ~ file, messageId:', file, messageId);
+	const [localFile, setLocalFile] = useState(file);
+	const [isMessagePersisted, setIsMessagePersisted] = useState(!!messageId);
+	console.log(`using ${messageId} ${isMessagePersisted ? 'DB' : 'STATE'}`, localFile);
+	useEffect(() => {
+		const checkMessage = async () => {
+			const message = await getMessageById(messageId);
+			console.log(`checking message ${messageId}`, message);
+			if (!message) {
+				setIsMessagePersisted(false);
+			}
+		};
+		checkMessage();
+	}, [messageId]);
+
+	const manageForwardedFile = (f: Partial<IAttachment>) => {
+		if (isMessagePersisted) {
+			return;
+		}
+		setLocalFile(prev => ({ ...prev, ...f }));
+	};
+	return [isMessagePersisted ? file : localFile, manageForwardedFile] as const;
+};
+
 const ImageContainer = ({
 	file,
 	imageUrl,
@@ -91,11 +116,12 @@ const ImageContainer = ({
 	author,
 	msg
 }: IMessageImage): React.ReactElement | null => {
-	const [imageCached, setImageCached] = useState(file);
+	const { id, baseUrl, user } = useContext(MessageContext);
+	const [imageCached, setImageCached] = useFile(file, id);
+	console.log('🚀 ~ imageCached:', id, imageCached);
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const { theme } = useTheme();
-	const { id, baseUrl, user } = useContext(MessageContext);
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
@@ -106,6 +132,7 @@ const ImageContainer = ({
 		const handleCache = async () => {
 			if (img) {
 				const isImageCached = await handleGetMediaCache();
+				console.log('🚀 ~ handleCache ~ isImageCached:', isImageCached);
 				if (isImageCached) {
 					return;
 				}
@@ -142,19 +169,17 @@ const ImageContainer = ({
 	};
 
 	const updateImageCached = (imgUri: string) => {
-		setImageCached(prev => ({
-			...prev,
+		setImageCached({
 			title_link: imgUri
-		}));
+		});
 		setCached(true);
 	};
 
 	const setDecrypted = () => {
 		if (imageCached.e2e === 'pending') {
-			setImageCached(prev => ({
-				...prev,
+			setImageCached({
 				e2e: 'done'
-			}));
+			});
 		}
 	};
 
@@ -164,11 +189,10 @@ const ImageContainer = ({
 			mimeType: imageCached.image_type,
 			urlToCache: imgUrlToCache
 		});
-		if (cachedImageResult?.exists) {
-			await decryptFileIfNeeded(cachedImageResult.uri);
+		if (cachedImageResult?.exists && imageCached.e2e !== 'pending') {
 			updateImageCached(cachedImageResult.uri);
 		}
-		return !!cachedImageResult?.exists;
+		return !!cachedImageResult?.exists && imageCached.e2e !== 'pending';
 	};
 
 	const handleResumeDownload = () => {
@@ -192,13 +216,6 @@ const ImageContainer = ({
 		} catch (e) {
 			setCached(false);
 			setLoading(false);
-		}
-	};
-
-	const decryptFileIfNeeded = async (uri: string) => {
-		if (file.encryption && file.hashes?.sha256 && imageCached.e2e === 'pending') {
-			await Encryption.addFileToDecryptFileQueue(id, uri, file.encryption, file.hashes?.sha256);
-			setDecrypted();
 		}
 	};
 
@@ -226,7 +243,6 @@ const ImageContainer = ({
 		if (!showAttachment || !imageCached.title_link) {
 			return;
 		}
-		await decryptFileIfNeeded(imageCached.title_link);
 		showAttachment(imageCached);
 	};
 
