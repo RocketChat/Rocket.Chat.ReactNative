@@ -93,7 +93,6 @@ const ImageContainer = ({
 }: IMessageImage): React.ReactElement | null => {
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [imageCached, setImageCached] = useFile(file, id);
-	console.log('🚀 ~ imageCached:', id, imageCached);
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const { theme } = useTheme();
@@ -107,7 +106,6 @@ const ImageContainer = ({
 		const handleCache = async () => {
 			if (img) {
 				const isImageCached = await handleGetMediaCache();
-				console.log('🚀 ~ handleCache ~ isImageCached:', isImageCached);
 				if (isImageCached) {
 					return;
 				}
