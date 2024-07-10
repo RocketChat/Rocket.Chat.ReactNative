@@ -78,6 +78,8 @@ export default class ThreadMessage extends Model {
 
 	@field('e2e') e2e;
 
+	@json('content', sanitizer) content;
+
 	asPlain() {
 		return {
 			id: this.id,
@@ -112,7 +114,8 @@ export default class ThreadMessage extends Model {
 			autoTranslate: this.autoTranslate,
 			translations: this.translations,
 			draftMessage: this.draftMessage,
-			e2e: this.e2e
+			e2e: this.e2e,
+			content: this.content
 		};
 	}
 }

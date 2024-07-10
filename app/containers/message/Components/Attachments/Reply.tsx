@@ -4,19 +4,19 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { IAttachment, TGetCustomEmoji } from '../../definitions';
-import { themes } from '../../lib/constants';
-import { fileDownloadAndPreview } from '../../lib/methods/helpers';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import openLink from '../../lib/methods/helpers/openLink';
-import { TSupportedThemes, useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import RCActivityIndicator from '../ActivityIndicator';
-import Markdown from '../markdown';
+import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
+import { themes } from '../../../../lib/constants';
+import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import openLink from '../../../../lib/methods/helpers/openLink';
+import { TSupportedThemes, useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
+import RCActivityIndicator from '../../../ActivityIndicator';
+import Markdown from '../../../markdown';
 import { Attachments } from './components';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import messageStyles from './styles';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import messageStyles from '../../styles';
 
 const styles = StyleSheet.create({
 	button: {
@@ -202,9 +202,9 @@ const Reply = React.memo(
 	({ attachment, timeFormat, index, getCustomEmoji, msg, showAttachment }: IMessageReply) => {
 		const [loading, setLoading] = useState(false);
 		const { theme } = useTheme();
-		const { baseUrl, user } = useContext(MessageContext);
+		const { baseUrl, user, id, e2e, isEncrypted } = useContext(MessageContext);
 
-		if (!attachment) {
+		if (!attachment || (isEncrypted && !e2e)) {
 			return null;
 		}
 
@@ -216,7 +216,7 @@ const Reply = React.memo(
 			if (attachment.type === 'file' && attachment.title_link) {
 				setLoading(true);
 				url = formatAttachmentUrl(attachment.title_link, user.id, user.token, baseUrl);
-				await fileDownloadAndPreview(url, attachment);
+				await fileDownloadAndPreview(url, attachment, id);
 				setLoading(false);
 				return;
 			}
