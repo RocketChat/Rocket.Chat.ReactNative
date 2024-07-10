@@ -112,7 +112,7 @@ const Content = React.memo(
 				}
 			}
 			return label;
-		}, [title, subtitle, translateTitle, translateSubtitle, additionalAcessibilityLabel]);
+		}, [title, subtitle, translateTitle, translateSubtitle, additionalAcessibilityLabel, additionalAcessibilityLabelCheck]);
 
 		return (
 			<View
