@@ -119,7 +119,8 @@ const Content = React.memo(
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}
 				accessible
-				accessibilityLabel={handleAcessibilityLabel}>
+				accessibilityLabel={handleAcessibilityLabel}
+				accessibilityRole='button'>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>

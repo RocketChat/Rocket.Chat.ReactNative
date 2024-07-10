@@ -17,7 +17,7 @@ const Touch = React.forwardRef<RectButton, ITouchProps>(
 
 		return (
 			// container for accessibility
-			<View accessible={accessible} accessibilityLabel={accessibilityLabel}>
+			<View accessible={accessible} accessibilityLabel={accessibilityLabel} accessibilityRole='button'>
 				<RectButton
 					ref={ref}
 					onPress={onPress}

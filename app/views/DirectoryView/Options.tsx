@@ -64,7 +64,7 @@ const DirectoryOptions = ({
 		}
 
 		return (
-			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)}>
+			<Touch onPress={() => changeType(itemType)} style={styles.dropdownItemButton} accessibilityLabel={I18n.t(text)} accessible>
 				<View style={styles.dropdownItemContainer}>
 					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.dropdownItemIcon} />
 					<Text style={[styles.dropdownItemText, { color: colors.fontDefault }]}>{I18n.t(text)}</Text>
