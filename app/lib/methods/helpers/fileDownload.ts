@@ -25,6 +25,7 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 export const fileDownloadAndPreview = async (url: string, attachment: IAttachment, messageId: string): Promise<void> => {
 	try {
 		let file = url;
+		// If url starts with file://, we assume it's a local file and we don't download/decrypt it
 		if (!file.startsWith('file://')) {
 			file = await fileDownload(file, attachment);
 
