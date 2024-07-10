@@ -24,13 +24,16 @@ export const fileDownload = async (url: string, attachment?: IAttachment, fileNa
 
 export const fileDownloadAndPreview = async (url: string, attachment: IAttachment, messageId: string): Promise<void> => {
 	try {
-		const file = await fileDownload(url, attachment);
+		let file = url;
+		if (!file.startsWith('file://')) {
+			file = await fileDownload(file, attachment);
 
-		if (attachment.encryption) {
-			if (!attachment.hashes?.sha256) {
-				throw new Error('Missing checksum');
+			if (attachment.encryption) {
+				if (!attachment.hashes?.sha256) {
+					throw new Error('Missing checksum');
+				}
+				await Encryption.addFileToDecryptFileQueue(messageId, file, attachment.encryption, attachment.hashes?.sha256);
 			}
-			await Encryption.addFileToDecryptFileQueue(messageId, file, attachment.encryption, attachment.hashes?.sha256);
 		}
 
 		await FileViewer.open(file, {
