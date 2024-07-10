@@ -26,7 +26,7 @@ export * from './logout';
 export * from './readMessages';
 export * from './roomTypeToApiType';
 export * from './search';
-export * from './sendFileMessage';
+export { sendFileMessage } from './sendFileMessage';
 export * from './sendMessage';
 export * from './setUser';
 export * from './triggerActions';

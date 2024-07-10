@@ -1,30 +1,26 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
-import { IAttachment } from '../../definitions/IAttachment';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import I18n from '../../i18n';
-import { themes } from '../../lib/constants';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import {
-	cancelDownload,
-	downloadMediaFile,
-	getMediaCache,
-	isDownloadActive,
-	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { fileDownload, isIOS } from '../../lib/methods/helpers';
-import EventEmitter from '../../lib/methods/helpers/events';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import { LISTENER } from '../Toast';
-import Markdown from '../markdown';
-import BlurComponent from './Components/OverlayComponent';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import { DEFAULT_MESSAGE_HEIGHT } from './utils';
+import { IAttachment } from '../../../../definitions/IAttachment';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import I18n from '../../../../i18n';
+import { themes } from '../../../../lib/constants';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
+import { emitter, fileDownload, isIOS } from '../../../../lib/methods/helpers';
+import EventEmitter from '../../../../lib/methods/helpers/events';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../theme';
+import sharedStyles from '../../../../views/Styles';
+import { LISTENER } from '../../../Toast';
+import Markdown from '../../../markdown';
+import BlurComponent from '../OverlayComponent';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
+import { TIconsName } from '../../../CustomIcon';
+import { useFile } from '../../hooks/useFile';
+import { IUserMessage } from '../../../../definitions';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -46,11 +42,6 @@ const styles = StyleSheet.create({
 	text: {
 		...sharedStyles.textRegular,
 		fontSize: 12
-	},
-	thumbnailImage: {
-		borderRadius: 4,
-		width: '100%',
-		height: '100%'
 	}
 });
 
@@ -58,6 +49,7 @@ interface IMessageVideo {
 	file: IAttachment;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
+	author?: IUserMessage;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
 	msg?: string;
@@ -72,20 +64,33 @@ const CancelIndicator = () => {
 	);
 };
 
-// TODO: Wait backend send the thumbnailUrl as prop
-const Thumbnail = ({ loading, thumbnailUrl, cached }: { loading: boolean; thumbnailUrl?: string; cached: boolean }) => (
-	<>
-		{thumbnailUrl ? <FastImage style={styles.thumbnailImage} source={{ uri: thumbnailUrl }} /> : null}
-		<BlurComponent iconName={cached ? 'play-filled' : 'arrow-down-circle'} loading={loading} style={styles.button} />
-		{loading ? <CancelIndicator /> : null}
-	</>
-);
+const Thumbnail = ({ loading, cached, encrypted = false }: { loading: boolean; cached: boolean; encrypted: boolean }) => {
+	let icon: TIconsName = cached ? 'play-filled' : 'arrow-down-circle';
+	if (encrypted && !loading && cached) {
+		icon = 'encrypted';
+	}
 
-const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IMessageVideo): React.ReactElement | null => {
-	const [videoCached, setVideoCached] = useState(file);
+	return (
+		<>
+			<BlurComponent iconName={icon} loading={loading} style={styles.button} />
+			{loading ? <CancelIndicator /> : null}
+		</>
+	);
+};
+
+const Video = ({
+	file,
+	showAttachment,
+	getCustomEmoji,
+	author,
+	style,
+	isReply,
+	msg
+}: IMessageVideo): React.ReactElement | null => {
+	const { id, baseUrl, user } = useContext(MessageContext);
+	const [videoCached, setVideoCached] = useFile(file, id);
 	const [loading, setLoading] = useState(true);
 	const [cached, setCached] = useState(false);
-	const { baseUrl, user } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const video = formatAttachmentUrl(file.video_url, user.id, user.token, baseUrl);
 
@@ -101,9 +106,19 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 					return;
 				}
 				await handleAutoDownload();
+				setLoading(false);
 			}
 		};
 		handleVideoSearchAndDownload();
+
+		return () => {
+			emitter.off(`downloadMedia${id}`, downloadMediaListener);
+		};
+	}, []);
+
+	const downloadMediaListener = useCallback((uri: string) => {
+		updateVideoCached(uri);
+		setLoading(false);
 	}, []);
 
 	if (!baseUrl) {
@@ -111,8 +126,9 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	}
 
 	const handleAutoDownload = async () => {
+		const isCurrentUserAuthor = author?._id === user.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled('videoPreferenceDownload');
-		if (isAutoDownloadEnabled && file.video_type && isTypeSupported(file.video_type)) {
+		if ((isAutoDownloadEnabled || isCurrentUserAuthor) && file.video_type && isTypeSupported(file.video_type)) {
 			await handleDownload();
 			return;
 		}
@@ -120,11 +136,17 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 	};
 
 	const updateVideoCached = (videoUri: string) => {
-		setVideoCached(prev => ({
-			...prev,
-			video_url: videoUri
-		}));
+		setVideoCached({ video_url: videoUri });
 		setCached(true);
+		setLoading(false);
+	};
+
+	const setDecrypted = () => {
+		if (videoCached.e2e === 'pending') {
+			setVideoCached({
+				e2e: 'done'
+			});
+		}
 	};
 
 	const handleGetMediaCache = async () => {
@@ -133,51 +155,42 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			mimeType: file.video_type,
 			urlToCache: video
 		});
-		if (cachedVideoResult?.exists) {
+		const result = !!cachedVideoResult?.exists && videoCached.e2e !== 'pending';
+		if (result) {
 			updateVideoCached(cachedVideoResult.uri);
-			setLoading(false);
 		}
-		return !!cachedVideoResult?.exists;
+		return result;
 	};
 
-	const handleResumeDownload = async () => {
-		try {
-			setLoading(true);
-			const videoUri = await resumeMediaFile({
-				downloadUrl: video
-			});
-			updateVideoCached(videoUri);
-		} catch (e) {
-			setCached(false);
-		} finally {
-			setLoading(false);
-		}
+	const handleResumeDownload = () => {
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
 	};
 
 	const handleDownload = async () => {
-		setLoading(true);
 		try {
 			const videoUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: video,
 				type: 'video',
-				mimeType: file.video_type
+				mimeType: file.video_type,
+				encryption: file.encryption,
+				originalChecksum: file.hashes?.sha256
 			});
+			setDecrypted();
 			updateVideoCached(videoUri);
 		} catch {
 			setCached(false);
-		} finally {
-			setLoading(false);
 		}
 	};
 
 	const onPress = async () => {
-		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment) {
+		if (file.video_type && cached && isTypeSupported(file.video_type) && showAttachment && videoCached.video_url) {
 			showAttachment(videoCached);
 			return;
 		}
 		if (!loading && !cached && file.video_type && isTypeSupported(file.video_type)) {
 			const isVideoCached = await handleGetMediaCache();
-			if (isVideoCached && showAttachment) {
+			if (isVideoCached && showAttachment && videoCached.video_url) {
 				showAttachment(videoCached);
 				return;
 			}
@@ -185,6 +198,7 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 				handleResumeDownload();
 				return;
 			}
+			setLoading(true);
 			handleDownload();
 			return;
 		}
@@ -224,9 +238,8 @@ const Video = ({ file, showAttachment, getCustomEmoji, style, isReply, msg }: IM
 			<Touchable
 				onPress={onPress}
 				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			>
-				<Thumbnail loading={loading} cached={cached} />
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
+				<Thumbnail loading={loading} cached={cached} encrypted={videoCached.e2e === 'pending'} />
 			</Touchable>
 		</>
 	);
