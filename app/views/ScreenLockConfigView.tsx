@@ -185,6 +185,8 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
+					additionalAcessibilityLabel={this.isSelected(value)}
+					additionalAcessibilityLabelCheck
 				/>
 				<List.Separator />
 			</>
@@ -244,6 +246,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
 					translateTitle={false}
+					additionalAcessibilityLabel={this.state.biometry ? I18n.t('Enabled') : I18n.t('Disabled')}
 				/>
 				<List.Separator />
 			</List.Section>
