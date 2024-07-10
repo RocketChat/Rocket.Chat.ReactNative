@@ -68,6 +68,8 @@ interface IListItemContent {
 	alert?: boolean;
 	heightContainer?: number;
 	styleTitle?: StyleProp<TextStyle>;
+	additionalAcessibilityLabel?: string | boolean;
+	additionalAcessibilityLabelCheck?: boolean;
 }
 
 const Content = React.memo(
@@ -85,7 +87,9 @@ const Content = React.memo(
 		showActionIndicator = false,
 		theme,
 		heightContainer,
-		styleTitle
+		styleTitle,
+		additionalAcessibilityLabel,
+		additionalAcessibilityLabelCheck
 	}: IListItemContent) => {
 		const { fontScale } = useDimensions();
 
@@ -97,8 +101,18 @@ const Content = React.memo(
 			if (subtitle) {
 				label = translateSubtitle ? `${label} ${I18n.t(subtitle)}` : `${label} ${subtitle}`;
 			}
+			if (typeof additionalAcessibilityLabel === 'string') {
+				label = `${label} ${additionalAcessibilityLabel}`;
+			}
+			if (typeof additionalAcessibilityLabel === 'boolean') {
+				if (additionalAcessibilityLabelCheck) {
+					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Checked') : I18n.t('Unchecked')}`;
+				} else {
+					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Enabled') : I18n.t('Disabled')}`;
+				}
+			}
 			return label;
-		}, [title, subtitle, translateTitle, translateSubtitle]);
+		}, [title, subtitle, translateTitle, translateSubtitle, additionalAcessibilityLabel]);
 
 		return (
 			<View

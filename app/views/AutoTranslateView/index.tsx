@@ -105,6 +105,8 @@ const AutoTranslateView = (): React.ReactElement => {
 				) : null
 			}
 			translateTitle={false}
+			additionalAcessibilityLabel={selectedLanguage === language}
+			additionalAcessibilityLabelCheck
 		/>
 	));
 
@@ -124,6 +126,7 @@ const AutoTranslateView = (): React.ReactElement => {
 							right={() => (
 								<Switch testID='auto-translate-view-switch' value={enableAutoTranslate} onValueChange={toggleAutoTranslate} />
 							)}
+							additionalAcessibilityLabel={enableAutoTranslate}
 						/>
 						<List.Separator />
 					</>

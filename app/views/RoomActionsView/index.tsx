@@ -831,6 +831,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						testID='room-actions-encrypt'
 						left={() => <List.Icon name='encrypted' />}
 						right={this.renderEncryptedSwitch}
+						additionalAcessibilityLabel={!!room.encrypted}
 					/>
 					<List.Separator />
 				</List.Section>
