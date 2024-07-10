@@ -18,7 +18,6 @@ export async function sendFileMessageV2(
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
-		console.log('sendFileMessage', rid, fileInfo);
 		const { id, token } = user;
 		const headers = {
 			...RocketChatSettings.customHeaders,

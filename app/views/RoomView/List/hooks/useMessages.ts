@@ -111,7 +111,5 @@ export const useMessages = ({
 		subscription.current?.unsubscribe();
 	};
 
-	// console.log(messages[0]);
-
 	return [messages, messagesIds, fetchMessages] as const;
 };
