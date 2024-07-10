@@ -36,8 +36,13 @@ interface IItem {
 }
 
 const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (
-	<Touch style={styles.container} onPress={() => onPress(item.url)} testID={`server-history-${item.url}`}>
-		<View style={styles.content}>
+	<Touch
+		style={styles.container}
+		onPress={() => onPress(item.url)}
+		testID={`server-history-${item.url}`}
+		accessible
+		accessibilityLabel={`${item.url} ${item.username}`}>
+		<View style={styles.content} accessible={false} accessibilityElementsHidden>
 			<Text numberOfLines={1} style={[styles.server, { color: themes[theme].fontDefault }]}>
 				{item.url}
 			</Text>
@@ -45,9 +50,9 @@ const Item = ({ item, theme, onPress, onDelete }: IItem): JSX.Element => (
 				{item.username}
 			</Text>
 		</View>
-		<BorderlessButton onPress={() => onDelete(item)} testID={`server-history-delete-${item.url}`}>
+		<Touch onPress={() => onDelete(item)} testID={`server-history-delete-${item.url}`}>
 			<CustomIcon name='delete' size={24} color={themes[theme].fontSecondaryInfo} />
-		</BorderlessButton>
+		</Touch>
 	</Touch>
 );
 
