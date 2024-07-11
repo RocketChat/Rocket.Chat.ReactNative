@@ -12,8 +12,14 @@ import { useSubscription, useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
-import { getRoomTitle, parseJson } from '../../../lib/methods/helpers';
-import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
+import { getRoomTitle, isTablet, parseJson } from '../../../lib/methods/helpers';
+import {
+	MAX_HEIGHT,
+	MIN_HEIGHT,
+	NO_CANNED_RESPONSES,
+	MARKDOWN_STYLES,
+	COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH
+} from '../constants';
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { emitter } from '../../../lib/methods/helpers/emitter';
@@ -44,6 +50,9 @@ export const ComposerInput = memo(
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (subscription && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
+			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
+				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
+			}
 		}
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
@@ -143,7 +152,8 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection) => {
-			textRef.current = text;
+			const message = text.trim();
+			textRef.current = message;
 			if (inputRef.current) {
 				inputRef.current.setNativeProps({ text });
 			}
@@ -154,7 +164,7 @@ export const ComposerInput = memo(
 					selectionRef.current = selection;
 				}, 50);
 			}
-			setMicOrSend(text.length === 0 ? 'mic' : 'send');
+			setMicOrSend(message.length === 0 ? 'mic' : 'send');
 		};
 
 		const focus = () => {
