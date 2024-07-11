@@ -152,7 +152,8 @@ export const ComposerInput = memo(
 		}));
 
 		const setInput: TSetInput = (text, selection) => {
-			textRef.current = text;
+			const message = text.trim();
+			textRef.current = message;
 			if (inputRef.current) {
 				inputRef.current.setNativeProps({ text });
 			}
@@ -163,7 +164,7 @@ export const ComposerInput = memo(
 					selectionRef.current = selection;
 				}, 50);
 			}
-			setMicOrSend(text.length === 0 ? 'mic' : 'send');
+			setMicOrSend(message.length === 0 ? 'mic' : 'send');
 		};
 
 		const focus = () => {

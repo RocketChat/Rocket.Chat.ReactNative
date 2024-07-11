@@ -18,7 +18,7 @@ import { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
@@ -69,7 +69,7 @@ const RenderContent = ({
 		);
 	}
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.video_url, user.id, user.token, baseUrl);
+		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
 		return (
 			<Video
@@ -83,7 +83,10 @@ const RenderContent = ({
 				style={{ flex: 1 }}
 				useNativeControls
 				onLoad={() => setLoading(false)}
-				onError={console.log}
+				onError={() => {
+					navigation.pop();
+					showErrorAlert(I18n.t('Error_play_video'));
+				}}
 				ref={videoRef}
 			/>
 		);

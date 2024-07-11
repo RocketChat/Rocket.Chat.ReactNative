@@ -1,21 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 
-import Markdown from '../markdown';
-import MessageContext from './Context';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { IAttachment, IUserMessage } from '../../definitions';
-import {
-	TDownloadState,
-	downloadMediaFile,
-	getMediaCache,
-	isDownloadActive,
-	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import AudioPlayer from '../AudioPlayer';
-import { useAudioUrl } from './hooks/useAudioUrl';
-import { getAudioUrlToCache } from '../../lib/methods/getAudioUrl';
+import { emitter } from '../../../../lib/methods/helpers';
+import Markdown from '../../../markdown';
+import MessageContext from '../../Context';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { IAttachment, IUserMessage } from '../../../../definitions';
+import { TDownloadState, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
+import AudioPlayer from '../../../AudioPlayer';
+import { useAudioUrl } from '../../hooks/useAudioUrl';
+import { getAudioUrlToCache } from '../../../../lib/methods/getAudioUrl';
 
 interface IMessageAudioProps {
 	file: IAttachment;
@@ -31,7 +26,6 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 	const [downloadState, setDownloadState] = useState<TDownloadState>('loading');
 	const [fileUri, setFileUri] = useState('');
 	const { baseUrl, user, id, rid } = useContext(MessageContext);
-
 	const audioUrl = useAudioUrl({ audioUrl: file.audio_url });
 
 	const onPlayButtonPress = async () => {
@@ -48,12 +42,15 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 		setDownloadState('loading');
 		try {
 			if (audioUrl) {
-				const audio = await downloadMediaFile({
+				const audioUri = await downloadMediaFile({
+					messageId: id,
 					downloadUrl: getAudioUrlToCache({ token: user.token, userId: user.id, url: audioUrl }),
 					type: 'audio',
-					mimeType: file.audio_type
+					mimeType: file.audio_type,
+					encryption: file.encryption,
+					originalChecksum: file.hashes?.sha256
 				});
-				setFileUri(audio);
+				setFileUri(audioUri);
 				setDownloadState('downloaded');
 			}
 		} catch {
@@ -83,26 +80,16 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			mimeType: file.audio_type,
 			urlToCache: audioUrl
 		});
-		if (cachedAudioResult?.exists) {
+		const result = cachedAudioResult?.exists && file.e2e !== 'pending';
+		if (result) {
 			setFileUri(cachedAudioResult.uri);
 			setDownloadState('downloaded');
 		}
-		return !!cachedAudioResult?.exists;
+		return result;
 	};
 
-	const handleResumeDownload = async () => {
-		try {
-			setDownloadState('loading');
-			if (audioUrl) {
-				const videoUri = await resumeMediaFile({
-					downloadUrl: audioUrl
-				});
-				setFileUri(videoUri);
-				setDownloadState('downloaded');
-			}
-		} catch (e) {
-			setDownloadState('to-download');
-		}
+	const handleResumeDownload = () => {
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
 	};
 
 	useEffect(() => {
@@ -121,6 +108,15 @@ const MessageAudio = ({ file, getCustomEmoji, author, isReply, style, msg }: IMe
 			handleCache();
 		}
 	}, [audioUrl]);
+
+	const downloadMediaListener = useCallback((uri: string) => {
+		setFileUri(uri);
+		setDownloadState('downloaded');
+	}, []);
+
+	useEffect(() => () => {
+		emitter.off(`downloadMedia${id}`, downloadMediaListener);
+	});
 
 	if (!baseUrl) {
 		return null;

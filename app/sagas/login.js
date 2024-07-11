@@ -183,6 +183,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
+		yield put(encryptionInit());
 		yield put(roomsRequest());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
@@ -192,7 +193,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchUsersPresenceFork);
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
-		yield put(encryptionInit());
 		yield fork(fetchUsersRoles);
 
 		setLanguage(user?.language);
