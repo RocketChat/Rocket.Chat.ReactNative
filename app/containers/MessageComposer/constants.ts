@@ -6,13 +6,15 @@ export const IMAGE_PICKER_CONFIG = {
 	cropping: true,
 	avoidEmptySpaceAroundImage: false,
 	freeStyleCropEnabled: true,
-	forceJpg: true
+	forceJpg: true,
+	includeExif: true
 };
 
 export const LIBRARY_PICKER_CONFIG: Options = {
 	multiple: true,
 	compressVideoPreset: 'Passthrough',
-	mediaType: 'any'
+	mediaType: 'any',
+	includeExif: true
 };
 
 export const VIDEO_PICKER_CONFIG: Options = {
@@ -33,3 +35,5 @@ export const MARKDOWN_STYLES: Record<TMarkdownStyle, string> = {
 	code: '`',
 	'code-block': '```'
 };
+
+export const COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH = 30;

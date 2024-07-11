@@ -7,7 +7,7 @@ import User from './User';
 import styles from './styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
-import Attachments from './Attachments';
+import Attachments from './Components/Attachments';
 import Urls from './Urls';
 import Thread from './Thread';
 import Blocks from './Blocks';
