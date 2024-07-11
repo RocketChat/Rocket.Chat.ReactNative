@@ -62,18 +62,18 @@ const RoomItemContainer = React.memo(
 
 		const handleOnLongPress = () => onLongPress && onLongPress(item);
 
-		let accessibilityLabel = '';
-		if (item.unread === 1) {
-			accessibilityLabel = `, ${item.unread} ${I18n.t('alert')}`;
-		} else if (item.unread > 1) {
-			accessibilityLabel = `, ${item.unread} ${I18n.t('alerts')}`;
-		}
-		if (item.userMentions > 0) {
-			accessibilityLabel = `, ${I18n.t('you_were_mentioned')}`;
-		}
-		if (date) {
-			accessibilityLabel = `, ${I18n.t('last_message')} ${date}`;
-		}
+		// let accessibilityLabel = '';
+		// if (item.unread === 1) {
+		// 	accessibilityLabel = `, ${item.unread} ${I18n.t('alert')}`;
+		// } else if (item.unread > 1) {
+		// 	accessibilityLabel = `, ${item.unread} ${I18n.t('alerts')}`;
+		// }
+		// if (item.userMentions > 0) {
+		// 	accessibilityLabel = `, ${I18n.t('you_were_mentioned')}`;
+		// }
+		// if (date) {
+		// 	accessibilityLabel = `, ${I18n.t('last_message')} ${date}`;
+		// }
 
 		return (
 			<RoomItem
@@ -84,7 +84,6 @@ const RoomItemContainer = React.memo(
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
 				date={date}
-				accessibilityLabel={accessibilityLabel}
 				width={width}
 				favorite={item.f}
 				rid={item.rid}
