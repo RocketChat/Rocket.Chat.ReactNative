@@ -9,6 +9,9 @@
 		android:networkSecurityConfig="@xml/network_security_config"
 		tools:replace="android:name"
 	>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notification" />
 		<receiver
 			android:name="chat.rocket.reachout.ReplyBroadcast"
 			android:enabled="true"
