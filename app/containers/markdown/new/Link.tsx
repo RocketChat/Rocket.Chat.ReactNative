@@ -10,10 +10,8 @@ import { useTheme } from '../../../theme';
 import openLink from '../../../lib/methods/helpers/openLink';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import { themes } from '../../../lib/constants';
-import Strike from './Strike';
-import Italic from './Italic';
-import Bold from './Bold';
 import MarkdownContext from './MarkdownContext';
+import { Bold, Italic, Strike } from './components';
 
 interface ILinkProps {
 	value: LinkProps['value'];

@@ -107,15 +107,13 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					borderColor: themes[theme].strokeLight,
 					marginTop: insets.top
 				}
-			]}
-		>
+			]}>
 			<Touchable
 				style={styles.content}
 				onPress={onPress}
 				hitSlop={BUTTON_HIT_SLOP}
 				background={Touchable.SelectableBackgroundBorderless()}
-				testID={`in-app-notification-${text}`}
-			>
+				testID={`in-app-notification-${text}`}>
 				<>
 					<Avatar text={avatar} size={AVATAR_SIZE} type={type} rid={rid} style={styles.avatar} />
 					<View style={styles.inner}>

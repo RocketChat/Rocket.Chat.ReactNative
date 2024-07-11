@@ -1,8 +1,10 @@
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import { random } from '../methods/helpers';
+import { compareServerVersion, random } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
+import { TSubscriptionModel } from '../../definitions';
+import { store } from '../store/auxStore';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -58,3 +60,101 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
 export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+
+export const generateAESCTRKey = () => SimpleCrypto.utils.randomBytes(32);
+
+interface IExportedKey {
+	kty: string;
+	alg: string;
+	k: string;
+	ext: boolean;
+	key_ops: string[];
+}
+
+export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
+	// Web Crypto format of a Secret Key
+	const exportedKey = {
+		// Type of Secret Key
+		kty: 'oct',
+		// Algorithm
+		alg: 'A256CTR',
+		// Base64URI encoded array of bytes
+		k: bufferToB64URI(key),
+		// Specific Web Crypto properties
+		ext: true,
+		key_ops: ['encrypt', 'decrypt']
+	};
+
+	return exportedKey;
+};
+
+export const encryptAESCTR = (path: string, key: string, vector: string): Promise<string> =>
+	SimpleCrypto.AES.encryptFile(path, key, vector);
+
+export const decryptAESCTR = (path: string, key: string, vector: string): Promise<string> =>
+	SimpleCrypto.AES.decryptFile(path, key, vector);
+
+// Missing room encryption key
+export const isMissingRoomE2EEKey = ({
+	encryptionEnabled,
+	roomEncrypted,
+	E2EKey
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+	E2EKey: TSubscriptionModel['E2EKey'];
+}): boolean => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	return (encryptionEnabled && roomEncrypted && !E2EKey) ?? false;
+};
+
+// Encrypted room, but user session is not encrypted
+export const isE2EEDisabledEncryptedRoom = ({
+	encryptionEnabled,
+	roomEncrypted
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+}): boolean => {
+	const serverVersion = store.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	return (!encryptionEnabled && roomEncrypted) ?? false;
+};
+
+export const hasE2EEWarning = ({
+	encryptionEnabled,
+	roomEncrypted,
+	E2EKey
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+	E2EKey: TSubscriptionModel['E2EKey'];
+}): boolean => {
+	if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted, E2EKey })) {
+		return true;
+	}
+	if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted })) {
+		return true;
+	}
+	return false;
+};
+
+// https://github.com/RocketChat/Rocket.Chat/blob/7a57f3452fd26a603948b70af8f728953afee53f/apps/meteor/lib/utils/getFileExtension.ts#L1
+export const getFileExtension = (fileName?: string): string => {
+	if (!fileName) {
+		return 'file';
+	}
+
+	const arr = fileName.split('.');
+
+	if (arr.length < 2 || (arr[0] === '' && arr.length === 2)) {
+		return 'file';
+	}
+
+	return arr.pop()?.toLocaleUpperCase() || 'file';
+};

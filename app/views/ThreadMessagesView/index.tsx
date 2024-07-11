@@ -190,7 +190,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				this.messagesSubscription.unsubscribe();
 			}
 
-			const whereClause = [Q.where('rid', this.rid), Q.experimentalSortBy('tlm', Q.desc)];
+			const whereClause = [Q.where('rid', this.rid), Q.sortBy('tlm', Q.desc)];
 
 			if (searchText?.trim()) {
 				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));

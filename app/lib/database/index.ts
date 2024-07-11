@@ -3,7 +3,7 @@ import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
 import { appGroupPath } from './appGroup';
-import { isOfficial } from '../constants';
+import { isOfficial } from '../constants/environment';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
 import Message from './model/Message';
@@ -39,7 +39,8 @@ export const getDatabase = (database = ''): Database => {
 	const adapter = new SQLiteAdapter({
 		dbName,
 		schema: appSchema,
-		migrations
+		migrations,
+		jsi: true
 	});
 
 	return new Database({
@@ -74,7 +75,8 @@ class DB {
 			adapter: new SQLiteAdapter({
 				dbName: getDatabasePath('default'),
 				schema: serversSchema,
-				migrations: serversMigrations
+				migrations: serversMigrations,
+				jsi: true
 			}),
 			modelClasses: [Server, LoggedUser, ServersHistory]
 		}) as TServerDatabase
@@ -104,7 +106,8 @@ class DB {
 		const adapter = new SQLiteAdapter({
 			dbName,
 			schema: appSchema,
-			migrations
+			migrations,
+			jsi: true
 		});
 
 		this.databases.shareDB = new Database({

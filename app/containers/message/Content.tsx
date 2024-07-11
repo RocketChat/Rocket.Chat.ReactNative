@@ -43,7 +43,10 @@ const Content = React.memo(
 
 		if (props.isEncrypted) {
 			content = (
-				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} accessibilityLabel={I18n.t('Encrypted_message')}>
+				<Text
+					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
+					accessibilityLabel={I18n.t('Encrypted_message')}
+				>
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);

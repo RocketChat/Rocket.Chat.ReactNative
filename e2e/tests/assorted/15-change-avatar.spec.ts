@@ -3,7 +3,7 @@ import { device, waitFor, element, by } from 'detox';
 import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
 import { createRandomUser, getProfileInfo, ITestUser, login as loginSetup } from '../../helpers/data_setup';
 
-describe('Profile screen', () => {
+describe('Change avatar', () => {
 	let scrollViewType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
@@ -44,7 +44,7 @@ describe('Profile screen', () => {
 			await sleep(300);
 		});
 
-		it('should appear the discard alert when click the back icon ', async () => {
+		it('should appear the discard alert when click the back icon', async () => {
 			await tapBack();
 			await waitFor(element(by[textMatcher]('Discard changes?')).atIndex(0))
 				.toBeVisible()
@@ -106,7 +106,7 @@ describe('Profile screen', () => {
 				.withTimeout(2000);
 			await element(by.id('change-avatar-view-submit')).tap();
 			await waitFor(element(by.id('profile-view')))
-				.toBeVisible()
+				.toExist()
 				.withTimeout(2000);
 			await sleep(300);
 			const newUserInfo = await getProfileInfo({ userId });

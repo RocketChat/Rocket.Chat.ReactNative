@@ -63,12 +63,7 @@ const CancelButton = ({ onCancelPress }: { onCancelPress?: () => void }) => {
 const SearchBox = ({ hasCancel, onCancelPress, inputRef, ...props }: ISearchBox): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<View
-			style={[
-				styles.container,
-				{ backgroundColor: isIOS ? themes[theme].surfaceNeutral : themes[theme].surfaceLight }
-			]}
-		>
+		<View style={[styles.container, { backgroundColor: isIOS ? themes[theme].surfaceNeutral : themes[theme].surfaceLight }]}>
 			<View style={[styles.searchBox, { backgroundColor: themes[theme].strokeExtraLight }]}>
 				<CustomIcon name='search' size={14} color={themes[theme].fontSecondaryInfo} />
 				<TextInput

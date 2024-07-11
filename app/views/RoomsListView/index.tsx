@@ -156,7 +156,7 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
+const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
 	length: height,
 	offset: height * index,
 	index
@@ -541,9 +541,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 		if (sortBy === SortBy.Alphabetical) {
-			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
+			defaultWhereClause.push(Q.sortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
 		} else {
-			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+			defaultWhereClause.push(Q.sortBy('room_updated_at', Q.desc));
 		}
 
 		// When we're grouping by something
@@ -557,7 +557,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
-				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
+				.query(...defaultWhereClause, Q.skip(0), Q.take(this.count))
 				.observeWithColumns(['on_hold']);
 		}
 
@@ -851,6 +851,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			// @ts-ignore
 			navigation.navigate(screen);
 		}
 	};

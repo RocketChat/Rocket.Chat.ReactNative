@@ -11,7 +11,7 @@ interface IInput {
 	children?: JSX.Element;
 	onPress: () => void;
 	inputStyle?: object;
-	disabled?: boolean | null;
+	disabled?: boolean;
 	placeholder?: string;
 	loading?: boolean;
 	innerInputStyle?: object;
