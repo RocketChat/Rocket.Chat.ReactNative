@@ -5,7 +5,6 @@ import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 
 const Translated = memo(({ isTranslated }: { isTranslated: boolean }) => {
-
 	if (!isTranslated) {
 		return null;
 	}

@@ -124,7 +124,7 @@ jest.mock('../../../app-supportedversions.json', () => ({
 	]
 }));
 
-jest.useFakeTimers('modern');
+jest.useFakeTimers();
 jest.setSystemTime(new Date(TODAY));
 
 describe('checkSupportedVersions', () => {

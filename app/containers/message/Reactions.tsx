@@ -55,14 +55,16 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			onLongPress={onReactionLongPress}
 			key={reaction.emoji}
 			testID={`message-reaction-${reaction.emoji}`}
-			style={[
-				styles.reactionButton,
-				{ backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }
-			]}
+			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
 			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			hitSlop={BUTTON_HIT_SLOP}
 		>
-			<View style={[styles.reactionContainer, { borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight }]}>
+			<View
+				style={[
+					styles.reactionContainer,
+					{ borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight }
+				]}
+			>
 				<Emoji
 					content={reaction.emoji}
 					standardEmojiStyle={styles.reactionEmoji}

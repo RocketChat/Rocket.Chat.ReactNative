@@ -1,8 +1,14 @@
 defaults: &defaults
   working_directory: ~/repo
 
+android-executor: &android-executor
+  executor:
+    name: android/android-machine
+    resource-class: large
+    tag: 2024.01.1
+
 orbs:
-  android: circleci/android@2.1.2
+  android: circleci/android@2.5.0
 
 macos: &macos
   macos:
@@ -87,7 +93,6 @@ commands:
       - run:
           name: Install ruby
           command: |
-            echo "ruby-2.7.7" > ~/.ruby-version
             if [ -d ~/.rbenv/versions/2.7.7 ]; then
               echo "Ruby already installed"
             else
@@ -139,11 +144,11 @@ commands:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
@@ -188,23 +193,15 @@ commands:
           working_directory: android
 
       - run:
-          name: Upload sourcemaps to Bugsnag
+          name: Upload sourcemaps/NDK symbols to Bugsnag
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              npx bugsnag-source-maps upload-react-native \
-                --api-key=$BUGSNAG_KEY_OFFICIAL \
-                --app-version-code=$CIRCLE_BUILD_NUM \
-                --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
-                --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
+              yarn bugsnag:upload-android --variant officialPlayRelease
+              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialPlayRelease/app-official-play-release.aab
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              npx bugsnag-source-maps upload-react-native \
-                --api-key=$BUGSNAG_KEY \
-                --app-version-code=$CIRCLE_BUILD_NUM \
-                --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
-                --bundle android/app/build/generated/assets/react/experimentalPlay/release/app.bundle
+              yarn bugsnag:upload-android --variant experimentalPlayRelease
+              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab
             fi
 
       - store_artifacts:
@@ -384,7 +381,7 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     resource_class: large
     environment:
       CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
@@ -416,35 +413,29 @@ jobs:
   # Android builds
   android-build-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2023.11-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
     # Android automatic builds
   android-automatic-build-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2023.11-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
   android-build-official:
     <<: *defaults
-    docker:
-      - image: cimg/android:2023.11-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
@@ -483,10 +474,7 @@ jobs:
 
   e2e-build-android:
     <<: *defaults
-    executor:
-      name: android/android-machine
-      resource-class: large
-      tag: 2022.12.1
+    <<: *android-executor
     environment:
       <<: *android-env
     steps:
@@ -499,11 +487,11 @@ jobs:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
             echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
             echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
@@ -532,8 +520,8 @@ jobs:
     <<: *defaults
     executor:
       name: android/android-machine
-      resource-class: large
-      tag: 2022.12.1
+      resource-class: xlarge
+      tag: 2024.01.1
     parallelism: 4
     steps:
       - checkout

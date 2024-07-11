@@ -8,7 +8,8 @@ import {
 	TTextMatcher,
 	tapBack,
 	navigateToRoom,
-	mockMessage
+	mockMessage,
+	checkRoomTitle
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
@@ -70,13 +71,19 @@ describe('Forward a message with another user', () => {
 					.toExist()
 					.withTimeout(10000);
 				await element(by.id(`multi-select-item-${otherUser.username.toLowerCase()}`)).tap();
+				await sleep(500);
 				await element(by.id('multi-select-search')).tapReturnKey();
-				await sleep(300);
+				await sleep(500);
+				await waitFor(element(by.id('multi-select-search')))
+					.not.toBeVisible()
+					.withTimeout(10000);
 				await waitFor(element(by.id('forward-message-view-send')))
 					.toBeVisible()
 					.withTimeout(10000);
+				await sleep(300);
 				await element(by.id('forward-message-view-send')).tap();
 				await sleep(300);
+				await checkRoomTitle(room);
 			});
 			it('should go to otherUser DM and verify if exist both messages', async () => {
 				await tapBack();

@@ -1,0 +1,144 @@
+diff --git a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
+index ac04274..f2cfd00 100644
+--- a/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
++++ b/node_modules/react-native-notifications/lib/android/app/src/main/java/com/wix/reactnativenotifications/core/notification/PushNotification.java
+@@ -30,7 +30,7 @@ public class PushNotification implements IPushNotification {
+     final protected AppLifecycleFacade mAppLifecycleFacade;
+     final protected AppLaunchHelper mAppLaunchHelper;
+     final protected JsIOHelper mJsIOHelper;
+-    final protected PushNotificationProps mNotificationProps;
++    protected PushNotificationProps mNotificationProps;
+     final protected AppVisibilityListener mAppVisibilityListener = new AppVisibilityListener() {
+         @Override
+         public void onAppVisible() {
+diff --git a/node_modules/react-native-notifications/lib/dist/Notifications.d.ts b/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
+index 6e49fd4..5fe9515 100644
+--- a/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
++++ b/node_modules/react-native-notifications/lib/dist/Notifications.d.ts
+@@ -32,7 +32,7 @@ export declare class NotificationsRoot {
+     /**
+      * setCategories
+      */
+-    setCategories(categories: [NotificationCategory?]): void;
++    setCategories(categories: NotificationCategory[]): void;
+     /**
+      * cancelLocalNotification
+     */
+diff --git a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
+index 8b2c269..8667351 100644
+--- a/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
++++ b/node_modules/react-native-notifications/lib/ios/RCTConvert+RNNotifications.h
+@@ -1,5 +1,5 @@
+ #import <React/RCTConvert.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RCTConvert (UIMutableUserNotificationAction)
+ + (UIMutableUserNotificationAction *)UIMutableUserNotificationAction:(id)json;
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h
+index 4bc5292..71df0bc 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.h
+@@ -4,7 +4,7 @@ typedef void (^RCTPromiseResolveBlock)(id result);
+ typedef void (^RCTResponseSenderBlock)(NSArray *response);
+ typedef void (^RCTPromiseRejectBlock)(NSString *code, NSString *message, NSError *error);
+ 
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>
+ 
+ @interface RNNotificationCenter : NSObject
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
+index afd5c73..ec4dd85 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenter.m
+@@ -48,14 +48,15 @@
+ }
+ 
+ - (void)setCategories:(NSArray *)json {
+-    NSMutableSet<UNNotificationCategory *>* categories = nil;
++    NSMutableSet<UNNotificationCategory *>* categories = [NSMutableSet new];
+     
+-    if ([json count] > 0) {
+-        categories = [NSMutableSet new];
+-        for (NSDictionary* categoryJson in json) {
+-            [categories addObject:[RCTConvert UNMutableUserNotificationCategory:categoryJson]];
++    for (NSDictionary* categoryJson in json) {
++        UNNotificationCategory *category = [RCTConvert UNMutableUserNotificationCategory:categoryJson];
++        if (category) {
++            [categories addObject:category];
+         }
+     }
++
+     [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:categories];
+ }
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationCenterListener.h b/node_modules/react-native-notifications/lib/ios/RNNotificationCenterListener.h
+index 77a67dd..eaf0043 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationCenterListener.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationCenterListener.h
+@@ -1,5 +1,5 @@
+ #import <Foundation/Foundation.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ #import "RNNotificationEventHandler.h"
+ 
+ @interface RNNotificationCenterListener : NSObject <UNUserNotificationCenterDelegate>
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h b/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h
+index a07c6e9..8e3ca6a 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationEventHandler.h
+@@ -1,5 +1,5 @@
+ #import <Foundation/Foundation.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ #import "RNNotificationsStore.h"
+ #import "RNEventEmitter.h"
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h
+index 7aa2bfb..c1c019c 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.h
+@@ -1,5 +1,5 @@
+ #import <Foundation/Foundation.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RNNotificationParser : NSObject
+ 
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m
+index 62f3043..840acda 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationParser.m
+@@ -12,7 +12,18 @@
+ }
+ 
+ + (NSDictionary *)parseNotificationResponse:(UNNotificationResponse *)response {
+-    NSDictionary* responseDict = @{@"notification": [RCTConvert UNNotificationPayload:response.notification], @"identifier": response.notification.request.identifier, @"action": [self parseNotificationResponseAction:response]};
++    NSMutableDictionary *notificationPayload = [[RCTConvert UNNotificationPayload:response.notification] mutableCopy];
++
++    NSDictionary *responseAction = [self parseNotificationResponseAction:response];
++    
++    if (responseAction != nil) {
++        [notificationPayload setObject:responseAction forKey:@"action"];
++    }
++    
++    NSDictionary *responseDict = @{
++        @"notification": [notificationPayload copy],
++        @"identifier": response.notification.request.identifier
++    };
+     
+     return responseDict;
+ }
+diff --git a/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h b/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
+index 4f8a171..7e4f9ca 100644
+--- a/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
++++ b/node_modules/react-native-notifications/lib/ios/RNNotificationsStore.h
+@@ -1,6 +1,6 @@
+ #import <Foundation/Foundation.h>
+ #import <UIKit/UIKit.h>
+-@import UserNotifications;
++#import <UserNotifications/UserNotifications.h>  
+ 
+ @interface RNNotificationsStore : NSObject
+ 

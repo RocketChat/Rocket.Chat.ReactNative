@@ -1,6 +1,3 @@
-// https://github.com/facebook/react/issues/20756#issuecomment-780927519
-import 'react-16-node-hanging-test-fix';
-
 import React from 'react';
 import '@testing-library/react-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
@@ -53,7 +50,11 @@ jest.mock('./app/lib/methods/search', () => ({
 	search: () => []
 }));
 
-jest.mock('./app/lib/database', () => jest.fn(() => null));
+jest.mock('./app/lib/database', () => ({
+	active: {
+		get: jest.fn()
+	}
+}));
 
 jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
 
@@ -105,7 +106,7 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
-jest.mock('@gorhom/bottom-sheet', () => {
+jest.mock('@discord/bottom-sheet', () => {
 	const react = require('react-native');
 	return {
 		__esModule: true,

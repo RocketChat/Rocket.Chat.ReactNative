@@ -92,8 +92,7 @@ const Content = React.memo(
 		return (
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
-				testID={testID}
-			>
+				testID={testID}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
@@ -101,7 +100,12 @@ const Content = React.memo(
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
-							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].buttonBackgroundDangerDefault} style={styles.alertIcon} />
+							<CustomIcon
+								name='info'
+								size={ICON_SIZE}
+								color={themes[theme].buttonBackgroundDangerDefault}
+								style={styles.alertIcon}
+							/>
 						) : null}
 					</View>
 					{subtitle ? (
@@ -138,8 +142,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 		onPress={() => onPress(props.title)}
 		style={{ backgroundColor: backgroundColor || themes[props.theme].surfaceRoom }}
 		underlayColor={underlayColor}
-		enabled={!props.disabled}
-	>
+		enabled={!props.disabled}>
 		<Content {...props} />
 	</Touch>
 ));

@@ -74,6 +74,8 @@ export default class Thread extends Model {
 
 	@json('translations', sanitizer) translations;
 
+	@json('content', sanitizer) content;
+
 	@field('e2e') e2e;
 
 	@field('draft_message') draftMessage;
@@ -112,7 +114,8 @@ export default class Thread extends Model {
 			autoTranslate: this.autoTranslate,
 			translations: this.translations,
 			e2e: this.e2e,
-			draftMessage: this.draftMessage
+			draftMessage: this.draftMessage,
+			content: this.content
 		};
 	}
 }

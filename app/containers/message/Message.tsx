@@ -7,7 +7,7 @@ import User from './User';
 import styles from './styles';
 import RepliedThread from './RepliedThread';
 import MessageAvatar from './MessageAvatar';
-import Attachments from './Attachments';
+import Attachments from './Components/Attachments';
 import Urls from './Urls';
 import Thread from './Thread';
 import Blocks from './Blocks';
@@ -152,8 +152,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onLongPress={onLongPress}
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}
-		>
+			style={{ backgroundColor }}>
 			<View>
 				<Message {...props} />
 			</View>
