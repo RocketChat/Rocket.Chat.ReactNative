@@ -165,8 +165,7 @@ const ChangeAvatarView = () => {
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
 					testID='change-avatar-view-list'
-					{...scrollPersistTaps}
-				>
+					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
 						{deletingRoomAvatar ? (
 							<AvatarPresentational
