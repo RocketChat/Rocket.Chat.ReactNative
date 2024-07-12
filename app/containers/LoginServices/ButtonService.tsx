@@ -7,7 +7,7 @@ import { CustomIcon } from '../CustomIcon';
 import { IButtonService } from './interfaces';
 import styles from './styles';
 
-const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, label }: IButtonService) => {
+const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, accessibilityLabel }: IButtonService) => {
 	const { colors } = useTheme();
 
 	return (
@@ -18,7 +18,7 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 			activeOpacity={0.5}
 			underlayColor={colors.fontWhite}
 			accessible
-			accessibilityLabel={label}
+			accessibilityLabel={accessibilityLabel}
 		>
 			<View style={styles.serviceButtonContainer}>
 				{authType === 'oauth' || authType === 'apple' ? <CustomIcon name={icon} size={24} style={styles.serviceIcon} /> : null}
