@@ -14,6 +14,7 @@ import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
+import { capitalize } from '../../lib/methods/helpers';
 
 const RoomItem = ({
 	rid,
@@ -60,7 +61,7 @@ const RoomItem = ({
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
 	);
-	const accessibilityLabel = useMemo(() => `${name} ${memoizedMessage}`, [name, memoizedMessage]);
+	const accessibilityLabel = useMemo(() => `${name} ${capitalize(date)} ${memoizedMessage}`, [name, date, memoizedMessage]);
 	return (
 		<Touchable
 			onPress={onPress}
