@@ -66,5 +66,5 @@ export interface IButtonService {
 	backgroundColor: string;
 	buttonText: ReactElement;
 	icon: TIconsName;
-	label: string;
+	accessibilityLabel?: string;
 }

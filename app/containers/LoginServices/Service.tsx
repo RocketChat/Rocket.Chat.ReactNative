@@ -96,7 +96,7 @@ const Service = React.memo(
 				icon={icon}
 				name={service.name}
 				authType={service.authType}
-				label={`${I18n.t('Continue_with')} ${modifiedName.current}`}
+				accessibilityLabel={`${I18n.t('Continue_with')} ${modifiedName.current}`}
 			/>
 		);
 	}
