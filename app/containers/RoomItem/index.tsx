@@ -1,7 +1,6 @@
 import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
-import I18n from '../../i18n';
 import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
 import { IRoomItemContainerProps } from './interfaces';

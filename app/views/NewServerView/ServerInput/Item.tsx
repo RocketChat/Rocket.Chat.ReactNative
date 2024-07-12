@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { themes } from '../../../lib/constants';
 import { CustomIcon } from '../../../containers/CustomIcon';
