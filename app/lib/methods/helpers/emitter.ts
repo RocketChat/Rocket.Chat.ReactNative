@@ -2,7 +2,11 @@ import mitt from 'mitt';
 
 import { TMarkdownStyle } from '../../../containers/MessageComposer/interfaces';
 
-export type TEmitterEvents = {
+type TDynamicMediaDownloadEvents = {
+	[key: `downloadMedia${string}`]: string;
+};
+
+export type TEmitterEvents = TDynamicMediaDownloadEvents & {
 	toolbarMention: undefined;
 	addMarkdown: {
 		style: TMarkdownStyle;

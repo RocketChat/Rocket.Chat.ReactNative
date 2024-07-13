@@ -7697,7 +7697,7 @@ expo-document-picker@11.10.1:
   resolved "https://registry.yarnpkg.com/expo-document-picker/-/expo-document-picker-11.10.1.tgz#03394d77842a2fd7cb0a784a60098ee1ddd1012e"
   integrity sha512-A1MiLfyXQ+KxanRO5lYxYQy3ryV+25JHe5Ai/BLV+FJU0QXByUF+Y/dn35WVPx5gpdZXC8UJ4ejg5SKSoeconw==
 
-expo-file-system@^16.0.8, expo-file-system@~16.0.0, expo-file-system@~16.0.8:
+expo-file-system@16.0.8, expo-file-system@~16.0.0, expo-file-system@~16.0.8:
   version "16.0.8"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-16.0.8.tgz#13c79a8e06e42a8e76e9297df6920597a011d989"
   integrity sha512-yDbVT0TUKd7ewQjaY5THum2VRFx2n/biskGhkUmLh3ai21xjIVtaeIzHXyv9ir537eVgt4ReqDNWi7jcXjdUcA==
@@ -11878,7 +11878,7 @@ react-devtools-core@^4.27.7:
     shell-quote "^1.6.1"
     ws "^7"
 
-react-dom@^18.2.0:
+react-dom@18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
   integrity sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g==
@@ -12182,9 +12182,9 @@ react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
-react-native-simple-crypto@RocketChat/react-native-simple-crypto#0.5.2:
-  version "0.5.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/6fb730b028c70eab37a4d4b6bcadfd23721a97c0"
+react-native-simple-crypto@RocketChat/react-native-simple-crypto#feat.file-encryption:
+  version "0.6.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/476f0d2750abc1a9e74879ac3bacc7bec753c476"
   dependencies:
     base64-js "^1.3.0"
     hex-lite "^1.5.0"

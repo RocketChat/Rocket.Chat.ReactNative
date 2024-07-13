@@ -1,0 +1,293 @@
+diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTCryptoPackage.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTCryptoPackage.java
+index 2ee3cb4..1288fd6 100644
+--- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTCryptoPackage.java
++++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/RCTCryptoPackage.java
+@@ -21,7 +21,8 @@ public class RCTCryptoPackage implements ReactPackage {
+                 new RCTPbkdf2(reactContext),
+                 new RCTRsa(reactContext),
+                 new RCTRsaUtils(reactContext),
+-                new RandomBytesModule(reactContext)
++                new RandomBytesModule(reactContext),
++                new Util(reactContext)
+         );
+     }
+ 
+diff --git a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
+index caba3b5..32d480d 100644
+--- a/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
++++ b/node_modules/react-native-simple-crypto/android/src/main/java/com/pedrouid/crypto/Util.java
+@@ -3,11 +3,37 @@ package com.pedrouid.crypto;
+ import android.content.Context;
+ import android.net.Uri;
+ 
++import com.facebook.react.bridge.Promise;
++import com.facebook.react.bridge.ReactApplicationContext;
++import com.facebook.react.bridge.ReactContextBaseJavaModule;
++import com.facebook.react.bridge.ReactMethod;
++
+ import java.io.File;
+ import java.io.FileInputStream;
+ import java.io.InputStream;
++import java.security.MessageDigest;
++
++public class Util extends ReactContextBaseJavaModule {
++
++     public Util(ReactApplicationContext reactContext) {
++        super(reactContext);
++    }
++
++    @Override
++    public String getName() {
++        return "Shared";
++    }
++
++    @ReactMethod
++    public void calculateFileChecksum(String filePath, Promise promise) {
++        try {
++            String result = calculateFileChecksum(getReactApplicationContext(),filePath );
++            promise.resolve(result);
++        } catch (Exception e) {
++            promise.reject("-1", e.getMessage());
++        }
++    }
+ 
+-public class Util {
+     public static String bytesToHex(byte[] bytes) {
+         final char[] hexArray = "0123456789abcdef".toCharArray();
+         char[] hexChars = new char[bytes.length * 2];
+@@ -39,4 +65,17 @@ public class Util {
+             return new FileInputStream(new File(inputFile)); // Handle plain file paths
+         }
+     }
++
++    public static String calculateFileChecksum(Context context, String filePath) throws Exception {
++        InputStream inputStream = getInputStream(context, filePath);
++        MessageDigest digest = MessageDigest.getInstance("SHA-256");
++        byte[] buffer = new byte[4096];
++        int bytesRead;
++        while ((bytesRead = inputStream.read(buffer)) != -1) {
++            digest.update(buffer, 0, bytesRead);
++        }
++        inputStream.close();
++        byte[] hash = digest.digest();
++        return bytesToHex(hash);
++    }
+ }
+diff --git a/node_modules/react-native-simple-crypto/index.d.ts b/node_modules/react-native-simple-crypto/index.d.ts
+index 079c397..852c5c9 100644
+--- a/node_modules/react-native-simple-crypto/index.d.ts
++++ b/node_modules/react-native-simple-crypto/index.d.ts
+@@ -77,6 +77,7 @@ declare module "react-native-simple-crypto" {
+ 
+   export namespace utils {
+     export function randomBytes(bytes: number): Promise<ArrayBuffer>;
++    export function calculateFileChecksum(filePath: string): Promise<string>;
+     export function convertArrayBufferToUtf8(input: ArrayBuffer): string;
+     export function convertUtf8ToArrayBuffer(input: string): ArrayBuffer;
+     export function convertArrayBufferToBase64(input: ArrayBuffer): string;
+diff --git a/node_modules/react-native-simple-crypto/index.js b/node_modules/react-native-simple-crypto/index.js
+index 6d4ed10..fb39cc6 100644
+--- a/node_modules/react-native-simple-crypto/index.js
++++ b/node_modules/react-native-simple-crypto/index.js
+@@ -69,6 +69,10 @@ async function randomBytes(length) {
+   return convertBase64ToArrayBuffer(await NativeModules.RNRandomBytes.randomBytes(length));
+ }
+ 
++async function calculateFileChecksum(filePath) {
++  return NativeModules.Shared.calculateFileChecksum(filePath);
++}
++
+ async function SHAWrapper(data, algorithm) {
+   if (typeof data === 'string') {
+     return NativeModules.Sha.shaUtf8(data, algorithm);
+@@ -148,6 +152,7 @@ const RSA = {
+ 
+ const utils = {
+   randomBytes,
++  calculateFileChecksum,
+   convertArrayBufferToUtf8,
+   convertUtf8ToArrayBuffer,
+   convertArrayBufferToBase64,
+diff --git a/node_modules/react-native-simple-crypto/ios/.DS_Store b/node_modules/react-native-simple-crypto/ios/.DS_Store
+new file mode 100644
+index 0000000..371b069
+Binary files /dev/null and b/node_modules/react-native-simple-crypto/ios/.DS_Store differ
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTShared.h b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTShared.h
+new file mode 100644
+index 0000000..55b52d1
+--- /dev/null
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTShared.h
+@@ -0,0 +1,5 @@
++#import <React/RCTBridgeModule.h>
++
++@interface RCTShared : NSObject <RCTBridgeModule>
++
++@end
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTShared.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTShared.m
+new file mode 100644
+index 0000000..c011235
+--- /dev/null
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/RCTShared.m
+@@ -0,0 +1,18 @@
++#import "RCTShared.h"
++#import "Shared.h"
++
++@implementation RCTShared
++
++RCT_EXPORT_MODULE()
++ 
++RCT_EXPORT_METHOD(calculateFileChecksum:(NSString *)filePath resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject) {
++    NSError *error = nil;
++    NSString *data = [Shared calculateFileChecksum:filePath];
++    if (data == nil) {
++        reject(@"shared_checksum_fail", @"Checksum error", error);
++    } else {
++        resolve(data);
++    }
++}
++
++@end
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
+index 067d962..b24e4dd 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Aes.m
+@@ -55,7 +55,7 @@
+ 
+     NSString *normalizedFilePath = [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+     NSString *outputFileName = [@"processed_" stringByAppendingString:[normalizedFilePath lastPathComponent]];
+-    NSString *outputFilePath = [[[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName] stringByDeletingPathExtension];
++    NSString *outputFilePath = [[normalizedFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:outputFileName];
+     NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:normalizedFilePath];
+     NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:outputFilePath append:NO];
+     [inputStream open];
+@@ -67,6 +67,8 @@
+     CCCryptorStatus status = CCCryptorCreateWithMode(operation, kCCModeCTR, kCCAlgorithmAES, ccNoPadding, ivData.bytes, keyData.bytes, keyData.length, NULL, 0, 0, kCCModeOptionCTR_BE, &cryptor);
+     if (status != kCCSuccess) {
+         NSLog(@"Failed to create cryptor: %d", status);
++        [inputStream close];
++        [outputStream close];
+         return nil;
+     }
+ 
+@@ -79,8 +81,25 @@
+                 [outputStream write:buffer maxLength:dataOutMoved];
+             } else {
+                 NSLog(@"Cryptor update failed: %d", status);
++                return nil;
+                 break;
+             }
++        } else if (bytesRead < 0) {
++            NSLog(@"Input stream read error");
++            status = kCCDecodeError;
++            return nil;
++            break;
++        }
++    }
++
++    if (status == kCCSuccess) {
++        size_t finalBytesOut;
++        status = CCCryptorFinal(cryptor, buffer, bufferSize, &finalBytesOut);
++        if (status == kCCSuccess) {
++            [outputStream write:buffer maxLength:finalBytesOut];
++        } else {
++            NSLog(@"Cryptor final failed: %d", status);
++            return nil;
+         }
+     }
+ 
+@@ -89,15 +108,20 @@
+     [outputStream close];
+ 
+     if (status == kCCSuccess) {
+-        if (operation == kCCDecrypt) {
+-            NSFileManager *fileManager = [NSFileManager defaultManager];
+-            // Overwrite the input file with the decrypted file
+-            [fileManager removeItemAtPath:normalizedFilePath error:nil];
+-            [fileManager moveItemAtPath:outputFilePath toPath:normalizedFilePath error:nil];
+-            return [NSString stringWithFormat:@"file://%@", normalizedFilePath];
+-        } else {
+-            return [NSString stringWithFormat:@"file://%@", outputFilePath];
++        NSURL *originalFileURL = [NSURL fileURLWithPath:normalizedFilePath];
++        NSURL *outputFileURL = [NSURL fileURLWithPath:outputFilePath];
++        NSError *error = nil;
++        [[NSFileManager defaultManager] replaceItemAtURL:originalFileURL
++                                          withItemAtURL:outputFileURL
++                                         backupItemName:nil
++                                                options:NSFileManagerItemReplacementUsingNewMetadataOnly
++                                       resultingItemURL:nil
++                                                  error:&error];
++        if (error) {
++            NSLog(@"Failed to replace original file: %@", error);
++            return nil;
+         }
++        return [NSString stringWithFormat:@"file://%@", normalizedFilePath];
+     } else {
+         // Clean up temp file in case of failure
+         [[NSFileManager defaultManager] removeItemAtPath:outputFilePath error:nil];
+@@ -105,7 +129,6 @@
+     }
+ }
+ 
+-
+ + (NSString *)encryptFile:(NSString *)filePath key:(NSString *)key iv:(NSString *)iv {
+     return [self processFile:filePath operation:kCCEncrypt key:key iv:iv];
+ }
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h
+index 398444b..0e8e078 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.h
+@@ -4,6 +4,5 @@
+ + (NSString *) toHex: (NSData *)nsdata;
+ + (NSData *) fromHex: (NSString *)string;
+ + (NSString *)base64FromBase64URL:(NSString *)base64URL;
+-+ (NSString *)normalizeFilePath:(NSString *)filePath;
+-+ (NSString *)restoreFilePathSchemeIfNeeded:(NSString *)filePath originalPath:(NSString *)originalPath;
+++ (NSString *)calculateFileChecksum:(NSString *)filePath;
+ @end
+diff --git a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m
+index e97098b..a52d03b 100644
+--- a/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m
++++ b/node_modules/react-native-simple-crypto/ios/RCTCrypto/lib/Shared.m
+@@ -41,4 +41,42 @@
+     return base64;
+ }
+ 
+++ (NSString *)calculateFileChecksum:(NSString *)filePath {
++    NSString *normalizedFilePath = [filePath stringByReplacingOccurrencesOfString:@"file://" withString:@""];
++    NSInputStream *inputStream = [NSInputStream inputStreamWithFileAtPath:normalizedFilePath];
++    [inputStream open];
++
++    if (!inputStream) {
++        NSLog(@"Failed to open file: %@", filePath);
++        return nil;
++    }
++
++    CC_SHA256_CTX sha256;
++    CC_SHA256_Init(&sha256);
++
++    uint8_t buffer[4096];
++    NSInteger bytesRead = 0;
++
++    while ((bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)]) > 0) {
++        CC_SHA256_Update(&sha256, buffer, (CC_LONG)bytesRead);
++    }
++
++    [inputStream close];
++
++    if (bytesRead < 0) {
++        NSLog(@"File read error: %@", filePath);
++        return nil;
++    }
++
++    unsigned char hash[CC_SHA256_DIGEST_LENGTH];
++    CC_SHA256_Final(hash, &sha256);
++
++    NSMutableString *checksum = [NSMutableString stringWithCapacity:CC_SHA256_DIGEST_LENGTH * 2];
++    for (int i = 0; i < CC_SHA256_DIGEST_LENGTH; i++) {
++        [checksum appendFormat:@"%02x", hash[i]];
++    }
++
++    return checksum;
++}
++
+ @end

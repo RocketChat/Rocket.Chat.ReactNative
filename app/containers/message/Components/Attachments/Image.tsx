@@ -1,25 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { IAttachment, IUserMessage } from '../../definitions';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { fetchAutoDownloadEnabled } from '../../lib/methods/autoDownloadPreference';
-import {
-	cancelDownload,
-	downloadMediaFile,
-	getMediaCache,
-	isDownloadActive,
-	resumeMediaFile
-} from '../../lib/methods/handleMediaDownload';
-import { formatAttachmentUrl } from '../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../theme';
-import Markdown from '../markdown';
-import BlurComponent from './Components/OverlayComponent';
-import MessageContext from './Context';
-import Touchable from './Touchable';
-import styles from './styles';
-import { isImageBase64 } from '../../lib/methods';
+import { emitter } from '../../../../lib/methods/helpers';
+import { IAttachment, IUserMessage } from '../../../../definitions';
+import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
+import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
+import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
+import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../theme';
+import Markdown from '../../../markdown';
+import BlurComponent from '../OverlayComponent';
+import MessageContext from '../../Context';
+import Touchable from '../../Touchable';
+import styles from '../../styles';
+import { isImageBase64 } from '../../../../lib/methods';
+import { isValidUrl } from '../../../../lib/methods/helpers/isValidUrl';
+import { useFile } from '../../hooks/useFile';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -45,28 +42,44 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 			disabled={disabled}
 			onPress={onPress}
 			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}
-		>
+			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			{children}
 		</Touchable>
 	);
 });
 
-export const MessageImage = React.memo(({ imgUri, cached, loading }: { imgUri: string; cached: boolean; loading: boolean }) => {
-	const { colors } = useTheme();
-	return (
-		<>
-			<FastImage
-				style={[styles.image, { borderColor: colors.strokeLight }]}
-				source={{ uri: encodeURI(imgUri) }}
-				resizeMode={FastImage.resizeMode.cover}
-			/>
-			{!cached ? (
-				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
-			) : null}
-		</>
-	);
-});
+export const MessageImage = React.memo(
+	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
+		const { colors } = useTheme();
+		const valid = isValidUrl(imgUri);
+
+		if (encrypted && !loading && cached) {
+			return (
+				<>
+					<View style={styles.image} />
+					<BlurComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
+				</>
+			);
+		}
+
+		return (
+			<>
+				{valid ? (
+					<FastImage
+						style={[styles.image, { borderColor: colors.strokeLight }]}
+						source={{ uri: encodeURI(imgUri) }}
+						resizeMode={FastImage.resizeMode.cover}
+					/>
+				) : (
+					<View style={styles.image} />
+				)}
+				{!cached ? (
+					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+				) : null}
+			</>
+		);
+	}
+);
 
 const ImageContainer = ({
 	file,
@@ -78,11 +91,11 @@ const ImageContainer = ({
 	author,
 	msg
 }: IMessageImage): React.ReactElement | null => {
-	const [imageCached, setImageCached] = useState(file);
+	const { id, baseUrl, user } = useContext(MessageContext);
+	const [imageCached, setImageCached] = useFile(file, id);
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const { theme } = useTheme();
-	const { baseUrl, user } = useContext(MessageContext);
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
 	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
@@ -100,8 +113,8 @@ const ImageContainer = ({
 					handleResumeDownload();
 					return;
 				}
-				setLoading(false);
 				await handleAutoDownload();
+				setLoading(false);
 			}
 		};
 		if (isImageBase64(imgUrlToCache)) {
@@ -110,6 +123,14 @@ const ImageContainer = ({
 		} else {
 			handleCache();
 		}
+
+		return () => {
+			emitter.off(`downloadMedia${id}`, downloadMediaListener);
+		};
+	}, []);
+
+	const downloadMediaListener = useCallback((imageUri: string) => {
+		updateImageCached(imageUri);
 	}, []);
 
 	if (!img) {
@@ -125,11 +146,18 @@ const ImageContainer = ({
 	};
 
 	const updateImageCached = (imgUri: string) => {
-		setImageCached(prev => ({
-			...prev,
+		setImageCached({
 			title_link: imgUri
-		}));
+		});
 		setCached(true);
+	};
+
+	const setDecrypted = () => {
+		if (imageCached.e2e === 'pending') {
+			setImageCached({
+				e2e: 'done'
+			});
+		}
 	};
 
 	const handleGetMediaCache = async () => {
@@ -138,39 +166,31 @@ const ImageContainer = ({
 			mimeType: imageCached.image_type,
 			urlToCache: imgUrlToCache
 		});
-		if (cachedImageResult?.exists) {
+		const result = !!cachedImageResult?.exists && imageCached.e2e !== 'pending';
+		if (result) {
 			updateImageCached(cachedImageResult.uri);
-			setLoading(false);
 		}
-		return !!cachedImageResult?.exists;
+		return result;
 	};
 
-	const handleResumeDownload = async () => {
-		try {
-			setLoading(true);
-			const imageUri = await resumeMediaFile({
-				downloadUrl: imgUrlToCache
-			});
-			updateImageCached(imageUri);
-		} catch (e) {
-			setCached(false);
-		} finally {
-			setLoading(false);
-		}
+	const handleResumeDownload = () => {
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
 	};
 
 	const handleDownload = async () => {
 		try {
-			setLoading(true);
 			const imageUri = await downloadMediaFile({
+				messageId: id,
 				downloadUrl: imgUrlToCache,
 				type: 'image',
-				mimeType: imageCached.image_type
+				mimeType: imageCached.image_type,
+				encryption: file.encryption,
+				originalChecksum: file.hashes?.sha256
 			});
+			setDecrypted();
 			updateImageCached(imageUri);
 		} catch (e) {
 			setCached(false);
-		} finally {
 			setLoading(false);
 		}
 	};
@@ -192,31 +212,37 @@ const ImageContainer = ({
 				handleResumeDownload();
 				return;
 			}
+			setLoading(true);
 			handleDownload();
 			return;
 		}
-		if (!showAttachment) {
+		if (!showAttachment || !imageCached.title_link) {
 			return;
 		}
 		showAttachment(imageCached);
 	};
 
+	const image = (
+		<Button onPress={onPress}>
+			<MessageImage
+				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
+				cached={cached}
+				loading={loading}
+				encrypted={imageCached.e2e === 'pending'}
+			/>
+		</Button>
+	);
+
 	if (msg) {
 		return (
 			<View>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
-				<Button onPress={onPress}>
-					<MessageImage imgUri={img} cached={cached} loading={loading} />
-				</Button>
+				{image}
 			</View>
 		);
 	}
 
-	return (
-		<Button onPress={onPress}>
-			<MessageImage imgUri={img} cached={cached} loading={loading} />
-		</Button>
-	);
+	return image;
 };
 
 ImageContainer.displayName = 'MessageImageContainer';
