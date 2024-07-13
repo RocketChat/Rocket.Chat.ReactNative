@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
@@ -94,6 +94,8 @@ type TImageLoadedState = 'loading' | 'done' | 'error';
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
+		const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!url || url?.ignoreParse || imageLoadedState === 'error') {
@@ -110,8 +112,18 @@ const Url = React.memo(
 		const hasContent = url.title || url.description;
 
 		let image = url.image || url.url;
+		
+		
+		
+
 		if (image) {
 			image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+			Image.getSize(image, (width, height) => {
+				setImageDimensions({ width, height });
+				setImageLoadedState('done');
+			}, () => {
+				setImageLoadedState('error');
+			});
 		}
 
 		return (
@@ -134,8 +146,9 @@ const Url = React.memo(
 					{image ? (
 						<FastImage
 							source={{ uri: image }}
-							style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
-							resizeMode={FastImage.resizeMode.cover}
+							style={[{ width: imageDimensions.width, height: imageDimensions.height }, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
+							resizeMode={FastImage.resizeMode.contain}
+							
 							onError={() => setImageLoadedState('error')}
 							onLoad={() => setImageLoadedState('done')}
 						/>
