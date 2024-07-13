@@ -84,7 +84,7 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 	Notifications.events().registerNotificationReceivedBackground(
 		(notification: Notification, completion: (response: any) => void) => {
-			completion({ alert: true, sound: true, badge: false });
+			completion({ alert: true, sound: true, badge: true });
 		}
 	);
 
