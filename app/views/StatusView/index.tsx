@@ -17,6 +17,7 @@ import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import { useTheme } from '../../theme';
 
 interface IStatus {
 	id: TUserStatus;
@@ -53,7 +54,9 @@ const styles = StyleSheet.create({
 	},
 	inputStyle: {
 		paddingLeft: 48,
-		borderRadius: 0
+		borderRadius: 0,
+		borderTopWidth: 1,
+		borderBottomWidth: 1
 	}
 });
 
@@ -96,6 +99,8 @@ const StatusView = (): React.ReactElement => {
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 
+	const { colors } = useTheme();
+
 	useEffect(() => {
 		const submit = async () => {
 			logEvent(events.STATUS_DONE);
@@ -110,7 +115,12 @@ const StatusView = (): React.ReactElement => {
 				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={goBack} />,
 				headerRight: () => (
 					<HeaderButton.Container>
-						<HeaderButton.Item title={I18n.t('Save')} onPress={submit} testID='status-view-submit' />
+						<HeaderButton.Item
+							title={I18n.t('Save')}
+							onPress={submit}
+							disabled={status === user.status && statusText === user.statusText}
+							testID='status-view-submit'
+						/>
 					</HeaderButton.Container>
 				)
 			});
@@ -161,6 +171,7 @@ const StatusView = (): React.ReactElement => {
 				}
 				ListFooterComponent={List.Separator}
 				ItemSeparatorComponent={List.Separator}
+				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>
 	);

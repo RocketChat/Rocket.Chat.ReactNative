@@ -1,12 +1,14 @@
-import React from 'react';
 import { dequal } from 'dequal';
+import React from 'react';
+import { TextStyle } from 'react-native';
 
 import I18n from '../../i18n';
-import styles from './styles';
-import { MarkdownPreview } from '../markdown';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../../lib/constants';
-import { ILastMessageProps } from './interfaces';
+import { isAndroid } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
+import { MarkdownPreview } from '../markdown';
+import { ILastMessageProps } from './interfaces';
+import styles from './styles';
 
 const formatMsg = ({ lastMessage, type, showLastMessage, username, useRealName }: Partial<ILastMessageProps>) => {
 	if (!showLastMessage) {
@@ -62,6 +64,8 @@ const arePropsEqual = (oldProps: any, newProps: any) => dequal(oldProps, newProp
 
 const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, alert, useRealName }: ILastMessageProps) => {
 	const { colors } = useTheme();
+	// Android has a bug with the text align on the markdown preview
+	const alignSelf: TextStyle = isAndroid ? { alignSelf: 'stretch' } : {};
 	return (
 		<MarkdownPreview
 			msg={formatMsg({
@@ -71,7 +75,7 @@ const LastMessage = React.memo(({ lastMessage, type, showLastMessage, username, 
 				username,
 				useRealName
 			})}
-			style={[styles.markdownText, { color: alert ? colors.bodyText : colors.auxiliaryText }]}
+			style={[styles.markdownText, { color: alert ? colors.fontDefault : colors.fontSecondaryInfo }, alignSelf]}
 			numberOfLines={2}
 		/>
 	);

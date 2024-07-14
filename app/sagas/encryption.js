@@ -2,14 +2,11 @@ import EJSON from 'ejson';
 import { put, select, takeLatest } from 'redux-saga/effects';
 
 import { ENCRYPTION } from '../actions/actionsTypes';
-import { encryptionSet } from '../actions/encryption';
+import { encryptionDecodeKeyFailure, encryptionSet } from '../actions/encryption';
 import { Encryption } from '../lib/encryption';
-import Navigation from '../lib/navigation/appNavigation';
 import database from '../lib/database';
 import UserPreferences from '../lib/methods/userPreferences';
 import { getUserSelector } from '../selectors/login';
-import { showErrorAlert } from '../lib/methods/helpers/info';
-import I18n from '../i18n';
 import log from '../lib/methods/helpers/log';
 import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
 import { Services } from '../lib/services';
@@ -111,11 +108,9 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 
 		// Hide encryption banner
 		yield put(encryptionSet(true));
-
-		Navigation.back();
 	} catch {
 		// Can't decrypt user private key
-		showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
+		yield put(encryptionDecodeKeyFailure());
 	}
 };
 

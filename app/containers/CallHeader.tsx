@@ -30,11 +30,11 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 
 	const handleColors = (enabled: boolean) => {
 		if (calling) {
-			if (enabled) return { button: colors.conferenceCallCallBackButton, icon: colors.gray300 };
-			return { button: 'transparent', icon: colors.gray100 };
+			if (enabled) return { button: colors.buttonBackgroundSecondaryDisabled, icon: colors.strokeExtraDark };
+			return { button: 'transparent', icon: colors.strokeLight };
 		}
-		if (enabled) return { button: colors.conferenceCallEnabledIconBackground, icon: colors.conferenceCallEnabledIcon };
-		return { button: 'transparent', icon: colors.conferenceCallDisabledIcon };
+		if (enabled) return { button: colors.strokeHighlight, icon: colors.surfaceLight };
+		return { button: 'transparent', icon: colors.strokeExtraDark };
 	};
 
 	return (
@@ -49,16 +49,14 @@ export const CallHeader = ({ mic, cam, setCam, setMic, title, avatar, uid, name,
 						onPress={() => setCam(!cam)}
 						style={[style.iconCallContainerRight, { backgroundColor: handleColors(cam).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}
-					>
+						disabled={calling}>
 						<CustomIcon name={cam ? 'camera' : 'camera-disabled'} size={24} color={handleColors(cam).icon} />
 					</Touchable>
 					<Touchable
 						onPress={() => setMic(!mic)}
 						style={[style.iconCallContainer, { backgroundColor: handleColors(mic).button }]}
 						hitSlop={BUTTON_HIT_SLOP}
-						disabled={calling}
-					>
+						disabled={calling}>
 						<CustomIcon name={mic ? 'microphone' : 'microphone-disabled'} size={24} color={handleColors(mic).icon} />
 					</Touchable>
 				</View>
@@ -81,7 +79,7 @@ function useStyle() {
 		actionSheetHeaderTitle: {
 			fontSize: 14,
 			...sharedStyles.textBold,
-			color: colors.n900
+			color: colors.fontDefault
 		},
 		actionSheetHeaderButtons: { flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'flex-end' },
 		iconCallContainer: {
@@ -97,7 +95,7 @@ function useStyle() {
 		actionSheetUsername: {
 			fontSize: 16,
 			...sharedStyles.textBold,
-			color: colors.passcodePrimary,
+			color: colors.fontDefault,
 			flexShrink: 1
 		},
 		rowContainer: { flexDirection: 'row' },

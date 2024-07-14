@@ -1,0 +1,41 @@
+--- a/node_modules/@notifee/react-native/android/src/main/java/io/invertase/notifee/NotifeeApiModule.java
++++ b/node_modules/@notifee/react-native/android/src/main/java/io/invertase/notifee/NotifeeApiModule.java
+@@ -238,7 +238,7 @@ public class NotifeeApiModule extends ReactContextBaseJavaModule implements Perm
+   @ReactMethod
+   public void requestPermission(Promise promise) {
+     // For Android 12 and below, we return the notification settings
+-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
++    if (Build.VERSION.SDK_INT < 33) {
+       Notifee.getInstance()
+           .getNotificationSettings(
+               (e, aBundle) -> NotifeeReactUtils.promiseResolver(promise, e, aBundle));
+@@ -265,7 +265,7 @@ public class NotifeeApiModule extends ReactContextBaseJavaModule implements Perm
+             (e, aBundle) -> NotifeeReactUtils.promiseResolver(promise, e, aBundle));
+ 
+     activity.requestPermissions(
+-        new String[] {Manifest.permission.POST_NOTIFICATIONS},
++        new String[] {"android.permission.POST_NOTIFICATIONS"},
+         Notifee.REQUEST_CODE_NOTIFICATION_PERMISSION,
+         this);
+   }
+diff --git a/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m b/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m
+index cf8020d..3a1e080 100644
+--- a/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m
++++ b/node_modules/@notifee/react-native/ios/NotifeeCore/NotifeeCore+UNUserNotificationCenter.m
+@@ -179,11 +179,11 @@ - (void)userNotificationCenter:(UNUserNotificationCenter *)center
+ 
+   _notificationOpenedAppID = notifeeNotification[@"id"];
+ 
+-  // handle notification outside of notifee
+-  if (notifeeNotification == nil) {
+-    notifeeNotification =
+-        [NotifeeCoreUtil parseUNNotificationRequest:response.notification.request];
+-  }
++  // disable notifee handler on ios devices
++  // if (notifeeNotification == nil) {
++  //   notifeeNotification =
++  //       [NotifeeCoreUtil parseUNNotificationRequest:response.notification.request];
++  // }
+ 
+   if (notifeeNotification != nil) {
+     if ([response.actionIdentifier isEqualToString:UNNotificationDismissActionIdentifier]) {

@@ -8,7 +8,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { ISubscription } from '../../definitions';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -102,7 +101,7 @@ const AutoTranslateView = (): React.ReactElement => {
 			testID={`auto-translate-view-${language}`}
 			right={() =>
 				selectedLanguage === language ? (
-					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.tintColor} />
+					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
 				) : null
 			}
 			translateTitle={false}
@@ -123,12 +122,7 @@ const AutoTranslateView = (): React.ReactElement => {
 						<List.Item
 							title='Enable_Auto_Translate'
 							right={() => (
-								<Switch
-									testID='auto-translate-view-switch'
-									value={enableAutoTranslate}
-									trackColor={SWITCH_TRACK_COLOR}
-									onValueChange={toggleAutoTranslate}
-								/>
+								<Switch testID='auto-translate-view-switch' value={enableAutoTranslate} onValueChange={toggleAutoTranslate} />
 							)}
 						/>
 						<List.Separator />

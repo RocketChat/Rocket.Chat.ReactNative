@@ -58,19 +58,19 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			title={i18n.t('Are_you_sure_you_want_to_delete_your_account')}
 			description={i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 			onCancel={hideActionSheet}
-			onSubmit={password => handleDeleteAccount(password)}
+			onSubmit={password => handleDeleteAccount(password as string)}
 			placeholder={i18n.t('Password')}
 			testID='profile-view-delete-account-sheet'
 			iconName='warning'
 			confirmTitle={i18n.t('Delete_Account')}
-			confirmBackgroundColor={colors.dangerColor}
+			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 		/>
 	);
 }
 
 const AlertText = ({ text = '' }) => {
 	const { colors } = useTheme();
-	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.dangerColor }}>{text}</Text>;
+	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.fontDanger }}>{text}</Text>;
 };
 
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
@@ -93,7 +93,7 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
-			confirmBackgroundColor={colors.dangerColor}
+			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 			showInput={false}
 			customText={
 				<>

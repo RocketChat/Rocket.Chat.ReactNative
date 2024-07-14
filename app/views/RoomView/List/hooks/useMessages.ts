@@ -50,15 +50,13 @@ export const useMessages = ({
 			}
 			observable = db
 				.get('thread_messages')
-				.query(Q.where('rid', tmid), Q.experimentalSortBy('ts', Q.desc), Q.experimentalSkip(0), Q.experimentalTake(count.current))
+				.query(Q.where('rid', tmid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(count.current))
 				.observe();
 		} else {
-			const whereClause = [
-				Q.where('rid', rid),
-				Q.experimentalSortBy('ts', Q.desc),
-				Q.experimentalSkip(0),
-				Q.experimentalTake(count.current)
-			] as (Q.WhereDescription | Q.Or)[];
+			const whereClause = [Q.where('rid', rid), Q.sortBy('ts', Q.desc), Q.skip(0), Q.take(count.current)] as (
+				| Q.WhereDescription
+				| Q.Or
+			)[];
 			if (!showMessageInMainThread) {
 				whereClause.push(Q.or(Q.where('tmid', null), Q.where('tshow', Q.eq(true))));
 			}

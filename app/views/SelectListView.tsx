@@ -101,8 +101,8 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	renderInfoText = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
+			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
+				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
 	};
@@ -153,7 +153,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
 				selected={selected.includes(item.rid)}
-				color={themes[theme].actionTintColor}
+				color={themes[theme].fontHint}
 				size={ICON_SIZE}
 			/>
 		);
@@ -162,7 +162,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				<List.Icon
 					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
 					name={checked}
-					color={themes[theme].actionTintColor}
+					color={themes[theme].fontHint}
 				/>
 			) : null;
 
@@ -175,7 +175,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={item.alert}
-					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
+					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
 				/>
 			</>
@@ -194,7 +194,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>

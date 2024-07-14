@@ -33,10 +33,9 @@ const RoomInfoViewAvatar = ({
 			style={styles.avatar}
 			type={type}
 			rid={rid}
-			handleEdit={showAvatarEdit ? handleEditAvatar : undefined}
-		>
+			handleEdit={showAvatarEdit ? handleEditAvatar : undefined}>
 			{type === SubscriptionType.DIRECT && userId ? (
-				<View style={[sharedStyles.status, { backgroundColor: colors.auxiliaryBackground }]}>
+				<View style={[sharedStyles.status, { backgroundColor: colors.surfaceHover }]}>
 					<Status size={20} id={userId} />
 				</View>
 			) : null}

@@ -140,14 +140,13 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.backgroundColor }}
+			style={{ backgroundColor: colors.surfaceRoom }}
 			contentContainerStyle={[sharedStyles.container, styles.container]}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={[styles.containerTextInput, { borderColor: colors.separatorColor }]}>
+					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							testID='create-channel-name'
@@ -167,7 +166,7 @@ const CreateChannelView = () => {
 					{users.length > 0 ? (
 						<>
 							<View style={styles.invitedHeader}>
-								<Text style={[styles.invitedCount, { color: colors.auxiliaryText }]}>
+								<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
 									{I18n.t('N_Selected_members', { n: users.length })}
 								</Text>
 							</View>
@@ -178,8 +177,8 @@ const CreateChannelView = () => {
 								style={[
 									styles.list,
 									{
-										backgroundColor: colors.backgroundColor,
-										borderColor: colors.separatorColor
+										backgroundColor: colors.surfaceRoom,
+										borderColor: colors.strokeLight
 									}
 								]}
 								contentContainerStyle={styles.invitedList}

@@ -36,11 +36,13 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 					{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				</View>
 				<View style={styles.flex}>
-					<Text numberOfLines={1} style={{ color: colors.titleText }}>
+					<Text numberOfLines={1} style={{ color: colors.fontTitlesLabels }}>
 						{textParser([item.text])}
 					</Text>
 				</View>
-				<View style={styles.flexZ}>{selected ? <CustomIcon color={colors.tintColor} size={22} name='check' /> : null}</View>
+				<View style={styles.flexZ}>
+					{selected ? <CustomIcon color={colors.badgeBackgroundLevel2} size={22} name='check' /> : null}
+				</View>
 			</View>
 		</Touchable>
 	);

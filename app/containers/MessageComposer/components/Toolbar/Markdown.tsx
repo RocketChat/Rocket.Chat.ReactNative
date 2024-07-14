@@ -4,7 +4,7 @@ import { BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { TMarkdownStyle } from '../../interfaces';
-import { emitter } from '../../emitter';
+import { emitter } from '../../../../lib/methods/helpers/emitter';
 
 export const Markdown = (): ReactElement => {
 	const { setMarkdownToolbar } = useMessageComposerApi();

@@ -41,5 +41,7 @@ export const roomAttrsUpdate = [
 	't',
 	'autoTranslate',
 	'autoTranslateLanguage',
-	'unmuted'
+	'unmuted',
+	'E2EKey',
+	'encrypted'
 ] as TRoomUpdate[];

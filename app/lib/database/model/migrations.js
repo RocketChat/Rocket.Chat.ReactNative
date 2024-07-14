@@ -284,6 +284,32 @@ export default schemaMigrations({
 					columns: [{ name: 'unmuted', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 24,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'disable_notifications', type: 'boolean', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 25,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [{ name: 'content', type: 'string', isOptional: true }]
+				}),
+				addColumns({
+					table: 'threads',
+					columns: [{ name: 'content', type: 'string', isOptional: true }]
+				}),
+				addColumns({
+					table: 'thread_messages',
+					columns: [{ name: 'content', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Linking } from 'react-native';
+import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Orientation from 'react-native-orientation-locker';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -73,6 +73,7 @@ const parseDeepLinking = (url: string) => {
 
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
+	private dimensionsListener?: EmitterSubscription;
 
 	constructor(props: any) {
 		super(props);
@@ -108,12 +109,12 @@ export default class Root extends React.Component<{}, IState> {
 				}
 			});
 		}, 5000);
-		Dimensions.addEventListener('change', this.onDimensionsChange);
+		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
+		this.dimensionsListener?.remove?.();
 
 		unsubscribeTheme();
 	}
@@ -199,10 +200,7 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider
-				initialMetrics={initialWindowMetrics}
-				style={{ backgroundColor: themes[this.state.theme].backgroundColor }}
-			>
+			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContext.Provider
 						value={{
@@ -221,7 +219,7 @@ export default class Root extends React.Component<{}, IState> {
 								setDimensions: this.setDimensions
 							}}
 						>
-							<GestureHandlerRootView style={{ flex: 1 }}>
+							<GestureHandlerRootView>
 								<ActionSheetProvider>
 									<AppContainer />
 									<TwoFactor />

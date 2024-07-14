@@ -15,7 +15,7 @@ interface ITableCell {
 export const CELL_WIDTH = 100;
 
 const TableCell = React.memo(({ isLastCell, align, children, theme }: ITableCell) => {
-	const cellStyle: ViewStyle[] = [styles.cell, { borderColor: themes[theme].borderColor }];
+	const cellStyle: ViewStyle[] = [styles.cell, { borderColor: themes[theme].strokeLight }];
 	if (!isLastCell) {
 		cellStyle.push(styles.cellRightBorder);
 	}
@@ -29,7 +29,7 @@ const TableCell = React.memo(({ isLastCell, align, children, theme }: ITableCell
 
 	return (
 		<View style={[...cellStyle, { width: CELL_WIDTH }]}>
-			<Text style={[textStyle, { color: themes[theme].bodyText }]}>{children}</Text>
+			<Text style={[textStyle, { color: themes[theme].fontDefault }]}>{children}</Text>
 		</View>
 	);
 });

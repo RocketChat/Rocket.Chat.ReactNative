@@ -54,17 +54,16 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].mentionOtherColor
+						color: themes[theme].badgeBackgroundLevel1
 					},
 					...style
 				]}
-				onPress={handlePress}
-			>
+				onPress={handlePress}>
 				{`#${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].bodyText }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;

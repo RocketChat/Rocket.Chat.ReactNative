@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ViewToken, ViewabilityConfigCallbackPairs } from 'react-native';
 
 import { IListContainerRef, IListProps, TListRef, TMessagesIdsRef } from '../definitions';
@@ -20,9 +20,9 @@ export const useScroll = ({ listRef, messagesIds }: { listRef: TListRef; message
 		[]
 	);
 
-	const jumpToBottom = () => {
+	const jumpToBottom = useCallback(() => {
 		listRef.current?.scrollToOffset({ offset: -100 });
-	};
+	}, [listRef]);
 
 	const onViewableItemsChanged: IListProps['onViewableItemsChanged'] = ({ viewableItems: vi }) => {
 		viewableItems.current = vi;

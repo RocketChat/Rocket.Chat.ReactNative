@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 23,
+	version: 25,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -66,7 +66,8 @@ export default appSchema({
 				{ name: 'source', type: 'string', isOptional: true },
 				{ name: 'hide_mention_status', type: 'boolean', isOptional: true },
 				{ name: 'users_count', type: 'number', isOptional: true },
-				{ name: 'unmuted', type: 'string', isOptional: true }
+				{ name: 'unmuted', type: 'string', isOptional: true },
+				{ name: 'disable_notifications', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -124,6 +125,7 @@ export default appSchema({
 				{ name: 'e2e', type: 'string', isOptional: true },
 				{ name: 'tshow', type: 'boolean', isOptional: true },
 				{ name: 'md', type: 'string', isOptional: true },
+				{ name: 'content', type: 'string', isOptional: true },
 				{ name: 'comment', type: 'string', isOptional: true }
 			]
 		}),
@@ -162,6 +164,7 @@ export default appSchema({
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
 				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'content', type: 'string', isOptional: true },
 				{ name: 'draft_message', type: 'string', isOptional: true }
 			]
 		}),
@@ -199,7 +202,8 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
-				{ name: 'e2e', type: 'string', isOptional: true }
+				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'content', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({

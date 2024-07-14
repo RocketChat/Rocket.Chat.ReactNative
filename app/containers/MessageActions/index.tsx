@@ -131,7 +131,7 @@ const MessageActions = React.memo(
 				}
 				const editOwn = isOwn(message);
 
-				if (!(permissions.hasEditPermission || (Message_AllowEditing && editOwn))) {
+				if (!(permissions.hasEditPermission || (Message_AllowEditing !== false && editOwn))) {
 					return false;
 				}
 				const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;

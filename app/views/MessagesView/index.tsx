@@ -34,7 +34,8 @@ import {
 } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
-import audioPlayer from '../../lib/methods/audioPlayer';
+import AudioManager from '../../lib/methods/AudioManager';
+import { Encryption } from '../../lib/encryption';
 
 interface IMessagesViewProps {
 	user: {
@@ -102,7 +103,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	}
 
 	componentWillUnmount(): void {
-		audioPlayer.pauseCurrentAudio();
+		AudioManager.pauseAudio();
 	}
 
 	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {
@@ -189,7 +190,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 					const { messages } = this.state;
 					const result = await Services.getFiles(this.rid, this.t, messages.length);
 					if (result.success) {
-						return { ...result, messages: result.files };
+						return { ...result, messages: await Encryption.decryptFiles(result.files) };
 					}
 				},
 				noDataMsg: I18n.t('No_files'),
@@ -206,6 +207,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 								{
 									title: item.name,
 									description: item.description,
+									...item,
 									...getFileUrlAndTypeFromMessage(item)
 								}
 							]
@@ -287,7 +289,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 							return {} as IUrl;
 						});
 					}
-					return message;
+					return { ...message };
 				});
 				this.setState({
 					messages: [...messages, ...urlRenderMessages],
@@ -297,7 +299,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			}
 		} catch (error) {
 			this.setState({ loading: false });
-			console.warn('MessagesView -> catch -> error', error);
+			console.error(error);
 		}
 	};
 
@@ -348,8 +350,8 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]} testID={this.content.testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{this.content.noDataMsg}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={this.content.testID}>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{this.content.noDataMsg}</Text>
 			</View>
 		);
 	};
@@ -365,12 +367,12 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		}
 
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID={this.content.testID}>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
 				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 					keyExtractor={item => item._id}
 					onEndReached={this.load}
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}

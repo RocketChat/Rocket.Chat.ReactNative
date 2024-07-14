@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22222" systemVersion="23C64" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Attachment" representedClassName="Attachment" syncable="YES" codeGenerationType="class">
+        <attribute name="height" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="imageURL" optional="YES" attributeType="URI"/>
+        <attribute name="msg" optional="YES" attributeType="String"/>
+        <attribute name="width" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Message" representedClassName="Message" syncable="YES" codeGenerationType="class">
+        <attribute name="comment" optional="YES" attributeType="String"/>
+        <attribute name="editedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="groupable" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="msg" optional="YES" attributeType="String"/>
+        <attribute name="role" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="t" optional="YES" attributeType="String"/>
+        <attribute name="ts" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment"/>
+        <relationship name="room" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Room" inverseName="messages" inverseEntity="Room"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="messages" inverseEntity="User"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="Room" representedClassName="Room" syncable="YES" codeGenerationType="class">
+        <attribute name="alert" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="archived" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="broadcast" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="encrypted" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="fname" optional="YES" attributeType="String"/>
+        <attribute name="hasMoreMessages" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="hideUnreadStatus" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="isReadOnly" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lr" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="open" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="prid" optional="YES" attributeType="String"/>
+        <attribute name="rid" optional="YES" attributeType="String"/>
+        <attribute name="synced" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="t" optional="YES" attributeType="String"/>
+        <attribute name="teamMain" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="ts" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="uids" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <attribute name="unread" optional="YES" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="updatedSince" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="usernames" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromDataTransformer" customClassName="[String]"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="room" inverseEntity="Message"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+                <constraint value="rid"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="user" inverseEntity="Message"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+</model>

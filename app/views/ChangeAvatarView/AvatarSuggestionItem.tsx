@@ -31,7 +31,7 @@ const AvatarSuggestionItem = ({
 	const { colors } = useTheme();
 
 	return (
-		<View key={item?.service} testID={testID} style={[styles.container, { backgroundColor: colors.borderColor }]}>
+		<View key={item?.service} testID={testID} style={[styles.container, { backgroundColor: colors.strokeLight }]}>
 			<Avatar avatar={item?.url} text={text} size={64} onPress={() => onPress(item)} />
 		</View>
 	);

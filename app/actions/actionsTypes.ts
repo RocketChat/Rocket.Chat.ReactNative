@@ -81,7 +81,14 @@ export const INVITE_LINKS = createRequestTypes('INVITE_LINKS', [
 export const SETTINGS = createRequestTypes('SETTINGS', ['CLEAR', 'ADD', 'UPDATE']);
 export const APP_STATE = createRequestTypes('APP_STATE', ['FOREGROUND', 'BACKGROUND']);
 export const ENTERPRISE_MODULES = createRequestTypes('ENTERPRISE_MODULES', ['CLEAR', 'SET']);
-export const ENCRYPTION = createRequestTypes('ENCRYPTION', ['INIT', 'STOP', 'DECODE_KEY', 'SET', 'SET_BANNER']);
+export const ENCRYPTION = createRequestTypes('ENCRYPTION', [
+	'INIT',
+	'STOP',
+	'DECODE_KEY',
+	'DECODE_KEY_FAILURE',
+	'SET',
+	'SET_BANNER'
+]);
 
 export const PERMISSIONS = createRequestTypes('PERMISSIONS', ['SET', 'UPDATE']);
 export const ROLES = createRequestTypes('ROLES', ['SET', 'UPDATE', 'REMOVE']);
@@ -96,5 +103,6 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 	'ACCEPT_CALL',
 	'SET_CALLING'
 ]);
+export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', ['INIT', 'SET']);
 export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);
 export const IN_APP_FEEDBACK = createRequestTypes('IN_APP_FEEDBACK', ['SET', 'REMOVE', 'CLEAR']);
