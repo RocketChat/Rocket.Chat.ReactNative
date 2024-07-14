@@ -16,8 +16,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
-import Touch from '../../containers/Touch';
-import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } from '../../definitions';
+import { IApplicationState, IBaseScreen, IProfileParams, IUser } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
@@ -213,7 +212,7 @@ function ProfileView({
 						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 						testID='profile-view-enter-password-sheet'
 						placeholder={I18n.t('Password')}
-						onSubmit={(p: string) => {
+						onSubmit={(p: string | string[]) => {
 							hideActionSheet();
 							setState(prevState => ({
 								...prevState,
@@ -231,9 +230,9 @@ function ProfileView({
 		try {
 			const twoFactorOptions = params.currentPassword
 				? {
-				    // eslint-disable-next-line @typescript-eslint/indent
+						// eslint-disable-next-line @typescript-eslint/indent
 						twoFactorCode: params.currentPassword,
-					// eslint-disable-next-line @typescript-eslint/indent
+						// eslint-disable-next-line @typescript-eslint/indent
 						twoFactorMethod: TwoFactorMethods.PASSWORD
 				  }
 				: null;
@@ -296,19 +295,6 @@ function ProfileView({
 		}
 	}, [formIsChanged, user, state, dispatch, showActionSheet, hideActionSheet]);
 
-	const resetAvatar = async () => {
-		if (!Accounts_AllowUserAvatarChange) {
-			return;
-		}
-
-		try {
-			await Services.resetAvatar(user.id);
-			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
-		} catch (e) {
-			handleError(e, 'changing_avatar');
-		}
-	};
-
 	const handleError = (e: any, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
@@ -328,17 +314,6 @@ function ProfileView({
 	const handleEditAvatar = () => {
 		navigation.navigate('ChangeAvatarView', { context: 'profile' });
 	};
-
-	const renderAvatarButton = ({ key, child, onPress, disabled = false }: IAvatarButton) => (
-		<Touch
-			key={key}
-			testID={key}
-			onPress={onPress}
-			style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].strokeLight }]}
-			enabled={!disabled}>
-			{child}
-		</Touch>
-	);
 
 	const renderCustomFields = React.useMemo(() => {
 		if (!Accounts_CustomFields) {
@@ -431,9 +406,7 @@ function ProfileView({
 	};
 
 	return (
-		<KeyboardView
-			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
