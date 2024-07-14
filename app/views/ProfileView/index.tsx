@@ -1,6 +1,6 @@
 import { StackNavigationOptions } from '@react-navigation/stack';
 import { sha256 } from 'js-sha256';
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
@@ -71,7 +71,7 @@ interface IProfileViewState {
 	};
 }
 
-const ProfileView: React.FC<IProfileViewProps> = ({
+function ProfileView({
 	user,
 	Accounts_AllowEmailChange,
 	Accounts_AllowPasswordChange,
@@ -87,36 +87,37 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 	showActionSheet,
 	hideActionSheet,
 	dispatch
-}) => { 
-	const [saving, setSaving] = useState<boolean>(false);
-	const [name, setName] = useState<string>('');
-	const [username, setUsername] = useState<string>('');
-	const [email, setEmail] = useState<string | null>('');
-	const [bio, setBio] = useState<string>('');
-	const [nickname, setNickname] = useState<string>('');
-	const [newPassword, setNewPassword] = useState<string | null>(null);
-	const [currentPassword, setCurrentPassword] = useState<string | null>(null);
-	const [customFields, setCustomFields] = useState<{ [key: string]: string }>({});
-	const [twoFactorCode, setTwoFactorCode] = useState<null | { twoFactorCode: string; twoFactorMethod: string }>(null);
+}: IProfileViewProps) {
+	const [state, setState] = React.useState<IProfileViewState>({
+		saving: false,
+		name: user?.name ?? '',
+		username: user?.username ?? '',
+		email: user?.emails?.[0]?.address ?? null,
+		bio: user?.bio ?? '',
+		nickname: user?.nickname ?? '',
+		newPassword: null,
+		currentPassword: null,
+		customFields: user?.customFields ?? {},
+		twoFactorCode: null
+	});
 
-	const nameRef = useRef<TextInput>(null);
-	const usernameRef = useRef<TextInput>(null);
-	const emailRef = useRef<TextInput>(null);
-	const avatarUrlRef = useRef<TextInput>(null);
-	const newPasswordRef = useRef<TextInput>(null);
-	const nicknameRef = useRef<TextInput>(null);
-	const bioRef = useRef<TextInput>(null);
+	const nameRef = React.useRef<TextInput>(null);
+	const usernameRef = React.useRef<TextInput>(null);
+	const emailRef = React.useRef<TextInput>(null);
+	const avatarUrlRef = React.useRef<TextInput>(null);
+	const newPasswordRef = React.useRef<TextInput>(null);
+	const nicknameRef = React.useRef<TextInput>(null);
+	const bioRef = React.useRef<TextInput>(null);
 
-	    useEffect(() => {
+	React.useEffect(() => {
 		const focusListener = navigation.addListener('focus', () => {
-			init(user);
 			setHeader();
 		});
 
 		return () => {
 			focusListener();
 		};
-	}, [user]);
+	});
 
 	const setHeader = () => {
 		const options: StackNavigationOptions = {
@@ -132,90 +133,79 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 		navigation.setOptions(options);
 	};
 
-	const init = (userProps?: IUser) => {
-		const { name, username, emails, customFields, bio, nickname } = user || userProps;
-
-		setName(name as string);
-		setUsername(username);
-		setEmail(emails ? emails[0].address : null);
-		setNewPassword(null);
-		setCurrentPassword(null);
-		setCustomFields(customFields || {});
-		setBio(bio || '');
-		setNickname(nickname || '');
-	};
-
-	const formIsChanged = () => {
+	const formIsChanged = React.useCallback(() => {
 		let customFieldsChanged = false;
 
-		const customFieldsKeys = Object.keys(customFields);
+		const customFieldsKeys = Object.keys(state.customFields);
 		if (customFieldsKeys.length) {
 			customFieldsKeys.forEach(key => {
-				if (!user.customFields || user.customFields[key] !== customFields[key]) {
+				if (!user.customFields || user.customFields[key] !== state.customFields[key]) {
 					customFieldsChanged = true;
 				}
 			});
 		}
-	
+
 		return !(
-			user.name === name &&
-			user.username === username &&
-			user.bio === bio &&
-			user.nickname === nickname &&
-			!newPassword &&
+			user.name === state.name &&
+			user.username === state.username &&
+			user.bio === state.bio &&
+			user.nickname === state.nickname &&
+			!state.newPassword &&
 			user.emails &&
-			user.emails[0].address === email &&
+			user.emails[0].address === state.email &&
 			!customFieldsChanged
 		);
-	};
+	}, [state, user]);
 
-	const submit = async (): Promise<void> => {
+	const submit = React.useCallback(async () => {
 		Keyboard.dismiss();
 
 		if (!formIsChanged()) {
 			return;
 		}
 
-		setSaving(true);
+		setState(prevState => ({
+			...prevState,
+			saving: true
+		}));
+
 		const params = {} as IProfileParams;
 
-		// Name
-		if (user.name !== name) {
-			params.realname = name;
+		if (user.name !== state.name) {
+			params.realname = state.name;
 		}
 
-		// Username
-		if (user.username !== username) {
-			params.username = username;
+		if (user.username !== state.username) {
+			params.username = state.username;
 		}
 
-		// Email
-		if (user.emails && user.emails[0].address !== email) {
-			params.email = email;
+		if (user.emails && user.emails[0].address !== state.email) {
+			params.email = state.email;
 		}
 
-		if (user.bio !== bio) {
-			params.bio = bio;
+		if (user.bio !== state.bio) {
+			params.bio = state.bio;
 		}
 
-		if (user.nickname !== nickname) {
-			params.nickname = nickname;
+		if (user.nickname !== state.nickname) {
+			params.nickname = state.nickname;
 		}
 
-		// newPassword
-		if (newPassword) {
-			params.newPassword = newPassword;
+		if (state.newPassword) {
+			params.newPassword = state.newPassword;
 		}
 
-		// currentPassword
-		if (currentPassword) {
-			params.currentPassword = sha256(currentPassword);
+		if (state.currentPassword) {
+			params.currentPassword = sha256(state.currentPassword);
 		}
 
-		const requirePassword = !!params.email || newPassword;
+		const requirePassword = !!params.email || state.newPassword;
 
 		if (requirePassword && !params.currentPassword) {
-			setSaving(false);
+			setState(prevState => ({
+				...prevState,
+				saving: false
+			}));
 			showActionSheet({
 				children: (
 					<ActionSheetContentWithInputAndSubmit
@@ -225,8 +215,11 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						placeholder={I18n.t('Password')}
 						onSubmit={(p: string) => {
 							hideActionSheet();
-							setCurrentPassword(p);
-							submit();						
+							setState(prevState => ({
+								...prevState,
+								currentPassword: p as string
+							}));
+							submit();
 						}}
 						onCancel={hideActionSheet}
 					/>
@@ -238,12 +231,14 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 		try {
 			const twoFactorOptions = params.currentPassword
 				? {
-					twoFactorCode: params.currentPassword,
-					twoFactorMethod: TwoFactorMethods.PASSWORD
+				    // eslint-disable-next-line @typescript-eslint/indent
+						twoFactorCode: params.currentPassword,
+					// eslint-disable-next-line @typescript-eslint/indent
+						twoFactorMethod: TwoFactorMethods.PASSWORD
 				  }
 				: null;
 
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await Services.saveUserProfileMethod(params, state.customFields, state.twoFactorCode || twoFactorOptions);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
@@ -251,27 +246,39 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 					params.name = params.realname;
 					delete params.realname;
 				}
-				if (customFields) {
-					dispatch(setUser({ customFields, ...params }));
-					setCustomFields({ ...customFields, ...params });
+				if (state.customFields) {
+					dispatch(setUser({ ...state.customFields, ...params }));
+					setState(prevState => ({
+						...prevState,
+						...params,
+						...state.customFields
+					}));
 				} else {
 					dispatch(setUser({ ...params }));
-					setName(params.name || '');
-					setUsername(params.username || '');
-					setEmail(params.email || null);
-					setBio(params.bio || '');
-					setNickname(params.nickname || '');
+					setState(prevState => ({
+						...prevState,
+						...params
+					}));
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
-			setSaving(false);
-			setCurrentPassword(null);
-			setTwoFactorCode(null);		
+			setState(prevState => ({
+				...prevState,
+				saving: false,
+				currentPassword: null,
+				twoFactorCode: null
+			}));
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
-					const code = await twoFactor({ method: e?.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-					setTwoFactorCode(code);
+					const code = await twoFactor({
+						method: e?.details.method,
+						invalid: e?.error === 'totp-invalid' && !!state.twoFactorCode
+					});
+					setState(prevState => ({
+						...prevState,
+						twoFactorCode: code
+					}));
 					submit();
 					return;
 				} catch {
@@ -279,15 +286,17 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 				}
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			setSaving(false);
-			setCurrentPassword(null);
-			setTwoFactorCode(null);
+			setState(prevState => ({
+				...prevState,
+				saving: false,
+				currentPassword: null,
+				twoFactorCode: null
+			}));
 			handleError(e, 'saving_profile');
 		}
-	};
+	}, [formIsChanged, user, state, dispatch, showActionSheet, hideActionSheet]);
 
 	const resetAvatar = async () => {
-
 		if (!Accounts_AllowUserAvatarChange) {
 			return;
 		}
@@ -295,7 +304,6 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 		try {
 			await Services.resetAvatar(user.id);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
-			init();
 		} catch (e) {
 			handleError(e, 'changing_avatar');
 		}
@@ -327,13 +335,12 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 			testID={key}
 			onPress={onPress}
 			style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
-			enabled={!disabled}
-		>
+			enabled={!disabled}>
 			{child}
 		</Touch>
 	);
 
-	const renderCustomFields = () => {
+	const renderCustomFields = React.useMemo(() => {
 		if (!Accounts_CustomFields) {
 			return null;
 		}
@@ -349,10 +356,12 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 							onValueChange={value => {
 								const newValue: { [key: string]: string } = {};
 								newValue[key] = value;
-								setCustomFields({ ...customFields, ...newValue });
+								setState(prevState => ({
+									...prevState,
+									customFields: { ...state.customFields, ...newValue }
+								}));
 							}}
-							value={customFields[key]}
-						>
+							value={state.customFields[key]}>
 							<FormTextInput
 								inputRef={e => {
 									// @ts-ignore
@@ -360,7 +369,7 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 								}}
 								label={key}
 								placeholder={key}
-								value={customFields[key]}
+								value={state.customFields[key]}
 								testID='settings-view-language'
 							/>
 						</RNPickerSelect>
@@ -373,11 +382,14 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						key={key}
 						label={key}
 						placeholder={key}
-						value={customFields[key]}
+						value={state.customFields[key]}
 						onChangeText={value => {
 							const newValue: { [key: string]: string } = {};
 							newValue[key] = value;
-							setCustomFields({ ...customFields, ...newValue });
+							setState(prevState => ({
+								...prevState,
+								customFields: { ...state.customFields, ...newValue }
+							}));
 						}}
 						onSubmitEditing={() => {
 							if (array.length - 1 > index) {
@@ -392,7 +404,7 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 		} catch (error) {
 			return null;
 		}
-	};
+	}, [Accounts_CustomFields, state.customFields]);
 
 	const logoutOtherLocations = () => {
 		logEvent(events.PL_OTHER_LOCATIONS);
@@ -422,16 +434,12 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 		<KeyboardView
 			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='profile-view'>
 				<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='profile-view-avatar'>
-						<AvatarWithEdit
-							text={user.username}
-							handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined}
-						/>
+						<AvatarWithEdit text={user.username} handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined} />
 					</View>
 					<FormTextInput
 						editable={Accounts_AllowRealNameChange}
@@ -439,8 +447,13 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						inputRef={nameRef}
 						label={I18n.t('Name')}
 						placeholder={I18n.t('Name')}
-						value={name}
-						onChangeText={setName}
+						value={state.name}
+						onChangeText={(value: string) =>
+							setState(prevState => ({
+								...prevState,
+								name: value
+							}))
+						}
 						onSubmitEditing={() => {
 							usernameRef.current?.focus();
 						}}
@@ -452,8 +465,13 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						inputRef={usernameRef}
 						label={I18n.t('Username')}
 						placeholder={I18n.t('Username')}
-						value={username}
-						onChangeText={setUsername}
+						value={state.username}
+						onChangeText={(value: string) =>
+							setState(prevState => ({
+								...prevState,
+								username: value
+							}))
+						}
 						onSubmitEditing={() => {
 							emailRef.current?.focus();
 						}}
@@ -465,8 +483,13 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						inputRef={emailRef}
 						label={I18n.t('Email')}
 						placeholder={I18n.t('Email')}
-						value={email || undefined}
-						onChangeText={setEmail}
+						value={state.email || undefined}
+						onChangeText={(value: string) =>
+							setState(prevState => ({
+								...prevState,
+								email: value
+							}))
+						}
 						onSubmitEditing={() => {
 							nicknameRef.current?.focus();
 						}}
@@ -476,8 +499,13 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						<FormTextInput
 							inputRef={nicknameRef}
 							label={I18n.t('Nickname')}
-							value={nickname}
-							onChangeText={setNickname}
+							value={state.nickname}
+							onChangeText={(value: string) =>
+								setState(prevState => ({
+									...prevState,
+									nickname: value
+								}))
+							}
 							onSubmitEditing={() => {
 								bioRef.current?.focus();
 							}}
@@ -492,8 +520,13 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 							inputStyle={styles.inputBio}
 							multiline
 							maxLength={MAX_BIO_LENGTH}
-							value={bio}
-							onChangeText={setBio}
+							value={state.bio}
+							onChangeText={(value: string) =>
+								setState(prevState => ({
+									...prevState,
+									bio: value
+								}))
+							}
 							onSubmitEditing={() => {
 								newPasswordRef.current?.focus();
 							}}
@@ -506,26 +539,31 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 						inputRef={newPasswordRef}
 						label={I18n.t('New_Password')}
 						placeholder={I18n.t('New_Password')}
-						value={newPassword || undefined}
-						onChangeText={setNewPassword}
+						value={state.newPassword || undefined}
+						onChangeText={(value: string) =>
+							setState(prevState => ({
+								...prevState,
+								newPassword: value
+							}))
+						}
 						onSubmitEditing={() => {
-							if (Accounts_CustomFields && Object.keys(customFields).length) {
+							if (Accounts_CustomFields && Object.keys(state.customFields).length) {
 								// @ts-ignore
-								return this[Object.keys(customFields)[0]].focus();
+								return this[Object.keys(state.customFields)[0]].focus();
 							}
 							avatarUrlRef.current?.focus();
 						}}
 						secureTextEntry
 						testID='profile-view-new-password'
 					/>
-					{renderCustomFields()}
+					{renderCustomFields}
 					<Button
 						title={I18n.t('Save_Changes')}
 						type='primary'
 						onPress={submit}
 						disabled={!formIsChanged()}
 						testID='profile-view-submit'
-						loading={saving}
+						loading={state.saving}
 					/>
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
@@ -548,7 +586,6 @@ const ProfileView: React.FC<IProfileViewProps> = ({
 		</KeyboardView>
 	);
 }
-
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
