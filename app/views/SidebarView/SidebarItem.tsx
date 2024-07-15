@@ -27,7 +27,7 @@ const Item = React.memo(({ left, right, text, onPress, testID, current, theme, t
 		accessibilityLabel={text}>
 		<View style={styles.itemHorizontal}>{left}</View>
 		<View style={styles.itemCenter}>
-			<Text style={[styles.itemText, { color: textColor || themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+			<Text testID={`sidebar-custom-status-text-${text}`} style={[styles.itemText, { color: textColor || themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 				{text}
 			</Text>
 		</View>
