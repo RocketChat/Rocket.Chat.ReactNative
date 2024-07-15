@@ -9,7 +9,7 @@ const onPressMock = jest.fn((value: boolean) => value);
 describe('SwitchItemEncrypted', () => {
 	const testEncrypted = {
 		encrypted: false,
-		encryptionEnabled: false,
+		encryptionDisabled: false,
 		isTeam: false,
 		onValueChangeEncrypted: onPressMock,
 		type: false,
@@ -21,7 +21,7 @@ describe('SwitchItemEncrypted', () => {
 		render(
 			<SwitchItemEncrypted
 				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
+				encryptionDisabled={!testEncrypted.encryptionDisabled}
 				isTeam={testEncrypted.isTeam}
 				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
 				type={testEncrypted.type}
@@ -32,11 +32,10 @@ describe('SwitchItemEncrypted', () => {
 	});
 
 	it('should render the Encrypted Switch component', () => {
-		testEncrypted.encryptionEnabled = true;
 		render(
 			<SwitchItemEncrypted
 				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
+				encryptionDisabled={testEncrypted.encryptionDisabled}
 				isTeam={testEncrypted.isTeam}
 				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
 				type={testEncrypted.type}
@@ -50,7 +49,7 @@ describe('SwitchItemEncrypted', () => {
 		render(
 			<SwitchItemEncrypted
 				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
+				encryptionDisabled={testEncrypted.encryptionDisabled}
 				isTeam={testEncrypted.isTeam}
 				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
 				type={testEncrypted.type}
@@ -67,7 +66,7 @@ describe('SwitchItemEncrypted', () => {
 		render(
 			<SwitchItemEncrypted
 				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
+				encryptionDisabled={testEncrypted.encryptionDisabled}
 				isTeam={testEncrypted.isTeam}
 				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
 				type={testEncrypted.type}
@@ -84,7 +83,7 @@ describe('SwitchItemEncrypted', () => {
 		render(
 			<SwitchItemEncrypted
 				encrypted={testEncrypted.encrypted}
-				encryptionEnabled={testEncrypted.encryptionEnabled}
+				encryptionDisabled={testEncrypted.encryptionDisabled}
 				isTeam={testEncrypted.isTeam}
 				onValueChangeEncrypted={value => testEncrypted.onValueChangeEncrypted(value)}
 				type={testEncrypted.type}

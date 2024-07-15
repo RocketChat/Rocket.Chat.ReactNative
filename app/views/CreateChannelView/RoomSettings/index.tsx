@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 
-import { useAppSelector } from '../../../lib/hooks';
+import { IFormData } from '..';
+import { useSetting } from '../../../lib/hooks/useSetting';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { SwitchItem } from './SwitchItem';
-import { SwitchItemType } from './SwitchItemType';
-import { SwitchItemReadOnly } from './SwitchItemReadOnly';
 import { SwitchItemEncrypted } from './SwitchItemEncrypted';
-import { IFormData } from '..';
+import { SwitchItemReadOnly } from './SwitchItemReadOnly';
+import { SwitchItemType } from './SwitchItemType';
 
 export const RoomSettings = ({
 	isTeam,
@@ -22,48 +22,72 @@ export const RoomSettings = ({
 	createPrivateChannelPermission: boolean;
 	e2eEnabledDefaultPrivateRooms: boolean;
 }) => {
+	const e2eEnabled = useSetting<boolean>('E2E_Enable');
+
 	const [type, setType] = useState(true);
 	const [readOnly, setReadOnly] = useState(false);
 	const [encrypted, setEncrypted] = useState(e2eEnabledDefaultPrivateRooms);
 	const [broadcast, setBroadcast] = useState(false);
 
-	const { encryptionEnabled } = useAppSelector(state => ({
-		encryptionEnabled: state.encryption.enabled
-	}));
+	const canOnlyCreateOneType = useMemo(() => {
+		if (!createChannelPermission && createPrivateChannelPermission) return 'p';
+		if (createChannelPermission && !createPrivateChannelPermission) return 'c';
+		return false;
+	}, [createChannelPermission, createPrivateChannelPermission]);
+
+	const isPrivate = useMemo(() => (canOnlyCreateOneType ? canOnlyCreateOneType === 'p' : true), [canOnlyCreateOneType]);
+	const e2eDisabled = useMemo(() => !isPrivate || broadcast || !e2eEnabled, [e2eEnabled, broadcast, isPrivate]);
 
 	const onValueChangeType = useCallback(
 		(value: boolean) => {
 			logEvent(events.CR_TOGGLE_TYPE);
-			// If we set the channel as public, encrypted status should be false
 			setType(value);
 			setValue('type', value);
-			setEncrypted(value && encrypted);
-			setValue('encrypted', value && encrypted);
+			const newEncryptedValue = value && encrypted;
+			setEncrypted(newEncryptedValue);
+			setValue('encrypted', newEncryptedValue);
 		},
-		[encrypted]
+		[encrypted, setValue]
 	);
 
-	const onValueChangeReadOnly = useCallback((value: boolean) => {
-		logEvent(events.CR_TOGGLE_READ_ONLY);
-		setReadOnly(value);
-		setValue('readOnly', value);
-	}, []);
+	const onValueChangeReadOnly = useCallback(
+		(value: boolean) => {
+			logEvent(events.CR_TOGGLE_READ_ONLY);
+			setReadOnly(value);
+			setValue('readOnly', value);
+		},
+		[setValue]
+	);
 
-	const onValueChangeEncrypted = useCallback((value: boolean) => {
-		logEvent(events.CR_TOGGLE_ENCRYPTED);
-		setEncrypted(value);
-		setValue('encrypted', value);
-	}, []);
+	const onValueChangeEncrypted = useCallback(
+		(value: boolean) => {
+			logEvent(events.CR_TOGGLE_ENCRYPTED);
+			setEncrypted(value);
+			setValue('encrypted', value);
+		},
+		[setValue]
+	);
 
-	const onValueChangeBroadcast = (value: boolean) => {
-		logEvent(events.CR_TOGGLE_BROADCAST);
-		setBroadcast(value);
-		setValue('broadcast', value);
-		setReadOnly(value ? true : readOnly);
-		setValue('readOnly', value ? true : readOnly);
-	};
+	const onValueChangeBroadcast = useCallback(
+		(value: boolean) => {
+			logEvent(events.CR_TOGGLE_BROADCAST);
+			setBroadcast(value);
+			setValue('broadcast', value);
+			const newReadOnlyValue = value ? true : readOnly;
+			setReadOnly(newReadOnlyValue);
+			setValue('readOnly', newReadOnlyValue);
+			if (encrypted && value) {
+				setEncrypted(false);
+				setValue('encrypted', false);
+			}
+		},
+		[encrypted, readOnly, setValue]
+	);
 
-	const isDisabled = [createChannelPermission, createPrivateChannelPermission].filter(r => r === true).length <= 1;
+	const isDisabled = useMemo(
+		() => [createChannelPermission, createPrivateChannelPermission].filter(Boolean).length <= 1,
+		[createChannelPermission, createPrivateChannelPermission]
+	);
 
 	return (
 		<>
@@ -80,17 +104,18 @@ export const RoomSettings = ({
 				onValueChangeReadOnly={onValueChangeReadOnly}
 			/>
 			<SwitchItemEncrypted
-				encryptionEnabled={encryptionEnabled}
+				encryptionDisabled={e2eDisabled}
 				isTeam={isTeam}
 				type={type}
 				encrypted={encrypted}
+				disabled={e2eEnabledDefaultPrivateRooms}
 				onValueChangeEncrypted={onValueChangeEncrypted}
 			/>
 			<SwitchItem
-				id={'broadcast'}
+				id='broadcast'
 				value={broadcast}
-				label={'Broadcast'}
-				hint={'Broadcast_hint'}
+				label='Broadcast'
+				hint='Broadcast_hint'
 				onValueChange={onValueChangeBroadcast}
 			/>
 		</>
