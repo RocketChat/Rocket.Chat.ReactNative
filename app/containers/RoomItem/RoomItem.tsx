@@ -56,7 +56,6 @@ const RoomItem = ({
 	sourceType,
 	hideMentionStatus
 }: IRoomItemProps) => {
-	// later update this
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
