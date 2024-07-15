@@ -119,15 +119,14 @@ export async function logout({ server }: { server: string }): Promise<void> {
 		log(e);
 	}
 
-	try {
-		// RC 0.60.0
-		await sdk.current.logout();
-	} catch (e) {
-		log(e);
-	}
-
 	if (sdk.current) {
-		sdk.disconnect();
+		try {
+			// RC 0.60.0
+			await sdk.current.logout();
+			sdk.disconnect();
+		} catch (e) {
+			log(e);
+		}
 	}
 
 	await removeServerData({ server });
