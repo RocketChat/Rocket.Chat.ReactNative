@@ -33,12 +33,4 @@ class MainActivity : ReactActivity() {
   override fun invokeDefaultOnBackPressed() {
     moveTaskToBack(true)
   }
-
-	// from react-native-orientation
-	override fun onConfigurationChanged(newConfig: Configuration) {
-		super.onConfigurationChanged(newConfig)
-		val intent = Intent("onConfigurationChanged")
-		intent.putExtra("newConfig", newConfig)
-		sendBroadcast(intent)
-	}
 }
