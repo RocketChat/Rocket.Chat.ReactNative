@@ -113,9 +113,6 @@ const Url = React.memo(
 
 		let image = url.image || url.url;
 		
-		
-		
-
 		if (image) {
 			image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 			Image.getSize(image, (width, height) => {
