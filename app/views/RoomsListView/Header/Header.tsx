@@ -24,9 +24,6 @@ const styles = StyleSheet.create({
 	subtitle: {
 		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	upsideDown: {
-		transform: [{ scaleY: -1 }]
 	}
 });
 

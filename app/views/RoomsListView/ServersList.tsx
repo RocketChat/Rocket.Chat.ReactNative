@@ -26,7 +26,7 @@ import { removeServer } from '../../lib/methods';
 import { useAppSelector } from '../../lib/hooks';
 
 const ROW_HEIGHT = 68;
-const MAX_ROWS = 4;
+const MAX_ROWS = 4.5;
 
 const ServersList = () => {
 	const subscription = useRef<Subscription>();
@@ -124,16 +124,13 @@ const ServersList = () => {
 
 	return (
 		<View
-			style={[
-				styles.dropdownContainer,
-				{
-					backgroundColor: colors.surfaceRoom,
-					borderColor: colors.strokeLight,
-					marginBottom: insets.bottom
-				}
-			]}
+			style={{
+				backgroundColor: colors.surfaceRoom,
+				borderColor: colors.strokeLight,
+				marginBottom: insets.bottom
+			}}
 			testID='rooms-list-header-servers-list'>
-			<View style={[styles.dropdownContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
+			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
 				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
 				<TouchableOpacity onPress={addServer} testID='rooms-list-header-server-add'>
 					<Text style={[styles.serverHeaderAdd, { color: colors.badgeBackgroundLevel2 }]}>{I18n.t('Add_Server')}</Text>

@@ -17,8 +17,5 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		paddingBottom: 30
-	},
-	dropdownContainer: {
-		width: '100%'
 	}
 });

@@ -25,7 +25,7 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	};
 
 	onPress = () => {
-		showActionSheetRef({ children: <ServersList /> });
+		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 	};
 
 	render() {

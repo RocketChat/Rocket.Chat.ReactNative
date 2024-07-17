@@ -2,7 +2,6 @@ import React from 'react';
 import { FlatList, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import styles from '../styles';
 import { useTheme } from '../../../theme';
 import * as List from '../../../containers/List';
 import DepartmentItemFilter, { ROW_HEIGHT } from './DepartmentItemFilter';
@@ -22,14 +21,11 @@ const DepartmentFilter = ({ currentDepartment, onDepartmentSelected, departments
 
 	return (
 		<View
-			style={[
-				styles.dropdownContainer,
-				{
-					backgroundColor: colors.surfaceRoom,
-					borderColor: colors.strokeLight,
-					marginBottom: insets.bottom
-				}
-			]}>
+			style={{
+				backgroundColor: colors.surfaceRoom,
+				borderColor: colors.strokeLight,
+				marginBottom: insets.bottom
+			}}>
 			<FlatList
 				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
 				data={departments}

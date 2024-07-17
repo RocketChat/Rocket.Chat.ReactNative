@@ -9,17 +9,11 @@ export default StyleSheet.create({
 	list: {
 		width: '100%'
 	},
-	dropdownContainerHeader: {
+	serversListContainerHeader: {
 		height: 41,
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		alignItems: 'center',
 		flexDirection: 'row'
-	},
-	dropdownContainer: {
-		width: '100%'
-	},
-	backdrop: {
-		...StyleSheet.absoluteFillObject
 	},
 	groupTitleContainer: {
 		paddingHorizontal: 12,

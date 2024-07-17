@@ -57,8 +57,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
 	const [departments, setDepartments] = useState<ILivechatDepartment[]>([]);
-
-	// states used by the filter in Header and Dropdown
 	const [isSearching, setIsSearching] = useState(false);
 	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
 
