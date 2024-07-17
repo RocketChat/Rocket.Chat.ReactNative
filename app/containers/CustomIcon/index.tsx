@@ -17,7 +17,7 @@ export interface ICustomIcon extends IconProps {
 	color?: string;
 }
 
-const CustomIcon = ({ name, size = 24, color, style, ...props }: ICustomIcon): React.ReactElement => {
+const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
 	return <IconSet name={name} size={size} color={color || colors.fontDefault} style={[{ lineHeight: size }, style]} {...props} />;
 };
