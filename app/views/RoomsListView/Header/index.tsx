@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import { setSearch } from '../../../actions/rooms';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
@@ -26,7 +25,6 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	};
 
 	onPress = () => {
-		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
 		showActionSheetRef({ children: <ServersList /> });
 	};
 
