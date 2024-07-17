@@ -16,10 +16,7 @@ export default StyleSheet.create({
 		flexDirection: 'row'
 	},
 	dropdownContainer: {
-		width: '100%',
-		position: 'absolute',
-		top: 0,
-		borderBottomWidth: StyleSheet.hairlineWidth
+		width: '100%'
 	},
 	backdrop: {
 		...StyleSheet.absoluteFillObject

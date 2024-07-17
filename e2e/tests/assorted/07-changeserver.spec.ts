@@ -31,8 +31,8 @@ describe('Change server', () => {
 	});
 
 	it('should open the dropdown button, have the server add button and create workspace button', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await waitFor(element(by.id('rooms-list-header-server-add')))
@@ -57,8 +57,8 @@ describe('Change server', () => {
 	});
 
 	it('should add server and create new user', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();
@@ -91,8 +91,8 @@ describe('Change server', () => {
 	});
 
 	it('should change back to main server', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${data.server}`)).tap();

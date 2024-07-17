@@ -3,7 +3,6 @@ import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityPro
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { CustomIcon } from '../../../containers/CustomIcon';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
 import { useAppSelector } from '../../../lib/hooks';
@@ -37,7 +36,6 @@ interface IRoomHeader {
 	isFetching: boolean;
 	serverName: string;
 	server: string;
-	showServerDropdown: boolean;
 	showSearchHeader: boolean;
 	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
@@ -50,7 +48,6 @@ const Header = React.memo(
 		isFetching,
 		serverName = 'Rocket.Chat',
 		server,
-		showServerDropdown,
 		showSearchHeader,
 		onSearchChangeText,
 		onPress
@@ -75,24 +72,17 @@ const Header = React.memo(
 		}
 		return (
 			<View style={styles.container}>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
+				<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
 					<View style={styles.button}>
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{serverName}
 						</Text>
-						<CustomIcon
-							name='chevron-down'
-							color={colors.fontSecondaryInfo}
-							style={[showServerDropdown && styles.upsideDown]}
-							size={18}
-						/>
 					</View>
 					{subtitle ? (
 						<Text
 							testID='rooms-list-header-server-subtitle'
 							style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-							numberOfLines={1}
-						>
+							numberOfLines={1}>
 							{subtitle}
 						</Text>
 					) : null}

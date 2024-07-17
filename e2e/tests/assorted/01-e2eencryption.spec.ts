@@ -369,8 +369,8 @@ describe('E2E Encryption', () => {
 
 		it('should add server and create new user', async () => {
 			await sleep(5000);
-			await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-			await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+			await element(by.id('rooms-list-header-servers-list-button')).tap();
+			await waitFor(element(by.id('rooms-list-header-servers-list')))
 				.toBeVisible()
 				.withTimeout(5000);
 			await element(by.id('rooms-list-header-server-add')).tap();
@@ -403,8 +403,8 @@ describe('E2E Encryption', () => {
 		});
 
 		it('should change back', async () => {
-			await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-			await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+			await element(by.id('rooms-list-header-servers-list-button')).tap();
+			await waitFor(element(by.id('rooms-list-header-servers-list')))
 				.toBeVisible()
 				.withTimeout(5000);
 			await element(by.id(`rooms-list-header-server-${data.server}`)).tap();
