@@ -74,7 +74,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			title: I18n.t('Directory'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={this.showFilters} />
+					<HeaderButton.Item iconName='filter' onPress={this.showFilters} testID='directory-view-filter' />
 				</HeaderButton.Container>
 			)
 		};

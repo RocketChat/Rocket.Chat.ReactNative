@@ -30,7 +30,10 @@ describe('Change server', () => {
 		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
-	it('should open the dropdown button, have the server add button and create workspace button', async () => {
+	it('should open the servers list, have the server add button and create workspace button', async () => {
+		await waitFor(element(by.id('rooms-list-header-servers-list-button')))
+			.toBeVisible()
+			.withTimeout(2000);
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
