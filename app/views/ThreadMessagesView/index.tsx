@@ -65,8 +65,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	private rid: string;
 
-	private t: string;
-
 	private subSubscription?: Subscription;
 
 	private messagesSubscription?: Subscription;
@@ -77,7 +75,6 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		super(props);
 		this.mounted = false;
 		this.rid = props.route.params?.rid;
-		this.t = props.route.params?.t;
 		this.state = {
 			loading: false,
 			end: false,
