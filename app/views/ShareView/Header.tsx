@@ -96,7 +96,7 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<View style={styles.container} accessible accessibilityLabel={`${I18n.t('Sending_to')} ${title}`} accessibilityRole='header'>
 			<View style={styles.inner}>
 				<Text numberOfLines={1} style={styles.text}>
 					<Text style={[styles.text, { color: textColor }]} numberOfLines={1}>

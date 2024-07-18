@@ -73,8 +73,9 @@ const Header = React.memo(
 		} else {
 			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 		}
+		// improve copy
 		return (
-			<View style={styles.container}>
+			<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
 					<View style={styles.button}>
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
@@ -91,8 +92,7 @@ const Header = React.memo(
 						<Text
 							testID='rooms-list-header-server-subtitle'
 							style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-							numberOfLines={1}
-						>
+							numberOfLines={1}>
 							{subtitle}
 						</Text>
 					) : null}
