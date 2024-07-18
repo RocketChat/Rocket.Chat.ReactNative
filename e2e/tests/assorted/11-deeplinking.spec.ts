@@ -213,8 +213,8 @@ describe('Deep linking', () => {
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-				await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+				await element(by.id('rooms-list-header-servers-list-button')).tap();
+				await waitFor(element(by.id('rooms-list-header-servers-list')))
 					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();
