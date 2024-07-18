@@ -91,7 +91,10 @@ const ServersList = () => {
 			}
 			if (!userId) {
 				navToNewServer(server);
-				EventEmitter.emit('NewServer', { server: serverParam });
+				// Intentionally not cleared, because it needs to trigger the emitter even after unmount
+				setTimeout(() => {
+					EventEmitter.emit('NewServer', { server: serverParam });
+				}, 300);
 			} else {
 				await localAuthenticate(serverParam);
 				dispatch(selectServerRequest(serverParam, version, true, true));
