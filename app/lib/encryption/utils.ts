@@ -1,7 +1,7 @@
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import { compareServerVersion, random } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
 import { TSubscriptionModel } from '../../definitions';
 import { store } from '../store/auxStore';
