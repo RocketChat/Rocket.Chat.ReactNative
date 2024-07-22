@@ -59,7 +59,10 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	// @ts-ignore
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
-export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+export const randomPassword = async (): Promise<string> => {
+	const random = await Promise.all(Array.from({ length: 4 }, () => SimpleCrypto.utils.getRandomValues(3)));
+	return `${random[0]}-${random[1]}-${random[2]}-${random[3]}`;
+};
 
 export const generateAESCTRKey = () => SimpleCrypto.utils.randomBytes(32);
 

@@ -188,7 +188,7 @@
 		"@types/react-test-renderer": "^18.0.7",
 		"@types/semver": "7.3.13",
 		"@types/ua-parser-js": "^0.7.36",
-		"@types/url-parse": "^1.4.8",
+		"@types/url-parse": "1.4.11",
 		"@typescript-eslint/eslint-plugin": "^7.4.0",
 		"@typescript-eslint/parser": "^7.4.0",
 		"axios": "0.27.2",
