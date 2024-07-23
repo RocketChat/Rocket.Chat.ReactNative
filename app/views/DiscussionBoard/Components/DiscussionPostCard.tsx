@@ -16,6 +16,9 @@ import Markdown from '../../../containers/markdown';
 import Avatar from '../../../containers/Avatar/Avatar';
 import { Services } from '../../../lib/services';
 import RoomServices from './../../RoomView/services';
+import { TThreadMessageModel } from '../../../definitions';
+
+import { loadThreadMessages } from '../../../lib/methods';
 
 import { ResizeMode, Video } from 'expo-av';
 
@@ -27,7 +30,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	const server = useSelector((state: IApplicationState) => state.server.server);
 
 	// const { theme } = useTheme();
-    const theme = 'light'
+	const theme = 'light';
 
 	const styles = makeStyles(theme, themes);
 
@@ -35,7 +38,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 	const { msg, id, ts, u: userObject, urls, attachments, replies, reactions, starred, rid } = _raw;
 
 	const [isSaved, setIsSaved] = useState(false);
-	const [replyList, setReplyList] = useState([]);
+	const [replyList, setReplyList] = useState<void | TThreadMessageModel[]>([]);
 	const [description, setDescription] = useState('');
 	const [bannerImage, setBannerImage] = useState<null | string>(null);
 	const [videoUri, setVideoUri] = useState<string | null>(null);
@@ -78,13 +81,20 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 		return null;
 	};
 
+	const getReplies = async () => {
+		const repliesList = await loadThreadMessages({ tmid: id, rid: rid });
+		if (repliesList?.length) {
+			setReplyList(repliesList);
+		}
+	};
+
 	useEffect(() => {
 		if (item) {
 			setIsSaved(starred);
-			setReplyList(replies);
 			setDescription(msg);
 			setLikeCount(0);
 			setHasLiked(false);
+			getReplies();
 			if (Array.isArray(attachments) && attachments?.length > 0) {
 				const attachment = attachments[0];
 				if (attachment.image_url) {
@@ -93,7 +103,7 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 				} else if (attachment.video_url) {
 					const url = formatAttachmentUrl(attachment.video_url, user.id, user.token, server);
 					const uri = encodeURI(url);
-					setVideoUri(uri)
+					setVideoUri(uri);
 				}
 			}
 			if (reactions && typeof reactions !== 'string') {
@@ -140,14 +150,14 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 					}}
 				/>
 			)}
-			{videoUri &&
+			{videoUri && (
 				<Video
-			 		source={{ uri: videoUri }}
-			 		resizeMode={ResizeMode.CONTAIN}
-			 		shouldPlay={false}
-			 		style={{ aspectRatio: 16 / 9, width: '100%' }}
+					source={{ uri: videoUri }}
+					resizeMode={ResizeMode.CONTAIN}
+					shouldPlay={false}
+					style={{ aspectRatio: 16 / 9, width: '100%' }}
 				/>
-			}
+			)}
 			<View style={styles.textContainer}>
 				{title ? <Text style={styles.title}>{title}</Text> : <></>}
 				{description ? (
@@ -184,96 +194,95 @@ const DiscussionPostCard = React.memo((item: SavedPostCardProps) => {
 export default withTheme(DiscussionPostCard);
 const makeStyles = (theme: string, themes: any) =>
 	StyleSheet.create({
-	container: {
-		width: '100%',
-		elevation: 1,
-		backgroundColor: '#fff',
-		padding: 20,
-		borderRadius: 20,
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 0 },
-		shadowOpacity: 0.05,
-		shadowRadius: 30,
-		elevation: 5
-	},
-	header: {
-		flexDirection: 'row',
-		marginBottom: 12.5,
-		alignItems: 'center'
-	},
-	profileImage: {
-		width: 34,
-		height: 34,
-		borderRadius: 17,
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	headerTextContainer: {
-		marginLeft: 12,
-		flex: 1
-	},
-	nameText: {
-		fontSize: 14,
-		lineHeight: 20,
-		fontWeight: '400'
-	},
-	dateText: {
-		fontSize: 12,
-		lineHeight: 15,
-		fontWeight: '400',
-		color: '#00000080'
-	},
-	saveIcon: {
-		width: 18,
-		height: 18
-	},
-	postReaction: {
-		height: 14,
-		width: 14
-	},
-	postReactionText: {
-		fontSize: 10,
-		lineHeight: 12,
-		fontWeight: '400',
-		marginLeft: 6
-	},
-	bannerImage: {
-		borderRadius: 20,
-		height: 160,
-		width: '100%',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	arrow: {
-		height: 15,
-		width: 15
-	},
-	textContainer: {
-		paddingTop: 6,
-		marginVertical: 10
-	},
-	title: {
-		fontFamily: 'Inter',
-		fontWeight: '500',
-		fontSize: 16,
-		lineHeight: 19,
-		color: '#000000'
-	},
-	description: {
-		fontFamily: 'Inter',
-		fontWeight: '400',
-		fontSize: 12,
-	    color: themes[theme].bodyText
-	},
-	actionContainer: {
-		width: '100%',
-		height: 33,
-		alignItems: 'center',
-		flexDirection: 'row',
-		justifyContent: 'space-between'
-	},
-	buttonContainer: {
-		flexDirection: 'row',
-		alignItems: 'center'
-	}
-});
+		container: {
+			width: '100%',
+			backgroundColor: '#fff',
+			padding: 20,
+			borderRadius: 20,
+			shadowColor: '#000',
+			shadowOffset: { width: 0, height: 0 },
+			shadowOpacity: 0.05,
+			shadowRadius: 30,
+			elevation: 5
+		},
+		header: {
+			flexDirection: 'row',
+			marginBottom: 12.5,
+			alignItems: 'center'
+		},
+		profileImage: {
+			width: 34,
+			height: 34,
+			borderRadius: 17,
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		headerTextContainer: {
+			marginLeft: 12,
+			flex: 1
+		},
+		nameText: {
+			fontSize: 14,
+			lineHeight: 20,
+			fontWeight: '400'
+		},
+		dateText: {
+			fontSize: 12,
+			lineHeight: 15,
+			fontWeight: '400',
+			color: '#00000080'
+		},
+		saveIcon: {
+			width: 18,
+			height: 18
+		},
+		postReaction: {
+			height: 14,
+			width: 14
+		},
+		postReactionText: {
+			fontSize: 10,
+			lineHeight: 12,
+			fontWeight: '400',
+			marginLeft: 6
+		},
+		bannerImage: {
+			borderRadius: 20,
+			height: 160,
+			width: '100%',
+			justifyContent: 'center',
+			alignItems: 'center'
+		},
+		arrow: {
+			height: 15,
+			width: 15
+		},
+		textContainer: {
+			paddingTop: 6,
+			marginVertical: 10
+		},
+		title: {
+			fontFamily: 'Inter',
+			fontWeight: '500',
+			fontSize: 16,
+			lineHeight: 19,
+			color: '#000000'
+		},
+		description: {
+			fontFamily: 'Inter',
+			fontWeight: '400',
+			fontSize: 12,
+			color: themes[theme].bodyText
+		},
+		actionContainer: {
+			width: '100%',
+			height: 33,
+			alignItems: 'center',
+			flexDirection: 'row',
+			justifyContent: 'space-between'
+		},
+		buttonContainer: {
+			flexDirection: 'row',
+			alignItems: 'center'
+		}
+	});

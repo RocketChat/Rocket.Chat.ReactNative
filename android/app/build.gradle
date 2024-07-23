@@ -301,7 +301,7 @@ android {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }
-        experimentalPlayRelease {
+        experimentalPlay {
             java.srcDirs = ['src/main/java', 'src/play/java']
             manifest.srcFile 'src/play/AndroidManifest.xml'
         }

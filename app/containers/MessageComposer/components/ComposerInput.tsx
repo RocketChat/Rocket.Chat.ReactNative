@@ -331,7 +331,7 @@ export const ComposerInput = memo(
 			<TextInput
 				style={[styles.textInput, { color: themes[theme].bodyText }]}
 				placeholder={placeholder}
-				placeholderTextColor={colors.fontAnnotation}
+				placeholderTextColor={colors.auxiliaryText}
 				ref={component => (inputRef.current = component)}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}

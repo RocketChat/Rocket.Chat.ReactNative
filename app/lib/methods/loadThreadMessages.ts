@@ -24,8 +24,8 @@ async function load({ tmid }: { tmid: string }) {
 	}
 }
 
-export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }) {
-	return new Promise<void>(async (resolve, reject) => {
+export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string }): Promise<TThreadMessageModel[] | null> {
+	return new Promise(async (resolve, reject) => {
 		try {
 			let data = await load({ tmid });
 			if (data && data.length) {

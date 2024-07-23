@@ -48,7 +48,6 @@ module.exports = {
 		'ordered-imports': [0],
 		'react/no-did-mount-set-state': 0,
 		'react/no-multi-comp': [0],
-		'react/jsx-indent-props': [2, 'tab'],
 		'jsx-quotes': [2, 'prefer-single'],
 		'jsx-a11y/href-no-hash': 0,
 		'jsx-a11y/aria-role': 0,
@@ -112,7 +111,6 @@ module.exports = {
 		complexity: [1, 31],
 		'space-in-parens': [2, 'never'],
 		'space-before-blocks': [2, 'always'],
-		indent: 'off',
 		'eol-last': [2, 'always'],
 		'comma-dangle': [2, 'never'],
 		'keyword-spacing': 2,
@@ -162,7 +160,6 @@ module.exports = {
 				'plugin:@typescript-eslint/recommended',
 				'plugin:@typescript-eslint/eslint-recommended',
 				'@rocket.chat/eslint-config',
-				'prettier'
 			],
 			parser: '@typescript-eslint/parser',
 			parserOptions: {

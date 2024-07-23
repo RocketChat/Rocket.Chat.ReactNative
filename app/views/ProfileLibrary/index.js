@@ -2,8 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FlatList, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
+import FastImage from 'react-native-fast-image';
+
 import { Services as RocketChat } from '../../lib/services';
 import DirectoryItem from '../../containers/DirectoryItem';
+import { clearCache } from '../../lib/methods';
+import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
@@ -28,19 +32,16 @@ class ProfileLibraryView extends React.Component {
 			title: I18n.t('PeerSupporterLibrary')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => (
-				<HeaderButton.Drawer
-					navigation={navigation}
-					testID='profile-library-view-drawer'
-				/>
-			);
+			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} testID='profile-library-view-drawer' />;
 		}
 		return options;
-	}
+	};
 
 	static propTypes = {
 		navigation: PropTypes.object,
-		baseUrl: PropTypes.string,
+		server: PropTypes.shape({
+			baseurl: PropTypes.string
+		}),
 		isFederationEnabled: PropTypes.bool,
 		user: PropTypes.shape({
 			id: PropTypes.string,
@@ -65,32 +66,47 @@ class ProfileLibraryView extends React.Component {
 			type: props.directoryDefaultView
 		};
 		this.loadingMore = false;
-    	this.threshold = 5;
+		this.threshold = 5;
 	}
 
 	onEndReached = () => {
 		const { loading, total, searching, numUsersFetched } = this.state;
-	
+
 		if (!searching && numUsersFetched < total && !loading) {
 			this.load({});
 		}
 	};
 
+	clearCache = async () => {
+		logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
+		const { server } = this.props;
+
+		await deleteMediaFiles(server.server);
+		await clearCache({ server: server.server });
+		await FastImage.clearMemoryCache();
+		await FastImage.clearDiskCache();
+	};
+
 	componentDidMount() {
+		this.clearCache();
 		this.load({});
 		logEvent(events.DIRECTORY_SEARCH_USERS);
 	}
 
-	onSearchChangeText = (text) => {
+	onSearchChangeText = text => {
 		this.setState({ text });
-	}
+	};
 
 	load = debounce(async ({ newSearch = false }) => {
 		if (newSearch) {
 			this.setState({ data: [], total: -1, numUsersFetched: 0, loading: false });
 		}
 		const {
-			loading, text, total, numUsersFetched, data: { length }
+			loading,
+			text,
+			total,
+			numUsersFetched,
+			data: { length }
 		} = this.state;
 		if (loading || (numUsersFetched >= total && total !== -1)) {
 			return;
@@ -113,13 +129,15 @@ class ProfileLibraryView extends React.Component {
 				const combinedResults = [];
 				const results = directories.result;
 
-				await Promise.all(results.map(async (item, index) => {
-					const user = await RocketChat.getUserInfo(item._id);
-					//Only keep users that are Peer Supporters
-					if (user.user.roles.includes("Peer Supporter")) {
-					  combinedResults.push({ ...item, customFields: user.user.customFields });
-					}
-				}));
+				await Promise.all(
+					results.map(async (item, index) => {
+						const user = await RocketChat.getUserInfo(item._id);
+						//Only keep users that are Peer Supporters
+						if (user.user.roles.includes('Peer Supporter')) {
+							combinedResults.push({ ...item, customFields: user.user.customFields });
+						}
+					})
+				);
 
 				// Update total number of users in directory, and number fetched (including filtered out users)
 				this.setState({
@@ -136,13 +154,13 @@ class ProfileLibraryView extends React.Component {
 			log(e);
 			this.setState({ loading: false, refreshing: false });
 		}
-	}, 200)
+	}, 200);
 
 	search = () => {
 		this.load({ newSearch: true });
-	}
+	};
 
-	changeType = (type) => {
+	changeType = type => {
 		this.setState({ type, data: [] }, () => this.search());
 
 		if (type === 'users') {
@@ -150,17 +168,20 @@ class ProfileLibraryView extends React.Component {
 		} else if (type === 'channels') {
 			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
 		}
-	}
+	};
 
 	toggleWorkspace = () => {
-		this.setState(({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }), () => this.search());
-	}
+		this.setState(
+			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
+			() => this.search()
+		);
+	};
 
 	toggleDropdown = () => {
 		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
-	}
+	};
 
-	goRoom = (item) => {
+	goRoom = item => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
 			navigation.navigate('DrawerNavigator');
@@ -168,9 +189,9 @@ class ProfileLibraryView extends React.Component {
 			navigation.navigate('RoomsListView');
 		}
 		goRoom({ item, isMasterDetail });
-	}
+	};
 
-	onPressItem = (item) => {
+	onPressItem = item => {
 		const { type } = this.state;
 		const { navigation } = this.props;
 		if (type === 'users') {
@@ -182,10 +203,13 @@ class ProfileLibraryView extends React.Component {
 			navigation.navigate('ConnectView', { user: postUser, fromRid: item._id });
 		} else {
 			this.goRoom({
-				rid: item._id, name: item.name, t: 'c', search: true
+				rid: item._id,
+				name: item.name,
+				t: 'c',
+				search: true
 			});
 		}
-	}
+	};
 
 	renderHeader = () => (
 		<SearchBox
@@ -194,12 +218,15 @@ class ProfileLibraryView extends React.Component {
 			clearText={this.search}
 			testID='federation-view-search'
 		/>
-	)
+	);
 
 	renderItem = ({ item, index }) => {
 		const { data, type } = this.state;
-		const { baseUrl, user, theme } = this.props;
-
+		const {
+			server: { baseUrl },
+			user,
+			theme
+		} = this.props;
 
 		let style;
 		if (index === data.length - 1) {
@@ -212,7 +239,7 @@ class ProfileLibraryView extends React.Component {
 			title: item?.name,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `federation-view-item-${ item?.name }`,
+			testID: `federation-view-item-${item?.name}`,
 			style,
 			user,
 			theme
@@ -226,7 +253,7 @@ class ProfileLibraryView extends React.Component {
 					rightLabel={item?.federation && item?.federation.peer}
 					type='d'
 					icon={<CustomIcon name='pin-map' size={15} color='#161a1d' />}
-				    age={item.customFields?.Age ? `${ item.customFields?.Age } years old` : ''}
+					age={item.customFields?.Age ? `${item.customFields?.Age} years old` : ''}
 					{...commonProps}
 				/>
 			);
@@ -242,19 +269,13 @@ class ProfileLibraryView extends React.Component {
 				{...commonProps}
 			/>
 		);
-	}
+	};
 
 	render = () => {
-		const {
-			data, loading, refreshing, showOptionsDropdown, type, globalUsers
-		} = this.state;
+		const { data, loading, refreshing, showOptionsDropdown, type, globalUsers } = this.state;
 		const { isFederationEnabled, theme } = this.props;
 		return (
-			<SafeAreaView
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				testID='directory-view'
-				theme={theme}
-			>
+			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view' theme={theme}>
 				<StatusBar theme={theme} />
 				<FlatList
 					data={data}
@@ -268,7 +289,7 @@ class ProfileLibraryView extends React.Component {
 					showsVerticalScrollIndicator={false}
 					ListFooterComponent={loading ? <ActivityIndicator theme={theme} /> : null}
 					onEndReached={this.onEndReached}
-					refreshControl={(
+					refreshControl={
 						<RefreshControl
 							refreshing={refreshing}
 							onRefresh={() => {
@@ -279,28 +300,26 @@ class ProfileLibraryView extends React.Component {
 							}}
 							tintColor={themes[theme].auxiliaryText}
 						/>
-					)}
+					}
 				/>
-				{showOptionsDropdown
-					? (
-						<Options
-							theme={theme}
-							type={type}
-							globalUsers={globalUsers}
-							close={this.toggleDropdown}
-							changeType={this.changeType}
-							toggleWorkspace={this.toggleWorkspace}
-							isFederationEnabled={isFederationEnabled}
-						/>
-					)
-					: null}
+				{showOptionsDropdown ? (
+					<Options
+						theme={theme}
+						type={type}
+						globalUsers={globalUsers}
+						close={this.toggleDropdown}
+						changeType={this.changeType}
+						toggleWorkspace={this.toggleWorkspace}
+						isFederationEnabled={isFederationEnabled}
+					/>
+				) : null}
 			</SafeAreaView>
 		);
-	}
+	};
 }
 
 const mapStateToProps = state => ({
-	baseUrl: state.server.server,
+	server: state.server,
 	user: getUserSelector(state),
 	isFederationEnabled: state.settings.FEDERATION_Enabled,
 	directoryDefaultView: 'users',

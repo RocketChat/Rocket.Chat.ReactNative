@@ -42,7 +42,6 @@ import RoomServices from './../../RoomView/services';
 
 import { ResizeMode, Video } from 'expo-av';
 
-
 const hitSlop = { top: 10, right: 10, bottom: 10, left: 10 };
 
 const PostView: React.FC = ({ route }) => {
@@ -427,21 +426,21 @@ const PostView: React.FC = ({ route }) => {
 							)}
 						</View>
 						<View style={styles.content}>
-						   {videoUri &&
-							   <Video
-								source={{ uri: videoUri }}
-								rate={1.0}
-								volume={1.0}
-								isMuted={false}
-								resizeMode={ResizeMode.CONTAIN}
-								shouldPlay
-								isLooping={false}
-								style={{ aspectRatio: 16 / 9, width: '100%' }}
-								useNativeControls
-								onError={console.log}
-								ref={videoRef}
-							   />
-							 }
+							{videoUri && (
+								<Video
+									source={{ uri: videoUri }}
+									rate={1.0}
+									volume={1.0}
+									isMuted={false}
+									resizeMode={ResizeMode.CONTAIN}
+									shouldPlay
+									isLooping={false}
+									style={{ aspectRatio: 16 / 9, width: '100%' }}
+									useNativeControls
+									onError={console.log}
+									ref={videoRef}
+								/>
+							)}
 
 							{bannerImage && (
 								<ImageProgress

@@ -7,6 +7,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { dequal } from 'dequal';
 import omit from 'lodash/omit';
 import { StackNavigationOptions } from '@react-navigation/stack';
+import FastImage from 'react-native-fast-image';
 
 import Touch from '../../containers/Touch';
 import KeyboardView from '../../containers/KeyboardView';
@@ -46,9 +47,12 @@ import { withActionSheet, IActionSheetProvider } from '../../containers/ActionSh
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 
+import { clearCache } from '../../lib/methods';
+import { deleteMediaFiles } from '../../lib/methods/handleMediaDownload';
+
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {
 	user: IUser;
-	baseUrl: string;
+	server: string;
 	Accounts_AllowEmailChange: boolean;
 	Accounts_AllowPasswordChange: boolean;
 	Accounts_AllowRealNameChange: boolean;
@@ -197,7 +201,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	isRequiredFieldEmpty = () => {
-	   	const { customFields } = this.state;
+		const { customFields } = this.state;
 		const { Accounts_CustomFields } = this.props;
 
 		if (!Accounts_CustomFields) {
@@ -234,7 +238,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		this.setState({ saving: true });
 
 		const { name, username, email, currentPassword, avatar, customFields, twoFactorCode } = this.state;
-		const { user, dispatch } = this.props;
+		const { user, dispatch, server } = this.props;
 		const params = {} as IProfileParams;
 
 		// Name
@@ -285,6 +289,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				try {
 					logEvent(events.PROFILE_SAVE_AVATAR);
 					await Services.setAvatarFromService(avatar);
+
+					logEvent(events.SE_CLEAR_LOCAL_SERVER_CACHE);
+					await deleteMediaFiles(server);
+					await clearCache({ server });
+					await FastImage.clearMemoryCache();
+					await FastImage.clearDiskCache();
 				} catch (e) {
 					logEvent(events.PROFILE_SAVE_AVATAR_F);
 					this.setState({ saving: false, currentPassword: null });
@@ -294,8 +304,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 			const twoFactorOptions = params.currentPassword
 				? {
-					twoFactorCode: params.currentPassword,
-					twoFactorMethod: TwoFactorMethods.PASSWORD
+						twoFactorCode: params.currentPassword,
+						twoFactorMethod: TwoFactorMethods.PASSWORD
 				  }
 				: null;
 
@@ -338,14 +348,20 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			return;
 		}
 
-		try {
-			const { user } = this.props;
-			await Services.resetAvatar(user.id);
-			EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
-			this.init();
-		} catch (e) {
-			this.handleError(e, 'resetAvatar', 'changing_avatar');
-		}
+		showConfirmationAlert({
+			message: I18n.t('reset_avatar_message'),
+			confirmationText: I18n.t('reset_avatar_confirmation'),
+			onPress: async () => {
+				try {
+					const { user } = this.props;
+					await Services.resetAvatar(user.id);
+					EventEmitter.emit(LISTENER, { message: I18n.t('Avatar_changed_successfully') });
+					this.init();
+				} catch (e) {
+					this.handleError(e, 'resetAvatar', 'changing_avatar');
+				}
+			}
+		});
 	};
 
 	pickImage = async () => {
@@ -387,7 +403,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				testID={key}
 				onPress={onPress}
 				style={[styles.avatarButton, { opacity: disabled ? 0.5 : 1 }, { backgroundColor: themes[theme].borderColor }]}
-				enabled={!disabled}>
+				enabled={!disabled}
+			>
 				{child}
 			</Touch>
 		);
@@ -446,7 +463,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		try {
 			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
 			// filter out ConnectIds and VideoUrl keys
-		    const filteredCustomFields = omit(parsedCustomFields, ['ConnectIds', 'VideoUrl']);
+			const filteredCustomFields = omit(parsedCustomFields, ['ConnectIds', 'VideoUrl']);
 
 			return Object.keys(filteredCustomFields).map((key, index, array) => {
 				const isFieldRequired = filteredCustomFields[key].required;
@@ -461,7 +478,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 								newValue[key] = value;
 								this.setState({ customFields: { ...customFields, ...newValue } });
 							}}
-							value={customFields[key]}>
+							value={customFields[key]}
+						>
 							<FormTextInput
 								inputRef={e => {
 									// @ts-ignore
@@ -475,7 +493,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							/>
 						</RNPickerSelect>
 					);
-				} if (filteredCustomFields[key].type === 'numeric') {
+				}
+				if (filteredCustomFields[key].type === 'numeric') {
 					return (
 						<FormTextInput
 							inputRef={e => {
@@ -575,7 +594,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+				keyboardVerticalOffset={128}
+			>
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
 					<ScrollView contentContainerStyle={sharedStyles.containerScrollView} testID='profile-view-list' {...scrollPersistTaps}>
@@ -644,7 +664,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						/>
 						{this.renderAvatarButtons()}
 						<Button
-							title={this.isRequiredFieldEmpty () ? I18n.t('Please_fill_all_required_fields') : I18n.t('Save_Changes')}
+							title={this.isRequiredFieldEmpty() ? I18n.t('Please_fill_all_required_fields') : I18n.t('Save_Changes')}
 							type='primary'
 							onPress={this.submit}
 							disabled={!this.formIsChanged() || this.isRequiredFieldEmpty()}
@@ -692,7 +712,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange as boolean,
 	Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
 	Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
-	baseUrl: state.server.server,
+	server: state.server.server,
 	Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
 });
 
