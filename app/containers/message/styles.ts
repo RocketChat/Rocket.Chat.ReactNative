@@ -95,16 +95,17 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	imageContainer: {
-		flexDirection: 'column',
+		// flexDirection: 'column',
 		borderRadius: 4
 	},
 	image: {
-		width: '100%',
-		minHeight: isTablet ? 300 : 200,
-		borderRadius: 4,
-		borderWidth: 1,
-		overflow: 'hidden',
-		borderColor: 'rgba(0, 0, 0, 0.1)'
+		// width: '100%',
+		// minHeight: isTablet ? 300 : 200,
+		// width: null,
+		// borderRadius: 4,
+		// borderWidth: 1,
+		// overflow: 'hidden',
+		// borderColor: 'rgba(0, 0, 0, 0.1)'
 	},
 	imageBlurContainer: {
 		height: '100%'

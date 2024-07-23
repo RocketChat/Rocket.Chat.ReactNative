@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { StyleProp, TextStyle, View, Image, ImageProps, ImageStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { emitter } from '../../../../lib/methods/helpers';
@@ -49,11 +49,33 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 });
 
 export const MessageImage = React.memo(
-	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
+	({
+		imgUri,
+		cached,
+		loading,
+		encrypted = false,
+		maxSize
+	}: {
+		imgUri: string;
+		cached: boolean;
+		loading: boolean;
+		encrypted: boolean;
+		maxSize: number;
+	}) => {
 		const { colors } = useTheme();
+		const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 		const valid = isValidUrl(imgUri);
+		const encryptedState = encrypted && !loading && cached;
 
-		if (encrypted && !loading && cached) {
+		useEffect(() => {
+			if (valid && !encryptedState) {
+				Image.getSize(imgUri, (width, height) => {
+					setImageDimensions({ width, height });
+				});
+			}
+		}, [imgUri, valid, encryptedState]);
+
+		if (encryptedState) {
 			return (
 				<>
 					<View style={styles.image} />
@@ -62,21 +84,51 @@ export const MessageImage = React.memo(
 			);
 		}
 
+		const style: ImageStyle = {
+			width: Math.min(imageDimensions.width, maxSize),
+			height: Math.min(imageDimensions.height, maxSize)
+		};
+
+		if (!imageDimensions.width || !maxSize) {
+			return null;
+		}
+
+		// se tiver abaixo de 64x64, faz um comportamento diferente com view fixa
+		if (imageDimensions.width <= 64 && imageDimensions.height <= 64) {
+			return (
+				<View
+					style={{
+						width: 64,
+						height: 64,
+						borderColor: 'red',
+						borderWidth: 1,
+						borderRadius: 4,
+						alignItems: 'center',
+						justifyContent: 'center'
+					}}>
+					{valid ? (
+						<FastImage
+							style={{ width: Math.min(imageDimensions.width, 250), height: Math.min(imageDimensions.height, 250) }}
+							source={{ uri: encodeURI(imgUri) }}
+							// resizeMode={FastImage.resizeMode.contain}
+						/>
+					) : (
+						<View style={styles.image} />
+					)}
+					{!cached ? (
+						<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+					) : null}
+				</View>
+			);
+		}
+
 		return (
-			<>
-				{valid ? (
-					<FastImage
-						style={[styles.image, { borderColor: colors.strokeLight }]}
-						source={{ uri: encodeURI(imgUri) }}
-						resizeMode={FastImage.resizeMode.cover}
-					/>
-				) : (
-					<View style={styles.image} />
-				)}
+			<View style={{ borderColor: 'blue', borderWidth: 1, borderRadius: 4 }}>
+				{valid ? <FastImage style={style} source={{ uri: encodeURI(imgUri) }} /> : <View style={styles.image} />}
 				{!cached ? (
 					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
 				) : null}
-			</>
+			</View>
 		);
 	}
 );
@@ -95,6 +147,7 @@ const ImageContainer = ({
 	const [imageCached, setImageCached] = useFile(file, id);
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const [width, setWidth] = useState(0);
 	const { theme } = useTheme();
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
@@ -224,12 +277,19 @@ const ImageContainer = ({
 
 	const image = (
 		<Button onPress={onPress}>
-			<MessageImage
-				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
-				cached={cached}
-				loading={loading}
-				encrypted={imageCached.e2e === 'pending'}
-			/>
+			<View
+				style={{ flexDirection: 'row' }}
+				onLayout={ev => {
+					setWidth(ev.nativeEvent.layout.width);
+				}}>
+				<MessageImage
+					imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
+					cached={cached}
+					loading={loading}
+					encrypted={imageCached.e2e === 'pending'}
+					maxSize={width}
+				/>
+			</View>
 		</Button>
 	);
 
