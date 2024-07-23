@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
@@ -94,11 +94,27 @@ type TImageLoadedState = 'loading' | 'done' | 'error';
 const Url = React.memo(
 	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
 		const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
+		const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 		const { baseUrl, user } = useContext(MessageContext);
+		let image = url.image || url.url;
+		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 
-		if (!url || url?.ignoreParse || imageLoadedState === 'error') {
-			return null;
-		}
+		useEffect(() => {
+			if (image) {
+				Image.getSize(
+					image,
+					(width, height) => {
+						unstable_batchedUpdates(() => {
+							setImageDimensions({ width, height });
+							setImageLoadedState('done');
+						});
+					},
+					() => {
+						setImageLoadedState('error');
+					}
+				);
+			}
+		}, [image]);
 
 		const onPress = () => openLink(url.url, theme);
 
@@ -109,9 +125,8 @@ const Url = React.memo(
 
 		const hasContent = url.title || url.description;
 
-		let image = url.image || url.url;
-		if (image) {
-			image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+		if (!url || url?.ignoreParse || imageLoadedState === 'error' || !imageDimensions.width || !imageDimensions.height) {
+			return null;
 		}
 
 		return (
@@ -128,14 +143,17 @@ const Url = React.memo(
 					},
 					imageLoadedState === 'loading' && styles.loading
 				]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			>
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
 				<>
 					{image ? (
 						<FastImage
 							source={{ uri: image }}
-							style={[styles.image, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
-							resizeMode={FastImage.resizeMode.cover}
+							style={[
+								{ width: imageDimensions.width, height: imageDimensions.height },
+								!hasContent && styles.imageWithoutContent,
+								imageLoadedState === 'loading' && styles.loading
+							]}
+							resizeMode={FastImage.resizeMode.contain}
 							onError={() => setImageLoadedState('error')}
 							onLoad={() => setImageLoadedState('done')}
 						/>
