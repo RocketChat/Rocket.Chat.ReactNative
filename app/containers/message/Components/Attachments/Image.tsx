@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { StyleProp, TextStyle, View, Image, ImageProps, ImageStyle } from 'react-native';
+import { StyleProp, TextStyle, View, Image, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { emitter } from '../../../../lib/methods/helpers';
@@ -75,58 +75,39 @@ export const MessageImage = React.memo(
 			}
 		}, [imgUri, valid, encryptedState]);
 
-		if (encryptedState) {
-			return (
-				<>
-					<View style={styles.image} />
-					<BlurComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
-				</>
-			);
-		}
-
-		const style: ImageStyle = {
+		const imageStyle = {
 			width: Math.min(imageDimensions.width, maxSize),
 			height: Math.min(imageDimensions.height, maxSize)
 		};
+
+		const containerStyle: ViewStyle = {
+			borderColor: colors.strokeLight,
+			borderWidth: 1,
+			borderRadius: 4,
+			alignItems: 'center',
+			justifyContent: 'center',
+			...(imageDimensions.width <= 64 && { width: 64 }),
+			...(imageDimensions.height <= 64 && { height: 64 })
+		};
+
+		if (encryptedState) {
+			return (
+				<View style={containerStyle}>
+					<View style={imageStyle} />
+					<BlurComponent loading={false} style={[imageStyle, styles.imageBlurContainer]} iconName='encrypted' />
+				</View>
+			);
+		}
 
 		if (!imageDimensions.width || !maxSize) {
 			return null;
 		}
 
-		// se tiver abaixo de 64x64, faz um comportamento diferente com view fixa
-		if (imageDimensions.width <= 64 && imageDimensions.height <= 64) {
-			return (
-				<View
-					style={{
-						width: 64,
-						height: 64,
-						borderColor: 'red',
-						borderWidth: 1,
-						borderRadius: 4,
-						alignItems: 'center',
-						justifyContent: 'center'
-					}}>
-					{valid ? (
-						<FastImage
-							style={{ width: Math.min(imageDimensions.width, 250), height: Math.min(imageDimensions.height, 250) }}
-							source={{ uri: encodeURI(imgUri) }}
-							// resizeMode={FastImage.resizeMode.contain}
-						/>
-					) : (
-						<View style={styles.image} />
-					)}
-					{!cached ? (
-						<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
-					) : null}
-				</View>
-			);
-		}
-
 		return (
-			<View style={{ borderColor: 'blue', borderWidth: 1, borderRadius: 4 }}>
-				{valid ? <FastImage style={style} source={{ uri: encodeURI(imgUri) }} /> : <View style={styles.image} />}
+			<View style={containerStyle}>
+				{valid ? <FastImage style={imageStyle} source={{ uri: encodeURI(imgUri) }} /> : <View style={imageStyle} />}
 				{!cached ? (
-					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+					<BlurComponent loading={loading} style={[imageStyle, styles.imageBlurContainer]} iconName='arrow-down-circle' />
 				) : null}
 			</View>
 		);
