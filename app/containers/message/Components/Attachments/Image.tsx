@@ -76,6 +76,7 @@ export const MessageImage = React.memo(
 			borderColor: colors.strokeLight,
 			borderWidth: 1,
 			borderRadius: 4,
+			overflow: 'hidden',
 			alignItems: 'center',
 			justifyContent: 'center',
 			...(imageDimensions.width <= 64 && { width: 64 }),
