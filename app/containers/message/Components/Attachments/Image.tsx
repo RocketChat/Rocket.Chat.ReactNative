@@ -17,6 +17,7 @@ import styles from '../../styles';
 import { isImageBase64 } from '../../../../lib/methods';
 import { isValidUrl } from '../../../../lib/methods/helpers/isValidUrl';
 import { useFile } from '../../hooks/useFile';
+import { WidthAwareContext, WidthAwareView } from '../WidthAwareView';
 
 interface IMessageButton {
 	children: React.ReactElement;
@@ -49,23 +50,12 @@ const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
 });
 
 export const MessageImage = React.memo(
-	({
-		imgUri,
-		cached,
-		loading,
-		encrypted = false,
-		maxSize
-	}: {
-		imgUri: string;
-		cached: boolean;
-		loading: boolean;
-		encrypted: boolean;
-		maxSize: number;
-	}) => {
+	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
 		const { colors } = useTheme();
 		const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 		const valid = isValidUrl(imgUri);
 		const encryptedState = encrypted && !loading && cached;
+		const maxSize = useContext(WidthAwareContext);
 
 		useEffect(() => {
 			if (valid && !encryptedState) {
@@ -75,9 +65,11 @@ export const MessageImage = React.memo(
 			}
 		}, [imgUri, valid, encryptedState]);
 
+		const width = Math.min(imageDimensions.width, maxSize);
+		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize);
 		const imageStyle = {
-			width: Math.min(imageDimensions.width, maxSize),
-			height: Math.min(imageDimensions.height, maxSize)
+			width,
+			height
 		};
 
 		const containerStyle: ViewStyle = {
@@ -128,7 +120,6 @@ const ImageContainer = ({
 	const [imageCached, setImageCached] = useFile(file, id);
 	const [cached, setCached] = useState(false);
 	const [loading, setLoading] = useState(true);
-	const [width, setWidth] = useState(0);
 	const { theme } = useTheme();
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
@@ -258,19 +249,14 @@ const ImageContainer = ({
 
 	const image = (
 		<Button onPress={onPress}>
-			<View
-				style={{ flexDirection: 'row' }}
-				onLayout={ev => {
-					setWidth(ev.nativeEvent.layout.width);
-				}}>
+			<WidthAwareView>
 				<MessageImage
 					imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
 					cached={cached}
 					loading={loading}
 					encrypted={imageCached.e2e === 'pending'}
-					maxSize={width}
 				/>
-			</View>
+			</WidthAwareView>
 		</Button>
 	);
 

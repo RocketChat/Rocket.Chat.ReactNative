@@ -98,15 +98,6 @@ export default StyleSheet.create({
 		// flexDirection: 'column',
 		borderRadius: 4
 	},
-	image: {
-		// width: '100%',
-		// minHeight: isTablet ? 300 : 200,
-		// width: null,
-		// borderRadius: 4,
-		// borderWidth: 1,
-		// overflow: 'hidden',
-		// borderColor: 'rgba(0, 0, 0, 0.1)'
-	},
 	imageBlurContainer: {
 		height: '100%'
 	},
@@ -183,7 +174,6 @@ export default StyleSheet.create({
 		right: 0
 	},
 	blurIndicator: {
-		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center'
 	}
