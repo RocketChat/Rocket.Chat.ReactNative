@@ -209,8 +209,8 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = (server: string) => {
-		const password = randomPassword();
+	createRandomPassword = async (server: string) => {
+		const password = await randomPassword();
 		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
