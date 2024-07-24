@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
+import { Image, StyleSheet, Text, unstable_batchedUpdates, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
@@ -14,16 +14,10 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
 import { IUrl } from '../../definitions';
-import { DEFAULT_MESSAGE_HEIGHT } from './utils';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		flexDirection: 'column',
-		borderRadius: 4,
-		borderWidth: 1
-	},
+	rootContainer: { gap: 4 },
 	textContainer: {
 		flex: 1,
 		flexDirection: 'column',
@@ -38,9 +32,6 @@ const styles = StyleSheet.create({
 	description: {
 		fontSize: 16,
 		...sharedStyles.textRegular
-	},
-	imageWithoutContent: {
-		borderRadius: 4
 	},
 	loading: {
 		height: 0,
@@ -91,6 +82,7 @@ const UrlImage = ({
 }) => {
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
+	const { colors } = useTheme();
 
 	useEffect(() => {
 		if (image) {
@@ -116,21 +108,31 @@ const UrlImage = ({
 	const width = Math.min(imageDimensions.width, maxSize);
 	const height = (imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100;
 
+	const containerStyle: ViewStyle = {
+		alignItems: 'center',
+		justifyContent: 'center',
+		...(!hasContent && { borderColor: colors.strokeLight, borderWidth: 1, borderRadius: 4, overflow: 'hidden' }),
+		...(imageDimensions.width <= 64 && { width: 64 }),
+		...(imageDimensions.height <= 64 && { height: 64 })
+	};
+
 	return (
-		<FastImage
-			source={{ uri: image }}
-			style={[{ width, height }, !hasContent && styles.imageWithoutContent, imageLoadedState === 'loading' && styles.loading]}
-			resizeMode={FastImage.resizeMode.contain}
-			onError={() => setImageLoadedState('error')}
-			onLoad={() => setImageLoadedState('done')}
-		/>
+		<View style={containerStyle}>
+			<FastImage
+				source={{ uri: image }}
+				style={[{ width, height }, imageLoadedState === 'loading' && styles.loading]}
+				resizeMode={FastImage.resizeMode.contain}
+				onError={() => setImageLoadedState('error')}
+				onLoad={() => setImageLoadedState('done')}
+			/>
+		</View>
 	);
 };
 
 type TImageLoadedState = 'loading' | 'done' | 'error';
 
 const Url = React.memo(
-	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
+	({ url, theme }: { url: IUrl; theme: TSupportedThemes }) => {
 		const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
 		const { baseUrl, user } = useContext(MessageContext);
 		let image = url.image || url.url;
@@ -150,19 +152,18 @@ const Url = React.memo(
 		}
 
 		return (
-			<Touchable
-				onPress={onPress}
-				onLongPress={onLongPress}
-				style={[
-					styles.container,
-					{
-						backgroundColor: themes[theme].surfaceTint,
-						borderColor: themes[theme].strokeLight
-					},
-					imageLoadedState === 'loading' && styles.loading
-				]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
-				<>
+			<Touchable onPress={onPress} onLongPress={onLongPress} background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
+				<View
+					style={[
+						hasContent && {
+							backgroundColor: themes[theme].surfaceTint,
+							borderColor: themes[theme].strokeLight,
+							borderWidth: 1,
+							borderRadius: 4,
+							overflow: 'hidden'
+						},
+						imageLoadedState === 'loading' && styles.loading
+					]}>
 					<WidthAwareView>
 						<UrlImage
 							image={image}
@@ -172,7 +173,7 @@ const Url = React.memo(
 						/>
 					</WidthAwareView>
 					{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
-				</>
+				</View>
 			</Touchable>
 		);
 	},
@@ -188,9 +189,9 @@ const Urls = React.memo(
 		}
 
 		return (
-			<View style={{ gap: 6 }}>
-				{urls.map((url: IUrl, index: number) => (
-					<Url url={url} key={url.url} index={index} theme={theme} />
+			<View style={styles.rootContainer}>
+				{urls.map((url: IUrl) => (
+					<Url url={url} key={url.url} theme={theme} />
 				))}
 			</View>
 		);
