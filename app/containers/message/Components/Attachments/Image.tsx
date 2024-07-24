@@ -54,6 +54,8 @@ export const MessageImage = React.memo(
 		const { colors } = useTheme();
 		const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 		const valid = isValidUrl(imgUri);
+		// loading = true;
+		// cached = false;
 		const encryptedState = encrypted && !loading && cached;
 		const maxSize = useContext(WidthAwareContext);
 
@@ -65,8 +67,8 @@ export const MessageImage = React.memo(
 			}
 		}, [imgUri, valid, encryptedState]);
 
-		const width = Math.min(imageDimensions.width, maxSize);
-		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize);
+		const width = Math.min(imageDimensions.width, maxSize) || 0;
+		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
 		const imageStyle = {
 			width,
 			height
@@ -92,16 +94,18 @@ export const MessageImage = React.memo(
 			);
 		}
 
-		if (!imageDimensions.width || !maxSize) {
-			return null;
-		}
+		// if (!imageDimensions.width || !maxSize) {
+		// 	return null;
+		// }
 
 		return (
 			<View style={containerStyle}>
-				{valid ? <FastImage style={imageStyle} source={{ uri: encodeURI(imgUri) }} /> : <View style={imageStyle} />}
-				{!cached ? (
-					<BlurComponent loading={loading} style={[imageStyle, styles.imageBlurContainer]} iconName='arrow-down-circle' />
-				) : null}
+				{valid && imageDimensions.width && maxSize ? (
+					<FastImage style={imageStyle} source={{ uri: encodeURI(imgUri) }} />
+				) : (
+					<View style={imageStyle} />
+				)}
+				{!cached ? <BlurComponent loading={loading} style={imageStyle} iconName='arrow-down-circle' /> : null}
 			</View>
 		);
 	}

@@ -111,7 +111,12 @@ const UrlImage = ({
 	const containerStyle: ViewStyle = {
 		alignItems: 'center',
 		justifyContent: 'center',
-		...(!hasContent && { borderColor: colors.strokeLight, borderWidth: 1, borderRadius: 4, overflow: 'hidden' }),
+		...(!hasContent && {
+			borderColor: colors.strokeLight,
+			borderWidth: 1,
+			borderRadius: 4,
+			overflow: 'hidden'
+		}),
 		...(imageDimensions.width <= 64 && { width: 64 }),
 		...(imageDimensions.height <= 64 && { height: 64 })
 	};
