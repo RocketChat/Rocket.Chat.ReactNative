@@ -10,7 +10,7 @@ interface IMessageButton {
 	onPress: () => void;
 }
 
-export const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
+export const Button = ({ children, onPress, disabled }: IMessageButton) => {
 	const { colors } = useTheme();
 	return (
 		<Touchable
@@ -21,4 +21,4 @@ export const Button = React.memo(({ children, onPress, disabled }: IMessageButto
 			{children}
 		</Touchable>
 	);
-});
+};

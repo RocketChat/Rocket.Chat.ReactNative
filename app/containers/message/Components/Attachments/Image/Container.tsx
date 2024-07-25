@@ -1,8 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { View } from 'react-native';
 
-import { IAttachment, IUserMessage } from '../../../../../definitions';
-import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { isImageBase64 } from '../../../../../lib/methods';
 import { fetchAutoDownloadEnabled } from '../../../../../lib/methods/autoDownloadPreference';
 import {
@@ -19,21 +17,10 @@ import MessageContext from '../../../Context';
 import { useFile } from '../../../hooks/useFile';
 import { Button } from './Button';
 import { MessageImage } from './Image';
-
-interface IImageContainer {
-	file: IAttachment;
-	imageUrl?: string;
-	showAttachment?: (file: IAttachment) => void;
-	style?: StyleProp<TextStyle>[];
-	isReply?: boolean;
-	getCustomEmoji?: TGetCustomEmoji;
-	author?: IUserMessage;
-	msg?: string;
-}
+import { IImageContainer, TFileStatus } from './definitions';
 
 const ImageContainer = ({
 	file,
-	imageUrl,
 	showAttachment,
 	getCustomEmoji,
 	style,
@@ -42,13 +29,12 @@ const ImageContainer = ({
 	msg
 }: IImageContainer): React.ReactElement | null => {
 	const { id, baseUrl, user } = useContext(MessageContext);
-	const [imageCached, setImageCached] = useFile(file, id);
-	const [cached, setCached] = useState(false);
-	const [loading, setLoading] = useState(true);
+	const [currentFile, setCurrentFile] = useFile(file, id);
+	const [status, setStatus] = useState<TFileStatus>('loading');
 	const { theme } = useTheme();
-	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
+	const getUrl = (link?: string) => formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
-	const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
+	const imgUrlToCache = getUrl(currentFile.title_link || currentFile.image_url);
 
 	useEffect(() => {
 		const handleCache = async () => {
@@ -62,12 +48,10 @@ const ImageContainer = ({
 					return;
 				}
 				await handleAutoDownload();
-				setLoading(false);
 			}
 		};
 		if (isImageBase64(imgUrlToCache)) {
-			setLoading(false);
-			setCached(true);
+			setStatus('cached');
 		} else {
 			handleCache();
 		}
@@ -78,7 +62,7 @@ const ImageContainer = ({
 	}, []);
 
 	const downloadMediaListener = useCallback((imageUri: string) => {
-		updateImageCached(imageUri);
+		updateCurrentFile(imageUri);
 	}, []);
 
 	if (!img) {
@@ -93,16 +77,16 @@ const ImageContainer = ({
 		}
 	};
 
-	const updateImageCached = (imgUri: string) => {
-		setImageCached({
+	const updateCurrentFile = (imgUri: string) => {
+		setCurrentFile({
 			title_link: imgUri
 		});
-		setCached(true);
+		setStatus('cached');
 	};
 
 	const setDecrypted = () => {
-		if (imageCached.e2e === 'pending') {
-			setImageCached({
+		if (currentFile.e2e === 'pending') {
+			setCurrentFile({
 				e2e: 'done'
 			});
 		}
@@ -111,12 +95,12 @@ const ImageContainer = ({
 	const handleGetMediaCache = async () => {
 		const cachedImageResult = await getMediaCache({
 			type: 'image',
-			mimeType: imageCached.image_type,
+			mimeType: currentFile.image_type,
 			urlToCache: imgUrlToCache
 		});
-		const result = !!cachedImageResult?.exists && imageCached.e2e !== 'pending';
+		const result = !!cachedImageResult?.exists && currentFile.e2e !== 'pending';
 		if (result) {
-			updateImageCached(cachedImageResult.uri);
+			updateCurrentFile(cachedImageResult.uri);
 		}
 		return result;
 	};
@@ -131,52 +115,49 @@ const ImageContainer = ({
 				messageId: id,
 				downloadUrl: imgUrlToCache,
 				type: 'image',
-				mimeType: imageCached.image_type,
+				mimeType: currentFile.image_type,
 				encryption: file.encryption,
 				originalChecksum: file.hashes?.sha256
 			});
 			setDecrypted();
-			updateImageCached(imageUri);
+			updateCurrentFile(imageUri);
 		} catch (e) {
-			setCached(false);
-			setLoading(false);
+			setStatus('not-cached');
 		}
 	};
 
 	const onPress = async () => {
-		if (loading && isDownloadActive(imgUrlToCache)) {
+		if (status === 'loading' && isDownloadActive(imgUrlToCache)) {
 			cancelDownload(imgUrlToCache);
-			setLoading(false);
-			setCached(false);
+			setStatus('not-cached');
 			return;
 		}
-		if (!cached && !loading) {
+		if (status === 'not-cached') {
 			const isImageCached = await handleGetMediaCache();
 			if (isImageCached && showAttachment) {
-				showAttachment(imageCached);
+				showAttachment(currentFile);
 				return;
 			}
 			if (isDownloadActive(imgUrlToCache)) {
 				handleResumeDownload();
 				return;
 			}
-			setLoading(true);
+			setStatus('loading');
 			handleDownload();
 			return;
 		}
-		if (!showAttachment || !imageCached.title_link) {
+		if (!showAttachment || !currentFile.title_link) {
 			return;
 		}
-		showAttachment(imageCached);
+		showAttachment(currentFile);
 	};
 
 	const image = (
 		<Button onPress={onPress}>
 			<MessageImage
-				uri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
-				cached={cached}
-				loading={loading}
-				encrypted={imageCached.e2e === 'pending'}
+				uri={file.encryption && currentFile.title_link ? currentFile.title_link : img}
+				status={status}
+				encrypted={currentFile.e2e === 'pending'}
 			/>
 		</Button>
 	);

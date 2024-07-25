@@ -1,30 +1,22 @@
 import React from 'react';
-import { StyleProp, TextStyle, View } from 'react-native';
+import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
-import { IAttachment, IUserMessage } from '../../../../../definitions';
-import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
 import styles from '../../../styles';
-import BlurComponent from '../../OverlayComponent';
+import OverlayComponent from '../../OverlayComponent';
+import { IMessageImage } from './definitions';
 
-interface IMessageImage {
-	uri: string;
-	cached: boolean;
-	loading: boolean;
-	encrypted: boolean;
-}
-
-export const MessageImage = React.memo(({ uri, cached, loading, encrypted = false }: IMessageImage) => {
+export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
 	const { colors } = useTheme();
 	const valid = isValidUrl(uri);
 
-	if (encrypted && !loading && cached) {
+	if (encrypted && status === 'cached') {
 		return (
 			<>
 				<View style={styles.image} />
-				<BlurComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
+				<OverlayComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
 			</>
 		);
 	}
@@ -40,8 +32,8 @@ export const MessageImage = React.memo(({ uri, cached, loading, encrypted = fals
 			) : (
 				<View style={styles.image} />
 			)}
-			{!cached ? (
-				<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
+			{status === 'loading' ? (
+				<OverlayComponent loading style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
 			) : null}
 		</>
 	);
