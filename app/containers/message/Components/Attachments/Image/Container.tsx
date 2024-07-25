@@ -30,23 +30,24 @@ const ImageContainer = ({
 }: IImageContainer): React.ReactElement | null => {
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [currentFile, setCurrentFile] = useFile(file, id);
-	const [status, setStatus] = useState<TFileStatus>('loading');
+	const [status, setStatus] = useState<TFileStatus>('not-cached');
 	const { theme } = useTheme();
 	const getUrl = (link?: string) => formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const imageUrl = getUrl(currentFile.title_link || currentFile.image_url);
+	const isEncrypted = currentFile.e2e === 'pending';
 
 	useEffect(() => {
 		const handleCache = async () => {
 			if (imageUrl) {
-				const isImageCached = await handleGetMediaCache();
-				if (isImageCached) {
+				const isCached = await checkCache();
+				if (isCached) {
 					return;
 				}
 				if (isDownloadActive(imageUrl)) {
-					handleResumeDownload();
+					resumeDownload();
 					return;
 				}
-				await handleAutoDownload();
+				await tryAutoDownload();
 			}
 		};
 		if (isImageBase64(imageUrl)) {
@@ -68,51 +69,24 @@ const ImageContainer = ({
 		return null;
 	}
 
-	const handleAutoDownload = async () => {
+	const resumeDownload = () => {
+		emitter.on(`downloadMedia${id}`, downloadMediaListener);
+	};
+
+	const tryAutoDownload = async () => {
 		const isCurrentUserAuthor = author?._id === user.id;
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
-			await handleDownload();
+			await download();
 		} else {
 			setStatus('not-cached');
 		}
 	};
 
-	const updateCurrentFile = (imgUri: string) => {
-		setCurrentFile({
-			title_link: imgUri
-		});
-		setStatus('cached');
-	};
-
-	const setDecrypted = () => {
-		if (currentFile.e2e === 'pending') {
-			setCurrentFile({
-				e2e: 'done'
-			});
-		}
-	};
-
-	const handleGetMediaCache = async () => {
-		const cachedImageResult = await getMediaCache({
-			type: 'image',
-			mimeType: currentFile.image_type,
-			urlToCache: imageUrl
-		});
-		const result = !!cachedImageResult?.exists && currentFile.e2e !== 'pending';
-		if (result) {
-			updateCurrentFile(cachedImageResult.uri);
-		}
-		return result;
-	};
-
-	const handleResumeDownload = () => {
-		emitter.on(`downloadMedia${id}`, downloadMediaListener);
-	};
-
-	const handleDownload = async () => {
+	const download = async () => {
 		try {
-			const imageUri = await downloadMediaFile({
+			setStatus('loading');
+			const uri = await downloadMediaFile({
 				messageId: id,
 				downloadUrl: imageUrl,
 				type: 'image',
@@ -121,33 +95,50 @@ const ImageContainer = ({
 				originalChecksum: file.hashes?.sha256
 			});
 			setDecrypted();
-			updateCurrentFile(imageUri);
+			updateCurrentFile(uri);
 		} catch (e) {
 			setStatus('not-cached');
 		}
 	};
 
-	const onPress = async () => {
-		if (status === 'loading' && isDownloadActive(imageUrl)) {
+	const updateCurrentFile = (uri: string) => {
+		setCurrentFile({
+			title_link: uri
+		});
+		setStatus('cached');
+	};
+
+	const setDecrypted = () => {
+		if (isEncrypted) {
+			setCurrentFile({
+				e2e: 'done'
+			});
+		}
+	};
+
+	const checkCache = async () => {
+		const result = await getMediaCache({
+			type: 'image',
+			mimeType: currentFile.image_type,
+			urlToCache: imageUrl
+		});
+		if (result?.exists && !isEncrypted) {
+			updateCurrentFile(result.uri);
+		}
+		return result?.exists;
+	};
+
+	const onPress = () => {
+		if (status === 'loading') {
 			cancelDownload(imageUrl);
 			setStatus('not-cached');
 			return;
 		}
 		if (status === 'not-cached') {
-			const isImageCached = await handleGetMediaCache();
-			if (isImageCached && showAttachment) {
-				showAttachment(currentFile);
-				return;
-			}
-			if (isDownloadActive(imageUrl)) {
-				handleResumeDownload();
-				return;
-			}
-			setStatus('loading');
-			handleDownload();
+			download();
 			return;
 		}
-		if (!showAttachment || !currentFile.title_link) {
+		if (!showAttachment || !currentFile.title_link || isEncrypted) {
 			return;
 		}
 		showAttachment(currentFile);
@@ -155,7 +146,7 @@ const ImageContainer = ({
 
 	const image = (
 		<Button onPress={onPress}>
-			<MessageImage uri={imageUrl} status={status} encrypted={currentFile.e2e === 'pending'} />
+			<MessageImage uri={imageUrl} status={status} encrypted={isEncrypted} />
 		</Button>
 	);
 
