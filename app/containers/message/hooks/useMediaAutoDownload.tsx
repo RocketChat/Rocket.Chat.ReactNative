@@ -86,7 +86,7 @@ export const useMediaAutoDownload = ({
 
 	const tryAutoDownload = async () => {
 		const isCurrentUserAuthor = author?._id === user.id;
-		const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagePreferenceDownload');
+		const isAutoDownloadEnabled = fetchAutoDownloadEnabled(`${fileType}PreferenceDownload`);
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
 		} else {
