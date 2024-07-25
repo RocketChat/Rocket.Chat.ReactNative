@@ -1,30 +1,26 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { StyleProp, TextStyle, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
-import { emitter } from '../../../../lib/methods/helpers';
-import { IAttachment, IUserMessage } from '../../../../definitions';
-import { TGetCustomEmoji } from '../../../../definitions/IEmoji';
-import { fetchAutoDownloadEnabled } from '../../../../lib/methods/autoDownloadPreference';
-import { cancelDownload, downloadMediaFile, getMediaCache, isDownloadActive } from '../../../../lib/methods/handleMediaDownload';
-import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
-import { useTheme } from '../../../../theme';
-import Markdown from '../../../markdown';
-import BlurComponent from '../OverlayComponent';
-import MessageContext from '../../Context';
-import Touchable from '../../Touchable';
-import styles from '../../styles';
-import { isImageBase64 } from '../../../../lib/methods';
-import { isValidUrl } from '../../../../lib/methods/helpers/isValidUrl';
-import { useFile } from '../../hooks/useFile';
+import { IAttachment, IUserMessage } from '../../../../../definitions';
+import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import { isImageBase64 } from '../../../../../lib/methods';
+import { fetchAutoDownloadEnabled } from '../../../../../lib/methods/autoDownloadPreference';
+import {
+	cancelDownload,
+	downloadMediaFile,
+	getMediaCache,
+	isDownloadActive
+} from '../../../../../lib/methods/handleMediaDownload';
+import { emitter } from '../../../../../lib/methods/helpers';
+import { formatAttachmentUrl } from '../../../../../lib/methods/helpers/formatAttachmentUrl';
+import { useTheme } from '../../../../../theme';
+import Markdown from '../../../../markdown';
+import MessageContext from '../../../Context';
+import { useFile } from '../../../hooks/useFile';
+import { Button } from './Button';
+import { MessageImage } from './Image';
 
-interface IMessageButton {
-	children: React.ReactElement;
-	disabled?: boolean;
-	onPress: () => void;
-}
-
-interface IMessageImage {
+interface IImageContainer {
 	file: IAttachment;
 	imageUrl?: string;
 	showAttachment?: (file: IAttachment) => void;
@@ -35,52 +31,6 @@ interface IMessageImage {
 	msg?: string;
 }
 
-const Button = React.memo(({ children, onPress, disabled }: IMessageButton) => {
-	const { colors } = useTheme();
-	return (
-		<Touchable
-			disabled={disabled}
-			onPress={onPress}
-			style={styles.imageContainer}
-			background={Touchable.Ripple(colors.surfaceNeutral)}>
-			{children}
-		</Touchable>
-	);
-});
-
-export const MessageImage = React.memo(
-	({ imgUri, cached, loading, encrypted = false }: { imgUri: string; cached: boolean; loading: boolean; encrypted: boolean }) => {
-		const { colors } = useTheme();
-		const valid = isValidUrl(imgUri);
-
-		if (encrypted && !loading && cached) {
-			return (
-				<>
-					<View style={styles.image} />
-					<BlurComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
-				</>
-			);
-		}
-
-		return (
-			<>
-				{valid ? (
-					<FastImage
-						style={[styles.image, { borderColor: colors.strokeLight }]}
-						source={{ uri: encodeURI(imgUri) }}
-						resizeMode={FastImage.resizeMode.cover}
-					/>
-				) : (
-					<View style={styles.image} />
-				)}
-				{!cached ? (
-					<BlurComponent loading={loading} style={[styles.image, styles.imageBlurContainer]} iconName='arrow-down-circle' />
-				) : null}
-			</>
-		);
-	}
-);
-
 const ImageContainer = ({
 	file,
 	imageUrl,
@@ -90,7 +40,7 @@ const ImageContainer = ({
 	isReply,
 	author,
 	msg
-}: IMessageImage): React.ReactElement | null => {
+}: IImageContainer): React.ReactElement | null => {
 	const { id, baseUrl, user } = useContext(MessageContext);
 	const [imageCached, setImageCached] = useFile(file, id);
 	const [cached, setCached] = useState(false);
@@ -98,8 +48,6 @@ const ImageContainer = ({
 	const { theme } = useTheme();
 	const getUrl = (link?: string) => imageUrl || formatAttachmentUrl(link, user.id, user.token, baseUrl);
 	const img = getUrl(file.image_url);
-	// The param file.title_link is the one that point to image with best quality, however we still need to test the imageUrl
-	// And we cannot be certain whether the file.title_link actually exists.
 	const imgUrlToCache = getUrl(imageCached.title_link || imageCached.image_url);
 
 	useEffect(() => {
@@ -225,7 +173,7 @@ const ImageContainer = ({
 	const image = (
 		<Button onPress={onPress}>
 			<MessageImage
-				imgUri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
+				uri={file.encryption && imageCached.title_link ? imageCached.title_link : img}
 				cached={cached}
 				loading={loading}
 				encrypted={imageCached.e2e === 'pending'}
@@ -246,6 +194,5 @@ const ImageContainer = ({
 };
 
 ImageContainer.displayName = 'MessageImageContainer';
-MessageImage.displayName = 'MessageImage';
 
 export default ImageContainer;
