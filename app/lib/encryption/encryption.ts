@@ -1,29 +1,19 @@
-import EJSON from 'ejson';
-import SimpleCrypto from 'react-native-simple-crypto';
+import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q, Model } from '@nozbe/watermelondb';
+import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
+import SimpleCrypto from 'react-native-simple-crypto';
 
-import UserPreferences from '../methods/userPreferences';
-import { getMessageById } from '../database/services/Message';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import database from '../database';
-import protectedFunction from '../methods/helpers/protectedFunction';
-import Deferred from './helpers/deferred';
-import log from '../methods/helpers/log';
-import { store } from '../store/auxStore';
-import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import {
 	IMessage,
+	IServerAttachment,
 	ISubscription,
-	TSendFileMessageFileInfo,
 	TMessageModel,
+	TSendFileMessageFileInfo,
 	TSubscriptionModel,
 	TThreadMessageModel,
-	TThreadModel,
-	IServerAttachment
+	TThreadModel
 } from '../../definitions';
-import EncryptionRoom from './room';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -32,9 +22,18 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
 } from '../constants';
+import database from '../database';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import log from '../methods/helpers/log';
+import protectedFunction from '../methods/helpers/protectedFunction';
+import UserPreferences from '../methods/userPreferences';
 import { Services } from '../services';
-import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
+import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import Deferred from './helpers/deferred';
+import EncryptionRoom from './room';
+import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 
 class Encryption {
 	ready: boolean;
@@ -548,26 +547,12 @@ class Encryption {
 	};
 
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
-		const messageRecord = await getMessageById(messageId);
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
 			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
 			if (checksum !== originalChecksum) {
 				await deleteAsync(decryptedFile);
 				return null;
-			}
-
-			if (messageRecord) {
-				const db = database.active;
-				await db.write(async () => {
-					await messageRecord.update(m => {
-						m.attachments = m.attachments?.map(att => ({
-							...att,
-							title_link: decryptedFile,
-							e2e: 'done'
-						}));
-					});
-				});
 			}
 		}
 		return decryptedFile;

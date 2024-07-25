@@ -33,24 +33,23 @@ const ImageContainer = ({
 	const [status, setStatus] = useState<TFileStatus>('loading');
 	const { theme } = useTheme();
 	const getUrl = (link?: string) => formatAttachmentUrl(link, user.id, user.token, baseUrl);
-	const img = getUrl(file.image_url);
-	const imgUrlToCache = getUrl(currentFile.title_link || currentFile.image_url);
+	const imageUrl = getUrl(currentFile.title_link || currentFile.image_url);
 
 	useEffect(() => {
 		const handleCache = async () => {
-			if (img) {
+			if (imageUrl) {
 				const isImageCached = await handleGetMediaCache();
 				if (isImageCached) {
 					return;
 				}
-				if (isDownloadActive(imgUrlToCache)) {
+				if (isDownloadActive(imageUrl)) {
 					handleResumeDownload();
 					return;
 				}
 				await handleAutoDownload();
 			}
 		};
-		if (isImageBase64(imgUrlToCache)) {
+		if (isImageBase64(imageUrl)) {
 			setStatus('cached');
 		} else {
 			handleCache();
@@ -65,7 +64,7 @@ const ImageContainer = ({
 		updateCurrentFile(imageUri);
 	}, []);
 
-	if (!img) {
+	if (!imageUrl) {
 		return null;
 	}
 
@@ -74,6 +73,8 @@ const ImageContainer = ({
 		const isAutoDownloadEnabled = fetchAutoDownloadEnabled('imagesPreferenceDownload');
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await handleDownload();
+		} else {
+			setStatus('not-cached');
 		}
 	};
 
@@ -96,7 +97,7 @@ const ImageContainer = ({
 		const cachedImageResult = await getMediaCache({
 			type: 'image',
 			mimeType: currentFile.image_type,
-			urlToCache: imgUrlToCache
+			urlToCache: imageUrl
 		});
 		const result = !!cachedImageResult?.exists && currentFile.e2e !== 'pending';
 		if (result) {
@@ -113,7 +114,7 @@ const ImageContainer = ({
 		try {
 			const imageUri = await downloadMediaFile({
 				messageId: id,
-				downloadUrl: imgUrlToCache,
+				downloadUrl: imageUrl,
 				type: 'image',
 				mimeType: currentFile.image_type,
 				encryption: file.encryption,
@@ -127,8 +128,8 @@ const ImageContainer = ({
 	};
 
 	const onPress = async () => {
-		if (status === 'loading' && isDownloadActive(imgUrlToCache)) {
-			cancelDownload(imgUrlToCache);
+		if (status === 'loading' && isDownloadActive(imageUrl)) {
+			cancelDownload(imageUrl);
 			setStatus('not-cached');
 			return;
 		}
@@ -138,7 +139,7 @@ const ImageContainer = ({
 				showAttachment(currentFile);
 				return;
 			}
-			if (isDownloadActive(imgUrlToCache)) {
+			if (isDownloadActive(imageUrl)) {
 				handleResumeDownload();
 				return;
 			}
@@ -154,11 +155,7 @@ const ImageContainer = ({
 
 	const image = (
 		<Button onPress={onPress}>
-			<MessageImage
-				uri={file.encryption && currentFile.title_link ? currentFile.title_link : img}
-				status={status}
-				encrypted={currentFile.e2e === 'pending'}
-			/>
+			<MessageImage uri={imageUrl} status={status} encrypted={currentFile.e2e === 'pending'} />
 		</Button>
 	);
 

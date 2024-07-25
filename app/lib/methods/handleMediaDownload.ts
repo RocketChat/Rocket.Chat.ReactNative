@@ -8,6 +8,8 @@ import { store } from '../store/auxStore';
 import log from './helpers/log';
 import { emitter } from './helpers';
 import { Encryption } from '../encryption';
+import { getMessageById } from '../database/services/Message';
+import database from '../database';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
@@ -226,6 +228,20 @@ export function downloadMediaFile({
 
 			if (encryption && originalChecksum) {
 				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
+			}
+
+			const messageRecord = await getMessageById(messageId);
+			if (messageRecord) {
+				const db = database.active;
+				await db.write(async () => {
+					await messageRecord.update(m => {
+						m.attachments = m.attachments?.map(att => ({
+							...att,
+							title_link: result.uri,
+							e2e: encryption ? 'done' : undefined
+						}));
+					});
+				});
 			}
 
 			emitter.emit(`downloadMedia${messageId}`, result.uri);
