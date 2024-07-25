@@ -18,7 +18,7 @@ import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
 import BlurComponent from '../OverlayComponent';
-import { TFileStatus } from './Image/definitions';
+import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -62,9 +62,9 @@ const CancelIndicator = () => {
 	);
 };
 
-const Thumbnail = ({ status, encrypted = false }: { status: TFileStatus; encrypted: boolean }) => {
-	let icon: TIconsName = status === 'cached' ? 'play-filled' : 'arrow-down-circle';
-	if (encrypted && status === 'cached') {
+const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encrypted: boolean }) => {
+	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
+	if (encrypted && status === 'downloaded') {
 		icon = 'encrypted';
 	}
 
@@ -102,13 +102,14 @@ const Video = ({
 	};
 
 	const downloadVideoToGallery = async (uri: string) => {
-		const fileDownloaded = await fileDownload(uri, file);
-
-		if (fileDownloaded) {
-			EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
-			return;
+		try {
+			const fileDownloaded = await fileDownload(uri, file);
+			if (fileDownloaded) {
+				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
+			}
+		} catch (error) {
+			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
 		}
-		EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
 	};
 
 	return (

@@ -2,6 +2,7 @@ import { StyleProp, TextStyle } from 'react-native';
 
 import { IAttachment, IUserMessage } from '../../../../../definitions';
 import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
+import { TDownloadState } from '../../../../../lib/methods/handleMediaDownload';
 
 export interface IImageContainer {
 	file: IAttachment;
@@ -14,10 +15,8 @@ export interface IImageContainer {
 	msg?: string;
 }
 
-export type TFileStatus = 'not-cached' | 'loading' | 'cached';
-
 export interface IMessageImage {
 	uri: string;
-	status: TFileStatus;
+	status: TDownloadState;
 	encrypted: boolean;
 }

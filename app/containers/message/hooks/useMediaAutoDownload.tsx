@@ -8,13 +8,13 @@ import {
 	downloadMediaFile,
 	getMediaCache,
 	isDownloadActive,
-	MediaTypes
+	MediaTypes,
+	TDownloadState
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../lib/methods/helpers/formatAttachmentUrl';
 import MessageContext from '../Context';
 import { useFile } from './useFile';
-import { TFileStatus } from '../Components/Attachments/Image/definitions';
 
 const getFileType = (file: IAttachment): MediaTypes | null => {
 	if (file.image_url) {
@@ -46,7 +46,7 @@ export const useMediaAutoDownload = ({
 }) => {
 	const fileType = getFileType(file) ?? 'image';
 	const { id, baseUrl, user } = useContext(MessageContext);
-	const [status, setStatus] = useState<TFileStatus>('not-cached');
+	const [status, setStatus] = useState<TDownloadState>('to-download');
 	const [currentFile, setCurrentFile] = useFile(file, id);
 	const url = formatAttachmentUrl(file.title_link || getFileProperty(currentFile, fileType, 'url'), user.id, user.token, baseUrl);
 	const isEncrypted = currentFile.e2e === 'pending';
@@ -66,7 +66,7 @@ export const useMediaAutoDownload = ({
 			}
 		};
 		if (fileType === 'image' && isImageBase64(url)) {
-			setStatus('cached');
+			setStatus('downloaded');
 		} else {
 			handleCache();
 		}
@@ -90,7 +90,7 @@ export const useMediaAutoDownload = ({
 		if (isAutoDownloadEnabled || isCurrentUserAuthor) {
 			await download();
 		} else {
-			setStatus('not-cached');
+			setStatus('to-download');
 		}
 	};
 
@@ -108,7 +108,7 @@ export const useMediaAutoDownload = ({
 			setDecrypted();
 			updateCurrentFile(uri);
 		} catch (e) {
-			setStatus('not-cached');
+			setStatus('to-download');
 		}
 	};
 
@@ -116,7 +116,7 @@ export const useMediaAutoDownload = ({
 		setCurrentFile({
 			title_link: uri
 		});
-		setStatus('cached');
+		setStatus('downloaded');
 	};
 
 	const setDecrypted = () => {
@@ -142,10 +142,10 @@ export const useMediaAutoDownload = ({
 	const onPress = () => {
 		if (status === 'loading') {
 			cancelDownload(url);
-			setStatus('not-cached');
+			setStatus('to-download');
 			return;
 		}
-		if (status === 'not-cached') {
+		if (status === 'to-download') {
 			download();
 			return;
 		}

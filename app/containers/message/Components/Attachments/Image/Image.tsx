@@ -11,7 +11,7 @@ import { IMessageImage } from './definitions';
 export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
 	const { colors } = useTheme();
 
-	if (encrypted && status === 'cached') {
+	if (encrypted && status === 'downloaded') {
 		return (
 			<>
 				<View style={styles.image} />
@@ -22,7 +22,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 
 	return (
 		<>
-			{isValidUrl(uri) && status === 'cached' ? (
+			{isValidUrl(uri) && status === 'downloaded' ? (
 				<FastImage
 					style={[styles.image, { borderColor: colors.strokeLight }]}
 					source={{ uri: encodeURI(uri) }}
@@ -31,7 +31,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 			) : (
 				<View style={styles.image} />
 			)}
-			{['loading', 'not-cached'].includes(status) ? (
+			{['loading', 'to-download'].includes(status) ? (
 				<OverlayComponent
 					loading={status === 'loading'}
 					style={[styles.image, styles.imageBlurContainer]}
