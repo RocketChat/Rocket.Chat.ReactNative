@@ -14,6 +14,8 @@ import { isIOS } from '../methods/helpers';
 import { store as reduxStore } from '../store/auxStore';
 import I18n from '../../i18n';
 
+import { backgroundNotificationHandler, setBackgroundNotificationHandler } from './backgroundNotifications';
+
 export let deviceToken = '';
 
 export const setNotificationsBadgeCount = (count = 0): void => {
@@ -66,9 +68,16 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 
 	Notifications.events().registerNotificationReceivedForeground(
 		(notification: Notification, completion: (response: NotificationCompletion) => void) => {
-			completion({ alert: false, sound: false, badge: false });
+			completion({ alert: true, sound: false, badge: true });
 		}
 	);
+
+	// Notifications.events().registerNotificationReceivedBackground(
+	// 	(notification: Notification, completion: (response: any) => void) => {
+	// 		console.log('notification background');
+	// 		completion({ alert: false, sound: false, badge: false });
+	// 	}
+	// );
 
 	Notifications.events().registerNotificationOpened((notification: Notification, completion: () => void) => {
 		if (isIOS) {
@@ -81,12 +90,6 @@ export const pushNotificationConfigure = (onNotification: (notification: INotifi
 		}
 		completion();
 	});
-
-	Notifications.events().registerNotificationReceivedBackground(
-		(notification: Notification, completion: (response: any) => void) => {
-			completion({ alert: true, sound: true, badge: true });
-		}
-	);
 
 	return Notifications.getInitialNotification();
 };
