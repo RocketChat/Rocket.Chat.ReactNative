@@ -9,6 +9,7 @@ import log from './helpers/log';
 import { emitter } from './helpers';
 import { Encryption } from '../encryption';
 import { getMessageById } from '../database/services/Message';
+import { getThreadMessageById } from '../database/services/ThreadMessage';
 import database from '../database';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
@@ -196,6 +197,34 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
+const persistMessage = async (messageId: string, uri: string, encryption: boolean) => {
+	const messageRecord = await getMessageById(messageId);
+	const db = database.active;
+	if (messageRecord) {
+		await db.write(async () => {
+			await messageRecord.update(m => {
+				m.attachments = m.attachments?.map(att => ({
+					...att,
+					title_link: uri,
+					e2e: encryption ? 'done' : undefined
+				}));
+			});
+		});
+	}
+	const threadMessageRecord = await getThreadMessageById(messageId);
+	if (threadMessageRecord) {
+		await db.write(async () => {
+			await threadMessageRecord.update(m => {
+				m.attachments = m.attachments?.map(att => ({
+					...att,
+					title_link: uri,
+					e2e: encryption ? 'done' : undefined
+				}));
+			});
+		});
+	}
+};
+
 export function downloadMediaFile({
 	messageId,
 	type,
@@ -230,19 +259,7 @@ export function downloadMediaFile({
 				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
 			}
 
-			const messageRecord = await getMessageById(messageId);
-			if (messageRecord) {
-				const db = database.active;
-				await db.write(async () => {
-					await messageRecord.update(m => {
-						m.attachments = m.attachments?.map(att => ({
-							...att,
-							title_link: result.uri,
-							e2e: encryption ? 'done' : undefined
-						}));
-					});
-				});
-			}
+			await persistMessage(messageId, result.uri, !!encryption);
 
 			emitter.emit(`downloadMedia${messageId}`, result.uri);
 			return resolve(result.uri);
