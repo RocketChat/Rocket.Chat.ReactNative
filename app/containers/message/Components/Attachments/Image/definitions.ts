@@ -6,7 +6,6 @@ import { TDownloadState } from '../../../../../lib/methods/handleMediaDownload';
 
 export interface IImageContainer {
 	file: IAttachment;
-	// imageUrl?: string;
 	showAttachment?: (file: IAttachment) => void;
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;

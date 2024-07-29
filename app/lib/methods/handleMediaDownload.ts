@@ -1,8 +1,9 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
+import { Model } from '@nozbe/watermelondb';
 
-import { TAttachmentEncryption } from '../../definitions';
+import { IAttachment, TAttachmentEncryption, TMessageModel } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
@@ -198,42 +199,51 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
+const mapAttachments = ({
+	attachments,
+	uri,
+	encryption
+}: {
+	attachments?: IAttachment[];
+	uri: string;
+	encryption: boolean;
+}): TMessageModel['attachments'] =>
+	attachments?.map(att => ({
+		...att,
+		title_link: uri,
+		e2e: encryption ? 'done' : undefined
+	}));
+
 const persistMessage = async (messageId: string, uri: string, encryption: boolean) => {
 	const db = database.active;
+	const batch: Model[] = [];
 	const messageRecord = await getMessageById(messageId);
 	if (messageRecord) {
-		await db.write(async () => {
-			await messageRecord.update(m => {
-				m.attachments = m.attachments?.map(att => ({
-					...att,
-					title_link: uri,
-					e2e: encryption ? 'done' : undefined
-				}));
-			});
-		});
+		batch.push(
+			messageRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
 	}
 	const threadRecord = await getThreadById(messageId);
 	if (threadRecord) {
-		await db.write(async () => {
-			await threadRecord.update(m => {
-				m.attachments = m.attachments?.map(att => ({
-					...att,
-					title_link: uri,
-					e2e: encryption ? 'done' : undefined
-				}));
-			});
-		});
+		batch.push(
+			threadRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
 	}
 	const threadMessageRecord = await getThreadMessageById(messageId);
 	if (threadMessageRecord) {
+		batch.push(
+			threadMessageRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	if (batch.length) {
 		await db.write(async () => {
-			await threadMessageRecord.update(m => {
-				m.attachments = m.attachments?.map(att => ({
-					...att,
-					title_link: uri,
-					e2e: encryption ? 'done' : undefined
-				}));
-			});
+			await db.batch(...batch);
 		});
 	}
 };
