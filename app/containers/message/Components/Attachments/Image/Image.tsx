@@ -13,15 +13,15 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
-	const showImage = isValidUrl(uri) && status === 'downloaded';
+	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
 
 	useEffect(() => {
-		if (showImage) {
+		if (status === 'downloaded') {
 			Image.getSize(uri, (width, height) => {
 				setImageDimensions({ width, height });
 			});
 		}
-	}, [uri, showImage]);
+	}, [uri, status]);
 
 	const width = Math.min(imageDimensions.width, maxSize) || 0;
 	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
@@ -63,9 +63,9 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 			) : (
 				<View style={styles.image} />
 			)}
-			{['loading', 'to-download'].includes(status) ? (
+			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<OverlayComponent
-					loading={status === 'loading'}
+					loading={['loading', 'downloaded'].includes(status)}
 					style={[styles.image, styles.imageBlurContainer]}
 					iconName='arrow-down-circle'
 				/>
