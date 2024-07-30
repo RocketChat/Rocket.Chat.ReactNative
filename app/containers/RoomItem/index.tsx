@@ -38,7 +38,7 @@ const RoomItemContainer = React.memo(
 		const testID = `rooms-list-view-item-${name}`;
 		const avatar = getRoomAvatar(item);
 		const isRead = getIsRead(item);
-		const date = item.roomUpdatedAt && formatDate(item.roomUpdatedAt);
+		const date = item?.lastMessage?.ts && formatDate(item.lastMessage.ts);
 		const alert = item.alert || item.tunread?.length;
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
