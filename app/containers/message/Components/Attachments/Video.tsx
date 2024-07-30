@@ -16,22 +16,15 @@ import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
-import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
+// import { DEFAULT_MESSAGE_HEIGHT } from '../../utils';
 import BlurComponent from '../OverlayComponent';
 import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
+import messageStyles from '../../styles';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
-	button: {
-		flex: 1,
-		borderRadius: 4,
-		height: DEFAULT_MESSAGE_HEIGHT,
-		marginBottom: 6,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
 	cancelContainer: {
 		position: 'absolute',
 		top: 8,
@@ -63,6 +56,7 @@ const CancelIndicator = () => {
 };
 
 const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encrypted: boolean }) => {
+	const { colors } = useTheme();
 	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
 	if (encrypted && status === 'downloaded') {
 		icon = 'encrypted';
@@ -70,7 +64,11 @@ const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encr
 
 	return (
 		<>
-			<BlurComponent iconName={icon} loading={status === 'loading'} style={styles.button} />
+			<BlurComponent
+				iconName={icon}
+				loading={status === 'loading'}
+				style={[messageStyles.image, { borderColor: colors.strokeLight, borderWidth: 1 }]}
+			/>
 			{status === 'loading' ? <CancelIndicator /> : null}
 		</>
 	);
@@ -86,7 +84,7 @@ const Video = ({
 	msg
 }: IMessageVideo): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { theme, colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const _onPress = async () => {
@@ -115,10 +113,7 @@ const Video = ({
 	return (
 		<>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
-			<Touchable
-				onPress={_onPress}
-				style={[styles.button, { backgroundColor: themes[theme].surfaceDark }]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
+			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>
 		</>

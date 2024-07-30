@@ -31,21 +31,24 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 	};
 
 	const containerStyle: ViewStyle = {
-		borderColor: colors.strokeLight,
-		borderWidth: 1,
-		borderRadius: 4,
-		overflow: 'hidden',
 		alignItems: 'center',
 		justifyContent: 'center',
 		...(imageDimensions.width <= 64 && { width: 64 }),
 		...(imageDimensions.height <= 64 && { height: 64 })
 	};
 
+	const borderStyle: ViewStyle = {
+		borderColor: colors.strokeLight,
+		borderWidth: 1,
+		borderRadius: 4,
+		overflow: 'hidden'
+	};
+
 	if (encrypted && status === 'downloaded') {
 		return (
 			<>
 				<View style={styles.image} />
-				<OverlayComponent loading={false} style={[styles.image, styles.imageBlurContainer]} iconName='encrypted' />
+				<OverlayComponent loading={false} style={styles.image} iconName='encrypted' />
 			</>
 		);
 	}
@@ -53,20 +56,16 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 	return (
 		<>
 			{showImage ? (
-				<View style={containerStyle}>
-					<FastImage
-						style={[imageStyle, { borderColor: colors.strokeLight }]}
-						source={{ uri: encodeURI(uri) }}
-						resizeMode={FastImage.resizeMode.cover}
-					/>
+				<View style={[containerStyle, borderStyle]}>
+					<FastImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={FastImage.resizeMode.cover} />
 				</View>
 			) : (
-				<View style={styles.image} />
+				<View style={[styles.image, borderStyle]} />
 			)}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<OverlayComponent
 					loading={['loading', 'downloaded'].includes(status)}
-					style={[styles.image, styles.imageBlurContainer]}
+					style={[styles.image, borderStyle]}
 					iconName='arrow-down-circle'
 				/>
 			) : null}
