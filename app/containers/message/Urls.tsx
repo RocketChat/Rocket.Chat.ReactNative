@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
@@ -7,8 +7,7 @@ import { dequal } from 'dequal';
 import Touchable from './Touchable';
 import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, useTheme, withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
@@ -17,12 +16,11 @@ import { IUrl } from '../../definitions';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
-	button: {
-		marginTop: 6
-	},
 	container: {
 		flex: 1,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		marginTop: 4,
+		gap: 4
 	},
 	textContainer: {
 		flex: 1,
@@ -39,9 +37,6 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
-	marginTop: {
-		marginTop: 4
-	},
 	loading: {
 		height: 0,
 		borderWidth: 0,
@@ -49,35 +44,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-const UrlContent = React.memo(
-	({ title, description }: { title: string; description: string }) => {
-		const { colors } = useTheme();
-		return (
-			<View style={styles.textContainer}>
-				{title ? (
-					<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
-						{title}
-					</Text>
-				) : null}
-				{description ? (
-					<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
-						{description}
-					</Text>
-				) : null}
-			</View>
-		);
-	},
-	(prevProps, nextProps) => {
-		if (prevProps.title !== nextProps.title) {
-			return false;
-		}
-		if (prevProps.description !== nextProps.description) {
-			return false;
-		}
-		return true;
-	}
-);
-
+const UrlContent = ({ title, description }: { title: string; description: string }) => {
+	const { colors } = useTheme();
+	return (
+		<View style={styles.textContainer}>
+			{title ? (
+				<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
+					{title}
+				</Text>
+			) : null}
+			{description ? (
+				<Text style={[styles.description, { color: colors.fontSecondaryInfo }]} numberOfLines={2}>
+					{description}
+				</Text>
+			) : null}
+		</View>
+	);
+};
 const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean }) => {
 	const { colors } = useTheme();
 	const [imageLoadedState, setImageLoadedState] = useState<TImageLoadedState>('loading');
@@ -140,71 +123,65 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 type TImageLoadedState = 'loading' | 'done' | 'error';
 
-const Url = React.memo(
-	({ url, index, theme }: { url: IUrl; index: number; theme: TSupportedThemes }) => {
-		const { baseUrl, user } = useContext(MessageContext);
-		let image = url.image || url.url;
-		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+const Url = ({ url }: { url: IUrl }) => {
+	const { colors, theme } = useTheme();
+	const { baseUrl, user } = useContext(MessageContext);
+	let image = url.image || url.url;
+	image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
 
-		const onPress = () => openLink(url.url, theme);
+	const onPress = () => openLink(url.url, theme);
 
-		const onLongPress = () => {
-			Clipboard.setString(url.url);
-			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
-		};
+	const onLongPress = () => {
+		Clipboard.setString(url.url);
+		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
+	};
 
-		const hasContent = !!(url.title || url.description);
+	const hasContent = !!(url.title || url.description);
 
-		if (!url || url?.ignoreParse) {
-			return null;
-		}
+	if (!url || url?.ignoreParse) {
+		return null;
+	}
 
-		return (
-			<Touchable
-				onPress={onPress}
-				onLongPress={onLongPress}
-				style={[
-					styles.button,
-					index > 0 && styles.marginTop,
-					styles.container,
-					hasContent && {
-						backgroundColor: themes[theme].surfaceTint,
-						borderColor: themes[theme].strokeLight,
-						borderRadius: 4,
-						borderWidth: 1,
-						overflow: 'hidden'
-					}
-				]}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
-				<>
-					{image ? (
-						<WidthAwareView>
-							<UrlImage image={image} hasContent={hasContent} />
-						</WidthAwareView>
-					) : null}
-					{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
-				</>
-			</Touchable>
-		);
-	},
-	(oldProps, newProps) => dequal(oldProps.url, newProps.url) && oldProps.theme === newProps.theme
-);
-
+	return (
+		<Touchable
+			onPress={onPress}
+			onLongPress={onLongPress}
+			style={[
+				styles.container,
+				hasContent && {
+					backgroundColor: colors.surfaceTint,
+					borderColor: colors.strokeLight,
+					borderRadius: 4,
+					borderWidth: 1,
+					overflow: 'hidden'
+				}
+			]}
+			background={Touchable.Ripple(colors.surfaceNeutral)}>
+			<>
+				{image ? (
+					<WidthAwareView>
+						<UrlImage image={image} hasContent={hasContent} />
+					</WidthAwareView>
+				) : null}
+				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
+			</>
+		</Touchable>
+	);
+};
 const Urls = React.memo(
-	({ urls }: { urls?: IUrl[] }): any => {
-		const { theme } = useTheme();
-
+	({ urls }: { urls?: IUrl[] }): ReactElement[] | null => {
 		if (!urls || urls.length === 0) {
 			return null;
 		}
 
-		return urls.map((url: IUrl, index: number) => <Url url={url} key={url.url} index={index} theme={theme} />);
+		return urls.map((url: IUrl) => <Url url={url} key={url.url} />);
 	},
 	(oldProps, newProps) => dequal(oldProps.urls, newProps.urls)
 );
 
 UrlContent.displayName = 'MessageUrlContent';
+UrlImage.displayName = 'MessageUrlImage';
 Url.displayName = 'MessageUrl';
 Urls.displayName = 'MessageUrls';
 
-export default withTheme(Urls);
+export default Urls;
