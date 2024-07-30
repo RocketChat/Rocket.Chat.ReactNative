@@ -8,6 +8,7 @@ import { Button } from './Button';
 import { MessageImage } from './Image';
 import { IImageContainer } from './definitions';
 import MessageContext from '../../../Context';
+import { WidthAwareView } from '../../WidthAwareView';
 
 const ImageContainer = ({
 	file,
@@ -24,7 +25,9 @@ const ImageContainer = ({
 
 	const image = (
 		<Button onPress={onPress}>
-			<MessageImage uri={url} status={status} encrypted={isEncrypted} />
+			<WidthAwareView>
+				<MessageImage uri={url} status={status} encrypted={isEncrypted} />
+			</WidthAwareView>
 		</Button>
 	);
 
