@@ -53,18 +53,6 @@ export function setSearch(searchText: string): ISetSearch {
 	};
 }
 
-export function closeServerDropdown(): Action {
-	return {
-		type: ROOMS.CLOSE_SERVER_DROPDOWN
-	};
-}
-
-export function toggleServerDropdown(): Action {
-	return {
-		type: ROOMS.TOGGLE_SERVER_DROPDOWN
-	};
-}
-
 export function openSearchHeader(): Action {
 	return {
 		type: ROOMS.OPEN_SEARCH_HEADER

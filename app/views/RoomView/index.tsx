@@ -472,6 +472,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
 		const iSubRoom = room as ISubscription;
+		const e2eeWarning = !!(
+			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
+		);
 		navigation.setOptions({
 			headerLeft: () =>
 				isIOS && (unreadsCount || isMasterDetail) ? (
@@ -504,7 +507,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
-					disabled={!!tmid}
+					disabled={e2eeWarning}
 					rightButtonsWidth={rightButtonsWidth}
 				/>
 			),
@@ -524,9 +527,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
 					onLayout={onLayout}
-					hasE2EEWarning={
-						'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
-					}
+					hasE2EEWarning={e2eeWarning}
 				/>
 			)
 		});

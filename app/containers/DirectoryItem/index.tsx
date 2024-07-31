@@ -50,27 +50,29 @@ const DirectoryItem = ({
 }: IDirectoryItem): React.ReactElement => {
 	const { theme } = useTheme();
 	return (
-		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
-			<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
-				<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
-				<View style={styles.directoryItemTextContainer}>
-					<View style={styles.directoryItemTextTitle}>
-						{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
-						<Text style={[styles.directoryItemName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
-							{title}
-						</Text>
+		<View accessible accessibilityLabel={`${title} ${rightLabel}`}>
+			<Touch onPress={onPress} style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
+				<View style={[styles.directoryItemContainer, styles.directoryItemButton, style]}>
+					<Avatar text={avatar} size={30} type={type} rid={rid} style={styles.directoryItemAvatar} />
+					<View style={styles.directoryItemTextContainer}>
+						<View style={styles.directoryItemTextTitle}>
+							{type !== 'd' ? <RoomTypeIcon type={type} teamMain={teamMain} /> : null}
+							<Text style={[styles.directoryItemName, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
+								{title}
+							</Text>
+						</View>
+						{description ? (
+							<MarkdownPreview
+								msg={description}
+								style={[styles.directoryItemUsername, { color: themes[theme].fontSecondaryInfo }]}
+								numberOfLines={1}
+							/>
+						) : null}
 					</View>
-					{description ? (
-						<MarkdownPreview
-							msg={description}
-							style={[styles.directoryItemUsername, { color: themes[theme].fontSecondaryInfo }]}
-							numberOfLines={1}
-						/>
-					) : null}
+					<DirectoryItemLabel text={rightLabel} theme={theme} />
 				</View>
-				<DirectoryItemLabel text={rightLabel} theme={theme} />
-			</View>
-		</Touch>
+			</Touch>
+		</View>
 	);
 };
 

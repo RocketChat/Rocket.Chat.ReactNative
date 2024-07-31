@@ -1,18 +1,17 @@
 import React from 'react';
-import { FlatList, ListRenderItem, Text, View } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
+import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
-import Touch from '../../containers/Touch';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -47,22 +46,11 @@ interface IDirectoryViewState {
 	loading: boolean;
 	text: string;
 	total: number;
-	showOptionsDropdown: boolean;
 	globalUsers: boolean;
 	type: string;
 }
 
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
-	static navigationOptions = ({ navigation, isMasterDetail }: IDirectoryViewProps) => {
-		const options: NativeStackNavigationOptions = {
-			title: I18n.t('Directory')
-		};
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
-		}
-		return options;
-	};
-
 	constructor(props: IDirectoryViewProps) {
 		super(props);
 		this.state = {
@@ -70,15 +58,32 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			loading: false,
 			text: '',
 			total: -1,
-			showOptionsDropdown: false,
 			globalUsers: true,
 			type: props.directoryDefaultView
 		};
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		this.load({});
 	}
+
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
+		const options: NativeStackNavigationOptions = {
+			title: I18n.t('Directory'),
+			headerRight: () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='filter' onPress={this.showFilters} testID='directory-view-filter' />
+				</HeaderButton.Container>
+			)
+		};
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
+		}
+
+		navigation.setOptions(options);
+	};
 
 	onSearchChangeText = (text: string) => {
 		this.setState({ text }, this.search);
@@ -139,7 +144,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		} else if (type === 'teams') {
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
-		this.toggleDropdown();
+		hideActionSheetRef();
 	};
 
 	toggleWorkspace = () => {
@@ -149,8 +154,20 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		);
 	};
 
-	toggleDropdown = () => {
-		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
+	showFilters = () => {
+		const { type, globalUsers } = this.state;
+		const { isFederationEnabled } = this.props;
+		showActionSheetRef({
+			children: (
+				<Options
+					type={type}
+					globalUsers={globalUsers}
+					changeType={this.changeType}
+					toggleWorkspace={this.toggleWorkspace}
+					isFederationEnabled={isFederationEnabled}
+				/>
+			)
+		});
 	};
 
 	goRoom = (item: TGoRoomItem) => {
@@ -195,36 +212,12 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 	};
 
-	renderHeader = () => {
-		const { type } = this.state;
-		const { theme } = this.props;
-		let text = 'Users';
-		let icon: TIconsName = 'user';
-
-		if (type === 'channels') {
-			text = 'Channels';
-			icon = 'channel-public';
-		}
-
-		if (type === 'teams') {
-			text = 'Teams';
-			icon = 'teams';
-		}
-
-		return (
-			<>
-				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
-				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
-					<View
-						style={[sharedStyles.separatorVertical, styles.toggleDropdownContainer, { borderColor: themes[theme].strokeLight }]}>
-						<CustomIcon name={icon} size={20} color={themes[theme].badgeBackgroundLevel2} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].badgeBackgroundLevel2 }]}>{I18n.t(text)}</Text>
-						<CustomIcon name='chevron-down' size={20} color={themes[theme].fontHint} style={styles.toggleDropdownArrow} />
-					</View>
-				</Touch>
-			</>
-		);
-	};
+	renderHeader = () => (
+		<>
+			<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
+			<List.Separator />
+		</>
+	);
 
 	renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
 		const { data, type } = this.state;
@@ -285,8 +278,8 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	render = () => {
-		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
-		const { isFederationEnabled, theme } = this.props;
+		const { data, loading } = this.state;
+		const { theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
 				<StatusBar />
@@ -303,16 +296,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 					onEndReached={() => this.load({})}
 				/>
-				{showOptionsDropdown ? (
-					<Options
-						type={type}
-						globalUsers={globalUsers}
-						close={this.toggleDropdown}
-						changeType={this.changeType}
-						toggleWorkspace={this.toggleWorkspace}
-						isFederationEnabled={isFederationEnabled}
-					/>
-				) : null}
 			</SafeAreaView>
 		);
 	};

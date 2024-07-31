@@ -46,7 +46,7 @@ interface ISelectListViewProps {
 class SelectListView extends React.Component<ISelectListViewProps, ISelectListViewState> {
 	private title: string;
 
-	private fontHint: string;
+	private infoText: string;
 
 	private nextAction: (selected: string[]) => void;
 
@@ -62,7 +62,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.fontHint = props.route?.params?.fontHint ?? '';
+		this.infoText = props.route?.params?.infoText ?? '';
 		this.nextAction = props.route?.params?.nextAction;
 		this.showAlert = props.route?.params?.showAlert ?? (() => {});
 		this.isSearch = props.route?.params?.isSearch ?? false;
@@ -102,7 +102,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
-				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.fontHint)}</Text>
+				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
 	};
@@ -166,6 +166,16 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				/>
 			) : null;
 
+		const handleAcessibilityLabel = (rid: string) => {
+			let label = '';
+			if (this.isRadio) {
+				label = this.isChecked(rid) ? I18n.t('Selected') : I18n.t('Unselected');
+			} else {
+				label = this.isChecked(rid) ? I18n.t('Checked') : I18n.t('Unchecked');
+			}
+			return label;
+		};
+
 		return (
 			<>
 				<List.Separator />
@@ -177,6 +187,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
+					additionalAcessibilityLabel={handleAcessibilityLabel(item.rid)}
 				/>
 			</>
 		);

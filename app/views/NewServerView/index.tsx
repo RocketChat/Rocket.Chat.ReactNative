@@ -14,19 +14,17 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
-import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isIOS, isTablet } from '../../lib/methods/helpers';
+import { isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { moderateScale, verticalScale } from './scaling';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
@@ -68,8 +66,6 @@ const styles = StyleSheet.create({
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
 	connecting: boolean;
 	previousServer: string | null;
-	width: number;
-	height: number;
 }
 
 interface INewServerViewState {
@@ -293,31 +289,23 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
-		const { theme, width, height, previousServer } = this.props;
+		const { theme, previousServer } = this.props;
 		return (
 			<View
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
+						marginTop: isAndroid ? 20 : 0,
+						marginBottom: previousServer && !isTablet ? 10 : 30
 					}
-				]}
-			>
-				<Text
-					style={[
-						styles.chooseCertificateTitle,
-						{ color: themes[theme].fontSecondaryInfo, fontSize: moderateScale({ size: 13, width }) }
-					]}
-				>
+				]}>
+				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].fontSecondaryInfo, fontSize: 13 }]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<TouchableOpacity
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
-					testID='new-server-choose-certificate'
-				>
-					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: moderateScale({ size: 13, width }) }]}
-					>
+					testID='new-server-choose-certificate'>
+					<Text style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: 13 }]}>
 						{certificate ?? I18n.t('Apply_Your_Certificate')}
 					</Text>
 				</TouchableOpacity>
@@ -326,7 +314,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	render() {
-		const { connecting, theme, previousServer, width, height } = this.props;
+		const { connecting, theme, previousServer } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
 		const marginTop = previousServer ? 0 : 35;
 
@@ -337,10 +325,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale({ size: 10, height }),
-								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
-								width: verticalScale({ size: 100, height }),
-								height: verticalScale({ size: 100, height })
+								marginBottom: 10,
+								marginTop: isTablet ? 0 : marginTop,
+								width: 100,
+								height: 100
 							}
 						]}
 						source={require('../../static/images/logo.png')}
@@ -351,11 +339,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							styles.title,
 							{
 								color: themes[theme].fontTitlesLabels,
-								fontSize: moderateScale({ size: 22, width }),
-								marginBottom: verticalScale({ size: 8, height })
+								fontSize: 22,
+								marginBottom: 8
 							}
-						]}
-					>
+						]}>
 						Rocket.Chat
 					</Text>
 					<Text
@@ -363,11 +350,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							styles.subtitle,
 							{
 								color: themes[theme].fontHint,
-								fontSize: moderateScale({ size: 16, width }),
-								marginBottom: verticalScale({ size: 30, height })
+								fontSize: 16,
+								marginBottom: 30
 							}
-						]}
-					>
+						]}>
 						{I18n.t('Onboarding_subtitle')}
 					</Text>
 					<ServerInput
@@ -385,7 +371,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
+						style={[styles.connectButton, { marginTop: 16 }]}
 						testID='new-server-view-button'
 					/>
 					{isIOS ? (
@@ -396,11 +382,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 									styles.description,
 									{
 										color: themes[theme].fontSecondaryInfo,
-										fontSize: moderateScale({ size: 14, width }),
-										marginBottom: verticalScale({ size: 16, height })
+										fontSize: 14,
+										marginBottom: 16
 									}
-								]}
-							>
+								]}>
 								{I18n.t('Onboarding_join_open_description')}
 							</Text>
 							<Button
@@ -425,4 +410,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	previousServer: state.server.previousServer
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(NewServerView)));
+export default connect(mapStateToProps)(withTheme(NewServerView));

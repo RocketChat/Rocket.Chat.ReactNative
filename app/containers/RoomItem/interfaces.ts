@@ -104,7 +104,6 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	isRead: boolean;
 	teamMain: boolean;
 	date: string;
-	accessibilityLabel: string;
 	lastMessage: ILastMessage;
 	favorite: boolean;
 	alert: boolean;

@@ -60,16 +60,15 @@ const RenderListPicker = ({
 		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 	}));
 
+	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label;
+
 	return (
 		<List.Item
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
-			right={() => (
-				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>
-					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
-				</Text>
-			)}
+			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
+			additionalAcessibilityLabel={label}
 		/>
 	);
 };
@@ -143,6 +142,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Receive_Notification'
 						testID='notification-preference-view-receive-notification'
 						right={() => <RenderSwitch preference='disableNotifications' room={room} onChangeValue={saveNotificationSettings} />}
+						additionalAcessibilityLabel={!room.disableNotifications}
 					/>
 					<List.Separator />
 					<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
@@ -154,6 +154,8 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Receive_Group_Mentions'
 						testID='notification-preference-view-group-mentions'
 						right={() => <RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={saveNotificationSettings} />}
+						// @ts-ignore
+						additionalAcessibilityLabel={!room.muteGroupMentions}
 					/>
 					<List.Separator />
 					<List.Info info='Receive_Group_Mentions_Info' />
@@ -165,6 +167,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Mark_as_unread'
 						testID='notification-preference-view-mark-as-unread'
 						right={() => <RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={saveNotificationSettings} />}
+						additionalAcessibilityLabel={!room.hideUnreadStatus}
 					/>
 					<List.Separator />
 					<List.Info info='Mark_as_unread_Info' />
@@ -177,6 +180,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							title='Show_badge_for_mentions'
 							testID='notification-preference-view-badge-for-mentions'
 							right={() => <RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={saveNotificationSettings} />}
+							additionalAcessibilityLabel={!room.hideMentionStatus}
 						/>
 						<List.Separator />
 						<List.Info info='Show_badge_for_mentions_Info' />

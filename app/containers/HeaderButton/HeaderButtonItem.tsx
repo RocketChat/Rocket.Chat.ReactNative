@@ -14,6 +14,7 @@ export interface IHeaderButtonItem {
 	badge?(): void;
 	color?: string;
 	disabled?: boolean;
+	accessibilityLabel?: string;
 }
 
 export const BUTTON_HIT_SLOP = {
@@ -40,7 +41,17 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Item = ({ title, iconName, onPress, testID, badge, color, disabled, ...props }: IHeaderButtonItem): React.ReactElement => {
+const Item = ({
+	title,
+	iconName,
+	onPress,
+	testID,
+	badge,
+	color,
+	disabled,
+	accessibilityLabel,
+	...props
+}: IHeaderButtonItem): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
 		<PlatformPressable
@@ -53,7 +64,8 @@ const Item = ({ title, iconName, onPress, testID, badge, color, disabled, ...pro
 				{
 					opacity: disabled ? 0.5 : 1
 				}
-			]}>
+			]}
+			accessibilityLabel={accessibilityLabel}>
 			<>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color} {...props} />

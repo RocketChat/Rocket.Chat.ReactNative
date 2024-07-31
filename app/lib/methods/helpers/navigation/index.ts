@@ -4,7 +4,6 @@ import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
-import { isIOS } from '../deviceInfo';
 import sharedStyles from '../../../../views/Styles';
 
 export const defaultHeader: NativeStackNavigationOptions = {
@@ -28,9 +27,6 @@ export const defaultHeader: NativeStackNavigationOptions = {
 export const drawerStyle = {
 	width: 320
 };
-
-// TODO: Remove it once we migrate dropdowns to action sheet
-export const headerHeight = isIOS ? 50 : 56;
 
 export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {

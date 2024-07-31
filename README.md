@@ -1,7 +1,7 @@
 # Rocket.Chat Mobile
 
 - **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 12+
+- **Supported iOS versions**: 13.4+
 - **Supported Android versions**: 6.0+
 
 ## Download
@@ -13,7 +13,7 @@
   <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
 </a>
 
-Check [our docs](https://docs.rocket.chat/use-rocket.chat/rocket.chat-mobile) for  beta and Experimental versions.
+Check [our docs](https://developer.rocket.chat/docs/mobile-app) for  beta and Experimental versions.
 
 ## Reporting an Issue
 

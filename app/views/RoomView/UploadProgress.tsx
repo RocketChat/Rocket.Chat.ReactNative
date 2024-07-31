@@ -10,8 +10,9 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IUser, TUploadModel } from '../../definitions';
-import { cancelUpload, isUploadActive, sendFileMessage } from '../../lib/methods';
+import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
+import { sendFileMessage } from '../../lib/methods';
+import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -160,7 +161,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item, item.tmid, server, user, true);
+			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
 		} catch (e) {
 			log(e);
 		}
@@ -175,8 +176,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
 					<Text
 						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
-						numberOfLines={1}
-					>
+						numberOfLines={1}>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
 					<CustomIcon
@@ -227,8 +227,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 						backgroundColor: themes[theme!].surfaceTint,
 						borderColor: themes[theme!].strokeLight
 					}
-				]}
-			>
+				]}>
 				{this.renderItemContent(item)}
 			</View>
 		);

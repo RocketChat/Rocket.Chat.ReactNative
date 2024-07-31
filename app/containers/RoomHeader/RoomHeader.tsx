@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -176,10 +176,17 @@ const Header = React.memo(
 
 		const handleOnPress = useCallback(() => onPress(), []);
 
+		const accessibilityLabel = useMemo(() => {
+			if (tmid) {
+				return `${title} ${parentTitle}`;
+			}
+			return title;
+		}, [title, parentTitle, tmid]);
+
 		return (
 			<TouchableOpacity
 				testID='room-header'
-				accessibilityLabel={title}
+				accessibilityLabel={accessibilityLabel}
 				onPress={handleOnPress}
 				style={[
 					styles.container,
@@ -189,7 +196,8 @@ const Header = React.memo(
 					}
 				]}
 				disabled={disabled}
-				hitSlop={HIT_SLOP}>
+				hitSlop={HIT_SLOP}
+				accessibilityRole='header'>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon

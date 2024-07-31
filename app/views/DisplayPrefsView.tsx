@@ -110,6 +110,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-expanded'
 						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
+						additionalAcessibilityLabel={displayMode === DisplayMode.Expanded}
 					/>
 					<List.Separator />
 					<List.Item
@@ -118,6 +119,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						testID='display-pref-view-condensed'
 						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
+						additionalAcessibilityLabel={displayMode === DisplayMode.Condensed}
 					/>
 					<List.Separator />
 					<List.Item
@@ -125,6 +127,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						title='Avatars'
 						testID='display-pref-view-avatars'
 						right={() => renderAvatarSwitch(showAvatar)}
+						additionalAcessibilityLabel={showAvatar}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -137,6 +140,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='clock' />}
 						onPress={sortByActivity}
 						right={() => renderRadio(sortBy === SortBy.Activity)}
+						additionalAcessibilityLabel={sortBy === SortBy.Activity}
 					/>
 					<List.Separator />
 					<List.Item
@@ -145,6 +149,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='sort-az' />}
 						onPress={sortByName}
 						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
+						additionalAcessibilityLabel={sortBy === SortBy.Alphabetical}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -157,6 +162,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='flag' />}
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread)}
+						additionalAcessibilityLabel={showUnread}
 					/>
 					<List.Separator />
 					<List.Item
@@ -165,6 +171,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='star' />}
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites)}
+						additionalAcessibilityLabel={showFavorites}
 					/>
 					<List.Separator />
 					<List.Item
@@ -173,6 +180,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						left={() => <List.Icon name='group-by-type' />}
 						onPress={toggleGroupByType}
 						right={() => renderCheckBox(groupByType)}
+						additionalAcessibilityLabel={groupByType}
 					/>
 					<List.Separator />
 				</List.Section>
