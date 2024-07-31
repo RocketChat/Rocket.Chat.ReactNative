@@ -6,6 +6,7 @@ import { HeaderBackButton } from '@react-navigation/elements';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
+import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -18,8 +19,7 @@ import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
 import log from '../../lib/methods/helpers/log';
 import CannedResponseItem from './CannedResponseItem';
-import Dropdown from './Dropdown';
-import DropdownItemHeader from './Dropdown/DropdownItemHeader';
+import DepartmentFilter from './DepartmentFilter';
 import styles from './styles';
 import { ICannedResponse } from '../../definitions/ICannedResponse';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -57,11 +57,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const [cannedResponses, setCannedResponses] = useState<ICannedResponse[]>([]);
 	const [cannedResponsesScopeName, setCannedResponsesScopeName] = useState<ICannedResponse[]>([]);
 	const [departments, setDepartments] = useState<ILivechatDepartment[]>([]);
-
-	// states used by the filter in Header and Dropdown
 	const [isSearching, setIsSearching] = useState(false);
 	const [currentDepartment, setCurrentDepartment] = useState(fixedScopes[0]);
-	const [showFilterDropdown, setShowFilterDropDown] = useState(false);
 
 	// states used to do a fetch by onChangeText, onDepartmentSelect and onEndReached
 	const [searchText, setSearchText] = useState('');
@@ -200,8 +197,8 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		setCurrentDepartment(value);
 		setScope(department);
 		setDepartmentId(depId);
-		setShowFilterDropDown(false);
 		searchCallback(searchText, department, depId);
+		hideActionSheetRef();
 	};
 
 	const onEndReached = async () => {
@@ -249,6 +246,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 			),
 			headerRight: () => (
 				<HeaderButton.Container>
+					<HeaderButton.Item iconName='filter' onPress={showFilters} />
 					<HeaderButton.Item iconName='search' onPress={() => setIsSearching(true)} />
 				</HeaderButton.Container>
 			)
@@ -268,36 +266,24 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	useEffect(() => {
 		setHeader();
-	}, [isSearching]);
+	}, [isSearching, departments, currentDepartment]);
 
-	const showDropdown = () => {
-		if (isSearching) {
-			setSearchText('');
-			setIsSearching(false);
-		}
-		setShowFilterDropDown(true);
-	};
-
-	const renderFlatListHeader = () => {
-		if (!departments.length) {
-			return null;
-		}
-		return (
-			<>
-				<DropdownItemHeader department={currentDepartment} onPress={showDropdown} />
-				<List.Separator />
-			</>
-		);
+	const showFilters = () => {
+		showActionSheetRef({
+			children: (
+				<DepartmentFilter
+					departments={departments}
+					currentDepartment={currentDepartment}
+					onDepartmentSelected={onDepartmentSelect}
+				/>
+			),
+			enableContentPanningGesture: false
+		});
 	};
 
 	const renderContent = () => {
 		if (!cannedResponsesScopeName.length && !loading) {
-			return (
-				<>
-					{renderFlatListHeader()}
-					<BackgroundContainer text={I18n.t('No_canned_responses')} />
-				</>
-			);
+			return <BackgroundContainer text={I18n.t('No_canned_responses')} />;
 		}
 		return (
 			<FlatList
@@ -316,8 +302,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 					/>
 				)}
 				keyExtractor={item => item._id || item.shortcut}
-				ListHeaderComponent={renderFlatListHeader}
-				stickyHeaderIndices={[0]}
 				onEndReached={onEndReached}
 				onEndReachedThreshold={0.5}
 				ItemSeparatorComponent={List.Separator}
@@ -330,14 +314,6 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 		<SafeAreaView>
 			<StatusBar />
 			{renderContent()}
-			{showFilterDropdown ? (
-				<Dropdown
-					departments={departments}
-					currentDepartment={currentDepartment}
-					onDepartmentSelected={onDepartmentSelect}
-					onClose={() => setShowFilterDropDown(false)}
-				/>
-			) : null}
 		</SafeAreaView>
 	);
 };

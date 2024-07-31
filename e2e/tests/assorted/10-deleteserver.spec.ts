@@ -36,8 +36,8 @@ describe('Delete server', () => {
 
 	it('should add server', async () => {
 		await sleep(5000);
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id('rooms-list-header-server-add')).tap();
@@ -69,14 +69,14 @@ describe('Delete server', () => {
 	});
 
 	it('should delete server', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`rooms-list-header-server-${data.server}`)).longPress(1500);
 		await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await waitFor(element(by.id(`rooms-list-header-server-${data.server}`)))

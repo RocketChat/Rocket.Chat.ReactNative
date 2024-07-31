@@ -3,7 +3,6 @@
 #import <React/RCTLinkingManager.h>
 #import "RNNotifications.h"
 #import "RNBootSplash.h"
-#import "Orientation.h"
 #import <Firebase.h>
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
@@ -79,8 +78,4 @@ return [RCTLinkingManager application:application
                     restorationHandler:restorationHandler];
 }
 
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-{
-  return [Orientation getOrientation];
-}
 @end
