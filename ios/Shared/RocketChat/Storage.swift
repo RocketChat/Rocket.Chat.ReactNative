@@ -6,8 +6,6 @@ struct Credentials {
 }
 
 final class Storage {
-	static let shared = Storage()
-	
 	private let mmkv = MMKV.build()
 	
 	func getCredentials(server: String) -> Credentials? {
