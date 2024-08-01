@@ -9,7 +9,6 @@ import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { leaveRoom } from '../../actions/room';
-import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -450,21 +449,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		} catch (e) {
 			log(e);
 			this.setState({ member: {} });
-		}
-	};
-
-	addUser = async () => {
-		const { room } = this.state;
-		const { dispatch, navigation } = this.props;
-		const { rid } = room;
-		try {
-			dispatch(setLoading(true));
-			await Services.addUsersToRoom(rid);
-			navigation.pop();
-		} catch (e) {
-			log(e);
-		} finally {
-			dispatch(setLoading(false));
 		}
 	};
 

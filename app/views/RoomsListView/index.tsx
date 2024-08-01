@@ -423,7 +423,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): any => {
 		const { searching, canCreateRoom, headerTitleWidth } = this.state;
-		console.log('🚀 ~ RoomsListView ~ headerTitleWidth:', headerTitleWidth);
+		// console.log('🚀 ~ RoomsListView ~ headerTitleWidth:', headerTitleWidth);
 		const {
 			navigation,
 			isMasterDetail,
