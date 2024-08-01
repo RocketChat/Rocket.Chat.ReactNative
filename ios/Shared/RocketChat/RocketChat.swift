@@ -15,7 +15,6 @@ final class RocketChat {
   let server: Server
   let api: API?
   
-  static var instances: [Server: RocketChat] = [:]
   var encryptionInstances: [RoomId: Encryption] = [:]
   
   static private var queue = DispatchQueue(label: "chat.rocket.instanceQueue")
@@ -24,18 +23,6 @@ final class RocketChat {
   init(server: Server) {
     self.server = server
     self.api = API(server: server)
-  }
-  
-  static func instanceForServer(server: Server) -> RocketChat {
-    queue.sync {
-      if let rocketchat = instances[server] {
-        return rocketchat
-      }
-      
-      let rocketchat = RocketChat(server: server)
-      instances[server] = rocketchat
-      return rocketchat
-    }
   }
   
   func getPushWithId(_ msgId: String, completion: @escaping((Notification?) -> Void)) {
