@@ -5,9 +5,9 @@ extension MMKV {
 //		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		
-		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.none)
+		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.info)
 		
-		guard let mmkv = MMKV(mmapID: "default", mode: MMKVMode.multiProcess) else {
+		guard let mmkv = MMKV(mmapID: "mmkv.default", mode: MMKVMode.multiProcess) else {
 			fatalError("Could not initialize MMKV instance.")
 		}
 		
