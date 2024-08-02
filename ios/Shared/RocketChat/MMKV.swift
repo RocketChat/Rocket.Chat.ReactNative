@@ -2,12 +2,12 @@ import Foundation
 
 extension MMKV {
 	static func build() -> MMKV {
-		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
+//		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
 		
 		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.none)
 		
-		guard let mmkv = MMKV(mmapID: "default", cryptKey: password?.data(using: .utf8), mode: MMKVMode.multiProcess) else {
+		guard let mmkv = MMKV(mmapID: "default", mode: MMKVMode.multiProcess) else {
 			fatalError("Could not initialize MMKV instance.")
 		}
 		
