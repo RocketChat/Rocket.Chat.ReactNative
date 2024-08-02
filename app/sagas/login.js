@@ -44,6 +44,7 @@ import { getServerById } from '../lib/database/services/Server';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { storage } from '../lib/methods/userPreferencesNew';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -229,9 +230,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			}
 		});
 
-		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
-		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
-		UserPreferences.setString(CURRENT_SERVER, server);
+		// UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
+		// UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
+		// UserPreferences.setString(CURRENT_SERVER, server);
+		storage.set(`${TOKEN_KEY}-${server}`, user.id);
+		storage.set(`${TOKEN_KEY}-${user.id}`, user.token);
+		storage.set(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
