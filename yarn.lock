@@ -12088,10 +12088,10 @@ react-native-notifications@5.1.0:
   resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-5.1.0.tgz#8cba105fd57ab9d5df9d27284acf1e2b4f3d7ea3"
   integrity sha512-laqDSDlCvEASmJR6cXpqaryK855ejQd07vrfYERzhv68YDOoSkKy/URExRP4vAfAOVqHhix80tLbNUcfvZk2VQ==
 
-react-native-notifier@1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/react-native-notifier/-/react-native-notifier-1.6.1.tgz#eec07bdebed6c22cd22f5167555b7762e4119552"
-  integrity sha512-uq58vefWCmgk9B/GU0Z9P6M8Su5IuRBtKmroSX7luISEdh3r8QvJo/G6jgK2sO0QhM5QvJOGWBDm1JGEkYL4IQ==
+react-native-notifier@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-notifier/-/react-native-notifier-2.0.0.tgz#99bb703fae8cbf0c0465a5beacdca923613344fa"
+  integrity sha512-CKaoldBM2Lz9FIWn1frUZ70R8n1jCwaUsO4hGfqbNYFUZLV4OYy/UeEicWvrLy3Ce8fEg7WyYWVd0q+crsFQlA==
 
 react-native-picker-select@9.0.1:
   version "9.0.1"
