@@ -1,11 +1,16 @@
 import Foundation
+import os
+
+let logger = OSLog(subsystem: "chat.rocket.reactnative", category: "PUSH")
 
 extension MMKV {
 	static func build() -> MMKV {
 //		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
-//		let groupDir = FileManager.default.groupDir()
+		let groupDir = FileManager.default.groupDir()
+        
+        os_log("GROUPDIR: %@", log: logger, type: .info, groupDir)
 		
-//		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.info)
+		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.debug)
 
 		guard let mmkv = MMKV(mmapID: "mmkv.default", mode: MMKVMode.multiProcess) else {
 			fatalError("Could not initialize MMKV instance.")
