@@ -16,8 +16,6 @@ final class RocketChat {
   let api: API?
   
   var encryptionInstances: [RoomId: Encryption] = [:]
-  
-  static private var queue = DispatchQueue(label: "chat.rocket.instanceQueue")
   private var encryptionQueue = DispatchQueue(label: "chat.rocket.encryptionQueue")
   
   init(server: Server) {

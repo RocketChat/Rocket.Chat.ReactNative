@@ -39,6 +39,7 @@ final class API {
       return nil
     }
       
+      os_log("SERVER: %@", log: logger, type: .info, server.absoluteString)
     guard let credentials = Storage().getCredentials(server: server.absoluteString) else {
       return nil
     }
