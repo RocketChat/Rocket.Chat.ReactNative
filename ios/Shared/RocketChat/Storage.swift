@@ -10,8 +10,14 @@ final class Storage {
 	
 	func getCredentials(server: String) -> Credentials? {
 		guard let userId = mmkv.userId(for: server), let userToken = mmkv.userToken(for: userId) else {
+            mmkv.close()
 			return nil
 		}
+        
+        os_log("USERID: %@", log: logger, type: .info, userId)
+        os_log("USERTOKEN: %@", log: logger, type: .info, userToken)
+        
+        mmkv.close()
 		
 		return .init(userId: userId, userToken: userToken)
 	}
