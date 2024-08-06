@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 
 import { useAppSelector, usePermissions } from '../../lib/hooks';
@@ -93,7 +93,7 @@ const CreateChannelView = () => {
 		}
 	});
 
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const { params } = useRoute<RouteProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const isTeam = params?.isTeam || false;
 	const teamId = params?.teamId;

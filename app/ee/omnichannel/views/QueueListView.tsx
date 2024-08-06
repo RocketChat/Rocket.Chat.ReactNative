@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, ListRenderItem } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -22,8 +22,8 @@ import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailSt
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'QueueListView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'QueueListView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
@@ -62,7 +62,7 @@ const QueueListView = React.memo(() => {
 	const queued = useSelector((state: IApplicationState) => getInquiryQueueSelector(state));
 
 	useEffect(() => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Queued_chats')
 		};
 		if (isMasterDetail) {

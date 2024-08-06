@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 
 interface ILivechatEditViewProps {
 	user: IUser;
-	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: TSupportedThemes;
 	editOmnichannelContact: string[] | undefined;

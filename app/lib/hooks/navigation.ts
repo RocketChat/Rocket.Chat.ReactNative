@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { TNavigation } from '../../stacks/stackType';
 import {
@@ -33,7 +33,7 @@ type TRoutes =
 	| TNavigation;
 
 export function useAppNavigation<ParamList extends TRoutes, RouteName extends keyof ParamList = keyof ParamList>() {
-	const navigation = useNavigation<StackNavigationProp<ParamList, RouteName>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ParamList, RouteName>>();
 	return navigation;
 }
 

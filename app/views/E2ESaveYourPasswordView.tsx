@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
 const E2ESaveYourPasswordView = () => {
 	const server = useAppSelector(state => state.server.server);
-	const navigation = useNavigation<StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>>();
 	const dispatch = useDispatch();
 	const [password, setPassword] = useState('');
 	const { colors } = useTheme();

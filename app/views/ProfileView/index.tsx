@@ -1,4 +1,4 @@
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React from 'react';
 import { Keyboard, ScrollView, TextInput, View } from 'react-native';
@@ -83,7 +83,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {

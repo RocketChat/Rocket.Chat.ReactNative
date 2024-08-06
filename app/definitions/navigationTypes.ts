@@ -1,5 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { TSubscriptionModel } from './ISubscription';
 import { TServerModel } from './IServer';
@@ -14,7 +14,7 @@ interface INavigationProps {
 }
 
 export type TNavigationOptions = {
-	navigationOptions?(props: INavigationProps): StackNavigationOptions;
+	navigationOptions?(props: INavigationProps): NativeStackNavigationOptions;
 };
 
 export type SetUsernameStackParamList = {

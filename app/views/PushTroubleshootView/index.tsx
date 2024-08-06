@@ -1,5 +1,5 @@
 import { useFocusEffect } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -15,7 +15,7 @@ import NotificationDelay from './components/NotificationDelay';
 import PushGatewayConnection from './components/PushGatewayConnection';
 
 interface IPushTroubleshootViewProps {
-	navigation: StackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
+	navigation: NativeStackNavigationProp<SettingsStackParamList, 'PushTroubleshootView'>;
 }
 
 const PushTroubleshootView = ({ navigation }: IPushTroubleshootViewProps): JSX.Element => {

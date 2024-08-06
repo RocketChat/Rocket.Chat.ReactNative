@@ -3,7 +3,7 @@ import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/core';
 
 import * as List from '../../containers/List';
@@ -25,7 +25,7 @@ interface IReadReceiptViewState {
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	route: RouteProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	isMasterDetail: boolean;
 }
@@ -39,7 +39,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 	private messageId: string;
 
 	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
@@ -131,8 +131,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 							{
 								color: themes[theme].fontSecondaryInfo
 							}
-						]}
-					>{`@${item.user.username}`}</Text>
+						]}>{`@${item.user.username}`}</Text>
 				</View>
 			</View>
 		);

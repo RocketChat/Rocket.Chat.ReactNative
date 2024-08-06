@@ -68,7 +68,7 @@ async function login(username: string, password: string) {
 
 async function logout() {
 	const deviceType = device.getPlatform();
-	const { scrollViewType, textMatcher } = platformTypes[deviceType];
+	const { textMatcher } = platformTypes[deviceType];
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -77,10 +77,9 @@ async function logout() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await waitFor(element(by.id('settings-view')))
+	await waitFor(element(by.id('settings-logout')))
 		.toBeVisible()
 		.withTimeout(2000);
-	await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 	await element(by.id('settings-logout')).tap();
 	const logoutAlertMessage = 'You will be logged out of this application.';
 	await waitFor(element(by[textMatcher](logoutAlertMessage)).atIndex(0))
@@ -108,12 +107,20 @@ async function mockMessage(message: string, isThread = false) {
 }
 
 async function tapBack() {
-	try {
-		await element(by.id('header-back')).atIndex(0).tap();
-	} catch (error) {
-		await device.pressBack();
+	if (device.getPlatform() === 'ios') {
+		try {
+			await element(by.type('UIAccessibilityBackButtonElement')).tap();
+		} catch (error) {
+			await element(by.id('header-back')).atIndex(0).tap();
+		}
+	} else {
+		try {
+			await element(by.id('header-back')).atIndex(0).tap();
+		} catch (error) {
+			await device.pressBack();
+		}
 	}
-	await sleep(300); // Wait for animation to finish
+	// await sleep(300); // Wait for animation to finish
 }
 
 async function searchRoom(

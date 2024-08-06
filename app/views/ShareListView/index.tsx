@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dispatch } from 'redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
 import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
@@ -54,7 +54,7 @@ interface IState {
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
+	navigation: NativeStackNavigationProp<ShareInsideStackParamList, 'ShareListView'>;
 }
 
 interface IShareListViewProps extends INavigationOption {

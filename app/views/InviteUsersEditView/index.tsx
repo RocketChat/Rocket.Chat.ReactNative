@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useLayoutEffect } from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -16,7 +16,7 @@ import styles from './styles';
 import Picker from './Picker';
 
 const InviteUsersEditView = () => {
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'InviteUsersEditView'>>();
 	const { rid } = useRoute<RouteProp<ChatsStackParamList, 'InviteUsersEditView'>>().params;
 	const dispatch = useDispatch();
 
