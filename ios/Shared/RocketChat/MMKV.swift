@@ -5,14 +5,14 @@ let logger = OSLog(subsystem: "chat.rocket.reactnative", category: "PUSH")
 
 extension MMKV {
 	static func build() -> MMKV {
-//		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
+		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
         
         os_log("GROUPDIR: %@", log: logger, type: .info, groupDir)
 		
 		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.debug)
-
-		guard let mmkv = MMKV(mmapID: "mmkv.default", mode: MMKVMode.multiProcess) else {
+		
+		guard let mmkv = MMKV(mmapID: "default", cryptKey: password?.data(using: .utf8), mode: MMKVMode.multiProcess) else {
 			fatalError("Could not initialize MMKV instance.")
 		}
 		

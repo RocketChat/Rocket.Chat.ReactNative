@@ -6,7 +6,6 @@ import valid from 'semver/functions/valid';
 import coerce from 'semver/functions/coerce';
 import { call } from 'typed-redux-saga';
 
-import { storage } from '../lib/methods/userPreferencesNew';
 import Navigation from '../lib/navigation/appNavigation';
 import { SERVER } from '../actions/actionsTypes';
 import {
@@ -26,7 +25,7 @@ import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
-// import UserPreferences from '../lib/methods/userPreferences';
+import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
 import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
@@ -144,14 +143,14 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = storage.getString(`${CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
-		const userId = storage.getString(`${TOKEN_KEY}-${server}`);
+		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		let user = null;
 		if (userId) {
 			// search credentials on database
@@ -172,14 +171,14 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 					requirePasswordChange: userRecord.requirePasswordChange
 				};
 			} else {
-				const token = storage.getString(`${TOKEN_KEY}-${userId}`);
+				const token = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 				if (token) {
 					user = { token };
 				}
 			}
 		}
 
-		const basicAuth = storage.getString(`${BASIC_AUTH_KEY}-${server}`);
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
 		setBasicAuth(basicAuth);
 
 		if (user) {
@@ -187,8 +186,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-			// storage.setString(CURRENT_SERVER, server); // only set server after have a user
-			storage.set(CURRENT_SERVER, server); // only set server after have a user
+			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
 			yield connect({ server });
@@ -224,7 +222,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = storage.getString(`${CERTIFICATE_KEY}-${server}`);
+		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
 			SSLPinning?.setCertificate(certificate, server);
 		}

@@ -27,7 +27,7 @@ export const headers: CustomHeaders = {
 };
 
 let _basicAuth;
-export const setBasicAuth = (basicAuth: string | undefined): void => {
+export const setBasicAuth = (basicAuth: string | null): void => {
 	_basicAuth = basicAuth;
 	if (basicAuth) {
 		RocketChatSettings.customHeaders = { ...headers, Authorization: `Basic ${_basicAuth}` };
