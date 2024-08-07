@@ -1278,6 +1278,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNKeychain (8.2.0):
+    - React-Core
   - RNLocalize (2.1.1):
     - React-Core
   - RNNotifee (7.8.2):
@@ -1412,6 +1414,7 @@ DEPENDENCIES:
   - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -1632,6 +1635,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
     :path: "../node_modules/react-native-image-crop-picker"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNNotifee:
@@ -1764,6 +1769,7 @@ SPEC CHECKSUMS:
   RNFileViewer: 83cc066ad795b1f986791d03b56fe0ee14b6a69f
   RNGestureHandler: bc2cdb2dc42facdf34992ae364b8a728e19a3686
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
+  RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
   RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
