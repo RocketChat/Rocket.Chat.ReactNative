@@ -16,7 +16,7 @@ class NotificationService: UNNotificationServiceExtension {
         return
       }
       
-      rocketchat = RocketChat.instanceForServer(server: data.host.removeTrailingSlash())
+      rocketchat = RocketChat(server: data.host.removeTrailingSlash())
       
       // If the notification has the content on the payload, show it
       if data.notificationType != .messageIdOnly {
@@ -25,13 +25,23 @@ class NotificationService: UNNotificationServiceExtension {
       }
       
       // Request the content from server
-      rocketchat?.getPushWithId(data.messageId) { notification in
-        if let notification = notification {
-          self.bestAttemptContent?.title = notification.title
-          self.bestAttemptContent?.body = notification.text
-          self.processPayload(payload: notification.payload)
+        UNUserNotificationCenter.current().getDeliveredNotifications { deliveredNotifications in
+            let identifiersToRemove = deliveredNotifications.filter {
+                $0.request.content.body == "You have a new message"
+            }.map { $0.request.identifier }
+            
+            if identifiersToRemove.count > 0 {
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiersToRemove)
+            }
+
+            self.rocketchat?.getPushWithId(data.messageId) { notification in
+                if let notification = notification {
+                    self.bestAttemptContent?.title = notification.title
+                    self.bestAttemptContent?.body = notification.text
+                    self.processPayload(payload: notification.payload)
+                }
+            }
         }
-      }
     }
   }
   
