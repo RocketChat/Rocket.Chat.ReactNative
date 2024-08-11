@@ -37,6 +37,7 @@ def all_pods
   pod 'Firebase/Analytics', :modular_headers => true
   pod 'Firebase/Crashlytics', :modular_headers => true
   pod 'Firebase/Core', :modular_headers => true
+  pod 'Firebase/Messaging', :modular_headers => true
   
 
   # Enable and run pods again, if you want to use Flipper

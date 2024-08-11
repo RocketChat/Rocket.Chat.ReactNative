@@ -32,7 +32,7 @@ class FirebaseMessagingComponent extends React.Component {
 			await messaging()
 				.getToken()
 				.then(e => {
-					console.error(e, 'token');
+					console.error(e, 'this isa fcm token');
 				});
 			messaging().subscribeToTopic('all');
 			messaging().subscribeToTopic('version');
