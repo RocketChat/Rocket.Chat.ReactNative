@@ -46,10 +46,23 @@ const WebViewAI = ({
 					headerRight: () => null,
 					headerTintColor: '#FFF',
 					gestureEnabled: false
-				}
+				},
+				isTablet: DeviceInfo.isTablet()
 			});
 		}
 		setIsVisible(true);
+	};
+
+	const RenderHeader = () => {
+		if (DeviceInfo.isTablet()) {
+			return (
+				<View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgb(16,19,23)' }}>
+					<HeaderBackButton onPress={closeWebView} tintColor={theme === 'light' ? 'white' : 'white'} />
+					<Text style={{ color: 'white' }}>Nionium AI</Text>
+				</View>
+			);
+		}
+		return null;
 	};
 
 	const closeWebView = () => {
@@ -118,8 +131,9 @@ const WebViewAI = ({
 			>
 				<NioniumAiSvg />
 			</TouchableOpacity>
-			<View style={{ height: screenHeight - 56, display: isVisible ? 'flex' : 'none' }}>
+			<View style={{ height: screenHeight, display: isVisible ? 'flex' : 'none' }}>
 				{renderLoader()}
+				<RenderHeader />
 				<KeyboardAvoidingView
 					behavior={Platform.OS === 'android' ? 'padding' : undefined}
 					keyboardVerticalOffset={100}
@@ -128,6 +142,7 @@ const WebViewAI = ({
 					<WebView
 						allowsBackForwardNavigationGestures
 						ref={webViewRef}
+						style={{ maxHeight: screenHeight - 60 }}
 						onContentProcessDidTerminate={() => webViewRef.current.reload()}
 						scrollEnabled={true}
 						onLoad={() => {

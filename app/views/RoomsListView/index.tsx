@@ -898,7 +898,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const { drawerStyle } = this.context;
 		const options = this.getHeader();
 		const yo = !drawerStyle.hasOwnProperty('header') ? options : drawerStyle.header;
-		return <Header title='' {...themedHeader(theme)} {...yo} />;
+		return drawerStyle?.isTablet !== true ? null : <Header title='' {...themedHeader(theme)} {...yo} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
