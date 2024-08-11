@@ -13,6 +13,7 @@ import {
 import { HeaderBackButton } from '@react-navigation/elements';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DeviceInfo from 'react-native-device-info';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import NioniumAiSvg from '../../static/svg/NioniumAi';
 import { ThemeContext } from '../../theme';
@@ -35,6 +36,7 @@ const WebViewAI = ({
 	const webViewRef = useRef(null);
 	const [token, setToken] = useState(-1);
 	const { setDrawerStyle } = useDrawerStyle();
+	const insets = useSafeAreaInsets()
 
 	const openWebView = () => {
 		if (DeviceInfo.isTablet()) {
@@ -52,6 +54,9 @@ const WebViewAI = ({
 		}
 		setIsVisible(true);
 	};
+	
+
+	console.error(DeviceInfo.isTablet(), "yes?")
 
 	const RenderHeader = () => {
 		if (DeviceInfo.isTablet()) {
@@ -123,6 +128,10 @@ const WebViewAI = ({
 			);
 		}
 	};
+
+	const paddingTop = RenderHeader() !== null ? insets.top : 0
+
+	const webViweHeight = RenderHeader() === null ? 60 : 0
 	return (
 		<>
 			<TouchableOpacity
@@ -131,11 +140,12 @@ const WebViewAI = ({
 			>
 				<NioniumAiSvg />
 			</TouchableOpacity>
-			<View style={{ height: screenHeight, display: isVisible ? 'flex' : 'none' }}>
+			<View style={{ height: screenHeight- webViweHeight, display: isVisible ? 'flex' : 'none', paddingTop }}>
 				{renderLoader()}
-				<RenderHeader />
+				{RenderHeader()}
 				<KeyboardAvoidingView
 					behavior={Platform.OS === 'android' ? 'padding' : undefined}
+					contentContainerStyle={{ flex: 1 }}
 					keyboardVerticalOffset={100}
 					style={{ flex: 1, backgroundColor: 'rgb(17,19,23)' }}
 				>
