@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
 import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
+import * as Keychain from 'react-native-keychain';
 
 import { getDeviceToken } from '../notifications';
 import { extractHostname, isSsl } from './helpers';
@@ -15,7 +16,7 @@ import { Services } from '../services';
 import { roomsSubscription } from './subscriptions/rooms';
 import { _activeUsersSubTimeout } from '.';
 
-function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
+async function removeServerKeys({ server, userId }: { server: string; userId?: string | null }) {
 	UserPreferences.removeItem(`${TOKEN_KEY}-${server}`);
 	if (userId) {
 		UserPreferences.removeItem(`${TOKEN_KEY}-${userId}`);
@@ -24,6 +25,7 @@ function removeServerKeys({ server, userId }: { server: string; userId?: string 
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
+	await Keychain.resetInternetCredentials(server);
 }
 
 async function removeSharedCredentials({ server }: { server: string }) {
@@ -56,7 +58,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 
 		await serversDB.write(() => serversDB.batch(...batch));
 		await removeSharedCredentials({ server });
-		removeServerKeys({ server, userId });
+		await removeServerKeys({ server, userId });
 	} catch (e) {
 		log(e);
 	}
