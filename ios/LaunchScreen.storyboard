@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dtp-p8-LvN">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
@@ -14,28 +14,26 @@
             <objects>
                 <viewController id="Dtp-p8-LvN" sceneMemberID="viewController">
                     <view key="view" autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" id="guO-oA-Nhw">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="Launch Screen Icon" translatesAutoresizingMaskIntoConstraints="NO" id="3lX-Ut-9ad">
-                                <rect key="frame" x="80" y="316" width="254" height="264"/>
+                                <rect key="frame" x="312" y="484" width="400" height="398"/>
                                 <color key="tintColor" systemColor="tintColor"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" image="YES" notEnabled="YES"/>
-                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="3lX-Ut-9ad" secondAttribute="height" multiplier="161:160" id="aspect-ratio"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="max-width"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="eg9-kz-Dhh"/>
                         <color key="backgroundColor" red="0.25490196078431371" green="1" blue="0.54509803921568623" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <color key="tintColor" red="0.32706910495443409" green="0.66464671161439681" blue="0.25354843354968898" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" notEnabled="YES"/>
-                        </accessibility>
                         <constraints>
-                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="centerX" secondItem="guO-oA-Nhw" secondAttribute="centerX" id="5ec-hi-bQD"/>
-                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="centerY" secondItem="guO-oA-Nhw" secondAttribute="centerY" id="J51-nl-dOu"/>
-                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="top" secondItem="eg9-kz-Dhh" secondAttribute="top" constant="268" id="V78-8y-c51"/>
-                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="leading" secondItem="eg9-kz-Dhh" secondAttribute="leading" constant="80" id="vQY-1j-YIx"/>
+                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="centerX" secondItem="guO-oA-Nhw" secondAttribute="centerX" id="centerX"/>
+                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="centerY" secondItem="guO-oA-Nhw" secondAttribute="centerY" id="centerY"/>
+                            <constraint firstItem="eg9-kz-Dhh" firstAttribute="leading" relation="lessThanOrEqual" secondItem="3lX-Ut-9ad" secondAttribute="leading" constant="-20" id="leading"/>
+                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="eg9-kz-Dhh" secondAttribute="trailing" constant="20" id="trailing"/>
+                            <constraint firstItem="3lX-Ut-9ad" firstAttribute="width" secondItem="guO-oA-Nhw" secondAttribute="width" multiplier="0.7" priority="750" id="width"/>
                         </constraints>
                     </view>
                 </viewController>
