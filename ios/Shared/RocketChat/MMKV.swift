@@ -1,14 +1,9 @@
 import Foundation
-import os
-
-let logger = OSLog(subsystem: "chat.rocket.reactnative", category: "PUSH")
 
 extension MMKV {
 	static func build() -> MMKV {
 		let password = SecureStorage().getSecureKey("com.MMKV.default".toHex())
 		let groupDir = FileManager.default.groupDir()
-        
-        os_log("GROUPDIR: %@", log: logger, type: .info, groupDir)
 		
 		MMKV.initialize(rootDir: nil, groupDir: groupDir, logLevel: MMKVLogLevel.debug)
 		
