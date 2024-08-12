@@ -38,8 +38,7 @@ final class API {
     guard let server = URL(string: server.removeTrailingSlash()) else {
       return nil
     }
-      
-      os_log("SERVER: %@", log: logger, type: .info, server.absoluteString)
+
     guard let credentials = Storage().getCredentials(server: server.absoluteString) else {
       return nil
     }
