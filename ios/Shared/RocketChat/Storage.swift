@@ -1,6 +1,5 @@
 import Foundation
 import Security
-import os
 
 struct Credentials {
 	let userId: String
