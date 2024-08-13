@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
+import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useState } from 'react';
 import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
@@ -47,6 +47,7 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const [, setForceUpdate] = useState(0);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (subscription && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
@@ -154,9 +155,14 @@ export const ComposerInput = memo(
 		const setInput: TSetInput = (text, selection) => {
 			const message = text.trim();
 			textRef.current = message;
-			if (inputRef.current) {
-				inputRef.current.setNativeProps({ text });
+
+			// como forçar o disparo do useAutoSaveDraft aqui de dentro?
+			if (!message) {
+				setForceUpdate(Math.random());
 			}
+
+			inputRef.current?.setNativeProps?.({ text });
+
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
 				setTimeout(() => {

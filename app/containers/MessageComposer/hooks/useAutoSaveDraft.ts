@@ -24,6 +24,7 @@ export const useAutoSaveDraft = (text = '') => {
 		}
 	}, [action, rid, tmid, text, selectedMessages?.length, route.name]);
 
+	// if focused on composer input, saves every N seconds
 	useEffect(() => {
 		if (focused) {
 			intervalRef.current = setInterval(saveMessageDraft, 3000) as any;
