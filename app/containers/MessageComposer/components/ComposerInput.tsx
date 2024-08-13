@@ -47,7 +47,6 @@ export const ComposerInput = memo(
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		const [, setForceUpdate] = useState(0);
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (subscription && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
@@ -59,7 +58,7 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
 
-		useAutoSaveDraft(textRef.current);
+		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
 
 		// Draft/Canned Responses
 		useEffect(() => {
@@ -143,7 +142,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('');
+				setInput('', undefined, true);
 				return text;
 			},
 			getText: () => textRef.current,
@@ -152,13 +151,12 @@ export const ComposerInput = memo(
 			onAutocompleteItemSelected
 		}));
 
-		const setInput: TSetInput = (text, selection) => {
+		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
 			const message = text.trim();
 			textRef.current = message;
 
-			// como forçar o disparo do useAutoSaveDraft aqui de dentro?
-			if (!message) {
-				setForceUpdate(Math.random());
+			if (forceUpdateDraftMessage) {
+				saveMessageDraft('');
 			}
 
 			inputRef.current?.setNativeProps?.({ text });
