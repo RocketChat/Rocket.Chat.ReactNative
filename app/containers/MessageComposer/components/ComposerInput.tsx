@@ -1,4 +1,4 @@
-import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
 import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
