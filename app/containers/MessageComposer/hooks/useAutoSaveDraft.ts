@@ -12,6 +12,8 @@ export const useAutoSaveDraft = (text = '') => {
 	const oldText = useRef('');
 	const intervalRef = useRef();
 
+	const mounted = useRef(true);
+
 	const saveMessageDraft = useCallback(
 		(m?: string) => {
 			if (route.name === 'ShareView') return;
@@ -43,6 +45,23 @@ export const useAutoSaveDraft = (text = '') => {
 			clearInterval(intervalRef.current);
 		};
 	}, [focused, saveMessageDraft]);
+
+	// hack to call saveMessageDraft when component is unmounted
+	useEffect(() => {
+		() => {};
+		return () => {
+			mounted.current = false;
+		};
+	}, []);
+
+	useEffect(
+		() => () => {
+			if (!mounted.current) {
+				saveMessageDraft();
+			}
+		},
+		[saveMessageDraft]
+	);
 
 	return { saveMessageDraft };
 };
