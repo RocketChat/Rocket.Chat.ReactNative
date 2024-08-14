@@ -21,7 +21,7 @@ export const useAutoSaveDraft = (text = '') => {
 			if (selectedMessages?.length) {
 				draftMessage = JSON.stringify({ quotes: selectedMessages, msg: text });
 			} else {
-				draftMessage = m || text;
+				draftMessage = m ?? text;
 			}
 			if (oldText.current !== draftMessage || (oldText.current === '' && draftMessage === '') || m !== undefined) {
 				oldText.current = draftMessage;
