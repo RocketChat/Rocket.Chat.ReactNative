@@ -41,7 +41,6 @@ abstract_target 'defaults' do
 
   target 'RocketChatRN' # Experimental app
   target 'Rocket.Chat' # Official app
-  target 'ShareRocketChatRN'
   target 'NotificationService'
 end
 
