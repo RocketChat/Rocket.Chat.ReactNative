@@ -242,7 +242,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-		if (!currentRoot === RootEnum.ROOT_SHARE_EXTENSION && !currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 		}
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);

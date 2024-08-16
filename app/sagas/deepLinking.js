@@ -89,6 +89,12 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	const server = UserPreferences.getString(CURRENT_SERVER);
 	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+
+	if (!user) {
+		yield put(appInit());
+		return;
+	}
+
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	console.log('🚀 ~ handleShareExtension ~ server:', server, user);
 
