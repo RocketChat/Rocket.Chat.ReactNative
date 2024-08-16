@@ -99,37 +99,37 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	}
 
 	async componentDidMount() {
-		try {
-			const data = (await ShareExtension.data()) as IDataFromShare[];
-			if (isAndroid) {
-				await this.askForPermission(data);
-			}
-			const info = await Promise.all(
-				data
-					.filter(item => item.type === 'media')
-					.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true }))
-			);
-			const attachments = info.map(file => {
-				if (!file.exists) {
-					return null;
-				}
+		// try {
+		// 	const data = (await ShareExtension.data()) as IDataFromShare[];
+		// 	if (isAndroid) {
+		// 		await this.askForPermission(data);
+		// 	}
+		// 	const info = await Promise.all(
+		// 		data
+		// 			.filter(item => item.type === 'media')
+		// 			.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true }))
+		// 	);
+		// 	const attachments = info.map(file => {
+		// 		if (!file.exists) {
+		// 			return null;
+		// 		}
 
-				return {
-					filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-					description: '',
-					size: file.size,
-					mime: mime.lookup(file.uri),
-					path: file.uri
-				};
-			}) as IFileToShare[];
-			const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
-			this.setState({
-				text,
-				attachments
-			});
-		} catch {
-			// Do nothing
-		}
+		// 		return {
+		// 			filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+		// 			description: '',
+		// 			size: file.size,
+		// 			mime: mime.lookup(file.uri),
+		// 			path: file.uri
+		// 		};
+		// 	}) as IFileToShare[];
+		// 	const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
+		// 	this.setState({
+		// 		text,
+		// 		attachments
+		// 	});
+		// } catch {
+		// 	// Do nothing
+		// }
 
 		this.getSubscriptions();
 	}
@@ -266,10 +266,12 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	getSubscriptions = async () => {
 		const { server } = this.props;
+		console.log('🚀 ~ ShareListView ~ getSubscriptions= ~ server:', server);
 		const serversDB = database.servers;
 
 		if (server) {
 			const chats = await this.query();
+			console.log('🚀 ~ ShareListView ~ getSubscriptions= ~ chats:', chats);
 			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
@@ -482,10 +484,10 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 }
 
-const mapStateToProps = ({ share }: IApplicationState) => ({
-	userId: share.user && (share.user.id as string),
-	token: share.user && (share.user.token as string),
-	server: share.server.server as string
+const mapStateToProps = ({ login, server }: IApplicationState) => ({
+	userId: login?.user?.id as string,
+	token: login?.user?.token as string,
+	server: server?.server as string
 });
 
 export default connect(mapStateToProps)(withTheme(ShareListView));

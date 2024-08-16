@@ -59,14 +59,23 @@ interface IState {
 const parseDeepLinking = (url: string) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth|invite)\?/;
-		if (url.match(regex)) {
-			url = url.replace(regex, '').trim();
-			if (url) {
-				return parseQuery(url);
+		const regex = /^(room|auth|invite|shareextension)\?/;
+		const match = url.match(regex);
+		if (match) {
+			const matchedPattern = match[1];
+			const query = url.replace(regex, '').trim();
+
+			if (query) {
+				const parsedQuery = parseQuery(query);
+				return {
+					...parsedQuery,
+					type: matchedPattern
+				};
 			}
 		}
 	}
+
+	// Return null if the URL doesn't match or is not valid
 	return null;
 };
 

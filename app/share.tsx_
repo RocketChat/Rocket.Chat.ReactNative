@@ -141,4 +141,12 @@ const Root = (): React.ReactElement => {
 	);
 };
 
+// loading screen
+// screen lock / localAuthenticate
+// connect?
+// modal -> stack
+// if logged out, go to onboarding
+// android
+// tablet
+
 export default Root;

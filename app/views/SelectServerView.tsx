@@ -20,6 +20,7 @@ const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
 	const [servers, setServers] = React.useState<TServerModel[]>([]);
+	console.log('🚀 ~ SelectServerView ~ servers:', servers);
 
 	const server = useAppSelector(state => state.share.server.server);
 	const navigation = useNavigation<StackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
@@ -35,6 +36,7 @@ const SelectServerView = () => {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversResult = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
+			console.log('🚀 ~ init ~ serversResult:', serversResult);
 			setServers(serversResult);
 		};
 		init();

@@ -84,7 +84,29 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+const handleShareExtension = function* handleOpen({ params }) {
+	console.log('SHARE EXTENSION');
+
+	const server = UserPreferences.getString(CURRENT_SERVER);
+	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
+	console.log('🚀 ~ handleShareExtension ~ server:', server, user);
+
+	// yield localAuthenticate(server);
+	yield put(selectServerRequest(server));
+	yield take(types.LOGIN.SUCCESS);
+	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+};
+
 const handleOpen = function* handleOpen({ params }) {
+	console.log('🚀 ~ handleOpen ~ params:', params);
+	if (params.type === 'shareextension') {
+		yield handleShareExtension({ params });
+		return;
+	}
+
+	console.log('noooo noooo noooo noooo noooo ');
+
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 

@@ -180,6 +180,14 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
+		const currentRoot = yield select(state => state.app.root);
+
+		console.log('handleLoginSuccess', currentRoot);
+
+		if (currentRoot === RootEnum.ROOT_SHARE_EXTENSION || currentRoot === RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+			return;
+		}
+
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);

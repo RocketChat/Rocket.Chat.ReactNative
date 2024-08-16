@@ -185,7 +185,11 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			const currentRoot = yield* appSelector(state => state.app.root);
+			console.log('🚀 ~ handleLoginSuccess ~ currentRoot:', currentRoot);
+			if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			}
 			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
