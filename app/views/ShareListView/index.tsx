@@ -59,6 +59,8 @@ interface INavigationOption {
 
 interface IShareListViewProps extends INavigationOption {
 	server: string;
+	connecting: boolean;
+	isAuthenticated: boolean;
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
@@ -135,9 +137,16 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	}
 
 	componentDidUpdate(previousProps: IShareListViewProps) {
-		const { server } = this.props;
-		if (previousProps.server !== server) {
+		const { server, connecting, isAuthenticated } = this.props;
+		if (
+			previousProps.server !== server ||
+			(previousProps.connecting !== connecting && !connecting) ||
+			(previousProps.isAuthenticated !== isAuthenticated && isAuthenticated)
+		) {
 			this.getSubscriptions();
+		}
+		if (previousProps.connecting !== connecting && connecting) {
+			this.setState({ chats: [], searchResults: [], searching: false, searchText: '' });
 		}
 	}
 
@@ -150,11 +159,17 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			return true;
 		}
 
-		const { server, userId } = this.props;
+		const { server, userId, isAuthenticated, connecting } = this.props;
 		if (server !== nextProps.server) {
 			return true;
 		}
 		if (userId !== nextProps.userId) {
+			return true;
+		}
+		if (isAuthenticated !== nextProps.isAuthenticated) {
+			return true;
+		}
+		if (connecting !== nextProps.connecting) {
 			return true;
 		}
 
@@ -265,13 +280,14 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	getSubscriptions = async () => {
-		const { server } = this.props;
-		console.log('🚀 ~ ShareListView ~ getSubscriptions= ~ server:', server);
-		const serversDB = database.servers;
+		const { server, connecting, isAuthenticated } = this.props;
+		if (connecting || !isAuthenticated) {
+			return;
+		}
 
 		if (server) {
 			const chats = await this.query();
-			console.log('🚀 ~ ShareListView ~ getSubscriptions= ~ chats:', chats);
+			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
 			let serverInfo = {};
@@ -487,7 +503,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 const mapStateToProps = ({ login, server }: IApplicationState) => ({
 	userId: login?.user?.id as string,
 	token: login?.user?.token as string,
-	server: server?.server as string
+	isAuthenticated: login?.isAuthenticated,
+	server: server?.server,
+	connecting: server?.connecting
 });
 
 export default connect(mapStateToProps)(withTheme(ShareListView));

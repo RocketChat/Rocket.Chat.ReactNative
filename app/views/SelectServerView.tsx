@@ -3,26 +3,27 @@ import { FlatList } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
-import { shareExtensionInit } from '../lib/methods/shareExtension';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks';
+import { selectServerRequest } from '../actions/server';
 
 const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
 	const [servers, setServers] = React.useState<TServerModel[]>([]);
-	console.log('🚀 ~ SelectServerView ~ servers:', servers);
+	const dispatch = useDispatch();
 
-	const server = useAppSelector(state => state.share.server.server);
+	const server = useAppSelector(state => state.server.server);
 	const navigation = useNavigation<StackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
 
 	useLayoutEffect(() => {
@@ -36,17 +37,16 @@ const SelectServerView = () => {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversResult = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetch();
-			console.log('🚀 ~ init ~ serversResult:', serversResult);
 			setServers(serversResult);
 		};
 		init();
 	}, []);
 
-	const select = async (serverSelected: string) => {
-		navigation.navigate('ShareListView');
+	const select = (serverSelected: string) => {
 		if (serverSelected !== server) {
-			await shareExtensionInit(serverSelected);
+			dispatch(selectServerRequest(serverSelected));
 		}
+		navigation.pop();
 	};
 
 	return (
