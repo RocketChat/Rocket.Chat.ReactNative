@@ -3,8 +3,8 @@ import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/s
 import { RouteProp } from '@react-navigation/native';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
+import { Dispatch } from 'redux';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -28,6 +28,7 @@ import {
 	IServer,
 	IShareAttachment,
 	IUser,
+	RootEnum,
 	TMessageAction,
 	TSubscriptionModel,
 	TThreadModel
@@ -35,6 +36,7 @@ import {
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
+import { appStart } from '../../actions/app';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -62,6 +64,7 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
+	dispatch: Dispatch;
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
@@ -237,7 +240,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		if (this.state.loading) return;
 
 		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
-		const { navigation, server, user } = this.props;
+		const { navigation, server, user, dispatch } = this.props;
 		// update state
 		await this.selectFile(selected);
 
@@ -308,7 +311,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// if it's share extension this should close
 		if (this.isShareExtension) {
 			sendLoadingEvent({ visible: false });
-			ShareExtension.close();
+			dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		}
 	};
 
