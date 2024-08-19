@@ -2,7 +2,6 @@ import React from 'react';
 import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
-import ShareExtension from 'rn-extensions-share';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -16,16 +15,17 @@ import ServerItem from '../../containers/ServerItem';
 import * as HeaderButton from '../../containers/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
+import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
-import ShareListHeader from './Header';
-import { IApplicationState, TServerModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, RootEnum, TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
+import { appStart } from '../../actions/app';
 
 interface IDataFromShare {
 	value: string;
@@ -136,7 +136,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		this.getSubscriptions();
 	}
 
-	componentDidUpdate(previousProps: IShareListViewProps) {
+	componentDidUpdate(previousProps: IShareListViewProps, previousState: IState) {
+		const { searching } = this.state;
 		const { server, connecting, isAuthenticated } = this.props;
 		if (
 			previousProps.server !== server ||
@@ -147,6 +148,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 		if (previousProps.connecting !== connecting && connecting) {
 			this.setState({ chats: [], searchResults: [], searching: false, searchText: '' });
+		}
+		if (previousState.searching !== searching) {
+			this.setHeader();
 		}
 	}
 
@@ -193,39 +197,35 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	setHeader = () => {
 		const { searching } = this.state;
-		const { navigation, theme } = this.props;
+		const { navigation } = this.props;
 
-		if (isIOS) {
+		if (searching) {
 			navigation.setOptions({
-				header: () => (
-					<ShareListHeader
-						searching={searching}
-						initSearch={this.initSearch}
-						cancelSearch={this.cancelSearch}
-						onChangeSearchText={this.search}
-						theme={theme}
-					/>
-				)
+				headerTitleAlign: 'left',
+				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
+				headerRightContainerStyle: { flexGrow: 0 },
+				headerLeft: () => (
+					<HeaderButton.Container left>
+						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
+					</HeaderButton.Container>
+				),
+				headerTitle: () => <SearchHeader onSearchChangeText={this.search} />,
+				headerRight: () => null
 			});
 			return;
 		}
 
 		navigation.setOptions({
-			headerLeft: () =>
-				searching ? (
-					<HeaderButton.Container left>
-						<HeaderButton.Item title='cancel' iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				) : (
-					<HeaderButton.CancelModal onPress={ShareExtension.close} testID='share-extension-close' />
-				),
-			headerTitle: () => <ShareListHeader searching={searching} onChangeSearchText={this.search} theme={theme} />,
-			headerRight: () =>
-				searching ? null : (
-					<HeaderButton.Container>
-						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-					</HeaderButton.Container>
-				)
+			headerTitleAlign: undefined,
+			headerTitleContainerStyle: undefined,
+			headerRightContainerStyle: undefined,
+			headerLeft: () => <HeaderButton.CancelModal onPress={this.closeShareExtension} testID='share-extension-close' />,
+			headerTitle: I18n.t('Send_to'),
+			headerRight: () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='search' onPress={this.initSearch} />
+				</HeaderButton.Container>
+			)
 		});
 	};
 
@@ -367,6 +367,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		return false;
 	};
 
+	closeShareExtension = () => {
+		const { dispatch } = this.props;
+		dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
+	};
+
 	renderSectionHeader = (header: string) => {
 		const { searching } = this.state;
 		const { theme } = this.props;
@@ -457,6 +462,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	render = () => {
 		const { chats, loading, searchResults, searching, searchText, needsPermission } = this.state;
 		const { theme } = this.props;
+
+		console.count(`SHARE LIST`);
 
 		if (loading) {
 			return <ActivityIndicator />;
