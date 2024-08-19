@@ -29,6 +29,7 @@ export type StackParamList = {
 	InsideStack: NavigatorScreenParams<InsideStackParamList>;
 	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
 	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+	ShareExtensionStack: NavigatorScreenParams<ShareInsideStackParamList>;
 };
 
 export type ShareInsideStackParamList = {
