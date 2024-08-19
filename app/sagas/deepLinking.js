@@ -18,6 +18,7 @@ import log from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
+import sdk from '../lib/services/sdk';
 
 const roomTypes = {
 	channel: 'c',
@@ -101,7 +102,9 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	// yield localAuthenticate(server);
 	yield put(selectServerRequest(server));
-	yield take(types.LOGIN.SUCCESS);
+	if (sdk.current?.client?.host !== server) {
+		yield take(types.LOGIN.SUCCESS);
+	}
 	yield put(shareSetParams(params));
 	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 };
