@@ -25,6 +25,7 @@ import styles from './styles';
 import { IApplicationState, RootEnum, TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
+import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';
 
 interface IDataFromShare {
@@ -64,6 +65,7 @@ interface IShareListViewProps extends INavigationOption {
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
+	shareExtensionParams: any;
 	dispatch: Dispatch;
 }
 
@@ -84,7 +86,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			chats: [],
 			serversCount: 0,
 			attachments: [],
-			text: '',
+			text: props.shareExtensionParams.text,
 			loading: true,
 			serverInfo: {} as TServerModel,
 			needsPermission: isAndroid || false
@@ -101,37 +103,36 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	}
 
 	async componentDidMount() {
-		// try {
-		// 	const data = (await ShareExtension.data()) as IDataFromShare[];
-		// 	if (isAndroid) {
-		// 		await this.askForPermission(data);
-		// 	}
-		// 	const info = await Promise.all(
-		// 		data
-		// 			.filter(item => item.type === 'media')
-		// 			.map(file => FileSystem.getInfoAsync(this.uriToPath(file.value), { size: true }))
-		// 	);
-		// 	const attachments = info.map(file => {
-		// 		if (!file.exists) {
-		// 			return null;
-		// 		}
+		const { shareExtensionParams } = this.props;
+		const { mediaUris } = shareExtensionParams;
+		if (mediaUris) {
+			try {
+				// if (isAndroid) {
+				// 	await this.askForPermission(data);
+				// }
+				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
+				console.log('🚀 ~ ShareListView ~ componentDidMount ~ info:', info);
+				const attachments = info.map(file => {
+					if (!file.exists) {
+						return null;
+					}
 
-		// 		return {
-		// 			filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
-		// 			description: '',
-		// 			size: file.size,
-		// 			mime: mime.lookup(file.uri),
-		// 			path: file.uri
-		// 		};
-		// 	}) as IFileToShare[];
-		// 	const text = data.filter(item => item.type === 'text').reduce((acc, item) => `${item.value}\n${acc}`, '');
-		// 	this.setState({
-		// 		text,
-		// 		attachments
-		// 	});
-		// } catch {
-		// 	// Do nothing
-		// }
+					return {
+						filename: decodeURIComponent(file.uri.substring(file.uri.lastIndexOf('/') + 1)),
+						description: '',
+						size: file.size,
+						mime: mime.lookup(file.uri),
+						path: file.uri
+					};
+				}) as IFileToShare[];
+				this.setState({
+					// text,
+					attachments
+				});
+			} catch {
+				// Do nothing
+			}
+		}
 
 		this.getSubscriptions();
 	}
@@ -193,6 +194,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
+		const { dispatch } = this.props;
+		dispatch(shareSetParams({}));
 	}
 
 	setHeader = () => {
@@ -507,12 +510,13 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 }
 
-const mapStateToProps = ({ login, server }: IApplicationState) => ({
+const mapStateToProps = ({ login, server, share }: IApplicationState) => ({
 	userId: login?.user?.id as string,
 	token: login?.user?.token as string,
 	isAuthenticated: login?.isAuthenticated,
 	server: server?.server,
-	connecting: server?.connecting
+	connecting: server?.connecting,
+	shareExtensionParams: share?.params
 });
 
 export default connect(mapStateToProps)(withTheme(ShareListView));

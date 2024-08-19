@@ -15,7 +15,11 @@ interface IShareSetUser extends Action {
 	user: IShareUser;
 }
 
-export type TActionsShare = IShareSelectServer & IShareSetSettings & IShareSetUser;
+interface IShareSetParams extends Action {
+	params: any;
+}
+
+export type TActionsShare = IShareSelectServer & IShareSetSettings & IShareSetUser & IShareSetParams;
 
 export function shareSelectServer(server: IShareServer): IShareSelectServer {
 	return {
@@ -35,5 +39,12 @@ export function shareSetUser(user: IShareUser): IShareSetUser {
 	return {
 		type: SHARE.SET_USER,
 		user
+	};
+}
+
+export function shareSetParams(params: any): IShareSetParams {
+	return {
+		type: SHARE.SET_PARAMS,
+		params
 	};
 }

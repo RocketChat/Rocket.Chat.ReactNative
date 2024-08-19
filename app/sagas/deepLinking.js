@@ -1,5 +1,6 @@
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
+import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
 import { appInit, appStart } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
@@ -101,6 +102,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 	// yield localAuthenticate(server);
 	yield put(selectServerRequest(server));
 	yield take(types.LOGIN.SUCCESS);
+	yield put(shareSetParams(params));
 	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
 };
 

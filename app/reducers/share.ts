@@ -19,12 +19,14 @@ export interface IShare {
 	user: IShareUser;
 	server: IShareServer;
 	settings: TShareSettings;
+	params: any;
 }
 
 export const initialState: IShare = {
 	user: {},
 	server: {},
-	settings: {}
+	settings: {},
+	params: {}
 };
 
 export default function share(state = initialState, action: TActionsShare): IShare {
@@ -43,6 +45,11 @@ export default function share(state = initialState, action: TActionsShare): ISha
 			return {
 				...state,
 				settings: action.settings
+			};
+		case SHARE.SET_PARAMS:
+			return {
+				...state,
+				params: action.params
 			};
 		default:
 			return state;
