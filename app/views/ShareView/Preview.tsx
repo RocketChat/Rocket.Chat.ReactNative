@@ -1,7 +1,7 @@
 import React from 'react';
 import { Video, ResizeMode } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
@@ -76,7 +76,7 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 	if (item?.canUpload) {
 		if (type?.match(/video/)) {
 			return (
-				<ScrollView style={{ height: calculatedHeight }}>
+				<View style={{ flex: 1, alignItems: 'center' }}>
 					<Video
 						source={{ uri: item.path }}
 						rate={1.0}
@@ -84,10 +84,10 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 						isMuted={false}
 						resizeMode={ResizeMode.CONTAIN}
 						isLooping={false}
-						style={{ width, height: calculatedHeight }}
+						style={{ width, height: calculatedHeight, marginTop: 24 }}
 						useNativeControls
 					/>
-				</ScrollView>
+				</View>
 			);
 		}
 
@@ -104,7 +104,7 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 		}
 		return (
 			<IconPreview
-				iconName={type?.match(/image/) ? 'image' : 'attach'}
+				iconName={'attach'}
 				title={item?.filename}
 				description={prettyBytes(item?.size ?? 0)}
 				theme={theme}

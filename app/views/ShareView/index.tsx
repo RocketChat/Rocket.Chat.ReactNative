@@ -417,14 +417,14 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceHover }]}>
 					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
 				</View>
 			);
 		}
-		return <SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>{this.renderContent()}</SafeAreaView>;
+		return <SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover, flex: 1 }}>{this.renderContent()}</SafeAreaView>;
 	}
 }
 
