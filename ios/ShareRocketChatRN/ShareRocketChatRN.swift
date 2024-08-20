@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MobileCoreServices
 
 class ShareRocketChatRN: UIViewController {
     // TODO: whitelabel?
@@ -22,98 +23,100 @@ class ShareRocketChatRN: UIViewController {
             return
         }
 
-        Task {
-            if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-                await self.handleText(item: firstAttachment)
-            } else if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
-                await self.handleUrl(item: firstAttachment)
-            } else if firstAttachment.hasItemConformingToTypeIdentifier("public.image") {
-                await self.handleMedia(items: attachments, type: "public.image")
-            } else if firstAttachment.hasItemConformingToTypeIdentifier("public.movie") {
-                await self.handleMedia(items: attachments, type: "public.movie")
-            } else if firstAttachment.hasItemConformingToTypeIdentifier("public.data") {
-                await self.handleDocs(items: attachments)
-            } else {
-                self.completeRequest()
-            }
+        if firstAttachment.hasItemConformingToTypeIdentifier("public.data") {
+            self.handleMedia(items: attachments, type: "public.data")
+        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.image") {
+            self.handleMedia(items: attachments, type: "public.image")
+        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.movie") {
+            self.handleMedia(items: attachments, type: "public.movie")
+        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
+            self.handleUrl(item: firstAttachment)
+        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
+            self.handleText(item: firstAttachment)
+        } else {
+            self.completeRequest()
         }
     }
 
-    private func handleText(item: NSItemProvider) async {
-        do {
-            if let data = try await item.loadItem(forTypeIdentifier: "public.text") as? String {
-                if let encoded = data.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
+    private func handleText(item: NSItemProvider) {
+        item.loadItem(forTypeIdentifier: "public.text", options: nil) { (data, error) in
+            if let text = data as? String {
+                if let encoded = text.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
                    let url = URL(string: "\(self.appScheme)://shareextension?text=\(encoded)") {
                     _ = self.openURL(url)
                 }
             }
             self.completeRequest()
-        } catch {
-            self.completeRequest()
         }
     }
 
-    private func handleUrl(item: NSItemProvider) async {
-        do {
-            if let data = try await item.loadItem(forTypeIdentifier: "public.url") as? URL {
-                if let encoded = data.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
-                   let url = URL(string: "\(self.appScheme)://shareextension?url=\(encoded)") {
-                    _ = self.openURL(url)
+    private func handleUrl(item: NSItemProvider) {
+        item.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
+            if let url = data as? URL {
+                if let encoded = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
+                   let finalUrl = URL(string: "\(self.appScheme)://shareextension?url=\(encoded)") {
+                    _ = self.openURL(finalUrl)
                 }
             }
             self.completeRequest()
-        } catch {
-            self.completeRequest()
         }
     }
 
-    private func handleMedia(items: [NSItemProvider], type: String) async {
+    private func handleMedia(items: [NSItemProvider], type: String) {
         var valid = true
         var mediaUris = ""
+
+        let dispatchGroup = DispatchGroup()
 
         for (index, item) in items.enumerated() {
             var mediaUriInfo: String?
 
-            do {
-                if let dataUri = try await item.loadItem(forTypeIdentifier: type) as? URL {
-                    let data = try Data(contentsOf: dataUri)
-                    let filename = UUID().uuidString
-                    let savedUrl = self.saveDataToSharedContainer(data: data, filename: "\(filename).\(self.fileExtension(forType: type))")
-                    mediaUriInfo = savedUrl?.absoluteString
-                } else if let data = try await item.loadItem(forTypeIdentifier: type) as? Data {
-                    let filename = UUID().uuidString
-                    let savedUrl = self.saveDataToSharedContainer(data: data, filename: "\(filename).\(self.fileExtension(forType: type))")
-                    mediaUriInfo = savedUrl?.absoluteString
-                }
-            } catch {
-                valid = false
-            }
+            dispatchGroup.enter()
 
-            if let mediaUriInfo = mediaUriInfo {
-                mediaUris.append(mediaUriInfo)
-                if index < items.count - 1 {
-                    mediaUris.append(",")
+            item.loadItem(forTypeIdentifier: type, options: nil) { (data, error) in
+                if let dataUri = data as? URL {
+                    do {
+                        let data = try Data(contentsOf: dataUri)
+                        let originalFilename = dataUri.lastPathComponent
+                        let savedUrl = self.saveDataToSharedContainer(data: data, filename: originalFilename)
+                        mediaUriInfo = savedUrl?.absoluteString
+                    } catch {
+                        valid = false
+                    }
+                } else if let data = data as? Data {
+                    if let fileExtension = self.inferFileExtension(from: item) {
+                        let filename = UUID().uuidString + "." + fileExtension
+                        let savedUrl = self.saveDataToSharedContainer(data: data, filename: filename)
+                        mediaUriInfo = savedUrl?.absoluteString
+                    } else {
+                        valid = false
+                    }
                 }
-            } else {
-                valid = false
+
+                if let mediaUriInfo = mediaUriInfo {
+                    mediaUris.append(mediaUriInfo)
+                    if index < items.count - 1 {
+                        mediaUris.append(",")
+                    }
+                } else {
+                    valid = false
+                }
+
+                dispatchGroup.leave()
             }
         }
 
-        if valid,
-           let encoded = mediaUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
-           let url = URL(string: "\(self.appScheme)://shareextension?mediaUris=\(encoded)") {
-            _ = self.openURL(url)
+        dispatchGroup.notify(queue: .main) {
+            if valid,
+               let encoded = mediaUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
+               let url = URL(string: "\(self.appScheme)://shareextension?mediaUris=\(encoded)") {
+                _ = self.openURL(url)
+            }
+            self.completeRequest()
         }
-
-        self.completeRequest()
-    }
-
-    private func handleDocs(items: [NSItemProvider]) async {
-        await self.handleMedia(items: items, type: "public.data")
     }
 
     private func saveDataToSharedContainer(data: Data, filename: String) -> URL? {
-        // TODO: read info.plist
         guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.ios.chat.rocket") else {
             return nil
         }
@@ -126,18 +129,19 @@ class ShareRocketChatRN: UIViewController {
         }
     }
 
-    // TODO: find a better way
-    private func fileExtension(forType type: String) -> String {
-        switch type {
-        case "public.image":
+    private func inferFileExtension(from item: NSItemProvider) -> String? {
+        if item.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
             return "jpeg"
-        case "public.movie":
-            return "mov"
-        case "public.data":
-            return "dat"
-        default:
-            return "bin"
+        } else if item.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
+            return "mp4"
+        } else if let typeIdentifier = item.registeredTypeIdentifiers.first as CFString? {
+            if let utType = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, typeIdentifier, nil)?.takeRetainedValue() {
+                if let preferredExtension = UTTypeCopyPreferredTagWithClass(utType, kUTTagClassFilenameExtension)?.takeRetainedValue() {
+                    return preferredExtension as String
+                }
+            }
         }
+        return nil
     }
 
     @objc private func openURL(_ url: URL) -> Bool {
