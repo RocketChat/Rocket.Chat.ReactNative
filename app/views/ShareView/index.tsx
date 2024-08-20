@@ -17,7 +17,6 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
-import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
@@ -425,12 +424,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				</View>
 			);
 		}
-		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>
-				<StatusBar barStyle='light-content' backgroundColor={themes[theme].surfaceDark} />
-				{this.renderContent()}
-			</SafeAreaView>
-		);
+		return <SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>{this.renderContent()}</SafeAreaView>;
 	}
 }
 
