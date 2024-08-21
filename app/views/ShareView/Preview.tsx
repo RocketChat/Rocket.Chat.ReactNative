@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Video, ResizeMode } from 'expo-av';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import { ImageViewer, types } from '../../containers/ImageViewer';
-import { useDimensions } from '../../dimensions';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
@@ -67,16 +66,24 @@ interface IPreview {
 
 const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview) => {
 	const type = item?.mime;
-	const { width, height } = useDimensions();
+	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const headerHeight = useHeaderHeight();
 	const thumbsHeight = length > 1 ? THUMBS_HEIGHT : 0;
 	const calculatedHeight = height - insets.top - insets.bottom - MESSAGE_COMPOSER_HEIGHT - thumbsHeight - headerHeight;
+	const [wrapperDimensions, setWrapperDimensions] = useState<{ width?: number; height?: number }>({});
 
 	if (item?.canUpload) {
 		if (type?.match(/video/)) {
 			return (
-				<View style={{ flex: 1, alignItems: 'center' }}>
+				<View
+					style={{ flex: 1 }}
+					onLayout={ev => {
+						setWrapperDimensions({
+							width: ev.nativeEvent.layout.width,
+							height: ev.nativeEvent.layout.height
+						});
+					}}>
 					<Video
 						source={{ uri: item.path }}
 						rate={1.0}
@@ -84,7 +91,7 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 						isMuted={false}
 						resizeMode={ResizeMode.CONTAIN}
 						isLooping={false}
-						style={{ width, height: calculatedHeight, marginTop: 24 }}
+						style={{ width: wrapperDimensions?.width, height: wrapperDimensions?.height }}
 						useNativeControls
 					/>
 				</View>
