@@ -50,7 +50,7 @@ const SelectServerView = () => {
 	};
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView testID='select-server-view'>
 			<StatusBar />
 			<FlatList
 				data={servers}

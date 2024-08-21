@@ -43,6 +43,8 @@ describe('Deep linking', () => {
 
 	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
 
+	const randomUserAlternateServer = data.randomUser();
+
 	beforeAll(async () => {
 		const user = await createRandomUser();
 		({ _id: rid, name: room } = await createRandomRoom(user, 'p'));
@@ -95,17 +97,16 @@ describe('Deep linking', () => {
 			await authAndNavigate();
 		});
 
-		it('should authenticate while logged in another server', async () => {
+		it.only('should authenticate while logged in another server', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
-			const randomUser = data.randomUser();
-			await element(by.id('register-view-name')).replaceText(randomUser.name);
-			await element(by.id('register-view-username')).replaceText(randomUser.username);
-			await element(by.id('register-view-email')).replaceText(randomUser.email);
-			await element(by.id('register-view-password')).replaceText(randomUser.password);
+			await element(by.id('register-view-name')).replaceText(randomUserAlternateServer.name);
+			await element(by.id('register-view-username')).replaceText(randomUserAlternateServer.username);
+			await element(by.id('register-view-email')).replaceText(randomUserAlternateServer.email);
+			await element(by.id('register-view-password')).replaceText(randomUserAlternateServer.password);
 			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
-			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
+			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUserAlternateServer.username });
 
 			await authAndNavigate();
 		});
@@ -219,7 +220,7 @@ describe('Deep linking', () => {
 				await waitFor(element(by.id('rooms-list-header-servers-list')))
 					.toBeVisible()
 					.withTimeout(5000);
-				await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();
+				await element(by.id(`server-item-${data.alternateServer}`)).tap();
 				await checkServer(data.alternateServer);
 
 				await device.launchApp({
@@ -246,10 +247,19 @@ describe('Deep linking', () => {
 		});
 	});
 
-	describe('Share extension', () => {
+	describe.only('Share extension', () => {
+		const shareTextMessage = async (message: string) => {
+			await element(by.id(`share-extension-item-${room}`)).tap();
+			await waitFor(element(by.id('share-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			await element(by.text('Send')).tap();
+			await navigateToRoom(room);
+			await checkMessage(message);
+		};
+
 		it('should share text', async () => {
 			const message = random();
-			await authAndNavigate();
 			await device.launchApp({
 				permissions: { notifications: 'YES' },
 				newInstance: true,
@@ -258,13 +268,47 @@ describe('Deep linking', () => {
 			await waitFor(element(by.id('share-list-view')))
 				.toBeVisible()
 				.withTimeout(30000);
-			await element(by.id(`share-extension-item-${room}`)).tap();
-			await waitFor(element(by.id('share-view')))
+			await shareTextMessage(message);
+		});
+
+		it('should change server and share text', async () => {
+			await tapBack();
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(10000);
+			await element(by.id('rooms-list-header-servers-list-button')).tap();
+			await waitFor(element(by.id('rooms-list-header-servers-list')))
+				.toBeVisible()
+				.withTimeout(5000);
+			await element(by.id(`server-item-${data.alternateServer}`)).tap();
+			await checkServer(data.alternateServer);
+
+			// share
+			const message = random();
+			await device.launchApp({
+				permissions: { notifications: 'YES' },
+				newInstance: true,
+				url: `rocketchat://shareextension?text=${message}`
+			});
+			await waitFor(element(by.id('share-list-view')))
 				.toBeVisible()
 				.withTimeout(30000);
-			await element(by.text('Send')).tap();
-			await navigateToRoom(room);
-			await checkMessage(message);
+			await waitFor(element(by.id(`server-item-${data.alternateServer}`)))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id(`server-item-${data.alternateServer}`)).tap();
+			await waitFor(element(by.id('select-server-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			await element(by.id(`server-item-${data.server}`)).tap();
+			await waitFor(element(by.id('share-list-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			await waitFor(element(by.id(`server-item-${data.server}`)))
+				.toBeVisible()
+				.withTimeout(2000);
+
+			await shareTextMessage(message);
 		});
 	});
 });

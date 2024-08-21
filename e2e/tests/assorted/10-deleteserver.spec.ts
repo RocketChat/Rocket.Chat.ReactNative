@@ -73,13 +73,13 @@ describe('Delete server', () => {
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.server}`)).longPress(1500);
+		await element(by.id(`server-item-${data.server}`)).longPress(1500);
 		await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await waitFor(element(by.id(`rooms-list-header-server-${data.server}`)))
+		await waitFor(element(by.id(`server-item-${data.server}`)))
 			.toBeNotVisible()
 			.withTimeout(10000);
 	});
