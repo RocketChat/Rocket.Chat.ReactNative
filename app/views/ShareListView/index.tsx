@@ -89,7 +89,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			text: props.shareExtensionParams.text,
 			loading: true,
 			serverInfo: {} as TServerModel,
-			needsPermission: isAndroid || false
+			needsPermission: false
 		};
 		this.setHeader();
 		if (isAndroid) {
@@ -107,9 +107,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { mediaUris } = shareExtensionParams;
 		if (mediaUris) {
 			try {
-				// if (isAndroid) {
-				// 	await this.askForPermission(data);
-				// }
+				if (isAndroid) {
+					await this.askForPermission();
+				}
 				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
 				console.log('🚀 ~ ShareListView ~ componentDidMount ~ info:', info);
 				const attachments = info.map(file => {
@@ -310,17 +310,12 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 	};
 
-	askForPermission = async (data: IDataFromShare[]) => {
-		const mediaIndex = data.findIndex(item => item.type === 'media');
-		if (mediaIndex !== -1) {
-			const result = await askAndroidMediaPermissions();
-			if (!result) {
-				this.setState({ needsPermission: true });
-				return Promise.reject();
-			}
+	askForPermission = async () => {
+		const result = await askAndroidMediaPermissions();
+		if (!result) {
+			this.setState({ needsPermission: true });
 		}
 		this.setState({ needsPermission: false });
-		return Promise.resolve();
 	};
 
 	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
