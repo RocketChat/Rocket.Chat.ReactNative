@@ -45,13 +45,3 @@ export type ShareInsideStackParamList = {
 	};
 	SelectServerView: undefined;
 };
-
-export type ShareOutsideStackParamList = {
-	WithoutServersView: undefined;
-};
-
-export type ShareAppStackParamList = {
-	AuthLoading?: undefined;
-	OutsideStack?: NavigatorScreenParams<ShareOutsideStackParamList>;
-	InsideStack?: NavigatorScreenParams<ShareInsideStackParamList>;
-};

@@ -28,11 +28,6 @@ import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../
 import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';
 
-interface IDataFromShare {
-	value: string;
-	type: string;
-}
-
 interface IFileToShare {
 	filename: string;
 	description: string;
@@ -65,7 +60,7 @@ interface IShareListViewProps extends INavigationOption {
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
-	shareExtensionParams: any;
+	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
 }
 
@@ -111,7 +106,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					await this.askForPermission();
 				}
 				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
-				console.log('🚀 ~ ShareListView ~ componentDidMount ~ info:', info);
 				const attachments = info.map(file => {
 					if (!file.exists) {
 						return null;
@@ -460,8 +454,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	render = () => {
 		const { chats, loading, searchResults, searching, searchText, needsPermission } = this.state;
 		const { theme } = this.props;
-
-		console.count(`SHARE LIST`);
 
 		if (loading) {
 			return <ActivityIndicator />;

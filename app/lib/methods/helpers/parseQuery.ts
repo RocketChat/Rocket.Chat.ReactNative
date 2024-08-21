@@ -10,9 +10,6 @@
  */
 
 export default function (query: string) {
-	// {"url":"https://www.google.com/?client","channel":"iphone_bm","type":"shareextension"}
-	// query.startsWith('url=') ? { text: decodeURIComponent(query) } :
-
 	if (query.startsWith('url=')) {
 		return { text: decodeURIComponent(query.replace('url=', '').trim()) };
 	}

@@ -1229,8 +1229,6 @@ PODS:
     - React-perflogger (= 0.73.6)
   - ReactNativeUiLib (3.0.4):
     - React
-  - rn-extensions-share (2.4.1):
-    - React
   - RNBootSplash (4.6.0):
     - React-Core
   - RNCAsyncStorage (1.22.3):
@@ -1396,7 +1394,6 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
-  - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
@@ -1600,8 +1597,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeUiLib:
     :path: "../node_modules/react-native-ui-lib"
-  rn-extensions-share:
-    :path: "../node_modules/rn-extensions-share"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -1748,7 +1743,6 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
-  rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   RNBootSplash: 91e0c16bfc96703cb5b0562785b9a8cbfeb298fe
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d

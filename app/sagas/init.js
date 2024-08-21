@@ -40,14 +40,6 @@ const restore = function* restore() {
 			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
 		}
 
-		// const currentRoot = yield select(state => state.app.root);
-
-		// console.log('handleLoginSuccess', currentRoot);
-
-		// if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION || currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
-		// 	return;
-		// }
-
 		if (!server) {
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else if (!userId) {
@@ -94,8 +86,6 @@ const restore = function* restore() {
 
 const start = function* start() {
 	const currentRoot = yield select(state => state.app.root);
-
-	console.log('start', currentRoot);
 
 	if (currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 		yield RNBootSplash.hide({ fade: true });

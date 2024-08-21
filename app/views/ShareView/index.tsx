@@ -430,7 +430,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
-	server: state.share.server.server || state.server.server,
+	server: state.server.server,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
 });
