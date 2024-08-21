@@ -97,7 +97,7 @@ describe('Deep linking', () => {
 			await authAndNavigate();
 		});
 
-		it.only('should authenticate while logged in another server', async () => {
+		it('should authenticate while logged in another server', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
 			await element(by.id('register-view-name')).replaceText(randomUserAlternateServer.name);
@@ -247,7 +247,7 @@ describe('Deep linking', () => {
 		});
 	});
 
-	describe.only('Share extension', () => {
+	describe('Share extension', () => {
 		const shareTextMessage = async (message: string) => {
 			await element(by.id(`share-extension-item-${room}`)).tap();
 			await waitFor(element(by.id('share-view')))
@@ -309,6 +309,17 @@ describe('Deep linking', () => {
 				.withTimeout(2000);
 
 			await shareTextMessage(message);
+		});
+
+		it('should open share without being logged in and go to onboarding', async () => {
+			await device.launchApp({
+				permissions: { notifications: 'YES' },
+				delete: true,
+				url: `rocketchat://shareextension?text=whatever`
+			});
+			await waitFor(element(by.id('new-server-view')))
+				.toBeVisible()
+				.withTimeout(30000);
 		});
 	});
 });
