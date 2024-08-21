@@ -477,7 +477,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 
 		return (
-			<SafeAreaView>
+			<SafeAreaView testID='share-list-view'>
 				<FlatList
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}

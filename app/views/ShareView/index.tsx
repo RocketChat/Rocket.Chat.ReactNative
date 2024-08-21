@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Text, View } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { Dispatch } from 'redux';
@@ -238,6 +238,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	send = async () => {
 		if (this.state.loading) return;
 
+		Keyboard.dismiss();
+
 		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
 		const { navigation, server, user, dispatch } = this.props;
 		// update state
@@ -424,7 +426,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				</View>
 			);
 		}
-		return <SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover, flex: 1 }}>{this.renderContent()}</SafeAreaView>;
+		return (
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover, flex: 1 }} testID='share-view'>
+				{this.renderContent()}
+			</SafeAreaView>
+		);
 	}
 }
 

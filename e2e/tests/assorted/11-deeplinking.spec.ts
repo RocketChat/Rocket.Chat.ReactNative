@@ -8,7 +8,9 @@ import {
 	navigateToRegister,
 	platformTypes,
 	TTextMatcher,
-	expectValidRegisterOrRetry
+	expectValidRegisterOrRetry,
+	navigateToRoom,
+	checkMessage
 } from '../../helpers/app';
 import {
 	IDeleteCreateUser,
@@ -58,6 +60,25 @@ describe('Deep linking', () => {
 		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
+	const authAndNavigate = async () => {
+		await device.launchApp({
+			permissions: { notifications: 'YES' },
+			newInstance: true,
+			url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${userId}${amp}token=${authToken}${amp}path=group/${room}`)
+		});
+		await waitFor(element(by.id(`room-view-title-${room}`)))
+			.toExist()
+			.withTimeout(30000);
+		await tapBack();
+		await waitFor(element(by.id('rooms-list-view')))
+			.toBeVisible()
+			.withTimeout(10000);
+		await checkServer(data.server);
+		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
+			.toExist()
+			.withTimeout(2000);
+	};
+
 	describe('Authentication', () => {
 		it('should run a deep link to an invalid account and raise error', async () => {
 			await device.launchApp({
@@ -69,25 +90,6 @@ describe('Deep linking', () => {
 				.toExist()
 				.withTimeout(30000); // TODO: we need to improve this message
 		});
-
-		const authAndNavigate = async () => {
-			await device.launchApp({
-				permissions: { notifications: 'YES' },
-				newInstance: true,
-				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=${userId}${amp}token=${authToken}${amp}path=group/${room}`)
-			});
-			await waitFor(element(by.id(`room-view-title-${room}`)))
-				.toExist()
-				.withTimeout(30000);
-			await tapBack();
-			await waitFor(element(by.id('rooms-list-view')))
-				.toBeVisible()
-				.withTimeout(10000);
-			await checkServer(data.server);
-			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
-				.toExist()
-				.withTimeout(2000);
-		};
 
 		it('should authenticate and navigate', async () => {
 			await authAndNavigate();
@@ -241,6 +243,28 @@ describe('Deep linking', () => {
 					.withTimeout(30000);
 				await checkServer(data.server);
 			});
+		});
+	});
+
+	describe('Share extension', () => {
+		it('should share text', async () => {
+			const message = random();
+			await authAndNavigate();
+			await device.launchApp({
+				permissions: { notifications: 'YES' },
+				newInstance: true,
+				url: `rocketchat://shareextension?text=${message}`
+			});
+			await waitFor(element(by.id('share-list-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			await element(by.id(`share-extension-item-${room}`)).tap();
+			await waitFor(element(by.id('share-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			await element(by.text('Send')).tap();
+			await navigateToRoom(room);
+			await checkMessage(message);
 		});
 	});
 });
