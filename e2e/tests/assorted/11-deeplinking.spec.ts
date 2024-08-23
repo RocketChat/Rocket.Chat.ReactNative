@@ -10,7 +10,8 @@ import {
 	TTextMatcher,
 	expectValidRegisterOrRetry,
 	navigateToRoom,
-	checkMessage
+	checkMessage,
+	sleep
 } from '../../helpers/app';
 import {
 	IDeleteCreateUser,
@@ -252,8 +253,14 @@ describe('Deep linking', () => {
 
 	describe('Share extension', () => {
 		const shareTextMessage = async (message: string) => {
+			await waitFor(element(by.id(`share-extension-item-${room}`)))
+				.toBeVisible()
+				.withTimeout(30000);
 			await element(by.id(`share-extension-item-${room}`)).tap();
 			await waitFor(element(by.id('share-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			await waitFor(element(by.text('Send')))
 				.toBeVisible()
 				.withTimeout(30000);
 			await element(by.text('Send')).tap();
@@ -296,6 +303,7 @@ describe('Deep linking', () => {
 			await waitFor(element(by.id('share-list-view')))
 				.toBeVisible()
 				.withTimeout(30000);
+			await sleep(300);
 			await waitFor(element(by.id(`server-item-${data.alternateServer}`)))
 				.toBeVisible()
 				.withTimeout(2000);
