@@ -96,8 +96,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 	}
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
-
-	// yield localAuthenticate(server);
+	yield localAuthenticate(server);
 	yield put(selectServerRequest(server));
 	if (sdk.current?.client?.host !== server) {
 		yield take(types.LOGIN.SUCCESS);
