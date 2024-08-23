@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		paddingBottom: 10
 	},
+	fieldText: {
+		fontSize: 15,
+		padding: 10,
+		...sharedStyles.textRegular
+	},
 	fieldTitle: {
 		fontSize: 15,
 		...sharedStyles.textBold
@@ -90,6 +95,15 @@ const Fields = React.memo(
 
 		return (
 			<>
+				{attachment.text ? (
+					<Markdown
+						msg={attachment.text}
+						username={user.username}
+						getCustomEmoji={getCustomEmoji}
+						theme={theme}
+						style={[styles.fieldText]}
+					/>
+				) : null}
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
