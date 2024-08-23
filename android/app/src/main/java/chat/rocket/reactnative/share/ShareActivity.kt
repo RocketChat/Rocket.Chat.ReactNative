@@ -23,9 +23,10 @@ class ShareActivity : AppCompatActivity() {
         if (intent?.action == Intent.ACTION_SEND || intent?.action == Intent.ACTION_SEND_MULTIPLE) {
             when {
                 intent.type?.startsWith("text/") == true -> handleText(intent)
-                intent.type?.startsWith("image/") == true -> handleMedia(intent, "image")
-                intent.type?.startsWith("video/") == true -> handleMedia(intent, "video")
+                intent.type?.startsWith("image/") == true -> handleMedia(intent, "data")
+                intent.type?.startsWith("video/") == true -> handleMedia(intent, "data")
                 intent.type?.startsWith("application/") == true -> handleMedia(intent, "data")
+                intent.type == "*/*" -> handleMedia(intent, "data")
                 intent.type == "text/plain" -> handleText(intent)
                 else -> completeRequest() // No matching type, complete the request
             }
