@@ -171,7 +171,10 @@ class ShareRocketChatRN: UIViewController {
     }
 
     private func saveDataToSharedContainer(data: Data, filename: String) -> URL? {
-        guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.ios.chat.rocket") else {
+        guard let appGroup = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String else {
+            return nil
+        }
+        guard let groupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
             return nil
         }
         let fileURL = groupURL.appendingPathComponent(filename)
