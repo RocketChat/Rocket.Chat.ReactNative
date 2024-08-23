@@ -10,32 +10,30 @@ import UIKit
 import MobileCoreServices
 
 class ShareRocketChatRN: UIViewController {
-    // TODO: whitelabel?
     let appScheme = "rocketchat"
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         guard let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
-              let attachments = extensionItem.attachments,
-              let firstAttachment = attachments.first else {
+              let attachments = extensionItem.attachments else {
             self.completeRequest()
             return
         }
 
-        if firstAttachment.hasItemConformingToTypeIdentifier("public.data") {
-            self.handleMedia(items: attachments, type: "public.data")
-        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.image") {
-            self.handleMedia(items: attachments, type: "public.image")
-        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.movie") {
-            self.handleMedia(items: attachments, type: "public.movie")
-        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
-            self.handleUrl(item: firstAttachment)
-        } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
-            self.handleText(item: firstAttachment)
-        } else {
-            self.completeRequest()
+        // Handle URL or Text using the first attachment only
+        if let firstAttachment = attachments.first {
+            if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
+                self.handleUrl(item: firstAttachment)
+                return
+            } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
+                self.handleText(item: firstAttachment)
+                return
+            }
         }
+
+        // Handle Media (Images, Videos) and Data (PDFs, etc.) for all attachments
+        self.handleMultipleMediaAndData(items: attachments)
     }
 
     private func handleText(item: NSItemProvider) {
@@ -62,57 +60,70 @@ class ShareRocketChatRN: UIViewController {
         }
     }
 
-    private func handleMedia(items: [NSItemProvider], type: String) {
-        var valid = true
-        var mediaUris = ""
+    private func handleMultipleMediaAndData(items: [NSItemProvider]) {
+        var mediaUris = [String]()
 
         let dispatchGroup = DispatchGroup()
 
         for (index, item) in items.enumerated() {
-            var mediaUriInfo: String?
-
             dispatchGroup.enter()
 
-            item.loadItem(forTypeIdentifier: type, options: nil) { (data, error) in
-                if let dataUri = data as? URL {
-                    do {
-                        let data = try Data(contentsOf: dataUri)
-                        let originalFilename = dataUri.lastPathComponent
-                        let savedUrl = self.saveDataToSharedContainer(data: data, filename: originalFilename)
-                        mediaUriInfo = savedUrl?.absoluteString
-                    } catch {
-                        valid = false
-                    }
-                } else if let data = data as? Data {
-                    if let fileExtension = self.inferFileExtension(from: item) {
-                        let filename = UUID().uuidString + "." + fileExtension
-                        let savedUrl = self.saveDataToSharedContainer(data: data, filename: filename)
-                        mediaUriInfo = savedUrl?.absoluteString
-                    } else {
-                        valid = false
+            if item.hasItemConformingToTypeIdentifier("public.image") {
+                self.loadAndSaveItem(item: item, type: "public.image", dispatchGroup: dispatchGroup) { mediaUriInfo in
+                    if let mediaUriInfo = mediaUriInfo {
+                        mediaUris.append(mediaUriInfo)
                     }
                 }
-
-                if let mediaUriInfo = mediaUriInfo {
-                    mediaUris.append(mediaUriInfo)
-                    if index < items.count - 1 {
-                        mediaUris.append(",")
+            } else if item.hasItemConformingToTypeIdentifier("public.movie") {
+                self.loadAndSaveItem(item: item, type: "public.movie", dispatchGroup: dispatchGroup) { mediaUriInfo in
+                    if let mediaUriInfo = mediaUriInfo {
+                        mediaUris.append(mediaUriInfo)
                     }
-                } else {
-                    valid = false
                 }
-
+            } else if item.hasItemConformingToTypeIdentifier("public.data") {
+                self.loadAndSaveItem(item: item, type: "public.data", dispatchGroup: dispatchGroup) { mediaUriInfo in
+                    if let mediaUriInfo = mediaUriInfo {
+                        mediaUris.append(mediaUriInfo)
+                    }
+                }
+            } else {
                 dispatchGroup.leave()
             }
         }
 
         dispatchGroup.notify(queue: .main) {
-            if valid,
-               let encoded = mediaUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
+            let combinedMediaUris = mediaUris.joined(separator: ",")
+            if let encoded = combinedMediaUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
                let url = URL(string: "\(self.appScheme)://shareextension?mediaUris=\(encoded)") {
                 _ = self.openURL(url)
             }
             self.completeRequest()
+        }
+    }
+
+    private func loadAndSaveItem(item: NSItemProvider, type: String, dispatchGroup: DispatchGroup, completion: @escaping (String?) -> Void) {
+        item.loadItem(forTypeIdentifier: type, options: nil) { (data, error) in
+            var mediaUriInfo: String?
+
+            if let dataUri = data as? URL {
+                do {
+                    let data = try Data(contentsOf: dataUri)
+                    let originalFilename = dataUri.lastPathComponent
+                    let savedUrl = self.saveDataToSharedContainer(data: data, filename: originalFilename)
+                    mediaUriInfo = savedUrl?.absoluteString
+                } catch {
+                    mediaUriInfo = nil
+                }
+            } else if let data = data as? Data {
+                if let fileExtension = self.inferFileExtension(from: item) {
+                    let filename = UUID().uuidString + "." + fileExtension
+                    let savedUrl = self.saveDataToSharedContainer(data: data, filename: filename)
+                    mediaUriInfo = savedUrl?.absoluteString
+                }
+            }
+
+            completion(mediaUriInfo)
+            dispatchGroup.leave()
         }
     }
 
