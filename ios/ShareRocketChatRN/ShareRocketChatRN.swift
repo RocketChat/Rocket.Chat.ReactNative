@@ -24,7 +24,17 @@ class ShareRocketChatRN: UIViewController {
         // Handle URL or Text using the first attachment only
         if let firstAttachment = attachments.first {
             if firstAttachment.hasItemConformingToTypeIdentifier("public.url") {
-                self.handleUrl(item: firstAttachment)
+                firstAttachment.loadItem(forTypeIdentifier: "public.url", options: nil) { (data, error) in
+                    if let url = data as? URL {
+                        if url.isFileURL {
+                            // Handle all file URLs
+                            self.handleAllFileURLs(items: attachments)
+                        } else {
+                            // Handle as a web URL
+                            self.handleUrl(item: firstAttachment)
+                        }
+                    }
+                }
                 return
             } else if firstAttachment.hasItemConformingToTypeIdentifier("public.text") {
                 self.handleText(item: firstAttachment)
@@ -60,12 +70,45 @@ class ShareRocketChatRN: UIViewController {
         }
     }
 
-    private func handleMultipleMediaAndData(items: [NSItemProvider]) {
-        var mediaUris = [String]()
-
+    private func handleAllFileURLs(items: [NSItemProvider]) {
+        var fileUris = [String]()
         let dispatchGroup = DispatchGroup()
 
-        for (index, item) in items.enumerated() {
+        for item in items {
+            dispatchGroup.enter()
+            item.loadItem(forTypeIdentifier: "public.data", options: nil) { (data, error) in
+                if let fileUrl = data as? URL, fileUrl.isFileURL {
+                    do {
+                        let fileData = try Data(contentsOf: fileUrl)
+                        let originalFilename = fileUrl.lastPathComponent
+                        let savedUrl = self.saveDataToSharedContainer(data: fileData, filename: originalFilename)
+                        if let finalUrl = savedUrl?.absoluteString {
+                            fileUris.append(finalUrl)
+                        }
+                    } catch {
+                        // Handle error
+                    }
+                }
+                dispatchGroup.leave()
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            let combinedFileUris = fileUris.joined(separator: ",")
+            if let encoded = combinedFileUris.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed),
+            let url = URL(string: "\(self.appScheme)://shareextension?mediaUris=\(encoded)") {
+                _ = self.openURL(url)
+            }
+            self.completeRequest()
+        }
+    }
+
+
+    private func handleMultipleMediaAndData(items: [NSItemProvider]) {
+        var mediaUris = [String]()
+        let dispatchGroup = DispatchGroup()
+
+        for (_, item) in items.enumerated() {
             dispatchGroup.enter()
 
             if item.hasItemConformingToTypeIdentifier("public.image") {

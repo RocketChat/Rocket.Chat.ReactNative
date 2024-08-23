@@ -85,8 +85,11 @@ const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 		);
 	}
 
-	// Multiple files upload of files different than image/video is not implemented, so there's no thumb
-	return null;
+	return (
+		<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
+			<CustomIcon name='attach' size={30} color={themes[theme].badgeBackgroundLevel2} />
+		</View>
+	);
 });
 
 const ThumbButton: typeof React.Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
