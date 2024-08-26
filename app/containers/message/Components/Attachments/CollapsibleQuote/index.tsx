@@ -99,14 +99,7 @@ const AttText = React.memo(
 		}
 
 		return (
-			<Markdown
-				msg={text}
-				username={user.username}
-				getCustomEmoji={getCustomEmoji}
-				theme={theme}
-				style={[styles.fieldText]}
-				testID='collapsibleQuoteTouchableText'
-			/>
+			<Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} style={[styles.fieldText]} />
 		);
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
