@@ -72,6 +72,11 @@ const styles = StyleSheet.create({
 	}
 });
 
+interface IMessageAttText {
+	text?: string;
+	getCustomEmoji: TGetCustomEmoji;
+}
+
 interface IMessageFields {
 	attachment: IAttachment;
 	getCustomEmoji: TGetCustomEmoji;
@@ -84,6 +89,29 @@ interface IMessageReply {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
+const AttText = React.memo(
+	({ text, getCustomEmoji }: IMessageAttText) => {
+		const { theme } = useTheme();
+		const { user } = useContext(MessageContext);
+
+		if (!text) {
+			return null;
+		}
+
+		return (
+			<Markdown
+				msg={text}
+				username={user.username}
+				getCustomEmoji={getCustomEmoji}
+				theme={theme}
+				style={[styles.fieldText]}
+				testID='collapsibleQuoteTouchableText'
+			/>
+		);
+	},
+	(prevProps, nextProps) => prevProps.text === nextProps.text
+);
+
 const Fields = React.memo(
 	({ attachment, getCustomEmoji }: IMessageFields) => {
 		const { theme } = useTheme();
@@ -95,15 +123,6 @@ const Fields = React.memo(
 
 		return (
 			<>
-				{attachment.text ? (
-					<Markdown
-						msg={attachment.text}
-						username={user.username}
-						getCustomEmoji={getCustomEmoji}
-						theme={theme}
-						style={[styles.fieldText]}
-					/>
-				) : null}
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text testID='collapsibleQuoteTouchableFieldTitle' style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>
@@ -176,6 +195,7 @@ const CollapsibleQuote = React.memo(
 							<View style={styles.authorContainer}>
 								<Text style={[styles.title, { color: fontSecondaryInfo }]}>{attachment.title}</Text>
 							</View>
+							{!collapsed && <AttText text={attachment.text} getCustomEmoji={getCustomEmoji} />}
 							{!collapsed && <Fields attachment={attachment} getCustomEmoji={getCustomEmoji} />}
 						</View>
 						<View style={styles.iconContainer}>
