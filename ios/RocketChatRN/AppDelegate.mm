@@ -18,7 +18,7 @@
   
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
-  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogDebug];
+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
   
   [RNNotifications startMonitorNotifications];
   [ReplyNotification configure];
