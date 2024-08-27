@@ -42,6 +42,7 @@ import {
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
+import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -234,7 +235,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield Keychain.setInternetCredentials(server, user.id, user.token, {
-			accessGroup: 'group.ios.chat.rocket',
+			accessGroup: appGroupSuiteName,
 			securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
 		});
 		yield put(setUser(user));

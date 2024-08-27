@@ -2,7 +2,7 @@ import { Database } from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 import logger from '@nozbe/watermelondb/utils/common/logger';
 
-import { appGroupPath } from './appGroup';
+import { appGroupPath } from '../methods/appGroup';
 import { isOfficial } from '../constants/environment';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
