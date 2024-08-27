@@ -108,6 +108,10 @@ export const isMissingRoomE2EEKey = ({
 	E2EKey: TSubscriptionModel['E2EKey'];
 }): boolean => {
 	const serverVersion = store.getState().server.version;
+	const e2eeEnabled = store.getState().settings.E2E_Enable;
+	if (!e2eeEnabled) {
+		return false;
+	}
 	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
 		return false;
 	}
@@ -123,6 +127,10 @@ export const isE2EEDisabledEncryptedRoom = ({
 	roomEncrypted: TSubscriptionModel['encrypted'];
 }): boolean => {
 	const serverVersion = store.getState().server.version;
+	const e2eeEnabled = store.getState().settings.E2E_Enable;
+	if (!e2eeEnabled) {
+		return false;
+	}
 	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
 		return false;
 	}
