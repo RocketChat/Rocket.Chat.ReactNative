@@ -188,6 +188,7 @@ describe('Room', () => {
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.3);
 		// 104
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -196,6 +197,7 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		// 154
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -204,6 +206,7 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		// 202
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -212,6 +215,7 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		// 253
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -219,6 +223,7 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('253')))
 			.toExist()
 			.withTimeout(5000);
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toNotExist()
 			.withTimeout(5000);
