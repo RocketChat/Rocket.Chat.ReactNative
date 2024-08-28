@@ -531,7 +531,8 @@ class Encryption {
 			throw new Error('Subscription not found');
 		}
 
-		if (!subscription.encrypted) {
+		const { E2E_Enable_Encrypt_Files } = store.getState().settings;
+		if (!subscription.encrypted || !E2E_Enable_Encrypt_Files) {
 			// Send a non encrypted message
 			return { file };
 		}
