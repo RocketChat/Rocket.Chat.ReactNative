@@ -2206,10 +2206,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bugsnag/cli@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@bugsnag/cli/-/cli-2.1.1.tgz#a1c0b879525ce74e017233b2cb50f3b6083279a0"
-  integrity sha512-N5Ubpaz+g4sbxsM0tWgE3HQOvg73Hmmywj8lzP9deEgRcYG9/iLj1Nn5CFxzK+i516iTF6TBe26bIW7ItMHY0w==
+"@bugsnag/cli@^2.2.0":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@bugsnag/cli/-/cli-2.4.1.tgz#e11533f301f6d7fe08899658b40c659d3032dfd4"
+  integrity sha512-4Ey2NLnD6KnZ6qOXUZkRAc/LjUp8Clw07tThKZYTfvX0st0EZzZ5y4gKu5igYFCEF/sGnNhjSUxx0liWCTtcTg==
   dependencies:
     axios "^1.6.2"
     js-yaml "^4.1.0"
@@ -4321,7 +4321,7 @@
   resolved "https://registry.yarnpkg.com/@types/i18n-js/-/i18n-js-3.8.9.tgz#074d1389539d2db992e6afd7eb379aa02929ef93"
   integrity sha512-bSxgya4x5O+x+QhfCGckiDDE+17XGPp1TNBgBA/vfF5EwdiZC70F4cKG5QK2v44+v62oY7/t/InreRhxskulcA==
 
-"@types/invariant@^2.2.37":
+"@types/invariant@2.2.37":
   version "2.2.37"
   resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.37.tgz#1709741e534364d653c87dff22fc76fa94aa7bc0"
   integrity sha512-IwpIMieE55oGWiXkQPSBY1nw1nFs6bsKXTFskNY8sdS17K24vyEBRQZEwlRS7ZmXCWnJcQtbxWzly+cODWGs2A==

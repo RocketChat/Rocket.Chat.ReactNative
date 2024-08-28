@@ -17,7 +17,7 @@ export interface IInputSelection {
 	end: number;
 }
 
-export type TSetInput = (text: string, selection?: IInputSelection) => void;
+export type TSetInput = (text: string, selection?: IInputSelection, forceUpdateDraftMessage?: boolean) => void;
 
 export type TMicOrSend = 'mic' | 'send';
 
