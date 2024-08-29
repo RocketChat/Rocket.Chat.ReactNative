@@ -27,6 +27,7 @@ import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import log from '../methods/helpers/log';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import UserPreferences from '../methods/userPreferences';
+import { compareServerVersion } from '../methods/helpers';
 import { Services } from '../services';
 import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
@@ -228,8 +229,15 @@ class Encryption {
 			throw new Error('Public key not found in local storage, password not changed');
 		}
 
+		// Only send force param for newer worspace versions
+		const { version } = store.getState().server;
+		let force = false;
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '6.10.0')) {
+			force = true;
+		}
+
 		// Send the new keys to the server
-		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey, force);
 	};
 
 	// get a encryption room instance
