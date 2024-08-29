@@ -122,12 +122,6 @@ const AttachmentView = (): React.ReactElement => {
 		}
 		const options = {
 			title: title || '',
-			// headerTitleAlign: 'center',
-			// headerTitleStyle: { color: colors.fontDefault },
-			// headerTintColor: colors.surfaceTint,
-			// headerTitleContainerStyle: { flex: 1, maxWidth: undefined },
-			// headerLeftContainerStyle: { flexGrow: undefined, flexBasis: undefined },
-			// headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.fontDefault} />
 			),

@@ -423,7 +423,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	getHeader = (): any => {
 		const { searching, canCreateRoom, headerTitleWidth } = this.state;
-		// console.log('🚀 ~ RoomsListView ~ headerTitleWidth:', headerTitleWidth);
 		const {
 			navigation,
 			isMasterDetail,
@@ -436,9 +435,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		if (searching) {
 			return {
-				// headerTitleAlign: 'left',
-				// headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				// headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />

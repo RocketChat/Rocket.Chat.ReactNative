@@ -120,7 +120,6 @@ async function tapBack() {
 			await device.pressBack();
 		}
 	}
-	// await sleep(300); // Wait for animation to finish
 }
 
 async function searchRoom(
