@@ -242,18 +242,21 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					backgroundColor={this.currentItemKey === 'ChatsStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
+				<List.Separator />
 				<List.Item
 					title={'Profile'}
 					left={() => <List.Icon name='user' />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					backgroundColor={this.currentItemKey === 'ProfileStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
+				<List.Separator />
 				<List.Item
 					title={'Display'}
 					left={() => <List.Icon name='sort' />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					backgroundColor={this.currentItemKey === 'DisplayPrefStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
+				<List.Separator />
 				<List.Item
 					title={'Settings'}
 					left={() => <List.Icon name='administration' />}
@@ -282,8 +285,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			right = undefined;
 		}
 
-		console.log(user.statusText);
-
 		return (
 			<List.Item
 				title={user.statusText || 'Edit_Status'}
@@ -299,13 +300,16 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const { theme, supportedVersionsStatus } = this.props;
 		if (supportedVersionsStatus === 'warn') {
 			return (
-				<List.Item
-					title={'Supported_versions_warning_update_required'}
-					color={themes[theme!].fontDanger}
-					left={() => <CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
-					onPress={() => this.onPressSupportedVersionsWarning()}
-					testID={`sidebar-supported-versions-warn`}
-				/>
+				<>
+					<List.Separator />
+					<List.Item
+						title={'Supported_versions_warning_update_required'}
+						color={themes[theme!].fontDanger}
+						left={() => <CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
+						onPress={() => this.onPressSupportedVersionsWarning()}
+						testID={`sidebar-supported-versions-warn`}
+					/>
+				</>
 			);
 		}
 		return null;
@@ -318,17 +322,18 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].surfaceLight }} vertical={isMasterDetail}>
+			<SafeAreaView testID='sidebar-view' vertical={isMasterDetail}>
 				<ScrollView
 					style={[
-						styles.container,
-						{
-							backgroundColor: isMasterDetail ? themes[theme!].surfaceRoom : themes[theme!].surfaceLight
-						}
+						styles.container
+						// {
+						// 	backgroundColor: isMasterDetail ? themes[theme!].surfaceRoom : undefined
+						// }
 					]}
 					{...scrollPersistTaps}>
+					<List.Separator />
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
-						<View style={styles.header}>
+						<View style={[styles.header, { backgroundColor: themes[theme!].surfaceRoom }]}>
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
@@ -346,7 +351,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 						</View>
 					</TouchableWithoutFeedback>
 
-					<List.Separator />
 					{this.renderSupportedVersionsWarn()}
 
 					<List.Separator />
@@ -356,11 +360,12 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 						<>
 							<List.Separator />
 							{this.renderNavigation()}
-							<List.Separator />
 						</>
 					) : (
 						<>{this.renderAdmin()}</>
 					)}
+
+					<List.Separator />
 				</ScrollView>
 			</SafeAreaView>
 		);

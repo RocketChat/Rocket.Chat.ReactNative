@@ -238,6 +238,7 @@ const SettingsView = (): React.ReactElement => {
 						testID='settings-view-security-privacy'
 						left={() => <List.Icon name='locker' />}
 					/>
+					<List.Separator />
 				</List.Section>
 
 				<List.Section>
