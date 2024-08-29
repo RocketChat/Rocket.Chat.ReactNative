@@ -18,7 +18,6 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/navigation/appNavigation';
-import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser, TSVStatus } from '../../definitions';
@@ -223,13 +222,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		return (
 			<>
 				<List.Separator />
-				<SidebarItem
-					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme!].fontTitlesLabels} />}
+				<List.Item
+					title={'Admin_Panel'}
+					left={() => <List.Icon name='settings' />}
 					onPress={() => this.sidebarNavigate(routeName)}
-					testID='sidebar-admin'
-					theme={theme!}
-					current={this.currentItemKey === routeName}
+					backgroundColor={this.currentItemKey === routeName ? themes[theme!].strokeLight : undefined}
 				/>
 			</>
 		);
@@ -239,37 +236,29 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const { theme } = this.props;
 		return (
 			<>
-				<SidebarItem
-					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={themes[theme!].fontTitlesLabels} />}
+				<List.Item
+					title={'Chats'}
+					left={() => <List.Icon name='message' />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
-					testID='sidebar-chats'
-					theme={theme!}
-					current={this.currentItemKey === 'ChatsStackNavigator'}
+					backgroundColor={this.currentItemKey === 'ChatsStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
-				<SidebarItem
-					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme!].fontTitlesLabels} />}
+				<List.Item
+					title={'Profile'}
+					left={() => <List.Icon name='user' />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
-					testID='sidebar-profile'
-					theme={theme!}
-					current={this.currentItemKey === 'ProfileStackNavigator'}
+					backgroundColor={this.currentItemKey === 'ProfileStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
-				<SidebarItem
-					text={I18n.t('Display')}
-					left={<CustomIcon name='sort' size={20} color={themes[theme!].fontTitlesLabels} />}
+				<List.Item
+					title={'Display'}
+					left={() => <List.Icon name='sort' />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
-					testID='sidebar-display'
-					theme={theme!}
-					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
+					backgroundColor={this.currentItemKey === 'DisplayPrefStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
-				<SidebarItem
-					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme!].fontTitlesLabels} />}
+				<List.Item
+					title={'Settings'}
+					left={() => <List.Icon name='administration' />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
-					testID='sidebar-settings'
-					theme={theme!}
-					current={this.currentItemKey === 'SettingsStackNavigator'}
+					backgroundColor={this.currentItemKey === 'SettingsStackNavigator' ? themes[theme!].strokeLight : undefined}
 				/>
 				{this.renderAdmin()}
 			</>
@@ -284,21 +273,24 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			status = 'disabled';
 		}
 
-		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].fontTitlesLabels} />;
+		let right: (() => JSX.Element | null) | undefined = () => (
+			<CustomIcon name='edit' size={20} color={themes[theme!].fontTitlesLabels} />
+		);
 		if (notificationPresenceCap) {
-			right = <View style={[styles.customStatusDisabled, { backgroundColor: themes[theme!].userPresenceDisabled }]} />;
+			right = () => <View style={[styles.customStatusDisabled, { backgroundColor: themes[theme!].userPresenceDisabled }]} />;
 		} else if (Presence_broadcast_disabled) {
 			right = undefined;
 		}
 
+		console.log(user.statusText);
+
 		return (
-			<SidebarItem
-				text={user.statusText || I18n.t('Edit_Status')}
-				left={<Status size={24} status={status} />}
-				theme={theme!}
+			<List.Item
+				title={user.statusText || 'Edit_Status'}
+				left={() => <Status size={24} status={status} />}
 				right={right}
 				onPress={() => (Presence_broadcast_disabled ? this.onPressPresenceLearnMore() : this.sidebarNavigate('StatusView'))}
-				testID={`sidebar-custom-status-${user.status}`}
+				translateTitle={!user.statusText}
 			/>
 		);
 	};
@@ -307,11 +299,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const { theme, supportedVersionsStatus } = this.props;
 		if (supportedVersionsStatus === 'warn') {
 			return (
-				<SidebarItem
-					text={I18n.t('Supported_versions_warning_update_required')}
-					textColor={themes[theme!].fontDanger}
-					left={<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
-					theme={theme!}
+				<List.Item
+					title={'Supported_versions_warning_update_required'}
+					color={themes[theme!].fontDanger}
+					left={() => <CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
 					onPress={() => this.onPressSupportedVersionsWarning()}
 					testID={`sidebar-supported-versions-warn`}
 				/>
