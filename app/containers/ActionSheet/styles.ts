@@ -24,7 +24,7 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textMedium
 	},
 	handle: {
 		justifyContent: 'center',
