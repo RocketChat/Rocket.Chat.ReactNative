@@ -98,8 +98,11 @@ describe('Deep linking', () => {
 			await navigateToRegister(data.alternateServer);
 			const randomUser = data.randomUser();
 			await element(by.id('register-view-name')).replaceText(randomUser.name);
+			await element(by.id('register-view-name')).tapReturnKey();
 			await element(by.id('register-view-username')).replaceText(randomUser.username);
+			await element(by.id('register-view-username')).tapReturnKey();
 			await element(by.id('register-view-email')).replaceText(randomUser.email);
+			await element(by.id('register-view-email')).tapReturnKey();
 			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
