@@ -600,7 +600,7 @@
   "Users": "Utilisateurs",
   "Uses_server_configuration": "Utilise la configuration du serveur",
   "Verify_email_desc": "Nous vous avons envoyé un e-mail pour confirmer votre inscription. Si vous ne recevez pas d'e-mail sous peu, veuillez revenir et réessayer.",
-  "Version_no": "Version : {{version}}",
+  "Version_no": "Version de l'application : {{version}}",
   "View_Original": "Voir l'original",
   "Wait_activation_warning": "Avant de pouvoir vous connecter, votre compte doit être activé manuellement par un administrateur.",
   "Waiting_for_network": "En attente du réseau...",
