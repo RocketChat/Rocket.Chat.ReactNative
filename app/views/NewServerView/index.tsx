@@ -2,7 +2,6 @@ import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
 import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 
@@ -37,24 +36,12 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		resizeMode: 'contain'
 	},
-	title: {
-		...sharedStyles.textBold,
-		letterSpacing: 0,
-		alignSelf: 'center'
-	},
-	subtitle: {
-		...sharedStyles.textRegular,
-		alignSelf: 'center'
-	},
 	certificatePicker: {
 		alignItems: 'center',
 		justifyContent: 'flex-end'
 	},
 	chooseCertificateTitle: {
 		...sharedStyles.textRegular
-	},
-	chooseCertificate: {
-		...sharedStyles.textSemibold
 	},
 	description: {
 		...sharedStyles.textRegular,
@@ -122,7 +109,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { previousServer, navigation, connecting } = this.props;
 		if (previousServer) {
 			return navigation.setOptions({
-				headerTitle: I18n.t('Workspaces'),
+				headerTitle: I18n.t('Add_server'),
 				headerLeft: () =>
 					!connecting ? (
 						<HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
@@ -293,13 +280,13 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
-		const { theme, width, height, previousServer } = this.props;
+		const { theme, width, height, previousServer, connecting } = this.props;
 		return (
 			<View
 				style={[
 					styles.certificatePicker,
 					{
-						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
+						marginTop: verticalScale({ size: previousServer && !isTablet ? 10 : 16, height })
 					}
 				]}
 			>
@@ -311,16 +298,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
-				<TouchableOpacity
+				<Button
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'
-				>
-					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: moderateScale({ size: 13, width }) }]}
-					>
-						{certificate ?? I18n.t('Apply_Your_Certificate')}
-					</Text>
-				</TouchableOpacity>
+					title={certificate ?? I18n.t('Apply_Certificate')}
+					type='secondary'
+					disabled={connecting}
+					style={{ marginTop: verticalScale({ size: 16, height }), width: '100%' }}
+				/>
 			</View>
 		);
 	};
@@ -328,7 +313,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	render() {
 		const { connecting, theme, previousServer, width, height } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
-		const marginTop = previousServer ? 0 : 35;
+		const marginTop = previousServer ? 32 : 84;
 
 		return (
 			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -337,38 +322,17 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale({ size: 10, height }),
+								marginBottom: verticalScale({ size: 32, height }),
 								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
-								width: verticalScale({ size: 100, height }),
-								height: verticalScale({ size: 100, height })
+								width: verticalScale({ size: 375, height }),
+								height: verticalScale({ size: 43, height })
 							}
 						]}
-						source={require('../../static/images/logo.png')}
+						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text
-						style={[
-							styles.title,
-							{
-								color: themes[theme].fontTitlesLabels,
-								fontSize: moderateScale({ size: 22, width }),
-								marginBottom: verticalScale({ size: 8, height })
-							}
-						]}
-					>
-						Rocket.Chat
-					</Text>
-					<Text
-						style={[
-							styles.subtitle,
-							{
-								color: themes[theme].fontHint,
-								fontSize: moderateScale({ size: 16, width }),
-								marginBottom: verticalScale({ size: 30, height })
-							}
-						]}
-					>
-						{I18n.t('Onboarding_subtitle')}
+					<Text style={{ fontSize: moderateScale({ size: 24, width }), marginBottom: verticalScale({ size: 24, height }), ...sharedStyles.textBold }}>
+						{I18n.t('Add_server')}
 					</Text>
 					<ServerInput
 						text={text}
@@ -388,7 +352,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
 						testID='new-server-view-button'
 					/>
-					{isIOS ? (
+					{this.renderCertificatePicker()}
+					{isIOS && !previousServer ? (
 						<>
 							<OrSeparator theme={theme} />
 							<Text
@@ -414,7 +379,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						</>
 					) : null}
 				</FormContainerInner>
-				{this.renderCertificatePicker()}
 			</FormContainer>
 		);
 	}

@@ -68,16 +68,19 @@ const ForgotPasswordView = (): React.ReactElement => {
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>
-					{I18n.t('Forgot_password')}
+					{I18n.t('Reset_password')}
+				</Text>
+				<Text>
+					{I18n.t('email')}
 				</Text>
 				<ControlledFormTextInput
 					name='email'
 					control={control}
 					autoFocus
-					placeholder={I18n.t('Email')}
+					// placeholder={I18n.t('Email')}
 					keyboardType='email-address'
 					returnKeyType='send'
-					iconLeft='mail'
+					// iconLeft='mail'
 					onSubmitEditing={handleSubmit(resetPassword)}
 					testID='forgot-password-view-email'
 					containerStyle={sharedStyles.inputLastChild}

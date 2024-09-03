@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
+import parse from 'url-parse';
 
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
@@ -51,9 +52,9 @@ const WorkspaceView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Your_workspace')
+			title: new parse(Site_Url).hostname
 		});
-	}, [navigation]);
+	}, [navigation, Site_Url]);
 
 	const showRegistrationButton = !!(
 		!Accounts_iframe_enabled &&
