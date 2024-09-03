@@ -77,10 +77,8 @@ const ForgotPasswordView = (): React.ReactElement => {
 					name='email'
 					control={control}
 					autoFocus
-					// placeholder={I18n.t('Email')}
 					keyboardType='email-address'
 					returnKeyType='send'
-					// iconLeft='mail'
 					onSubmitEditing={handleSubmit(resetPassword)}
 					testID='forgot-password-view-email'
 					containerStyle={sharedStyles.inputLastChild}
