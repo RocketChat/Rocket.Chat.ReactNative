@@ -98,8 +98,11 @@ describe('Deep linking', () => {
 			await navigateToRegister(data.alternateServer);
 			const randomUser = data.randomUser();
 			await element(by.id('register-view-name')).replaceText(randomUser.name);
+			await element(by.id('register-view-name')).tapReturnKey();
 			await element(by.id('register-view-username')).replaceText(randomUser.username);
+			await element(by.id('register-view-username')).tapReturnKey();
 			await element(by.id('register-view-email')).replaceText(randomUser.email);
+			await element(by.id('register-view-email')).tapReturnKey();
 			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
@@ -213,8 +216,8 @@ describe('Deep linking', () => {
 				await waitFor(element(by.id('rooms-list-view')))
 					.toBeVisible()
 					.withTimeout(2000);
-				await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-				await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+				await element(by.id('rooms-list-header-servers-list-button')).tap();
+				await waitFor(element(by.id('rooms-list-header-servers-list')))
 					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();

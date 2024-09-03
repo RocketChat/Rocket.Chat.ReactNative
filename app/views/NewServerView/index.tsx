@@ -13,7 +13,6 @@ import FormContainer, { FormContainerInner } from '../../containers/FormContaine
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
-import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
@@ -25,7 +24,6 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { moderateScale, verticalScale } from './scaling';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
@@ -48,15 +46,14 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	connectButton: {
-		marginBottom: 0
+		marginTop: 20,
+		marginBottom: 24
 	}
 });
 
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
 	connecting: boolean;
 	previousServer: string | null;
-	width: number;
-	height: number;
 }
 
 interface INewServerViewState {
@@ -280,22 +277,11 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
-		const { theme, width, height, previousServer, connecting } = this.props;
+		const { theme, connecting } = this.props;
 		return (
 			<View
-				style={[
-					styles.certificatePicker,
-					{
-						marginTop: verticalScale({ size: previousServer && !isTablet ? 10 : 16, height })
-					}
-				]}
-			>
-				<Text
-					style={[
-						styles.chooseCertificateTitle,
-						{ color: themes[theme].fontSecondaryInfo, fontSize: moderateScale({ size: 13, width }) }
-					]}
-				>
+				style={[styles.certificatePicker]}>
+				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].fontSecondaryInfo, fontSize: 13 }]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<Button
@@ -304,14 +290,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					title={certificate ?? I18n.t('Apply_Certificate')}
 					type='secondary'
 					disabled={connecting}
-					style={{ marginTop: verticalScale({ size: 16, height }), width: '100%' }}
+					style={{ marginTop: 12, width: '100%' }}
 				/>
 			</View>
 		);
 	};
 
 	render() {
-		const { connecting, theme, previousServer, width, height } = this.props;
+		const { connecting, theme, previousServer } = this.props;
 		const { text, connectingOpen, serversHistory } = this.state;
 		const marginTop = previousServer ? 32 : 84;
 
@@ -322,16 +308,16 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale({ size: 32, height }),
-								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
-								width: verticalScale({ size: 375, height }),
-								height: verticalScale({ size: 43, height })
+								marginBottom: 32,
+								marginTop: isTablet ? 0 : marginTop,
+								width: 250,
+								height: 50
 							}
 						]}
 						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text style={{ fontSize: moderateScale({ size: 24, width }), marginBottom: verticalScale({ size: 24, height }), ...sharedStyles.textBold }}>
+					<Text style={{ fontSize: 24, marginBottom: 24, ...sharedStyles.textBold }}>
 						{I18n.t('Add_server')}
 					</Text>
 					<ServerInput
@@ -349,7 +335,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
+						style={[styles.connectButton]}
 						testID='new-server-view-button'
 					/>
 					{this.renderCertificatePicker()}
@@ -361,11 +347,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 									styles.description,
 									{
 										color: themes[theme].fontSecondaryInfo,
-										fontSize: moderateScale({ size: 14, width }),
-										marginBottom: verticalScale({ size: 16, height })
+										fontSize: 14,
+										marginBottom: 16
 									}
-								]}
-							>
+								]}>
 								{I18n.t('Onboarding_join_open_description')}
 							</Text>
 							<Button
@@ -389,4 +374,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	previousServer: state.server.previousServer
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(NewServerView)));
+export default connect(mapStateToProps)(withTheme(NewServerView));
