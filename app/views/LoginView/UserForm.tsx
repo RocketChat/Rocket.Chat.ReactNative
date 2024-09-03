@@ -6,10 +6,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import parse from 'url-parse';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
+import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import I18n from '../../i18n';
 import { OutsideParamList } from '../../stacks/types';
@@ -34,7 +34,7 @@ const UserForm = () => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'LoginView'>>();
-
+	const workspaceDomain = useWorkspaceDomain();
 	const {
 		params: { username }
 	} = useRoute<RouteProp<OutsideParamList, 'LoginView'>>();
@@ -54,8 +54,6 @@ const UserForm = () => {
 		Accounts_RegistrationForm_LinkReplacementText,
 		isFetching,
 		Accounts_RegistrationForm,
-		Site_Name,
-		Site_Url,
 		inviteLinkToken,
 		error,
 		failure
@@ -66,8 +64,6 @@ const UserForm = () => {
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
 		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-		Site_Name: state.settings.Site_Name as string,
-		Site_Url: state.settings.Site_Url as string,
 		inviteLinkToken: state.inviteLinks.token,
 		failure: state.login.failure,
 		error: state.login.error && state.login.error.data
@@ -88,11 +84,11 @@ const UserForm = () => {
 		Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
 
 	const register = () => {
-		navigation.navigate('RegisterView', { title: Site_Name });
+		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
 
 	const forgotPassword = () => {
-		navigation.navigate('ForgotPasswordView', { title: new parse(Site_Url).hostname });
+		navigation.navigate('ForgotPasswordView', { title: workspaceDomain });
 	};
 
 	const submit = ({ password, user }: ISubmit) => {

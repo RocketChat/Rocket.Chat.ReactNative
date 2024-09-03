@@ -2,6 +2,7 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, View, TextInput as RNTextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
+import parse from 'url-parse';
 
 import { loginRequest } from '../actions/login';
 import { themes } from '../lib/constants';
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {
 	Site_Name: string;
+	Site_Url: string;
 	Gitlab_URL: string;
 	CAS_enabled: boolean;
 	CAS_login_url: string;
@@ -99,8 +101,8 @@ class RegisterView extends React.Component<IProps, any> {
 	}
 
 	login = () => {
-		const { navigation, Site_Name } = this.props;
-		navigation.navigate('LoginView', { title: Site_Name });
+		const { navigation, Site_Url } = this.props;
+		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
 	};
 
 	valid = () => {
@@ -327,6 +329,7 @@ class RegisterView extends React.Component<IProps, any> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	Site_Name: state.settings.Site_Name as string,
+	Site_Url: state.settings.Site_Url as string,
 	Gitlab_URL: state.settings.API_Gitlab_URL as string,
 	CAS_enabled: state.settings.CAS_enabled as boolean,
 	CAS_login_url: state.settings.CAS_login_url as string,
