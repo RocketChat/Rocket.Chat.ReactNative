@@ -857,5 +857,5 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Your invite link will expire on {{date}} or after {{usesLeft}} uses.",
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
 }
