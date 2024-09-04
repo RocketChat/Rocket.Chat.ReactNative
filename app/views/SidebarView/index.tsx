@@ -241,6 +241,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					left={() => <List.Icon name='message' />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					backgroundColor={this.currentItemKey === 'ChatsStackNavigator' ? themes[theme!].strokeLight : undefined}
+					testID='sidebar-chats'
 				/>
 				<List.Separator />
 				<List.Item
@@ -248,6 +249,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					left={() => <List.Icon name='user' />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
 					backgroundColor={this.currentItemKey === 'ProfileStackNavigator' ? themes[theme!].strokeLight : undefined}
+					testID='sidebar-profile'
 				/>
 				<List.Separator />
 				<List.Item
@@ -255,6 +257,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					left={() => <List.Icon name='sort' />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
 					backgroundColor={this.currentItemKey === 'DisplayPrefStackNavigator' ? themes[theme!].strokeLight : undefined}
+					testID='sidebar-display'
 				/>
 				<List.Separator />
 				<List.Item
@@ -262,6 +265,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					left={() => <List.Icon name='administration' />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					backgroundColor={this.currentItemKey === 'SettingsStackNavigator' ? themes[theme!].strokeLight : undefined}
+					testID='sidebar-settings'
 				/>
 				{this.renderAdmin()}
 			</>
@@ -294,6 +298,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				right={right}
 				onPress={() => (Presence_broadcast_disabled ? this.onPressPresenceLearnMore() : this.sidebarNavigate('StatusView'))}
 				translateTitle={!user.statusText}
+				testID={`sidebar-custom-status-${user.status}`}
 			/>
 		);
 	};
@@ -325,14 +330,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		}
 		return (
 			<SafeAreaView testID='sidebar-view' vertical={isMasterDetail}>
-				<ScrollView
-					style={[
-						styles.container
-						// {
-						// 	backgroundColor: isMasterDetail ? themes[theme!].surfaceRoom : undefined
-						// }
-					]}
-					{...scrollPersistTaps}>
+				<ScrollView style={styles.container} {...scrollPersistTaps}>
 					<List.Separator />
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
 						<View style={[styles.header, { backgroundColor: themes[theme!].surfaceRoom }]}>
