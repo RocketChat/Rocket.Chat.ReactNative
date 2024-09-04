@@ -2,7 +2,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
-import { Linking, Share } from 'react-native';
+import { I18nManager, Linking, Share } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -225,7 +225,7 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
-						title='Media_auto_download'
+					title='Media_auto_download'
 						showActionIndicator
 						onPress={() => navigateToScreen('MediaAutoDownloadView')}
 						testID='settings-view-media-auto-download'
@@ -236,6 +236,12 @@ const SettingsView = (): React.ReactElement => {
 						showActionIndicator
 						onPress={() => navigateToScreen('SecurityPrivacyView')}
 						testID='settings-view-security-privacy'
+					/>
+					<List.Separator />
+					<List.Item
+						title='Get_help'
+						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null}/>}
+						onPress={() => navigateToScreen('GetHelpView')}
 					/>
 					<List.Separator />
 				</List.Section>
