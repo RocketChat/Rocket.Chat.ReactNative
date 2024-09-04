@@ -7,10 +7,16 @@ import * as List from '../containers/List';
 import StatusBar from "../containers/StatusBar";
 import { SettingsStackParamList } from "../stacks/types";
 import i18n from "../i18n";
+import openLink from "../lib/methods/helpers/openLink";
+import { useTheme } from "../theme";
+
+const DOCS_LINK = 'https://docs.rocket.chat/';
+const ACCESSIBILITY_LINK = 'https://go.rocket.chat/i/accessibility';
+const GLOSSARY_LINK = 'https://go.rocket.chat/i/glossary';
 
 const GetHelpView = () => {
-
 	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'GetHelpView'>>();
+	const { theme } = useTheme();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -27,19 +33,19 @@ const GetHelpView = () => {
 					<List.Item
 						title='Rocket_Chat_Documentation'
 						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null}/>}
-						onPress={() => console.log('GetHelpView')}
+						onPress={() => openLink(DOCS_LINK, theme)}
 					/>
 					<List.Separator/>
 					<List.Item
 						title='Accessibility_statement'
 						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null}/>}
-						onPress={() => console.log('GetHelpView')}
+						onPress={() => openLink(ACCESSIBILITY_LINK, theme)}
 					/>
 					<List.Separator/>
 					<List.Item
 						title='Glossary_of_simplified_terms'
 						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null}/>}
-						onPress={() => console.log('GetHelpView')}
+						onPress={() => openLink(GLOSSARY_LINK, theme)}
 					/>
 					<List.Separator/>
 				</List.Section>
