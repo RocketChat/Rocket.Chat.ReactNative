@@ -289,8 +289,6 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			right = undefined;
 		}
 
-		console.log(user.statusText);
-
 		return (
 			<List.Item
 				title={user.statusText || 'Edit_Status'}
