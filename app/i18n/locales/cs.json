@@ -783,7 +783,7 @@
   "Uses_server_configuration": "Používá konfiguraci pracovního prostoru",
   "Verify": "Ověřit",
   "Verify_email_desc": "Poslali jsme vám e-mail pro potvrzení vaší registrace. Pokud e-mail brzy neobdržíte, vraťte se a zkuste to znovu.",
-  "Version_no": "Verze: {{version}}",
+  "Version_no": "Verze aplikace: {{version}}",
   "Vibrate": "Vibrovat",
   "Video": "Video",
   "video-conf-provider-not-configured-body": "Správce pracovního prostoru musí nejprve povolit funkci konferenčních hovorů.",
