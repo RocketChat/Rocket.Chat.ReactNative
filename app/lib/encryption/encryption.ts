@@ -540,7 +540,7 @@ class Encryption {
 		}
 
 		const { E2E_Enable_Encrypt_Files } = store.getState().settings;
-		if (!subscription.encrypted || !E2E_Enable_Encrypt_Files) {
+		if (!subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
 			// Send a non encrypted message
 			return { file };
 		}
