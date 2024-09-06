@@ -290,10 +290,9 @@ describe('E2E Encryption', () => {
 				await waitFor(element(by[textMatcher](mockedMessageText)).atIndex(0))
 					.not.toExist()
 					.withTimeout(2000);
-				// await waitFor(element(by.id('room-view-encrypted-room')))
-				// 	.toBeVisible()
-				// 	.withTimeout(2000);
-				await expect(element(by.label('Encrypted message')).atIndex(0)).toExist();
+				await waitFor(element(by.id('room-view-encrypted-room')))
+					.toBeVisible()
+					.withTimeout(2000);
 			});
 
 			it('should enter new e2e password and messages should be decrypted', async () => {
@@ -391,7 +390,7 @@ describe('E2E Encryption', () => {
 
 			// Register new user
 			const randomUser = data.randomUser();
-			await element(by.id('register-view-name')).replaceText(randomUser.username);
+			await element(by.id('register-view-name')).replaceText(randomUser.name);
 			await element(by.id('register-view-name')).tapReturnKey();
 			await element(by.id('register-view-username')).replaceText(randomUser.username);
 			await element(by.id('register-view-username')).tapReturnKey();
@@ -406,6 +405,9 @@ describe('E2E Encryption', () => {
 		});
 
 		it('should change back', async () => {
+			await waitFor(element(by.id('rooms-list-header-servers-list-button')))
+				.toExist()
+				.withTimeout(2000);
 			await element(by.id('rooms-list-header-servers-list-button')).tap();
 			await waitFor(element(by.id('rooms-list-header-servers-list')))
 				.toBeVisible()

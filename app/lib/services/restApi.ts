@@ -54,9 +54,9 @@ export const createChannel = ({
 	return sdk.post(type ? 'groups.create' : 'channels.create', params);
 };
 
-export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string) =>
+export const e2eSetUserPublicAndPrivateKeys = (public_key: string, private_key: string, force: boolean = false) =>
 	// RC 2.2.0
-	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key });
+	sdk.post('e2e.setUserPublicAndPrivateKeys', { public_key, private_key, ...(force && { force: true }) });
 
 export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 	// RC 0.72.0

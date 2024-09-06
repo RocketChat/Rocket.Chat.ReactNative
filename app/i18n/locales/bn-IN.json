@@ -712,7 +712,7 @@
   "Users": "ব্যবহারকারীগণ",
   "Uses_server_configuration": "ওয়ার্কস্পেস কনফিগারেশন ব্যবহার করে",
   "Verify_email_desc": "আমরা আপনার নিবন্ধন নিশ্চিত করতে একটি ইমেল পাঠিয়েছি। যদি আপনি শীঘ্রই একটি ইমেল পাননি, তবে দয়া করে ফিরে এসে আবার চেষ্টা করুন।",
-  "Version_no": "সংস্করণ: {{version}}",
+  "Version_no": "অ্যাপ সংস্করণ: {{version}}",
   "Video": "ভিডিও",
   "video-conf-provider-not-configured-body": "একটি কার্যক্ষম প্রশাসককে প্রথমে কনফারেন্স কল বৈশিষ্ট্যটি চালু করতে হবে।",
   "video-conf-provider-not-configured-header": "কনফারেন্স কল সক্ষম হয়নি",

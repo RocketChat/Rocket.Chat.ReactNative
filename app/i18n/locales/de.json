@@ -706,7 +706,7 @@
   "Users": "Benutzer",
   "Uses_server_configuration": "Nutzt Servereinstellungen",
   "Verify_email_desc": "Wir haben Ihnen eine Email geschickt um Ihre Anmeldung zu bestätigen. Wenn Sie keine Email erhalten, versuchen Sie es später noch einmal.",
-  "Version_no": "Version: {{version}}",
+  "Version_no": "App-Version: {{version}}",
   "video-conf-provider-not-configured-body": "Ein Arbeitsbereich-Administrator muss die Funktion für Telefonkonferenzen zuerst aktivieren.",
   "video-conf-provider-not-configured-header": "Telefonkonferenz nicht aktiviert",
   "View_Original": "Original anzeigen",

@@ -219,6 +219,9 @@ async function checkRoomTitle(room: string) {
 
 const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
