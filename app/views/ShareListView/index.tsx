@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { BackHandler, FlatList, Keyboard, ScrollView, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -24,7 +24,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
 import { IApplicationState, RootEnum, TServerModel, TSubscriptionModel } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
-import { getRoomAvatar, isAndroid, isIOS, askAndroidMediaPermissions } from '../../lib/methods/helpers';
+import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
 import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';
 
@@ -46,7 +46,6 @@ interface IState {
 	text: string;
 	loading: boolean;
 	serverInfo: TServerModel;
-	needsPermission: boolean;
 }
 
 interface INavigationOption {
@@ -83,8 +82,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			attachments: [],
 			text: props.shareExtensionParams.text,
 			loading: true,
-			serverInfo: {} as TServerModel,
-			needsPermission: false
+			serverInfo: {} as TServerModel
 		};
 		this.setHeader();
 		if (isAndroid) {
@@ -102,9 +100,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		const { mediaUris } = shareExtensionParams;
 		if (mediaUris) {
 			try {
-				if (isAndroid) {
-					await this.askForPermission();
-				}
 				const info = await Promise.all(mediaUris.split(',').map((uri: string) => FileSystem.getInfoAsync(uri, { size: true })));
 				const attachments = info.map(file => {
 					if (!file.exists) {
@@ -150,14 +145,10 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	}
 
 	shouldComponentUpdate(nextProps: IShareListViewProps, nextState: IState) {
-		const { searching, needsPermission } = this.state;
+		const { searching } = this.state;
 		if (nextState.searching !== searching) {
 			return true;
 		}
-		if (nextState.needsPermission !== needsPermission) {
-			return true;
-		}
-
 		const { server, userId, isAuthenticated, connecting } = this.props;
 		if (server !== nextProps.server) {
 			return true;
@@ -304,14 +295,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 	};
 
-	askForPermission = async () => {
-		const result = await askAndroidMediaPermissions();
-		if (!result) {
-			this.setState({ needsPermission: true });
-		}
-		this.setState({ needsPermission: false });
-	};
-
 	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
 	getRoomTitle = (item: TSubscriptionModel) => {
@@ -452,28 +435,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	render = () => {
-		const { chats, loading, searchResults, searching, searchText, needsPermission } = this.state;
+		const { chats, loading, searchResults, searching, searchText } = this.state;
 		const { theme } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
-		}
-
-		if (needsPermission) {
-			return (
-				<SafeAreaView>
-					<ScrollView
-						style={{ backgroundColor: themes[theme].surfaceRoom }}
-						contentContainerStyle={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
-						<Text style={[styles.permissionTitle, { color: themes[theme].fontTitlesLabels }]}>
-							{I18n.t('Read_External_Permission')}
-						</Text>
-						<Text style={[styles.permissionMessage, { color: themes[theme].fontDefault }]}>
-							{I18n.t('Read_External_Permission_Message')}
-						</Text>
-					</ScrollView>
-				</SafeAreaView>
-			);
 		}
 
 		return (
