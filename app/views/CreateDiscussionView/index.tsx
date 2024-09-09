@@ -185,6 +185,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 									title='Encrypted'
 									testID='room-actions-encrypt'
 									right={() => <Switch value={encrypted} onValueChange={this.onEncryptedChange} />}
+									additionalAcessibilityLabel={encrypted}
 								/>
 							</>
 						) : null}

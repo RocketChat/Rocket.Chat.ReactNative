@@ -14,7 +14,7 @@ import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
-import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
+import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -28,7 +28,6 @@ import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
-import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
@@ -65,7 +64,6 @@ interface IRoomsListViewProps {
 	searchText: string;
 	changingServer: boolean;
 	loadingServer: boolean;
-	showServerDropdown: boolean;
 	sortBy: string;
 	groupByType: boolean;
 	showFavorites: boolean;
@@ -133,7 +131,6 @@ const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
 const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
-	'showServerDropdown',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
@@ -200,7 +197,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	componentDidMount() {
-		const { navigation, dispatch } = this.props;
+		const { navigation } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
@@ -219,7 +216,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
-			dispatch(closeServerDropdown());
 			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
@@ -626,11 +622,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	initSearching = () => {
 		logEvent(events.RL_SEARCH);
-		const { dispatch, showServerDropdown } = this.props;
+		const { dispatch } = this.props;
 		this.internalSetState({ searching: true }, () => {
-			if (showServerDropdown) {
-				dispatch(closeServerDropdown());
-			}
 			dispatch(openSearchHeader());
 			this.handleSearch('');
 			this.setHeader();
@@ -995,14 +988,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme } = this.props;
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	};
@@ -1017,7 +1009,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
-	showServerDropdown: state.rooms.showServerDropdown,
 	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,

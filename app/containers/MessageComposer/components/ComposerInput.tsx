@@ -58,7 +58,7 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
 
-		useAutoSaveDraft(textRef.current);
+		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
 
 		// Draft/Canned Responses
 		useEffect(() => {
@@ -142,7 +142,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('');
+				setInput('', undefined, true);
 				return text;
 			},
 			getText: () => textRef.current,
@@ -151,12 +151,16 @@ export const ComposerInput = memo(
 			onAutocompleteItemSelected
 		}));
 
-		const setInput: TSetInput = (text, selection) => {
+		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
 			const message = text.trim();
 			textRef.current = message;
-			if (inputRef.current) {
-				inputRef.current.setNativeProps({ text });
+
+			if (forceUpdateDraftMessage) {
+				saveMessageDraft('');
 			}
+
+			inputRef.current?.setNativeProps?.({ text });
+
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
 				setTimeout(() => {

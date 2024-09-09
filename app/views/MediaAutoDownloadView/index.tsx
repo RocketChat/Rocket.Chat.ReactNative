@@ -9,7 +9,7 @@ import ListPicker from './ListPicker';
 import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	AUDIO_PREFERENCE_DOWNLOAD,
-	IMAGES_PREFERENCE_DOWNLOAD,
+	IMAGE_PREFERENCE_DOWNLOAD,
 	MediaDownloadOption,
 	VIDEO_PREFERENCE_DOWNLOAD
 } from '../../lib/constants';
@@ -18,7 +18,7 @@ import { SettingsStackParamList } from '../../stacks/types';
 
 const MediaAutoDownload = () => {
 	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(
-		IMAGES_PREFERENCE_DOWNLOAD,
+		IMAGE_PREFERENCE_DOWNLOAD,
 		'wifi_mobile_data'
 	);
 	const [videoPreference, setVideoPreference] = useUserPreferences<MediaDownloadOption>(VIDEO_PREFERENCE_DOWNLOAD, 'wifi');
@@ -36,11 +36,13 @@ const MediaAutoDownload = () => {
 			<StatusBar />
 			<List.Container>
 				<List.Section>
-					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference} title='Images' />
+					<List.Separator />
+					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference} title='Image' />
 					<List.Separator />
 					<ListPicker onChangeValue={setVideoPreference} value={videoPreference} title='Video' />
 					<List.Separator />
 					<ListPicker onChangeValue={setAudioPreference} value={audioPreference} title='Audio' />
+					<List.Separator />
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

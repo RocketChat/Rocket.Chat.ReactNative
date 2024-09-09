@@ -150,6 +150,7 @@ export const FormTextInput = ({
 						size={20}
 						color={colors.fontDefault}
 						style={[styles.iconContainer, styles.iconRight]}
+						accessible={false}
 					/>
 				) : null}
 

@@ -678,7 +678,7 @@
   "Users": "Användare",
   "Uses_server_configuration": "Använder serverkonfiguration",
   "Verify_email_desc": "Vi har skickat ett e-postmeddelande för att bekräfta din registrering. Om du inte får e-postmeddelandet försöker du igen.",
-  "Version_no": "Version: {{version}}",
+  "Version_no": "Appversion: {{version}}",
   "View_Original": "Visa original",
   "Wait_activation_warning": "Innan du kan logga in måste ditt konto aktiveras manuellt av en administratör.",
   "Waiting_for_answer": "Väntar på svar",
