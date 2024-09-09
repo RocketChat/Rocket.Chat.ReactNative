@@ -137,32 +137,36 @@ const UserForm = () => {
 				disabled={!isValid}
 				style={styles.loginButton}
 			/>
-			{Accounts_PasswordReset ? (
-				<Button
-					title={I18n.t('Forgot_password')}
-					type='secondary'
-					onPress={forgotPassword}
-					testID='login-view-forgot-password'
-					color={colors.fontInfo}
-					fontSize={14}
-					backgroundColor='transparent'
-				/>
-			) : null}
-			{showRegistrationButton ? (
-				<View style={styles.bottomContainer}>
-					<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Dont_Have_An_Account')}</Text>
-					<Text
-						style={[styles.bottomContainerTextBold, { color: colors.fontHint }]}
-						onPress={register}
-						testID='login-view-register'>
-						{I18n.t('Create_account')}
+			<View style={styles.bottomContainer}>
+				{Accounts_PasswordReset && (
+					<>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Forgot_password')}</Text>
+						<Button
+							title={I18n.t('Reset_password')}
+							type='secondary'
+							onPress={forgotPassword}
+							style={styles.forgotPasswordButton}
+							testID='login-view-forgot-password'
+						/>
+					</>
+				)}
+				{showRegistrationButton ? (
+					<>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('You_dont_have_account')}</Text>
+						<Button
+							title={I18n.t('Create_account')}
+							onPress={register}
+							type='secondary'
+							testID='login-view-register'
+							style={styles.createAccountButton}
+						/>
+					</>
+				) : (
+					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
+						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
-				</View>
-			) : (
-				<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
-					{Accounts_RegistrationForm_LinkReplacementText}
-				</Text>
-			)}
+				)}
+			</View>
 			<UGCRules styleContainer={styles.ugcContainer} />
 		</>
 	);
