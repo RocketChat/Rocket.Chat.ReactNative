@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { StyleSheet, Text, TextInputProps, View } from 'react-native';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
@@ -35,7 +35,6 @@ interface IRoomHeader {
 	server: string;
 	showSearchHeader: boolean;
 	onSearchChangeText: TextInputProps['onChangeText'];
-	onPress: TouchableOpacityProps['onPress'];
 }
 
 const Header = React.memo(
@@ -46,8 +45,7 @@ const Header = React.memo(
 		serverName = 'Rocket.Chat',
 		server,
 		showSearchHeader,
-		onSearchChangeText,
-		onPress
+		onSearchChangeText
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
@@ -70,21 +68,19 @@ const Header = React.memo(
 		// improve copy
 		return (
 			<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
-					<View style={styles.button}>
-						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-							{serverName}
-						</Text>
-					</View>
-					{subtitle ? (
-						<Text
-							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-							numberOfLines={1}>
-							{subtitle}
-						</Text>
-					) : null}
-				</TouchableOpacity>
+				<View style={styles.button}>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						{serverName}
+					</Text>
+				</View>
+				{subtitle ? (
+					<Text
+						testID='rooms-list-header-server-subtitle'
+						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+						numberOfLines={1}>
+						{subtitle}
+					</Text>
+				) : null}
 			</View>
 		);
 	}

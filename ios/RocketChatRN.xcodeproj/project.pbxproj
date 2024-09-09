@@ -293,7 +293,8 @@
 		65AD383C2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */; };
 		65B9A71A2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
 		65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
-		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
+		6886EA443FB173DAC09A8CC1 /* libPods-defaults-ShareRocketChatRN.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 094A928A54F8F7D6362EBDE8 /* libPods-defaults-ShareRocketChatRN.a */; };
+		6A155BB8D100C38441B462E9 /* libPods-defaults-NotificationService.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5540801CC0131C98DD520BC4 /* libPods-defaults-NotificationService.a */; };
 		7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
 		7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCEC257FEB3A005BDCD4 /* Experimental.xcassets */; };
 		7A14FCF4257FEB59005BDCD4 /* Official.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7A14FCF3257FEB59005BDCD4 /* Official.xcassets */; };
@@ -346,7 +347,6 @@
 		7AAB3E3E257E6A6E00707CF6 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 06BB44DD4855498082A744AD /* libz.tbd */; };
 		7AAB3E3F257E6A6E00707CF6 /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7E862283664608B3894E34 /* libWatermelonDB.a */; };
 		7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		7AAB3E44257E6A6E00707CF6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7AAB3E45257E6A6E00707CF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
 		7AAB3E49257E6A6E00707CF6 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AAB3E4A257E6A6E00707CF6 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -728,7 +728,6 @@
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
 				7A8B30752BCD9D3F00146A40 /* SSLPinning.mm */,
 				65B9A7192AFC24190088956F /* ringtone.mp3 */,
-				7A006F13229C83B600803143 /* GoogleService-Info.plist */,
 				60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -986,7 +985,6 @@
 		1EC6ACB122CB9FC300A41C61 /* ShareRocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
-				1ED59D4B22CBA77D00C54289 /* GoogleService-Info.plist */,
 				1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */,
 				1EC6ACB522CB9FC300A41C61 /* MainInterface.storyboard */,
 				1EC6ACB822CB9FC300A41C61 /* Info.plist */,
@@ -1502,7 +1500,6 @@
 				7A610CD227ECE38100B8ABDD /* custom.ttf in Resources */,
 				7A14FCED257FEB3A005BDCD4 /* Experimental.xcassets in Resources */,
 				7AE10C0628A59530003593CB /* Inter.ttf in Resources */,
-				7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */,
 				65AD38372BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				7A0D62D2242AB187006D5C06 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -1514,7 +1511,6 @@
 			files = (
 				7A610CD327ECE38100B8ABDD /* custom.ttf in Resources */,
 				1EC6ACB722CB9FC300A41C61 /* MainInterface.storyboard in Resources */,
-				1ED59D4C22CBA77D00C54289 /* GoogleService-Info.plist in Resources */,
 				65AD38382BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				7AE10C0728A59530003593CB /* Inter.ttf in Resources */,
 			);
@@ -1549,7 +1545,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				65AD38392BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
-				1E6CC61F2513DBF400965591 /* GoogleService-Info.plist in Resources */,
 				7A610CD427ECE38100B8ABDD /* custom.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1563,7 +1558,6 @@
 				7A610CD527ECE38100B8ABDD /* custom.ttf in Resources */,
 				7AAB3E42257E6A6E00707CF6 /* Images.xcassets in Resources */,
 				7AE10C0828A59530003593CB /* Inter.ttf in Resources */,
-				7AAB3E44257E6A6E00707CF6 /* GoogleService-Info.plist in Resources */,
 				65AD383A2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */,
 				7AAB3E45257E6A6E00707CF6 /* LaunchScreen.storyboard in Resources */,
 			);
