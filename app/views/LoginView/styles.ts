@@ -21,16 +21,21 @@ export default StyleSheet.create({
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
-		fontSize: 13
-	},
-	bottomContainerTextBold: {
-		...sharedStyles.textSemibold,
-		fontSize: 13
+		fontSize: 14,
+		marginTop: 32
 	},
 	loginButton: {
 		marginTop: 16
 	},
 	ugcContainer: {
 		marginTop: 32
+	},
+	createAccountButton: {
+		width: '100%',
+		marginTop: 12
+	},
+	forgotPasswordButton: {
+		width: '100%',
+		marginTop: 12
 	}
 });

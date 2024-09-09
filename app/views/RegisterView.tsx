@@ -32,20 +32,19 @@ const styles = StyleSheet.create({
 	bottomContainer: {
 		flexDirection: 'column',
 		alignItems: 'center',
-		marginBottom: 32,
-		marginHorizontal: 30
+		marginBottom: 32
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
 		fontSize: 13
 	},
-	bottomContainerTextBold: {
-		...sharedStyles.textSemibold,
-		fontSize: 13
-	},
 	registerButton: {
 		marginTop: 16,
 		marginBottom: 32
+	},
+	loginButton: {
+		width: '100%',
+		marginTop: 12
 	}
 });
 
@@ -307,18 +306,16 @@ class RegisterView extends React.Component<IProps, any> {
 						style={styles.registerButton}
 					/>
 
-					<UGCRules />
-
 					{showLoginButton ? (
 						<View style={styles.bottomContainer}>
 							<Text style={[styles.bottomContainerText, { color: themes[theme].fontSecondaryInfo }]}>
-								{I18n.t('Do_you_have_an_account')}
+								{I18n.t('Already_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].fontHint }]} onPress={this.login}>
-								{I18n.t('Login')}
-							</Text>
+							<Button title={I18n.t('Login')} type='secondary' onPress={this.login} style={styles.loginButton}/>
 						</View>
 					) : null}
+
+					<UGCRules />
 				</FormContainerInner>
 			</FormContainer>
 		);
