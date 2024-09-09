@@ -16,8 +16,6 @@ export const ROOMS = createRequestTypes('ROOMS', [
 	...defaultTypes,
 	'REFRESH',
 	'SET_SEARCH',
-	'CLOSE_SERVER_DROPDOWN',
-	'TOGGLE_SERVER_DROPDOWN',
 	'OPEN_SEARCH_HEADER',
 	'CLOSE_SEARCH_HEADER'
 ]);

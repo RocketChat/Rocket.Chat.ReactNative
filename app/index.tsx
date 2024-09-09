@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Orientation from 'react-native-orientation-locker';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
@@ -93,9 +92,6 @@ export default class Root extends React.Component<{}, IState> {
 		};
 		if (isTablet) {
 			this.initTablet();
-			Orientation.unlockAllOrientations();
-		} else {
-			Orientation.lockToPortrait();
 		}
 		setNativeTheme(theme);
 	}
@@ -208,8 +204,7 @@ export default class Root extends React.Component<{}, IState> {
 							themePreferences,
 							setTheme: this.setTheme,
 							colors: colors[theme]
-						}}
-					>
+						}}>
 						<DimensionsContext.Provider
 							value={{
 								width,
@@ -217,8 +212,7 @@ export default class Root extends React.Component<{}, IState> {
 								scale,
 								fontScale,
 								setDimensions: this.setDimensions
-							}}
-						>
+							}}>
 							<GestureHandlerRootView>
 								<ActionSheetProvider>
 									<AppContainer />

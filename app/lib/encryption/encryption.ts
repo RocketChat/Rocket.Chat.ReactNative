@@ -1,29 +1,19 @@
-import EJSON from 'ejson';
-import SimpleCrypto from 'react-native-simple-crypto';
+import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q, Model } from '@nozbe/watermelondb';
+import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
+import SimpleCrypto from 'react-native-simple-crypto';
 
-import UserPreferences from '../methods/userPreferences';
-import { getMessageById } from '../database/services/Message';
-import { getSubscriptionByRoomId } from '../database/services/Subscription';
-import database from '../database';
-import protectedFunction from '../methods/helpers/protectedFunction';
-import Deferred from './helpers/deferred';
-import log from '../methods/helpers/log';
-import { store } from '../store/auxStore';
-import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 import {
 	IMessage,
+	IServerAttachment,
 	ISubscription,
-	TSendFileMessageFileInfo,
 	TMessageModel,
+	TSendFileMessageFileInfo,
 	TSubscriptionModel,
 	TThreadMessageModel,
-	TThreadModel,
-	IServerAttachment
+	TThreadModel
 } from '../../definitions';
-import EncryptionRoom from './room';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -32,9 +22,19 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
 } from '../constants';
+import database from '../database';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import log from '../methods/helpers/log';
+import protectedFunction from '../methods/helpers/protectedFunction';
+import UserPreferences from '../methods/userPreferences';
+import { compareServerVersion } from '../methods/helpers';
 import { Services } from '../services';
-import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import { store } from '../store/auxStore';
 import { MAX_CONCURRENT_QUEUE } from './constants';
+import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import Deferred from './helpers/deferred';
+import EncryptionRoom from './room';
+import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 
 class Encryption {
 	ready: boolean;
@@ -209,8 +209,8 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = (server: string) => {
-		const password = randomPassword();
+	createRandomPassword = async (server: string) => {
+		const password = await randomPassword();
 		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
@@ -229,8 +229,15 @@ class Encryption {
 			throw new Error('Public key not found in local storage, password not changed');
 		}
 
+		// Only send force param for newer worspace versions
+		const { version } = store.getState().server;
+		let force = false;
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '6.10.0')) {
+			force = true;
+		}
+
 		// Send the new keys to the server
-		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey, force);
 	};
 
 	// get a encryption room instance
@@ -532,7 +539,8 @@ class Encryption {
 			throw new Error('Subscription not found');
 		}
 
-		if (!subscription.encrypted) {
+		const { E2E_Enable_Encrypt_Files } = store.getState().settings;
+		if (!subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
 			// Send a non encrypted message
 			return { file };
 		}
@@ -548,26 +556,12 @@ class Encryption {
 	};
 
 	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
-		const messageRecord = await getMessageById(messageId);
 		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
 		if (decryptedFile) {
 			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
 			if (checksum !== originalChecksum) {
 				await deleteAsync(decryptedFile);
 				return null;
-			}
-
-			if (messageRecord) {
-				const db = database.active;
-				await db.write(async () => {
-					await messageRecord.update(m => {
-						m.attachments = m.attachments?.map(att => ({
-							...att,
-							title_link: decryptedFile,
-							e2e: 'done'
-						}));
-					});
-				});
 			}
 		}
 		return decryptedFile;

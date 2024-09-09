@@ -166,6 +166,16 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				/>
 			) : null;
 
+		const handleAcessibilityLabel = (rid: string) => {
+			let label = '';
+			if (this.isRadio) {
+				label = this.isChecked(rid) ? I18n.t('Selected') : I18n.t('Unselected');
+			} else {
+				label = this.isChecked(rid) ? I18n.t('Checked') : I18n.t('Unchecked');
+			}
+			return label;
+		};
+
 		return (
 			<>
 				<List.Separator />
@@ -177,6 +187,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					alert={item.alert}
 					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
+					additionalAcessibilityLabel={handleAcessibilityLabel(item.rid)}
 				/>
 			</>
 		);

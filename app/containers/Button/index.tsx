@@ -67,7 +67,13 @@ const Button: React.FC<IButtonProps> = ({
 	const textStyle = [styles.text, { color: isDisabled ? colors.fontDisabled : resolvedTextColor, fontSize }, styleText];
 
 	return (
-		<Touchable onPress={onPress} disabled={isDisabled} style={containerStyle} accessibilityLabel={title} {...otherProps}>
+		<Touchable
+			onPress={onPress}
+			disabled={isDisabled}
+			style={containerStyle}
+			accessibilityLabel={title}
+			accessibilityRole='button'
+			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} /> : <Text style={textStyle}>{title}</Text>}
 		</Touchable>
 	);
