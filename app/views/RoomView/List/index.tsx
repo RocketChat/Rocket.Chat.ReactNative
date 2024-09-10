@@ -73,7 +73,8 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 						jumpToBottom={jumpToBottom}
 						isThread={!!tmid}
 						maintainVisibleContentPosition={{
-							minIndexForVisible: 0
+							minIndexForVisible: 0,
+							autoscrollToTopThreshold: 0
 						}}
 					/>
 				</Container>
