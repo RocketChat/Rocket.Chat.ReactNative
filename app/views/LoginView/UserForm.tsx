@@ -152,7 +152,9 @@ const UserForm = () => {
 				)}
 				{showRegistrationButton ? (
 					<>
-						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('You_dont_have_account')}</Text>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+							{I18n.t('You_dont_have_account')}
+						</Text>
 						<Button
 							title={I18n.t('Create_account')}
 							onPress={register}
