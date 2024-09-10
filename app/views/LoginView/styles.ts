@@ -16,11 +16,11 @@ export default StyleSheet.create({
 		marginVertical: 16
 	},
 	bottomContainer: {
-		flexDirection: 'column',
-		alignItems: 'center'
+		flexDirection: 'column'
 	},
 	bottomContainerText: {
 		...sharedStyles.textRegular,
+		alignSelf: 'center',
 		fontSize: 14,
 		marginTop: 32
 	},
@@ -31,11 +31,9 @@ export default StyleSheet.create({
 		marginTop: 32
 	},
 	createAccountButton: {
-		width: '100%',
 		marginTop: 12
 	},
 	forgotPasswordButton: {
-		width: '100%',
 		marginTop: 12
 	}
 });
