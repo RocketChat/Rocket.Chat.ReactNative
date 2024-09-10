@@ -103,73 +103,65 @@ const UserForm = () => {
 	return (
 		<>
 			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</Text>
-			<ControlledFormTextInput
-				name='user'
-				control={control}
-				label={I18n.t('Username_or_email')}
-				containerStyle={styles.inputContainer}
-				placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
-				keyboardType='email-address'
-				returnKeyType='next'
-				onSubmitEditing={() => setFocus('password')}
-				testID='login-view-email'
-				textContentType='username'
-				autoComplete='username'
-			/>
-			<ControlledFormTextInput
-				name='password'
-				control={control}
-				label={I18n.t('Password')}
-				containerStyle={styles.inputContainer}
-				placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
-				returnKeyType='send'
-				secureTextEntry
-				onSubmitEditing={handleSubmit(submit)}
-				testID='login-view-password'
-				textContentType='password'
-				autoComplete='password'
-			/>
-			<Button
-				title={I18n.t('Login')}
-				onPress={handleSubmit(submit)}
-				testID='login-view-submit'
-				loading={isFetching}
-				disabled={!isValid}
-				style={styles.loginButton}
-			/>
+			<View style={styles.credentialsContainer}>
+				<ControlledFormTextInput
+					name='user'
+					control={control}
+					label={I18n.t('Username_or_email')}
+					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
+					keyboardType='email-address'
+					returnKeyType='next'
+					onSubmitEditing={() => setFocus('password')}
+					testID='login-view-email'
+					textContentType='username'
+					autoComplete='username'
+				/>
+				<ControlledFormTextInput
+					name='password'
+					control={control}
+					label={I18n.t('Password')}
+					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+					returnKeyType='send'
+					secureTextEntry
+					onSubmitEditing={handleSubmit(submit)}
+					testID='login-view-password'
+					textContentType='password'
+					autoComplete='password'
+				/>
+				<Button
+					title={I18n.t('Login')}
+					onPress={handleSubmit(submit)}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!isValid}
+				/>
+			</View>
 			<View style={styles.bottomContainer}>
 				{Accounts_PasswordReset && (
-					<>
+					<View style={styles.bottomContainerGroup}>
 						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Forgot_password')}</Text>
 						<Button
 							title={I18n.t('Reset_password')}
 							type='secondary'
 							onPress={forgotPassword}
-							style={styles.forgotPasswordButton}
 							testID='login-view-forgot-password'
 						/>
-					</>
+					</View>
 				)}
 				{showRegistrationButton ? (
-					<>
+					<View style={styles.bottomContainerGroup}>
 						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
 							{I18n.t('You_dont_have_account')}
 						</Text>
-						<Button
-							title={I18n.t('Create_account')}
-							onPress={register}
-							type='secondary'
-							testID='login-view-register'
-							style={styles.createAccountButton}
-						/>
-					</>
+						<Button title={I18n.t('Create_account')} onPress={register} type='secondary' testID='login-view-register' />
+					</View>
 				) : (
 					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
 						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
 				)}
+				<UGCRules />
 			</View>
-			<UGCRules styleContainer={styles.ugcContainer} />
 		</>
 	);
 };

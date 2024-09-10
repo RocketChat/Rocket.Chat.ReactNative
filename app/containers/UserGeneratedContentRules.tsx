@@ -15,12 +15,14 @@ const styles = StyleSheet.create({
 		marginHorizontal: 30
 	},
 	bottomContainerText: {
-		...sharedStyles.textRegular,
-		fontSize: 13,
+		...sharedStyles.textMedium,
+		fontSize: 14,
+		lineHeight: 22,
 		textAlign: 'center'
 	},
 	bottomContainerTextUnderline: {
-		fontSize: 13,
+		fontSize: 14,
+		lineHeight: 22,
 		textAlign: 'center',
 		textDecorationLine: 'underline'
 	}
@@ -40,19 +42,15 @@ const UGCRules = ({ styleContainer }: { styleContainer?: ViewStyle }) => {
 	};
 	return (
 		<View style={[styles.bottomContainer, styleContainer]}>
-			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
-				{I18n.t('Onboarding_agree_terms')}
-			</Text>
+			<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Onboarding_agree_terms')}</Text>
 			<Text
-				style={[styles.bottomContainerTextUnderline, { color: colors.strokeHighlight }]}
-				onPress={() => openContract('terms-of-service')}
-			>
+				style={[styles.bottomContainerTextUnderline, { color: colors.fontInfo }]}
+				onPress={() => openContract('terms-of-service')}>
 				{I18n.t('Terms_of_Service')}
 			</Text>
 			<Text
-				style={[styles.bottomContainerTextUnderline, { color: colors.strokeHighlight }]}
-				onPress={() => openContract('privacy-policy')}
-			>
+				style={[styles.bottomContainerTextUnderline, { color: colors.fontInfo }]}
+				onPress={() => openContract('privacy-policy')}>
 				{I18n.t('Privacy_Policy')}
 			</Text>
 		</View>
