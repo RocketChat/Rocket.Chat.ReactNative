@@ -16,6 +16,7 @@
   "All_users_in_the_channel_can_write_new_messages": "Todos os utilizadores no canal podem escrever novas mensagens",
   "All_users_in_the_team_can_write_new_messages": "Todos os usuários da equipa podem escrever novas mensagens",
   "Allow_Reactions": "Permitir Reacções",
+  "Already_have_an_account": "Já tem uma conta?",
   "and": "e",
   "and_N_more": "e mais {{count}}",
   "Announcement": "Anúncio",
@@ -375,6 +376,7 @@
   "You_are_in_preview_mode": "Você está no modo de pré-visualização",
   "You_can_search_using_RegExp_eg": "Você pode pesquisar usando RegEx. por exemplo, `/^text$/i`",
   "You_colon": "Você: ",
+  "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!"
 }
