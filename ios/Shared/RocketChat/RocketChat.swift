@@ -56,7 +56,7 @@ final class RocketChat {
     let id = String.random(length: 17)
     
     var msg = message
-    let encrypted = Database(server: server).readRoomEncrypted(rid: rid)
+    let encrypted = Database(server: server).readRoomEncrypted(for: rid)
     if encrypted {
       msg = encryptMessage(rid: rid, id: id, message: message)
     }

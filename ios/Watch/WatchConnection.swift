@@ -1,10 +1,9 @@
 import Foundation
-import WatermelonDB
 import WatchConnectivity
 
 @objc
 final class WatchConnection: NSObject {
-	private let database = WatermelonDB.Database(name: "default")
+	private let database = Database(name: "default")
 	private let mmkv = MMKV.build()
 	private let session: WCSession
 	
@@ -18,45 +17,61 @@ final class WatchConnection: NSObject {
 		}
 	}
 	
-	private func getMessage() -> WatchMessage {
-		let serversQuery = database.query(raw: "select * from servers") as [DBServer]
-		
-		let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
-			guard let userId = mmkv.userId(for: item.identifier), let userToken = mmkv.userToken(for: userId) else {
-				return nil
-			}
-			
-			let clientSSL = SSLPinning().getCertificate(server: item.url.absoluteString.removeTrailingSlash())
-			
-			let usersQuery = database.query(raw: "select * from users where token == ? limit 1", [userToken]) as [DBUser]
-			
-			guard let user = usersQuery.first else {
-				return nil
-			}
-			
-			return WatchMessage.Server(
-				url: item.url,
-				name: item.name,
-				iconURL: item.iconURL,
-				useRealName: item.useRealName == 1 ? true : false,
-				loggedUser: .init(
-					id: userId,
-					token: userToken,
-					name: user.name,
-					username: user.username
-				),
-				clientSSL: clientSSL.map {
-					.init(
-						certificate: $0.certificate,
-						password: $0.password
-					)
-				},
-				version: item.version
-			)
-		}
-		
-		return WatchMessage(servers: servers)
-	}
+    private func getMessage() -> WatchMessage? {
+        // Safely unwrap the result of the database query
+        guard let serversQuery = database.query("SELECT * FROM servers") else {
+            print("No servers found")
+            return nil
+        }
+
+        // Map over the results to extract WatchMessage.Server
+        let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
+            guard let userId = mmkv.userId(for: item["identifier"] as? String ?? ""),
+                  let userToken = mmkv.userToken(for: userId) else {
+                return nil
+            }
+
+            let clientSSL = SSLPinning().getCertificate(server: item["url"] as? String ?? "")
+
+            // Safely query the users table with the token
+            guard let usersQuery = database.query("SELECT * FROM users WHERE token == ? LIMIT 1", args: [userToken]),
+                  let user = usersQuery.first else {
+                return nil
+            }
+
+            // Safely unwrap the server URL and icon URL using guard
+            guard let serverUrlString = item["url"] as? String,
+                  let serverUrl = URL(string: serverUrlString),
+                  let iconUrlString = item["iconURL"] as? String,
+                  let iconURL = URL(string: iconUrlString) else {
+                print("Invalid URL for server or icon")
+                return nil
+            }
+
+            // Proceed if URLs are valid
+            return WatchMessage.Server(
+                url: serverUrl,  // Already unwrapped as valid URL
+                name: item["name"] as? String ?? "",
+                iconURL: iconURL,  // Already unwrapped as valid URL
+                useRealName: (item["useRealName"] as? Int ?? 0) == 1,
+                loggedUser: .init(
+                    id: userId,
+                    token: userToken,
+                    name: user["name"] as? String ?? "",
+                    username: user["username"] as? String ?? ""
+                ),
+                clientSSL: clientSSL.map {
+                    .init(
+                        certificate: $0.certificate,
+                        password: $0.password
+                    )
+                },
+                version: item["version"] as? String ?? ""
+            )
+        }
+
+        return WatchMessage(servers: servers)
+    }
 	
 	private func encodedMessage() -> [String: Any] {
 		do {
