@@ -99,7 +99,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
-			yield serversDB.action(async () => {
+			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
@@ -214,7 +214,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			nickname: user.nickname,
 			requirePasswordChange: user.requirePasswordChange
 		};
-		yield serversDB.action(async () => {
+		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
 				await userRecord.update(record => {
