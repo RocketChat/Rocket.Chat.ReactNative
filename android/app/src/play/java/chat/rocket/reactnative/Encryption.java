@@ -9,7 +9,6 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
-import com.nozbe.watermelondb.Database;
 import com.pedrouid.crypto.RCTAes;
 import com.pedrouid.crypto.RCTRsaUtils;
 import com.pedrouid.crypto.RSA;
@@ -64,38 +63,62 @@ class Encryption {
     public static Encryption shared = new Encryption();
     private ReactApplicationContext reactContext;
 
-    public Room readRoom(final Ejson ejson) throws NoSuchFieldException {
+    // Updated Room reading logic
+    public Room readRoom(final Ejson ejson) {
+        String dbName = getDatabaseName(ejson.serverURL());
+        SQLiteDatabase db = null;
+
+        try {
+            // Open the database connection
+            db = SQLiteDatabase.openDatabase(dbName, null, SQLiteDatabase.OPEN_READONLY);
+            String[] queryArgs = {ejson.rid};
+
+            // Execute query
+            Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", queryArgs);
+
+            // Room not found
+            if (cursor.getCount() == 0) {
+                cursor.close();
+                return null;
+            }
+
+            cursor.moveToFirst();
+            String e2eKey = cursor.getString(cursor.getColumnIndex("e2e_key"));
+            Boolean encrypted = cursor.getInt(cursor.getColumnIndex("encrypted")) > 0;
+            cursor.close();
+
+            return new Room(e2eKey, encrypted);
+
+        } catch (Exception e) {
+            Log.e("[ENCRYPTION]", "Error reading room", e);
+            return null;
+
+        } finally {
+            if (db != null) {
+                db.close(); // Ensure database is closed after the operation
+            }
+        }
+    }
+
+    // Utility function to get database name based on server URL
+    private String getDatabaseName(String serverUrl) {
         int resId = reactContext.getResources().getIdentifier("rn_config_reader_custom_package", "string", reactContext.getPackageName());
         String className = reactContext.getString(resId);
-        Class clazz = null;
         Boolean isOfficial = false;
+
         try {
-            clazz = Class.forName(className + ".BuildConfig");
+            Class<?> clazz = Class.forName(className + ".BuildConfig");
             Field IS_OFFICIAL = clazz.getField("IS_OFFICIAL");
             isOfficial = (Boolean) IS_OFFICIAL.get(null);
-        } catch (ClassNotFoundException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        String dbName = ejson.serverURL().replace("https://", "");
+
+        String dbName = serverUrl.replace("https://", "");
         if (!isOfficial) {
             dbName += "-experimental";
         }
-        dbName += ".db";
-        Database database = new Database(dbName, reactContext, SQLiteDatabase.CREATE_IF_NECESSARY);
-        String[] query = {ejson.rid};
-        Cursor cursor = database.rawQuery("select * from subscriptions where id == ? limit 1", query);
-
-        // Room not found
-        if (cursor.getCount() == 0) {
-            return null;
-        }
-
-        cursor.moveToFirst();
-        String e2eKey = cursor.getString(cursor.getColumnIndex("e2e_key"));
-        Boolean encrypted = cursor.getInt(cursor.getColumnIndex("encrypted")) > 0;
-        cursor.close();
-
-        return new Room(e2eKey, encrypted);
+        return dbName + ".db";
     }
 
     public String readUserKey(final Ejson ejson) throws Exception {
@@ -120,7 +143,7 @@ class Encryption {
     }
 
     public String decryptRoomKey(final String e2eKey, final Ejson ejson) throws Exception {
-        String key = e2eKey.substring(12, e2eKey.length());
+        String key = e2eKey.substring(12);
         keyId = e2eKey.substring(0, 12);
 
         String userKey = readUserKey(ejson);
@@ -152,7 +175,7 @@ class Encryption {
             }
 
             String message = ejson.msg;
-            String msg = message.substring(12, message.length());
+            String msg = message.substring(12);
             byte[] msgData = Base64.decode(msg, Base64.NO_WRAP);
 
             String b64 = Base64.encodeToString(Arrays.copyOfRange(msgData, 16, msgData.length), Base64.DEFAULT);
@@ -163,7 +186,7 @@ class Encryption {
 
             return m.text;
         } catch (Exception e) {
-            Log.d("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
+            Log.e("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return null;
@@ -193,27 +216,24 @@ class Encryption {
 
             return keyId + Base64.encodeToString(concat(bytes, data), Base64.NO_WRAP);
         } catch (Exception e) {
-            Log.d("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
+            Log.e("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
 
         return message;
     }
 
     static byte[] concat(byte[]... arrays) {
-        // Determine the length of the result array
         int totalLength = 0;
-        for (int i = 0; i < arrays.length; i++) {
-            totalLength += arrays[i].length;
+        for (byte[] array : arrays) {
+            totalLength += array.length;
         }
 
-        // create the result array
         byte[] result = new byte[totalLength];
-
-        // copy the source arrays into the result array
         int currentIndex = 0;
-        for (int i = 0; i < arrays.length; i++) {
-            System.arraycopy(arrays[i], 0, result, currentIndex, arrays[i].length);
-            currentIndex += arrays[i].length;
+
+        for (byte[] array : arrays) {
+            System.arraycopy(array, 0, result, currentIndex, array.length);
+            currentIndex += array.length;
         }
 
         return result;
