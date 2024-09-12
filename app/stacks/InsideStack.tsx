@@ -186,7 +186,7 @@ const SettingsStackNavigator = () => {
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
-			<SettingsStack.Screen name='GetHelpView' component={GetHelpView}/>
+			<SettingsStack.Screen name='GetHelpView' component={GetHelpView} />
 			<SettingsStack.Screen
 				name='ScreenLockConfigView'
 				// @ts-ignore
