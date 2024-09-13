@@ -620,7 +620,7 @@
   "Users": "Uporabniki",
   "Uses_server_configuration": "Uporablja konfiguracijo strežnika",
   "Verify_email_desc": "Poslali smo vam e -poštno sporočilo za potrditev vaše registracije. Če v kratkem ne prejmete e -pošte, se vrnite in poskusite znova.",
-  "Version_no": "Različica: {{version}}",
+  "Version_no": "Različica aplikacije: {{version}}",
   "View_Original": "Pogled original",
   "Wait_activation_warning": "Preden se lahko prijavite, mora skrbnik ročno aktivirati vaš račun.",
   "Waiting_for_network": "Čakanje na omrežje ...",

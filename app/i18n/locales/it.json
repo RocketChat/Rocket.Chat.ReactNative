@@ -512,7 +512,7 @@
   "Users": "Utenti",
   "Uses_server_configuration": "Usa la configurazione del server",
   "Verify_email_desc": "Ti abbiamo inviato una e-mail per confermare la tua registrazione. Se non la ricevi, ritorna qui e riprova",
-  "Version_no": "Versione: {{version}}",
+  "Version_no": "Versione dell'app: {{version}}",
   "View_Original": "Mostra originale",
   "Wait_activation_warning": "Prima di poter accedere, il tuo account deve essere attivato manualmente da un amministratore.",
   "Waiting_for_network": "In attesa di connessione ...",

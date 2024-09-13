@@ -38,7 +38,7 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	return (
 		<View accessible accessibilityLabel={item.title}>
 			<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.surfaceLight }]} testID={item.testID}>
-				{item.icon ? <CustomIcon name={item.icon} size={20} color={color} /> : null}
+				{item.icon ? <CustomIcon name={item.icon} size={24} color={color} /> : null}
 				<View style={styles.titleContainer}>
 					<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
 						{item.title}

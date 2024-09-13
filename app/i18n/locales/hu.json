@@ -719,7 +719,7 @@
   "Users": "Felhasználók",
   "Uses_server_configuration": "Használja a munkaterület konfigurációját",
   "Verify_email_desc": "Küldtünk Önnek egy e-mailt a regisztrációja megerősítéséhez. Ha nem kap rövidesen e-mailt, akkor térjen vissza, és próbálja meg újra.",
-  "Version_no": "Verzió: {{version}}",
+  "Version_no": "Alkalmazás verzió: {{version}}",
   "Video": "Videó",
   "video-conf-provider-not-configured-body": "A munkaterület adminisztrátorának először engedélyeznie kell a konferenciahívások funkciót.",
   "video-conf-provider-not-configured-header": "Konferenciahívás nem engedélyezett",

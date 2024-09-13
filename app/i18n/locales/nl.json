@@ -605,7 +605,7 @@
   "Users": "Gebruikers",
   "Uses_server_configuration": "Gebruikt serverconfiguratie",
   "Verify_email_desc": "We hebben je een e-mail gestuurd om je inschrijving te bevestigen. Als je binnenkort geen e-mail ontvangt, gelieve terug te komen en het opnieuw te proberen.",
-  "Version_no": "Versie: {{version}}",
+  "Version_no": "App-versie: {{version}}",
   "View_Original": "Bekijk origineel",
   "Wait_activation_warning": "Voordat u kunt inloggen, moet uw account handmatig worden geactiveerd door een beheerder.",
   "Waiting_for_network": "Wachten op netwerk...",

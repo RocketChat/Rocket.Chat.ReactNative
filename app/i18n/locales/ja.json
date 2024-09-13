@@ -392,7 +392,7 @@
   "Username_or_email": "ユーザー名かメールアドレス",
   "Users": "ユーザー",
   "Uses_server_configuration": "サーバー構成を使用する",
-  "Version_no": "バージョン: {{version}}",
+  "Version_no": "アプリバージョン: {{version}}",
   "View_Original": "オリジナルを見る",
   "Websocket_disabled": "Websocketはこのサーバーでは無効化されています。\n{{contact}}",
   "Whats_the_password_for_your_certificate": "証明書のパスワードはなんですか？",

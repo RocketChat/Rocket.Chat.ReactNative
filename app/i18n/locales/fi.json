@@ -685,7 +685,7 @@
   "Users": "Käyttäjät",
   "Uses_server_configuration": "Käyttää palvelimen määrityksiä",
   "Verify_email_desc": "Lähetimme rekisteröitymisvahvistuksen sähköpostiisi. Jos et saa sähköpostia pian, yritä uudelleen.",
-  "Version_no": "Versio: {{version}}",
+  "Version_no": "Sovelluksen versio: {{version}}",
   "View_Original": "Näytä alkuperäinen",
   "Wait_activation_warning": "Ennen kuin voit kirjautua, järjestelmänvalvojan on aktivoitava tilisi manuaalisesti.",
   "Waiting_for_answer": "Odotetaan vastausta",
