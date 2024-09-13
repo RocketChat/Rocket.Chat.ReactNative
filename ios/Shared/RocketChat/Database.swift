@@ -14,18 +14,16 @@ class Database {
 
     // Initialize the database with a name (which gets converted to a path)
     init(name: String) {
-        if let dbPath = self.getDatabasePath(databaseName: name) {
+        if let dbPath = self.getDatabasePath(name: name) {
             openDatabase(databasePath: dbPath)
         } else {
             print("Could not resolve database path for name: \(name)")
         }
     }
-
-    // Initialize the database using the server's domain
+    
     init(server: String) {
-        // Extract domain from server URL
-        let domain = URL(string: server)?.host ?? ""
-        if let dbPath = self.getDatabasePath(databaseName: domain) {
+        let domain = URL(string: server)?.domain ?? ""
+        if let dbPath = self.getDatabasePath(name: domain) {
             openDatabase(databasePath: dbPath)
         } else {
             print("Could not resolve database path for server: \(server)")
@@ -33,13 +31,10 @@ class Database {
     }
 
     // Get the path to the SQLite database file based on its name
-    func getDatabasePath(databaseName: String) -> String? {
-        let fileManager = FileManager.default
-        if let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
-            let dbURL = documentDirectory.appendingPathComponent("\(databaseName).db")
-            return dbURL.path
-        }
-        return nil
+    func getDatabasePath(name: String) -> String? {
+        let isOfficial = Bundle.main.bool(forKey: "IS_OFFICIAL")
+        let groupDir = FileManager.default.groupDir()
+        return "\(groupDir)/\(name)\(isOfficial ? "" : "-experimental").db"
     }
 
     // Open the SQLite database
@@ -73,7 +68,7 @@ class Database {
         if sqlite3_prepare_v2(db, query, -1, &statement, nil) == SQLITE_OK {
             // Bind arguments to the prepared statement
             for (index, arg) in args.enumerated() {
-                sqlite3_bind_text(statement, Int32(index + 1), arg, -1, nil)
+                sqlite3_bind_text(statement, Int32(index + 1), arg, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
             }
 
             // Process each row in the result set
@@ -98,6 +93,7 @@ class Database {
                         row[columnName] = nil
                     }
                 }
+                print("Row: \(row)")
                 results.append(row)
             }
         } else {
@@ -105,12 +101,13 @@ class Database {
         }
 
         sqlite3_finalize(statement)
+        print(results)
         return results
     }
 
     // Fetch the encryption key for a room (subscriptions table)
     func readRoomEncryptionKey(for roomId: String) -> String? {
-        let query = "SELECT e2e_key FROM subscriptions WHERE id = ? LIMIT 1"
+        let query = "SELECT e2e_key FROM subscriptions WHERE rid = ? LIMIT 1"
         if let results = self.query(query, args: [roomId]), let firstResult = results.first {
             return firstResult["e2e_key"] as? String
         }
@@ -119,7 +116,7 @@ class Database {
 
     // Example method to fetch encrypted status for a room
     func readRoomEncrypted(for roomId: String) -> Bool {
-        let query = "SELECT encrypted FROM subscriptions WHERE id = ? LIMIT 1"
+        let query = "SELECT encrypted FROM subscriptions WHERE rid = ? LIMIT 1"
         if let results = self.query(query, args: [roomId]), let firstResult = results.first {
             return firstResult["encrypted"] as? Bool ?? false
         }
