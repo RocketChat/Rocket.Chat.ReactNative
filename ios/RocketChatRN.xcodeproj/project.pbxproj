@@ -347,6 +347,12 @@
 		7AAB3E45257E6A6E00707CF6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */; };
 		7AAB3E49257E6A6E00707CF6 /* ShareRocketChatRN.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EC6ACB022CB9FC300A41C61 /* ShareRocketChatRN.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7AAB3E4A257E6A6E00707CF6 /* NotificationService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1EFEB5952493B6640072EDC0 /* NotificationService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7AACF8A82C94AB8B0082844E /* EncryptedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACF8A72C94AB8B0082844E /* EncryptedContent.swift */; };
+		7AACF8A92C94AB8B0082844E /* EncryptedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACF8A72C94AB8B0082844E /* EncryptedContent.swift */; };
+		7AACF8AA2C94AB8B0082844E /* EncryptedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACF8A72C94AB8B0082844E /* EncryptedContent.swift */; };
+		7AACF8AC2C94B28B0082844E /* DecryptedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACF8AB2C94B28B0082844E /* DecryptedContent.swift */; };
+		7AACF8AD2C94B28B0082844E /* DecryptedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACF8AB2C94B28B0082844E /* DecryptedContent.swift */; };
+		7AACF8AE2C94B28B0082844E /* DecryptedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AACF8AB2C94B28B0082844E /* DecryptedContent.swift */; };
 		7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
 		7AE10C0628A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
 		7AE10C0728A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
@@ -631,6 +637,8 @@
 		7A92554528777E0100EC3DA3 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = RocketChatRN/AppDelegate.mm; sourceTree = "<group>"; };
 		7AAA749C23043B1D00F1ADE9 /* RocketChatRN-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RocketChatRN-Bridging-Header.h"; sourceTree = "<group>"; };
 		7AAB3E52257E6A6E00707CF6 /* Rocket.Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rocket.Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AACF8A72C94AB8B0082844E /* EncryptedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptedContent.swift; sourceTree = "<group>"; };
+		7AACF8AB2C94B28B0082844E /* DecryptedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptedContent.swift; sourceTree = "<group>"; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
 		99BB5C7456559286B4FF9E13 /* Pods-defaults-Rocket.Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.debug.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -949,6 +957,8 @@
 				1E01C8202511301400FEF824 /* PushResponse.swift */,
 				1E01C8242511303100FEF824 /* Notification.swift */,
 				1E01C8262511303900FEF824 /* Payload.swift */,
+				7AACF8A72C94AB8B0082844E /* EncryptedContent.swift */,
+				7AACF8AB2C94B28B0082844E /* DecryptedContent.swift */,
 				1E01C8282511304100FEF824 /* Sender.swift */,
 				1E01C82A2511335A00FEF824 /* Message.swift */,
 				1E01C82C2511337700FEF824 /* RoomKey.swift */,
@@ -2273,9 +2283,11 @@
 				1E76CBD125152C710067298C /* Date+Extensions.swift in Sources */,
 				1E76CBD425152C790067298C /* Database.swift in Sources */,
 				1E9A71742B59F36E00477BA2 /* ClientSSL.swift in Sources */,
+				7AACF8AC2C94B28B0082844E /* DecryptedContent.swift in Sources */,
 				1ED038A52B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				1E76CBC325152A460067298C /* String+Extensions.swift in Sources */,
 				1ED038BA2B50A1B800C007D4 /* WatchConnection.swift in Sources */,
+				7AACF8A82C94AB8B0082844E /* EncryptedContent.swift in Sources */,
 				1ED038A12B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				1E76CBCA25152C220067298C /* Notification.swift in Sources */,
 				1ED038C12B50A1E400C007D4 /* DBUser.swift in Sources */,
@@ -2495,10 +2507,12 @@
 			files = (
 				1E51D965251263D600DC95DE /* NotificationType.swift in Sources */,
 				1EF5FBD1250C109E00614FEA /* Encryption.swift in Sources */,
+				7AACF8AD2C94B28B0082844E /* DecryptedContent.swift in Sources */,
 				1E598AE42515057D002BDFBD /* Date+Extensions.swift in Sources */,
 				1ED038A22B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				1ED038AA2B5090AD00C007D4 /* MMKV.swift in Sources */,
 				1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */,
+				7AACF8A92C94AB8B0082844E /* EncryptedContent.swift in Sources */,
 				1E470E832513A71E00E3DD1D /* RocketChat.swift in Sources */,
 				1E2F615D25128FA300871711 /* Response.swift in Sources */,
 				1E01C82D2511337700FEF824 /* RoomKey.swift in Sources */,
@@ -2548,9 +2562,11 @@
 				7AAB3E24257E6A6E00707CF6 /* Date+Extensions.swift in Sources */,
 				7AAB3E25257E6A6E00707CF6 /* Database.swift in Sources */,
 				1E9A71752B59F36E00477BA2 /* ClientSSL.swift in Sources */,
+				7AACF8AE2C94B28B0082844E /* DecryptedContent.swift in Sources */,
 				1ED038A72B50900800C007D4 /* Bundle+Extensions.swift in Sources */,
 				7AAB3E26257E6A6E00707CF6 /* String+Extensions.swift in Sources */,
 				1ED038BB2B50A1B800C007D4 /* WatchConnection.swift in Sources */,
+				7AACF8AA2C94AB8B0082844E /* EncryptedContent.swift in Sources */,
 				1ED038A32B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				7AAB3E27257E6A6E00707CF6 /* Notification.swift in Sources */,
 				1ED038C22B50A1E400C007D4 /* DBUser.swift in Sources */,

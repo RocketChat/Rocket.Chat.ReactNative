@@ -16,7 +16,6 @@ final class RocketChat {
   let api: API?
   
   static var instances: [Server: RocketChat] = [:]
-  var encryptionInstances: [RoomId: Encryption] = [:]
   
   static private var queue = DispatchQueue(label: "chat.rocket.instanceQueue")
   private var encryptionQueue = DispatchQueue(label: "chat.rocket.encryptionQueue")
@@ -75,16 +74,12 @@ final class RocketChat {
   
   func decryptMessage(rid: String, message: String) -> String? {
     encryptionQueue.sync {
-      if let encryption = encryptionInstances[rid] {
-        return encryption.decryptMessage(message: message)
-      }
-      
       let encryption = Encryption(server: server, rid: rid)
-      encryptionInstances[rid] = encryption
       return encryption.decryptMessage(message: message)
     }
   }
   
+  // TODO: migrate to content obj encryption
   func encryptMessage(rid: String, id: String, message: String) -> String {
     encryptionQueue.sync {
       if let encryption = encryptionInstances[rid] {
