@@ -21,8 +21,8 @@ const AvatarContainer = ({
 	isStatic,
 	rid
 }: IAvatar): React.ReactElement => {
-	const server = useSelector((state: IApplicationState) => state.share.server.server || state.server.server);
-	const serverVersion = useSelector((state: IApplicationState) => state.share.server.version || state.server.version);
+	const server = useSelector((state: IApplicationState) => state.server.server);
+	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
 	const { id, token, username } = useSelector(
 		(state: IApplicationState) => ({
 			id: getUserSelector(state).id,
@@ -38,11 +38,8 @@ const AvatarContainer = ({
 		cdnPrefix: state.settings.CDN_PREFIX as string
 	}));
 	const blockUnauthenticatedAccess = useSelector(
-		(state: IApplicationState) =>
-			(state.share.settings?.Accounts_AvatarBlockUnauthenticatedAccess as boolean) ??
-			state.settings.Accounts_AvatarBlockUnauthenticatedAccess ??
-			true
-	);
+		(state: IApplicationState) => state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
+	) as boolean;
 
 	const { avatarETag } = useAvatarETag({ username, text, type, rid, id });
 
