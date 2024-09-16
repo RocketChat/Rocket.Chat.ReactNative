@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
@@ -7,7 +8,7 @@ import sharedStyles from '../../../../views/Styles';
 
 export * from './animations';
 
-export const defaultHeader = {
+export const defaultHeader: StackNavigationOptions = {
 	headerBackTitleVisible: false,
 	headerBackTestID: 'header-back',
 	cardOverlayEnabled: true,
