@@ -73,9 +73,7 @@ export const getE2EEMentions = (message?: string) => {
 
 	return {
 		e2eUserMentions: (message.match(userMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim()),
-		e2eUserMentionse2eChannelMentions: (message.match(channelMentionRegex(utf8UserNamesValidation)) || []).map(match =>
-			match.trim()
-		)
+		e2eChannelMentions: (message.match(channelMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim())
 	};
 };
 
