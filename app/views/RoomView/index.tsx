@@ -1297,6 +1297,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				dateSeparator = item.ts;
 			}
 		}
+
+		const separator = showUnreadSeparator || dateSeparator ? <Separator ts={dateSeparator} unread={showUnreadSeparator} /> : null;
+
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			const runOnRender = () => {
@@ -1306,7 +1309,16 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 				return false;
 			};
-			content = <LoadMore rid={room.rid} t={room.t as RoomType} loaderId={item.id} type={item.t} runOnRender={runOnRender()} />;
+			content = (
+				<LoadMore
+					rid={room.rid}
+					t={room.t as RoomType}
+					loaderId={item.id}
+					type={item.t}
+					runOnRender={runOnRender()}
+					separator={separator}
+				/>
+			);
 		} else {
 			if (inAppFeedback?.[item.id]) {
 				this.hapticFeedback(item.id);
@@ -1353,16 +1365,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					theme={theme}
 					closeEmojiAndAction={this.handleCloseEmoji}
 					isBeingEdited={isBeingEdited}
+					separator={separator}
 				/>
-			);
-		}
-
-		if (showUnreadSeparator || dateSeparator) {
-			return (
-				<>
-					<Separator ts={dateSeparator} unread={showUnreadSeparator} />
-					{content}
-				</>
 			);
 		}
 
