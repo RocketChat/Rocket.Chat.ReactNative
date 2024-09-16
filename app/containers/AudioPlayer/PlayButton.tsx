@@ -31,7 +31,13 @@ const Icon = ({ audioState, disabled }: { audioState: TAudioState; disabled: boo
 		customIconName = 'play-shape-filled';
 	}
 
-	return <CustomIcon name={customIconName} size={24} color={disabled ? colors.buttonBackgroundPrimaryDisabled : colors.buttonFontPrimary} />;
+	return (
+		<CustomIcon
+			name={customIconName}
+			size={24}
+			color={disabled ? colors.buttonBackgroundPrimaryDisabled : colors.buttonFontPrimary}
+		/>
+	);
 };
 
 const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.ReactElement => {

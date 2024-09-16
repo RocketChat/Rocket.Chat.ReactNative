@@ -10,7 +10,6 @@ import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
 	private sdk: typeof Rocketchat;
-	private shareSdk?: typeof Rocketchat;
 	private code: any;
 
 	private initializeSdk(server: string): typeof Rocketchat {
@@ -25,12 +24,8 @@ class Sdk {
 		return this.sdk;
 	}
 
-	initializeShareExtension(server: string) {
-		this.shareSdk = this.initializeSdk(server);
-	}
-
 	get current() {
-		return this.shareSdk || this.sdk;
+		return this.sdk;
 	}
 
 	/**
@@ -38,11 +33,6 @@ class Sdk {
 	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
 	 */
 	disconnect() {
-		if (this.shareSdk) {
-			this.shareSdk.disconnect();
-			this.shareSdk = null;
-			return null;
-		}
 		if (this.sdk) {
 			this.sdk.disconnect();
 			this.sdk = null;

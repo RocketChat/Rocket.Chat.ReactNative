@@ -76,6 +76,8 @@ const Item = ({
 				onPress={onPress}
 				testID={`theme-view-${value}`}
 				right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
+				additionalAcessibilityLabel={isSelected}
+				additionalAcessibilityLabelCheck
 			/>
 			<List.Separator />
 		</>

@@ -183,6 +183,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
+		yield put(encryptionInit());
 		yield put(roomsRequest());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
@@ -192,7 +193,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchUsersPresenceFork);
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
-		yield put(encryptionInit());
 		yield fork(fetchUsersRoles);
 
 		setLanguage(user?.language);
@@ -234,7 +234,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const currentRoot = yield select(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		}
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));

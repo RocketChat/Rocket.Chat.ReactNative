@@ -1047,13 +1047,11 @@ PODS:
     - React-Core
   - react-native-notifications (5.1.0):
     - React-Core
-  - react-native-orientation-locker (1.1.8):
-    - React
   - react-native-restart (0.0.22):
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
-  - react-native-simple-crypto (0.5.1):
+  - react-native-simple-crypto (0.6.1):
     - OpenSSL-Universal (= 1.1.1100)
     - React
   - react-native-slider (4.5.0):
@@ -1231,8 +1229,6 @@ PODS:
     - React-perflogger (= 0.73.6)
   - ReactNativeUiLib (3.0.4):
     - React
-  - rn-extensions-share (2.4.1):
-    - React
   - RNBootSplash (4.6.0):
     - React-Core
   - RNCAsyncStorage (1.22.3):
@@ -1247,7 +1243,7 @@ PODS:
     - React-Core
   - RNDateTimePicker (7.6.3):
     - React-Core
-  - RNDeviceInfo (10.3.0):
+  - RNDeviceInfo (11.1.0):
     - React-Core
   - RNFastImage (8.5.12):
     - React-Core
@@ -1372,7 +1368,6 @@ DEPENDENCIES:
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
-  - react-native-orientation-locker (from `../node_modules/react-native-orientation-locker`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-crypto (from `../node_modules/react-native-simple-crypto`)
@@ -1399,7 +1394,6 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
-  - rn-extensions-share (from `../node_modules/rn-extensions-share`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
@@ -1551,8 +1545,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
-  react-native-orientation-locker:
-    :path: "../node_modules/react-native-orientation-locker"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
@@ -1605,8 +1597,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeUiLib:
     :path: "../node_modules/react-native-ui-lib"
-  rn-extensions-share:
-    :path: "../node_modules/rn-extensions-share"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -1727,10 +1717,9 @@ SPEC CHECKSUMS:
   react-native-mmkv-storage: cfb6854594cfdc5f7383a9e464bb025417d1721c
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-notifications: 4601a5a8db4ced6ae7cfc43b44d35fe437ac50c4
-  react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
-  react-native-simple-crypto: a26121696064628b6cb92f52f653353114deb7f4
+  react-native-simple-crypto: 663609d550ba052dd6ee5eef9954bac274736576
   react-native-slider: 09e5a8b7e766d3b5ae24ec15c5c4ec2679ca0f8c
   react-native-webview: 9f111dfbcfc826084d6c507f569e5e03342ee1c1
   React-nativeconfig: b4d4e9901d4cabb57be63053fd2aa6086eb3c85f
@@ -1754,7 +1743,6 @@ SPEC CHECKSUMS:
   React-utils: d16c1d2251c088ad817996621947d0ac8167b46c
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
-  rn-extensions-share: 5fd84a80e6594706f0dfa1884f2d6d591b382cf5
   RNBootSplash: 91e0c16bfc96703cb5b0562785b9a8cbfeb298fe
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
@@ -1762,7 +1750,7 @@ SPEC CHECKSUMS:
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: b18aaf30df596e9b1738e7c1f9ee55402a229dca
   RNDateTimePicker: 7b38b71bcd7c4cfa1cb95f2dff9a4f1faed2dced
-  RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
+  RNDeviceInfo: b899ce37a403a4dea52b7cb85e16e49c04a5b88e
   RNFastImage: 68cd51fa6ee8c65c7eb08654f4bf3c994be7839e
   RNFBAnalytics: 293c3d5ffa4c383f391db4fb7dbca90f72443edf
   RNFBApp: 614f1621b49db54ebd258df8c45427370d8d84a2
@@ -1786,6 +1774,6 @@ SPEC CHECKSUMS:
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 4037481efaa1c9c86740a10ac1fa6f1f1845721c
+PODFILE CHECKSUM: 23b05e7d7ba785e3452040d94d4b7ab4a920ee60
 
 COCOAPODS: 1.14.3

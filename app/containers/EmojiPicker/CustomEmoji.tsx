@@ -12,7 +12,7 @@ interface ICustomEmojiProps {
 
 const CustomEmoji = React.memo(
 	({ emoji, style }: ICustomEmojiProps) => {
-		const baseUrl = useAppSelector(state => state.share.server.server || state.server.server);
+		const baseUrl = useAppSelector(state => state.server.server);
 		return (
 			<FastImage
 				style={style}

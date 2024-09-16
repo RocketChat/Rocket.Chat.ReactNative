@@ -115,7 +115,12 @@ const StatusView = (): React.ReactElement => {
 				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={goBack} />,
 				headerRight: () => (
 					<HeaderButton.Container>
-						<HeaderButton.Item title={I18n.t('Save')} onPress={submit} testID='status-view-submit' />
+						<HeaderButton.Item
+							title={I18n.t('Save')}
+							onPress={submit}
+							disabled={status === user.status && statusText === user.statusText}
+							testID='status-view-submit'
+						/>
 					</HeaderButton.Container>
 				)
 			});
@@ -156,7 +161,7 @@ const StatusView = (): React.ReactElement => {
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}
-							left={<StatusIcon testID={`status-view-current-${status}`} style={styles.inputLeft} status={status} size={24} />}
+							left={<StatusIcon accessible={false} testID={`status-view-current-${status}`} style={styles.inputLeft} status={status} size={24} />}
 							inputStyle={styles.inputStyle}
 							placeholder={I18n.t('What_are_you_doing_right_now')}
 							testID='status-view-input'

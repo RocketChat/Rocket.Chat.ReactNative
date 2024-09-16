@@ -1,23 +1,32 @@
 import { IUser } from './IUser';
-import { IAttachmentTranslations } from './IMessage';
+import { E2EType, IAttachmentTranslations, IMessageE2EEContent } from './IMessage';
+
+export type TAttachmentEncryption = {
+	iv: string;
+	key: any; // JsonWebKey
+};
 
 export interface IAttachment {
 	ts?: string | Date;
 	title?: string;
 	type?: string;
+	size?: number;
 	description?: string;
 	title_link?: string;
 	image_url?: string;
 	image_type?: string;
+	image_size?: number;
+	image_dimensions?: { width?: number; height?: number };
+	image_preview?: string;
 	video_url?: string;
 	video_type?: string;
+	video_size?: number;
 	audio_url?: string;
+	audio_type?: string;
+	audio_size?: number;
 	title_link_download?: boolean;
 	attachments?: IAttachment[];
 	fields?: IAttachment[];
-	image_dimensions?: { width?: number; height?: number };
-	image_preview?: string;
-	image_size?: number;
 	author_name?: string;
 	author_icon?: string;
 	actions?: { type: string; msg: string; text: string }[];
@@ -29,8 +38,13 @@ export interface IAttachment {
 	color?: string;
 	thumb_url?: string;
 	collapsed?: boolean;
-	audio_type?: string;
 	translations?: IAttachmentTranslations;
+	e2e?: E2EType;
+	encryption?: TAttachmentEncryption;
+	format?: string;
+	hashes?: {
+		sha256: string;
+	};
 }
 
 export interface IServerAttachment {
@@ -58,6 +72,7 @@ export interface IServerAttachment {
 	uploading: boolean;
 	url: string;
 	user: Pick<IUser, '_id' | 'username' | 'name'>;
+	content?: IMessageE2EEContent;
 }
 
 export interface IShareAttachment {
@@ -69,4 +84,9 @@ export interface IShareAttachment {
 	canUpload: boolean;
 	error?: any;
 	uri: string;
+	width?: number;
+	height?: number;
+	exif?: {
+		Orientation: string;
+	};
 }
