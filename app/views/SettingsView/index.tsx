@@ -178,13 +178,19 @@ const SettingsView = (): React.ReactElement => {
 						</List.Section>
 						<List.Section>
 							<List.Separator />
-							<List.Item title='Display' onPress={() => navigateToScreen('DisplayPrefsView')} showActionIndicator />
+							<List.Item
+								title='Display'
+								onPress={() => navigateToScreen('DisplayPrefsView')}
+								showActionIndicator
+								left={() => <List.Icon name='sort' />}
+							/>
 							<List.Separator />
 							<List.Item
 								title='Profile'
 								onPress={() => navigateToScreen('ProfileView')}
 								showActionIndicator
 								testID='settings-profile'
+								left={() => <List.Icon name='user' />}
 							/>
 							<List.Separator />
 						</List.Section>
@@ -193,28 +199,20 @@ const SettingsView = (): React.ReactElement => {
 
 				<List.Section>
 					<List.Separator />
-					<List.Item title='Contact_us' onPress={sendEmail} showActionIndicator testID='settings-view-contact' />
-					<List.Separator />
 					<List.Item
 						title='Language'
 						onPress={() => navigateToScreen('LanguageView')}
 						showActionIndicator
 						testID='settings-view-language'
+						left={() => <List.Icon name='language' />}
 					/>
-					<List.Separator />
-					{!isFDroidBuild ? (
-						<>
-							<List.Item title='Review_this_app' showActionIndicator onPress={onReviewPress} testID='settings-view-review-app' />
-						</>
-					) : null}
-					<List.Separator />
-					<List.Item title='Share_this_app' showActionIndicator onPress={shareApp} testID='settings-view-share-app' />
 					<List.Separator />
 					<List.Item
 						title='Default_browser'
 						showActionIndicator
 						onPress={() => navigateToScreen('DefaultBrowserView')}
 						testID='settings-view-default-browser'
+						left={() => <List.Icon name='federation' />}
 					/>
 					<List.Separator />
 					<List.Item
@@ -222,6 +220,7 @@ const SettingsView = (): React.ReactElement => {
 						showActionIndicator
 						onPress={() => navigateToScreen('ThemeView')}
 						testID='settings-view-theme'
+						left={() => <List.Icon name='moon' />}
 					/>
 					<List.Separator />
 					<List.Item
@@ -229,6 +228,7 @@ const SettingsView = (): React.ReactElement => {
 						showActionIndicator
 						onPress={() => navigateToScreen('MediaAutoDownloadView')}
 						testID='settings-view-media-auto-download'
+						left={() => <List.Icon name='download' />}
 					/>
 					<List.Separator />
 					<List.Item
@@ -236,19 +236,54 @@ const SettingsView = (): React.ReactElement => {
 						showActionIndicator
 						onPress={() => navigateToScreen('SecurityPrivacyView')}
 						testID='settings-view-security-privacy'
+						left={() => <List.Icon name='locker' />}
 					/>
-					<List.Separator />
 				</List.Section>
 
 				<List.Section>
 					<List.Separator />
-					<List.Item title='License' onPress={onPressLicense} showActionIndicator testID='settings-view-license' />
+					<List.Item
+						title='Share_this_app'
+						showActionIndicator
+						onPress={shareApp}
+						testID='settings-view-share-app'
+						left={() => <List.Icon name='arrow-forward' />}
+					/>
+					<List.Separator />
+					<List.Item
+						title='Contact_us'
+						onPress={sendEmail}
+						testID='settings-view-contact'
+						left={() => <List.Icon name='mail' />}
+						right={() => <List.Icon name='new-window' />}
+					/>
+					<List.Separator />
+					{!isFDroidBuild ? (
+						<>
+							<List.Item
+								title='Review_this_app'
+								onPress={onReviewPress}
+								testID='settings-view-review-app'
+								left={() => <List.Icon name='star' />}
+								right={() => <List.Icon name='new-window' />}
+							/>
+						</>
+					) : null}
+					<List.Separator />
+					<List.Item
+						title='License'
+						onPress={onPressLicense}
+						testID='settings-view-license'
+						left={() => <List.Icon name='file-document' />}
+						right={() => <List.Icon name='new-window' />}
+					/>
 					<List.Separator />
 					<List.Item
 						title={I18n.t('Version_no', { version: getReadableVersion })}
 						onPress={copyAppVersion}
 						testID='settings-view-version'
 						translateTitle={false}
+						left={() => <List.Icon name='mobile' />}
 					/>
 					<List.Separator />
 					<List.Item
@@ -258,6 +293,7 @@ const SettingsView = (): React.ReactElement => {
 						testID='settings-view-server-version'
 						translateTitle={false}
 						translateSubtitle={false}
+						left={() => <List.Icon name='desktop' />}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -268,16 +304,16 @@ const SettingsView = (): React.ReactElement => {
 						title='Clear_cache'
 						testID='settings-view-clear-cache'
 						onPress={handleClearCache}
-						showActionIndicator
-						color={colors.buttonBackgroundDangerDefault}
+						color={colors.fontDanger}
+						left={() => <List.Icon name='prune' color={colors.fontDanger} />}
 					/>
 					<List.Separator />
 					<List.Item
 						title='Logout'
 						testID='settings-logout'
 						onPress={handleLogout}
-						showActionIndicator
-						color={colors.buttonBackgroundDangerDefault}
+						color={colors.fontDanger}
+						left={() => <List.Icon name='logout' color={colors.fontDanger} />}
 					/>
 					<List.Separator />
 				</List.Section>

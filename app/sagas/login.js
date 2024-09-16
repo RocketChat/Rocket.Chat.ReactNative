@@ -240,7 +240,10 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		});
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const currentRoot = yield select(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		}
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));

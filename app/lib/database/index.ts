@@ -64,7 +64,6 @@ export const getDatabase = (database = ''): Database => {
 };
 
 interface IDatabases {
-	shareDB?: TAppDatabase | null;
 	serversDB: TServerDatabase;
 	activeDB?: TAppDatabase;
 }
@@ -82,49 +81,12 @@ class DB {
 		}) as TServerDatabase
 	};
 
-	// Expected at least one database
 	get active(): TAppDatabase {
-		return this.databases.shareDB || this.databases.activeDB!;
-	}
-
-	get share() {
-		return this.databases.shareDB;
-	}
-
-	set share(db) {
-		this.databases.shareDB = db;
+		return this.databases.activeDB!;
 	}
 
 	get servers() {
 		return this.databases.serversDB;
-	}
-
-	setShareDB(database = '') {
-		const path = database.replace(/(^\w+:|^)\/\//, '').replace(/\//g, '.');
-		const dbName = getDatabasePath(path);
-
-		const adapter = new SQLiteAdapter({
-			dbName,
-			schema: appSchema,
-			migrations,
-			jsi: true
-		});
-
-		this.databases.shareDB = new Database({
-			adapter,
-			modelClasses: [
-				Subscription,
-				Message,
-				Thread,
-				ThreadMessage,
-				Upload,
-				Permission,
-				CustomEmoji,
-				FrequentlyUsedEmoji,
-				Setting,
-				User
-			]
-		}) as TAppDatabase;
 	}
 
 	setActiveDB(database: string) {

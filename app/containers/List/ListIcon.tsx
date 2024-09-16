@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { ICON_SIZE } from './constants';
+import { useTheme } from '../../theme';
 
 interface IListIcon {
 	name: TIconsName;
@@ -19,11 +20,14 @@ const styles = StyleSheet.create({
 	}
 });
 
-const ListIcon = ({ name, color, style, testID, size }: IListIcon): React.ReactElement => (
-	<View style={[styles.icon, style]}>
-		<CustomIcon name={name} color={color} size={size ?? ICON_SIZE} testID={testID} />
-	</View>
-);
+const ListIcon = ({ name, color, style, testID, size }: IListIcon): React.ReactElement => {
+	const { colors } = useTheme();
+	return (
+		<View style={[styles.icon, style]}>
+			<CustomIcon name={name} color={color || colors.fontDefault} size={size ?? ICON_SIZE} testID={testID} />
+		</View>
+	);
+};
 
 ListIcon.displayName = 'List.Icon';
 
