@@ -804,7 +804,7 @@
   "Uses_server_configuration": "Uses workspace configuration",
   "Verify": "Verify",
   "Verify_email_desc": "We have sent you an email to confirm your registration. If you do not receive an email shortly, please come back and try again.",
-  "Version_no": "Version: {{version}}",
+  "Version_no": "App version: {{version}}",
   "Vibrate": "Vibrate",
   "Video": "Video",
   "video-conf-provider-not-configured-body": "A workspace admin needs to enable the conference calls feature first.",

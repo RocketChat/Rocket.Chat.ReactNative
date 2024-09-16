@@ -396,6 +396,8 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-username')).tapReturnKey();
 			await element(by.id('register-view-email')).replaceText(randomUser.email);
 			await element(by.id('register-view-email')).tapReturnKey();
+			await element(by.id('register-view-password')).replaceText(randomUser.password);
+			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
 			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
@@ -403,11 +405,14 @@ describe('E2E Encryption', () => {
 		});
 
 		it('should change back', async () => {
+			await waitFor(element(by.id('rooms-list-header-servers-list-button')))
+				.toExist()
+				.withTimeout(2000);
 			await element(by.id('rooms-list-header-servers-list-button')).tap();
 			await waitFor(element(by.id('rooms-list-header-servers-list')))
 				.toBeVisible()
 				.withTimeout(5000);
-			await element(by.id(`rooms-list-header-server-${data.server}`)).tap();
+			await element(by.id(`server-item-${data.server}`)).tap();
 			await waitFor(element(by.id('rooms-list-view')))
 				.toBeVisible()
 				.withTimeout(10000);
