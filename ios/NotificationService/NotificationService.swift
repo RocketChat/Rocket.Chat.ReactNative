@@ -36,16 +36,28 @@ class NotificationService: UNNotificationServiceExtension {
   }
   
   func processPayload(payload: Payload) {
-    // If is a encrypted message
-    if payload.messageType == .e2e, let content = payload.content, content.algorithm == "rc.v1.aes-sha2" {
-        if let rid = payload.rid {
-            if let decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: content.ciphertext) {
-              bestAttemptContent?.body = decryptedMessage
-              if let roomType = payload.type, roomType == .group, let sender = payload.senderName {
-                bestAttemptContent?.body = "\(sender): \(decryptedMessage)"
+    if payload.messageType == .e2e {
+      if let rid = payload.rid {
+          let messageToDecrypt: String?
+
+          if !payload.message.isEmpty {
+              messageToDecrypt = payload.message
+          }
+          else if let content = payload.content, content.algorithm == "rc.v1.aes-sha2" {
+              messageToDecrypt = content.ciphertext
+          } else {
+              messageToDecrypt = nil
+          }
+
+          if let messageToDecrypt = messageToDecrypt, !messageToDecrypt.isEmpty {
+              if let decryptedMessage = rocketchat?.decryptMessage(rid: rid, message: messageToDecrypt) {
+                  bestAttemptContent?.body = decryptedMessage
+                  if let roomType = payload.type, roomType == .group, let sender = payload.senderName {
+                      bestAttemptContent?.body = "\(sender): \(decryptedMessage)"
+                  }
               }
-            }
-        }
+          }
+      }
     }
     
     if let bestAttemptContent = bestAttemptContent {
