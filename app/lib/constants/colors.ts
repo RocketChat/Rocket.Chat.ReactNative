@@ -152,7 +152,7 @@ const dark = {
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
 
-	buttonBackgroundPrimaryDefault: '#3976D1',
+	buttonBackgroundPrimaryDefault: '#095AD2',
 	buttonBackgroundPrimaryPress: '#245399',
 	buttonBackgroundPrimaryDisabled: '#1D3963',
 
