@@ -11,7 +11,8 @@ export const defaultHeader = {
 	headerBackTitleVisible: false,
 	headerBackTestID: 'header-back',
 	cardOverlayEnabled: true,
-	cardStyle: { backgroundColor: 'transparent' }
+	cardStyle: { backgroundColor: 'transparent' },
+	headerTitleAlign: 'left'
 };
 
 export const cardStyle = {
