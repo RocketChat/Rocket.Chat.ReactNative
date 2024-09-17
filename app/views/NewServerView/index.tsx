@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
+import { BackHandler, Image, Keyboard, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 
@@ -34,14 +34,7 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		resizeMode: 'contain'
 	},
-	certificatePicker: {
-		alignItems: 'center',
-		justifyContent: 'flex-end'
-	},
-	chooseCertificateTitle: {
-		...sharedStyles.textRegular
-	},
-	description: {
+	buttonPrompt: {
 		...sharedStyles.textRegular,
 		textAlign: 'center'
 	},
@@ -279,9 +272,8 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { certificate } = this.state;
 		const { theme, connecting } = this.props;
 		return (
-			<View
-				style={[styles.certificatePicker]}>
-				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].fontSecondaryInfo, fontSize: 13 }]}>
+			<>
+				<Text style={[styles.buttonPrompt, { color: themes[theme].fontSecondaryInfo }]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
 				<Button
@@ -290,9 +282,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					title={certificate ?? I18n.t('Apply_Certificate')}
 					type='secondary'
 					disabled={connecting}
-					style={{ marginTop: 12, width: '100%' }}
+					style={{ marginTop: 12 }}
 				/>
-			</View>
+			</>
 		);
 	};
 
@@ -317,9 +309,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text style={{ fontSize: 24, marginBottom: 24, ...sharedStyles.textBold }}>
-						{I18n.t('Add_server')}
-					</Text>
+					<Text style={{ fontSize: 24, marginBottom: 24, ...sharedStyles.textBold }}>{I18n.t('Add_server')}</Text>
 					<ServerInput
 						text={text}
 						theme={theme}
@@ -335,7 +325,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						onPress={this.submit}
 						disabled={!text || connecting}
 						loading={!connectingOpen && connecting}
-						style={[styles.connectButton]}
+						style={styles.connectButton}
 						testID='new-server-view-button'
 					/>
 					{this.renderCertificatePicker()}
@@ -344,10 +334,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							<OrSeparator theme={theme} />
 							<Text
 								style={[
-									styles.description,
+									styles.buttonPrompt,
 									{
 										color: themes[theme].fontSecondaryInfo,
-										fontSize: 14,
 										marginBottom: 16
 									}
 								]}>
