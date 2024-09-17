@@ -79,15 +79,9 @@ final class RocketChat {
     }
   }
   
-  // TODO: migrate to content obj encryption
   func encryptMessage(rid: String, id: String, message: String) -> String {
     encryptionQueue.sync {
-      if let encryption = encryptionInstances[rid] {
-        return encryption.encryptMessage(id: id, message: message)
-      }
-      
       let encryption = Encryption(server: server, rid: rid)
-      encryptionInstances[rid] = encryption
       return encryption.encryptMessage(id: id, message: message)
     }
   }
