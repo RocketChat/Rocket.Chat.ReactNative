@@ -12,7 +12,6 @@ import SQLite3
 class Database {
     var db: OpaquePointer?
 
-    // Initialize the database with a name (which gets converted to a path)
     init(name: String) {
         if let dbPath = self.getDatabasePath(name: name) {
             openDatabase(databasePath: dbPath)
@@ -30,14 +29,12 @@ class Database {
         }
     }
 
-    // Get the path to the SQLite database file based on its name
     func getDatabasePath(name: String) -> String? {
         let isOfficial = Bundle.main.bool(forKey: "IS_OFFICIAL")
         let groupDir = FileManager.default.groupDir()
         return "\(groupDir)/\(name)\(isOfficial ? "" : "-experimental").db"
     }
 
-    // Open the SQLite database
     func openDatabase(databasePath: String) {
         if sqlite3_open(databasePath, &db) == SQLITE_OK {
             print("Successfully opened database at \(databasePath)")
@@ -46,7 +43,6 @@ class Database {
         }
     }
 
-    // Close the SQLite database
     func closeDatabase() {
         if sqlite3_close(db) != SQLITE_OK {
             print("Error closing database")
@@ -60,25 +56,21 @@ class Database {
         closeDatabase()
     }
 
-    // Execute a query and return results as an array of dictionaries
     func query(_ query: String, args: [String] = []) -> [[String: Any]]? {
         var statement: OpaquePointer?
         var results: [[String: Any]] = []
 
         if sqlite3_prepare_v2(db, query, -1, &statement, nil) == SQLITE_OK {
-            // Bind arguments to the prepared statement
             for (index, arg) in args.enumerated() {
                 sqlite3_bind_text(statement, Int32(index + 1), arg, -1, unsafeBitCast(-1, to: sqlite3_destructor_type.self))
             }
 
-            // Process each row in the result set
             while sqlite3_step(statement) == SQLITE_ROW {
                 var row: [String: Any] = [:]
                 for columnIndex in 0..<sqlite3_column_count(statement) {
                     let columnName = String(cString: sqlite3_column_name(statement, columnIndex))
                     let columnType = sqlite3_column_type(statement, columnIndex)
 
-                    // Extract the value based on its type
                     switch columnType {
                     case SQLITE_INTEGER:
                         let value = sqlite3_column_int64(statement, columnIndex)
@@ -105,7 +97,6 @@ class Database {
         return results
     }
 
-    // Fetch the encryption key for a room (subscriptions table)
     func readRoomEncryptionKey(for roomId: String) -> String? {
         let query = "SELECT e2e_key FROM subscriptions WHERE rid = ? LIMIT 1"
         if let results = self.query(query, args: [roomId]), let firstResult = results.first {
@@ -114,7 +105,6 @@ class Database {
         return nil
     }
 
-    // Example method to fetch encrypted status for a room
     func readRoomEncrypted(for roomId: String) -> Bool {
         let query = "SELECT encrypted FROM subscriptions WHERE rid = ? LIMIT 1"
         if let results = self.query(query, args: [roomId]), let firstResult = results.first {

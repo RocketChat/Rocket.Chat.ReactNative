@@ -18,13 +18,11 @@ class NotificationService: UNNotificationServiceExtension {
       
       rocketchat = RocketChat.instanceForServer(server: data.host.removeTrailingSlash())
       
-      // If the notification has the content on the payload, show it
       if data.notificationType != .messageIdOnly {
         self.processPayload(payload: data)
         return
       }
       
-      // Request the content from server
       rocketchat?.getPushWithId(data.messageId) { notification in
         if let notification = notification {
           self.bestAttemptContent?.title = notification.title
@@ -42,8 +40,7 @@ class NotificationService: UNNotificationServiceExtension {
 
           if !payload.message.isEmpty {
               messageToDecrypt = payload.message
-          }
-          else if let content = payload.content, content.algorithm == "rc.v1.aes-sha2" {
+          } else if let content = payload.content, content.algorithm == "rc.v1.aes-sha2" {
               messageToDecrypt = content.ciphertext
           } else {
               messageToDecrypt = nil
