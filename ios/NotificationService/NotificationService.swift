@@ -38,8 +38,8 @@ class NotificationService: UNNotificationServiceExtension {
       if let rid = payload.rid {
           let messageToDecrypt: String?
 
-          if ((payload.msg?.isEmpty) == nil) {
-              messageToDecrypt = payload.msg
+          if let msg = payload.msg, !msg.isEmpty {
+              messageToDecrypt = msg
           } else if let content = payload.content, content.algorithm == "rc.v1.aes-sha2" {
               messageToDecrypt = content.ciphertext
           } else {
