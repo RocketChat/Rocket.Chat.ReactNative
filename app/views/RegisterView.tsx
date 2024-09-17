@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {
-	Site_Name: string;
 	Site_Url: string;
 	Gitlab_URL: string;
 	CAS_enabled: boolean;
@@ -328,7 +327,6 @@ class RegisterView extends React.Component<IProps, any> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	Site_Name: state.settings.Site_Name as string,
 	Site_Url: state.settings.Site_Url as string,
 	Gitlab_URL: state.settings.API_Gitlab_URL as string,
 	CAS_enabled: state.settings.CAS_enabled as boolean,
