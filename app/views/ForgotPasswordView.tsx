@@ -70,9 +70,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>
 					{I18n.t('Reset_password')}
 				</Text>
-				<Text>
-					{I18n.t('email')}
-				</Text>
+				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22 }]}>{I18n.t('email')}</Text>
 				<ControlledFormTextInput
 					name='email'
 					control={control}
@@ -81,7 +79,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 					returnKeyType='send'
 					onSubmitEditing={handleSubmit(resetPassword)}
 					testID='forgot-password-view-email'
-					containerStyle={sharedStyles.inputLastChild}
+					containerStyle={{ marginBottom: 20 }}
 				/>
 				<Button
 					title={I18n.t('Reset_password')}
