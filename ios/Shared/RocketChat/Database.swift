@@ -108,7 +108,10 @@ class Database {
     func readRoomEncrypted(for roomId: String) -> Bool {
         let query = "SELECT encrypted FROM subscriptions WHERE rid = ? LIMIT 1"
         if let results = self.query(query, args: [roomId]), let firstResult = results.first {
-            return firstResult["encrypted"] as? Bool ?? false
+            if let encrypted = firstResult["encrypted"] as? NSNumber {
+                let isEncrypted = encrypted.boolValue
+                return isEncrypted
+            }
         }
         return false
     }
