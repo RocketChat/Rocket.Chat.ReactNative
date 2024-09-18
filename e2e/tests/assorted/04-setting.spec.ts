@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToLogin, login, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Settings screen', () => {
@@ -61,10 +61,6 @@ describe('Settings screen', () => {
 			await expect(element(by.id('settings-view-security-privacy'))).toExist();
 		});
 
-		it('should have get help', async () => {
-			await expect(element(by.id('settings-view-get-help'))).toExist();
-		});
-
 		it('should have media auto-download', async () => {
 			await expect(element(by.id('settings-view-media-auto-download'))).toExist();
 		});
@@ -79,6 +75,17 @@ describe('Settings screen', () => {
 
 		it('should have server version', async () => {
 			await expect(element(by.id('settings-view-server-version'))).toExist();
+		});
+
+		it('should have get help', async () => {
+			await expect(element(by.id('settings-view-get-help'))).toExist();
+			await element(by.id('settings-view-get-help')).tap();
+			await waitFor(element(by.id('settings-view-get-help-documentation')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await expect(element(by.id('settings-view-get-help-accessibility-statement'))).toExist();
+			await expect(element(by.id('settings-view-get-help-glossary'))).toExist();
+			await tapBack();
 		});
 	});
 

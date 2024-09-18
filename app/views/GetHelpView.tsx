@@ -34,18 +34,21 @@ const GetHelpView = () => {
 						title='Rocket_Chat_Documentation'
 						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null} />}
 						onPress={() => openLink(DOCS_LINK, theme)}
+						testID='settings-view-get-help-documentation'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Accessibility_statement'
 						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null} />}
 						onPress={() => openLink(ACCESSIBILITY_LINK, theme)}
+						testID='settings-view-get-help-accessibility-statement'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Glossary_of_simplified_terms'
 						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null} />}
 						onPress={() => openLink(GLOSSARY_LINK, theme)}
+						testID='settings-view-get-help-glossary'
 					/>
 					<List.Separator />
 				</List.Section>
