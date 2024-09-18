@@ -18,13 +18,11 @@ final class WatchConnection: NSObject {
 	}
 	
     private func getMessage() -> WatchMessage? {
-        // Safely unwrap the result of the database query
         guard let serversQuery = database.query("SELECT * FROM servers") else {
             print("No servers found")
             return nil
         }
 
-        // Map over the results to extract WatchMessage.Server
         let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
             guard let userId = mmkv.userId(for: item["identifier"] as? String ?? ""),
                   let userToken = mmkv.userToken(for: userId) else {
@@ -33,13 +31,11 @@ final class WatchConnection: NSObject {
 
             let clientSSL = SSLPinning().getCertificate(server: item["url"] as? String ?? "")
 
-            // Safely query the users table with the token
             guard let usersQuery = database.query("SELECT * FROM users WHERE token == ? LIMIT 1", args: [userToken]),
                   let user = usersQuery.first else {
                 return nil
             }
 
-            // Safely unwrap the server URL and icon URL using guard
             guard let serverUrlString = item["url"] as? String,
                   let serverUrl = URL(string: serverUrlString),
                   let iconUrlString = item["iconURL"] as? String,
@@ -50,9 +46,9 @@ final class WatchConnection: NSObject {
 
             // Proceed if URLs are valid
             return WatchMessage.Server(
-                url: serverUrl,  // Already unwrapped as valid URL
+                url: serverUrl,
                 name: item["name"] as? String ?? "",
-                iconURL: iconURL,  // Already unwrapped as valid URL
+                iconURL: iconURL,
                 useRealName: (item["useRealName"] as? Int ?? 0) == 1,
                 loggedUser: .init(
                     id: userId,

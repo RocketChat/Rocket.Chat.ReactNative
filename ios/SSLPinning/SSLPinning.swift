@@ -22,16 +22,14 @@ final class SSLPinning: NSObject {
 	}
 	
     @objc func migrate() {
-        // Safely unwrap the result of the database query
         guard let serversQuery = database.query("SELECT * FROM servers") else {
             print("No servers found")
             return
         }
 
-        // Proceed with iterating over the servers
         serversQuery.forEach { server in
             guard let serverUrlString = server["url"] as? String,
-                  let serverUrl = URL(string: serverUrlString), // Convert String to URL
+                  let serverUrl = URL(string: serverUrlString),
                   let clientSSL = mmkv.clientSSL(for: serverUrl) else {
                 return
             }

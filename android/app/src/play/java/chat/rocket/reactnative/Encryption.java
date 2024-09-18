@@ -66,26 +66,21 @@ class Room {
 
 class Encryption {
     private Gson gson = new Gson();
-    private String E2ERoomKey;
     private String keyId;
 
     public static Encryption shared = new Encryption();
     private ReactApplicationContext reactContext;
 
-    // Updated Room reading logic
     public Room readRoom(final Ejson ejson) {
         String dbName = getDatabaseName(ejson.serverURL());
         SQLiteDatabase db = null;
 
         try {
-            // Open the database connection
             db = SQLiteDatabase.openDatabase(dbName, null, SQLiteDatabase.OPEN_READONLY);
             String[] queryArgs = {ejson.rid};
 
-            // Execute query
             Cursor cursor = db.rawQuery("SELECT * FROM subscriptions WHERE id == ? LIMIT 1", queryArgs);
 
-            // Room not found
             if (cursor.getCount() == 0) {
                 cursor.close();
                 return null;
@@ -104,12 +99,11 @@ class Encryption {
 
         } finally {
             if (db != null) {
-                db.close(); // Ensure database is closed after the operation
+                db.close();
             }
         }
     }
 
-    // Utility function to get database name based on server URL
     private String getDatabaseName(String serverUrl) {
         int resId = reactContext.getResources().getIdentifier("rn_config_reader_custom_package", "string", reactContext.getPackageName());
         String className = reactContext.getString(resId);
