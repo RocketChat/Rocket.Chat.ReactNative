@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Text, View } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import ShareExtension from 'rn-extensions-share';
 import { Q } from '@nozbe/watermelondb';
+import { Dispatch } from 'redux';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -17,7 +17,6 @@ import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { getUserSelector } from '../../selectors/login';
-import StatusBar from '../../containers/StatusBar';
 import database from '../../lib/database';
 import Thumbs from './Thumbs';
 import Preview from './Preview';
@@ -28,6 +27,7 @@ import {
 	IServer,
 	IShareAttachment,
 	IUser,
+	RootEnum,
 	TMessageAction,
 	TSubscriptionModel,
 	TThreadModel
@@ -35,6 +35,7 @@ import {
 import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
+import { appStart } from '../../actions/app';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -62,6 +63,7 @@ interface IShareViewProps {
 	server: string;
 	FileUpload_MediaTypeWhiteList?: string;
 	FileUpload_MaxFileSize?: number;
+	dispatch: Dispatch;
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
@@ -236,8 +238,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	send = async () => {
 		if (this.state.loading) return;
 
+		Keyboard.dismiss();
+
 		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
-		const { navigation, server, user } = this.props;
+		const { navigation, server, user, dispatch } = this.props;
 		// update state
 		await this.selectFile(selected);
 
@@ -308,7 +312,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		// if it's share extension this should close
 		if (this.isShareExtension) {
 			sendLoadingEvent({ visible: false });
-			ShareExtension.close();
+			dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 		}
 	};
 
@@ -415,7 +419,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceRoom }]}>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceHover }]}>
 					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
@@ -423,8 +427,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backdropColor, flex: 1 }}>
-				<StatusBar barStyle='light-content' backgroundColor={themes[theme].surfaceDark} />
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover, flex: 1 }} testID='share-view'>
 				{this.renderContent()}
 			</SafeAreaView>
 		);
@@ -433,7 +436,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
-	server: state.share.server.server || state.server.server,
+	server: state.server.server,
 	FileUpload_MediaTypeWhiteList: state.settings.FileUpload_MediaTypeWhiteList as string,
 	FileUpload_MaxFileSize: state.settings.FileUpload_MaxFileSize as number
 });

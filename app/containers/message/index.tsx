@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
 
 import Message from './Message';
@@ -60,6 +60,7 @@ interface IMessageContainerProps {
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 	isBeingEdited?: boolean;
 	isPreview?: boolean;
+	separator?: ReactElement | null;
 }
 
 interface IMessageContainerState {
@@ -360,7 +361,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			jumpToMessage,
 			highlighted,
 			isBeingEdited,
-			isPreview
+			isPreview,
+			separator
 		} = this.props;
 		const {
 			id,
@@ -432,6 +434,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 					isEncrypted: this.isEncrypted
 				}}>
+				{separator || null}
 				{/* @ts-ignore*/}
 				<Message
 					id={id}

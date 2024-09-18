@@ -94,16 +94,20 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
-async function mockMessage(message: string, isThread = false) {
+async function checkMessage(message: string) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
-	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
-	await element(by.id(input)).typeText(message);
-	await element(by.id('message-composer-send')).tap();
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()
 		.withTimeout(60000);
 	await element(by[textMatcher](message)).atIndex(0).tap();
+}
+
+async function mockMessage(message: string, isThread = false) {
+	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
+	await element(by.id(input)).typeText(message);
+	await element(by.id('message-composer-send')).tap();
+	await checkMessage(message);
 	return message;
 }
 
@@ -267,6 +271,7 @@ export {
 	navigateToRegister,
 	login,
 	logout,
+	checkMessage,
 	mockMessage,
 	tapBack,
 	sleep,

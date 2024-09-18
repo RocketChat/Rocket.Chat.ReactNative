@@ -30,12 +30,11 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 		<Pressable
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
-			testID={`rooms-list-header-server-${item.id}`}
+			testID={`server-item-${item.id}`}
 			android_ripple={{ color: themes[theme].surfaceNeutral }}
 			style={({ pressed }: { pressed: boolean }) => ({
 				backgroundColor: isIOS && pressed ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom
-			})}
-		>
+			})}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
 					<FastImage
