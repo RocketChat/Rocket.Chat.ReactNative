@@ -1,5 +1,5 @@
 //
-//  EncryptedContent.swift
+//  DecryptedContent.swift
 //  RocketChatRN
 //
 //  Created by Diego Mello on 9/13/24.
