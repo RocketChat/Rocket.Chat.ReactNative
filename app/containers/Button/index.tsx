@@ -9,7 +9,7 @@ import ActivityIndicator from '../ActivityIndicator';
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	onPress: () => void;
-	type?: 'primary' | 'secondary'; // primary | secondary
+	type?: 'primary' | 'secondary';
 	backgroundColor?: string;
 	loading?: boolean;
 	color?: string;
@@ -64,7 +64,7 @@ const Button: React.FC<IButtonProps> = ({
 		style
 	];
 
-	const textStyle = [styles.text, { color: isDisabled ? colors.fontWhite : resolvedTextColor, fontSize }, styleText];
+	const textStyle = [styles.text, { color: isDisabled ? colors.fontDisabled : resolvedTextColor, fontSize }, styleText];
 
 	return (
 		<Touchable
