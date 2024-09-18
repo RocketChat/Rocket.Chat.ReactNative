@@ -1,10 +1,11 @@
-import { I18nManager, SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
+import NewWindowIcon from '../containers/NewWindowIcon';
 import { SettingsStackParamList } from '../stacks/types';
 import i18n from '../i18n';
 import openLink from '../lib/methods/helpers/openLink';
@@ -32,21 +33,21 @@ const GetHelpView = () => {
 					<List.Separator />
 					<List.Item
 						title='Rocket_Chat_Documentation'
-						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null} />}
+						right={() => <NewWindowIcon />}
 						onPress={() => openLink(DOCS_LINK, theme)}
 						testID='settings-view-get-help-documentation'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Accessibility_statement'
-						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null} />}
+						right={() => <NewWindowIcon />}
 						onPress={() => openLink(ACCESSIBILITY_LINK, theme)}
 						testID='settings-view-get-help-accessibility-statement'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Glossary_of_simplified_terms'
-						right={() => <List.Icon name='new-window' style={I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : null} />}
+						right={() => <NewWindowIcon />}
 						onPress={() => openLink(GLOSSARY_LINK, theme)}
 						testID='settings-view-get-help-glossary'
 					/>

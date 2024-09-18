@@ -11,6 +11,7 @@ import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
 import { selectServerRequest } from '../../actions/server';
 import * as HeaderButton from '../../containers/HeaderButton';
+import NewWindowIcon from '../../containers/NewWindowIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
@@ -245,7 +246,7 @@ const SettingsView = (): React.ReactElement => {
 					<List.Item
 						title='Get_help'
 						left={() => <List.Icon name='support' />}
-						right={() => <List.Icon name='new-window' />}
+						right={() => <NewWindowIcon />}
 						onPress={() => navigateToScreen('GetHelpView')}
 						testID='settings-view-get-help'
 					/>
@@ -263,7 +264,7 @@ const SettingsView = (): React.ReactElement => {
 						onPress={sendEmail}
 						testID='settings-view-contact'
 						left={() => <List.Icon name='mail' />}
-						right={() => <List.Icon name='new-window' />}
+						right={() => <NewWindowIcon />}
 					/>
 					<List.Separator />
 					{!isFDroidBuild ? (
@@ -273,7 +274,7 @@ const SettingsView = (): React.ReactElement => {
 								onPress={onReviewPress}
 								testID='settings-view-review-app'
 								left={() => <List.Icon name='star' />}
-								right={() => <List.Icon name='new-window' />}
+								right={() => <NewWindowIcon />}
 							/>
 						</>
 					) : null}
@@ -283,7 +284,7 @@ const SettingsView = (): React.ReactElement => {
 						onPress={onPressLicense}
 						testID='settings-view-license'
 						left={() => <List.Icon name='file-document' />}
-						right={() => <List.Icon name='new-window' />}
+						right={() => <NewWindowIcon />}
 					/>
 					<List.Separator />
 					<List.Item
