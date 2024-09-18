@@ -31,6 +31,14 @@ class Message {
     }
 }
 
+class DecryptedContent {
+    String msg;
+
+    DecryptedContent(String msg) {
+        this.msg = msg;
+    }
+}
+
 class PrivateKey {
     String d;
     String dp;
@@ -166,6 +174,15 @@ class Encryption {
         return Util.bytesToHex(decoded);
     }
 
+    private String decryptText(String text, String e2eKey) throws Exception {
+        String msg = text.substring(12);
+        byte[] msgData = Base64.decode(msg, Base64.NO_WRAP);
+        String b64 = Base64.encodeToString(Arrays.copyOfRange(msgData, 16, msgData.length), Base64.DEFAULT);
+        String decrypted = RCTAes.decrypt(b64, e2eKey, Util.bytesToHex(Arrays.copyOfRange(msgData, 0, 16)));
+        byte[] data = Base64.decode(decrypted, Base64.NO_WRAP);
+        return new String(data, "UTF-8");
+    }
+
     public String decryptMessage(final Ejson ejson, final ReactApplicationContext reactContext) {
         try {
             this.reactContext = reactContext;
@@ -179,17 +196,20 @@ class Encryption {
                 return null;
             }
 
-            String message = ejson.msg;
-            String msg = message.substring(12);
-            byte[] msgData = Base64.decode(msg, Base64.NO_WRAP);
+            if (ejson.msg != null && !ejson.msg.isEmpty()) {
+                String message = ejson.msg;
+                String decryptedText = decryptText(message, e2eKey);
+                Message m = gson.fromJson(decryptedText, Message.class);
+                return m.text;
+            } else if (ejson.content != null && "rc.v1.aes-sha2".equals(ejson.content.algorithm)) {
+                String message = ejson.content.ciphertext;
+                String decryptedText = decryptText(message, e2eKey);
+                DecryptedContent m = gson.fromJson(decryptedText, DecryptedContent.class);
+                return m.msg;
+            } else {
+                return null;
+            }
 
-            String b64 = Base64.encodeToString(Arrays.copyOfRange(msgData, 16, msgData.length), Base64.DEFAULT);
-
-            String decrypted = RCTAes.decrypt(b64, e2eKey, Util.bytesToHex(Arrays.copyOfRange(msgData, 0, 16)));
-            byte[] data = Base64.decode(decrypted, Base64.NO_WRAP);
-            Message m = gson.fromJson(new String(data, "UTF-8"), Message.class);
-
-            return m.text;
         } catch (Exception e) {
             Log.e("[ROCKETCHAT][E2E]", Log.getStackTraceString(e));
         }
