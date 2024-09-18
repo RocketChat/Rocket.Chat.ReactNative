@@ -14,6 +14,7 @@ import com.pedrouid.crypto.RCTRsaUtils;
 import com.pedrouid.crypto.RSA;
 import com.pedrouid.crypto.Util;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -118,7 +119,11 @@ class Encryption {
         if (!isOfficial) {
             dbName += "-experimental";
         }
-        return dbName + ".db";
+        // Old issue. Safer to accept it then to migrate away from it.
+        dbName += ".db.db";
+        // https://github.com/Nozbe/WatermelonDB/blob/a757e646141437ad9a06f7314ad5555a8a4d252e/native/android-jsi/src/main/java/com/nozbe/watermelondb/jsi/JSIInstaller.java#L18
+        File databasePath = new File(reactContext.getDatabasePath(dbName).getPath().replace("/databases", ""));
+        return databasePath.getPath();
     }
 
     public String readUserKey(final Ejson ejson) throws Exception {
