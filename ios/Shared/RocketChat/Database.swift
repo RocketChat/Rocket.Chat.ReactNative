@@ -85,7 +85,6 @@ class Database {
                         row[columnName] = nil
                     }
                 }
-                print("Row: \(row)")
                 results.append(row)
             }
         } else {
@@ -93,8 +92,18 @@ class Database {
         }
 
         sqlite3_finalize(statement)
-        print(results)
         return results
+    }
+    
+    func decodeQueryResult<T: Decodable>(_ result: [[String: Any]]) -> [T]? {
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: result, options: [])
+            let decodedObjects = try JSONDecoder().decode([T].self, from: jsonData)
+            return decodedObjects
+        } catch {
+            print("Failed to decode result: \(error)")
+            return nil
+        }
     }
 
     func readRoomEncryptionKey(for roomId: String) -> String? {
@@ -109,8 +118,7 @@ class Database {
         let query = "SELECT encrypted FROM subscriptions WHERE rid = ? LIMIT 1"
         if let results = self.query(query, args: [roomId]), let firstResult = results.first {
             if let encrypted = firstResult["encrypted"] as? NSNumber {
-                let isEncrypted = encrypted.boolValue
-                return isEncrypted
+                return encrypted.boolValue
             }
         }
         return false

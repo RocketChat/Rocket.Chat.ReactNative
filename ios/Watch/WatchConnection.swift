@@ -17,44 +17,22 @@ final class WatchConnection: NSObject {
 		}
 	}
     
-    private func getServers() -> [DBServer]? {
+    func getServers() -> [DBServer]? {
         guard let serversQuery = database.query("select * from servers") else {
             print("No servers found")
             return nil
         }
-        
-        if let data = try? JSONSerialization.data(withJSONObject: serversQuery, options: []) {
-            do {
-                let servers = try JSONDecoder().decode([DBServer].self, from: data)
-                return servers
-            } catch {
-                print("Failed to decode DBServer: \(error)")
-                return nil
-            }
-        } else {
-            print("Failed to serialize query result to data.")
-            return nil
-        }
+
+        return database.decodeQueryResult(serversQuery)
     }
-    
-    private func getUsers(userToken: String) -> [DBUser]? {
+
+    func getUsers(userToken: String) -> [DBUser]? {
         guard let usersQuery = database.query("select * from users where token == ? limit 1", args: [userToken]) else {
             print("No users found")
             return nil
         }
-        
-        if let data = try? JSONSerialization.data(withJSONObject: usersQuery, options: []) {
-            do {
-                let users = try JSONDecoder().decode([DBUser].self, from: data)
-                return users
-            } catch {
-                print("Failed to decode DBServer: \(error)")
-                return nil
-            }
-        } else {
-            print("Failed to serialize query result to data.")
-            return nil
-        }
+
+        return database.decodeQueryResult(usersQuery)
     }
     
     private func getMessage() -> WatchMessage? {
