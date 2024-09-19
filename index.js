@@ -25,7 +25,6 @@ if (!isFDroidBuild && isAndroid) {
 }
 
 AppRegistry.registerComponent(appName, () => require('./app/index').default);
-AppRegistry.registerComponent(shareName, () => require('./app/share').default);
 
 // For storybook, comment everything above and uncomment below
 // import 'react-native-gesture-handler';

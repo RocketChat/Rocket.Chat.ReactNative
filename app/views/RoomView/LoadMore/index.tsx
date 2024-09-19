@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -29,13 +29,15 @@ const LoadMore = React.memo(
 		t,
 		loaderId,
 		type,
-		runOnRender
+		runOnRender,
+		separator
 	}: {
 		rid: string;
 		t: RoomType;
 		loaderId: string;
 		type: MessageType;
 		runOnRender: boolean;
+		separator?: ReactElement | null;
 	}): React.ReactElement => {
 		const { colors } = useTheme();
 		const dispatch = useDispatch();
@@ -58,13 +60,16 @@ const LoadMore = React.memo(
 		}
 
 		return (
-			<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
-				{loading ? (
-					<ActivityIndicator color={colors.fontSecondaryInfo} />
-				) : (
-					<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
-				)}
-			</Touch>
+			<>
+				{separator || null}
+				<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
+					{loading ? (
+						<ActivityIndicator color={colors.fontSecondaryInfo} />
+					) : (
+						<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
+					)}
+				</Touch>
+			</>
 		);
 	}
 );
