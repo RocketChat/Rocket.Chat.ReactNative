@@ -16,45 +16,77 @@ final class WatchConnection: NSObject {
 			session.activate()
 		}
 	}
-	
-    private func getMessage() -> WatchMessage? {
-        guard let serversQuery = database.query("SELECT * FROM servers") else {
+    
+    private func getServers() -> [DBServer]? {
+        guard let serversQuery = database.query("select * from servers") else {
             print("No servers found")
+            return nil
+        }
+        
+        if let data = try? JSONSerialization.data(withJSONObject: serversQuery, options: []) {
+            do {
+                let servers = try JSONDecoder().decode([DBServer].self, from: data)
+                return servers
+            } catch {
+                print("Failed to decode DBServer: \(error)")
+                return nil
+            }
+        } else {
+            print("Failed to serialize query result to data.")
+            return nil
+        }
+    }
+    
+    private func getUsers(userToken: String) -> [DBUser]? {
+        guard let usersQuery = database.query("select * from users where token == ? limit 1", args: [userToken]) else {
+            print("No users found")
+            return nil
+        }
+        
+        if let data = try? JSONSerialization.data(withJSONObject: usersQuery, options: []) {
+            do {
+                let users = try JSONDecoder().decode([DBUser].self, from: data)
+                return users
+            } catch {
+                print("Failed to decode DBServer: \(error)")
+                return nil
+            }
+        } else {
+            print("Failed to serialize query result to data.")
+            return nil
+        }
+    }
+    
+    private func getMessage() -> WatchMessage? {
+        guard let serversQuery = getServers() else {
             return nil
         }
 
         let servers = serversQuery.compactMap { item -> WatchMessage.Server? in
-            guard let userId = mmkv.userId(for: item["identifier"] as? String ?? ""),
-                  let userToken = mmkv.userToken(for: userId) else {
+            guard let userId = mmkv.userId(for: item.identifier), let userToken = mmkv.userToken(for: userId) else {
                 return nil
             }
 
-            let clientSSL = SSLPinning().getCertificate(server: item["url"] as? String ?? "")
+            let clientSSL = SSLPinning().getCertificate(server: item.url.absoluteString.removeTrailingSlash())
 
-            guard let usersQuery = database.query("SELECT * FROM users WHERE token == ? LIMIT 1", args: [userToken]),
-                  let user = usersQuery.first else {
+            guard let usersQuery = getUsers(userToken: userToken) else {
                 return nil
             }
 
-            guard let serverUrlString = item["url"] as? String,
-                  let serverUrl = URL(string: serverUrlString),
-                  let iconUrlString = item["iconURL"] as? String,
-                  let iconURL = URL(string: iconUrlString) else {
-                print("Invalid URL for server or icon")
+            guard let user = usersQuery.first else {
                 return nil
             }
 
-            // Proceed if URLs are valid
             return WatchMessage.Server(
-                url: serverUrl,
-                name: item["name"] as? String ?? "",
-                iconURL: iconURL,
-                useRealName: (item["useRealName"] as? Int ?? 0) == 1,
+                url: item.url,
+                name: item.name,
+                iconURL: item.iconURL,
+                useRealName: item.useRealName == 1 ? true : false,
                 loggedUser: .init(
                     id: userId,
                     token: userToken,
-                    name: user["name"] as? String ?? "",
-                    username: user["username"] as? String ?? ""
+                    name: user.name,
+                    username: user.username
                 ),
                 clientSSL: clientSSL.map {
                     .init(
@@ -62,7 +94,7 @@ final class WatchConnection: NSObject {
                         password: $0.password
                     )
                 },
-                version: item["version"] as? String ?? ""
+                version: item.version
             )
         }
 
@@ -70,17 +102,20 @@ final class WatchConnection: NSObject {
     }
 	
 	private func encodedMessage() -> [String: Any] {
-		do {
-			let data = try JSONEncoder().encode(getMessage())
-			
-			guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-				fatalError("Could not serialize message: \(getMessage())")
-			}
-			
-			return dictionary
-		} catch {
-			fatalError("Could not encode message: \(getMessage())")
-		}
+        do {
+            guard let message = getMessage() else {
+                fatalError("Message is null")
+            }
+            let data = try JSONEncoder().encode(message)
+            
+            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                fatalError("Could not serialize message: \(message)")
+            }
+            
+            return dictionary
+        } catch {
+            fatalError("Could not encode message")
+        }
 	}
 }
 
