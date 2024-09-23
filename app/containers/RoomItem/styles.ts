@@ -25,7 +25,6 @@ export default StyleSheet.create({
 		flex: 1,
 		paddingVertical: 10,
 		paddingRight: 14,
-		borderBottomWidth: StyleSheet.hairlineWidth
 	},
 	title: {
 		flex: 1,

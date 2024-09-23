@@ -47,6 +47,7 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import * as List from '../../containers/List';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -894,6 +895,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 
+	renderSeparator = () => {
+		return <List.Separator spaceOn='left' spaceSize={72} />
+	};
+	
 	renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
@@ -971,6 +976,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
+				ItemSeparatorComponent={this.renderSeparator}
 				getItemLayout={(data, index) => getItemLayout(data, index, height)}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
