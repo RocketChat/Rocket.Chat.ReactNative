@@ -246,7 +246,7 @@ const SettingsView = (): React.ReactElement => {
 					<List.Item
 						title='Get_help'
 						left={() => <List.Icon name='support' />}
-						right={() => <NewWindowIcon />}
+						showActionIndicator
 						onPress={() => navigateToScreen('GetHelpView')}
 						testID='settings-view-get-help'
 					/>
