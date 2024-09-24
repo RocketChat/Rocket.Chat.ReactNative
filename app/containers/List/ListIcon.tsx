@@ -5,7 +5,7 @@ import { CustomIcon, TIconsName } from '../CustomIcon';
 import { ICON_SIZE } from './constants';
 import { useTheme } from '../../theme';
 
-interface IListIcon {
+export interface IListIcon {
 	name: TIconsName;
 	color?: string;
 	style?: StyleProp<ViewStyle>;
