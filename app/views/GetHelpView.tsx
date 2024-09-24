@@ -1,8 +1,8 @@
-import { SafeAreaView } from 'react-native';
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
 import NewWindowIcon from '../containers/NewWindowIcon';
