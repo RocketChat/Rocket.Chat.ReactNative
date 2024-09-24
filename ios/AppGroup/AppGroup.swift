@@ -15,12 +15,15 @@ class AppGroup: NSObject {
   func constantsToExport() -> [AnyHashable : Any]! {
     // Get App Group directory
     var path = ""
-    if let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String {
+    var suiteName = ""
+    
+    if let suite = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String {
+      suiteName = suite
       if let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) {
         path = directory.path
       }
     }
 
-    return ["path": "\(path)/"]
+    return ["path": "\(path)/", "suiteName": suiteName]
   }
 }

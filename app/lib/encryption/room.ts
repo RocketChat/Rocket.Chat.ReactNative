@@ -16,6 +16,7 @@ import {
 	bufferToB64,
 	bufferToB64URI,
 	bufferToUtf8,
+	getE2EEMentions,
 	encryptAESCTR,
 	exportAESCTR,
 	generateAESCTRKey,
@@ -245,6 +246,7 @@ export default class EncryptionRoom {
 				t: E2E_MESSAGE_TYPE,
 				e2e: E2E_STATUS.PENDING,
 				msg,
+				e2eMentions: getE2EEMentions(message.msg),
 				content: {
 					algorithm: 'rc.v1.aes-sha2' as const,
 					ciphertext: await this.encryptText(
