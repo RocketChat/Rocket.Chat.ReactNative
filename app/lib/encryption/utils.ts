@@ -59,6 +59,24 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	// @ts-ignore
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
+
+// https://github.com/RocketChat/Rocket.Chat/blob/b94db45cab297a3bcbafca4d135d83c898222380/apps/meteor/app/mentions/lib/MentionsParser.ts#L50
+const userMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)@(${pattern}(@(${pattern}))?(:([0-9a-zA-Z-_.]+))?)`, 'gm');
+const channelMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)#(${pattern}(@(${pattern}))?)`, 'gm');
+
+export const getE2EEMentions = (message?: string) => {
+	const e2eEnabledMentions = store.getState().settings.E2E_Enabled_Mentions;
+	if (!e2eEnabledMentions || !message) {
+		return undefined;
+	}
+	const utf8UserNamesValidation = store.getState().settings.UTF8_User_Names_Validation as string;
+
+	return {
+		e2eUserMentions: (message.match(userMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim()),
+		e2eChannelMentions: (message.match(channelMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim())
+	};
+};
+
 export const randomPassword = async (): Promise<string> => {
 	const random = await Promise.all(Array.from({ length: 4 }, () => SimpleCrypto.utils.getRandomValues(3)));
 	return `${random[0]}-${random[1]}-${random[2]}-${random[3]}`;

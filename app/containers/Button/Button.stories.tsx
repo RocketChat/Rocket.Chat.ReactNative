@@ -4,7 +4,7 @@ import Button from '.';
 
 const buttonProps = {
 	title: 'Press me!',
-	type: 'primary',
+	type: 'primary' as const,
 	onPress: () => {},
 	testID: 'testButton'
 };
