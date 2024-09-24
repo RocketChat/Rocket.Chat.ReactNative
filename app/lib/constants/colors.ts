@@ -23,7 +23,7 @@ const light = {
 	strokeError: '#EC0D2A',
 
 	fontWhite: '#FFFFFF',
-	fontDisabled: '#CBCED1',
+	fontDisabled: '#FFFFFF',
 	fontAnnotation: '#9EA2A8',
 	fontHint: '#6C727A',
 	fontSecondaryInfo: '#6C727A',
@@ -152,7 +152,7 @@ const dark = {
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
 
-	buttonBackgroundPrimaryDefault: '#3976D1',
+	buttonBackgroundPrimaryDefault: '#095AD2',
 	buttonBackgroundPrimaryPress: '#245399',
 	buttonBackgroundPrimaryDisabled: '#1D3963',
 
