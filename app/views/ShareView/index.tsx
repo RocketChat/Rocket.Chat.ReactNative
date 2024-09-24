@@ -382,7 +382,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							item={selected}
 							length={attachments.length}
 							theme={theme}
-							isShareExtension={this.isShareExtension}
 						/>
 						<MessageComposerContainer ref={this.messageComposerRef}>
 							<Thumbs
