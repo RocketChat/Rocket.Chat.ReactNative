@@ -30,20 +30,19 @@ const styles = StyleSheet.create({
 		marginVertical: 16
 	},
 	bottomContainer: {
-		flexDirection: 'column',
-		alignItems: 'center',
 		marginBottom: 32
 	},
 	bottomContainerText: {
-		...sharedStyles.textRegular,
-		fontSize: 13
+		...sharedStyles.textMedium,
+		fontSize: 14,
+		lineHeight: 22,
+		alignSelf: 'center'
 	},
 	registerButton: {
 		marginTop: 16,
 		marginBottom: 32
 	},
 	loginButton: {
-		width: '100%',
 		marginTop: 12
 	}
 });
@@ -311,7 +310,7 @@ class RegisterView extends React.Component<IProps, any> {
 							<Text style={[styles.bottomContainerText, { color: themes[theme].fontSecondaryInfo }]}>
 								{I18n.t('Already_have_an_account')}
 							</Text>
-							<Button title={I18n.t('Login')} type='secondary' onPress={this.login} style={styles.loginButton}/>
+							<Button title={I18n.t('Login')} type='secondary' onPress={this.login} style={styles.loginButton} />
 						</View>
 					) : null}
 
