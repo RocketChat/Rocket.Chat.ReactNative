@@ -72,7 +72,7 @@ export const useMediaAutoDownload = ({
 		}
 
 		return () => {
-			emitter.off(`downloadMedia${id}`, downloadMediaListener);
+			emitter.off(`downloadMedia${url}`, downloadMediaListener);
 		};
 	}, []);
 
@@ -81,7 +81,8 @@ export const useMediaAutoDownload = ({
 	}, []);
 
 	const resumeDownload = () => {
-		emitter.on(`downloadMedia${id}`, downloadMediaListener);
+		setStatus('loading');
+		emitter.on(`downloadMedia${url}`, downloadMediaListener);
 	};
 
 	const tryAutoDownload = async () => {

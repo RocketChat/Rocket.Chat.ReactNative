@@ -1,5 +1,6 @@
 import { all, call, delay, put, select, take, takeLatest } from 'redux-saga/effects';
 
+import { shareSetParams } from '../actions/share';
 import * as types from '../actions/actionsTypes';
 import { appInit, appStart } from '../actions/app';
 import { inviteLinksRequest, inviteLinksSetToken } from '../actions/inviteLinks';
@@ -17,6 +18,7 @@ import log from '../lib/methods/helpers/log';
 import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
+import sdk from '../lib/services/sdk';
 
 const roomTypes = {
 	channel: 'c',
@@ -84,7 +86,31 @@ const handleOAuth = function* handleOAuth({ params }) {
 	}
 };
 
+const handleShareExtension = function* handleOpen({ params }) {
+	const server = UserPreferences.getString(CURRENT_SERVER);
+	const user = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
+
+	if (!user) {
+		yield put(appInit());
+		return;
+	}
+
+	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
+	yield localAuthenticate(server);
+	yield put(selectServerRequest(server));
+	if (sdk.current?.client?.host !== server) {
+		yield take(types.LOGIN.SUCCESS);
+	}
+	yield put(shareSetParams(params));
+	yield put(appStart({ root: RootEnum.ROOT_SHARE_EXTENSION }));
+};
+
 const handleOpen = function* handleOpen({ params }) {
+	if (params.type === 'shareextension') {
+		yield handleShareExtension({ params });
+		return;
+	}
+
 	const serversDB = database.servers;
 	const serversCollection = serversDB.get('servers');
 
