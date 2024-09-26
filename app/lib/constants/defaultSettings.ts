@@ -258,5 +258,11 @@ export const defaultSettings = {
 	Accounts_ConfirmPasswordPlaceholder: {
 		type: 'valueAsString'
 	},
+	E2E_Enabled_Mentions: {
+		type: 'valueAsBoolean'
+	},
+	UTF8_User_Names_Validation: {
+		type: 'valueAsString'
+	},
 	...deprecatedSettings
 } as const;
