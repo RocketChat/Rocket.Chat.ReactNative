@@ -110,9 +110,8 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme].surfaceHover }
-					]}
-				>
+						{ backgroundColor: themes[theme].surfaceTint }
+					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<FormTextInput
@@ -133,13 +132,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 						</Text>
 					) : null}
 					<View style={styles.buttonContainer}>
-						<Button
-							title={I18n.t('Cancel')}
-							type='secondary'
-							backgroundColor={themes[theme].surfaceTint}
-							style={styles.button}
-							onPress={onCancel}
-						/>
+						<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
 						<Button title={I18n.t('Verify')} type='primary' style={styles.button} onPress={onSubmit} testID='two-factor-send' />
 					</View>
 				</View>

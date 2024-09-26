@@ -2,6 +2,7 @@ import React from 'react';
 import { call, cancel, delay, fork, put, race, select, take, takeLatest } from 'redux-saga/effects';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
+import * as Keychain from 'react-native-keychain';
 
 import moment from 'moment';
 import * as types from '../actions/actionsTypes';
@@ -41,6 +42,7 @@ import {
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
 import { getServerById } from '../lib/database/services/Server';
+import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
@@ -234,9 +236,16 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
+		yield Keychain.setInternetCredentials(server, user.id, user.token, {
+			accessGroup: appGroupSuiteName,
+			securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
+		});
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
-		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const currentRoot = yield select(state => state.app.root);
+		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		}
 		const inviteLinkToken = yield select(state => state.inviteLinks.token);
 		if (inviteLinkToken) {
 			yield put(inviteLinksRequest(inviteLinkToken));

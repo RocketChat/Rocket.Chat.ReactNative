@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -25,6 +25,7 @@ export const initLocalSettings = function* initLocalSettings() {
 const BIOMETRY_MIGRATION_KEY = 'kBiometryMigration';
 
 const restore = function* restore() {
+	console.log('RESTORE');
 	try {
 		// const server = UserPreferences.getString(CURRENT_SERVER);
 		// let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
@@ -93,7 +94,11 @@ const restore = function* restore() {
 };
 
 const start = function* start() {
-	yield RNBootSplash.hide({ fade: true });
+	const currentRoot = yield select(state => state.app.root);
+
+	if (currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		yield RNBootSplash.hide({ fade: true });
+	}
 };
 
 const root = function* root() {
