@@ -64,7 +64,7 @@ describe('Change server', () => {
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();
+		await element(by.id(`server-item-${data.alternateServer}`)).tap();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(60000);
@@ -101,7 +101,7 @@ describe('Change server', () => {
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.server}`)).tap();
+		await element(by.id(`server-item-${data.server}`)).tap();
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()
 			.withTimeout(10000);

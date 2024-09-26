@@ -36,11 +36,13 @@ const MediaAutoDownload = () => {
 			<StatusBar />
 			<List.Container>
 				<List.Section>
+					<List.Separator />
 					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference} title='Image' />
 					<List.Separator />
 					<ListPicker onChangeValue={setVideoPreference} value={videoPreference} title='Video' />
 					<List.Separator />
 					<ListPicker onChangeValue={setAudioPreference} value={audioPreference} title='Audio' />
+					<List.Separator />
 				</List.Section>
 			</List.Container>
 		</SafeAreaView>

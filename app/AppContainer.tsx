@@ -14,6 +14,7 @@ import SetUsernameView from './views/SetUsernameView';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
+import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 
@@ -59,13 +60,18 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 				Navigation.routeNameRef.current = currentRouteName;
 			}}>
 			<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
-				{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
+				{root === RootEnum.ROOT_LOADING || root === RootEnum.ROOT_LOADING_SHARE_EXTENSION ? (
+					<Stack.Screen name='AuthLoading' component={AuthLoadingView} />
+				) : null}
 				{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
 				{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
 					<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
 				) : null}
 				{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
 				{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
+				{root === RootEnum.ROOT_SHARE_EXTENSION ? (
+					<Stack.Screen name='ShareExtensionStack' component={ShareExtensionStack} />
+				) : null}
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

@@ -41,6 +41,7 @@ import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
 import SettingsView from '../views/SettingsView';
 import SecurityPrivacyView from '../views/SecurityPrivacyView';
+import GetHelpView from '../views/GetHelpView';
 import PushTroubleshootView from '../views/PushTroubleshootView';
 import E2EEncryptionSecurityView from '../views/E2EEncryptionSecurityView';
 import LanguageView from '../views/LanguageView';
@@ -184,6 +185,7 @@ const SettingsStackNavigator = () => {
 			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
+			<SettingsStack.Screen name='GetHelpView' component={GetHelpView} />
 			<SettingsStack.Screen
 				name='ScreenLockConfigView'
 				// @ts-ignore
