@@ -678,7 +678,7 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 export const getMessages = (
 	roomId: string,
 	type: SubscriptionType,
-	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
+	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean, _hidden: {$ne: boolean}},
 	offset: number
 ) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
