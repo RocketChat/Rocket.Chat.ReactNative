@@ -97,8 +97,20 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { threadBadgeColor, isIgnored, highlighted, previousItem, autoTranslateRoom, autoTranslateLanguage, isBeingEdited } =
-			this.props;
+		const {
+			threadBadgeColor,
+			separator,
+			isIgnored,
+			highlighted,
+			previousItem,
+			autoTranslateRoom,
+			autoTranslateLanguage,
+			isBeingEdited
+		} = this.props;
+
+		if (nextProps.separator !== separator) {
+			return true;
+		}
 
 		if (nextProps.highlighted !== highlighted) {
 			return true;
