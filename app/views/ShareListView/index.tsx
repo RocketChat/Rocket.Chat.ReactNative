@@ -189,9 +189,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 		if (searching) {
 			navigation.setOptions({
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
@@ -204,10 +201,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		}
 
 		navigation.setOptions({
-			headerTitleAlign: undefined,
-			headerTitleContainerStyle: undefined,
-			headerRightContainerStyle: undefined,
-			headerLeft: () => <HeaderButton.CancelModal onPress={this.closeShareExtension} testID='share-extension-close' />,
+			headerLeft: () => (
+				<HeaderButton.Container left>
+					<HeaderButton.Item iconName='close' onPress={this.closeShareExtension} testID='share-extension-close' />
+				</HeaderButton.Container>
+			),
 			headerTitle: I18n.t('Send_to'),
 			headerRight: () => (
 				<HeaderButton.Container>
