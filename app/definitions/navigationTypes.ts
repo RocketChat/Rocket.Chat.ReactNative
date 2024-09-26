@@ -29,6 +29,7 @@ export type StackParamList = {
 	InsideStack: NavigatorScreenParams<InsideStackParamList>;
 	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
 	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+	ShareExtensionStack: NavigatorScreenParams<ShareInsideStackParamList>;
 };
 
 export type ShareInsideStackParamList = {
@@ -43,14 +44,4 @@ export type ShareInsideStackParamList = {
 		thread?: any; // TODO: Change
 	};
 	SelectServerView: undefined;
-};
-
-export type ShareOutsideStackParamList = {
-	WithoutServersView: undefined;
-};
-
-export type ShareAppStackParamList = {
-	AuthLoading?: undefined;
-	OutsideStack?: NavigatorScreenParams<ShareOutsideStackParamList>;
-	InsideStack?: NavigatorScreenParams<ShareInsideStackParamList>;
 };

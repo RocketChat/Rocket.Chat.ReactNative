@@ -1,6 +1,7 @@
 import React from 'react';
 import { Linking } from 'react-native';
 
+import NewWindowIcon from '../../../containers/NewWindowIcon';
 import * as List from '../../../containers/List';
 import { useTheme } from '../../../theme';
 
@@ -15,7 +16,7 @@ export default function NotificationDelay(): React.ReactElement {
 			<List.Item
 				title='Documentation'
 				onPress={openNotificationDocumentation}
-				right={() => <List.Icon size={32} name='new-window' color={colors.fontAnnotation} />}
+				right={() => <NewWindowIcon size={32} color={colors.fontAnnotation} />}
 				testID='push-troubleshoot-view-notification-delay'
 			/>
 			<List.Separator />
