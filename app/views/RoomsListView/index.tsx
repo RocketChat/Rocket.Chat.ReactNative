@@ -896,9 +896,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderSeparator = () => {
-		return <List.Separator spaceOn='left' spaceSize={72} />
+		return <List.Separator spaceOn='left' spaceSize={72} />;
 	};
-	
+
 	renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
