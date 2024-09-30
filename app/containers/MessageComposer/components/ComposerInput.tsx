@@ -172,9 +172,11 @@ export const ComposerInput = memo(
 		};
 
 		const focus = () => {
-			if (inputRef.current) {
-				inputRef.current.focus();
-			}
+			setTimeout(() => {
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			}, 300);
 		};
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
