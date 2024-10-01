@@ -85,7 +85,7 @@ const ChangeAvatarView = () => {
 				<HeaderBackButton
 					labelVisible={false}
 					onPress={() => navigation.goBack()}
-					tintColor={colors.fontSecondaryInfo}
+					tintColor={colors.fontDefault}
 					testID='header-back'
 				/>
 			)

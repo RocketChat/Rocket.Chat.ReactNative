@@ -119,7 +119,11 @@ async function tapBack() {
 			await element(by.id('header-back')).atIndex(0).tap();
 		}
 	} else {
-		await element(by.label('Navigate up')).atIndex(0).tap();
+		try {
+			await element(by.label('Navigate up')).tap();
+		} catch (error) {
+			await element(by.id('header-back')).atIndex(0).tap();
+		}
 	}
 }
 
