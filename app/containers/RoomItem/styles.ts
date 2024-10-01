@@ -24,7 +24,7 @@ export default StyleSheet.create({
 	centerContainer: {
 		flex: 1,
 		paddingVertical: 10,
-		paddingRight: 14,
+		paddingRight: 14
 	},
 	title: {
 		flex: 1,
