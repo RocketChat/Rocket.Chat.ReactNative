@@ -77,6 +77,7 @@ async function logout() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
+	await element(by.id('settings-view')).swipe('up');
 	await waitFor(element(by.id('settings-logout')))
 		.toBeVisible()
 		.withTimeout(2000);
@@ -118,11 +119,7 @@ async function tapBack() {
 			await element(by.id('header-back')).atIndex(0).tap();
 		}
 	} else {
-		try {
-			await element(by.id('header-back')).atIndex(0).tap();
-		} catch (error) {
-			await device.pressBack();
-		}
+		await element(by.label('Navigate up')).atIndex(0).tap();
 	}
 }
 

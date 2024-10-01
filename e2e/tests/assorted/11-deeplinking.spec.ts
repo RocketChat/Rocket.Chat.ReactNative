@@ -256,6 +256,7 @@ describe('Deep linking', () => {
 				.toBeVisible()
 				.withTimeout(30000);
 			await element(by.id(`share-extension-item-${room}`)).tap();
+			await sleep(1000);
 			await waitFor(element(by.id('share-view')))
 				.toBeVisible()
 				.withTimeout(30000);
