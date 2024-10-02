@@ -6,8 +6,7 @@ import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	headerBackTitleVisible: false,
-	fullScreenGestureEnabled: true
+	headerBackTitleVisible: false
 };
 
 export const drawerStyle = {
