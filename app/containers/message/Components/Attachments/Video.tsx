@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle } from 'react-native';
 
 import { IUserMessage } from '../../../../definitions';
 import { IAttachment } from '../../../../definitions/IAttachment';
@@ -9,15 +9,13 @@ import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import { TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
-import BlurComponent from '../OverlayComponent';
-import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
+import Thumbnail from './Thumbnail';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -43,34 +41,6 @@ interface IMessageVideo {
 	isReply?: boolean;
 	msg?: string;
 }
-
-const CancelIndicator = () => {
-	const { colors } = useTheme();
-	return (
-		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
-		</View>
-	);
-};
-
-const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encrypted: boolean }) => {
-	const { colors } = useTheme();
-	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
-	if (encrypted && status === 'downloaded') {
-		icon = 'encrypted';
-	}
-
-	return (
-		<>
-			<BlurComponent
-				iconName={icon}
-				loading={status === 'loading'}
-				style={[messageStyles.image, { borderColor: colors.strokeLight, borderWidth: 1 }]}
-			/>
-			{status === 'loading' ? <CancelIndicator /> : null}
-		</>
-	);
-};
 
 const Video = ({
 	file,
@@ -112,7 +82,7 @@ const Video = ({
 		<>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
-				<Thumbnail status={status} encrypted={isEncrypted} />
+				<Thumbnail url={url} encrypted={isEncrypted} />
 			</Touchable>
 		</>
 	);
