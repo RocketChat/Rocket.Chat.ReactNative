@@ -68,7 +68,7 @@ const parseDeepLinking = (url: string) => {
 				const parsedQuery = parseQuery(query);
 				return {
 					...parsedQuery,
-					type: matchedPattern
+					type: matchedPattern === 'shareextension' ? matchedPattern : parsedQuery?.type
 				};
 			}
 		}
