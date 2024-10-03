@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
 import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
-import MessageSeparator from '../../views/RoomView/Separator';
+import MessageSeparator from '../MessageSeparator';
 import MessageContext from './Context';
 
 const _theme = 'light';
@@ -57,8 +57,7 @@ export default {
 							onDiscussionPress: () => {},
 							onReactionLongPress: () => {},
 							threadBadgeColor: themes.light.fontInfo
-						}}
-					>
+						}}>
 						<Story />
 					</MessageContext.Provider>
 				</ScrollView>
