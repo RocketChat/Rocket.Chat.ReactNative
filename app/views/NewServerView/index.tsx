@@ -11,7 +11,6 @@ import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
-import OrSeparator from '../../containers/OrSeparator';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -19,7 +18,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isIOS, isTablet } from '../../lib/methods/helpers';
+import { isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
@@ -51,7 +50,6 @@ interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerVi
 
 interface INewServerViewState {
 	text: string;
-	connectingOpen: boolean;
 	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
 }
@@ -68,7 +66,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 		this.state = {
 			text: '',
-			connectingOpen: false,
 			certificate: null,
 			serversHistory: []
 		};
@@ -171,8 +168,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
 
-		this.setState({ connectingOpen: false });
-
 		if (text) {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
@@ -191,13 +186,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				dispatch(serverRequest(server));
 			}
 		}
-	};
-
-	connectOpen = () => {
-		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
-		this.setState({ connectingOpen: true });
-		const { dispatch } = this.props;
-		dispatch(serverRequest('https://open.rocket.chat'));
 	};
 
 	basicAuth = (server: string, text: string) => {
@@ -282,7 +270,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					title={certificate ?? I18n.t('Apply_Certificate')}
 					type='secondary'
 					disabled={connecting}
-					style={{ marginTop: 12 }}
+					style={{ marginTop: 12, alignSelf: 'center', marginBottom: 24 }}
+					fontSize={12}
+					styleText={{ ...sharedStyles.textBold, textAlign: 'center', fontFamily: 'M1/Micro' }}
 				/>
 			</>
 		);
@@ -290,7 +280,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	render() {
 		const { connecting, theme, previousServer } = this.props;
-		const { text, connectingOpen, serversHistory } = this.state;
+		const { text, serversHistory } = this.state;
 		const marginTop = previousServer ? 32 : 84;
 
 		return (
@@ -324,35 +314,12 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						type='primary'
 						onPress={this.submit}
 						disabled={!text || connecting}
-						loading={!connectingOpen && connecting}
+						loading={connecting}
 						style={styles.connectButton}
 						testID='new-server-view-button'
 					/>
-					{this.renderCertificatePicker()}
-					{isIOS && !previousServer ? (
-						<>
-							<OrSeparator theme={theme} />
-							<Text
-								style={[
-									styles.buttonPrompt,
-									{
-										color: themes[theme].fontSecondaryInfo,
-										marginBottom: 16
-									}
-								]}>
-								{I18n.t('Onboarding_join_open_description')}
-							</Text>
-							<Button
-								title={I18n.t('Join_our_open_workspace')}
-								type='secondary'
-								onPress={this.connectOpen}
-								disabled={connecting}
-								loading={connectingOpen && connecting}
-								testID='new-server-view-open'
-							/>
-						</>
-					) : null}
 				</FormContainerInner>
+				{this.renderCertificatePicker()}
 			</FormContainer>
 		);
 	}

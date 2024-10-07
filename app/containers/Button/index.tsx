@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
@@ -14,6 +14,7 @@ interface IButtonProps extends PlatformTouchableProps {
 	loading?: boolean;
 	color?: string;
 	fontSize?: number;
+	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
 }
 
