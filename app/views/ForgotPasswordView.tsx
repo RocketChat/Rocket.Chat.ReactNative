@@ -67,10 +67,12 @@ const ForgotPasswordView = (): React.ReactElement => {
 	return (
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: 24 }]}>
 					{I18n.t('Reset_password')}
 				</Text>
-				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22 }]}>{I18n.t('email')}</Text>
+				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
+					{I18n.t('email')}
+				</Text>
 				<ControlledFormTextInput
 					name='email'
 					control={control}
