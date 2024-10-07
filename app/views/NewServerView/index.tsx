@@ -38,8 +38,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	connectButton: {
-		marginTop: 20,
-		marginBottom: 24
+		marginTop: 20
 	}
 });
 

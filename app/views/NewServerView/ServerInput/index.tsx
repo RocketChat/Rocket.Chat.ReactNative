@@ -64,11 +64,11 @@ const ServerInput = ({
 				textContentType='URL'
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
+				inputStyle={{ marginTop: 4 }}
 			/>
 			{focused && serversHistory?.length ? (
 				<View
-					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}
-				>
+					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}>
 					<FlatList
 						data={serversHistory}
 						renderItem={({ item }) => (
