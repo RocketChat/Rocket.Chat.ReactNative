@@ -64,7 +64,7 @@ const Button: React.FC<IButtonProps> = ({
 		style
 	];
 
-	const textStyle = [styles.text, { color: isDisabled ? colors.fontDisabled : resolvedTextColor, fontSize }, styleText];
+	const textStyle = [styles.text, { color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize }, styleText];
 
 	return (
 		<Touchable
