@@ -23,7 +23,7 @@ const light = {
 	strokeError: '#EC0D2A',
 
 	fontWhite: '#FFFFFF',
-	fontDisabled: '#FFFFFF',
+	fontDisabled: '#CBCED1',
 	fontAnnotation: '#9EA2A8',
 	fontHint: '#6C727A',
 	fontSecondaryInfo: '#6C727A',

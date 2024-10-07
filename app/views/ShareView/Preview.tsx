@@ -6,7 +6,7 @@ import prettyBytes from 'pretty-bytes';
 import { useHeaderHeight } from '@react-navigation/elements';
 
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import { ImageViewer, types } from '../../containers/ImageViewer';
+import { ImageViewer } from '../../containers/ImageViewer';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import { THUMBS_HEIGHT } from './constants';
@@ -60,11 +60,10 @@ const IconPreview = React.memo(({ iconName, title, description, theme, width, he
 interface IPreview {
 	item: IShareAttachment;
 	theme: TSupportedThemes;
-	isShareExtension: boolean;
 	length: number;
 }
 
-const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview) => {
+const Preview = React.memo(({ item, theme, length }: IPreview) => {
 	const type = item?.mime;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
@@ -98,17 +97,10 @@ const Preview = React.memo(({ item, theme, isShareExtension, length }: IPreview)
 			);
 		}
 
-		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
 		if (type?.match(/image/)) {
-			return (
-				<ImageViewer
-					uri={item.path}
-					imageComponentType={isShareExtension ? types.REACT_NATIVE_IMAGE : types.FAST_IMAGE}
-					width={width}
-					height={calculatedHeight}
-				/>
-			);
+			return <ImageViewer uri={item.path} width={width} height={calculatedHeight} />;
 		}
+
 		return (
 			<IconPreview
 				iconName={'attach'}

@@ -41,7 +41,6 @@ import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
-import Separator from './Separator';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
@@ -1298,8 +1297,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 
-		const separator = showUnreadSeparator || dateSeparator ? <Separator ts={dateSeparator} unread={showUnreadSeparator} /> : null;
-
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			const runOnRender = () => {
@@ -1316,7 +1313,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					loaderId={item.id}
 					type={item.t}
 					runOnRender={runOnRender()}
-					separator={separator}
+					dateSeparator={dateSeparator}
+					showUnreadSeparator={showUnreadSeparator}
 				/>
 			);
 		} else {
@@ -1365,7 +1363,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					theme={theme}
 					closeEmojiAndAction={this.handleCloseEmoji}
 					isBeingEdited={isBeingEdited}
-					separator={separator}
+					dateSeparator={dateSeparator}
+					showUnreadSeparator={showUnreadSeparator}
 				/>
 			);
 		}
