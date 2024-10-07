@@ -272,7 +272,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					disabled={connecting}
 					style={{ marginTop: 12, alignSelf: 'center', marginBottom: 24 }}
 					fontSize={12}
-					styleText={{ ...sharedStyles.textBold, textAlign: 'center', fontFamily: 'M1/Micro' }}
+					styleText={{ ...sharedStyles.textBold, textAlign: 'center' }}
 				/>
 			</>
 		);
