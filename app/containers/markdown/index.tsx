@@ -53,7 +53,7 @@ type TLiteral = {
 };
 
 const emojiRanges = [
-	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
+	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\uFE0F]|\u263A\uFE0F', // unicode emoji from https://www.regextester.com/106421
 	':.{1,40}:', // custom emoji
 	' |\n' // allow spaces and line breaks
 ].join('|');
@@ -67,20 +67,8 @@ const isOnlyEmoji = (str: string) => {
 	return !removeAllEmoji(str).length;
 };
 
-const removeOneEmoji = (str: string) => str.replace(new RegExp(emojiRanges), '');
-
 const emojiCount = (str: string) => {
-	str = removeSpaces(str);
-	let oldLength = 0;
-	let counter = 0;
-
-	while (oldLength !== str.length) {
-		oldLength = str.length;
-		str = removeOneEmoji(str);
-		if (oldLength !== str.length) {
-			counter += 1;
-		}
-	}
+	const counter = removeSpaces(str).length;
 
 	return counter;
 };
@@ -142,6 +130,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderText = ({ context, literal }: { context: []; literal: string }) => {
 		const { numberOfLines } = this.props;
 		const defaultStyle = [this.isMessageContainsOnlyEmoji ? styles.textBig : {}, ...context.map(type => styles[type])];
+
+		if (this.isMessageContainsOnlyEmoji) return this.renderEmoji({ literal: removeSpaces(literal) });
+
 		return (
 			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle]} numberOfLines={numberOfLines}>
 				{literal}
@@ -191,10 +182,13 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderParagraph = ({ children }: any) => {
-		const { numberOfLines, style = [], theme } = this.props;
+		const { numberOfLines, style = [], theme, msg } = this.props;
 		if (!children || children.length === 0) {
 			return null;
 		}
+
+		if (msg && isOnlyEmoji(msg)) return <>{children}</>;
+
 		return (
 			<Text style={[styles.text, { color: themes[theme!].fontDefault }, ...style]} numberOfLines={numberOfLines}>
 				{children}
@@ -343,7 +337,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		m = formatHyperlink(m);
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
-		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 6;
 		return this.renderer?.render(ast) || null;
 	}
 }
