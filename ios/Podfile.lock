@@ -10,7 +10,7 @@ PODS:
     - ReactCommon/turbomodule/core
   - Expo (50.0.14):
     - ExpoModulesCore
-  - ExpoAppleAuthentication (6.3.0):
+  - ExpoAppleAuthentication (6.4.2):
     - ExpoModulesCore
   - ExpoCamera (14.1.1):
     - ExpoModulesCore
@@ -1267,15 +1267,15 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
-  - RNImageCropPicker (0.36.3):
+  - RNImageCropPicker (0.41.3):
     - React-Core
     - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.36.3)
-    - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.36.3):
+    - RNImageCropPicker/QBImagePickerController (= 0.41.3)
+    - TOCropViewController (~> 2.7.4)
+  - RNImageCropPicker/QBImagePickerController (0.41.3):
     - React-Core
     - React-RCTImage
-    - TOCropViewController
+    - TOCropViewController (~> 2.7.4)
   - RNKeychain (8.2.0):
     - React-Core
   - RNLocalize (2.1.1):
@@ -1308,7 +1308,7 @@ PODS:
     - SDWebImage/Core (~> 5.17)
   - simdjson (1.0.0)
   - SocketRocket (0.6.1)
-  - TOCropViewController (2.6.1)
+  - TOCropViewController (2.7.4)
   - WatermelonDB (0.25.5):
     - React
     - React-jsi
@@ -1660,7 +1660,7 @@ SPEC CHECKSUMS:
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXAV: 07e50f934907fa8274dd06fbcd20ee4b9478c619
   Expo: e01a77c6fa4bc80a6d1bb949cda1d12d21044abd
-  ExpoAppleAuthentication: 4fc9972356977f009911f2f3a5f56319c2a5b11b
+  ExpoAppleAuthentication: 265219fa0ba1110872079f55f56686b9737b0065
   ExpoCamera: 53f5ef81bab088b2edcf94d05e4da3bc84f46383
   ExpoDocumentPicker: 70254802886e29a45d4ad25486e64b6fc9c8f0cc
   ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
@@ -1762,7 +1762,7 @@ SPEC CHECKSUMS:
   RNFBCrashlytics: c39e903af97cb426f36a10d3268fb0623a1ccddf
   RNFileViewer: 83cc066ad795b1f986791d03b56fe0ee14b6a69f
   RNGestureHandler: bc2cdb2dc42facdf34992ae364b8a728e19a3686
-  RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
+  RNImageCropPicker: 97f68f9b8ee0f5fca501b302dba19d2b35687352
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
@@ -1775,11 +1775,11 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: af09429398d99d524cae2fe00f6f0f6e491ed102
   simdjson: c96317b3a50dff3468a42f586ab7ed22c6ab2fd9
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  WatermelonDB: 6ae836b52d11281d87187ff2283480e44b111771
+  TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
+  WatermelonDB: 212eaf89fa5ad3c0dd7250e1d4a5b2a94984dad7
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 23b05e7d7ba785e3452040d94d4b7ab4a920ee60
+PODFILE CHECKSUM: 3ca3fbc58d59b1325cf552361ee88d50eef59eac
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2

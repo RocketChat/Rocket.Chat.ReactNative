@@ -18,33 +18,35 @@ final class Database {
 	}
 	
 	func readRoomEncryptionKey(rid: String) -> String? {
-		if let results = try? database.queryRaw("select * from subscriptions where id == ? limit 1", [rid]) {
-			guard let record = results.next() else {
-				return nil
-			}
+		// TODO: fix: queryRaw is no longer available
+		// if let results = try? database.queryRaw("select * from subscriptions where id == ? limit 1", [rid]) {
+		// 	guard let record = results.next() else {
+		// 		return nil
+		// 	}
 			
-			if let room = record.resultDictionary as? [String: Any] {
-				if let e2eKey = room["e2e_key"] as? String {
-					return e2eKey
-				}
-			}
-		}
+		// 	if let room = record.resultDictionary as? [String: Any] {
+		// 		if let e2eKey = room["e2e_key"] as? String {
+		// 			return e2eKey
+		// 		}
+		// 	}
+		// }
 		
 		return nil
 	}
 	
 	func readRoomEncrypted(rid: String) -> Bool {
-		if let results = try? database.queryRaw("select * from subscriptions where id == ? limit 1", [rid]) {
-			guard let record = results.next() else {
-				return false
-			}
+		// TODO: fix: queryRaw is no longer available
+		// if let results = try? database.queryRaw("select * from subscriptions where id == ? limit 1", [rid]) {
+		// 	guard let record = results.next() else {
+		// 		return false
+		// 	}
 			
-			if let room = record.resultDictionary as? [String: Any] {
-				if let encrypted = room["encrypted"] as? Bool {
-					return encrypted
-				}
-			}
-		}
+		// 	if let room = record.resultDictionary as? [String: Any] {
+		// 		if let encrypted = room["encrypted"] as? Bool {
+		// 			return encrypted
+		// 		}
+		// 	}
+		// }
 		
 		return false
 	}
