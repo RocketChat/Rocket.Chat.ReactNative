@@ -736,7 +736,7 @@
   "you": "Sie",
   "You_are_converting_the_team": "Sie wandeln dieses Team in einen Room um",
   "You_are_deleting_the_team": "Sie sind dabei dieses Team zu löschen.",
-  "You_are_in_preview_mode": "Sie befinden dich im Vorschaumodus",
+  "You_are_in_preview_mode": "Sie befinden sich im Vorschaumodus",
   "You_are_leaving_the_team": "Sie verlassen das Team '{{team}}'",
   "You_can_search_using_RegExp_eg": "Sie können mit RegExp suchen. z.B. `/ ^ text $ / i`",
   "You_colon": "Sie: ",
