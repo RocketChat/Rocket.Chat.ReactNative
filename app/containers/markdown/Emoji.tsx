@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -23,10 +23,13 @@ const Emoji = React.memo(({ literal, isMessageContainsOnlyEmoji, getCustomEmoji,
 	if (emoji && customEmojis) {
 		return <CustomEmoji style={[isMessageContainsOnlyEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
+
 	return (
-		<Text style={[{ color: colors.fontDefault }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
-			{emojiUnicode}
-		</Text>
+		<View style={{ flexDirection: 'row' }}>
+			<Text style={[{ color: colors.fontDefault }, isMessageContainsOnlyEmoji ? styles.textBig : styles.text, style]}>
+				{emojiUnicode}
+			</Text>
+		</View>
 	);
 });
 
