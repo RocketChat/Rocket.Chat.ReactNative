@@ -1,3 +1,16 @@
+diff --git a/node_modules/@nozbe/watermelondb/WatermelonDB.podspec b/node_modules/@nozbe/watermelondb/WatermelonDB.podspec
+index e9fea58..cfc33ee 100644
+--- a/node_modules/@nozbe/watermelondb/WatermelonDB.podspec
++++ b/node_modules/@nozbe/watermelondb/WatermelonDB.podspec
+@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
+   s.source = { :git => "https://github.com/Nozbe/WatermelonDB.git", :tag => "v#{s.version}" }
+   s.source_files = "native/ios/**/*.{h,m,mm,swift,c,cpp}", "native/shared/**/*.{h,c,cpp}"
+   s.public_header_files = [
+-    'native/ios/WatermelonDB/SupportingFiles/Bridging.h',
++    'native/ios/**/*.h',
+     'native/ios/WatermelonDB/JSIInstaller.h',
+   ]
+   s.requires_arc = true
 diff --git a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt b/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
 index ca31e20..1c1bc24 100644
 --- a/node_modules/@nozbe/watermelondb/native/android/src/main/java/com/nozbe/watermelondb/Database.kt
