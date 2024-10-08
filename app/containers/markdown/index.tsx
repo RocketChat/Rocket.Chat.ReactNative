@@ -53,7 +53,7 @@ type TLiteral = {
 };
 
 const emojiRanges = [
-	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]|[\uFE0F]|\u263A\uFE0F', // unicode emoji from https://www.regextester.com/106421
+	'\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff]', // unicode emoji from https://www.regextester.com/106421
 	':.{1,40}:', // custom emoji
 	' |\n' // allow spaces and line breaks
 ].join('|');
@@ -186,9 +186,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		if (!children || children.length === 0) {
 			return null;
 		}
-
-		if (msg && isOnlyEmoji(msg)) return <>{children}</>;
-
+		if (msg && this.isMessageContainsOnlyEmoji) {
+			return <Text>{children}</Text>;
+		}
 		return (
 			<Text style={[styles.text, { color: themes[theme!].fontDefault }, ...style]} numberOfLines={numberOfLines}>
 				{children}
