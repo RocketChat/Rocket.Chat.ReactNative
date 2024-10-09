@@ -234,7 +234,7 @@ class RegisterView extends React.Component<IProps, any> {
 					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
-						placeholder={I18n.t('Name')}
+						placeholder={I18n.t('Full_name')}
 						returnKeyType='next'
 						onChangeText={(name: string) => this.setState({ name })}
 						onSubmitEditing={() => {
