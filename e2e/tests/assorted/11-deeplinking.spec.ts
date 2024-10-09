@@ -44,8 +44,6 @@ describe('Deep linking', () => {
 
 	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
 
-	const randomUserAlternateServer = data.randomUser();
-
 	beforeAll(async () => {
 		const user = await createRandomUser();
 		({ _id: rid, name: room } = await createRandomRoom(user, 'p'));
@@ -101,16 +99,17 @@ describe('Deep linking', () => {
 		it('should authenticate while logged in another server', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
-			await element(by.id('register-view-name')).replaceText(randomUserAlternateServer.name);
+			const randomUser = data.randomUser();
+			await element(by.id('register-view-name')).replaceText(randomUser.name);
 			await element(by.id('register-view-name')).tapReturnKey();
-			await element(by.id('register-view-username')).replaceText(randomUserAlternateServer.username);
+			await element(by.id('register-view-username')).replaceText(randomUser.username);
 			await element(by.id('register-view-username')).tapReturnKey();
-			await element(by.id('register-view-email')).replaceText(randomUserAlternateServer.email);
+			await element(by.id('register-view-email')).replaceText(randomUser.email);
 			await element(by.id('register-view-email')).tapReturnKey();
-			await element(by.id('register-view-password')).replaceText(randomUserAlternateServer.password);
+			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
-			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUserAlternateServer.username });
+			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
 			await authAndNavigate();
 		});

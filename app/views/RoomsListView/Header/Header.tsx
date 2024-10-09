@@ -1,15 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	TextInputProps,
+	TouchableOpacity,
+	TouchableOpacityProps,
+	View,
+	useWindowDimensions
+} from 'react-native';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
 import { useAppSelector } from '../../../lib/hooks';
+import { isTablet } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	button: {
@@ -34,6 +42,7 @@ interface IRoomHeader {
 	serverName: string;
 	server: string;
 	showSearchHeader: boolean;
+	width?: number;
 	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
 }
@@ -46,11 +55,13 @@ const Header = React.memo(
 		serverName = 'Rocket.Chat',
 		server,
 		showSearchHeader,
+		width,
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
+		const { width: windowWidth } = useWindowDimensions();
 
 		if (showSearchHeader) {
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
@@ -69,7 +80,11 @@ const Header = React.memo(
 		}
 		// improve copy
 		return (
-			<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
+			<View
+				style={[styles.container, { width: width || (isTablet ? undefined : windowWidth) }]}
+				accessibilityLabel={`${serverName} ${subtitle}`}
+				accessibilityRole='header'
+				accessible>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
 					<View style={styles.button}>
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>

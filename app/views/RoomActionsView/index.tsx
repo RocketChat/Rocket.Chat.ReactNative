@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Text, View } from 'react-native';
@@ -9,7 +9,6 @@ import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { leaveRoom } from '../../actions/room';
-import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -81,8 +80,8 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	livechatAllowManualOnHold?: boolean;
 	livechatRequestComment?: boolean;
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+		NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
@@ -123,8 +122,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	static navigationOptions = ({
 		navigation,
 		isMasterDetail
-	}: Pick<IRoomActionsViewProps, 'navigation' | 'isMasterDetail'>): StackNavigationOptions => {
-		const options: StackNavigationOptions = {
+	}: Pick<IRoomActionsViewProps, 'navigation' | 'isMasterDetail'>): NativeStackNavigationOptions => {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Actions')
 		};
 		if (isMasterDetail) {
@@ -450,21 +449,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		} catch (e) {
 			log(e);
 			this.setState({ member: {} });
-		}
-	};
-
-	addUser = async () => {
-		const { room } = this.state;
-		const { dispatch, navigation } = this.props;
-		const { rid } = room;
-		try {
-			dispatch(setLoading(true));
-			await Services.addUsersToRoom(rid);
-			navigation.pop();
-		} catch (e) {
-			log(e);
-		} finally {
-			dispatch(setLoading(false));
 		}
 	};
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StackNavigationOptions } from '@react-navigation/stack';
 import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
@@ -43,7 +42,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 
 	private observable?: Subscription;
 
-	static navigationOptions = (): StackNavigationOptions => ({
+	static navigationOptions = () => ({
 		title: I18n.t('Screen_lock')
 	});
 

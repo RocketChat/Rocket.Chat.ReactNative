@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -60,8 +60,8 @@ export interface IRoomInfoParam {
 
 interface INavigationOption {
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
-		StackNavigationProp<InsideStackParamList & TNavigation>
+		NativeStackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
+		NativeStackNavigationProp<InsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'SearchMessagesView'>;
 }
@@ -88,7 +88,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	private room?: IRoomInfoResult;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Search')
 		};
 		const showCloseModal = route.params?.showCloseModal;

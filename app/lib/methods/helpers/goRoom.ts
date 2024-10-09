@@ -1,5 +1,6 @@
 import { CommonActions } from '@react-navigation/native';
 
+import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import Navigation from '../../navigation/appNavigation';
 import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../../../definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
@@ -117,7 +118,20 @@ export const goRoom = async ({
 		}
 	}
 
-	return navigate({ item, isMasterDetail, popToRoot, ...props });
+	/**
+	 * Fetches subscription from database to use goRoom with a more complete room object.
+	 * We might want to review this logic in the future, since react-navigation complains about non-serializable data
+	 * https://reactnavigation.org/docs/troubleshooting/#i-get-the-warning-non-serializable-values-were-found-in-the-navigation-state
+	 */
+	let _item = item;
+	if (item.rid) {
+		const sub = await getSubscriptionByRoomId(item.rid);
+		if (sub) {
+			_item = sub;
+		}
+	}
+
+	return navigate({ item: _item, isMasterDetail, popToRoot, ...props });
 };
 
 export const navigateToRoom = navigate;

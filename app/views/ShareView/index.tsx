@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
@@ -52,7 +52,7 @@ interface IShareViewState {
 }
 
 interface IShareViewProps {
-	navigation: StackNavigationProp<InsideStackParamList, 'ShareView'>;
+	navigation: NativeStackNavigationProp<InsideStackParamList, 'ShareView'>;
 	route: RouteProp<InsideStackParamList, 'ShareView'>;
 	theme: TSupportedThemes;
 	user: {
@@ -130,10 +130,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { room, thread, readOnly, attachments } = this.state;
 		const { navigation, theme } = this.props;
 
-		const options: StackNavigationOptions = {
-			headerTitle: () => <Header room={room} thread={thread} />,
-			headerTitleAlign: 'left',
-			headerTintColor: themes[theme].backdropColor
+		const options: NativeStackNavigationOptions = {
+			headerTitle: () => <Header room={room} thread={thread} />
 		};
 
 		// if is share extension show default back button
@@ -150,8 +148,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				</HeaderButton.Container>
 			);
 		}
-
-		options.headerBackground = () => <View style={[styles.container, { backgroundColor: themes[theme].surfaceNeutral }]} />;
 
 		navigation.setOptions(options);
 	};
@@ -418,7 +414,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
 			return (
-				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceHover }]}>
+				<View style={[styles.container, styles.centered, { backgroundColor: themes[theme].surfaceHover }]} testID='share-view'>
 					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>
 						{isBlocked(room) ? I18n.t('This_room_is_blocked') : I18n.t('This_room_is_read_only')}
 					</Text>
@@ -426,7 +422,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover, flex: 1 }} testID='share-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover }} testID='share-view'>
 				{this.renderContent()}
 			</SafeAreaView>
 		);

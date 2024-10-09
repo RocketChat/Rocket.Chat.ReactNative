@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const E2EEncryptionSecurityView = () => {
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 

@@ -10,15 +10,15 @@ import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
+		marginLeft: -15,
 		...Platform.select({
 			ios: {
-				minWidth: 60
+				minWidth: 34
 			}
 		})
 	},
 	avatar: {
-		borderRadius: 10,
-		marginHorizontal: 15
+		borderRadius: 10
 	}
 });
 

@@ -1,38 +1,20 @@
-import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 
-export * from './animations';
-
-export const defaultHeader: StackNavigationOptions = {
-	headerBackTitleVisible: false,
-	headerBackTestID: 'header-back',
-	cardOverlayEnabled: true,
-	cardStyle: { backgroundColor: 'transparent' },
-	headerTitleAlign: 'left'
+export const defaultHeader: NativeStackNavigationOptions = {
+	headerBackTitleVisible: false
 };
-
-export const cardStyle = {
-	backgroundColor: 'rgba(0,0,0,0)'
-};
-
-export const borderBottom: any = (theme: TSupportedThemes) => ({
-	borderBottomWidth: StyleSheet.hairlineWidth,
-	borderBottomColor: themes[theme].strokeDark,
-	elevation: 0
-});
 
 export const drawerStyle = {
 	width: 320
 };
 
-export const themedHeader = (theme: TSupportedThemes) => ({
+export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
-		...borderBottom(theme),
 		backgroundColor: themes[theme].surfaceNeutral
 	},
 	headerTintColor: themes[theme].fontDefault,

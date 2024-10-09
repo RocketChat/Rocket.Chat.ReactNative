@@ -1,6 +1,6 @@
 import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
@@ -17,6 +17,8 @@ import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
+
+const createStackNavigator = createNativeStackNavigator;
 
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();
@@ -57,7 +59,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 				}
 				Navigation.routeNameRef.current = currentRouteName;
 			}}>
-			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
+			<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
 				{root === RootEnum.ROOT_LOADING || root === RootEnum.ROOT_LOADING_SHARE_EXTENSION ? (
 					<Stack.Screen name='AuthLoading' component={AuthLoadingView} />
 				) : null}
