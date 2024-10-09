@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 		marginBottom: 10
 	},
 	label: {
+		marginBottom: 10,
 		fontSize: 14,
 		...sharedStyles.textSemibold
 	},
@@ -28,8 +29,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderRadius: 2,
-		marginTop: 10
+		borderRadius: 2
 	},
 	inputIconLeft: {
 		paddingLeft: 45
