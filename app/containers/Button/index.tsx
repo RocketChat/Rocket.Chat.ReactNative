@@ -16,15 +16,23 @@ interface IButtonProps extends PlatformTouchableProps {
 	fontSize?: number;
 	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
 	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
+	small?: boolean;
 }
 
 const styles = StyleSheet.create({
 	container: {
+		marginBottom: 12,
+		borderRadius: 4
+	},
+	normalButton: {
 		paddingHorizontal: 14,
 		justifyContent: 'center',
-		height: 48,
-		borderRadius: 4,
-		marginBottom: 12
+		height: 48
+	},
+	smallButton: {
+		paddingHorizontal: 12,
+		paddingVertical: 8,
+		alignSelf: 'center'
 	},
 	text: {
 		...sharedStyles.textMedium,
@@ -46,6 +54,7 @@ const Button: React.FC<IButtonProps> = ({
 	color,
 	style,
 	styleText,
+	small,
 	...otherProps
 }) => {
 	const { colors } = useTheme();
@@ -59,6 +68,7 @@ const Button: React.FC<IButtonProps> = ({
 	const resolvedTextColor = color || (isPrimary ? colors.fontWhite : colors.fontDefault);
 
 	const containerStyle = [
+		small ? styles.smallButton : styles.normalButton,
 		styles.container,
 		{ backgroundColor: isDisabled ? disabledBackgroundColor : resolvedBackgroundColor },
 		isDisabled && backgroundColor ? styles.disabled : {},

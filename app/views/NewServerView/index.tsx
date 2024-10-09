@@ -270,9 +270,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					title={certificate ?? I18n.t('Apply_Certificate')}
 					type='secondary'
 					disabled={connecting}
-					style={{ marginTop: 12, alignSelf: 'center', marginBottom: 24 }}
+					style={{ marginTop: 12, marginBottom: 24 }}
 					fontSize={12}
 					styleText={{ ...sharedStyles.textBold, textAlign: 'center' }}
+					small
 				/>
 			</>
 		);
