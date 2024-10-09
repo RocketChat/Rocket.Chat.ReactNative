@@ -23,6 +23,8 @@ export const DisabledButton = () => <Button disabled {...buttonProps} />;
 
 export const DisabledLoadingButton = () => <Button disabled loading {...buttonProps} />;
 
+export const SmallButton = () => <Button small {...buttonProps} />;
+
 export const CustomButton = () => (
 	<Button
 		{...buttonProps}

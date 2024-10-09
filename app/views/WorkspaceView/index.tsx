@@ -7,6 +7,7 @@ import { CompositeNavigationProp } from '@react-navigation/core';
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
+import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { useTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
@@ -38,6 +39,8 @@ const WorkspaceView = () => {
 
 	const { colors } = useTheme();
 
+	const workspaceDomain = useWorkspaceDomain();
+
 	const {
 		Accounts_iframe_enabled,
 		Assets_favicon_512,
@@ -51,9 +54,9 @@ const WorkspaceView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Your_workspace')
+			title: workspaceDomain
 		});
-	}, [navigation]);
+	}, [navigation, workspaceDomain]);
 
 	const showRegistrationButton = !!(
 		!Accounts_iframe_enabled &&
@@ -65,11 +68,11 @@ const WorkspaceView = () => {
 			navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
 			return;
 		}
-		navigation.navigate('LoginView', { title: Site_Name });
+		navigation.navigate('LoginView', { title: workspaceDomain });
 	};
 
 	const register = () => {
-		navigation.navigate('RegisterView', { title: Site_Name });
+		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
 
 	return (

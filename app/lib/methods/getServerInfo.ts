@@ -52,7 +52,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			if (!serverInfo?.success) {
 				return {
 					success: false,
-					message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+					message: I18n.t('Not_RC_Server')
 				};
 			}
 
@@ -109,14 +109,14 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			}
 			return {
 				success: false,
-				message: e.message
+				message: I18n.t('Not_RC_Server')
 			};
 		}
 	}
 
 	return {
 		success: false,
-		message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+		message: I18n.t('Not_RC_Server')
 	};
 }
 

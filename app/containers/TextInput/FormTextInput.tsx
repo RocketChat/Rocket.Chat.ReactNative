@@ -15,12 +15,13 @@ const styles = StyleSheet.create({
 		paddingTop: 5
 	},
 	inputContainer: {
-		marginBottom: 10
+		marginBottom: 10,
+		gap: 4
 	},
 	label: {
-		marginBottom: 10,
-		fontSize: 14,
-		...sharedStyles.textSemibold
+		fontSize: 16,
+		lineHeight: 22,
+		...sharedStyles.textMedium
 	},
 	input: {
 		...sharedStyles.textRegular,
