@@ -250,7 +250,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.usernameInput = e;
 						}}
-						placeholder={I18n.t('Username')}
 						returnKeyType='next'
 						onChangeText={(username: string) => this.setState({ username })}
 						onSubmitEditing={() => {
@@ -266,7 +265,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.emailInput = e;
 						}}
-						placeholder={I18n.t('Email')}
 						returnKeyType='next'
 						onChangeText={(email: string) => this.setState({ email })}
 						onSubmitEditing={() => {
@@ -283,7 +281,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.passwordInput = e;
 						}}
-						placeholder={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
 						onChangeText={(value: string) => this.setState({ password: value })}
