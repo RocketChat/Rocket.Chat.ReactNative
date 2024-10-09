@@ -501,5 +501,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "ستنتهي صلاحية رابط الدعوة الخاص بك في {{date}} أو بعد {{usesLeft}} استخدامات",
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
-  "Your_workspace": "مساحة عملك"
+  "Your_workspace": "مساحة عملك",
+  "AirGapped_workspace_read_only_title": "مساحة العمل في وضع القراءة فقط.",
+  "AirGapped_workspace_read_only_description": "يمكن للمسؤولين استعادة الوظائف الكاملة عن طريق الاتصال بالإنترنت أو الترقية إلى خطة متميزة."
 }

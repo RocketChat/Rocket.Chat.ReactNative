@@ -767,5 +767,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "మీ ఆహ్వాన లింక్ {{date}} లేదా {{usesLeft}} ఉపయోగాల తరువాత అది కనబడిపోతుంది.",
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
-  "Your_workspace": "మీ వర్క్‌స్పేస్"
+  "Your_workspace": "మీ వర్క్‌స్పేస్",
+  "AirGapped_workspace_read_only_title": "అయోమయ స్థితిలో ఉన్న పనికోసం.",
+  "AirGapped_workspace_read_only_description": "నిర్వహకులు దీన్ని ఇంటర్నెట్‌తో కలుపుకోవడం లేదా ప్రీమియం ప్రణాళికకు మెరుగుపరచడం ద్వారా పూర్తి ఫంక్షనాలిటీని పునఃస్థాపించవచ్చు."
 }

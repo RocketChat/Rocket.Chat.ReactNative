@@ -648,5 +648,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Je uitnodigingslink verloopt op {{date}} of na {{usesLeft}} keer.",
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
-  "Your_workspace": "Jouw werkruimte"
+  "Your_workspace": "Jouw werkruimte",
+  "AirGapped_workspace_read_only_title": "Werkruimte in alleen-lezen modus.",
+  "AirGapped_workspace_read_only_description": "Beheerders kunnen de volledige functionaliteit herstellen door deze met internet te verbinden of te upgraden naar een premiumplan."
 }

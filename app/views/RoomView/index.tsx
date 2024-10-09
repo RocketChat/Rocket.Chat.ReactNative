@@ -246,11 +246,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
 		const { roomUpdate, member, isOnHold } = state;
-		const { theme, insets, route, encryptionEnabled } = this.props;
+		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
 		}
 		if (encryptionEnabled !== nextProps.encryptionEnabled) {
+			return true;
+		}
+		if (airGappedRestrictionRemainingDays !== nextProps.airGappedRestrictionRemainingDays) {
 			return true;
 		}
 		if (member.statusText !== nextState.member.statusText) {
@@ -1378,7 +1381,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	renderFooter = () => {
 		const { joined, room, readOnly, loading } = this.state;
-		const { theme } = this.props;
+		const { theme, airGappedRestrictionRemainingDays } = this.props;
 
 		if (!this.rid) {
 			return null;
@@ -1410,6 +1413,18 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 							{I18n.t(this.isOmnichannel ? 'Take_it' : 'Join')}
 						</Text>
 					</Touch>
+				</View>
+			);
+		}
+		if (airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === -1) {
+			return (
+				<View style={styles.readOnly}>
+					<Text style={[styles.previewMode, { color: themes[theme].fontDefault }]}>
+						{I18n.t('AirGapped_workspace_read_only_title')}
+					</Text>
+					<Text style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
+						{I18n.t('AirGapped_workspace_read_only_description')}
+					</Text>
 				</View>
 			);
 		}
@@ -1534,6 +1549,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	transferLivechatGuestPermission: state.permissions['transfer-livechat-guest'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
+	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
 	inAppFeedback: state.inAppFeedback,
 	encryptionEnabled: state.encryption.enabled
 });

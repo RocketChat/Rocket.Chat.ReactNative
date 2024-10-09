@@ -521,5 +521,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "您的邀請連結將於{{date}}或{{usesLeft}}使用後到期。",
   "Your_invite_link_will_never_expire": "您的邀請連結永久有效。",
   "Your_password_is": "您的密碼",
-  "Your_workspace": "您的工作區"
+  "Your_workspace": "您的工作區",
+  "AirGapped_workspace_read_only_title": "工作區域為唯讀模式。",
+  "AirGapped_workspace_read_only_description": "管理員可以通過將其連接到互聯網或升級到高級計劃來恢復完整功能。"
 }

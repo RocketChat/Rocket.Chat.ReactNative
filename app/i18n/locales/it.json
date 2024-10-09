@@ -551,5 +551,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Il tuo link di invito scadrà il {{date}} oppure dopo {{usesLeft}} utilizzi.",
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
-  "Your_workspace": "Il tuo workspace"
+  "Your_workspace": "Il tuo workspace",
+  "AirGapped_workspace_read_only_title": "Workspace in modalità di sola lettura.",
+  "AirGapped_workspace_read_only_description": "Gli amministratori possono ripristinare la funzionalità completa collegandosi a Internet o aggiornando a un piano premium."
 }

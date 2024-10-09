@@ -534,5 +534,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Davet bağlantınızın geçerliliği {{date}} tarihinde veya {{usesLeft}} kullanımdan sonra sona erecek.",
   "Your_invite_link_will_never_expire": "Davet bağlantınızın geçerlilik süresi asla dolmayacak.",
   "Your_password_is": "Şifreniz",
-  "Your_workspace": "Çalışma alanınız"
+  "Your_workspace": "Çalışma alanınız",
+  "AirGapped_workspace_read_only_title": "Çalışma alanı yalnızca okunur modda.",
+  "AirGapped_workspace_read_only_description": "Yöneticiler, bunu internete bağlayarak veya premium bir plana yükselterek tam işlevselliği geri kazanabilirler."
 }

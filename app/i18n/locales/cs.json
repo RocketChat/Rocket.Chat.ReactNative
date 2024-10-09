@@ -844,5 +844,7 @@
   "Your_invite_link_will_never_expire": "Platnost vašeho odkazu s pozvánkou nikdy nevyprší.",
   "Your_password_is": "Vaše heslo je",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor"
+  "Your_workspace": "Váš pracovní prostor",
+  "AirGapped_workspace_read_only_title": "Pracoviště v režimu pouze pro čtení.",
+  "AirGapped_workspace_read_only_description": "Správci mohou obnovit plnou funkčnost připojením k internetu nebo upgradem na prémiový plán."
 }

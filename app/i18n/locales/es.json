@@ -306,5 +306,7 @@
   "You_need_to_access_at_least_one_RocketChat_server_to_share_something": "Necesita acceder al menos a un servidor Rocket.Chat para compartir algo.",
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
-  "Your_certificate": "Tu certificado"
+  "Your_certificate": "Tu certificado",
+  "AirGapped_workspace_read_only_title": "Espacio de trabajo en modo de solo lectura.",
+  "AirGapped_workspace_read_only_description": "Los administradores pueden restaurar la funcionalidad completa conectándolo a Internet o actualizando a un plan premium."
 }

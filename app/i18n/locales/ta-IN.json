@@ -767,5 +767,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "உங்கள் அழைத்துக்கொள்ளும் இணைய கணக்கு {{date}} அல்லது {{usesLeft}} பயன்பாடுகளுக்குப் பிறகு காலாவதியாகின்றது.",
   "Your_invite_link_will_never_expire": "உங்கள் அழைத்துக்கொள்ளும் இணைய கணக்கு எப்போதும் காலாவதியாகின்றதுமில்லை.",
   "Your_password_is": "உங்கள் கடவுச்சொல் உள்ளது",
-  "Your_workspace": "உங்கள் பணிகள்"
+  "Your_workspace": "உங்கள் பணிகள்",
+  "AirGapped_workspace_read_only_title": "தற்காலிகமாகவே படிக்கக்கூடிய சூழலில் உள்ள வேலைப்பாடு.",
+  "AirGapped_workspace_read_only_description": "அடுத்தவர்களை இணையத்துடன் இணைத்து அல்லது பிரீமியம் திட்டத்திற்கு மேம்படுத்துவதன் மூலம் முழு செயல்திறனை மீட்டெடுக்கலாம்."
 }

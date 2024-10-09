@@ -757,5 +757,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Ihr Einladungs-Link wird am {{date}} oder nach {{usesLeft}} Benutzungen ablaufen.",
   "Your_invite_link_will_never_expire": "Ihr Einladungs-Link wird niemals ablaufen.",
   "Your_password_is": "Ihr Passwort lautet",
-  "Your_workspace": "Ihr Arbeitsbereich"
+  "Your_workspace": "Ihr Arbeitsbereich",
+  "AirGapped_workspace_read_only_title": "Arbeitsbereich im Nur-Lesen-Modus.",
+  "AirGapped_workspace_read_only_description": "Administratoren können die volle Funktionalität wiederherstellen, indem sie es mit dem Internet verbinden oder auf einen Premium-Plan upgraden."
 }

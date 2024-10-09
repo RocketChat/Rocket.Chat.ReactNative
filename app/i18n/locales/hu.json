@@ -770,5 +770,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "A meghívási hivatkozása {{date}} napon vagy {{usesLeft}} használat után lejár.",
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
-  "Your_workspace": "Az Ön munkaterülete"
+  "Your_workspace": "Az Ön munkaterülete",
+  "AirGapped_workspace_read_only_title": "Munkaterület csak olvasási módban.",
+  "AirGapped_workspace_read_only_description": "A rendszergazdák visszaállíthatják a teljes funkcionalitást az internethez való csatlakozással vagy prémium tervre való frissítéssel."
 }

@@ -379,5 +379,7 @@
   "You_colon": "Você: ",
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
-  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!"
+  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
+  "AirGapped_workspace_read_only_title": "Espaço de trabalho em modo apenas leitura.",
+  "AirGapped_workspace_read_only_description": "Os administradores podem restaurar a funcionalidade completa ligando-o à internet ou fazendo um upgrade para um plano premium."
 }

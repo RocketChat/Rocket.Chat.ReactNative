@@ -767,5 +767,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "আপনার আমন্ত্রণ লিঙ্কটি {{date}} বা তারপর {{usesLeft}} ব্যবহার করার পর মেয়াদ শেষ হবে।",
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস",
+  "AirGapped_workspace_read_only_title": "কর্মস্থান পড়ার মোডে।",
+  "AirGapped_workspace_read_only_description": "অ্যাডমিনরা এটি ইন্টারনেটের সাথে সংযুক্ত করে বা একটি প্রিমিয়াম পরিকল্পনায় আপগ্রেড করে সম্পূর্ণ কার্যকারিতা পুনরুদ্ধার করতে পারেন।"
 }

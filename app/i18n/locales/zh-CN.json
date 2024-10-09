@@ -492,5 +492,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "您的邀请链接将于{{date}}或{{usesLeft}}使用后到期。",
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
-  "Your_workspace": "您的工作区"
+  "Your_workspace": "您的工作区",
+  "AirGapped_workspace_read_only_title": "工作区为只读模式。",
+  "AirGapped_workspace_read_only_description": "管理员可以通过将其连接到互联网或升级到高级计划来恢复完整功能。"
 }

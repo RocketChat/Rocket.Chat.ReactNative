@@ -767,5 +767,7 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "आपका आमंत्रण लिंक {{date}} को या {{usesLeft}} उपयोगों के बाद समाप्त हो जाएगा।",
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
-  "Your_workspace": "आपका कार्यस्थान"
+  "Your_workspace": "आपका कार्यस्थान",
+  "AirGapped_workspace_read_only_title": "कार्यस्थान केवल-पढ़ने के मोड में है।",
+  "AirGapped_workspace_read_only_description": "व्यवस्थापकों के पास इसे इंटरनेट से कनेक्ट करके या प्रीमियम योजना में अपग्रेड करके पूर्ण कार्यक्षमता को पुनर्स्थापित करने का विकल्प है।"
 }

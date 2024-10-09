@@ -865,5 +865,7 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace"
+  "Your_workspace": "Your workspace",
+  "AirGapped_workspace_read_only_title": "Workspace in read-only mode.",
+  "AirGapped_workspace_read_only_description": "Admins can restore full functionality by connecting it to internet or upgrading to a premium plan."
 }
