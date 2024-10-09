@@ -108,7 +108,7 @@ const UserForm = () => {
 					name='user'
 					control={control}
 					label={I18n.t('Username_or_email')}
-					placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
+					placeholder={Accounts_EmailOrUsernamePlaceholder}
 					keyboardType='email-address'
 					returnKeyType='next'
 					onSubmitEditing={() => setFocus('password')}
@@ -120,7 +120,7 @@ const UserForm = () => {
 					name='password'
 					control={control}
 					label={I18n.t('Password')}
-					placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
+					placeholder={Accounts_PasswordPlaceholder}
 					returnKeyType='send'
 					secureTextEntry
 					onSubmitEditing={handleSubmit(submit)}
