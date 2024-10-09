@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import moment from 'moment';
 
-import I18n from '../../i18n';
-import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
-import { useTheme } from '../../theme';
+import I18n from '../i18n';
+import sharedStyles from '../views/Styles';
+import { themes } from '../lib/constants';
+import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,8 +31,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boolean }): React.ReactElement => {
+const MessageSeparator = ({ ts, unread }: { ts?: Date | string | null; unread?: boolean }): React.ReactElement | null => {
 	const { theme } = useTheme();
+
+	if (!ts && !unread) {
+		return null;
+	}
+
 	const date = ts ? moment(ts).format('LL') : null;
 	const unreadLine = { backgroundColor: themes[theme].buttonBackgroundDangerDefault };
 	const unreadText = { color: themes[theme].fontDanger };
@@ -62,4 +67,4 @@ const DateSeparator = ({ ts, unread }: { ts: Date | string | null; unread: boole
 	);
 };
 
-export default DateSeparator;
+export default MessageSeparator;

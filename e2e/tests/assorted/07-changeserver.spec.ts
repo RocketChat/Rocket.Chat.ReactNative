@@ -30,9 +30,12 @@ describe('Change server', () => {
 		await deleteCreatedUsers(deleteUsersAfterAll);
 	});
 
-	it('should open the dropdown button, have the server add button and create workspace button', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+	it('should open the servers list, have the server add button and create workspace button', async () => {
+		await waitFor(element(by.id('rooms-list-header-servers-list-button')))
+			.toBeVisible()
+			.withTimeout(2000);
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await waitFor(element(by.id('rooms-list-header-server-add')))
@@ -57,11 +60,11 @@ describe('Change server', () => {
 	});
 
 	it('should add server and create new user', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();
+		await element(by.id(`server-item-${data.alternateServer}`)).tap();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(60000);
@@ -73,8 +76,11 @@ describe('Change server', () => {
 		// Register new user
 		const randomUser = data.randomUser();
 		await element(by.id('register-view-name')).replaceText(randomUser.name);
+		await element(by.id('register-view-name')).tapReturnKey();
 		await element(by.id('register-view-username')).replaceText(randomUser.username);
+		await element(by.id('register-view-username')).tapReturnKey();
 		await element(by.id('register-view-email')).replaceText(randomUser.email);
+		await element(by.id('register-view-email')).tapReturnKey();
 		await element(by.id('register-view-password')).replaceText(randomUser.password);
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
@@ -91,11 +97,11 @@ describe('Change server', () => {
 	});
 
 	it('should change back to main server', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.server}`)).tap();
+		await element(by.id(`server-item-${data.server}`)).tap();
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()
 			.withTimeout(10000);

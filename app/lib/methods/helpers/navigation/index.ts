@@ -1,18 +1,19 @@
 import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { StackNavigationOptions } from '@react-navigation/stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
-import { isIOS } from '../deviceInfo';
 import sharedStyles from '../../../../views/Styles';
 
 export * from './animations';
 
-export const defaultHeader = {
+export const defaultHeader: StackNavigationOptions = {
 	headerBackTitleVisible: false,
 	headerBackTestID: 'header-back',
 	cardOverlayEnabled: true,
-	cardStyle: { backgroundColor: 'transparent' }
+	cardStyle: { backgroundColor: 'transparent' },
+	headerTitleAlign: 'left'
 };
 
 export const cardStyle = {
@@ -28,9 +29,6 @@ export const borderBottom: any = (theme: TSupportedThemes) => ({
 export const drawerStyle = {
 	width: 320
 };
-
-// TODO: Remove it once we migrate dropdowns to action sheet
-export const headerHeight = isIOS ? 50 : 56;
 
 export const themedHeader = (theme: TSupportedThemes) => ({
 	headerStyle: {

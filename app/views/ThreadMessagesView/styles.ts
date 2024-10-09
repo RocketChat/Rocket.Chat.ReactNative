@@ -17,14 +17,5 @@ export default StyleSheet.create({
 	},
 	contentContainer: {
 		paddingBottom: 30
-	},
-	dropdownContainer: {
-		width: '100%',
-		position: 'absolute',
-		top: 0,
-		borderBottomWidth: StyleSheet.hairlineWidth
-	},
-	backdrop: {
-		...StyleSheet.absoluteFillObject
 	}
 });

@@ -54,7 +54,6 @@ export default {
 	SET_STATUS_FAIL: 'set_status_fail',
 
 	// ROOMS LIST VIEW
-	RL_TOGGLE_SERVER_DROPDOWN: 'rl_toggle_server_dropdown',
 	RL_ADD_SERVER: 'rl_add_server',
 	RL_CHANGE_SERVER: 'rl_change_server',
 	RL_GO_NEW_MSG: 'rl_go_new_msg',

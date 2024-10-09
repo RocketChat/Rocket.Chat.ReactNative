@@ -10,6 +10,7 @@ import openLink from '../../lib/methods/helpers/openLink';
 import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
+import MessageSeparator from '../MessageSeparator';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -60,6 +61,8 @@ interface IMessageContainerProps {
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
 	isBeingEdited?: boolean;
 	isPreview?: boolean;
+	dateSeparator?: Date | string | null;
+	showUnreadSeparator?: boolean;
 }
 
 interface IMessageContainerState {
@@ -96,9 +99,24 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { threadBadgeColor, isIgnored, highlighted, previousItem, autoTranslateRoom, autoTranslateLanguage, isBeingEdited } =
-			this.props;
+		const {
+			threadBadgeColor,
+			isIgnored,
+			highlighted,
+			previousItem,
+			autoTranslateRoom,
+			autoTranslateLanguage,
+			isBeingEdited,
+			showUnreadSeparator,
+			dateSeparator
+		} = this.props;
 
+		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
+			return true;
+		}
+		if (nextProps.dateSeparator !== dateSeparator) {
+			return true;
+		}
 		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
@@ -360,7 +378,9 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			jumpToMessage,
 			highlighted,
 			isBeingEdited,
-			isPreview
+			isPreview,
+			showUnreadSeparator,
+			dateSeparator
 		} = this.props;
 		const {
 			id,
@@ -432,6 +452,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
 					isEncrypted: this.isEncrypted
 				}}>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				{/* @ts-ignore*/}
 				<Message
 					id={id}

@@ -14,16 +14,26 @@ export const useAutoSaveDraft = (text = '') => {
 
 	const mounted = useRef(true);
 
-	const saveMessageDraft = useCallback(() => {
-		if (route.name === 'ShareView') return;
-		if (action === 'edit') return;
-		const draftMessage = selectedMessages?.length ? JSON.stringify({ quotes: selectedMessages, msg: text }) : text;
-		if (oldText.current !== draftMessage || (oldText.current === '' && draftMessage === '')) {
-			oldText.current = draftMessage;
-			saveDraftMessage({ rid, tmid, draftMessage });
-		}
-	}, [action, rid, tmid, text, selectedMessages?.length, route.name]);
+	const saveMessageDraft = useCallback(
+		(m?: string) => {
+			if (route.name === 'ShareView') return;
+			if (action === 'edit') return;
 
+			let draftMessage = '';
+			if (selectedMessages?.length) {
+				draftMessage = JSON.stringify({ quotes: selectedMessages, msg: text });
+			} else {
+				draftMessage = m ?? text;
+			}
+			if (oldText.current !== draftMessage || (oldText.current === '' && draftMessage === '') || m !== undefined) {
+				oldText.current = draftMessage;
+				saveDraftMessage({ rid, tmid, draftMessage });
+			}
+		},
+		[action, rid, tmid, text, selectedMessages?.length, route.name]
+	);
+
+	// if focused on composer input, saves every N seconds
 	useEffect(() => {
 		if (focused) {
 			intervalRef.current = setInterval(saveMessageDraft, 3000) as any;
@@ -52,4 +62,6 @@ export const useAutoSaveDraft = (text = '') => {
 		},
 		[saveMessageDraft]
 	);
+
+	return { saveMessageDraft };
 };

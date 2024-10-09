@@ -41,7 +41,6 @@ import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import RoomServices from './services';
 import LoadMore from './LoadMore';
 import Banner from './Banner';
-import Separator from './Separator';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
@@ -1297,6 +1296,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				dateSeparator = item.ts;
 			}
 		}
+
 		let content = null;
 		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
 			const runOnRender = () => {
@@ -1306,7 +1306,17 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}
 				return false;
 			};
-			content = <LoadMore rid={room.rid} t={room.t as RoomType} loaderId={item.id} type={item.t} runOnRender={runOnRender()} />;
+			content = (
+				<LoadMore
+					rid={room.rid}
+					t={room.t as RoomType}
+					loaderId={item.id}
+					type={item.t}
+					runOnRender={runOnRender()}
+					dateSeparator={dateSeparator}
+					showUnreadSeparator={showUnreadSeparator}
+				/>
+			);
 		} else {
 			if (inAppFeedback?.[item.id]) {
 				this.hapticFeedback(item.id);
@@ -1353,16 +1363,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					theme={theme}
 					closeEmojiAndAction={this.handleCloseEmoji}
 					isBeingEdited={isBeingEdited}
+					dateSeparator={dateSeparator}
+					showUnreadSeparator={showUnreadSeparator}
 				/>
-			);
-		}
-
-		if (showUnreadSeparator || dateSeparator) {
-			return (
-				<>
-					<Separator ts={dateSeparator} unread={showUnreadSeparator} />
-					{content}
-				</>
 			);
 		}
 

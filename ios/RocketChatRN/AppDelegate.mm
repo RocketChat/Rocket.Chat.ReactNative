@@ -3,7 +3,6 @@
 #import <React/RCTLinkingManager.h>
 #import "RNNotifications.h"
 #import "RNBootSplash.h"
-#import "Orientation.h"
 #import <Firebase.h>
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
@@ -19,7 +18,7 @@
   
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
-  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogInfo];
+  [MMKV initializeMMKV:nil groupDir:groupDir logLevel:MMKVLogDebug];
   
   [RNNotifications startMonitorNotifications];
   [ReplyNotification configure];
@@ -79,8 +78,4 @@ return [RCTLinkingManager application:application
                     restorationHandler:restorationHandler];
 }
 
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-{
-  return [Orientation getOrientation];
-}
 @end

@@ -9,7 +9,7 @@ import ActivityIndicator from '../ActivityIndicator';
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	onPress: () => void;
-	type?: string; // primary | secondary
+	type?: 'primary' | 'secondary';
 	backgroundColor?: string;
 	loading?: boolean;
 	color?: string;
@@ -64,10 +64,16 @@ const Button: React.FC<IButtonProps> = ({
 		style
 	];
 
-	const textStyle = [styles.text, { color: isDisabled ? colors.fontDisabled : resolvedTextColor, fontSize }, styleText];
+	const textStyle = [styles.text, { color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize }, styleText];
 
 	return (
-		<Touchable onPress={onPress} disabled={isDisabled} style={containerStyle} accessibilityLabel={title} {...otherProps}>
+		<Touchable
+			onPress={onPress}
+			disabled={isDisabled}
+			style={containerStyle}
+			accessibilityLabel={title}
+			accessibilityRole='button'
+			{...otherProps}>
 			{loading ? <ActivityIndicator color={resolvedTextColor} /> : <Text style={textStyle}>{title}</Text>}
 		</Touchable>
 	);
