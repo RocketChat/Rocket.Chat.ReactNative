@@ -264,5 +264,8 @@ export const defaultSettings = {
 	UTF8_User_Names_Validation: {
 		type: 'valueAsString'
 	},
+	Cloud_Workspace_AirGapped_Restrictions_Remaining_Days: {
+		type: 'valueAsNumber'
+	},
 	...deprecatedSettings
 } as const;
