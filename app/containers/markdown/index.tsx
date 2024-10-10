@@ -67,9 +67,20 @@ const isOnlyEmoji = (str: string) => {
 	return !removeAllEmoji(str).length;
 };
 
-const emojiCount = (str: string) => {
-	const counter = removeSpaces(str).length;
+const removeOneEmoji = (str: string) => str.replace(new RegExp(emojiRanges), '');
 
+const emojiCount = (str: string) => {
+	str = removeSpaces(str);
+	let oldLength = 0;
+	let counter = 0;
+
+	while (oldLength !== str.length) {
+		oldLength = str.length;
+		str = removeOneEmoji(str);
+		if (oldLength !== str.length) {
+			counter += 1;
+		}
+	}
 	return counter;
 };
 
@@ -337,7 +348,7 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 		m = formatHyperlink(m);
 		let ast = parser.parse(m);
 		ast = mergeTextNodes(ast);
-		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 6;
+		this.isMessageContainsOnlyEmoji = isOnlyEmoji(m) && emojiCount(m) <= 3;
 		return this.renderer?.render(ast) || null;
 	}
 }
