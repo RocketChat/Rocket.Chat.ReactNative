@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 8
 	},
-	titleAndDesciptionContainer: {
-		flexDirection: "column",
+	titleAndDescriptionContainer: {
+		flexDirection: 'column',
 		flex: 1,
 		width: 200
 	},
@@ -251,7 +251,7 @@ const Reply = React.memo(
 					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
-						<View style={styles.titleAndDesciptionContainer}>
+						<View style={styles.titleAndDescriptionContainer}>
 							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
 							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
 							<Attachments
