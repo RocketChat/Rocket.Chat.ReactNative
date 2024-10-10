@@ -18,6 +18,9 @@
   "Admin_Panel": "Панель админа",
   "After_seconds_set_by_admin": "Через {{seconds}} секунд (установлено администратором сервера)",
   "Agent": "Агент",
+  "AirGapped_workspace_read_only_description": "Администраторы могут восстановить полную функциональность, подключив его к интернету или обновив до премиум-плана.",
+  "AirGapped_workspace_read_only_share_extension_title": "Обмен отключен, так как рабочая область находится в режиме только для чтения.",
+  "AirGapped_workspace_read_only_title": "Рабочее пространство в режиме только для чтения.",
   "Alert": "Оповещение",
   "alert": "оповещение",
   "alerts": "оповещения",
@@ -697,8 +700,5 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Ваша ссылка-приглашение станет не действительной {{date}} или после {{usesLeft}} ее использований.",
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
-  "Your_workspace": "Ваш сервер",
-  "AirGapped_workspace_read_only_title": "Рабочее пространство в режиме только для чтения.",
-  "AirGapped_workspace_read_only_description": "Администраторы могут восстановить полную функциональность, подключив его к интернету или обновив до премиум-плана.",
-  "AirGapped_workspace_read_only_share_extension_title": "Обмен отключен, так как рабочая область находится в режиме только для чтения."
+  "Your_workspace": "Ваш сервер"
 }

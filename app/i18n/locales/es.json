@@ -6,6 +6,9 @@
   "Add_Server": "Añadir servidor",
   "Add_server": "Añadir servidor",
   "Admin_Panel": "Panel de Control",
+  "AirGapped_workspace_read_only_description": "Los administradores pueden restaurar la funcionalidad completa conectándolo a Internet o actualizando a un plan premium.",
+  "AirGapped_workspace_read_only_share_extension_title": "La compartición está deshabilitada porque el espacio de trabajo está en modo de solo lectura.",
+  "AirGapped_workspace_read_only_title": "Espacio de trabajo en modo de solo lectura.",
   "Alert": "Alerta",
   "alert": "alerta",
   "alerts": "alertas",
@@ -306,8 +309,5 @@
   "You_need_to_access_at_least_one_RocketChat_server_to_share_something": "Necesita acceder al menos a un servidor Rocket.Chat para compartir algo.",
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
-  "Your_certificate": "Tu certificado",
-  "AirGapped_workspace_read_only_title": "Espacio de trabajo en modo de solo lectura.",
-  "AirGapped_workspace_read_only_description": "Los administradores pueden restaurar la funcionalidad completa conectándolo a Internet o actualizando a un plan premium.",
-  "AirGapped_workspace_read_only_share_extension_title": "La compartición está deshabilitada porque el espacio de trabajo está en modo de solo lectura."
+  "Your_certificate": "Tu certificado"
 }

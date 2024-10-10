@@ -27,6 +27,9 @@
   "admin-video-conf-provider-not-configured-header": "Telefonkonferenz nicht aktiviert",
   "After_seconds_set_by_admin": "Nach {{seconds}} Sekunden (durch den Admin gesetzt)",
   "Agent": "Agent",
+  "AirGapped_workspace_read_only_description": "Administratoren können die volle Funktionalität wiederherstellen, indem sie es mit dem Internet verbinden oder auf einen Premium-Plan upgraden.",
+  "AirGapped_workspace_read_only_share_extension_title": "Das Teilen ist deaktiviert, da der Arbeitsbereich im Nur-Lesen-Modus ist.",
+  "AirGapped_workspace_read_only_title": "Arbeitsbereich im Nur-Lesen-Modus.",
   "Alert": "Benachrichtigung",
   "alert": "Benachrichtigung",
   "alerts": "Benachrichtigungen",
@@ -757,8 +760,5 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Ihr Einladungs-Link wird am {{date}} oder nach {{usesLeft}} Benutzungen ablaufen.",
   "Your_invite_link_will_never_expire": "Ihr Einladungs-Link wird niemals ablaufen.",
   "Your_password_is": "Ihr Passwort lautet",
-  "Your_workspace": "Ihr Arbeitsbereich",
-  "AirGapped_workspace_read_only_title": "Arbeitsbereich im Nur-Lesen-Modus.",
-  "AirGapped_workspace_read_only_description": "Administratoren können die volle Funktionalität wiederherstellen, indem sie es mit dem Internet verbinden oder auf einen Premium-Plan upgraden.",
-  "AirGapped_workspace_read_only_share_extension_title": "Das Teilen ist deaktiviert, da der Arbeitsbereich im Nur-Lesen-Modus ist."
+  "Your_workspace": "Ihr Arbeitsbereich"
 }

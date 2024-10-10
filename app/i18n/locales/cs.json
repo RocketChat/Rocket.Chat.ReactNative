@@ -28,6 +28,9 @@
   "admin-video-conf-provider-not-configured-header": "Konferenční hovor není povolen",
   "After_seconds_set_by_admin": "Po {{seconds}} sekundách (nastaveno administrátorem)",
   "Agent": "Agent",
+  "AirGapped_workspace_read_only_description": "Správci mohou obnovit plnou funkčnost připojením k internetu nebo upgradem na prémiový plán.",
+  "AirGapped_workspace_read_only_share_extension_title": "Sdílení je zakázáno, protože pracovní prostor je v režimu pouze pro čtení.",
+  "AirGapped_workspace_read_only_title": "Pracoviště v režimu pouze pro čtení.",
   "Alert": "Upozornění",
   "alert": "upozornění",
   "alerts": "upozornění",
@@ -844,8 +847,5 @@
   "Your_invite_link_will_never_expire": "Platnost vašeho odkazu s pozvánkou nikdy nevyprší.",
   "Your_password_is": "Vaše heslo je",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor",
-  "AirGapped_workspace_read_only_title": "Pracoviště v režimu pouze pro čtení.",
-  "AirGapped_workspace_read_only_description": "Správci mohou obnovit plnou funkčnost připojením k internetu nebo upgradem na prémiový plán.",
-  "AirGapped_workspace_read_only_share_extension_title": "Sdílení je zakázáno, protože pracovní prostor je v režimu pouze pro čtení."
+  "Your_workspace": "Váš pracovní prostor"
 }

@@ -28,6 +28,9 @@
   "admin-video-conf-provider-not-configured-header": "Conference call not enabled",
   "After_seconds_set_by_admin": "After {{seconds}} seconds (set by admin)",
   "Agent": "Agent",
+  "AirGapped_workspace_read_only_description": "Admins can restore full functionality by connecting it to internet or upgrading to a premium plan.",
+  "AirGapped_workspace_read_only_share_extension_title": "Sharing is disabled because workspace is in read-only mode.",
+  "AirGapped_workspace_read_only_title": "Workspace in read-only mode.",
   "Alert": "Alert",
   "alert": "alert",
   "alerts": "alerts",
@@ -865,8 +868,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "Your_workspace": "Your workspace",
-  "AirGapped_workspace_read_only_share_extension_title": "Sharing is disabled because workspace is in read-only mode.",
-  "AirGapped_workspace_read_only_title": "Workspace in read-only mode.",
-  "AirGapped_workspace_read_only_description": "Admins can restore full functionality by connecting it to internet or upgrading to a premium plan."
+  "Your_workspace": "Your workspace"
 }

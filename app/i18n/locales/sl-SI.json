@@ -17,6 +17,9 @@
   "Admin_Panel": "Administracijska plošča",
   "After_seconds_set_by_admin": "Po {{seconds}} sekundah (nastavil admin)",
   "Agent": "Agent",
+  "AirGapped_workspace_read_only_description": "Skupni skrbniki lahko obnovijo popolno funkcionalnost z povezovanjem z internetom ali nadgradnjo na premium načrt.",
+  "AirGapped_workspace_read_only_share_extension_title": "Deljenje je onemogočeno, ker je delovno okolje v načinu samo za branje.",
+  "AirGapped_workspace_read_only_title": "Delovno okolje v načinu samo za branje.",
   "Alert": "Opozorilo",
   "alert": "Opozorilo",
   "alerts": "opozorila",
@@ -663,8 +666,5 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Vaša povezava za povabilo bo potekala na {{date}} ali po {{usesLeft}}.",
   "Your_invite_link_will_never_expire": "Vaša povezava za povabilo ne bo nikoli potekala.",
   "Your_password_is": "Vaše geslo je",
-  "Your_workspace": "Vaš delovni prostor",
-  "AirGapped_workspace_read_only_title": "Delovno okolje v načinu samo za branje.",
-  "AirGapped_workspace_read_only_description": "Skupni skrbniki lahko obnovijo popolno funkcionalnost z povezovanjem z internetom ali nadgradnjo na premium načrt.",
-  "AirGapped_workspace_read_only_share_extension_title": "Deljenje je onemogočeno, ker je delovno okolje v načinu samo za branje."
+  "Your_workspace": "Vaš delovni prostor"
 }

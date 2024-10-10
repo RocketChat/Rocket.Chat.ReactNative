@@ -10,6 +10,9 @@
   "Admin_Panel": "لوحة الإدارة",
   "After_seconds_set_by_admin": "بعد {{seconds}} ثوان (حددها المدير)",
   "Agent": "المندوب",
+  "AirGapped_workspace_read_only_description": "يمكن للمسؤولين استعادة الوظائف الكاملة عن طريق الاتصال بالإنترنت أو الترقية إلى خطة متميزة.",
+  "AirGapped_workspace_read_only_share_extension_title": "المشاركة معطلة لأن مساحة العمل في وضع القراءة فق.",
+  "AirGapped_workspace_read_only_title": "مساحة العمل في وضع القراءة فقط.",
   "Alert": "إنذار",
   "alert": "إنذار",
   "alerts": "الإنذارات",
@@ -501,8 +504,5 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "ستنتهي صلاحية رابط الدعوة الخاص بك في {{date}} أو بعد {{usesLeft}} استخدامات",
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
-  "Your_workspace": "مساحة عملك",
-  "AirGapped_workspace_read_only_title": "مساحة العمل في وضع القراءة فقط.",
-  "AirGapped_workspace_read_only_description": "يمكن للمسؤولين استعادة الوظائف الكاملة عن طريق الاتصال بالإنترنت أو الترقية إلى خطة متميزة.",
-  "AirGapped_workspace_read_only_share_extension_title": "المشاركة معطلة لأن مساحة العمل في وضع القراءة فق."
+  "Your_workspace": "مساحة عملك"
 }

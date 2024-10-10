@@ -20,6 +20,9 @@
   "Admin_Panel": "Hallintapaneeli",
   "After_seconds_set_by_admin": "{{seconds}} sekunnin kuluttua (järjestelmänvalvojan asettama)",
   "Agent": "Agentti",
+  "AirGapped_workspace_read_only_description": "Järjestelmänvalvojat voivat palauttaa täyden toiminnallisuuden liittämällä sen internetiin tai päivittämällä premium-suunnitelmaan.",
+  "AirGapped_workspace_read_only_share_extension_title": "Jakaminen on poistettu käytöstä, koska työtila on vain luku -tilassa.",
+  "AirGapped_workspace_read_only_title": "Työtila vain luku -tilassa.",
   "Alert": "Hälytys",
   "alert": "hälytys",
   "alerts": "hälytystä",
@@ -729,8 +732,5 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Kutsulinkkisi vanhenee {{date}} tai {{usesLeft}} käyttökerran jälkeen.",
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
-  "Your_workspace": "Työtilasi",
-  "AirGapped_workspace_read_only_title": "Työtila vain luku -tilassa.",
-  "AirGapped_workspace_read_only_description": "Järjestelmänvalvojat voivat palauttaa täyden toiminnallisuuden liittämällä sen internetiin tai päivittämällä premium-suunnitelmaan.",
-  "AirGapped_workspace_read_only_share_extension_title": "Jakaminen on poistettu käytöstä, koska työtila on vain luku -tilassa."
+  "Your_workspace": "Työtilasi"
 }
