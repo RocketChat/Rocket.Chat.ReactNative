@@ -81,7 +81,6 @@ const emojiCount = (str: string) => {
 			counter += 1;
 		}
 	}
-
 	return counter;
 };
 
@@ -142,6 +141,9 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderText = ({ context, literal }: { context: []; literal: string }) => {
 		const { numberOfLines } = this.props;
 		const defaultStyle = [this.isMessageContainsOnlyEmoji ? styles.textBig : {}, ...context.map(type => styles[type])];
+
+		if (this.isMessageContainsOnlyEmoji) return this.renderEmoji({ literal: removeSpaces(literal) });
+
 		return (
 			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle]} numberOfLines={numberOfLines}>
 				{literal}
@@ -191,9 +193,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderParagraph = ({ children }: any) => {
-		const { numberOfLines, style = [], theme } = this.props;
+		const { numberOfLines, style = [], theme, msg } = this.props;
 		if (!children || children.length === 0) {
 			return null;
+		}
+		if (msg && this.isMessageContainsOnlyEmoji) {
+			return <Text>{children}</Text>;
 		}
 		return (
 			<Text style={[styles.text, { color: themes[theme!].fontDefault }, ...style]} numberOfLines={numberOfLines}>
