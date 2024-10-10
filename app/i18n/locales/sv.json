@@ -729,5 +729,6 @@
   "Your_password_is": "Ditt lösenord är",
   "Your_workspace": "Din arbetsyta",
   "AirGapped_workspace_read_only_title": "Arbetsytan är i skrivskyddat läge.",
-  "AirGapped_workspace_read_only_description": "Administratörer kan återställa full funktionalitet genom att ansluta den till internet eller uppgradera till en premiumplan."
+  "AirGapped_workspace_read_only_description": "Administratörer kan återställa full funktionalitet genom att ansluta den till internet eller uppgradera till en premiumplan.",
+  "AirGapped_workspace_read_only_share_extension_title": "Delning är inaktiverat eftersom arbetsytan är i skrivskyddat läge."
 }

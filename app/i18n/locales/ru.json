@@ -699,5 +699,6 @@
   "Your_password_is": "Ваш пароль",
   "Your_workspace": "Ваш сервер",
   "AirGapped_workspace_read_only_title": "Рабочее пространство в режиме только для чтения.",
-  "AirGapped_workspace_read_only_description": "Администраторы могут восстановить полную функциональность, подключив его к интернету или обновив до премиум-плана."
+  "AirGapped_workspace_read_only_description": "Администраторы могут восстановить полную функциональность, подключив его к интернету или обновив до премиум-плана.",
+  "AirGapped_workspace_read_only_share_extension_title": "Обмен отключен, так как рабочая область находится в режиме только для чтения."
 }

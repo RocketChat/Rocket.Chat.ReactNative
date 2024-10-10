@@ -1416,7 +1416,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				</View>
 			);
 		}
-		if (airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === -1) {
+		if (airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === 0) {
 			return (
 				<View style={styles.readOnly}>
 					<Text style={[styles.previewMode, { color: themes[theme].fontDefault }]}>

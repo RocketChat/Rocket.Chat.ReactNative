@@ -769,5 +769,6 @@
   "Your_password_is": "మీ సంకేతపదం",
   "Your_workspace": "మీ వర్క్‌స్పేస్",
   "AirGapped_workspace_read_only_title": "అయోమయ స్థితిలో ఉన్న పనికోసం.",
-  "AirGapped_workspace_read_only_description": "నిర్వహకులు దీన్ని ఇంటర్నెట్‌తో కలుపుకోవడం లేదా ప్రీమియం ప్రణాళికకు మెరుగుపరచడం ద్వారా పూర్తి ఫంక్షనాలిటీని పునఃస్థాపించవచ్చు."
+  "AirGapped_workspace_read_only_description": "నిర్వహకులు దీన్ని ఇంటర్నెట్‌తో కలుపుకోవడం లేదా ప్రీమియం ప్రణాళికకు మెరుగుపరచడం ద్వారా పూర్తి ఫంక్షనాలిటీని పునఃస్థాపించవచ్చు.",
+  "AirGapped_workspace_read_only_share_extension_title": "జోడించడం నిలిపివేయబడింది, ఎందుకంటే పనికోసం చదివే స్ధితిలో ఉంది."
 }

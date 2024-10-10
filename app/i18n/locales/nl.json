@@ -650,5 +650,6 @@
   "Your_password_is": "Jouw wachtwoord is",
   "Your_workspace": "Jouw werkruimte",
   "AirGapped_workspace_read_only_title": "Werkruimte in alleen-lezen modus.",
-  "AirGapped_workspace_read_only_description": "Beheerders kunnen de volledige functionaliteit herstellen door deze met internet te verbinden of te upgraden naar een premiumplan."
+  "AirGapped_workspace_read_only_description": "Beheerders kunnen de volledige functionaliteit herstellen door deze met internet te verbinden of te upgraden naar een premiumplan.",
+  "AirGapped_workspace_read_only_share_extension_title": "Delen is uitgeschakeld omdat de werkruimte in alleen-lezen modus is."
 }

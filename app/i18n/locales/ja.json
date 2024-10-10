@@ -419,5 +419,6 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
   "AirGapped_workspace_read_only_title": "ワークスペースは読み取り専用モードです。",
-  "AirGapped_workspace_read_only_description": "管理者は、インターネットに接続するか、プレミアムプランにアップグレードすることで、完全な機能を復元できます。"
+  "AirGapped_workspace_read_only_description": "管理者は、インターネットに接続するか、プレミアムプランにアップグレードすることで、完全な機能を復元できます。",
+  "AirGapped_workspace_read_only_share_extension_title": "共有は無効です。作業スペースが読み取り専用モードになっているため。"
 }

@@ -759,5 +759,6 @@
   "Your_password_is": "Ihr Passwort lautet",
   "Your_workspace": "Ihr Arbeitsbereich",
   "AirGapped_workspace_read_only_title": "Arbeitsbereich im Nur-Lesen-Modus.",
-  "AirGapped_workspace_read_only_description": "Administratoren können die volle Funktionalität wiederherstellen, indem sie es mit dem Internet verbinden oder auf einen Premium-Plan upgraden."
+  "AirGapped_workspace_read_only_description": "Administratoren können die volle Funktionalität wiederherstellen, indem sie es mit dem Internet verbinden oder auf einen Premium-Plan upgraden.",
+  "AirGapped_workspace_read_only_share_extension_title": "Das Teilen ist deaktiviert, da der Arbeitsbereich im Nur-Lesen-Modus ist."
 }

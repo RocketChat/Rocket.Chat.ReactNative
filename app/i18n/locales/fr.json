@@ -650,5 +650,6 @@
   "Your_password_is": "Votre mot de passe est",
   "Your_workspace": "Votre espace de travail",
   "AirGapped_workspace_read_only_title": "Espace de travail en mode lecture seule.",
-  "AirGapped_workspace_read_only_description": "Les administrateurs peuvent restaurer la fonctionnalité complète en le connectant à Internet ou en passant à un plan premium."
+  "AirGapped_workspace_read_only_description": "Les administrateurs peuvent restaurer la fonctionnalité complète en le connectant à Internet ou en passant à un plan premium.",
+  "AirGapped_workspace_read_only_share_extension_title": "Le partage est désactivé car l'espace de travail est en mode lecture seule."
 }

@@ -665,5 +665,6 @@
   "Your_password_is": "Vaše geslo je",
   "Your_workspace": "Vaš delovni prostor",
   "AirGapped_workspace_read_only_title": "Delovno okolje v načinu samo za branje.",
-  "AirGapped_workspace_read_only_description": "Skupni skrbniki lahko obnovijo popolno funkcionalnost z povezovanjem z internetom ali nadgradnjo na premium načrt."
+  "AirGapped_workspace_read_only_description": "Skupni skrbniki lahko obnovijo popolno funkcionalnost z povezovanjem z internetom ali nadgradnjo na premium načrt.",
+  "AirGapped_workspace_read_only_share_extension_title": "Deljenje je onemogočeno, ker je delovno okolje v načinu samo za branje."
 }
