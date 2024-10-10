@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { getThumbnailAsync } from 'expo-video-thumbnails';
 
 import { IUserMessage } from '../../../../definitions';
 import { IAttachment } from '../../../../definitions/IAttachment';
@@ -8,17 +10,16 @@ import I18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import messageStyles from '../../styles';
-import { getThumbnailAsync } from 'expo-video-thumbnails';
 import OverlayComponent from '../OverlayComponent';
-import FastImage from 'react-native-fast-image';
-import { CustomIcon } from '../../../CustomIcon';
+import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { themes } from '../../../../lib/constants';
+import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
 	},
 	playerIcon: {
 		position: 'absolute',
-		shadowColor: '#000',
+		shadowColor: themes.light.backdropColor,
 		shadowOpacity: 0.3,
 		shadowOffset: {
 			width: 1,
@@ -47,23 +48,23 @@ const styles = StyleSheet.create({
 	}
 });
 
-type Image = {
-	loading: boolean;
-	uri: string | null;
-};
+type Image = string | null;
 
 type ThumbnailProps = {
 	url: string;
+	status: TDownloadState;
 	encrypted?: boolean;
 };
 
-const Thumbnail = ({ url, encrypted = false }: ThumbnailProps) => {
-	const icon = encrypted ? 'encrypted' : 'play-filled';
+const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
+	const { theme } = useTheme();
 
-	const [image, setImage] = useState<Image>({
-		loading: true,
-		uri: null
-	});
+	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
+	if (encrypted && status === 'downloaded') {
+		icon = 'encrypted';
+	}
+
+	const [image, setImage] = useState<Image>(null);
 
 	const generateThumbnail = async () => {
 		try {
@@ -72,10 +73,7 @@ const Thumbnail = ({ url, encrypted = false }: ThumbnailProps) => {
 			const { uri } = await getThumbnailAsync(url, {
 				time: 1
 			});
-			setImage({
-				loading: false,
-				uri
-			});
+			setImage(uri);
 		} catch (e) {
 			console.warn(e);
 		}
@@ -87,12 +85,17 @@ const Thumbnail = ({ url, encrypted = false }: ThumbnailProps) => {
 
 	return (
 		<View style={styles.container}>
-			{image.loading || !image.uri ? (
-				<OverlayComponent style={styles.overlay} loading={image.loading} iconName='arrow-down-circle' />
+			{status === 'loading' || !image || encrypted ? (
+				<OverlayComponent style={styles.overlay} loading={status === 'loading'} iconName={icon} />
 			) : (
 				<>
-					<FastImage style={styles.image} source={{ uri: image.uri }} />
-					<CustomIcon name={icon} size={54} color='#fff' style={styles.playerIcon} />
+					<FastImage style={styles.image} resizeMode='cover' source={{ uri: image }} />
+					<CustomIcon
+						name={icon}
+						size={54}
+						color={themes[theme].fontPureWhite}
+						style={[styles.playerIcon, { shadowColor: themes[theme].backdropColor }]}
+					/>
 				</>
 			)}
 		</View>
@@ -149,7 +152,7 @@ const Video = ({
 		<>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
-				<Thumbnail url={url} encrypted={isEncrypted} />
+				<Thumbnail status={status} url={url} encrypted={isEncrypted} />
 			</Touchable>
 		</>
 	);
