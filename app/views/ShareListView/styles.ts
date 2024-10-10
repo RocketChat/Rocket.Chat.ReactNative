@@ -66,5 +66,25 @@ export default StyleSheet.create({
 		marginHorizontal: 30,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
+	},
+	readOnlyServerSeparator: {
+		height: 16
+	},
+	readOnlyContainer: {
+		flex: 1,
+		alignItems: 'center',
+		padding: 16
+	},
+	readOnlyTitle: {
+		fontSize: 16,
+		lineHeight: 24,
+		...sharedStyles.textSemibold,
+		textAlign: 'center'
+	},
+	readOnlyDescription: {
+		fontSize: 16,
+		lineHeight: 24,
+		...sharedStyles.textRegular,
+		textAlign: 'center'
 	}
 });
