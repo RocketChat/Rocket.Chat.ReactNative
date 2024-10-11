@@ -39,18 +39,9 @@ interface IServices {
 	service: string;
 }
 
-let connectingListener: any;
-let connectedListener: any;
-let closeListener: any;
-let usersListener: any;
-let notifyAllListener: any;
-let rolesListener: any;
-let notifyLoggedListener: any;
-let logoutListener: any;
-
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(async resolve => {
-		if (sdk.current?.client?.host === server) {
+		if (sdk.current?.connection.url === server) {
 			return resolve();
 		}
 
@@ -60,40 +51,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		disconnect();
 		database.setActiveDB(server);
 
-		store.dispatch(connectRequest());
-
-		if (connectingListener) {
-			connectingListener.then(stopListener);
-		}
-
-		if (connectedListener) {
-			connectedListener.then(stopListener);
-		}
-
-		if (closeListener) {
-			closeListener.then(stopListener);
-		}
-
-		if (usersListener) {
-			usersListener.then(stopListener);
-		}
-
-		if (notifyAllListener) {
-			notifyAllListener.then(stopListener);
-		}
-
-		if (rolesListener) {
-			rolesListener.then(stopListener);
-		}
-
-		if (notifyLoggedListener) {
-			notifyLoggedListener.then(stopListener);
-		}
-
-		if (logoutListener) {
-			logoutListener.then(stopListener);
-		}
-
 		unsubscribeRooms();
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
@@ -102,7 +59,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		console.log(sdk.current);
 		// getSettings();
 
-		sdk.current?.connection.on('connection', status => {
+		sdk.current?.connection.on('connection', async status => {
 			console.log('🚀 ~ emitter.on ~ status:', status);
 			if (['connecting', 'reconnecting'].includes(status)) {
 				store.dispatch(connectRequest());
@@ -280,8 +237,7 @@ function stopListener(listener: any): boolean {
 }
 
 async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
-	// RC 0.64.0
-	// await sdk.current.login(credentials);
+	// TODO: other login methods: ldap, saml, cas, apple, oauth, oauth_custom
 	if (credentials.resume) {
 		await sdk.current?.account.loginWithToken(credentials.resume);
 	} else if (credentials.username && credentials.password) {
@@ -290,37 +246,44 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 		throw new Error('Invalid credentials');
 	}
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current?.account.user;
-	console.log('🚀 ~ login ~ result:', result);
+	const loginUser = sdk.current?.account.user;
+	console.log('🚀 ~ login ~ result:', loginUser);
+	const me = await sdk.current?.rest.get('/v1/me');
+	console.log('🚀 ~ login ~ me:', me);
+
+	if (!me) {
+		throw new Error("Couldn't fetch user data");
+	}
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
 	if (compareServerVersion(serverVersion, 'lowerThan', '5.0.0')) {
-		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
-		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
+		enableMessageParserEarlyAdoption = me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
+		showMessageInMainThread = me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
 
-	if (result) {
+	if (loginUser) {
+		// TODO: review type
 		const user: ILoggedUser = {
-			id: result.userId,
-			token: result.authToken,
-			username: result.me.username,
-			name: result.me.name,
-			language: result.me.language,
-			status: result.me.status,
-			statusText: result.me.statusText,
-			customFields: result.me.customFields,
-			statusLivechat: result.me.statusLivechat,
-			emails: result.me.emails,
-			roles: result.me.roles,
-			avatarETag: result.me.avatarETag,
+			id: loginUser.id,
+			token: loginUser.token as string,
+			username: me.username as string,
+			name: me.name,
+			language: me.language,
+			status: me.status as ILoggedUser['status'],
+			statusText: me.statusText,
+			customFields: me.customFields,
+			// statusLivechat: me.statusLivechat, // TODO: Check if this is still necessary
+			// emails: me.emails,
+			roles: me.roles,
+			avatarETag: me.avatarETag,
 			isFromWebView,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
-			bio: result.me.bio,
-			nickname: result.me.nickname,
-			requirePasswordChange: result.me.requirePasswordChange
+			alsoSendThreadToChannel: me.settings?.preferences?.alsoSendThreadToChannel,
+			bio: me.bio,
+			nickname: me.nickname,
+			requirePasswordChange: me.requirePasswordChange
 		};
 		return user;
 	}
