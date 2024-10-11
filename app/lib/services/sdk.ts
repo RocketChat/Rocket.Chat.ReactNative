@@ -1,6 +1,7 @@
 import { Rocketchat } from '@rocket.chat/sdk';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
@@ -9,7 +10,7 @@ import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } fro
 import { compareServerVersion, random } from '../methods/helpers';
 
 class Sdk {
-	private sdk: typeof Rocketchat;
+	private sdk: DDPSDK | undefined;
 	private code: any;
 
 	private initializeSdk(server: string): typeof Rocketchat {
@@ -18,9 +19,9 @@ class Sdk {
 	}
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
-	initialize(server: string) {
+	async initialize(server: string) {
 		this.code = null;
-		this.sdk = this.initializeSdk(server);
+		this.sdk = await DDPSDK.create(server);
 		return this.sdk;
 	}
 

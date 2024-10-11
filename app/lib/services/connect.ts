@@ -49,7 +49,7 @@ let notifyLoggedListener: any;
 let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
-	return new Promise<void>(resolve => {
+	return new Promise<void>(async resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
 		}
@@ -98,184 +98,178 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
-		sdk.initialize(server);
-		getSettings();
+		await sdk.initialize(server);
+		console.log(sdk.current);
+		// getSettings();
 
-		sdk.current
-			.connect()
-			.then(() => {
-				console.log('connected');
-			})
-			.catch((err: unknown) => {
-				console.log('connect error', err);
-			});
-
-		connectingListener = sdk.current.onStreamData('connecting', () => {
-			store.dispatch(connectRequest());
-		});
-
-		connectedListener = sdk.current.onStreamData('connected', () => {
-			const { connected } = store.getState().meteor;
-			if (connected) {
-				return;
+		sdk.current?.connection.on('connection', status => {
+			console.log('🚀 ~ emitter.on ~ status:', status);
+			if (['connecting', 'reconnecting'].includes(status)) {
+				store.dispatch(connectRequest());
 			}
-			store.dispatch(connectSuccess());
-			const { user } = store.getState().login;
-			if (user?.token) {
-				store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
-			}
-		});
-
-		closeListener = sdk.current.onStreamData('close', () => {
-			store.dispatch(disconnectAction());
-		});
-
-		usersListener = sdk.current.onStreamData(
-			'users',
-			protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
-		);
-
-		notifyAllListener = sdk.current.onStreamData(
-			'stream-notify-all',
-			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
-				const { eventName } = ddpMessage.fields;
-				if (/public-settings-changed/.test(eventName)) {
-					const { _id, value } = ddpMessage.fields.args[1];
-					const db = database.active;
-					const settingsCollection = db.get('settings');
-
-					// Check if the _id exists in defaultSettings
-					if (defaultSettings.hasOwnProperty(_id)) {
-						try {
-							const settingsRecord = await settingsCollection.find(_id);
-							// @ts-ignore
-							const { type } = defaultSettings[_id];
-							if (type) {
-								await db.write(async () => {
-									await settingsRecord.update(u => {
-										// @ts-ignore
-										u[type] = value;
-									});
-								});
-							}
-							store.dispatch(updateSettings(_id, value));
-
-							if (_id === 'Presence_broadcast_disabled') {
-								setPresenceCap(value);
-							}
-						} catch (e) {
-							log(e);
-						}
-					} else {
-						console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
-					}
+			if (status === 'connected') {
+				const { connected } = store.getState().meteor;
+				if (connected) {
+					return;
 				}
-			})
-		);
-
-		rolesListener = sdk.current.onStreamData(
-			'stream-roles',
-			protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
-		);
-
-		// RC 4.1
-		sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
-			const userStatus = ddpMessage.fields.args[0];
-			const { uid } = ddpMessage.fields;
-			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
-			// @ts-ignore
-			store.dispatch(setActiveUsers({ [uid]: newStatus }));
-
-			const { user: loggedUser } = store.getState().login;
-			if (loggedUser && loggedUser.id === uid) {
-				// @ts-ignore
-				store.dispatch(setUser(newStatus));
+				store.dispatch(connectSuccess());
+				const { user } = store.getState().login;
+				if (user?.token) {
+					store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
+				}
+			}
+			if (['disconnected', 'close'].includes(status)) {
+				store.dispatch(disconnectAction());
 			}
 		});
+		await sdk.current?.connection.connect();
 
-		notifyLoggedListener = sdk.current.onStreamData(
-			'stream-notify-logged',
-			protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
-				const { eventName } = ddpMessage.fields;
+		// usersListener = sdk.current.onStreamData(
+		// 	'users',
+		// 	protectedFunction((ddpMessage: any) => _setUser(ddpMessage))
+		// );
 
-				// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
-				if (/user-status/.test(eventName)) {
-					_activeUsers.activeUsers = _activeUsers.activeUsers || {};
-					if (!_setUserTimer.setUserTimer) {
-						_setUserTimer.setUserTimer = setTimeout(() => {
-							const activeUsersBatch = _activeUsers.activeUsers;
-							InteractionManager.runAfterInteractions(() => {
-								// @ts-ignore
-								store.dispatch(setActiveUsers(activeUsersBatch));
-							});
-							_setUserTimer.setUserTimer = null;
-							_activeUsers.activeUsers = {} as IActiveUsers;
-							return null;
-						}, 10000);
-					}
-					const userStatus = ddpMessage.fields.args[0];
-					const [id, , status, statusText] = userStatus;
-					_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
+		// notifyAllListener = sdk.current.onStreamData(
+		// 	'stream-notify-all',
+		// 	protectedFunction(async (ddpMessage: { fields: { args?: any; eventName: string } }) => {
+		// 		const { eventName } = ddpMessage.fields;
+		// 		if (/public-settings-changed/.test(eventName)) {
+		// 			const { _id, value } = ddpMessage.fields.args[1];
+		// 			const db = database.active;
+		// 			const settingsCollection = db.get('settings');
 
-					const { user: loggedUser } = store.getState().login;
-					if (loggedUser && loggedUser.id === id) {
-						store.dispatch(setUser({ status: STATUSES[status], statusText }));
-					}
-				} else if (/updateAvatar/.test(eventName)) {
-					const { username, etag } = ddpMessage.fields.args[0];
-					const db = database.active;
-					const userCollection = db.get('users');
-					try {
-						const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
-						await db.write(async () => {
-							await userRecord.update(u => {
-								u.avatarETag = etag;
-							});
-						});
-					} catch {
-						// We can't create a new record since we don't receive the user._id
-					}
-				} else if (/permissions-changed/.test(eventName)) {
-					const { _id, roles } = ddpMessage.fields.args[1];
-					const db = database.active;
-					const permissionsCollection = db.get('permissions');
-					try {
-						const permissionsRecord = await permissionsCollection.find(_id);
-						await db.write(async () => {
-							await permissionsRecord.update(u => {
-								u.roles = roles;
-							});
-						});
-						store.dispatch(updatePermission(_id, roles));
-					} catch (err) {
-						//
-					}
-				} else if (/Users:NameChanged/.test(eventName)) {
-					const userNameChanged = ddpMessage.fields.args[0];
-					const db = database.active;
-					const userCollection = db.get('users');
-					try {
-						const userRecord = await userCollection.find(userNameChanged._id);
-						await db.write(async () => {
-							await userRecord.update(u => {
-								Object.assign(u, userNameChanged);
-							});
-						});
-					} catch {
-						// User not found
-						await db.write(async () => {
-							await userCollection.create(u => {
-								u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
-								Object.assign(u, userNameChanged);
-							});
-						});
-					}
-				}
-			})
-		);
+		// 			// Check if the _id exists in defaultSettings
+		// 			if (defaultSettings.hasOwnProperty(_id)) {
+		// 				try {
+		// 					const settingsRecord = await settingsCollection.find(_id);
+		// 					// @ts-ignore
+		// 					const { type } = defaultSettings[_id];
+		// 					if (type) {
+		// 						await db.write(async () => {
+		// 							await settingsRecord.update(u => {
+		// 								// @ts-ignore
+		// 								u[type] = value;
+		// 							});
+		// 						});
+		// 					}
+		// 					store.dispatch(updateSettings(_id, value));
 
-		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+		// 					if (_id === 'Presence_broadcast_disabled') {
+		// 						setPresenceCap(value);
+		// 					}
+		// 				} catch (e) {
+		// 					log(e);
+		// 				}
+		// 			} else {
+		// 				console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
+		// 			}
+		// 		}
+		// 	})
+		// );
+
+		// rolesListener = sdk.current.onStreamData(
+		// 	'stream-roles',
+		// 	protectedFunction((ddpMessage: any) => onRolesChanged(ddpMessage))
+		// );
+
+		// // RC 4.1
+		// sdk.current.onStreamData('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
+		// 	const userStatus = ddpMessage.fields.args[0];
+		// 	const { uid } = ddpMessage.fields;
+		// 	const [, status, statusText] = userStatus;
+		// 	const newStatus = { status: STATUSES[status], statusText };
+		// 	// @ts-ignore
+		// 	store.dispatch(setActiveUsers({ [uid]: newStatus }));
+
+		// 	const { user: loggedUser } = store.getState().login;
+		// 	if (loggedUser && loggedUser.id === uid) {
+		// 		// @ts-ignore
+		// 		store.dispatch(setUser(newStatus));
+		// 	}
+		// });
+
+		// notifyLoggedListener = sdk.current.onStreamData(
+		// 	'stream-notify-logged',
+		// 	protectedFunction(async (ddpMessage: { fields: { args?: any; eventName?: any } }) => {
+		// 		const { eventName } = ddpMessage.fields;
+
+		// 		// `user-status` event is deprecated after RC 4.1 in favor of `stream-user-presence/${uid}`
+		// 		if (/user-status/.test(eventName)) {
+		// 			_activeUsers.activeUsers = _activeUsers.activeUsers || {};
+		// 			if (!_setUserTimer.setUserTimer) {
+		// 				_setUserTimer.setUserTimer = setTimeout(() => {
+		// 					const activeUsersBatch = _activeUsers.activeUsers;
+		// 					InteractionManager.runAfterInteractions(() => {
+		// 						// @ts-ignore
+		// 						store.dispatch(setActiveUsers(activeUsersBatch));
+		// 					});
+		// 					_setUserTimer.setUserTimer = null;
+		// 					_activeUsers.activeUsers = {} as IActiveUsers;
+		// 					return null;
+		// 				}, 10000);
+		// 			}
+		// 			const userStatus = ddpMessage.fields.args[0];
+		// 			const [id, , status, statusText] = userStatus;
+		// 			_activeUsers.activeUsers[id] = { status: STATUSES[status], statusText };
+
+		// 			const { user: loggedUser } = store.getState().login;
+		// 			if (loggedUser && loggedUser.id === id) {
+		// 				store.dispatch(setUser({ status: STATUSES[status], statusText }));
+		// 			}
+		// 		} else if (/updateAvatar/.test(eventName)) {
+		// 			const { username, etag } = ddpMessage.fields.args[0];
+		// 			const db = database.active;
+		// 			const userCollection = db.get('users');
+		// 			try {
+		// 				const [userRecord] = await userCollection.query(Q.where('username', Q.eq(username))).fetch();
+		// 				await db.write(async () => {
+		// 					await userRecord.update(u => {
+		// 						u.avatarETag = etag;
+		// 					});
+		// 				});
+		// 			} catch {
+		// 				// We can't create a new record since we don't receive the user._id
+		// 			}
+		// 		} else if (/permissions-changed/.test(eventName)) {
+		// 			const { _id, roles } = ddpMessage.fields.args[1];
+		// 			const db = database.active;
+		// 			const permissionsCollection = db.get('permissions');
+		// 			try {
+		// 				const permissionsRecord = await permissionsCollection.find(_id);
+		// 				await db.write(async () => {
+		// 					await permissionsRecord.update(u => {
+		// 						u.roles = roles;
+		// 					});
+		// 				});
+		// 				store.dispatch(updatePermission(_id, roles));
+		// 			} catch (err) {
+		// 				//
+		// 			}
+		// 		} else if (/Users:NameChanged/.test(eventName)) {
+		// 			const userNameChanged = ddpMessage.fields.args[0];
+		// 			const db = database.active;
+		// 			const userCollection = db.get('users');
+		// 			try {
+		// 				const userRecord = await userCollection.find(userNameChanged._id);
+		// 				await db.write(async () => {
+		// 					await userRecord.update(u => {
+		// 						Object.assign(u, userNameChanged);
+		// 					});
+		// 				});
+		// 			} catch {
+		// 				// User not found
+		// 				await db.write(async () => {
+		// 					await userCollection.create(u => {
+		// 						u._raw = sanitizedRaw({ id: userNameChanged._id }, userCollection.schema);
+		// 						Object.assign(u, userNameChanged);
+		// 					});
+		// 				});
+		// 			}
+		// 		}
+		// 	})
+		// );
+
+		// logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
 
 		resolve();
 	});
@@ -287,9 +281,17 @@ function stopListener(listener: any): boolean {
 
 async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
 	// RC 0.64.0
-	await sdk.current.login(credentials);
+	// await sdk.current.login(credentials);
+	if (credentials.resume) {
+		await sdk.current?.account.loginWithToken(credentials.resume);
+	} else if (credentials.username && credentials.password) {
+		await sdk.current?.account.loginWithPassword(credentials.username, credentials.password);
+	} else {
+		throw new Error('Invalid credentials');
+	}
 	const serverVersion = store.getState().server.version;
-	const result = sdk.current.currentLogin?.result;
+	const result = sdk.current?.account.user;
+	console.log('🚀 ~ login ~ result:', result);
 
 	let enableMessageParserEarlyAdoption = true;
 	let showMessageInMainThread = false;
