@@ -84,6 +84,7 @@ export async function removeServer({ server }: { server: string }): Promise<void
 			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
 			try {
+				// TODO: new sdk
 				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 				await sdk.login({ resume });
 
@@ -123,14 +124,14 @@ export async function logout({ server }: { server: string }): Promise<void> {
 
 	try {
 		// RC 0.60.0
-		await sdk.current.logout();
+		await sdk.current?.account.logout();
 	} catch (e) {
 		log(e);
 	}
 
-	if (sdk.current) {
-		sdk.disconnect();
-	}
+	// if (sdk.current) {
+	// 	sdk.disconnect();
+	// }
 
 	await removeServerData({ server });
 	await removeCurrentServer();

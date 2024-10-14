@@ -161,7 +161,7 @@ export function getPermissions(): Promise<void> {
 			// if server version is lower than 0.73.0, fetches from old api
 			if (serverVersion && compareServerVersion(serverVersion, 'lowerThan', '0.73.0')) {
 				// RC 0.66.0
-				// @ts-ignore
+				// @ts-ignore TODO: how to deal with this?
 				const result: any = await sdk.get('permissions.list');
 				if (!result.success) {
 					return resolve();
@@ -179,9 +179,9 @@ export function getPermissions(): Promise<void> {
 				params.updatedSince = updatedSince;
 			}
 			// RC 0.73.0
-			const result = await sdk.get('permissions.listAll', params);
+			const result = await sdk.current?.rest.get('/v1/permissions.listAll', params);
 
-			if (!result.success) {
+			if (!result) {
 				return resolve();
 			}
 

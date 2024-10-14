@@ -365,12 +365,14 @@ async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
 }
 
 function abort() {
-	if (sdk.current) {
-		return sdk.current.abort();
-	}
+	// if (sdk.current) {
+	// 	return sdk.current.abort();
+	// }
+	console.log('ABORT?');
 }
 
 function checkAndReopen() {
+	console.log('CHECK AND REOPEN??');
 	return sdk.current.checkAndReopen();
 }
 

@@ -134,7 +134,7 @@ export function getCustomEmojis() {
 			// @ts-ignore TODO: missing query params
 			const result = await sdk.current?.rest.get('/v1/emoji-custom.list', params);
 
-			if (!result?.emojis) {
+			if (!result) {
 				return resolve();
 			}
 

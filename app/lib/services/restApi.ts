@@ -64,7 +64,7 @@ export const e2eRequestSubscriptionKeys = (): Promise<boolean> =>
 
 export const e2eGetUsersOfRoomWithoutKey = (rid: string) =>
 	// RC 0.70.0
-	sdk.get('e2e.getUsersOfRoomWithoutKey', { rid });
+	sdk.current?.rest.get('/v1/e2e.getUsersOfRoomWithoutKey', { rid });
 
 export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
@@ -159,7 +159,7 @@ export const getDiscussions = ({
 		...(text && { text })
 	};
 	// RC 2.4.0
-	return sdk.get('chat.getDiscussions', params);
+	return sdk.current?.rest.get('/v1/chat.getDiscussions', params);
 };
 
 export const createTeam = ({
@@ -231,7 +231,7 @@ export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToR
 
 export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
 	// RC 3.13.0
-	sdk.get('teams.listRoomsOfUser', { teamId, userId });
+	sdk.current?.rest.get('/v1/teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -350,26 +350,26 @@ export const getRoomCounters = (
 	t: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
 ) =>
 	// RC 0.65.0
-	sdk.get(`${roomTypeToApiType(t)}.counters`, { roomId });
+	sdk.current?.rest.get(`/v1/${roomTypeToApiType(t)}.counters`, { roomId });
 
 export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
-	sdk.get('channels.info', { roomId });
+	sdk.current?.rest.get('/v1/channels.info', { roomId });
 
 export const getUserPreferences = (userId: string) =>
 	// RC 0.62.0
-	sdk.get('users.getPreferences', { userId });
+	sdk.current?.rest.get('/v1/users.getPreferences', { userId });
 
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
-	sdk.get('rooms.info', { roomId });
+	sdk.current?.rest.get('/v1/rooms.info', { roomId });
 
 export const getRoomByTypeAndName = (roomType: RoomType, roomName: string): Promise<IServerRoom> =>
 	sdk.methodCallWrapper('getRoomByTypeAndName', roomType, roomName);
 
 export const getVisitorInfo = (visitorId: string) =>
 	// RC 2.3.0
-	sdk.get('livechat/visitors.info', { visitorId });
+	sdk.current?.rest.get('/v1/livechat/visitors.info', { visitorId });
 
 export const setUserPresenceAway = () => sdk.methodCall('UserPresence:away');
 
@@ -399,7 +399,7 @@ export const getTeamListRoom = ({
 		params.filter = filter;
 	}
 	// RC 3.13.0
-	return sdk.get('teams.listRooms', params);
+	return sdk.current?.rest.get('/v1/teams.listRooms', params);
 };
 
 export const closeLivechat = (rid: string, comment?: string, tags?: string[]) => {
@@ -428,7 +428,7 @@ export const forwardLivechat = (transferData: any) =>
 
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
-	sdk.get(`livechat/department/${departmentId}?includeAgents=false`);
+	sdk.current?.rest.get(`/v1/livechat/department/${departmentId}?includeAgents=false`);
 
 export const getDepartments = (args?: { count: number; offset: number; text: string }) => {
 	let params;
@@ -440,12 +440,12 @@ export const getDepartments = (args?: { count: number; offset: number; text: str
 		};
 	}
 	// RC 2.2.0
-	return sdk.get('livechat/department', params);
+	return sdk.current?.rest.get('/v1/livechat/department', params);
 };
 
 export const usersAutoComplete = (selector: any) =>
 	// RC 2.4.0
-	sdk.get('users.autocomplete', { selector });
+	sdk.current?.rest.get('/v1/users.autocomplete', { selector });
 
 export const getRoutingConfig = (): Promise<{
 	previewRoom: boolean;
@@ -465,11 +465,11 @@ export const getTagsList = (): Promise<ILivechatTag[]> =>
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	sdk.get(`livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
+	sdk.current?.rest.get(`/v1/livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
 
 export const getCustomFields = () =>
 	// RC 2.2.0
-	sdk.get('livechat/custom-fields');
+	sdk.current?.rest.get('/v1/livechat/custom-fields');
 
 export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 0, count = 25, text = '' }) => {
 	const params = {
@@ -481,7 +481,7 @@ export const getListCannedResponse = ({ scope = '', departmentId = '', offset = 
 	};
 
 	// RC 3.17.0
-	return sdk.get('canned-responses', params);
+	return sdk.current?.rest.get('/v1/canned-responses', params);
 };
 
 export const toggleBlockUser = (rid: string, blocked: string, block: boolean): Promise<boolean> => {
@@ -580,7 +580,7 @@ export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: R
 
 export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
 	// RC 0.64.0
-	sdk.get('chat.ignoreUser', { rid, userId, ignore });
+	sdk.current?.rest.get('/v1/chat.ignoreUser', { rid, userId, ignore });
 
 export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: boolean) => {
 	const type = t as SubscriptionType.CHANNEL | SubscriptionType.GROUP;
@@ -632,14 +632,14 @@ export const saveNotificationSettings = (roomId: string, notifications: IRoomNot
 
 export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
-	sdk.get('chat.getMessage', { msgId });
+	sdk.current?.rest.get('/v1/chat.getMessage', { msgId });
 
 export const getRoomRoles = (
 	roomId: string,
 	type: SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL
 ) =>
 	// RC 0.65.0
-	sdk.get(`${roomTypeToApiType(type)}.roles`, { roomId });
+	sdk.current?.rest.get(`/v1/${roomTypeToApiType(type)}.roles`, { roomId });
 
 export const getAvatarSuggestion = (): Promise<{ [service: string]: IAvatarSuggestion }> =>
 	// RC 0.51.0
@@ -663,12 +663,12 @@ export const setAvatarFromService = ({
 
 export const getUsernameSuggestion = () =>
 	// RC 0.65.0
-	sdk.get('users.getUsernameSuggestion');
+	sdk.current?.rest.get('/v1/users.getUsernameSuggestion');
 
 export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	return sdk.get(`${roomTypeToApiType(t)}.files`, {
+	return sdk.current?.rest.get(`/v1/${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
 		sort: { uploadedAt: -1 }
@@ -683,7 +683,7 @@ export const getMessages = (
 ) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
-	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
+	return sdk.current?.rest.get(`/v1/${roomTypeToApiType(t)}.messages`, {
 		roomId,
 		query,
 		offset,
@@ -693,13 +693,13 @@ export const getMessages = (
 
 export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
-	sdk.get('chat.getMessageReadReceipts', {
+	sdk.current?.rest.get('/v1/chat.getMessageReadReceipts', {
 		messageId
 	});
 
 export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
 	// RC 0.60.0
-	sdk.get('chat.search', {
+	sdk.current?.rest.get('/v1/chat.search', {
 		roomId,
 		searchText,
 		count,
@@ -725,12 +725,12 @@ export const getThreadsList = ({ rid, count, offset, text }: { rid: string; coun
 	}
 
 	// RC 1.0
-	return sdk.get('chat.getThreadsList', params);
+	return sdk.current?.rest.get('/v1/chat.getThreadsList', params);
 };
 
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
-	sdk.get('chat.syncThreadsList', {
+	sdk.current?.rest.get('/v1/chat.syncThreadsList', {
 		rid,
 		updatedSince
 	});
@@ -747,7 +747,7 @@ export const runSlashCommand = (command: string, roomId: string, params: string,
 
 export const getCommandPreview = (command: string, roomId: string, params: string) =>
 	// RC 0.65.0
-	sdk.get('commands.preview', {
+	sdk.current?.rest.get('/v1/commands.preview', {
 		command,
 		roomId,
 		params
@@ -783,7 +783,7 @@ export const getDirectory = ({
 	sort: { [key: string]: number };
 }) =>
 	// RC 1.0
-	sdk.get('directory', {
+	sdk.current?.rest.get('/v1/directory', {
 		query,
 		count,
 		offset,
@@ -909,7 +909,7 @@ export const removePushToken = (): Promise<boolean | void> => {
 export const pushTest = () => sdk.post('push.test');
 
 // RC 6.5.0
-export const pushInfo = () => sdk.get('push.info');
+export const pushInfo = () => sdk.current?.rest.get('/v1/push.info');
 
 export const sendEmailCode = () => {
 	const { username } = reduxStore.getState().login.user as IUser;
@@ -945,8 +945,8 @@ export const getRoomMembers = async ({
 			...(filter && { filter })
 		};
 		// RC 3.16.0
-		const result = await sdk.get(`${roomTypeToApiType(t)}.members`, params);
-		if (result.success) {
+		const result = await sdk.current?.rest.get(`/v1/${roomTypeToApiType(t)}.members`, params);
+		if (result) {
 			return result?.members;
 		}
 	}
@@ -957,11 +957,11 @@ export const getRoomMembers = async ({
 
 export const e2eFetchMyKeys = async () => {
 	// RC 0.70.0
-	const result = await sdk.get('e2e.fetchMyKeys');
+	const result = await sdk.current?.rest.get('/v1/e2e.fetchMyKeys');
 	// snake_case -> camelCase
-	if (result.success) {
+	if (result) {
 		return {
-			success: result.success,
+			success: true,
 			publicKey: result.public_key,
 			privateKey: result.private_key
 		};
@@ -976,7 +976,7 @@ export const logoutOtherLocations = () => {
 
 export function getUserInfo(userId: string) {
 	// RC 0.48.0
-	return sdk.get('users.info', { userId });
+	return sdk.current?.rest.get('/v1/users.info', { userId });
 }
 
 export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('rooms.favorite', { roomId, favorite });
@@ -984,7 +984,7 @@ export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('r
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });
 
-export const videoConferenceGetCapabilities = () => sdk.get('video-conference.capabilities');
+export const videoConferenceGetCapabilities = () => sdk.current?.rest.get('/v1/video-conference.capabilities');
 
 export const videoConferenceStart = (roomId: string) => sdk.post('video-conference.start', { roomId, allowRinging: true });
 
