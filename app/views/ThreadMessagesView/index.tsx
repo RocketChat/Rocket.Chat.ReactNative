@@ -1,10 +1,9 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useReducer } from 'react';
 import { FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { StackNavigationOptions } from '@react-navigation/stack';
-import { HeaderBackButton } from '@react-navigation/elements';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Observable, Subscription } from 'rxjs';
 
 import { showActionSheetRef } from '../../containers/ActionSheet';
@@ -35,7 +34,8 @@ import { IApplicationState, IMessage, SubscriptionType, TSubscriptionModel, TThr
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { IThreadMessagesViewProps } from './types';
+import { ISearchThreadMessages, IThreadMessagesViewProps } from './types';
+import { threadMessagesInitialState, threadReducer } from './reducer';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -46,17 +46,17 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 	let messagesSubscription: Subscription;
 	let messagesObservable: Observable<TThreadModel[]>;
 
-	//Improve states and check re-renders
+	const [state, dispatch] = useReducer(threadReducer, threadMessagesInitialState);
+	const { currentFilter, displayingThreads, end, loading, messages, offset, search, subscription } = state;
 
-	const [loading, setLoading] = useState(false);
-	const [end, setEnd] = useState(false);
-	const [messages, setMessages] = useState<any[]>([]);
-	const [displayingThreads, setDisplayingThreads] = useState<TThreadModel[]>([]);
-	const [subscription, setSubscription] = useState({} as TSubscriptionModel);
-	const [currentFilter, setCurrentFilter] = useState(Filter.All);
-	const [isSearching, setIsSearching] = useState(false);
-	const [searchText, setSearchText] = useState('');
-	const [offset, setOffset] = useState(0);
+	const setLoading = (value: boolean) => dispatch({ type: 'SET_LOADING', payload: value });
+	const setEnd = (value: boolean) => dispatch({ type: 'SET_END', payload: value });
+	const setMessages = (value: TThreadModel[]) => dispatch({ type: 'SET_MESSAGES', payload: value });
+	const setDisplayingThreads = (value: TThreadModel[]) => dispatch({ type: 'SET_DISPLAYING_THREADS', payload: value });
+	const setSubscription = (value: TSubscriptionModel) => dispatch({ type: 'SET_SUBSCRIPTION', payload: value });
+	const setCurrentFilter = (value: Filter) => dispatch({ type: 'SET_FILTER', payload: value });
+	const setSearch = (value: ISearchThreadMessages) => dispatch({ type: 'SET_SEARCH', payload: value });
+	const setOffset = (value: number) => dispatch({ type: 'SET_OFFSET', payload: value });
 
 	const initSubscription = async () => {
 		try {
@@ -98,7 +98,6 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 				const displayingThreads = getFilteredThreads(messages, subscription, currentFilter);
 				setMessages(messages);
 				setDisplayingThreads(displayingThreads);
-				setHeader();
 			});
 		} catch (e) {
 			log(e);
@@ -144,7 +143,6 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
 		if (!subscription._id) {
-			setHeader();
 			setMessages([...messages, ...update] as TThreadModel[]);
 			return;
 		}
@@ -207,7 +205,6 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		}
 	};
 
-	// eslint-disable-next-line react/sort-comp
 	const load = debounce(async (lastThreadSync: Date) => {
 		if (end || loading) {
 			return;
@@ -217,10 +214,10 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 
 		try {
 			const result = await Services.getThreadsList({
-				rid: rid,
+				rid,
 				count: API_FETCH_COUNT,
 				offset,
-				text: searchText
+				text: search.searchText
 			});
 			if (result.success) {
 				updateThreads({ update: result.threads, lastThreadSync });
@@ -235,13 +232,12 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		}
 	}, 300);
 
-	// eslint-disable-next-line react/sort-comp
 	const sync = async (updatedSince: Date) => {
 		setLoading(true);
 
 		try {
 			const result = await Services.getSyncThreadsList({
-				rid: rid,
+				rid,
 				updatedSince: updatedSince.toISOString()
 			});
 			if (result.success && result.threads) {
@@ -256,19 +252,22 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 	};
 
 	const onSearchPress = () => {
-		setIsSearching(true);
-		setHeader();
+		setSearch({ ...search, isSearching: true });
+		const options = getHeader(true);
+		navigation.setOptions(options);
 	};
 
 	const onCancelSearchPress = () => {
-		setIsSearching(false);
-		setSearchText('');
+		setSearch({
+			isSearching: false,
+			searchText: ''
+		});
 		setHeader();
 		subscribeMessages(subscription);
 	};
 
 	const onSearchChangeText = debounce((searchText: string) => {
-		setSearchText(searchText);
+		setSearch({ isSearching: true, searchText });
 		subscribeMessages(subscription, searchText);
 	}, 300);
 
@@ -289,16 +288,11 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		true
 	);
 
-	const handleBadgeColor = (item: TThreadModel) => {
-		return getBadgeColor({ subscription, theme, messageId: item?.id });
-	};
+	const handleBadgeColor = (item: TThreadModel) => getBadgeColor({ subscription, theme, messageId: item?.id });
 
-	const getHeader = (): StackNavigationOptions => {
-		if (isSearching) {
+	const getHeader = (triggerSearch?: boolean): NativeStackNavigationOptions => {
+		if (search.isSearching || triggerSearch) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -309,19 +303,9 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 			};
 		}
 
-		const options: StackNavigationOptions = {
-			headerTitleAlign: 'center',
+		const options: NativeStackNavigationOptions = {
+			headerLeft: () => null,
 			headerTitle: I18n.t('Threads'),
-			headerTitleContainerStyle: {},
-			headerRightContainerStyle: { flexGrow: 1 },
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].fontSecondaryInfo}
-					testID='header-back'
-				/>
-			),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='filter' onPress={showFilters} />
@@ -353,6 +337,7 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		}
 	};
 
+	// helper to query threads
 	const getFilteredThreads = (
 		messages: TThreadModel[],
 		subscription?: TSubscriptionModel,
@@ -389,12 +374,15 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		});
 	};
 
-	const onFilterSelected = (filter: Filter) => {
-		const displayingThreads = getFilteredThreads(messages, subscription, filter);
-		setCurrentFilter(filter);
-		setDisplayingThreads(displayingThreads);
-		UserPreferences.setString(THREADS_FILTER, filter);
-	};
+	const onFilterSelected = useCallback(
+		(filter: Filter) => {
+			const displayingThreads = getFilteredThreads(messages, subscription, filter);
+			setCurrentFilter(filter);
+			setDisplayingThreads(displayingThreads);
+			UserPreferences.setString(THREADS_FILTER, filter);
+		},
+		[messages, subscription]
+	);
 
 	const renderItem = ({ item }: { item: TThreadModel }) => {
 		const badgeColor = handleBadgeColor(item);
@@ -428,7 +416,8 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 
 		return (
 			<FlatList
-				extraData={messages}
+				keyExtractor={item => item.id}
+				extraData={displayingThreads}
 				data={displayingThreads}
 				renderItem={renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
@@ -459,16 +448,11 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 				messagesSubscription.unsubscribe();
 			}
 		};
-	}, []);
+	}, [currentFilter]);
 
 	useEffect(() => {
 		setHeader();
 	}, [messages, currentFilter]);
-
-	useEffect(() => {
-		const options = getHeader();
-		navigation.setOptions(options);
-	}, [isSearching]);
 
 	console.count(`${ThreadMessagesView.name}.render calls`);
 
