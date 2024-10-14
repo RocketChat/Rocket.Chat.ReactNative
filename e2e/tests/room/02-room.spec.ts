@@ -285,6 +285,10 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await waitFor(element(by[textMatcher]('Edit')))
+				.toBeVisible()
+				.withTimeout(3000);
 			await element(by[textMatcher]('Edit')).atIndex(0).tap();
 			await element(by.id('message-composer-input')).typeText('ed');
 			await element(by.id('message-composer-send')).tap();
@@ -312,6 +316,7 @@ describe('Room screen', () => {
 			await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
 				.toBeVisible()
 				.withTimeout(3000);
+			await element(by[textMatcher](quotedMessage)).atIndex(0).tap();
 			await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
 				.toBeVisible()
 				.withTimeout(3000);
@@ -321,6 +326,9 @@ describe('Room screen', () => {
 			const expectedLastMessage = `You: ${quotedMessage}`;
 			await sleep(300);
 			await tapBack();
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await waitFor(element(by.id(`markdown-preview-${expectedLastMessage}`)))
 				.toBeVisible()
 				.withTimeout(5000);

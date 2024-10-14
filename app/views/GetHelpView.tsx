@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
@@ -16,7 +16,7 @@ const ACCESSIBILITY_LINK = 'https://go.rocket.chat/i/accessibility';
 const GLOSSARY_LINK = 'https://go.rocket.chat/i/glossary';
 
 const GetHelpView = () => {
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'GetHelpView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'GetHelpView'>>();
 	const { theme } = useTheme();
 
 	useLayoutEffect(() => {

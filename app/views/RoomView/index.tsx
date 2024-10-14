@@ -177,7 +177,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
-			isOnHold: false
+			isOnHold: false,
+			rightButtonsWidth: 0
 		};
 
 		this.setHeader();
@@ -275,7 +276,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined } = this.state;
+		const { roomUpdate, joined, rightButtonsWidth } = this.state;
 		const { insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
@@ -298,7 +299,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
-		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+		if (
+			insets.left !== prevProps.insets.left ||
+			insets.right !== prevProps.insets.right ||
+			rightButtonsWidth !== prevState.rightButtonsWidth
+		) {
 			this.setHeader();
 		}
 		this.setReadOnly();
@@ -415,7 +420,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } =
+			this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
 		const { rid, tmid } = this;
 		if (!room.rid) {
@@ -457,6 +463,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			visitor = room.visitor;
 		}
 
+		const onLayout = ({ nativeEvent }: { nativeEvent: any }) => {
+			this.setState({ rightButtonsWidth: nativeEvent.layout.width });
+		};
+
 		const t = room?.t;
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
@@ -465,30 +475,22 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
 		);
 		navigation.setOptions({
-			headerShown: true,
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: {
-				flex: 1,
-				marginLeft: 0,
-				marginRight: 4,
-				maxWidth: undefined
-			},
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
-			headerLeft: () => (
-				<LeftButtons
-					rid={rid}
-					tmid={tmid}
-					unreadsCount={unreadsCount}
-					baseUrl={baseUrl}
-					userId={userId}
-					token={token}
-					title={avatar}
-					theme={theme}
-					t={t}
-					goRoomActionsView={this.goRoomActionsView}
-					isMasterDetail={isMasterDetail}
-				/>
-			),
+			headerLeft: () =>
+				isIOS && (unreadsCount || isMasterDetail) ? (
+					<LeftButtons
+						rid={rid}
+						tmid={tmid}
+						unreadsCount={unreadsCount}
+						baseUrl={baseUrl}
+						userId={userId}
+						token={token}
+						title={avatar}
+						theme={theme}
+						t={t}
+						goRoomActionsView={this.goRoomActionsView}
+						isMasterDetail={isMasterDetail}
+					/>
+				) : undefined,
 			headerTitle: () => (
 				<RoomHeader
 					prid={prid}
@@ -505,6 +507,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
 					disabled={e2eeWarning}
+					rightButtonsWidth={rightButtonsWidth}
 				/>
 			),
 			headerRight: () => (
@@ -522,6 +525,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
+					onLayout={onLayout}
 					hasE2EEWarning={e2eeWarning}
 				/>
 			)

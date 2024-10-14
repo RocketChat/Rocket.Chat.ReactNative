@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Keyboard, Text, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -32,7 +32,7 @@ const schema = yup.object().shape({
 const UserForm = () => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'LoginView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
 
 	const {
 		params: { username }
