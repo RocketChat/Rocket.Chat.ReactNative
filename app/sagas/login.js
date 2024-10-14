@@ -173,7 +173,7 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	}
 };
 
-const fetchUsersRoles = function* fetchRoomsFork() {
+const fetchUsersRoles = function* fetchUsersRoles() {
 	const roles = yield Services.getUsersRoles();
 	if (roles.length) {
 		yield put(setUsersRoles(roles));

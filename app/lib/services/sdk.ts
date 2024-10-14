@@ -69,10 +69,10 @@ class Sdk {
 	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
 	 */
 	disconnect() {
-		if (this.sdk) {
-			this.sdk.disconnect();
-			this.sdk = null;
-		}
+		// if (this.sdk) {
+		// 	this.sdk.disconnect();
+		// 	this.sdk = null;
+		// }
 		return null;
 	}
 
@@ -82,7 +82,7 @@ class Sdk {
 
 	post(endpoint: string, params: any): Promise<any> {
 		return new Promise(async (resolve, reject) => {
-			const isMethodCall = endpoint?.startsWith('method.call/');
+			const isMethodCall = endpoint?.match('/method.call/');
 			try {
 				const result = await this.current?.rest.post(endpoint, params);
 
@@ -121,7 +121,7 @@ class Sdk {
 	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.current.methodCall(...args, this.code || '');
+				const result = await this.current?.client.callAsyncWithOptions(...args, this.code || '');
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -146,7 +146,7 @@ class Sdk {
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
 			// @ts-ignore
-			return this.post(`${url}/${method}`, {
+			return this.post(`/v1/${url}/${method}`, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
 			});
 		}
@@ -160,7 +160,7 @@ class Sdk {
 	}
 
 	subscribe(...args: any[]) {
-		return this.current.subscribe(...args);
+		return this.current?.client.subscribe(...args);
 	}
 
 	subscribeRaw(...args: any[]) {
