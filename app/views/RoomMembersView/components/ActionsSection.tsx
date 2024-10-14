@@ -1,5 +1,5 @@
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -15,8 +15,8 @@ import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailSt
 import { ChatsStackParamList } from '../../../stacks/types';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 interface IActionsSection {
