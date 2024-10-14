@@ -57,7 +57,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		await sdk.initialize(server);
 		console.log(sdk.current);
-		// getSettings();
+		getSettings();
 
 		sdk.current?.connection.on('connection', async status => {
 			console.log('🚀 ~ emitter.on ~ status:', status);

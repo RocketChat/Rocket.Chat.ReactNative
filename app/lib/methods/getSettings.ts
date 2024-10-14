@@ -158,14 +158,13 @@ export async function getSettings(): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(
-				`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}
-				&offset=${offset}`
-			);
+			// @ts-ignore TODO: type me
+			const result = (await sdk.current?.rest.get('/v1/settings.public', {
+				query: `{ "_id": { "$in": ${JSON.stringify(settingsParams)}} }`,
+				offset
+			})) as any;
 
-			const result = await response.json();
-
-			if (!result.success) {
+			if (!result) {
 				return;
 			}
 
