@@ -1,5 +1,6 @@
 import orderBy from 'lodash/orderBy';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import type { IEmojiCustom } from '@rocket.chat/core-typings';
 
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
@@ -10,8 +11,8 @@ import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
 
 interface IUpdateEmojis {
-	update: TCustomEmojiModel[];
-	remove?: TCustomEmojiModel[];
+	update: IEmojiCustom[];
+	remove?: IEmojiCustom[];
 	allRecords: TCustomEmojiModel[];
 }
 
@@ -111,7 +112,7 @@ export function getCustomEmojis() {
 			if (compareServerVersion(serverVersion, 'lowerThan', '0.75.0')) {
 				// RC 0.61.0
 				// @ts-ignore
-				const result = await sdk.get('emoji-custom');
+				const result = await sdk.current?.rest.get('emoji-custom');
 				// @ts-ignore
 				let { emojis } = result;
 				emojis = emojis.filter((emoji: TCustomEmojiModel) => !updatedSince || emoji._updatedAt.toISOString() > updatedSince);
@@ -124,21 +125,22 @@ export function getCustomEmojis() {
 				}
 				return resolve();
 			}
-			const params: { updatedSince: string } = { updatedSince: '' };
+			const params = { updatedSince: '' };
 			if (updatedSince) {
 				params.updatedSince = updatedSince;
 			}
 
 			// RC 0.75.0
-			const result = await sdk.get('emoji-custom.list', params);
+			// @ts-ignore TODO: missing query params
+			const result = await sdk.current?.rest.get('/v1/emoji-custom.list', params);
 
-			if (!result.success) {
+			if (!result?.emojis) {
 				return resolve();
 			}
 
 			const { emojis } = result;
-			// @ts-ignore
-			const { update, remove } = emojis;
+			// @ts-ignore TODO: get is not returning the correct type
+			const { update, remove }: { update: IEmojiCustom[]; remove: IEmojiCustom[] } = emojis;
 			const changedEmojis = await updateEmojis({ update, remove, allRecords });
 
 			// `setCustomEmojis` is fired on selectServer
