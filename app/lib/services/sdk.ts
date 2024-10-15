@@ -6,57 +6,7 @@ import { DDPSDK } from '@rocket.chat/ddp-client';
 import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
-// import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
-
-// const run = async (url: string, token: string) => {
-// 	const sdk = await DDPSDK.create(url);
-// 	await sdk.connection.connect();
-
-// 	try {
-// 		if (!token) {
-// 			throw new Error('Token is required');
-// 		}
-
-// 		await sdk.account.loginWithToken(token);
-
-// 		await sdk.stream('notify-room', ['wjd5oD5QaZFuKizSC/typing', 'wjd5oD5QaZFuKizSC/deleteMessage'], args => {
-// 			console.log(JSON.stringify(args, undefined, 2));
-// 		});
-
-// 		// await sdk.stream('notify-room', )
-
-// 		await sdk.stream(
-// 			'notify-user',
-// 			['bMvbehmLppt3BzeMc/rooms-changed', 'bMvbehmLppt3BzeMc/subscriptions-changed'],
-// 			(args, bbb) => {
-// 				console.log(args, bbb);
-// 			}
-// 		);
-// 		// console.log('notify-user -> GENERAL/user-activity', JSON.stringify(args, undefined, 2))
-// 		// );
-// 		// await sdk.stream('notify-user', 'GENERAL/rooms-changed', args =>
-// 		// 	console.log('notify-user -> GENERAL/rooms-changed', JSON.stringify(args, undefined, 2))
-// 		// );
-
-// 		// await sdk.stream('room-messages', 'GENERAL', message =>
-// 		// 	console.log('room-messages -> GENERAL', JSON.stringify(message, undefined, 2))
-// 		// );
-// 		// await sdk.stream('roles', 'roles', args => console.log('roles -> roles', JSON.stringify(args, undefined, 2)));
-
-// 		// await sdk.stream('notify-user', [''])
-
-// 		// console.log('ROOMS', await sdk.rest.get('/v1/rooms.get', { updatedSince: '2024-10-10' }));
-// 	} catch (error) {
-// 		console.error('error', error);
-// 	}
-
-// 	return sdk;
-// };
-
-// (async () => {
-// 	await run('https://open.rocket.chat', 'zgGRuDegXwOii3BmYYiMJSfNFimZCJV8wQXdDGaXSeC');
-// })();
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
@@ -91,7 +41,7 @@ class Sdk {
 		return null;
 	}
 
-	get(endpoint: string, params: any): DDPSDK['rest']['get'] {
+	get(endpoint: string, params: any): any {
 		return this.current?.rest.get(endpoint, params);
 	}
 

@@ -46,7 +46,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		}
 
 		// Check for running requests and abort them before connecting to the server
-		abort();
+		// TODO: check if this is necessary
+		// abort();
 
 		disconnect();
 		database.setActiveDB(server);
@@ -59,7 +60,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		console.log(sdk.current);
 		getSettings();
 
-		sdk.current?.connection.on('connection', async status => {
+		sdk.current?.connection.on('connection', status => {
 			console.log('🚀 ~ emitter.on ~ status:', status);
 			if (['connecting', 'reconnecting'].includes(status)) {
 				store.dispatch(connectRequest());
@@ -240,8 +241,8 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	// TODO: other login methods: ldap, saml, cas, apple, oauth, oauth_custom
 	if (credentials.resume) {
 		await sdk.current?.account.loginWithToken(credentials.resume);
-	} else if (credentials.username && credentials.password) {
-		await sdk.current?.account.loginWithPassword(credentials.username, credentials.password);
+	} else if (credentials.user && credentials.password) {
+		await sdk.current?.account.loginWithPassword(credentials.user, credentials.password);
 	} else {
 		throw new Error('Invalid credentials');
 	}
