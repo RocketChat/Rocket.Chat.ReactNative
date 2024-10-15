@@ -37,9 +37,6 @@ import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
 import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/videoConf';
 
-const removeListener = (listener: { stop: () => void }) => listener.stop();
-
-let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
@@ -436,10 +433,6 @@ export default function subscribeRooms() {
 	});
 
 	const stop = () => {
-		if (streamListener) {
-			streamListener.then(removeListener);
-			streamListener = false;
-		}
 		queue = {};
 		if (subTimer) {
 			clearTimeout(subTimer);
@@ -448,12 +441,13 @@ export default function subscribeRooms() {
 		roomsSubscription = null;
 	};
 
-	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
+	// TODO: do I have to unsubscribe from the stream?
+	sdk.onCollection('stream-notify-user', handleStreamMessageReceived);
 
 	try {
 		// set the server that started this task
 		subServer = sdk.current?.connection.url || '';
-		// sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		subscribeNotifyUser().catch((e: unknown) => console.log(e));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {
@@ -461,3 +455,20 @@ export default function subscribeRooms() {
 		return Promise.reject();
 	}
 }
+
+const subscribeNotifyUser = () => {
+	const { id } = store.getState().login.user;
+	const topic = 'stream-notify-user';
+	return Promise.all(
+		[
+			'message',
+			'notification',
+			'rooms-changed',
+			'subscriptions-changed',
+			'uiInteraction',
+			'e2ekeyRequest',
+			'userData',
+			'video-conference'
+		].map(event => sdk.subscribe(topic, `${id}/${event}`, false))
+	);
+};
