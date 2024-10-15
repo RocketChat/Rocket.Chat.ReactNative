@@ -64,7 +64,7 @@ export async function getUsersPresence(usersParams: string[]) {
 			const result = await sdk.current?.rest.get('/v1/users.presence', params);
 
 			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.1.0')) {
-				sdk.subscribeRaw('stream-user-presence', ['', { added: usersParams }]);
+				sdk.subscribe('stream-user-presence', '', { added: usersParams });
 			}
 
 			if (result) {

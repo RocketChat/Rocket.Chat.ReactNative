@@ -128,10 +128,6 @@ class Sdk {
 		return this.current?.client.subscribe(...args);
 	}
 
-	subscribeRaw(...args: any[]) {
-		return this.current.subscribeRaw(...args);
-	}
-
 	subscribeRoom(...args: any[]) {
 		const { server } = reduxStore.getState();
 		const { version: serverVersion } = server;
