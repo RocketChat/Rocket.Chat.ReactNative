@@ -12,7 +12,7 @@ import { getThreadById } from '../../database/services/Thread';
 import { getThreadMessageById } from '../../database/services/ThreadMessage';
 import { store as reduxStore } from '../../store/auxStore';
 import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actions/usersTyping';
-import { debounce } from '../helpers';
+import { compareServerVersion, debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
 import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
@@ -58,8 +58,13 @@ export default class RoomSubscription {
 		sdk.current?.connection.on('connection', this.handleConnection);
 		this.streamRoomMessages = sdk._stream('room-messages', this.rid, this.handleMessageReceived);
 		this.streamDeleteMessage = sdk._stream('notify-room', `${this.rid}/deleteMessage`, this.handleNotifyRoomReceived);
-		// TODO: missing ws below 4.4.0
-		this.streamUserActivity = sdk._stream('notify-room', `${this.rid}/user-activity`, this.handleNotifyRoomReceived);
+
+		const { version: serverVersion } = reduxStore.getState().server;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
+			this.streamUserActivity = sdk._stream('notify-room', `${this.rid}/user-activity`, this.handleNotifyRoomReceived);
+		} else {
+			this.streamUserActivity = sdk._stream('notify-room', `${this.rid}/typing`, this.handleNotifyRoomReceived);
+		}
 
 		if (!this.isAlive) {
 			this.unsubscribe();

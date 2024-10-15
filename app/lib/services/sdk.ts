@@ -128,29 +128,6 @@ class Sdk {
 		return this.current?.client.subscribe(...args);
 	}
 
-	subscribeRoom(...args: any[]) {
-		const { server } = reduxStore.getState();
-		const { version: serverVersion } = server;
-		const topic = 'stream-notify-room';
-		let eventUserTyping;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
-			eventUserTyping = this.subscribe(topic, `${args[0]}/user-activity`, ...args);
-		} else {
-			eventUserTyping = this.subscribe(topic, `${args[0]}/typing`, ...args);
-		}
-
-		// Taken from https://github.com/RocketChat/Rocket.Chat.js.SDK/blob/454b4ba784095057b8de862eb99340311b672e15/lib/drivers/ddp.ts#L555
-		return Promise.all([
-			this.subscribe('stream-room-messages', args[0], ...args),
-			eventUserTyping,
-			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args)
-		]);
-	}
-
-	unsubscribe(subscription: any[]) {
-		return this.current.unsubscribe(subscription);
-	}
-
 	onCollection(...args: any[]) {
 		return this.current?.client.onCollection(...args);
 	}
