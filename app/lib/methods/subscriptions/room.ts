@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
+import { Subscription } from '@rocket.chat/ddp-client/dist/types/Subscription';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
@@ -14,7 +15,7 @@ import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actio
 import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { IMessage, TMessageModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
@@ -34,11 +35,8 @@ export default class RoomSubscription {
 	private _threadsBatch: { [key: string]: TThreadModel };
 	private threadMessagesBatch: {};
 	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
-	private promises?: Promise<TSubscriptionModel[]>;
-	private connectedListener?: Promise<any>;
-	private disconnectedListener?: Promise<any>;
-	private notifyRoomListener?: Promise<any>;
-	private messageReceivedListener?: Promise<any>;
+	private subscriptions: (Subscription | undefined)[] = [];
+	private streams: (() => void)[] = [];
 	private lastOpen?: Date;
 
 	constructor(rid: string) {
@@ -57,15 +55,22 @@ export default class RoomSubscription {
 
 	subscribe = async () => {
 		console.log(`[RCRN] Subscribing to room ${this.rid}`);
-		if (this.promises) {
+		if (this.subscriptions.length) {
+			console.log('await this.unsubscribe();');
 			await this.unsubscribe();
 		}
-		this.promises = sdk.subscribeRoom(this.rid);
-
-		this.connectedListener = sdk.onStreamData('connected', this.handleConnection);
-		this.disconnectedListener = sdk.onStreamData('close', this.handleConnection);
-		this.notifyRoomListener = sdk.onStreamData('stream-notify-room', this.handleNotifyRoomReceived);
-		this.messageReceivedListener = sdk.onStreamData('stream-room-messages', this.handleMessageReceived);
+		this.subscriptions = [
+			sdk.subscribe('stream-room-messages', this.rid),
+			sdk.subscribe('stream-notify-room', `${this.rid}/typing`),
+			sdk.subscribe('stream-notify-room', `${this.rid}/deleteMessage`)
+		];
+		sdk.current?.connection.on('connection', this.handleConnection);
+		this.streams = [
+			// @ts-ignore
+			sdk.onCollection('stream-notify-room', this.handleNotifyRoomReceived),
+			// @ts-ignore
+			sdk.onCollection('stream-room-messages', this.handleMessageReceived)
+		];
 		if (!this.isAlive) {
 			await this.unsubscribe();
 		}
@@ -73,53 +78,39 @@ export default class RoomSubscription {
 		reduxStore.dispatch(subscribeRoom(this.rid));
 	};
 
-	unsubscribe = async () => {
+	unsubscribe = () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
 		updateLastOpen(this.rid);
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
-		if (this.promises) {
-			try {
-				const subscriptions = (await this.promises) || [];
-				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
-			} catch (e) {
-				// do nothing
-			}
+		if (this.subscriptions) {
+			this.subscriptions.forEach(sub => sub && sub.stop());
+		}
+		if (this.streams) {
+			this.streams.forEach(s => s && s());
 		}
 		reduxStore.dispatch(clearUserTyping());
-		this.removeListener(this.connectedListener);
-		this.removeListener(this.disconnectedListener);
-		this.removeListener(this.notifyRoomListener);
-		this.removeListener(this.messageReceivedListener);
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
 	};
 
-	removeListener = async (promise?: Promise<any>): Promise<void> => {
-		if (promise) {
-			try {
-				const listener = await promise;
-				listener.stop();
-			} catch (e) {
-				// do nothing
-			}
-		}
-	};
-
-	handleConnection = async () => {
+	handleConnection = async (status: string) => {
 		try {
-			reduxStore.dispatch(clearUserTyping());
-			await loadMissedMessages({ rid: this.rid });
-			const _lastOpen = new Date();
-			this.read(_lastOpen);
-			this.lastOpen = _lastOpen;
+			if (['connected', 'close'].includes(status)) {
+				reduxStore.dispatch(clearUserTyping());
+				await loadMissedMessages({ rid: this.rid });
+				const _lastOpen = new Date();
+				this.read(_lastOpen);
+				this.lastOpen = _lastOpen;
+			}
 		} catch (e) {
 			log(e);
 		}
 	};
 
 	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
+		console.log('🚀 ~ RoomSubscription ~ handleNotifyRoomReceived=protectedFunction ~ ddpMessage:', ddpMessage);
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -312,6 +303,7 @@ export default class RoomSubscription {
 		});
 
 	handleMessageReceived = (ddpMessage: IDDPMessage) => {
+		console.log('🚀 ~ RoomSubscription ~ ddpMessage:', ddpMessage);
 		if (!this.timer) {
 			this.timer = setTimeout(async () => {
 				// copy variables values to local and clean them
