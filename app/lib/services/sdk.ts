@@ -6,7 +6,7 @@ import { DDPSDK } from '@rocket.chat/ddp-client';
 import { twoFactor } from './twoFactor';
 import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
-import { compareServerVersion, random } from '../methods/helpers';
+import { random } from '../methods/helpers';
 
 class Sdk {
 	private sdk: DDPSDK | undefined;

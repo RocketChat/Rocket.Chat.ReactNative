@@ -24,7 +24,7 @@ async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen?: Date })
 		lastUpdate = await getLastUpdate(roomId);
 	}
 	// RC 0.60.0
-	const result = await sdk.current?.rest.get('/v1/chat.syncMessages', { roomId, lastUpdate: lastUpdate || '' });
+	const result = await sdk.get('/v1/chat.syncMessages', { roomId, lastUpdate: lastUpdate || '' });
 
 	if (!result) {
 		return null;

@@ -12,7 +12,7 @@ export function getSlashCommands() {
 		try {
 			// RC 0.60.2
 			// @ts-ignore
-			const result = await sdk.current?.rest.get('/v1/commands.list');
+			const result = await sdk.get('/v1/commands.list');
 
 			if (!result) {
 				return resolve();

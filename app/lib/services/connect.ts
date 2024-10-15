@@ -245,7 +245,7 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 	const serverVersion = store.getState().server.version;
 	const loginUser = sdk.current?.account.user;
 	console.log('🚀 ~ login ~ result:', loginUser);
-	const me = await sdk.current?.rest.get('/v1/me');
+	const me = await sdk.get('/v1/me');
 	console.log('🚀 ~ login ~ me:', me);
 
 	if (!me) {

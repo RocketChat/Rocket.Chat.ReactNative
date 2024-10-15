@@ -6,10 +6,10 @@ export function getRooms(updatedSince: Date) {
 	if (updatedSince) {
 		const updatedDate = updatedSince.toISOString();
 		return Promise.all([
-			sdk.current?.rest.get('/v1/subscriptions.get', { updatedSince: updatedDate }),
-			sdk.current?.rest.get('/v1/rooms.get', { updatedSince: updatedDate })
+			sdk.get('/v1/subscriptions.get', { updatedSince: updatedDate }),
+			sdk.get('/v1/rooms.get', { updatedSince: updatedDate })
 		]);
 	}
 	// @ts-ignore TODO: null updatedSince?
-	return Promise.all([sdk.current?.rest.get('/v1/subscriptions.get'), sdk.current?.rest.get('/v1/rooms.get')]);
+	return Promise.all([sdk.get('/v1/subscriptions.get'), sdk.get('/v1/rooms.get')]);
 }
