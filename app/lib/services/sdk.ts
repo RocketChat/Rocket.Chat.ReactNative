@@ -9,36 +9,50 @@ import { store as reduxStore } from '../store/auxStore';
 // import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
 import { compareServerVersion, random } from '../methods/helpers';
 
-const run = async (url: string, token: string) => {
-	const sdk = await DDPSDK.create(url);
-	await sdk.connection.connect();
+// const run = async (url: string, token: string) => {
+// 	const sdk = await DDPSDK.create(url);
+// 	await sdk.connection.connect();
 
-	try {
-		if (!token) {
-			throw new Error('Token is required');
-		}
+// 	try {
+// 		if (!token) {
+// 			throw new Error('Token is required');
+// 		}
 
-		await sdk.account.loginWithToken(token);
+// 		await sdk.account.loginWithToken(token);
 
-		await sdk.stream('notify-room', 'GENERAL/user-activity', args =>
-			console.log('notify-user -> GENERAL/user-activity', JSON.stringify(args, undefined, 2))
-		);
-		await sdk.stream('notify-user', 'GENERAL/rooms-changed', args =>
-			console.log('notify-user -> GENERAL/rooms-changed', JSON.stringify(args, undefined, 2))
-		);
+// 		await sdk.stream('notify-room', ['wjd5oD5QaZFuKizSC/typing', 'wjd5oD5QaZFuKizSC/deleteMessage'], args => {
+// 			console.log(JSON.stringify(args, undefined, 2));
+// 		});
 
-		await sdk.stream('room-messages', 'GENERAL', message =>
-			console.log('room-messages -> GENERAL', JSON.stringify(message, undefined, 2))
-		);
-		await sdk.stream('roles', 'roles', args => console.log('roles -> roles', JSON.stringify(args, undefined, 2)));
+// 		// await sdk.stream('notify-room', )
 
-		console.log('ROOMS', await sdk.rest.get('/v1/rooms.get', { updatedSince: '2024-10-10' }));
-	} catch (error) {
-		console.error('error', error);
-	}
+// 		await sdk.stream(
+// 			'notify-user',
+// 			['bMvbehmLppt3BzeMc/rooms-changed', 'bMvbehmLppt3BzeMc/subscriptions-changed'],
+// 			(args, bbb) => {
+// 				console.log(args, bbb);
+// 			}
+// 		);
+// 		// console.log('notify-user -> GENERAL/user-activity', JSON.stringify(args, undefined, 2))
+// 		// );
+// 		// await sdk.stream('notify-user', 'GENERAL/rooms-changed', args =>
+// 		// 	console.log('notify-user -> GENERAL/rooms-changed', JSON.stringify(args, undefined, 2))
+// 		// );
 
-	return sdk;
-};
+// 		// await sdk.stream('room-messages', 'GENERAL', message =>
+// 		// 	console.log('room-messages -> GENERAL', JSON.stringify(message, undefined, 2))
+// 		// );
+// 		// await sdk.stream('roles', 'roles', args => console.log('roles -> roles', JSON.stringify(args, undefined, 2)));
+
+// 		// await sdk.stream('notify-user', [''])
+
+// 		// console.log('ROOMS', await sdk.rest.get('/v1/rooms.get', { updatedSince: '2024-10-10' }));
+// 	} catch (error) {
+// 		console.error('error', error);
+// 	}
+
+// 	return sdk;
+// };
 
 // (async () => {
 // 	await run('https://open.rocket.chat', 'zgGRuDegXwOii3BmYYiMJSfNFimZCJV8wQXdDGaXSeC');
@@ -73,6 +87,7 @@ class Sdk {
 		// 	this.sdk.disconnect();
 		// 	this.sdk = null;
 		// }
+		console.log('disconnect', sdk.current?.client.subscriptions);
 		return null;
 	}
 
@@ -190,8 +205,42 @@ class Sdk {
 		return this.current.unsubscribe(subscription);
 	}
 
-	onStreamData(...args: any[]) {
-		return this.current.onStreamData(...args);
+	onCollection(...args: any[]) {
+		return this.current?.client.onCollection(...args);
+	}
+
+	stream(...args: any[]) {
+		return this.current?.stream(...args);
+	}
+
+	_stream(name: string, data: unknown, cb: (...data: any) => void) {
+		const [key, args] = Array.isArray(data) ? data : [data];
+		if (!this.current) {
+			return;
+		}
+		const subscription = this.current.client.subscribe(`stream-${name}`, key, { useCollection: false, args: [args] });
+
+		const stop = subscription.stop.bind(subscription);
+		const cancel = [
+			() => stop(),
+			this.current.client.onCollection(`stream-${name}`, (data: any) => {
+				if (data.collection !== `stream-${name}`) {
+					return;
+				}
+				if (data.msg === 'added') {
+					return;
+				}
+				if (data.fields.eventName === key) {
+					cb(data);
+				}
+			})
+		];
+
+		return Object.assign(subscription, {
+			stop: () => {
+				cancel.forEach(fn => fn());
+			}
+		});
 	}
 }
 

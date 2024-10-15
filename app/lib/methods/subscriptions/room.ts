@@ -35,9 +35,10 @@ export default class RoomSubscription {
 	private _threadsBatch: { [key: string]: TThreadModel };
 	private threadMessagesBatch: {};
 	private _threadMessagesBatch: { [key: string]: TThreadMessageModel };
-	private subscriptions: (Subscription | undefined)[] = [];
-	private streams: (() => void)[] = [];
 	private lastOpen?: Date;
+	private streamRoomMessages: Subscription | undefined;
+	private streamDeleteMessage: Subscription | undefined;
+	private streamUserActivity: Subscription | undefined;
 
 	constructor(rid: string) {
 		this.rid = rid;
@@ -47,32 +48,21 @@ export default class RoomSubscription {
 		this.messagesBatch = {};
 		this.threadsBatch = {};
 		this.threadMessagesBatch = {};
-
 		this._messagesBatch = {};
 		this._threadsBatch = {};
 		this._threadMessagesBatch = {};
 	}
 
-	subscribe = async () => {
+	subscribe = () => {
 		console.log(`[RCRN] Subscribing to room ${this.rid}`);
-		if (this.subscriptions.length) {
-			console.log('await this.unsubscribe();');
-			await this.unsubscribe();
-		}
-		this.subscriptions = [
-			sdk.subscribe('stream-room-messages', this.rid),
-			sdk.subscribe('stream-notify-room', `${this.rid}/typing`),
-			sdk.subscribe('stream-notify-room', `${this.rid}/deleteMessage`)
-		];
 		sdk.current?.connection.on('connection', this.handleConnection);
-		this.streams = [
-			// @ts-ignore
-			sdk.onCollection('stream-notify-room', this.handleNotifyRoomReceived),
-			// @ts-ignore
-			sdk.onCollection('stream-room-messages', this.handleMessageReceived)
-		];
+		this.streamRoomMessages = sdk._stream('room-messages', this.rid, this.handleMessageReceived);
+		this.streamDeleteMessage = sdk._stream('notify-room', `${this.rid}/deleteMessage`, this.handleNotifyRoomReceived);
+		// TODO: missing ws below 4.4.0
+		this.streamUserActivity = sdk._stream('notify-room', `${this.rid}/user-activity`, this.handleNotifyRoomReceived);
+
 		if (!this.isAlive) {
-			await this.unsubscribe();
+			this.unsubscribe();
 		}
 
 		reduxStore.dispatch(subscribeRoom(this.rid));
@@ -81,15 +71,20 @@ export default class RoomSubscription {
 	unsubscribe = () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
 		updateLastOpen(this.rid);
+		// TODO: do we need this?
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
-		if (this.subscriptions) {
-			this.subscriptions.forEach(sub => sub && sub.stop());
-		}
-		if (this.streams) {
-			this.streams.forEach(s => s && s());
-		}
 		reduxStore.dispatch(clearUserTyping());
+		if (this.streamRoomMessages) {
+			this.streamRoomMessages.stop();
+		}
+		if (this.streamDeleteMessage) {
+			this.streamDeleteMessage.stop();
+		}
+		if (this.streamUserActivity) {
+			this.streamUserActivity.stop();
+		}
+
 		if (this.timer) {
 			clearTimeout(this.timer);
 		}
@@ -110,7 +105,6 @@ export default class RoomSubscription {
 	};
 
 	handleNotifyRoomReceived = protectedFunction((ddpMessage: IDDPMessage) => {
-		console.log('🚀 ~ RoomSubscription ~ handleNotifyRoomReceived=protectedFunction ~ ddpMessage:', ddpMessage);
 		const [_rid, ev] = ddpMessage.fields.eventName.split('/');
 		if (this.rid !== _rid) {
 			return;
@@ -303,7 +297,6 @@ export default class RoomSubscription {
 		});
 
 	handleMessageReceived = (ddpMessage: IDDPMessage) => {
-		console.log('🚀 ~ RoomSubscription ~ ddpMessage:', ddpMessage);
 		if (!this.timer) {
 			this.timer = setTimeout(async () => {
 				// copy variables values to local and clean them
