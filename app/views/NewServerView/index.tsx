@@ -3,7 +3,6 @@ import { Base64 } from 'js-base64';
 import React, { useEffect, useLayoutEffect, useReducer } from 'react';
 import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { connect } from 'react-redux';
 import parse from 'url-parse';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
@@ -13,12 +12,12 @@ import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { IApplicationState, TServerHistoryModel } from '../../definitions';
+import { TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
@@ -28,8 +27,9 @@ import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 import { serializeAsciiUrl } from '../../lib/methods';
-import { INewServerViewProps, ISubmitParams } from './types';
+import { INewServerViewProps, TSubmitParams, TCertificatePicker } from './types';
 import { newServerReducer, newServerInitialState } from './reducer';
+import { useAppSelector } from '../../lib/hooks';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -64,7 +64,34 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NewServerView = ({ connecting, dispatch, navigation, previousServer, theme }: INewServerViewProps) => {
+const CertificatePicker = ({ previousServer, certificate, theme, chooseCertificate, handleRemove }: TCertificatePicker) => (
+	<View
+		style={[
+			styles.certificatePicker,
+			{
+				marginTop: isAndroid ? 20 : 0,
+				marginBottom: previousServer && !isTablet ? 10 : 30
+			}
+		]}>
+		<Text style={[styles.chooseCertificateTitle, { color: themes[theme].fontSecondaryInfo, fontSize: 13 }]}>
+			{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
+		</Text>
+		<TouchableOpacity onPress={certificate ? handleRemove : chooseCertificate} testID='new-server-choose-certificate'>
+			<Text style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: 13 }]}>
+				{certificate ?? I18n.t('Apply_Your_Certificate')}
+			</Text>
+		</TouchableOpacity>
+	</View>
+);
+
+const NewServerView = ({ dispatch, navigation }: INewServerViewProps) => {
+	const { theme } = useTheme();
+
+	const { previousServer, connecting } = useAppSelector(state => ({
+		previousServer: state.server.previousServer,
+		connecting: state.server.connecting
+	}));
+
 	const [state, reducerDispatch] = useReducer(newServerReducer, newServerInitialState);
 
 	const setText = (value: string) => reducerDispatch({ type: 'SET_TEXT', payload: value });
@@ -143,7 +170,7 @@ const NewServerView = ({ connecting, dispatch, navigation, previousServer, theme
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
 	};
 
-	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
+	const submit = ({ fromServerHistory = false, username, serverUrl }: TSubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 
 		setConnectingOpen(false);
@@ -236,26 +263,6 @@ const NewServerView = ({ connecting, dispatch, navigation, previousServer, theme
 			// Nothing
 		}
 	};
-
-	const renderCertificatePicker = () => (
-		<View
-			style={[
-				styles.certificatePicker,
-				{
-					marginTop: isAndroid ? 20 : 0,
-					marginBottom: previousServer && !isTablet ? 10 : 30
-				}
-			]}>
-			<Text style={[styles.chooseCertificateTitle, { color: themes[theme].fontSecondaryInfo, fontSize: 13 }]}>
-				{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
-			</Text>
-			<TouchableOpacity onPress={certificate ? handleRemove : chooseCertificate} testID='new-server-choose-certificate'>
-				<Text style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: 13 }]}>
-					{certificate ?? I18n.t('Apply_Your_Certificate')}
-				</Text>
-			</TouchableOpacity>
-		</View>
-	);
 
 	useLayoutEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
@@ -357,14 +364,15 @@ const NewServerView = ({ connecting, dispatch, navigation, previousServer, theme
 					</>
 				) : null}
 			</FormContainerInner>
-			{renderCertificatePicker()}
+			<CertificatePicker
+				certificate={certificate}
+				chooseCertificate={chooseCertificate}
+				handleRemove={handleRemove}
+				previousServer={previousServer}
+				theme={theme}
+			/>
 		</FormContainer>
 	);
 };
 
-const mapStateToProps = (state: IApplicationState) => ({
-	connecting: state.server.connecting,
-	previousServer: state.server.previousServer
-});
-
-export default connect(mapStateToProps)(withTheme(NewServerView));
+export default NewServerView;
