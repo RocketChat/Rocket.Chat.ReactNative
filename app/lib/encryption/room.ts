@@ -1,5 +1,4 @@
 import EJSON from 'ejson';
-import { Base64 } from 'js-base64';
 import SimpleCrypto from 'react-native-simple-crypto';
 import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
@@ -123,7 +122,7 @@ export default class EncryptionRoom {
 			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
-			const keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
+			const keyID = (await SimpleCrypto.SHA.sha256(sessionKeyExportedString as string)).slice(0, 12);
 
 			// Extract K from Web Crypto Secret Key
 			// K is a base64URL encoded array of bytes
@@ -161,7 +160,7 @@ export default class EncryptionRoom {
 		};
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
-		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
+		this.keyID = (await SimpleCrypto.SHA.sha256(this.sessionKeyExportedString)).slice(0, 12);
 
 		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
 
