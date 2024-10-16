@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { StackNavigationOptions } from '@react-navigation/stack';
 import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { getPermalinkMessage } from '../../lib/methods';
@@ -54,7 +53,7 @@ const ForwardMessageView = () => {
 				</HeaderButton.Container>
 			),
 			headerLeft: () => <HeaderButton.CloseModal />
-		} as StackNavigationOptions);
+		});
 	}, [rooms.length, navigation, sending]);
 
 	const handlePostMessage = async () => {

@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/core';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useLayoutEffect, useState } from 'react';
 import { WebView, WebViewNavigation } from 'react-native-webview';
 import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
@@ -44,7 +44,7 @@ const AuthenticationWebView = () => {
 	const [logging, setLogging] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const navigation = useNavigation<StackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideModalParamList, 'AuthenticationWebView'>>();
 	const {
 		params: { authType, url, ssoToken }
 	} = useRoute<RouteProp<OutsideModalParamList, 'AuthenticationWebView'>>();
