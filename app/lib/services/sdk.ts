@@ -33,11 +33,10 @@ class Sdk {
 	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
 	 */
 	disconnect() {
-		// if (this.sdk) {
-		// 	this.sdk.disconnect();
-		// 	this.sdk = null;
-		// }
-		console.log('disconnect', sdk.current?.client.subscriptions);
+		if (this.sdk) {
+			this.sdk.connection.close();
+			this.sdk = undefined;
+		}
 		return null;
 	}
 

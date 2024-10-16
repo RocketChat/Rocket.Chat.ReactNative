@@ -129,9 +129,7 @@ export async function logout({ server }: { server: string }): Promise<void> {
 		log(e);
 	}
 
-	// if (sdk.current) {
-	// 	sdk.disconnect();
-	// }
+	sdk.disconnect();
 
 	await removeServerData({ server });
 	await removeCurrentServer();
