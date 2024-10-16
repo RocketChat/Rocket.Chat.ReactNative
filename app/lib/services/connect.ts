@@ -45,10 +45,6 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			return resolve();
 		}
 
-		// Check for running requests and abort them before connecting to the server
-		// TODO: check if this is necessary
-		// abort();
-
 		disconnect();
 		database.setActiveDB(server);
 
@@ -361,13 +357,6 @@ async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
 	store.dispatch(loginRequest({ resume: result.token }, false, isFromWebView));
 }
 
-function abort() {
-	// if (sdk.current) {
-	// 	return sdk.current.abort();
-	// }
-	console.log('ABORT?');
-}
-
 function checkAndReopen() {
 	console.log('CHECK AND REOPEN??');
 	return sdk.current.checkAndReopen();
@@ -463,7 +452,6 @@ export {
 	loginWithPassword,
 	loginOAuthOrSso,
 	checkAndReopen,
-	abort,
 	connect,
 	disconnect,
 	getWebsocketInfo,

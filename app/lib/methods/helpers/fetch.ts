@@ -14,7 +14,6 @@ interface CustomHeaders {
 
 interface IOptions {
 	headers?: CustomHeaders;
-	signal?: AbortSignal;
 	method?: TMethods;
 	body?: any;
 }
@@ -44,11 +43,5 @@ export default (url: string, options: IOptions = {}): Promise<Response> => {
 	if (options && options.headers) {
 		customOptions = { ...customOptions, headers: { ...options.headers, ...customOptions.headers } };
 	}
-	// TODO: Check if this really works and if anyone else has complained about this problem.
-	// if (RocketChat.controller) {
-	// 	// @ts-ignore
-	// 	const { signal } = RocketChat.controller;
-	// 	customOptions = { ...customOptions, signal };
-	// }
 	return fetch(url, customOptions);
 };
