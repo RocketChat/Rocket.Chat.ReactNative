@@ -123,6 +123,12 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		if (!serverRecord) {
 			throw new Error('Server not found');
 		}
+
+		// if server url contains .qa.rocket.chat, don't check supported versions
+		if (server.includes('.qa.rocket.chat')) {
+			return serverRecord;
+		}
+
 		const supportedVersionsResult = yield* call(checkSupportedVersions, {
 			supportedVersions: serverRecord.supportedVersions,
 			serverVersion: serverRecord.version
