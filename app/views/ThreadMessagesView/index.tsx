@@ -17,7 +17,7 @@ import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
 import { themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
+import { useTheme, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -36,15 +36,24 @@ import { Services } from '../../lib/services';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { ISearchThreadMessages, IThreadMessagesViewProps } from './types';
 import { threadMessagesInitialState, threadReducer } from './reducer';
+import { useAppSelector } from '../../lib/hooks';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
 
-const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealName, user }: IThreadMessagesViewProps) => {
+const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => {
 	const rid = route.params?.rid;
 	let subSubscription: Subscription;
 	let messagesSubscription: Subscription;
 	let messagesObservable: Observable<TThreadModel[]>;
+
+	const { theme } = useTheme();
+
+	const { user, useRealName, isMasterDetail } = useAppSelector(state => ({
+		user: getUserSelector(state),
+		useRealName: state.settings.UI_Use_Real_Name as boolean,
+		isMasterDetail: state.app.isMasterDetail
+	}));
 
 	const [state, dispatch] = useReducer(threadReducer, threadMessagesInitialState);
 	const { currentFilter, displayingThreads, end, loading, messages, offset, search, subscription } = state;
@@ -104,18 +113,15 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		}
 	};
 
-	const initFilter = () =>
-		new Promise<void>(resolve => {
-			const savedFilter = UserPreferences.getString(THREADS_FILTER);
-			if (savedFilter) {
-				setCurrentFilter(savedFilter as Filter);
-				resolve();
-			}
-			resolve();
-		});
+	const initFilter = () => {
+		const savedFilter = UserPreferences.getString(THREADS_FILTER);
+		if (savedFilter) {
+			setCurrentFilter(savedFilter as Filter);
+		}
+	};
 
 	const init = async () => {
-		await initFilter();
+		initFilter();
 		if (!subscription) {
 			return load();
 		}
@@ -142,10 +148,6 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 	}) => {
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
-		if (!subscription._id) {
-			setMessages([...messages, ...update] as TThreadModel[]);
-			return;
-		}
 
 		try {
 			const db = database.active;
@@ -401,7 +403,7 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 		);
 	};
 
-	const renderContent = () => {
+	const Content = (): React.JSX.Element => {
 		if (!messages?.length || !displayingThreads?.length) {
 			let text;
 			if (currentFilter === Filter.Following) {
@@ -459,16 +461,9 @@ const ThreadMessagesView = ({ navigation, route, theme, isMasterDetail, useRealN
 	return (
 		<SafeAreaView testID='thread-messages-view'>
 			<StatusBar />
-			{renderContent()}
+			<Content />
 		</SafeAreaView>
 	);
 };
 
-const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	useRealName: state.settings.UI_Use_Real_Name as boolean,
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(withTheme(ThreadMessagesView));
+export default ThreadMessagesView;

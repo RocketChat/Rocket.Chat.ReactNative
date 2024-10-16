@@ -31,7 +31,6 @@ const threadReducer = (state: IThreadMessagesViewState, action: IThreadAction): 
         case 'SET_FILTER':
             return { ...state, currentFilter: action.payload };
         case 'SET_SEARCH':
-            console.log(action.payload)
             return { ...state, search: action.payload };
         case 'SET_OFFSET':
             return { ...state, offset: action.payload };
