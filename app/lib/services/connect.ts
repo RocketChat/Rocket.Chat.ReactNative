@@ -71,7 +71,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					store.dispatch(loginRequest({ resume: user.token }, logoutOnError));
 				}
 			}
-			if (['disconnected', 'close'].includes(status)) {
+			if (['disconnected', 'closed'].includes(status)) {
 				store.dispatch(disconnectAction());
 			}
 		});
