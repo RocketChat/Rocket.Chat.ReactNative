@@ -1,13 +1,13 @@
-import { INewServerAction, INewServerViewState } from "./types";
+import { INewServerAction, TNewServerViewState } from "./types";
 
-const newServerInitialState: INewServerViewState = {
+const newServerInitialState: TNewServerViewState = {
     text: '',
     connectingOpen: false,
     certificate: null,
     serversHistory: []
 };
 
-const newServerReducer = (state: INewServerViewState, action: INewServerAction): INewServerViewState => {
+const newServerReducer = (state: TNewServerViewState, action: INewServerAction): TNewServerViewState => {
     switch (action.type) {
         case 'SET_TEXT':
             return { ...state, text: action.payload };
