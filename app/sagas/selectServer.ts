@@ -24,7 +24,7 @@ import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
-import { setSupportedVersions } from '../actions/supportedVersions';
+// import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
 import { encryptionStop } from '../actions/encryption';
 import SSLPinning from '../lib/methods/helpers/sslPinning';
@@ -32,7 +32,7 @@ import { inquiryReset } from '../ee/omnichannel/actions/inquiry';
 import { IServerInfo, RootEnum, TServerModel } from '../definitions';
 import { CERTIFICATE_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import {
-	checkSupportedVersions,
+	// checkSupportedVersions,
 	getLoginSettings,
 	getServerInfo,
 	setCustomEmojis,
@@ -42,7 +42,7 @@ import {
 	setSettings
 } from '../lib/methods';
 import { Services } from '../lib/services';
-import { connect, disconnect } from '../lib/services/connect';
+import { connect } from '../lib/services/connect';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
@@ -123,15 +123,15 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		if (!serverRecord) {
 			throw new Error('Server not found');
 		}
-		const supportedVersionsResult = yield* call(checkSupportedVersions, {
-			supportedVersions: serverRecord.supportedVersions,
-			serverVersion: serverRecord.version
-		});
-		yield put(setSupportedVersions(supportedVersionsResult));
+		// const supportedVersionsResult = yield* call(checkSupportedVersions, {
+		// 	supportedVersions: serverRecord.supportedVersions,
+		// 	serverVersion: serverRecord.version
+		// });
+		// yield put(setSupportedVersions(supportedVersionsResult));
 
-		if (supportedVersionsResult.status === 'expired') {
-			disconnect();
-		}
+		// if (supportedVersionsResult.status === 'expired') {
+		// 	disconnect();
+		// }
 
 		return serverRecord;
 	} catch (e) {
