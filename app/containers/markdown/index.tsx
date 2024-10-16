@@ -142,9 +142,6 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	renderText = ({ context, literal }: { context: []; literal: string }) => {
 		const { numberOfLines } = this.props;
 		const defaultStyle = [this.isMessageContainsOnlyEmoji ? styles.textBig : {}, ...context.map(type => styles[type])];
-
-		if (this.isMessageContainsOnlyEmoji) return this.renderEmoji({ literal });
-
 		return (
 			<Text accessibilityLabel={literal} style={[styles.text, defaultStyle]} numberOfLines={numberOfLines}>
 				{literal}
