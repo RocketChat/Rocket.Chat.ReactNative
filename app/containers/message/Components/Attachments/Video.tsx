@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
 	},
 	playerIcon: {
 		position: 'absolute',
-		shadowColor: themes.light.backdropColor,
-		shadowOpacity: 0.3,
 		shadowOffset: {
 			width: 1,
 			height: 1
@@ -48,7 +46,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-type Image = string | null;
+type TThumbnailImage = string | null;
 
 type ThumbnailProps = {
 	url: string;
@@ -64,7 +62,7 @@ const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
 		icon = 'encrypted';
 	}
 
-	const [image, setImage] = useState<Image>(null);
+	const [image, setImage] = useState<TThumbnailImage>(null);
 
 	const generateThumbnail = async () => {
 		try {
@@ -94,7 +92,10 @@ const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
 						name={icon}
 						size={54}
 						color={themes[theme].fontPureWhite}
-						style={[styles.playerIcon, { shadowColor: themes[theme].backdropColor }]}
+						style={[
+							styles.playerIcon,
+							{ shadowColor: themes[theme].backdropColor, shadowOpacity: themes[theme].backdropOpacity }
+						]}
 					/>
 				</>
 			)}
