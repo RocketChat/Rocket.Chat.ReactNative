@@ -28,7 +28,7 @@ import {
 	onRolesChanged,
 	setPresenceCap
 } from '../methods';
-import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
+import { compareServerVersion, isIOS } from '../methods/helpers';
 
 interface IServices {
 	[index: string]: string | boolean;

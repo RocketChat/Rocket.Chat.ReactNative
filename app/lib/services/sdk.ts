@@ -1,21 +1,14 @@
-import { Rocketchat } from '@rocket.chat/sdk';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import { twoFactor } from './twoFactor';
-import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
 import { random } from '../methods/helpers';
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
 	private code: any;
-
-	private initializeSdk(server: string): typeof Rocketchat {
-		// The app can't reconnect if reopen interval is 5s while in development
-		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
-	}
 
 	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	async initialize(server: string) {
