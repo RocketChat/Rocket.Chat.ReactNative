@@ -1,7 +1,7 @@
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
@@ -370,24 +370,19 @@ async function getWebsocketInfo({
 }: {
 	server: string;
 }): Promise<{ success: true } | { success: false; message: string }> {
-	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-
 	try {
-		await websocketSdk.connect();
-	} catch (err: any) {
-		if (err.message && err.message.includes('400')) {
-			return {
-				success: false,
-				message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
-			};
-		}
+		const sdk = await DDPSDK.createAndConnect(server);
+		sdk.connection.close();
+
+		return {
+			success: true
+		};
+	} catch {
+		return {
+			success: false,
+			message: I18n.t('Websocket_disabled', { contact: I18n.t('Contact_your_server_admin') })
+		};
 	}
-
-	websocketSdk.disconnect();
-
-	return {
-		success: true
-	};
 }
 
 async function getLoginServices(server: string) {
