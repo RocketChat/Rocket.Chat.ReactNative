@@ -1,10 +1,10 @@
 import * as FileSystem from 'expo-file-system';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 import * as Keychain from 'react-native-keychain';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import { getDeviceToken } from '../notifications';
-import { extractHostname, isSsl } from './helpers';
+import { extractHostname } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
@@ -81,21 +81,26 @@ export async function removeServer({ server }: { server: string }): Promise<void
 	try {
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		if (userId) {
-			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
+			const userToken = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
-			try {
-				// TODO: new sdk
-				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume });
+			if (userToken) {
+				try {
+					const sdk = await DDPSDK.createAndConnect(server);
+					await sdk.account.loginWithToken(userToken);
 
-				const token = getDeviceToken();
-				if (token) {
-					await sdk.del('push.token', { token });
+					const token = getDeviceToken();
+					if (token) {
+						try {
+							await sdk.rest.delete('/v1/push.token', { token });
+						} catch (e) {
+							log(e);
+						}
+					}
+
+					await sdk.account.logout();
+				} catch (e) {
+					log(e);
 				}
-
-				await sdk.logout();
-			} catch (e) {
-				log(e);
 			}
 		}
 
