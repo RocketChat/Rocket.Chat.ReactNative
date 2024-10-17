@@ -21,3 +21,4 @@ export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
 export const CURRENT_SERVER = 'currentServer';
 export const CERTIFICATE_KEY = 'RC_CERTIFICATE_KEY';
+export const BASIC_AUTH_KEY = 'BASIC_AUTH_KEY';

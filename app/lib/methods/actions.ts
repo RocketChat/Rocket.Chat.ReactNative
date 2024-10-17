@@ -1,6 +1,5 @@
 import { ITriggerAction, IUserInteraction, ModalActions } from '../../containers/UIKit/interfaces';
 import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
 import { random } from './helpers';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';
@@ -88,17 +87,7 @@ export function triggerAction({ type, actionId, appId, rid, mid, viewId, contain
 		const payload = rest.payload || rest;
 
 		try {
-			const { userId, authToken } = sdk.current.currentLogin;
-			const { host } = sdk.current.client;
-
-			// we need to use fetch because this.sdk.post add /v1 to url
-			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Auth-Token': authToken,
-					'X-User-Id': userId
-				},
+			const result = await sdk.post(`/apps/ui.interaction/${appId}/`, {
 				body: JSON.stringify({
 					type,
 					actionId,

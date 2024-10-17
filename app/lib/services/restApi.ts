@@ -888,7 +888,7 @@ export const removePushToken = async (): Promise<boolean | void> => {
 	const token = getDeviceToken();
 	if (token) {
 		// RC 0.60.0
-		await sdk.current?.rest.delete('/v1/push.token', { token });
+		await sdk.delete('/v1/push.token', { token });
 	}
 	return Promise.resolve();
 };

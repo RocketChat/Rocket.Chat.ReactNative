@@ -5,12 +5,18 @@ import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import { getDeviceToken } from '../notifications';
 import { extractHostname } from './helpers';
-import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { ICertificate } from '../../definitions';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
+import {
+	CURRENT_SERVER,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	TOKEN_KEY,
+	BASIC_AUTH_KEY
+} from '../constants';
 import UserPreferences from './userPreferences';
 import { Services } from '../services';
 import { roomsSubscription } from './subscriptions/rooms';

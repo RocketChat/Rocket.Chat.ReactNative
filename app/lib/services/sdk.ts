@@ -1,19 +1,29 @@
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
 import { DDPSDK } from '@rocket.chat/ddp-client';
+import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import { twoFactor } from './twoFactor';
 import { store as reduxStore } from '../store/auxStore';
 import { random } from '../methods/helpers';
+import { BASIC_AUTH_KEY } from '../constants';
+import UserPreferences from '../methods/userPreferences';
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
 	private code: any;
+	private headers: Record<string, string> = {
+		'User-Agent': `RC Mobile; ${
+			Platform.OS
+		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
+	};
 
-	// TODO: We need to stop returning the SDK after all methods are dehydrated
 	async initialize(server: string) {
 		this.code = null;
 		this.sdk = await DDPSDK.create(server);
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
+		this.setBasicAuth(basicAuth);
 		return this.sdk;
 	}
 
@@ -33,15 +43,21 @@ class Sdk {
 		return null;
 	}
 
+	setBasicAuth(basicAuth: string | null): void {
+		if (basicAuth) {
+			this.headers.Authorization = `Basic ${basicAuth}`;
+		}
+	}
+
 	get(endpoint: string, params: any): any {
-		return this.current?.rest.get(endpoint, params);
+		return this.current?.rest.get(endpoint, params, { headers: this.headers });
 	}
 
 	post(endpoint: string, params: any): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = endpoint?.match('/method.call/');
 			try {
-				const result = await this.current?.rest.post(endpoint, params);
+				const result = await this.current?.rest.post(endpoint, params, { headers: this.headers });
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -73,6 +89,10 @@ class Sdk {
 				}
 			}
 		});
+	}
+
+	delete(endpoint: string, params: any): any {
+		return this.current?.rest.delete(endpoint, params, { headers: this.headers });
 	}
 
 	methodCall(...args: any[]): Promise<any> {
