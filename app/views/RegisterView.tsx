@@ -30,22 +30,20 @@ const styles = StyleSheet.create({
 		marginVertical: 16
 	},
 	bottomContainer: {
-		flexDirection: 'column',
-		alignItems: 'center',
-		marginBottom: 32,
-		marginHorizontal: 30
+		marginBottom: 32
 	},
 	bottomContainerText: {
-		...sharedStyles.textRegular,
-		fontSize: 13
-	},
-	bottomContainerTextBold: {
-		...sharedStyles.textSemibold,
-		fontSize: 13
+		...sharedStyles.textMedium,
+		fontSize: 14,
+		lineHeight: 22,
+		alignSelf: 'center'
 	},
 	registerButton: {
 		marginTop: 16,
 		marginBottom: 32
+	},
+	loginButton: {
+		marginTop: 12
 	}
 });
 
@@ -236,7 +234,7 @@ class RegisterView extends React.Component<IProps, any> {
 					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
-						placeholder={I18n.t('Name')}
+						placeholder={I18n.t('Full_name')}
 						returnKeyType='next'
 						onChangeText={(name: string) => this.setState({ name })}
 						onSubmitEditing={() => {
@@ -252,7 +250,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.usernameInput = e;
 						}}
-						placeholder={I18n.t('Username')}
 						returnKeyType='next'
 						onChangeText={(username: string) => this.setState({ username })}
 						onSubmitEditing={() => {
@@ -268,7 +265,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.emailInput = e;
 						}}
-						placeholder={I18n.t('Email')}
 						returnKeyType='next'
 						onChangeText={(email: string) => this.setState({ email })}
 						onSubmitEditing={() => {
@@ -285,7 +281,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.passwordInput = e;
 						}}
-						placeholder={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
 						onChangeText={(value: string) => this.setState({ password: value })}
@@ -307,18 +302,16 @@ class RegisterView extends React.Component<IProps, any> {
 						style={styles.registerButton}
 					/>
 
-					<UGCRules />
-
 					{showLoginButton ? (
 						<View style={styles.bottomContainer}>
 							<Text style={[styles.bottomContainerText, { color: themes[theme].fontSecondaryInfo }]}>
-								{I18n.t('Do_you_have_an_account')}
+								{I18n.t('Already_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].fontHint }]} onPress={this.login}>
-								{I18n.t('Login')}
-							</Text>
+							<Button title={I18n.t('Login')} type='secondary' onPress={this.login} style={styles.loginButton} />
 						</View>
 					) : null}
+
+					<UGCRules />
 				</FormContainerInner>
 			</FormContainer>
 		);
