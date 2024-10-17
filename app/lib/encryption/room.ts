@@ -8,7 +8,7 @@ import { sha256 } from 'js-sha256';
 import getSingleMessage from '../methods/getSingleMessage';
 import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IUser, IServerAttachment } from '../../definitions';
 import Deferred from './helpers/deferred';
-import { debounce } from '../methods/helpers';
+import { compareServerVersion, debounce } from '../methods/helpers';
 import database from '../database';
 import log from '../methods/helpers/log';
 import {
@@ -35,6 +35,7 @@ import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getMessageById } from '../database/services/Message';
 import { TEncryptFileResult, TGetContent } from './definitions';
+import { store } from '../store/auxStore';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -123,7 +124,13 @@ export default class EncryptionRoom {
 			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
-			const keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
+			let keyID = '';
+			const { version } = store.getState().server;
+			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
+				keyID = (await SimpleCrypto.SHA.sha256(sessionKeyExportedString as string)).slice(0, 12);
+			} else {
+				keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
+			}
 
 			// Extract K from Web Crypto Secret Key
 			// K is a base64URL encoded array of bytes
@@ -161,7 +168,13 @@ export default class EncryptionRoom {
 		};
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
-		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
+
+		const { version } = store.getState().server;
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
+			this.keyID = (await SimpleCrypto.SHA.sha256(this.sessionKeyExportedString as string)).slice(0, 12);
+		} else {
+			this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
+		}
 
 		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
 
