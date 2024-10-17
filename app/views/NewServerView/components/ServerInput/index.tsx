@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
-import { FormTextInput } from '../../../containers/TextInput';
-import * as List from '../../../containers/List';
-import { themes } from '../../../lib/constants';
-import I18n from '../../../i18n';
-import { TServerHistoryModel } from '../../../definitions';
+import { FormTextInput } from '../../../../containers/TextInput';
+import * as List from '../../../../containers/List';
+import { themes } from '../../../../lib/constants';
+import I18n from '../../../../i18n';
+import { TServerHistoryModel } from '../../../../definitions';
 import Item from './Item';
-import { TSupportedThemes } from '../../../theme';
+import { TSupportedThemes } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -67,8 +67,7 @@ const ServerInput = ({
 			/>
 			{focused && serversHistory?.length ? (
 				<View
-					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}
-				>
+					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}>
 					<FlatList
 						data={serversHistory}
 						renderItem={({ item }) => (
