@@ -358,8 +358,7 @@ async function loginOAuthOrSso(params: ICredentials, isFromWebView = true) {
 }
 
 function checkAndReopen() {
-	console.log('CHECK AND REOPEN??');
-	return sdk.current.checkAndReopen();
+	console.log('TODO: CHECK AND REOPEN: do we need to hurry connection on app foreground?');
 }
 
 function disconnect() {
