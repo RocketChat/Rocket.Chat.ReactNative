@@ -52,7 +52,7 @@ async function sendMessageCall(message: any) {
 	try {
 		// RC 0.60.0
 		// @ts-ignore
-		const result = await sdk.post('chat.sendMessage', { message });
+		const result = await sdk.post('/v1/chat.sendMessage', { message });
 		if (result.success) {
 			// @ts-ignore
 			return changeMessageStatus(_id, messagesStatus.SENT, tmid, result.message);

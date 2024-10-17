@@ -3,7 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import database from '../database';
 import log from './helpers/log';
 import protectedFunction from './helpers/protectedFunction';
-import { ISlashCommandResult, TSlashCommandModel } from '../../definitions';
+import { TSlashCommandModel } from '../../definitions';
 import sdk from '../services/sdk';
 
 export function getSlashCommands() {
@@ -12,9 +12,9 @@ export function getSlashCommands() {
 		try {
 			// RC 0.60.2
 			// @ts-ignore
-			const result = await sdk.get('commands.list');
+			const result = await sdk.get('/v1/commands.list');
 
-			if (!result.success) {
+			if (!result) {
 				return resolve();
 			}
 			// @ts-ignore
@@ -25,20 +25,16 @@ export function getSlashCommands() {
 					const allSlashCommandsRecords = await slashCommandsCollection.query().fetch();
 
 					// filter slash commands
-					const filteredSlashCommandsToCreate = commands.filter(
-						(i1: ISlashCommandResult) => !allSlashCommandsRecords.find(i2 => i1.command === i2.id)
-					);
-					const filteredSlashCommandsToUpdate = allSlashCommandsRecords.filter(i1 =>
-						commands.find((i2: ISlashCommandResult) => i1.id === i2.command)
-					);
+					const filteredSlashCommandsToCreate = commands.filter(i1 => !allSlashCommandsRecords.find(i2 => i1.command === i2.id));
+					const filteredSlashCommandsToUpdate = allSlashCommandsRecords.filter(i1 => commands.find(i2 => i1.id === i2.command));
 					const filteredSlashCommandsToDelete = allSlashCommandsRecords.filter(
 						i1 =>
-							!filteredSlashCommandsToCreate.find((i2: ISlashCommandResult) => i2.command === i1.id) &&
+							!filteredSlashCommandsToCreate.find(i2 => i2.command === i1.id) &&
 							!filteredSlashCommandsToUpdate.find(i2 => i2.id === i1.id)
 					);
 
 					// Create
-					const slashCommandsToCreate = filteredSlashCommandsToCreate.map((command: ISlashCommandResult) =>
+					const slashCommandsToCreate = filteredSlashCommandsToCreate.map(command =>
 						slashCommandsCollection.prepareCreate(
 							protectedFunction((s: TSlashCommandModel) => {
 								s._raw = sanitizedRaw({ id: command.command }, slashCommandsCollection.schema);
@@ -49,7 +45,7 @@ export function getSlashCommands() {
 
 					// Update
 					const slashCommandsToUpdate = filteredSlashCommandsToUpdate.map(command => {
-						const newCommand = commands.find((s: ISlashCommandResult) => s.command === command.id);
+						const newCommand = commands.find(s => s.command === command.id);
 						return command.prepareUpdate(
 							protectedFunction((s: TSlashCommandModel) => {
 								Object.assign(s, newCommand);

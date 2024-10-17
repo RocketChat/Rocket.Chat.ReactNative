@@ -1,26 +1,29 @@
-import { Rocketchat } from '@rocket.chat/sdk';
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
+import { DDPSDK } from '@rocket.chat/ddp-client';
+import { Platform } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import { twoFactor } from './twoFactor';
-import { isSsl } from '../methods/helpers/isSsl';
 import { store as reduxStore } from '../store/auxStore';
-import { Serialized, MatchPathPattern, OperationParams, PathFor, ResultFor } from '../../definitions/rest/helpers';
-import { compareServerVersion, random } from '../methods/helpers';
+import { random } from '../methods/helpers';
+import { BASIC_AUTH_KEY } from '../constants';
+import UserPreferences from '../methods/userPreferences';
 
 class Sdk {
-	private sdk: typeof Rocketchat;
+	private sdk: DDPSDK | undefined;
 	private code: any;
+	private headers: Record<string, string> = {
+		'User-Agent': `RC Mobile; ${
+			Platform.OS
+		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
+	};
 
-	private initializeSdk(server: string): typeof Rocketchat {
-		// The app can't reconnect if reopen interval is 5s while in development
-		return new Rocketchat({ host: server, protocol: 'ddp', useSsl: isSsl(server), reopen: __DEV__ ? 20000 : 5000 });
-	}
-
-	// TODO: We need to stop returning the SDK after all methods are dehydrated
-	initialize(server: string) {
+	async initialize(server: string) {
 		this.code = null;
-		this.sdk = this.initializeSdk(server);
+		this.sdk = await DDPSDK.create(server);
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
+		this.setBasicAuth(basicAuth);
 		return this.sdk;
 	}
 
@@ -34,41 +37,27 @@ class Sdk {
 	 */
 	disconnect() {
 		if (this.sdk) {
-			this.sdk.disconnect();
-			this.sdk = null;
+			this.sdk.connection.close();
+			this.sdk = undefined;
 		}
 		return null;
 	}
 
-	get<TPath extends PathFor<'GET'>>(
-		endpoint: TPath,
-		params: void extends OperationParams<'GET', MatchPathPattern<TPath>>
-			? void
-			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
-			'GET',
-			MatchPathPattern<TPath>
-		>
-			? void
-			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
-	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.current.get(endpoint, params);
+	setBasicAuth(basicAuth: string | null): void {
+		if (basicAuth) {
+			this.headers.Authorization = `Basic ${basicAuth}`;
+		}
 	}
 
-	post<TPath extends PathFor<'POST'>>(
-		endpoint: TPath,
-		params: void extends OperationParams<'POST', MatchPathPattern<TPath>>
-			? void
-			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>> = undefined as void extends OperationParams<
-			'POST',
-			MatchPathPattern<TPath>
-		>
-			? void
-			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
-	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
+	get(endpoint: string, params: any): any {
+		return this.current?.rest.get(endpoint, params, { headers: this.headers });
+	}
+
+	post(endpoint: string, params: any): Promise<any> {
 		return new Promise(async (resolve, reject) => {
-			const isMethodCall = endpoint?.startsWith('method.call/');
+			const isMethodCall = endpoint?.match('/method.call/');
 			try {
-				const result = await this.current.post(endpoint, params);
+				const result = await this.current?.rest.post(endpoint, params, { headers: this.headers });
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
@@ -102,10 +91,14 @@ class Sdk {
 		});
 	}
 
+	delete(endpoint: string, params: any): any {
+		return this.current?.rest.delete(endpoint, params, { headers: this.headers });
+	}
+
 	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
-				const result = await this.current.methodCall(...args, this.code || '');
+				const result = await this.current?.client.callAsyncWithOptions(...args, this.code || '');
 				return resolve(result);
 			} catch (e: any) {
 				if (e.error && (e.error === 'totp-required' || e.error === 'totp-invalid')) {
@@ -130,7 +123,7 @@ class Sdk {
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
 			// @ts-ignore
-			return this.post(`${url}/${method}`, {
+			return this.post(`/v1/${url}/${method}`, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
 			});
 		}
@@ -144,38 +137,45 @@ class Sdk {
 	}
 
 	subscribe(...args: any[]) {
-		return this.current.subscribe(...args);
+		return this.current?.client.subscribe(...args);
 	}
 
-	subscribeRaw(...args: any[]) {
-		return this.current.subscribeRaw(...args);
+	onCollection(...args: any[]) {
+		return this.current?.client.onCollection(...args);
 	}
 
-	subscribeRoom(...args: any[]) {
-		const { server } = reduxStore.getState();
-		const { version: serverVersion } = server;
-		const topic = 'stream-notify-room';
-		let eventUserTyping;
-		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.0.0')) {
-			eventUserTyping = this.subscribe(topic, `${args[0]}/user-activity`, ...args);
-		} else {
-			eventUserTyping = this.subscribe(topic, `${args[0]}/typing`, ...args);
+	stream(...args: any[]) {
+		return this.current?.stream(...args);
+	}
+
+	_stream(name: string, data: unknown, cb: (...data: any) => void) {
+		const [key, args] = Array.isArray(data) ? data : [data];
+		if (!this.current) {
+			return;
 		}
+		const subscription = this.current.client.subscribe(`stream-${name}`, key, { useCollection: false, args: [args] });
 
-		// Taken from https://github.com/RocketChat/Rocket.Chat.js.SDK/blob/454b4ba784095057b8de862eb99340311b672e15/lib/drivers/ddp.ts#L555
-		return Promise.all([
-			this.subscribe('stream-room-messages', args[0], ...args),
-			eventUserTyping,
-			this.subscribe(topic, `${args[0]}/deleteMessage`, ...args)
-		]);
-	}
+		const stop = subscription.stop.bind(subscription);
+		const cancel = [
+			() => stop(),
+			this.current.client.onCollection(`stream-${name}`, (data: any) => {
+				if (data.collection !== `stream-${name}`) {
+					return;
+				}
+				if (data.msg === 'added') {
+					return;
+				}
+				if (data.fields.eventName === key) {
+					cb(data);
+				}
+			})
+		];
 
-	unsubscribe(subscription: any[]) {
-		return this.current.unsubscribe(subscription);
-	}
-
-	onStreamData(...args: any[]) {
-		return this.current.onStreamData(...args);
+		return Object.assign(subscription, {
+			stop: () => {
+				cancel.forEach(fn => fn());
+			}
+		});
 	}
 }
 

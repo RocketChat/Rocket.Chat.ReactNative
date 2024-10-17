@@ -11,7 +11,6 @@ export * from './isReadOnly';
 export * from './media';
 export * from './room';
 export * from './server';
-export * from './isSsl';
 export * from './isValidEmail';
 export * from './random';
 export * from './image';
