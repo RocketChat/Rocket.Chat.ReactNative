@@ -1,23 +1,39 @@
-import { IBaseScreen, TSubscriptionModel, TThreadModel } from "../../definitions";
+import React from "react";
+
 import { Filter } from "./filters";
+import { IBaseScreen, TSubscriptionModel, TThreadModel } from "../../definitions";
 import { ChatsStackParamList } from "../../stacks/types";
 import { TSupportedThemes } from "../../theme";
 
 
-export type ISearchThreadMessages = {
+export type TSearchThreadMessages = {
 	isSearching: boolean;
 	searchText: string;
 };
 
-export type IThreadMessagesViewState = {
-	loading: boolean;
-	end: boolean;
-	messages: any[];
-	displayingThreads: TThreadModel[];
-	subscription: TSubscriptionModel;
+export type TUseThreadMessagesProps = {
+	rid: string;
+	getFilteredThreads: (messages: TThreadModel[], subscription?: TSubscriptionModel, currentFilter?: Filter) => TThreadModel[];
+	search: TSearchThreadMessages;
 	currentFilter: Filter;
-	search: ISearchThreadMessages;
-	offset: number;
+	initFilter: () => void;
+	viewName: string;
+};
+
+export type TUSeThreadMessages = {
+	subscription: TSubscriptionModel;
+	messages: TThreadModel[];
+	displayingThreads: TThreadModel[];
+	loadMore: {
+		(...args: any[]): void;
+		stop(): void;
+	};
+	loading: boolean;
+	setDisplayingThreads: (value: React.SetStateAction<TThreadModel[]>) => void;
+	subscribeMessages: ({ subscription, searchText }: {
+		subscription?: TSubscriptionModel;
+		searchText?: string;
+	}) => void;
 };
 
 export type IThreadMessagesViewProps = IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'> & {
@@ -29,12 +45,4 @@ export type IThreadMessagesViewProps = IBaseScreen<ChatsStackParamList, 'ThreadM
 };
 
 
-export type IThreadAction =
-	| { type: 'SET_LOADING'; payload: boolean }
-	| { type: 'SET_END'; payload: boolean }
-	| { type: 'SET_MESSAGES'; payload: any[] } 
-	| { type: 'SET_DISPLAYING_THREADS'; payload: TThreadModel[] } 
-	| { type: 'SET_SUBSCRIPTION'; payload: TSubscriptionModel } 
-	| { type: 'SET_FILTER'; payload: Filter } 
-	| { type: 'SET_SEARCH'; payload: ISearchThreadMessages }
-	| { type: 'SET_OFFSET'; payload: number };
+
