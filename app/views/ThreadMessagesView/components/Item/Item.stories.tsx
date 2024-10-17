@@ -1,10 +1,10 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import * as List from '../../containers/List';
-import { themes } from '../../lib/constants';
-import { ThemeContext, TSupportedThemes } from '../../theme';
-import Item, { IItem } from './Item';
+import * as List from '../../../../containers/List';
+import { themes } from '../../../../lib/constants';
+import { ThemeContext, TSupportedThemes } from '../../../../theme';
+import Item, { IItem } from '.';
 
 const author = {
 	_id: 'userid',
