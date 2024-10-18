@@ -59,6 +59,7 @@ interface IShareListViewProps extends INavigationOption {
 	token: string;
 	userId: string;
 	theme: TSupportedThemes;
+	airGappedRestrictionRemainingDays: number | undefined;
 	shareExtensionParams: Record<string, any>;
 	dispatch: Dispatch;
 }
@@ -207,11 +208,12 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				</HeaderButton.Container>
 			),
 			headerTitle: I18n.t('Send_to'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='search' onPress={this.initSearch} />
-				</HeaderButton.Container>
-			)
+			headerRight: () =>
+				this.airGappedReadOnly ? null : (
+					<HeaderButton.Container>
+						<HeaderButton.Item iconName='search' onPress={this.initSearch} />
+					</HeaderButton.Container>
+				)
 		});
 	};
 
@@ -283,6 +285,17 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				// Do nothing
 			}
 
+			if (this.airGappedReadOnly) {
+				this.internalSetState({
+					chats: [],
+					serversCount,
+					loading: false,
+					serverInfo
+				});
+				this.forceUpdate();
+				return;
+			}
+
 			this.internalSetState({
 				chats: chats ?? [],
 				serversCount,
@@ -345,6 +358,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		dispatch(appStart({ root: RootEnum.ROOT_INSIDE }));
 	};
 
+	get airGappedReadOnly() {
+		const { airGappedRestrictionRemainingDays } = this.props;
+		return airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === 0;
+	}
+
 	renderSectionHeader = (header: string) => {
 		const { searching } = this.state;
 		const { theme } = this.props;
@@ -393,8 +411,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	renderSelectServer = () => {
-		const { serverInfo } = this.state;
+		const { serverInfo, serversCount } = this.state;
 		const { navigation } = this.props;
+		if (serversCount === 1) {
+			return null;
+		}
 		return (
 			<>
 				{this.renderSectionHeader('Select_Server')}
@@ -405,23 +426,23 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	renderEmptyComponent = () => {
+		const { searching, searchText } = this.state;
 		const { theme } = this.props;
-		return (
-			<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].surfaceHover }]}>
-				<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
-			</View>
-		);
+		if (searching && searchText) {
+			return (
+				<View style={[styles.container, styles.emptyContainer, { backgroundColor: themes[theme].surfaceHover }]}>
+					<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
+				</View>
+			);
+		}
+		return null;
 	};
 
 	renderHeader = () => {
-		const { searching, serversCount } = this.state;
+		const { searching } = this.state;
 
 		if (searching) {
 			return null;
-		}
-
-		if (serversCount === 1) {
-			return this.renderSectionHeader('Chats');
 		}
 
 		return (
@@ -433,11 +454,40 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	render = () => {
-		const { chats, loading, searchResults, searching, searchText } = this.state;
+		const { chats, loading, searchResults, searching, serversCount } = this.state;
 		const { theme } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
+		}
+
+		if (this.airGappedReadOnly) {
+			return (
+				<SafeAreaView testID='share-list-view'>
+					{this.renderSelectServer()}
+					{serversCount > 1 ? (
+						<>
+							<View style={styles.readOnlyServerSeparator} />
+							<List.Separator />
+						</>
+					) : null}
+					<View
+						style={[
+							styles.readOnlyContainer,
+							{
+								backgroundColor: themes[theme].surfaceRoom,
+								...(serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 })
+							}
+						]}>
+						<Text style={[styles.readOnlyTitle, { color: themes[theme].fontDefault }]}>
+							{I18n.t('AirGapped_workspace_read_only_share_extension_title')}
+						</Text>
+						<Text style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
+							{I18n.t('AirGapped_workspace_read_only_description')}
+						</Text>
+					</View>
+				</SafeAreaView>
+			);
 		}
 
 		return (
@@ -451,7 +501,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					ItemSeparatorComponent={List.Separator}
 					ListHeaderComponent={this.renderHeader}
 					ListFooterComponent={!searching || searchResults.length > 0 ? <List.Separator /> : null}
-					ListEmptyComponent={searching && searchText ? this.renderEmptyComponent : null}
+					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
 				/>
@@ -460,13 +510,17 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 }
 
-const mapStateToProps = ({ login, server, share }: IApplicationState) => ({
+const mapStateToProps = ({ login, server, share, settings }: IApplicationState) => ({
 	userId: login?.user?.id as string,
 	token: login?.user?.token as string,
 	isAuthenticated: login?.isAuthenticated,
 	server: server?.server,
 	connecting: server?.connecting,
-	shareExtensionParams: share?.params
+	shareExtensionParams: share?.params,
+	airGappedRestrictionRemainingDays:
+		typeof settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days === 'number'
+			? settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days
+			: undefined
 });
 
 export default connect(mapStateToProps)(withTheme(ShareListView));
