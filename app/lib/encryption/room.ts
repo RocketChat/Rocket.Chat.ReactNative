@@ -83,7 +83,21 @@ export default class EncryptionRoom {
 			// Find the subscription
 			const subscription = await subCollection.find(this.roomId);
 
-			const { E2EKey, e2eKeyId } = subscription;
+			// Similar to Encryption.evaluateSuggestedKey
+			const { E2EKey, e2eKeyId, E2ESuggestedKey } = subscription;
+			if (E2EKey && E2ESuggestedKey && Encryption.privateKey) {
+				try {
+					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
+					this.keyID = keyID;
+					this.roomKey = roomKey;
+					this.sessionKeyExportedString = sessionKeyExportedString;
+					await Services.e2eAcceptSuggestedGroupKey(this.roomId);
+					this.readyPromise.resolve();
+					return;
+				} catch (e) {
+					await Services.e2eRejectSuggestedGroupKey(this.roomId);
+				}
+			}
 
 			// If this room has a E2EKey, we import it
 			if (E2EKey && Encryption.privateKey) {
