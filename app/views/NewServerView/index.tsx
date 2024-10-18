@@ -1,7 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { BackHandler, Image, Keyboard, Text } from 'react-native';
-import parse from 'url-parse';
-import { Base64 } from 'js-base64';
+import { BackHandler, Image, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import I18n from '../../i18n';
@@ -13,19 +11,17 @@ import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
 import OrSeparator from '../../containers/OrSeparator';
-import { CERTIFICATE_KEY, themes } from '../../lib/constants';
-import UserPreferences from '../../lib/methods/userPreferences';
+import { themes } from '../../lib/constants';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { serializeAsciiUrl } from '../../lib/methods';
 import { useAppSelector } from '../../lib/hooks';
 import CertificatePicker from './components/CertificatePicker';
 import ServerInput from './components/ServerInput';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
-import { INewServerViewProps, TSubmitParams } from './types';
+import useNewServer from './hooks/useConnectServer';
+import completeUrl from './utils/completeUrl';
+import { INewServerViewProps } from './types';
 import styles from './styles';
 
 const NewServerView = ({ navigation }: INewServerViewProps) => {
@@ -37,11 +33,15 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	}));
 
 	const [text, setText] = useState<string>('');
-	const [connectingOpen, setConnectingOpen] = useState(false);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate } = useCertificate();
-
+	const { connectOpen, connectingOpen, submit } = useNewServer({ text, certificate });
 	const marginTop = previousServer ? 0 : 35;
+
+	const onChangeText = (text: string) => {
+		setText(text);
+		queryServerHistory(text);
+	};
 
 	const setHeader = () => {
 		if (previousServer) {
@@ -65,79 +65,9 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		return false;
 	};
 
-	const onChangeText = (text: string) => {
-		setText(text);
-		queryServerHistory(text);
-	};
-
 	const onPressServerHistory = (serverHistory: TServerHistoryModel) => {
 		setText(serverHistory.url);
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
-	};
-
-	const basicAuth = (server: string, text: string) => {
-		try {
-			const parsedUrl = parse(text, true);
-			if (parsedUrl.auth.length) {
-				const credentials = Base64.encode(parsedUrl.auth);
-				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
-				setBasicAuth(credentials);
-			}
-		} catch {
-			// do nothing
-		}
-	};
-
-	const completeUrl = (url: string) => {
-		const parsedUrl = parse(url, true);
-		if (parsedUrl.auth.length) {
-			url = parsedUrl.origin;
-		}
-
-		url = url && url.replace(/\s/g, '');
-
-		if (/^(\w|[0-9-_]){3,}$/.test(url) && /^(htt(ps?)?)|(loca((l)?|(lh)?|(lho)?|(lhos)?|(lhost:?\d*)?)$)/.test(url) === false) {
-			url = `${url}.rocket.chat`;
-		}
-
-		if (/^(https?:\/\/)?(((\w|[0-9-_])+(\.(\w|[0-9-_])+)+)|localhost)(:\d+)?$/.test(url)) {
-			if (/^localhost(:\d+)?/.test(url)) {
-				url = `http://${url}`;
-			} else if (/^https?:\/\//.test(url) === false) {
-				url = `https://${url}`;
-			}
-		}
-		return serializeAsciiUrl(url.replace(/\/+$/, '').replace(/\\/g, '/'));
-	};
-
-	const submit = ({ fromServerHistory = false, username, serverUrl }: TSubmitParams = {}) => {
-		logEvent(events.NS_CONNECT_TO_WORKSPACE);
-
-		setConnectingOpen(false);
-		if (text || serverUrl) {
-			Keyboard.dismiss();
-			const server = completeUrl(serverUrl ?? text);
-
-			// Save info - SSL Pinning
-			if (certificate) {
-				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
-			}
-
-			// Save info - HTTP Basic Authentication
-			basicAuth(server, serverUrl ?? text);
-
-			if (fromServerHistory) {
-				dispatch(serverRequest(server, username, true));
-			} else {
-				dispatch(serverRequest(server));
-			}
-		}
-	};
-
-	const connectOpen = () => {
-		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
-		setConnectingOpen(true);
-		dispatch(serverRequest('https://open.rocket.chat'));
 	};
 
 	const close = () => {
