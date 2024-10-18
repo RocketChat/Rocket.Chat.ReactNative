@@ -4,7 +4,6 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { addSettings, clearSettings } from '../../actions/settings';
 import { DEFAULT_AUTO_LOCK, defaultSettings } from '../constants';
 import { IPreparedSettings, ISettingsIcon } from '../../definitions';
-import fetch from './helpers/fetch';
 import log from './helpers/log';
 import { store as reduxStore } from '../store/auxStore';
 import database from '../database';
@@ -158,14 +157,13 @@ export async function getSettings(): Promise<void> {
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(
-				`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}
-				&offset=${offset}`
-			);
+			// @ts-ignore TODO: type me
+			const result = (await sdk.get('/v1/settings.public', {
+				query: `{ "_id": { "$in": ${JSON.stringify(settingsParams)}} }`,
+				offset
+			})) as any;
 
-			const result = await response.json();
-
-			if (!result.success) {
+			if (!result) {
 				return;
 			}
 

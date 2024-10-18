@@ -9,10 +9,6 @@ export interface ISlashCommand {
 	appId?: string;
 }
 
-export interface ISlashCommandResult extends ISlashCommand {
-	command: string;
-}
-
 export type TSlashCommandModel = ISlashCommand & Model;
 
 // For Command Preview ex: /giphy or /tenor
