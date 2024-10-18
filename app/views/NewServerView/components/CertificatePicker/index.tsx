@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import I18n from 'i18n-js';
 
 import { themes } from '../../../../lib/constants';
-import { TCertificatePicker } from '../../types';
+import { TCertificatePicker } from '../../definitions';
 import { isAndroid, isTablet } from '../../../../lib/methods/helpers';
 import styles from './styles';
 

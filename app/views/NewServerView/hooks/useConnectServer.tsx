@@ -10,7 +10,7 @@ import { serverRequest } from '../../../actions/server';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../../lib/methods/helpers/fetch';
 import { CERTIFICATE_KEY } from '../../../lib/constants';
 import completeUrl from '../utils/completeUrl';
-import { TSubmitParams } from '../types';
+import { ISubmitParams } from '../definitions';
 
 type TUseNewServerProps = {
 	text: string;
@@ -40,7 +40,7 @@ const useConnectServer = ({ text, certificate }: TUseNewServerProps) => {
 		dispatch(serverRequest('https://open.rocket.chat'));
 	};
 
-	const submit = ({ fromServerHistory = false, username, serverUrl }: TSubmitParams = {}) => {
+	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 
 		setConnectingOpen(false);

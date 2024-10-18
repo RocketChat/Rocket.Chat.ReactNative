@@ -21,7 +21,7 @@ import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
 import useNewServer from './hooks/useConnectServer';
 import completeUrl from './utils/completeUrl';
-import { INewServerViewProps } from './types';
+import { INewServerViewProps } from './definitions';
 import styles from './styles';
 
 const NewServerView = ({ navigation }: INewServerViewProps) => {
