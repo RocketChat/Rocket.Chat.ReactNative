@@ -108,6 +108,10 @@ export const merge = (
 	mergedSubscription.blocked = !!mergedSubscription.blocked;
 	mergedSubscription.hideMentionStatus = !!mergedSubscription.hideMentionStatus;
 	mergedSubscription.sanitizedFname = slugifyLikeString(mergedSubscription.fname || mergedSubscription.name);
+
+	if (!mergedSubscription.E2ESuggestedKey) {
+		mergedSubscription.E2ESuggestedKey = null;
+	}
 	return mergedSubscription;
 };
 
