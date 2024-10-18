@@ -1,10 +1,10 @@
-import { useLayoutEffect, useState } from 'react';
+import { useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { Observable, Subscription } from 'rxjs';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
-import { TUseThreadMessagesProps } from '../types';
-import { IMessage, TSubscriptionModel, TThreadModel } from '../../../definitions';
+import { ISearchThreadMessages } from '../definitions';
+import { IMessage, IUser, TSubscriptionModel, TThreadModel } from '../../../definitions';
 import { debounce } from '../../../lib/methods/helpers';
 import { Services } from '../../../lib/services';
 import { sanitizeLikeString } from '../../../lib/database/utils';
@@ -12,14 +12,22 @@ import log from '../../../lib/methods/helpers/log';
 import protectedFunction from '../../../lib/methods/helpers/protectedFunction';
 import buildMessage from '../../../lib/methods/helpers/buildMessage';
 import database from '../../../lib/database';
+import getFilteredThreads from '../utils/helper';
+import { Filter } from '../filters';
 
 const API_FETCH_COUNT = 50;
 
-const useThreadMessages = ({ rid, getFilteredThreads, search, currentFilter, initFilter, viewName }: TUseThreadMessagesProps) => {
+interface IUseThreadMessagesProps {
+	user: IUser;
+	rid: string;
+	messagesObservable: Observable<TThreadModel[]>;
+	currentFilter: Filter;
+	search: ISearchThreadMessages;
+}
+
+const useThreadMessages = ({ user, rid, search, currentFilter, messagesObservable }: IUseThreadMessagesProps) => {
 	let subSubscription: Subscription;
 	let messagesSubscription: Subscription;
-	let messagesObservable: Observable<TThreadModel[]>;
-
 	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);
 	const [messages, setMessages] = useState<TThreadModel[]>([]);
@@ -28,7 +36,6 @@ const useThreadMessages = ({ rid, getFilteredThreads, search, currentFilter, ini
 	const [offset, setOffset] = useState(0);
 
 	const init = () => {
-		initFilter();
 		if (!subscription) {
 			return load();
 		}
@@ -81,7 +88,7 @@ const useThreadMessages = ({ rid, getFilteredThreads, search, currentFilter, ini
 				.observeWithColumns(['_updated_at']);
 
 			messagesSubscription = messagesObservable.subscribe(messages => {
-				const displayingThreads = getFilteredThreads(messages, subscription, currentFilter);
+				const displayingThreads = getFilteredThreads(user, messages, subscription, currentFilter);
 				setMessages(messages);
 				setDisplayingThreads(displayingThreads);
 			});
@@ -206,29 +213,26 @@ const useThreadMessages = ({ rid, getFilteredThreads, search, currentFilter, ini
 		}
 	};
 
-	useLayoutEffect(() => {
-		initSubscription();
-		subscribeMessages({});
-		init();
-		return () => {
-			console.countReset(`${viewName}.render calls`);
-			if (subSubscription) {
-				subSubscription.unsubscribe();
-			}
-			if (messagesSubscription) {
-				messagesSubscription.unsubscribe();
-			}
-		};
-	}, [currentFilter]);
+	const unsubscribeMessages = () => {
+		if (subSubscription) {
+			subSubscription.unsubscribe();
+		}
+		if (messagesSubscription) {
+			messagesSubscription.unsubscribe();
+		}
+	};
 
 	return {
 		subscription,
 		messages,
+		init,
+		initSubscription,
 		displayingThreads,
 		loadMore: load,
 		loading,
 		setDisplayingThreads,
-		subscribeMessages
+		subscribeMessages,
+		unsubscribeMessages
 	};
 };
 
