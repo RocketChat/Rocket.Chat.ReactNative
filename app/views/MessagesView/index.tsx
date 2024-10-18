@@ -1,169 +1,56 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, Text, View } from 'react-native';
-import { connect } from 'react-redux';
-import { dequal } from 'dequal';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
-import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
+import { useTheme } from '../../theme';
+import { themes } from '../../lib/constants';
+import { getUserSelector } from '../../selectors/login';
+import { SubscriptionType, IAttachment, IMessage, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
+import { IRoomInfoParam } from '../SearchMessagesView';
+import { Services } from '../../lib/services';
+import { Encryption } from '../../lib/encryption';
+import { useAppSelector } from '../../lib/hooks';
+import { useActionSheet } from '../../containers/ActionSheet';
+import { TMessagesViewProps, TMessageViewContent, TParams } from './types';
+import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
+import I18n from '../../i18n';
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
-import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
-import { themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { getUserSelector } from '../../selectors/login';
-import { withActionSheet } from '../../containers/ActionSheet';
 import SafeAreaView from '../../containers/SafeAreaView';
 import getThreadName from '../../lib/methods/getThreadName';
+import useMessages from './hooks/useMessages';
 import styles from './styles';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IRoomInfoParam } from '../SearchMessagesView';
-import {
-	IApplicationState,
-	TMessageModel,
-	ISubscription,
-	SubscriptionType,
-	IAttachment,
-	IMessage,
-	TAnyMessageModel,
-	IUrl,
-	TGetCustomEmoji,
-	ICustomEmoji
-} from '../../definitions';
-import { Services } from '../../lib/services';
-import { TNavigation } from '../../stacks/stackType';
-import AudioManager from '../../lib/methods/AudioManager';
-import { Encryption } from '../../lib/encryption';
 
-interface IMessagesViewProps {
-	user: {
-		id: string;
-		username: string;
-		token: string;
-	};
-	baseUrl: string;
-	navigation: CompositeNavigationProp<
-		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
-		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
-	>;
-	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	customEmojis: { [key: string]: ICustomEmoji };
-	theme: TSupportedThemes;
-	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
-	useRealName: boolean;
-	isMasterDetail: boolean;
-}
+const MessagesView = ({ navigation, route }: TMessagesViewProps) => {
+	const rid: string = route.params?.rid;
+	const t: SubscriptionType = route.params?.t;
+	let room: any;
 
-interface IMessagesViewState {
-	loading: boolean;
-	messages: IMessage[];
-	message?: IMessage;
-	fileLoading: boolean;
-	total: number;
-}
+	const { showActionSheet } = useActionSheet();
+	const { theme } = useTheme();
+	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
+		baseUrl: state.server.server,
+		user: getUserSelector(state),
+		customEmojis: state.customEmojis,
+		useRealName: state.settings.UI_Use_Real_Name as boolean,
+		isMasterDetail: state.app.isMasterDetail
+	}));
 
-interface IParams {
-	rid: string;
-	t: SubscriptionType;
-	tmid?: string;
-	message?: TMessageModel;
-	name?: string;
-	fname?: string;
-	prid?: string;
-	room?: ISubscription;
-	jumpToMessageId?: string;
-	jumpToThreadId?: string;
-	roomUserId?: string;
-}
-
-class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewState> {
-	private rid: string;
-	private t: SubscriptionType;
-	private content: any;
-	private room?: ISubscription;
-
-	constructor(props: IMessagesViewProps) {
-		super(props);
-		this.state = {
-			loading: false,
-			messages: [],
-			fileLoading: true,
-			total: -1
-		};
-		this.setHeader();
-		this.rid = props.route.params?.rid;
-		this.t = props.route.params?.t;
-		this.content = this.defineMessagesViewContent(props.route.params?.name);
-	}
-
-	componentDidMount() {
-		this.load();
-	}
-
-	componentWillUnmount(): void {
-		AudioManager.pauseAudio();
-	}
-
-	shouldComponentUpdate(nextProps: IMessagesViewProps, nextState: IMessagesViewState) {
-		const { loading, messages, fileLoading } = this.state;
-		const { theme } = this.props;
-		if (nextProps.theme !== theme) {
-			return true;
-		}
-		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (!dequal(nextState.messages, messages)) {
-			return true;
-		}
-		if (fileLoading !== nextState.fileLoading) {
-			return true;
-		}
-		return false;
-	}
-
-	setHeader = () => {
-		const { route, navigation } = this.props;
+	const setHeader = () => {
 		navigation.setOptions({
 			title: I18n.t(route.params?.name)
 		});
 	};
 
-	navToRoomInfo = (navParam: IRoomInfoParam) => {
-		const { navigation } = this.props;
-		navigation.navigate('RoomInfoView', navParam);
-	};
-
-	jumpToMessage = async ({ item }: { item: IMessage }) => {
-		const { navigation, isMasterDetail } = this.props;
-		let params: IParams = {
-			rid: this.rid,
-			jumpToMessageId: item._id,
-			t: this.t,
-			room: this.room
-		};
-		if (item.tmid) {
-			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
-			} else {
-				navigation.pop(2);
-			}
-			params = {
-				...params,
-				tmid: item.tmid,
-				name: await getThreadName(this.rid, item.tmid, item._id),
-				t: SubscriptionType.THREAD
-			};
-			navigation.push('RoomView', params);
-		} else {
-			navigation.navigate('RoomView', params);
+	const getCustomEmoji: TGetCustomEmoji = name => {
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
 		}
+		return null;
 	};
 
-	defineMessagesViewContent = (name: string) => {
-		const { user, baseUrl, theme, useRealName } = this.props;
+	const defineMessagesViewContent = (name: string) => {
 		const renderItemCommonProps = (item: TAnyMessageModel) => ({
 			item,
 			baseUrl,
@@ -175,11 +62,11 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			isThreadRoom: true,
 			attachments: item.attachments || [],
 			useRealName,
-			showAttachment: this.showAttachment,
-			getCustomEmoji: this.getCustomEmoji,
-			navToRoomInfo: this.navToRoomInfo,
-			onPress: () => this.jumpToMessage({ item }),
-			rid: this.rid
+			showAttachment,
+			getCustomEmoji,
+			navToRoomInfo,
+			onPress: () => jumpToMessage({ item }),
+			rid
 		});
 
 		return {
@@ -187,8 +74,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			Files: {
 				name: I18n.t('Files'),
 				fetchFunc: async () => {
-					const { messages } = this.state;
-					const result = await Services.getFiles(this.rid, this.t, messages.length);
+					const result = await Services.getFiles(rid, t, messages.length);
 					if (result.success) {
 						return { ...result, messages: await Encryption.decryptFiles(result.files) };
 					}
@@ -218,10 +104,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			// Mentions Messages Screen
 			Mentions: {
 				name: I18n.t('Mentions'),
-				fetchFunc: () => {
-					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
-				},
+				fetchFunc: () => Services.getMessages(rid, t, { 'mentions._id': { $in: [user.id] } }, messages.length),
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
 				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
@@ -229,165 +112,119 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			// Starred Messages Screen
 			Starred: {
 				name: I18n.t('Starred'),
-				fetchFunc: () => {
-					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
-				},
+				fetchFunc: () => Services.getMessages(rid, t, { 'starred._id': { $in: [user.id] } }, messages.length),
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
 				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
+					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => onLongPress(item)} theme={theme} />
 				),
 				action: (message: IMessage) => ({
 					title: I18n.t('Unstar'),
 					icon: message.starred ? 'star-filled' : 'star',
-					onPress: this.handleActionPress
+					onPress: handleActionPress
 				}),
 				handleActionPress: (message: IMessage) => Services.toggleStarMessage(message._id, message.starred)
 			},
 			// Pinned Messages Screen
 			Pinned: {
 				name: I18n.t('Pinned'),
-				fetchFunc: () => {
-					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { pinned: true }, messages.length);
-				},
+				fetchFunc: () => Services.getMessages(rid, t, { pinned: true }, messages.length),
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
 				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => this.onLongPress(item)} theme={theme} />
+					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => onLongPress(item)} theme={theme} />
 				),
-				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: this.handleActionPress }),
+				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: handleActionPress }),
 				handleActionPress: (message: IMessage) => Services.togglePinMessage(message._id, message.pinned)
 			}
 		}[name];
 	};
 
-	load = async () => {
-		const { messages, total, loading } = this.state;
-		if (messages.length === total || loading) {
-			return;
-		}
+	const content: TMessageViewContent | any = defineMessagesViewContent(route.params.name);
 
-		this.setState({ loading: true });
+	const [message, setMessage] = useState<IMessage>({} as IMessage);
 
-		try {
-			const result = await this.content.fetchFunc();
-			if (result.success) {
-				const urlRenderMessages = result.messages?.map((message: any) => {
-					if (message.urls && message.urls.length > 0) {
-						message.urls = message.urls?.map((url: any, index: any) => {
-							if (url.meta) {
-								return {
-									_id: index,
-									title: url.meta.pageTitle,
-									description: url.meta.ogDescription,
-									image: url.meta.ogImage,
-									url: url.url
-								} as IUrl;
-							}
-							return {} as IUrl;
-						});
-					}
-					return { ...message };
-				});
-				this.setState({
-					messages: [...messages, ...urlRenderMessages],
-					total: result.total,
-					loading: false
-				});
-			}
-		} catch (error) {
-			this.setState({ loading: false });
-			console.error(error);
-		}
+	const navToRoomInfo = (navParam: IRoomInfoParam) => {
+		navigation.navigate('RoomInfoView', navParam);
 	};
 
-	getCustomEmoji: TGetCustomEmoji = name => {
-		const { customEmojis } = this.props;
-		const emoji = customEmojis[name];
-		if (emoji) {
-			return emoji;
-		}
-		return null;
-	};
-
-	showAttachment = (attachment: IAttachment) => {
-		const { navigation } = this.props;
+	const showAttachment = (attachment: IAttachment) => {
 		navigation.navigate('AttachmentView', { attachment });
 	};
 
-	onLongPress = (message: IMessage) => {
-		this.setState({ message }, this.showActionSheet);
+	const jumpToMessage = async ({ item }: { item: IMessage }) => {
+		let params: TParams = {
+			rid,
+			jumpToMessageId: item._id,
+			t,
+			room
+		};
+
+		if (item.tmid) {
+			if (isMasterDetail) {
+				navigation.navigate('DrawerNavigator');
+			} else {
+				navigation.pop(2);
+			}
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: await getThreadName(rid, item.tmid, item._id),
+				t: SubscriptionType.THREAD
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomView', params);
+		}
 	};
 
-	showActionSheet = () => {
-		const { message } = this.state;
-		const { showActionSheet } = this.props;
-		showActionSheet({ options: [this.content.action(message)], hasCancel: true });
+	// ActionSheet
+	const onLongPress = (message: IMessage) => {
+		setMessage(message);
+		handleShowActionSheet(message);
 	};
 
-	handleActionPress = async () => {
-		const { message } = this.state;
+	const handleShowActionSheet = (message?: IMessage) => {
+		showActionSheet({ options: [content.action(message)], hasCancel: true });
+	};
 
+	const handleActionPress = async () => {
 		try {
-			const result = await this.content.handleActionPress(message);
+			const result = await content.handleActionPress(message);
 			if (result.success) {
-				this.setState((prevState: IMessagesViewState) => ({
-					messages: prevState.messages.filter((item: IMessage) => item._id !== message?._id),
-					total: prevState.total - 1
-				}));
+				updateMessagesOnActionPress(message?._id);
 			}
 		} catch {
 			// Do nothing
 		}
 	};
 
-	setFileLoading = (fileLoading: boolean) => {
-		this.setState({ fileLoading });
-	};
+	const renderItem = ({ item }: { item: IMessage }) => content?.renderItem(item);
 
-	renderEmpty = () => {
-		const { theme } = this.props;
+	const { loading, messages, loadMore, updateMessagesOnActionPress } = useMessages({ setHeader, fetchFunc: content?.fetchFunc });
+
+	if (!loading && messages.length === 0) {
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={this.content.testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{this.content.noDataMsg}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={content?.testID}>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{content?.noDataMsg}</Text>
 			</View>
 		);
-	};
-
-	renderItem = ({ item }: { item: IMessage }) => this.content.renderItem(item);
-
-	render() {
-		const { messages, loading } = this.state;
-		const { theme } = this.props;
-
-		if (!loading && messages.length === 0) {
-			return this.renderEmpty();
-		}
-
-		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<StatusBar />
-				<FlatList
-					data={messages}
-					renderItem={this.renderItem}
-					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-					keyExtractor={item => item._id}
-					onEndReached={this.load}
-					ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				/>
-			</SafeAreaView>
-		);
 	}
-}
 
-const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	customEmojis: state.customEmojis,
-	useRealName: state.settings.UI_Use_Real_Name,
-	isMasterDetail: state.app.isMasterDetail
-});
+	return (
+		<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={content?.testID}>
+			<StatusBar />
+			<FlatList
+				extraData={content}
+				data={messages}
+				renderItem={renderItem}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+				keyExtractor={item => item._id}
+				onEndReached={loadMore}
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
+			/>
+		</SafeAreaView>
+	);
+};
 
-export default connect(mapStateToProps)(withTheme(withActionSheet(MessagesView)));
+export default MessagesView;
