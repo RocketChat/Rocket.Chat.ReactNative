@@ -191,9 +191,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 	};
 
 	renderParagraph = ({ children }: any) => {
-		const { numberOfLines, style = [], theme } = this.props;
+		const { numberOfLines, style = [], theme, msg } = this.props;
 		if (!children || children.length === 0) {
 			return null;
+		}
+		if (msg && this.isMessageContainsOnlyEmoji) {
+			return <Text>{children}</Text>;
 		}
 		return (
 			<Text style={[styles.text, { color: themes[theme!].fontDefault }, ...style]} numberOfLines={numberOfLines}>
