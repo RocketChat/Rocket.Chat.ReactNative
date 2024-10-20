@@ -3,14 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>AppGroup</key>
-	<string>group.ios.chat.rocket</string>
-	<key>IS_OFFICIAL</key>
-	<false/>
-	<key>bugsnag</key>
-	<dict>
-		<key>apiKey</key>
-		<string>apiKeyValue</string>
-	</dict>
+	<string>group.ios.chat.nionium</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -22,15 +15,17 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>Nionium</string>
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.48.0</string>
+	<string>1.2.1</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
+	<key>IS_OFFICIAL</key>
+	<true/>
 	<key>KeychainGroup</key>
-	<string>$(AppIdentifierPrefix)chat.rocket.reactnative</string>
+	<string>$(AppIdentifierPrefix)chat.rocket.nionium</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -72,5 +67,10 @@
 		<string>custom.ttf</string>
 		<string>Inter.ttf</string>
 	</array>
+	<key>bugsnag</key>
+	<dict>
+		<key>apiKey</key>
+		<string>apiKeyValue</string>
+	</dict>
 </dict>
 </plist>

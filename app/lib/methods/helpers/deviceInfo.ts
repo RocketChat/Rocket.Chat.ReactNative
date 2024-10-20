@@ -4,7 +4,7 @@ import DeviceInfo from 'react-native-device-info';
 export const hasNotch = DeviceInfo.hasNotch();
 export const isIOS = Platform.OS === 'ios';
 export const isAndroid = !isIOS;
-export const getReadableVersion = DeviceInfo.getReadableVersion();
+export const getReadableVersion = DeviceInfo.getVersion();
 export const getBundleId = DeviceInfo.getBundleId();
 export const getDeviceModel = DeviceInfo.getModel();
 

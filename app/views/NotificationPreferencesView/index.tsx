@@ -78,6 +78,7 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 	const [switchValue, setSwitchValue] = useState(!room[preference]);
 	return (
 		<Switch
+			thumbColor={switchValue ? '#41FF8B' : '#f5455c'}
 			value={switchValue}
 			testID={preference as string}
 			trackColor={SWITCH_TRACK_COLOR}

@@ -130,7 +130,12 @@ const UserNotificationPreferencesView = () => {
 								title='Vibrate'
 								testID='user-notification-preference-view-in-app-vibration'
 								right={() => (
-									<Switch value={inAppVibration} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleInAppVibration} />
+									<Switch
+										thumbColor={inAppVibration ? '#41FF8B' : '#f5455c'}
+										value={inAppVibration}
+										trackColor={SWITCH_TRACK_COLOR}
+										onValueChange={toggleInAppVibration}
+									/>
 								)}
 							/>
 							<List.Separator />

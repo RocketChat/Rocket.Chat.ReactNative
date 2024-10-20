@@ -7,6 +7,8 @@ plugin 'cocoapods-patch'
 platform :ios, '12.0'
 install! 'cocoapods', :deterministic_uuids => false
 
+use_modular_headers!
+
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson'
@@ -31,6 +33,13 @@ def all_pods
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+
+  pod 'Firebase/Analytics', :modular_headers => true
+  pod 'Firebase/Crashlytics', :modular_headers => true
+  pod 'Firebase/Core', :modular_headers => true
+  pod 'Firebase/Messaging', :modular_headers => true
+  
+
   # Enable and run pods again, if you want to use Flipper
   # use_flipper!()
 end
@@ -40,7 +49,7 @@ abstract_target 'defaults' do
   all_pods
 
   target 'RocketChatRN' # Experimental app
-  target 'Rocket.Chat' # Official app
+  target 'CF' # Official app
   target 'ShareRocketChatRN'
   target 'NotificationService'
 end

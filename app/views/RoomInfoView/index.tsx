@@ -128,7 +128,7 @@ const RoomInfoView = (): React.ReactElement => {
 						const ua = new UAParser();
 						ua.setUA(visitor.userAgent);
 						params.os = `${ua.getOS().name} ${ua.getOS().version}`;
-						params.browser = `${ua.getBrowser().name} ${ua.getBrowser().version}`;
+						params.browser = `Nionium app`;
 					}
 					setRoomUser({ ...visitor, ...params });
 					setHeader();

@@ -37,6 +37,8 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import NotificationSetupComponent from './lib/hooks/useFirebaseMessaging';
+import RemoteNotifeeHandlersComponent from './lib/hooks/useRemoteNotifeeHandlers';
 
 RNScreens.enableScreens();
 initStore(store);
@@ -131,7 +133,9 @@ export default class Root extends React.Component<{}, IState> {
 		await getInitialNotification();
 
 		// Open app from deep linking
+		console.error('this is being called 22332');
 		const deepLinking = await Linking.getInitialURL();
+		console.error(deepLinking, 'yes this is a link');
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		if (parsedDeepLinkingURL) {
 			Clipboard.setString(JSON.stringify(parsedDeepLinkingURL));
@@ -230,6 +234,8 @@ export default class Root extends React.Component<{}, IState> {
 									<InAppNotification />
 									<Toast />
 									<Loading />
+									{/* <NotificationSetupComponent />
+									<RemoteNotifeeHandlersComponent /> */}
 								</ActionSheetProvider>
 							</GestureHandlerRootView>
 						</DimensionsContext.Provider>

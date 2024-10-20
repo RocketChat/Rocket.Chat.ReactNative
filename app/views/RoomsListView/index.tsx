@@ -47,6 +47,8 @@ import {
 import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, STATUS_COLORS, colors } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
+import WebViewAI from '../WebViewAI/index';
+import { DrawerStyleContext } from '../../stacks/MasterDetailStack/DrawerNavigationStyleProvider';
 
 type TNavigation = CompositeNavigationProp<
 	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -175,6 +177,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	private querySubscription?: Subscription;
 	private scroll?: FlatList;
 	private useRealName?: boolean;
+	static contextType = DrawerStyleContext;
 
 	constructor(props: IRoomsListViewProps) {
 		super(props);
@@ -892,8 +895,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
+		const { drawerStyle } = this.context;
 		const options = this.getHeader();
-		return <Header title='' {...themedHeader(theme)} {...options} />;
+		const yo = !drawerStyle.hasOwnProperty('header') ? options : drawerStyle.header;
+		return drawerStyle?.isTablet === true ? null : <Header title='' {...themedHeader(theme)} {...yo} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
@@ -984,15 +989,23 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		);
 	};
 
+	renderAIWebView = () => {
+		const { navigation, isMasterDetail } = this.props;
+		const param = this.props.route;
+
+		return <WebViewAI isMasterDetail={isMasterDetail} header={this.getHeader} timestamp={param} navigation={navigation} />;
+	};
+
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
 		const { showServerDropdown, theme } = this.props;
 
 		return (
-			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor, position: 'relative' }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
+				{this.renderAIWebView()}
 				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);

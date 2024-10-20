@@ -99,7 +99,12 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 								title='Log_analytics_events'
 								testID='security-privacy-view-analytics-events'
 								right={() => (
-									<Switch value={analyticsEventsState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleAnalyticsEvents} />
+									<Switch
+										thumbColor={analyticsEventsState ? '#41FF8B' : '#f5455c'}
+										value={analyticsEventsState}
+										trackColor={SWITCH_TRACK_COLOR}
+										onValueChange={toggleAnalyticsEvents}
+									/>
 								)}
 							/>
 							<List.Separator />
@@ -107,7 +112,12 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 								title='Send_crash_report'
 								testID='security-privacy-view-crash-report'
 								right={() => (
-									<Switch value={crashReportState} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleCrashReport} />
+									<Switch
+										thumbColor={crashReportState ? '#41FF8B' : '#f5455c'}
+										value={crashReportState}
+										trackColor={SWITCH_TRACK_COLOR}
+										onValueChange={toggleCrashReport}
+									/>
 								)}
 							/>
 							<List.Separator />

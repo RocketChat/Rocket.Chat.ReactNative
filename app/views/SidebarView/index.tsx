@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
-import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
+import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Dispatch } from 'redux';
 
+import { verticalScale } from '../NewServerView/scaling';
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -159,10 +160,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		return isAdmin;
 	}
 
-	sidebarNavigate = (route: string) => {
+	sidebarNavigate = (route: string, params?: any) => {
 		// @ts-ignore
 		logEvent(events[`SIDEBAR_GO_${route.replace('StackNavigator', '').replace('View', '').toUpperCase()}`]);
-		Navigation.navigate(route);
+		Navigation.navigate(route, params);
 	};
 
 	get currentItemKey() {
@@ -226,7 +227,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				<SidebarItem
 					text={I18n.t('Admin_Panel')}
 					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
-					onPress={() => this.sidebarNavigate(routeName)}
+					onPress={() => this.sidebarNavigate(routeName, { hello: 'world' })}
 					testID='sidebar-admin'
 					theme={theme!}
 					current={this.currentItemKey === routeName}
@@ -373,6 +374,21 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 						<>{this.renderAdmin()}</>
 					)}
 				</ScrollView>
+				<View style={{ display: 'flex', flexDirection: 'row' }}>
+					<Image
+						style={[
+							{
+								width: verticalScale({ size: 150, height: 550 }),
+								height: verticalScale({ size: 100, height: 550 }),
+								marginLeft: 15,
+								alignSelf: 'center',
+								resizeMode: 'contain'
+							}
+						]}
+						source={require('../../static/images/logo.png')}
+						fadeDuration={0}
+					/>
+				</View>
 			</SafeAreaView>
 		);
 	}

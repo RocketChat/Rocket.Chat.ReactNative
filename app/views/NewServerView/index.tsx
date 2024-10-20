@@ -339,7 +339,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							{
 								marginBottom: verticalScale({ size: 10, height }),
 								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
-								width: verticalScale({ size: 100, height }),
+								width: verticalScale({ size: 230, height }),
 								height: verticalScale({ size: 100, height })
 							}
 						]}
@@ -355,9 +355,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 								marginBottom: verticalScale({ size: 8, height })
 							}
 						]}
-					>
-						Rocket.Chat
-					</Text>
+					></Text>
 					<Text
 						style={[
 							styles.subtitle,
@@ -388,32 +386,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
 						testID='new-server-view-button'
 					/>
-					{isIOS ? (
-						<>
-							<OrSeparator theme={theme} />
-							<Text
-								style={[
-									styles.description,
-									{
-										color: themes[theme].auxiliaryText,
-										fontSize: moderateScale({ size: 14, width }),
-										marginBottom: verticalScale({ size: 16, height })
-									}
-								]}
-							>
-								{I18n.t('Onboarding_join_open_description')}
-							</Text>
-							<Button
-								title={I18n.t('Join_our_open_workspace')}
-								type='secondary'
-								backgroundColor={themes[theme].chatComponentBackground}
-								onPress={this.connectOpen}
-								disabled={connecting}
-								loading={connectingOpen && connecting}
-								testID='new-server-view-open'
-							/>
-						</>
-					) : null}
 				</FormContainerInner>
 				{this.renderCertificatePicker()}
 			</FormContainer>
