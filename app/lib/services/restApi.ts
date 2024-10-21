@@ -412,9 +412,15 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
-export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
-	// RC 0.55.0
-	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
+		// RC 0.55.0
+		return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+	}
+	// RC 5.3.0
+	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
+};
 
 export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
