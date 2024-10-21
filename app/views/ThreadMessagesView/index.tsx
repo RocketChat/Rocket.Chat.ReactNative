@@ -25,7 +25,7 @@ import EmptyThreads from './components/EmptyThreads';
 import useThreadMessages from './hooks/useThreadMessages';
 import styles from './styles';
 import useThreadFilter from './hooks/useThreadFilter';
-import getFilteredThreads from './utils/helper';
+import getFilteredThreads from './utils/getFilteredThreads';
 import useThreadSearch from './hooks/useeThreadSearch';
 
 const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => {

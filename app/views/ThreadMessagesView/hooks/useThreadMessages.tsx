@@ -12,7 +12,7 @@ import log from '../../../lib/methods/helpers/log';
 import protectedFunction from '../../../lib/methods/helpers/protectedFunction';
 import buildMessage from '../../../lib/methods/helpers/buildMessage';
 import database from '../../../lib/database';
-import getFilteredThreads from '../utils/helper';
+import getFilteredThreads from '../utils/getFilteredThreads';
 import { Filter } from '../filters';
 
 const API_FETCH_COUNT = 50;

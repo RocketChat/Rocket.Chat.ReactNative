@@ -6,7 +6,7 @@ import UserPreferences from '../../../lib/methods/userPreferences';
 import { showActionSheetRef } from '../../../containers/ActionSheet';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import { IUser, TSubscriptionModel, TThreadModel } from '../../../definitions';
-import getFilteredThreads from '../utils/helper';
+import getFilteredThreads from '../utils/getFilteredThreads';
 
 const THREADS_FILTER = 'threadsFilter';
 
