@@ -1,32 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
-import { getUserSelector } from '../../selectors/login';
-import { SubscriptionType, IAttachment, IMessage, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
-import { IRoomInfoParam } from '../SearchMessagesView';
-import { Services } from '../../lib/services';
-import { Encryption } from '../../lib/encryption';
-import { useAppSelector } from '../../lib/hooks';
-import { useActionSheet } from '../../containers/ActionSheet';
-import { TMessagesViewProps, TMessageViewContent, TParams } from './types';
-import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
+import { SubscriptionType, IMessage, TGetCustomEmoji, TAnyMessageModel } from '../../definitions';
+import { IMessagesViewProps, IMessageViewContent } from './definitions';
 import I18n from '../../i18n';
-import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import StatusBar from '../../containers/StatusBar';
 import SafeAreaView from '../../containers/SafeAreaView';
-import getThreadName from '../../lib/methods/getThreadName';
 import useMessages from './hooks/useMessages';
 import styles from './styles';
+import useMessagesContent from './hooks/useMessagesActions';
+import { useAppSelector } from '../../lib/hooks';
+import { getUserSelector } from '../../selectors/login';
+import { Services } from '../../lib/services';
+import { Encryption } from '../../lib/encryption';
+import Message from '../../containers/message';
+import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 
-const MessagesView = ({ navigation, route }: TMessagesViewProps) => {
+const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
+	const routeName: string = route.params.name;
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
 	let room: any;
-
-	const { showActionSheet } = useActionSheet();
 	const { theme } = useTheme();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
 		baseUrl: state.server.server,
@@ -36,18 +33,18 @@ const MessagesView = ({ navigation, route }: TMessagesViewProps) => {
 		isMasterDetail: state.app.isMasterDetail
 	}));
 
-	const setHeader = () => {
-		navigation.setOptions({
-			title: I18n.t(route.params?.name)
-		});
-	};
-
 	const getCustomEmoji: TGetCustomEmoji = name => {
 		const emoji = customEmojis[name];
 		if (emoji) {
 			return emoji;
 		}
 		return null;
+	};
+
+	const setHeader = () => {
+		navigation.setOptions({
+			title: I18n.t(route.params?.name)
+		});
 	};
 
 	const defineMessagesViewContent = (name: string) => {
@@ -121,9 +118,8 @@ const MessagesView = ({ navigation, route }: TMessagesViewProps) => {
 				action: (message: IMessage) => ({
 					title: I18n.t('Unstar'),
 					icon: message.starred ? 'star-filled' : 'star',
-					onPress: handleActionPress
-				}),
-				handleActionPress: (message: IMessage) => Services.toggleStarMessage(message._id, message.starred)
+					onPress: () => handleActionPress('STAR', message)
+				})
 			},
 			// Pinned Messages Screen
 			Pinned: {
@@ -134,74 +130,29 @@ const MessagesView = ({ navigation, route }: TMessagesViewProps) => {
 				renderItem: (item: TAnyMessageModel) => (
 					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => onLongPress(item)} theme={theme} />
 				),
-				action: () => ({ title: I18n.t('Unpin'), icon: 'pin', onPress: handleActionPress }),
-				handleActionPress: (message: IMessage) => Services.togglePinMessage(message._id, message.pinned)
+				action: (message: IMessage) => ({
+					title: I18n.t('Unpin'),
+					icon: 'pin',
+					onPress: () => handleActionPress('PIN', message)
+				})
 			}
 		}[name];
 	};
 
-	const content: TMessageViewContent | any = defineMessagesViewContent(route.params.name);
+	const content: IMessageViewContent | any = defineMessagesViewContent(routeName);
 
-	const [message, setMessage] = useState<IMessage>({} as IMessage);
-
-	const navToRoomInfo = (navParam: IRoomInfoParam) => {
-		navigation.navigate('RoomInfoView', navParam);
-	};
-
-	const showAttachment = (attachment: IAttachment) => {
-		navigation.navigate('AttachmentView', { attachment });
-	};
-
-	const jumpToMessage = async ({ item }: { item: IMessage }) => {
-		let params: TParams = {
-			rid,
-			jumpToMessageId: item._id,
-			t,
-			room
-		};
-
-		if (item.tmid) {
-			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
-			} else {
-				navigation.pop(2);
-			}
-			params = {
-				...params,
-				tmid: item.tmid,
-				name: await getThreadName(rid, item.tmid, item._id),
-				t: SubscriptionType.THREAD
-			};
-			navigation.push('RoomView', params);
-		} else {
-			navigation.navigate('RoomView', params);
-		}
-	};
-
-	// ActionSheet
-	const onLongPress = (message: IMessage) => {
-		setMessage(message);
-		handleShowActionSheet(message);
-	};
-
-	const handleShowActionSheet = (message?: IMessage) => {
-		showActionSheet({ options: [content.action(message)], hasCancel: true });
-	};
-
-	const handleActionPress = async () => {
-		try {
-			const result = await content.handleActionPress(message);
-			if (result.success) {
-				updateMessagesOnActionPress(message?._id);
-			}
-		} catch {
-			// Do nothing
-		}
-	};
+	const { loading, messages, loadMore, updateMessagesOnActionPress } = useMessages({ setHeader, fetchFunc: content.fetchFunc });
+	const { handleActionPress, onLongPress, jumpToMessage, navToRoomInfo, showAttachment } = useMessagesContent({
+		content,
+		isMasterDetail,
+		navigation,
+		rid,
+		room,
+		t,
+		updateMessagesOnActionPress
+	});
 
 	const renderItem = ({ item }: { item: IMessage }) => content?.renderItem(item);
-
-	const { loading, messages, loadMore, updateMessagesOnActionPress } = useMessages({ setHeader, fetchFunc: content?.fetchFunc });
 
 	if (!loading && messages.length === 0) {
 		return (

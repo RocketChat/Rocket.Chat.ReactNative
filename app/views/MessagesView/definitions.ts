@@ -12,15 +12,14 @@ import {
 	IMessage
 } from '../../definitions';
 
-export type TMessagesViewProps = {
+export interface IMessagesViewProps  {
 	navigation: CompositeNavigationProp<
 		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
-	showActionSheet: (params: { options: string[]; hasCancel: boolean }) => void;
 }
-export type TParams = {
+export interface IParams {
 	rid: string;
 	t: SubscriptionType;
 	tmid?: string;
@@ -34,7 +33,7 @@ export type TParams = {
 	roomUserId?: string;
 }
 
-export type TMessageViewContent = {
+export interface IMessageViewContent {
 	name: string;
 	fetchFunc: () => Promise<any> | any;
 	noDataMsg: string;
@@ -47,3 +46,5 @@ export type TMessageViewContent = {
 	};
 	handleActionPress?: (message: IMessage) => void;
 };
+
+export type TActionContentType = 'PIN' | 'STAR';
