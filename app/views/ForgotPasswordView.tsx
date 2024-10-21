@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,7 +34,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 
 	const [isFetching, setIsFetching] = useState(false);
 
-	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { params } = useRoute<RouteProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { colors } = useTheme();
 

@@ -8,6 +8,9 @@
   "Add_users": "Adicionar utilizadores",
   "Admin_Panel": "Painel de Administração",
   "Agent": "Agente",
+  "AirGapped_workspace_read_only_description": "Os administradores podem restaurar a funcionalidade completa ligando-o à internet ou fazendo um upgrade para um plano premium.",
+  "AirGapped_workspace_read_only_share_extension_title": "O compartilhamento está desativado porque o espaço de trabalho está em modo apenas leitura.",
+  "AirGapped_workspace_read_only_title": "Espaço de trabalho em modo apenas leitura.",
   "Alert": "Alerta",
   "alert": "alerta",
   "alerts": "alertas",
@@ -16,6 +19,7 @@
   "All_users_in_the_channel_can_write_new_messages": "Todos os utilizadores no canal podem escrever novas mensagens",
   "All_users_in_the_team_can_write_new_messages": "Todos os usuários da equipa podem escrever novas mensagens",
   "Allow_Reactions": "Permitir Reacções",
+  "Already_have_an_account": "Já tem uma conta?",
   "and": "e",
   "and_N_more": "e mais {{count}}",
   "Announcement": "Anúncio",
@@ -157,6 +161,7 @@
   "Forward_Chat": "Reencaminhar Chat",
   "Forward_to_department": "Reencaminhar para o departamento",
   "Forward_to_user": "Reencaminhar para o utilizador",
+  "Full_name": "Nome completo",
   "Full_table": "Clique para ver a tabela completa",
   "Generate_New_Link": "Gerar Novo Link",
   "Get_help": "Obter ajuda",
@@ -376,6 +381,7 @@
   "You_are_in_preview_mode": "Você está no modo de pré-visualização",
   "You_can_search_using_RegExp_eg": "Você pode pesquisar usando RegEx. por exemplo, `/^text$/i`",
   "You_colon": "Você: ",
+  "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!"
 }

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
@@ -87,7 +87,7 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 	) : null;
 
 interface ICannedResponseDetailProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>;
 	route: RouteProp<ChatsStackParamList, 'CannedResponseDetail'>;
 }
 

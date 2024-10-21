@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
 
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
@@ -18,8 +18,8 @@ import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
-	StackNavigationProp<OutsideModalParamList>
+	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
+	NativeStackNavigationProp<OutsideModalParamList>
 >;
 
 const useWorkspaceViewSelector = () =>
