@@ -24,6 +24,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
 	let room: any;
+
 	const { theme } = useTheme();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
 		baseUrl: state.server.server,

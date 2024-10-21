@@ -19,6 +19,7 @@ export interface IMessagesViewProps  {
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 }
+
 export interface IParams {
 	rid: string;
 	t: SubscriptionType;
