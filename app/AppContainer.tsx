@@ -17,7 +17,6 @@ import MasterDetailStack from './stacks/MasterDetailStack';
 import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
-import { themes } from './lib/constants';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -60,7 +59,7 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 				}
 				Navigation.routeNameRef.current = currentRouteName;
 			}}>
-			<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none', navigationBarColor: themes[theme].surfaceLight }}>
+			<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none' }}>
 				{root === RootEnum.ROOT_LOADING || root === RootEnum.ROOT_LOADING_SHARE_EXTENSION ? (
 					<Stack.Screen name='AuthLoading' component={AuthLoadingView} />
 				) : null}

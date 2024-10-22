@@ -20,7 +20,14 @@ import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
 import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
-import { getTheme, initialTheme, newThemeState, subscribeTheme, unsubscribeTheme } from './lib/methods/helpers/theme';
+import {
+	getTheme,
+	initialTheme,
+	newThemeState,
+	updateRootViewColor,
+	subscribeTheme,
+	unsubscribeTheme
+} from './lib/methods/helpers/theme';
 import { initializePushNotifications, onNotification } from './lib/notifications';
 import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
 import store from './lib/store';
@@ -94,6 +101,7 @@ export default class Root extends React.Component<{}, IState> {
 		if (isTablet) {
 			this.initTablet();
 		}
+		updateRootViewColor(theme);
 	}
 
 	componentDidMount() {

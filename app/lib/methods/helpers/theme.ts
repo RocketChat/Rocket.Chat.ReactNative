@@ -1,7 +1,8 @@
 import { Appearance } from 'react-native';
+import setRootViewColor from 'rn-root-view';
 
 import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
-import { THEME_PREFERENCES_KEY } from '../../constants';
+import { themes, THEME_PREFERENCES_KEY } from '../../constants';
 import UserPreferences from '../userPreferences';
 import { TSupportedThemes } from '../../../theme';
 
@@ -44,6 +45,11 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
+export const updateRootViewColor = (themePreferences: IThemePreference) => {
+	const theme = getTheme(themePreferences);
+
+	setRootViewColor(themes[theme].surfaceRoom);
+};
 
 export const unsubscribeTheme = () => {
 	if (themeListener && themeListener.remove) {
@@ -61,5 +67,6 @@ export const subscribeTheme = (themePreferences: IThemePreference, setTheme: () 
 		// unsubscribe appearance changes when automatic was disabled
 		unsubscribeTheme();
 	}
-	// set native components theme
+	
+	updateRootViewColor(themePreferences);
 };
