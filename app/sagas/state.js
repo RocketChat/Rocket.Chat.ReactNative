@@ -34,9 +34,9 @@ const appHasComeBackToBackground = function* appHasComeBackToBackground() {
 		const server = yield select(state => state.server.server);
 		yield saveLastLocalAuthenticationSession(server);
 
-        if (server) {
-		    yield Services.setUserPresenceAway();
-        }
+		if (server) {
+			yield Services.setUserPresenceAway();
+		}
 	} catch (e) {
 		log(e);
 	}

@@ -18,7 +18,7 @@ import { themes } from '../../../lib/constants';
 const playIcon = require('../../../static/images/discussionboard/play_icon.png');
 const screenWidth = Dimensions.get('window').width;
 
-const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) => {
+const ConnectView: React.FC = ({ route, theme }: { route: any; theme: string }) => {
 	const navigation = useNavigation<StackNavigationProp<any>>();
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
@@ -34,10 +34,13 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		if (user) {
 			setUsername(user.username);
 		}
-		const roomUserId = getUidDirectMessage({
-			rid: userId,
-			t: 'd'
-		}, avoidLegacy = true);
+		const roomUserId = getUidDirectMessage(
+			{
+				rid: userId,
+				t: 'd'
+			},
+			(avoidLegacy = true)
+		);
 		const result = await Services.getUserInfo(roomUserId);
 		if (result?.user) {
 			setUserInfo(result.user);
@@ -80,7 +83,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 			try {
 				goRoom({ item: params, isMasterDetail: true, popToRoot: true });
 			} catch (e) {
-				log(e);
+				console.log(e);
 			}
 		}
 	};
@@ -92,7 +95,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		videoUrl = '';
 
 	const devices = [];
-	const {customFields, name} = userInfo || {};
+	const { customFields, name } = userInfo || {};
 
 	if (customFields) {
 		age = customFields.Age;
@@ -100,7 +103,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 		bio = customFields.Bio;
 		t1dSince = customFields['T1D Since'];
 		videoUrl = customFields.VideoUrl;
-		videoUrl = videoUrl.replace("https://youtu.be/", "https://www.youtube.com/embed/");
+		videoUrl = videoUrl.replace('https://youtu.be/', 'https://www.youtube.com/embed/');
 		videoUrl = `${videoUrl}?autoplay=1`;
 		if (customFields['Glucose Monitoring Method'] !== '') {
 			devices.push(customFields['Glucose Monitoring Method']);
@@ -129,7 +132,7 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 								<TouchableOpacity
 									style={styles.playIconContainer}
 									onPress={() => {
-										navigation.navigate('VideoPlayerView', { videoUrl: `${ videoUrl }` });
+										navigation.navigate('VideoPlayerView', { videoUrl: `${videoUrl}` });
 									}}
 								>
 									<Image source={playIcon} style={styles.playIcon} />
@@ -140,28 +143,29 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 				</View>
 				<View style={styles.nameContainer}>
 					<Status size={20} id={user._id} />
-					<Text style={[styles.profileName, {color: themes[theme].titleText}]}>{age ? `${name}, ${age}` : `${name ?? ''}`}</Text>
+					<Text style={[styles.profileName, { color: themes[theme].titleText }]}>
+						{age ? `${name}, ${age}` : `${name ?? ''}`}
+					</Text>
 				</View>
 				<View style={styles.locationContainer}>
-					<Text style={[styles.locationText, {color: themes[theme].titleText}]}>{location ?? ''}</Text>
+					<Text style={[styles.locationText, { color: themes[theme].titleText }]}>{location ?? ''}</Text>
 				</View>
 				<View style={styles.userInfoContainer}>
 					<View style={styles.userInfoTextContainerLeft}>
-						<Text style={[styles.userInfoText, {color: themes[theme].titleText}]}>T1D Since</Text>
-						<Text style={[styles.userInfoTextGrey, {color: themes[theme].bodyText}]}>{t1dSince !== '' ? t1dSince : '-'}</Text>
+						<Text style={[styles.userInfoText, { color: themes[theme].titleText }]}>T1D Since</Text>
+						<Text style={[styles.userInfoTextGrey, { color: themes[theme].bodyText }]}>{t1dSince !== '' ? t1dSince : '-'}</Text>
 					</View>
 					<View style={styles.userInfoTextContainerRight}>
-						<Text style={[styles.userInfoText, {color: themes[theme].titleText}]}>Devices</Text>
-						{devices.length > 0 ? 
+						<Text style={[styles.userInfoText, { color: themes[theme].titleText }]}>Devices</Text>
+						{devices.length > 0 ? (
 							devices.map((device, index) => (
-								<Text style={[styles.userInfoTextGrey, {color: themes[theme].bodyText}]} key={index}>
+								<Text style={[styles.userInfoTextGrey, { color: themes[theme].bodyText }]} key={index}>
 									{device}
 								</Text>
-							)
-							)
-						 : (
-								<Text style={[styles.userInfoTextGrey, {color: themes[theme].bodyText}]}>-</Text>
-							)}
+							))
+						) : (
+							<Text style={[styles.userInfoTextGrey, { color: themes[theme].bodyText }]}>-</Text>
+						)}
 					</View>
 				</View>
 				<View>
@@ -170,8 +174,8 @@ const ConnectView: React.FC = ({ route, theme }: { route: any, theme: string }) 
 					</TouchableOpacity>
 				</View>
 				<View style={styles.bioContainer}>
-					<Text style={[styles.aboutTextHeader, {color: themes[theme].titleText}]}>About</Text>
-					<Text style={[styles.aboutText, {color: themes[theme].bodyText}]}>{bio ?? ''}</Text>
+					<Text style={[styles.aboutTextHeader, { color: themes[theme].titleText }]}>About</Text>
+					<Text style={[styles.aboutText, { color: themes[theme].bodyText }]}>{bio ?? ''}</Text>
 				</View>
 			</ScrollView>
 		</View>

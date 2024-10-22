@@ -26,7 +26,9 @@ const LOGIN_SUBMIT_ERRORS = {
 };
 
 export const handleLoginErrors = (error: keyof typeof LOGIN_SUBMIT_ERRORS): string => {
-	const errorKey = typeof error === 'string' && Object.keys(LOGIN_SUBMIT_ERRORS).find(key => error.includes(key)) as keyof typeof LOGIN_SUBMIT_ERRORS;
+	const errorKey =
+		typeof error === 'string' &&
+		(Object.keys(LOGIN_SUBMIT_ERRORS).find(key => error.includes(key)) as keyof typeof LOGIN_SUBMIT_ERRORS);
 
 	const e = errorKey ? LOGIN_SUBMIT_ERRORS[errorKey].i18n : 'Login_error';
 	if (i18n.isTranslated(e)) {

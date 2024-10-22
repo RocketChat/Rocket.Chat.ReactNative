@@ -4,8 +4,39 @@ require File.join(File.dirname(`node --print "require.resolve('expo/package.json
 
 plugin 'cocoapods-patch'
 
-platform :ios, '12.0'
+platform :ios, '13.0'
 install! 'cocoapods', :deterministic_uuids => false
+
+def node_require(script)
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve('#{script}', {paths: [process.argv[1]]})", __dir__]).strip
+end
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
+
+setup_permissions([
+  # 'AppTrackingTransparency',
+  # 'Bluetooth',
+  'Calendars',
+  'CalendarsWriteOnly',
+  # 'Camera',
+  # 'Contacts',
+  # 'FaceID',
+  # 'LocationAccuracy',
+  # 'LocationAlways',
+  # 'LocationWhenInUse',
+  # 'MediaLibrary',
+  # 'Microphone',
+  # 'Motion',
+  'Notifications',
+  # 'PhotoLibrary',
+  # 'PhotoLibraryAddOnly',
+  'Reminders',
+  # 'Siri',
+  # 'SpeechRecognition',
+  # 'StoreKit',
+])
+
 
 def all_pods
   pod 'React-jsi', :path => '../node_modules/react-native/ReactCommon/jsi', :modular_headers => true

@@ -1,4 +1,4 @@
-import {SizeTypes} from './interfaces'
+import { SizeTypes } from './interfaces';
 
 export const largeTiles = [
 	{
@@ -38,11 +38,11 @@ export const smallTiles = [
 	},
 	{
 		title: 'Calendar',
-		screen: 'Calendar',
+		screen: 'CalendarView',
 		size: SizeTypes.SMALL,
 		color: 'pink',
 		icon: require('../../static/images/calendar-solid.png'),
-		disabled: true
+		disabled: false
 	},
 	{
 		title: 'Direct Messaging',

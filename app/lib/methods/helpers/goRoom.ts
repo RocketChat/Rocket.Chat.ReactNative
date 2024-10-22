@@ -96,7 +96,7 @@ export const goRoom = async ({
 	popToRoot?: boolean;
 }): Promise<void> => {
 	if (!item) {
-		console.log('item was not passed to goRoom function, probably no item was found')
+		console.log('item was not passed to goRoom function, probably no item was found');
 		return;
 	}
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {

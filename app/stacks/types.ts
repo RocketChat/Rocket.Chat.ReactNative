@@ -260,7 +260,7 @@ export type InsideStackParamList = {
 	DrawerNavigator: NavigatorScreenParams<DrawerParamList>;
 	VideoPlayerView: {
 		videoURL: string;
-	}
+	};
 	NewMessageStackNavigator: NavigatorScreenParams<NewMessageStackParamList>;
 	E2ESaveYourPasswordStackNavigator: NavigatorScreenParams<E2ESaveYourPasswordStackParamList>;
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
@@ -317,4 +317,4 @@ export type OutsideModalParamList = {
 
 export type HomeStackParamList = {
 	HomeView: undefined;
-}
+};

@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.05,
 		shadowRadius: 30,
 		elevation: 5,
-		marginHorizontal:20
+		marginHorizontal: 20
 	},
 	title: {
 		fontSize: 16,

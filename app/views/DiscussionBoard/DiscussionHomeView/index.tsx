@@ -34,7 +34,7 @@ import { handleStar } from '../helpers';
 const QUERY_SIZE = 20;
 const VIRTUAL_HAPPY_HOUR = {
 	ROOM_RID: 'jRXA42HyPKpjAmZpX'
-}
+};
 
 const DiscussionHomeView: React.FC = ({ route }) => {
 	const navigation = useNavigation<StackNavigationProp<any>>();
@@ -66,7 +66,7 @@ const DiscussionHomeView: React.FC = ({ route }) => {
 							<HeaderButton.Item
 								iconName='search'
 								color={themes[theme].superGray}
-								onPress={() => navigation.navigate('DiscussionSearchView', { roomIDs: boards.map((board: any) => board.id)})}
+								onPress={() => navigation.navigate('DiscussionSearchView', { roomIDs: boards.map((board: any) => board.id) })}
 							/>
 						</HeaderButton.Container>
 					</View>
@@ -131,7 +131,7 @@ const DiscussionHomeView: React.FC = ({ route }) => {
 
 				const boards = formattedData.filter(d => {
 					// removing direct messages
-					return d.t !== 'd' && d.id !== 'GENERAL' && (d.rid !== VIRTUAL_HAPPY_HOUR.ROOM_RID);
+					return d.t !== 'd' && d.id !== 'GENERAL' && d.rid !== VIRTUAL_HAPPY_HOUR.ROOM_RID;
 					// return true;
 				});
 

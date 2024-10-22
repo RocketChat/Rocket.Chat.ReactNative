@@ -56,13 +56,13 @@ const DiscussionBoardCard = React.memo(({ item, onPress }: DiscussionBoardCardPr
 			<View style={styles.textContainer}>
 				<Text style={styles.title}>{title}</Text>
 				{description ? (
-						<Text style={styles.description}>{`${description?.slice(0, 100)}${description?.length > 100 ? '...' : ''}`}</Text>
+					<Text style={styles.description}>{`${description?.slice(0, 100)}${description?.length > 100 ? '...' : ''}`}</Text>
 				) : (
 					<></>
 				)}
 				<View style={styles.boardMembersContainer}>
 					<Image source={getIcon('boardUsers')} style={styles.usersIcon} />
-			<Text style={{ color: colors.boardMembersText }}>{usersCount} members</Text>
+					<Text style={{ color: colors.boardMembersText }}>{usersCount} members</Text>
 				</View>
 			</View>
 			{/* 
@@ -131,11 +131,11 @@ const styles = StyleSheet.create({
 	},
 	boardMembersContainer: {
 		flexDirection: 'row',
-		marginTop: 4,
+		marginTop: 4
 	},
 	usersIcon: {
 		width: 20,
 		height: 15,
-		marginRight: 8,
+		marginRight: 8
 	}
 });

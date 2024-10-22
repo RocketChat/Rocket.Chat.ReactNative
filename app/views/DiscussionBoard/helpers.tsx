@@ -79,7 +79,7 @@ export const getIcon = (icon: string) => {
 			imagePath = require('../../static/images/discussionboard/send.png');
 			break;
 		case 'saveMedia':
-			imagePath = require("../../static/images/discussionboard/save_media_new.png");
+			imagePath = require('../../static/images/discussionboard/save_media_new.png');
 			break;
 		case 'boardUsers':
 			imagePath = require('../../static/images/discussionboard/board_users.png');

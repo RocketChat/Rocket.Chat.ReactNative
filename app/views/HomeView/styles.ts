@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
 	profileImage: {
 		// width: 24,
 		// height: 24,
-		borderRadius: 12,
+		borderRadius: 12
 		// backgroundColor: 'red'
 	}
 });
@@ -35,13 +35,21 @@ const isLargeMobileScreen = screenWidth > 390;
 
 const smallTileWidth = isLargeMobileScreen ? 115 : 96;
 
-export const createTileStyles = ({ size, color, maxTileWidth }: { size?: 'small' | 'large'; color: string, maxTileWidth?: number }) =>
-    StyleSheet.create({
-        tile: {
-            width: size === 'small' ? smallTileWidth : 130,
-            marginVertical: 16,
-            alignItems: 'center'
-        },
+export const createTileStyles = ({
+	size,
+	color,
+	maxTileWidth
+}: {
+	size?: 'small' | 'large';
+	color: string;
+	maxTileWidth?: number;
+}) =>
+	StyleSheet.create({
+		tile: {
+			width: size === 'small' ? smallTileWidth : 130,
+			marginVertical: 16,
+			alignItems: 'center'
+		},
 		tileContent: {
 			alignItems: 'center'
 		},

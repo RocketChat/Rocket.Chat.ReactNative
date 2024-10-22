@@ -27,13 +27,7 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	render() {
 		const { serverName, showSearchHeader } = this.props;
 
-		return (
-			<Header
-				serverName={serverName}
-				showSearchHeader={showSearchHeader}
-				onSearchChangeText={this.onSearchChangeText}
-			/>
-		);
+		return <Header serverName={serverName} showSearchHeader={showSearchHeader} onSearchChangeText={this.onSearchChangeText} />;
 	}
 }
 

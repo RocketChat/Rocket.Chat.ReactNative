@@ -159,7 +159,7 @@ module.exports = {
 			extends: [
 				'plugin:@typescript-eslint/recommended',
 				'plugin:@typescript-eslint/eslint-recommended',
-				'@rocket.chat/eslint-config',
+				'@rocket.chat/eslint-config'
 			],
 			parser: '@typescript-eslint/parser',
 			parserOptions: {

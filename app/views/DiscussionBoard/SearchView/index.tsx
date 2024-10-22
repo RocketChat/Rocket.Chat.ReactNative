@@ -20,9 +20,8 @@ import { searchItemProps } from './interfaces';
 const leftArrow = require('../../../static/images/discussionboard/arrow_left.png');
 const rightArrow = require('../../../static/images/discussionboard/arrow_right.png');
 
-
 type SearchProps = {
-	route: any
+	route: any;
 };
 
 const SearchView: React.FC<SearchProps> = ({ route }) => {
@@ -93,10 +92,10 @@ const SearchView: React.FC<SearchProps> = ({ route }) => {
 
 		setIsLoading(true);
 		try {
-			const whereClause = [Q.where('msg', Q.like(`%${searchText}%`))]
+			const whereClause = [Q.where('msg', Q.like(`%${searchText}%`))];
 
 			if (route?.params?.roomIDs && route?.params?.roomIDs.length > 0) {
-				whereClause.push(Q.where('rid', Q.oneOf(route.params.roomIDs)))
+				whereClause.push(Q.where('rid', Q.oneOf(route.params.roomIDs)));
 			}
 
 			const messagesObservable = db

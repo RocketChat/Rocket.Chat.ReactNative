@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 14,
 		lineHeight: 20,
-		fontWeight: '400',
+		fontWeight: '400'
 	},
 	submit: {
 		borderRadius: 30,

@@ -53,7 +53,14 @@ const DirectoryItem = ({
 
 	return (
 		<Touch onPress={onPress} style={{ backgroundColor: themes[theme].backgroundColor }} testID={testID}>
-			<View style={[styles.directoryItemContainer, styles.directoryItemButton, style, {backgroundColor: themes[theme].peerSupporterBackground}]}>
+			<View
+				style={[
+					styles.directoryItemContainer,
+					styles.directoryItemButton,
+					style,
+					{ backgroundColor: themes[theme].peerSupporterBackground }
+				]}
+			>
 				<Avatar text={avatar} size={70} type={type} rid={rid} style={styles.directoryItemAvatar} />
 				<View style={styles.directoryItemTextContainer}>
 					<View style={styles.directoryItemTextTitle}>

@@ -9,6 +9,7 @@ import rooms from './rooms';
 import server from './server';
 import selectedUsers from './selectedUsers';
 import createChannel from './createChannel';
+import calendarEvents from './calendarEvents';
 import app from './app';
 import sortPreferences from './sortPreferences';
 import share from './share';
@@ -26,6 +27,7 @@ import usersRoles from './usersRoles';
 import troubleshootingNotification from './troubleshootingNotification';
 import supportedVersions from './supportedVersions';
 import inAppFeedback from './inAppFeedback';
+import confirmationPopup from './confirmationPopup';
 
 export default combineReducers({
 	settings,
@@ -34,6 +36,7 @@ export default combineReducers({
 	server,
 	selectedUsers,
 	createChannel,
+	calendarEvents,
 	app,
 	room,
 	rooms,
@@ -53,5 +56,6 @@ export default combineReducers({
 	usersRoles,
 	troubleshootingNotification,
 	supportedVersions,
-	inAppFeedback
+	inAppFeedback,
+    confirmationPopup
 });

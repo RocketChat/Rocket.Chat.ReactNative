@@ -156,10 +156,14 @@ const NewPostView: React.FC<ScreenProps> = ({ route }) => {
 				{showBanner()}
 				<View style={styles.descriptionContainer}>
 					<Text style={styles.titleText}>Media</Text>
-						<TouchableOpacity style={styles.mediaContainer} onPress={onImagePicker} hitSlop={{ top: 0, right: 0, bottom: 0, left: 0 }}>
-							<Image source={getIcon('saveMedia')} style={styles.selectImage} resizeMode='contain' />
-							<Text style={styles.mediaText}>Add Photos/Videos</Text>
-						</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.mediaContainer}
+						onPress={onImagePicker}
+						hitSlop={{ top: 0, right: 0, bottom: 0, left: 0 }}
+					>
+						<Image source={getIcon('saveMedia')} style={styles.selectImage} resizeMode='contain' />
+						<Text style={styles.mediaText}>Add Photos/Videos</Text>
+					</TouchableOpacity>
 				</View>
 				<View style={styles.descriptionContainer}>
 					<Text style={styles.titleText}>Description</Text>

@@ -43,27 +43,20 @@ interface IRoomHeader {
 	onPress: TouchableOpacityProps['onPress'];
 }
 
-const Header = React.memo(
-	({
-		serverName,
-		showSearchHeader,
-		onSearchChangeText,
-		onPress
-	}: IRoomHeader) => {
-		const { colors } = useTheme();
+const Header = React.memo(({ serverName, showSearchHeader, onSearchChangeText, onPress }: IRoomHeader) => {
+	const { colors } = useTheme();
 
-		if (showSearchHeader) {
-			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
-		}
-
-		return (
-			<View style={styles.container}>
-				<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
-					{serverName}
-				</Text>
-			</View>
-		);
+	if (showSearchHeader) {
+		return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 	}
-);
+
+	return (
+		<View style={styles.container}>
+			<Text style={[styles.title, { color: colors.headerTitleColor }]} numberOfLines={1}>
+				{serverName}
+			</Text>
+		</View>
+	);
+});
 
 export default Header;

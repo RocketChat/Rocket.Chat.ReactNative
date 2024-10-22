@@ -6,9 +6,9 @@ export type CommentProps = {
 	date: string;
 	description: string;
 	reactions: any[];
-	_id: string,
-	rid: string,
-	tmid: string
+	_id: string;
+	rid: string;
+	tmid: string;
 };
 
 export type CommentOptionsModalProps = {

@@ -84,29 +84,38 @@ PODS:
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (~> 2.30908.0)
-  - GoogleDataTransport (9.2.0):
+  - GoogleDataTransport (9.4.1):
     - GoogleUtilities/Environment (~> 7.7)
-    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - nanopb (< 2.30911.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/AppDelegateSwizzler (7.11.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.13.3):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.11.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Environment (7.13.3):
+    - GoogleUtilities/Privacy
     - PromisesObjC (< 3.0, >= 1.2)
-  - GoogleUtilities/Logger (7.11.0):
+  - GoogleUtilities/Logger (7.13.3):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (7.11.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/MethodSwizzler (7.13.3):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (7.11.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Network (7.13.3):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Privacy
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.11.0)"
-  - GoogleUtilities/Reachability (7.11.0):
+  - "GoogleUtilities/NSData+zlib (7.13.3)":
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (7.13.3)
+  - GoogleUtilities/Reachability (7.13.3):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (7.11.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/UserDefaults (7.13.3):
     - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
   - hermes-engine (0.11.0)
   - iosMath (0.9.4)
   - libevent (2.1.12)
@@ -124,14 +133,14 @@ PODS:
     - libwebp/sharpyuv
   - MMKV (1.2.13):
     - MMKVCore (~> 1.2.13)
-  - MMKVCore (1.2.15)
+  - MMKVCore (1.2.16)
   - nanopb (2.30908.0):
     - nanopb/decode (= 2.30908.0)
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - OpenSSL-Universal (1.1.1100)
-  - PromisesObjC (2.1.1)
+  - PromisesObjC (2.4.0)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -356,6 +365,8 @@ PODS:
   - React-jsinspector (0.68.7)
   - React-logger (0.68.7):
     - glog
+  - react-native-add-calendar-event (5.0.0):
+    - React-Core
   - react-native-background-timer (2.4.1):
     - React-Core
   - react-native-cameraroll (5.6.1):
@@ -369,7 +380,7 @@ PODS:
     - React-Core
   - react-native-netinfo (6.0.0):
     - React-Core
-  - react-native-notifications (4.3.3):
+  - react-native-notifications (5.1.0):
     - React-Core
   - react-native-orientation-locker (1.1.8):
     - React
@@ -534,10 +545,12 @@ PODS:
     - React-Core
   - RNMathView (1.0.0):
     - iosMath
-  - RNNotifee (7.8.0):
+  - RNNotifee (7.8.2):
     - React-Core
-    - RNNotifee/NotifeeCore (= 7.8.0)
-  - RNNotifee/NotifeeCore (7.8.0):
+    - RNNotifee/NotifeeCore (= 7.8.2)
+  - RNNotifee/NotifeeCore (7.8.2):
+    - React-Core
+  - RNPermissions (4.1.5):
     - React-Core
   - RNReanimated (2.8.0):
     - DoubleConversion
@@ -582,7 +595,7 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
   - simdjson (0.9.6-fix2)
-  - TOCropViewController (2.6.1)
+  - TOCropViewController (2.7.4)
   - WatermelonDB (0.23.0):
     - React
     - React-jsi
@@ -625,6 +638,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
+  - react-native-add-calendar-event (from `../node_modules/react-native-add-calendar-event`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
@@ -672,6 +686,7 @@ DEPENDENCIES:
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNMathView (from `../node_modules/react-native-math-view/ios`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -771,6 +786,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
+  react-native-add-calendar-event:
+    :path: "../node_modules/react-native-add-calendar-event"
   react-native-background-timer:
     :path: "../node_modules/react-native-background-timer"
   react-native-cameraroll:
@@ -865,6 +882,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-math-view/ios"
   RNNotifee:
     :path: "../node_modules/@notifee/react-native"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNRootView:
@@ -909,17 +928,17 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 476ee3e89abb49e07f822b48323c51c57124b572
   GoogleAppMeasurement: 4c19f031220c72464d460c9daa1fb5d1acce958e
-  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
-  GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
+  GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
+  GoogleUtilities: ea963c370a38a8069cc5f7ba4ca849a60b6d7d15
   hermes-engine: 84e3af1ea01dd7351ac5d8689cbbea1f9903ffc3
   iosMath: f7a6cbadf9d836d2149c2a84c435b1effc244cba
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   libwebp: 1786c9f4ff8a279e4dac1e8f385004d5fc253009
   MMKV: aac95d817a100479445633f2b3ed8961b4ac5043
-  MMKVCore: ddf41b9d9262f058419f9ba7598719af56c02cd3
+  MMKVCore: 9cfef4c48c6c46f66226fc2e4634d78490206a48
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
-  PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
   RCTRequired: 530916cd48c5f7cf1fc16966ad5ea01638ca4799
   RCTTypeSafety: 5fb4cb3080efd582e5563c3e9a0e459fc51396c5
@@ -934,13 +953,14 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 7c0bd030a84f2ec446fb104b7735af2f5ed11eea
   React-jsinspector: cab4d37ebde480f84c79ac89568abbf76b916c3e
   React-logger: b75b80500ea80457b2cf169427d66de986cdcb29
+  react-native-add-calendar-event: b9802a8be8ad4beb0dcb3efb28969c077558fb29
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-cameraroll: 2f08db1ecc9b73dbc01f89335d6d5179fac2894c
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-document-picker: f5ec1a712ca2a975c233117f044817bb8393cad4
   react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
   react-native-netinfo: e849fc21ca2f4128a5726c801a82fc6f4a6db50d
-  react-native-notifications: 83b4fd4a127a6c918fc846cae90da60f84819e44
+  react-native-notifications: 4601a5a8db4ced6ae7cfc43b44d35fe437ac50c4
   react-native-orientation-locker: f0ca1a8e5031dab6b74bfb4ab33a17ed2c2fcb0d
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
@@ -980,7 +1000,8 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
   RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
-  RNNotifee: f3c01b391dd8e98e67f539f9a35a9cbcd3bae744
+  RNNotifee: 8e2d3df3f0e9ce8f5d1fe4c967431138190b6175
+  RNPermissions: 0835d22a2b55b1185341ff314dc0d8bf939d93f0
   RNReanimated: 64573e25e078ae6bec03b891586d50b9ec284393
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: fa9b582d85ae5d62c91c66003b5278458fed7aaa
@@ -989,10 +1010,10 @@ SPEC CHECKSUMS:
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   SDWebImageWebPCoder: af09429398d99d524cae2fe00f6f0f6e491ed102
   simdjson: 85016870cd17207312b718ef6652eb6a1cd6a2b0
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+  TOCropViewController: 80b8985ad794298fb69d3341de183f33d1853654
   WatermelonDB: 577c61fceff16e9f9103b59d14aee4850c0307b6
   Yoga: 0bc4b37c3b8a345336ff601e2cf7d9704bab7e93
 
-PODFILE CHECKSUM: 64d42395bfd44083a3a28acf1ade8637a43b275e
+PODFILE CHECKSUM: ea2b6a3377ba7e90c41e321a124f986e96b687a4
 
 COCOAPODS: 1.15.2

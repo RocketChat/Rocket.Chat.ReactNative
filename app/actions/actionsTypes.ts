@@ -99,3 +99,13 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', ['INIT', 'SET']);
 export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);
 export const IN_APP_FEEDBACK = createRequestTypes('IN_APP_FEEDBACK', ['SET', 'REMOVE', 'CLEAR']);
+
+export const CREATE_EVENT = createRequestTypes('CREATE_EVENT', [...defaultTypes, 'DRAFT', 'RESET']);
+export const EDIT_EVENT = createRequestTypes('EDIT_EVENT', [...defaultTypes, 'CANCEL']);
+export const FETCH_EVENT = createRequestTypes('FETCH_EVENT', [...defaultTypes]);
+export const PRESS_EVENT = createRequestTypes('PRESS_EVENT', [...defaultTypes]);
+export const UPDATE_EVENT = createRequestTypes('UPDATE_EVENT', [...defaultTypes]);
+export const DELETE_EVENT = createRequestTypes('DELETE_EVENT', [...defaultTypes]);
+
+export const REGISTER_EVENT = createRequestTypes('REGISTER_EVENT', [...defaultTypes]);
+export const DE_REGISTER_EVENT = createRequestTypes('DE_REGISTER_EVENT', [...defaultTypes]);

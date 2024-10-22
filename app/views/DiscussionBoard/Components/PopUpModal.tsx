@@ -20,8 +20,8 @@ const PopUpModal: React.FC<Props> = props => {
 			transparent={true}
 		>
 			<KeyboardAvoidingView
-        		behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        		pointerEvents="box-none"
+				behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+				pointerEvents='box-none'
 				style={styles.flexContainer}
 			>
 				<TouchableWithoutFeedback onPress={close}>
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	},
 	flexContainer: {
 		flex: 1,
-		justifyContent: 'flex-end',
+		justifyContent: 'flex-end'
 	},
 	darkBackground: {
 		backgroundColor: '#00000080'
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
 		minHeight: 100,
-		elevation: 5,
+		elevation: 5
 	}
 });

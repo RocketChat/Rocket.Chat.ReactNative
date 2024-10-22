@@ -26,6 +26,7 @@ const HomeView: React.FC = () => {
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const server = useSelector((state: IApplicationState) => state.server.server);
+	const state = useSelector((state: IApplicationState) => state);
 	const userName = user?.username || '';
 	const userRealName = user?.name || '';
 	// const { theme } = useTheme();
@@ -42,11 +43,7 @@ const HomeView: React.FC = () => {
 				headerRight: () => (
 					<HeaderButton.Container>
 						<Touchable style={styles.profileImageContainer} onPress={() => navigation.navigate('ProfileView')}>
-							{userName ? (
-								<Avatar text={userName} style={styles.profileImage} size={24} borderRadius={12} />
-							) : (
-								<></>
-							)}
+							{userName ? <Avatar text={userName} style={styles.profileImage} size={24} borderRadius={12} /> : <></>}
 						</Touchable>
 					</HeaderButton.Container>
 				)
@@ -72,7 +69,7 @@ const HomeView: React.FC = () => {
 						} else if (screen === 'TechSupport') {
 							navToTechSupport(Navigation, isMasterDetail);
 						} else {
-						navigation.navigate(screen);
+							navigation.navigate(screen);
 						}
 					}
 				}}
@@ -83,7 +80,7 @@ const HomeView: React.FC = () => {
 			>
 				<View style={tileStyles.tileContent}>
 					<View style={tileStyles.imageContainer}>
-						<Image source={ icon } style={imageStyle} resizeMode='contain' />
+						<Image source={icon} style={imageStyle} resizeMode='contain' />
 					</View>
 					<Text style={tileStyles.text}>{title}</Text>
 				</View>

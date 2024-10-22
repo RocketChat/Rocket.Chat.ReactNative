@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		borderColor: '#CB007B',
 		borderStyle: 'dotted',
-		padding: 10,
+		padding: 10
 	},
 	mediaText: {
 		color: '#CB007B',
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 	},
 	selectImage: {
 		height: 26.67,
-    	width: 21.33
+		width: 21.33
 	},
 	buttonContainer: {
 		position: 'absolute',

@@ -67,8 +67,8 @@ const makeStyles = (themes: any, theme: string) => {
 			fontSize: 16,
 			alignSelf: 'center',
 			color: themes[theme].auxiliaryText,
-			flexWrap:'wrap',
-			textAlign:'center'
+			flexWrap: 'wrap',
+			textAlign: 'center'
 		},
 		connectButton: {
 			backgroundColor: '#799A79',
@@ -111,6 +111,6 @@ const makeStyles = (themes: any, theme: string) => {
 			color: themes[theme].bodyText
 		}
 	});
-}
+};
 
 export default makeStyles;

@@ -911,6 +911,32 @@ export const pushTest = () => sdk.post('push.test');
 // RC 6.5.0
 export const pushInfo = () => sdk.get('push.info');
 
+export const createCalendarEvent = async () => {
+	const event = reduxStore.getState().calendarEvents.draftEvent;
+
+	return sdk.post('calendarEvents.create', { event });
+};
+
+export const updateCalendarEvent = async () => {
+	const event = reduxStore.getState().calendarEvents.draftEvent;
+
+	return sdk.post('calendarEvents.update', { event });
+};
+
+export const deleteCalendarEvent = async (eventId: string) => {
+	return sdk.post('calendarEvents.delete', { eventId });
+};
+
+export const registerCalendarEvent = async (eventId: string, attendeeId: string) => {
+	return sdk.post('calendarEvents.register', { eventId, attendeeId });
+};
+
+export const deregisterCalendarEvent = async (eventId: string, attendeeId: string) => {
+	return sdk.post('calendarEvents.deregister', { eventId, attendeeId });
+};
+
+export const getCalendarEvents = () => sdk.get('calendarEvents.fetch');
+
 export const sendEmailCode = () => {
 	const { username } = reduxStore.getState().login.user as IUser;
 	// RC 3.1.0

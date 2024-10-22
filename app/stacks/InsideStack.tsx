@@ -68,25 +68,14 @@ import ShareView from '../views/ShareView';
 import CreateDiscussionView from '../views/CreateDiscussionView';
 import ForwardMessageView from '../views/ForwardMessageView';
 import QueueListView from '../ee/omnichannel/views/QueueListView';
-import AddChannelTeamView from '../views/AddChannelTeamView';
-import AddExistingChannelView from '../views/AddExistingChannelView';
-import SelectListView from '../views/SelectListView';
-import DiscussionsView from '../views/DiscussionsView';
-import ChangeAvatarView from '../views/ChangeAvatarView';
 import {
-	AdminPanelStackParamList,
-	ChatsStackParamList,
 	DisplayPrefStackParamList,
 	DrawerParamList,
 	E2EEnterYourPasswordStackParamList,
 	E2ESaveYourPasswordStackParamList,
-	HomeStackParamList,
 	InsideStackParamList,
-	NewMessageStackParamList,
-	ProfileStackParamList,
-	SettingsStackParamList
+	NewMessageStackParamList
 } from './types';
-import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
 
 // Profile Library Stack
@@ -94,6 +83,10 @@ import ProfileLibraryView from '../views/ProfileLibrary';
 import ChangePasswordView from '../views/ChangePasswordView';
 // Home Stack
 import HomeView from '../views/HomeView';
+import CalendarView from '../views/CalendarView';
+import CreateEventView from '../views/CalendarView/CreateEventView';
+import EventDetailsView from '../views/CalendarView/EventDetailsView';
+import SearchPeersView from '../views/CalendarView/SearchPeersView';
 // Discussion Stack
 import DiscussionBoardView from '../views/DiscussionBoard/DiscussionBoardView';
 import DiscussionPostView from '../views/DiscussionBoard/PostView';
@@ -137,6 +130,10 @@ const MainStackNavigator = () => {
 			{/* HomeStackNavigator */}
 			<MainStack.Screen name='HomeView' component={HomeView} />
 			<MainStack.Screen name='RoomView' component={RoomView} />
+			<MainStack.Screen name='CalendarView' component={CalendarView} />
+			<MainStack.Screen name='CreateEventView' component={CreateEventView} />
+			<MainStack.Screen name='SearchPeersView' component={SearchPeersView} />
+			<MainStack.Screen name='EventDetailsView' component={EventDetailsView} />
 			{/* ChatsStackNavigator */}
 			<MainStack.Screen name='RoomsListView' component={RoomsListView} />
 			<MainStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
@@ -172,7 +169,7 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<MainStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
 			<MainStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
-			<MainStack.Screen name='ChangePasswordView' component={ChangePasswordView} options={{ title: 'Change Password' }}/>
+			<MainStack.Screen name='ChangePasswordView' component={ChangePasswordView} options={{ title: 'Change Password' }} />
 			{/* SettingsStackNavigator */}
 			<MainStack.Screen name='SettingsView' component={SettingsView} />
 			<MainStack.Screen name='SecurityPrivacyView' component={SecurityPrivacyView} />
@@ -181,13 +178,29 @@ const MainStackNavigator = () => {
 			<MainStack.Screen name='ThemeView' component={ThemeView} />
 			<MainStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<MainStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
-			<MainStack.Screen name='ScreenLockConfigView' component={ScreenLockConfigView} options={ScreenLockConfigView.navigationOptions} />
+			<MainStack.Screen
+				name='ScreenLockConfigView'
+				component={ScreenLockConfigView}
+				options={ScreenLockConfigView.navigationOptions}
+			/>
 			{/* DiscussionStackNavigator */}
 			<MainStack.Screen name='DiscussionHomeView' component={DiscussionHomeView} options={DiscussionHomeView.navigationOptions} />
-			<MainStack.Screen name='DiscussionBoardView' component={DiscussionBoardView} options={DiscussionBoardView.navigationOptions} />
+			<MainStack.Screen
+				name='DiscussionBoardView'
+				component={DiscussionBoardView}
+				options={DiscussionBoardView.navigationOptions}
+			/>
 			<MainStack.Screen name='DiscussionPostView' component={DiscussionPostView} options={DiscussionPostView.navigationOptions} />
-			<MainStack.Screen name='DiscussionNewPostView' component={DiscussionNewPostView} options={DiscussionNewPostView.navigationOptions} />
-			<MainStack.Screen name='DiscussionSearchView' component={DiscussionSearchView} options={DiscussionSearchView.navigationOptions} />
+			<MainStack.Screen
+				name='DiscussionNewPostView'
+				component={DiscussionNewPostView}
+				options={DiscussionNewPostView.navigationOptions}
+			/>
+			<MainStack.Screen
+				name='DiscussionSearchView'
+				component={DiscussionSearchView}
+				options={DiscussionSearchView.navigationOptions}
+			/>
 			{/* AdminPanelStackNavigator */}
 			<MainStack.Screen name='AdminPanelView' component={AdminPanelView} />
 		</MainStack.Navigator>
@@ -283,7 +296,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='VideoPlayerView'
 				component={VideoPlayerView}
-				options={{ title: 'Peer Supporter Video', headerShown: true}}
+				options={{ title: 'Peer Supporter Video', headerShown: true }}
 			/>
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen

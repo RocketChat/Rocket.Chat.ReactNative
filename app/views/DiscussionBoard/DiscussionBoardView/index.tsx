@@ -80,7 +80,11 @@ const DiscussionView: React.FC<ScreenProps> = ({ route }) => {
 							<HeaderButton.Item
 								iconName='search'
 								color={themes[theme].superGray}
-								onPress={() => navigation.navigate('DiscussionSearchView', { roomIDs: route?.params?.item ? [route.params.item.id] : undefined })}
+								onPress={() =>
+									navigation.navigate('DiscussionSearchView', {
+										roomIDs: route?.params?.item ? [route.params.item.id] : undefined
+									})
+								}
 							/>
 						</HeaderButton.Container>
 					</View>
@@ -195,8 +199,8 @@ const DiscussionView: React.FC<ScreenProps> = ({ route }) => {
 					<PostCard
 						{...item}
 						onPress={(params: any) => {
-							setLastOpened(new Date())
-							navigation.navigate('DiscussionPostView', { ...params, room: route.params?.item })
+							setLastOpened(new Date());
+							navigation.navigate('DiscussionPostView', { ...params, room: route.params?.item });
 						}}
 						starPost={(message: any) => handleStar(message, loadMessages)}
 						roomId={route.params?.item}

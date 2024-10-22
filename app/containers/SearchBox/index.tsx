@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): JSX.Element => {
+const SearchBox = ({ onChangeText, onSubmitEditing, testID, placeholder }: TextInputProps): JSX.Element => {
 	const [text, setText] = useState('');
 
 	const { colors } = useTheme();
@@ -28,7 +28,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 				autoCapitalize='none'
 				autoCorrect={false}
 				blurOnSubmit
-				placeholder={I18n.t('Search')}
+				placeholder={placeholder ?? I18n.t('Search')}
 				returnKeyType='search'
 				underlineColorAndroid='transparent'
 				containerStyle={styles.inputContainer}
