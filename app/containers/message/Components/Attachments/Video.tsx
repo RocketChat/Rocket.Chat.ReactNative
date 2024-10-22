@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
 	},
 	playerIcon: {
 		position: 'absolute',
+		elevation: 4,
 		shadowOffset: {
 			width: 1,
 			height: 1
