@@ -24,7 +24,7 @@ import {
 	getTheme,
 	initialTheme,
 	newThemeState,
-	setNativeTheme,
+	updateRootViewColor,
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
@@ -101,7 +101,7 @@ export default class Root extends React.Component<{}, IState> {
 		if (isTablet) {
 			this.initTablet();
 		}
-		setNativeTheme(theme);
+		updateRootViewColor(theme);
 	}
 
 	componentDidMount() {
