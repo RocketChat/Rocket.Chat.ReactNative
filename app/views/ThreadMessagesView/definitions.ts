@@ -33,5 +33,3 @@ export interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamLis
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
 };
-
-
