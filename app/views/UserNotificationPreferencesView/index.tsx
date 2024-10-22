@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
 import StatusBar from '../../containers/StatusBar';
@@ -20,8 +20,8 @@ import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
 import Switch from '../../containers/Switch';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 const UserNotificationPreferencesView = () => {

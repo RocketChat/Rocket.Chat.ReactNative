@@ -378,6 +378,17 @@ const MessageActions = React.memo(
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = message.t === 'videoconf';
 
+				// Edit
+				const isEditAllowed = allowEdit(message);
+				if (!videoConfBlock && (isOwn(message) || isEditAllowed)) {
+					options.push({
+						title: I18n.t('Edit'),
+						icon: 'edit',
+						onPress: () => handleEdit(message.id),
+						enabled: isEditAllowed
+					});
+				}
+
 				// Jump to message
 				const quoteMessageLink = getQuoteMessageLink(message.attachments);
 				if (quoteMessageLink && jumpToMessage) {
@@ -454,17 +465,6 @@ const MessageActions = React.memo(
 					icon: 'share',
 					onPress: () => handleShare(message)
 				});
-
-				// Edit
-				const isEditAllowed = allowEdit(message);
-				if (!videoConfBlock && (isOwn(message) || isEditAllowed)) {
-					options.push({
-						title: I18n.t('Edit'),
-						icon: 'edit',
-						onPress: () => handleEdit(message.id),
-						enabled: isEditAllowed
-					});
-				}
 
 				// Pin
 				if (Message_AllowPinning && !videoConfBlock) {

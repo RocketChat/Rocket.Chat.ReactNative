@@ -24,6 +24,7 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	livechatAllowManualOnHold?: boolean;
 	inAppFeedback?: { [key: string]: string };
 	encryptionEnabled: boolean;
+	airGappedRestrictionRemainingDays: number | undefined;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;

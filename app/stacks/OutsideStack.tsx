@@ -1,9 +1,9 @@
 import React from 'react';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
-import { ModalAnimation, StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 // Outside Stack
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
@@ -16,17 +16,17 @@ import AuthenticationWebView from '../views/AuthenticationWebView';
 import { OutsideModalParamList, OutsideParamList } from './types';
 
 // Outside
-const Outside = createStackNavigator<OutsideParamList>();
+const Outside = createNativeStackNavigator<OutsideParamList>();
 const _OutsideStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
+		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
-			{/* @ts-ignore */}
-			<Outside.Screen name='LoginView' component={LoginView} options={LoginView.navigationOptions} />
+
+			<Outside.Screen name='LoginView' component={LoginView} />
 			<Outside.Screen name='ForgotPasswordView' component={ForgotPasswordView} />
 			{/* @ts-ignore */}
 			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} />
@@ -45,13 +45,13 @@ const mapStateToProps = (state: any) => ({
 const OutsideStack = connect(mapStateToProps)(_OutsideStack);
 
 // OutsideStackModal
-const OutsideModal = createStackNavigator<OutsideModalParamList>();
+const OutsideModal = createNativeStackNavigator<OutsideModalParamList>();
 const OutsideStackModal = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
 		<OutsideModal.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...ModalAnimation, presentation: 'transparentModal' }}>
+			screenOptions={{ ...defaultHeader, ...themedHeader(theme), presentation: 'containedTransparentModal' }}>
 			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
 			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} />
 		</OutsideModal.Navigator>

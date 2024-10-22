@@ -78,17 +78,8 @@ describe('Broadcast room', () => {
 			.toBeVisible()
 			.withTimeout(2000);
 		await tapBack();
-		await waitFor(element(by.id('room-view')))
-			.toBeVisible()
-			.withTimeout(2000);
-	});
-
-	it('should send message', async () => {
-		await waitFor(element(by.id('room-view')))
-			.toBeVisible()
-			.withTimeout(5000);
+		await checkRoomTitle(room);
 		message = await mockMessage('message');
-		await tapBack();
 	});
 
 	it('should login as user without write message authorization and enter room', async () => {
@@ -126,11 +117,8 @@ describe('Broadcast room', () => {
 			.withTimeout(60000);
 	});
 
-	it('should have reply button', async () => {
-		await expect(element(by.id('message-broadcast-reply'))).toBeVisible();
-	});
-
 	it('should tap on reply button and navigate to direct room', async () => {
+		await expect(element(by.id('message-broadcast-reply'))).toBeVisible();
 		await element(by.id('message-broadcast-reply')).tap();
 		await waitFor(element(by.id(`room-view-title-${user.username}`)))
 			.toBeVisible()

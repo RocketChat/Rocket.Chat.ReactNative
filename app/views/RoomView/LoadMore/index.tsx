@@ -6,6 +6,7 @@ import { MessageTypeLoad } from '../../../lib/constants';
 import { MessageType, RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
+import MessageSeparator from '../../../containers/MessageSeparator';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
@@ -30,7 +31,8 @@ const LoadMore = React.memo(
 		loaderId,
 		type,
 		runOnRender,
-		separator
+		dateSeparator,
+		showUnreadSeparator
 	}: {
 		rid: string;
 		t: RoomType;
@@ -38,6 +40,8 @@ const LoadMore = React.memo(
 		type: MessageType;
 		runOnRender: boolean;
 		separator?: ReactElement | null;
+		dateSeparator?: Date | string | null;
+		showUnreadSeparator?: boolean;
 	}): React.ReactElement => {
 		const { colors } = useTheme();
 		const dispatch = useDispatch();
@@ -61,7 +65,7 @@ const LoadMore = React.memo(
 
 		return (
 			<>
-				{separator || null}
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
 					{loading ? (
 						<ActivityIndicator color={colors.fontSecondaryInfo} />
