@@ -105,6 +105,9 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	componentDidMount() {
+		const theme = initialTheme();
+		setNativeTheme(theme);
+
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
