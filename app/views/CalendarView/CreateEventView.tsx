@@ -4,7 +4,7 @@ import Touchable from 'react-native-platform-touchable';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { format, parseISO, parse } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -128,7 +128,7 @@ const CreateEventView = () => {
 					<Text style={styles.dateTimeText}>{formattedDate}</Text>
 				</TouchableOpacity>
 			</View>
-			{showDatePicker && <DateTimePicker value={dateTime} mode='date' display='default' onChange={onDateChange} />}
+			{showDatePicker && <DateTimePicker value={dateTime} mode='date' display='spinner' onChange={onDateChange} />}
 
 			<View style={styles.rowContainer}>
 				<Text style={styles.label}>Time</Text>
@@ -138,7 +138,7 @@ const CreateEventView = () => {
 			</View>
 
 			{showTimePicker && (
-				<DateTimePicker value={dateTime} mode='time' is24Hour={true} display='default' onChange={onTimeChange} />
+				<DateTimePicker value={dateTime} mode='time' is24Hour={true} display='spinner' onChange={onTimeChange} />
 			)}
 
 			<Text style={styles.label}>Description</Text>
