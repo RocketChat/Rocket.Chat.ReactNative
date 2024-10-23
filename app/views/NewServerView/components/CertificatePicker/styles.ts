@@ -1,7 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../../Styles';
-
 
 const styles = StyleSheet.create({
 	certificatePicker: {

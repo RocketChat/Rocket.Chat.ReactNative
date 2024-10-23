@@ -19,7 +19,7 @@ import CertificatePicker from './components/CertificatePicker';
 import ServerInput from './components/ServerInput';
 import useServersHistory from './hooks/useServersHistory';
 import useCertificate from './hooks/useCertificate';
-import useNewServer from './hooks/useConnectServer';
+import useConnectServer from './hooks/useConnectServer';
 import completeUrl from './utils/completeUrl';
 import { INewServerViewProps } from './definitions';
 import styles from './styles';
@@ -35,7 +35,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const [text, setText] = useState<string>('');
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate } = useCertificate();
-	const { connectOpen, connectingOpen, submit } = useNewServer({ text, certificate });
+	const { connectOpen, connectingOpen, submit } = useConnectServer({ text, certificate });
 	const marginTop = previousServer ? 0 : 35;
 
 	const onChangeText = (text: string) => {
@@ -90,7 +90,6 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	useLayoutEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-		queryServerHistory();
 
 		return () => {
 			EventEmitter.removeListener('NewServer', handleNewServerEvent);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { sanitizeLikeString } from '@nozbe/watermelondb/QueryDescription';
 
@@ -36,6 +36,10 @@ const useServersHistory = () => {
 			// Nothing
 		}
 	};
+
+	useLayoutEffect(() => {
+		queryServerHistory();
+	}, []);
 
 	return {
 		serversHistory,
