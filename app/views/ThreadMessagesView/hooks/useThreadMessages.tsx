@@ -1,18 +1,15 @@
 import { useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { ISearchThreadMessages } from '../definitions';
-import { IMessage, IUser, TSubscriptionModel, TThreadModel } from '../../../definitions';
+import { IMessage, IUser, TThreadModel } from '../../../definitions';
 import { debounce } from '../../../lib/methods/helpers';
 import { Services } from '../../../lib/services';
-import { sanitizeLikeString } from '../../../lib/database/utils';
 import log from '../../../lib/methods/helpers/log';
 import protectedFunction from '../../../lib/methods/helpers/protectedFunction';
 import buildMessage from '../../../lib/methods/helpers/buildMessage';
 import database from '../../../lib/database';
-import getFilteredThreads from '../utils/getFilteredThreads';
 import { Filter } from '../filters';
 import useSubscription from './useSubscription';
 

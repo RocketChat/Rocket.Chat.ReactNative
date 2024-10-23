@@ -1,8 +1,8 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { Observable, Subscription } from 'rxjs';
 
-import { IMessage, IUser, TSubscriptionModel, TThreadModel } from '../../../definitions';
+import { IUser, TSubscriptionModel, TThreadModel } from '../../../definitions';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
