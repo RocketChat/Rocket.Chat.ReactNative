@@ -39,10 +39,10 @@ const styles = StyleSheet.create({
 	},
 	playerIcon: {
 		position: 'absolute',
-		elevation: 4,
-		shadowOffset: {
-			width: 1,
-			height: 1
+		textShadowRadius: 3,
+		textShadowOffset: {
+			width: 0.5,
+			height: 0.5
 		}
 	}
 });
@@ -93,10 +93,7 @@ const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
 						name={icon}
 						size={54}
 						color={themes[theme].fontPureWhite}
-						style={[
-							styles.playerIcon,
-							{ shadowColor: themes[theme].backdropColor, shadowOpacity: themes[theme].backdropOpacity }
-						]}
+						style={[styles.playerIcon, { textShadowColor: themes[theme].backdropColor }]}
 					/>
 				</>
 			)}
