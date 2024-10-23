@@ -1,5 +1,5 @@
-import { IUser, TSubscriptionModel, TThreadModel } from "../../../definitions";
-import { Filter } from "../filters";
+import { IUser, TSubscriptionModel, TThreadModel } from '../../../definitions';
+import { Filter } from '../filters';
 
 const getFilteredThreads = (
     user: IUser,

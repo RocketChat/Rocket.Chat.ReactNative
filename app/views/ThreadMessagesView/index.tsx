@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { Observable } from 'rxjs';
 
@@ -7,6 +7,10 @@ import { Filter } from './filters';
 import { themes } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
+import { useDebounce } from '../../lib/methods/helpers';
+import UserPreferences from '../../lib/methods/userPreferences';
+import { showActionSheetRef } from '../../containers/ActionSheet';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { getUserSelector } from '../../selectors/login';
@@ -23,10 +27,11 @@ import I18n from '../../i18n';
 import Item from './components/Item';
 import EmptyThreads from './components/EmptyThreads';
 import useThreadMessages from './hooks/useThreadMessages';
-import styles from './styles';
-import useThreadFilter from './hooks/useThreadFilter';
 import getFilteredThreads from './utils/getFilteredThreads';
-import useThreadSearch from './hooks/useeThreadSearch';
+import useThreadSearch from './hooks/useThreadSearch';
+import styles from './styles';
+
+const THREADS_FILTER = 'threadsFilter';
 
 const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => {
 	const viewName = ThreadMessagesView.name;
@@ -61,40 +66,57 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		search
 	});
 
-	const { initFilter, showFilters } = useThreadFilter({
-		currentFilter,
-		setCurrentFilter,
-		user,
-		messages,
-		setDisplayingThreads,
-		subscription
-	});
+	const initFilter = () => {
+		const savedFilter = UserPreferences.getString(THREADS_FILTER);
+		if (savedFilter) {
+			setCurrentFilter(savedFilter as Filter);
+		}
+	};
 
-	const { setHeader } = useThreadSearch({
-		isMasterDetail,
-		navigation,
-		search,
-		setSearch,
-		showFilters,
-		subscribeMessages
-	});
-
-	const onThreadPress = debounce(
-		(item: any) => {
-			if (isMasterDetail) {
-				navigation.pop();
-			}
-			navigation.push('RoomView', {
-				rid: item.subscription.id,
-				tmid: item.id,
-				name: makeThreadName(item),
-				t: SubscriptionType.THREAD,
-				roomUserId: getUidDirectMessage(subscription)
-			});
+	const onFilterSelected = useCallback(
+		(filter: Filter) => {
+			const displayingThreads = getFilteredThreads(user, messages, subscription, filter);
+			setCurrentFilter(filter);
+			setDisplayingThreads(displayingThreads);
+			UserPreferences.setString(THREADS_FILTER, filter);
 		},
-		1000,
-		true
+		[messages, subscription]
 	);
+
+	const showFilters = () => {
+		showActionSheetRef({
+			options: [
+				{
+					title: I18n.t(Filter.All),
+					right: currentFilter === Filter.All ? () => <CustomIcon name='check' size={24} /> : undefined,
+					onPress: () => onFilterSelected(Filter.All)
+				},
+				{
+					title: I18n.t(Filter.Following),
+					right: currentFilter === Filter.Following ? () => <CustomIcon name='check' size={24} /> : undefined,
+					onPress: () => onFilterSelected(Filter.Following)
+				},
+				{
+					title: I18n.t(Filter.Unread),
+					right: currentFilter === Filter.Unread ? () => <CustomIcon name='check' size={24} /> : undefined,
+					onPress: () => onFilterSelected(Filter.Unread)
+				}
+			]
+		});
+	};
+
+	const onThreadPress = useDebounce((item: any) => {
+		if (isMasterDetail) {
+			navigation.pop();
+		}
+		navigation.push('RoomView', {
+			rid: item.subscription.id,
+			tmid: item.id,
+			name: makeThreadName(item),
+			t: SubscriptionType.THREAD,
+			roomUserId: getUidDirectMessage(subscription)
+		});
+	}, 1000);
 
 	const toggleFollowThread = async (isFollowingThread: boolean, tmid: string) => {
 		try {
@@ -106,6 +128,15 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 			log(e);
 		}
 	};
+
+	const { setHeader } = useThreadSearch({
+		isMasterDetail,
+		navigation,
+		search,
+		setSearch,
+		showFilters,
+		subscribeMessages
+	});
 
 	const renderItem = ({ item }: { item: TThreadModel }) => {
 		const badgeColor = getBadgeColor({ subscription, theme, messageId: item?.id });

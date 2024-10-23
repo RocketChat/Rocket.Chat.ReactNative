@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { IBaseScreen, TSubscriptionModel, TThreadModel } from "../../definitions";
-import { ChatsStackParamList } from "../../stacks/types";
-import { TSupportedThemes } from "../../theme";
+import { IBaseScreen, TSubscriptionModel, TThreadModel } from '../../definitions';
+import { ChatsStackParamList } from '../../stacks/types';
+import { TSupportedThemes } from '../../theme';
 
 
 export interface ISearchThreadMessages {
@@ -10,7 +10,7 @@ export interface ISearchThreadMessages {
 	searchText: string;
 };
 
-export interface IUSeThreadMessages {
+export interface IUseThreadMessages {
 	subscription: TSubscriptionModel;
 	messages: TThreadModel[];
 	displayingThreads: TThreadModel[];
@@ -26,7 +26,7 @@ export interface IUSeThreadMessages {
 	}) => void;
 };
 
-export interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'>  {
+export interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'> {
 	user: { id: string };
 	baseUrl: string;
 	useRealName: boolean;

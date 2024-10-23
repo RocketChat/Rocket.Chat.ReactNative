@@ -106,7 +106,7 @@ const useThreadMessages = ({ user, rid, search, currentFilter, messagesObservabl
 		remove?: IMessage[];
 		lastThreadSync: Date;
 	}) => {
-		// if there's no subscription, manage data on this.state.messages
+		// if there's no subscription, manage data on messages
 		// note: sync will never be called without subscription
 
 		try {
