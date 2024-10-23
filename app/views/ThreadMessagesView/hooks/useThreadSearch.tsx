@@ -1,13 +1,13 @@
-import { debounce } from 'lodash';
-import I18n from 'i18n-js';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import I18n from '../../../i18n';
 import * as HeaderButton from '../../../containers/HeaderButton';
 import SearchHeader from '../../../containers/SearchHeader';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { TNavigation } from '../../../stacks/stackType';
 import { TSubscriptionModel } from '../../../definitions';
 import { ISearchThreadMessages } from '../definitions';
+import { useDebounce } from '../../../lib/methods/helpers';
 
 interface IUseThreadSearch {
 	isMasterDetail: boolean;
@@ -61,7 +61,7 @@ const useThreadSearch = ({ isMasterDetail, navigation, search, setSearch, subscr
 		navigation.setOptions(options);
 	};
 
-	const onSearchChangeText = debounce((searchText: string) => {
+	const onSearchChangeText = useDebounce((searchText: string) => {
 		setSearch({ isSearching: true, searchText });
 		subscribeMessages({ searchText });
 	}, 300);
