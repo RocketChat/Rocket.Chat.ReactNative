@@ -9,7 +9,7 @@ import { userAgent } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
 import { getRoomIdFromJitsiCallUrl } from '../../lib/methods/helpers/getRoomIdFromJitsiCall';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { endVideoConfTimer, initVideoConfTimer } from '../../lib/methods/videoConfTimer';
 import { getUserSelector } from '../../selectors/login';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -25,26 +25,6 @@ const JitsiMeetView = (): React.ReactElement => {
 
 	const [authModal, setAuthModal] = useState(false);
 	const [cookiesSet, setCookiesSet] = useState(false);
-
-	const setCookies = async () => {
-		const date = new Date();
-		date.setDate(date.getDate() + 1);
-		const expires = date.toISOString();
-		const domain = serverUrl.replace(/^https?:\/\//, '');
-		const ck = { domain, version: '1', expires };
-
-		await CookieManager.set(serverUrl, {
-			name: 'rc_uid',
-			value: user.id,
-			...ck
-		});
-		await CookieManager.set(serverUrl, {
-			name: 'rc_token',
-			value: user.token,
-			...ck
-		});
-		setCookiesSet(true);
-	};
 
 	const handleJitsiApp = useCallback(async () => {
 		const callUrl = url.replace(/^https?:\/\//, '');
@@ -98,8 +78,33 @@ const JitsiMeetView = (): React.ReactElement => {
 	}, [handleJitsiApp, onConferenceJoined, videoConf]);
 
 	useEffect(() => {
+		const setCookies = async () => {
+			const date = new Date();
+			date.setDate(date.getDate() + 1);
+			const expires = date.toISOString();
+			// get rid of the port value if any, since it isn't necessary for cookie domain and causes error
+			const domain = serverUrl.replace(/^https?:\/\//, '').split(':')[0];
+			const ck = { domain, version: '1', expires };
+	
+			try {
+				await CookieManager.set(serverUrl, {
+					name: 'rc_uid',
+					value: user.id,
+					...ck
+				});
+				await CookieManager.set(serverUrl, {
+					name: 'rc_token',
+					value: user.token,
+					...ck
+				});
+				setCookiesSet(true);
+			} catch (error) {
+				log(error);
+			}
+		};
+		
 		setCookies();
-	}, []);
+	}, [serverUrl, user.id, user.token]);
 
 	const callUrl = `${url}${url.includes('#config') ? '&' : '#'}config.disableDeepLinking=true`;
 
