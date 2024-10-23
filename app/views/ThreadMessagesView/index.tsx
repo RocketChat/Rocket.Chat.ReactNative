@@ -12,7 +12,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
-import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
+import { getUidDirectMessage, isIOS } from '../../lib/methods/helpers';
 import { getUserSelector } from '../../selectors/login';
 import { LISTENER } from '../../containers/Toast';
 import { useTheme } from '../../theme';
@@ -46,25 +46,14 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		useRealName: state.settings.UI_Use_Real_Name as boolean,
 		isMasterDetail: state.app.isMasterDetail
 	}));
-
-	const {
-		init,
-		initSubscription,
-		messages,
-		subscription,
-		displayingThreads,
-		loadMore,
-		loading,
-		setDisplayingThreads,
-		subscribeMessages,
-		unsubscribeMessages
-	} = useThreadMessages({
-		user,
-		messagesObservable,
-		currentFilter,
-		rid,
-		search
-	});
+	const { init, messages, subscription, subscribeMessages, displayingThreads, loadMore, loading, setDisplayingThreads } =
+		useThreadMessages({
+			user,
+			messagesObservable,
+			currentFilter,
+			rid,
+			search
+		});
 
 	const initFilter = () => {
 		const savedFilter = UserPreferences.getString(THREADS_FILTER);
@@ -154,16 +143,12 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 			/>
 		);
 	};
-
 	useLayoutEffect(() => {
-		initSubscription();
-		subscribeMessages({});
 		init();
 		initFilter();
 
 		return () => {
 			console.countReset(`${viewName}.render calls`);
-			unsubscribeMessages();
 		};
 	}, [currentFilter]);
 

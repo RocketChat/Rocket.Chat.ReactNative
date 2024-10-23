@@ -14,6 +14,7 @@ import buildMessage from '../../../lib/methods/helpers/buildMessage';
 import database from '../../../lib/database';
 import getFilteredThreads from '../utils/getFilteredThreads';
 import { Filter } from '../filters';
+import useSubscription from './useSubscription';
 
 const API_FETCH_COUNT = 50;
 
@@ -26,14 +27,20 @@ interface IUseThreadMessagesProps {
 }
 
 const useThreadMessages = ({ user, rid, search, currentFilter, messagesObservable }: IUseThreadMessagesProps) => {
-	let subSubscription: Subscription;
-	let messagesSubscription: Subscription;
 	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);
 	const [messages, setMessages] = useState<TThreadModel[]>([]);
 	const [displayingThreads, setDisplayingThreads] = useState<TThreadModel[]>([]);
-	const [subscription, setSubscription] = useState<TSubscriptionModel>({} as TSubscriptionModel);
 	const [offset, setOffset] = useState(0);
+
+	const { subscription, subscribeMessages } = useSubscription({
+		user,
+		currentFilter,
+		messagesObservable,
+		rid,
+		setDisplayingThreads,
+		setMessages
+	});
 
 	const init = () => {
 		if (!subscription) {
@@ -46,52 +53,6 @@ const useThreadMessages = ({ user, rid, search, currentFilter, messagesObservabl
 			} else {
 				load(lastThreadSync);
 			}
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const initSubscription = async () => {
-		try {
-			const db = database.active;
-
-			// subscription query
-			const subscription = await db.get('subscriptions').find(rid);
-			const observable = subscription.observe();
-			subSubscription = observable.subscribe(data => {
-				setSubscription(data);
-			});
-
-			subscribeMessages({ subscription });
-		} catch (e) {
-			log(e);
-		}
-	};
-
-	const subscribeMessages = ({ subscription, searchText }: { subscription?: TSubscriptionModel; searchText?: string }) => {
-		try {
-			const db = database.active;
-
-			if (messagesSubscription && messagesSubscription.unsubscribe) {
-				messagesSubscription.unsubscribe();
-			}
-
-			const whereClause = [Q.where('rid', rid), Q.sortBy('tlm', Q.desc)];
-
-			if (searchText?.trim()) {
-				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));
-			}
-
-			messagesObservable = db
-				.get('threads')
-				.query(...whereClause)
-				.observeWithColumns(['_updated_at']);
-
-			messagesSubscription = messagesObservable.subscribe(messages => {
-				const displayingThreads = getFilteredThreads(user, messages, subscription, currentFilter);
-				setMessages(messages);
-				setDisplayingThreads(displayingThreads);
-			});
 		} catch (e) {
 			log(e);
 		}
@@ -213,26 +174,15 @@ const useThreadMessages = ({ user, rid, search, currentFilter, messagesObservabl
 		}
 	};
 
-	const unsubscribeMessages = () => {
-		if (subSubscription) {
-			subSubscription.unsubscribe();
-		}
-		if (messagesSubscription) {
-			messagesSubscription.unsubscribe();
-		}
-	};
-
 	return {
 		subscription,
+		subscribeMessages,
 		messages,
 		init,
-		initSubscription,
 		displayingThreads,
 		loadMore: load,
 		loading,
-		setDisplayingThreads,
-		subscribeMessages,
-		unsubscribeMessages
+		setDisplayingThreads
 	};
 };
 
