@@ -5,14 +5,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TNavigation } from '../../stacks/stackType';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import {
-	TMessageModel,
-	ISubscription,
-	SubscriptionType,
-	IMessage
-} from '../../definitions';
+import { TMessageModel, ISubscription, SubscriptionType, IMessage } from '../../definitions';
 
-export interface IMessagesViewProps  {
+export interface IMessagesViewProps {
 	navigation: CompositeNavigationProp<
 		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
 		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
@@ -46,6 +41,6 @@ export interface IMessageViewContent {
 		onPress: () => void;
 	};
 	handleActionPress?: (message: IMessage) => void;
-};
+}
 
 export type TActionContentType = 'PIN' | 'STAR';

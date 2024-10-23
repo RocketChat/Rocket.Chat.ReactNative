@@ -4,14 +4,14 @@ import { FlatList, Text, View } from 'react-native';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { SubscriptionType, IMessage, TGetCustomEmoji, TAnyMessageModel } from '../../definitions';
-import { IMessagesViewProps, IMessageViewContent } from './definitions';
+import { IMessagesViewProps } from './definitions';
 import I18n from '../../i18n';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import StatusBar from '../../containers/StatusBar';
 import SafeAreaView from '../../containers/SafeAreaView';
 import useMessages from './hooks/useMessages';
 import styles from './styles';
-import useMessagesContent from './hooks/useMessagesActions';
+import useMessagesActions from './hooks/useMessagesActions';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
 import { Services } from '../../lib/services';
@@ -20,10 +20,8 @@ import Message from '../../containers/message';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
-	const routeName: string = route.params.name;
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
-	let room: any;
 
 	const { theme } = useTheme();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
@@ -140,15 +138,14 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		}[name];
 	};
 
-	const content: IMessageViewContent | any = defineMessagesViewContent(routeName);
+	const content: any = defineMessagesViewContent(route.params.name);
 
 	const { loading, messages, loadMore, updateMessagesOnActionPress } = useMessages({ setHeader, fetchFunc: content.fetchFunc });
-	const { handleActionPress, onLongPress, jumpToMessage, navToRoomInfo, showAttachment } = useMessagesContent({
+	const { handleActionPress, onLongPress, jumpToMessage, navToRoomInfo, showAttachment } = useMessagesActions({
 		content,
 		isMasterDetail,
 		navigation,
 		rid,
-		room,
 		t,
 		updateMessagesOnActionPress
 	});

@@ -18,7 +18,6 @@ interface IUseMessagesActions {
 	>;
 	rid: string;
 	t: SubscriptionType;
-	room: any;
 	isMasterDetail: boolean;
 	content: IMessageViewContent | any;
 	updateMessagesOnActionPress: (message_id: string) => void;
@@ -28,7 +27,6 @@ const useMessagesActions = ({
 	navigation,
 	rid,
 	t,
-	room,
 	updateMessagesOnActionPress,
 	content,
 	isMasterDetail
@@ -47,8 +45,7 @@ const useMessagesActions = ({
 		let params: IParams = {
 			rid,
 			jumpToMessageId: item._id,
-			t,
-			room
+			t
 		};
 
 		if (item.tmid) {
