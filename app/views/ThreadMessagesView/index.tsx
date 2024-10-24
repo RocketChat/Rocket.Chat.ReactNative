@@ -99,6 +99,7 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		if (savedFilter) {
 			setCurrentFilter(savedFilter as Filter);
 		}
+		setHeader();
 	};
 
 	const showFilters = () => {
@@ -190,7 +191,6 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 
 	useEffect(() => {
 		initFilter();
-		setHeader();
 	}, [currentFilter]);
 
 	return (
