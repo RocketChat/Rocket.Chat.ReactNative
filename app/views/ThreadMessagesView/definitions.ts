@@ -2,7 +2,6 @@ import React from 'react';
 
 import { IBaseScreen, TSubscriptionModel, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
-import { TSupportedThemes } from '../../theme';
 
 export interface ISearchThreadMessages {
 	isSearching: boolean;

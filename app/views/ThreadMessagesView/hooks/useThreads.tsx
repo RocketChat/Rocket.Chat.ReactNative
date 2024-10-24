@@ -1,32 +1,32 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { Subscription } from 'rxjs';
-import { Services } from '../../../lib/services';
+import { Subscription, Observable } from 'rxjs';
+import { useDebouncedCallback } from 'use-debounce';
 
+import { Services } from '../../../lib/services';
 import { TThreadModel } from '../../../definitions';
 import { sanitizeLikeString } from '../../../lib/database/utils';
+import { Filter } from '../filters';
+import { ISearchThreadMessages } from '../definitions';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
-import { Filter } from '../filters';
-import { useDebouncedCallback } from 'use-debounce';
-import { ISearchThreadMessages } from '../definitions';
 import updateThreads from '../methods/updateThreads';
 
 interface IUseSubscriptionProps {
 	search: ISearchThreadMessages;
 	currentFilter: Filter;
 	subscription: any;
-	messagesSubscription: React.MutableRefObject<Subscription | null>;
-	messagesObservable: any;
+	threadsSubscription: React.MutableRefObject<Subscription | null>;
 	rid: string;
 }
 
 const API_FETCH_COUNT = 50;
 
-const useThreads = ({ search, subscription, rid, messagesSubscription, messagesObservable }: IUseSubscriptionProps) => {
+const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseSubscriptionProps) => {
+	const threadsObservable = useRef<Observable<TThreadModel[]> | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);
-	const [messages, setMessages] = useState<TThreadModel[]>([]);
+	const [threads, setThreads] = useState<TThreadModel[]>([]);
 	const [offset, setOffset] = useState(0);
 
 	const init = () => {
@@ -60,7 +60,7 @@ const useThreads = ({ search, subscription, rid, messagesSubscription, messagesO
 
 			if (result.success) {
 				if (!subscription._id) {
-					setMessages([...messages, ...result.threads] as TThreadModel[]);
+					setThreads([...threads, ...result.threads] as TThreadModel[]);
 					setLoading(false);
 					setEnd(result.count < API_FETCH_COUNT);
 					setOffset(offset + API_FETCH_COUNT);
@@ -78,6 +78,8 @@ const useThreads = ({ search, subscription, rid, messagesSubscription, messagesO
 			setEnd(true);
 		}
 	}, 300);
+
+	const loadMore = () => load();
 
 	const sync = async (updatedSince: Date) => {
 		setLoading(true);
@@ -97,11 +99,11 @@ const useThreads = ({ search, subscription, rid, messagesSubscription, messagesO
 		}
 	};
 
-	const subscribeMessages = ({ searchText }: { searchText?: string }) => {
+	const handleThreadsSubscription = ({ searchText }: { searchText?: string }) => {
 		try {
 			const db = database.active;
-			if (messagesSubscription && messagesSubscription?.current?.unsubscribe) {
-				messagesSubscription?.current?.unsubscribe();
+			if (threadsSubscription && threadsSubscription?.current?.unsubscribe) {
+				threadsSubscription?.current?.unsubscribe();
 			}
 
 			const whereClause = [Q.where('rid', rid), Q.sortBy('tlm', Q.desc)];
@@ -109,13 +111,13 @@ const useThreads = ({ search, subscription, rid, messagesSubscription, messagesO
 				whereClause.push(Q.where('msg', Q.like(`%${sanitizeLikeString(searchText.trim())}%`)));
 			}
 
-			messagesObservable = db
+			threadsObservable.current = db
 				.get('threads')
 				.query(...whereClause)
 				.observeWithColumns(['_updated_at']);
 
-			messagesSubscription.current = messagesObservable.subscribe((messages: TThreadModel[]) => {
-				setMessages(messages);
+			threadsSubscription.current = threadsObservable.current.subscribe((threads: TThreadModel[]) => {
+				setThreads(threads);
 			});
 		} catch (e) {
 			log(e);
@@ -124,13 +126,14 @@ const useThreads = ({ search, subscription, rid, messagesSubscription, messagesO
 
 	useLayoutEffect(() => {
 		init();
-		subscribeMessages({});
+		handleThreadsSubscription({});
 	}, []);
 
 	return {
 		loading,
-		loadMore: load as () => Promise<void>,
-		messages
+		loadMore,
+		threads,
+		handleThreadsSubscription
 	};
 };
 

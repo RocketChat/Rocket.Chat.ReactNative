@@ -10,10 +10,10 @@ interface IUseSubscriptionProps {
 	user: IUser;
 	rid: string;
 	currentFilter: Filter;
-	messagesSubscription: React.MutableRefObject<Subscription | null>;
+	threadsSubscription: React.MutableRefObject<Subscription | null>;
 }
 
-const useSubscription = ({ rid, currentFilter, messagesSubscription }: IUseSubscriptionProps) => {
+const useSubscription = ({ rid, currentFilter, threadsSubscription }: IUseSubscriptionProps) => {
 	const subSubscription = useRef<any | null>(null);
 
 	const [subscription, setSubscription] = useState<TSubscriptionModel>({} as TSubscriptionModel);
@@ -37,8 +37,8 @@ const useSubscription = ({ rid, currentFilter, messagesSubscription }: IUseSubsc
 		if (subSubscription) {
 			subSubscription.current?.unsubscribe();
 		}
-		if (messagesSubscription) {
-			messagesSubscription.current?.unsubscribe();
+		if (threadsSubscription) {
+			threadsSubscription.current?.unsubscribe();
 		}
 	};
 
