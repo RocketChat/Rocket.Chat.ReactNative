@@ -93,7 +93,7 @@ export interface ISubscription {
 	livechatData?: any;
 	tags?: string[];
 	E2EKey?: string;
-	E2ESuggestedKey?: string;
+	E2ESuggestedKey?: string | null;
 	encrypted?: boolean;
 	e2eKeyId?: string;
 	avatarETag?: string;
@@ -153,7 +153,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 	onHold?: boolean;
 	encrypted?: boolean;
 	E2EKey?: string;
-	E2ESuggestedKey?: string;
+	E2ESuggestedKey?: string | null;
 	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
 
 	fname?: unknown;

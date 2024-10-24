@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -17,7 +17,7 @@ import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
 
 interface IUserPreferencesViewProps {
-	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
+	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {

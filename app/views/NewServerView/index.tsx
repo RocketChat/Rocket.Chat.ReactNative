@@ -1,8 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { BackHandler, Image, Keyboard, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 
@@ -12,7 +11,6 @@ import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
-import OrSeparator from '../../containers/OrSeparator';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -20,7 +18,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isAndroid, isIOS, isTablet } from '../../lib/methods/helpers';
+import { isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
@@ -35,31 +33,12 @@ const styles = StyleSheet.create({
 		alignSelf: 'center',
 		resizeMode: 'contain'
 	},
-	title: {
-		...sharedStyles.textBold,
-		letterSpacing: 0,
-		alignSelf: 'center'
-	},
-	subtitle: {
-		...sharedStyles.textRegular,
-		alignSelf: 'center'
-	},
-	certificatePicker: {
-		alignItems: 'center',
-		justifyContent: 'flex-end'
-	},
-	chooseCertificateTitle: {
-		...sharedStyles.textRegular
-	},
-	chooseCertificate: {
-		...sharedStyles.textSemibold
-	},
-	description: {
+	buttonPrompt: {
 		...sharedStyles.textRegular,
 		textAlign: 'center'
 	},
 	connectButton: {
-		marginBottom: 0
+		marginTop: 20
 	}
 });
 
@@ -70,7 +49,6 @@ interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerVi
 
 interface INewServerViewState {
 	text: string;
-	connectingOpen: boolean;
 	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
 }
@@ -87,7 +65,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 		this.state = {
 			text: '',
-			connectingOpen: false,
 			certificate: null,
 			serversHistory: []
 		};
@@ -118,7 +95,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { previousServer, navigation, connecting } = this.props;
 		if (previousServer) {
 			return navigation.setOptions({
-				headerTitle: I18n.t('Workspaces'),
+				headerTitle: I18n.t('Add_server'),
 				headerLeft: () =>
 					!connecting ? (
 						<HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
@@ -190,8 +167,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
 
-		this.setState({ connectingOpen: false });
-
 		if (text) {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
@@ -210,13 +185,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				dispatch(serverRequest(server));
 			}
 		}
-	};
-
-	connectOpen = () => {
-		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
-		this.setState({ connectingOpen: true });
-		const { dispatch } = this.props;
-		dispatch(serverRequest('https://open.rocket.chat'));
 	};
 
 	basicAuth = (server: string, text: string) => {
@@ -289,34 +257,31 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	renderCertificatePicker = () => {
 		const { certificate } = this.state;
-		const { theme, previousServer } = this.props;
+		const { theme, connecting } = this.props;
 		return (
-			<View
-				style={[
-					styles.certificatePicker,
-					{
-						marginTop: isAndroid ? 20 : 0,
-						marginBottom: previousServer && !isTablet ? 10 : 30
-					}
-				]}>
-				<Text style={[styles.chooseCertificateTitle, { color: themes[theme].fontSecondaryInfo, fontSize: 13 }]}>
+			<>
+				<Text style={[styles.buttonPrompt, { color: themes[theme].fontSecondaryInfo }]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
-				<TouchableOpacity
+				<Button
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
-					testID='new-server-choose-certificate'>
-					<Text style={[styles.chooseCertificate, { color: themes[theme].fontInfo, fontSize: 13 }]}>
-						{certificate ?? I18n.t('Apply_Your_Certificate')}
-					</Text>
-				</TouchableOpacity>
-			</View>
+					testID='new-server-choose-certificate'
+					title={certificate ?? I18n.t('Apply_Certificate')}
+					type='secondary'
+					disabled={connecting}
+					style={{ marginTop: 12, marginBottom: 24 }}
+					fontSize={12}
+					styleText={{ ...sharedStyles.textBold, textAlign: 'center' }}
+					small
+				/>
+			</>
 		);
 	};
 
 	render() {
 		const { connecting, theme, previousServer } = this.props;
-		const { text, connectingOpen, serversHistory } = this.state;
-		const marginTop = previousServer ? 0 : 35;
+		const { text, serversHistory } = this.state;
+		const marginTop = previousServer ? 32 : 84;
 
 		return (
 			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
@@ -325,37 +290,16 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: 10,
+								marginBottom: 32,
 								marginTop: isTablet ? 0 : marginTop,
-								width: 100,
-								height: 100
+								width: 250,
+								height: 50
 							}
 						]}
-						source={require('../../static/images/logo.png')}
+						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text
-						style={[
-							styles.title,
-							{
-								color: themes[theme].fontTitlesLabels,
-								fontSize: 22,
-								marginBottom: 8
-							}
-						]}>
-						Rocket.Chat
-					</Text>
-					<Text
-						style={[
-							styles.subtitle,
-							{
-								color: themes[theme].fontHint,
-								fontSize: 16,
-								marginBottom: 30
-							}
-						]}>
-						{I18n.t('Onboarding_subtitle')}
-					</Text>
+					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>{I18n.t('Add_server')}</Text>
 					<ServerInput
 						text={text}
 						theme={theme}
@@ -370,34 +314,10 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						type='primary'
 						onPress={this.submit}
 						disabled={!text || connecting}
-						loading={!connectingOpen && connecting}
-						style={[styles.connectButton, { marginTop: 16 }]}
+						loading={connecting}
+						style={styles.connectButton}
 						testID='new-server-view-button'
 					/>
-					{isIOS ? (
-						<>
-							<OrSeparator theme={theme} />
-							<Text
-								style={[
-									styles.description,
-									{
-										color: themes[theme].fontSecondaryInfo,
-										fontSize: 14,
-										marginBottom: 16
-									}
-								]}>
-								{I18n.t('Onboarding_join_open_description')}
-							</Text>
-							<Button
-								title={I18n.t('Join_our_open_workspace')}
-								type='secondary'
-								onPress={this.connectOpen}
-								disabled={connecting}
-								loading={connectingOpen && connecting}
-								testID='new-server-view-open'
-							/>
-						</>
-					) : null}
 				</FormContainerInner>
 				{this.renderCertificatePicker()}
 			</FormContainer>
