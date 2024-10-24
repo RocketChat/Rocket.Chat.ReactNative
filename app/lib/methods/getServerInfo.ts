@@ -1,4 +1,3 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 import moment from 'moment';
 
@@ -10,6 +9,7 @@ import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
 import log from './helpers/log';
+import sdk from '../services/sdk';
 
 interface IServerInfoFailure {
 	success: false;
@@ -45,7 +45,7 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
 		const response = await fetch(`${server}/api/info`, {
-			...RocketChatSettings.customHeaders
+			headers: sdk.getHeaders()
 		});
 		try {
 			const serverInfo: IApiServerInfo = await response.json();

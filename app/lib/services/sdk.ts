@@ -12,7 +12,7 @@ import UserPreferences from '../methods/userPreferences';
 
 class Sdk {
 	private sdk: DDPSDK | undefined;
-	private code: any;
+	private code: any = null;
 	private headers: Record<string, string> = {
 		'User-Agent': `RC Mobile; ${
 			Platform.OS
@@ -20,10 +20,8 @@ class Sdk {
 	};
 
 	async initialize(server: string) {
-		this.code = null;
 		this.sdk = await DDPSDK.create(server);
-		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
-		this.setBasicAuth(basicAuth);
+		this.setBasicAuth();
 		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
 		return this.sdk;
 	}
@@ -44,10 +42,19 @@ class Sdk {
 		return null;
 	}
 
-	setBasicAuth(basicAuth: string | null): void {
+	private setBasicAuth(): void {
+		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${this.sdk?.connection.url}`);
 		if (basicAuth) {
-			this.headers.Authorization = `Basic ${basicAuth}`;
+			this.setHeaders({ Authorization: `Basic ${basicAuth}` });
 		}
+	}
+
+	private setHeaders(headers: Record<string, string>): void {
+		this.headers = { ...this.headers, ...headers };
+	}
+
+	getHeaders(): Record<string, string> {
+		return this.headers;
 	}
 
 	get(endpoint: string, params: any): any {
@@ -97,6 +104,8 @@ class Sdk {
 	async login(credentials: any): Promise<any> {
 		try {
 			const loginResult = await this.post('/v1/login', credentials);
+			// TODO: get/set headers from SDK instead?
+			this.setHeaders({ 'X-Auth-Token': loginResult.data.authToken, 'X-User-Id': loginResult.data.userId });
 			await this.current?.account.loginWithToken(loginResult.data.authToken);
 			return loginResult.data;
 		} catch (e) {
