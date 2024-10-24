@@ -24,6 +24,7 @@ class Sdk {
 		this.sdk = await DDPSDK.create(server);
 		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
 		this.setBasicAuth(basicAuth);
+		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
 		return this.sdk;
 	}
 
@@ -72,27 +73,35 @@ class Sdk {
 				}
 				return resolve(result);
 			} catch (e: any) {
-				const errorType = isMethodCall ? e?.error : e?.data?.errorType;
-				const totpInvalid = 'totp-invalid';
-				const totpRequired = 'totp-required';
-				if ([totpInvalid, totpRequired].includes(errorType)) {
-					const { details } = isMethodCall ? e : e?.data;
-					try {
-						await twoFactor({ method: details?.method, invalid: errorType === totpInvalid });
-						return resolve(this.post(endpoint, params));
-					} catch {
-						// twoFactor was canceled
-						return resolve({} as any);
-					}
-				} else {
-					reject(e);
-				}
+				reject(e);
 			}
 		});
 	}
 
 	delete(endpoint: string, params: any): any {
 		return this.current?.rest.delete(endpoint, params, { headers: this.headers });
+	}
+
+	async twoFactorHandler({
+		method,
+		// emailOrUsername, TODO: what is this for?
+		invalidAttempt
+	}: {
+		method: 'totp' | 'email' | 'password';
+		invalidAttempt?: boolean;
+	}): Promise<string> {
+		const result = await twoFactor({ method, invalid: !!invalidAttempt });
+		return result.twoFactorCode;
+	}
+
+	async login(credentials: any): Promise<any> {
+		try {
+			const loginResult = await this.post('/v1/login', credentials);
+			await this.current?.account.loginWithToken(loginResult.data.authToken);
+			return loginResult.data;
+		} catch (e) {
+			return Promise.reject(e);
+		}
 	}
 
 	methodCall(...args: any[]): Promise<any> {

@@ -310,7 +310,7 @@ export const setUserPreferences = (userId: string, data: Partial<INotificationPr
 
 export const setUserStatus = (status: string, message: string) =>
 	// RC 1.2.0
-	sdk.methodCall('setUserStatus', status, message);
+	sdk.methodCallWrapper('setUserStatus', status, message);
 
 export const setReaction = (emoji: string, messageId: string) =>
 	// RC 0.62.2
@@ -991,7 +991,7 @@ export const saveUserProfileMethod = (
 		twoFactorCode: string;
 		twoFactorMethod: string;
 	} | null
-) => sdk.current.methodCall('saveUserProfile', params, customFields, twoFactorOptions);
+) => sdk.methodCallWrapper('saveUserProfile', params, customFields, twoFactorOptions);
 
 export const deleteOwnAccount = (password: string, confirmRelinquish = false): any =>
 	// RC 0.67.0
@@ -1002,9 +1002,9 @@ export const postMessage = (roomId: string, text: string) => sdk.post('/v1/chat.
 export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
 	sdk.methodCall('stream-notify-user', type, params);
 
-export const getUsersRoles = (): Promise<boolean> => sdk.methodCall('getUserRoles');
+export const getUsersRoles = (): Promise<boolean> => sdk.methodCallWrapper('getUserRoles');
 
 export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 	fetch(`https://releases.rocket.chat/v2/server/supportedVersions?uniqueId=${uniqueId}&domain=${domain}&source=mobile`);
 
-export const setUserPassword = (password: string) => sdk.methodCall('setUserPassword', password);
+export const setUserPassword = (password: string) => sdk.methodCallWrapper('setUserPassword', password);

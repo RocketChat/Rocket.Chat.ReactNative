@@ -231,18 +231,10 @@ function stopListener(listener: any): boolean {
 
 async function login(credentials: ICredentials, isFromWebView = false): Promise<ILoggedUser | undefined> {
 	// TODO: other login methods: ldap, saml, cas, apple, oauth, oauth_custom
-	if (credentials.resume) {
-		await sdk.current?.account.loginWithToken(credentials.resume);
-	} else if (credentials.user && credentials.password) {
-		await sdk.current?.account.loginWithPassword(credentials.user, credentials.password);
-	} else {
-		throw new Error('Invalid credentials');
-	}
+	const result = await sdk.login(credentials);
+	const { me } = result;
 	const serverVersion = store.getState().server.version;
 	const loginUser = sdk.current?.account.user;
-	console.log('🚀 ~ login ~ result:', loginUser);
-	const me = await sdk.get('/v1/me');
-	console.log('🚀 ~ login ~ me:', me);
 
 	if (!me) {
 		throw new Error("Couldn't fetch user data");
@@ -266,8 +258,8 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			status: me.status as ILoggedUser['status'],
 			statusText: me.statusText,
 			customFields: me.customFields,
-			// statusLivechat: me.statusLivechat, // TODO: Check if this is still necessary
-			// emails: me.emails,
+			statusLivechat: me.statusLivechat,
+			emails: me.emails,
 			roles: me.roles,
 			avatarETag: me.avatarETag,
 			isFromWebView,

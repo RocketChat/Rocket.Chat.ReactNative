@@ -98,7 +98,7 @@ const UserForm = () => {
 			return;
 		}
 		Keyboard.dismiss();
-		dispatch(loginRequest({ user, password: sha256(password) }));
+		dispatch(loginRequest({ user, password }));
 	};
 
 	return (
