@@ -1,7 +1,7 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
-import { sanitizeLikeString } from '@nozbe/watermelondb/QueryDescription';
 
+import { sanitizeLikeString } from '../../../lib/database/utils';
 import { TServerHistoryModel } from '../../../definitions';
 import database from '../../../lib/database';
 
@@ -37,7 +37,7 @@ const useServersHistory = () => {
 		}
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		queryServerHistory();
 	}, []);
 

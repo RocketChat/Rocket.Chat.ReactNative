@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
+import Item from './Item';
 import { FormTextInput } from '../../../../containers/TextInput';
 import * as List from '../../../../containers/List';
 import { themes } from '../../../../lib/constants';
 import I18n from '../../../../i18n';
 import { TServerHistoryModel } from '../../../../definitions';
-import Item from './Item';
-import { TSupportedThemes } from '../../../../theme';
+import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
 
 interface IServerInput extends TextInputProps {
 	text: string;
-	theme: TSupportedThemes;
 	serversHistory: any[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
@@ -40,14 +39,17 @@ interface IServerInput extends TextInputProps {
 
 const ServerInput = ({
 	text,
-	theme,
 	serversHistory,
 	onChangeText,
 	onSubmit,
 	onDelete,
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
+	const { theme } = useTheme();
 	const [focused, setFocused] = useState(false);
+	const ref = useRef<any>();
+
+	console.log(ref.current, 'hereee');
 	return (
 		<View style={styles.container}>
 			<FormTextInput

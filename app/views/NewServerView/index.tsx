@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BackHandler, Image, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -77,7 +77,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		}
 	};
 
-	const handleNewServerEvent = (event: { server: string }) => {
+	const handleNewServerEvent = useCallback((event: { server: string }) => {
 		let { server } = event;
 		if (!server) {
 			return;
@@ -85,9 +85,9 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		setText(server);
 		server = completeUrl(server);
 		dispatch(serverRequest(server));
-	};
+	}, []);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
@@ -145,7 +145,6 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 				</Text>
 				<ServerInput
 					text={text}
-					theme={theme}
 					serversHistory={serversHistory}
 					onChangeText={onChangeText}
 					onSubmit={submit}
