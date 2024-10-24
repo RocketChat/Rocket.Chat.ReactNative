@@ -4,11 +4,10 @@ import { IBaseScreen, TSubscriptionModel, TThreadModel } from '../../definitions
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSupportedThemes } from '../../theme';
 
-
 export interface ISearchThreadMessages {
 	isSearching: boolean;
 	searchText: string;
-};
+}
 
 export interface IUseThreadMessages {
 	subscription: TSubscriptionModel;
@@ -20,16 +19,7 @@ export interface IUseThreadMessages {
 	};
 	loading: boolean;
 	setDisplayingThreads: (value: React.SetStateAction<TThreadModel[]>) => void;
-	subscribeMessages: ({ subscription, searchText }: {
-		subscription?: TSubscriptionModel;
-		searchText?: string;
-	}) => void;
-};
+	subscribeMessages: ({ subscription, searchText }: { subscription?: TSubscriptionModel; searchText?: string }) => void;
+}
 
-export interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'> {
-	user: { id: string };
-	baseUrl: string;
-	useRealName: boolean;
-	theme: TSupportedThemes;
-	isMasterDetail: boolean;
-};
+export interface IThreadMessagesViewProps extends IBaseScreen<ChatsStackParamList, 'ThreadMessagesView'> {}

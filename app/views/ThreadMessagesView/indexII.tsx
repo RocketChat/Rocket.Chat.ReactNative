@@ -25,13 +25,12 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import Item from './components/Item';
 import EmptyThreads from './components/EmptyThreads';
+import useThreadMessages from './hooks/useThreadMessages';
+import getFilteredThreads from './methods/getFilteredThreads';
+import useThreadSearch from './hooks/useThreadSearch';
 import styles from './styles';
 import useSubscription from './hooks/useSubscription';
 import useThreads from './hooks/useThreads';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import * as HeaderButton from '../../containers/HeaderButton';
-import SearchHeader from '../../containers/SearchHeader';
-import getFilteredThreads from './methods/getFilteredThreads';
 
 const THREADS_FILTER = 'threadsFilter';
 
@@ -62,6 +61,15 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		subscription
 	});
 
+	/* 	const { init, messages, subscription, subscribeMessages, displayingThreads, loadMore, loading, setDisplayingThreads } =
+		useThreadMessages({
+			user,
+			messagesObservable,
+			currentFilter,
+			rid,
+			search
+		});
+
 	const initFilter = () => {
 		const savedFilter = UserPreferences.getString(THREADS_FILTER);
 		if (savedFilter) {
@@ -69,45 +77,11 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		}
 	};
 
-	const getHeader = (triggerSearch?: boolean): NativeStackNavigationOptions => {
-		if (search.isSearching || triggerSearch) {
-			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={() => {}} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <SearchHeader onSearchChangeText={() => {}} testID='thread-messages-view-search-header' />,
-				headerRight: () => null
-			};
-		}
-
-		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
-			headerTitle: I18n.t('Threads'),
-			headerRight: () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={showFilters} />
-					<HeaderButton.Item iconName='search' onPress={() => {}} testID='thread-messages-view-search-icon' />
-				</HeaderButton.Container>
-			)
-		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
-
-		return options;
-	};
-
-	const setHeader = () => {
-		const options = getHeader();
-		navigation.setOptions(options);
-	};
-
 	const onFilterSelected = useCallback(
 		(filter: Filter) => {
+			const displayingThreads = getFilteredThreads(user, messages, subscription, filter);
 			setCurrentFilter(filter);
+			setDisplayingThreads(displayingThreads);
 			UserPreferences.setString(THREADS_FILTER, filter);
 		},
 		[messages, subscription]
@@ -153,10 +127,24 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 			await Services.toggleFollowMessage(tmid, !isFollowingThread);
 			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
 			const updatedThreads = getFilteredThreads(user, messages, subscription, currentFilter);
+			setDisplayingThreads(updatedThreads);
 		} catch (e) {
 			log(e);
 		}
 	};
+
+	const { setHeader } = useThreadSearch({
+		isMasterDetail,
+		navigation,
+		search,
+		setSearch,
+		showFilters,
+		subscribeMessages
+	});
+ */
+
+	const onThreadPress = () => {};
+	const toggleFollowThread = () => {};
 
 	const renderItem = ({ item }: { item: TThreadModel }) => {
 		const badgeColor = getBadgeColor({ subscription, theme, messageId: item?.id });
@@ -174,34 +162,43 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 			/>
 		);
 	};
+	/* useLayoutEffect(() => {
+		init();
+		initFilter();
+
+		return () => {
+			console.countReset(`${viewName}.render calls`);
+		};
+	}, [currentFilter]);
 
 	useEffect(() => {
-		initFilter();
 		setHeader();
-	}, [currentFilter]);
+	}, [messages, currentFilter]); */
 
 	console.count(`${ThreadMessagesView.name}.render calls`);
 
 	return (
 		<SafeAreaView testID='thread-messages-view'>
 			<StatusBar />
-			<FlatList
-				keyExtractor={item => item.id}
-				data={getFilteredThreads(user, messages, subscription, currentFilter)}
-				renderItem={renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				contentContainerStyle={styles.contentContainer}
-				onEndReachedThreshold={0.5}
-				maxToRenderPerBatch={5}
-				windowSize={10}
-				initialNumToRender={7}
-				onEndReached={loadMore}
-				removeClippedSubviews={isIOS}
-				ListEmptyComponent={<EmptyThreads currentFilter={currentFilter} />}
-				ItemSeparatorComponent={List.Separator}
-				ListFooterComponent={loading ? <ActivityIndicator /> : null}
-				scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
-			/>
+			{!messages?.length ? (
+				<EmptyThreads currentFilter={currentFilter} />
+			) : (
+				<FlatList
+					keyExtractor={item => item.id}
+					data={messages}
+					renderItem={renderItem}
+					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+					contentContainerStyle={styles.contentContainer}
+					onEndReachedThreshold={0.5}
+					maxToRenderPerBatch={5}
+					windowSize={10}
+					initialNumToRender={7}
+					removeClippedSubviews={isIOS}
+					ItemSeparatorComponent={List.Separator}
+					ListFooterComponent={loading ? <ActivityIndicator /> : null}
+					scrollIndicatorInsets={{ right: 1 }} // https://github.com/facebook/react-native/issues/26610#issuecomment-539843444
+				/>
+			)}
 		</SafeAreaView>
 	);
 };
