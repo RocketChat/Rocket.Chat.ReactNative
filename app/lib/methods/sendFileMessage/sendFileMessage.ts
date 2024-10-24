@@ -1,26 +1,24 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { Alert } from 'react-native';
 
-import { IUser, TSendFileMessageFileInfo, TUploadModel } from '../../../definitions';
+import { TSendFileMessageFileInfo, TUploadModel } from '../../../definitions';
 import i18n from '../../../i18n';
 import database from '../../database';
 import FileUpload from '../helpers/fileUpload';
 import log from '../helpers/log';
 import { copyFileToCacheDirectoryIfNeeded, getUploadPath, persistUploadError, uploadQueue } from './utils';
 import { IFormData } from '../helpers/fileUpload/definitions';
+import sdk from '../../services/sdk';
 
 export async function sendFileMessage(
 	rid: string,
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	try {
-		const { id, token } = user;
 		const uploadUrl = `${server}/api/v1/rooms.upload/${rid}`;
 		fileInfo.rid = rid;
 
@@ -84,10 +82,8 @@ export async function sendFileMessage(
 		}
 
 		const headers = {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
+			...sdk.getHeaders(),
+			'Content-Type': 'multipart/form-data'
 		};
 
 		uploadQueue[uploadPath] = new FileUpload(uploadUrl, headers, formData, async (loaded, total) => {

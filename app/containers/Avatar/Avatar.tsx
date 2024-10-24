@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
+import sdk from '../../lib/services/sdk';
 import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
@@ -72,7 +72,7 @@ const Avatar = React.memo(
 					style={avatarStyle}
 					source={{
 						uri,
-						headers: RocketChatSettings.customHeaders,
+						headers: sdk.getHeaders(),
 						priority: FastImage.priority.high
 					}}
 				/>

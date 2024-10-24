@@ -1,29 +1,24 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
-
-import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../../definitions';
+import { TSendFileMessageFileInfo, TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
 import { IFormData } from '../helpers/fileUpload/definitions';
+import sdk from '../../services/sdk';
 
 export async function sendFileMessageV2(
 	rid: string,
 	fileInfo: TSendFileMessageFileInfo,
 	tmid: string | undefined,
 	server: string,
-	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
-		const { id, token } = user;
 		const headers = {
-			...RocketChatSettings.customHeaders,
-			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
+			...sdk.getHeaders(),
+			'Content-Type': 'multipart/form-data'
 		};
 		const db = database.active;
 

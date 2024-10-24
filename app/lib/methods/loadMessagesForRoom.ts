@@ -23,8 +23,8 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	}
 
 	// RC 0.48.0
-	const data = await sdk.get(`${apiType}.history`, params);
-	if (!data.success) {
+	const data = await sdk.get(`/v1/${apiType}.history`, params);
+	if (!data) {
 		return [];
 	}
 	return data.messages;

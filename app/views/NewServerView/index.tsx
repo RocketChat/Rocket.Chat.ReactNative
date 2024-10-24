@@ -7,7 +7,7 @@ import parse from 'url-parse';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
-import { CERTIFICATE_KEY, themes } from '../../lib/constants';
+import { BASIC_AUTH_KEY, CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -20,7 +20,6 @@ import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
 import { isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
@@ -193,7 +192,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			if (parsedUrl.auth.length) {
 				const credentials = Base64.encode(parsedUrl.auth);
 				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
-				setBasicAuth(credentials);
 			}
 		} catch {
 			// do nothing
