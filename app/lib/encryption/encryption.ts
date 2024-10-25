@@ -261,15 +261,15 @@ class Encryption {
 	};
 
 	evaluateSuggestedKey = async (rid: string, E2ESuggestedKey: string) => {
-		try {
-			if (this.privateKey) {
+		if (this.privateKey) {
+			try {
 				const roomE2E = await this.getRoomInstance(rid);
 				await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
 				delete this.roomInstances[rid];
 				await Services.e2eAcceptSuggestedGroupKey(rid);
+			} catch (e) {
+				await Services.e2eRejectSuggestedGroupKey(rid);
 			}
-		} catch (e) {
-			await Services.e2eRejectSuggestedGroupKey(rid);
 		}
 	};
 
@@ -350,7 +350,10 @@ class Encryption {
 			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
 			await Promise.all(
 				subsEncrypted.map(async (sub: TSubscriptionModel) => {
-					const { rid, lastMessage } = sub;
+					const { rid, lastMessage, E2ESuggestedKey } = sub;
+					if (E2ESuggestedKey) {
+						await this.evaluateSuggestedKey(rid, E2ESuggestedKey);
+					}
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
 						return sub.prepareUpdate(
