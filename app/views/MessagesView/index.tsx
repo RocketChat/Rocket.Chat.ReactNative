@@ -21,7 +21,7 @@ import { IMessagesViewProps, IParams } from './definitions';
 import { useAppSelector } from '../../lib/hooks';
 import useMessages from './hooks/useMessages';
 import getContentTestId from './methods/getContentTestId';
-import getEmptyMessage from './methods/getEmptyMessage';
+import getEmptyListMessage from './methods/getEmptyListMessage';
 import getActionTitle from './methods/getActionTitle';
 import getActionIcon from './methods/getActionIcon';
 import { TIconsName } from '../../containers/CustomIcon';
@@ -31,7 +31,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const t: SubscriptionType = route.params?.t;
 	const screenName: string = route.params?.name;
 	const testID = getContentTestId({ screenName });
-	const emptyMessage = getEmptyMessage({ screenName });
+	const emptyListMessage = getEmptyListMessage({ screenName });
 	const { theme } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
@@ -41,7 +41,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		useRealName: state.settings.UI_Use_Real_Name as boolean,
 		isMasterDetail: state.app.isMasterDetail
 	}));
-	const { messages, loading, loadMore, updateMessagesOnActionPress } = useMessages({ rid, t, screenName, userId: user.id });
+	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({ rid, t, screenName, userId: user.id });
 
 	const setHeader = () => {
 		navigation.setOptions({
@@ -77,7 +77,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 			}
 
 			if (result.success) {
-				updateMessagesOnActionPress(message?._id);
+				updateMessageOnActionPress(message?._id);
 			}
 		} catch {
 			// Do nothing
@@ -184,7 +184,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	if (!loading && messages.length === 0) {
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{emptyMessage}</Text>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{emptyListMessage}</Text>
 			</View>
 		);
 	}

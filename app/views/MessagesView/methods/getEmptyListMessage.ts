@@ -1,10 +1,10 @@
 import I18n from '../../../i18n';
 
-interface IGetEmptyMessage {
+interface IGetEmptyListMessage {
 	screenName: string;
 }
 
-const getEmptyMessage = ({ screenName }: IGetEmptyMessage): string | undefined => {
+const getEmptyListMessage = ({ screenName }: IGetEmptyListMessage): string | undefined => {
 	switch (screenName) {
 		case 'Files':
 			return I18n.t('No_files');
@@ -17,4 +17,4 @@ const getEmptyMessage = ({ screenName }: IGetEmptyMessage): string | undefined =
 	}
 };
 
-export default getEmptyMessage;
+export default getEmptyListMessage;

@@ -65,7 +65,7 @@ export const useMessages = ({ rid, screenName, t, userId }: IUseMessage) => {
 		}
 	};
 
-	const updateMessagesOnActionPress = (message_id: string) => {
+	const updateMessageOnActionPress = (message_id: string) => {
 		setMessages(prevState => prevState.filter((item: IMessage) => item._id !== message_id));
 		setTotal(prevState => prevState - 1);
 	};
@@ -74,7 +74,7 @@ export const useMessages = ({ rid, screenName, t, userId }: IUseMessage) => {
 		load();
 	}, []);
 
-	return { messages, loading, total, updateMessagesOnActionPress, loadMore: load };
+	return { messages, loading, total, updateMessageOnActionPress, loadMore: load };
 };
 
 export default useMessages;

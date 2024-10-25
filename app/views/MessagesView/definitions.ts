@@ -42,5 +42,3 @@ export interface IMessageViewContent {
 	};
 	handleActionPress?: (message: IMessage) => void;
 }
-
-export type TActionContentType = 'PIN' | 'STAR';
