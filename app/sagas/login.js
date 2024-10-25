@@ -37,7 +37,8 @@ import {
 	removeServerData,
 	removeServerDatabase,
 	subscribeSettings,
-	subscribeUsersPresence
+	subscribeUsersPresence,
+	getAppActions
 } from '../lib/methods';
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
@@ -180,6 +181,10 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
+const fetchAppActionsFork = function* fetchAppActionsFork() {
+	yield getAppActions();
+}
+
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -196,6 +201,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
+		yield fork(fetchAppActionsFork);
 
 		setLanguage(user?.language);
 

@@ -278,6 +278,18 @@ export default appSchema({
 				{ name: 'username', type: 'string', isIndexed: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true }
 			]
-		})
+		}),
+		tableSchema({
+			name: 'app_actions_buttons',
+			columns: [
+				{ name: 'app_id', type: 'string' },
+				{ name: 'action_id', type: 'string' },
+				{ name: 'context', type: 'string' },
+				{ name: 'label_i18n', type: 'string' },
+				{ name: 'variant', type: 'string', isOptional: true },
+				{ name: 'category', type: 'string', isOptional: true },
+				{ name: 'when', type: 'string', isOptional: true },
+			]
+		}),
 	]
 });

@@ -49,9 +49,10 @@ class Sdk {
 			MatchPathPattern<TPath>
 		>
 			? void
-			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
+			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>,
+		apiVersion: string = 'v1'
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.current.get(endpoint, params);
+		return this.current.get(endpoint, params, undefined, undefined, undefined, apiVersion);
 	}
 
 	post<TPath extends PathFor<'POST'>>(
