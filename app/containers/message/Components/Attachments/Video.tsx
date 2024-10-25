@@ -1,5 +1,7 @@
-import React, { useContext } from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { getThumbnailAsync } from 'expo-video-thumbnails';
 
 import { IUserMessage } from '../../../../definitions';
 import { IAttachment } from '../../../../definitions/IAttachment';
@@ -8,31 +10,96 @@ import I18n from '../../../../i18n';
 import { fileDownload, isIOS } from '../../../../lib/methods/helpers';
 import EventEmitter from '../../../../lib/methods/helpers/events';
 import { useTheme } from '../../../../theme';
-import sharedStyles from '../../../../views/Styles';
-import { TIconsName } from '../../../CustomIcon';
 import { LISTENER } from '../../../Toast';
 import Markdown from '../../../markdown';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
-import BlurComponent from '../OverlayComponent';
-import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
+import OverlayComponent from '../OverlayComponent';
+import { CustomIcon, TIconsName } from '../../../CustomIcon';
+import { themes } from '../../../../lib/constants';
+import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({
-	cancelContainer: {
-		position: 'absolute',
-		top: 8,
-		right: 8
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
-	text: {
-		...sharedStyles.textRegular,
-		fontSize: 12
+	overlay: {
+		flex: 1
+	},
+	image: {
+		width: '100%',
+		height: '100%'
+	},
+	playerIcon: {
+		position: 'absolute',
+		textShadowRadius: 3,
+		textShadowOffset: {
+			width: 0.5,
+			height: 0.5
+		}
 	}
 });
+
+type TThumbnailImage = string | null;
+
+type ThumbnailProps = {
+	url: string;
+	status: TDownloadState;
+	encrypted?: boolean;
+};
+
+const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
+	const { theme } = useTheme();
+
+	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
+	if (encrypted && status === 'downloaded') {
+		icon = 'encrypted';
+	}
+
+	const [image, setImage] = useState<TThumbnailImage>(null);
+
+	const generateThumbnail = async () => {
+		try {
+			if (!url) return;
+
+			const { uri } = await getThumbnailAsync(url, {
+				time: 1
+			});
+			setImage(uri);
+		} catch (e) {
+			console.warn(e);
+		}
+	};
+
+	useEffect(() => {
+		generateThumbnail();
+	}, [url]);
+
+	return (
+		<View style={styles.container}>
+			{status === 'loading' || !image || encrypted ? (
+				<OverlayComponent style={styles.overlay} loading={status === 'loading'} iconName={icon} />
+			) : (
+				<>
+					<FastImage style={styles.image} resizeMode='cover' source={{ uri: image }} />
+					<CustomIcon
+						name={icon}
+						size={54}
+						color={themes[theme].fontPureWhite}
+						style={[styles.playerIcon, { textShadowColor: themes[theme].backdropColor }]}
+					/>
+				</>
+			)}
+		</View>
+	);
+};
 
 interface IMessageVideo {
 	file: IAttachment;
@@ -43,34 +110,6 @@ interface IMessageVideo {
 	isReply?: boolean;
 	msg?: string;
 }
-
-const CancelIndicator = () => {
-	const { colors } = useTheme();
-	return (
-		<View style={styles.cancelContainer}>
-			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>{I18n.t('Cancel')}</Text>
-		</View>
-	);
-};
-
-const Thumbnail = ({ status, encrypted = false }: { status: TDownloadState; encrypted: boolean }) => {
-	const { colors } = useTheme();
-	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
-	if (encrypted && status === 'downloaded') {
-		icon = 'encrypted';
-	}
-
-	return (
-		<>
-			<BlurComponent
-				iconName={icon}
-				loading={status === 'loading'}
-				style={[messageStyles.image, { borderColor: colors.strokeLight, borderWidth: 1 }]}
-			/>
-			{status === 'loading' ? <CancelIndicator /> : null}
-		</>
-	);
-};
 
 const Video = ({
 	file,
@@ -112,7 +151,7 @@ const Video = ({
 		<>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
-				<Thumbnail status={status} encrypted={isEncrypted} />
+				<Thumbnail status={status} url={url} encrypted={isEncrypted} />
 			</Touchable>
 		</>
 	);
