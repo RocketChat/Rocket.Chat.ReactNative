@@ -126,8 +126,14 @@ type TImageLoadedState = 'loading' | 'done' | 'error';
 const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
-	let image = url.image || url.url;
-	image = image?.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
+	const getImageUrl = () => {
+		const imageUrl = url.image || url.url;
+
+		if (!imageUrl) return null;
+		if (imageUrl.includes('http')) return imageUrl;
+		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
+	};
+	const image = getImageUrl();
 
 	const onPress = () => openLink(url.url, theme);
 
