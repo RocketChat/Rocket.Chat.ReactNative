@@ -288,8 +288,8 @@ export default appSchema({
 				{ name: 'label_i18n', type: 'string' },
 				{ name: 'variant', type: 'string', isOptional: true },
 				{ name: 'category', type: 'string', isOptional: true },
-				{ name: 'when', type: 'string', isOptional: true },
+				{ name: 'when', type: 'string', isOptional: true }
 			]
-		}),
+		})
 	]
 });

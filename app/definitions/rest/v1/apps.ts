@@ -1,7 +1,7 @@
-import { IAppActionButton } from "definitions/IAppActionButton";
+import { IAppActionButton } from '../../IAppActionButton';
 
 export type AppsEndpoints = {
-    'actionButtons': {
-        GET: () => IAppActionButton[];
-    }
-}
+	actionButtons: {
+		GET: () => IAppActionButton[];
+	};
+};

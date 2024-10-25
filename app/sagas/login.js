@@ -183,7 +183,7 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 
 const fetchAppActionsFork = function* fetchAppActionsFork() {
 	yield getAppActions();
-}
+};
 
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
