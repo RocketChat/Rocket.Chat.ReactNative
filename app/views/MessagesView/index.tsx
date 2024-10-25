@@ -51,7 +51,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 
 	const handleShowActionSheet = (message: IMessage) => {
 		const title = getActionTitle(screenName) as string;
-		const icon = getActionIcon(screenName, message) as TIconsName;
+		const icon = getActionIcon(screenName) as TIconsName;
 		showActionSheet({
 			options: [
 				{
