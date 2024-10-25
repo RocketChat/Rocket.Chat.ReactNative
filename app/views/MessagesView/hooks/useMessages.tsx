@@ -74,7 +74,7 @@ export const useMessages = ({ rid, screenName, t, userId }: IUseMessage) => {
 		load();
 	}, []);
 
-	return { messages, loading, total, updateMessageOnActionPress, loadMore: load };
+	return { messages, loading, updateMessageOnActionPress, loadMore: load };
 };
 
 export default useMessages;

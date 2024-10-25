@@ -4,7 +4,7 @@ interface IGetEmptyListMessage {
 	screenName: string;
 }
 
-const getEmptyListMessage = ({ screenName }: IGetEmptyListMessage): string | undefined => {
+const getListEmptyMessage = ({ screenName }: IGetEmptyListMessage): string | undefined => {
 	switch (screenName) {
 		case 'Files':
 			return I18n.t('No_files');
@@ -17,4 +17,4 @@ const getEmptyListMessage = ({ screenName }: IGetEmptyListMessage): string | und
 	}
 };
 
-export default getEmptyListMessage;
+export default getListEmptyMessage;

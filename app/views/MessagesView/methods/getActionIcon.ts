@@ -3,7 +3,7 @@ import { IMessage } from '../../../definitions';
 const getActionIcon = (screenName: string, message: IMessage) => {
 	switch (screenName) {
 		case 'Starred':
-			return message.starred ? 'star-filled' : 'star';
+			return 'star-filled';
 
 		case 'Pinned':
 			return 'pin';

@@ -1,37 +1,37 @@
 import React, { useLayoutEffect } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import Message from '../../containers/message';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
-import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { useActionSheet } from '../../containers/ActionSheet';
-import SafeAreaView from '../../containers/SafeAreaView';
-import getThreadName from '../../lib/methods/getThreadName';
-import styles from './styles';
 import { IRoomInfoParam } from '../SearchMessagesView';
 import { SubscriptionType, IAttachment, IMessage, TGetCustomEmoji } from '../../definitions';
-import { Services } from '../../lib/services';
-import AudioManager from '../../lib/methods/AudioManager';
 import { IMessagesViewProps, IParams } from './definitions';
 import { useAppSelector } from '../../lib/hooks';
+import { TIconsName } from '../../containers/CustomIcon';
+import Message from '../../containers/message';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
+import getFileUrlAndTypeFromMessage from './methods/getFileUrlAndTypeFromMessage';
+import AudioManager from '../../lib/methods/AudioManager';
+import SafeAreaView from '../../containers/SafeAreaView';
+import getThreadName from '../../lib/methods/getThreadName';
 import useMessages from './hooks/useMessages';
 import getContentTestId from './methods/getContentTestId';
-import getEmptyListMessage from './methods/getEmptyListMessage';
+import getListEmptyMessage from './methods/getListEmptyMessage';
 import getActionTitle from './methods/getActionTitle';
 import getActionIcon from './methods/getActionIcon';
-import { TIconsName } from '../../containers/CustomIcon';
+import performMessageAction from './methods/performMessageAction';
+import styles from './styles';
 
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
 	const screenName: string = route.params?.name;
 	const testID = getContentTestId({ screenName });
-	const emptyListMessage = getEmptyListMessage({ screenName });
+	const listEmptyMessage = getListEmptyMessage({ screenName });
 	const { theme } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
@@ -57,26 +57,18 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 				{
 					title,
 					icon,
-					onPress: () => handleActionPress(message)
+					onPress: () => onActionPress(message)
 				}
 			],
 			hasCancel: true
 		});
 	};
 
-	const handleActionPress = async (message: IMessage) => {
+	const onActionPress = async (message: IMessage) => {
 		try {
-			let result: any;
-			switch (screenName) {
-				case 'Pinned':
-					result = await Services.togglePinMessage(message._id, message.pinned);
-					break;
-				case 'Starred':
-					result = await Services.toggleStarMessage(message._id, message.starred);
-					break;
-			}
+			const result = await performMessageAction(screenName, message);
 
-			if (result.success) {
+			if (result?.success) {
 				updateMessageOnActionPress(message?._id);
 			}
 		} catch {
@@ -184,7 +176,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	if (!loading && messages.length === 0) {
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{emptyListMessage}</Text>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{listEmptyMessage}</Text>
 			</View>
 		);
 	}

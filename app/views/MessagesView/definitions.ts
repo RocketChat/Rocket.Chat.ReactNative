@@ -1,11 +1,10 @@
-import React from 'react';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { ChatsStackParamList } from '../../stacks/types';
 import { TNavigation } from '../../stacks/stackType';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
-import { TMessageModel, ISubscription, SubscriptionType, IMessage } from '../../definitions';
+import { TMessageModel, ISubscription, SubscriptionType } from '../../definitions';
 
 export interface IMessagesViewProps {
 	navigation: CompositeNavigationProp<
@@ -27,18 +26,4 @@ export interface IParams {
 	jumpToMessageId?: string;
 	jumpToThreadId?: string;
 	roomUserId?: string;
-}
-
-export interface IMessageViewContent {
-	name: string;
-	fetchFunc: () => Promise<any> | any;
-	noDataMsg: string;
-	testID: string;
-	renderItem: (item: any) => React.ReactElement;
-	action?: (message: IMessage) => {
-		title: string;
-		icon: string;
-		onPress: () => void;
-	};
-	handleActionPress?: (message: IMessage) => void;
 }
