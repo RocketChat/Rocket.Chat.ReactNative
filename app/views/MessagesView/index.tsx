@@ -1,29 +1,39 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { FlatList, Text, View } from 'react-native';
 
-import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import { SubscriptionType, IMessage, TGetCustomEmoji, TAnyMessageModel } from '../../definitions';
-import { IMessagesViewProps } from './definitions';
-import I18n from '../../i18n';
-import ActivityIndicator from '../../containers/ActivityIndicator';
-import StatusBar from '../../containers/StatusBar';
-import SafeAreaView from '../../containers/SafeAreaView';
-import useMessages from './hooks/useMessages';
-import styles from './styles';
-import useMessagesActions from './hooks/useMessagesActions';
-import { useAppSelector } from '../../lib/hooks';
-import { getUserSelector } from '../../selectors/login';
-import { Services } from '../../lib/services';
-import { Encryption } from '../../lib/encryption';
 import Message from '../../containers/message';
+import ActivityIndicator from '../../containers/ActivityIndicator';
+import I18n from '../../i18n';
+import StatusBar from '../../containers/StatusBar';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
+import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
+import { getUserSelector } from '../../selectors/login';
+import { useActionSheet } from '../../containers/ActionSheet';
+import SafeAreaView from '../../containers/SafeAreaView';
+import getThreadName from '../../lib/methods/getThreadName';
+import styles from './styles';
+import { IRoomInfoParam } from '../SearchMessagesView';
+import { SubscriptionType, IAttachment, IMessage, TGetCustomEmoji } from '../../definitions';
+import { Services } from '../../lib/services';
+import AudioManager from '../../lib/methods/AudioManager';
+import { IMessagesViewProps, IParams } from './definitions';
+import { useAppSelector } from '../../lib/hooks';
+import useMessages from './hooks/useMessages';
+import getContentTestId from './methods/getContentTestId';
+import getEmptyMessage from './methods/getEmptyMessage';
+import getActionTitle from './methods/getActionTitle';
+import getActionIcon from './methods/getActionIcon';
+import { TIconsName } from '../../containers/CustomIcon';
 
 const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const rid: string = route.params?.rid;
 	const t: SubscriptionType = route.params?.t;
-
+	const screenName: string = route.params?.name;
+	const testID = getContentTestId({ screenName });
+	const emptyMessage = getEmptyMessage({ screenName });
 	const { theme } = useTheme();
+	const { showActionSheet } = useActionSheet();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
 		baseUrl: state.server.server,
 		user: getUserSelector(state),
@@ -31,6 +41,81 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		useRealName: state.settings.UI_Use_Real_Name as boolean,
 		isMasterDetail: state.app.isMasterDetail
 	}));
+	const { messages, loading, loadMore, updateMessagesOnActionPress } = useMessages({ rid, t, screenName, userId: user.id });
+
+	const setHeader = () => {
+		navigation.setOptions({
+			title: I18n.t(screenName)
+		});
+	};
+
+	const handleShowActionSheet = (message: IMessage) => {
+		const title = getActionTitle(screenName) as string;
+		const icon = getActionIcon(screenName, message) as TIconsName;
+		showActionSheet({
+			options: [
+				{
+					title,
+					icon,
+					onPress: () => handleActionPress(message)
+				}
+			],
+			hasCancel: true
+		});
+	};
+
+	const handleActionPress = async (message: IMessage) => {
+		try {
+			let result: any;
+			switch (screenName) {
+				case 'Pinned':
+					result = await Services.togglePinMessage(message._id, message.pinned);
+					break;
+				case 'Starred':
+					result = await Services.toggleStarMessage(message._id, message.starred);
+					break;
+			}
+
+			if (result.success) {
+				updateMessagesOnActionPress(message?._id);
+			}
+		} catch {
+			// Do nothing
+		}
+	};
+
+	const showAttachment = (attachment: IAttachment) => {
+		navigation.navigate('AttachmentView', { attachment });
+	};
+
+	const navToRoomInfo = (navParam: IRoomInfoParam) => {
+		navigation.navigate('RoomInfoView', navParam);
+	};
+
+	const jumpToMessage = async ({ item }: { item: IMessage }) => {
+		let params: IParams = {
+			rid,
+			jumpToMessageId: item._id,
+			t
+		};
+
+		if (item.tmid) {
+			if (isMasterDetail) {
+				navigation.navigate('DrawerNavigator');
+			} else {
+				navigation.pop(2);
+			}
+			params = {
+				...params,
+				tmid: item.tmid,
+				name: await getThreadName(rid, item.tmid, item._id),
+				t: SubscriptionType.THREAD
+			};
+			navigation.push('RoomView', params);
+		} else {
+			navigation.navigate('RoomView', params);
+		}
+	};
 
 	const getCustomEmoji: TGetCustomEmoji = name => {
 		const emoji = customEmojis[name];
@@ -40,14 +125,8 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		return null;
 	};
 
-	const setHeader = () => {
-		navigation.setOptions({
-			title: I18n.t(route.params?.name)
-		});
-	};
-
-	const defineMessagesViewContent = (name: string) => {
-		const renderItemCommonProps = (item: TAnyMessageModel) => ({
+	const renderItem = ({ item }: { item: any }) => {
+		const renderItemCommonProps = {
 			item,
 			baseUrl,
 			user,
@@ -63,108 +142,57 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 			navToRoomInfo,
 			onPress: () => jumpToMessage({ item }),
 			rid
-		});
+		};
 
-		return {
-			// Files Messages Screen
-			Files: {
-				name: I18n.t('Files'),
-				fetchFunc: async () => {
-					const result = await Services.getFiles(rid, t, messages.length);
-					if (result.success) {
-						return { ...result, messages: await Encryption.decryptFiles(result.files) };
-					}
-				},
-				noDataMsg: I18n.t('No_files'),
-				testID: 'room-files-view',
-				renderItem: (item: any) => (
-					<Message
-						{...renderItemCommonProps(item)}
-						theme={theme}
-						item={{
-							...item,
-							u: item.user,
-							ts: item.ts || item.uploadedAt,
-							attachments: [
-								{
-									title: item.name,
-									description: item.description,
-									...item,
-									...getFileUrlAndTypeFromMessage(item)
-								}
-							]
-						}}
-					/>
-				)
-			},
-			// Mentions Messages Screen
-			Mentions: {
-				name: I18n.t('Mentions'),
-				fetchFunc: () => Services.getMessages(rid, t, { 'mentions._id': { $in: [user.id] } }, messages.length),
-				noDataMsg: I18n.t('No_mentioned_messages'),
-				testID: 'mentioned-messages-view',
-				renderItem: (item: TAnyMessageModel) => <Message {...renderItemCommonProps(item)} msg={item.msg} theme={theme} />
-			},
-			// Starred Messages Screen
-			Starred: {
-				name: I18n.t('Starred'),
-				fetchFunc: () => Services.getMessages(rid, t, { 'starred._id': { $in: [user.id] } }, messages.length),
-				noDataMsg: I18n.t('No_starred_messages'),
-				testID: 'starred-messages-view',
-				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => onLongPress(item)} theme={theme} />
-				),
-				action: (message: IMessage) => ({
-					title: I18n.t('Unstar'),
-					icon: message.starred ? 'star-filled' : 'star',
-					onPress: () => handleActionPress('STAR', message)
-				})
-			},
-			// Pinned Messages Screen
-			Pinned: {
-				name: I18n.t('Pinned'),
-				fetchFunc: () => Services.getMessages(rid, t, { pinned: true }, messages.length),
-				noDataMsg: I18n.t('No_pinned_messages'),
-				testID: 'pinned-messages-view',
-				renderItem: (item: TAnyMessageModel) => (
-					<Message {...renderItemCommonProps(item)} msg={item.msg} onLongPress={() => onLongPress(item)} theme={theme} />
-				),
-				action: (message: IMessage) => ({
-					title: I18n.t('Unpin'),
-					icon: 'pin',
-					onPress: () => handleActionPress('PIN', message)
-				})
-			}
-		}[name];
+		if (screenName === 'Files') {
+			return (
+				<Message
+					{...renderItemCommonProps}
+					theme={theme}
+					item={{
+						...item,
+						u: item.user,
+						ts: item.ts || item.uploadedAt,
+						attachments: [
+							{
+								title: item.name,
+								description: item.description,
+								...item,
+								...getFileUrlAndTypeFromMessage(item)
+							}
+						]
+					}}
+				/>
+			);
+		}
+
+		if (screenName === 'Pinned' || screenName === 'Starred') {
+			return <Message {...renderItemCommonProps} msg={item.msg} theme={theme} onLongPress={() => handleShowActionSheet(item)} />;
+		}
+
+		return <Message {...renderItemCommonProps} msg={item.msg} theme={theme} />;
 	};
 
-	const content: any = defineMessagesViewContent(route.params.name);
+	useLayoutEffect(() => {
+		setHeader();
 
-	const { loading, messages, loadMore, updateMessagesOnActionPress } = useMessages({ setHeader, fetchFunc: content.fetchFunc });
-	const { handleActionPress, onLongPress, jumpToMessage, navToRoomInfo, showAttachment } = useMessagesActions({
-		content,
-		isMasterDetail,
-		navigation,
-		rid,
-		t,
-		updateMessagesOnActionPress
-	});
-
-	const renderItem = ({ item }: { item: IMessage }) => content?.renderItem(item);
+		return () => {
+			AudioManager.pauseAudio();
+		};
+	}, []);
 
 	if (!loading && messages.length === 0) {
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={content?.testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{content?.noDataMsg}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={testID}>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{emptyMessage}</Text>
 			</View>
 		);
 	}
 
 	return (
-		<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={content?.testID}>
+		<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={testID}>
 			<StatusBar />
 			<FlatList
-				extraData={content}
 				data={messages}
 				renderItem={renderItem}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
