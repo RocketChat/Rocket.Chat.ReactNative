@@ -1,6 +1,6 @@
 import EJSON from 'ejson';
 import isEmpty from 'lodash/isEmpty';
-import { DDPSDK } from '@rocket.chat/ddp-client';
+import { ClientStream, DDPSDK } from '@rocket.chat/ddp-client';
 import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -19,22 +19,25 @@ class Sdk {
 		} ${DeviceInfo.getSystemVersion()}; v${DeviceInfo.getVersion()} (${DeviceInfo.getBuildNumber()})`
 	};
 
-	async initialize(server: string) {
+	async initialize(server: string): Promise<DDPSDK> {
 		this.sdk = await DDPSDK.create(server);
 		this.setBasicAuth();
 		this.sdk.rest.handleTwoFactorChallenge(this.twoFactorHandler);
 		return this.sdk;
 	}
 
+	private ensureInitialized(): DDPSDK {
+		if (!this.current) {
+			throw new Error('SDK not initialized');
+		}
+		return this.current;
+	}
+
 	get current() {
 		return this.sdk;
 	}
 
-	/**
-	 * TODO: evaluate the need for assigning "null" to this.sdk
-	 * I'm returning "null" because we need to remove both instances of this.sdk here and on rocketchat.js
-	 */
-	disconnect() {
+	disconnect(): null {
 		if (this.sdk) {
 			this.sdk.connection.close();
 			this.sdk = undefined;
@@ -57,37 +60,41 @@ class Sdk {
 		return this.headers;
 	}
 
-	get(endpoint: string, params: any): any {
-		return this.current?.rest.get(endpoint, params, { headers: this.headers });
-	}
-
-	post(endpoint: string, params: any): Promise<any> {
-		return new Promise(async (resolve, reject) => {
-			const isMethodCall = endpoint?.match('/method.call/');
-			try {
-				const result = await this.current?.rest.post(endpoint, params, { headers: this.headers });
-
-				/**
-				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
-				 * responses have a different object structure
-				 */
-				if (isMethodCall) {
-					const response = JSON.parse(result.message);
-					if (response?.error) {
-						throw response.error;
-					}
-					return resolve(response.result);
-				}
-				return resolve(result);
-			} catch (e: any) {
-				reject(e);
+	get: DDPSDK['rest']['get'] = (...args: Parameters<DDPSDK['rest']['get']>) => {
+		const [endpoint, params, options] = args;
+		const sdk = this.ensureInitialized();
+		return sdk.rest.get(endpoint, params, {
+			...options,
+			headers: {
+				...this.headers,
+				...options?.headers
 			}
 		});
-	}
+	};
 
-	delete(endpoint: string, params: any): any {
-		return this.current?.rest.delete(endpoint, params, { headers: this.headers });
-	}
+	post: DDPSDK['rest']['post'] = (...args: Parameters<DDPSDK['rest']['post']>) => {
+		const [endpoint, params, options] = args;
+		const sdk = this.ensureInitialized();
+		return sdk.rest.post(endpoint, params, {
+			...options,
+			headers: {
+				...this.headers,
+				...options?.headers
+			}
+		});
+	};
+
+	delete: DDPSDK['rest']['delete'] = (...args: Parameters<DDPSDK['rest']['delete']>) => {
+		const [endpoint, params, options] = args;
+		const sdk = this.ensureInitialized();
+		return sdk.rest.delete(endpoint, params, {
+			...options,
+			headers: {
+				...this.headers,
+				...options?.headers
+			}
+		});
+	};
 
 	async twoFactorHandler({
 		method,
@@ -113,7 +120,7 @@ class Sdk {
 		}
 	}
 
-	methodCall(...args: any[]): Promise<any> {
+	methodCall(...args: Parameters<ClientStream['callAsyncWithOptions']>) {
 		return new Promise(async (resolve, reject) => {
 			try {
 				const result = await this.current?.client.callAsyncWithOptions(...args, this.code || '');
@@ -140,7 +147,6 @@ class Sdk {
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
-			// @ts-ignore
 			return this.post(`/v1/${url}/${method}`, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
 			});
@@ -151,32 +157,35 @@ class Sdk {
 			}
 			return param;
 		});
+		// @ts-ignore
 		return this.methodCall(method, ...parsedParams);
 	}
 
-	subscribe(...args: any[]) {
+	subscribe(...args: Parameters<ClientStream['subscribe']>) {
 		return this.current?.client.subscribe(...args);
 	}
 
-	onCollection(...args: any[]) {
+	onCollection(...args: Parameters<ClientStream['onCollection']>) {
 		return this.current?.client.onCollection(...args);
 	}
 
-	stream(...args: any[]) {
+	stream(...args: Parameters<DDPSDK['stream']>) {
 		return this.current?.stream(...args);
 	}
 
 	_stream(name: string, data: unknown, cb: (...data: any) => void) {
 		const [key, args] = Array.isArray(data) ? data : [data];
+
 		if (!this.current) {
-			return;
+			return { stop: () => {} };
 		}
+
 		const subscription = this.current.client.subscribe(`stream-${name}`, key, { useCollection: false, args: [args] });
 
 		const stop = subscription.stop.bind(subscription);
 		const cancel = [
 			() => stop(),
-			this.current.client.onCollection(`stream-${name}`, (data: any) => {
+			this.current?.client.onCollection(`stream-${name}`, (data: any) => {
 				if (data.collection !== `stream-${name}`) {
 					return;
 				}
