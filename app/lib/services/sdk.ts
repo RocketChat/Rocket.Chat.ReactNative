@@ -142,14 +142,19 @@ class Sdk {
 		});
 	}
 
-	methodCallWrapper(method: string, ...params: any[]): Promise<any> {
+	async methodCallWrapper(method: string, ...params: any[]): Promise<any> {
 		const { API_Use_REST_For_DDP_Calls } = reduxStore.getState().settings;
 		const { user } = reduxStore.getState().login;
 		if (API_Use_REST_For_DDP_Calls) {
 			const url = isEmpty(user) ? 'method.callAnon' : 'method.call';
-			return this.post(`/v1/${url}/${method}`, {
+			const result = (await this.post(`/v1/${url}/${method}`, {
 				message: EJSON.stringify({ msg: 'method', id: random(10), method, params })
-			});
+			})) as any;
+			const response = JSON.parse(result.message) as any;
+			if (response?.error) {
+				throw response.error;
+			}
+			return response.result;
 		}
 		const parsedParams = params.map(param => {
 			if (param instanceof Date) {
