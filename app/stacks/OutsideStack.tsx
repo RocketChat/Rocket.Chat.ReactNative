@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
-import { themes } from '../lib/constants';
 // Outside Stack
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
@@ -55,8 +54,7 @@ const OutsideStackModal = () => {
 			screenOptions={{
 				...defaultHeader,
 				...themedHeader(theme),
-				presentation: 'containedTransparentModal',
-				navigationBarColor: themes[theme].surfaceLight
+				presentation: 'containedTransparentModal'
 			}}>
 			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
 			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} />
