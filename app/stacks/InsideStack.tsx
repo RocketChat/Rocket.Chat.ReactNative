@@ -89,7 +89,6 @@ import {
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
-import { themes } from '../lib/constants';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
@@ -304,8 +303,7 @@ const InsideStackNavigator = () => {
 			screenOptions={{
 				...defaultHeader,
 				...themedHeader(theme),
-				presentation: 'containedModal',
-				navigationBarColor: themes[theme].surfaceLight
+				presentation: 'containedModal'
 			}}>
 			<InsideStack.Screen name='DrawerNavigator' component={DrawerNavigator} options={{ headerShown: false }} />
 			<InsideStack.Screen name='NewMessageStackNavigator' component={NewMessageStackNavigator} options={{ headerShown: false }} />
