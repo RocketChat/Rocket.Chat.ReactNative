@@ -715,8 +715,6 @@ export const getMessages = ({
 		params.pinned = pinned;
 	}
 
-	console.log(params);
-
 	// RC 0.59.0
 	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
