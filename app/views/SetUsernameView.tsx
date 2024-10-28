@@ -22,6 +22,7 @@ import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 import { useAppSelector } from '../lib/hooks';
+import sdk from '../lib/services/sdk';
 
 const styles = StyleSheet.create({
 	loginTitle: {
@@ -73,7 +74,7 @@ const SetUsernameView = () => {
 		}
 		setLoading(true);
 		try {
-			await Services.saveUserProfile({ username });
+			await sdk.post('/v1/users.updateOwnBasicInfo', { data: { username } });
 			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));

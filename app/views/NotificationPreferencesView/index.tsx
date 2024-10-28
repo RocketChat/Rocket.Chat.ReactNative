@@ -2,6 +2,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { Notifications } from '@rocket.chat/rest-typings';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -14,12 +15,12 @@ import { useAppSelector } from '../../lib/hooks';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
 import Switch from '../../containers/Switch';
+import sdk from '../../lib/services/sdk';
 
 type TOptions = keyof typeof OPTIONS;
 type TRoomNotifications = keyof IRoomNotifications;
@@ -118,11 +119,16 @@ const NotificationPreferencesView = (): React.ReactElement => {
 		}
 	};
 
-	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
+	const saveNotificationSettings = async (
+		key: TUnionOptionsRoomNotifications,
+		params: Partial<Notifications>,
+		onError: Function
+	) => {
 		try {
 			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}`]);
-			await Services.saveNotificationSettings(rid, params);
+			// @ts-ignore
+			await sdk.post('/v1/rooms.saveNotification', { roomId: rid, notifications: params });
 		} catch (e) {
 			// @ts-ignore
 			logEvent(events[`NP_${key.toUpperCase()}_F`]);

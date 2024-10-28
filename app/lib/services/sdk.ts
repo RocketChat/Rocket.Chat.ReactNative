@@ -120,9 +120,10 @@ class Sdk {
 		}
 	}
 
-	methodCall(...args: Parameters<ClientStream['callAsyncWithOptions']>) {
+	methodCall(...args: any[]) {
 		return new Promise(async (resolve, reject) => {
 			try {
+				// @ts-ignore
 				const result = await this.current?.client.callAsyncWithOptions(...args, this.code || '');
 				return resolve(result);
 			} catch (e: any) {

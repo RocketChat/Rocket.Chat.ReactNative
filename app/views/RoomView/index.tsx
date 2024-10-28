@@ -1041,7 +1041,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (joinCodeRequired) {
 					this.joinCode.current?.show();
 				} else {
-					await Services.joinRoom(rid, null, this.t as any);
+					await Services.joinRoom(rid, undefined, this.t as any);
 					this.onJoin();
 				}
 			}

@@ -118,7 +118,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				const updatedUser = yield sdk.post('/v1/users.updateOwnBasicInfo', { customFields: registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
 			}
 		}

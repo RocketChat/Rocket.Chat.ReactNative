@@ -17,12 +17,14 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
+import { ICustomFields, IInputsRefs, ITitle, ILivechat } from '../definitions/ILivechatEditView';
 import { IApplicationState, IUser } from '../definitions';
 import { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
+import sdk from '../lib/services/sdk';
 import { Services } from '../lib/services';
-import { usePermissions } from '../lib/hooks';
+import { useAppSelector, usePermissions } from '../lib/hooks';
+import { compareServerVersion } from '../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -58,8 +60,9 @@ const Title = ({ title, theme }: ITitle) =>
 const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
+	const { version: serverVersion } = useAppSelector(state => state.server);
 
-	const params = {} as TParams;
+	const params = {};
 	const inputs = {} as IInputsRefs;
 
 	const livechat = (route.params?.room ?? {}) as ILivechat;
@@ -118,6 +121,16 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		}
 	};
 
+	const editLivechat = (userData: any, roomData: any): Promise<{ error?: string }> => {
+		if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
+			// RC 0.55.0
+			return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+		}
+		// RC 5.3.0
+		// @ts-ignore
+		return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData });
+	};
+
 	const submit = async () => {
 		const userData = { _id: visitor?._id } as TParams;
 
@@ -160,7 +173,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 			delete userData.phone;
 		}
 
-		const { error } = await Services.editLivechat(userData, roomData);
+		const { error } = await editLivechat(userData, roomData);
 		if (error) {
 			EventEmitter.emit(LISTENER, { message: error });
 		} else {

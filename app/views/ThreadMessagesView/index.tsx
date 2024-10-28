@@ -6,6 +6,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Observable, Subscription } from 'rxjs';
 
+import sdk from '../../lib/services/sdk';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -312,13 +313,14 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getThreadsList({
+			const result = await sdk.get('/v1/chat.getThreadsList', {
 				rid: this.rid,
+				type: 'all',
 				count: API_FETCH_COUNT,
 				offset,
 				text: searchText
 			});
-			if (result.success) {
+			if (result) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
 				this.setState({
 					loading: false,
@@ -337,11 +339,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getSyncThreadsList({
+			const result = await sdk.get('/v1/chat.syncThreadsList', {
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
-			if (result.success && result.threads) {
+			if (result && result.threads) {
 				const { update, remove } = result.threads;
 				this.updateThreads({ update, remove, lastThreadSync: updatedSince });
 			}

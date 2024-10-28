@@ -1,3 +1,5 @@
+import type { IPushTokenTypes } from '@rocket.chat/core-typings';
+
 import {
 	IAvatarSuggestion,
 	IMessage,
@@ -5,18 +7,14 @@ import {
 	IPreviewItem,
 	IProfileParams,
 	IRoom,
-	IRoomNotifications,
 	IServerRoom,
 	IUser,
 	RoomType,
 	SubscriptionType
 } from '../../definitions';
-import { TParams } from '../../definitions/ILivechatEditView';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import { ISpotlight } from '../../definitions/ISpotlight';
 import { TEAM_TYPE } from '../../definitions/ITeam';
-import { OperationParams, ResultFor } from '../../definitions/rest/helpers';
-import { SubscriptionsEndpoints } from '../../definitions/rest/v1/subscriptions';
 import { Encryption } from '../encryption';
 import { RoomTypes, roomTypeToApiType, unsubscribeRooms } from '../methods';
 import { compareServerVersion, getBundleId, isIOS } from '../methods/helpers';
@@ -70,24 +68,25 @@ export const e2eSetRoomKeyID = (rid: string, keyID: string) =>
 	// RC 0.70.0
 	sdk.post('/v1/e2e.setRoomKeyID', { rid, keyID });
 
-export const e2eUpdateGroupKey = (uid: string, rid: string, key: string): any =>
+export const e2eUpdateGroupKey = (uid: string, rid: string, key: string) =>
 	// RC 0.70.0
 	sdk.post('/v1/e2e.updateGroupKey', { uid, rid, key });
 
-export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<{ message: { msg?: string }; success: boolean }> =>
+export const e2eRequestRoomKey = (rid: string, e2eKeyId: string): Promise<any> =>
 	// RC 0.70.0
 	sdk.methodCall('stream-notify-room-users', `${rid}/e2ekeyRequest`, rid, e2eKeyId);
 
-export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
+export const e2eAcceptSuggestedGroupKey = (rid: string) =>
 	// RC 5.5
 	sdk.post('/v1/e2e.acceptSuggestedGroupKey', { rid });
 
-export const e2eRejectSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
+export const e2eRejectSuggestedGroupKey = (rid: string) =>
 	// RC 5.5
 	sdk.post('/v1/e2e.rejectSuggestedGroupKey', { rid });
 
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
+	// @ts-ignore TODO: does this exist?
 	sdk.post('/v1/video-conference/jitsi.update-timeout', { roomId });
 
 export const register = (credentials: { name: string; email: string; pass: string; username: string }) =>
@@ -235,23 +234,22 @@ export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const serverVersion = reduxStore.getState().server.version;
-	let params;
 	if (type === 'c') {
 		// https://github.com/RocketChat/Rocket.Chat/pull/25279
-		params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
+		const params = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '4.8.0')
 			? { channelId: rid }
 			: {
 					channelId: rid,
 					channelName: name
 			  };
-	} else {
-		params = {
-			roomId: rid,
-			roomName: name
-		};
+		// @ts-ignore Backwards compatibility breaking ts
+		return sdk.post('/v1/channels.convertToTeam', params);
 	}
-
-	return sdk.post(type === 'c' ? '/v1/channels.convertToTeam' : '/v1/groups.convertToTeam', params);
+	const params = {
+		roomId: rid,
+		roomName: name
+	};
+	return sdk.post('/v1/groups.convertToTeam', params);
 };
 
 export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; selected: string[] }) => {
@@ -262,7 +260,7 @@ export const convertTeamToChannel = ({ teamId, selected }: { teamId: string; sel
 	return sdk.post('/v1/teams.convertToChannel', params);
 };
 
-export const joinRoom = (roomId: string, joinCode: string | null, type: 'c' | 'p') => {
+export const joinRoom = (roomId: string, joinCode: string | undefined, type: 'c' | 'p') => {
 	// RC 0.48.0
 	if (type === 'p') {
 		return sdk.methodCallWrapper('joinRoom', roomId) as Promise<boolean>;
@@ -317,20 +315,15 @@ export const setReaction = (emoji: string, messageId: string) =>
 	sdk.post('/v1/chat.react', { emoji, messageId });
 
 export const toggleReadStatus = (isRead: boolean, roomId: string, includeThreads?: boolean) => {
-	let endpoint: string;
-	let payload: any;
-
 	if (isRead) {
-		endpoint = '/v1/subscriptions.unread';
-	} else {
-		endpoint = '/v1/subscriptions.read';
-		payload = { rid: roomId };
-		if (includeThreads) {
-			payload.readThreads = includeThreads;
-		}
+		return sdk.post('/v1/subscriptions.unread', { roomId });
+	}
+	const payload: any = { rid: roomId };
+	if (includeThreads) {
+		payload.readThreads = includeThreads;
 	}
 
-	return sdk.post(endpoint, payload);
+	return sdk.post('/v1/subscriptions.read', payload);
 };
 
 export const getRoomCounters = (
@@ -344,9 +337,9 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('/v1/channels.info', { roomId });
 
-export const getUserPreferences = (userId: string) =>
+export const getUserPreferences = () =>
 	// RC 0.62.0
-	sdk.get('/v1/users.getPreferences', { userId });
+	sdk.get('/v1/users.getPreferences');
 
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
@@ -400,16 +393,6 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
-export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> => {
-	const serverVersion = reduxStore.getState().server.version;
-	if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
-		// RC 0.55.0
-		return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
-	}
-	// RC 5.3.0
-	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
-};
-
 export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
 	sdk.methodCallWrapper('livechat:returnAsInquiry', rid);
@@ -422,6 +405,7 @@ export const forwardLivechat = (transferData: any) =>
 
 export const getDepartmentInfo = (departmentId: string) =>
 	// RC 2.2.0
+	// @ts-ignore
 	sdk.get(`/v1/livechat/department/${departmentId}?includeAgents=false`);
 
 export const getDepartments = (args?: { count: number; offset: number; text: string }) => {
@@ -459,6 +443,7 @@ export const getTagsList = (): Promise<ILivechatTag[]> =>
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
+	// @ts-ignore
 	sdk.get(`/v1/livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
 
 export const getCustomFields = () =>
@@ -572,7 +557,7 @@ export const removeUserFromRoom = ({ roomId, t, userId }: { roomId: string; t: R
 	// RC 0.48.0
 	sdk.post(`/v1/${roomTypeToApiType(t)}.kick`, { roomId, userId });
 
-export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: boolean }) =>
+export const ignoreUser = ({ rid, userId, ignore }: { rid: string; userId: string; ignore: string }) =>
 	// RC 0.64.0
 	sdk.get('/v1/chat.ignoreUser', { rid, userId, ignore });
 
@@ -609,20 +594,9 @@ export const saveRoomSettings = (
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
-export const saveUserProfile = (
-	data: IProfileParams | Pick<IProfileParams, 'username'>,
-	customFields?: { [key: string | number]: string }
-) =>
-	// RC 0.62.2
-	sdk.post('/v1/users.updateOwnBasicInfo', { data, customFields });
-
 export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
 	// RC 0.62.0
 	sdk.post('/v1/users.setPreferences', { data });
-
-export const saveNotificationSettings = (roomId: string, notifications: IRoomNotifications) =>
-	// RC 0.63.0
-	sdk.post('/v1/rooms.saveNotification', { roomId, notifications });
 
 export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0
@@ -665,7 +639,7 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	return sdk.get(`/v1/${roomTypeToApiType(t)}.files`, {
 		roomId,
 		offset,
-		sort: { uploadedAt: -1 }
+		sort: '{"uploadedAt": -1}'
 	});
 };
 
@@ -677,11 +651,12 @@ export const getMessages = (
 ) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
 	// RC 0.59.0
+	// @ts-ignore
 	return sdk.get(`/v1/${roomTypeToApiType(t)}.messages`, {
 		roomId,
 		query,
 		offset,
-		sort: { ts: -1 }
+		sort: '{ "ts": -1 }'
 	});
 };
 
@@ -708,35 +683,11 @@ export const toggleFollowMessage = (mid: string, follow: boolean) => {
 	return sdk.post('/v1/chat.unfollowMessage', { mid });
 };
 
-export const getThreadsList = ({ rid, count, offset, text }: { rid: string; count: number; offset: number; text?: string }) => {
-	const params = {
-		rid,
-		count,
-		offset
-	} as { rid: string; count: number; offset: number; text?: string };
-	if (text) {
-		params.text = text;
-	}
-
-	// RC 1.0
-	return sdk.get('/v1/chat.getThreadsList', params);
-};
-
 export const getSyncThreadsList = ({ rid, updatedSince }: { rid: string; updatedSince: string }) =>
 	// RC 1.0
 	sdk.get('/v1/chat.syncThreadsList', {
 		rid,
 		updatedSince
-	});
-
-export const runSlashCommand = (command: string, roomId: string, params: string, triggerId?: string, tmid?: string) =>
-	// RC 0.60.2
-	sdk.post('/v1/commands.run', {
-		command,
-		roomId,
-		params,
-		triggerId,
-		...(tmid && { tmid })
 	});
 
 export const getCommandPreview = (command: string, roomId: string, params: string) =>
@@ -771,12 +722,13 @@ export const getDirectory = ({
 	offset,
 	sort
 }: {
-	query: { [key: string]: string };
+	query: any;
 	count: number;
 	offset: number;
 	sort: { [key: string]: number };
 }) =>
 	// RC 1.0
+	// @ts-ignore TODO: params changed on 7.0
 	sdk.get('/v1/directory', {
 		query,
 		count,
@@ -867,14 +819,14 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0
-	return sdk.post('/v1/chat.update', { roomId: rid, msgId: message.id, text: msg });
+	return sdk.post('/v1/chat.update', { roomId: rid, msgId: message.id, text: msg, customFields: {} }); // TODO: customFields required on ChatUpdate? why?
 };
 
 export const registerPushToken = () =>
 	new Promise<void>(async resolve => {
 		const token = getDeviceToken();
 		if (token) {
-			const type = isIOS ? 'apn' : 'gcm';
+			const type: IPushTokenTypes = isIOS ? 'apn' : 'gcm';
 			const data = {
 				value: token,
 				type,
@@ -963,10 +915,7 @@ export const e2eFetchMyKeys = async () => {
 	return result;
 };
 
-export const logoutOtherLocations = () => {
-	const { id } = reduxStore.getState().login.user;
-	return sdk.post('/v1/users.removeOtherTokens', { userId: id as string });
-};
+export const logoutOtherLocations = () => sdk.post('/v1/users.removeOtherTokens');
 
 export function getUserInfo(userId: string) {
 	// RC 0.48.0
@@ -999,7 +948,7 @@ export const deleteOwnAccount = (password: string, confirmRelinquish = false): a
 
 export const postMessage = (roomId: string, text: string) => sdk.post('/v1/chat.postMessage', { roomId, text });
 
-export const notifyUser = (type: string, params: Record<string, any>): Promise<boolean> =>
+export const notifyUser = (type: string, params: Record<string, any>): Promise<unknown> =>
 	sdk.methodCall('stream-notify-user', type, params);
 
 export const getUsersRoles = (): Promise<boolean> => sdk.methodCallWrapper('getUserRoles');

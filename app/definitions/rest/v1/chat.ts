@@ -36,18 +36,6 @@ export type ChatEndpoints = {
 			count: number;
 		};
 	};
-	'chat.getThreadsList': {
-		GET: (params: {
-			rid: IServerRoom['_id'];
-			type?: 'unread' | 'following' | 'all';
-			text?: string;
-			offset: number;
-			count: number;
-		}) => PaginatedResult<{
-			threads: IMessage[];
-			total: number;
-		}>;
-	};
 	'chat.syncThreadsList': {
 		GET: (params: { rid: IServerRoom['_id']; updatedSince: string }) => {
 			threads: {
