@@ -53,7 +53,7 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		EventEmitter.emit('INQUIRY_UNSUBSCRIBE');
 
 		await sdk.initialize(server);
-		console.log(sdk.current);
+		resolve();
 		getSettings();
 
 		sdk.current?.connection.on('connection', status => {
