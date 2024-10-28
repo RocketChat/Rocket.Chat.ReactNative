@@ -681,20 +681,44 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	});
 };
 
-export const getMessages = (
-	roomId: string,
-	type: SubscriptionType,
-	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
-	offset: number
-) => {
+export const getMessages = ({
+	roomId,
+	type,
+	offset,
+	starredIds,
+	mentionIds,
+	pinned
+}: {
+	roomId: string;
+	type: SubscriptionType;
+	offset: number;
+	mentionIds?: string[];
+	starredIds?: string[];
+	pinned?: boolean;
+}) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
-	// RC 0.59.0
-	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
+	const params: any = {
 		roomId,
-		query,
 		offset,
 		sort: { ts: -1 }
-	});
+	};
+
+	if (mentionIds && mentionIds.length > 0) {
+		params.mentionsId = mentionIds.join(',');
+	}
+
+	if (starredIds && starredIds.length > 0) {
+		params.starredId = starredIds.join(',');
+	}
+
+	if (pinned) {
+		params.pinned = pinned;
+	}
+
+	console.log(params);
+
+	// RC 0.59.0
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
 
 export const getReadReceipts = (messageId: string) =>
