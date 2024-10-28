@@ -111,9 +111,7 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 export async function getLoginSettings({ server }: { server: string }): Promise<void> {
 	try {
 		const settingsParams = JSON.stringify(loginSettings);
-		const result = await fetch(`${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`).then(response =>
-			response.json()
-		);
+		const result = await fetch(`${server}/api/v1/settings.public?_id=${settingsParams}`).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
@@ -159,7 +157,7 @@ export async function getSettings(): Promise<void> {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
 			const response = await fetch(
-				`${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}
+				`${sdk.current.client.host}/api/v1/settings.public?_id=${JSON.stringify(settingsParams)}
 				&offset=${offset}`
 			);
 

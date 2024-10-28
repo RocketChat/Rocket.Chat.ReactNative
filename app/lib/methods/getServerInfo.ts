@@ -121,7 +121,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 }
 
 const getUniqueId = async (server: string): Promise<string> => {
-	const response = await fetch(`${server}/api/v1/settings.public?query={"_id": "uniqueID"}`);
+	const response = await fetch(`${server}/api/v1/settings.public?_id=uniqueID`);
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };
