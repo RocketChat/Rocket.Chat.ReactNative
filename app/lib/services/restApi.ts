@@ -704,11 +704,11 @@ export const getMessages = ({
 	};
 
 	if (mentionIds && mentionIds.length > 0) {
-		params.mentionsId = mentionIds.join(',');
+		params.mentionIds = mentionIds.join(',');
 	}
 
 	if (starredIds && starredIds.length > 0) {
-		params.starredId = starredIds.join(',');
+		params.starredIds = starredIds.join(',');
 	}
 
 	if (pinned) {
