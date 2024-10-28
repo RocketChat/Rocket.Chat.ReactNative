@@ -9,13 +9,12 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
-import { INotificationPreferences } from '../../definitions';
-import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useUserPreferences } from '../../lib/methods';
+import sdk from '../../lib/services/sdk';
 import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
 import Switch from '../../containers/Switch';
 
@@ -24,9 +23,13 @@ type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
+interface IPreferencesState {
+	[x: string]: any;
+}
+
 const UserNotificationPreferencesView = () => {
 	const [inAppVibration, setInAppVibration] = useUserPreferences<boolean>(NOTIFICATION_IN_APP_VIBRATION, true);
-	const [preferences, setPreferences] = useState({} as INotificationPreferences);
+	const [preferences, setPreferences] = useState<IPreferencesState>({});
 	const [loading, setLoading] = useState(true);
 
 	const navigation = useNavigation<TNavigation>();
@@ -44,7 +47,7 @@ const UserNotificationPreferencesView = () => {
 	useEffect(() => {
 		async function getPreferences() {
 			try {
-				const result = await Services.getUserPreferences();
+				const result = await sdk.get('/v1/users.getPreferences');
 				if (result) {
 					setLoading(false);
 					setPreferences(result);
@@ -61,8 +64,8 @@ const UserNotificationPreferencesView = () => {
 		const previousPreferences = preferences;
 		try {
 			setPreferences({ ...previousPreferences, ...param });
-			const result = await Services.setUserPreferences(userId, param);
-			if (!result.success) {
+			const result = await sdk.post('/v1/users.setPreferences', { userId, data: param });
+			if (!result) {
 				setPreferences(previousPreferences);
 			}
 		} catch (error) {

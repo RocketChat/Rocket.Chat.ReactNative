@@ -337,10 +337,6 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('/v1/channels.info', { roomId });
 
-export const getUserPreferences = () =>
-	// RC 0.62.0
-	sdk.get('/v1/users.getPreferences');
-
 export const getRoomInfo = (roomId: string) =>
 	// RC 0.72.0
 	sdk.get('/v1/rooms.info', { roomId });
@@ -593,10 +589,6 @@ export const saveRoomSettings = (
 ): Promise<{ result: boolean; rid: string }> =>
 	// RC 0.55.0
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
-
-export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
-	// RC 0.62.0
-	sdk.post('/v1/users.setPreferences', { data });
 
 export const getSingleMessage = (msgId: string) =>
 	// RC 0.47.0

@@ -6,7 +6,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { sha256 } from 'js-sha256';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';

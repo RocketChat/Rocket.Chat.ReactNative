@@ -228,15 +228,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	updateThreads = async ({
-		update,
-		remove,
-		lastThreadSync
-	}: {
-		update: IMessage[];
-		remove?: IMessage[];
-		lastThreadSync: Date;
-	}) => {
+	updateThreads = async ({ update, remove, lastThreadSync }: { update: any[]; remove?: any[]; lastThreadSync: Date }) => {
 		const { subscription } = this.state;
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
@@ -313,9 +305,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
+			// @ts-ignore TODO: type is required on SDK, but fails on request
 			const result = await sdk.get('/v1/chat.getThreadsList', {
 				rid: this.rid,
-				type: 'all',
+				// type: 'all'
 				count: API_FETCH_COUNT,
 				offset,
 				text: searchText
@@ -324,6 +317,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 				this.updateThreads({ update: result.threads, lastThreadSync });
 				this.setState({
 					loading: false,
+					// @ts-ignore TODO: count actually exists on payload
 					end: result.count < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
