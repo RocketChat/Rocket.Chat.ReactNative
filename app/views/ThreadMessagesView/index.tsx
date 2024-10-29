@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { Subscription } from 'rxjs';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
@@ -99,7 +99,6 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		if (savedFilter) {
 			setCurrentFilter(savedFilter as Filter);
 		}
-		setHeader();
 	};
 
 	const showFilters = () => {
@@ -191,6 +190,10 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 
 	useEffect(() => {
 		initFilter();
+	}, []);
+
+	useEffect(() => {
+		setHeader();
 	}, [currentFilter]);
 
 	return (
