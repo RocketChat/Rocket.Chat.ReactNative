@@ -111,9 +111,9 @@ export const spotlight = (
 		? sdk.methodCallWrapper('spotlight', search, usernames, type, rid)
 		: sdk.methodCallWrapper('spotlight', search, usernames, type);
 
-export const createDirectMessage = (username: string) =>
-	// RC 0.59.0
-	sdk.post('/v1/im.create', { username });
+// export const createDirectMessage = (username: string) =>
+// 	// RC 0.59.0
+// 	sdk.post('/v1/im.create', { username });
 
 export const createDiscussion = ({
 	prid,
@@ -191,13 +191,13 @@ export const createTeam = ({
 	// RC 3.13.0
 	return sdk.post('/v1/teams.create', params);
 };
-export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
-	// RC 3.13.0
-	sdk.post('/v1/teams.addRooms', { teamId, rooms });
+// export const addRoomsToTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }) =>
+// 	// RC 3.13.0
+// 	sdk.post('/v1/teams.addRooms', { teamId, rooms });
 
-export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: string }) =>
-	// RC 3.13.0
-	sdk.post('/v1/teams.removeRoom', { roomId, teamId });
+// export const removeTeamRoom = ({ roomId, teamId }: { roomId: string; teamId: string }) =>
+// 	// RC 3.13.0
+// 	sdk.post('/v1/teams.removeRoom', { roomId, teamId });
 
 export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }): any =>
 	// RC 3.13.0
@@ -209,18 +209,18 @@ export const leaveTeam = ({ teamId, rooms }: { teamId: string; rooms: string[] }
 		...(rooms?.length && { rooms })
 	});
 
-export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }) =>
-	// RC 3.13.0
-	sdk.post('/v1/teams.removeMember', {
-		teamId,
-		userId,
-		// RC 4.2.0
-		...(rooms?.length && { rooms })
-	});
+// export const removeTeamMember = ({ teamId, userId, rooms }: { teamId: string; userId: string; rooms: string[] }) =>
+// RC 3.13.0
+// sdk.post('/v1/teams.removeMember', {
+// 	teamId,
+// 	userId,
+// 	// RC 4.2.0
+// 	...(rooms?.length && { rooms })
+// });
 
-export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }) =>
-	// RC 3.13.0
-	sdk.post('/v1/teams.updateRoom', { roomId, isDefault });
+// export const updateTeamRoom = ({ roomId, isDefault }: { roomId: string; isDefault: boolean }) =>
+// 	// RC 3.13.0
+// 	sdk.post('/v1/teams.updateRoom', { roomId, isDefault });
 
 export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToRemove: string[] }): any =>
 	// RC 3.13.0
@@ -228,9 +228,9 @@ export const deleteTeam = ({ teamId, roomsToRemove }: { teamId: string; roomsToR
 	// @ts-ignore
 	sdk.post('/v1/teams.delete', { teamId, roomsToRemove });
 
-export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
-	// RC 3.13.0
-	sdk.get('/v1/teams.listRoomsOfUser', { teamId, userId });
+// export const teamListRoomsOfUser = ({ teamId, userId }: { teamId: string; userId: string }) =>
+// 	// RC 3.13.0
+// 	sdk.get('/v1/teams.listRoomsOfUser', { teamId, userId });
 
 export const convertChannelToTeam = ({ rid, name, type }: { rid: string; name: string; type: 'c' | 'p' }) => {
 	const serverVersion = reduxStore.getState().server.version;
@@ -337,16 +337,16 @@ export const getChannelInfo = (roomId: string) =>
 	// RC 0.48.0
 	sdk.get('/v1/channels.info', { roomId });
 
-export const getRoomInfo = (roomId: string) =>
-	// RC 0.72.0
-	sdk.get('/v1/rooms.info', { roomId });
+// export const getRoomInfo = (roomId: string) =>
+// 	// RC 0.72.0
+// 	sdk.get('/v1/rooms.info', { roomId });
 
 export const getRoomByTypeAndName = (roomType: RoomType, roomName: string): Promise<IServerRoom> =>
 	sdk.methodCallWrapper('getRoomByTypeAndName', roomType, roomName);
 
-export const getVisitorInfo = (visitorId: string) =>
-	// RC 2.3.0
-	sdk.get('/v1/livechat/visitors.info', { visitorId });
+// export const getVisitorInfo = (visitorId: string) =>
+// 	// RC 2.3.0
+// 	sdk.get('/v1/livechat/visitors.info', { visitorId });
 
 export const setUserPresenceAway = () => sdk.methodCall('UserPresence:away');
 
@@ -399,10 +399,10 @@ export const forwardLivechat = (transferData: any) =>
 	// RC 0.36.0
 	sdk.methodCallWrapper('livechat:transfer', transferData);
 
-export const getDepartmentInfo = (departmentId: string) =>
-	// RC 2.2.0
-	// @ts-ignore
-	sdk.get(`/v1/livechat/department/${departmentId}?includeAgents=false`);
+// export const getDepartmentInfo = (departmentId: string) =>
+// 	// RC 2.2.0
+// 	// @ts-ignore
+// 	sdk.get(`/v1/livechat/department/${departmentId}?includeAgents=false`);
 
 export const getDepartments = (args?: { count: number; offset: number; text: string }) => {
 	let params;
@@ -567,9 +567,9 @@ export const toggleArchiveRoom = (roomId: string, t: SubscriptionType, archive: 
 	return sdk.post(`/v1/${roomTypeToApiType(type)}.unarchive`, { roomId });
 };
 
-export const hideRoom = (roomId: string, t: RoomTypes) =>
-	// RC 0.48.0
-	sdk.post(`/v1/${roomTypeToApiType(t)}.close`, { roomId });
+// export const hideRoom = (roomId: string, t: RoomTypes) =>
+// 	// RC 0.48.0
+// 	sdk.post(`/v1/${roomTypeToApiType(t)}.close`, { roomId });
 
 export const saveRoomSettings = (
 	rid: string,
@@ -621,9 +621,9 @@ export const setAvatarFromService = ({
 	// RC 0.51.0
 	sdk.methodCallWrapper('setAvatarFromService', data, contentType, service);
 
-export const getUsernameSuggestion = () =>
-	// RC 0.65.0
-	sdk.get('/v1/users.getUsernameSuggestion');
+// export const getUsernameSuggestion = () =>
+// 	// RC 0.65.0
+// 	sdk.get('/v1/users.getUsernameSuggestion');
 
 export const getFiles = (roomId: string, type: SubscriptionType, offset: number) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
@@ -652,20 +652,20 @@ export const getMessages = (
 	});
 };
 
-export const getReadReceipts = (messageId: string) =>
-	// RC 0.63.0
-	sdk.get('/v1/chat.getMessageReadReceipts', {
-		messageId
-	});
+// export const getReadReceipts = (messageId: string) =>
+// 	// RC 0.63.0
+// 	sdk.get('/v1/chat.getMessageReadReceipts', {
+// 		messageId
+// 	});
 
-export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
-	// RC 0.60.0
-	sdk.get('/v1/chat.search', {
-		roomId,
-		searchText,
-		count,
-		offset
-	});
+// export const searchMessages = (roomId: string, searchText: string, count: number, offset: number) =>
+// 	// RC 0.60.0
+// 	sdk.get('/v1/chat.search', {
+// 		roomId,
+// 		searchText,
+// 		count,
+// 		offset
+// 	});
 
 export const toggleFollowMessage = (mid: string, follow: boolean) => {
 	// RC 1.0
@@ -844,7 +844,7 @@ export const removePushToken = async (): Promise<boolean | void> => {
 };
 
 // RC 6.6.0
-export const pushTest = () => sdk.post('/v1/push.test');
+// export const pushTest = () => sdk.post('/v1/push.test');
 
 // RC 6.5.0
 export const pushInfo = () => sdk.get('/v1/push.info');
@@ -909,12 +909,12 @@ export const e2eFetchMyKeys = async () => {
 
 export const logoutOtherLocations = () => sdk.post('/v1/users.removeOtherTokens');
 
-export function getUserInfo(userId: string) {
-	// RC 0.48.0
-	return sdk.get('/v1/users.info', { userId });
-}
+// export function getUserInfo(userId: string) {
+// 	// RC 0.48.0
+// 	return sdk.get('/v1/users.info', { userId });
+// }
 
-export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('/v1/rooms.favorite', { roomId, favorite });
+// export const toggleFavorite = (roomId: string, favorite: boolean) => sdk.post('/v1/rooms.favorite', { roomId, favorite });
 
 export const videoConferenceJoin = (callId: string, cam?: boolean, mic?: boolean) =>
 	sdk.post('/v1/video-conference.join', { callId, state: { cam: !!cam, mic: mic === undefined ? true : mic } });

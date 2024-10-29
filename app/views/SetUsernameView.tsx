@@ -20,7 +20,6 @@ import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
-import { Services } from '../lib/services';
 import { useAppSelector } from '../lib/hooks';
 import sdk from '../lib/services/sdk';
 
@@ -60,8 +59,8 @@ const SetUsernameView = () => {
 
 	useEffect(() => {
 		const init = async () => {
-			const suggestion = await Services.getUsernameSuggestion();
-			if (suggestion.success) {
+			const suggestion = await sdk.get('/v1/users.getUsernameSuggestion');
+			if (suggestion) {
 				setValue('username', suggestion.result, { shouldValidate: true });
 			}
 		};

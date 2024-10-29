@@ -103,6 +103,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import sdk from '../../lib/services/sdk';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -624,8 +625,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const roomUserId = getUidDirectMessage(room);
 				this.setState({ roomUserId }, () => this.setHeader());
 
-				const result = await Services.getUserInfo(roomUserId);
-				if (result.success) {
+				const result = await sdk.get('/v1/users.info', { userId: roomUserId });
+				if (result) {
 					return result.user;
 				}
 			} catch (e) {
@@ -1526,7 +1527,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					/>
 					{this.renderFooter()}
 					{this.renderActions()}
-					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+					<UploadProgress rid={rid} baseUrl={baseUrl} width={width} />
 					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
 				</SafeAreaView>
 			</RoomContext.Provider>

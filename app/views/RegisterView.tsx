@@ -19,7 +19,7 @@ import { withTheme } from '../theme';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { Services } from '../lib/services';
+import sdk from '../lib/services/sdk';
 import UGCRules from '../containers/UserGeneratedContentRules';
 
 const styles = StyleSheet.create({
@@ -125,13 +125,13 @@ class RegisterView extends React.Component<IProps, any> {
 		const { dispatch, Accounts_EmailVerification, navigation, Accounts_ManuallyApproveNewUsers } = this.props;
 
 		try {
-			const user = await Services.register({
+			const user = await sdk.post('/v1/users.register', {
 				name,
 				email,
 				pass: password,
 				username
 			});
-			if (user.success) {
+			if (user) {
 				if (Accounts_EmailVerification) {
 					await navigation.goBack();
 					showErrorAlert(I18n.t('Verify_email_desc'), I18n.t('Registration_Succeeded'));

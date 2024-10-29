@@ -31,7 +31,7 @@ import styles from './styles';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
-import { RoomTypes, search } from '../../lib/methods';
+import { RoomTypes, roomTypeToApiType, search } from '../../lib/methods';
 import {
 	getRoomAvatar,
 	getRoomTitle,
@@ -47,6 +47,7 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import sdk from '../../lib/services/sdk';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -716,20 +717,18 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(favorite ? events.RL_UNFAVORITE_CHANNEL : events.RL_FAVORITE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await Services.toggleFavorite(rid, !favorite);
-			if (result.success) {
-				const subCollection = db.get('subscriptions');
-				await db.write(async () => {
-					try {
-						const subRecord = await subCollection.find(rid);
-						await subRecord.update(sub => {
-							sub.f = !favorite;
-						});
-					} catch (e) {
-						log(e);
-					}
-				});
-			}
+			await sdk.post('/v1/rooms.favorite', { roomId: rid, favorite: !favorite });
+			const subCollection = db.get('subscriptions');
+			await db.write(async () => {
+				try {
+					const subRecord = await subCollection.find(rid);
+					await subRecord.update(sub => {
+						sub.f = !favorite;
+					});
+				} catch (e) {
+					log(e);
+				}
+			});
 		} catch (e) {
 			logEvent(events.RL_TOGGLE_FAVORITE_F);
 			log(e);
@@ -742,25 +741,22 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		try {
 			const db = database.active;
 			const includeThreads = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0');
-			const result = await Services.toggleReadStatus(tIsRead, rid, includeThreads);
-
-			if (result.success) {
-				const subCollection = db.get('subscriptions');
-				await db.write(async () => {
-					try {
-						const subRecord = await subCollection.find(rid);
-						await subRecord.update(sub => {
-							sub.alert = tIsRead;
-							sub.unread = 0;
-							if (includeThreads) {
-								sub.tunread = [];
-							}
-						});
-					} catch (e) {
-						log(e);
-					}
-				});
-			}
+			await Services.toggleReadStatus(tIsRead, rid, includeThreads);
+			const subCollection = db.get('subscriptions');
+			await db.write(async () => {
+				try {
+					const subRecord = await subCollection.find(rid);
+					await subRecord.update(sub => {
+						sub.alert = tIsRead;
+						sub.unread = 0;
+						if (includeThreads) {
+							sub.tunread = [];
+						}
+					});
+				} catch (e) {
+					log(e);
+				}
+			});
 		} catch (e) {
 			logEvent(events.RL_TOGGLE_READ_F);
 			log(e);
@@ -771,18 +767,16 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		logEvent(events.RL_HIDE_CHANNEL);
 		try {
 			const db = database.active;
-			const result = await Services.hideRoom(rid, type as RoomTypes);
-			if (result.success) {
-				const subCollection = db.get('subscriptions');
-				await db.write(async () => {
-					try {
-						const subRecord = await subCollection.find(rid);
-						await subRecord.destroyPermanently();
-					} catch (e) {
-						log(e);
-					}
-				});
-			}
+			await sdk.post(`/v1/${roomTypeToApiType(type as RoomTypes)}.close`, { roomId: rid });
+			const subCollection = db.get('subscriptions');
+			await db.write(async () => {
+				try {
+					const subRecord = await subCollection.find(rid);
+					await subRecord.destroyPermanently();
+				} catch (e) {
+					log(e);
+				}
+			});
 		} catch (e) {
 			logEvent(events.RL_HIDE_CHANNEL_F);
 			log(e);

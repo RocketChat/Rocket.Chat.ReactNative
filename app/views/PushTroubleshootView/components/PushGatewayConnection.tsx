@@ -5,9 +5,9 @@ import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
 import { useAppSelector, usePermissions } from '../../../lib/hooks';
 import { compareServerVersion, showErrorAlertWithEMessage } from '../../../lib/methods/helpers';
-import { Services } from '../../../lib/services';
 import { useTheme } from '../../../theme';
 import CustomListSection from './CustomListSection';
+import sdk from '../../../lib/services/sdk';
 
 export default function PushGatewayConnection(): React.ReactElement | null {
 	const [loading, setLoading] = useState(false);
@@ -25,8 +25,8 @@ export default function PushGatewayConnection(): React.ReactElement | null {
 	const handleTestPushNotification = async () => {
 		setLoading(true);
 		try {
-			const result = await Services.pushTest();
-			if (result.success) {
+			const result = await sdk.post('/v1/push.test');
+			if (result) {
 				Alert.alert(i18n.t('Test_push_notification'), i18n.t('Your_push_was_sent_to_s_devices', { s: result.tokensCount }));
 			}
 		} catch (error: any) {

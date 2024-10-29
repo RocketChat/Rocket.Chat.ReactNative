@@ -62,7 +62,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	const [availableUserTags, setAvailableUserTags] = useState<string[]>([]);
 	const { version: serverVersion } = useAppSelector(state => state.server);
 
-	const params = {};
+	const params = {} as any;
 	const inputs = {} as IInputsRefs;
 
 	const livechat = (route.params?.room ?? {}) as ILivechat;
@@ -74,8 +74,8 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	);
 
 	const getCustomFields = async () => {
-		const result = await Services.getCustomFields();
-		if (result.success && result.customFields?.length) {
+		const result = await sdk.get('/v1/livechat/custom-fields');
+		if (result && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
 				.filter(field => field.visibility !== 'hidden' && field.scope === 'visitor')
 				.map(field => ({ [field._id]: (visitor.livechatData && visitor.livechatData[field._id]) || '' }))
@@ -114,30 +114,30 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	};
 
 	const handleGetAgentDepartments = async () => {
-		const result = await Services.getAgentDepartments(visitor?._id);
-		if (result.success) {
+		const result = await sdk.get(`/v1/livechat/agents/${visitor?._id}/departments`, { enabledDepartmentsOnly: 'true' });
+		if (result) {
 			const agentDepartments = result.departments.map(dept => dept.departmentId);
 			handleGetTagsList(agentDepartments);
 		}
 	};
 
-	const editLivechat = (userData: any, roomData: any): Promise<{ error?: string }> => {
+	const editLivechat = (userData: any, roomData: any) => {
 		if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
 			// RC 0.55.0
 			return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
 		}
 		// RC 5.3.0
-		// @ts-ignore
+		// @ts-ignore TODO: fix this
 		return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData });
 	};
 
 	const submit = async () => {
-		const userData = { _id: visitor?._id } as TParams;
+		const userData: any = { _id: visitor?._id };
 
 		const { rid } = livechat;
 		const sms = livechat?.sms;
 
-		const roomData = { _id: rid } as TParams;
+		const roomData: any = { _id: rid };
 
 		if (params.name) {
 			userData.name = params.name;

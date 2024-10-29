@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { Observable, Subscription } from 'rxjs';
 
+import sdk from '../../lib/services/sdk';
 import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { IApplicationState, ISubscription, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
@@ -259,9 +260,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		let tagsList: ILivechatTag[] | undefined;
 
 		if (departmentId) {
-			const result = await Services.getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
+			const result = await sdk.get(`/v1/livechat/department/${departmentId}`, { includeAgents: 'false' });
+			if (result) {
+				// @ts-ignore TODO: find a way to make this work
+				departmentInfo = result.department;
 			}
 		}
 

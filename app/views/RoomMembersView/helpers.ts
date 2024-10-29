@@ -1,6 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { Alert } from 'react-native';
 
+import sdk from '../../lib/services/sdk';
 import { LISTENER } from '../../containers/Toast';
 import { IGetRoomRoles, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
@@ -29,7 +30,7 @@ export const fetchRoomMembersRoles = async (roomType: TRoomType, rid: string, up
 	try {
 		const type = roomType;
 		const result = await Services.getRoomRoles(rid, type);
-		if (result?.success) {
+		if (result) {
 			updateState({ roomRoles: result.roles });
 		}
 	} catch (e) {
@@ -86,8 +87,8 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 			const [room] = query;
 			handleGoRoom(room, isMasterDetail);
 		} else {
-			const result = await Services.createDirectMessage(item.username);
-			if (result.success) {
+			const result = await sdk.post('/v1/im.create', { username: item.username });
+			if (result) {
 				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
 			}
 		}
@@ -105,20 +106,19 @@ const removeFromTeam = async (
 ) => {
 	try {
 		const userId = selectedUser._id;
-		const result = await Services.removeTeamMember({
+		await sdk.post('/v1/teams.removeMember', {
 			teamId: room.teamId,
 			userId,
+			// RC 4.2.0
 			...(selected && { rooms: selected })
 		});
-		if (result.success) {
-			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
-			EventEmitter.emit(LISTENER, { message });
-			const newMembers = members.filter(member => member._id !== userId);
-			updateState({
-				members: newMembers
-			});
-			appNavigation.navigate('RoomMembersView', { room });
-		}
+		const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
+		EventEmitter.emit(LISTENER, { message });
+		const newMembers = members.filter(member => member._id !== userId);
+		updateState({
+			members: newMembers
+		});
+		appNavigation.navigate('RoomMembersView', { room });
 	} catch (e: any) {
 		log(e);
 		showErrorAlert(

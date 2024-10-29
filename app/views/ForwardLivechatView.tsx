@@ -10,6 +10,7 @@ import { IServerRoom } from '../definitions';
 import I18n from '../i18n';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
 import { Services } from '../lib/services';
+import sdk from '../lib/services/sdk';
 import { TNavigation } from '../stacks/stackType';
 import { useTheme } from '../theme';
 import { IOptionsField } from './NotificationPreferencesView/options';
@@ -40,7 +41,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 	const getDepartments = async (text = '', offset = 0) => {
 		try {
 			const result = await Services.getDepartments({ count: COUNT_DEPARTMENT, text, offset });
-			if (result.success) {
+			if (result) {
 				const parsedDepartments = result.departments.map(department => ({
 					label: department.name,
 					value: department._id
@@ -60,11 +61,12 @@ const ForwardLivechatView = (): React.ReactElement => {
 		try {
 			const { servedBy: { _id: agentId } = {} } = room;
 			const _id = agentId && { $ne: agentId };
-			const result = await Services.usersAutoComplete({
+			// @ts-ignore query changes?
+			const result = await sdk.get('/v1/users.autocomplete', {
 				conditions: { _id, status: { $ne: 'offline' }, statusLivechat: 'available' },
 				term
 			});
-			if (result.success) {
+			if (result) {
 				const parsedUsers = result.items.map(user => ({ label: user.username, value: user._id }));
 				if (!term) {
 					setUsers(parsedUsers);
@@ -78,9 +80,9 @@ const ForwardLivechatView = (): React.ReactElement => {
 
 	const getRoom = async () => {
 		try {
-			const result = await Services.getRoomInfo(rid);
-			if (result.success) {
-				setRoom(result.room as IServerRoom);
+			const result = await sdk.get('/v1/rooms.info', { roomId: rid });
+			if (result.room) {
+				setRoom(result.room as any);
 			}
 		} catch {
 			// do nothing

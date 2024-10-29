@@ -55,6 +55,7 @@ import { TNavigation } from '../../stacks/stackType';
 import Switch from '../../containers/Switch';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
+import sdk from '../../lib/services/sdk';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -192,9 +193,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					}
 				} else {
 					try {
-						const result = await Services.getChannelInfo(room.rid);
-						if (result.success) {
-							// @ts-ignore
+						const result = await sdk.get('/v1/channels.info', { roomId: room.rid });
+						if (result) {
+							// @ts-ignore find a way to fix this
 							this.setState({ room: { ...result.channel, rid: result.channel._id } });
 						}
 					} catch (e) {
@@ -206,7 +207,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			if (room && room.t !== 'd' && (await this.canViewMembers())) {
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
-					if (counters.success) {
+					if (counters.members) {
 						await this.updateUsersCount(counters.members);
 						this.setState({ joined: counters.joined });
 					}
@@ -382,9 +383,10 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		let tagsList: ILivechatTag[] | undefined;
 
 		if (departmentId) {
-			const result = await Services.getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
+			const result = await sdk.get(`/v1/livechat/department/${departmentId}`, { includeAgents: 'false' });
+			if (result) {
+				// @ts-ignore
+				departmentInfo = result.department;
 			}
 		}
 
@@ -441,8 +443,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			if (!isGroupChat(room)) {
 				const roomUserId = getUidDirectMessage(room);
-				const result = await Services.getUserInfo(roomUserId);
-				if (result.success) {
+				const result = await sdk.get('/v1/users.info', { userId: roomUserId });
+				if (result) {
 					this.setState({ member: result.user as any });
 				}
 			}
@@ -511,9 +513,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				return;
 			}
 			this.setState({ loading: true });
-			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
+			const result = await sdk.get('/v1/teams.listRoomsOfUser', { teamId: room.teamId, userId });
 
-			if (result.success) {
+			if (result) {
 				if (result.rooms?.length) {
 					const teamChannels = result.rooms.map(r => ({
 						rid: r._id,
@@ -546,8 +548,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				return;
 			}
 			const result = await Services.convertTeamToChannel({ teamId: room.teamId, selected });
-
-			if (result.success) {
+			if (result) {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
@@ -574,7 +575,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				return;
 			}
 			this.setState({ loading: true });
-			const result = await Services.teamListRoomsOfUser({ teamId: room.teamId, userId });
+			const result = await sdk.get('/v1/teams.listRoomsOfUser', { teamId: room.teamId, userId });
 
 			if (result.success) {
 				if (result.rooms?.length) {
@@ -582,6 +583,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						rid: r._id,
 						name: r.name,
 						teamId: r.teamId,
+						// @ts-ignore fix type on server?
 						alert: r.isLastOwner
 					}));
 					navigation.navigate('SelectListView', {
@@ -614,9 +616,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await Services.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
-
-			if (result.success) {
+			// @ts-ignore fix room type
+			const result = await Services.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t });
+			if (result) {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {
@@ -639,8 +641,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		try {
 			const { room } = this.state;
 			const { navigation } = this.props;
-			const result = await Services.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
-			if (result.success) {
+			const result = await sdk.post('/v1/teams.addRooms', { teamId: selected?.[0], rooms: [room.rid] });
+			if (result) {
 				navigation.navigate('RoomView');
 			}
 		} catch (e) {

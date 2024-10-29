@@ -285,8 +285,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 								width
 							},
 							this.getThreadId(thread),
-							server,
-							{ id: user.id, token: user.token }
+							server
 						);
 					})
 				);

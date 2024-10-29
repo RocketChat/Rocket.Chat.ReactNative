@@ -17,7 +17,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import { ChatsStackParamList } from '../../stacks/types';
 import { IApplicationState, IReadReceipts } from '../../definitions';
-import { Services } from '../../lib/services';
+import sdk from '../../lib/services/sdk';
 
 interface IReadReceiptViewState {
 	loading: boolean;
@@ -85,9 +85,12 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getReadReceipts(this.messageId);
-			if (result.success) {
+			const result = await sdk.get('/v1/chat.getMessageReadReceipts', {
+				messageId: this.messageId
+			});
+			if (result) {
 				this.setState({
+					// @ts-ignore fix local type
 					receipts: result.receipts,
 					loading: false
 				});

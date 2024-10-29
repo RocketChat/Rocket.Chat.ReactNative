@@ -10,7 +10,7 @@ import UAParser from 'ua-parser-js';
 import * as HeaderButton from '../../containers/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import { ISubscription, IUser, SubscriptionType } from '../../definitions';
+import { ISubscription, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import { useAppSelector } from '../../lib/hooks';
@@ -18,6 +18,7 @@ import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/meth
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import sdk from '../../lib/services/sdk';
 import { Services } from '../../lib/services';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -125,8 +126,8 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadVisitor = async () => {
 		try {
 			if (room?.visitor?._id) {
-				const result = await Services.getVisitorInfo(room.visitor._id);
-				if (result.success) {
+				const result = await sdk.get('/v1/livechat/visitors.info', { visitorId: room.visitor._id });
+				if (result) {
 					const { visitor } = result;
 					const params: { os?: string; browser?: string } = {};
 					if (visitor.userAgent) {
@@ -146,7 +147,8 @@ const RoomInfoView = (): React.ReactElement => {
 
 	const parseRoles = (roleArray: string[]) => roleArray.map(role => roles[role]);
 
-	const handleRoles = (user: Pick<IUser, 'username' | 'roles'>) => {
+	const handleRoles = (user: any) => {
+		// TODO: how to type this?
 		const rrr = (() => {
 			const userRoles = usersRoles.find(u => u?.username === user.username);
 			let r: string[] = [];
@@ -164,8 +166,8 @@ const RoomInfoView = (): React.ReactElement => {
 		if (isEmpty(roomUser)) {
 			try {
 				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
-				const result = await Services.getUserInfo(roomUserId);
-				if (result.success) {
+				const result = await sdk.get('/v1/users.info', { userId: roomUserId });
+				if (result) {
 					const { user } = result;
 					const r = handleRoles(user);
 					setRoomUser({ ...user, roles: r });
@@ -201,8 +203,11 @@ const RoomInfoView = (): React.ReactElement => {
 		} else {
 			try {
 				if (!isDirect) {
-					const result = await Services.getRoomInfo(rid);
-					if (result.success) setRoom({ ...room, ...(result.room as unknown as ISubscription) });
+					const result = await sdk.get('/v1/rooms.info', { roomId: rid });
+					if (result) {
+						// @ts-ignore how to type this?
+						setRoom({ ...room, ...result.room });
+					}
 				}
 			} catch (e) {
 				log(e);
@@ -217,8 +222,10 @@ const RoomInfoView = (): React.ReactElement => {
 			// We don't need to create a direct
 			if (!isEmpty(member)) return resolve();
 			try {
-				const result = await Services.createDirectMessage(roomUser.username);
-				if (result.success) return resolve({ ...roomUser, rid: result.room.rid });
+				const result = await sdk.post('/v1/im.create', { username: roomUser.username });
+				if (result) {
+					return resolve({ ...roomUser, rid: result.room.rid });
+				}
 			} catch (e) {
 				reject(e);
 			}
