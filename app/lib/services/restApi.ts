@@ -720,7 +720,6 @@ export const getMessages = ({
 
 		return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 	}
-
 	const params: any = {
 		roomId,
 		offset,
