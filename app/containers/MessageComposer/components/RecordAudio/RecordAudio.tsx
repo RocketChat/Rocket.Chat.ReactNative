@@ -3,7 +3,6 @@ import React, { ReactElement, useEffect, useRef } from 'react';
 import { Audio } from 'expo-av';
 import { getInfoAsync } from 'expo-file-system';
 import { useKeepAwake } from 'expo-keep-awake';
-import { shallowEqual } from 'react-redux';
 
 import { useTheme } from '../../../../theme';
 import { BaseButton } from '../Buttons';
@@ -32,7 +31,6 @@ export const RecordAudio = (): ReactElement | null => {
 	const { setRecordingAudio } = useMessageComposerApi();
 	const { rid, tmid } = useRoomContext();
 	const server = useAppSelector(state => state.server.server);
-	const user = useAppSelector(state => ({ id: state.login.user.id, token: state.login.user.token }), shallowEqual);
 	const permissionToUpload = useCanUploadFile(rid);
 	useKeepAwake();
 
@@ -108,7 +106,7 @@ export const RecordAudio = (): ReactElement | null => {
 
 			if (fileInfo) {
 				if (permissionToUpload) {
-					await sendFileMessage(rid, fileInfo, tmid, server, user);
+					await sendFileMessage(rid, fileInfo, tmid, server);
 				}
 			}
 		} catch (e) {

@@ -4,7 +4,7 @@ import { getSubscriptionByRoomId } from '../../database/services/Subscription';
 import Navigation from '../../navigation/appNavigation';
 import { IOmnichannelRoom, SubscriptionType, IVisitor, TSubscriptionModel, ISubscription } from '../../../definitions';
 import { getRoomTitle, getUidDirectMessage } from './helpers';
-import { Services } from '../../services';
+import sdk from '../../services/sdk';
 import { emitErrorCreateDirectMessage } from './emitErrorCreateDirectMessage';
 
 interface IGoRoomItem {
@@ -100,8 +100,11 @@ export const goRoom = async ({
 		// if user is using the search we need first to join/create room
 		try {
 			const { username } = item;
-			const result = await Services.createDirectMessage(username as string);
-			if (result.success && result?.room?._id) {
+			if (!username) {
+				return;
+			}
+			const result = await sdk.post('/v1/im.create', { username });
+			if (result?.room?._id) {
 				return navigate({
 					item: {
 						rid: result.room._id,

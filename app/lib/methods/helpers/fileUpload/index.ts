@@ -1,4 +1,3 @@
-import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
 import { Upload } from './Upload';
 import { IFormData } from './definitions';
 
@@ -16,7 +15,8 @@ class FileUpload {
 		data.forEach(item => this.upload.appendFile(item));
 	}
 
-	public send(): Promise<TRoomsMediaResponse> {
+	public send(): Promise<any> {
+		// TODO: type return
 		return this.upload.send();
 	}
 

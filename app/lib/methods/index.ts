@@ -8,11 +8,9 @@ export * from './getCustomEmojis';
 export * from './getPermalinks';
 export * from './getPermissions';
 export * from './getRoles';
-// export * from './getRoom'; only used inside methods folder
 export * from './getRoomInfo';
 export * from './getRooms';
 export * from './getSettings';
-export * from './getSingleMessage';
 export * from './getSlashCommands';
 export * from './getThreadName';
 export * from './getUsersPresence';

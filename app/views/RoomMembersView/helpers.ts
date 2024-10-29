@@ -135,9 +135,12 @@ export const handleRemoveFromTeam = async (
 	members: TUserModel[]
 ): Promise<void> => {
 	try {
-		const result = await Services.teamListRoomsOfUser({ teamId: room.teamId as string, userId: selectedUser._id });
+		if (!room.teamId) {
+			return;
+		}
+		const result = await sdk.get('/v1/teams.listRoomsOfUser', { teamId: room.teamId, userId: selectedUser._id });
 
-		if (result.success) {
+		if (result) {
 			if (result.rooms?.length) {
 				const teamChannels = result.rooms.map((r: any) => ({
 					rid: r._id,

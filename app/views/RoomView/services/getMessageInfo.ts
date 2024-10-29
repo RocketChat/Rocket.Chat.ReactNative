@@ -1,7 +1,7 @@
+import { Services } from '../../../lib/services';
 import { TMessageModel, TThreadMessageModel } from '../../../definitions';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { getThreadMessageById } from '../../../lib/database/services/ThreadMessage';
-import getSingleMessage from '../../../lib/methods/getSingleMessage';
 
 const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThreadMessageModel | any | null> => {
 	const message = await getMessageById(messageId);
@@ -24,7 +24,7 @@ const getMessageInfo = async (messageId: string): Promise<TMessageModel | TThrea
 		};
 	}
 
-	const singleMessage: any = await getSingleMessage(messageId);
+	const singleMessage: any = await Services.getSingleMessage(messageId);
 	if (singleMessage) {
 		return {
 			id: singleMessage._id,

@@ -82,22 +82,24 @@ export const handlePayloadUserInteraction = (
 
 export function triggerAction({ type, actionId, appId, rid, mid, viewId, container, ...rest }: ITriggerAction) {
 	return new Promise<ModalActions | undefined | void>(async (resolve, reject) => {
+		if (!appId) {
+			return reject();
+		}
 		const triggerId = generateTriggerId(appId);
 
 		const payload = rest.payload || rest;
 
 		try {
-			const result = await sdk.post(`/apps/ui.interaction/${appId}/`, {
-				body: JSON.stringify({
-					type,
-					actionId,
-					payload,
-					container,
-					mid,
-					rid,
-					triggerId,
-					viewId
-				})
+			// @ts-ignore TODO: we're going to refactor everything related to UIKit on Yash work
+			const result = await sdk.post(`/apps/ui.interaction/${appId}`, {
+				type,
+				actionId,
+				payload,
+				container,
+				mid,
+				rid,
+				triggerId,
+				viewId
 			});
 
 			try {

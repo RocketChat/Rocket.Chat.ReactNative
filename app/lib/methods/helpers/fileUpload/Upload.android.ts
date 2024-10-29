@@ -1,6 +1,5 @@
 import * as FileSystem from 'expo-file-system';
 
-import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
 import { IFormData } from './definitions';
 
 export class Upload {
@@ -43,7 +42,8 @@ export class Upload {
 		}
 	}
 
-	public send(): Promise<TRoomsMediaResponse> {
+	public send(): Promise<any> {
+		// TODO: type return
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (!this.file) {

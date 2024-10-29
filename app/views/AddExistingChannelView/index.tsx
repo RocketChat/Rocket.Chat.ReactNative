@@ -19,8 +19,8 @@ import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
-import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
+import sdk from '../../lib/services/sdk';
 
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
@@ -129,8 +129,8 @@ const AddExistingChannelView = () => {
 		sendLoadingEvent({ visible: true });
 		try {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM);
-			const result = await Services.addRoomsToTeam({ rooms: selected, teamId });
-			if (result.success) {
+			const result = await sdk.post('/v1/teams.addRooms', { teamId, rooms: selected });
+			if (result) {
 				sendLoadingEvent({ visible: false });
 				// Expect that after you add an existing channel to a team, the user should move back to the team
 				navigation.navigate('RoomView');

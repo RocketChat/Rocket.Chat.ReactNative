@@ -123,18 +123,21 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		// RC 4.1
-		sdk.onCollection('stream-user-presence', (ddpMessage: { fields: { args?: any; uid?: any } }) => {
-			const userStatus = ddpMessage.fields.args[0];
-			const { uid } = ddpMessage.fields;
-			const [, status, statusText] = userStatus;
-			const newStatus = { status: STATUSES[status], statusText };
-			// @ts-ignore
-			store.dispatch(setActiveUsers({ [uid]: newStatus }));
+		sdk.onCollection('stream-user-presence', ddpMessage => {
+			if (ddpMessage.msg === 'added' || ddpMessage.msg === 'changed') {
+				if (!ddpMessage.fields) {
+					return;
+				}
+				const userStatus = ddpMessage.fields.args[0];
+				const { uid } = ddpMessage.fields;
+				const [, status, statusText] = userStatus;
+				const newStatus = { status: STATUSES[status], statusText };
+				store.dispatch(setActiveUsers({ [uid]: newStatus }));
 
-			const { user: loggedUser } = store.getState().login;
-			if (loggedUser && loggedUser.id === uid) {
-				// @ts-ignore
-				store.dispatch(setUser(newStatus));
+				const { user: loggedUser } = store.getState().login;
+				if (loggedUser && loggedUser.id === uid) {
+					store.dispatch(setUser(newStatus));
+				}
 			}
 		});
 

@@ -3,7 +3,6 @@ import type { IPushTokenTypes } from '@rocket.chat/core-typings';
 import {
 	IAvatarSuggestion,
 	IMessage,
-	INotificationPreferences,
 	IPreviewItem,
 	IProfileParams,
 	IRoom,
@@ -272,9 +271,9 @@ export const deleteMessage = (messageId: string, rid: string) =>
 	// RC 0.48.0
 	sdk.post('/v1/chat.delete', { msgId: messageId, roomId: rid });
 
-export const markAsUnread = ({ messageId }: { messageId: string }) =>
-	// RC 0.65.0
-	sdk.post('/v1/subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
+// export const markAsUnread = ({ messageId }: { messageId: string }) =>
+// 	// RC 0.65.0
+// 	sdk.post('/v1/subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
 
 export const toggleStarMessage = (messageId: string, starred?: boolean) => {
 	if (starred) {
@@ -302,9 +301,9 @@ export const reportMessage = (messageId: string) =>
 	// RC 0.64.0
 	sdk.post('/v1/chat.reportMessage', { messageId, description: 'Message reported by user' });
 
-export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
-	// RC 0.62.0
-	sdk.post('/v1/users.setPreferences', { userId, data });
+// export const setUserPreferences = (userId: string, data: Partial<INotificationPreferences>) =>
+// 	// RC 0.62.0
+// 	sdk.post('/v1/users.setPreferences', { userId, data });
 
 export const setUserStatus = (status: string, message: string) =>
 	// RC 1.2.0
@@ -439,8 +438,7 @@ export const getTagsList = (): Promise<ILivechatTag[]> =>
 
 export const getAgentDepartments = (uid: string) =>
 	// RC 2.4.0
-	// @ts-ignore
-	sdk.get(`/v1/livechat/agents/${uid}/departments?enabledDepartmentsOnly=true`);
+	sdk.get(`/v1/livechat/agents/${uid}/departments`, { enabledDepartmentsOnly: 'true' });
 
 export const getCustomFields = () =>
 	// RC 2.2.0

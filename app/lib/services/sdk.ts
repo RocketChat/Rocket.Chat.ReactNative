@@ -120,7 +120,7 @@ class Sdk {
 		}
 	}
 
-	methodCall(...args: any[]) {
+	methodCall(...args: any[]): Promise<any> {
 		return new Promise(async (resolve, reject) => {
 			try {
 				// @ts-ignore
