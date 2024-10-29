@@ -59,14 +59,6 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseSubs
 			});
 
 			if (result.success) {
-				if (!subscription._id) {
-					setThreads([...threads, ...result.threads] as TThreadModel[]);
-					setLoading(false);
-					setEnd(result.count < API_FETCH_COUNT);
-					setOffset(offset + API_FETCH_COUNT);
-					return;
-				}
-
 				updateThreads({ subscription, update: result.threads, lastThreadSync: lastThreadSync ?? new Date() });
 				setLoading(false);
 				setEnd(result.count < API_FETCH_COUNT);
@@ -127,7 +119,7 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseSubs
 	useLayoutEffect(() => {
 		init();
 		handleThreadsSubscription({});
-	}, []);
+	}, [subscription]);
 
 	return {
 		loading,

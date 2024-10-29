@@ -4,16 +4,14 @@ import { Subscription } from 'rxjs';
 import { IUser, TSubscriptionModel } from '../../../definitions';
 import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
-import { Filter } from '../filters';
 
 interface IUseSubscriptionProps {
 	user: IUser;
 	rid: string;
-	currentFilter: Filter;
 	threadsSubscription: React.MutableRefObject<Subscription | null>;
 }
 
-const useSubscription = ({ rid, currentFilter, threadsSubscription }: IUseSubscriptionProps) => {
+const useSubscription = ({ rid, threadsSubscription }: IUseSubscriptionProps) => {
 	const subSubscription = useRef<any | null>(null);
 
 	const [subscription, setSubscription] = useState<TSubscriptionModel>({} as TSubscriptionModel);
@@ -48,7 +46,7 @@ const useSubscription = ({ rid, currentFilter, threadsSubscription }: IUseSubscr
 		return () => {
 			unsubscribeMessages();
 		};
-	}, [currentFilter]);
+	}, []);
 
 	return {
 		subscription

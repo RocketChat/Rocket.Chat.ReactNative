@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList } from 'react-native';
 import { Subscription } from 'rxjs';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
@@ -49,7 +49,7 @@ const ThreadMessagesView = ({ navigation, route }: IThreadMessagesViewProps) => 
 		useRealName: state.settings.UI_Use_Real_Name as boolean,
 		isMasterDetail: state.app.isMasterDetail
 	}));
-	const { subscription } = useSubscription({ rid, currentFilter, user, threadsSubscription });
+	const { subscription } = useSubscription({ rid, user, threadsSubscription });
 	const { threads, loading, loadMore, handleThreadsSubscription } = useThreads({
 		currentFilter,
 		threadsSubscription,
