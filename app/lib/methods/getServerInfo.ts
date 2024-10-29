@@ -9,6 +9,7 @@ import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
+import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 
 interface IServerInfoFailure {
@@ -121,7 +122,11 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 }
 
 const getUniqueId = async (server: string): Promise<string> => {
-	const response = await fetch(`${server}/api/v1/settings.public?_id=uniqueID`);
+	const serverVersion = store.getState().server.version;
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? `${server}/api/v1/settings.public?_id=uniqueID`
+		: `${server}/api/v1/settings.public?query={"_id": "uniqueID"}`;
+	const response = await fetch(url);
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };

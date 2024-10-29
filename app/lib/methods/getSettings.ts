@@ -12,6 +12,7 @@ import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
+import { compareServerVersion } from './helpers';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -109,9 +110,13 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 };
 
 export async function getLoginSettings({ server }: { server: string }): Promise<void> {
+	const serverVersion = reduxStore.getState().server.version;
+	const settingsParams = JSON.stringify(loginSettings);
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? `${server}/api/v1/settings.public?_id=${settingsParams}`
+		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const settingsParams = JSON.stringify(loginSettings);
-		const result = await fetch(`${server}/api/v1/settings.public?_id=${settingsParams}`).then(response => response.json());
+		const result = await fetch(url).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
@@ -151,15 +156,18 @@ export async function getSettings(): Promise<void> {
 		let offset = 0;
 		let remaining;
 		let settings: IData[] = [];
+		const serverVersion = reduxStore.getState().server.version;
+		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+			? `${sdk.current.client.host}/api/v1/settings.public?_id=${JSON.stringify(settingsParams)}
+				&offset=${offset}`
+			: `${sdk.current.client.host}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}
+				&offset=${offset}`;
 
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
-			const response = await fetch(
-				`${sdk.current.client.host}/api/v1/settings.public?_id=${JSON.stringify(settingsParams)}
-				&offset=${offset}`
-			);
+			const response = await fetch(url);
 
 			const result = await response.json();
 
