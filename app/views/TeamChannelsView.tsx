@@ -78,6 +78,10 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	moveRoomToTeamPermission: string[];
 	editTeamChannelPermission: string[];
 	removeTeamChannelPermission: string[];
+	createCPermission: string[];
+	createTeamChannelPermission: string[];
+	createPPermission: string[];
+	createTeamGroupPermission: string[];
 	deleteCPermission: string[];
 	deletePPermission: string[];
 	deleteTeamChannelPermission: string[];
@@ -117,13 +121,24 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	}
 
 	hasCreatePermission = async () => {
-		const { addTeamChannelPermission, moveRoomToTeamPermission, serverVersion } = this.props;
+		const {
+			addTeamChannelPermission,
+			moveRoomToTeamPermission,
+			serverVersion,
+			createCPermission,
+			createPPermission,
+			createTeamChannelPermission,
+			createTeamGroupPermission
+		} = this.props;
 		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
-			const result = await hasPermission([moveRoomToTeamPermission], this.team.rid);
-			return result[0];
+			const createPermissions =
+				this.team.t === 'c' ? [createCPermission, createTeamChannelPermission] : [createPPermission, createTeamGroupPermission];
+			const result = await hasPermission([moveRoomToTeamPermission, ...createPermissions], this.team.rid);
+			return result.some(Boolean);
 		}
-		const result = await hasPermission([addTeamChannelPermission], this.team.rid);
-		return result[0];
+		const createPermissions = this.team.t === 'c' ? [createCPermission] : [createPPermission];
+		const result = await hasPermission([addTeamChannelPermission, ...createPermissions], this.team.rid);
+		return result.some(Boolean);
 	};
 
 	loadTeam = async () => {
@@ -231,7 +246,9 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						<HeaderButton.Item
 							iconName='create'
 							testID='team-channels-view-create'
-							onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId })}
+							onPress={() =>
+								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
+							}
 						/>
 					) : null}
 					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
@@ -569,7 +586,10 @@ const mapStateToProps = (state: IApplicationState) => ({
 	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
-	deleteCPermission: state.permissions['delete-c'],
+	createCPermission: state.permissions['create-c'],
+	createTeamChannelPermission: state.permissions['create-team-channel'],
+	createPPermission: state.permissions['create-p'],
+	createTeamGroupPermission: state.permissions['create-team-group'],
 	deleteTeamChannelPermission: state.permissions['delete-team-channel'],
 	deletePPermission: state.permissions['delete-p'],
 	deleteTeamGroupPermission: state.permissions['delete-team-group'],

@@ -63,6 +63,8 @@ export const SUPPORTED_PERMISSIONS = [
 	'call-management',
 	'test-push-notifications',
 	'move-room-to-team',
+	'create-team-channel',
+	'create-team-group',
 	'delete-team-channel',
 	'delete-team-group'
 ] as const;
