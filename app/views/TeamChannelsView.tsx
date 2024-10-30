@@ -80,6 +80,8 @@ interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamC
 	removeTeamChannelPermission: string[];
 	deleteCPermission: string[];
 	deletePPermission: string[];
+	deleteTeamChannelPermission: string[];
+	deleteTeamGroupPermission: string[];
 	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
 	displayMode: DisplayMode;
@@ -415,6 +417,20 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		);
 	};
 
+	hasDeletePermission = async (rid: string, t: 'c' | 'p') => {
+		const { serverVersion, deleteCPermission, deletePPermission, deleteTeamChannelPermission, deleteTeamGroupPermission } =
+			this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const permissions =
+				t === 'c' ? [deleteTeamChannelPermission, deleteTeamGroupPermission] : [deletePPermission, deletePPermission];
+			const result = await hasPermission(permissions, rid);
+			return result[0] && result[1];
+		}
+
+		const result = await hasPermission([t === 'c' ? deleteCPermission : deletePPermission], rid);
+		return result[0];
+	};
+
 	showChannelActions = async (item: IItem) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
@@ -554,7 +570,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
 	deleteCPermission: state.permissions['delete-c'],
+	deleteTeamChannelPermission: state.permissions['delete-team-channel'],
 	deletePPermission: state.permissions['delete-p'],
+	deleteTeamGroupPermission: state.permissions['delete-team-group'],
 	showAvatar: state.sortPreferences.showAvatar,
 	displayMode: state.sortPreferences.displayMode
 });

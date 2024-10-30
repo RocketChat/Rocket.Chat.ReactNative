@@ -16,7 +16,6 @@ export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-p-room',
 	'add-user-to-joined-room',
 	'add-team-channel',
-	'move-room-to-team',
 	'archive-room',
 	'auto-translate',
 	'create-invite-links',
@@ -62,7 +61,10 @@ export const SUPPORTED_PERMISSIONS = [
 	'mobile-upload-file',
 	'delete-own-message',
 	'call-management',
-	'test-push-notifications'
+	'test-push-notifications',
+	'move-room-to-team',
+	'delete-team-channel',
+	'delete-team-group'
 ] as const;
 
 export async function setPermissions(): Promise<void> {
