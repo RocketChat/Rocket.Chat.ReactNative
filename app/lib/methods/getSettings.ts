@@ -109,17 +109,14 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 	});
 };
 
-export async function getLoginSettings({ server }: { server: string }): Promise<void> {
+export async function getLoginSettings({ server, serverVersion }: { server: string; serverVersion: string }): Promise<void> {
 	const settingsParams = JSON.stringify(loginSettings);
 
-	const workspaceVersionUrlV7OrHigher = `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`;
-	const workspaceVersionUrl = `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
+		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		let result = await fetch(workspaceVersionUrlV7OrHigher).then(response => response.json());
-		if (result.total > loginSettings.length) {
-			const tryingLowerVersions = await fetch(workspaceVersionUrl).then(response => response.json());
-			result = tryingLowerVersions;
-		}
+		const result = await fetch(url).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
