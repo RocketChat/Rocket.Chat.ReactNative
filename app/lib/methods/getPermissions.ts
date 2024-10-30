@@ -16,6 +16,7 @@ export const SUPPORTED_PERMISSIONS = [
 	'add-user-to-any-p-room',
 	'add-user-to-joined-room',
 	'add-team-channel',
+	'move-room-to-team',
 	'archive-room',
 	'auto-translate',
 	'create-invite-links',

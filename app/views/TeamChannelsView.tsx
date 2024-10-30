@@ -21,13 +21,12 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
-import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS } from '../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
@@ -71,10 +70,12 @@ interface ITeamChannelsViewState {
 }
 
 interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamChannelsView'> {
+	serverVersion: string;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;
 	addTeamChannelPermission: string[];
+	moveRoomToTeamPermission: string[];
 	editTeamChannelPermission: string[];
 	removeTeamChannelPermission: string[];
 	deleteCPermission: string[];
@@ -113,8 +114,17 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		this.load();
 	}
 
+	hasCreatePermission = async () => {
+		const { addTeamChannelPermission, moveRoomToTeamPermission, serverVersion } = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const result = await hasPermission([moveRoomToTeamPermission], this.team.rid);
+			return result[0];
+		}
+		const result = await hasPermission([addTeamChannelPermission], this.team.rid);
+		return result[0];
+	};
+
 	loadTeam = async () => {
-		const { addTeamChannelPermission } = this.props;
 		const { loading, data } = this.state;
 
 		const db = database.active;
@@ -128,8 +138,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				throw new Error();
 			}
 
-			const permissions = await hasPermission([addTeamChannelPermission], this.team.rid);
-			if (permissions[0]) {
+			const hasCreatePermission = await this.hasCreatePermission();
+			if (hasCreatePermission) {
 				this.setState({ showCreate: true }, () => this.setHeader());
 			}
 
@@ -535,12 +545,12 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
+	serverVersion: state.server.version,
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions['add-team-channel'],
+	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
 	deleteCPermission: state.permissions['delete-c'],
