@@ -87,7 +87,7 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`)
 			});
-			waitFor(element(by[textMatcher]('Unauthorized')))
+			await waitFor(element(by[textMatcher]('Unauthorized')))
 				.toExist()
 				.withTimeout(30000);
 		});
