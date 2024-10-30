@@ -297,7 +297,6 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 		enableMessageParserEarlyAdoption = result.me.settings?.preferences?.enableMessageParserEarlyAdoption ?? true;
 		showMessageInMainThread = result.me.settings?.preferences?.showMessageInMainThread ?? true;
 	}
-
 	if (result) {
 		const user: ILoggedUser = {
 			id: result.userId,

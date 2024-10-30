@@ -540,7 +540,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
-	addTeamChannelPermission: state.permissions['add-team-channel'] ?? state.permissions['create-team-channel'],
+	addTeamChannelPermission: state.permissions['add-team-channel'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
 	deleteCPermission: state.permissions['delete-c'],
