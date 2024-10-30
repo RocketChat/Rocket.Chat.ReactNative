@@ -40,7 +40,7 @@ const AddExistingChannelView = () => {
 
 	const { addTeamChannelPermission, isMasterDetail } = useAppSelector(state => ({
 		isMasterDetail: state.app.isMasterDetail,
-		addTeamChannelPermission: state.permissions['add-team-channel']
+		addTeamChannelPermission: state.permissions['add-team-channel'] ?? state.permissions['create-team-channel']
 	}));
 
 	useLayoutEffect(() => {

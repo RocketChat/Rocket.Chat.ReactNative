@@ -1289,7 +1289,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	toggleRoomE2EEncryptionPermission: state.permissions['toggle-room-e2e-encryption'],
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
 	createTeamPermission: state.permissions['create-team'],
-	addTeamChannelPermission: state.permissions['add-team-channel'],
+	addTeamChannelPermission: state.permissions['add-team-channel'] ?? state.permissions['create-team-channel'],
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
