@@ -20,7 +20,7 @@ describe('Login screen', () => {
 			await element(by.id('login-view-email')).tapReturnKey();
 			await element(by.id('login-view-password')).replaceText('NotMyActualPassword');
 			await element(by.id('login-view-password')).tapReturnKey();
-			await waitFor(element(by[textMatcher]('Your credentials were rejected! Please try again.')))
+			await waitFor(element(by[textMatcher]('Unauthorized')))
 				.toBeVisible()
 				.withTimeout(10000);
 			await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
