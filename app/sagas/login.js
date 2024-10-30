@@ -123,7 +123,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			}
 		}
 	} catch (e) {
-		if (e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) {
+		if ((e?.data?.message && /you've been logged out by the server/i.test(e.data.message)) || e.data.message === 'Unauthorized') {
 			logEvent(events.LOGOUT_BY_SERVER);
 			yield put(logoutAction(true, 'Logged_out_by_server'));
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
