@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { Keyboard, Text, View, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
+import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import I18n from '../../i18n';
 import { OutsideParamList } from '../../stacks/types';
@@ -32,7 +33,8 @@ const schema = yup.object().shape({
 const UserForm = () => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'LoginView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
+	const workspaceDomain = useWorkspaceDomain();
 
 	const {
 		params: { username }
@@ -53,7 +55,6 @@ const UserForm = () => {
 		Accounts_RegistrationForm_LinkReplacementText,
 		isFetching,
 		Accounts_RegistrationForm,
-		Site_Name,
 		inviteLinkToken,
 		error,
 		failure
@@ -64,7 +65,6 @@ const UserForm = () => {
 		Accounts_EmailOrUsernamePlaceholder: state.settings.Accounts_EmailOrUsernamePlaceholder as string,
 		Accounts_PasswordPlaceholder: state.settings.Accounts_PasswordPlaceholder as string,
 		Accounts_PasswordReset: state.settings.Accounts_PasswordReset as boolean,
-		Site_Name: state.settings.Site_Name as string,
 		inviteLinkToken: state.inviteLinks.token,
 		failure: state.login.failure,
 		error: state.login.error && state.login.error.data
@@ -85,11 +85,11 @@ const UserForm = () => {
 		Accounts_RegistrationForm === 'Public' || (Accounts_RegistrationForm === 'Secret URL' && inviteLinkToken?.length);
 
 	const register = () => {
-		navigation.navigate('RegisterView', { title: Site_Name });
+		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
 
 	const forgotPassword = () => {
-		navigation.navigate('ForgotPasswordView', { title: Site_Name });
+		navigation.navigate('ForgotPasswordView', { title: workspaceDomain });
 	};
 
 	const submit = ({ password, user }: ISubmit) => {
@@ -103,67 +103,65 @@ const UserForm = () => {
 	return (
 		<>
 			<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Login')}</Text>
-			<ControlledFormTextInput
-				name='user'
-				control={control}
-				label={I18n.t('Username_or_email')}
-				containerStyle={styles.inputContainer}
-				placeholder={Accounts_EmailOrUsernamePlaceholder || I18n.t('Username_or_email')}
-				keyboardType='email-address'
-				returnKeyType='next'
-				onSubmitEditing={() => setFocus('password')}
-				testID='login-view-email'
-				textContentType='username'
-				autoComplete='username'
-			/>
-			<ControlledFormTextInput
-				name='password'
-				control={control}
-				label={I18n.t('Password')}
-				containerStyle={styles.inputContainer}
-				placeholder={Accounts_PasswordPlaceholder || I18n.t('Password')}
-				returnKeyType='send'
-				secureTextEntry
-				onSubmitEditing={handleSubmit(submit)}
-				testID='login-view-password'
-				textContentType='password'
-				autoComplete='password'
-			/>
-			<Button
-				title={I18n.t('Login')}
-				onPress={handleSubmit(submit)}
-				testID='login-view-submit'
-				loading={isFetching}
-				disabled={!isValid}
-				style={styles.loginButton}
-			/>
-			{Accounts_PasswordReset ? (
-				<Button
-					title={I18n.t('Forgot_password')}
-					type='secondary'
-					onPress={forgotPassword}
-					testID='login-view-forgot-password'
-					color={colors.fontInfo}
-					fontSize={14}
-					backgroundColor='transparent'
+			<View style={styles.credentialsContainer}>
+				<ControlledFormTextInput
+					name='user'
+					control={control}
+					label={I18n.t('Username_or_email')}
+					placeholder={Accounts_EmailOrUsernamePlaceholder}
+					keyboardType='email-address'
+					returnKeyType='next'
+					onSubmitEditing={() => setFocus('password')}
+					testID='login-view-email'
+					textContentType='username'
+					autoComplete='username'
 				/>
-			) : null}
-			{showRegistrationButton ? (
-				<View style={styles.bottomContainer}>
-					<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Dont_Have_An_Account')}</Text>
-					<Text
-						style={[styles.bottomContainerTextBold, { color: colors.fontHint }]}
-						onPress={register}
-						testID='login-view-register'>
-						{I18n.t('Create_account')}
+				<ControlledFormTextInput
+					name='password'
+					control={control}
+					label={I18n.t('Password')}
+					placeholder={Accounts_PasswordPlaceholder}
+					returnKeyType='send'
+					secureTextEntry
+					onSubmitEditing={handleSubmit(submit)}
+					testID='login-view-password'
+					textContentType='password'
+					autoComplete='password'
+				/>
+				<Button
+					title={I18n.t('Login')}
+					onPress={handleSubmit(submit)}
+					testID='login-view-submit'
+					loading={isFetching}
+					disabled={!isValid}
+				/>
+			</View>
+			<View style={styles.bottomContainer}>
+				{Accounts_PasswordReset && (
+					<View style={styles.bottomContainerGroup}>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Forgot_password')}</Text>
+						<Button
+							title={I18n.t('Reset_password')}
+							type='secondary'
+							onPress={forgotPassword}
+							testID='login-view-forgot-password'
+						/>
+					</View>
+				)}
+				{showRegistrationButton ? (
+					<View style={styles.bottomContainerGroup}>
+						<Text style={[styles.bottomContainerText, { color: colors.fontSecondaryInfo }]}>
+							{I18n.t('You_dont_have_account')}
+						</Text>
+						<Button title={I18n.t('Create_account')} onPress={register} type='secondary' testID='login-view-register' />
+					</View>
+				) : (
+					<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
+						{Accounts_RegistrationForm_LinkReplacementText}
 					</Text>
-				</View>
-			) : (
-				<Text style={[styles.registerDisabled, { color: colors.fontSecondaryInfo }]}>
-					{Accounts_RegistrationForm_LinkReplacementText}
-				</Text>
-			)}
-			<UGCRules styleContainer={styles.ugcContainer} />
+				)}
+				<UGCRules />
+			</View>
 		</>
 	);
 };

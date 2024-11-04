@@ -203,4 +203,18 @@ export type OmnichannelEndpoints = {
 			cannedResponses: ICannedResponse[];
 		}>;
 	};
+
+	'livechat/room.saveInfo': {
+		POST: (params: {
+			guestData: { _id: string; name?: string; email?: string; phone?: string; livechatData?: Record<string, string> };
+			roomData: {
+				_id: string;
+				topic?: string;
+				tags?: string[];
+				livechatData?: Record<string, string>;
+				priorityId?: string;
+				slaId?: string;
+			};
+		}) => void;
+	};
 };

@@ -2,7 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { BIOMETRY_ENABLED_KEY, CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
+import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import UserPreferences from '../lib/methods/userPreferences';
 import { selectServerRequest, serverRequest } from '../actions/server';
 import { setAllPreferences } from '../actions/sortPreferences';
@@ -22,25 +22,11 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
-const BIOMETRY_MIGRATION_KEY = 'kBiometryMigration';
-
 const restore = function* restore() {
 	console.log('RESTORE');
 	try {
 		// const server = UserPreferences.getString(CURRENT_SERVER);
 		// let userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
-
-		// Migration biometry setting from WatermelonDB to MMKV
-		// TODO: remove it after a few versions
-		const hasMigratedBiometry = UserPreferences.getBool(BIOMETRY_MIGRATION_KEY);
-		if (!hasMigratedBiometry) {
-			const serversDB = database.servers;
-			const serversCollection = serversDB.get('servers');
-			const servers = yield serversCollection.query().fetch();
-			const isBiometryEnabled = servers.some(server => !!server.biometry);
-			UserPreferences.setBool(BIOMETRY_ENABLED_KEY, isBiometryEnabled);
-			UserPreferences.setBool(BIOMETRY_MIGRATION_KEY, true);
-		}
 
 		// if (!server) {
 		// 	yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
