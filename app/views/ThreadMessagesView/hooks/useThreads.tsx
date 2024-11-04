@@ -12,7 +12,7 @@ import log from '../../../lib/methods/helpers/log';
 import database from '../../../lib/database';
 import updateThreads from '../methods/updateThreads';
 
-interface IUseSubscriptionProps {
+interface IUseThreadsProps {
 	search: ISearchThreadMessages;
 	currentFilter: Filter;
 	subscription: any;
@@ -22,7 +22,7 @@ interface IUseSubscriptionProps {
 
 const API_FETCH_COUNT = 50;
 
-const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseSubscriptionProps) => {
+const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThreadsProps) => {
 	const threadsObservable = useRef<Observable<TThreadModel[]> | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [end, setEnd] = useState(false);

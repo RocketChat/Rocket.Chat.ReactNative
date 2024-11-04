@@ -70,7 +70,6 @@ const updateThreads = async ({
 			);
 		});
 	} catch (e) {
-		console.log('chega aqui nop erro', e);
 		log(e);
 	}
 };
