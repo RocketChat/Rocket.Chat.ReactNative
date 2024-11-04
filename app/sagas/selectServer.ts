@@ -22,7 +22,6 @@ import { clearActiveUsers } from '../actions/activeUsers';
 import database from '../lib/database';
 import log, { logServerVersion } from '../lib/methods/helpers/log';
 import I18n from '../i18n';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../lib/methods/helpers/fetch';
 import { appStart } from '../actions/app';
 import { setSupportedVersions } from '../actions/supportedVersions';
 import UserPreferences from '../lib/methods/userPreferences';
@@ -177,9 +176,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 				}
 			}
 		}
-
-		const basicAuth = UserPreferences.getString(`${BASIC_AUTH_KEY}-${server}`);
-		setBasicAuth(basicAuth);
 
 		if (user) {
 			yield put(clearSettings());

@@ -29,7 +29,7 @@ import { showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
-import { Services } from '../../lib/services';
+import sdk from '../../lib/services/sdk';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -104,7 +104,7 @@ const SettingsView = (): React.ReactElement => {
 				await clearCache({ server });
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
-				Services.disconnect();
+				sdk.disconnect();
 				dispatch(selectServerRequest(server));
 			}
 		});

@@ -134,7 +134,7 @@ export const useAutocomplete = ({
 						return;
 					}
 					const response = await Services.getCommandPreview(text, rid, commandParams);
-					if (response.success) {
+					if (response) {
 						const previewItems = (response.preview?.items || []).map(item => ({
 							id: item.id,
 							preview: item,
@@ -147,7 +147,7 @@ export const useAutocomplete = ({
 				}
 				if (type === '!') {
 					const res = await Services.getListCannedResponse({ text });
-					if (res.success) {
+					if (res) {
 						if (res.cannedResponses.length === 0) {
 							setItems([
 								{

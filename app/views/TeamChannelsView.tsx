@@ -28,6 +28,7 @@ import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
+import sdk from '../lib/services/sdk';
 
 const API_FETCH_COUNT = 25;
 
@@ -335,8 +336,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			const { isMasterDetail } = this.props;
 			try {
 				let params = {};
-				const result = await Services.getRoomInfo(item._id);
-				if (result.success) {
+				const result = await sdk.get('/v1/rooms.info', { roomId: item._id });
+				if (result.room) {
 					params = {
 						rid: item._id,
 						name: getRoomTitle(result.room),
@@ -362,8 +363,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_TOGGLE_AUTOJOIN);
 		try {
 			const { data } = this.state;
-			const result = await Services.updateTeamRoom({ roomId: item._id, isDefault: !item.teamDefault });
-			if (result.success) {
+			const result = await sdk.post('/v1/teams.updateRoom', { roomId: item._id, isDefault: !item.teamDefault });
+			if (result) {
 				const newData = data.map(i => {
 					if (i._id === item._id) {
 						i.teamDefault = !i.teamDefault;
@@ -401,8 +402,11 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		logEvent(events.TC_DELETE_ROOM);
 		try {
 			const { data } = this.state;
-			const result = await Services.removeTeamRoom({ roomId: item._id, teamId: this.team.teamId as string });
-			if (result.success) {
+			if (!this.team?.teamId) {
+				return;
+			}
+			const result = await sdk.post('/v1/teams.removeRoom', { roomId: item._id, teamId: this.team.teamId });
+			if (result) {
 				const newData = data.filter(room => result.room._id !== room._id);
 				this.setState({ data: newData });
 			}

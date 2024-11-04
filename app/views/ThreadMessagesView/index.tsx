@@ -6,6 +6,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Observable, Subscription } from 'rxjs';
 
+import sdk from '../../lib/services/sdk';
 import { showActionSheetRef } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -227,15 +228,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 	};
 
-	updateThreads = async ({
-		update,
-		remove,
-		lastThreadSync
-	}: {
-		update: IMessage[];
-		remove?: IMessage[];
-		lastThreadSync: Date;
-	}) => {
+	updateThreads = async ({ update, remove, lastThreadSync }: { update: any[]; remove?: any[]; lastThreadSync: Date }) => {
 		const { subscription } = this.state;
 		// if there's no subscription, manage data on this.state.messages
 		// note: sync will never be called without subscription
@@ -312,16 +305,19 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getThreadsList({
+			// @ts-ignore TODO: type is required on SDK, but fails on request
+			const result = await sdk.get('/v1/chat.getThreadsList', {
 				rid: this.rid,
+				// type: 'all'
 				count: API_FETCH_COUNT,
 				offset,
 				text: searchText
 			});
-			if (result.success) {
+			if (result) {
 				this.updateThreads({ update: result.threads, lastThreadSync });
 				this.setState({
 					loading: false,
+					// @ts-ignore TODO: count actually exists on payload
 					end: result.count < API_FETCH_COUNT,
 					offset: offset + API_FETCH_COUNT
 				});
@@ -337,11 +333,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		this.setState({ loading: true });
 
 		try {
-			const result = await Services.getSyncThreadsList({
+			const result = await sdk.get('/v1/chat.syncThreadsList', {
 				rid: this.rid,
 				updatedSince: updatedSince.toISOString()
 			});
-			if (result.success && result.threads) {
+			if (result && result.threads) {
 				const { update, remove } = result.threads;
 				this.updateThreads({ update, remove, lastThreadSync: updatedSince });
 			}

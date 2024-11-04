@@ -163,7 +163,7 @@ function* initCall({ payload: { mic, cam, direct, rid } }: { payload: TCallProps
 	if (isServer5OrNewer) {
 		try {
 			const videoConfResponse = yield* call(Services.videoConferenceStart, rid);
-			if (videoConfResponse.success) {
+			if (videoConfResponse) {
 				if (direct && videoConfResponse.data.type === 'direct') {
 					yield call(callUser, { rid, uid: videoConfResponse.data.calleeId, callId: videoConfResponse.data.callId });
 				} else {

@@ -27,6 +27,7 @@ import styles from './styles';
 import Options from './Options';
 import { Services } from '../../lib/services';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
+import sdk from '../../lib/services/sdk';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
@@ -115,9 +116,10 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 				count: 50,
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
 			});
-			if (directories.success) {
+			if (directories) {
 				this.setState({
-					data: [...data, ...(directories.result as IServerRoom[])],
+					// @ts-ignore fix this
+					data: [...data, ...directories.result],
 					loading: false,
 					total: directories.total
 				});
@@ -178,8 +180,11 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	onPressItem = async (item: IServerRoom) => {
 		const { type } = this.state;
 		if (type === 'users') {
-			const result = await Services.createDirectMessage(item.username as string);
-			if (result.success) {
+			if (!item.username) {
+				return;
+			}
+			const result = await sdk.post('/v1/im.create', { username: item.username });
+			if (result) {
 				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
 			}
 			return;

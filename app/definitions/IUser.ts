@@ -105,21 +105,21 @@ export interface IUserSettings {
 }
 export type TNotifications = 'default' | 'all' | 'mentions' | 'nothing';
 
-export interface INotificationPreferences {
-	id: string;
-	enableMessageParserEarlyAdoption: boolean;
-	desktopNotifications: TNotifications;
-	pushNotifications: TNotifications;
-	emailNotificationMode: 'mentions' | 'nothing';
-	language?: string;
-}
+// export interface INotificationPreferences {
+// 	id: string;
+// 	enableMessageParserEarlyAdoption: boolean;
+// 	desktopNotifications: TNotifications;
+// 	pushNotifications: TNotifications;
+// 	emailNotificationMode: 'mentions' | 'nothing';
+// 	language?: string;
+// }
 
-export interface IUserPreferences {
-	user: Pick<IUser, '_id'>;
-	settings: {
-		preferences: INotificationPreferences;
-	};
-}
+// export interface IUserPreferences {
+// 	user: Pick<IUser, '_id'>;
+// 	settings: {
+// 		preferences: INotificationPreferences;
+// 	};
+// }
 
 export interface IUser extends IRocketChatRecord, ILoggedUser {
 	_id: string;

@@ -1,16 +1,22 @@
 import * as FileSystem from 'expo-file-system';
-import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import Model from '@nozbe/watermelondb/Model';
 import * as Keychain from 'react-native-keychain';
+import { DDPSDK } from '@rocket.chat/ddp-client';
 
 import { getDeviceToken } from '../notifications';
-import { extractHostname, isSsl } from './helpers';
-import { BASIC_AUTH_KEY } from './helpers/fetch';
+import { extractHostname } from './helpers';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
 import { ICertificate } from '../../definitions';
 import sdk from '../services/sdk';
-import { CURRENT_SERVER, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY, TOKEN_KEY } from '../constants';
+import {
+	CURRENT_SERVER,
+	E2E_PRIVATE_KEY,
+	E2E_PUBLIC_KEY,
+	E2E_RANDOM_PASSWORD_KEY,
+	TOKEN_KEY,
+	BASIC_AUTH_KEY
+} from '../constants';
 import UserPreferences from './userPreferences';
 import { Services } from '../services';
 import { roomsSubscription } from './subscriptions/rooms';
@@ -81,20 +87,26 @@ export async function removeServer({ server }: { server: string }): Promise<void
 	try {
 		const userId = UserPreferences.getString(`${TOKEN_KEY}-${server}`);
 		if (userId) {
-			const resume = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
+			const userToken = UserPreferences.getString(`${TOKEN_KEY}-${userId}`);
 
-			try {
-				const sdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
-				await sdk.login({ resume });
+			if (userToken) {
+				try {
+					const sdk = await DDPSDK.createAndConnect(server);
+					await sdk.account.loginWithToken(userToken);
 
-				const token = getDeviceToken();
-				if (token) {
-					await sdk.del('push.token', { token });
+					const token = getDeviceToken();
+					if (token) {
+						try {
+							await sdk.rest.delete('/v1/push.token', { token });
+						} catch (e) {
+							log(e);
+						}
+					}
+
+					await sdk.account.logout();
+				} catch (e) {
+					log(e);
 				}
-
-				await sdk.logout();
-			} catch (e) {
-				log(e);
 			}
 		}
 
@@ -123,14 +135,12 @@ export async function logout({ server }: { server: string }): Promise<void> {
 
 	try {
 		// RC 0.60.0
-		await sdk.current.logout();
+		await sdk.current?.account.logout();
 	} catch (e) {
 		log(e);
 	}
 
-	if (sdk.current) {
-		sdk.disconnect();
-	}
+	sdk.disconnect();
 
 	await removeServerData({ server });
 	await removeCurrentServer();

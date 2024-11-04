@@ -189,8 +189,8 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				fetchFunc: async () => {
 					const { messages } = this.state;
 					const result = await Services.getFiles(this.rid, this.t, messages.length);
-					if (result.success) {
-						return { ...result, messages: await Encryption.decryptFiles(result.files) };
+					if (result) {
+						return { ...result, messages: await Encryption.decryptFiles(result.files as any) }; // TODO: Fix any
 					}
 				},
 				noDataMsg: I18n.t('No_files'),

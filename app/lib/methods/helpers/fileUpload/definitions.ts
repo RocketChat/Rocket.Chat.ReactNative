@@ -1,5 +1,3 @@
-import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
-
 export interface IFormData {
 	name: string;
 	uri?: string;
@@ -9,6 +7,6 @@ export interface IFormData {
 }
 
 export interface IFileUpload {
-	send(): Promise<TRoomsMediaResponse>;
+	send(): Promise<any>; // TODO: type return
 	cancel(): void;
 }

@@ -25,12 +25,12 @@ import { IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
-import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
 import { emitter } from '../../lib/methods/helpers/emitter';
+import sdk from '../../lib/services/sdk';
 
 const styles = StyleSheet.create({
 	container: {
@@ -139,7 +139,13 @@ export const MessageComposer = ({
 					const messageWithoutCommand = textFromInput.replace(/([^\s]+)/, '').trim();
 					const [{ appId }] = slashCommand;
 					const triggerId = generateTriggerId(appId);
-					await Services.runSlashCommand(command, rid, messageWithoutCommand, triggerId, tmid);
+					await sdk.post('/v1/commands.run', {
+						command,
+						roomId: rid,
+						params: messageWithoutCommand,
+						triggerId,
+						...(tmid && { tmid })
+					});
 				} catch (e) {
 					log(e);
 				}

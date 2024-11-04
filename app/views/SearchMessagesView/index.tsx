@@ -38,14 +38,14 @@ import {
 	TGetCustomEmoji,
 	ICustomEmoji
 } from '../../definitions';
-import { Services } from '../../lib/services';
+import sdk from '../../lib/services/sdk';
 import { TNavigation } from '../../stacks/stackType';
 
 const QUERY_SIZE = 50;
 
 interface ISearchMessagesViewState {
 	loading: boolean;
-	messages: (IMessageFromServer | TMessageModel)[];
+	messages: any[]; // TODO: type me after we solve messages types
 	searchText: string;
 }
 
@@ -138,7 +138,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	}
 
 	// Handle encrypted rooms search messages
-	searchMessages = async (searchText: string): Promise<(IMessageFromServer | TMessageModel)[]> => {
+	searchMessages = async (searchText: string) => {
 		if (!searchText) {
 			return [];
 		}
@@ -157,8 +157,13 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 				.fetch();
 		}
 		// If it's not a encrypted room, search messages on the server
-		const result = await Services.searchMessages(this.rid, searchText, QUERY_SIZE, this.offset);
-		if (result.success) {
+		const result = await sdk.get('/v1/chat.search', {
+			roomId: this.rid,
+			searchText,
+			count: QUERY_SIZE,
+			offset: this.offset
+		});
+		if (result) {
 			const urlRenderMessages = result.messages?.map(message => {
 				if (message.urls && message.urls.length > 0) {
 					message.urls = message.urls?.map((url, index) => {
@@ -181,6 +186,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 		}
 		return [];
 	};
+
 	getMessages = async (searchText: string, debounced?: boolean) => {
 		try {
 			const messages = await this.searchMessages(searchText);

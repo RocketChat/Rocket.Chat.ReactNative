@@ -83,7 +83,7 @@ export default function subscribeInquiry() {
 		}
 
 		Services.getAgentDepartments(user.id).then(result => {
-			if (result.success) {
+			if (result) {
 				const { departments } = result;
 
 				if (!departments.length || hasRole('livechat-manager')) {

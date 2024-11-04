@@ -1,4 +1,3 @@
-import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
 import { IFormData } from './definitions';
 
 export class Upload {
@@ -39,7 +38,8 @@ export class Upload {
 		}
 	}
 
-	public send(): Promise<TRoomsMediaResponse> {
+	// @ts-ignore fix this
+	public send(): Promise<any> {
 		return new Promise((resolve, reject) => {
 			this.xhr.onload = () => {
 				if (this.xhr.status >= 200 && this.xhr.status < 400) {

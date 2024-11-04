@@ -5,8 +5,8 @@ import { getMessageById } from '../database/services/Message';
 import { getThreadById } from '../database/services/Thread';
 import log from './helpers/log';
 import { Encryption } from '../encryption';
-import getSingleMessage from './getSingleMessage';
 import { IMessage, IThread, TThreadModel } from '../../definitions';
+import { Services } from '../services';
 
 const buildThreadName = (thread: IThread | IMessage): string | undefined => thread.msg || thread?.attachments?.[0]?.title;
 
@@ -25,7 +25,7 @@ const getThreadName = async (rid: string, tmid: string, messageId: string): Prom
 				});
 			});
 		} else {
-			let thread = await getSingleMessage(tmid);
+			let thread = (await Services.getSingleMessage(tmid)) as any; // TODO: type return
 			thread = await Encryption.decryptMessage(thread);
 			tmsg = buildThreadName(thread);
 			await db.write(async () => {

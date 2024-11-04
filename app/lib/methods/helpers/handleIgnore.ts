@@ -9,7 +9,7 @@ export const handleIgnore = async (userId: string, ignore: boolean, rid: string)
 		await Services.ignoreUser({
 			rid,
 			userId,
-			ignore
+			ignore: ignore.toString()
 		});
 		const message = I18n.t(ignore ? 'User_has_been_ignored' : 'User_has_been_unignored');
 		EventEmitter.emit(LISTENER, { message });

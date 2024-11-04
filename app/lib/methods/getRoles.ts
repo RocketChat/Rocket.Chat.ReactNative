@@ -74,9 +74,9 @@ export function getRoles(): Promise<void> {
 	return new Promise(async resolve => {
 		try {
 			// RC 0.70.0
-			const result = await sdk.get('roles.list');
+			const result = await sdk.get('/v1/roles.list');
 
-			if (!result.success) {
+			if (!result) {
 				return resolve();
 			}
 

@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import RNBootSplash from 'react-native-bootsplash';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,7 +19,6 @@ export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
-
 
 const restore = function* restore() {
 	console.log('RESTORE');
@@ -75,6 +74,7 @@ const start = function* start() {
 	const currentRoot = yield select(state => state.app.root);
 
 	if (currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+		yield delay(100); // TODO: is it worth doing this to prevent white screen after splash?
 		yield RNBootSplash.hide({ fade: true });
 	}
 };

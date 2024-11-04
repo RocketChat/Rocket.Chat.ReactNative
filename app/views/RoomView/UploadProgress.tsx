@@ -10,7 +10,7 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
+import { TSendFileMessageFileInfo, TUploadModel } from '../../definitions';
 import { sendFileMessage } from '../../lib/methods';
 import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
 interface IUploadProgressProps {
 	width: number;
 	rid: string;
-	user: Pick<IUser, 'id' | 'username' | 'token'>;
 	baseUrl: string;
 	theme?: TSupportedThemes;
 }
@@ -152,7 +151,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 	};
 
 	tryAgain = async (item: TUploadModel) => {
-		const { rid, baseUrl: server, user } = this.props;
+		const { rid, baseUrl: server } = this.props;
 
 		try {
 			const db = database.active;
@@ -161,7 +160,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
+			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, true);
 		} catch (e) {
 			log(e);
 		}

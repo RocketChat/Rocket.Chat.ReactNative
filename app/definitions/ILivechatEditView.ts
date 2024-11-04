@@ -1,7 +1,6 @@
 import { TextInput } from 'react-native';
 
 import { TSupportedThemes } from '../theme';
-import { ILivechatVisitor } from './ILivechatVisitor';
 import { ISubscription } from './ISubscription';
 
 export interface ITitle {
@@ -20,8 +19,6 @@ export interface IInputs {
 	tag: string[];
 	[key: string]: any;
 }
-
-export type TParams = ILivechatVisitor & IInputs;
 
 export interface ILivechat extends ISubscription {
 	// Param dynamic depends on server

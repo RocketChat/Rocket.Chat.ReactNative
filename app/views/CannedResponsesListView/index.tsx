@@ -85,8 +85,9 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 	const getDepartments = useDebounce(async () => {
 		try {
 			const res = await Services.getDepartments();
-			if (res.success) {
-				setDepartments([...fixedScopes, ...(res.departments as ILivechatDepartment[])]);
+			if (res) {
+				// @ts-ignore fix this
+				setDepartments([...fixedScopes, ...res.departments]);
 			}
 		} catch (e) {
 			setDepartments(fixedScopes);
@@ -125,9 +126,10 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 				departmentId: depId,
 				scope: department
 			});
-			if (res.success) {
+			if (res) {
 				// search with changes on text or scope are debounced
 				// the begin result and pagination aren't debounced
+				// @ts-ignore fix this
 				setCannedResponses(prevCanned => (debounced ? res.cannedResponses : [...prevCanned, ...res.cannedResponses]));
 				setLoading(false);
 				setOffset(prevOffset => prevOffset + COUNT);

@@ -29,7 +29,7 @@ export const handleAndroidBltPermission = async (): Promise<void> => {
 export const videoConfJoin = async (callId: string, cam?: boolean, mic?: boolean, fromPush?: boolean): Promise<void> => {
 	try {
 		const result = await Services.videoConferenceJoin(callId, cam, mic);
-		if (result.success) {
+		if (result) {
 			const { url, providerName } = result;
 			if (providerName === 'jitsi') {
 				navigation.navigate('JitsiMeetView', { url, onlyAudio: !cam, videoConf: true });

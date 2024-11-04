@@ -19,6 +19,7 @@ import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscription
 import { getPermalinkMessage, getQuoteMessageLink } from '../../lib/methods';
 import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import sdk from '../../lib/services/sdk';
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -217,19 +218,17 @@ const MessageActions = React.memo(
 				const { rid } = room;
 				try {
 					const db = database.active;
-					const result = await Services.markAsUnread({ messageId });
-					if (result.success) {
-						const subCollection = db.get('subscriptions');
-						const subRecord = await subCollection.find(rid);
-						await db.write(async () => {
-							try {
-								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
-							} catch {
-								// do nothing
-							}
-						});
-						Navigation.navigate('RoomsListView');
-					}
+					await sdk.post('/v1/subscriptions.unread', { firstUnreadMessage: { _id: messageId } });
+					const subCollection = db.get('subscriptions');
+					const subRecord = await subCollection.find(rid);
+					await db.write(async () => {
+						try {
+							await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
+						} catch {
+							// do nothing
+						}
+					});
+					Navigation.navigate('RoomsListView');
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_UNREAD_F);
 					log(e);
@@ -272,8 +271,8 @@ const MessageActions = React.memo(
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
 				if (message?.u?.username) {
-					const result = await Services.createDirectMessage(message.u.username);
-					if (result.success) {
+					const result = await sdk.post('/v1/im.create', { username: message.u.username });
+					if (result) {
 						const { room } = result;
 						const params = {
 							rid: room.rid,

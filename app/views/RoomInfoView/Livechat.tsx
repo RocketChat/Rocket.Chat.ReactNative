@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
+import sdk from '../../lib/services/sdk';
 import { ISubscription } from '../../definitions';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
 import I18n from '../../i18n';
-import { Services } from '../../lib/services';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import CustomFields from './CustomFields';
@@ -30,8 +30,9 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 
 	const getDepartment = async (id: string) => {
 		if (id) {
-			const result = await Services.getDepartmentInfo(id);
-			if (result.success) {
+			const result = await sdk.get(`/v1/livechat/department/${id}`, { includeAgents: 'false' });
+			if (result) {
+				// @ts-ignore
 				setDepartment(result.department as ILivechatDepartment);
 			}
 		}

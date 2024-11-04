@@ -11,17 +11,17 @@ import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
-import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
+import sdk from '../../lib/services/sdk';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel } = useAppSelector(state => getUserSelector(state));
+	const { enableMessageParserEarlyAdoption, alsoSendThreadToChannel } = useAppSelector(state => getUserSelector(state));
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
 
@@ -40,7 +40,8 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	const toggleMessageParser = async (value: boolean) => {
 		try {
 			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
-			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+			// @ts-ignore
+			await sdk.post('/v1/users.setPreferences', { data: { enableMessageParserEarlyAdoption: value } });
 		} catch (e) {
 			log(e);
 		}
@@ -48,7 +49,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const setAlsoSendThreadToChannel = async (param: { [key: string]: string }, onError: () => void) => {
 		try {
-			await Services.saveUserPreferences(param);
+			await sdk.post('/v1/users.setPreferences', { data: param });
 			dispatch(setUser(param));
 		} catch (e) {
 			log(e);

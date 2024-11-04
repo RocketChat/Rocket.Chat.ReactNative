@@ -10,7 +10,7 @@ export async function readMessages(rid: string, ls: Date, updateLastOpen = false
 
 		// RC 0.61.0
 		// @ts-ignore
-		await sdk.post('subscriptions.read', { rid });
+		await sdk.post('/v1/subscriptions.read', { rid });
 
 		await db.write(async () => {
 			try {

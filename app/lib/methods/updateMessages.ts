@@ -12,8 +12,8 @@ import protectedFunction from './helpers/protectedFunction';
 
 interface IUpdateMessages {
 	rid: string;
-	update: Partial<IMessage>[];
-	remove?: Partial<IMessage>[];
+	update: any[]; // TODO: fix any
+	remove?: any[];
 	loaderItem?: TMessageModel;
 }
 

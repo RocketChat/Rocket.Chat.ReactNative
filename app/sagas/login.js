@@ -118,7 +118,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			});
 			yield put(loginSuccess(result));
 			if (registerCustomFields) {
-				const updatedUser = yield call(Services.saveUserProfile, {}, { ...registerCustomFields });
+				const updatedUser = yield sdk.post('/v1/users.updateOwnBasicInfo', { customFields: registerCustomFields });
 				yield put(setUser({ ...result, ...updatedUser.user }));
 			}
 		}
@@ -173,9 +173,9 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	}
 };
 
-const fetchUsersRoles = function* fetchRoomsFork() {
+const fetchUsersRoles = function* fetchUsersRoles() {
 	const roles = yield Services.getUsersRoles();
-	if (roles.length) {
+	if (roles?.length) {
 		yield put(setUsersRoles(roles));
 	}
 };
@@ -239,7 +239,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
 		});
 		yield put(setUser(user));
-		EventEmitter.emit('connected');
+		console.log('yield put(setUser(user));');
+		// EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
 		if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
 			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
@@ -262,6 +263,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 	if (server) {
 		try {
 			yield call(logoutCall, { server });
+			console.log('after yield call(logoutCall, { server });');
 
 			// if the user was logged out by the server
 			if (forcedByServer) {

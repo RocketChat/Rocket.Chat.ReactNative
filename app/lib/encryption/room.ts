@@ -5,7 +5,6 @@ import ByteBuffer from 'bytebuffer';
 import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
-import getSingleMessage from '../methods/getSingleMessage';
 import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IUser, IServerAttachment } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
@@ -29,6 +28,7 @@ import {
 import { Encryption } from './index';
 import { E2E_MESSAGE_TYPE, E2E_STATUS } from '../constants';
 import { Services } from '../services';
+import sdk from '../services/sdk';
 import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
 import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
@@ -212,8 +212,8 @@ export default class EncryptionRoom {
 	// Create an encrypted key for this room based on users
 	encryptRoomKey = async () => {
 		try {
-			const result = await Services.e2eGetUsersOfRoomWithoutKey(this.roomId);
-			if (result.success) {
+			const result = await sdk.get('/v1/e2e.getUsersOfRoomWithoutKey', { rid: this.roomId });
+			if (result) {
 				const { users } = result;
 				await Promise.all(users.map(user => this.encryptRoomKeyForUser(user)));
 			}
@@ -533,10 +533,11 @@ export default class EncryptionRoom {
 				}
 
 				// From API
-				const quotedMessageObject = await getSingleMessage(messageId);
+				const quotedMessageObject = await Services.getSingleMessage(messageId);
 				if (!quotedMessageObject) {
 					return;
 				}
+				// @ts-ignore TODO: fix this
 				const decryptedQuoteMessage = await this.decrypt(mapMessageFromAPI(quotedMessageObject));
 				message.attachments = message.attachments || [];
 				const quoteAttachment = createQuoteAttachment(decryptedQuoteMessage, url);

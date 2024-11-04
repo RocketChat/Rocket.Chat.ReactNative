@@ -10,7 +10,7 @@ import Button from '../containers/Button';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { Services } from '../lib/services';
+import sdk from '../lib/services/sdk';
 import { OutsideParamList } from '../stacks/types';
 import { useTheme } from '../theme';
 import { showErrorAlert } from '../lib/methods/helpers';
@@ -51,11 +51,9 @@ const ForgotPasswordView = (): React.ReactElement => {
 		try {
 			logEvent(events.FP_FORGOT_PASSWORD);
 			setIsFetching(true);
-			const result = await Services.forgotPassword(email);
-			if (result.success) {
-				navigation.pop();
-				showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
-			}
+			await sdk.post('/v1/users.forgotPassword', { email });
+			navigation.pop();
+			showErrorAlert(I18n.t('Forgot_password_If_this_email_is_registered'), I18n.t('Alert'));
 		} catch (e: any) {
 			logEvent(events.FP_FORGOT_PASSWORD_F);
 			const msg = (e.data && e.data.error) || I18n.t('There_was_an_error_while_action', { action: I18n.t('resetting_password') });

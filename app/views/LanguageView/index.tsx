@@ -18,7 +18,7 @@ import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { Services } from '../../lib/services';
+import sdk from '../../lib/services/sdk';
 import LanguageItem from './LanguageItem';
 
 const LanguageView = () => {
@@ -67,7 +67,7 @@ const LanguageView = () => {
 		}
 
 		try {
-			await Services.saveUserPreferences(params);
+			await sdk.post('/v1/users.setPreferences', { data: params });
 			dispatch(setUser({ language: params.language }));
 
 			const serversDB = database.servers;

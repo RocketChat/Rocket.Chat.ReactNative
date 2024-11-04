@@ -65,12 +65,15 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 				text: searchText.current
 			});
 
-			if (result.success) {
+			if (result) {
+				// @ts-ignore fix these types
 				offset.current += result.count;
 				total.current = result.total;
 				if (isSearching) {
+					// @ts-ignore
 					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
 				} else {
+					// @ts-ignore
 					setDiscussions(result.messages);
 				}
 			}

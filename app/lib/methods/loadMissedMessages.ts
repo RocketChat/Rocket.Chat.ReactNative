@@ -1,4 +1,3 @@
-import { ILastMessage } from '../../definitions';
 import log from './helpers/log';
 import database from '../database';
 import sdk from '../services/sdk';
@@ -24,9 +23,12 @@ async function load({ rid: roomId, lastOpen }: { rid: string; lastOpen?: Date })
 		lastUpdate = await getLastUpdate(roomId);
 	}
 	// RC 0.60.0
-	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('chat.syncMessages', { roomId, lastUpdate });
-	return result;
+	const result = await sdk.get('/v1/chat.syncMessages', { roomId, lastUpdate: lastUpdate || '' });
+
+	if (!result) {
+		return null;
+	}
+	return result.result;
 }
 
 export function loadMissedMessages(args: { rid: string; lastOpen?: Date }): Promise<void> {
@@ -34,8 +36,7 @@ export function loadMissedMessages(args: { rid: string; lastOpen?: Date }): Prom
 		try {
 			const data = await load({ rid: args.rid, lastOpen: args.lastOpen });
 			if (data) {
-				const { updated, deleted }: { updated: ILastMessage[]; deleted: ILastMessage[] } = data;
-				// @ts-ignore // TODO: remove loaderItem obligatoriness
+				const { updated, deleted } = data;
 				await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 			}
 			resolve();

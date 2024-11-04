@@ -1,7 +1,9 @@
+/* eslint-disable complexity */
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import EJSON from 'ejson';
 import Model from '@nozbe/watermelondb/Model';
+import { Subscription } from '@rocket.chat/ddp-client/dist/types/Subscription';
 
 import database from '../../database';
 import protectedFunction from '../helpers/protectedFunction';
@@ -36,12 +38,10 @@ import { merge } from '../helpers/mergeSubscriptionsRooms';
 import { getRoomAvatar, getRoomTitle, getSenderName, random } from '../helpers';
 import { handleVideoConfIncomingWebsocketMessages } from '../../../actions/videoConf';
 
-const removeListener = (listener: { stop: () => void }) => listener.stop();
-
-let streamListener: Promise<any> | false;
 let subServer: string;
 let queue: { [key: string]: ISubscription | IRoom } = {};
 let subTimer: ReturnType<typeof setTimeout> | null | false = null;
+let streams: (Subscription | undefined)[] = [];
 const WINDOW_TIME = 500;
 
 export let roomsSubscription: { stop: () => void } | null = null;
@@ -286,173 +286,177 @@ const debouncedUpdate = (subscription: ISubscription) => {
 	queue[subscription.rid ? getSubQueueId(subscription.rid) : getRoomQueueId(subscription._id)] = subscription;
 };
 
-export default function subscribeRooms() {
-	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
-		const db = database.active;
+const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
+	const db = database.active;
 
-		// check if the server from variable is the same as the js sdk client
-		if (sdk && sdk.current.client && sdk.current.client.host !== subServer) {
-			return;
+	// check if the server from variable is the same as the js sdk client
+	if (sdk.current?.connection.url !== subServer) {
+		return;
+	}
+	if (ddpMessage.msg === 'added') {
+		return;
+	}
+	const [type, data] = ddpMessage.fields.args;
+	const [, ev] = ddpMessage.fields.eventName.split('/');
+	if (/userData/.test(ev)) {
+		const [{ diff, unset }] = ddpMessage.fields.args;
+		if (diff.emails?.length > 0) {
+			store.dispatch(setUser({ emails: diff.emails }));
 		}
-		if (ddpMessage.msg === 'added') {
-			return;
+		if (diff?.statusLivechat) {
+			store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
 		}
-		const [type, data] = ddpMessage.fields.args;
-		const [, ev] = ddpMessage.fields.eventName.split('/');
-		if (/userData/.test(ev)) {
-			const [{ diff, unset }] = ddpMessage.fields.args;
-			if (diff.emails?.length > 0) {
-				store.dispatch(setUser({ emails: diff.emails }));
-			}
-			if (diff?.statusLivechat) {
-				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
-			}
-			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
-				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
-			}
-			if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
-				store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
-			}
-			if (diff?.avatarETag) {
-				store.dispatch(setUser({ avatarETag: diff.avatarETag }));
-			}
-			if (unset?.avatarETag) {
-				store.dispatch(setUser({ avatarETag: '' }));
-			}
-			if (diff?.bio) {
-				store.dispatch(setUser({ bio: diff.bio }));
-			}
-			if (diff?.nickname) {
-				store.dispatch(setUser({ nickname: diff.nickname }));
-			}
+		if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
+			store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
 		}
-		if (/subscriptions/.test(ev)) {
-			if (type === 'removed') {
-				try {
-					const subCollection = db.get('subscriptions');
-					const sub = await subCollection.find(data.rid);
-					// TODO - today the Relation type from watermelon just support one to one relations
-					// @ts-ignore
-					const messages = (await sub.messages.fetch()) as TMessageModel[];
-					// @ts-ignore
-					const threads = (await sub.threads.fetch()) as TThreadModel[];
-					// @ts-ignore
-					const threadMessages = (await sub.threadMessages.fetch()) as TThreadMessageModel[];
+		if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
+			store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+		}
+		if (diff?.avatarETag) {
+			store.dispatch(setUser({ avatarETag: diff.avatarETag }));
+		}
+		if (unset?.avatarETag) {
+			store.dispatch(setUser({ avatarETag: '' }));
+		}
+		if (diff?.bio) {
+			store.dispatch(setUser({ bio: diff.bio }));
+		}
+		if (diff?.nickname) {
+			store.dispatch(setUser({ nickname: diff.nickname }));
+		}
+	}
+	if (/subscriptions/.test(ev)) {
+		if (type === 'removed') {
+			try {
+				const subCollection = db.get('subscriptions');
+				const sub = await subCollection.find(data.rid);
+				// TODO - today the Relation type from watermelon just support one to one relations
+				// @ts-ignore
+				const messages = (await sub.messages.fetch()) as TMessageModel[];
+				// @ts-ignore
+				const threads = (await sub.threads.fetch()) as TThreadModel[];
+				// @ts-ignore
+				const threadMessages = (await sub.threadMessages.fetch()) as TThreadMessageModel[];
 
-					const messagesToDelete = messages?.map((m: TMessageModel) => m.prepareDestroyPermanently());
-					const threadsToDelete = threads?.map((m: TThreadModel) => m.prepareDestroyPermanently());
-					const threadMessagesToDelete = threadMessages?.map((m: TThreadMessageModel) => m.prepareDestroyPermanently());
+				const messagesToDelete = messages?.map((m: TMessageModel) => m.prepareDestroyPermanently());
+				const threadsToDelete = threads?.map((m: TThreadModel) => m.prepareDestroyPermanently());
+				const threadMessagesToDelete = threadMessages?.map((m: TThreadMessageModel) => m.prepareDestroyPermanently());
 
-					await db.write(async () => {
-						await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
-					});
+				await db.write(async () => {
+					await db.batch(sub.prepareDestroyPermanently(), ...messagesToDelete, ...threadsToDelete, ...threadMessagesToDelete);
+				});
 
-					Encryption.stopRoom(data.rid);
+				Encryption.stopRoom(data.rid);
 
-					const roomState = store.getState().room;
-					// Delete and remove events come from this stream
-					// Here we identify which one was triggered
-					if (data.rid === roomState.rid && roomState.isDeleting) {
-						store.dispatch(removedRoom());
+				const roomState = store.getState().room;
+				// Delete and remove events come from this stream
+				// Here we identify which one was triggered
+				if (data.rid === roomState.rid && roomState.isDeleting) {
+					store.dispatch(removedRoom());
+				} else {
+					EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
+				}
+			} catch (e) {
+				log(e);
+			}
+		} else {
+			debouncedUpdate(data);
+		}
+	}
+	if (/rooms/.test(ev)) {
+		if (type === 'updated' || type === 'inserted') {
+			debouncedUpdate(data);
+		}
+	}
+	if (/message/.test(ev)) {
+		try {
+			const [args] = ddpMessage.fields.args;
+			const _id = random(17);
+			const message = {
+				// @ts-ignore
+				u: {
+					_id,
+					username: 'rocket.cat',
+					name: 'Rocket Cat'
+				},
+				...buildMessage(EJSON.fromJSONValue(args))
+			} as IMessage;
+			await updateMessages({ rid: args.rid, update: [message] });
+		} catch (e) {
+			log(e);
+		}
+	}
+	if (/notification/.test(ev)) {
+		const [notification] = ddpMessage.fields.args;
+		try {
+			const {
+				payload: { rid, message, sender }
+			} = notification;
+			const room = await getRoom(rid);
+			notification.title = getRoomTitle(room);
+			notification.avatar = getRoomAvatar(room);
+
+			// If it's from a encrypted room
+			if (message?.t === E2E_MESSAGE_TYPE) {
+				if (message.msg) {
+					// Decrypt this message content
+					const { msg } = await Encryption.decryptMessage({ ...message, rid });
+					// If it's a direct the content is the message decrypted
+					if (room.t === 'd') {
+						notification.text = msg;
+						// If it's a private group we should add the sender name
 					} else {
-						EventEmitter.emit('ROOM_REMOVED', { rid: data.rid });
-					}
-				} catch (e) {
-					log(e);
-				}
-			} else {
-				debouncedUpdate(data);
-			}
-		}
-		if (/rooms/.test(ev)) {
-			if (type === 'updated' || type === 'inserted') {
-				debouncedUpdate(data);
-			}
-		}
-		if (/message/.test(ev)) {
-			try {
-				const [args] = ddpMessage.fields.args;
-				const _id = random(17);
-				const message = {
-					// @ts-ignore
-					u: {
-						_id,
-						username: 'rocket.cat',
-						name: 'Rocket Cat'
-					},
-					...buildMessage(EJSON.fromJSONValue(args))
-				} as IMessage;
-				await updateMessages({ rid: args.rid, update: [message] });
-			} catch (e) {
-				log(e);
-			}
-		}
-		if (/notification/.test(ev)) {
-			const [notification] = ddpMessage.fields.args;
-			try {
-				const {
-					payload: { rid, message, sender }
-				} = notification;
-				const room = await getRoom(rid);
-				notification.title = getRoomTitle(room);
-				notification.avatar = getRoomAvatar(room);
-
-				// If it's from a encrypted room
-				if (message?.t === E2E_MESSAGE_TYPE) {
-					if (message.msg) {
-						// Decrypt this message content
-						const { msg } = await Encryption.decryptMessage({ ...message, rid });
-						// If it's a direct the content is the message decrypted
-						if (room.t === 'd') {
-							notification.text = msg;
-							// If it's a private group we should add the sender name
-						} else {
-							notification.text = `${getSenderName(sender)}: ${msg}`;
-						}
+						notification.text = `${getSenderName(sender)}: ${msg}`;
 					}
 				}
-			} catch (e) {
-				log(e);
 			}
-			EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+		} catch (e) {
+			log(e);
 		}
-		if (/uiInteraction/.test(ev)) {
-			const { type: eventType, ...args } = type;
-			handlePayloadUserInteraction(eventType, args);
+		EventEmitter.emit(INAPP_NOTIFICATION_EMITTER, notification);
+	}
+	if (/uiInteraction/.test(ev)) {
+		const { type: eventType, ...args } = type;
+		handlePayloadUserInteraction(eventType, args);
+	}
+	if (/e2ekeyRequest/.test(ev)) {
+		const [roomId, keyId] = ddpMessage.fields.args;
+		try {
+			await Encryption.provideRoomKeyToUser(keyId, roomId);
+		} catch (e) {
+			log(e);
 		}
-		if (/e2ekeyRequest/.test(ev)) {
-			const [roomId, keyId] = ddpMessage.fields.args;
-			try {
-				await Encryption.provideRoomKeyToUser(keyId, roomId);
-			} catch (e) {
-				log(e);
-			}
-		}
-		if (/video-conference/.test(ev)) {
-			const [action, params] = ddpMessage.fields.args;
-			store.dispatch(handleVideoConfIncomingWebsocketMessages({ action, params }));
-		}
-	});
+	}
+	if (/video-conference/.test(ev)) {
+		const [action, params] = ddpMessage.fields.args;
+		store.dispatch(handleVideoConfIncomingWebsocketMessages({ action, params }));
+	}
+});
 
+export default function subscribeRooms() {
 	const stop = () => {
-		if (streamListener) {
-			streamListener.then(removeListener);
-			streamListener = false;
-		}
 		queue = {};
 		if (subTimer) {
 			clearTimeout(subTimer);
 			subTimer = false;
 		}
 		roomsSubscription = null;
+		streams.forEach(stream => stream?.stop());
+		streams = [];
 	};
-
-	streamListener = sdk.onStreamData('stream-notify-user', handleStreamMessageReceived);
 
 	try {
 		// set the server that started this task
-		subServer = sdk.current.client.host;
-		sdk.current.subscribeNotifyUser().catch((e: unknown) => console.log(e));
+		subServer = sdk.current?.connection.url || '';
+		const { id } = store.getState().login.user;
+		streams.push(sdk._stream('notify-user', `${id}/message`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/notification`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/rooms-changed`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/subscriptions-changed`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/uiInteraction`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/e2ekeyRequest`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/userData`, handleStreamMessageReceived));
+		streams.push(sdk._stream('notify-user', `${id}/video-conference`, handleStreamMessageReceived));
 		roomsSubscription = { stop: () => stop() };
 		return null;
 	} catch (e) {

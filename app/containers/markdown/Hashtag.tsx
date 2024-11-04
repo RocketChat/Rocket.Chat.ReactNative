@@ -7,7 +7,7 @@ import { getSubscriptionByRoomId } from '../../lib/database/services/Subscriptio
 import { useAppSelector } from '../../lib/hooks';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { Services } from '../../lib/services';
+import sdk from '../../lib/services/sdk';
 import { useTheme } from '../../theme';
 import { sendLoadingEvent } from '../Loading';
 import { IUserChannel } from './interfaces';
@@ -37,7 +37,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 			} else if (navParam.rid) {
 				sendLoadingEvent({ visible: true });
 				try {
-					await Services.getRoomInfo(navParam.rid);
+					await sdk.get('/v1/rooms.info', { roomId: navParam.rid });
 					sendLoadingEvent({ visible: false });
 					navToRoomInfo(navParam);
 				} catch (error) {

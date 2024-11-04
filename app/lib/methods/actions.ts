@@ -1,6 +1,5 @@
 import { ITriggerAction, IUserInteraction, ModalActions } from '../../containers/UIKit/interfaces';
 import EventEmitter from './helpers/events';
-import fetch from './helpers/fetch';
 import { random } from './helpers';
 import Navigation from '../navigation/appNavigation';
 import sdk from '../services/sdk';
@@ -83,32 +82,24 @@ export const handlePayloadUserInteraction = (
 
 export function triggerAction({ type, actionId, appId, rid, mid, viewId, container, ...rest }: ITriggerAction) {
 	return new Promise<ModalActions | undefined | void>(async (resolve, reject) => {
+		if (!appId) {
+			return reject();
+		}
 		const triggerId = generateTriggerId(appId);
 
 		const payload = rest.payload || rest;
 
 		try {
-			const { userId, authToken } = sdk.current.currentLogin;
-			const { host } = sdk.current.client;
-
-			// we need to use fetch because this.sdk.post add /v1 to url
-			const result = await fetch(`${host}/api/apps/ui.interaction/${appId}/`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Auth-Token': authToken,
-					'X-User-Id': userId
-				},
-				body: JSON.stringify({
-					type,
-					actionId,
-					payload,
-					container,
-					mid,
-					rid,
-					triggerId,
-					viewId
-				})
+			// @ts-ignore TODO: we're going to refactor everything related to UIKit on Yash work
+			const result = await sdk.post(`/apps/ui.interaction/${appId}`, {
+				type,
+				actionId,
+				payload,
+				container,
+				mid,
+				rid,
+				triggerId,
+				viewId
 			});
 
 			try {
