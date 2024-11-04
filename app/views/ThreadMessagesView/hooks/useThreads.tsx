@@ -119,7 +119,7 @@ const useThreads = ({ search, subscription, rid, threadsSubscription }: IUseThre
 	useLayoutEffect(() => {
 		init();
 		handleThreadsSubscription({});
-	}, [subscription]);
+	}, []);
 
 	return {
 		loading,
