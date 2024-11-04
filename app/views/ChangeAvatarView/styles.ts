@@ -9,7 +9,7 @@ export default StyleSheet.create({
 		marginBottom: 16
 	},
 	separator: {
-		marginVertical: 16
+		marginVertical: 24
 	},
 	itemLabel: {
 		marginBottom: 12,

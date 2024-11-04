@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, TextInput, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
@@ -64,6 +64,7 @@ function reducer(state: IState, action: IReducerAction) {
 
 const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const [url, setUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
 	const { userId, username, server } = useAppSelector(
@@ -212,9 +213,9 @@ const ChangeAvatarView = () => {
 						type='secondary'
 						disabled={saving}
 						backgroundColor={colors.buttonBackgroundSecondaryDefault}
-						onPress={() => pickImage(true)}
+						onPress={() => console.log()}
 						testID='change-avatar-view-take-a-photo'
-						style={{ marginTop: 36 }}
+						style={{ marginTop: 36, marginBottom: 0 }}
 					/>
 
 					<List.Separator style={styles.separator} />
