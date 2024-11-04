@@ -141,6 +141,10 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	yield subscribeSettings();
 };
 
+const fetchAppActionsFork = function* fetchAppActionsFork() {
+	yield getAppActions();
+};
+
 const fetchPermissionsFork = function* fetchPermissionsFork() {
 	yield getPermissions();
 };
@@ -181,10 +185,6 @@ const fetchUsersRoles = function* fetchRoomsFork() {
 	}
 };
 
-const fetchAppActionsFork = function* fetchAppActionsFork() {
-	yield getAppActions();
-};
-
 const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 	try {
 		getUserPresence(user.id);
@@ -192,6 +192,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const server = yield select(getServer);
 		yield put(encryptionInit());
 		yield put(roomsRequest());
+		yield fork(fetchAppActionsFork);
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
@@ -201,7 +202,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(fetchEnterpriseModulesFork, { user });
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
-		yield fork(fetchAppActionsFork);
 
 		setLanguage(user?.language);
 

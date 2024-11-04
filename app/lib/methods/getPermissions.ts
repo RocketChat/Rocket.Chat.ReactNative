@@ -64,11 +64,27 @@ export const SUPPORTED_PERMISSIONS = [
 	'test-push-notifications'
 ] as const;
 
+const getAppActionButtonsRequiredPermissions = async () => {
+	const db = database.active;
+	const appActionButtonsCollection = db.get('app_actions_buttons');
+	const allAppActionButtonsRecords = await appActionButtonsCollection.query().fetch();
+
+	return [
+		...new Set(
+			allAppActionButtonsRecords
+				.map(action => [...(action.when?.hasAllPermissions || []), ...(action.when?.hasOnePermission || [])])
+				.flat()
+		)
+	];
+};
+
 export async function setPermissions(): Promise<void> {
 	const db = database.active;
 	const permissionsCollection = db.get('permissions');
+	const appActionButtonsPermissions = await getAppActionButtonsRequiredPermissions();
+
 	const allPermissions = await permissionsCollection
-		.query(Q.where('id', Q.oneOf(SUPPORTED_PERMISSIONS as unknown as string[])))
+		.query(Q.where('id', Q.oneOf([...SUPPORTED_PERMISSIONS, ...appActionButtonsPermissions] as unknown as string[])))
 		.fetch();
 	const parsed = allPermissions.reduce((acc, item) => ({ ...acc, [item.id]: item.roles }), {});
 
