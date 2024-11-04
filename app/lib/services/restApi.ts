@@ -633,21 +633,65 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	});
 };
 
-export const getMessages = (
-	roomId: string,
-	type: SubscriptionType,
-	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
-	offset: number
-) => {
+export const getMessages = ({
+	roomId,
+	type,
+	offset,
+	starredIds,
+	mentionIds,
+	pinned
+}: {
+	roomId: string;
+	type: SubscriptionType;
+	offset: number;
+	mentionIds?: string[];
+	starredIds?: string[];
+	pinned?: boolean;
+}) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
-	// RC 0.59.0
-	// @ts-ignore
-	return sdk.get(`/v1/${roomTypeToApiType(t)}.messages`, {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+		const params: any = {
+			roomId,
+			offset,
+			sort: { ts: -1 }
+		};
+
+		if (mentionIds && mentionIds.length > 0) {
+			params.mentionIds = mentionIds.join(',');
+		}
+
+		if (starredIds && starredIds.length > 0) {
+			params.starredIds = starredIds.join(',');
+		}
+
+		if (pinned) {
+			params.pinned = pinned;
+		}
+
+		return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
+	}
+	const params: any = {
 		roomId,
-		query,
 		offset,
-		sort: '{ "ts": -1 }'
-	});
+		sort: { ts: -1 }
+	};
+
+	if (mentionIds && mentionIds.length > 0) {
+		params.query = { ...params.query, 'mentions._id': { $in: mentionIds } };
+	}
+
+	if (starredIds && starredIds.length > 0) {
+		params.query = { ...params.query, 'starred._id': { $in: starredIds } };
+	}
+
+	if (pinned) {
+		params.query = { ...params.query, pinned: true };
+	}
+
+	// RC 0.59.0
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
 
 // export const getReadReceipts = (messageId: string) =>

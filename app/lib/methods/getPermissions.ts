@@ -61,7 +61,12 @@ export const SUPPORTED_PERMISSIONS = [
 	'mobile-upload-file',
 	'delete-own-message',
 	'call-management',
-	'test-push-notifications'
+	'test-push-notifications',
+	'move-room-to-team',
+	'create-team-channel',
+	'create-team-group',
+	'delete-team-channel',
+	'delete-team-group'
 ] as const;
 
 export async function setPermissions(): Promise<void> {

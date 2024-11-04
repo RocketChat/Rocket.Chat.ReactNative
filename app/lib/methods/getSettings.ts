@@ -11,6 +11,7 @@ import sdk from '../services/sdk';
 import protectedFunction from './helpers/protectedFunction';
 import { parseSettings, _prepareSettings } from './parseSettings';
 import { setPresenceCap } from './getUsersPresence';
+import { compareServerVersion } from './helpers';
 
 const serverInfoKeys = [
 	'Site_Name',
@@ -107,12 +108,14 @@ const serverInfoUpdate = async (serverInfo: IPreparedSettings[], iconSetting: IS
 	});
 };
 
-export async function getLoginSettings({ server }: { server: string }): Promise<void> {
+export async function getLoginSettings({ server, serverVersion }: { server: string; serverVersion: string }): Promise<void> {
+	const settingsParams = JSON.stringify(loginSettings);
+
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? `${server}/api/v1/settings.public?_id=${loginSettings.join(',')}`
+		: `${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`;
 	try {
-		const settingsParams = JSON.stringify(loginSettings);
-		const result = await fetch(`${server}/api/v1/settings.public?query={"_id":{"$in":${settingsParams}}}`).then(response =>
-			response.json()
-		);
+		const result = await fetch(url).then(response => response.json());
 
 		if (result.success && result.settings.length) {
 			reduxStore.dispatch(clearSettings());
@@ -152,14 +155,16 @@ export async function getSettings(): Promise<void> {
 		let offset = 0;
 		let remaining;
 		let settings: IData[] = [];
-
+		const serverVersion = reduxStore.getState().server.version;
+		const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+			? `${sdk.current?.connection.url}/api/v1/settings.public?_id=${settingsParams.join(',')}`
+			: `${sdk.current?.connection.url}/api/v1/settings.public?query={"_id":{"$in":${JSON.stringify(settingsParams)}}}`;
 		// Iterate over paginated results to retrieve all settings
 		do {
 			// TODO: why is no-await-in-loop enforced in the first place?
 			/* eslint-disable no-await-in-loop */
 			// @ts-ignore TODO: type me
-			const result = (await sdk.get('/v1/settings.public', {
-				query: `{ "_id": { "$in": ${JSON.stringify(settingsParams)}} }`,
+			const result = (await sdk.get(url, {
 				offset
 			})) as any;
 
