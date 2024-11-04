@@ -67,6 +67,5 @@ export const subscribeTheme = (themePreferences: IThemePreference, setTheme: () 
 		// unsubscribe appearance changes when automatic was disabled
 		unsubscribeTheme();
 	}
-	
 	updateRootViewColor(themePreferences);
 };
