@@ -242,6 +242,7 @@
   "Expanded": "Laajennettu",
   "Expiration_Days": "Vanheneminen (päivää)",
   "Favorites": "Suosikit",
+  "Fetch_image_from_URL": "Hae kuva URL-osoitteesta",
   "File_description": "Tiedoston kuvaus",
   "Files": "Tiedostot",
   "FileUpload_Error": "Tiedoston latausvirhe",

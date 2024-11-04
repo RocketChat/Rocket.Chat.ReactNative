@@ -105,6 +105,7 @@
   "error-you-are-last-owner": "Eres el único propietario existente. Debes establecer un nuevo propietario antes de abandonar la sala.",
   "Everyone_can_access_this_channel": "Todos los usuarios pueden acceder a este canal",
   "Favorites": "Favoritos",
+  "Fetch_image_from_URL": "Obtener imagen desde URL",
   "File_description": "Descripción del archivo",
   "Files": "Archivos",
   "Finish_recording": "Finalizar grabación",

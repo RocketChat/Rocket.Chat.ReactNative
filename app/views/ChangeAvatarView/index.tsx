@@ -172,7 +172,7 @@ const ChangeAvatarView = () => {
 			<StatusBar />
 			<SafeAreaView testID='change-avatar-view'>
 				<ScrollView
-					contentContainerStyle={sharedStyles.containerScrollView}
+					contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 32 }}
 					testID='change-avatar-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='change-avatar-view-avatar'>
@@ -206,6 +206,17 @@ const ChangeAvatarView = () => {
 							}
 						/>
 					) : null}
+
+					<Button
+						title={I18n.t('Fetch_image_from_URL')}
+						type='secondary'
+						disabled={saving}
+						backgroundColor={colors.buttonBackgroundSecondaryDefault}
+						onPress={() => pickImage(true)}
+						testID='change-avatar-view-take-a-photo'
+						style={{ marginTop: 36 }}
+					/>
+
 					<List.Separator style={styles.separator} />
 					{context === 'profile' ? (
 						<AvatarSuggestion

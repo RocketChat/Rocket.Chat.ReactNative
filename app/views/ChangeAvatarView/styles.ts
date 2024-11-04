@@ -6,18 +6,20 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 24
+		marginBottom: 16
 	},
 	separator: {
 		marginVertical: 16
 	},
 	itemLabel: {
 		marginBottom: 12,
-		fontSize: 14,
-		...sharedStyles.textSemibold
+		fontSize: 16,
+		lineHeight: 24,
+		...sharedStyles.textMedium
 	},
 	containerImagesUploaded: {
-		flex: 1
+		flex: 1,
+		marginBottom: 36
 	},
 	containerAvatarSuggestion: {
 		flex: 1,

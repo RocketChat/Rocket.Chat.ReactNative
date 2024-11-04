@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 20,
-		marginBottom: 12,
+
 		borderRadius: 4
 	}
 });
