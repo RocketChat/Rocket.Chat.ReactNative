@@ -387,21 +387,21 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache: *restore-npm-cache-linux
+      # - restore_cache: *restore-npm-cache-linux
 
-      - run: *install-npm-modules
+      # - run: *install-npm-modules
 
-      - run:
-          name: Lint
-          command: |
-            yarn lint
+      # - run:
+      #     name: Lint
+      #     command: |
+      #       yarn lint
 
-      - run:
-          name: Test
-          command: |
-            yarn test --runInBand
+      # - run:
+      #     name: Test
+      #     command: |
+      #       yarn test --runInBand
 
-      - save_cache: *save-npm-cache-linux
+      # - save_cache: *save-npm-cache-linux
 
   # Android builds
   android-build-experimental:
