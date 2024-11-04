@@ -46,12 +46,13 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textBig: {
+		lineHeight: 43,
 		fontSize: 30,
 		...sharedStyles.textRegular
 	},
 	customEmoji: {
-		width: 20,
-		height: 20
+		width: 15,
+		height: 15
 	},
 	customEmojiBig: {
 		width: 30,

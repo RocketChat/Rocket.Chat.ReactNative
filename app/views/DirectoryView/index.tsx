@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
@@ -30,8 +30,8 @@ import { getSubscriptionByRoomId } from '../../lib/database/services/Subscriptio
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
+		NativeStackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
@@ -70,7 +70,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Directory'),
 			headerRight: () => (
 				<HeaderButton.Container>

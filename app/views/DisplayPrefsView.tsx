@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
 import { RadioButton } from 'react-native-ui-lib';
@@ -21,7 +21,7 @@ import { saveSortPreference } from '../lib/methods';
 import { useAppSelector } from '../lib/hooks';
 
 const DisplayPrefsView = (): React.ReactElement => {
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'DisplayPrefsView'>>();
 	const { colors } = useTheme();
 
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(

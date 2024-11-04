@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Linking, StyleSheet, Text, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { ChatsStackParamList } from '../../../stacks/types';
 import { useTheme } from '../../../theme';
@@ -19,7 +19,7 @@ export const EncryptedRoom = ({
 	navigation
 }: {
 	roomName: string;
-	navigation: StackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 }): ReactElement => {
 	const { colors } = useTheme();
 	const styles = useStyle();

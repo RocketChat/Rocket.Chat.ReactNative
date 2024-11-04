@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -45,8 +45,8 @@ interface IMessagesViewProps {
 	};
 	baseUrl: string;
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'MessagesView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: ICustomEmoji };
@@ -220,7 +220,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, mentionIds: [user.id] });
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
@@ -231,7 +231,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, starredIds: [user.id] });
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
@@ -250,7 +250,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, pinned: true });
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { WebView } from 'react-native-webview';
 import { useSelector } from 'react-redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
@@ -13,7 +13,7 @@ import { AdminPanelStackParamList } from '../../stacks/types';
 import { IApplicationState } from '../../definitions';
 
 const AdminPanelView = () => {
-	const navigation = useNavigation<StackNavigationProp<AdminPanelStackParamList, 'AdminPanelView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<AdminPanelStackParamList, 'AdminPanelView'>>();
 	const baseUrl = useSelector((state: IApplicationState) => state.server.server);
 	const token = useSelector((state: IApplicationState) => getUserSelector(state).token);
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
