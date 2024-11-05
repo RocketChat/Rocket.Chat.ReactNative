@@ -1,5 +1,8 @@
+import { IAppActionButton } from '../definitions';
 import { APP_ACTION_BUTTON } from '../actions/actionsTypes';
-import { IAppActionButtonsState, TActionAppActionButtons } from '../actions/appActionButtons';
+import { TActionAppActionButtons } from '../actions/appActionButtons';
+
+export type IAppActionButtonsState = Record<string, IAppActionButton>;
 
 export const initialState: IAppActionButtonsState = {};
 

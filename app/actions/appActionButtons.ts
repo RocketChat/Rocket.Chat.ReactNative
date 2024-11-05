@@ -2,8 +2,7 @@ import { Action } from 'redux';
 
 import { IAppActionButton } from '../definitions';
 import { APP_ACTION_BUTTON } from './actionsTypes';
-
-export type IAppActionButtonsState = Record<string, IAppActionButton>;
+import { IAppActionButtonsState } from '../reducers/appActionButtons';
 
 interface ISetAppActionButtons extends Action {
 	appActionButtons: IAppActionButtonsState;
