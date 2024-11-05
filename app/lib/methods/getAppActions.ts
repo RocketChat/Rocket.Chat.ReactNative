@@ -3,7 +3,19 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { IAppActionButton, TAppActionButtonModel } from '../../definitions';
 import database from '../database';
 import sdk from '../services/sdk';
+import { store as reduxStore } from '../store/auxStore';
 import protectedFunction from './helpers/protectedFunction';
+import { setAppActionButtons as setPermissionsAction } from '../../actions/appActionButtons';
+
+export async function setAppActionButtons(): Promise<void> {
+	const db = database.active;
+	const appActionButtonsCollection = db.get('app_actions_buttons');
+
+	const allAppActionButtons = await appActionButtonsCollection.query().fetch();
+	const parsed = allAppActionButtons.reduce((acc, item) => ({ ...acc, [`${item.appId}/${item.actionId}`]: item._raw }), {});
+
+    reduxStore.dispatch(setPermissionsAction(parsed));
+}
 
 export const getAppActions = () => {
 	const db = database.active;
@@ -16,8 +28,6 @@ export const getAppActions = () => {
 				await db.write(async () => {
 					const appActionButtonsCollection = db.get('app_actions_buttons');
 					const allAppActionButtonsRecords = await appActionButtonsCollection.query().fetch();
-
-					console.log('getAppActions test', allAppActionButtonsRecords);
 
 					const filteredAppActionButtonsToCreate = appActionButtons.filter(
 						(i1: IAppActionButton) =>
@@ -64,6 +74,7 @@ export const getAppActions = () => {
 					} catch (e) {
 						console.log('getAppActions - Error', e);
 					}
+					setAppActionButtons();
 					return allRecords.length;
 				});
 			}
