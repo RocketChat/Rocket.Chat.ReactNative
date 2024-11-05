@@ -142,7 +142,7 @@
 		"ua-parser-js": "1.0.33",
 		"uri-js": "4.4.1",
 		"url-parse": "1.5.10",
-		"use-debounce": "9.0.4",
+		"use-debounce": "10.0.4",
 		"use-deep-compare-effect": "1.6.1",
 		"xregexp": "5.0.2",
 		"yup": "0.32.11"
