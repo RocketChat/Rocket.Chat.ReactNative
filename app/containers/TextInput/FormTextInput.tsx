@@ -100,7 +100,9 @@ export const FormTextInput = ({
 	return (
 		<View style={[styles.inputContainer, containerStyle]}>
 			{label ? (
-				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
+				<Text
+					accessibilityLabel={`${label} ${required ? i18n.t('Required') : ''}`}
+					style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
 					{label}{' '}
 					{required && (
 						<Text style={[styles.required, { color: themes[theme].fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
