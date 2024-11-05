@@ -15,7 +15,8 @@ const handleRequest = function* handleRequest() {
 
 		if (showQueue) {
 			// get all the current chats on the queue
-			const result = yield getInquiriesQueued();
+			const serverVersion = yield select(state => state.server.version);
+			const result = yield getInquiriesQueued(serverVersion);
 			if (result.success) {
 				const { inquiries } = result;
 

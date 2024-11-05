@@ -1,5 +1,6 @@
 import sdk from '../../../lib/services/sdk';
 import { IUser } from '../../../definitions';
+import { compareServerVersion } from '../../../lib/methods/helpers';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import subscribeInquiry from './subscriptions/inquiry';
 
@@ -10,7 +11,12 @@ export const changeLivechatStatus = () => sdk.methodCallWrapper('livechat:change
 
 // RC 2.4.0
 // @ts-ignore
-export const getInquiriesQueued = () => sdk.get('livechat/inquiries.queued');
+export const getInquiriesQueued = (serverVersion: string) => {
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? 'livechat/inquiries.queuedForUser'
+		: 'livechat/inquiries.queued';
+	return sdk.get(url);
+};
 
 // this inquiry is added to the db by the subscriptions stream
 // and will be removed by the queue stream
