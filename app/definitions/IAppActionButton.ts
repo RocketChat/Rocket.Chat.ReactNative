@@ -1,30 +1,30 @@
 import Model from '@nozbe/watermelondb/Model';
 
-export declare enum RoomTypeFilter {
-	PUBLIC_CHANNEL = "public_channel",
-	PRIVATE_CHANNEL = "private_channel",
-	PUBLIC_TEAM = "public_team",
-	PRIVATE_TEAM = "private_team",
-	PUBLIC_DISCUSSION = "public_discussion",
-	PRIVATE_DISCUSSION = "private_discussion",
-	DIRECT = "direct",
-	DIRECT_MULTIPLE = "direct_multiple",
-	LIVE_CHAT = "livechat"
+export enum RoomTypeFilter {
+	PUBLIC_CHANNEL = 'public_channel',
+	PRIVATE_CHANNEL = 'private_channel',
+	PUBLIC_TEAM = 'public_team',
+	PRIVATE_TEAM = 'private_team',
+	PUBLIC_DISCUSSION = 'public_discussion',
+	PRIVATE_DISCUSSION = 'private_discussion',
+	DIRECT = 'direct',
+	DIRECT_MULTIPLE = 'direct_multiple',
+	LIVE_CHAT = 'livechat'
 }
 
-export declare enum MessageActionContext {
-	MESSAGE = "message",
-	MESSAGE_MOBILE = "message-mobile",
-	THREADS = "threads",
-	STARRED = "starred"
+export enum MessageActionContext {
+	MESSAGE = 'message',
+	MESSAGE_MOBILE = 'message-mobile',
+	THREADS = 'threads',
+	STARRED = 'starred'
 }
 
-export declare enum UIActionButtonContext {
-	MESSAGE_ACTION = "messageAction",
-	ROOM_ACTION = "roomAction",
-	MESSAGE_BOX_ACTION = "messageBoxAction",
-	USER_DROPDOWN_ACTION = "userDropdownAction",
-	ROOM_SIDEBAR_ACTION = "roomSideBarAction"
+export enum UIActionButtonContext {
+	MESSAGE_ACTION = 'messageAction',
+	ROOM_ACTION = 'roomAction',
+	MESSAGE_BOX_ACTION = 'messageBoxAction',
+	USER_DROPDOWN_ACTION = 'userDropdownAction',
+	ROOM_SIDEBAR_ACTION = 'roomSideBarAction'
 }
 
 export interface IUActionButtonWhen {

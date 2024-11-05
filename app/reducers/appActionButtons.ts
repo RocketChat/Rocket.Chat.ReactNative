@@ -1,7 +1,7 @@
 import { APP_ACTION_BUTTON } from '../actions/actionsTypes';
 import { IAppActionButtonsState, TActionAppActionButtons } from '../actions/appActionButtons';
 
-const initialState: IAppActionButtonsState = {};
+export const initialState: IAppActionButtonsState = {};
 
 export default function appActionButtons(state = initialState, action: TActionAppActionButtons): IAppActionButtonsState {
 	switch (action.type) {
