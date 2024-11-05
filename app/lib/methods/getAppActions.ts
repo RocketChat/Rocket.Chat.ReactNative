@@ -6,6 +6,7 @@ import sdk from '../services/sdk';
 import { store as reduxStore } from '../store/auxStore';
 import protectedFunction from './helpers/protectedFunction';
 import { setAppActionButtons as setPermissionsAction } from '../../actions/appActionButtons';
+import log from './helpers/log';
 
 export async function setAppActionButtons(): Promise<void> {
 	const db = database.active;
@@ -14,7 +15,7 @@ export async function setAppActionButtons(): Promise<void> {
 	const allAppActionButtons = await appActionButtonsCollection.query().fetch();
 	const parsed = allAppActionButtons.reduce((acc, item) => ({ ...acc, [`${item.appId}/${item.actionId}`]: item._raw }), {});
 
-    reduxStore.dispatch(setPermissionsAction(parsed));
+	reduxStore.dispatch(setPermissionsAction(parsed));
 }
 
 export const getAppActions = () => {
@@ -72,7 +73,7 @@ export const getAppActions = () => {
 					try {
 						await db.batch(...allRecords);
 					} catch (e) {
-						console.log('getAppActions - Error', e);
+						log(e);
 					}
 					setAppActionButtons();
 					return allRecords.length;
@@ -81,7 +82,7 @@ export const getAppActions = () => {
 
 			return resolve();
 		} catch (e) {
-			console.log('getAppActions Error', JSON.stringify(e));
+			log(e);
 			return resolve();
 		}
 	});
