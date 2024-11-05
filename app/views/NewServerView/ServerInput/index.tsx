@@ -52,7 +52,6 @@ const ServerInput = ({
 		<View style={styles.container}>
 			<FormTextInput
 				label={I18n.t('Workspace_URL')}
-				placeholder={I18n.t('Workspace_URL_Example')}
 				containerStyle={styles.inputContainer}
 				value={text}
 				returnKeyType='send'
@@ -62,13 +61,13 @@ const ServerInput = ({
 				clearButtonMode='while-editing'
 				keyboardType='url'
 				textContentType='URL'
+				required
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>
 			{focused && serversHistory?.length ? (
 				<View
-					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}
-				>
+					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}>
 					<FlatList
 						data={serversHistory}
 						renderItem={({ item }) => (

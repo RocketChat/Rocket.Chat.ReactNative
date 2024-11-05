@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
-		textAlign: 'center'
+		textAlign: 'center',
+		lineHeight: 20
 	},
 	connectButton: {
-		marginTop: 20
+		marginTop: 36
 	}
 });
 
@@ -303,7 +304,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>
+					<Text
+						style={{
+							fontSize: 24,
+							lineHeight: 36,
+							marginBottom: 24,
+							color: themes[theme].fontTitlesLabels,
+							...sharedStyles.textBold
+						}}>
 						{I18n.t('Add_server')}
 					</Text>
 					<ServerInput
