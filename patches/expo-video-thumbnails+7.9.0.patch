@@ -1,0 +1,83 @@
+diff --git a/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/Exceptions.kt b/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/Exceptions.kt
+index eadd828..b93114e 100644
+--- a/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/Exceptions.kt
++++ b/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/Exceptions.kt
+@@ -10,3 +10,6 @@ class GenerateThumbnailException :
+ 
+ class FilePermissionsModuleNotFound :
+   CodedException("File permissions module not found")
++
++class InvalidSourceFilenameException :
++  CodedException("Invalid source URI")
+\ No newline at end of file
+diff --git a/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/VideoThumbnailsModule.kt b/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/VideoThumbnailsModule.kt
+index 4da98be..12a08a4 100644
+--- a/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/VideoThumbnailsModule.kt
++++ b/node_modules/expo-video-thumbnails/android/src/main/java/expo/modules/videothumbnails/VideoThumbnailsModule.kt
+@@ -32,15 +32,17 @@ class VideoThumbnailsModule : Module() {
+     Name("ExpoVideoThumbnails")
+ 
+     AsyncFunction("getThumbnail") { sourceFilename: String, options: VideoThumbnailOptions, promise: Promise ->
+-      if (URLUtil.isFileUrl(sourceFilename) && !isAllowedToRead(Uri.decode(sourceFilename).replace("file://", ""))) {
+-        throw ThumbnailFileException()
+-      }
+-
+       withModuleScope(promise) {
+-        val thumbnail = GetThumbnail(sourceFilename, options, context).execute()
+-          ?: throw GenerateThumbnailException()
+-
+         try {
++          if (!URLUtil.isValidUrl(sourceFilename)) throw InvalidSourceFilenameException()
++
++          if (URLUtil.isFileUrl(sourceFilename) && !isAllowedToRead(Uri.decode(sourceFilename).replace("file://", ""))) {
++            throw ThumbnailFileException()
++          }
++
++          val thumbnail = GetThumbnail(sourceFilename, options, context).execute()
++            ?: throw GenerateThumbnailException()
++
+           val path = FileUtilities.generateOutputPath(context.cacheDir, "VideoThumbnails", "jpg")
+           FileOutputStream(path).use { outputStream ->
+             thumbnail.compress(Bitmap.CompressFormat.JPEG, (options.quality * 100).toInt(), outputStream)
+@@ -73,19 +75,30 @@ class VideoThumbnailsModule : Module() {
+     fun execute(): Bitmap? {
+       val retriever = MediaMetadataRetriever()
+ 
+-      if (URLUtil.isFileUrl(sourceFilename)) {
+-        retriever.setDataSource(Uri.decode(sourceFilename).replace("file://", ""))
+-      } else if (URLUtil.isContentUrl(sourceFilename)) {
+-        val fileUri = Uri.parse(sourceFilename)
+-        val fileDescriptor = context.contentResolver.openFileDescriptor(fileUri, "r")!!.fileDescriptor
+-        FileInputStream(fileDescriptor).use { inputStream ->
+-          retriever.setDataSource(inputStream.fd)
++      try {
++        if (URLUtil.isFileUrl(sourceFilename)) {
++          retriever.setDataSource(Uri.decode(sourceFilename).replace("file://", ""))
++        } else if (URLUtil.isContentUrl(sourceFilename)) {
++          val fileUri = Uri.parse(sourceFilename)
++          context.contentResolver.openFileDescriptor(fileUri, "r")?.use { parcelFileDescriptor ->
++            FileInputStream(parcelFileDescriptor.fileDescriptor).use { inputStream ->
++              retriever.setDataSource(inputStream.fd)
++            }
++          }
++        } else {
++          retriever.setDataSource(sourceFilename, videoOptions.headers)
+         }
+-      } else {
+-        retriever.setDataSource(sourceFilename, videoOptions.headers)
+-      }
+ 
+-      return retriever.getFrameAtTime(videoOptions.time.toLong() * 1000, MediaMetadataRetriever.OPTION_CLOSEST_SYNC)
++        return retriever.getFrameAtTime(
++          videoOptions.time.toLong() * 1000,
++          MediaMetadataRetriever.OPTION_CLOSEST_SYNC
++        )
++      } catch (e: Exception) {
++        Log.e(ERROR_TAG, "Unable to retrieve source file")
++        return null
++      } finally {
++        retriever.release()
++      }
+     }
+   }
+ 
