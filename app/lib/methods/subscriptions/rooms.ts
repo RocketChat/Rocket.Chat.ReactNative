@@ -301,7 +301,7 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/userData/.test(ev)) {
 			const [{ diff, unset }] = ddpMessage.fields.args;
-			if (diff.emails?.length > 0) {
+			if (diff?.emails?.length > 0) {
 				store.dispatch(setUser({ emails: diff.emails }));
 			}
 			if (diff?.statusLivechat) {
