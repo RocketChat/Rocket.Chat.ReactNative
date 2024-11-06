@@ -56,7 +56,7 @@ type ThumbnailProps = {
 	encrypted?: boolean;
 };
 
-const Thumbnail = ({ url, status, encrypted = false, isSupportedVideoType }: ThumbnailProps) => {
+const Thumbnail = ({ url, status, isSupportedVideoType, encrypted = false }: ThumbnailProps) => {
 	const { theme } = useTheme();
 
 	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
