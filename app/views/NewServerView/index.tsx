@@ -14,7 +14,6 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
-import { getServerById } from '../../lib/database/services/Server';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
