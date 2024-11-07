@@ -62,22 +62,20 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<>
-					{
-						(imagePreview && imageType) ? (
-							<FastImage
-								style={styles.image}
-								source={{ uri: `data:${imageType};base64,${imagePreview}` }}
-								resizeMode={FastImage.resizeMode.cover}
-							/>
-						) : (
-							<View style={[styles.image, borderStyle]} /> 
-						)
-					}
+					{imagePreview && imageType ? (
+						<FastImage
+							style={styles.image}
+							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
+							resizeMode={FastImage.resizeMode.cover}
+						/>
+					) : (
+						<View style={[styles.image, borderStyle]} />
+					)}
 					<OverlayComponent
 						loading={['loading', 'downloaded'].includes(status)}
 						style={[styles.image, borderStyle]}
 						iconName={status === 'to-download' ? 'arrow-down-circle' : 'loading'}
-						showBackground={(!imagePreview || !imageType)} 
+						showBackground={!imagePreview || !imageType}
 					/>
 				</>
 			) : null}
