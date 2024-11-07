@@ -20,7 +20,6 @@ export const initLocalSettings = function* initLocalSettings() {
 	yield put(setAllPreferences(sortPreferences));
 };
 
-
 const restore = function* restore() {
 	console.log('RESTORE');
 	try {
@@ -40,23 +39,14 @@ const restore = function* restore() {
 					const newServer = servers[i].id;
 					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (userId) {
-						return yield put(selectServerRequest(newServer));
+						return yield put(selectServerRequest(newServer, newServer.version));
 					}
 				}
 			}
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
-			const serversDB = database.servers;
-			const serverCollections = serversDB.get('servers');
-
-			let serverObj;
-			try {
-				yield localAuthenticate(server);
-				serverObj = yield serverCollections.find(server);
-			} catch {
-				// Server not found
-			}
-			yield put(selectServerRequest(server, serverObj && serverObj.version));
+			yield localAuthenticate(server);
+			yield put(selectServerRequest(server));
 		}
 
 		yield put(appReady({}));
