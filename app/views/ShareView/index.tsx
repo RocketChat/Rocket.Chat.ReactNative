@@ -185,9 +185,18 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	getAttachments = async () => {
 		const { mediaAllowList, maxFileSize } = this.state;
 		const permissionToUploadFile = await this.getPermissionMobileUpload();
+		if (!this.files.length && this.files.length < 1) {
+			return {
+				attachments: [],
+				selected: {} as IShareAttachment
+			};
+		}
 
 		const items = await Promise.all(
 			this.files.map(async item => {
+				if (!item) {
+					return null;
+				}
 				// Check server settings
 				const { success: canUpload, error } = canUploadFile({
 					file: item,
@@ -195,6 +204,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					maxFileSize,
 					permissionToUploadFile
 				});
+
 				item.canUpload = canUpload;
 				item.error = error;
 
@@ -410,6 +420,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
+
 		const { readOnly, room } = this.state;
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
