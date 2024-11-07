@@ -45,6 +45,7 @@ const restore = function* restore() {
 			}
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
+			yield localAuthenticate(server);
 			yield put(selectServerRequest(server));
 		}
 
