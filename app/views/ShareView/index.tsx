@@ -195,7 +195,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const items = await Promise.all(
 			this.files.map(async item => {
 				if (!item) {
-					return null;
+					return {} as IShareAttachment;
 				}
 				// Check server settings
 				const { success: canUpload, error } = canUploadFile({
