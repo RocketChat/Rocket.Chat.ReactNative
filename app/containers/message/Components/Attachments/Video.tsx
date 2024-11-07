@@ -52,10 +52,11 @@ type TThumbnailImage = string | null;
 type ThumbnailProps = {
 	url: string;
 	status: TDownloadState;
+	isSupportedVideoType: boolean;
 	encrypted?: boolean;
 };
 
-const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
+const Thumbnail = ({ url, status, encrypted = false, isSupportedVideoType }: ThumbnailProps) => {
 	const { theme } = useTheme();
 
 	let icon: TIconsName = status === 'downloaded' ? 'play-filled' : 'arrow-down-circle';
@@ -67,7 +68,7 @@ const Thumbnail = ({ url, status, encrypted = false }: ThumbnailProps) => {
 
 	const generateThumbnail = async () => {
 		try {
-			if (!url) return;
+			if (!url || encrypted || !isSupportedVideoType) return;
 
 			const { uri } = await getThumbnailAsync(url, {
 				time: 1
@@ -151,7 +152,12 @@ const Video = ({
 		<>
 			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
-				<Thumbnail status={status} url={url} encrypted={isEncrypted} />
+				<Thumbnail
+					status={status}
+					url={url}
+					encrypted={isEncrypted}
+					isSupportedVideoType={!!currentFile.video_type && !isTypeSupported(currentFile.video_type)}
+				/>
 			</Touchable>
 		</>
 	);
