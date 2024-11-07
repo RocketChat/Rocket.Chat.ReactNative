@@ -14,6 +14,7 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
+import { getServerById } from '../../lib/database/services/Server';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
@@ -299,7 +300,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>{I18n.t('Add_server')}</Text>
+					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>
+						{I18n.t('Add_server')}
+					</Text>
 					<ServerInput
 						text={text}
 						theme={theme}

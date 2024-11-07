@@ -142,6 +142,14 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
+		let currentVersion = version;
+		if (!currentVersion) {
+			const serverRecord = yield* call(getServerById, server);
+			if (serverRecord) {
+				currentVersion = serverRecord.version;
+			}
+		}
+
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
@@ -211,7 +219,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		// Return server version even when offline
-		const serverVersion = (serverInfo && serverInfo.version) || (version as string);
+		const serverVersion = (serverInfo && serverInfo.version) || (currentVersion as string);
 
 		// we'll set serverVersion as metadata for bugsnag
 		logServerVersion(serverVersion);
