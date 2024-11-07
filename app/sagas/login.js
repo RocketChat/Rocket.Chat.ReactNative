@@ -138,46 +138,82 @@ const handleLoginRequest = function* handleLoginRequest({
 };
 
 const subscribeSettingsFork = function* subscribeSettingsFork() {
-	yield subscribeSettings();
+	try {
+		yield subscribeSettings();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchPermissionsFork = function* fetchPermissionsFork() {
-	yield getPermissions();
+	try {
+		yield getPermissions();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchCustomEmojisFork = function* fetchCustomEmojisFork() {
-	yield getCustomEmojis();
+	try {
+		yield getCustomEmojis();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchRolesFork = function* fetchRolesFork() {
-	sdk.subscribe('stream-roles', 'roles');
-	yield getRoles();
+	try {
+		sdk.subscribe('stream-roles', 'roles');
+		yield getRoles();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
-	yield getSlashCommands();
+	try {
+		yield getSlashCommands();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const registerPushTokenFork = function* registerPushTokenFork() {
-	yield Services.registerPushToken();
+	try {
+		yield Services.registerPushToken();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
-	subscribeUsersPresence();
+	try {
+		subscribeUsersPresence();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
-	yield getEnterpriseModules();
+	try {
+		yield getEnterpriseModules();
 
-	if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
-		yield put(inquiryRequest());
+		if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
+			yield put(inquiryRequest());
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
 const fetchUsersRoles = function* fetchRoomsFork() {
-	const roles = yield Services.getUsersRoles();
-	if (roles.length) {
-		yield put(setUsersRoles(roles));
+	try {
+		const roles = yield Services.getUsersRoles();
+		if (roles.length) {
+			yield put(setUsersRoles(roles));
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
