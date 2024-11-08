@@ -211,7 +211,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		// Return server version even when offline
-		const serverVersion = (serverInfo && serverInfo.version) || (version as string);
+		const serverVersion = serverInfo?.version || version;
 
 		// we'll set serverVersion as metadata for bugsnag
 		logServerVersion(serverVersion);

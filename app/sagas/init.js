@@ -14,12 +14,12 @@ import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
+import { getServerById } from '../lib/database/services/Server';
 
 export const initLocalSettings = function* initLocalSettings() {
 	const sortPreferences = getSortPreferences();
 	yield put(setAllPreferences(sortPreferences));
 };
-
 
 const restore = function* restore() {
 	console.log('RESTORE');
@@ -40,23 +40,18 @@ const restore = function* restore() {
 					const newServer = servers[i].id;
 					userId = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (userId) {
-						return yield put(selectServerRequest(newServer));
+						return yield put(selectServerRequest(newServer, newServer.version));
 					}
 				}
 			}
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
-			const serversDB = database.servers;
-			const serverCollections = serversDB.get('servers');
-
-			let serverObj;
-			try {
-				yield localAuthenticate(server);
-				serverObj = yield serverCollections.find(server);
-			} catch {
-				// Server not found
+			yield localAuthenticate(server);
+			const serverRecord = yield getServerById(server);
+			if (!serverRecord) {
+				return;
 			}
-			yield put(selectServerRequest(server, serverObj && serverObj.version));
+			yield put(selectServerRequest(server, serverRecord.version));
 		}
 
 		yield put(appReady({}));

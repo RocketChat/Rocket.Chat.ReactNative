@@ -81,7 +81,7 @@ const ServersList = () => {
 		navToNewServer(server);
 	};
 
-	const select = async (serverParam: string, version?: string) => {
+	const select = async (serverParam: string, version: string) => {
 		close();
 		if (server !== serverParam) {
 			logEvent(events.RL_CHANGE_SERVER);
