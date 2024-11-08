@@ -109,6 +109,19 @@ export type OmnichannelEndpoints = {
 			];
 		}>;
 	};
+
+	'livechat/inquiries.queued': {
+		GET: () => PaginatedResult<{
+			inquiries: IOmnichannelRoom[];
+		}>;
+	};
+
+	'livechat/inquiries.queuedForUser': {
+		GET: () => PaginatedResult<{
+			inquiries: IOmnichannelRoom[];
+		}>;
+	};
+
 	'livechat/rooms': {
 		GET: (params: {
 			guest: string;

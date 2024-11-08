@@ -46,6 +46,7 @@ import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { isIOS } from '../lib/methods/helpers';
 
 const getServer = state => state.server.server;
 const loginWithPasswordCall = args => Services.loginWithPassword(args);
@@ -101,7 +102,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
-			yield serversDB.action(async () => {
+			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
@@ -216,7 +217,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			nickname: user.nickname,
 			requirePasswordChange: user.requirePasswordChange
 		};
-		yield serversDB.action(async () => {
+		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
 				await userRecord.update(record => {
@@ -234,10 +235,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		yield Keychain.setInternetCredentials(server, user.id, user.token, {
-			accessGroup: appGroupSuiteName,
-			securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
-		});
+		if (isIOS) {
+			yield Keychain.setInternetCredentials(server, user.id, user.token, {
+				accessGroup: appGroupSuiteName,
+				securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
+			});
+		}
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
