@@ -419,7 +419,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-
 		const { readOnly, room } = this.state;
 		const { theme } = this.props;
 		if (readOnly || isBlocked(room)) {
