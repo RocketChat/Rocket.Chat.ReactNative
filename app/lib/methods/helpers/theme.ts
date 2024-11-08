@@ -1,5 +1,6 @@
-import { Appearance } from 'react-native';
+import { Appearance, Platform, StatusBar } from 'react-native';
 import setRootViewColor from 'rn-root-view';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
 import { themes, THEME_PREFERENCES_KEY } from '../../constants';
@@ -47,7 +48,13 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 
 export const updateRootViewColor = (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
+	const isLightTheme = theme === 'light';
 
+	if (Platform.OS === 'android') {
+		changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
+		StatusBar.setBackgroundColor(themes[theme].surfaceNeutral);
+		StatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
+	}
 	setRootViewColor(themes[theme].surfaceRoom);
 };
 
