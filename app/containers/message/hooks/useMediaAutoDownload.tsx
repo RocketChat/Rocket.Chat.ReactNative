@@ -136,7 +136,7 @@ export const useMediaAutoDownload = ({
 			urlToCache: url
 		});
 		if (result?.exists && !isEncrypted) {
-			if(!currentFile.title_link) {
+			if(!currentFile?.title_link) {
 				persistMessageWithCacheFile(id, result.uri, file.encryption, file.image_url || url);
 			}
 			
