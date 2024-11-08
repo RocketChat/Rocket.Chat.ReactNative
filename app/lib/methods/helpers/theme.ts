@@ -46,7 +46,7 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const updateRootViewColor = (themePreferences: IThemePreference) => {
+export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
 	const isLightTheme = theme === 'light';
 
@@ -74,5 +74,5 @@ export const subscribeTheme = (themePreferences: IThemePreference, setTheme: () 
 		// unsubscribe appearance changes when automatic was disabled
 		unsubscribeTheme();
 	}
-	updateRootViewColor(themePreferences);
+	setNativeTheme(themePreferences);
 };
