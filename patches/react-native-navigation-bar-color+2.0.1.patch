@@ -11,4 +11,3 @@ index eeab32f..d4d8a2c 100644
    }
  };
  const hideNavigationBar = () => {
-  
