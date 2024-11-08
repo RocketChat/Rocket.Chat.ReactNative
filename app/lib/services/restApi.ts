@@ -823,23 +823,35 @@ export const executeCommandPreview = (
 	});
 
 export const getDirectory = ({
-	query,
+	text,
+	type,
+	workspace,
 	count,
 	offset,
 	sort
 }: {
-	query: { [key: string]: string };
+	text: string;
+	type: string;
+	workspace: string;
 	count: number;
 	offset: number;
 	sort: { [key: string]: number };
-}) =>
-	// RC 1.0
-	sdk.get('directory', {
-		query,
+}) => {
+	const serverVersion = reduxStore.getState().server.version;
+	const params: any = {
 		count,
 		offset,
 		sort
-	});
+	};
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+		params.text = text;
+		params.type = type;
+		params.workspace = workspace;
+	} else {
+		params.query = { text, type, workspace };
+	}
+	return sdk.get('directory', params);
+};
 
 export const saveAutoTranslate = ({
 	rid,

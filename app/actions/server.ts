@@ -4,7 +4,7 @@ import { SERVER } from './actionsTypes';
 
 export interface ISelectServerAction extends Action {
 	server: string;
-	version?: string;
+	version: string;
 	fetchVersion: boolean;
 	changeServer: boolean;
 }
@@ -29,7 +29,7 @@ export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServer
 
 export function selectServerRequest(
 	server: string,
-	version?: string,
+	version: string,
 	fetchVersion = true,
 	changeServer = false
 ): ISelectServerAction {

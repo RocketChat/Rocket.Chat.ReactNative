@@ -98,7 +98,11 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	yield localAuthenticate(server);
-	yield put(selectServerRequest(server));
+	const serverRecord = yield getServerById(server);
+	if (!serverRecord) {
+		return;
+	}
+	yield put(selectServerRequest(server, serverRecord.version));
 	if (sdk.current?.client?.host !== server) {
 		yield take(types.LOGIN.SUCCESS);
 	}
@@ -198,34 +202,35 @@ const handleOpen = function* handleOpen({ params }) {
 };
 
 const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-	const db = database.active;
-	const subsCollection = db.get('subscriptions');
-	const room = yield subsCollection.find(params.rid);
-	if (room) {
-		const isMasterDetail = yield select(state => state.app.isMasterDetail);
-		yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
-		const uid = params.caller._id;
-		const { rid, callId, event } = params;
-		if (event === 'accept') {
-			yield call(Services.notifyUser, `${uid}/video-conference`, {
-				action: 'accepted',
-				params: { uid, rid, callId }
-			});
-			yield videoConfJoin(callId, true, false, true);
-		} else if (event === 'decline') {
-			yield call(Services.notifyUser, `${uid}/video-conference`, {
-				action: 'rejected',
-				params: { uid, rid, callId }
-			});
+	try {
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
+		const room = yield subsCollection.find(params.rid);
+		if (room) {
+			const isMasterDetail = yield select(state => state.app.isMasterDetail);
+			yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
+			const uid = params.caller._id;
+			const { rid, callId, event } = params;
+			if (event === 'accept') {
+				yield call(Services.notifyUser, `${uid}/video-conference`, {
+					action: 'accepted',
+					params: { uid, rid, callId }
+				});
+				yield videoConfJoin(callId, true, false, true);
+			} else if (event === 'decline') {
+				yield call(Services.notifyUser, `${uid}/video-conference`, {
+					action: 'rejected',
+					params: { uid, rid, callId }
+				});
+			}
 		}
+	} catch (e) {
+		log(e);
 	}
 };
 
 const handleClickCallPush = function* handleOpen({ params }) {
-	const serversDB = database.servers;
-	const serversCollection = serversDB.get('servers');
-
 	let { host } = params;
 
 	if (host.slice(-1) === '/') {

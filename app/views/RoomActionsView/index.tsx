@@ -375,30 +375,34 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	closeLivechat = async () => {
-		const {
-			room: { rid, departmentId }
-		} = this.state;
-		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
-		let departmentInfo: ILivechatDepartment | undefined;
-		let tagsList: ILivechatTag[] | undefined;
+		try {
+			const {
+				room: { rid, departmentId }
+			} = this.state;
+			const { livechatRequestComment, isMasterDetail, navigation } = this.props;
+			let departmentInfo: ILivechatDepartment | undefined;
+			let tagsList: ILivechatTag[] | undefined;
 
-		if (departmentId) {
-			const result = await Services.getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
+			if (departmentId) {
+				const result = await Services.getDepartmentInfo(departmentId);
+				if (result.success) {
+					departmentInfo = result.department as ILivechatDepartment;
+				}
 			}
-		}
 
-		if (departmentInfo?.requestTagBeforeClosingChat) {
-			tagsList = await Services.getTagsList();
-		}
+			if (departmentInfo?.requestTagBeforeClosingChat) {
+				tagsList = await Services.getTagsList();
+			}
 
-		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
-			const comment = I18n.t('Chat_closed_by_agent');
-			return closeLivechat({ rid, isMasterDetail, comment });
-		}
+			if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+				const comment = I18n.t('Chat_closed_by_agent');
+				return closeLivechat({ rid, isMasterDetail, comment });
+			}
 
-		navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+			navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+		} catch (e) {
+			log(e);
+		}
 	};
 
 	placeOnHoldLivechat = () => {

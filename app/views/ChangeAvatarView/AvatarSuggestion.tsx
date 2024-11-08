@@ -23,17 +23,21 @@ const AvatarSuggestion = ({
 
 	useEffect(() => {
 		const getAvatarSuggestion = async () => {
-			const result = await Services.getAvatarSuggestion();
-			const suggestions = Object.keys(result).map(service => {
-				const { url, blob, contentType } = result[service];
-				return {
-					url,
-					data: blob,
-					service,
-					contentType
-				};
-			});
-			setAvatarSuggestions(suggestions);
+			try {
+				const result = await Services.getAvatarSuggestion();
+				const suggestions = Object.keys(result).map(service => {
+					const { url, blob, contentType } = result[service];
+					return {
+						url,
+						data: blob,
+						service,
+						contentType
+					};
+				});
+				setAvatarSuggestions(suggestions);
+			} catch {
+				// do nothing
+			}
 		};
 		getAvatarSuggestion();
 	}, []);
