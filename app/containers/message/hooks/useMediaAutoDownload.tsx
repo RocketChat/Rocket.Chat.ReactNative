@@ -9,6 +9,7 @@ import {
 	getMediaCache,
 	isDownloadActive,
 	MediaTypes,
+	persistMessageWithCacheFile,
 	TDownloadState
 } from '../../../lib/methods/handleMediaDownload';
 import { emitter } from '../../../lib/methods/helpers';
@@ -135,6 +136,10 @@ export const useMediaAutoDownload = ({
 			urlToCache: url
 		});
 		if (result?.exists && !isEncrypted) {
+			if(!currentFile.title_link) {
+				persistMessageWithCacheFile(id, result.uri, file.encryption, file.image_url || url);
+			}
+			
 			updateCurrentFile(result.uri);
 		}
 		return result?.exists;
@@ -150,7 +155,7 @@ export const useMediaAutoDownload = ({
 			download();
 			return;
 		}
-		if (!showAttachment || isEncrypted) {
+		if (!showAttachment || !currentFile.title_link || isEncrypted) {
 			return;
 		}
 		showAttachment(currentFile);
