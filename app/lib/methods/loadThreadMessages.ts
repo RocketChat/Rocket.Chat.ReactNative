@@ -18,8 +18,7 @@ async function load({ tmid }: { tmid: string }) {
 			return [];
 		}
 		return EJSON.fromJSONValue(result);
-	} catch (error) {
-		console.log(error);
+	} catch {
 		return [];
 	}
 }
