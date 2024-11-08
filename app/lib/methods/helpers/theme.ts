@@ -1,6 +1,6 @@
 import { Appearance, Platform, StatusBar } from 'react-native';
-import setRootViewColor from 'rn-root-view';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import setRootViewColor from 'rn-root-view';
 
 import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
 import { themes, THEME_PREFERENCES_KEY } from '../../constants';
