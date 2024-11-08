@@ -17,14 +17,15 @@ const ImageContainer = ({
 	style,
 	isReply,
 	author,
-	msg
+	msg,
+	onLongPress = null
 }: IImageContainer): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const image = (
-		<Button onPress={onPress}>
+		<Button onPress={onPress} onLongPress={onLongPress} >
 			<WidthAwareView>
 				<MessageImage uri={url} status={status} encrypted={isEncrypted} />
 			</WidthAwareView>

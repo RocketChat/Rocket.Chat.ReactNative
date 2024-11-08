@@ -11,7 +11,7 @@ import MessageContext from '../../Context';
 import { IMessageAttachments } from '../../interfaces';
 import { IAttachment } from '../../../../definitions';
 import { getMessageFromAttachment } from '../../utils';
-
+import Share from 'react-native-share'
 const Attachments: React.FC<IMessageAttachments> = React.memo(
 	({ attachments, timeFormat, showAttachment, style, getCustomEmoji, isReply, author }: IMessageAttachments) => {
 		const { translateLanguage } = useContext(MessageContext);
@@ -20,11 +20,28 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			return null;
 		}
 
+		const handleShareImage = async (imageUrl: string) => {
+			try {
+				await Share.open({
+					url: imageUrl,
+					type: 'image/jpeg', // Update the type based on your image format
+				});
+			} catch (error) {
+				console.error('Error sharing image:', error);
+			}
+		};
+
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
 				return (
 					<Image
+						onLongPress={()=>{
+							if (file && file.image_url)
+							{
+								handleShareImage(file.image_url)
+							}
+						}}
 						key={file.image_url}
 						file={file}
 						showAttachment={showAttachment}
