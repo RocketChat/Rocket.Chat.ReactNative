@@ -212,7 +212,7 @@ const mapAttachments = ({
 }): TMessageModel['attachments'] =>
 	attachments?.map(att => ({
 		...att,
-		title_link: att.image_url && downloadUrl.includes(att.image_url) ? uri : att.title_link,
+		title_link: att.image_url && !downloadUrl.startsWith("file://") && downloadUrl.includes(att.image_url) ? uri : att.title_link,
 		e2e: encryption ? 'done' : undefined
 	}));
 
@@ -272,7 +272,7 @@ export function downloadMediaFile({
 			if (!path) {
 				return reject();
 			}
-			downloadKey = mediaDownloadKey(downloadUrl);
+			downloadKey = messageId + mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
 
@@ -295,4 +295,8 @@ export function downloadMediaFile({
 			delete downloadQueue[downloadKey];
 		}
 	});
+}
+
+export const persistMessageWithCacheFile = async (messageId: string, uri: string, encryption: TAttachmentEncryption | undefined, downloadUrl: string) => {
+	await persistMessage(messageId, uri, !!encryption, downloadUrl);
 }
