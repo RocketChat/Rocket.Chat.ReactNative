@@ -188,7 +188,7 @@ const registerPushTokenFork = function* registerPushTokenFork() {
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
 	try {
-		subscribeUsersPresence();
+		yield subscribeUsersPresence();
 	} catch (e) {
 		log(e);
 	}
