@@ -150,7 +150,7 @@ export const useMediaAutoDownload = ({
 			download();
 			return;
 		}
-		if (!showAttachment || !currentFile.title_link || isEncrypted) {
+		if (!showAttachment || isEncrypted) {
 			return;
 		}
 		showAttachment(currentFile);
