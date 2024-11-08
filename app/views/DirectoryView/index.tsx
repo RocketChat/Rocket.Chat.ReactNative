@@ -108,9 +108,10 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 		try {
 			const { data, type, globalUsers } = this.state;
-			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			const directories = await Services.getDirectory({
-				query,
+				text,
+				type,
+				workspace: globalUsers ? 'all' : 'local',
 				offset: data.length,
 				count: 50,
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
