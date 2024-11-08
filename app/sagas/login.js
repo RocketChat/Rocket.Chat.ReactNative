@@ -286,7 +286,7 @@ const handleLogout = function* handleLogout({ forcedByServer, message }) {
 						const newServer = servers[i].id;
 						const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 						if (token) {
-							yield put(selectServerRequest(newServer));
+							yield put(selectServerRequest(newServer, newServer.version));
 							return;
 						}
 					}
@@ -353,7 +353,7 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 					const newServer = servers[i].id;
 					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (token) {
-						yield put(selectServerRequest(newServer));
+						yield put(selectServerRequest(newServer, newServer.version));
 						return;
 					}
 				}
