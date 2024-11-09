@@ -10,7 +10,7 @@ import { mockedStore as store } from '../app/reducers/mockedStore';
 import { setUser } from '../app/actions/login';
 
 const baseUrl = 'https://open.rocket.chat';
-store.dispatch(selectServerRequest(baseUrl));
+store.dispatch(selectServerRequest(baseUrl, '7.0.0'));
 store.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat' }));
 
 const preview: Preview = {
