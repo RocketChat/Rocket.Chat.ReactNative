@@ -11,7 +11,7 @@ export const useStyle = () => {
 			paddingHorizontal: 24,
 			paddingVertical: 18,
 			marginHorizontal: 10,
-			borderWidth: StyleSheet.hairlineWidth,
+			borderWidth: 1,
 			borderRadius: 4,
 			backgroundColor: colors.surfaceLight,
 			borderColor: colors.strokeLight,

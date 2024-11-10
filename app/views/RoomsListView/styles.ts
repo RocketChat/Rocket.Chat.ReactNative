@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
 	serversListContainerHeader: {
 		height: 41,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomWidth: 1,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},

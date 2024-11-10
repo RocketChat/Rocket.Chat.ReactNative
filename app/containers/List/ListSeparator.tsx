@@ -6,7 +6,7 @@ import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	separator: {
-		height: StyleSheet.hairlineWidth
+		height: 1
 	}
 });
 

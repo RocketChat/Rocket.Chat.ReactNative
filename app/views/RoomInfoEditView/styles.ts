@@ -56,8 +56,8 @@ export default StyleSheet.create({
 		alignSelf: 'center'
 	},
 	divider: {
-		height: StyleSheet.hairlineWidth,
-		borderBottomWidth: StyleSheet.hairlineWidth,
+		height: 1,
+		borderBottomWidth: 1,
 		marginVertical: 20
 	},
 	broadcast: {

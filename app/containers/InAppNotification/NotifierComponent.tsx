@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		marginHorizontal: 10,
-		borderWidth: StyleSheet.hairlineWidth,
+		borderWidth: 1,
 		borderRadius: 4
 	},
 	content: {
