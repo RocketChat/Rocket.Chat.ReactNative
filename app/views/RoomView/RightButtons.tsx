@@ -253,36 +253,40 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	closeLivechat = async () => {
-		const { rid, departmentId } = this.props;
-		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
-		let departmentInfo: ILivechatDepartment | undefined;
-		let tagsList: ILivechatTag[] | undefined;
+		try {
+			const { rid, departmentId } = this.props;
+			const { livechatRequestComment, isMasterDetail, navigation } = this.props;
+			let departmentInfo: ILivechatDepartment | undefined;
+			let tagsList: ILivechatTag[] | undefined;
 
-		if (departmentId) {
-			const result = await Services.getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
-			}
-		}
-
-		if (departmentInfo?.requestTagBeforeClosingChat) {
-			tagsList = await Services.getTagsList();
-		}
-
-		if (rid) {
-			if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
-				const comment = i18n.t('Chat_closed_by_agent');
-				return closeLivechatService({ rid, isMasterDetail, comment });
+			if (departmentId) {
+				const result = await Services.getDepartmentInfo(departmentId);
+				if (result.success) {
+					departmentInfo = result.department as ILivechatDepartment;
+				}
 			}
 
-			if (isMasterDetail) {
-				navigation.navigate('ModalStackNavigator', {
-					screen: 'CloseLivechatView',
-					params: { rid, departmentId, departmentInfo, tagsList }
-				});
-			} else {
-				navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+			if (departmentInfo?.requestTagBeforeClosingChat) {
+				tagsList = await Services.getTagsList();
 			}
+
+			if (rid) {
+				if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+					const comment = i18n.t('Chat_closed_by_agent');
+					return closeLivechatService({ rid, isMasterDetail, comment });
+				}
+
+				if (isMasterDetail) {
+					navigation.navigate('ModalStackNavigator', {
+						screen: 'CloseLivechatView',
+						params: { rid, departmentId, departmentInfo, tagsList }
+					});
+				} else {
+					navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+				}
+			}
+		} catch {
+			// do nothing
 		}
 	};
 

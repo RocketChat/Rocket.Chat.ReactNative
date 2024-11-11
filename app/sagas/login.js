@@ -46,6 +46,7 @@ import { appGroupSuiteName } from '../lib/methods/appGroup';
 import appNavigation from '../lib/navigation/appNavigation';
 import { showActionSheetRef } from '../containers/ActionSheet';
 import { SupportedVersionsWarning } from '../containers/SupportedVersions';
+import { isIOS } from '../lib/methods/helpers';
 
 import appConfig from '../../app.json';
 
@@ -139,46 +140,82 @@ const handleLoginRequest = function* handleLoginRequest({
 };
 
 const subscribeSettingsFork = function* subscribeSettingsFork() {
-	yield subscribeSettings();
+	try {
+		yield subscribeSettings();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchPermissionsFork = function* fetchPermissionsFork() {
-	yield getPermissions();
+	try {
+		yield getPermissions();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchCustomEmojisFork = function* fetchCustomEmojisFork() {
-	yield getCustomEmojis();
+	try {
+		yield getCustomEmojis();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchRolesFork = function* fetchRolesFork() {
-	sdk.subscribe('stream-roles', 'roles');
-	yield getRoles();
+	try {
+		sdk.subscribe('stream-roles', 'roles');
+		yield getRoles();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchSlashCommandsFork = function* fetchSlashCommandsFork() {
-	yield getSlashCommands();
+	try {
+		yield getSlashCommands();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const registerPushTokenFork = function* registerPushTokenFork() {
-	yield Services.registerPushToken();
+	try {
+		yield Services.registerPushToken();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchUsersPresenceFork = function* fetchUsersPresenceFork() {
-	subscribeUsersPresence();
+	try {
+		yield subscribeUsersPresence();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }) {
-	yield getEnterpriseModules();
+	try {
+		yield getEnterpriseModules();
 
-	if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
-		yield put(inquiryRequest());
+		if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
+			yield put(inquiryRequest());
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
 const fetchUsersRoles = function* fetchRoomsFork() {
-	const roles = yield Services.getUsersRoles();
-	if (roles.length) {
-		yield put(setUsersRoles(roles));
+	try {
+		const roles = yield Services.getUsersRoles();
+		if (roles.length) {
+			yield put(setUsersRoles(roles));
+		}
+	} catch (e) {
+		log(e);
 	}
 };
 
@@ -236,10 +273,12 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(`${TOKEN_KEY}-${server}`, user.id);
 		UserPreferences.setString(`${TOKEN_KEY}-${user.id}`, user.token);
 		UserPreferences.setString(CURRENT_SERVER, server);
-		yield Keychain.setInternetCredentials(server, user.id, user.token, {
-			accessGroup: appGroupSuiteName,
-			securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
-		});
+		if (isIOS) {
+			yield Keychain.setInternetCredentials(server, user.id, user.token, {
+				accessGroup: appGroupSuiteName,
+				securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
+			});
+		}
 		yield put(setUser(user));
 		EventEmitter.emit('connected');
 		const currentRoot = yield select(state => state.app.root);
@@ -336,7 +375,7 @@ const handleDeleteAccount = function* handleDeleteAccount() {
 					const newServer = servers[i].id;
 					const token = UserPreferences.getString(`${TOKEN_KEY}-${newServer}`);
 					if (token) {
-						yield put(selectServerRequest(newServer));
+						yield put(selectServerRequest(newServer, newServer.version));
 						return;
 					}
 				}

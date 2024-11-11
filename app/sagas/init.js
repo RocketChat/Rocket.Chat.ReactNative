@@ -14,6 +14,7 @@ import { appReady, appStart } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { getSortPreferences } from '../lib/methods';
 import { deepLinkingClickCallPush } from '../actions/deepLinking';
+import { getServerById } from '../lib/database/services/Server';
 
 import appConfig from '../../app.json';
 
@@ -54,17 +55,12 @@ const restore = function* restore() {
 			yield put(serverRequest(appConfig.server));
 			yield put(appStart({ root: RootEnum.ROOT_OUTSIDE }));
 		} else {
-			const serversDB = database.servers;
-			const serverCollections = serversDB.get('servers');
-
-			let serverObj;
-			try {
-				yield localAuthenticate(server);
-				serverObj = yield serverCollections.find(server);
-			} catch {
-				// Server not found
+			yield localAuthenticate(server);
+			const serverRecord = yield getServerById(server);
+			if (!serverRecord) {
+				return;
 			}
-			yield put(selectServerRequest(server, serverObj && serverObj.version));
+			yield put(selectServerRequest(server, serverRecord.version));
 		}
 
 		yield put(appReady({}));
