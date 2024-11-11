@@ -12,6 +12,13 @@ export const insertEmojiAtCursor = (text: string, emojiText: string, cursor: num
 		updatedText = `${firstPart}${emojiText}`;
 	}
 
+	if (lastPart.length === 0) {
+		return {
+			updatedCursor,
+			updatedText
+		};
+	}
+
 	if (lastPart[0] !== ' ') {
 		updatedText = `${updatedText} ${lastPart}`;
 		updatedCursor += 1;
