@@ -132,7 +132,13 @@ const handleLoginRequest = function* handleLoginRequest({
 			yield put(logoutAction(true, 'Token_expired'));
 		} else {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
-			yield put(loginFailure(e));
+			const currentRoot = yield select(state => state.app.root);
+			const connected = yield select(state => state.meteor.connected);
+			if (currentRoot === RootEnum.ROOT_OUTSIDE || !connected) {
+				yield put(loginFailure(e));
+				return;
+			}
+			yield put(logoutAction(true));
 		}
 	}
 };
