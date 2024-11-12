@@ -4,7 +4,7 @@ export const insertEmojiAtCursor = (text: string, emojiText: string, cursor: num
 	const firstPart = text.substr(0, cursor);
 	const lastPart = text.substr(cursor);
 
-	const spaceBefore = firstPart.endsWith(' ') ? '' : ' ';
+	const spaceBefore = firstPart.endsWith(' ') || firstPart.length === 0 ? '' : ' ';
 	const spaceAfter = lastPart.startsWith(' ') || lastPart.length === 0 ? '' : ' ';
 
 	const updatedText = `${firstPart}${spaceBefore}${emojiText}${spaceAfter}${lastPart}`;
