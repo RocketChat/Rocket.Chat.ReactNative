@@ -385,7 +385,7 @@ const RoomMembersView = (): React.ReactElement => {
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (
-					<View style={{ backgroundColor: colors.surfaceRoom }}>
+					<View style={{ backgroundColor: colors.surfaceRoom, marginBottom: 0.5 }}>
 						<UserItem
 							name={item.name || item.username}
 							username={item.username}
