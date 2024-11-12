@@ -200,7 +200,7 @@ export default async function updateMessages({
 			...threadMessagesToUpdate
 		];
 
-		await db.batch(...allRecords);
+		await db.batch(allRecords);
 		return allRecords.length;
 	});
 }
