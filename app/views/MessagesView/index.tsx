@@ -31,7 +31,6 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	const t: SubscriptionType = route.params?.t;
 	const screenName: string = route.params?.name;
 	const testID = getContentTestId({ screenName });
-	const listEmptyMessage = getListEmptyMessage({ screenName });
 	const { theme } = useTheme();
 	const { showActionSheet } = useActionSheet();
 	const { baseUrl, customEmojis, isMasterDetail, useRealName, user } = useAppSelector(state => ({
@@ -42,12 +41,6 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 		isMasterDetail: state.app.isMasterDetail
 	}));
 	const { messages, loading, loadMore, updateMessageOnActionPress } = useMessages({ rid, t, screenName, userId: user.id });
-
-	const setHeader = () => {
-		navigation.setOptions({
-			title: I18n.t(screenName)
-		});
-	};
 
 	const handleShowActionSheet = (message: IMessage) => {
 		const title = getActionTitle(screenName) as string;
@@ -166,7 +159,9 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	};
 
 	useLayoutEffect(() => {
-		setHeader();
+		navigation.setOptions({
+			title: I18n.t(screenName)
+		});
 
 		return () => {
 			AudioManager.pauseAudio();
@@ -176,7 +171,7 @@ const MessagesView = ({ navigation, route }: IMessagesViewProps) => {
 	if (!loading && messages.length === 0) {
 		return (
 			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]} testID={testID}>
-				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{listEmptyMessage}</Text>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{getListEmptyMessage({ screenName })}</Text>
 			</View>
 		);
 	}
