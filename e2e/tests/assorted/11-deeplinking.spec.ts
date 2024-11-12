@@ -82,7 +82,7 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`)
 			});
-			await waitFor(element(by.id('new-server-view')))
+			await waitFor(element(by.id('workspace-view')))
 				.toBeVisible()
 				.withTimeout(30000);
 			// await waitFor(element(by[textMatcher]("You've been logged out by the workspace. Please log in again.")))
