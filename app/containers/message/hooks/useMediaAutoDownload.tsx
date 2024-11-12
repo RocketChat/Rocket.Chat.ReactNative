@@ -136,10 +136,10 @@ export const useMediaAutoDownload = ({
 			urlToCache: url
 		});
 		if (result?.exists && !isEncrypted) {
-			if(!currentFile?.title_link) {
-				persistMessageWithCacheFile(id, result.uri, file.encryption, file.image_url || url);
+			if (!currentFile?.title_link) {
+				await persistMessageWithCacheFile(id, result.uri, file.encryption, file.image_url || url);
 			}
-			
+
 			updateCurrentFile(result.uri);
 		}
 		return result?.exists;
