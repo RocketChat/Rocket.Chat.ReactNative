@@ -1,4 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
+import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { MESSAGE_TYPE_ANY_LOAD } from '../constants';
@@ -198,7 +198,7 @@ export default async function updateMessages({
 			...threadsToUpdate,
 			...threadMessagesToCreate,
 			...threadMessagesToUpdate
-		];
+		] as Model[];
 
 		await db.batch(allRecords);
 		return allRecords.length;
