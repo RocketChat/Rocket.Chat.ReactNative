@@ -27,6 +27,7 @@ import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 import { serializeAsciiUrl } from '../../lib/methods';
+import { getServerById } from '../../lib/database/services/Server';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
@@ -138,12 +139,15 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	};
 
-	close = () => {
+	close = async () => {
 		const { dispatch, previousServer } = this.props;
 
 		dispatch(inviteLinksClear());
 		if (previousServer) {
-			dispatch(selectServerRequest(previousServer));
+			const serverRecord = await getServerById(previousServer);
+			if (serverRecord) {
+				dispatch(selectServerRequest(previousServer, serverRecord.version));
+			}
 		}
 	};
 
@@ -282,9 +286,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { connecting, theme, previousServer } = this.props;
 		const { text, serversHistory } = this.state;
 		const marginTop = previousServer ? 32 : 84;
-
+		const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 		return (
-			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
+			<FormContainer style={formContainerStyle} testID='new-server-view' keyboardShouldPersistTaps='never'>
 				<FormContainerInner>
 					<Image
 						style={[
@@ -299,7 +303,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						source={require('../../static/images/logo_with_name.png')}
 						fadeDuration={0}
 					/>
-					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>{I18n.t('Add_server')}</Text>
+					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>
+						{I18n.t('Add_server')}
+					</Text>
 					<ServerInput
 						text={text}
 						theme={theme}

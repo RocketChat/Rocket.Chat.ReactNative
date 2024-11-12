@@ -9,6 +9,7 @@ import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
+import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
@@ -111,6 +112,7 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 	return (
 		<View style={containerStyle}>
 			<FastImage
+				fallback={isAndroid}
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
 				resizeMode={FastImage.resizeMode.contain}
