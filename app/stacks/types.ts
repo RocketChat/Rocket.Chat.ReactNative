@@ -148,6 +148,8 @@ export type ChatsStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId: string;
+		rid: string;
+		t: 'c' | 'p';
 	};
 	AddExistingChannelView: {
 		teamId: string;

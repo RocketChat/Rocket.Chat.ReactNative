@@ -16,7 +16,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	try {
 		const serverRecord = yield serversCollection.find(server);
 
-		return serversDB.action(async () => {
+		return serversDB.write(async () => {
 			await serverRecord.update(record => {
 				record.roomsUpdatedAt = newRoomsUpdatedAt;
 			});
@@ -123,7 +123,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				})
 			];
 
-			yield db.action(async () => {
+			yield db.write(async () => {
 				await db.batch(...allRecords);
 			});
 		}
