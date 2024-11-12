@@ -29,11 +29,11 @@ const fetchMessages = ({ t, rid, screenName, userId, offset }: IFetchMessages) =
 		case 'Files':
 			return fetchFiles({ rid, t, offset });
 		case 'Mentions':
-			return Services.getMessages(rid, t, { 'mentions._id': { $in: [userId] } }, offset);
+			return Services.getMessages({ roomId: rid, type: t, offset, mentionIds: [userId] });
 		case 'Starred':
-			return Services.getMessages(rid, t, { 'starred._id': { $in: [userId] } }, offset);
+			return Services.getMessages({ roomId: rid, type: t, offset, starredIds: [userId] });
 		case 'Pinned':
-			return Services.getMessages(rid, t, { pinned: true }, offset);
+			return Services.getMessages({ roomId: rid, type: t, offset, pinned: true });
 	}
 };
 
