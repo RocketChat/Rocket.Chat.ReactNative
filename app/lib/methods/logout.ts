@@ -58,7 +58,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		const serverRecord = await serverCollection.find(server);
 		batch.push(serverRecord.prepareDestroyPermanently());
 
-		await serversDB.write(() => serversDB.batch(...batch));
+		await serversDB.write(() => serversDB.batch(batch));
 		await removeSharedCredentials({ server });
 		await removeServerKeys({ server, userId });
 	} catch (e) {
