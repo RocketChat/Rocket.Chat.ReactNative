@@ -286,9 +286,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { connecting, theme, previousServer } = this.props;
 		const { text, serversHistory } = this.state;
 		const marginTop = previousServer ? 32 : 84;
-
+		const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 		return (
-			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
+			<FormContainer style={formContainerStyle} testID='new-server-view' keyboardShouldPersistTaps='never'>
 				<FormContainerInner>
 					<Image
 						style={[

@@ -586,6 +586,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
+	deleteCPermission: state.permissions['delete-c'],
 	createCPermission: state.permissions['create-c'],
 	createTeamChannelPermission: state.permissions['create-team-channel'],
 	createPPermission: state.permissions['create-p'],

@@ -27,7 +27,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
-import { prepareQuoteMessage } from './helpers';
+import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
 import { emitter } from '../../lib/methods/helpers/emitter';
@@ -179,9 +179,8 @@ export const MessageComposer = ({
 				} else {
 					emojiText = `:${emoji.name}:`;
 				}
-				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
-				newCursor = cursor + emojiText.length;
-				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+				const { updatedCursor, updatedText } = insertEmojiAtCursor(text, emojiText, cursor);
+				composerInputComponentRef.current.setInput(updatedText, { start: updatedCursor, end: updatedCursor });
 				break;
 			case EventTypes.SEARCH_PRESSED:
 				openSearchEmojiKeyboard();
