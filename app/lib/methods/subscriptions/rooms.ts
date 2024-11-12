@@ -238,7 +238,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		await db.write(async () => {
-			await db.batch(...batch);
+			await db.batch(batch);
 		});
 	} catch (e) {
 		log(e);

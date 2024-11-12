@@ -332,7 +332,7 @@ class Encryption {
 			)) as (TThreadModel | TThreadMessageModel)[];
 
 			await db.write(async () => {
-				await db.batch(...toDecrypt);
+				await db.batch(toDecrypt);
 			});
 		} catch (e) {
 			log(e);
@@ -368,7 +368,7 @@ class Encryption {
 			);
 
 			await db.write(async () => {
-				await db.batch(...subsEncrypted);
+				await db.batch(subsEncrypted);
 			});
 		} catch (e) {
 			log(e);
@@ -417,7 +417,7 @@ class Encryption {
 		}
 
 		try {
-			const batch: (Model | null | void | false)[] = [];
+			const batch: Model[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
 				// Let's create the subscription with the data received
@@ -444,7 +444,7 @@ class Encryption {
 			// If batch has some operation
 			if (batch.length) {
 				await db.write(async () => {
-					await db.batch(...batch);
+					await db.batch(batch);
 				});
 			}
 		} catch {

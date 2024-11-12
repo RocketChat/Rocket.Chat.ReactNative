@@ -73,7 +73,7 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 					});
 
 					await db.write(async () => {
-						await db.batch(...threadMessagesToCreate, ...threadMessagesToUpdate);
+						await db.batch(threadMessagesToCreate, ...threadMessagesToUpdate);
 					});
 				} catch (e) {
 					log(e);

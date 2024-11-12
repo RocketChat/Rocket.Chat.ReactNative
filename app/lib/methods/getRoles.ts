@@ -114,7 +114,7 @@ export function getRoles(): Promise<void> {
 					const allRecords: Model[] = [...rolesToCreate, ...rolesToUpdate];
 
 					try {
-						await db.batch(...allRecords);
+						await db.batch(allRecords);
 					} catch (e) {
 						log(e);
 					}

@@ -115,15 +115,13 @@ const handleOpen = function* handleOpen({ params }) {
 		yield handleShareExtension({ params });
 		return;
 	}
-
-	let { host } = params;
-
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
 		return;
 	}
 
 	// If there's no host on the deep link params and the app is opened, just call appInit()
+	let { host } = params;
 	if (!host) {
 		yield fallbackNavigation();
 		return;
@@ -151,13 +149,10 @@ const handleOpen = function* handleOpen({ params }) {
 	]);
 
 	const serverRecord = yield getServerById(host);
-	if (!serverRecord) {
-		return;
-	}
 
 	// TODO: needs better test
 	// if deep link is from same server
-	if (server === host && user) {
+	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
 			yield localAuthenticate(host);
@@ -168,7 +163,7 @@ const handleOpen = function* handleOpen({ params }) {
 	} else {
 		// search if deep link's server already exists
 		try {
-			if (user) {
+			if (user && serverRecord) {
 				yield localAuthenticate(host);
 				yield put(selectServerRequest(host, serverRecord.version, true, true));
 				yield take(types.LOGIN.SUCCESS);
@@ -230,7 +225,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 	}
 };
 
-const handleClickCallPush = function* handleOpen({ params }) {
+const handleClickCallPush = function* handleClickCallPush({ params }) {
 	let { host } = params;
 
 	if (host.slice(-1) === '/') {
@@ -243,11 +238,8 @@ const handleClickCallPush = function* handleOpen({ params }) {
 	]);
 
 	const serverRecord = yield getServerById(host);
-	if (!serverRecord) {
-		return;
-	}
 
-	if (server === host && user) {
+	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
 			yield localAuthenticate(host);
@@ -256,7 +248,7 @@ const handleClickCallPush = function* handleOpen({ params }) {
 		}
 		yield handleNavigateCallRoom({ params });
 	} else {
-		if (user) {
+		if (user && serverRecord) {
 			yield localAuthenticate(host);
 			yield put(selectServerRequest(host, serverRecord.version, true, true));
 			yield take(types.LOGIN.SUCCESS);

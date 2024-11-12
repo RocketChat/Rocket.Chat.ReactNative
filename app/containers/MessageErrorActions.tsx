@@ -71,7 +71,7 @@ const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(
 				}
 			}
 			await db.write(async () => {
-				await db.batch(...deleteBatch);
+				await db.batch(deleteBatch);
 			});
 		} catch (e) {
 			log(e);

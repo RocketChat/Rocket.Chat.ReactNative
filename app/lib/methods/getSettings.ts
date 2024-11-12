@@ -225,7 +225,7 @@ export async function getSettings(): Promise<void> {
 			const allRecords = [...settingsToCreateMapped, ...settingsToUpdateMapped];
 
 			try {
-				await db.batch(...allRecords);
+				await db.batch(allRecords);
 			} catch (e) {
 				log(e);
 			}

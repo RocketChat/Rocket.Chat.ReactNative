@@ -147,7 +147,7 @@ const updatePermissions = async ({
 
 	try {
 		await db.write(async () => {
-			await db.batch(...batch);
+			await db.batch(batch);
 		});
 		return true;
 	} catch (e) {

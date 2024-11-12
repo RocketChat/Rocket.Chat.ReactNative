@@ -40,7 +40,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 
 	try {
 		await db.write(async () => {
-			await db.batch(...successBatch);
+			await db.batch(successBatch);
 		});
 	} catch (error) {
 		// Do nothing
@@ -223,7 +223,7 @@ export async function sendMessage(
 
 		try {
 			await db.write(async () => {
-				await db.batch(...batch);
+				await db.batch(batch);
 			});
 		} catch (e) {
 			log(e);

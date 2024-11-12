@@ -124,7 +124,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 			];
 
 			yield db.write(async () => {
-				await db.batch(...allRecords);
+				await db.batch(allRecords);
 			});
 		}
 
