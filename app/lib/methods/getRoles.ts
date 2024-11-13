@@ -8,13 +8,20 @@ import { store as reduxStore } from '../store/auxStore';
 import { removeRoles, setRoles as setRolesAction, updateRoles } from '../../actions/roles';
 import { TRoleModel } from '../../definitions';
 import sdk from '../services/sdk';
+import { decodeRoleIdFromStorage, encodeRoleIdForStorage } from './helpers';
 import protectedFunction from './helpers/protectedFunction';
 
 export async function setRoles(): Promise<void> {
 	const db = database.active;
 	const rolesCollection = db.get('roles');
 	const allRoles = await rolesCollection.query().fetch();
-	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.name || item.id }), {});
+	const parsed = allRoles.reduce(
+		(acc, item) => ({
+			...acc,
+			[decodeRoleIdFromStorage(item.id)]: item.description || item.name || decodeRoleIdFromStorage(item.id)
+		}),
+		{}
+	);
 	reduxStore.dispatch(setRolesAction(parsed));
 }
 
@@ -69,6 +76,18 @@ export async function onRolesChanged(ddpMessage: IRolesChanged): Promise<void> {
 	}
 }
 
+// if the roleID was wrote with nonUTF8 we need to reset collection because it breaks .query().fetch() of rolesCollection.
+async function resetRolesCollection() {
+	const db = database.active;
+
+	await db.write(async () => {
+		await db.adapter.unsafeExecute({
+			sqls: [['DELETE FROM roles', []]]
+		});
+	});
+	await getRoles();
+}
+
 export function getRoles(): Promise<void> {
 	const db = database.active;
 	return new Promise(async resolve => {
@@ -88,25 +107,33 @@ export function getRoles(): Promise<void> {
 					const allRolesRecords = await rolesCollections.query().fetch();
 
 					// filter roles
-					const filteredRolesToCreate = roles.filter(i1 => !allRolesRecords.find(i2 => i1._id === i2.id));
-					const filteredRolesToUpdate = allRolesRecords.filter(i1 => roles.find(i2 => i1.id === i2._id));
+					const filteredRolesToCreate = roles.filter(i1 => !allRolesRecords.find(i2 => encodeRoleIdForStorage(i1._id) === i2.id));
+					const filteredRolesToUpdate = allRolesRecords.filter(i1 => roles.find(i2 => i1.id === encodeRoleIdForStorage(i2._id)));
 
 					// Create
 					const rolesToCreate = filteredRolesToCreate.map(role =>
 						rolesCollections.prepareCreate(
 							protectedFunction((r: TRoleModel) => {
-								r._raw = sanitizedRaw({ id: role._id }, rolesCollections.schema);
-								Object.assign(r, role);
+								r._raw = sanitizedRaw({ id: encodeRoleIdForStorage(role._id) }, rolesCollections.schema);
+								Object.assign(r, {
+									...role,
+									id: encodeRoleIdForStorage(role?.id),
+									_id: encodeRoleIdForStorage(role?._id)
+								});
 							})
 						)
 					);
 
 					// Update
 					const rolesToUpdate = filteredRolesToUpdate.map(role => {
-						const newRole = roles.find(r => r._id === role.id);
+						const newRole = roles.find(r => encodeRoleIdForStorage(r._id) === role.id);
 						return role.prepareUpdate(
 							protectedFunction((r: TRoleModel) => {
-								Object.assign(r, newRole);
+								Object.assign(r, {
+									...newRole,
+									id: encodeRoleIdForStorage(newRole?.id),
+									_id: encodeRoleIdForStorage(newRole?._id)
+								});
 							})
 						);
 					});
@@ -123,7 +150,10 @@ export function getRoles(): Promise<void> {
 				});
 				return resolve();
 			}
-		} catch (e) {
+		} catch (e: any) {
+			if (e.message.includes('Record ID') && e.message.includes("was sent over the bridge, but it's not cached")) {
+				await resetRolesCollection();
+			}
 			log(e);
 			return resolve();
 		}
