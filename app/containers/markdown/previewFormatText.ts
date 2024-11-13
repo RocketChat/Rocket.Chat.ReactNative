@@ -11,6 +11,7 @@ export const previewFormatText = (msg: string) => {
 	// Removes sequential empty spaces before to use removeMarkdown,
 	// because with some edge cases the library takes a long time to finish the process
 	m = m.replace(/\s+/g, ' ');
+	m = m.replace(/\*\s+|\s+\*/g, '*')
 	m = removeMarkdown(m);
 	// Removes sequential empty spaces to remove leading empty space on quotes at the rooms list view
 	m = m.replace(/\s+/g, ' ');
