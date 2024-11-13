@@ -128,6 +128,15 @@ const RoomMembersView = (): React.ReactElement => {
 	}, []);
 
 	useEffect(() => {
+		const unsubscribe = navigation.addListener('focus', () => {
+			const { allUsers } = state;
+			fetchMembers(allUsers);
+		});
+
+		return unsubscribe;
+	}, [navigation]);
+
+	useEffect(() => {
 		const fetchRoles = () => {
 			if (isGroupChat(state.room)) {
 				return;
