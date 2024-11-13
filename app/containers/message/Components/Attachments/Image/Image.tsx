@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ViewStyle, Image } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
@@ -8,6 +8,7 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
+import { ImageResizeMode } from 'definitions/ImageResizeMode';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
 	const { colors } = useTheme();
@@ -57,7 +58,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<FastImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={FastImage.resizeMode.cover} />
+					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={ImageResizeMode.cover} />
 				</View>
 			) : (
 				<View style={[styles.image, borderStyle]} />

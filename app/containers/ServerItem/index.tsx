@@ -1,12 +1,13 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image, ImageStyle } from 'expo-image';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
 import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
+import { ImagePriority } from 'definitions/ImagePriority';
 
 export { ROW_HEIGHT };
 
@@ -37,18 +38,18 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 			})}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
-					<FastImage
+					<Image
 						source={{
 							uri: item.iconURL,
-							priority: FastImage.priority.high
 						}}
+						priority={ImagePriority.high}
 						// @ts-ignore TODO: Remove when updating FastImage
 						defaultSource={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
 					/>
 				) : (
-					<FastImage source={defaultLogo} style={styles.serverIcon} />
+					<Image source={defaultLogo} style={styles.serverIcon} />
 				)}
 				<View style={styles.serverTextContainer}>
 					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>

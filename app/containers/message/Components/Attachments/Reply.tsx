@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
@@ -17,6 +17,7 @@ import { Attachments } from './components';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
+import { ImageResizeMode } from 'definitions/ImageResizeMode';
 
 const styles = StyleSheet.create({
 	button: {
@@ -168,7 +169,7 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+		return <Image source={{ uri: image }} style={styles.image} resizeMode={ImageResizeMode.cover} />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );
