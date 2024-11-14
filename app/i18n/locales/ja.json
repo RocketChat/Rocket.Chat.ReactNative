@@ -133,7 +133,6 @@
   "Encryption_error_desc": "暗号化キーをデコードしてインポートできませんでした。",
   "Encryption_error_title": "暗号化パスワードが間違っているようです",
   "End_to_end_encrypted_room": "暗号化されたエンドツーエンドのルーム",
-  "Enter": "入力",
   "Enter_E2EE_Password": "E2EEパスワードを入力",
   "Enter_E2EE_Password_description": "暗号化されたチャンネルとダイレクトメッセージにアクセスするには、暗号化パスワードを入力してください。これはサーバーに保存されないため、すべてのデバイスで使用する必要があります。",
   "Error_uploading": "アップロードエラー",

@@ -264,7 +264,6 @@
   "Encryption_error_desc": "Não foi possível decodificar sua chave E2E para ser importada.",
   "Encryption_error_title": "Sua senha E2E parece errada",
   "End_to_end_encrypted_room": "Sala criptografada de ponta a ponta",
-  "Enter": "Inserir",
   "Enter_E2EE_Password": "Digite a senha E2EE",
   "Enter_E2EE_Password_description": "Para acessar seus canais criptografados e mensagens diretas, insira sua senha de criptografia. Isso não é armazenado no servidor, então você precisará usá-la em cada dispositivo.",
   "Enter_the_code": "Insira o código que acabamos de enviar por e-mail.",

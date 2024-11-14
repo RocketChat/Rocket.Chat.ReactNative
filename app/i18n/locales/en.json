@@ -270,7 +270,6 @@
   "Encryption_error_desc": "It wasn't possible to decode your encryption key to be imported.",
   "Encryption_error_title": "Your encryption password seems wrong",
   "End_to_end_encrypted_room": "End to end encrypted room",
-  "Enter": "Enter",
   "Enter_E2EE_Password": "Enter E2EE password",
   "Enter_E2EE_Password_description": "To access your encrypted channels and direct messages, enter your encryption password. This is not stored on the server, so you’ll need to use it on every device.",
   "Enter_the_code": "Enter the code we just emailed you.",
