@@ -3,9 +3,7 @@ import { StyleProp } from 'react-native';
 import { Image, ImageStyle } from 'expo-image';
 
 import { useAppSelector } from '../../lib/hooks';
-import { ICustomEmoji } from '../../definitions';
-import { ImagePriority } from 'definitions/ImagePriority';
-import { ImageResizeMode } from 'definitions/ImageResizeMode';
+import { ICustomEmoji, ImagePriority, ImageResizeMode } from '../../definitions';
 
 interface ICustomEmojiProps {
 	emoji: ICustomEmoji;

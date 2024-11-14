@@ -6,7 +6,7 @@ import { IAutocompleteItemProps } from '../../interfaces';
 import { CustomIcon } from '../../../CustomIcon';
 import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';
-import { ImageResizeMode } from 'definitions/ImageResizeMode';
+import { ImageResizeMode } from '../../../../definitions';
 
 export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) => {
 	const [styles, colors] = useStyle();

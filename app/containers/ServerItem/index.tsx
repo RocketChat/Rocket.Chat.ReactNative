@@ -7,7 +7,7 @@ import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
 import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
-import { ImagePriority } from 'definitions/ImagePriority';
+import { ImagePriority } from '../../definitions';
 
 export { ROW_HEIGHT };
 

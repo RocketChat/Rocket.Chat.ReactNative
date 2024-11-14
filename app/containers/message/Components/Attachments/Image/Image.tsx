@@ -8,7 +8,7 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
-import { ImageResizeMode } from 'definitions/ImageResizeMode';
+import { ImageResizeMode } from '../../../../../definitions';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
 	const { colors } = useTheme();

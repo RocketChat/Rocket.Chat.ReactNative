@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
+import { IAttachment, TGetCustomEmoji, ImageResizeMode } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
@@ -17,7 +17,6 @@ import { Attachments } from './components';
 import MessageContext from '../../Context';
 import Touchable from '../../Touchable';
 import messageStyles from '../../styles';
-import { ImageResizeMode } from 'definitions/ImageResizeMode';
 
 const styles = StyleSheet.create({
 	button: {

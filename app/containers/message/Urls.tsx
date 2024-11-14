@@ -13,9 +13,8 @@ import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { IUrl } from '../../definitions';
+import { IUrl, ImageResizeMode } from '../../definitions';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
-import { ImageResizeMode } from 'definitions/ImageResizeMode';
 
 const styles = StyleSheet.create({
 	container: {

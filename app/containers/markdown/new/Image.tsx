@@ -7,7 +7,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import styles from '../../message/styles';
-import { ImagePriority } from 'definitions/ImagePriority';
+import { ImagePriority } from '../../../definitions';
 
 interface IImageProps {
 	value: ImageProps['value'];

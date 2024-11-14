@@ -5,10 +5,9 @@ import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import { SubscriptionType } from '../../definitions';
+import { SubscriptionType, ImagePriority } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
-import { ImagePriority } from 'definitions/ImagePriority';
 
 const Avatar = React.memo(
 	({
