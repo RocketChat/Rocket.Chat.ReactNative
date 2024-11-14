@@ -43,8 +43,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 							uri: item.iconURL,
 						}}
 						priority={ImagePriority.high}
-						// @ts-ignore TODO: Remove when updating FastImage
-						defaultSource={defaultLogo}
+						placeholder={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
 					/>
