@@ -36,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 
-import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
+// import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
 
 import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
 import expo.modules.filesystem.FileSystemModule;
@@ -111,7 +111,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         // RNCWebView onReceivedClientCertRequest
         RNCWebViewManager.setCertificateAlias(data);
         // FastImage Glide network layer
-        FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
+        //FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
         // Expo AV network layer
         SharedCookiesDataSourceFactory.setOkHttpClient(getOkHttpClient());
         // Expo File System network layer
