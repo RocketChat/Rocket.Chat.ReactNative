@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
+import { useTheme } from '../../../theme';
 import { FormTextInput } from '../../../containers/TextInput';
-import * as List from '../../../containers/List';
-import { themes } from '../../../lib/constants';
-import I18n from '../../../i18n';
 import { TServerHistoryModel } from '../../../definitions';
+import * as List from '../../../containers/List';
+import I18n from '../../../i18n';
 import Item from './Item';
-import { TSupportedThemes } from '../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -31,7 +30,6 @@ const styles = StyleSheet.create({
 
 interface IServerInput extends TextInputProps {
 	text: string;
-	theme: TSupportedThemes;
 	serversHistory: any[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
@@ -40,7 +38,6 @@ interface IServerInput extends TextInputProps {
 
 const ServerInput = ({
 	text,
-	theme,
 	serversHistory,
 	onChangeText,
 	onSubmit,
@@ -48,6 +45,7 @@ const ServerInput = ({
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
 	const [focused, setFocused] = useState(false);
+	const { colors } = useTheme();
 	return (
 		<View style={styles.container}>
 			<FormTextInput
@@ -67,13 +65,10 @@ const ServerInput = ({
 				onBlur={() => setFocused(false)}
 			/>
 			{focused && serversHistory?.length ? (
-				<View
-					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}>
+				<View style={[styles.serverHistory, { backgroundColor: colors.surfaceRoom, borderColor: colors.strokeLight }]}>
 					<FlatList
 						data={serversHistory}
-						renderItem={({ item }) => (
-							<Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />
-						)}
+						renderItem={({ item }) => <Item item={item} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />}
 						ItemSeparatorComponent={List.Separator}
 						keyExtractor={item => item.id}
 					/>

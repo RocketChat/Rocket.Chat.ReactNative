@@ -316,7 +316,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 					</Text>
 					<ServerInput
 						text={text}
-						theme={theme}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
