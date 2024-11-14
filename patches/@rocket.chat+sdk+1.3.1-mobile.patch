@@ -1,5 +1,5 @@
 diff --git a/node_modules/@rocket.chat/sdk/lib/api/api.ts b/node_modules/@rocket.chat/sdk/lib/api/api.ts
-index 0faaabd..a8bd048 100644
+index 0faaabd..0b3dbdb 100644
 --- a/node_modules/@rocket.chat/sdk/lib/api/api.ts
 +++ b/node_modules/@rocket.chat/sdk/lib/api/api.ts
 @@ -160,10 +160,20 @@ class Client implements IClient {
@@ -19,7 +19,7 @@ index 0faaabd..a8bd048 100644
 +          params.push(`${encodeURIComponent(key)}=${encodeURIComponent(val)}`);
 +        });
 +      } else {
-+        params.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
++        params.push(`${encodeURIComponent(key)}=${(typeof data[key] === 'object' ? encodeURIComponent(JSON.stringify(data[key])) : encodeURIComponent(data[key]))}`);
 +      }
 +    });
 +    return params.join('&');
