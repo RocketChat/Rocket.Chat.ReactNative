@@ -5,25 +5,37 @@ on:
     branches:
       - '*'
       - '!develop'
-  pull_request:
-    branches:
-      - '*'
 
 jobs:
   format:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           fetch-depth: 0
-
+          
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '22'
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
 
       - name: Install dependencies
         run: yarn install
