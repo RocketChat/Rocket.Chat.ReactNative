@@ -64,8 +64,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 					style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
 					onPress={openEmojiKeyboard}
 					hitSlop={BUTTON_HIT_SLOP}
-					testID='openback-emoji-keyboard'
-				>
+					testID='openback-emoji-keyboard'>
 					<CustomIcon name='chevron-left' size={24} />
 				</Pressable>
 				<View style={styles.inputContainer}>

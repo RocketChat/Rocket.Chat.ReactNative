@@ -65,11 +65,12 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 			<Touchable
 				onPress={() => onShow(!show)}
 				style={{ backgroundColor: themes[theme].surfaceRoom }}
-				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			>
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
 				<View
-					style={[styles.input, { borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }]}
-				>
+					style={[
+						styles.input,
+						{ borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }
+					]}>
 					<Text style={[styles.inputText, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
 						{currentDate.toLocaleDateString(language)}
 					</Text>

@@ -72,8 +72,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 					<Text
 						testID={`thread-count-${count}`}
 						style={[styles.detailText, { color: themes[theme].fontSecondaryInfo }]}
-						numberOfLines={1}
-					>
+						numberOfLines={1}>
 						{count}
 					</Text>
 				</View>
