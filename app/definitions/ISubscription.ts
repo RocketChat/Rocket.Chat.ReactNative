@@ -3,7 +3,7 @@ import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IRocketChatRecord } from './IRocketChatRecord';
-import { IOmnichannelSource, RoomID, RoomType } from './IRoom';
+import { IOmnichannelSource, RoomID, RoomType, TUserWaitingForE2EKeys } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
@@ -96,6 +96,7 @@ export interface ISubscription {
 	E2ESuggestedKey?: string | null;
 	encrypted?: boolean;
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
@@ -154,6 +155,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 	encrypted?: boolean;
 	E2EKey?: string;
 	E2ESuggestedKey?: string | null;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
 
 	fname?: unknown;
