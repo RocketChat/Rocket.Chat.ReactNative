@@ -55,7 +55,7 @@ jobs:
           fi
 
       - name: Commit and push changes
-        if: steps.check_changes.outputs.changes == 'true' && github.actor != 'github-actions[bot]'
+        if: steps.check_changes.outputs.changes == 'true'
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
