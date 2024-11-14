@@ -21,8 +21,7 @@ const Roles = ({ roles }: { roles?: string[] }) => {
 							<View
 								style={[styles.roleBadge, { backgroundColor: colors.surfaceSelected }]}
 								key={role}
-								testID={`user-role-${role.replace(/ /g, '-')}`}
-							>
+								testID={`user-role-${role.replace(/ /g, '-')}`}>
 								<Text style={[styles.role, { color: colors.fontTitlesLabels }]}>{role}</Text>
 							</View>
 						) : null

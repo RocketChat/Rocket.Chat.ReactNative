@@ -161,7 +161,15 @@ const StatusView = (): React.ReactElement => {
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}
-							left={<StatusIcon accessible={false} testID={`status-view-current-${status}`} style={styles.inputLeft} status={status} size={24} />}
+							left={
+								<StatusIcon
+									accessible={false}
+									testID={`status-view-current-${status}`}
+									style={styles.inputLeft}
+									status={status}
+									size={24}
+								/>
+							}
 							inputStyle={styles.inputStyle}
 							placeholder={I18n.t('What_are_you_doing_right_now')}
 							testID='status-view-input'

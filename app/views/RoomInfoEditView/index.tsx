@@ -523,15 +523,13 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].surfaceRoom }}
 				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}
-			>
+				keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 					<ScrollView
 						contentContainerStyle={sharedStyles.containerScrollView}
 						testID='room-info-edit-view-list'
-						{...scrollPersistTaps}
-					>
+						{...scrollPersistTaps}>
 						<View style={styles.avatarContainer}>
 							<AvatarWithEdit type={room.t} text={room.name} rid={room.rid} handleEdit={this.handleEditAvatar} />
 						</View>
@@ -665,8 +663,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								testID='room-info-edit-switch-system-messages'
 								onValueChange={this.toggleHideSystemMessages}
 								labelContainerStyle={styles.hideSystemMessages}
-								leftLabelStyle={styles.systemMessagesLabel}
-							>
+								leftLabelStyle={styles.systemMessagesLabel}>
 								{this.renderSystemMessages()}
 							</SwitchContainer>
 						) : null}
@@ -691,8 +688,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							]}
 							onPress={this.submit}
 							disabled={!this.formIsChanged()}
-							testID='room-info-edit-view-submit'
-						>
+							testID='room-info-edit-view-submit'>
 							<Text style={[styles.button, { color: themes[theme].fontWhite }]} accessibilityRole='button'>
 								{I18n.t('SAVE')}
 							</Text>
@@ -707,12 +703,10 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								]}
 								onPress={this.reset}
 								disabled={!this.formIsChanged()}
-								testID='room-info-edit-view-reset'
-							>
+								testID='room-info-edit-view-reset'>
 								<Text
 									style={[styles.button, styles.button_inverted, { color: themes[theme].fontDefault }]}
-									accessibilityRole='button'
-								>
+									accessibilityRole='button'>
 									{I18n.t('RESET')}
 								</Text>
 							</TouchableOpacity>
@@ -727,8 +721,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								]}
 								onPress={this.toggleArchive}
 								disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
-								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
-							>
+								testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}>
 								<Text style={[styles.button, styles.button_inverted, { color: fontDanger }]}>
 									{archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 								</Text>
@@ -745,8 +738,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							]}
 							onPress={room.teamMain ? this.deleteTeam : this.delete}
 							disabled={!this.hasDeletePermission()}
-							testID='room-info-edit-view-delete'
-						>
+							testID='room-info-edit-view-delete'>
 							<Text style={[styles.button, styles.button_inverted, { color: fontDanger }]} accessibilityRole='button'>
 								{I18n.t('DELETE')}
 							</Text>

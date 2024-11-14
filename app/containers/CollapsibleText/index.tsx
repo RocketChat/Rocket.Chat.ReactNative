@@ -67,15 +67,13 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 				} else {
 					setShowTruncated(false);
 				}
-			}}
-		>
+			}}>
 			{m}
 			{truncatedText ? (
 				<Text
 					testID='collapsible-text-show-less'
 					onPress={() => setShowTruncated(true)}
-					style={[styles.textInfo, { color: colors.fontHint }]}
-				>
+					style={[styles.textInfo, { color: colors.fontHint }]}>
 					{` ${I18n.t('Show_less')}`}
 				</Text>
 			) : null}
