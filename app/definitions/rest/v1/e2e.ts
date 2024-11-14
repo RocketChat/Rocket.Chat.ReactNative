@@ -18,6 +18,14 @@ export type E2eEndpoints = {
 	'e2e.rejectSuggestedGroupKey': {
 		POST: (params: { rid: string }) => {};
 	};
+	'e2e.fetchUsersWaitingForGroupKey': {
+		GET: (params: { roomIds: string[] }) => {
+			usersWaitingForE2EKeys: any;
+		};
+	};
+	'e2e.provideUsersSuggestedGroupKeys': {
+		POST: (params: { usersSuggestedGroupKeys: any }) => void;
+	};
 	'e2e.setRoomKeyID': {
 		POST: (params: { rid: string; keyID: string }) => {};
 	};

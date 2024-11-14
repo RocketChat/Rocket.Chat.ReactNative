@@ -3,6 +3,7 @@ import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import EJSON from 'ejson';
 import { deleteAsync } from 'expo-file-system';
 import SimpleCrypto from 'react-native-simple-crypto';
+import { sampleSize } from 'lodash';
 
 import {
 	IMessage,
@@ -36,6 +37,7 @@ import Deferred from './helpers/deferred';
 import EncryptionRoom from './room';
 import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 
+const ROOM_KEY_EXCHANGE_SIZE = 10;
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
@@ -53,10 +55,13 @@ class Encryption {
 			encryptFile: TEncryptFile;
 			encryptUpload: Function;
 			importRoomKey: Function;
+			hasSessionKey: () => boolean;
+			encryptGroupKeyForParticipantsWaitingForTheKeys: (params: any) => Promise<any>;
 		};
 	};
 	decryptionFileQueue: IDecryptionFileQueue[];
 	decryptionFileQueueActiveCount: number;
+	keyDistributionInterval: ReturnType<typeof setInterval> | null;
 
 	constructor() {
 		this.userId = '';
@@ -73,6 +78,7 @@ class Encryption {
 			});
 		this.decryptionFileQueue = [];
 		this.decryptionFileQueueActiveCount = 0;
+		this.keyDistributionInterval = null;
 	}
 
 	// Initialize Encryption client
@@ -84,6 +90,7 @@ class Encryption {
 		// so they can run parallelized
 		this.decryptPendingSubscriptions();
 		this.decryptPendingMessages();
+		this.initiateKeyDistribution();
 
 		// Mark Encryption client as ready
 		this.readyPromise.resolve();
@@ -139,6 +146,9 @@ class Encryption {
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E) {
+			return;
+		}
 		return roomE2E.provideKeyToUser(keyId);
 	};
 
@@ -242,28 +252,36 @@ class Encryption {
 
 	// get a encryption room instance
 	getRoomInstance = async (rid: string) => {
-		// Prevent handshake again
-		if (this.roomInstances[rid]?.ready) {
-			return this.roomInstances[rid];
+		try {
+			// Prevent handshake again
+			if (this.roomInstances[rid]?.ready) {
+				return this.roomInstances[rid];
+			}
+
+			// If doesn't have a instance of this room
+			if (!this.roomInstances[rid]) {
+				this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
+			}
+
+			const roomE2E = this.roomInstances[rid];
+
+			// Start Encryption Room instance handshake
+			await roomE2E.handshake();
+
+			return roomE2E;
+		} catch (e) {
+			log(e);
+			return null;
 		}
-
-		// If doesn't have a instance of this room
-		if (!this.roomInstances[rid]) {
-			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
-		}
-
-		const roomE2E = this.roomInstances[rid];
-
-		// Start Encryption Room instance handshake
-		await roomE2E.handshake();
-
-		return roomE2E;
 	};
 
 	evaluateSuggestedKey = async (rid: string, E2ESuggestedKey: string) => {
 		if (this.privateKey) {
 			try {
 				const roomE2E = await this.getRoomInstance(rid);
+				if (!roomE2E) {
+					return;
+				}
 				await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
 				delete this.roomInstances[rid];
 				await Services.e2eAcceptSuggestedGroupKey(rid);
@@ -375,6 +393,98 @@ class Encryption {
 		}
 	};
 
+	async getSuggestedE2EEKeys(usersWaitingForE2EKeys: Record<string, { _id: string; public_key: string }[]>) {
+		const roomIds = Object.keys(usersWaitingForE2EKeys);
+		return Object.fromEntries(
+			// @ts-ignore
+			(
+				await Promise.all(
+					roomIds.map(async room => {
+						const e2eRoom = await this.getRoomInstance(room);
+
+						if (!e2eRoom) {
+							return;
+						}
+						const usersWithKeys = await e2eRoom.encryptGroupKeyForParticipantsWaitingForTheKeys(usersWaitingForE2EKeys[room]);
+
+						if (!usersWithKeys) {
+							return;
+						}
+
+						return [room, usersWithKeys];
+					})
+				)
+			).filter(Boolean)
+		);
+	}
+
+	async getSample(roomIds: string[], limit = 3): Promise<string[]> {
+		if (limit === 0) {
+			return [];
+		}
+
+		const randomRoomIds = sampleSize(roomIds, ROOM_KEY_EXCHANGE_SIZE);
+
+		const sampleIds: string[] = [];
+		for await (const roomId of randomRoomIds) {
+			const e2eroom = await this.getRoomInstance(roomId);
+			if (!e2eroom || !e2eroom?.hasSessionKey()) {
+				continue;
+			}
+
+			sampleIds.push(roomId);
+		}
+
+		if (!sampleIds.length) {
+			return this.getSample(roomIds, limit - 1);
+		}
+
+		return sampleIds;
+	}
+
+	initiateKeyDistribution = async () => {
+		if (this.keyDistributionInterval) {
+			return;
+		}
+
+		const keyDistribution = async () => {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			try {
+				const subscriptions = await subCollection.query(Q.where('users_waiting_for_e2e_keys', Q.notEq(null)));
+				if (subscriptions) {
+					const filteredSubs = subscriptions
+						.filter(sub => sub.usersWaitingForE2EKeys && !sub.usersWaitingForE2EKeys.some(user => user.userId === this.userId))
+						.map(sub => sub.rid);
+
+					const sampleIds = await this.getSample(filteredSubs);
+
+					if (!sampleIds.length) {
+						return;
+					}
+
+					const result = await Services.fetchUsersWaitingForGroupKey(sampleIds);
+					if (!result.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
+						return;
+					}
+
+					const userKeysWithRooms = await this.getSuggestedE2EEKeys(result.usersWaitingForE2EKeys);
+
+					if (!Object.keys(userKeysWithRooms).length) {
+						return;
+					}
+
+					await Services.provideUsersSuggestedGroupKeys(userKeysWithRooms);
+				}
+			} catch (e) {
+				log(e);
+			}
+		};
+
+		await keyDistribution();
+		this.keyDistributionInterval = setInterval(keyDistribution, 10000);
+	};
+
 	// Creating the instance is enough to generate room e2ee key
 	encryptSubscription = (rid: string) => this.getRoomInstance(rid as string);
 
@@ -455,6 +565,9 @@ class Encryption {
 
 		// Get a instance using the subscription
 		const roomE2E = await this.getRoomInstance(rid as string);
+		if (!roomE2E) {
+			return;
+		}
 		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
@@ -464,6 +577,9 @@ class Encryption {
 
 	encryptText = async (rid: string, text: string) => {
 		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E) {
+			return;
+		}
 		return roomE2E.encryptText(text);
 	};
 
@@ -490,6 +606,9 @@ class Encryption {
 			}
 
 			const roomE2E = await this.getRoomInstance(rid);
+			if (!roomE2E) {
+				return;
+			}
 			return roomE2E.encrypt(message);
 		} catch {
 			// Subscription not found
@@ -523,6 +642,9 @@ class Encryption {
 
 		const { rid } = message;
 		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E) {
+			return;
+		}
 		return roomE2E.decrypt(message);
 	};
 
@@ -555,6 +677,9 @@ class Encryption {
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E) {
+			return { file };
+		}
 		return roomE2E.encryptFile(rid, file);
 	};
 

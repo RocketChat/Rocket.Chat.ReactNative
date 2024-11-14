@@ -133,6 +133,8 @@ export default class Subscription extends Model {
 
 	@field('e2e_key_id') e2eKeyId;
 
+	@json('users_waiting_for_e2e_keys', sanitizer) usersWaitingForE2EKeys;
+
 	@field('avatar_etag') avatarETag;
 
 	@field('team_id') teamId;
@@ -204,6 +206,7 @@ export default class Subscription extends Model {
 			E2ESuggestedKey: this.E2ESuggestedKey,
 			encrypted: this.encrypted,
 			e2eKeyId: this.e2eKeyId,
+			usersWaitingForE2EKeys: this.usersWaitingForE2EKeys,
 			avatarETag: this.avatarETag,
 			teamId: this.teamId,
 			teamMain: this.teamMain,
