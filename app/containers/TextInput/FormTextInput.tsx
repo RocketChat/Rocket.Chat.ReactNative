@@ -98,11 +98,12 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 	return (
-		<View style={[styles.inputContainer, containerStyle]}>
+		<View
+			accessible
+			accessibilityLabel={`${label} - ${required ? i18n.t('Required') : ''}`}
+			style={[styles.inputContainer, containerStyle]}>
 			{label ? (
-				<Text
-					accessibilityLabel={`${label} ${required ? i18n.t('Required') : ''}`}
-					style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
 					{label}{' '}
 					{required && <Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>}
 				</Text>
