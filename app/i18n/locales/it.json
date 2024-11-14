@@ -158,6 +158,7 @@
   "Encryption_error_desc": "Non è stato possibile importare la tua chiave di cifratura.",
   "Encryption_error_title": "La tua password di cifratura sembra errata",
   "End_to_end_encrypted_room": "Stanza crittografata end to end",
+  "Enter": "Inserire",
   "Enter_E2EE_Password": "Inserisci la password E2EE",
   "Enter_E2EE_Password_description": "Per accedere ai tuoi canali criptati e ai messaggi diretti, inserisci la tua password di crittografia. Questa non viene memorizzata sul server, quindi dovrai usarla su ogni dispositivo.",
   "Error_uploading": "Errore nel caricamento di",

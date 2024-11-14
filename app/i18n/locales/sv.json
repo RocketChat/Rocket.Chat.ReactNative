@@ -216,6 +216,7 @@
   "Encryption_error_desc": "Det gick inte att avkoda krypteringsnyckeln som skulle importeras.",
   "Encryption_error_title": "Ditt krypteringslösenord verkar vara felaktigt",
   "End_to_end_encrypted_room": "End-to-end-krypterat rum",
+  "Enter": "Ange",
   "Enter_E2EE_Password": "Ange E2EE-lösenord",
   "Enter_E2EE_Password_description": "För att komma åt dina krypterade kanaler och direkta meddelanden, ange ditt krypteringslösenord. Detta lagras inte på servern, så du måste använda det på varje enhet.",
   "Error_Download_file": "Fel vid nedladdning av fil",

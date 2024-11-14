@@ -62,6 +62,7 @@ const ServerInput = ({
 				keyboardType='url'
 				textContentType='URL'
 				required
+				accessibilityLabel={`${I18n.t('Enter')} ${I18n.t('Workspace_URL')}`}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>

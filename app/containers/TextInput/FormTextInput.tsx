@@ -91,6 +91,7 @@ export const FormTextInput = ({
 	secureTextEntry,
 	bottomSheet,
 	placeholder,
+	accessibilityLabel,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors, theme } = useTheme();
@@ -134,7 +135,7 @@ export const FormTextInput = ({
 					underlineColorAndroid='transparent'
 					secureTextEntry={secureTextEntry && !showPassword}
 					testID={testID}
-					accessibilityLabel={placeholder}
+					accessibilityLabel={`${accessibilityLabel ?? placeholder}${required ? ' - ' + i18n.t('Required') : ''}`}
 					placeholder={placeholder}
 					value={value}
 					placeholderTextColor={colors.fontAnnotation}

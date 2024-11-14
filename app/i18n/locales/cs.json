@@ -253,6 +253,7 @@
   "Encryption_error_desc": "Nebylo možné dekódovat váš šifrovací klíč pro import.",
   "Encryption_error_title": "Vaše heslo pro šifrování se zdá být špatné",
   "End_to_end_encrypted_room": "End to end šifrovaná místnost",
+  "Enter": "Enter",
   "Enter_the_code": "Zadejte kód, který jsme vám právě poslali e-mailem.",
   "Enter_Your_E2E_Password": "Zadejte heslo E2E",
   "Enter_Your_Encryption_Password_desc1": "To vám umožní přístup k vašim zašifrovaným soukromým skupinám a přímým zprávám.",

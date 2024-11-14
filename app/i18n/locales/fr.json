@@ -182,6 +182,7 @@
   "Encryption_error_desc": "Il n'a pas été possible de décoder votre clé de cryptage pour être importé.",
   "Encryption_error_title": "Votre mot de passe de cryptage semble erroné",
   "End_to_end_encrypted_room": "Salon crypté de bout en bout",
+  "Enter": "Saisir",
   "Enter_E2EE_Password": "Entrez le mot de passe E2EE",
   "Enter_E2EE_Password_description": "Pour accéder à vos canaux cryptés et à vos messages directs, entrez votre mot de passe de cryptage. Celui-ci n'est pas stocké sur le serveur, vous devrez donc l'utiliser sur chaque appareil.",
   "Error_Download_file": "Erreur lors du téléchargement du fichier",

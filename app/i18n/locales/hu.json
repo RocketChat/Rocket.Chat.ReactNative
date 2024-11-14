@@ -237,6 +237,7 @@
   "Encryption_error_desc": "Nem sikerült dekódolni az importálandó titkosítási kulcsot.",
   "Encryption_error_title": "A titkosítási jelszó rossznak tűnik",
   "End_to_end_encrypted_room": "Végponttól végpontig titkosított szoba",
+  "Enter": "Beírni",
   "Enter_E2EE_Password": "Adja meg az E2EE jelszót",
   "Enter_E2EE_Password_description": "Az titkosított csatornákhoz és közvetlen üzenetekhez való hozzáféréshez írja be a titkosítási jelszavát. Ez nincs tárolva a szerveren, így minden eszközön használnia kell.",
   "Error_Download_file": "Hiba a fájl letöltése közben",
