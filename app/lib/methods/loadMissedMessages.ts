@@ -8,47 +8,33 @@ import store from '../../lib/store';
 
 const count = 50;
 
-const getLastUpdate = async (rid: string) => {
-	try {
-		const db = database.active;
-		const subsCollection = db.get('subscriptions');
-		const sub = await subsCollection.find(rid);
-		return sub.lastOpen;
-	} catch (e) {
-		// Do nothing
-	}
-	return null;
-};
-
-const getUpdatedMessages = async ({ roomId, next }: { roomId: string; next: number }) => {
+const syncMessages = async ({ roomId, next, type }: { roomId: string; next: number; type: 'UPDATED' | 'DELETED' }) => {
 	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('chat.syncMessages', { roomId, next, count, type: 'UPDATED' });
+	const { result } = await sdk.get('chat.syncMessages', { roomId, next, count, type });
 	return result;
 };
 
-const getDeletedMessages = async ({ roomId, next }: { roomId: string; next: number }) => {
-	// @ts-ignore // this method dont have type
-	const { result } = await sdk.get('chat.syncMessages', { roomId, next, count, type: 'DELETED' });
-	return result;
-};
-
-const syncMessages = async (roomId: string, lastOpen?: number, updatedNext?: number | null, deletedNext?: number | null) => {
+const getSyncMessagesFromCursor = async (
+	roomId: string,
+	lastOpen?: number,
+	updatedNext?: number | null,
+	deletedNext?: number | null
+) => {
 	try {
 		const promises = [];
 
 		if (lastOpen && !updatedNext && !deletedNext) {
-			promises.push(getUpdatedMessages({ roomId, next: lastOpen }));
-			promises.push(getDeletedMessages({ roomId, next: lastOpen }));
+			promises.push(syncMessages({ roomId, next: lastOpen, type: 'UPDATED' }));
+			promises.push(syncMessages({ roomId, next: lastOpen, type: 'DELETED' }));
 		}
 		if (updatedNext && typeof updatedNext !== 'undefined') {
-			promises.push(getUpdatedMessages({ roomId, next: updatedNext }));
+			promises.push(syncMessages({ roomId, next: updatedNext, type: 'UPDATED' }));
 		}
 		if (deletedNext && typeof deletedNext !== 'undefined') {
-			promises.push(getDeletedMessages({ roomId, next: deletedNext }));
+			promises.push(syncMessages({ roomId, next: deletedNext, type: 'DELETED' }));
 		}
 
 		const [updatedMessages, deletedMessages] = await Promise.all(promises);
-		console.log(updatedMessages, deletedMessages, 'raw');
 		return {
 			deleted: deletedMessages?.deleted ?? [],
 			deletedNext: deletedMessages?.cursor.next,
@@ -59,6 +45,18 @@ const syncMessages = async (roomId: string, lastOpen?: number, updatedNext?: num
 		console.error('Error syncing messages:', error);
 		throw error;
 	}
+};
+
+const getLastUpdate = async (rid: string) => {
+	try {
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
+		const sub = await subsCollection.find(rid);
+		return sub.lastOpen;
+	} catch (e) {
+		// Do nothing
+	}
+	return null;
 };
 
 async function load({
@@ -72,7 +70,6 @@ async function load({
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 }) {
-	console.log('cai aqui', lastOpen, updatedNext, deletedNext);
 	const { version: serverVersion } = store.getState().server;
 	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.1.0')) {
 		let lastOpenTimestamp;
@@ -82,8 +79,7 @@ async function load({
 			const lastUpdate = await getLastUpdate(roomId);
 			lastOpenTimestamp = lastUpdate?.getTime();
 		}
-		const result = await syncMessages(roomId, lastOpenTimestamp, updatedNext, deletedNext);
-		console.log(result, 'result');
+		const result = await getSyncMessagesFromCursor(roomId, lastOpenTimestamp, updatedNext, deletedNext);
 		return result;
 	}
 
@@ -106,8 +102,6 @@ export async function loadMissedMessages(args: {
 	updatedNext?: number | null;
 	deletedNext?: number | null;
 }): Promise<void> {
-	console.log('here', args);
-	if (args.rid === 'terst') return;
 	try {
 		const data = await load({
 			rid: args.rid,
@@ -125,7 +119,7 @@ export async function loadMissedMessages(args: {
 			// @ts-ignore // TODO: remove loaderItem obligatoriness
 			await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
-			if ((deleted.length === count && deletedNext) || (updatedNext && updated.length === count)) {
+			if (deletedNext || updatedNext) {
 				loadMissedMessages({
 					rid: args.rid,
 					lastOpen: args.lastOpen,
