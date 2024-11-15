@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
 
 import { IUserMessage } from '../../../../definitions';
@@ -18,7 +18,6 @@ import { useMediaAutoDownload } from '../../hooks/useMediaAutoDownload';
 import BlurComponent from '../OverlayComponent';
 import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
-import Urls from 'containers/message/Urls';
 
 const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
@@ -43,10 +42,7 @@ interface IMessageVideo {
 	style?: StyleProp<TextStyle>[];
 	isReply?: boolean;
 	msg?: string;
-	setUrls: React.Dispatch<React.SetStateAction<Record<string, string>>>;
-	urls: Record<string, string>;
 }
-
 
 const CancelIndicator = () => {
 	const { colors } = useTheme();
@@ -83,26 +79,11 @@ const Video = ({
 	author,
 	style,
 	isReply,
-	msg,
-	setUrls,
-	urls
+	msg
 }: IMessageVideo): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
 	const { theme, colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
-
-	useEffect(() => {
-		if (!setUrls || !urls || !file?.video_url || typeof file.video_url !== 'string') {
-			return;
-		}
-
-		if (!Object.keys(urls).includes(file.video_url)) {
-			setUrls(prevUrls => ({
-				...prevUrls,
-				[file.video_url as string]: url
-			}));
-		}
-	}, [url, setUrls, urls, file]); // Include dependencies
 
 	const _onPress = async () => {
 		if (currentFile.video_type && !isTypeSupported(currentFile.video_type)) {
