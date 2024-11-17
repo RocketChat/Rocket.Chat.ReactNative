@@ -57,8 +57,7 @@ const Chip = ({ avatar, text, onPress, testID, style }: IChip) => {
 			onPress={() => onPress?.()}
 			android_ripple={{
 				color: colors.surfaceNeutral
-			}}
-		>
+			}}>
 			<View style={styles.container}>
 				{avatar ? <Avatar text={avatar} size={28} style={styles.avatar} /> : null}
 				<View style={styles.textContainer}>

@@ -55,8 +55,7 @@ const Table = React.memo(({ children, numColumns, theme }: ITable) => {
 				style={[
 					styles.containerTable,
 					{ maxWidth: getTableWidth(), maxHeight: MAX_HEIGHT, borderColor: themes[theme].strokeLight }
-				]}
-			>
+				]}>
 				{renderRows(false)}
 			</ScrollView>
 			<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Full_table')}</Text>
