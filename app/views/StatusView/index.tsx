@@ -51,10 +51,6 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginBottom: 12
 	},
-	inputLeft: {
-		position: 'absolute',
-		left: 12
-	},
 	inputStyle: {
 		borderRadius: 0,
 		borderTopWidth: 1,
@@ -149,18 +145,16 @@ const StatusView = (): React.ReactElement => {
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
-	const FooterComponent = () => {
-		return (
-			<View style={styles.footerComponent}>
-				<Button
-					testID='status-view-submit'
-					disabled={status === user.status && user?.statusText === statusText}
-					onPress={submit}
-					title={I18n.t('Save')}
-				/>
-			</View>
-		);
-	};
+	const FooterComponent = () => (
+		<View style={styles.footerComponent}>
+			<Button
+				testID='status-view-submit'
+				disabled={status === user.status && user?.statusText === statusText}
+				onPress={submit}
+				title={I18n.t('Save')}
+			/>
+		</View>
+	);
 
 	return (
 		<SafeAreaView testID='status-view'>
