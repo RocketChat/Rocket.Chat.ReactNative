@@ -7697,7 +7697,12 @@ expo-haptics@^12.8.1:
   resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-12.8.1.tgz#42b996763be33d661bd33bbc3b3958c3f2734b9d"
   integrity sha512-ntLsHkfle8K8w9MW8pZEw92ZN3sguaGUSSIxv30fPKNeQFu7Cq/h47Qv3tONv2MO3wU48N9FbKnant6XlfptpA==
 
-expo-keep-awake@^12.8.2, expo-keep-awake@~12.8.2:
+expo-keep-awake@^14.0.1:
+  version "14.0.1"
+  resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-14.0.1.tgz#77c38feefa95c494aa167e6df5a6eacd17af2358"
+  integrity sha512-c5mGCAIk2YM+Vsdy90BlEJ4ZX+KG5Au9EkJUIxXWlpnuKmDAJ3N+5nEZ7EUO1ZTheqoSBeAo4jJ8rTWPU+JXdw==
+
+expo-keep-awake@~12.8.2:
   version "12.8.2"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-12.8.2.tgz#6cfdf8ad02b5fa130f99d4a1eb98e459d5b4332e"
   integrity sha512-uiQdGbSX24Pt8nGbnmBtrKq6xL/Tm3+DuDRGBk/3ZE/HlizzNosGRIufIMJ/4B4FRw4dw8KU81h2RLuTjbay6g==
