@@ -75,7 +75,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		if (isAndroid) {
-			Keyboard.addListener('keyboardDidShow', e => this.handleShowKeyboard());
+			Keyboard.addListener('keyboardDidShow', () => this.handleShowKeyboard());
 			Keyboard.addListener('keyboardDidHide', () => this.handleHideKeyboard());
 		}
 	}

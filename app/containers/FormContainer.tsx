@@ -14,7 +14,7 @@ import SafeAreaView from './SafeAreaView';
 interface IFormContainer extends ScrollViewProps {
 	testID: string;
 	children: React.ReactElement | React.ReactElement[] | null;
-	showAppVersion: boolean;
+	showAppVersion?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -35,7 +35,7 @@ export const FormContainerInner = ({
 	</View>
 );
 
-const FormContainer = ({ children, testID, showAppVersion, ...props }: IFormContainer) => {
+const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer) => {
 	const { theme } = useTheme();
 
 	return (
