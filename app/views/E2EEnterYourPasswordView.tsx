@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	info: {
 		fontSize: 16,
 		lineHeight: 24,
-		marginVertical: 4,
+		marginTop: 24,
 		...sharedStyles.textRegular
 	}
 });
@@ -82,10 +82,14 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}>
 			<StatusBar />
-			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+			<ScrollView
+				{...scrollPersistTaps}
+				style={sharedStyles.container}
+				contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 24 }}>
 				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
 					<FormTextInput
-						placeholder={I18n.t('Password')}
+						containerStyle={{ marginBottom: 36 }}
+						label={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
 						onSubmitEditing={submit}

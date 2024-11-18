@@ -283,7 +283,11 @@ const E2EEnterYourPasswordStackNavigator = () => {
 
 	return (
 		<E2EEnterYourPasswordStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<E2EEnterYourPasswordStack.Screen name='E2EEnterYourPasswordView' component={E2EEnterYourPasswordView} />
+			<E2EEnterYourPasswordStack.Screen
+				name='E2EEnterYourPasswordView'
+				component={E2EEnterYourPasswordView}
+				options={{ presentation: 'modal' }}
+			/>
 		</E2EEnterYourPasswordStack.Navigator>
 	);
 };
@@ -305,7 +309,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='E2EEnterYourPasswordStackNavigator'
 				component={E2EEnterYourPasswordStackNavigator}
-				options={{ headerShown: false }}
+				options={{ headerShown: false, presentation: 'modal' }}
 			/>
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
 			<InsideStack.Screen name='StatusView' component={StatusView} />
