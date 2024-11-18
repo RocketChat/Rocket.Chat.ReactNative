@@ -12,8 +12,8 @@ export async function setAppActionButtons(): Promise<void> {
 	const db = database.active;
 	const appActionButtonsCollection = db.get('app_actions_buttons');
 
-	const allAppActionButtons = await appActionButtonsCollection.query().fetch();
-	const parsed = allAppActionButtons.reduce((acc, item) => ({ ...acc, [`${item.appId}/${item.actionId}`]: item._raw }), {});
+	const allAppActionButtons = (await appActionButtonsCollection.query().fetch()).map(i => i.asPlain());
+	const parsed = allAppActionButtons.reduce((acc, item) => ({ ...acc, [`${item.appId}/${item.actionId}`]: item }), {});
 
 	reduxStore.dispatch(setPermissionsAction(parsed));
 }

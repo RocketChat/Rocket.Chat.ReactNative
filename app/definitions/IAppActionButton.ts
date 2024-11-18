@@ -49,4 +49,7 @@ export interface IAppActionButton extends IUIActionButtonDescriptor {
 	appId: string;
 }
 
-export type TAppActionButtonModel = IAppActionButton & Model;
+export type TAppActionButtonModel = IAppActionButton &
+	Model & {
+		asPlain: () => IAppActionButton;
+	};

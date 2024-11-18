@@ -21,4 +21,16 @@ export default class AppActionButton extends Model {
 	@field('category') category!: string;
 
 	@json('when', sanitizer) when!: string;
+
+	asPlain() {
+		return {
+			appId: this.appId,
+			actionId: this.actionId,
+			context: this.context,
+			labelI18n: this.labelI18n,
+			variant: this.variant,
+			category: this.category,
+			when: this.when
+		};
+	}
 }
