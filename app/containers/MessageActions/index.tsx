@@ -15,10 +15,43 @@ import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATION } from '../ActionSheet';
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
-import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
+import {
+	IAppActionButton,
+	IApplicationState,
+	IEmoji,
+	ILoggedUser,
+	MessageActionContext,
+	TAnyMessageModel,
+	TSubscriptionModel,
+	UIActionButtonContext
+} from '../../definitions';
 import { getPermalinkMessage, getQuoteMessageLink } from '../../lib/methods';
-import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+import {
+	compareServerVersion,
+	getRoomTitle,
+	getUidDirectMessage,
+	hasPermission,
+	hasScopedRole,
+	isStarredMessage,
+	isThreadMessage,
+	isTruthy,
+	random
+} from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
+import { IAppActionButtonsState } from '../../reducers/appActionButtons';
+import sdk from '../../lib/services/sdk';
+
+const getMessageContext = (message: TAnyMessageModel): MessageActionContext => {
+	if (isThreadMessage(message)) {
+		return MessageActionContext.THREADS;
+	}
+
+	if (isStarredMessage(message)) {
+		return MessageActionContext.STARRED;
+	}
+
+	return MessageActionContext.MESSAGE;
+};
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
@@ -47,6 +80,7 @@ export interface IMessageActionsProps {
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
 	createDiscussionOtherUserPermission?: string[];
+	appActionButtons: IAppActionButtonsState;
 }
 
 export interface IMessageActions {
@@ -82,7 +116,8 @@ const MessageActions = React.memo(
 				pinMessagePermission,
 				createDirectMessagePermission,
 				createDiscussionOtherUserPermission,
-				serverVersion
+				serverVersion,
+				appActionButtons
 			},
 			ref
 		) => {
@@ -374,6 +409,82 @@ const MessageActions = React.memo(
 				});
 			};
 
+			const handleAppActionButtonPress = (appActionButton: IAppActionButton, message: TAnyMessageModel) => {
+				const params = {
+					type: 'actionButton',
+					triggerId: random(17),
+					actionId: appActionButton.actionId,
+					payload: { context: appActionButton.context },
+					rid: room.rid,
+					tmid: message?.tmid,
+					mid: message._id
+				} as const;
+
+				sdk.post(`ui.interaction/${appActionButton.appId}`, params, 'apps');
+			};
+
+			const getMessageAppActionButtons = (appActionButtons: IAppActionButton[]) =>
+				appActionButtons.filter(action => action.context === UIActionButtonContext.MESSAGE_ACTION);
+
+			// TODO: Implement room context filter
+			const filterByMessageContext = async (
+				appActionButtons: IAppActionButton[],
+				message: TAnyMessageModel
+			): Promise<IAppActionButton[]> => {
+				const filteredByMessageActionContextButtons = appActionButtons.filter(action => {
+					if (!action.when?.messageActionContext) {
+						return true;
+					}
+
+					const messageContext = getMessageContext(message);
+					return action.when.messageActionContext.includes(messageContext);
+				});
+
+				return (
+					await Promise.all(
+						filteredByMessageActionContextButtons.map(async action => {
+							if (!action.when) {
+								return action;
+							}
+
+							const { hasAllPermissions, hasAllRoles, hasOnePermission, hasOneRole } = action.when;
+
+							const hasAllPermissionsResult = hasAllPermissions
+								? (await hasPermission(hasAllPermissions, room.rid)).every(perm => perm === true)
+								: true;
+							const hasOnePermissionResult = hasOnePermission
+								? (await hasPermission(hasOnePermission, room.rid)).some(perm => perm === true)
+								: true;
+							const hasOneRoleResult = hasOneRole
+								? (await Promise.all(hasOneRole.map(role => hasScopedRole(role, room.rid)))).some(role => role === true)
+								: true;
+							const hasAllRolesResult = hasAllRoles
+								? (await Promise.all(hasAllRoles.map(role => hasScopedRole(role, room.rid)))).every(role => role === true)
+								: true;
+
+							if (!hasOnePermissionResult || !hasAllPermissionsResult || !hasOneRoleResult || !hasAllRolesResult) {
+								return;
+							}
+
+							return action;
+						})
+					)
+				).filter(isTruthy);
+			};
+
+			const getAppActionButtons = async (message: TAnyMessageModel) => {
+				const parsedAppActionButtons = Object.values(appActionButtons);
+
+				const messageActionButtons = getMessageAppActionButtons(parsedAppActionButtons);
+				const actionButtons = await filterByMessageContext(messageActionButtons, message);
+
+				return actionButtons.map(action => ({
+					title: action.labelI18n,
+					onPress: () => handleAppActionButtonPress(action, message),
+					icon: 'phone'
+				}));
+			};
+
 			const getOptions = (message: TAnyMessageModel) => {
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = message.t === 'videoconf';
@@ -538,8 +649,9 @@ const MessageActions = React.memo(
 			const showMessageActions = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_SHOW_MSG_ACTIONS);
 				await getPermissions();
+				const appActionOptions = (await getAppActionButtons(message)) as TActionSheetOptionsItem[];
 				showActionSheet({
-					options: getOptions(message),
+					options: [...getOptions(message), ...appActionOptions],
 					headerHeight: HEADER_HEIGHT,
 					customHeader: (
 						<>
@@ -548,6 +660,7 @@ const MessageActions = React.memo(
 							) : null}
 						</>
 					)
+					// children: <><Text>test</Text></>,
 				});
 			};
 
@@ -574,7 +687,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
 	createDirectMessagePermission: state.permissions['create-d'],
-	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
+	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user'],
+	appActionButtons: state.appActionButtons
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

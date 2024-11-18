@@ -1,4 +1,5 @@
 // @ts-nocheck - TEMP
+import { TAnyMessageModel } from '../../../definitions';
 import log from './log';
 import { store as reduxStore } from '../../store/auxStore';
 import database from '../../database';
@@ -88,6 +89,22 @@ export function hasRole(role): boolean {
 	return userRoles.indexOf(role) > -1;
 }
 
+export async function hasScopedRole(role: string, scope?: string): Promise<boolean> {
+	if (!scope) {
+		return hasRole(role);
+	}
+
+	const db = database.active;
+	const subsCollection = db.get('subscriptions');
+	try {
+		const room = await subsCollection.find(scope);
+		return room?.roles?.indexOf(role) > -1;
+	} catch (error) {
+		console.log('hasScopedRole -> Room not found');
+		return false;
+	}
+}
+
 export async function hasPermission(permissions, rid?: any): Promise<boolean[]> {
 	let roomRoles = [];
 	if (rid) {
@@ -113,3 +130,9 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 		log(e);
 	}
 }
+
+export const isThreadMessage = (message: Partial<TAnyMessageModel>) => !!message.tmid;
+
+export const isStarredMessage = (message: Partial<TAnyMessageModel>) => !!message.starred;
+
+export const isTruthy = <T>(x: T | null | undefined | 0 | false | ''): x is T => Boolean(x);
