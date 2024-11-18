@@ -1,6 +1,7 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
 
 import {
+	IAppActionButton,
 	IAttachment,
 	ICannedResponse,
 	ILivechatDepartment,
@@ -183,6 +184,10 @@ export type ChatsStackParamList = {
 		username: string;
 		userId: string;
 		name: string;
+	};
+	AIAppActionsView: {
+		aiAppActionButtons: IAppActionButton[];
+		rid: string;
 	};
 };
 

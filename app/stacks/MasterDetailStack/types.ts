@@ -6,6 +6,7 @@ import { ILivechatTag } from '../../definitions/ILivechatTag';
 import { IMessage, TAnyMessageModel } from '../../definitions/IMessage';
 import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
+import { IAppActionButton } from '../../definitions';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -204,6 +205,9 @@ export type ModalStackParamList = {
 		username: string;
 		userId: string;
 		name: string;
+	};
+	AIAppActionsView: {
+		aiAppActionButtons: IAppActionButton[];
 	};
 };
 

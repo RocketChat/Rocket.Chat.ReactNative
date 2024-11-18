@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
+import { IAppActionButtonsState } from '../../reducers/appActionButtons';
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -17,7 +18,15 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import {
+	IAppActionButton,
+	IApplicationState,
+	IBaseScreen,
+	ISubscription,
+	IUser,
+	SubscriptionType,
+	TSubscriptionModel
+} from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -55,6 +64,7 @@ import { TNavigation } from '../../stacks/stackType';
 import Switch from '../../containers/Switch';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
+import AIAppActionButtons from './components/AIAppActionButtons';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -80,13 +90,14 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	livechatAllowManualOnHold?: boolean;
 	livechatRequestComment?: boolean;
 	navigation: CompositeNavigationProp<
-		NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
 	videoConf_Enable_Groups: boolean;
 	videoConf_Enable_Teams: boolean;
+	appActionButtons: IAppActionButtonsState;
 }
 
 interface IRoomActionsViewState {
@@ -103,6 +114,7 @@ interface IRoomActionsViewState {
 	canConvertTeam: boolean;
 	hasE2EEWarning: boolean;
 	loading: boolean;
+	appActionButtons: IAppActionButton[];
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -154,7 +166,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canAddChannelToTeam: false,
 			canConvertTeam: false,
 			hasE2EEWarning: false,
-			loading: false
+			loading: false,
+			appActionButtons: []
 		};
 		if (room && room.observe && room.rid) {
 			const { encryptionEnabled } = this.props;
@@ -203,7 +216,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				}
 			}
 
-			if (room && room.t !== 'd' && (await this.canViewMembers())) {
+			if (room && room.t !== 'd' && await this.canViewMembers()) {
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
@@ -1058,6 +1071,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					<CallSection rid={rid} disabled={hasE2EEWarning} />
+					<AIAppActionButtons room={room} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />
@@ -1293,7 +1307,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
+	appActionButtons: state.appActionButtons
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));
