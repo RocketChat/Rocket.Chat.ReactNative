@@ -101,8 +101,8 @@ export async function hasScopedRole(role: string, scope?: string): Promise<boole
 		return room?.roles?.indexOf(role) > -1;
 	} catch (error) {
 		console.log('hasScopedRole -> Room not found');
-		return false;
 	}
+	return false;
 }
 
 export async function hasPermission(permissions, rid?: any): Promise<boolean[]> {
