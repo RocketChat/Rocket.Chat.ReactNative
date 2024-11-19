@@ -562,6 +562,7 @@
   "Select_Team": "Valitse tiimi",
   "Select_Team_Channels": "Valitse tiimin kanavat, joilta haluat poistua.",
   "Select_Team_Channels_To_Delete": "Valitse poistettavat tiimin kanavat. Valitsematta jättämäsi kanavat siirretään työtilaan. \n\nHuomioi, että julkiset kanavat ovat julkisia ja näkyvät kaikille.",
+  "Select_Uploaded_Image": "Valitse ladattu kuva",
   "Select_Users": "Valitse käyttäjät",
   "Send": "Lähetä",
   "Send_audio_message": "Lähetä ääniviesti",

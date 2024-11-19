@@ -561,6 +561,7 @@
   "Select_Team": "Välj team",
   "Select_Team_Channels": "Välj de teamkanaler du vill lämna.",
   "Select_Team_Channels_To_Delete": "Välj den teamkanal du vill ta bort. De du inte väljer flyttas till arbetsytan. \n\nTänk på att offentliga kanaler är öppna och synliga för alla.",
+  "Select_Uploaded_Image": "Välj uppladdad bild",
   "Select_Users": "Välj användare",
   "Send": "Skicka",
   "Send_audio_message": "Skicka ljudmeddelande",

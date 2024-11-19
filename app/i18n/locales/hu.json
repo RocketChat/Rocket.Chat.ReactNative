@@ -602,6 +602,7 @@
   "Select_Team": "Csapat kiválasztása",
   "Select_Team_Channels": "Válassza ki a csapat azon csatornáit, amelyeket el szeretne hagyni.",
   "Select_Team_Channels_To_Delete": "Válassza ki a törölni kívánt csapat csatornáit, a ki nem választott csatornák a munkaterületre kerülnek. \n\nVegye figyelembe, hogy a nyilvános csatornák nyilvánosak és mindenki számára láthatóak lesznek.",
+  "Select_Uploaded_Image": "Válassza ki a feltöltött képet",
   "Select_Users": "Felhasználók kiválasztása",
   "Send": "Küldés",
   "Send_audio_message": "Hangüzenet küldése",

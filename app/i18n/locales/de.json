@@ -587,6 +587,7 @@
   "Select_Team": "Team auswählen",
   "Select_Team_Channels": "Wählen Sie die Channels des Teams aus, die Sie verlassen möchten.",
   "Select_Team_Channels_To_Delete": "Wählen Sie die Channels des Teams aus, die Sie löschen möchten. Die Channels, die Sie nicht auswählen, werden in den Arbeitsbereich verschoben \n\nBeachten Sie, dass öffentliche Kanäle öffentlich und für alle sichtbar sind.",
+  "Select_Uploaded_Image": "Wählen Sie hochgeladenes Bild",
   "Select_Users": "Benutzer auswählen",
   "Send": "Senden",
   "Send_audio_message": "Audio-Nachricht senden",

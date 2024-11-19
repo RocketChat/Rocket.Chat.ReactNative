@@ -671,6 +671,7 @@
   "Select_Team": "Select team",
   "Select_Team_Channels": "Select the team's channels you would like to leave.",
   "Select_Team_Channels_To_Delete": "Select the team’s channels you would like to delete, the ones you do not select will be moved to the workspace. \n\nNotice that public channels will be public and visible to everyone.",
+  "Select_Uploaded_Image": "Select Uploaded Image",
   "Select_Users": "Select users",
   "Selected": "Selected",
   "Send": "Send",

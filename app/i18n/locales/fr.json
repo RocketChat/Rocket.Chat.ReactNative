@@ -502,6 +502,7 @@
   "Select_Team": "Sélectionnez l'équipe",
   "Select_Team_Channels": "Sélectionnez les canaux de l'équipe que vous souhaitez quitter.",
   "Select_Team_Channels_To_Delete": "Sélectionnez les canaux de l'équipe que vous souhaitez supprimer, ceux que vous ne sélectionnez pas, seront déplacés vers l'espace de travail. \n\n\nNotez que les canaux publics seront publics et visibles par tous.",
+  "Select_Uploaded_Image": "Sélectionnez l'image téléchargée",
   "Select_Users": "Sélectionner les utilisateurs",
   "Send": "Envoyer",
   "Send_audio_message": "Envoyer un message audio",
