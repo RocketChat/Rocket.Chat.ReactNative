@@ -9,7 +9,6 @@ import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
-import { themes } from '../../lib/constants';
 
 const styles = StyleSheet.create({
 	error: {
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		fontSize: 16,
-		lineHeight: 24,
+		lineHeight: 22,
 		...sharedStyles.textMedium
 	},
 	required: {
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderRadius: 4
+		borderRadius: 2
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -94,7 +93,7 @@ export const FormTextInput = ({
 	accessibilityLabel,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
@@ -118,7 +117,7 @@ export const FormTextInput = ({
 						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
 							backgroundColor: colors.surfaceRoom,
-							borderColor: themes[theme].strokeMedium,
+							borderColor: colors.strokeLight,
 							color: colors.fontTitlesLabels
 						},
 						error?.error && {
