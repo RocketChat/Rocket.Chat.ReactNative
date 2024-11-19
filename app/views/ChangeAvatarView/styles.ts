@@ -25,5 +25,8 @@ export default StyleSheet.create({
 		flex: 1,
 		flexWrap: 'wrap',
 		flexDirection: 'row'
+	},
+	buttons: {
+		gap: 12
 	}
 });
