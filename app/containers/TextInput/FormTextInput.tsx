@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
+import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
@@ -21,6 +22,10 @@ const styles = StyleSheet.create({
 	label: {
 		fontSize: 16,
 		lineHeight: 22,
+		...sharedStyles.textMedium
+	},
+	required: {
+		fontSize: 14,
 		...sharedStyles.textMedium
 	},
 	input: {
@@ -55,6 +60,7 @@ const styles = StyleSheet.create({
 
 export interface IRCTextInputProps extends TextInputProps {
 	label?: string;
+	required?: boolean;
 	error?: any;
 	loading?: boolean;
 	containerStyle?: StyleProp<ViewStyle>;
@@ -69,6 +75,7 @@ export interface IRCTextInputProps extends TextInputProps {
 
 export const FormTextInput = ({
 	label,
+	required,
 	error,
 	loading,
 	containerStyle,
@@ -83,6 +90,7 @@ export const FormTextInput = ({
 	secureTextEntry,
 	bottomSheet,
 	placeholder,
+	accessibilityLabel,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
@@ -90,10 +98,14 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 	return (
-		<View style={[styles.inputContainer, containerStyle]}>
+		<View
+			accessible
+			accessibilityLabel={`${label} - ${required ? i18n.t('Required') : ''}`}
+			style={[styles.inputContainer, containerStyle]}>
 			{label ? (
 				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
-					{label}
+					{label}{' '}
+					{required && <Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>}
 				</Text>
 			) : null}
 
@@ -121,7 +133,6 @@ export const FormTextInput = ({
 					underlineColorAndroid='transparent'
 					secureTextEntry={secureTextEntry && !showPassword}
 					testID={testID}
-					accessibilityLabel={placeholder}
 					placeholder={placeholder}
 					value={value}
 					placeholderTextColor={colors.fontAnnotation}
