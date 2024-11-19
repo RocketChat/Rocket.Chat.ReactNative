@@ -4,7 +4,7 @@ import updateMessages from './updateMessages';
 import log from './helpers/log';
 import database from '../database';
 import sdk from '../services/sdk';
-import store from '../../lib/store';
+import store from '../store';
 
 const count = 50;
 
@@ -43,7 +43,7 @@ const getSyncMessagesFromCursor = async (
 		};
 	} catch (error) {
 		console.error('Error syncing messages:', error);
-		throw error;
+		log(error);
 	}
 };
 
@@ -103,6 +103,8 @@ export async function loadMissedMessages(args: {
 	deletedNext?: number | null;
 }): Promise<void> {
 	try {
+		const { version: serverVersion } = store.getState().server;
+
 		const data = await load({
 			rid: args.rid,
 			lastOpen: args.lastOpen,
@@ -119,7 +121,7 @@ export async function loadMissedMessages(args: {
 			// @ts-ignore // TODO: remove loaderItem obligatoriness
 			await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
-			if (deletedNext || updatedNext) {
+			if ((deletedNext || updatedNext) && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.1.0')) {
 				loadMissedMessages({
 					rid: args.rid,
 					lastOpen: args.lastOpen,
