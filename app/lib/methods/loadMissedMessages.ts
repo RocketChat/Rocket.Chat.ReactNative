@@ -4,7 +4,7 @@ import updateMessages from './updateMessages';
 import log from './helpers/log';
 import database from '../database';
 import sdk from '../services/sdk';
-import store from '../store';
+import { store } from '../store/auxStore';
 
 const count = 50;
 
