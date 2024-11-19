@@ -453,6 +453,7 @@
   "Notify_active_in_this_room": "ఈ గదిలో సక్రియంగా ఉన్న వాడులను నవోదయించు",
   "Notify_all_in_this_room": "ఈ గదిలో అన్నివారినీ నవోదయించు",
   "Off": "ఆఫ్",
+  "Offline": "ఆఫ్లైన్",
   "Omnichannel": "ఒమ్నిచానెల్",
   "Omnichannel_enable_alert": "మీరు ఒమ్నిచానెల్‌లో అందుబాటులేదు. మీరు అందుబాటునారా?",
   "Omnichannel_on_hold_chat_resumed": "ఆఫ్‌లోడ్ లోని చాట్ పునఃప్రారంభించబడింది: {{comment}}",

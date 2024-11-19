@@ -454,6 +454,7 @@
   "Notify_active_in_this_room": "Aktív felhasználók értesítése ebben a szobában",
   "Notify_all_in_this_room": "Mindenki értesítése ebben a szobában",
   "Off": "Ki",
+  "Offline": "Offline",
   "Omnichannel": "Összcsatorna",
   "Omnichannel_enable_alert": "Nem vagy elérhető az Összcsatornában. Szeretnél elérhető lenni?",
   "Omnichannel_on_hold_chat_resumed": "Várakoztatott csevegés folytatva: {{comment}}",

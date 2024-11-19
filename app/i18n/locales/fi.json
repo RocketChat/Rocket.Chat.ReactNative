@@ -419,6 +419,7 @@
   "Notifications": "Ilmoitukset",
   "Notify_active_in_this_room": "Ilmoita tämän huoneen aktiivisille käyttäjille",
   "Notify_all_in_this_room": "Ilmoita kaikille tässä huoneessa",
+  "Offline": "Pois",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Et ole saavutettavissa Omnichannelissa. Haluatko olla saavutettavissa?",
   "Omnichannel_on_hold_chat_resumed": "Pidossa olevaa keskustelua jatkettiin: {{comment}}",

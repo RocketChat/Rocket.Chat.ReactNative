@@ -442,6 +442,7 @@
   "Notifications": "Benachrichtigungen",
   "Notify_active_in_this_room": "Aktive Benutzer in diesem Room benachrichtigen",
   "Notify_all_in_this_room": "Alle in diesem Room nenachrichtigen",
+  "Offline": "Offline",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Sie sind in Omnichannel nicht verfügbar. Möchten Sie erreichbar sein?",
   "Omnichannel_on_hold_chat_resumed": "Pausierter Chat wird fortgesetzt: {{comment}}",

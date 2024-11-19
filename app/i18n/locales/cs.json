@@ -491,6 +491,7 @@
   "Notify_active_in_this_room": "Upozornit aktivní uživatele v této místnosti",
   "Notify_all_in_this_room": "Upozornit všechny v této místnosti",
   "Off": "Vypnuto",
+  "Offline": "Offline",
   "Omnichannel": "Omnikanál",
   "Omnichannel_enable_alert": "Nejste k dispozici na Omnikanálu. Chcete být k dispozici?",
   "Omnichannel_on_hold_chat_resumed": "Podržený chat obnoven: {{comment}}",

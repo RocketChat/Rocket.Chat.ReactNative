@@ -378,6 +378,7 @@
   "Notifications": "Notifications",
   "Notify_active_in_this_room": "Notifier les utilisateurs actifs dans ce salon",
   "Notify_all_in_this_room": "Avertir tout le monde dans ce salon",
+  "Offline": "Hors ligne",
   "Omnichannel": "Omnicanal",
   "Omnichannel_enable_alert": "Vous n'êtes pas disponible sur Omnicanal. Souhaitez-vous être disponible ?",
   "Omnichannel_on_hold_chat_resumed": "Le chat en attente a repris : {{comment}}",

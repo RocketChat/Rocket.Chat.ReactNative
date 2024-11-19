@@ -378,6 +378,7 @@
   "Notifications": "Notificaties",
   "Notify_active_in_this_room": "Waarschuw actieve gebruikers in deze kamer",
   "Notify_all_in_this_room": "Breng iedereen in deze kamer op de hoogte",
+  "Offline": "Offline",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Je bent niet beschikbaar op Omnichannel. Wil je beschikbaar zijn?",
   "Omnichannel_on_hold_chat_resumed": "Chat in de wacht hervat: {{comment}}",

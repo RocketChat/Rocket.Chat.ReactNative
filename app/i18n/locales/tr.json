@@ -305,6 +305,7 @@
   "Notifications": "Bildirimler",
   "Notify_active_in_this_room": "Bu odadaki çevrimiçi kullanıcıları bilgilendir",
   "Notify_all_in_this_room": "Bu odadaki herkesi bilgilendir",
+  "Offline": "Çevrimdışı",
   "Omnichannel": "Çoklu Kanal",
   "Omnichannel_enable_alert": "Çoklu Kanal'da mevcut değilsiniz. Erişilebilir olmak ister misiniz?",
   "Onboarding_agree_terms": "Devam ederek Rocket.Chat'i kabul etmiş olursunuz",

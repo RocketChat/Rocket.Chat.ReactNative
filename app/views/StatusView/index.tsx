@@ -149,7 +149,9 @@ const StatusView = (): React.ReactElement => {
 		<View style={styles.footerComponent}>
 			<Button
 				testID='status-view-submit'
-				disabled={status === user.status && user?.statusText === statusText}
+				disabled={
+					status === user.status && ((!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText))
+				}
 				onPress={submit}
 				title={I18n.t('Save')}
 			/>
@@ -165,7 +167,7 @@ const StatusView = (): React.ReactElement => {
 				ListHeaderComponent={
 					<>
 						<FormTextInput
-							label='Message'
+							label={I18n.t('Message')}
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}
@@ -176,7 +178,6 @@ const StatusView = (): React.ReactElement => {
 					</>
 				}
 				ListFooterComponent={FooterComponent}
-				ItemSeparatorComponent={List.Separator}
 				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>

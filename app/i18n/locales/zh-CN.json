@@ -288,6 +288,7 @@
   "Notifications": "通知",
   "Notify_active_in_this_room": "通知这个聊天室的活跃用户",
   "Notify_all_in_this_room": "通知这个聊天室的所有人",
+  "Offline": "离线",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "您尚未启用 Omnichannel，是否想要启用？",
   "Onboarding_agree_terms": "继续，即表示您同意 Rocket.Chat",

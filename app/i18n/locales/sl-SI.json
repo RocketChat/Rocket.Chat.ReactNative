@@ -390,6 +390,7 @@
   "Notifications": "Obvestila",
   "Notify_active_in_this_room": "Obvesti aktivne uporabnike v tej sobi",
   "Notify_all_in_this_room": "Obvesti vse v tej sobi",
+  "Offline": "Brez povezave",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Niste na voljo na Omnichannelu. Bi radi bili na voljo?",
   "Omnichannel_on_hold_chat_resumed": "Na zadrževanju klepeta se je nadaljeval: {{comment}}",

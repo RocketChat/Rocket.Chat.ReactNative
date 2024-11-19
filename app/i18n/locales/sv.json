@@ -418,6 +418,7 @@
   "Notifications": "Meddelanden",
   "Notify_active_in_this_room": "Meddela aktiva användare i rummet",
   "Notify_all_in_this_room": "Meddela alla i rummet",
+  "Offline": "Offline",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Du är inte tillgänglig i Omnichannel. Vill du vara tillgänglig?",
   "Omnichannel_on_hold_chat_resumed": "Återupptog parkerad chatt: {{comment}}",

@@ -501,6 +501,7 @@
   "Notify_active_in_this_room": "Notificar usuários ativos nesta sala",
   "Notify_all_in_this_room": "Notificar todos nesta sala",
   "Off": "Desativado",
+  "Offline": "Offline",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Você não está disponível no Omnichannel. Você quer ficar disponível?",
   "Omnichannel_on_hold_chat_resumed": "Conversa em espera retomada: {{comment}}",
