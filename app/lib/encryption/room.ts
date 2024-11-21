@@ -9,7 +9,6 @@ import getSingleMessage from '../methods/getSingleMessage';
 import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IServerAttachment } from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
-import database from '../database';
 import log from '../methods/helpers/log';
 import {
 	b64ToBuffer,
@@ -33,6 +32,7 @@ import { getMessageUrlRegex } from './helpers/getMessageUrlRegex';
 import { mapMessageFromAPI } from './helpers/mapMessageFromApi';
 import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
 import { getMessageById } from '../database/services/Message';
 import { TEncryptFileResult, TGetContent } from './definitions';
 import { store } from '../store/auxStore';
@@ -77,24 +77,29 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
-		const db = database.active;
-		const subCollection = db.get('subscriptions');
-		// Find the subscription
-		const subscription = await subCollection.find(this.roomId);
+		const subscription = await getSubscriptionByRoomId(this.roomId);
+		if (!subscription) {
+			return this.readyPromise;
+		}
 
 		// Similar to Encryption.evaluateSuggestedKey
 		const { E2EKey, e2eKeyId, E2ESuggestedKey } = subscription;
 		if (E2EKey && E2ESuggestedKey && Encryption.privateKey) {
 			try {
-				const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
-				this.keyID = keyID;
-				this.roomKey = roomKey;
-				this.sessionKeyExportedString = sessionKeyExportedString;
+				try {
+					this.establishing = true;
+					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
+					this.keyID = keyID;
+					this.roomKey = roomKey;
+					this.sessionKeyExportedString = sessionKeyExportedString;
+				} catch (error) {
+					await Services.e2eRejectSuggestedGroupKey(this.roomId);
+				}
 				await Services.e2eAcceptSuggestedGroupKey(this.roomId);
 				this.readyPromise.resolve();
 				return;
 			} catch (e) {
-				await Services.e2eRejectSuggestedGroupKey(this.roomId);
+				log(e);
 			}
 		}
 
@@ -120,7 +125,7 @@ export default class EncryptionRoom {
 		}
 
 		// Request a E2EKey for this room to other users
-		await this.requestRoomKey(e2eKeyId);
+		this.requestRoomKey(e2eKeyId);
 	};
 
 	// Import roomKey as an AES Decrypt key

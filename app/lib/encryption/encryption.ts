@@ -254,14 +254,11 @@ class Encryption {
 	getRoomInstance = async (rid: string) => {
 		try {
 			// Prevent handshake again
-			if (this.roomInstances[rid]?.ready) {
+			if (this.roomInstances[rid]) {
+				await this.roomInstances[rid].handshake();
 				return this.roomInstances[rid];
 			}
-
-			// If doesn't have a instance of this room
-			if (!this.roomInstances[rid]) {
-				this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
-			}
+			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
 
 			const roomE2E = this.roomInstances[rid];
 
@@ -282,11 +279,17 @@ class Encryption {
 				if (!roomE2E) {
 					return;
 				}
-				await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
-				delete this.roomInstances[rid];
+
+				try {
+					await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
+				} catch (error) {
+					await Services.e2eRejectSuggestedGroupKey(rid);
+					return;
+				}
+				// delete this.roomInstances[rid];
 				await Services.e2eAcceptSuggestedGroupKey(rid);
 			} catch (e) {
-				await Services.e2eRejectSuggestedGroupKey(rid);
+				console.error(e);
 			}
 		}
 	};
@@ -516,17 +519,14 @@ class Encryption {
 		}
 
 		const { rid } = subscription;
-		const db = database.active;
-		const subCollection = db.get('subscriptions');
-
-		let subRecord;
-		try {
-			subRecord = await subCollection.find(rid as string);
-		} catch {
-			// Do nothing
+		if (!rid) {
+			return subscription;
 		}
+		const subRecord = await getSubscriptionByRoomId(rid);
 
 		try {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
 			const batch: Model[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
