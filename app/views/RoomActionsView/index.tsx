@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
-import { IAppActionButtonsState } from '../../reducers/appActionButtons';
 import { leaveRoom } from '../../actions/room';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -18,15 +17,7 @@ import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
 import StatusBar from '../../containers/StatusBar';
-import {
-	IAppActionButton,
-	IApplicationState,
-	IBaseScreen,
-	ISubscription,
-	IUser,
-	SubscriptionType,
-	TSubscriptionModel
-} from '../../definitions';
+import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -91,14 +82,13 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	livechatAllowManualOnHold?: boolean;
 	livechatRequestComment?: boolean;
 	navigation: CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+		NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
 	videoConf_Enable_Groups: boolean;
 	videoConf_Enable_Teams: boolean;
-	appActionButtons: IAppActionButtonsState;
 }
 
 interface IRoomActionsViewState {
@@ -115,7 +105,6 @@ interface IRoomActionsViewState {
 	canConvertTeam: boolean;
 	hasE2EEWarning: boolean;
 	loading: boolean;
-	appActionButtons: IAppActionButton[];
 }
 
 class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomActionsViewState> {
@@ -167,8 +156,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			canAddChannelToTeam: false,
 			canConvertTeam: false,
 			hasE2EEWarning: false,
-			loading: false,
-			appActionButtons: []
+			loading: false
 		};
 		if (room && room.observe && room.rid) {
 			const { encryptionEnabled } = this.props;
@@ -1309,8 +1297,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
-	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean,
-	appActionButtons: state.appActionButtons
+	livechatRequestComment: state.settings.Livechat_request_comment_when_closing_conversation as boolean
 });
 
 export default connect(mapStateToProps)(withTheme(withActionSheet(withDimensions(RoomActionsView))));
