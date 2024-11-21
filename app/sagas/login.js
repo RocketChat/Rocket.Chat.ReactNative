@@ -151,10 +151,10 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	}
 };
 
-const fetchAppActionsFork = function* fetchAppActionsFork() {
+const fetchAppActions = async () => {
 	try {
 		sdk.subscribe('stream-apps', 'apps');
-		yield getAppActions();
+		await getAppActions();
 	} catch (e) {
 		log(e);
 	}
@@ -162,6 +162,7 @@ const fetchAppActionsFork = function* fetchAppActionsFork() {
 
 const fetchPermissionsFork = function* fetchPermissionsFork() {
 	try {
+		yield fetchAppActions();
 		yield getPermissions();
 	} catch (e) {
 		log(e);
@@ -239,7 +240,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const server = yield select(getServer);
 		yield put(encryptionInit());
 		yield put(roomsRequest());
-		yield fork(fetchAppActionsFork);
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
