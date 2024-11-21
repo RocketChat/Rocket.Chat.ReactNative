@@ -186,7 +186,7 @@
   "Discard_changes": "Änderungen verwerfen?",
   "Discard_changes_description": "Alle Änderungen werden verworfen, wenn Sie zurück gehen ohne zu speichern.",
   "Discussion": "Diskussion",
-  "Discussion_Desc": "Hilft, die Übersicht zu behalten! Durch das Erstellen einer Diskussion wird ein Unter-Channel im ausgewählten Room erzeugt und beide verknüpft.",
+  "Discussion_Desc": "Diskussionen ermöglichen separate Konversationen rund um ein bestimmtes Thema in einem Kanal oder Team, in dem ein Arbeitsbereich hinzugefügt werden kann.",
   "Discussion_name": "Diskussions-Name",
   "Discussions": "Diskussionen",
   "Display": "Anzeige",

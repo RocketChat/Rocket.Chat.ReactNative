@@ -215,7 +215,7 @@
   "Discard_changes": "Discard changes?",
   "Discard_changes_description": "All changes will be lost if you go back without saving.",
   "Discussion": "Discussion",
-  "Discussion_Desc": "Help keeping an overview about what's going on! By creating a discussion, a sub-channel of the one you selected is created and both are linked.",
+  "Discussion_Desc": "Discussions allow separate conversations around a specific topic inside a channel or team where any workspace member can be added.",
   "Discussion_name": "Discussion name",
   "Discussions": "Discussions",
   "Display": "Display",

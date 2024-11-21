@@ -171,7 +171,7 @@
   "Directory": "Hakemisto",
   "Disabled_E2E_Encryption_for_this_room": "poisti täyden salauksen käytöstä tässä huoneessa",
   "Discussion": "Keskustelu",
-  "Discussion_Desc": "Pysy selvillä tapahtumista! Luomalla keskustelun luot valitsemasi kanavan alikanavan, ja keskustelut liitetään yhteen.",
+  "Discussion_Desc": "Keskustelut sallivat erilliset keskustelut tietyn aiheen ympärillä kanavan tai tiimin sisällä, johon jokin työtilan jäsentä voidaan lisätä.",
   "Discussion_name": "Keskustelun nimi",
   "Discussions": "Keskustelut",
   "Display": "Näytä",
