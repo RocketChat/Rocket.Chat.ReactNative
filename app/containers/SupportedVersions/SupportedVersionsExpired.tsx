@@ -34,7 +34,7 @@ export const SupportedVersionsExpired = () => {
 						r.supportedVersionsWarningAt = null;
 					});
 				});
-				dispatch(selectServerRequest(server));
+				dispatch(selectServerRequest(server, serverRecord.version));
 				// forces loading state a little longer until redux is finished
 				await new Promise(res => setTimeout(res, checkAgainTimeout));
 			}

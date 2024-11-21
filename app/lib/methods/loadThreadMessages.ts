@@ -18,8 +18,7 @@ async function load({ tmid }: { tmid: string }) {
 			return [];
 		}
 		return EJSON.fromJSONValue(result);
-	} catch (error) {
-		console.log(error);
+	} catch {
 		return [];
 	}
 }
@@ -74,7 +73,7 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 					});
 
 					await db.write(async () => {
-						await db.batch(...threadMessagesToCreate, ...threadMessagesToUpdate);
+						await db.batch([...threadMessagesToCreate, ...threadMessagesToUpdate]);
 					});
 				} catch (e) {
 					log(e);
