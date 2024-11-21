@@ -2,6 +2,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
 
+import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import StatusBar from '../containers/StatusBar';
@@ -18,7 +19,7 @@ const AIAppActionsView = () => {
 
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
-			title: 'AI Actions'
+			title: I18n.t('AI_actions'),
 		};
 
 		navigation.setOptions(options);

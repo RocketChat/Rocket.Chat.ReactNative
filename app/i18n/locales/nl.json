@@ -13,6 +13,7 @@
   "Admin_Panel": "Admin Paneel",
   "After_seconds_set_by_admin": "Na {{seconds}} seconden (ingesteld door beheerder)",
   "Agent": "Agent",
+  "AI_actions": "AI-acties",
   "AirGapped_workspace_read_only_description": "Beheerders kunnen de volledige functionaliteit herstellen door deze met internet te verbinden of te upgraden naar een premiumplan.",
   "AirGapped_workspace_read_only_share_extension_title": "Delen is uitgeschakeld omdat de werkruimte in alleen-lezen modus is.",
   "AirGapped_workspace_read_only_title": "Werkruimte in alleen-lezen modus.",

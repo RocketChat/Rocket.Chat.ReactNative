@@ -27,6 +27,7 @@
   "admin-video-conf-provider-not-configured-header": "Konferenciahívás nem engedélyezett",
   "After_seconds_set_by_admin": "{{seconds}} másodperc  (admin által beállított)",
   "Agent": "Ügyintéző",
+  "AI_actions": "AI műveletek",
   "AirGapped_workspace_read_only_description": "A rendszergazdák visszaállíthatják a teljes funkcionalitást az internethez való csatlakozással vagy prémium tervre való frissítéssel.",
   "AirGapped_workspace_read_only_share_extension_title": "A megosztás le van tiltva, mert a munkaterület csak olvasási módban van.",
   "AirGapped_workspace_read_only_title": "Munkaterület csak olvasási módban.",

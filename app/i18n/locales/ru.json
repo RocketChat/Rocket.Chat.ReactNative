@@ -18,6 +18,7 @@
   "Admin_Panel": "Панель админа",
   "After_seconds_set_by_admin": "Через {{seconds}} секунд (установлено администратором сервера)",
   "Agent": "Агент",
+  "AI_actions": "Действия ИИ",
   "AirGapped_workspace_read_only_description": "Администраторы могут восстановить полную функциональность, подключив его к интернету или обновив до премиум-плана.",
   "AirGapped_workspace_read_only_share_extension_title": "Обмен отключен, так как рабочая область находится в режиме только для чтения.",
   "AirGapped_workspace_read_only_title": "Рабочее пространство в режиме только для чтения.",

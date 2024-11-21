@@ -21,7 +21,7 @@ const AIAppActionButtons = ({ room }: AIAppActionButtonsProps) => {
 		<List.Section>
 			<List.Separator />
 			<List.Item
-				title={'Ai Actions'}
+				title={'AI_actions'}
 				onPress={() => navigation.navigate('AIAppActionsView', { aiAppActionButtons: appActionButtons, rid: room.rid })}
 				testID='room-actions-call'
 				left={() => <List.Icon name='stars' />}
