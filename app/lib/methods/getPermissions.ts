@@ -61,7 +61,12 @@ export const SUPPORTED_PERMISSIONS = [
 	'mobile-upload-file',
 	'delete-own-message',
 	'call-management',
-	'test-push-notifications'
+	'test-push-notifications',
+	'move-room-to-team',
+	'create-team-channel',
+	'create-team-group',
+	'delete-team-channel',
+	'delete-team-group'
 ] as const;
 
 const getAppActionButtonsRequiredPermissions = async () => {
@@ -158,7 +163,7 @@ const updatePermissions = async ({
 
 	try {
 		await db.write(async () => {
-			await db.batch(...batch);
+			await db.batch(batch);
 		});
 		return true;
 	} catch (e) {

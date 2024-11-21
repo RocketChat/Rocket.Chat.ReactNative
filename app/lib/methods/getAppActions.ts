@@ -1,11 +1,12 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { Q } from '@nozbe/watermelondb';
 
 import { IAppActionButton, TAppActionButtonModel } from '../../definitions';
 import database from '../database';
 import sdk from '../services/sdk';
 import { store as reduxStore } from '../store/auxStore';
 import protectedFunction from './helpers/protectedFunction';
-import { setAppActionButtons as setPermissionsAction } from '../../actions/appActionButtons';
+import { removeAppActionButtonsByAppId, setAppActionButtons as setAppActionButtonsAction } from '../../actions/appActionButtons';
 import log from './helpers/log';
 
 export async function setAppActionButtons(): Promise<void> {
@@ -15,7 +16,43 @@ export async function setAppActionButtons(): Promise<void> {
 	const allAppActionButtons = (await appActionButtonsCollection.query().fetch()).map(i => i.asPlain());
 	const parsed = allAppActionButtons.reduce((acc, item) => ({ ...acc, [`${item.appId}/${item.actionId}`]: item }), {});
 
-	reduxStore.dispatch(setPermissionsAction(parsed));
+	reduxStore.dispatch(setAppActionButtonsAction(parsed));
+}
+
+type IAppsChanged = {
+	fields: {
+		eventName: string;
+		args: any;
+	};
+};
+
+export async function onAppsChanged(ddpMessage: IAppsChanged) {
+	const { eventName, args } = ddpMessage.fields;
+
+	if (/app\/removed/.test(eventName)) {
+		const appId = args[0];
+		const db = database.active;
+		try {
+			const dbCollection = db.get('app_actions_buttons');
+			const appRecords = await dbCollection.query(Q.where('app_id', appId)).fetch();
+			if (appRecords) {
+				await db.write(async () => {
+					await Promise.all(appRecords.map(app => app.destroyPermanently()));
+				});
+				reduxStore.dispatch(removeAppActionButtonsByAppId(appId));
+			}
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	if (/app\/added|actions\/changed|app\/statusUpdate|app\/updated/.test(eventName)) {
+		try {
+			await getAppActions();
+		} catch (e) {
+			log(e);
+		}
+	}
 }
 
 export const getAppActions = () => {

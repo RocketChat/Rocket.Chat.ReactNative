@@ -105,7 +105,7 @@ const SettingsView = (): React.ReactElement => {
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
 				Services.disconnect();
-				dispatch(selectServerRequest(server));
+				dispatch(selectServerRequest(server, version, true));
 			}
 		});
 	};

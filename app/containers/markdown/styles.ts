@@ -46,6 +46,7 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textBig: {
+		lineHeight: 43,
 		fontSize: 30,
 		...sharedStyles.textRegular
 	},

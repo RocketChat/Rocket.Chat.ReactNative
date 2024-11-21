@@ -104,4 +104,4 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', ['INIT', 'SET']);
 export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);
 export const IN_APP_FEEDBACK = createRequestTypes('IN_APP_FEEDBACK', ['SET', 'REMOVE', 'CLEAR']);
-export const APP_ACTION_BUTTON = createRequestTypes('APP_ACTION_BUTTON', ['SET', 'UPDATE', 'REMOVE']);
+export const APP_ACTION_BUTTON = createRequestTypes('APP_ACTION_BUTTON', ['SET', 'UPDATE', 'REMOVE', 'REMOVE_BY_APPID']);
