@@ -131,20 +131,25 @@ const TwoFactor = React.memo(() => {
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: colors.surfaceTint }
 					]}>
-					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-					<FormTextInput
-						value={code}
-						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
-						returnKeyType='send'
-						autoCapitalize='none'
-						onChangeText={setCode}
-						onSubmitEditing={onSubmit}
-						keyboardType={method?.keyboardType}
-						secureTextEntry={method?.secureTextEntry}
-						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
-						testID='two-factor-input'
-					/>
+					<View
+						accessibilityLabel={`${method?.text ? I18n.t(method.text) : I18n.t(method?.title || 'Two_Factor_Authentication')}`}>
+						<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+						{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
+						<FormTextInput
+							value={code}
+							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+							returnKeyType='send'
+							autoCapitalize='none'
+							onChangeText={setCode}
+							onSubmitEditing={onSubmit}
+							keyboardType={method?.keyboardType}
+							secureTextEntry={method?.secureTextEntry}
+							error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
+							testID='two-factor-input'
+							containerStyle={{ marginBottom: 36 }}
+						/>
+					</View>
+
 					{isEmail ? (
 						<Button
 							small
