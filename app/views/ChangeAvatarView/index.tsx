@@ -222,23 +222,24 @@ const ChangeAvatarView = () => {
 						)}
 					</View>
 					{context === 'profile' ? (
-						<FormTextInput
-							label={I18n.t('Avatar_Url')}
-							onChangeText={onChangeText}
-							testID='change-avatar-view-avatar-url'
-							containerStyle={{ marginBottom: 0 }}
-						/>
+						<>
+							<FormTextInput
+								label={I18n.t('Avatar_Url')}
+								onChangeText={onChangeText}
+								testID='change-avatar-view-avatar-url'
+								containerStyle={{ marginBottom: 0 }}
+							/>
+							<Button
+								title={I18n.t('Fetch_image_from_URL')}
+								type='secondary'
+								disabled={saving}
+								backgroundColor={colors.buttonBackgroundSecondaryDefault}
+								onPress={fetchImageFromURL}
+								testID='change-avatar-view-take-a-photo'
+								style={{ marginTop: 36, marginBottom: 0 }}
+							/>
+						</>
 					) : null}
-
-					<Button
-						title={I18n.t('Fetch_image_from_URL')}
-						type='secondary'
-						disabled={saving}
-						backgroundColor={colors.buttonBackgroundSecondaryDefault}
-						onPress={fetchImageFromURL}
-						testID='change-avatar-view-take-a-photo'
-						style={{ marginTop: 36, marginBottom: 0 }}
-					/>
 
 					<List.Separator style={styles.separator} />
 					{context === 'profile' ? (
