@@ -208,6 +208,7 @@ export type ModalStackParamList = {
 	};
 	AIAppActionsView: {
 		aiAppActionButtons: IAppActionButton[];
+		rid: string;
 	};
 };
 
