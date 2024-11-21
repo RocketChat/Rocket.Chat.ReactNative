@@ -45,7 +45,7 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 		this.setHeader();
 	}
 
-	componentDidUpdate(prevProps: ICreateChannelViewProps, prevState: ICreateChannelViewState) {
+	componentDidUpdate(prevProps: ICreateChannelViewProps) {
 		const { loading, failure, error, result, isMasterDetail } = this.props;
 
 		if (loading !== prevProps.loading) {
