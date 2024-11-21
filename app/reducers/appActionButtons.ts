@@ -10,16 +10,6 @@ export default function appActionButtons(state = initialState, action: TActionAp
 	switch (action.type) {
 		case APP_ACTION_BUTTON.SET:
 			return action.appActionButtons;
-		case APP_ACTION_BUTTON.UPDATE:
-			return {
-				...state,
-				[action.payload.id]: action.payload.appActionButton
-			};
-		case APP_ACTION_BUTTON.REMOVE: {
-			const newState = { ...state };
-			delete newState[action.payload.id];
-			return newState;
-		}
 		case APP_ACTION_BUTTON.REMOVE_BY_APPID: {
 			const newState = { ...state };
 			Object.keys(newState).forEach(key => {
