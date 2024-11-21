@@ -19,7 +19,7 @@ const AIAppActionsView = () => {
 
 	useEffect(() => {
 		const options: NativeStackNavigationOptions = {
-			title: I18n.t('AI_actions'),
+			title: I18n.t('AI_actions')
 		};
 
 		navigation.setOptions(options);
