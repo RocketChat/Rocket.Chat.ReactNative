@@ -16,7 +16,13 @@ interface IRemoveAppActionButtons extends Action {
 	payload: { id: string };
 }
 
-export type TActionAppActionButtons = ISetAppActionButtons & IUpdateAppActionButtons & IRemoveAppActionButtons;
+interface IRemoveAppActionButtonsByAppId extends Action {
+	payload: { appId: string };
+}
+export type TActionAppActionButtons = ISetAppActionButtons &
+	IUpdateAppActionButtons &
+	IRemoveAppActionButtons &
+	IRemoveAppActionButtonsByAppId;
 
 export function setAppActionButtons(appActionButtons: IAppActionButtonsState): ISetAppActionButtons {
 	return {
@@ -36,5 +42,12 @@ export function removeAppActionButtons(id: string): IRemoveAppActionButtons {
 	return {
 		type: APP_ACTION_BUTTON.REMOVE,
 		payload: { id }
+	};
+}
+
+export function removeAppActionButtonsByAppId(appId: string): IRemoveAppActionButtonsByAppId {
+	return {
+		type: APP_ACTION_BUTTON.REMOVE_BY_APPID,
+		payload: { appId }
 	};
 }

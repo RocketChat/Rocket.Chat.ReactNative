@@ -20,6 +20,16 @@ export default function appActionButtons(state = initialState, action: TActionAp
 			delete newState[action.payload.id];
 			return newState;
 		}
+		case APP_ACTION_BUTTON.REMOVE_BY_APPID: {
+			const newState = { ...state };
+			Object.keys(newState).forEach(key => {
+				const [appId] = key.split('/');
+				if (appId === action.payload.appId) {
+					delete newState[key];
+				}
+			});
+			return newState;
+		}
 		default:
 			return state;
 	}

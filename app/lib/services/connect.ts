@@ -26,7 +26,8 @@ import {
 	_setUser,
 	_setUserTimer,
 	onRolesChanged,
-	setPresenceCap
+	setPresenceCap,
+	onAppsChanged
 } from '../methods';
 import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
 
@@ -47,6 +48,7 @@ let notifyAllListener: any;
 let rolesListener: any;
 let notifyLoggedListener: any;
 let logoutListener: any;
+let appsListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
@@ -92,6 +94,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		if (logoutListener) {
 			logoutListener.then(stopListener);
+		}
+
+		if (appsListener) {
+			appsListener.then(stopListener);
 		}
 
 		unsubscribeRooms();
@@ -276,6 +282,11 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 		);
 
 		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+
+		appsListener = sdk.current.onStreamData(
+			'stream-apps',
+			protectedFunction((ddpMessage: any) => onAppsChanged(ddpMessage))
+		);
 
 		resolve();
 	});

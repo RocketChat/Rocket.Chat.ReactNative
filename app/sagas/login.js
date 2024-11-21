@@ -152,7 +152,12 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 };
 
 const fetchAppActionsFork = function* fetchAppActionsFork() {
-	yield getAppActions();
+	try {
+		sdk.subscribe('stream-apps', 'apps');
+		yield getAppActions();
+	} catch (e) {
+		log(e);
+	}
 };
 
 const fetchPermissionsFork = function* fetchPermissionsFork() {
