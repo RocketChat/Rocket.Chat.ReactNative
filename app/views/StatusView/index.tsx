@@ -75,7 +75,7 @@ const Status = ({
 	return (
 		<>
 			<List.Item
-				additionalAcessibilityLabel={`${name} - ${status === id ? I18n.t('Current_Status') : ''}`}
+				additionalAcessibilityLabel={` - ${status === id ? I18n.t('Current_Status') : ''}`}
 				title={name}
 				onPress={() => {
 					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
