@@ -24,7 +24,7 @@ const AIAppActionButtons = ({ room }: AIAppActionButtonsProps) => {
 				title={'Ai Actions'}
 				onPress={() => navigation.navigate('AIAppActionsView', { aiAppActionButtons: appActionButtons, rid: room.rid })}
 				testID='room-actions-call'
-				left={() => <List.Icon name='phone' />}
+				left={() => <List.Icon name='stars' />}
 				showActionIndicator
 			/>
 		</List.Section>

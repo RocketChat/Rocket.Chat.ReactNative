@@ -35,7 +35,7 @@ const AIAppActionsView = () => {
 							<>
 								<List.Item
 									title={button.labelI18n}
-									left={() => <List.Icon name='team' />}
+									left={() => <List.Icon name='stars' />}
 									translateTitle={false}
 									key={`${button.appId}/${button.actionId}`}
 									onPress={() => performInteraction(button)}
