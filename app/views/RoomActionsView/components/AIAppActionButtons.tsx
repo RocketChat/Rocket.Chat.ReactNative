@@ -13,9 +13,13 @@ type AIAppActionButtonsProps = {
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList>;
 
 const AIAppActionButtons = ({ room }: AIAppActionButtonsProps) => {
-	const appActionButtons = useAppActionButtons(room, UIActionButtonContext.ROOM_ACTION);
+	const appActionButtons = useAppActionButtons(room, UIActionButtonContext.ROOM_ACTION, 'ai');
 
 	const navigation = useNavigation<TNavigation>();
+
+	if (!appActionButtons.length) {
+		return null;
+	}
 
 	return (
 		<List.Section>

@@ -79,8 +79,6 @@ export const useAppActionButtons = (room?: ISubscription, context?: UIActionButt
 	const applyButtonFilters = useApplyButtonFilters(room);
 	const parsedButtons = Object.values(appActionButtons);
 
-	console.log('appActionButtons - parsedButtons', { appActionButtons, parsedButtons });
-
 	return parsedButtons.filter(
 		button =>
 			(!context || button.context === context) && (!category || button.category === category) && applyButtonFilters(button)
