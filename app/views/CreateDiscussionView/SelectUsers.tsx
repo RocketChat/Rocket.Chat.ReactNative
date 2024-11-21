@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
@@ -58,7 +58,7 @@ const SelectUsers = ({
 		});
 
 	return (
-		<>
+		<View accessibilityLabel={I18n.t('Invite_users')}>
 			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Invite_users')}</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
@@ -73,7 +73,7 @@ const SelectUsers = ({
 				context={BlockContext.FORM}
 				multiselect
 			/>
-		</>
+		</View>
 	);
 };
 

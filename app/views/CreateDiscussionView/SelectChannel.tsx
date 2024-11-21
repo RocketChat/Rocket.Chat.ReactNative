@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
@@ -18,7 +18,8 @@ const SelectChannel = ({
 	onChannelSelect,
 	initial,
 	blockUnauthenticatedAccess,
-	serverVersion
+	serverVersion,
+	required
 }: ICreateDiscussionViewSelectChannel): React.ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
@@ -55,8 +56,11 @@ const SelectChannel = ({
 		});
 
 	return (
-		<>
-			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Parent_channel_or_group')}</Text>
+		<View accessibilityLabel={`${I18n.t('Parent_channel_or_group')} - ${required ? I18n.t('Required') : ''}`}>
+			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
+				{I18n.t('Parent_channel_or_group')}{' '}
+				{required && <Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>({I18n.t('Required')})</Text>}
+			</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
@@ -71,7 +75,7 @@ const SelectChannel = ({
 				onClose={() => getChannels('')}
 				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
 			/>
-		</>
+		</View>
 	);
 };
 
