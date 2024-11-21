@@ -481,7 +481,7 @@ const MessageActions = React.memo(
 				return actionButtons.map(action => ({
 					title: action.labelI18n,
 					onPress: () => handleAppActionButtonPress(action, message),
-					icon: 'phone'
+					icon: 'stars'
 				}));
 			};
 
