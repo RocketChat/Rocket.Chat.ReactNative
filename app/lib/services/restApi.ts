@@ -412,9 +412,15 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
-export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
-	// RC 0.55.0
-	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
+		// RC 0.55.0
+		return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+	}
+	// RC 5.3.0
+	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
+};
 
 export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
@@ -675,20 +681,65 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	});
 };
 
-export const getMessages = (
-	roomId: string,
-	type: SubscriptionType,
-	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
-	offset: number
-) => {
+export const getMessages = ({
+	roomId,
+	type,
+	offset,
+	starredIds,
+	mentionIds,
+	pinned
+}: {
+	roomId: string;
+	type: SubscriptionType;
+	offset: number;
+	mentionIds?: string[];
+	starredIds?: string[];
+	pinned?: boolean;
+}) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
-	// RC 0.59.0
-	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+		const params: any = {
+			roomId,
+			offset,
+			sort: { ts: -1 }
+		};
+
+		if (mentionIds && mentionIds.length > 0) {
+			params.mentionIds = mentionIds.join(',');
+		}
+
+		if (starredIds && starredIds.length > 0) {
+			params.starredIds = starredIds.join(',');
+		}
+
+		if (pinned) {
+			params.pinned = pinned;
+		}
+
+		return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
+	}
+	const params: any = {
 		roomId,
-		query,
 		offset,
 		sort: { ts: -1 }
-	});
+	};
+
+	if (mentionIds && mentionIds.length > 0) {
+		params.query = { ...params.query, 'mentions._id': { $in: mentionIds } };
+	}
+
+	if (starredIds && starredIds.length > 0) {
+		params.query = { ...params.query, 'starred._id': { $in: starredIds } };
+	}
+
+	if (pinned) {
+		params.query = { ...params.query, pinned: true };
+	}
+
+	// RC 0.59.0
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
 
 export const getReadReceipts = (messageId: string) =>
@@ -772,23 +823,35 @@ export const executeCommandPreview = (
 	});
 
 export const getDirectory = ({
-	query,
+	text,
+	type,
+	workspace,
 	count,
 	offset,
 	sort
 }: {
-	query: { [key: string]: string };
+	text: string;
+	type: string;
+	workspace: string;
 	count: number;
 	offset: number;
 	sort: { [key: string]: number };
-}) =>
-	// RC 1.0
-	sdk.get('directory', {
-		query,
+}) => {
+	const serverVersion = reduxStore.getState().server.version;
+	const params: any = {
 		count,
 		offset,
 		sort
-	});
+	};
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+		params.text = text;
+		params.type = type;
+		params.workspace = workspace;
+	} else {
+		params.query = { text, type, workspace };
+	}
+	return sdk.get('directory', params);
+};
 
 export const saveAutoTranslate = ({
 	rid,

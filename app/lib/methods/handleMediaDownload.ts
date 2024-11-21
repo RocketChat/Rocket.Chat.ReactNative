@@ -243,7 +243,7 @@ const persistMessage = async (messageId: string, uri: string, encryption: boolea
 	}
 	if (batch.length) {
 		await db.write(async () => {
-			await db.batch(...batch);
+			await db.batch(batch);
 		});
 	}
 };

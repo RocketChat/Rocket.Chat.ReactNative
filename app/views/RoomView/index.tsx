@@ -217,7 +217,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			const { isAuthenticated } = this.props;
 			this.setHeader();
 			if (this.rid) {
-				this.sub?.subscribe?.();
+				try {
+					this.sub?.subscribe?.();
+				} catch (e) {
+					log(e);
+				}
 				if (isAuthenticated) {
 					this.init();
 				} else {
