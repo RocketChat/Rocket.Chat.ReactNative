@@ -138,7 +138,7 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 				contentContainerStyle={styles.container}
 				keyboardVerticalOffset={128}>
 				<StatusBar />
-				<SafeAreaView testID='create-discussion-view' style={{ flex: 1 }}>
+				<SafeAreaView testID='create-discussion-view' style={styles.container}>
 					<ScrollView {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
 						<View style={{ gap: 12, paddingTop: 12 }}>
