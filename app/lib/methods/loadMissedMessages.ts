@@ -2,9 +2,9 @@ import { ILastMessage } from '../../definitions';
 import { compareServerVersion } from './helpers';
 import updateMessages from './updateMessages';
 import log from './helpers/log';
-import database from '../database';
 import sdk from '../services/sdk';
 import { store } from '../store/auxStore';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
 
 const count = 50;
 
@@ -27,10 +27,10 @@ const getSyncMessagesFromCursor = async (
 			promises.push(syncMessages({ roomId, next: lastOpen, type: 'UPDATED' }));
 			promises.push(syncMessages({ roomId, next: lastOpen, type: 'DELETED' }));
 		}
-		if (updatedNext && typeof updatedNext !== 'undefined') {
+		if (updatedNext) {
 			promises.push(syncMessages({ roomId, next: updatedNext, type: 'UPDATED' }));
 		}
-		if (deletedNext && typeof deletedNext !== 'undefined') {
+		if (deletedNext) {
 			promises.push(syncMessages({ roomId, next: deletedNext, type: 'DELETED' }));
 		}
 
@@ -42,21 +42,16 @@ const getSyncMessagesFromCursor = async (
 			updatedNext: updatedMessages?.cursor.next
 		};
 	} catch (error) {
-		console.error('Error syncing messages:', error);
 		log(error);
 	}
 };
 
 const getLastUpdate = async (rid: string) => {
-	try {
-		const db = database.active;
-		const subsCollection = db.get('subscriptions');
-		const sub = await subsCollection.find(rid);
-		return sub.lastOpen;
-	} catch (e) {
-		// Do nothing
+	const sub = await getSubscriptionByRoomId(rid);
+	if (!sub) {
+		return null;
 	}
-	return null;
+	return sub.lastOpen;
 };
 
 async function load({
@@ -103,8 +98,6 @@ export async function loadMissedMessages(args: {
 	deletedNext?: number | null;
 }): Promise<void> {
 	try {
-		const { version: serverVersion } = store.getState().server;
-
 		const data = await load({
 			rid: args.rid,
 			lastOpen: args.lastOpen,
@@ -121,7 +114,7 @@ export async function loadMissedMessages(args: {
 			// @ts-ignore // TODO: remove loaderItem obligatoriness
 			await updateMessages({ rid: args.rid, update: updated, remove: deleted });
 
-			if ((deletedNext || updatedNext) && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.1.0')) {
+			if (deletedNext || updatedNext) {
 				loadMissedMessages({
 					rid: args.rid,
 					lastOpen: args.lastOpen,
