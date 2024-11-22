@@ -18,6 +18,7 @@ import { useTheme } from '../theme';
 import sharedStyles from './Styles';
 import { showToast } from '../lib/methods/helpers/showToast';
 import { showErrorAlert, useDebounce } from '../lib/methods/helpers';
+import i18n from '../i18n';
 
 const styles = StyleSheet.create({
 	info: {
@@ -66,7 +67,9 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
+			headerLeft: () => (
+				<HeaderButton.CloseModal accessibilityLabel={i18n.t('Close')} testID='e2e-enter-your-password-view-close' />
+			),
 			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);
