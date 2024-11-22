@@ -81,7 +81,7 @@ const ReportUserView = () => {
 			style={{ backgroundColor: colors.surfaceHover }}
 			contentContainerStyle={styles.container}
 			keyboardVerticalOffset={128}>
-			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.strokeExtraDark }]} testID='report-user-view'>
+			<SafeAreaView style={[styles.containerView]} testID='report-user-view'>
 				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceHover }]}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
