@@ -555,7 +555,7 @@
   "Read_External_Permission": "Povolení ke čtení médií",
   "Read_External_Permission_Message": "Rocket.Chat potřebuje přístup k fotografiím, médiím a souborům ve vašem zařízení",
   "Read_Only": "Pouze ke čtení",
-  "Read_only_hint": "Pouze oprávnění uživatelé mohou psát nové zprávy",
+  "Read_only_hint": "Pouze majitelé kanálů mohou odesílat nové zprávy",
   "Read_Receipt": "Potvrzení o přečtení",
   "Receive_Group_Mentions": "Přijímat zmínky o skupině",
   "Receive_Group_Mentions_Info": "Přijímat @všechny a @zde zmínky",

@@ -498,7 +498,7 @@
   "Read_External_Permission": "Lese-Zugriff auf Medien",
   "Read_External_Permission_Message": "Rocket.Chat benötigt Zugriff auf Ihre Fotos, Medien und Dateien auf Ihrem Gerät",
   "Read_Only": "Schreibgeschützt",
-  "Read_only_hint": "Nur autorisierte Benutzer können neue Nachrichten schreiben",
+  "Read_only_hint": "Nur Kanalbesitzer können neue Nachrichten senden",
   "Read_Receipt": "Lesebestätigung",
   "Receive_Group_Mentions": "Gruppen-Benachrichtigungen erhalten",
   "Receive_Group_Mentions_Info": "@all- und @here-Erwähnungen empfangen",

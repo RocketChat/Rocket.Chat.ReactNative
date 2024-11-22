@@ -511,7 +511,7 @@
   "Read_External_Permission": "মিডিয়া অনুমতি পড়া",
   "Read_External_Permission_Message": "Rocket.Chat আপনার ডিভাইসে ফটো, মিডিয়া এবং ফাইল অ্যাক্সেস করতে পারে",
   "Read_Only": "শুধুমাত্র পড়া",
-  "Read_only_hint": "শুধুমাত্র অনুমোদিত ব্যবহারকারীরা নতুন বার্তা লেখতে পারবে",
+  "Read_only_hint": "কেবল চ্যানেল মালিকরা নতুন বার্তা প্রেরণ করতে পারেন",
   "Read_Receipt": "পড়া স্বীকৃতি",
   "Receive_Group_Mentions": "গ্রুপ উল্লেখ প্রাপ্ত করুন",
   "Receive_Group_Mentions_Info": "@all এবং @here উল্লেখ প্রাপ্ত করুন",

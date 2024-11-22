@@ -336,6 +336,7 @@
   "Read_External_Permission": "صلاحية قراءة الوسائط",
   "Read_External_Permission_Message": "يحتاج Rocket.chat للوصول إلى الصور والملفات الموجودة على الجهاز",
   "Read_Only": "قراءة فقط",
+  "Read_only_hint": "يمكن لمالكي القنوات فقط إرسال رسائل جديدة",
   "Read_Receipt": "قراءة المستلم",
   "Receive_Group_Mentions": "تلقي إشارات المجموعة",
   "Receive_Group_Mentions_Info": "تلقي @all و @here للإشعارات",

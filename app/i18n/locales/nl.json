@@ -433,6 +433,7 @@
   "Read_External_Permission": "Lees toestemming voor media",
   "Read_External_Permission_Message": "Rocket.Chat heeft toegang nodig tot foto's, media en bestanden op je apparaat",
   "Read_Only": "Alleen lezen",
+  "Read_only_hint": "Alleen kanaaleigenaren kunnen nieuwe berichten verzenden",
   "Read_Receipt": "Leesbevestiging",
   "Receive_Group_Mentions": "Groepsvermeldingen ontvangen",
   "Receive_Group_Mentions_Info": "Ontvang @all en @here vermeldingen",

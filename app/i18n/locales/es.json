@@ -200,6 +200,7 @@
   "Reactions_are_disabled": "Las reacciones están desactivadas",
   "Reactions_are_enabled": "Las reacciones están activadas",
   "Read_Only": "Sólo lectura ",
+  "Read_only_hint": "Solo los propietarios de canales pueden enviar nuevos mensajes",
   "Read_Receipt": "Comprobante de lectura",
   "Receive_Group_Mentions": "Recibir menciones de grupo",
   "Receive_Group_Mentions_Info": "Recibir menciones @all y @here",

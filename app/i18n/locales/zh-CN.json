@@ -337,6 +337,7 @@
   "Read_External_Permission": "读取媒体权限",
   "Read_External_Permission_Message": "Rocket.Chat 需要存取您装置上的相片、多媒体及文件",
   "Read_Only": "只读",
+  "Read_only_hint": "只有频道所有者可以发送新消息",
   "Read_Receipt": "查看已读人员",
   "Receive_Group_Mentions": "接收群组提及",
   "Receive_Group_Mentions_Info": "接收@all和@here提及",

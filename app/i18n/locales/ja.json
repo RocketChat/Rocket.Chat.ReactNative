@@ -289,6 +289,7 @@
   "Reactions_are_disabled": "リアクションは無効化されています",
   "Reactions_are_enabled": "リアクションは有効化されています",
   "Read_Only": "読み取り専用",
+  "Read_only_hint": "チャネル所有者のみが新しいメッセージを送信できます",
   "Read_Receipt": "レシートを見る",
   "Receive_Group_Mentions": "グループの通知を受け取る",
   "Receive_Group_Mentions_Info": "@all と @here の通知を受け取る",

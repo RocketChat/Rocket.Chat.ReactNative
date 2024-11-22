@@ -472,7 +472,7 @@
   "Read_External_Permission": "Behörighet att läsa media",
   "Read_External_Permission_Message": "Rocket.Chat behöver åtkomst till foton, media och filer på enheten",
   "Read_Only": "Skrivskyddat",
-  "Read_only_hint": "Endast behöriga användare kan skriva nya meddelanden",
+  "Read_only_hint": "Endast kanalägare kan skicka nya meddelanden",
   "Read_Receipt": "Läskvitto",
   "Receive_Group_Mentions": "Ta emot gruppomnämnanden",
   "Receive_Group_Mentions_Info": "Ta emot omnämnanden av typen @all och @here",

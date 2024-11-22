@@ -512,7 +512,7 @@
   "Read_External_Permission": "Médiaengedély olvasása",
   "Read_External_Permission_Message": "A Rocket.Chat-nek hozzá kell férnie a készülékén lévő fényképekhez, médiához és fájlokhoz",
   "Read_Only": "Csak olvasható",
-  "Read_only_hint": "Csak az engedélyezett felhasználók írhatnak új üzeneteket",
+  "Read_only_hint": "Csak a csatornatulajdonosok küldhetnek új üzeneteket",
   "Read_Receipt": "Olvassa el a nyugtát",
   "Receive_Group_Mentions": "Csoportos említések fogadása",
   "Receive_Group_Mentions_Info": "Az @all és @here említések fogadása",

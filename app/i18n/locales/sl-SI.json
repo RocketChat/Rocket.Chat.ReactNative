@@ -445,6 +445,7 @@
   "Read_External_Permission": "Dovoljenje za branje medija",
   "Read_External_Permission_Message": "Rocket.Chat potrebuje dostop do fotografij, medijev in datotek v vaši napravi",
   "Read_Only": "Le branje",
+  "Read_only_hint": "Samo lastniki kanalov lahko pošljejo nova sporočila",
   "Read_Receipt": "Preberite potrdilo",
   "Receive_Group_Mentions": "Prejemajte omembe skupine",
   "Receive_Group_Mentions_Info": "Prejemate @all in @Here omembe",

@@ -575,7 +575,7 @@
   "Read_External_Permission": "Read media permission",
   "Read_External_Permission_Message": "Rocket.Chat needs to access photos, media, and files on your device",
   "Read_Only": "Read only",
-  "Read_only_hint": "Only authorized users can write new messages",
+  "Read_only_hint": "Only channel owners can send new messages",
   "Read_Receipt": "Read receipt",
   "Receive_Group_Mentions": "Receive group mentions",
   "Receive_Group_Mentions_Info": "Receive @all and @here mentions",
