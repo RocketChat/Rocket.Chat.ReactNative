@@ -13,7 +13,7 @@ import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	editAvatarButton: {
-		marginTop: 8,
+		marginTop: 16,
 		paddingVertical: 8,
 		paddingHorizontal: 12,
 		marginBottom: 0,
