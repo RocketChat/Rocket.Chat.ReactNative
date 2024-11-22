@@ -12,19 +12,20 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		maxHeight: 80,
-		marginBottom: 12
+		maxHeight: 80
 	},
 	switchTextContainer: {
 		flex: 1,
 		marginRight: 8
 	},
 	label: {
-		fontSize: 14,
+		fontSize: 16,
+		lineHeight: 24,
 		...sharedStyles.textMedium
 	},
 	hint: {
 		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	}
 });
