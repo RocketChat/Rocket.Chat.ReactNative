@@ -1,8 +1,7 @@
 import React, { ReactElement } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { TSupportedThemes } from '../../theme';
-import { themes } from '../../lib/constants';
+import { useTheme } from '../../theme';
 import styles from './styles';
 import Switch from '../../containers/Switch';
 
@@ -13,7 +12,6 @@ interface ISwitchContainer {
 	leftLabelPrimary: string;
 	leftLabelSecondary?: string;
 	onValueChange: (value: any) => void;
-	theme: TSupportedThemes;
 	testID: string;
 	labelContainerStyle?: ViewStyle;
 	leftLabelStyle?: TextStyle;
@@ -27,30 +25,33 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 		onValueChange,
 		leftLabelPrimary,
 		leftLabelSecondary,
-		theme,
 		testID,
 		labelContainerStyle,
 		leftLabelStyle
-	}) => (
-		<View>
-			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
-				{leftLabelPrimary && (
-					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
-						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
-							{leftLabelPrimary}
-						</Text>
-						{leftLabelSecondary && (
-							<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontSecondaryInfo }, leftLabelStyle]}>
-								{leftLabelSecondary}
+	}) => {
+		const { colors } = useTheme();
+
+		return (
+			<View>
+				<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
+					{leftLabelPrimary && (
+						<View style={[styles.switchLabelContainer, labelContainerStyle]}>
+							<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
+								{leftLabelPrimary}
 							</Text>
-						)}
-					</View>
-				)}
-				<Switch style={styles.switch} onValueChange={onValueChange} value={value} disabled={disabled} testID={testID} />
+							{leftLabelSecondary && (
+								<Text style={[styles.switchLabelSecondary, { color: colors.fontSecondaryInfo }, leftLabelStyle]}>
+									{leftLabelSecondary}
+								</Text>
+							)}
+						</View>
+					)}
+					<Switch style={styles.switch} onValueChange={onValueChange} value={value} disabled={disabled} testID={testID} />
+				</View>
+				{children}
 			</View>
-			{children}
-		</View>
-	)
+		);
+	}
 );
 
 export default SwitchContainer;
