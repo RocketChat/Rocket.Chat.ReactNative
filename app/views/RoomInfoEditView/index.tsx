@@ -724,5 +724,3 @@ const mapStateToProps = (state: IApplicationState) => ({
 });
 
 export default connect(mapStateToProps)(withTheme(RoomInfoEditView));
-
-//Monday - update PT-BR labels, review code
