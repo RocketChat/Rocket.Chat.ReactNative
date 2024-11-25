@@ -250,9 +250,15 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
 
-		const appTranslations = (yield Services.getAppTranslations()).apps;
-		yield setLanguage(user?.language);
-		setAppTranslations(appTranslations || []);
+		setLanguage(user?.language);
+
+		try {
+			const appTranslations = (yield Services.getAppTranslations()).apps;
+			setAppTranslations(appTranslations || []);
+		} catch (e) {
+			log(e);
+		}
+
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
 		const u = {
@@ -376,9 +382,14 @@ const handleSetUser = function* handleSetUser({ user }) {
 		});
 	}
 
-	const appTranslations = (yield Services.getAppTranslations()).apps;
-	yield setLanguage(user?.language);
-	setAppTranslations(appTranslations || []);
+	setLanguage(user?.language);
+
+	try {
+		const appTranslations = (yield Services.getAppTranslations()).apps;
+		setAppTranslations(appTranslations || []);
+	} catch (e) {
+		log(e);
+	}
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user)) {

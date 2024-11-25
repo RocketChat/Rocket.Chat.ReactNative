@@ -190,31 +190,17 @@ type Ti18n = {
 } & typeof i18n;
 
 export const setAppTranslations = (appTranslations: TAppTranslations) => {	
-	let updatedTranslations = { ...i18n.translations };
-
 	appTranslations.forEach(({ id: appId, languages }) => {
 		Object.entries(languages).forEach(([language, translations]) => {
-			updatedTranslations = {
-				...updatedTranslations,
+			i18n.translations = {
+				...i18n.translations,
 				[language]: {
-					...updatedTranslations[language],
+					...i18n.translations[language],
 					[`apps-${appId}`]: translations
 				}
 			}
-
 		})
 	})
-
-	i18n.translations = { ...updatedTranslations };
-
-	if (i18n.locale) {
-		const {locale} = i18n
-		i18n.locale = locale; // Trigger locale reapplication
-	}
-
-	console.log('setAppTranslations', { i18n: i18n.translations, updatedTranslations, locale: i18n.locale })
-
 };
-
 
 export default i18n as Ti18n;
