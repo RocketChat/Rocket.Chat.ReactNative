@@ -613,7 +613,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									room.teamMain ? I18n.t('Everyone_can_access_this_team') : I18n.t('Everyone_can_access_this_channel')
 								}
 								onValueChange={this.toggleRoomType}
-								theme={theme}
 								testID='room-info-edit-view-t'
 							/>
 
@@ -627,7 +626,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								}
 								onValueChange={this.toggleReadOnly}
 								disabled={!permissions['set-readonly'] || room.broadcast}
-								theme={theme}
 								testID='room-info-edit-view-ro'
 							/>
 							{ro && !room.broadcast ? (
@@ -637,7 +635,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									leftLabelSecondary={I18n.t('Reactions_are_disabled')}
 									onValueChange={this.toggleReactions}
 									disabled={!permissions['set-react-when-readonly']}
-									theme={theme}
 									testID='room-info-edit-view-react-when-ro'
 								/>
 							) : null}
@@ -651,7 +648,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								<SwitchContainer
 									value={enableSysMes as boolean}
 									leftLabelPrimary={I18n.t('Hide_System_Messages')}
-									theme={theme}
 									testID='room-info-edit-switch-system-messages'
 									onValueChange={this.toggleHideSystemMessages}
 									labelContainerStyle={styles.hideSystemMessages}
@@ -665,7 +661,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									disabled={!t}
 									leftLabelPrimary={I18n.t('Encrypted')}
 									leftLabelSecondary={I18n.t('End_to_end_encrypted_room')}
-									theme={theme}
 									testID='room-info-edit-switch-encrypted'
 									onValueChange={this.toggleEncrypted}
 									labelContainerStyle={styles.hideSystemMessages}
