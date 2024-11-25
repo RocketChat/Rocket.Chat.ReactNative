@@ -36,7 +36,7 @@ const AIAppActionsView = () => {
 						{aiAppActionButtons.map(button => (
 							<>
 								<List.Item
-									title={button.labelI18n}
+									title={I18n.t(`apps-${button.appId}.${button.labelI18n}`)}
 									left={() => <List.Icon name='stars' />}
 									translateTitle={false}
 									key={getAppActionButtonId(button)}
