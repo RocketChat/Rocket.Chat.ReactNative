@@ -37,7 +37,8 @@ import {
 	removeServerData,
 	removeServerDatabase,
 	subscribeSettings,
-	subscribeUsersPresence
+	subscribeUsersPresence,
+	getAppActions
 } from '../lib/methods';
 import { Services } from '../lib/services';
 import { setUsersRoles } from '../actions/usersRoles';
@@ -150,8 +151,18 @@ const subscribeSettingsFork = function* subscribeSettingsFork() {
 	}
 };
 
+const fetchAppActions = async () => {
+	try {
+		sdk.subscribe('stream-apps', 'apps');
+		await getAppActions();
+	} catch (e) {
+		log(e);
+	}
+};
+
 const fetchPermissionsFork = function* fetchPermissionsFork() {
 	try {
+		yield fetchAppActions();
 		yield getPermissions();
 	} catch (e) {
 		log(e);
