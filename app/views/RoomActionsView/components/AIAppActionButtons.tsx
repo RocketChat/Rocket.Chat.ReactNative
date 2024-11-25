@@ -40,6 +40,7 @@ const AIAppActionButtons = ({ room }: AIAppActionButtonsProps) => {
 		<List.Section>
 			<List.Separator />
 			<List.Item title={'AI_actions'} onPress={onPress} left={() => <List.Icon name='stars' />} showActionIndicator />
+			<List.Separator />
 		</List.Section>
 	);
 };
