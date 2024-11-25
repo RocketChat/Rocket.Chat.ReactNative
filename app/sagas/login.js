@@ -11,7 +11,7 @@ import { selectServerRequest, serverFinishAdd } from '../actions/server';
 import { loginFailure, loginSuccess, logout as logoutAction, setUser } from '../actions/login';
 import { roomsRequest } from '../actions/rooms';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import I18n, { setAppTranslations, setLanguage } from '../i18n';
+import I18n, { setLanguage } from '../i18n';
 import database from '../lib/database';
 import EventEmitter from '../lib/methods/helpers/events';
 import { inviteLinksRequest } from '../actions/inviteLinks';
@@ -250,9 +250,9 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		yield fork(subscribeSettingsFork);
 		yield fork(fetchUsersRoles);
 
-		const appTranslations = (yield Services.getAppTranslations()).apps;
-		yield setLanguage(user?.language, appTranslations);
-		setAppTranslations(appTranslations);
+		// const appTranslations = (yield Services.getAppTranslations()).apps;
+		yield setLanguage(user?.language);
+		// setAppTranslations(appTranslations);
 
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
@@ -377,9 +377,9 @@ const handleSetUser = function* handleSetUser({ user }) {
 		});
 	}
 
-	const appTranslations = (yield Services.getAppTranslations()).apps;
-	yield setLanguage(user?.language, appTranslations);
-	setAppTranslations(appTranslations);
+	// const appTranslations = (yield Services.getAppTranslations()).apps;
+	yield setLanguage(user?.language);
+	// setAppTranslations(appTranslations);
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
 		if (isOmnichannelStatusAvailable(user)) {
