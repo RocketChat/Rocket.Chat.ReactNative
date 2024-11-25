@@ -67,6 +67,7 @@ const AvatarWithEdit = ({
 			/>
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
+					accessibilityLabel={I18n.t('Edit_Room_Photo')}
 					title={I18n.t('Edit')}
 					type='secondary'
 					onPress={handleEdit}
