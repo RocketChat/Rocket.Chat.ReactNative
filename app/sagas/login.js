@@ -253,7 +253,6 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		const appTranslations = (yield Services.getAppTranslations()).apps;
 		yield setLanguage(user?.language);
 		setAppTranslations(appTranslations || []);
-
 		const serversDB = database.servers;
 		const usersCollection = serversDB.get('users');
 		const u = {
