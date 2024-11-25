@@ -18,6 +18,8 @@ interface ILanguage {
 	file: () => any;
 }
 
+type TAppTranslations = { id: string; languages: { [language: string]: { [key: string]: string } }; }[];
+
 export const LANGUAGES: ILanguage[] = [
 	{
 		label: 'English',
@@ -161,7 +163,7 @@ export const setLanguage = (l: string) => {
 		return;
 	}
 	i18n.locale = locale;
-	i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
+	i18n.translations = { ...i18n.translations, [locale]: { ...i18n.translations[locale], ...translations[locale]?.() } };
 	I18nManager.forceRTL(isRTL(locale));
 	I18nManager.swapLeftAndRightInRTL(isRTL(locale));
 	// TODO: Review this logic
@@ -186,5 +188,33 @@ type Ti18n = {
 	t(scope: TTranslatedKeys, options?: any): string;
 	isTranslated: (text?: string) => boolean;
 } & typeof i18n;
+
+export const setAppTranslations = (appTranslations: TAppTranslations) => {	
+	let updatedTranslations = { ...i18n.translations };
+
+	appTranslations.forEach(({ id: appId, languages }) => {
+		Object.entries(languages).forEach(([language, translations]) => {
+			updatedTranslations = {
+				...updatedTranslations,
+				[language]: {
+					...updatedTranslations[language],
+					[`apps-${appId}`]: translations,
+				}
+			}
+
+		})
+	})
+
+	i18n.translations = { ...updatedTranslations };
+
+	if (i18n.locale) {
+		const locale = i18n.locale
+		i18n.locale = locale; // Trigger locale reapplication
+	}
+
+	console.log('setAppTranslations', { i18n: i18n.translations, updatedTranslations, locale: i18n.locale })
+
+};
+
 
 export default i18n as Ti18n;

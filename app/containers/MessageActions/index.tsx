@@ -479,7 +479,7 @@ const MessageActions = React.memo(
 				const actionButtons = await filterByMessageContext(messageActionButtons, message);
 
 				return actionButtons.map(action => ({
-					title: action.labelI18n,
+					title: I18n.t(`apps-${action.appId}.${action.labelI18n}`),
 					onPress: () => handleAppActionButtonPress(action, message),
 					icon: 'stars'
 				}));

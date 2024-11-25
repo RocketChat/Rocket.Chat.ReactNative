@@ -19,4 +19,12 @@ export type AppsEndpoints = {
 			triggerId: string;
 		}) => void;
 	};
+	'languages': {
+		GET: () => {
+			apps: {
+				id: string;
+				languages: { [language: string]: { [key: string]: string } };
+			}[];
+		}
+	}
 };
