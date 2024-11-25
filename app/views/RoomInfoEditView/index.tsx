@@ -542,13 +542,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								value={name}
 								onChangeText={value => this.setState({ name: value })}
 								onSubmitEditing={() => {
-									this.description?.focus();
+									this.topic?.focus();
 								}}
 								error={nameError}
 								testID='room-info-edit-view-name'
 								required
 							/>
-
 							<FormTextInput
 								inputRef={e => {
 									this.topic = e;
@@ -569,7 +568,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								value={announcement}
 								onChangeText={value => this.setState({ announcement: value })}
 								onSubmitEditing={() => {
-									this.joinCode?.focus();
+									this.description?.focus();
 								}}
 								testID='room-info-edit-view-announcement'
 							/>
@@ -581,19 +580,12 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								value={description}
 								onChangeText={value => this.setState({ description: value })}
 								onSubmitEditing={() => {
-									this.topic?.focus();
+									this.joinCode?.focus();
 								}}
 								testID='room-info-edit-view-description'
 							/>
 						</View>
-						{/* This TextInput avoid appears the password fill when typing into Announcements TextInput */}
-						<View style={{ height: StyleSheet.hairlineWidth, overflow: 'hidden' }}>
-							<TextInput
-								style={{
-									height: StyleSheet.hairlineWidth
-								}}
-							/>
-						</View>
+
 						<FormTextInput
 							inputRef={e => {
 								this.joinCode = e;
