@@ -2,7 +2,7 @@ import React from 'react';
 import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
-import { Alert, Keyboard, ScrollView, Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { Alert, Keyboard, ScrollView, Text, TextInput, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { Subscription } from 'rxjs';
 
@@ -725,4 +725,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 
 export default connect(mapStateToProps)(withTheme(RoomInfoEditView));
 
-//Monday - update PT-BR labels, useColors, review code
+//Monday - update PT-BR labels, review code
