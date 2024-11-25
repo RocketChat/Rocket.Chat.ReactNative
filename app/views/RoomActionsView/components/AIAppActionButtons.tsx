@@ -15,7 +15,7 @@ type AIAppActionButtonsProps = {
 type TNavigation = NativeStackNavigationProp<ChatsStackParamList>;
 
 const AIAppActionButtons = ({ room }: AIAppActionButtonsProps) => {
-	const appActionButtons = useAppActionButtons(room, UIActionButtonContext.ROOM_ACTION);
+	const appActionButtons = useAppActionButtons(room, UIActionButtonContext.ROOM_ACTION, 'ai');
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const navigation = useNavigation<TNavigation>();
