@@ -198,7 +198,7 @@ export const setAppTranslations = (appTranslations: TAppTranslations) => {
 				...updatedTranslations,
 				[language]: {
 					...updatedTranslations[language],
-					[`apps-${appId}`]: translations,
+					[`apps-${appId}`]: translations
 				}
 			}
 
@@ -208,7 +208,7 @@ export const setAppTranslations = (appTranslations: TAppTranslations) => {
 	i18n.translations = { ...updatedTranslations };
 
 	if (i18n.locale) {
-		const locale = i18n.locale
+		const {locale} = i18n
 		i18n.locale = locale; // Trigger locale reapplication
 	}
 
