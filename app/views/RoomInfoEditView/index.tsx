@@ -518,7 +518,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			encrypted
 		} = this.state;
 		const { serverVersion, encryptionEnabled, theme } = this.props;
-		const { buttonBackgroundDangerDefault, fontDanger } = themes[theme];
 
 		return (
 			<KeyboardView
