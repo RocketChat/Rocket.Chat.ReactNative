@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IUser } from '../definitions';
+import { IUser } from '@/definitions';
 import * as types from './actionsTypes';
 
 interface ICredentials {

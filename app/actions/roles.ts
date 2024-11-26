@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IRoles } from '../reducers/roles';
+import { IRoles } from '@reducers/roles';
 import { ROLES } from './actionsTypes';
 
 export interface ISetRoles extends Action {

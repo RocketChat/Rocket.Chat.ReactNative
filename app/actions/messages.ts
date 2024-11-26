@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
 import { MESSAGES } from './actionsTypes';
-import { IMessage } from '../definitions';
+import { IMessage } from '@/definitions';
 
 interface IReplyBroadcast extends Action {
 	message: IMessage;
