@@ -130,11 +130,10 @@ const handleLoginRequest = function* handleLoginRequest({
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
 			logEvent(events.LOGOUT_TOKEN_EXPIRED);
 			yield put(logoutAction(true, 'Token_expired'));
-		} else {
+		} else if (e?.status === 401) {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
-			const currentRoot = yield select(state => state.app.root);
-			const connected = yield select(state => state.meteor.connected);
-			if (currentRoot === RootEnum.ROOT_OUTSIDE || !connected) {
+			const userId = yield select(state => state.login.user.id);
+			if (!userId) {
 				yield put(loginFailure(e));
 				return;
 			}
