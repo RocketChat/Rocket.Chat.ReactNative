@@ -679,7 +679,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							backgroundColor={themes[theme].buttonBackgroundSecondaryDefault}
 							color={themes[theme].fontTitlesLabels}
 							title={archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
-							onPress={this.reset}
+							onPress={this.toggleArchive}
 							disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
 							testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 							style={{ marginBottom: 0 }}
