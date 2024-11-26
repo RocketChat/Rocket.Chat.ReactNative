@@ -131,8 +131,6 @@ export async function hasPermission(permissions, rid?: any): Promise<boolean[]> 
 	}
 }
 
-export const isThreadMessage = (message: Partial<TAnyMessageModel>) => !!message.tmid;
-
 export const isStarredMessage = (message: Partial<TAnyMessageModel>) => !!message.starred;
 
 export const isTruthy = <T>(x: T | null | undefined | 0 | false | ''): x is T => Boolean(x);

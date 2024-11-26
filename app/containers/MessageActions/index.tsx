@@ -33,7 +33,6 @@ import {
 	hasPermission,
 	hasScopedRole,
 	isStarredMessage,
-	isThreadMessage,
 	isTruthy,
 	random
 } from '../../lib/methods/helpers';
@@ -41,8 +40,8 @@ import { Services } from '../../lib/services';
 import { IAppActionButtonsState } from '../../reducers/appActionButtons';
 import sdk from '../../lib/services/sdk';
 
-const getMessageContext = (message: TAnyMessageModel): MessageActionContext => {
-	if (isThreadMessage(message)) {
+const getMessageContext = (message: TAnyMessageModel, tmid?: string): MessageActionContext => {
+	if (tmid) {
 		return MessageActionContext.THREADS;
 	}
 
@@ -436,7 +435,7 @@ const MessageActions = React.memo(
 						return true;
 					}
 
-					const messageContext = getMessageContext(message);
+					const messageContext = getMessageContext(message, tmid);
 					return action.when.messageActionContext.includes(messageContext);
 				});
 
