@@ -621,6 +621,7 @@
   "Room_Info_Edit": "Editar",
   "Room_name_changed_to": "alterou o nome da sala para: {{name}}",
   "Room_not_found": "Sala não encontrada",
+  "Room_Password": "Senha da sala",
   "room_removed_read_only_permission": "removeu permissão de escrita da sala",
   "room_set_read_only_permission": "adicionou permissão de escrita à sala",
   "room_unarchived": "desarquivou a sala",
