@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, InteractionManager, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -66,6 +66,7 @@ const TwoFactor = React.memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const [code, setCode] = useState<string>('');
+	const overlayRef = useRef(null);
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
@@ -80,7 +81,7 @@ const TwoFactor = React.memo(() => {
 				}
 			}
 		} catch (e) {
-			log(e)
+			log(e);
 		}
 	};
 
@@ -93,7 +94,13 @@ const TwoFactor = React.memo(() => {
 		}
 	}, [data]);
 
-	const showTwoFactor = (args: EventListenerMethod) => setData(args);
+	const showTwoFactor = (args: EventListenerMethod) => {
+		const overlayReactTag = overlayRef.current;
+		setData(args);
+		if (overlayReactTag) {
+			AccessibilityInfo.setAccessibilityFocus(overlayReactTag);
+		}
+	};
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
@@ -126,6 +133,7 @@ const TwoFactor = React.memo(() => {
 		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
 				<View
+					ref={overlayRef}
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
