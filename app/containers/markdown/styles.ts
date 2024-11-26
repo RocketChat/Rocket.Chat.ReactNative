@@ -89,7 +89,10 @@ export default StyleSheet.create({
 	codeBlock: {
 		borderWidth: 1,
 		borderRadius: 4,
-		padding: 4
+		padding: 4,
+		fontSize: 16,
+		lineHeight: 22,
+		...codeFontFamily
 	},
 	codeBlockText: {
 		fontSize: 16,
