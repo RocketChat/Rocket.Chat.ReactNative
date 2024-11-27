@@ -21,14 +21,21 @@ import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 import UGCRules from '../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../lib/hooks';
+import { CustomIcon, TIconsName } from '../containers/CustomIcon';
 
 const styles = StyleSheet.create({
 	title: {
 		...sharedStyles.textBold,
 		fontSize: 22
 	},
+	inputs: {
+		gap: 12,
+		paddingTop: 24,
+		paddingBottom: 12
+	},
 	inputContainer: {
-		marginVertical: 16
+		marginTop: 0,
+		marginBottom: 0
 	},
 	bottomContainer: {
 		marginBottom: 32
@@ -40,13 +47,64 @@ const styles = StyleSheet.create({
 		alignSelf: 'center'
 	},
 	registerButton: {
-		marginTop: 16,
+		marginTop: 36,
 		marginBottom: 32
 	},
 	loginButton: {
 		marginTop: 12
+	},
+	tipContainer: {
+		flexDirection: 'row'
+	},
+	PasswordTipsTitle: {
+		...sharedStyles.textMedium,
+		fontSize: 14,
+		lineHeight: 20
+	},
+	tips: {
+		gap: 8,
+		paddingTop: 8
 	}
 });
+
+const Tip = ({ type, description }: { type?: string; description: string }) => {
+	const { colors } = useTheme();
+
+	let icon: TIconsName = 'info';
+	let color = colors.fontDefault;
+	if (type === 'success') {
+		icon = 'success-circle';
+		color = colors.statusFontSuccess;
+	}
+	if (type === 'error') {
+		icon = 'error-circle';
+		color = colors.statusFontDanger;
+	}
+	return (
+		<View accessibilityLabel={description} style={styles.tipContainer}>
+			<CustomIcon color={color} name={icon} size={16} style={{ marginRight: 4 }} />
+			<Text>{description}</Text>
+		</View>
+	);
+};
+
+const PasswordTips = () => {
+	const { colors } = useTheme();
+
+	return (
+		<View>
+			<Text style={[styles.PasswordTipsTitle, { color: colors.fontDefault }]}>You password must have:</Text>
+			<View style={styles.tips}>
+				<Tip type='success' description='At least 8 characters' />
+				<Tip type='error' description='At most 24 characters' />
+				<Tip description='Max. 2 repeating characters' />
+				<Tip description='At least 1 lowercase letter' />
+				<Tip description='At least 1 number' />
+				<Tip description='At least 1 symbol' />
+			</View>
+		</View>
+	);
+};
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
@@ -77,9 +135,6 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 
 	const parsedCustomFields = getParsedCustomFields();
 	const customFields = getCustomFields();
-	const usernameInput = useRef<RNTextInput | null>(null);
-	const passwordInput = useRef<RNTextInput | null>(null);
-	const emailInput = useRef<RNTextInput | null>(null);
 	const avatarUrl = useRef<RNTextInput | null>(null);
 
 	const { colors } = useTheme();
@@ -89,6 +144,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 			name: '',
 			email: '',
 			password: '',
+			confirmPassword: '',
 			username: ''
 		}
 	});
@@ -229,93 +285,112 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 			<FormContainerInner>
 				<LoginServices separator />
 				<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Sign_Up')}</Text>
+				<View style={styles.inputs}>
+					<Controller
+						name='name'
+						control={control}
+						render={({ field: { onChange, value, ref } }) => (
+							<FormTextInput
+								inputRef={ref}
+								testID='register-view-name'
+								textContentType='name'
+								autoComplete='name'
+								returnKeyType='next'
+								required
+								label={I18n.t('Full_name')}
+								value={value}
+								onChangeText={onChange}
+								onSubmitEditing={() => setFocus('username')}
+								containerStyle={styles.inputContainer}
+							/>
+						)}
+					/>
 
-				<Controller
-					name='name'
-					control={control}
-					render={({ field: { onChange, value, ref } }) => (
-						<FormTextInput
-							inputRef={ref}
-							testID='register-view-name'
-							textContentType='name'
-							autoComplete='name'
-							returnKeyType='next'
-							required
-							label={I18n.t('Full_name')}
-							value={value}
-							onChangeText={onChange}
-							onSubmitEditing={() => setFocus('username')}
-							containerStyle={styles.inputContainer}
-						/>
-					)}
-				/>
+					<Controller
+						name='username'
+						control={control}
+						render={({ field: { onChange, value, ref } }) => (
+							<FormTextInput
+								inputRef={ref}
+								testID='register-view-username'
+								textContentType='username'
+								autoComplete='username'
+								returnKeyType='next'
+								required
+								label={I18n.t('Username')}
+								value={value}
+								onChangeText={onChange}
+								onSubmitEditing={() => {
+									setFocus('email');
+								}}
+								containerStyle={styles.inputContainer}
+							/>
+						)}
+					/>
 
-				<Controller
-					name='username'
-					control={control}
-					render={({ field: { onChange, value, ref } }) => (
-						<FormTextInput
-							inputRef={ref}
-							testID='register-view-username'
-							textContentType='username'
-							autoComplete='username'
-							returnKeyType='next'
-							required
-							label={I18n.t('Username')}
-							value={value}
-							onChangeText={onChange}
-							onSubmitEditing={() => {
-								setFocus('email');
-							}}
-							containerStyle={styles.inputContainer}
-						/>
-					)}
-				/>
+					<Controller
+						name='email'
+						control={control}
+						render={({ field: { onChange, value, ref } }) => (
+							<FormTextInput
+								inputRef={ref}
+								testID='register-view-email'
+								keyboardType='email-address'
+								textContentType='emailAddress'
+								autoComplete='email'
+								returnKeyType='next'
+								required
+								label={I18n.t('Email')}
+								value={value}
+								onChangeText={onChange}
+								onSubmitEditing={() => {
+									setFocus('password');
+								}}
+								containerStyle={styles.inputContainer}
+							/>
+						)}
+					/>
 
-				<Controller
-					name='email'
-					control={control}
-					render={({ field: { onChange, value, ref } }) => (
-						<FormTextInput
-							inputRef={ref}
-							testID='register-view-email'
-							keyboardType='email-address'
-							textContentType='emailAddress'
-							autoComplete='email'
-							returnKeyType='next'
-							required
-							label={I18n.t('Email')}
-							value={value}
-							onChangeText={onChange}
-							onSubmitEditing={() => {
-								setFocus('password');
-							}}
-							containerStyle={styles.inputContainer}
-						/>
-					)}
-				/>
-
-				<Controller
-					name='password'
-					control={control}
-					render={({ field: { onChange, value, ref } }) => (
-						<FormTextInput
-							inputRef={ref}
-							testID='register-view-password'
-							textContentType='newPassword'
-							autoComplete='password-new'
-							returnKeyType='next'
-							required
-							label={I18n.t('Password')}
-							value={value}
-							onChangeText={onChange}
-							secureTextEntry
-							containerStyle={styles.inputContainer}
-						/>
-					)}
-				/>
-				{renderCustomFields()}
-
+					<Controller
+						name='password'
+						control={control}
+						render={({ field: { onChange, value, ref } }) => (
+							<FormTextInput
+								inputRef={ref}
+								testID='register-view-password'
+								textContentType='newPassword'
+								autoComplete='password-new'
+								returnKeyType='next'
+								required
+								label={I18n.t('Password')}
+								value={value}
+								onChangeText={onChange}
+								secureTextEntry
+								containerStyle={styles.inputContainer}
+							/>
+						)}
+					/>
+					<Controller
+						name='confirmPassword'
+						control={control}
+						render={({ field: { onChange, value, ref } }) => (
+							<FormTextInput
+								inputRef={ref}
+								testID='register-view-confirm-password'
+								textContentType='newPassword'
+								autoComplete='password-new'
+								returnKeyType='next'
+								required
+								value={value}
+								onChangeText={onChange}
+								secureTextEntry
+								containerStyle={styles.inputContainer}
+							/>
+						)}
+					/>
+					{renderCustomFields()}
+				</View>
+				<PasswordTips />
 				<Button
 					title={I18n.t('Register')}
 					type='primary'
