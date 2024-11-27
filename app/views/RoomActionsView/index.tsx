@@ -361,18 +361,19 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return result;
 	};
 
-	renderEncryptedSwitch = () => {
-		const { room, canToggleEncryption, canEdit } = this.state;
-		const { rid, encrypted } = room;
-		const { serverVersion } = this.props;
-		let hasPermission = false;
-		if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
-			hasPermission = canEdit;
-		} else {
-			hasPermission = canToggleEncryption;
-		}
-		return <Switch value={encrypted} onValueChange={() => toggleRoomE2EE(rid)} disabled={!hasPermission} />;
-	};
+	// renderEncryptedSwitch = () => {
+	// 	const { room, canToggleEncryption, canEdit } = this.state;
+	// 	const { rid, encrypted } = room;
+	// 	const { serverVersion } = this.props;
+	// 	let hasPermission = false;
+	// 	if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
+	// 		hasPermission = canEdit;
+	// 	} else {
+	// 		hasPermission = canToggleEncryption;
+	// 	}
+	// 	// return <Switch value={encrypted} onValueChange={() => toggleRoomE2EE(rid)} disabled={!hasPermission} />;
+	// 	return
+	// };
 
 	closeLivechat = async () => {
 		try {
@@ -812,11 +813,18 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title='Encrypted'
+						title='E2E_Encryption'
 						testID='room-actions-encrypt'
 						left={() => <List.Icon name='encrypted' />}
-						right={this.renderEncryptedSwitch}
-						additionalAcessibilityLabel={!!room.encrypted}
+						onPress={() =>
+							this.onPressTouchable({
+								route: 'E2EEToggleRoomView',
+								params: {
+									rid: room.rid
+								}
+							})
+						}
+						showActionIndicator
 					/>
 					<List.Separator />
 				</List.Section>
