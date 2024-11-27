@@ -6,7 +6,14 @@ import parse from 'url-parse';
 import { sha256 } from 'js-sha256';
 
 import getSingleMessage from '../methods/getSingleMessage';
-import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IServerAttachment } from '../../definitions';
+import {
+	IAttachment,
+	IMessage,
+	IUpload,
+	TSendFileMessageFileInfo,
+	IServerAttachment,
+	TSubscriptionModel
+} from '../../definitions';
 import Deferred from './helpers/deferred';
 import { compareServerVersion, debounce } from '../methods/helpers';
 import log from '../methods/helpers/log';
@@ -46,6 +53,7 @@ export default class EncryptionRoom {
 	sessionKeyExportedString: string | ByteBuffer;
 	keyID: string;
 	roomKey: ArrayBuffer;
+	subscription: TSubscriptionModel | null;
 
 	constructor(roomId: string, userId: string) {
 		this.ready = false;
@@ -62,6 +70,7 @@ export default class EncryptionRoom {
 			// Mark as established
 			this.establishing = false;
 		});
+		this.subscription = null;
 	}
 
 	// Initialize the E2E room
@@ -77,14 +86,16 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
-		const subscription = await getSubscriptionByRoomId(this.roomId);
-		if (!subscription) {
-			return this.readyPromise;
+		if (!this.subscription) {
+			this.subscription = await getSubscriptionByRoomId(this.roomId);
+			if (!this.subscription) {
+				return;
+			}
 		}
 
 		// Similar to Encryption.evaluateSuggestedKey
-		const { E2EKey, e2eKeyId, E2ESuggestedKey } = subscription;
-		if (E2EKey && E2ESuggestedKey && Encryption.privateKey) {
+		const { E2EKey, e2eKeyId, E2ESuggestedKey } = this.subscription;
+		if (E2ESuggestedKey && Encryption.privateKey) {
 			try {
 				try {
 					this.establishing = true;
@@ -105,7 +116,6 @@ export default class EncryptionRoom {
 
 		// If this room has a E2EKey, we import it
 		if (E2EKey && Encryption.privateKey) {
-			// We're establishing a new room encryption client
 			this.establishing = true;
 			const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2EKey, Encryption.privateKey);
 			this.keyID = keyID;
@@ -117,7 +127,6 @@ export default class EncryptionRoom {
 
 		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
-			// We're establishing a new room encryption client
 			this.establishing = true;
 			await this.createRoomKey();
 			this.readyPromise.resolve();

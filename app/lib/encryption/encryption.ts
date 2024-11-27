@@ -146,7 +146,7 @@ class Encryption {
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E) {
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
 			return;
 		}
 		return roomE2E.provideKeyToUser(keyId);
@@ -286,7 +286,6 @@ class Encryption {
 					await Services.e2eRejectSuggestedGroupKey(rid);
 					return;
 				}
-				// delete this.roomInstances[rid];
 				await Services.e2eAcceptSuggestedGroupKey(rid);
 			} catch (e) {
 				console.error(e);
@@ -371,10 +370,7 @@ class Encryption {
 			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
 			await Promise.all(
 				subsEncrypted.map(async (sub: TSubscriptionModel) => {
-					const { rid, lastMessage, E2ESuggestedKey } = sub;
-					if (E2ESuggestedKey) {
-						await this.evaluateSuggestedKey(rid, E2ESuggestedKey);
-					}
+					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
 						return sub.prepareUpdate(
@@ -403,12 +399,11 @@ class Encryption {
 			(
 				await Promise.all(
 					roomIds.map(async room => {
-						const e2eRoom = await this.getRoomInstance(room);
-
-						if (!e2eRoom) {
+						const roomE2E = await this.getRoomInstance(room);
+						if (!roomE2E || !roomE2E?.hasSessionKey()) {
 							return;
 						}
-						const usersWithKeys = await e2eRoom.encryptGroupKeyForParticipantsWaitingForTheKeys(usersWaitingForE2EKeys[room]);
+						const usersWithKeys = await roomE2E.encryptGroupKeyForParticipantsWaitingForTheKeys(usersWaitingForE2EKeys[room]);
 
 						if (!usersWithKeys) {
 							return;
@@ -430,15 +425,15 @@ class Encryption {
 
 		const sampleIds: string[] = [];
 		for await (const roomId of randomRoomIds) {
-			const e2eroom = await this.getRoomInstance(roomId);
-			if (!e2eroom || !e2eroom?.hasSessionKey()) {
+			const roomE2E = await this.getRoomInstance(roomId);
+			if (!roomE2E || !roomE2E?.hasSessionKey()) {
 				continue;
 			}
 
 			sampleIds.push(roomId);
 		}
 
-		if (!sampleIds.length) {
+		if (!sampleIds.length && roomIds.length > limit) {
 			return this.getSample(roomIds, limit - 1);
 		}
 
@@ -577,7 +572,7 @@ class Encryption {
 
 	encryptText = async (rid: string, text: string) => {
 		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E) {
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
 			return;
 		}
 		return roomE2E.encryptText(text);
@@ -606,7 +601,7 @@ class Encryption {
 			}
 
 			const roomE2E = await this.getRoomInstance(rid);
-			if (!roomE2E) {
+			if (!roomE2E || !roomE2E?.hasSessionKey()) {
 				return;
 			}
 			return roomE2E.encrypt(message);
@@ -642,16 +637,15 @@ class Encryption {
 
 		const { rid } = message;
 		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E) {
-			return;
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
+			return message;
 		}
 		return roomE2E.decrypt(message);
 	};
 
 	decryptFileContent = async (file: IServerAttachment) => {
 		const roomE2E = await this.getRoomInstance(file.rid);
-
-		if (!roomE2E) {
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
 			return file;
 		}
 
@@ -677,7 +671,7 @@ class Encryption {
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
-		if (!roomE2E) {
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
 			return { file };
 		}
 		return roomE2E.encryptFile(rid, file);
@@ -733,7 +727,12 @@ class Encryption {
 		Promise.all(messages.map((m: Partial<IMessage>) => this.decryptMessage(m as IMessage)));
 
 	// Decrypt multiple subscriptions
-	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+	decryptSubscriptions = (subscriptions: ISubscription[]) => {
+		if (!this.ready) {
+			return subscriptions;
+		}
+		return Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+	};
 
 	// Decrypt multiple files
 	decryptFiles = (files: IServerAttachment[]) => Promise.all(files.map(f => this.decryptFileContent(f)));
