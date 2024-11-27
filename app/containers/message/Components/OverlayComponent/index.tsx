@@ -9,17 +9,19 @@ import { CustomIcon, TIconsName } from '../../../CustomIcon';
 const OverlayComponent = ({
 	loading = false,
 	style = {},
-	iconName
+	iconName,
+	showBackground = true
 }: {
 	loading: boolean;
 	style: StyleProp<ViewStyle>;
 	iconName: TIconsName;
+	showBackground?: boolean;
 }) => {
 	const { colors } = useTheme();
 
 	return (
 		<>
-			<View style={[style, styles.blurView, { backgroundColor: colors.surfaceNeutral }]} />
+			{showBackground ? <View style={[style, styles.blurView, { backgroundColor: colors.surfaceNeutral }]} /> : null}
 			<View style={[style, styles.blurIndicator]}>
 				{loading ? <RCActivityIndicator size={54} /> : <CustomIcon name={iconName} size={54} />}
 			</View>
