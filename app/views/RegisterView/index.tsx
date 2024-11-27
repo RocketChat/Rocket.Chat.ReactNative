@@ -4,24 +4,24 @@ import RNPickerSelect from 'react-native-picker-select';
 import parse from 'url-parse';
 import { useForm, Controller } from 'react-hook-form';
 
-import { loginRequest } from '../actions/login';
-import Button from '../containers/Button';
-import FormContainer, { FormContainerInner } from '../containers/FormContainer';
-import * as HeaderButton from '../containers/HeaderButton';
-import LoginServices from '../containers/LoginServices';
-import { FormTextInput } from '../containers/TextInput';
-import { IBaseScreen } from '../definitions';
-import I18n from '../i18n';
-import { getShowLoginButton } from '../selectors/login';
-import { OutsideParamList } from '../stacks/types';
-import { useTheme } from '../theme';
-import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
-import log, { events, logEvent } from '../lib/methods/helpers/log';
-import sharedStyles from './Styles';
-import { Services } from '../lib/services';
-import UGCRules from '../containers/UserGeneratedContentRules';
-import { useAppSelector } from '../lib/hooks';
-import { CustomIcon, TIconsName } from '../containers/CustomIcon';
+import { loginRequest } from '../../actions/login';
+import Button from '../../containers/Button';
+import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
+import * as HeaderButton from '../../containers/HeaderButton';
+import LoginServices from '../../containers/LoginServices';
+import { FormTextInput } from '../../containers/TextInput';
+import { IBaseScreen } from '../../definitions';
+import I18n from '../../i18n';
+import { getShowLoginButton } from '../../selectors/login';
+import { OutsideParamList } from '../../stacks/types';
+import { useTheme } from '../../theme';
+import { showErrorAlert, isValidEmail } from '../../lib/methods/helpers';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
+import sharedStyles from '../Styles';
+import { Services } from '../../lib/services';
+import UGCRules from '../../containers/UserGeneratedContentRules';
+import { useAppSelector } from '../../lib/hooks';
+import PasswordTips from './PasswordTips';
 
 const styles = StyleSheet.create({
 	title: {
@@ -52,59 +52,8 @@ const styles = StyleSheet.create({
 	},
 	loginButton: {
 		marginTop: 12
-	},
-	tipContainer: {
-		flexDirection: 'row'
-	},
-	PasswordTipsTitle: {
-		...sharedStyles.textMedium,
-		fontSize: 14,
-		lineHeight: 20
-	},
-	tips: {
-		gap: 8,
-		paddingTop: 8
 	}
 });
-
-const Tip = ({ type, description }: { type?: string; description: string }) => {
-	const { colors } = useTheme();
-
-	let icon: TIconsName = 'info';
-	let color = colors.fontDefault;
-	if (type === 'success') {
-		icon = 'success-circle';
-		color = colors.statusFontSuccess;
-	}
-	if (type === 'error') {
-		icon = 'error-circle';
-		color = colors.statusFontDanger;
-	}
-	return (
-		<View accessibilityLabel={description} style={styles.tipContainer}>
-			<CustomIcon color={color} name={icon} size={16} style={{ marginRight: 4 }} />
-			<Text>{description}</Text>
-		</View>
-	);
-};
-
-const PasswordTips = () => {
-	const { colors } = useTheme();
-
-	return (
-		<View>
-			<Text style={[styles.PasswordTipsTitle, { color: colors.fontDefault }]}>You password must have:</Text>
-			<View style={styles.tips}>
-				<Tip type='success' description='At least 8 characters' />
-				<Tip type='error' description='At most 24 characters' />
-				<Tip description='Max. 2 repeating characters' />
-				<Tip description='At least 1 lowercase letter' />
-				<Tip description='At least 1 number' />
-				<Tip description='At least 1 symbol' />
-			</View>
-		</View>
-	);
-};
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
