@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Keyboard, StyleSheet, Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import parse from 'url-parse';
+import * as yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 
 import { loginRequest } from '../../actions/login';
@@ -55,6 +56,19 @@ const styles = StyleSheet.create({
 	}
 });
 
+const passwordRules = /^(?!.*(.)\1{2})^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
+
+const validationSchema = yup.object().shape({
+	name: yup.string().min(1).required(),
+	email: yup.string().email().required(),
+	username: yup.string().min(1).required(),
+	password: yup.string().matches(passwordRules).required(),
+	confirmPassword: yup
+		.string()
+		.oneOf([yup.ref('password'), null])
+		.required()
+});
+
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
 const RegisterView = ({ navigation, route, dispatch }: IProps) => {
@@ -87,7 +101,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 
 	const { colors } = useTheme();
 	const [saving, setSaving] = useState(false);
-	const { control, handleSubmit, setFocus } = useForm({
+	const { control, handleSubmit, setFocus, getValues } = useForm({
 		defaultValues: {
 			name: '',
 			email: '',
@@ -109,14 +123,25 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
 	};
 
+	const valid = () => {
+		const isValid = validationSchema.isValidSync(getValues());
+		let requiredCheck = true;
+		Object.keys(parsedCustomFields).forEach((key: string) => {
+			if (parsedCustomFields[key].required) {
+				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
+			}
+		});
+		return isValid && requiredCheck;
+	};
+
 	const onSubmit = async (data: any) => {
 		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 
 		const { name, email, password, username } = data;
 
-		/* if (!this.valid()) {
+		if (!valid()) {
 			return;
-		} */
+		}
 
 		if (!isValidEmail(email)) {
 			showErrorAlert(I18n.t('Invalid_email'), I18n.t('Error'));
@@ -221,7 +246,9 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: route?.params?.title,
-			headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
+			headerRight: () => (
+				<HeaderButton.Legal accessibilityLabel={I18n.t('Legal')} testID='register-view-more' navigation={navigation} />
+			)
 		});
 	}, []);
 
