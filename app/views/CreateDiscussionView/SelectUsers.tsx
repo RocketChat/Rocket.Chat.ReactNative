@@ -69,7 +69,7 @@ const SelectUsers = ({
 					text: { text: getRoomTitle(user) },
 					imageUrl: getAvatar(user)
 				}))}
-				placeholder={{ text: `${I18n.t('Select_Users')}...` }}
+				placeholder={{ text: `${I18n.t('Select_Users')}` }}
 				context={BlockContext.FORM}
 				multiselect
 			/>

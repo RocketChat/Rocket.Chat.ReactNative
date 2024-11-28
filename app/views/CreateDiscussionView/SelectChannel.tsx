@@ -73,7 +73,7 @@ const SelectChannel = ({
 					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => getChannels('')}
-				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
+				placeholder={{ text: `${I18n.t('Select_a_Channel')}` }}
 			/>
 		</View>
 	);
