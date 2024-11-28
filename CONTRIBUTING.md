@@ -103,8 +103,6 @@ We use [Detox](https://github.com/wix/Detox) framework to end-to-end test our ap
 
 As soon as your changes are ready, you can open a Pull Request.
 
-The title of your PR should be descriptive, including either [NEW], [IMPROVEMENT] or [FIX] at the beginning, e.g. [FIX] App crashing on startup.
+Refer to [Pull request's tags](https://developer.rocket.chat/docs/pull-requests-tags) to write a good PR title.
 
-You may share working results prior to finishing, please include [WIP] in the title. This way anyone can look at your code: you can ask for help within the PR if you don't know how to solve a problem.
-
-Your PR is automatically inspected by various tools, check their response and try to improve your code accordingly. Requests that fail to build or have wrong coding style won't be merged.
+Open your PR as draft before asking for review. Your PR is automatically inspected by various tools, check their response and try to improve your code accordingly. Requests that fail to build or have wrong coding style won't be merged.
