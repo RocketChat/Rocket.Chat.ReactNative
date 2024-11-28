@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, StyleSheet, Text, View, TextInput as RNTextInput } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { Keyboard, StyleSheet, Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import parse from 'url-parse';
 import { useForm, Controller } from 'react-hook-form';
@@ -83,12 +83,11 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 	};
 
 	const parsedCustomFields = getParsedCustomFields();
-	const customFields = getCustomFields();
-	const avatarUrl = useRef<RNTextInput | null>(null);
+	const [customFields, setCustomFields] = useState(getCustomFields());
 
 	const { colors } = useTheme();
 	const [saving, setSaving] = useState(false);
-	const { control, handleSubmit, setFocus, register } = useForm({
+	const { control, handleSubmit, setFocus } = useForm({
 		defaultValues: {
 			name: '',
 			email: '',
@@ -99,14 +98,12 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 	});
 
 	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
-		useAppSelector(state => {
-			return {
-				...state.settings,
-				showLoginButton: getShowLoginButton(state),
-				Site_Url: state.settings.Site_Url as string,
-				Accounts_CustomFields: state.settings.Accounts_CustomFields as string
-			};
-		});
+		useAppSelector(state => ({
+			...state.settings,
+			showLoginButton: getShowLoginButton(state),
+			Site_Url: state.settings.Site_Url as string,
+			Accounts_CustomFields: state.settings.Accounts_CustomFields as string
+		}));
 
 	const login = () => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
@@ -173,7 +170,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 									onValueChange={value => {
 										const newValue: { [key: string]: string | number } = {};
 										newValue[key] = value;
-										/* 		this.setState({ customFields: { ...customFields, ...newValue } }); */
+										setCustomFields({ customFields: { ...customFields, ...newValue } });
 									}}
 									value={customFields[key]}>
 									<FormTextInput
@@ -202,14 +199,13 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 								onChangeText={(value: string) => {
 									const newValue: { [key: string]: string | number } = {};
 									newValue[key] = value;
-									/* this.setState({ customFields: { ...customFields, ...newValue } }); */
+									setCustomFields({ customFields: { ...customFields, ...newValue } });
 								}}
 								onSubmitEditing={() => {
 									if (array.length - 1 > index) {
 										// @ts-ignore
 										return this[array[index + 1]].focus();
 									}
-									avatarUrl?.current?.focus();
 								}}
 								containerStyle={styles.inputContainer}
 							/>
@@ -224,7 +220,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: route?.params?.title ?? 'Rocket.Chat',
+			title: route?.params?.title,
 			headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
 		});
 	}, []);
@@ -254,7 +250,6 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 							/>
 						)}
 					/>
-
 					<Controller
 						name='username'
 						control={control}
@@ -276,7 +271,6 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 							/>
 						)}
 					/>
-
 					<Controller
 						name='email'
 						control={control}
@@ -299,7 +293,6 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 							/>
 						)}
 					/>
-
 					<Controller
 						name='password'
 						control={control}
