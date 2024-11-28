@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import parse from 'url-parse';
 import * as yup from 'yup';
@@ -17,47 +17,16 @@ import { getShowLoginButton } from '../../selectors/login';
 import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import { showErrorAlert, isValidEmail } from '../../lib/methods/helpers';
-import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import sharedStyles from '../Styles';
+import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
 import PasswordTips from './PasswordTips';
-
-const styles = StyleSheet.create({
-	title: {
-		...sharedStyles.textBold,
-		fontSize: 22
-	},
-	inputs: {
-		gap: 12,
-		paddingTop: 24,
-		paddingBottom: 12
-	},
-	inputContainer: {
-		marginTop: 0,
-		marginBottom: 0
-	},
-	bottomContainer: {
-		marginBottom: 32
-	},
-	bottomContainerText: {
-		...sharedStyles.textMedium,
-		fontSize: 14,
-		lineHeight: 22,
-		alignSelf: 'center'
-	},
-	registerButton: {
-		marginTop: 36,
-		marginBottom: 32
-	},
-	loginButton: {
-		marginTop: 12
-	}
-});
+import getParsedCustomFields from './methods/getParsedCustomFields';
+import getCustomFields from './methods/getCustomFields';
+import styles from './styles';
 
 const passwordRules = /^(?!.*(.)\1{2})^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
-
 const validationSchema = yup.object().shape({
 	name: yup.string().min(1).required(),
 	email: yup.string().email().required(),
@@ -72,35 +41,14 @@ const validationSchema = yup.object().shape({
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
 const RegisterView = ({ navigation, route, dispatch }: IProps) => {
-	const getCustomFields = () => {
-		let customFields: any;
-		Object.keys(parsedCustomFields).forEach((key: string) => {
-			if (parsedCustomFields[key].defaultValue) {
-				customFields[key] = parsedCustomFields[key].defaultValue;
-			}
-		});
-
-		return customFields;
-	};
-
-	const getParsedCustomFields = () => {
-		let parsedCustomFields: any = {};
-		if (Accounts_CustomFields) {
-			try {
-				parsedCustomFields = JSON.parse(Accounts_CustomFields);
-			} catch (e) {
-				log(e);
-			}
-		}
-
-		return parsedCustomFields;
-	};
-
-	const parsedCustomFields = getParsedCustomFields();
-	const [customFields, setCustomFields] = useState(getCustomFields());
-
 	const { colors } = useTheme();
-	const [saving, setSaving] = useState(false);
+	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
+		useAppSelector(state => ({
+			...state.settings,
+			showLoginButton: getShowLoginButton(state),
+			Site_Url: state.settings.Site_Url as string,
+			Accounts_CustomFields: state.settings.Accounts_CustomFields as string
+		}));
 	const { control, handleSubmit, setFocus, getValues } = useForm({
 		defaultValues: {
 			name: '',
@@ -110,20 +58,15 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 			username: ''
 		}
 	});
-
-	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
-		useAppSelector(state => ({
-			...state.settings,
-			showLoginButton: getShowLoginButton(state),
-			Site_Url: state.settings.Site_Url as string,
-			Accounts_CustomFields: state.settings.Accounts_CustomFields as string
-		}));
+	const parsedCustomFields = getParsedCustomFields(Accounts_CustomFields);
+	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
+	const [saving, setSaving] = useState(false);
 
 	const login = () => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
 	};
 
-	const valid = () => {
+	const validateDefaultFormInfo = () => {
 		const isValid = validationSchema.isValidSync(getValues());
 		let requiredCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
@@ -139,7 +82,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 
 		const { name, email, password, username } = data;
 
-		if (!valid()) {
+		if (!validateDefaultFormInfo()) {
 			return;
 		}
 
@@ -256,7 +199,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 		<FormContainer testID='register-view'>
 			<FormContainerInner>
 				<LoginServices separator />
-				<Text style={[styles.title, sharedStyles.textBold, { color: colors.fontTitlesLabels }]}>{I18n.t('Sign_Up')}</Text>
+				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Sign_Up')}</Text>
 				<View style={styles.inputs}>
 					<Controller
 						name='name'

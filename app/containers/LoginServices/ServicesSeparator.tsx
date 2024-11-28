@@ -8,7 +8,7 @@ import I18n from '../../i18n';
 import { IServicesSeparator } from './interfaces';
 
 const ServicesSeparator = ({ services, separator, collapsed, onPress }: IServicesSeparator) => {
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 
 	const { length } = Object.values(services);
 
@@ -22,12 +22,12 @@ const ServicesSeparator = ({ services, separator, collapsed, onPress }: IService
 					style={styles.options}
 					color={colors.fontHint}
 				/>
-				<OrSeparator theme={theme} />
+				<OrSeparator />
 			</>
 		);
 	}
 	if (length > 0 && separator) {
-		return <OrSeparator theme={theme} />;
+		return <OrSeparator />;
 	}
 	return null;
 };
