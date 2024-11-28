@@ -4,7 +4,7 @@ Great to have you here! Here are a few ways you can help make this project bette
 
 ## Setting up a development environment
 
-Refer to [React Native environment setup](https://reactnative.dev/docs/environment-setup) to make sure everything is up and running.
+Refer to [React Native environment setup](https://reactnative.dev/docs/set-up-your-environment) to make sure everything is up and running.
 Follow the `React Native CLI Quickstart` section as we don't support Expo managed flow.
 
 *Note: you'll need a MacOS to run iOS apps*
