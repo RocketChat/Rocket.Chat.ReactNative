@@ -3,7 +3,9 @@ import { Keyboard, Text, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import parse from 'url-parse';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
@@ -40,7 +42,8 @@ const validationSchema = yup.object().shape({
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
-const RegisterView = ({ navigation, route, dispatch }: IProps) => {
+const RegisterView = ({ navigation, route }: IProps) => {
+	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
 		useAppSelector(state => ({
@@ -49,19 +52,26 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 			Site_Url: state.settings.Site_Url as string,
 			Accounts_CustomFields: state.settings.Accounts_CustomFields as string
 		}));
-	const { control, handleSubmit, setFocus, getValues } = useForm({
+	const {
+		control,
+		handleSubmit,
+		setFocus,
+		getValues,
+		formState: { isValid }
+	} = useForm({
+		mode: 'onChange',
 		defaultValues: {
 			name: '',
 			email: '',
 			password: '',
 			confirmPassword: '',
 			username: ''
-		}
+		},
+		resolver: yupResolver(validationSchema)
 	});
 	const parsedCustomFields = getParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
-
 	const login = () => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
 	};
@@ -305,6 +315,8 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 				</View>
 				<PasswordTips />
 				<Button
+					disabled={!isValid}
+					testID='register-view-submit'
 					title={I18n.t('Register')}
 					type='primary'
 					onPress={handleSubmit(onSubmit)}
