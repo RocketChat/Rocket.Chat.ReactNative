@@ -859,5 +859,13 @@
   "Your_invite_link_will_never_expire": "Seu link de convite nunca irá vencer.",
   "Your_password_is": "Sua senha é",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace"
+  "Your_workspace": "Sua workspace",
+  "At_Least_1_Lowercase_Letter": "Pelo menos 1 letra minúscula",
+  "At_Least_1_Number": "Pelo menos 1 número",
+  "At_Least_1_Symbol": "Pelo menos 1 símbolo",
+  "At_Least_8_Characters": "Pelo menos 8 caracteres",
+  "At_Most_24_Characters": "No máximo 24 caracteres",
+  "Confirm_Password": "Confirmar Senha",
+  "Max_2_Repeating_Characters": "No máximo 2 caracteres repetidos",
+  "Your_Password_Must_Have": "Sua senha deve conter:"
 }

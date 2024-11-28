@@ -384,5 +384,3 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 };
 
 export default RegisterView;
-
-// Update I18n and test again
