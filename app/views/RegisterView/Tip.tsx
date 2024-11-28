@@ -29,7 +29,7 @@ const Tip = ({ type, description }: ITipProps) => {
 		color = colors.statusFontDanger;
 	}
 	return (
-		<View accessibilityLabel={description} style={styles.container}>
+		<View accessible accessibilityLabel={description} style={styles.container}>
 			<CustomIcon color={color} name={icon} size={16} style={{ marginRight: 4 }} />
 			<Text>{description}</Text>
 		</View>

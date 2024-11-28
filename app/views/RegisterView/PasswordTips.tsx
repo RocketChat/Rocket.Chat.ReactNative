@@ -22,7 +22,9 @@ const PasswordTips = () => {
 
 	return (
 		<View>
-			<Text style={[styles.PasswordTipsTitle, { color: colors.fontDefault }]}>You password must have:</Text>
+			<Text accessible style={[styles.PasswordTipsTitle, { color: colors.fontDefault }]}>
+				You password must have:
+			</Text>
 			<View style={styles.tips}>
 				<Tip type='success' description='At least 8 characters' />
 				<Tip type='error' description='At most 24 characters' />

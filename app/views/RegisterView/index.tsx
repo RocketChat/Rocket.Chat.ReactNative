@@ -317,6 +317,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 						control={control}
 						render={({ field: { onChange, value, ref } }) => (
 							<FormTextInput
+								accessibilityLabel='Confirm Password'
 								inputRef={ref}
 								testID='register-view-confirm-password'
 								textContentType='newPassword'
