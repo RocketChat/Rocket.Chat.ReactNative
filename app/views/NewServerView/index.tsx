@@ -315,7 +315,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				style={formContainerStyle}
 				showAppVersion={showBottomInfo}
 				testID='new-server-view'
-				keyboardShouldPersistTaps='never'>
+				keyboardShouldPersistTaps='handled'>
 				<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
 					<Image
 						style={[
