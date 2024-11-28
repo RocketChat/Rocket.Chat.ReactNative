@@ -317,7 +317,7 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 						control={control}
 						render={({ field: { onChange, value, ref } }) => (
 							<FormTextInput
-								accessibilityLabel='Confirm Password'
+								accessibilityLabel={`${I18n.t('Confirm_Password')}`}
 								inputRef={ref}
 								testID='register-view-confirm-password'
 								textContentType='newPassword'
@@ -357,3 +357,5 @@ const RegisterView = ({ navigation, route, dispatch }: IProps) => {
 };
 
 export default RegisterView;
+
+// Update I18n and test again

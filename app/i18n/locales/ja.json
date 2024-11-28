@@ -31,6 +31,11 @@
   "are_typing": "が入力中",
   "Are_you_sure_question_mark": "よろしいですか？",
   "Are_you_sure_you_want_to_leave_the_room": "{{room}}を退出してもよろしいですか？",
+  "At_Least_1_Lowercase_Letter": "少なくとも1つの小文字",
+  "At_Least_1_Number": "少なくとも1つの数",
+  "At_Least_1_Symbol": "少なくとも1つのシンボル",
+  "At_Least_8_Characters": "少なくとも8文字",
+  "At_Most_24_Characters": "最大24文字",
   "Audio": "音声",
   "Auto_Translate": "自動翻訳",
   "Automatic": "自動",
@@ -70,6 +75,7 @@
   "Code_or_password_invalid": "無効なコードまたはパスワード",
   "Collaborative": "コラボ",
   "Confirm": "承認",
+  "Confirm_Password": "パスワードを認証する",
   "Connect": "接続",
   "Connecting": "接続中...",
   "Contact_us": "お問い合わせ",
@@ -212,6 +218,7 @@
   "Login": "ログイン",
   "Login_error": "証明書が承認されませんでした。再度お試しください。",
   "Logout": "ログアウト",
+  "Max_2_Repeating_Characters": "マックス。 2繰り返し文字",
   "Max_number_of_uses": "最大利用数",
   "Members": "メンバー",
   "members": "メンバー",
@@ -423,5 +430,6 @@
   "Your_invite_link_will_expire_after__usesLeft__uses": "招待リンクはあと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
-  "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。"
+  "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
 }

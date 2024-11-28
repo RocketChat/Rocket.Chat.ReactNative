@@ -30,6 +30,11 @@
   "are_typing": "estão a escrever",
   "Are_you_sure_question_mark": "Tem a certeza?",
   "Are_you_sure_you_want_to_leave_the_room": "Tem certeza de que quer sair da sala {{room}}?",
+  "At_Least_1_Lowercase_Letter": "Pelo menos 1 letra minúscula",
+  "At_Least_1_Number": "Pelo menos 1 número",
+  "At_Least_1_Symbol": "Pelo menos 1 símbolo",
+  "At_Least_8_Characters": "Pelo menos 8 caracteres",
+  "At_Most_24_Characters": "No máximo 24 caracteres",
   "Audio": "Áudio",
   "Auto_Translate": "Auto-Tradução",
   "Automatic": "Automático",
@@ -67,6 +72,7 @@
   "Code_or_password_invalid": "Código ou senha inválidos",
   "Collaborative": "Colaborativa",
   "Confirm": "Confirmar",
+  "Confirm_Password": "Confirme sua senha",
   "Connect": "Ligar",
   "Connecting": "A ligar...",
   "Contact_us": "Contacte-nos",
@@ -206,6 +212,7 @@
   "Login": "Entrar",
   "Login_error": "As suas credenciais foram rejeitadas! Por favor, tente novamente.",
   "Logout": "Sair",
+  "Max_2_Repeating_Characters": "Máx. 2 caracteres repetidos",
   "Max_number_of_users_allowed_is_number": "O número máximo de utilizadores permitido é {{maxUsers}}",
   "Max_number_of_uses": "Número máximo de utilizações",
   "Members": "Membros",
@@ -384,5 +391,6 @@
   "You_colon": "Você: ",
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
-  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!"
+  "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
+  "Your_Password_Must_Have": "Sua senha deve ter:"
 }
