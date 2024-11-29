@@ -2,16 +2,12 @@ import { useEffect, useState } from 'react';
 import { Subscription } from 'rxjs';
 
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { TSubscriptionModel } from '../../definitions';
+import { ISubscription } from '../../definitions';
 
-interface IResult {
-	encrypted: TSubscriptionModel['encrypted'];
-	E2EKey: TSubscriptionModel['E2EKey'];
-}
+type TResult = ISubscription | null;
 
-export const useEncrypted = (rid: string): IResult => {
-	const [encrypted, setEncrypted] = useState(false);
-	const [E2EKey, setE2EKey] = useState<IResult['E2EKey']>();
+export const useRoom = (rid: string): TResult => {
+	const [room, setRoom] = useState<TResult>(null);
 
 	useEffect(() => {
 		let subSubscription: Subscription;
@@ -21,8 +17,7 @@ export const useEncrypted = (rid: string): IResult => {
 			}
 			const observable = sub.observe();
 			subSubscription = observable.subscribe(s => {
-				setE2EKey(s.E2EKey);
-				setEncrypted(!!s.encrypted);
+				setRoom(s.asPlain());
 			});
 		});
 
@@ -33,8 +28,5 @@ export const useEncrypted = (rid: string): IResult => {
 		};
 	}, []);
 
-	return {
-		encrypted,
-		E2EKey
-	};
+	return room;
 };
