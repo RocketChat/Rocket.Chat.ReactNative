@@ -16,12 +16,12 @@ import { useRoom } from './useRoom';
 
 const getRoomTypeI18n = (t?: string, teamMain?: boolean) => {
 	if (teamMain) {
-		return 'team';
+		return 'Team';
 	}
 	if (t === 'd') {
-		return 'direct_message';
+		return 'Direct_message';
 	}
-	return 'channel';
+	return 'Channel';
 };
 
 const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
@@ -51,7 +51,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={I18n.t('Encrypt__room_type__', { room_type: I18n.t(roomType) })}
+						title={I18n.t('Encrypt__room_type__', { room_type: I18n.t(roomType).toLowerCase() })}
 						right={() => <Switch value={room?.encrypted} onValueChange={() => toggleRoomE2EE(rid)} />}
 						translateTitle={false}
 					/>

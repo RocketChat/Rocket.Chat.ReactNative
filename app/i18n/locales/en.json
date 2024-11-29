@@ -875,6 +875,5 @@
   "Encrypt__room_type__": "Encrypt {{room_type}}",
   "Encrypt__room_type__info__room_name__": "Ensure only intended recipients can access messages and files in {{room_name}}.",
   "Reset_encryption_keys": "Reset encryption keys",
-  "Reset_encryption_keys_info__room_type__": "Resetting E2EE keys is only recommend if no {{room_type}} member has a valid key to regain access to the previously encrypted content.",
-  "direct_message": "direct message"
+  "Reset_encryption_keys_info__room_type__": "Resetting E2EE keys is only recommend if no {{room_type}} member has a valid key to regain access to the previously encrypted content."
 }
