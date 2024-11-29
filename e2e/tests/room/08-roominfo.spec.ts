@@ -141,10 +141,11 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-announcement')).replaceText('abc');
 				await element(by.id('room-info-edit-view-announcement')).tapReturnKey();
 				await element(by.id('room-info-edit-view-description')).replaceText('abc');
-				await element(by.id('room-info-edit-view-announcement')).tapReturnKey();
+				await element(by.id('room-info-edit-view-description')).tapReturnKey();
 				await element(by.id('room-info-edit-view-password')).replaceText('abc');
 				await element(by.id('room-info-edit-view-password')).tapReturnKey();
 				await swipe('down'); // dismiss keyboard
+				await swipe('up');
 				await element(by.id('room-info-edit-view-t')).tap();
 				await swipe('up');
 				await element(by.id('room-info-edit-view-ro')).tap();
@@ -153,9 +154,9 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-reset')).tap();
 				// after reset
 				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(room);
-				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-topic'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-announcement'))).toHaveText('');
+				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(true);
 				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(false);
