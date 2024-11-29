@@ -13,7 +13,7 @@ class ThemeManagerModule(reactContext: ReactApplicationContext) : ReactContextBa
     override fun getName() = "ThemeManager"
 
     @ReactMethod
-    fun setAppTheme(isDarkMode: Boolean) {
+    fun setDarkTheme(isDarkMode: Boolean) {
         if (isDarkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {

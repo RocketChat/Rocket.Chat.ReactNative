@@ -107,7 +107,7 @@ export default class Root extends React.Component<{}, IState> {
 			const systemTheme = Appearance.getColorScheme();
 			const isDarkTheme = (theme as IThemePreference).currentTheme === 'dark' || (theme as IThemePreference).currentTheme === 'automatic' && systemTheme === 'dark';
 			
-			ThemeManager.setAppTheme(isDarkTheme);
+			ThemeManager.setDarkTheme(isDarkTheme);
 		}
 
 		setNativeTheme(theme);
@@ -184,7 +184,7 @@ export default class Root extends React.Component<{}, IState> {
 			const systemTheme = Appearance.getColorScheme();
 			const isDarkTheme = (newTheme as IThemePreference).currentTheme === 'dark' || (newTheme as IThemePreference).currentTheme === 'automatic' && systemTheme === 'dark';
 			
-			ThemeManager.setAppTheme(isDarkTheme);
+			ThemeManager.setDarkTheme(isDarkTheme);
 		}
 
 		// change theme state
