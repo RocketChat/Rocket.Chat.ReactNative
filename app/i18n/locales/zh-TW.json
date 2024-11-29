@@ -10,6 +10,7 @@
   "Admin_Panel": "管理者面板",
   "After_seconds_set_by_admin": "{{seconds}} 秒 (管理員設定)",
   "Agent": "代理",
+  "AI_actions": "AI 操作",
   "AirGapped_workspace_read_only_description": "管理員可以通過將其連接到互聯網或升級到高級計劃來恢復完整功能。",
   "AirGapped_workspace_read_only_share_extension_title": "共享被禁用，因為工作區域處於唯讀模式。",
   "AirGapped_workspace_read_only_title": "工作區域為唯讀模式。",

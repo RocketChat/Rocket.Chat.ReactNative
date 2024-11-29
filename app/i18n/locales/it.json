@@ -14,6 +14,7 @@
   "Admin_Panel": "Amministrazione",
   "After_seconds_set_by_admin": "Dopo {{seconds}} secondi (impostati dall'admin)",
   "Agent": "Agente",
+  "AI_actions": "Azioni AI",
   "AirGapped_workspace_read_only_description": "Gli amministratori possono ripristinare la funzionalità completa collegandosi a Internet o aggiornando a un piano premium.",
   "AirGapped_workspace_read_only_share_extension_title": "La condivisione è disabilitata perché l'area di lavoro è in modalità di sola lettura.",
   "AirGapped_workspace_read_only_title": "Workspace in modalità di sola lettura.",

@@ -43,3 +43,4 @@ export * from './checkSupportedVersions';
 export * from './getServerInfo';
 export * from './isImageBase64';
 export * from './getQuoteMessageLink';
+export * from './getAppActions';

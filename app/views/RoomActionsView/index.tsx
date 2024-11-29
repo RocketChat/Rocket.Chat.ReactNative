@@ -55,6 +55,7 @@ import { TNavigation } from '../../stacks/stackType';
 import Switch from '../../containers/Switch';
 import * as EncryptionUtils from '../../lib/encryption/utils';
 import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
+import AIAppActionButtons from './components/AIAppActionButtons';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -204,7 +205,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				}
 			}
 
-			if (room && room.t !== 'd' && (await this.canViewMembers())) {
+			if (room && room.t !== 'd' && await this.canViewMembers()) {
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
@@ -1059,6 +1060,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					<CallSection rid={rid} disabled={hasE2EEWarning} />
+					<AIAppActionButtons room={room} />
 					{this.renderE2EEncryption()}
 					<List.Section>
 						<List.Separator />

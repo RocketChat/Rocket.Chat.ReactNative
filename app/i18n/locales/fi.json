@@ -20,6 +20,7 @@
   "Admin_Panel": "Hallintapaneeli",
   "After_seconds_set_by_admin": "{{seconds}} sekunnin kuluttua (järjestelmänvalvojan asettama)",
   "Agent": "Agentti",
+  "AI_actions": "AI-toiminnot",
   "AirGapped_workspace_read_only_description": "Järjestelmänvalvojat voivat palauttaa täyden toiminnallisuuden liittämällä sen internetiin tai päivittämällä premium-suunnitelmaan.",
   "AirGapped_workspace_read_only_share_extension_title": "Jakaminen on poistettu käytöstä, koska työtila on vain luku -tilassa.",
   "AirGapped_workspace_read_only_title": "Työtila vain luku -tilassa.",

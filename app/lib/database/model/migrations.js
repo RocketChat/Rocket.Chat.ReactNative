@@ -310,6 +310,23 @@ export default schemaMigrations({
 					columns: [{ name: 'content', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 26,
+			steps: [
+				createTable({
+					name: 'app_actions_buttons',
+					columns: [
+						{ name: 'app_id', type: 'string' },
+						{ name: 'action_id', type: 'string' },
+						{ name: 'context', type: 'string' },
+						{ name: 'label_i18n', type: 'string' },
+						{ name: 'variant', type: 'string', isOptional: true },
+						{ name: 'category', type: 'string', isOptional: true },
+						{ name: 'when', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

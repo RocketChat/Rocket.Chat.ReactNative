@@ -87,6 +87,7 @@ import {
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
+import AIAppActionsView from '../views/AIAppActionsView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
@@ -107,6 +108,7 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='RoomMembersView' component={RoomMembersView} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='DiscussionsView' component={DiscussionsView} />
+			<ChatsStack.Screen name='AIAppActionsView' component={AIAppActionsView} />
 			<ChatsStack.Screen
 				name='SearchMessagesView'
 				// @ts-ignore

@@ -4,6 +4,7 @@ import logger from '@nozbe/watermelondb/utils/common/logger';
 
 import { appGroupPath } from '../methods/appGroup';
 import { isOfficial } from '../constants/environment';
+import AppActionButton from './model/AppActionButton';
 import Subscription from './model/Subscription';
 import Room from './model/Room';
 import Message from './model/Message';
@@ -58,7 +59,8 @@ export const getDatabase = (database = ''): Database => {
 			Role,
 			Permission,
 			SlashCommand,
-			User
+			User,
+			AppActionButton
 		]
 	});
 };

@@ -27,6 +27,7 @@
   "admin-video-conf-provider-not-configured-header": "कॉन्फ़्रेंस कॉल सक्षम नहीं है",
   "After_seconds_set_by_admin": "{{seconds}} सेकंड्स के बाद (व्यवस्थापक द्वारा सेट किया गया है)",
   "Agent": "एजेंट",
+  "AI_actions": "एआई क्रियाएँ",
   "AirGapped_workspace_read_only_description": "व्यवस्थापकों के पास इसे इंटरनेट से कनेक्ट करके या प्रीमियम योजना में अपग्रेड करके पूर्ण कार्यक्षमता को पुनर्स्थापित करने का विकल्प है।",
   "AirGapped_workspace_read_only_share_extension_title": "कार्यस्थान केवल-पढ़ने के मोड में होने के कारण साझा करना अक्षम है।",
   "AirGapped_workspace_read_only_title": "कार्यस्थान केवल-पढ़ने के मोड में है।",

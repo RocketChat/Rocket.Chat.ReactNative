@@ -16,7 +16,8 @@ export type TAppDatabaseNames =
 	| typeof models.ROLES_TABLE
 	| typeof models.PERMISSIONS_TABLE
 	| typeof models.SLASH_COMMANDS_TABLE
-	| typeof models.USERS_TABLE;
+	| typeof models.USERS_TABLE
+	| typeof models.APP_ACTION_BUTTON_TABLE;
 
 // Verify if T extends one type from TAppDatabaseNames, and if is truly,
 // returns the specific model type.
@@ -47,6 +48,8 @@ type ObjectType<T> = T extends typeof models.SUBSCRIPTIONS_TABLE
 	? definitions.TSlashCommandModel
 	: T extends typeof models.USERS_TABLE
 	? definitions.TUserModel
+	: T extends typeof models.APP_ACTION_BUTTON_TABLE
+	? definitions.TAppActionButtonModel
 	: never;
 
 export type TAppDatabase = {

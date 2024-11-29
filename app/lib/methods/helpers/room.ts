@@ -62,4 +62,43 @@ export const getBadgeColor = ({
 export const makeThreadName = (messageRecord: { id?: string; msg?: string; attachments?: IAttachment[] }): string | undefined =>
 	messageRecord.msg || messageRecord?.attachments?.[0]?.title;
 
+export const isDirectRoom = ({ t }: { t?: TSubscriptionModel['t'] }) => t === SubscriptionType.DIRECT;
+
+export const isMultipleDirectRoom = ({ t, uids }: { t?: TSubscriptionModel['t']; uids?: TSubscriptionModel['uids'] }) =>
+	isDirectRoom({ t }) && (uids?.length ?? 0) > 2;
+
+export const isPublicRoom = ({ t }: { t?: TSubscriptionModel['t'] }) => t === SubscriptionType.CHANNEL;
+
+export const isPrivateRoom = ({ t }: { t?: TSubscriptionModel['t'] }) => t === SubscriptionType.GROUP;
+
 export const isTeamRoom = ({ teamId, joined }: { teamId?: string; joined?: boolean }): boolean => (!!teamId && joined) ?? false;
+
+export const isPublicTeamRoom = ({
+	teamId,
+	joined,
+	t
+}: {
+	teamId?: string;
+	joined?: boolean;
+	t?: TSubscriptionModel['t'];
+}): boolean => isTeamRoom({ teamId, joined }) && isPublicRoom({ t });
+
+export const isPrivateTeamRoom = ({
+	teamId,
+	joined,
+	t
+}: {
+	teamId?: string;
+	joined?: boolean;
+	t?: TSubscriptionModel['t'];
+}): boolean => isTeamRoom({ teamId, joined }) && isPrivateRoom({ t });
+
+export const isDiscussion = ({ prid }: { prid?: TSubscriptionModel['prid'] }) => !!prid;
+
+export const isPublicDiscussion = ({ prid, t }: { prid?: TSubscriptionModel['prid']; t?: TSubscriptionModel['t'] }) =>
+	isDiscussion({ prid }) && isPublicRoom({ t });
+
+export const isPrivateDiscussion = ({ prid, t }: { prid?: TSubscriptionModel['prid']; t?: TSubscriptionModel['t'] }) =>
+	isDiscussion({ prid }) && isPrivateRoom({ t });
+
+export const isOmnichannelRoom = ({ t }: { t?: TSubscriptionModel['t'] }) => t === SubscriptionType.OMNICHANNEL;

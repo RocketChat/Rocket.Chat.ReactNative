@@ -49,9 +49,10 @@ class Sdk {
 			MatchPathPattern<TPath>
 		>
 			? void
-			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>
+			: Serialized<OperationParams<'GET', MatchPathPattern<TPath>>>,
+		apiVersion: string = 'v1'
 	): Promise<Serialized<ResultFor<'GET', MatchPathPattern<TPath>>>> {
-		return this.current.get(endpoint, params);
+		return this.current.get(endpoint, params, undefined, undefined, undefined, apiVersion);
 	}
 
 	post<TPath extends PathFor<'POST'>>(
@@ -63,12 +64,13 @@ class Sdk {
 			MatchPathPattern<TPath>
 		>
 			? void
-			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>
+			: Serialized<OperationParams<'POST', MatchPathPattern<TPath>>>,
+		apiVersion: string = 'v1'
 	): Promise<ResultFor<'POST', MatchPathPattern<TPath>>> {
 		return new Promise(async (resolve, reject) => {
 			const isMethodCall = endpoint?.startsWith('method.call/');
 			try {
-				const result = await this.current.post(endpoint, params);
+				const result = await this.current.post(endpoint, params, undefined, undefined, undefined, apiVersion);
 
 				/**
 				 * if API_Use_REST_For_DDP_Calls is enabled and it's a method call,
