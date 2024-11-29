@@ -183,6 +183,7 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 						) : null}
 
 						<Button
+							testID='create-discussion-submit'
 							disabled={!this.valid()}
 							style={{ marginTop: 24 }}
 							title={I18n.t('Create_Discussion')}
