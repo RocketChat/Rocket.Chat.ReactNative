@@ -396,16 +396,16 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (!rid) {
 			return;
 		}
-		// if (isMasterDetail) {
-		// 	// @ts-ignore TODO: find a way to make this work
-		// 	navigation.navigate('ModalStackNavigator', {
-		// 		screen: 'SearchMessagesView',
-		// 		params: { rid, showCloseModal: true, encrypted }
-		// 	});
-		// } else {
-		// @ts-ignore
-		navigation.navigate('E2EEToggleRoomView', { rid });
-		// }
+		if (isMasterDetail) {
+			// @ts-ignore TODO: find a way to make this work
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'E2EEToggleRoomView',
+				params: { rid }
+			});
+		} else {
+			// @ts-ignore
+			navigation.navigate('E2EEToggleRoomView', { rid });
+		}
 	};
 
 	toggleFollowThread = () => {

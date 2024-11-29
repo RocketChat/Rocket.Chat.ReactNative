@@ -117,6 +117,9 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
+	E2EEToggleRoomView: {
+		rid: string;
+	};
 	ForwardMessageView: {
 		message: TAnyMessageModel;
 	};
