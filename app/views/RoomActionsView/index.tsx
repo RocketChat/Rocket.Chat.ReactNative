@@ -359,20 +359,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return result;
 	};
 
-	// renderEncryptedSwitch = () => {
-	// 	const { room, canToggleEncryption, canEdit } = this.state;
-	// 	const { rid, encrypted } = room;
-	// 	const { serverVersion } = this.props;
-	// 	let hasPermission = false;
-	// 	if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
-	// 		hasPermission = canEdit;
-	// 	} else {
-	// 		hasPermission = canToggleEncryption;
-	// 	}
-	// 	// return <Switch value={encrypted} onValueChange={() => toggleRoomE2EE(rid)} disabled={!hasPermission} />;
-	// 	return
-	// };
-
 	closeLivechat = async () => {
 		try {
 			const {
@@ -801,7 +787,15 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderE2EEncryption = () => {
-		const { room, hasE2EEWarning } = this.state;
+		const { room, canToggleEncryption, canEdit } = this.state;
+
+		const { serverVersion } = this.props;
+		let hasPermission = false;
+		if (compareServerVersion(serverVersion, 'lowerThan', '3.11.0')) {
+			hasPermission = canEdit;
+		} else {
+			hasPermission = canToggleEncryption;
+		}
 
 		if (E2E_ROOM_TYPES[room.t]) {
 			return (
@@ -819,7 +813,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								}
 							})
 						}
-						disabled={hasE2EEWarning}
+						disabled={!hasPermission}
 						showActionIndicator
 					/>
 					<List.Separator />
