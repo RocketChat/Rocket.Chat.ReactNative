@@ -384,7 +384,7 @@ describe('E2E Encryption', () => {
 				.toBeVisible()
 				.withTimeout(60000);
 			await element(by.id('workspace-view-register')).tap();
-			await waitFor(element(by.id('register-view')))
+			await waitFor(element(by.id('register-view-name')))
 				.toBeVisible()
 				.withTimeout(2000);
 
