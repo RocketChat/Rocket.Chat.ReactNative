@@ -1,5 +1,5 @@
 import React from 'react';
-import { Appearance, Dimensions, EmitterSubscription, Linking, NativeModules, Platform } from 'react-native';
+import { Dimensions, EmitterSubscription, Linking, NativeModules, Platform, Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
