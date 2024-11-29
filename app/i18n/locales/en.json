@@ -227,7 +227,7 @@
   "Dont_activate": "Don't activate now",
   "Dont_Have_An_Account": "Don't you have an account?",
   "Downloaded_file": "Downloaded file",
-  "E2E_Encryption": "E2E encryption",
+  "E2E_Encryption": "End-to-end encryption",
   "E2E_encryption_change_password_confirmation": "Yes, change it",
   "E2E_encryption_change_password_description": "You can now create encrypted private groups and direct messages. You may also change existing private groups or DMs to encrypted. \nThis is end to end encryption so the key to encode/decode your messages will not be saved on the workspace. For that reason you need to store your password somewhere safe. You will be required to enter it on other devices you wish to use e2e encryption on.",
   "E2E_encryption_change_password_error": "Error while changing E2E key password!",
