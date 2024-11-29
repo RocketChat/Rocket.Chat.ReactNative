@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { ISelectedUser } from '../reducers/selectedUsers';
+import { ISelectedUser } from '@reducers/selectedUsers';
 import * as types from './actionsTypes';
 
 type TUser = {

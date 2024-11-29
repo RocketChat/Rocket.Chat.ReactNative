@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IPreferences } from '../definitions';
+import { IPreferences } from '@/definitions';
 import { SORT_PREFERENCES } from './actionsTypes';
 
 interface ISetAllPreferences extends Action {

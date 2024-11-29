@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { IPermissionsState, TSupportedPermissions } from '../reducers/permissions';
+import { IPermissionsState, TSupportedPermissions } from '@reducers/permissions';
 import { PERMISSIONS } from './actionsTypes';
 
 interface ISetPermissions extends Action {
