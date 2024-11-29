@@ -801,7 +801,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	renderE2EEncryption = () => {
-		const { room } = this.state;
+		const { room, hasE2EEWarning } = this.state;
 
 		if (E2E_ROOM_TYPES[room.t]) {
 			return (
@@ -810,7 +810,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					<List.Item
 						title='E2E_Encryption'
 						subtitle={room.encrypted ? 'Enabled' : 'Disabled'}
-						testID='room-actions-encrypt'
 						left={() => <List.Icon name='encrypted' />}
 						onPress={() =>
 							this.onPressTouchable({
@@ -820,6 +819,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 								}
 							})
 						}
+						disabled={hasE2EEWarning}
 						showActionIndicator
 					/>
 					<List.Separator />

@@ -51,7 +51,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={I18n.t('Encrypt__room_type__', { room_type: roomType })}
+						title={I18n.t('Encrypt__room_type__', { room_type: I18n.t(roomType) })}
 						right={() => <Switch value={room?.encrypted} onValueChange={() => toggleRoomE2EE(rid)} />}
 						translateTitle={false}
 					/>
