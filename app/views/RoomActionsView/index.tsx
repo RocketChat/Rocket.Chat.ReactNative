@@ -52,9 +52,7 @@ import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
 import { TNavigation } from '../../stacks/stackType';
-import Switch from '../../containers/Switch';
 import * as EncryptionUtils from '../../lib/encryption/utils';
-import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -804,16 +802,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 	renderE2EEncryption = () => {
 		const { room } = this.state;
-		const { encryptionEnabled } = this.props;
 
-		// If this room type can be encrypted
-		// If e2e is enabled
-		if (E2E_ROOM_TYPES[room.t] && encryptionEnabled) {
+		if (E2E_ROOM_TYPES[room.t]) {
 			return (
 				<List.Section>
 					<List.Separator />
 					<List.Item
 						title='E2E_Encryption'
+						subtitle={room.encrypted ? 'Enabled' : 'Disabled'}
 						testID='room-actions-encrypt'
 						left={() => <List.Icon name='encrypted' />}
 						onPress={() =>
