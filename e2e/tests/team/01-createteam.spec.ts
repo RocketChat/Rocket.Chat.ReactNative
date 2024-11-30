@@ -82,10 +82,10 @@ describe('Create team screen', () => {
 
 		it('should delete team', async () => {
 			await element(by.id('room-info-view-edit-button')).tap();
-			await sleep(300);
 			await waitFor(element(by.id('room-info-edit-view-list')))
 				.toBeVisible()
 				.withTimeout(2000);
+			await sleep(300);
 			await element(by.id('room-info-edit-view-list')).swipe('up');
 			await waitFor(element(by.id('room-info-edit-view-delete')))
 				.toBeVisible()
