@@ -306,6 +306,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 								required
 								value={value}
 								onChangeText={onChange}
+								onSubmitEditing={handleSubmit(onSubmit)}
 								secureTextEntry
 								containerStyle={styles.inputContainer}
 							/>
