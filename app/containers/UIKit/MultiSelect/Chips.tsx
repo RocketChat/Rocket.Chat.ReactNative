@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { textParser } from '../utils';
 import { CustomIcon } from '../../CustomIcon';
@@ -34,7 +34,7 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 			testID={`multi-select-chip-${item.value}`}
 		>
 			<>
-				{item.imageUrl ? <FastImage style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
+				{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text numberOfLines={1} style={[styles.chipText, { color: colors.fontTitlesLabels }]}>
 					{textParser([item.text])}
 				</Text>

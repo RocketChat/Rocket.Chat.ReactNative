@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { isTablet } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
@@ -35,7 +35,7 @@ const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
 
 	return (
 		<View style={styles.container}>
-			{image && <FastImage style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
+			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
 		</View>
 	);
 });

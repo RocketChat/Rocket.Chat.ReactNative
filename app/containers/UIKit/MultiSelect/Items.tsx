@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import { FlatList } from 'react-native-gesture-handler';
 
 import * as List from '../../List';
@@ -33,7 +33,7 @@ const Item = ({ item, selected, onSelect }: IItem) => {
 		<Touchable testID={`multi-select-item-${itemName}`} key={itemName} onPress={() => onSelect(item)}>
 			<View style={styles.item}>
 				<View style={styles.flexZ}>
-					{item.imageUrl ? <FastImage style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
+					{item.imageUrl ? <Image style={styles.itemImage} source={{ uri: item.imageUrl }} /> : null}
 				</View>
 				<View style={styles.flex}>
 					<Text numberOfLines={1} style={{ color: colors.fontTitlesLabels }}>
