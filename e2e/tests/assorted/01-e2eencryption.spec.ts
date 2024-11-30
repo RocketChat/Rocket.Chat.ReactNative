@@ -397,9 +397,7 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-password')).tapReturnKey();
 			await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-confirm-password')).tapReturnKey();
-			await element(by.id('register-view')).swipe('down', 'fast', 0.5); //	dismiss keyboard
-			await element(by.id('register-view')).swipe('up', 'fast', 0.5);
-			await element(by.id('register-view-submit')).tap();
+
 			await expectValidRegisterOrRetry(device.getPlatform());
 			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
