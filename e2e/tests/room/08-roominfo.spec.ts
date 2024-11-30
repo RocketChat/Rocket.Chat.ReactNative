@@ -136,6 +136,7 @@ describe('Room info screen', () => {
 		describe('Usage', () => {
 			it('should reset form', async () => {
 				await element(by.id('room-info-edit-view-name')).replaceText('abc');
+				await element(by.id('room-info-edit-view-name')).tapReturnKey();
 				await element(by.id('room-info-edit-view-topic')).replaceText('abc');
 				await element(by.id('room-info-edit-view-topic')).tapReturnKey();
 				await element(by.id('room-info-edit-view-announcement')).replaceText('abc');
