@@ -168,6 +168,7 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-name')).replaceText(`${room}new`);
 				await swipe('down'); // dismiss keyboard
 				await swipe('up');
+				await sleep(300);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await tapBack();
