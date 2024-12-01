@@ -148,7 +148,7 @@ export const MessageComposer = ({
 			}
 		}
 
-		// Hide autocomplete when user press send button
+		// Hide autocomplete
 		setAutocompleteParams({ text: '', type: null, params: '' });
 
 		// Text message
