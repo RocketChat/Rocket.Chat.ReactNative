@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-	StyleSheet,
-	Text,
-	TextInputProps,
-	TouchableOpacity,
-	TouchableOpacityProps,
-	View,
-	useWindowDimensions
-} from 'react-native';
+import { StyleSheet, Text, TextInputProps, View, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
@@ -44,7 +36,6 @@ interface IRoomHeader {
 	showSearchHeader: boolean;
 	width?: number;
 	onSearchChangeText: TextInputProps['onChangeText'];
-	onPress: TouchableOpacityProps['onPress'];
 }
 
 const Header = React.memo(
@@ -56,8 +47,7 @@ const Header = React.memo(
 		server,
 		showSearchHeader,
 		width,
-		onSearchChangeText,
-		onPress
+		onSearchChangeText
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
@@ -78,28 +68,25 @@ const Header = React.memo(
 		} else {
 			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 		}
-		// improve copy
 		return (
 			<View
 				style={[styles.container, { width: width || (isTablet ? undefined : windowWidth) }]}
 				accessibilityLabel={`${serverName} ${subtitle}`}
 				accessibilityRole='header'
 				accessible>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
-					<View style={styles.button}>
-						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
-							{serverName}
-						</Text>
-					</View>
-					{subtitle ? (
-						<Text
-							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
-							numberOfLines={1}>
-							{subtitle}
-						</Text>
-					) : null}
-				</TouchableOpacity>
+				<View style={styles.button}>
+					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
+						{serverName}
+					</Text>
+				</View>
+				{subtitle ? (
+					<Text
+						testID='rooms-list-header-server-subtitle'
+						style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+						numberOfLines={1}>
+						{subtitle}
+					</Text>
+				) : null}
 			</View>
 		);
 	}
