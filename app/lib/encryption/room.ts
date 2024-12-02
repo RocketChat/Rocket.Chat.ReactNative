@@ -175,8 +175,7 @@ export default class EncryptionRoom {
 
 	hasSessionKey = () => !!this.sessionKeyExportedString;
 
-	// Create a key to a room
-	createRoomKey = async () => {
+	createNewRoomKey = async () => {
 		const key = (await SimpleCrypto.utils.randomBytes(16)) as Uint8Array;
 		this.roomKey = key;
 
@@ -201,11 +200,28 @@ export default class EncryptionRoom {
 		} else {
 			this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
 		}
+	};
 
+	createRoomKey = async () => {
+		this.createNewRoomKey();
 		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
-
 		await this.encryptRoomKey();
 	};
+
+	async resetRoomKey() {
+		if (!Encryption.publicKey) {
+			console.log('Public key not found');
+			return;
+		}
+		try {
+			await this.createNewRoomKey();
+			const e2eNewKeys = { e2eKeyId: this.keyID, e2eKey: await this.encryptRoomKeyForUser(Encryption.publicKey) };
+			return e2eNewKeys;
+		} catch (error) {
+			console.error('Error resetting group key: ', error);
+			throw error;
+		}
+	}
 
 	// Request a key to this room
 	// We're debouncing this function to avoid multiple calls
