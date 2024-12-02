@@ -11950,6 +11950,11 @@ react-native-easy-toast@2.3.0:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
 
+react-native-edge-to-edge@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-native-edge-to-edge/-/react-native-edge-to-edge-1.1.3.tgz#bcfc5142da5556766de7ac8371fba94d0bc72e07"
+  integrity sha512-+as8PmGZCvZtHbHT2xXH0YFH1qqBpFVH14Pzk0+6fI53zWMa56m5HY9S1mhIBgPjdqLBM8Y6KresI1/MUI86pw==
+
 react-native-fast-image@RocketChat/react-native-fast-image.git#bump-version:
   version "8.5.12"
   resolved "https://codeload.github.com/RocketChat/react-native-fast-image/tar.gz/8bdb187a4500e23ad1c95324a669c25361bbf685"
@@ -11991,12 +11996,24 @@ react-native-iphone-x-helper@^1.0.3:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz#20c603e9a0e765fd6f97396638bdeb0e5a60b010"
   integrity sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg==
 
+react-native-is-edge-to-edge@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.1.6.tgz#69ec13f70d76e9245e275eed4140d0873a78f902"
+  integrity sha512-1pHnFTlBahins6UAajXUqeCOHew9l9C2C8tErnpGC3IyLJzvxD+TpYAixnCbrVS52f7+NvMttbiSI290XfwN0w==
+
 react-native-katex@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/react-native-katex/-/react-native-katex-0.5.1.tgz#516428ddc10b71e2f219869880222b1d3a1fc5eb"
   integrity sha512-71Hi66DsTsCHnxKcT0BtmylJvl8q285qbmSPJRzLM05Lu4qtgNwx2htb+k+nNaFv0KJl67n/irdd3uktpkXPsg==
   dependencies:
     react-native-webview "^11.18.2"
+
+react-native-keyboard-controller@^1.14.5:
+  version "1.14.5"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.14.5.tgz#ec1e7d1fb8ee18b69ced4d8ddd6fd99bdaaf14bb"
+  integrity sha512-Cx7+SWI/P50i4PKJZN4T43RqoFkJ3GBoxjQ5ysrzZGoImHTF4j3atSwcBQGMmunKCem1yGOOQ84or+Vbcor6wQ==
+  dependencies:
+    react-native-is-edge-to-edge "^1.1.6"
 
 react-native-keychain@^8.2.0:
   version "8.2.0"
