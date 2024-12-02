@@ -1,5 +1,5 @@
 import React from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import { InteractionManager, Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -178,7 +178,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
 			isOnHold: false,
-			rightButtonsWidth: 0
+			rightButtonsWidth: 0,
+			keyboardVisible: false
 		};
 
 		this.setHeader();
@@ -245,6 +246,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
 		});
+
+		Keyboard.addListener('keyboardDidShow', () => {
+			this.setState({ keyboardVisible: true });
+		});
+
+		Keyboard.addListener('keyboardDidHide', () => {
+			this.setState({ keyboardVisible: false });
+		})
 	}
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
@@ -264,6 +273,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return true;
 		}
 		if (isOnHold !== nextState.isOnHold) {
+			return true;
+		}
+		if(state.keyboardVisible !== nextState.keyboardVisible) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -359,6 +371,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		if (!this.tmid) {
 			await AudioManager.unloadRoomAudios(this.rid);
 		}
+		Keyboard.removeAllListeners('keyboardDidShow');
+		Keyboard.removeAllListeners('keyboardDidHide');
 	}
 
 	canForwardGuest = async () => {
@@ -1528,7 +1542,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}
 					/>
-					<View style={{ paddingBottom: this.props.insets.bottom, backgroundColor: themes[theme].surfaceLight }}>
+					<View style={{ paddingBottom: this.state.keyboardVisible ? 0 : this.props.insets.bottom, backgroundColor: themes[theme].surfaceLight }}>
 						{this.renderFooter()}
 					</View>
 					{this.renderActions()}
