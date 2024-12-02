@@ -6,7 +6,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import Switch from '../../containers/Switch';
 import I18n from '../../i18n';
-import { useHasE2EEWarning } from '../../lib/encryption/helpers/hooks';
+import { useIsMissingRoomE2EEKey } from '../../lib/encryption/helpers/hooks';
 import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
 import { getRoomTitle } from '../../lib/methods/helpers';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -29,7 +29,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 	const { rid } = route.params;
 	const { colors } = useTheme();
 	const room = useRoom(rid);
-	const hasE2EEWarning = useHasE2EEWarning(room?.encrypted, room?.E2EKey);
+	const isMissingRoomKey = useIsMissingRoomE2EEKey(room?.encrypted, room?.E2EKey);
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
@@ -59,7 +59,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 					<List.Info info={I18n.t('Encrypt__room_type__info__room_name__', { room_name: roomName })} translateInfo={false} />
 				</List.Section>
 
-				{hasE2EEWarning ? (
+				{isMissingRoomKey ? (
 					<List.Section>
 						<List.Separator />
 						<List.Item title='Reset_encryption_keys' color={colors.fontDanger} onPress={() => resetRoomKey(rid)} />

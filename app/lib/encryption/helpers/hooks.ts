@@ -20,6 +20,20 @@ const isE2EEDisabledEncryptedRoom = ({
 	roomEncrypted: TSubscriptionModel['encrypted'];
 }) => (!encryptionEnabled && roomEncrypted) ?? false;
 
+export const useIsMissingRoomE2EEKey = (roomEncrypted: TSubscriptionModel['encrypted'], E2EKey: TSubscriptionModel['E2EKey']) => {
+	const serverVersion = useAppSelector(state => state.server.version);
+	const e2eeEnabled = useAppSelector(state => state.settings.E2E_Enable);
+	const encryptionEnabled = useAppSelector(state => state.encryption.enabled);
+	if (!e2eeEnabled) {
+		return false;
+	}
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+
+	return isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted, E2EKey });
+};
+
 export const useHasE2EEWarning = (roomEncrypted: TSubscriptionModel['encrypted'], E2EKey: TSubscriptionModel['E2EKey']) => {
 	const serverVersion = useAppSelector(state => state.server.version);
 	const e2eeEnabled = useAppSelector(state => state.settings.E2E_Enable);
