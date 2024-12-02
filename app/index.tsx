@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import { SafeAreaProvider, initialWindowMetrics, SafeAreaView } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
 
@@ -24,7 +24,6 @@ import {
 	getTheme,
 	initialTheme,
 	newThemeState,
-	setNativeTheme,
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
@@ -35,6 +34,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import { KeyboardAvoidingView, KeyboardProvider } from "react-native-keyboard-controller";
 
 RNScreens.enableScreens();
 initStore(store);
@@ -101,7 +101,6 @@ export default class Root extends React.Component<{}, IState> {
 		if (isTablet) {
 			this.initTablet();
 		}
-		setNativeTheme(theme);
 	}
 
 	componentDidMount() {
@@ -204,36 +203,42 @@ export default class Root extends React.Component<{}, IState> {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
 			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
-				<Provider store={store}>
-					<ThemeContext.Provider
-						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme,
-							colors: colors[theme]
-						}}>
-						<DimensionsContext.Provider
-							value={{
-								width,
-								height,
-								scale,
-								fontScale,
-								setDimensions: this.setDimensions
-							}}>
-							<GestureHandlerRootView>
-								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
-									<Loading />
-								</ActionSheetProvider>
-							</GestureHandlerRootView>
-						</DimensionsContext.Provider>
-					</ThemeContext.Provider>
-				</Provider>
+				<SafeAreaView style={{ flex: 1 }} edges={['right', 'left']}>
+					<KeyboardProvider>
+						<Provider store={store}>
+							<KeyboardAvoidingView behavior='padding' style={{ flex: 1 }}>
+								<ThemeContext.Provider
+									value={{
+										theme,
+										themePreferences,
+										setTheme: this.setTheme,
+										colors: colors[theme]
+									}}>
+									<DimensionsContext.Provider
+										value={{
+											width,
+											height,
+											scale,
+											fontScale,
+											setDimensions: this.setDimensions
+										}}>
+										<GestureHandlerRootView>
+												<ActionSheetProvider>
+													<AppContainer />
+													<TwoFactor />
+													<ScreenLockedView />
+													<ChangePasscodeView />
+													<InAppNotification />
+													<Toast />
+													<Loading />
+												</ActionSheetProvider>
+										</GestureHandlerRootView>
+									</DimensionsContext.Provider>
+								</ThemeContext.Provider>
+							</KeyboardAvoidingView>
+						</Provider>
+					</KeyboardProvider>
+				</SafeAreaView>
 			</SafeAreaProvider>
 		);
 	}

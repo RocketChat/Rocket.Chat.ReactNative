@@ -1528,7 +1528,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						showMessageInMainThread={user.showMessageInMainThread ?? false}
 						serverVersion={serverVersion}
 					/>
-					{this.renderFooter()}
+					<View style={{ paddingBottom: this.props.insets.bottom, backgroundColor: themes[theme].surfaceLight }}>
+						{this.renderFooter()}
+					</View>
 					{this.renderActions()}
 					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
 					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
