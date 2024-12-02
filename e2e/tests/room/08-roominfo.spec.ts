@@ -145,10 +145,8 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-description')).tapReturnKey();
 				await element(by.id('room-info-edit-view-password')).replaceText('abc');
 				await element(by.id('room-info-edit-view-password')).tapReturnKey();
-				await swipe('down'); // dismiss keyboard
 				await swipe('up');
 				await element(by.id('room-info-edit-view-t')).tap();
-				await swipe('up');
 				await element(by.id('room-info-edit-view-ro')).tap();
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await swipe('up');
