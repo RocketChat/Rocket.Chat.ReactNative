@@ -310,6 +310,15 @@ export default schemaMigrations({
 					columns: [{ name: 'content', type: 'string', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 26,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'users_waiting_for_e2e_keys', type: 'string', isOptional: true }]
+				})
+			]
 		}
 	]
 });

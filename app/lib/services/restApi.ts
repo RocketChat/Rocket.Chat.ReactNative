@@ -86,6 +86,11 @@ export const e2eRejectSuggestedGroupKey = (rid: string): Promise<{ success: bool
 	// RC 5.5
 	sdk.post('e2e.rejectSuggestedGroupKey', { rid });
 
+export const fetchUsersWaitingForGroupKey = (roomIds: string[]) => sdk.get('e2e.fetchUsersWaitingForGroupKey', { roomIds });
+
+export const provideUsersSuggestedGroupKeys = (usersSuggestedGroupKeys: any) =>
+	sdk.post('e2e.provideUsersSuggestedGroupKeys', { usersSuggestedGroupKeys });
+
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
