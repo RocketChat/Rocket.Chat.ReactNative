@@ -104,7 +104,7 @@ const handleLoginRequest = function* handleLoginRequest({
 			// Saves username on server history
 			const serversDB = database.servers;
 			const serversHistoryCollection = serversDB.get('servers_history');
-			yield serversDB.action(async () => {
+			yield serversDB.write(async () => {
 				try {
 					const serversHistory = await serversHistoryCollection.query(Q.where('url', server)).fetch();
 					if (serversHistory?.length) {
@@ -132,9 +132,14 @@ const handleLoginRequest = function* handleLoginRequest({
 		} else if (e?.data?.message && /your session has expired/i.test(e.data.message)) {
 			logEvent(events.LOGOUT_TOKEN_EXPIRED);
 			yield put(logoutAction(true, 'Token_expired'));
-		} else {
+		} else if (e?.status === 401) {
 			logEvent(events.LOGIN_DEFAULT_LOGIN_F);
-			yield put(loginFailure(e));
+			const userId = yield select(state => state.login.user.id);
+			if (!userId) {
+				yield put(loginFailure(e));
+				return;
+			}
+			yield put(logoutAction(true));
 		}
 	}
 };
@@ -255,7 +260,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 			nickname: user.nickname,
 			requirePasswordChange: user.requirePasswordChange
 		};
-		yield serversDB.action(async () => {
+		yield serversDB.write(async () => {
 			try {
 				const userRecord = await usersCollection.find(user.id);
 				await userRecord.update(record => {
