@@ -1306,12 +1306,12 @@ PODS:
   - SDWebImageWebPCoder (0.13.0):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
-  - simdjson (1.0.0)
+  - simdjson (3.1.0-wmelon1)
   - SocketRocket (0.6.1)
   - TOCropViewController (2.6.1)
-  - WatermelonDB (0.25.5):
+  - WatermelonDB (0.27.1):
     - React
-    - React-jsi
+    - simdjson
   - Yoga (1.14.0)
   - ZXingObjC/Core (3.6.9)
   - ZXingObjC/OneD (3.6.9):
@@ -1773,10 +1773,10 @@ SPEC CHECKSUMS:
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   SDWebImageWebPCoder: af09429398d99d524cae2fe00f6f0f6e491ed102
-  simdjson: c96317b3a50dff3468a42f586ab7ed22c6ab2fd9
+  simdjson: e6bfae9ce4bcdc80452d388d593816f1ca2106f3
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  WatermelonDB: 6ae836b52d11281d87187ff2283480e44b111771
+  WatermelonDB: 842d22ba555425aa9f3ce551239a001200c539bc
   Yoga: d17d2cc8105eed528474683b42e2ea310e1daf61
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
