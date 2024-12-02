@@ -7,7 +7,7 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 24
+		marginBottom: 16
 	},
 	avatarButtons: {
 		flexWrap: 'wrap',
