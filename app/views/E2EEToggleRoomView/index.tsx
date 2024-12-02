@@ -16,12 +16,12 @@ import { useRoom } from './useRoom';
 
 const getRoomTypeI18n = (t?: string, teamMain?: boolean) => {
 	if (teamMain) {
-		return 'Team';
+		return I18n.t('Team');
 	}
 	if (t === 'd') {
-		return 'Direct_message';
+		return I18n.t('Direct_message');
 	}
-	return 'Channel';
+	return I18n.t('Channel');
 };
 
 const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
@@ -51,7 +51,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 				<List.Section>
 					<List.Separator />
 					<List.Item
-						title={I18n.t('Encrypt__room_type__', { room_type: I18n.t(roomType).toLowerCase() })}
+						title={I18n.t('Encrypt__room_type__', { room_type: roomType.toLowerCase() })}
 						right={() => <Switch value={room?.encrypted} onValueChange={() => toggleRoomE2EE(rid)} />}
 						translateTitle={false}
 					/>
@@ -64,7 +64,10 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 						<List.Separator />
 						<List.Item title='Reset_encryption_keys' color={colors.fontDanger} onPress={() => resetRoomKey(rid)} />
 						<List.Separator />
-						<List.Info info={I18n.t('Reset_encryption_keys_info__room_type__', { room_type: roomType })} translateInfo={false} />
+						<List.Info
+							info={I18n.t('Reset_encryption_keys_info__room_type__', { room_type: roomType.toLowerCase() })}
+							translateInfo={false}
+						/>
 					</List.Section>
 				) : null}
 			</List.Container>
