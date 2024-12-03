@@ -148,6 +148,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		rightButtonsWidth: 0
 	});
 
+	const mounted = React.useRef(false);
 	const subObserveQuery = React.useRef<Subscription | null>(null);
 	const subSubscription = React.useRef<Subscription | null>(null);
 
@@ -177,6 +178,91 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		// 	this.sub = new RoomClass(this.rid);
 		// }
 	}, []);
+
+	const updateOmnichannel = React.useCallback(async () => {
+		const data = await Promise.all([
+			canForwardGuest(),
+			canPlaceLivechatOnHold(),
+			canReturnQueue(),
+			canViewCannedResponse()
+		]);
+
+		setState((prev) => ({
+			...prev,
+			canForwardGuest: data[0],
+			canReturnQueue: data[1],
+			canViewCannedResponse: data[2],
+			canPlaceLivechatOnHold: data[3]
+		}));
+
+		if (mounted.current) {
+			setHeader();
+		}
+	}, []);
+
+	const canForwardGuest = React.useCallback(async () => {
+		const { transferLivechatGuestPermission } = props;
+		const permissions = await hasPermission([transferLivechatGuestPermission], rid);
+		return permissions[0];
+	}, [rid, props.transferLivechatGuestPermission]);
+
+	const canPlaceLivechatOnHold = React.useCallback(() => {
+		const { livechatAllowManualOnHold } = props;
+		const { room } = state;
+		return !!(livechatAllowManualOnHold && !room?.lastMessage?.token && room?.lastMessage?.u && !room.onHold);
+	}, [state, props.livechatAllowManualOnHold]);
+
+	const canViewCannedResponse = React.useCallback(async () => {
+		const { viewCannedResponsesPermission } = props;
+		const permissions = await hasPermission([viewCannedResponsesPermission], rid);
+		return permissions[0];
+	}, [rid, props.viewCannedResponsesPermission]);
+
+	const canReturnQueue = React.useCallback(async () => {
+		try {
+			const { returnQueue } = await getRoutingConfig();
+			return returnQueue;
+		} catch {
+			return false;
+		}
+	}, []);
+
+	const observeSubscriptions = React.useCallback(() => {
+		try {
+			const observeSubCollection = database.active
+				.get('subscriptions')
+				.query(Q.where('rid', rid as string))
+				.observe();
+			
+			subObserveQuery.current = observeSubCollection.subscribe(data => {
+				if (data[0]) {
+					if (subObserveQuery.current && subObserveQuery.current.unsubscribe) {
+						observeRoom(data[0]);
+						setState((prevState) => ({ ...prevState, room: data[0], joined: true }));
+						subObserveQuery.current.unsubscribe();
+					}
+				}
+			});
+		} catch (e) {
+			console.log("observeSubscriptions: Can't find subscription to observe");
+		}
+	}, [rid]);
+
+	const isOmnichannel = React.useMemo(() => {
+		return state.room.t === SubscriptionType.OMNICHANNEL;
+	}, [state.room.t]);
+
+	const hideSystemMessages = React.useMemo(() => {
+		const { sysMes } = state.room;
+		const { Hide_System_Messages } = props;
+
+		// FIXME: handle servers with version < 3.0.0
+		let hideSystemMessages = Array.isArray(sysMes) ? sysMes : Hide_System_Messages;
+		if (!Array.isArray(hideSystemMessages)) {
+			hideSystemMessages = [];
+		}
+		return hideSystemMessages ?? [];
+	}, [state.room, props.Hide_System_Messages]);
 
 	const setHeader = React.useCallback(() => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } = state;
@@ -289,6 +375,43 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		});
 	}, [state, props]);
 
+	const goRoomActionsView = React.useCallback((screen?: keyof ModalStackParamList) => {
+		logEvent(events.ROOM_GO_RA);
+		const { room, member, joined, canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold } = state;
+		const { navigation, isMasterDetail } = props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', {
+				screen: screen ?? 'RoomActionsView',
+				params: {
+					rid: rid as string,
+					t: t as SubscriptionType,
+					room: room as ISubscription,
+					member,
+					showCloseModal: !!screen,
+					// @ts-ignore
+					joined,
+					omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
+				}
+			});
+		} else if (rid && t) {
+			navigation.push('RoomActionsView', {
+				rid: rid,
+				t: t as SubscriptionType,
+				room: room as TSubscriptionModel,
+				member,
+				joined,
+				omnichannelPermissions: { canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold }
+			});
+		}
+	}, []);
+
+	const setReadOnly = React.useCallback(async () => {
+		const { room } = state;
+		const { user } = props;
+		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
+		setState((prevState) => ({ ...prevState, readOnly }));
+	}, []);
+
 	const observeRoom = React.useCallback((room: TSubscriptionModel) => {
 		const observable = room.observe();
 		
@@ -324,27 +447,6 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			if (rid) {
 				observeSubscriptions();
 			}
-		}
-	}, [rid]);
-
-	const observeSubscriptions = React.useCallback(() => {
-		try {
-			const observeSubCollection = database.active
-				.get('subscriptions')
-				.query(Q.where('rid', rid as string))
-				.observe();
-			
-			subObserveQuery.current = observeSubCollection.subscribe(data => {
-				if (data[0]) {
-					if (subObserveQuery.current && subObserveQuery.current.unsubscribe) {
-						observeRoom(data[0]);
-						setState((prevState) => ({ ...prevState, room: data[0], joined: true }));
-						subObserveQuery.current.unsubscribe();
-					}
-				}
-			});
-		} catch (e) {
-			console.log("observeSubscriptions: Can't find subscription to observe");
 		}
 	}, [rid]);
 }
@@ -560,17 +662,6 @@ class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> 
 		this.setReadOnly();
 	}
 
-	updateOmnichannel = async () => {
-		const canForwardGuest = await this.canForwardGuest();
-		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
-		const canReturnQueue = await this.canReturnQueue();
-		const canViewCannedResponse = await this.canViewCannedResponse();
-		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
-		if (this.mounted) {
-			this.setHeader();
-		}
-	};
-
 	async componentWillUnmount() {
 		const { dispatch } = this.props;
 		dispatch(clearInAppFeedback());
@@ -604,6 +695,17 @@ class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> 
 			await AudioManager.unloadRoomAudios(this.rid);
 		}
 	}
+
+	updateOmnichannel = async () => {
+		const canForwardGuest = await this.canForwardGuest();
+		const canPlaceLivechatOnHold = this.canPlaceLivechatOnHold();
+		const canReturnQueue = await this.canReturnQueue();
+		const canViewCannedResponse = await this.canViewCannedResponse();
+		this.setState({ canForwardGuest, canReturnQueue, canViewCannedResponse, canPlaceLivechatOnHold });
+		if (this.mounted) {
+			this.setHeader();
+		}
+	};
 
 	canForwardGuest = async () => {
 		const { transferLivechatGuestPermission } = this.props;
