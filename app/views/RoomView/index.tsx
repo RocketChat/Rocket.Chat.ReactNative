@@ -108,7 +108,7 @@ interface didMountInteraction {
 	then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
 	done: (...args: any[]) => any;
 	cancel: () => void;
-};
+}
 
 const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const rid = props.route.params?.rid;
@@ -171,7 +171,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const flatList = React.useRef<TListRef | null>(null);
 	const joinCode = React.useRef<IJoinCode | null>(null);
 
-	React.useEffect(()=>{
+	React.useEffect(() => {
 		mounted.current = true;
 
 		setHeader();
@@ -195,7 +195,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		const { navigation, dispatch } = props;
 		const { selectedMessages } = state;
 		dispatch(clearInAppFeedback());
-		
+
 		didMountInteraction.current = InteractionManager.runAfterInteractions(() => {
 			const { isAuthenticated } = props;
 			setHeader();
@@ -225,7 +225,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			}
 		});
 		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
-		
+
 		navigation.addListener('blur', () => {
 			AudioManager.pauseAudio();
 		});
@@ -260,18 +260,13 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			if (!tmid) {
 				AudioManager.unloadRoomAudios(rid);
 			}
-		}
+		};
 	}, []);
 
 	const updateOmnichannel = React.useCallback(async () => {
-		const data = await Promise.all([
-			canForwardGuest(),
-			canPlaceLivechatOnHold(),
-			canReturnQueue(),
-			canViewCannedResponse()
-		]);
+		const data = await Promise.all([canForwardGuest(), canPlaceLivechatOnHold(), canReturnQueue(), canViewCannedResponse()]);
 
-		setState((prev) => ({
+		setState(prev => ({
 			...prev,
 			canForwardGuest: data[0],
 			canReturnQueue: data[1],
@@ -283,7 +278,6 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			setHeader();
 		}
 	}, []);
-	
 
 	const canForwardGuest = React.useCallback(async () => {
 		const { transferLivechatGuestPermission } = props;
@@ -318,12 +312,12 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 				.get('subscriptions')
 				.query(Q.where('rid', rid as string))
 				.observe();
-			
+
 			subObserveQuery.current = observeSubCollection.subscribe(data => {
 				if (data[0]) {
 					if (subObserveQuery.current && subObserveQuery.current.unsubscribe) {
 						observeRoom(data[0]);
-						setState((prevState) => ({ ...prevState, room: data[0], joined: true }));
+						setState(prevState => ({ ...prevState, room: data[0], joined: true }));
 						subObserveQuery.current.unsubscribe();
 					}
 				}
@@ -350,9 +344,10 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	}, [state.room, props.Hide_System_Messages]);
 
 	const setHeader = React.useCallback(() => {
-		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } = state;
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } =
+			state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = props;
-		
+
 		if (!room.rid) return;
 
 		const prid = room?.prid;
@@ -392,7 +387,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		}
 
 		const onLayout = ({ nativeEvent }: { nativeEvent: any }) => {
-			setState((prevState) => ({ ...prevState, rightButtonsWidth: nativeEvent.layout.width }));
+			setState(prevState => ({ ...prevState, rightButtonsWidth: nativeEvent.layout.width }));
 		};
 
 		const t = room?.t;
@@ -494,12 +489,12 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		const { room } = state;
 		const { user } = props;
 		const readOnly = await isReadOnly(room as ISubscription, user.username as string);
-		setState((prevState) => ({ ...prevState, readOnly }));
+		setState(prevState => ({ ...prevState, readOnly }));
 	}, []);
 
 	const init = async () => {
 		try {
-			setState((prev) => ({ ...prev, loading: true }));
+			setState(prev => ({ ...prev, loading: true }));
 
 			const { room, joined } = state;
 			if (!rid) {
@@ -529,9 +524,9 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			const canAutoTranslate = canAutoTranslateMethod();
 			const member = await getRoomMember();
 
-			setState((prev) => ({ ...prev, canAutoTranslate, member, loading: false }));
+			setState(prev => ({ ...prev, canAutoTranslate, member, loading: false }));
 		} catch (e) {
-			setState((prev) => ({ ...prev, loading: false }));
+			setState(prev => ({ ...prev, loading: false }));
 
 			retryInit.current += 1;
 			if (retryInit.current <= 1) {
@@ -540,7 +535,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 				}, 300);
 			}
 		}
-	}
+	};
 
 	const getRoomMember = async () => {
 		const { room } = state;
@@ -549,7 +544,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		if ('id' in room && t === SubscriptionType.DIRECT && !isGroupChat(room)) {
 			try {
 				const roomUserId = getUidDirectMessage(room);
-				setState((prev)=>({ ...prev, roomUserId }));
+				setState(prev => ({ ...prev, roomUserId }));
 				setHeader();
 
 				const result = await Services.getUserInfo(roomUserId);
@@ -564,50 +559,56 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		return {};
 	};
 
-	const findAndObserveRoom = React.useCallback(async (rid: string) => {
-		try {
-			const db = database.active;
-			const subCollection = db.get('subscriptions');
-			const room = await subCollection.find(rid);
+	const findAndObserveRoom = React.useCallback(
+		async (rid: string) => {
+			try {
+				const db = database.active;
+				const subCollection = db.get('subscriptions');
+				const room = await subCollection.find(rid);
 
-			setState((prevState) => ({ ...prevState, room }));
-			
-			if (!tmid) {
-				setHeader();
-			}
+				setState(prevState => ({ ...prevState, room }));
 
-			observeRoom(room);
-		} catch (error) {
-			if (t !== SubscriptionType.DIRECT) {
-				console.log('Room not found');
+				if (!tmid) {
+					setHeader();
+				}
 
-				setState((prevState) => ({ ...prevState, joined: false }));
+				observeRoom(room);
+			} catch (error) {
+				if (t !== SubscriptionType.DIRECT) {
+					console.log('Room not found');
+
+					setState(prevState => ({ ...prevState, joined: false }));
+				}
+				if (rid) {
+					observeSubscriptions();
+				}
 			}
-			if (rid) {
-				observeSubscriptions();
-			}
-		}
-	}, [rid]);
+		},
+		[rid]
+	);
 
 	const unsubscribe = async () => {
 		if (sub.current && sub.current.unsubscribe) {
 			await sub.current.unsubscribe();
 		}
-		
+
 		sub.current = null;
 	};
-	const observeRoom = React.useCallback((room: TSubscriptionModel) => {
-		const observable = room.observe();
-		
-		subSubscription.current = observable.subscribe(changes => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
-				ret[attr] = changes[attr];
-				return ret;
-			}, {});
+	const observeRoom = React.useCallback(
+		(room: TSubscriptionModel) => {
+			const observable = room.observe();
 
-			setState((prevState) => ({ ...prevState, room: changes, roomUpdate, isOnHold: !!changes?.onHold }));
-		});
-	}, [roomAttrsUpdate]);
+			subSubscription.current = observable.subscribe(changes => {
+				const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
+					ret[attr] = changes[attr];
+					return ret;
+				}, {});
+
+				setState(prevState => ({ ...prevState, room: changes, roomUpdate, isOnHold: !!changes?.onHold }));
+			});
+		},
+		[roomAttrsUpdate]
+	);
 
 	const handleCloseEmoji = (action?: Function, params?: any) => {
 		if (messageComposerRef?.current) {
@@ -632,8 +633,8 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		if (action) {
 			return;
 		}
-		
-		setState((prev)=> ({ ...prev, selectedMessages: [messageId], action: 'edit' }));
+
+		setState(prev => ({ ...prev, selectedMessages: [messageId], action: 'edit' }));
 	};
 
 	const onEditCancel = () => {
@@ -674,24 +675,24 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		const { action } = state;
 		if (action === 'quote') {
 			if (!state.selectedMessages.includes(messageId)) {
-				setState((prev)=> ({ ...prev, selectedMessages: [...prev.selectedMessages, messageId] }));
+				setState(prev => ({ ...prev, selectedMessages: [...prev.selectedMessages, messageId] }));
 			}
 			return;
 		}
 		if (action) {
 			return;
 		}
-		setState((prev)=> ({ ...prev, selectedMessages: [messageId], action: 'quote' }));
+		setState(prev => ({ ...prev, selectedMessages: [messageId], action: 'quote' }));
 	};
 
 	const onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		setState((prev)=> ({ ...prev, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null }));
+		setState(prev => ({ ...prev, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null }));
 	};
 
 	const resetAction = () => {
-		setState((prev)=> ({ ...prev, action: null, selectedMessages: [] }));
+		setState(prev => ({ ...prev, action: null, selectedMessages: [] }));
 	};
 
 	const showReactionPicker = () => {
@@ -700,11 +701,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		setTimeout(() => {
 			showActionSheet({
 				children: (
-					<ReactionPicker
-						messageId={selectedMessages[0]}
-						onEmojiSelected={onReactionPress}
-						reactionClose={onReactionClose}
-					/>
+					<ReactionPicker messageId={selectedMessages[0]} onEmojiSelected={onReactionPress} reactionClose={onReactionClose} />
 				),
 				snaps: ['50%'],
 				enableContentPanningGesture: false,
@@ -718,8 +715,8 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			return;
 		}
 		handleCloseEmoji(() => {
-			setState((prev)=> ({ ...prev, selectedMessages: [messageId], action: 'react' }));
-			showReactionPicker()
+			setState(prev => ({ ...prev, selectedMessages: [messageId], action: 'react' }));
+			showReactionPicker();
 		});
 	};
 
@@ -818,7 +815,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 				0
 			);
 			if (state.unreadsCount !== unreadsCount) {
-				setState((prev)=> ({ ...prev, unreadsCount }));
+				setState(prev => ({ ...prev, unreadsCount }));
 				setHeader();
 			}
 		});
@@ -912,8 +909,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		const { room } = state;
 		if (rid === rid) {
 			Navigation.navigate('RoomsListView');
-			!isOmnichannel &&
-				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
+			!isOmnichannel && showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
 		}
 	};
 
@@ -922,7 +918,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			return;
 		}
 		// @ts-ignore TODO: TS is complaining about this, but I don't feel like changing rn since it should be working
-		setState((prevState) => ({ ...prevState, ...args }));
+		setState(prevState => ({ ...prevState, ...args }));
 	};
 
 	const handleSendMessage = (message: string, tshow?: boolean) => {
@@ -947,7 +943,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		return null;
 	};
 
-	const setLastOpen = (lastOpen: Date | null) => setState((prev) => ({ ...prev, lastOpen }));
+	const setLastOpen = (lastOpen: Date | null) => setState(prev => ({ ...prev, lastOpen }));
 
 	const onJoin = () => {
 		internalSetState({
@@ -1196,9 +1192,9 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 
 	const setQuotesAndText = (text: string, quotes: string[]) => {
 		if (quotes.length) {
-			setState((prev) => ({ ...prev, selectedMessages: quotes, action: 'quote' }));
+			setState(prev => ({ ...prev, selectedMessages: quotes, action: 'quote' }));
 		} else {
-			setState((prev) => ({ ...prev, action: null, selectedMessages: [] }));
+			setState(prev => ({ ...prev, action: null, selectedMessages: [] }));
 		}
 
 		messageComposerRef.current?.setInput(text || '');
@@ -1462,10 +1458,10 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 				</SafeAreaView>
 			</RoomContext.Provider>
 		);
-	}
-	
+	};
+
 	return render();
-}
+};
 
 function propsAreEqual(prevProps: IRoomViewProps, nextProps: IRoomViewProps) {
 	const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = prevProps;
