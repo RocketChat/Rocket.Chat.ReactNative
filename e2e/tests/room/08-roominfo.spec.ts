@@ -16,7 +16,7 @@ async function navigateToRoomInfo(room: string) {
 }
 
 async function swipe(direction: Detox.Direction) {
-	await element(by.id('room-info-edit-view-list')).swipe(direction);
+	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 1);
 }
 
 async function waitForToast() {
@@ -165,9 +165,8 @@ describe('Room info screen', () => {
 
 			it('should change room name', async () => {
 				await element(by.id('room-info-edit-view-name')).replaceText(`${room}new`);
-				await swipe('down'); // dismiss keyboard
+				await swipe('down');
 				await swipe('up');
-				await sleep(300);
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 				await tapBack();
@@ -186,14 +185,13 @@ describe('Room info screen', () => {
 
 			it('should change room description, topic, announcement', async () => {
 				await sleep(5000); // wait for changes to be applied from socket
-				await element(by.id('room-info-edit-view-description')).replaceText('new description');
 				await element(by.id('room-info-edit-view-topic')).replaceText('new topic');
-				await swipe('down'); // dismiss keyboard
-				// announcement is hide by the keyboard
+				await element(by.id('room-info-edit-view-topic')).tapReturnKey();
 				await element(by.id('room-info-edit-view-announcement')).replaceText('new announcement');
 				await element(by.id('room-info-edit-view-announcement')).tapReturnKey();
+				await element(by.id('room-info-edit-view-description')).replaceText('new description');
+				await element(by.id('room-info-edit-view-description')).tapReturnKey();
 				await element(by.id('room-info-edit-view-password')).tapReturnKey();
-				await swipe('down'); // dismiss keyboard
 				await swipe('up');
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
@@ -230,9 +228,9 @@ describe('Room info screen', () => {
 			// });
 
 			it('should change room type', async () => {
-				await swipe('down');
-				await element(by.id('room-info-edit-view-t')).tap();
+				await sleep(300);
 				await swipe('up');
+				await element(by.id('room-info-edit-view-t')).tap();
 				await element(by.id('room-info-edit-view-submit')).tap();
 				await waitForToast();
 			});
