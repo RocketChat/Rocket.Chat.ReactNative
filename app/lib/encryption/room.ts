@@ -494,13 +494,7 @@ export default class EncryptionRoom {
 			return null;
 		}
 
-		msg = b64ToBuffer(msg.slice(12) as string);
-		const [vector, cipherText] = splitVectorData(msg);
-
-		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, this.roomKey, vector);
-
-		const m = EJSON.parse(bufferToUtf8(decrypted));
-
+		const m = await this.decryptContent(msg as string);
 		return m.text;
 	};
 
@@ -517,9 +511,20 @@ export default class EncryptionRoom {
 			return null;
 		}
 
+		const keyID = contentBase64.slice(0, 12);
 		const contentBuffer = b64ToBuffer(contentBase64.slice(12) as string);
 		const [vector, cipherText] = splitVectorData(contentBuffer);
-		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, this.roomKey, vector);
+
+		let oldKey;
+		if (keyID !== this.keyID) {
+			const oldRoomKey = this.subscription?.oldRoomKeys?.find((key: any) => key.e2eKeyId === keyID);
+			if (oldRoomKey?.E2EKey && Encryption.privateKey) {
+				const { roomKey } = await this.importRoomKey(oldRoomKey.E2EKey, Encryption.privateKey);
+				oldKey = roomKey;
+			}
+		}
+
+		const decrypted = await SimpleCrypto.AES.decrypt(cipherText, oldKey || this.roomKey, vector);
 		return EJSON.parse(bufferToUtf8(decrypted));
 	};
 
