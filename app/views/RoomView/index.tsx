@@ -104,6 +104,12 @@ import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 
+interface didMountInteraction {
+	then: (onfulfilled?: (() => any) | undefined, onrejected?: (() => any) | undefined) => Promise<any>;
+	done: (...args: any[]) => any;
+	cancel: () => void;
+};
+
 const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const rid = props.route.params?.rid;
 	const t = props.route.params?.t;
@@ -156,6 +162,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const queryUnreads = React.useRef<Subscription | null>(null);
 	const sub = React.useRef<RoomClass | null>(null);
 	const messageComposerRef = React.useRef<IMessageComposerRef | null>(null);
+	const didMountInteraction = React.useRef<didMountInteraction | null>(null);
 
 	const messageErrorActions = React.useRef<IMessageErrorActions | null>(null);
 	const messageActions = React.useRef<IMessageActions | null>(null);
@@ -165,6 +172,8 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const joinCode = React.useRef<IJoinCode | null>(null);
 
 	React.useEffect(()=>{
+		mounted.current = true;
+
 		setHeader();
 
 		if ('id' in room) {
@@ -173,22 +182,85 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			findAndObserveRoom(rid);
 		}
 
-		// setReadOnly();
+		setReadOnly();
 
-		// this.messageComposerRef = React.createRef();
-		// this.list = React.createRef();
-		// this.flatList = React.createRef();
-		// this.joinCode = React.createRef();
-		// this.mounted = false;
+		if (t === SubscriptionType.OMNICHANNEL) {
+			updateOmnichannel();
+		}
 
-		// if (this.t === 'l') {
-		// 	this.updateOmnichannel();
-		// }
+		if (rid && !tmid) {
+			sub.current = new RoomClass(rid);
+		}
 
-		// // we don't need to subscribe to threads
-		// if (this.rid && !this.tmid) {
-		// 	this.sub = new RoomClass(this.rid);
-		// }
+		const { navigation, dispatch } = props;
+		const { selectedMessages } = state;
+		dispatch(clearInAppFeedback());
+		
+		didMountInteraction.current = InteractionManager.runAfterInteractions(() => {
+			const { isAuthenticated } = props;
+			setHeader();
+			if (rid) {
+				try {
+					sub.current?.subscribe?.();
+				} catch (e) {
+					log(e);
+				}
+				if (isAuthenticated) {
+					init();
+				} else {
+					EventEmitter.addEventListener('connected', handleConnected);
+				}
+			}
+			if (jumpToMessageId) {
+				jumpToMessage(jumpToMessageId);
+			}
+			if (jumpToThreadId && !jumpToMessageId) {
+				navToThread({ tmid: jumpToThreadId });
+			}
+			if (isIOS && rid) {
+				updateUnreadCount();
+			}
+			if (selectedMessages.length === 1) {
+				onQuoteInit(selectedMessages[0]);
+			}
+		});
+		EventEmitter.addEventListener('ROOM_REMOVED', handleRoomRemoved);
+		
+		navigation.addListener('blur', () => {
+			AudioManager.pauseAudio();
+		});
+
+		return () => {
+			mounted.current = false;
+
+			const { dispatch } = props;
+
+			dispatch(clearInAppFeedback());
+
+			unsubscribe();
+			if (didMountInteraction.current && didMountInteraction.current.cancel) {
+				didMountInteraction.current.cancel();
+			}
+			if (subSubscription.current && subSubscription.current.unsubscribe) {
+				subSubscription.current.unsubscribe();
+			}
+
+			if (subObserveQuery.current && subObserveQuery.current.unsubscribe) {
+				subObserveQuery.current.unsubscribe();
+			}
+			if (queryUnreads.current && queryUnreads.current.unsubscribe) {
+				queryUnreads.current.unsubscribe();
+			}
+			if (retryInitTimeout.current) {
+				clearTimeout(retryInitTimeout.current);
+			}
+
+			EventEmitter.removeListener('connected', handleConnected);
+			EventEmitter.removeListener('ROOM_REMOVED', handleRoomRemoved);
+			if (!tmid) {
+				AudioManager.unloadRoomAudios(rid);
+			}
+		}
 	}, []);
 
 	const updateOmnichannel = React.useCallback(async () => {
@@ -211,6 +283,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			setHeader();
 		}
 	}, []);
+	
 
 	const canForwardGuest = React.useCallback(async () => {
 		const { transferLivechatGuestPermission } = props;
