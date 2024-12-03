@@ -688,7 +688,11 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		setState(prevState => ({ ...prevState, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null }));
+		setState(prevState => ({
+			...prevState,
+			selectedMessages: newSelectedMessages,
+			action: newSelectedMessages.length ? 'quote' : null
+		}));
 	};
 
 	const resetAction = () => {
