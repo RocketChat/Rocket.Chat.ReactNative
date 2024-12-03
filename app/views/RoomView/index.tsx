@@ -11,7 +11,7 @@ import * as Haptics from 'expo-haptics';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
-import { replyBroadcast } from '../../actions/messages';
+import { replyBroadcast as replyBroadcastAction } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
 import MessageActions, { IMessageActions } from '../../containers/MessageActions';
@@ -23,7 +23,7 @@ import RoomHeader from '../../containers/RoomHeader';
 import StatusBar from '../../containers/StatusBar';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
-import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
+import { getBadgeColor as getBadgeColorMethod, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
 import { isReadOnly } from '../../lib/methods/helpers/isReadOnly';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { withTheme } from '../../theme';
@@ -35,7 +35,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { takeInquiry, takeResume } from '../../ee/omnichannel/lib';
 import { sendLoadingEvent } from '../../containers/Loading';
-import getThreadName from '../../lib/methods/getThreadName';
+import getThreadNameMethod from '../../lib/methods/getThreadName';
 import getRoomInfo from '../../lib/methods/getRoomInfo';
 import { ContainerTypes } from '../../containers/UIKit/interfaces';
 import RoomServices from './services';
@@ -156,6 +156,13 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const queryUnreads = React.useRef<Subscription | null>(null);
 	const sub = React.useRef<RoomClass | null>(null);
 	const messageComposerRef = React.useRef<IMessageComposerRef | null>(null);
+
+	const messageErrorActions = React.useRef<IMessageErrorActions | null>(null);
+	const messageActions = React.useRef<IMessageActions | null>(null);
+
+	const list = React.useRef<IListContainerRef | null>(null);
+	const flatList = React.useRef<TListRef | null>(null);
+	const joinCode = React.useRef<IJoinCode | null>(null);
 
 	React.useEffect(()=>{
 		setHeader();
@@ -539,7 +546,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	};
 
 	const errorActionsShow = (message: TAnyMessageModel) => {
-		handleCloseEmoji(messageErrorActions?.showMessageErrorActions, message);
+		handleCloseEmoji(messageErrorActions.current?.showMessageErrorActions, message);
 	};
 
 	const showActionSheet = (options: any) => {
@@ -658,7 +665,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		if (message.tmid && !tmid) {
 			return;
 		}
-		handleCloseEmoji(messageActions?.showMessageActions, message);
+		handleCloseEmoji(messageActions.current?.showMessageActions, message);
 	};
 
 	const showAttachment = (attachment: IAttachment) => {
@@ -820,14 +827,594 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 
 	const replyBroadcast = (message: IMessage) => {
 		const { dispatch } = props;
-		dispatch(replyBroadcast(message));
+		dispatch(replyBroadcastAction(message));
 	};
 
 	const handleConnected = () => {
 		init();
 		EventEmitter.removeListener('connected', handleConnected);
 	};
+
+	const handleRoomRemoved = ({ rid }: { rid: string }) => {
+		const { room } = state;
+		if (rid === rid) {
+			Navigation.navigate('RoomsListView');
+			!isOmnichannel &&
+				showErrorAlert(I18n.t('You_were_removed_from_channel', { channel: getRoomTitle(room) }), I18n.t('Oops'));
+		}
+	};
+
+	const internalSetState = (...args: any[]) => {
+		if (!mounted.current) {
+			return;
+		}
+		// @ts-ignore TODO: TS is complaining about this, but I don't feel like changing rn since it should be working
+		setState((prevState) => ({ ...prevState, ...args }));
+	};
+
+	const handleSendMessage = (message: string, tshow?: boolean) => {
+		logEvent(events.ROOM_SEND_MESSAGE);
+		const { rid } = state.room;
+		const { user } = props;
+		sendMessage(rid, message, tmid, user, tshow).then(() => {
+			if (mounted.current) {
+				setLastOpen(null);
+			}
+			Review.pushPositiveEvent();
+		});
+		resetAction();
+	};
+
+	const getCustomEmoji: TGetCustomEmoji = name => {
+		const { customEmojis } = props;
+		const emoji = customEmojis[name];
+		if (emoji) {
+			return emoji;
+		}
+		return null;
+	};
+
+	const setLastOpen = (lastOpen: Date | null) => setState((prev) => ({ ...prev, lastOpen }));
+
+	const onJoin = () => {
+		internalSetState({
+			joined: true
+		});
+	};
+
+	const joinRoom = async () => {
+		logEvent(events.ROOM_JOIN);
+		try {
+			const { room } = state;
+
+			if (isOmnichannel) {
+				if ('_id' in room) {
+					await takeInquiry(room._id);
+				}
+				onJoin();
+			} else {
+				const { joinCodeRequired, rid } = room;
+				if (joinCodeRequired) {
+					joinCode.current?.show();
+				} else {
+					await Services.joinRoom(rid, null, t as any);
+					onJoin();
+				}
+			}
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const resumeRoom = async () => {
+		logEvent(events.ROOM_RESUME);
+		try {
+			const { room } = state;
+
+			if (isOmnichannel) {
+				if ('rid' in room) {
+					await takeResume(room.rid);
+				}
+				onJoin();
+			}
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const getThreadName = (tmid: string, messageId: string) => {
+		const { rid } = state.room;
+		return getThreadNameMethod(rid, tmid, messageId);
+	};
+
+	const fetchThreadName = async (tmid: string, messageId: string) => {
+		const { rid } = state.room;
+		const threadRecord = await getThreadById(tmid);
+		if (threadRecord?.t === 'rm') {
+			return I18n.t('Message_removed');
+		}
+		return getThreadNameMethod(rid, tmid, messageId);
+	};
+
+	const toggleFollowThread = async (isFollowingThread: boolean, threadMessageId = tmid) => {
+		try {
+			if (!threadMessageId) {
+				return;
+			}
+
+			await Services.toggleFollowMessage(threadMessageId, !isFollowingThread);
+			EventEmitter.emit(LISTENER, { message: isFollowingThread ? I18n.t('Unfollowed_thread') : I18n.t('Following_thread') });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const getBadgeColor = (messageId: string) => {
+		const { room } = state;
+		const { theme } = props;
+		return getBadgeColorMethod({ subscription: room, theme, messageId });
+	};
+
+	const navToRoomInfo = (navParam: any) => {
+		const { navigation, isMasterDetail } = props;
+		const { room } = state;
+		logEvent(events[`ROOM_GO_${navParam.t === 'd' ? 'USER' : 'ROOM'}_INFO`]);
+		navParam.fromRid = room.rid;
+		if (isMasterDetail) {
+			navParam.showCloseModal = true;
+			// @ts-ignore
+			navigation.navigate('ModalStackNavigator', { screen: 'RoomInfoView', params: navParam });
+		} else {
+			navigation.navigate('RoomInfoView', navParam);
+		}
+	};
+
+	const navToThread = async (item: TAnyMessageModel | { tmid: string }) => {
+		const { roomUserId } = state;
+		const { navigation } = props;
+
+		if (!rid) {
+			return;
+		}
+
+		if (item.tmid) {
+			let name = '';
+			let jumpToMessageId = '';
+			if ('id' in item) {
+				name = item.tmsg ?? '';
+				jumpToMessageId = item.id;
+			}
+			sendLoadingEvent({ visible: true, onCancel: cancelJumpToMessage });
+			const threadRecord = await getThreadById(item.tmid);
+			if (threadRecord?.t === 'rm') {
+				name = I18n.t('Thread');
+			}
+			if (!name) {
+				const result = await getThreadName(item.tmid, jumpToMessageId);
+				// test if there isn't a thread
+				if (!result) {
+					sendLoadingEvent({ visible: false });
+					return;
+				}
+				name = result;
+			}
+			if ('id' in item && item.t === E2E_MESSAGE_TYPE && item.e2e !== E2E_STATUS.DONE) {
+				name = I18n.t('Encrypted_message');
+			}
+			if (!jumpToMessageId) {
+				setTimeout(() => {
+					sendLoadingEvent({ visible: false });
+				}, 300);
+			}
+			return navigation.push('RoomView', {
+				rid,
+				tmid: item.tmid,
+				name,
+				t: SubscriptionType.THREAD,
+				roomUserId,
+				jumpToMessageId
+			});
+		}
+
+		if ('tlm' in item) {
+			return navigation.push('RoomView', {
+				rid,
+				tmid: item.id,
+				name: makeThreadName(item),
+				t: SubscriptionType.THREAD,
+				roomUserId
+			});
+		}
+	};
+
+	const navToRoom = async (message: TAnyMessageModel) => {
+		const { isMasterDetail } = props;
+		const roomInfo = await getRoomInfo(message.rid);
+
+		return goRoom({
+			item: roomInfo as TGoRoomItem,
+			isMasterDetail,
+			jumpToMessageId: message.id
+		});
+	};
+
+	// OLD METHOD - support versions before 5.0.0
+	const handleEnterCall = () => {
+		const { room } = state;
+		if ('id' in room) {
+			const { jitsiTimeout } = room;
+			if (jitsiTimeout && jitsiTimeout < new Date()) {
+				showErrorAlert(I18n.t('Call_already_ended'));
+			} else {
+				callJitsi({ room });
+			}
+		}
+	};
+
+	const blockAction = ({
+		actionId,
+		appId,
+		value,
+		blockId,
+		rid,
+		mid
+	}: {
+		actionId: string;
+		appId: string;
+		value: any;
+		blockId: string;
+		rid: string;
+		mid: string;
+	}) =>
+		triggerBlockAction({
+			blockId,
+			actionId,
+			value,
+			mid,
+			rid,
+			appId,
+			container: {
+				type: ContainerTypes.MESSAGE,
+				id: mid
+			}
+		});
+
+	const closeBanner = async () => {
+		const { room } = state;
+		if ('id' in room) {
+			try {
+				const db = database.active;
+				await db.write(async () => {
+					await room.update(r => {
+						r.bannerClosed = true;
+					});
+				});
+			} catch {
+				// do nothing
+			}
+		}
+	};
+
+	const isIgnored = (message: TAnyMessageModel): boolean => {
+		const { room } = state;
+		if ('id' in room) {
+			return room?.ignored?.includes?.(message?.u?._id) ?? false;
+		}
+		return false;
+	};
+
+	const goToCannedResponses = () => {
+		const { room } = state;
+		Navigation.navigate('CannedResponsesListView', { rid: room.rid });
+	};
+
+	const hapticFeedback = (msgId: string) => {
+		const { dispatch } = props;
+		dispatch(removeInAppFeedback(msgId));
+		const notificationInAppVibration = UserPreferences.getBool(NOTIFICATION_IN_APP_VIBRATION);
+		if (notificationInAppVibration || notificationInAppVibration === null) {
+			try {
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+			} catch {
+				// Do nothing: Haptic is unavailable
+			}
+		}
+	};
+
+	const setQuotesAndText = (text: string, quotes: string[]) => {
+		if (quotes.length) {
+			setState((prev) => ({ ...prev, selectedMessages: quotes, action: 'quote' }));
+		} else {
+			setState((prev) => ({ ...prev, action: null, selectedMessages: [] }));
+		}
+
+		messageComposerRef.current?.setInput(text || '');
+	};
+
+	const getText = () => messageComposerRef.current?.getText();
+
+	const renderItem = (item: TAnyMessageModel, previousItem: TAnyMessageModel, highlightedMessage?: string) => {
+		const { room, lastOpen, canAutoTranslate } = state;
+		const {
+			user,
+			Message_GroupingPeriod,
+			Message_TimeFormat,
+			useRealName,
+			baseUrl,
+			Message_Read_Receipt_Enabled,
+			theme,
+			inAppFeedback
+		} = props;
+		const { action, selectedMessages } = state;
+		let dateSeparator = null;
+		let showUnreadSeparator = false;
+		const isBeingEdited = action === 'edit' && item.id === selectedMessages[0];
+
+		if (!previousItem) {
+			dateSeparator = item.ts;
+			showUnreadSeparator = moment(item.ts).isAfter(lastOpen);
+		} else {
+			showUnreadSeparator =
+				(lastOpen && moment(item.ts).isSameOrAfter(lastOpen) && moment(previousItem.ts).isBefore(lastOpen)) ?? false;
+			if (!moment(item.ts).isSame(previousItem.ts, 'day')) {
+				dateSeparator = item.ts;
+			}
+		}
+
+		let content = null;
+		if (item.t && MESSAGE_TYPE_ANY_LOAD.includes(item.t as MessageTypeLoad)) {
+			const runOnRender = () => {
+				if (item.t === MessageTypeLoad.MORE) {
+					if (!previousItem) return true;
+					if (previousItem?.tmid) return true;
+				}
+				return false;
+			};
+			content = (
+				<LoadMore
+					rid={room.rid}
+					t={room.t as RoomType}
+					loaderId={item.id}
+					type={item.t}
+					runOnRender={runOnRender()}
+					dateSeparator={dateSeparator}
+					showUnreadSeparator={showUnreadSeparator}
+				/>
+			);
+		} else {
+			if (inAppFeedback?.[item.id]) {
+				hapticFeedback(item.id);
+			}
+			content = (
+				<Message
+					item={item}
+					user={user as any}
+					rid={room.rid}
+					archived={'id' in room && room.archived}
+					broadcast={'id' in room && room.broadcast}
+					status={item.status}
+					isThreadRoom={!!tmid}
+					isIgnored={isIgnored(item)}
+					previousItem={previousItem}
+					fetchThreadName={fetchThreadName}
+					onReactionPress={onReactionPress}
+					onReactionLongPress={onReactionLongPress}
+					onLongPress={onMessageLongPress}
+					onEncryptedPress={onEncryptedPress}
+					onDiscussionPress={onDiscussionPress}
+					onThreadPress={onThreadPress}
+					onAnswerButtonPress={handleSendMessage}
+					showAttachment={showAttachment}
+					reactionInit={onReactionInit}
+					replyBroadcast={replyBroadcast}
+					errorActionsShow={errorActionsShow}
+					isSystemMessage={room.sysMes as boolean}
+					baseUrl={baseUrl}
+					Message_GroupingPeriod={Message_GroupingPeriod}
+					timeFormat={Message_TimeFormat}
+					useRealName={useRealName}
+					isReadReceiptEnabled={Message_Read_Receipt_Enabled}
+					autoTranslateRoom={canAutoTranslate && 'id' in room && room.autoTranslate}
+					autoTranslateLanguage={'id' in room ? room.autoTranslateLanguage : undefined}
+					navToRoomInfo={navToRoomInfo}
+					getCustomEmoji={getCustomEmoji}
+					handleEnterCall={handleEnterCall}
+					blockAction={blockAction}
+					threadBadgeColor={getBadgeColor(item?.id)}
+					toggleFollowThread={toggleFollowThread}
+					jumpToMessage={jumpToMessageByUrl}
+					highlighted={highlightedMessage === item.id}
+					theme={theme}
+					closeEmojiAndAction={handleCloseEmoji}
+					isBeingEdited={isBeingEdited}
+					dateSeparator={dateSeparator}
+					showUnreadSeparator={showUnreadSeparator}
+				/>
+			);
+		}
+
+		return content;
+	};
+
+	const renderFooter = () => {
+		const { joined, room, readOnly, loading } = state;
+		const { theme, airGappedRestrictionRemainingDays } = props;
+
+		if (!rid) {
+			return null;
+		}
+		if ('onHold' in room && room.onHold) {
+			return (
+				<View style={styles.joinRoomContainer} key='room-view-chat-on-hold' testID='room-view-chat-on-hold'>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Chat_is_on_hold')}</Text>
+					<Touch
+						onPress={resumeRoom}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
+						enabled={!loading}>
+						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-chat-on-hold-button'>
+							{I18n.t('Resume')}
+						</Text>
+					</Touch>
+				</View>
+			);
+		}
+		if (!joined) {
+			return (
+				<View style={styles.joinRoomContainer} key='room-view-join' testID='room-view-join'>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('You_are_in_preview_mode')}</Text>
+					<Touch
+						onPress={joinRoom}
+						style={[styles.joinRoomButton, { backgroundColor: themes[theme].fontHint }]}
+						enabled={!loading}>
+						<Text style={[styles.joinRoomText, { color: themes[theme].fontWhite }]} testID='room-view-join-button'>
+							{I18n.t(isOmnichannel ? 'Take_it' : 'Join')}
+						</Text>
+					</Touch>
+				</View>
+			);
+		}
+		if (airGappedRestrictionRemainingDays !== undefined && airGappedRestrictionRemainingDays === 0) {
+			return (
+				<View style={styles.readOnly}>
+					<Text style={[styles.previewMode, { color: themes[theme].fontDefault }]}>
+						{I18n.t('AirGapped_workspace_read_only_title')}
+					</Text>
+					<Text style={[styles.readOnlyDescription, { color: themes[theme].fontDefault }]}>
+						{I18n.t('AirGapped_workspace_read_only_description')}
+					</Text>
+				</View>
+			);
+		}
+		if (readOnly) {
+			return (
+				<View style={styles.readOnly}>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_read_only')}</Text>
+				</View>
+			);
+		}
+		if ('id' in room && isBlocked(room)) {
+			return (
+				<View style={styles.readOnly}>
+					<Text style={[styles.previewMode, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('This_room_is_blocked')}</Text>
+				</View>
+			);
+		}
+		return <MessageComposerContainer ref={messageComposerRef} />;
+	};
+
+	const renderActions = () => {
+		const { room, readOnly } = state;
+		const { user } = props;
+		if (!('id' in room)) {
+			return null;
+		}
+		return (
+			<>
+				<MessageActions
+					ref={messageActions}
+					tmid={tmid}
+					room={room}
+					user={user}
+					editInit={onEditInit}
+					replyInit={onReplyInit}
+					quoteInit={onQuoteInit}
+					reactionInit={onReactionInit}
+					onReactionPress={onReactionPress}
+					jumpToMessage={jumpToMessageByUrl}
+					isReadOnly={readOnly}
+				/>
+				<MessageErrorActions ref={messageErrorActions} tmid={tmid} />
+			</>
+		);
+	};
+
+	const render = () => {
+		console.count(`RoomView.render calls`);
+		const { room, loading, action, selectedMessages } = state;
+		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = props;
+		const { rid, t } = room;
+		let bannerClosed;
+		let announcement;
+		if ('id' in room) {
+			({ bannerClosed, announcement } = room);
+		}
+
+		if ('encrypted' in room) {
+			// Missing room encryption key
+			if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted: room.encrypted, E2EKey: room.E2EKey })) {
+				return <MissingRoomE2EEKey />;
+			}
+
+			// Encrypted room, but user session is not encrypted
+			if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted: room.encrypted })) {
+				return <EncryptedRoom navigation={navigation} roomName={getRoomTitle(room)} />;
+			}
+		}
+
+		return (
+			<RoomContext.Provider
+				value={{
+					rid,
+					t,
+					tmid,
+					sharing: false,
+					action,
+					selectedMessages,
+					onRemoveQuoteMessage,
+					editCancel: onEditCancel,
+					editRequest: onEditRequest,
+					onSendMessage: handleSendMessage,
+					setQuotesAndText,
+					getText
+				}}>
+				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+					<StatusBar />
+					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={closeBanner} />
+					<List
+						ref={list}
+						//@ts-ignore TODO: TS is complaining about this
+						listRef={flatList}
+						rid={rid}
+						tmid={tmid}
+						renderRow={renderItem}
+						loading={loading}
+						hideSystemMessages={hideSystemMessages}
+						showMessageInMainThread={user.showMessageInMainThread ?? false}
+						serverVersion={serverVersion}
+					/>
+					{renderFooter()}
+					{renderActions()}
+					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+					<JoinCode ref={joinCode} onJoin={onJoin} rid={rid} t={t} theme={theme} />
+				</SafeAreaView>
+			</RoomContext.Provider>
+		);
+	}
+	
+	return render();
 }
+
+function propsAreEqual(prevProps: IRoomViewProps, nextProps: IRoomViewProps) {
+	const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = prevProps;
+	if (theme !== nextProps.theme) {
+		return true;
+	}
+	if (encryptionEnabled !== nextProps.encryptionEnabled) {
+		return true;
+	}
+	if (airGappedRestrictionRemainingDays !== nextProps.airGappedRestrictionRemainingDays) {
+		return true;
+	}
+	if (!dequal(nextProps.insets, insets)) {
+		return true;
+	}
+	if (!dequal(nextProps.route?.params, route?.params)) {
+		return true;
+	}
+	return Object.is(prevProps, nextProps);
+}
+
+export default React.memo(RoomView, propsAreEqual);
 class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
@@ -1699,7 +2286,7 @@ class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> 
 
 	replyBroadcast = (message: IMessage) => {
 		const { dispatch } = this.props;
-		dispatch(replyBroadcast(message));
+		dispatch(replyBroadcastAction(message));
 	};
 
 	handleConnected = () => {
@@ -1796,7 +2383,7 @@ class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> 
 
 	getThreadName = (tmid: string, messageId: string) => {
 		const { rid } = this.state.room;
-		return getThreadName(rid, tmid, messageId);
+		return getThreadNameMethod(rid, tmid, messageId);
 	};
 
 	fetchThreadName = async (tmid: string, messageId: string) => {
@@ -1805,7 +2392,7 @@ class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> 
 		if (threadRecord?.t === 'rm') {
 			return I18n.t('Message_removed');
 		}
-		return getThreadName(rid, tmid, messageId);
+		return getThreadNameMethod(rid, tmid, messageId);
 	};
 
 	toggleFollowThread = async (isFollowingThread: boolean, tmid?: string) => {
@@ -1824,7 +2411,7 @@ class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> 
 	getBadgeColor = (messageId: string) => {
 		const { room } = this.state;
 		const { theme } = this.props;
-		return getBadgeColor({ subscription: room, theme, messageId });
+		return getBadgeColorMethod({ subscription: room, theme, messageId });
 	};
 
 	navToRoomInfo = (navParam: any) => {
@@ -2282,4 +2869,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	encryptionEnabled: state.encryption.enabled
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
+//export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
