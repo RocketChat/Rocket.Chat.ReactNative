@@ -104,7 +104,251 @@ import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 
-class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
+const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
+	const rid = props.route.params?.rid;
+	const t = props.route.params?.t;
+	const tmid = props.route.params?.tmid;
+	const name = props.route.params?.name;
+	const fname = props.route.params?.fname;
+	const prid = props.route.params?.prid;
+	const jumpToMessageId = props.route.params?.jumpToMessageId;
+	const jumpToThreadId = props.route.params?.jumpToThreadId;
+
+	const room = props.route.params?.room ?? {
+		rid: rid as string,
+		t: t as string,
+		name,
+		fname,
+		prid
+	};
+
+	const initialRoomUserId = props.route.params?.roomUserId ?? getUidDirectMessage(room);
+	const initialSelectedMessages = props.route.params?.messageId ? [props.route.params.messageId] : [];
+
+	const [state, setState] = React.useState<IRoomViewState>({
+		joined: true,
+		room,
+		roomUpdate: {},
+		member: {},
+		lastOpen: null,
+		reactionsModalVisible: false,
+		selectedMessages: initialSelectedMessages,
+		action: initialSelectedMessages.length ? 'quote' : null,
+		canAutoTranslate: false,
+		loading: true,
+		replyWithMention: false,
+		readOnly: false,
+		unreadsCount: null,
+		roomUserId: initialRoomUserId,
+		canViewCannedResponse: false,
+		canForwardGuest: false,
+		canReturnQueue: false,
+		canPlaceLivechatOnHold: false,
+		isOnHold: false,
+		rightButtonsWidth: 0
+	});
+
+	const subObserveQuery = React.useRef<Subscription | null>(null);
+	const subSubscription = React.useRef<Subscription | null>(null);
+
+	React.useEffect(()=>{
+		setHeader();
+
+		if ('id' in room) {
+			observeRoom(room as TSubscriptionModel);
+		} else if (rid) {
+			findAndObserveRoom(rid);
+		}
+
+		// setReadOnly();
+
+		// this.messageComposerRef = React.createRef();
+		// this.list = React.createRef();
+		// this.flatList = React.createRef();
+		// this.joinCode = React.createRef();
+		// this.mounted = false;
+
+		// if (this.t === 'l') {
+		// 	this.updateOmnichannel();
+		// }
+
+		// // we don't need to subscribe to threads
+		// if (this.rid && !this.tmid) {
+		// 	this.sub = new RoomClass(this.rid);
+		// }
+	}, []);
+
+	const setHeader = React.useCallback(() => {
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } = state;
+		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = props;
+		
+		if (!room.rid) return;
+
+		const prid = room?.prid;
+		const isGroupChatConst = isGroupChat(room as ISubscription);
+		let title = route.params?.name;
+		let parentTitle = '';
+		// TODO: I think it's safe to remove this, but we need to test tablet without rooms
+		if (!tmid) {
+			title = getRoomTitle(room);
+		}
+		if (tmid) {
+			parentTitle = getRoomTitle(room);
+		}
+		let subtitle: string | undefined;
+		let teamId: string | undefined;
+		let encrypted: boolean | undefined;
+		let userId: string | undefined;
+		let token: string | undefined;
+		let avatar: string | undefined;
+		let visitor: IVisitor | undefined;
+		let sourceType: IOmnichannelSource | undefined;
+		let departmentId: string | undefined;
+
+		if ('id' in room) {
+			subtitle = room.topic;
+			teamId = room.teamId;
+			encrypted = room.encrypted;
+			({ id: userId, token } = user);
+			avatar = room.name;
+			visitor = room.visitor;
+			departmentId = room.departmentId;
+		}
+
+		if ('source' in room) {
+			sourceType = room.source;
+			visitor = room.visitor;
+		}
+
+		const onLayout = ({ nativeEvent }: { nativeEvent: any }) => {
+			setState((prevState) => ({ ...prevState, rightButtonsWidth: nativeEvent.layout.width }));
+		};
+
+		const t = room?.t;
+		const teamMain = 'teamMain' in room ? room?.teamMain : false;
+		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
+		const iSubRoom = room as ISubscription;
+		const e2eeWarning = !!(
+			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
+		);
+		navigation.setOptions({
+			headerLeft: () =>
+				isIOS && (unreadsCount || isMasterDetail) ? (
+					<LeftButtons
+						rid={rid}
+						tmid={tmid}
+						unreadsCount={unreadsCount}
+						baseUrl={baseUrl}
+						userId={userId}
+						token={token}
+						title={avatar}
+						theme={theme}
+						t={t}
+						goRoomActionsView={goRoomActionsView}
+						isMasterDetail={isMasterDetail}
+					/>
+				) : undefined,
+			headerTitle: () => (
+				<RoomHeader
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					teamMain={teamMain}
+					parentTitle={parentTitle}
+					subtitle={subtitle}
+					type={t}
+					roomUserId={roomUserId}
+					visitor={visitor}
+					isGroupChat={isGroupChatConst}
+					onPress={goRoomActionsView}
+					testID={`room-view-title-${title}`}
+					sourceType={sourceType}
+					disabled={e2eeWarning}
+					rightButtonsWidth={rightButtonsWidth}
+				/>
+			),
+			headerRight: () => (
+				<RightButtons
+					rid={rid}
+					tmid={tmid}
+					teamId={teamId}
+					joined={joined}
+					status={room.status}
+					omnichannelPermissions={omnichannelPermissions}
+					t={t as SubscriptionType}
+					encrypted={encrypted}
+					navigation={navigation}
+					toggleFollowThread={toggleFollowThread}
+					showActionSheet={showActionSheet}
+					departmentId={departmentId}
+					notificationsDisabled={iSubRoom?.disableNotifications}
+					onLayout={onLayout}
+					hasE2EEWarning={e2eeWarning}
+				/>
+			)
+		});
+	}, [state, props]);
+
+	const observeRoom = React.useCallback((room: TSubscriptionModel) => {
+		const observable = room.observe();
+		
+		subSubscription.current = observable.subscribe(changes => {
+			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
+				ret[attr] = changes[attr];
+				return ret;
+			}, {});
+
+			setState((prevState) => ({ ...prevState, room: changes, roomUpdate, isOnHold: !!changes?.onHold }));
+		});
+	}, [roomAttrsUpdate]);
+
+	const findAndObserveRoom = React.useCallback(async (rid: string) => {
+		try {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const room = await subCollection.find(rid);
+
+			setState((prevState) => ({ ...prevState, room }));
+			
+			if (!tmid) {
+				setHeader();
+			}
+
+			observeRoom(room);
+		} catch (error) {
+			if (t !== SubscriptionType.DIRECT) {
+				console.log('Room not found');
+
+				setState((prevState) => ({ ...prevState, joined: false }));
+			}
+			if (rid) {
+				observeSubscriptions();
+			}
+		}
+	}, [rid]);
+
+	const observeSubscriptions = React.useCallback(() => {
+		try {
+			const observeSubCollection = database.active
+				.get('subscriptions')
+				.query(Q.where('rid', rid as string))
+				.observe();
+			
+			subObserveQuery.current = observeSubCollection.subscribe(data => {
+				if (data[0]) {
+					if (subObserveQuery.current && subObserveQuery.current.unsubscribe) {
+						observeRoom(data[0]);
+						setState((prevState) => ({ ...prevState, room: data[0], joined: true }));
+						subObserveQuery.current.unsubscribe();
+					}
+				}
+			});
+		} catch (e) {
+			console.log("observeSubscriptions: Can't find subscription to observe");
+		}
+	}, [rid]);
+}
+class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
 	private t?: string;
 	private tmid?: string;
