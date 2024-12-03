@@ -266,8 +266,8 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	const updateOmnichannel = React.useCallback(async () => {
 		const data = await Promise.all([canForwardGuest(), canPlaceLivechatOnHold(), canReturnQueue(), canViewCannedResponse()]);
 
-		setState(prev => ({
-			...prev,
+		setState(prevState => ({
+			...prevState,
 			canForwardGuest: data[0],
 			canReturnQueue: data[1],
 			canViewCannedResponse: data[2],
@@ -494,7 +494,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 
 	const init = async () => {
 		try {
-			setState(prev => ({ ...prev, loading: true }));
+			setState(prevState => ({ ...prevState, loading: true }));
 
 			const { room, joined } = state;
 			if (!rid) {
@@ -524,9 +524,9 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			const canAutoTranslate = canAutoTranslateMethod();
 			const member = await getRoomMember();
 
-			setState(prev => ({ ...prev, canAutoTranslate, member, loading: false }));
+			setState(prevState => ({ ...prevState, canAutoTranslate, member, loading: false }));
 		} catch (e) {
-			setState(prev => ({ ...prev, loading: false }));
+			setState(prevState => ({ ...prevState, loading: false }));
 
 			retryInit.current += 1;
 			if (retryInit.current <= 1) {
@@ -544,7 +544,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		if ('id' in room && t === SubscriptionType.DIRECT && !isGroupChat(room)) {
 			try {
 				const roomUserId = getUidDirectMessage(room);
-				setState(prev => ({ ...prev, roomUserId }));
+				setState(prevState => ({ ...prevState, roomUserId }));
 				setHeader();
 
 				const result = await Services.getUserInfo(roomUserId);
@@ -634,7 +634,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			return;
 		}
 
-		setState(prev => ({ ...prev, selectedMessages: [messageId], action: 'edit' }));
+		setState(prevState => ({ ...prevState, selectedMessages: [messageId], action: 'edit' }));
 	};
 
 	const onEditCancel = () => {
@@ -675,24 +675,24 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		const { action } = state;
 		if (action === 'quote') {
 			if (!state.selectedMessages.includes(messageId)) {
-				setState(prev => ({ ...prev, selectedMessages: [...prev.selectedMessages, messageId] }));
+				setState(prevState => ({ ...prevState, selectedMessages: [...prevState.selectedMessages, messageId] }));
 			}
 			return;
 		}
 		if (action) {
 			return;
 		}
-		setState(prev => ({ ...prev, selectedMessages: [messageId], action: 'quote' }));
+		setState(prevState => ({ ...prevState, selectedMessages: [messageId], action: 'quote' }));
 	};
 
 	const onRemoveQuoteMessage = (messageId: string) => {
 		const { selectedMessages } = state;
 		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
-		setState(prev => ({ ...prev, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null }));
+		setState(prevState => ({ ...prevState, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null }));
 	};
 
 	const resetAction = () => {
-		setState(prev => ({ ...prev, action: null, selectedMessages: [] }));
+		setState(prevState => ({ ...prevState, action: null, selectedMessages: [] }));
 	};
 
 	const showReactionPicker = () => {
@@ -715,7 +715,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			return;
 		}
 		handleCloseEmoji(() => {
-			setState(prev => ({ ...prev, selectedMessages: [messageId], action: 'react' }));
+			setState(prevState => ({ ...prevState, selectedMessages: [messageId], action: 'react' }));
 			showReactionPicker();
 		});
 	};
@@ -815,7 +815,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 				0
 			);
 			if (state.unreadsCount !== unreadsCount) {
-				setState(prev => ({ ...prev, unreadsCount }));
+				setState(prevState => ({ ...prevState, unreadsCount }));
 				setHeader();
 			}
 		});
@@ -943,7 +943,7 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		return null;
 	};
 
-	const setLastOpen = (lastOpen: Date | null) => setState(prev => ({ ...prev, lastOpen }));
+	const setLastOpen = (lastOpen: Date | null) => setState(prevState => ({ ...prevState, lastOpen }));
 
 	const onJoin = () => {
 		internalSetState({
@@ -1192,9 +1192,9 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 
 	const setQuotesAndText = (text: string, quotes: string[]) => {
 		if (quotes.length) {
-			setState(prev => ({ ...prev, selectedMessages: quotes, action: 'quote' }));
+			setState(prevState => ({ ...prevState, selectedMessages: quotes, action: 'quote' }));
 		} else {
-			setState(prev => ({ ...prev, action: null, selectedMessages: [] }));
+			setState(prevState => ({ ...prevState, action: null, selectedMessages: [] }));
 		}
 
 		messageComposerRef.current?.setInput(text || '');
