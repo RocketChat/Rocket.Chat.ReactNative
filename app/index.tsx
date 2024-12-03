@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useRef,useEffect} from 'react';
 import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
@@ -35,6 +35,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+
 
 RNScreens.enableScreens();
 initStore(store);
@@ -78,31 +79,54 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
-export default class Root extends React.Component<{}, IState> {
-	private listenerTimeout!: any;
-	private dimensionsListener?: EmitterSubscription;
 
-	constructor(props: any) {
-		super(props);
-		this.init();
+
+	
+const Root: React.FC = () => {
+	const stateRef = useRef({
+		theme: getTheme(initialTheme()),
+		themePreferences: initialTheme(),
+		...Dimensions.get('window'),
+	  });
+	
+	  const listenerTimeout = useRef<any>(null);
+	  const dimensionsListener = useRef<EmitterSubscription | undefined>(undefined);
+	
+	  const init = () => {
+	  };
+	
+	  const initCrashReport = () => {
+	  };
+	
+	  const initTablet = () => {
+	  };
+
+	
+	  useEffect(() => {
+		init();
+	
 		if (!isFDroidBuild) {
-			this.initCrashReport();
+		  initCrashReport();
 		}
-		const { width, height, scale, fontScale } = Dimensions.get('window');
-		const theme = initialTheme();
-		this.state = {
-			theme: getTheme(theme),
-			themePreferences: theme,
-			width,
-			height,
-			scale,
-			fontScale
-		};
+	
 		if (isTablet) {
-			this.initTablet();
+		  initTablet();
 		}
-		setNativeTheme(theme);
-	}
+	
+		setNativeTheme(stateRef.current.themePreferences);
+	
+		return () => {
+		  if (listenerTimeout.current) {
+			clearTimeout(listenerTimeout.current);
+		  }
+		  if (dimensionsListener.current) {
+			dimensionsListener.current.remove();
+		  }
+		};
+	  }, []);
+
+};
+
 
 	componentDidMount() {
 		this.listenerTimeout = setTimeout(() => {
@@ -115,6 +139,9 @@ export default class Root extends React.Component<{}, IState> {
 		}, 5000);
 		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 	}
+	
+
+	
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
@@ -238,3 +265,6 @@ export default class Root extends React.Component<{}, IState> {
 		);
 	}
 }
+
+
+export default Root;
