@@ -86,6 +86,8 @@ export default class EncryptionRoom {
 			return this.readyPromise;
 		}
 
+		this.establishing = true;
+
 		if (!this.subscription) {
 			this.subscription = await getSubscriptionByRoomId(this.roomId);
 			if (!this.subscription) {
@@ -98,7 +100,6 @@ export default class EncryptionRoom {
 		if (E2ESuggestedKey && Encryption.privateKey) {
 			try {
 				try {
-					this.establishing = true;
 					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
 					this.keyID = keyID;
 					this.roomKey = roomKey;
@@ -116,7 +117,6 @@ export default class EncryptionRoom {
 
 		// If this room has a E2EKey, we import it
 		if (E2EKey && Encryption.privateKey) {
-			this.establishing = true;
 			const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2EKey, Encryption.privateKey);
 			this.keyID = keyID;
 			this.roomKey = roomKey;
@@ -127,11 +127,12 @@ export default class EncryptionRoom {
 
 		// If it doesn't have a e2eKeyId, we need to create keys to the room
 		if (!e2eKeyId) {
-			this.establishing = true;
 			await this.createRoomKey();
 			this.readyPromise.resolve();
 			return;
 		}
+
+		this.establishing = false;
 
 		// Request a E2EKey for this room to other users
 		this.requestRoomKey(e2eKeyId);
