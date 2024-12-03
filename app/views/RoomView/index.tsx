@@ -149,8 +149,13 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 	});
 
 	const mounted = React.useRef(false);
+	const retryInit = React.useRef(0);
+	const retryInitTimeout = React.useRef<NodeJS.Timeout | null>(null);
 	const subObserveQuery = React.useRef<Subscription | null>(null);
 	const subSubscription = React.useRef<Subscription | null>(null);
+	const queryUnreads = React.useRef<Subscription | null>(null);
+	const sub = React.useRef<RoomClass | null>(null);
+	const messageComposerRef = React.useRef<IMessageComposerRef | null>(null);
 
 	React.useEffect(()=>{
 		setHeader();
@@ -412,18 +417,72 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 		setState((prevState) => ({ ...prevState, readOnly }));
 	}, []);
 
-	const observeRoom = React.useCallback((room: TSubscriptionModel) => {
-		const observable = room.observe();
-		
-		subSubscription.current = observable.subscribe(changes => {
-			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
-				ret[attr] = changes[attr];
-				return ret;
-			}, {});
+	const init = async () => {
+		try {
+			setState((prev) => ({ ...prev, loading: true }));
 
-			setState((prevState) => ({ ...prevState, room: changes, roomUpdate, isOnHold: !!changes?.onHold }));
-		});
-	}, [roomAttrsUpdate]);
+			const { room, joined } = state;
+			if (!rid) {
+				return;
+			}
+			if (tmid) {
+				await loadThreadMessages({ tmid: tmid, rid: rid });
+			} else {
+				const newLastOpen = new Date();
+				await RoomServices.getMessages({
+					rid: room.rid,
+					t: room.t as RoomType,
+					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
+				});
+
+				// if room is joined
+				if (joined && 'id' in room) {
+					if (room.alert || room.unread || room.userMentions) {
+						setLastOpen(room.ls);
+					} else {
+						setLastOpen(null);
+					}
+					readMessages(room.rid, newLastOpen, true).catch(e => console.log(e));
+				}
+			}
+
+			const canAutoTranslate = canAutoTranslateMethod();
+			const member = await getRoomMember();
+
+			setState((prev) => ({ ...prev, canAutoTranslate, member, loading: false }));
+		} catch (e) {
+			setState((prev) => ({ ...prev, loading: false }));
+
+			retryInit.current += 1;
+			if (retryInit.current <= 1) {
+				retryInitTimeout.current = setTimeout(() => {
+					init();
+				}, 300);
+			}
+		}
+	}
+
+	const getRoomMember = async () => {
+		const { room } = state;
+		const { t } = room;
+
+		if ('id' in room && t === SubscriptionType.DIRECT && !isGroupChat(room)) {
+			try {
+				const roomUserId = getUidDirectMessage(room);
+				setState((prev)=>({ ...prev, roomUserId }));
+				setHeader();
+
+				const result = await Services.getUserInfo(roomUserId);
+				if (result.success) {
+					return result.user;
+				}
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		return {};
+	};
 
 	const findAndObserveRoom = React.useCallback(async (rid: string) => {
 		try {
@@ -449,6 +508,325 @@ const RoomView: React.FC<IRoomViewProps> = (props: IRoomViewProps) => {
 			}
 		}
 	}, [rid]);
+
+	const unsubscribe = async () => {
+		if (sub.current && sub.current.unsubscribe) {
+			await sub.current.unsubscribe();
+		}
+		
+		sub.current = null;
+	};
+	const observeRoom = React.useCallback((room: TSubscriptionModel) => {
+		const observable = room.observe();
+		
+		subSubscription.current = observable.subscribe(changes => {
+			const roomUpdate = roomAttrsUpdate.reduce((ret: any, attr) => {
+				ret[attr] = changes[attr];
+				return ret;
+			}, {});
+
+			setState((prevState) => ({ ...prevState, room: changes, roomUpdate, isOnHold: !!changes?.onHold }));
+		});
+	}, [roomAttrsUpdate]);
+
+	const handleCloseEmoji = (action?: Function, params?: any) => {
+		if (messageComposerRef?.current) {
+			return messageComposerRef?.current.closeEmojiKeyboardAndAction(action, params);
+		}
+		if (action) {
+			return action(params);
+		}
+	};
+
+	const errorActionsShow = (message: TAnyMessageModel) => {
+		handleCloseEmoji(messageErrorActions?.showMessageErrorActions, message);
+	};
+
+	const showActionSheet = (options: any) => {
+		const { showActionSheet } = props;
+		handleCloseEmoji(showActionSheet, options);
+	};
+
+	const onEditInit = (messageId: string) => {
+		const { action } = state;
+		if (action) {
+			return;
+		}
+		
+		setState((prev)=> ({ ...prev, selectedMessages: [messageId], action: 'edit' }));
+	};
+
+	const onEditCancel = () => {
+		resetAction();
+	};
+
+	const onEditRequest = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
+		try {
+			resetAction();
+			await Services.editMessage(message);
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const onReplyInit = async (messageId: string) => {
+		const message = await getMessageById(messageId);
+		if (!message || !rid) {
+			return;
+		}
+
+		// If there's a thread already, we redirect to it
+		if (message.tlm) {
+			return onThreadPress(message);
+		}
+		const { roomUserId } = state;
+		const { navigation } = props;
+		navigation.push('RoomView', {
+			rid,
+			tmid: messageId,
+			name: makeThreadName(message),
+			t: SubscriptionType.THREAD,
+			roomUserId
+		});
+	};
+
+	const onQuoteInit = (messageId: string) => {
+		const { action } = state;
+		if (action === 'quote') {
+			if (!state.selectedMessages.includes(messageId)) {
+				setState((prev)=> ({ ...prev, selectedMessages: [...prev.selectedMessages, messageId] }));
+			}
+			return;
+		}
+		if (action) {
+			return;
+		}
+		setState((prev)=> ({ ...prev, selectedMessages: [messageId], action: 'quote' }));
+	};
+
+	const onRemoveQuoteMessage = (messageId: string) => {
+		const { selectedMessages } = state;
+		const newSelectedMessages = selectedMessages.filter(item => item !== messageId);
+		setState((prev)=> ({ ...prev, selectedMessages: newSelectedMessages, action: newSelectedMessages.length ? 'quote' : null }));
+	};
+
+	const resetAction = () => {
+		setState((prev)=> ({ ...prev, action: null, selectedMessages: [] }));
+	};
+
+	const showReactionPicker = () => {
+		const { showActionSheet } = props;
+		const { selectedMessages } = state;
+		setTimeout(() => {
+			showActionSheet({
+				children: (
+					<ReactionPicker
+						messageId={selectedMessages[0]}
+						onEmojiSelected={onReactionPress}
+						reactionClose={onReactionClose}
+					/>
+				),
+				snaps: ['50%'],
+				enableContentPanningGesture: false,
+				onClose: resetAction
+			});
+		}, 100);
+	};
+
+	const onReactionInit = (messageId: string) => {
+		if (state.action) {
+			return;
+		}
+		handleCloseEmoji(() => {
+			setState((prev)=> ({ ...prev, selectedMessages: [messageId], action: 'react' }));
+			showReactionPicker()
+		});
+	};
+
+	const onReactionClose = () => {
+		const { hideActionSheet } = props;
+		resetAction();
+		hideActionSheet();
+	};
+
+	const onMessageLongPress = (message: TAnyMessageModel) => {
+		const { action } = state;
+		if (action && action !== 'quote') {
+			return;
+		}
+		// if it's a thread message on main room, we disable the long press
+		if (message.tmid && !tmid) {
+			return;
+		}
+		handleCloseEmoji(messageActions?.showMessageActions, message);
+	};
+
+	const showAttachment = (attachment: IAttachment) => {
+		const { navigation } = props;
+		navigation.navigate('AttachmentView', { attachment });
+	};
+
+	const onReactionPress = async (emoji: IEmoji, messageId: string) => {
+		try {
+			let shortname = '';
+			if (typeof emoji === 'string') {
+				shortname = emoji;
+			} else {
+				shortname = emoji.name;
+			}
+			await Services.setReaction(shortname, messageId);
+			onReactionClose();
+			Review.pushPositiveEvent();
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const onReactionLongPress = (message: TAnyMessageModel) => {
+		const { showActionSheet } = props;
+		handleCloseEmoji(showActionSheet, {
+			children: <ReactionsList reactions={message?.reactions} getCustomEmoji={getCustomEmoji} />,
+			snaps: ['50%'],
+			enableContentPanningGesture: false
+		});
+	};
+
+	const onEncryptedPress = () => {
+		logEvent(events.ROOM_ENCRYPTED_PRESS);
+		const { navigation, isMasterDetail } = props;
+
+		const screen = { screen: 'E2EHowItWorksView', params: { showCloseModal: true } };
+
+		if (isMasterDetail) {
+			// @ts-ignore
+			return navigation.navigate('ModalStackNavigator', screen);
+		}
+		// @ts-ignore
+		navigation.navigate('E2ESaveYourPasswordStackNavigator', screen);
+	};
+
+	const onDiscussionPress = debounce(
+		async (item: TAnyMessageModel) => {
+			const { isMasterDetail } = props;
+			if (!item.drid) return;
+			const sub = await getRoomInfo(item.drid);
+			if (sub) {
+				goRoom({
+					item: sub as TGoRoomItem,
+					isMasterDetail
+				});
+			}
+		},
+		1000,
+		true
+	);
+
+	// eslint-disable-next-line react/sort-comp
+	const updateUnreadCount = async () => {
+		if (!rid) {
+			return;
+		}
+		const db = database.active;
+		const observable = db
+			.get('subscriptions')
+			.query(Q.where('archived', false), Q.where('open', true), Q.where('rid', Q.notEq(rid)))
+			.observeWithColumns(['unread']);
+
+		queryUnreads.current = observable.subscribe(rooms => {
+			const unreadsCount = rooms.reduce(
+				(unreadCount, room) => (room.unread > 0 && !room.hideUnreadStatus ? unreadCount + room.unread : unreadCount),
+				0
+			);
+			if (state.unreadsCount !== unreadsCount) {
+				setState((prev)=> ({ ...prev, unreadsCount }));
+				setHeader();
+			}
+		});
+	};
+
+	const onThreadPress = debounce((item: TAnyMessageModel) => navToThread(item), 1000, true);
+
+	const shouldNavigateToRoom = (message: IMessage) => {
+		if (message.tmid && message.tmid === tmid) {
+			return false;
+		}
+		if (!message.tmid && message.rid === rid) {
+			return false;
+		}
+		return true;
+	};
+
+	const jumpToMessageByUrl = async (messageUrl?: string, isFromReply?: boolean) => {
+		if (!messageUrl) {
+			return;
+		}
+		try {
+			const parsedUrl = parse(messageUrl, true);
+			const messageId = parsedUrl.query.msg;
+			if (messageId) {
+				await jumpToMessage(messageId, isFromReply);
+			}
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const jumpToMessage = async (messageId: string, isFromReply?: boolean) => {
+		try {
+			sendLoadingEvent({ visible: true, onCancel: cancelJumpToMessage });
+			const message = await RoomServices.getMessageInfo(messageId);
+
+			if (!message) {
+				cancelJumpToMessage();
+				return;
+			}
+
+			if (shouldNavigateToRoom(message)) {
+				if (message.rid !== rid) {
+					navToRoom(message);
+				} else {
+					navToThread(message);
+				}
+			} else if (!message.tmid && message.rid === rid && t === SubscriptionType.THREAD && !message.replies) {
+				/**
+				 * if the user is within a thread and the message that he is trying to jump to, is a message in the main room
+				 */
+				return navToRoom(message);
+			} else {
+				/**
+				 * if it's from server, we don't have it saved locally and so we fetch surroundings
+				 * we test if it's not from threads because we're fetching from threads currently with `loadThreadMessages`
+				 */
+				if (message.fromServer && !message.tmid && rid) {
+					await loadSurroundingMessages({ messageId, rid: rid });
+				}
+				await Promise.race([list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
+				cancelJumpToMessage();
+			}
+		} catch (error: any) {
+			if (isFromReply && error.data?.errorType === 'error-not-allowed') {
+				showErrorAlert(I18n.t('The_room_does_not_exist'), I18n.t('Room_not_found'));
+			} else {
+				log(error);
+			}
+			cancelJumpToMessage();
+		}
+	};
+
+	const cancelJumpToMessage = () => {
+		list.current?.cancelJumpToMessage();
+		sendLoadingEvent({ visible: false });
+	};
+
+	const replyBroadcast = (message: IMessage) => {
+		const { dispatch } = props;
+		dispatch(replyBroadcast(message));
+	};
+
+	const handleConnected = () => {
+		init();
+		EventEmitter.removeListener('connected', handleConnected);
+	};
 }
 class RoomViewComponent extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
