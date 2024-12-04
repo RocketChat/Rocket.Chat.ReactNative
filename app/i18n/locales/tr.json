@@ -107,7 +107,7 @@
   "Direct_message_someone": "Birine doğrudan ileti gönder",
   "Direct_Messages": "Özel İletiler",
   "Directory": "Dizin",
-  "Discussion_Desc": "Tartışmalar, herhangi bir çalışma alanı üyesinin eklenebileceği bir kanal veya ekip içindeki belirli bir konu etrafında ayrı konuşmalara izin verir.",
+  "Discussion_Desc": "Tartışmalar, bir kanalda veya ekipte belirli bir konu etrafında ayrı sohbetler yapılmasına olanak tanır ve herhangi bir çalışma alanı üyesi eklenebilir.",
   "Discussion_name": "Tartışma adı",
   "Discussions": "Tartışmalar",
   "Displays_action_text": "Görüntüler aksiyon metni",

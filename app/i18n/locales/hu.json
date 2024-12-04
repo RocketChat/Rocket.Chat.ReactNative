@@ -192,7 +192,7 @@
   "Discard_changes": "Változások elvetése?",
   "Discard_changes_description": "Minden változtatás elveszik, ha mentés nélkül visszalép.",
   "Discussion": "Megbeszélés",
-  "Discussion_Desc": "A megbeszélések külön beszélgetéseket tesznek lehetővé egy adott téma körül egy csatornán vagy csapaton belül, ahol bármelyik munkaterület tagja hozzáadható.",
+  "Discussion_Desc": "A megbeszélések lehetővé teszik, hogy egy adott témáról külön beszélgetések folytatódjanak egy csatornán vagy csapatban, ahová bármelyik munkaterületi tagot hozzá lehet adni.",
   "Discussion_name": "Megbeszélés neve",
   "Discussions": "Megbeszélések",
   "Display": "Megjelenítés",
