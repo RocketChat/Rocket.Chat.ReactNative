@@ -167,7 +167,10 @@ export const FormTextInput = ({
 				) : null}
 
 				{secureTextEntry ? (
-					<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
+					<Touchable
+						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
+						onPress={() => setShowPassword(!showPassword)}
+						style={[styles.iconContainer, styles.iconRight]}>
 						<CustomIcon
 							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 							testID={testID ? `${testID}-icon-password` : undefined}
