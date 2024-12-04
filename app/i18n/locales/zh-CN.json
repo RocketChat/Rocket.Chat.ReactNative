@@ -320,6 +320,8 @@
   "Passcode_choose_title": "请输入新通关密码",
   "Passcode_enter_title": "请输入通关密码",
   "Password": "密码",
+  "Password_Tip_Error": "未满足条件。",
+  "Password_Tip_Success": "条件已满足。",
   "Permalink_copied_to_clipboard": "永久链接已复制到剪贴板！",
   "Phone": "电话",
   "Pin": "钉选",

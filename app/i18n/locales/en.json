@@ -549,6 +549,8 @@
   "Passcode_choose_title": "Choose your new passcode",
   "Passcode_enter_title": "Enter your passcode",
   "Password": "Password",
+  "Password_Tip_Error": "Condition not met.",
+  "Password_Tip_Success": "Condition met.",
   "Permalink_copied_to_clipboard": "Permalink copied to clipboard!",
   "Person_or_channel": "Person or channel",
   "Phone": "Phone",

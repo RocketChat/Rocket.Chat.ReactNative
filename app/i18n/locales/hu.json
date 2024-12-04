@@ -491,6 +491,8 @@
   "Passcode_choose_title": "Válassza ki az új jelkódot",
   "Passcode_enter_title": "Adja meg a jelkódot",
   "Password": "Jelszó",
+  "Password_Tip_Error": "Feltétel nem teljesült.",
+  "Password_Tip_Success": "Feltétel teljesítve.",
   "Permalink_copied_to_clipboard": "Permalink a vágólapra másolva!",
   "Person_or_channel": "Személy vagy csatorna",
   "Phone": "Telefon",

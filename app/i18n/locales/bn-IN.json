@@ -490,6 +490,8 @@
   "Passcode_choose_title": "আপনার নতুন পাসকোড চয়ন করুন",
   "Passcode_enter_title": "আপনার পাসকোড লিখুন",
   "Password": "পাসওয়ার্ড",
+  "Password_Tip_Error": "শর্ত পূরণ হয়নি।",
+  "Password_Tip_Success": "শর্ত পূরণ হয়েছে।",
   "Permalink_copied_to_clipboard": "পারমালিঙ্ক ক্লিপবোর্ডে কপি করা হয়েছে!",
   "Person_or_channel": "ব্যক্তি বা চ্যানেল",
   "Phone": "ফোন",

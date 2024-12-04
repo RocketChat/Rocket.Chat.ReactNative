@@ -337,6 +337,8 @@
   "Passcode_choose_title": "Yeni şifrenizi yazın",
   "Passcode_enter_title": "Şifrenizi giriniz",
   "Password": "Şifre",
+  "Password_Tip_Error": "Koşul karşılanmadı.",
+  "Password_Tip_Success": "Koşul sağlandı.",
   "Permalink_copied_to_clipboard": "Kalıcı bağlantı panoya kopyalandı!",
   "Phone": "Telefon",
   "Pin": "Sabitle",

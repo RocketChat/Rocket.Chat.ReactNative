@@ -415,6 +415,8 @@
   "Passcode_choose_title": "Choisissez votre nouveau code d'accès",
   "Passcode_enter_title": "Entrez votre code d'accès",
   "Password": "Mot de passe",
+  "Password_Tip_Error": "Condition non remplie.",
+  "Password_Tip_Success": "Condition remplie.",
   "Permalink_copied_to_clipboard": "Lien permanent copié dans le presse-papiers !",
   "Phone": "Téléphone",
   "Pin": "Épingler",

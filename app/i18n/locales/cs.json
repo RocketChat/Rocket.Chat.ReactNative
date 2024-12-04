@@ -530,6 +530,8 @@
   "Passcode_choose_title": "Vyberte si nový přístupový kód",
   "Passcode_enter_title": "Zadejte přístupový kód",
   "Password": "Heslo",
+  "Password_Tip_Error": "Podmínka nesplněna.",
+  "Password_Tip_Success": "Podmínka splněna.",
   "Permalink_copied_to_clipboard": "Trvalý odkaz zkopírován do schránky!",
   "Person_or_channel": "Osoba nebo kanál",
   "Phone": "Telefon",

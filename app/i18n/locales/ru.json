@@ -446,6 +446,8 @@
   "Passcode_choose_title": "Выберите ваш новый пароль",
   "Passcode_enter_title": "Введите ваш пароль",
   "Password": "Пароль",
+  "Password_Tip_Error": "Условие не выполнено.",
+  "Password_Tip_Success": "Условие выполнено.",
   "Permalink_copied_to_clipboard": "Постоянная ссылка скопирована в буфер обмена!",
   "Phone": "Телефон",
   "Pin": "Прикрепить сообщение",

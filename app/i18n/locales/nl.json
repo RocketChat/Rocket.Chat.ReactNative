@@ -415,6 +415,8 @@
   "Passcode_choose_title": "Kies je nieuwe toegangscode",
   "Passcode_enter_title": "Voer uw toegangscode in",
   "Password": "Wachtwoord",
+  "Password_Tip_Error": "Voorwaarde niet voldaan.",
+  "Password_Tip_Success": "Voorwaarde voldaan.",
   "Permalink_copied_to_clipboard": "Permalink gekopiëerd naar klembord!",
   "Phone": "Telefoon",
   "Pin": "Vastzetten",

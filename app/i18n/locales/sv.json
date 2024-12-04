@@ -455,6 +455,8 @@
   "Passcode_choose_title": "Välj en ny lösenkod",
   "Passcode_enter_title": "Ange din lösenkod",
   "Password": "Lösenord",
+  "Password_Tip_Error": "Villkor ej uppfyllt.",
+  "Password_Tip_Success": "Villkor uppfyllt.",
   "Permalink_copied_to_clipboard": "Permalänken har kopierats till urklipp.",
   "Phone": "Telefonnummer",
   "Pin": "Fäst",

@@ -57,7 +57,8 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		handleSubmit,
 		setFocus,
 		getValues,
-		formState: { isValid }
+		watch,
+		formState: { isValid, isDirty }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -69,9 +70,11 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
+	const password = watch('password');
 	const parsedCustomFields = getParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
+
 	const login = () => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
 	};
@@ -209,7 +212,9 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		<FormContainer testID='register-view'>
 			<FormContainerInner>
 				<LoginServices separator />
-				<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('Sign_Up')}</Text>
+				<Text accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels }]}>
+					{I18n.t('Sign_Up')}
+				</Text>
 				<View style={styles.inputs}>
 					<Controller
 						name='name'
@@ -314,7 +319,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 					/>
 					{renderCustomFields()}
 				</View>
-				<PasswordTips />
+				<PasswordTips isDirty={isDirty} password={password} />
 				<Button
 					disabled={!isValid}
 					testID='register-view-submit'

@@ -189,6 +189,8 @@
   "Oops": "Oops!",
   "Open_emoji_selector": "Abrir selector de emojis",
   "Password": "Contraseña",
+  "Password_Tip_Error": "Condición no cumplida.",
+  "Password_Tip_Success": "Condición cumplida.",
   "Permalink_copied_to_clipboard": "¡Enlace permanente copiado al portapapeles!",
   "Pin": "Fijar",
   "Pinned": "Fijado",

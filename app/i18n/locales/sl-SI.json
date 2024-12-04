@@ -427,6 +427,8 @@
   "Passcode_choose_title": "Izberite svojo novo geslo",
   "Passcode_enter_title": "Vnesite svojo geslo",
   "Password": "Geslo",
+  "Password_Tip_Error": "Pogoj ni izpolnjen.",
+  "Password_Tip_Success": "Pogoj izpolnjen.",
   "Permalink_copied_to_clipboard": "Permalink, kopirano v odložišče!",
   "Phone": "Telefon",
   "Pin": "Zatič",

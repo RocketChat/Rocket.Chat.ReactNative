@@ -490,6 +490,8 @@
   "Passcode_choose_title": "உங்கள் புதிய கடவுச்சொல் தேர்ந்தெடுக்கவும்",
   "Passcode_enter_title": "உங்கள் கடவுச்சொல் உள்ளிடவும்",
   "Password": "கடவுச்சொல்",
+  "Password_Tip_Error": "நிபந்தனை பூர்த்தி செய்யப்படவில்லை.",
+  "Password_Tip_Success": "நிபந்தனை பூர்த்தி செய்யப்பட்டது.",
   "Permalink_copied_to_clipboard": "நிரல்களுக்கு பதில் நகல் எடுக்கப்பட்டுவிட்டது!",
   "Person_or_channel": "நபர் அல்லது சேனல்",
   "Phone": "கைபேசி",

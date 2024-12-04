@@ -354,6 +354,8 @@
   "Passcode_choose_title": "Scegli il tuo nuovo passcode",
   "Passcode_enter_title": "Inserisci il passcode",
   "Password": "Password",
+  "Password_Tip_Error": "Condizione non soddisfatta.",
+  "Password_Tip_Success": "Condizione soddisfatta.",
   "Permalink_copied_to_clipboard": "Permalink copiato negli appunti!",
   "Phone": "Telefono",
   "Pin": "Appunta",

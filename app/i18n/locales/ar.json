@@ -320,6 +320,8 @@
   "Passcode_choose_title": "اختر كلمة المرور الجديدة",
   "Passcode_enter_title": "أدخل كلمة المرور",
   "Password": "كلمة المرور",
+  "Password_Tip_Error": "الشرط غير محقق.",
+  "Password_Tip_Success": "تم استيفاء الشرط.",
   "Permalink_copied_to_clipboard": "تم نسخ الرابط الثابت إلى الحافظة!",
   "Phone": "الهاتف",
   "Pin": "ثبت",

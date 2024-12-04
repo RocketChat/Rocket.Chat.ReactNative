@@ -337,6 +337,8 @@
   "Passcode_choose_title": "請輸入新通關密碼",
   "Passcode_enter_title": "請輸入通關密碼",
   "Password": "密碼",
+  "Password_Tip_Error": "條件不符合。",
+  "Password_Tip_Success": "條件滿足。",
   "Permalink_copied_to_clipboard": "永久連結已複製到剪貼簿！",
   "Phone": "電話",
   "Pin": "釘選",

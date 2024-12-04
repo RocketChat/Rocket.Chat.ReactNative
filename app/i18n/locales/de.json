@@ -479,6 +479,8 @@
   "Passcode_choose_title": "Setzen Sie Ihren neuen Sicherheitscode",
   "Passcode_enter_title": "Geben Sie Ihren Sicherheitscode ein",
   "Password": "Passwort",
+  "Password_Tip_Error": "Bedingung nicht erfüllt.",
+  "Password_Tip_Success": "Bedingung erfüllt.",
   "Permalink_copied_to_clipboard": "Permalink in die Zwischenablage kopiert!",
   "Phone": "Telefon",
   "Pin": "Anheften",
