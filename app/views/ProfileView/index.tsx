@@ -1,4 +1,4 @@
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React, { useLayoutEffect, useState } from 'react';
 import { Keyboard, ScrollView, View } from 'react-native';
@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
 import { setUser } from '../../actions/login';
-import { IActionSheetProvider, useActionSheet } from '../../containers/ActionSheet';
+import { useActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
@@ -18,7 +18,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
-import { IBaseScreen, IProfileParams } from '../../definitions';
+import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
 import { compareServerVersion, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
@@ -49,9 +49,10 @@ const validationSchema = yup.object().shape({
 	newPassword: yup.string().nullable().notRequired().matches(passwordRules)
 });
 
-interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {}
-
-const ProfileView = ({ navigation }: IProfileViewProps) => {
+interface IProfileViewProps {
+	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
+}
+const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
@@ -66,21 +67,18 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 		isMasterDetail,
 		serverVersion,
 		user
-	} = useAppSelector(state => {
-		return {
-			user: getUserSelector(state),
-			isMasterDetail: state.app.isMasterDetail,
-			Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
-			Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
-			Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
-			Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange as boolean,
-			Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
-			Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
-			baseUrl: state.server.server,
-			serverVersion: state.server.version,
-			Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
-		};
-	});
+	} = useAppSelector(state => ({
+		user: getUserSelector(state),
+		isMasterDetail: state.app.isMasterDetail,
+		Accounts_AllowEmailChange: state.settings.Accounts_AllowEmailChange as boolean,
+		Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
+		Accounts_AllowRealNameChange: state.settings.Accounts_AllowRealNameChange as boolean,
+		Accounts_AllowUserAvatarChange: state.settings.Accounts_AllowUserAvatarChange as boolean,
+		Accounts_AllowUsernameChange: state.settings.Accounts_AllowUsernameChange as boolean,
+		Accounts_CustomFields: state.settings.Accounts_CustomFields as string,
+		serverVersion: state.server.version,
+		Accounts_AllowDeleteOwnAccount: state.settings.Accounts_AllowDeleteOwnAccount as boolean
+	}));
 	const {
 		control,
 		handleSubmit,
