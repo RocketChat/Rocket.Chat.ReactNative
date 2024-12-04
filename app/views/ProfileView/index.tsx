@@ -37,6 +37,7 @@ import { useAppSelector } from '../../lib/hooks';
 import getParsedCustomFields from './methods/getParsedCustomFields';
 import getCustomFields from './methods/getCustomFields';
 import CustomFields from './components/CustomFields';
+import ListSeparator from '../../containers/List/ListSeparator';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -276,93 +277,100 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					<View style={styles.avatarContainer} testID='profile-view-avatar'>
 						<AvatarWithEdit text={user.username} handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined} />
 					</View>
-
-					<ControlledFormTextInput
-						required
-						name='name'
-						control={control}
-						editable={Accounts_AllowRealNameChange}
-						inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
-						label={I18n.t('Name')}
-						placeholder={I18n.t('Name')}
-						onSubmitEditing={() => {
-							setFocus('username');
-						}}
-						testID='profile-view-name'
-					/>
-					<ControlledFormTextInput
-						required
-						name='username'
-						control={control}
-						editable={Accounts_AllowUsernameChange}
-						inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
-						label={I18n.t('Username')}
-						placeholder={I18n.t('Username')}
-						onSubmitEditing={() => {
-							setFocus('email');
-						}}
-						testID='profile-view-username'
-					/>
-					<ControlledFormTextInput
-						required
-						name='email'
-						control={control}
-						editable={Accounts_AllowEmailChange}
-						inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
-						label={I18n.t('Email')}
-						placeholder={I18n.t('Email')}
-						onSubmitEditing={() => {
-							setFocus('nickname');
-						}}
-						testID='profile-view-email'
-					/>
-					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
+					<View style={styles.inputs}>
 						<ControlledFormTextInput
-							name='nickname'
+							required
+							name='name'
 							control={control}
-							label={I18n.t('Nickname')}
+							editable={Accounts_AllowRealNameChange}
+							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
+							label={I18n.t('Name')}
+							placeholder={I18n.t('Name')}
 							onSubmitEditing={() => {
-								setFocus('bio');
+								setFocus('username');
 							}}
-							testID='profile-view-nickname'
-							maxLength={MAX_NICKNAME_LENGTH}
+							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							testID='profile-view-name'
 						/>
-					) : null}
-					{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
 						<ControlledFormTextInput
-							name='bio'
+							required
+							name='username'
 							control={control}
-							label={I18n.t('Bio')}
-							inputStyle={styles.inputBio}
-							multiline
-							maxLength={MAX_BIO_LENGTH}
+							editable={Accounts_AllowUsernameChange}
+							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
+							label={I18n.t('Username')}
+							placeholder={I18n.t('Username')}
 							onSubmitEditing={() => {
-								setFocus('newPassword');
+								setFocus('email');
 							}}
-							testID='profile-view-bio'
+							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							testID='profile-view-username'
 						/>
-					) : null}
-					<ControlledFormTextInput
-						name='newPassword'
-						control={control}
-						editable={Accounts_AllowPasswordChange}
-						inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-						label={I18n.t('New_Password')}
-						onSubmitEditing={() => {
-							if (Accounts_CustomFields && Object.keys(customFields).length) {
-								// @ts-ignore
-								return this[Object.keys(customFields)[0]].focus();
-							}
-						}}
-						secureTextEntry
-						testID='profile-view-new-password'
-					/>
+						<ControlledFormTextInput
+							required
+							name='email'
+							control={control}
+							editable={Accounts_AllowEmailChange}
+							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
+							label={I18n.t('Email')}
+							placeholder={I18n.t('Email')}
+							onSubmitEditing={() => {
+								setFocus('nickname');
+							}}
+							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							testID='profile-view-email'
+						/>
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
+							<ControlledFormTextInput
+								name='nickname'
+								control={control}
+								label={I18n.t('Nickname')}
+								onSubmitEditing={() => {
+									setFocus('bio');
+								}}
+								testID='profile-view-nickname'
+								maxLength={MAX_NICKNAME_LENGTH}
+								containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							/>
+						) : null}
+						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
+							<ControlledFormTextInput
+								name='bio'
+								control={control}
+								label={I18n.t('Bio')}
+								inputStyle={styles.inputBio}
+								multiline
+								maxLength={MAX_BIO_LENGTH}
+								onSubmitEditing={() => {
+									setFocus('newPassword');
+								}}
+								testID='profile-view-bio'
+								containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							/>
+						) : null}
+						<ControlledFormTextInput
+							name='newPassword'
+							control={control}
+							editable={Accounts_AllowPasswordChange}
+							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+							label={I18n.t('New_Password')}
+							onSubmitEditing={() => {
+								if (Accounts_CustomFields && Object.keys(customFields).length) {
+									// @ts-ignore
+									return this[Object.keys(customFields)[0]].focus();
+								}
+							}}
+							secureTextEntry
+							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							testID='profile-view-new-password'
+						/>
 
-					<CustomFields
-						Accounts_CustomFields={Accounts_CustomFields}
-						customFields={customFields}
-						onCustomFieldChange={value => setCustomFields(value)}
-					/>
+						<CustomFields
+							Accounts_CustomFields={Accounts_CustomFields}
+							customFields={customFields}
+							onCustomFieldChange={value => setCustomFields(value)}
+						/>
+					</View>
 
 					<Button
 						title={I18n.t('Save_Changes')}
@@ -371,7 +379,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 						disabled={!enableSaveChangesButton()}
 						testID='profile-view-submit'
 						loading={getValues().saving}
+						style={{ marginBottom: 0 }}
 					/>
+
+					<ListSeparator style={{ marginVertical: 12 }} />
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
 						type='secondary'

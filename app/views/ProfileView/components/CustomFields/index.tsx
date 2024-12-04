@@ -63,6 +63,7 @@ const CustomFields = ({ Accounts_CustomFields, customFields, onCustomFieldChange
 							return this[array[index + 1]].focus();
 						}
 					}}
+					containerStyle={{ marginBottom: 0, marginTop: 0 }}
 				/>
 			);
 		});
