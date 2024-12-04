@@ -410,7 +410,7 @@
   "Notifications": "Уведомления",
   "Notify_active_in_this_room": "Уведомить всех активных пользователей в этом чате",
   "Notify_all_in_this_room": "Уведомить всех в этом чате",
-  "Offline": "В автономном режиме",
+  "Offline": "Оффлайн",
   "Omnichannel": "Omnichannel",
   "Omnichannel_enable_alert": "Вы не доступны в Omnichannel. Хотите стать доступными?",
   "Omnichannel_on_hold_chat_resumed": "Чат в режиме удержания возобновлен: {{comment}}",

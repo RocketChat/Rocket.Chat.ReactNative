@@ -454,7 +454,7 @@
   "Notify_active_in_this_room": "इस कमरे में सक्रिय उपयोगकर्ताओं को सूचित करें",
   "Notify_all_in_this_room": "इस कमरे में सभी को सूचित करें",
   "Off": "बंद",
-  "Offline": "ऑफलाइन",
+  "Offline": "ऑफ़लाइन",
   "Omnichannel": "ओमनीचैनल",
   "Omnichannel_enable_alert": "आप ओमनीचैनल पर उपलब्ध नहीं हैं। क्या आप उपलब्ध होना चाहेंगे?",
   "Omnichannel_on_hold_chat_resumed": "होल्ड पर चैट पुनरारंभ: {{comment}}",
