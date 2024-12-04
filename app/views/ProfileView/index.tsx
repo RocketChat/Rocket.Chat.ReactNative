@@ -1,10 +1,11 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React, { useLayoutEffect, useState } from 'react';
-import { Keyboard, ScrollView, TextInput, View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { connect, useDispatch } from 'react-redux';
+import { Keyboard, ScrollView, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 
 import { setUser } from '../../actions/login';
 import { IActionSheetProvider, useActionSheet } from '../../containers/ActionSheet';
@@ -15,13 +16,11 @@ import * as HeaderButton from '../../containers/HeaderButton';
 import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
-import { ControlledFormTextInput, FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
-import Touch from '../../containers/Touch';
-import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } from '../../definitions';
+import { IBaseScreen, IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { themes } from '../../lib/constants';
 import { compareServerVersion, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -30,15 +29,14 @@ import { Services } from '../../lib/services';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
-import { TSupportedThemes, useTheme, withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
 import getParsedCustomFields from './methods/getParsedCustomFields';
 import getCustomFields from './methods/getCustomFields';
+import CustomFields from './components/CustomFields';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -48,7 +46,7 @@ const validationSchema = yup.object().shape({
 	name: yup.string().min(1).required(),
 	email: yup.string().email().required(),
 	username: yup.string().min(1).required(),
-	newPassword: yup.string().optional().matches(passwordRules)
+	newPassword: yup.string().nullable().notRequired().matches(passwordRules)
 });
 
 interface IProfileViewProps extends IActionSheetProvider, IBaseScreen<ProfileStackParamList, 'ProfileView'> {}
@@ -65,7 +63,6 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 		Accounts_AllowUserAvatarChange,
 		Accounts_AllowUsernameChange,
 		Accounts_CustomFields,
-		baseUrl,
 		isMasterDetail,
 		serverVersion,
 		user
@@ -89,7 +86,8 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 		handleSubmit,
 		setFocus,
 		getValues,
-		formState: { isValid }
+		setValue,
+		formState: { isDirty }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -99,12 +97,30 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 			newPassword: null,
 			currentPassword: null,
 			bio: user?.bio,
-			nickname: user?.nickname
-		}
+			nickname: user?.nickname,
+			saving: false
+		},
+		resolver: yupResolver(validationSchema)
 	});
 	const parsedCustomFields = getParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
-	const [saving, setSaving] = useState(false);
+	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+
+	const validateFormInfo = () => {
+		const isValid = validationSchema.isValidSync(getValues());
+		let requiredCheck = true;
+		Object.keys(parsedCustomFields).forEach((key: string) => {
+			if (parsedCustomFields[key].required) {
+				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
+			}
+		});
+		return isValid && requiredCheck;
+	};
+
+	const enableSaveChangesButton = () => {
+		const isFormInfoValid = validateFormInfo();
+		return isFormInfoValid && isDirty;
+	};
 
 	const handleError = (e: any, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
@@ -148,66 +164,30 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 		showActionSheet({ children: <DeleteAccountActionSheetContent /> });
 	};
 
-	const validateFormInfo = () => {
-		const isValid = validationSchema.isValidSync(getValues());
-		let requiredCheck = true;
-		Object.keys(parsedCustomFields).forEach((key: string) => {
-			if (parsedCustomFields[key].required) {
-				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
-			}
-		});
-		return isValid && requiredCheck;
-	};
-
-	/* const submit = async (): Promise<void> => {
+	const submit = async (): Promise<void> => {
 		Keyboard.dismiss();
 
 		if (!validateFormInfo()) {
 			return;
 		}
 
-		setSaving(true);
+		setValue('saving', true);
 
 		const { name, username, email, newPassword, currentPassword, bio, nickname } = getValues();
 		const params = {} as IProfileParams;
 
-		// Name
-		if (user.name !== name) {
-			params.realname = name;
-		}
-
-		// Username
-		if (user.username !== username) {
-			params.username = username;
-		}
-
-		// Email
-		if (user.emails && user.emails[0].address !== email) {
-			params.email = email;
-		}
-
-		if (user.bio !== bio) {
-			params.bio = bio;
-		}
-
-		if (user.nickname !== nickname) {
-			params.nickname = nickname;
-		}
-
-		// newPassword
-		if (newPassword) {
-			params.newPassword = newPassword;
-		}
-
-		// currentPassword
-		if (currentPassword) {
-			params.currentPassword = sha256(currentPassword);
-		}
+		if (user.name !== name) params.realname = name;
+		if (user.username !== username) params.username = username;
+		if (user.emails?.[0].address !== email) params.email = email;
+		if (user.bio !== bio) params.bio = bio;
+		if (user.nickname !== nickname) params.nickname = nickname;
+		if (newPassword) params.newPassword = newPassword;
+		if (currentPassword) params.currentPassword = sha256(currentPassword);
 
 		const requirePassword = !!params.email || newPassword;
 
 		if (requirePassword && !params.currentPassword) {
-			setSaving(false);
+			setValue('saving', false);
 			showActionSheet({
 				children: (
 					<ActionSheetContentWithInputAndSubmit
@@ -217,22 +197,19 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 						placeholder={I18n.t('Password')}
 						onSubmit={p => {
 							hideActionSheet();
-							this.setState({ currentPassword: p as string }, () => this.submit());
+							setValue('currentPassword', p as any);
+							submit();
 						}}
 						onCancel={hideActionSheet}
 					/>
 				)
 			});
-
 			return;
 		}
 
 		try {
 			const twoFactorOptions = params.currentPassword
-				? {
-						twoFactorCode: params.currentPassword,
-						twoFactorMethod: TwoFactorMethods.PASSWORD
-				  }
+				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
 				: null;
 
 			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
@@ -248,87 +225,31 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 					setCustomFields(customFields);
 				} else {
 					dispatch(setUser({ ...params }));
-					this.setState({ ...this.state, ...params });
+					const user = { ...getValues(), ...params };
+					Object.entries(user).forEach(([key, value]) => setValue(key as any, value));
 				}
+				dispatch(setUser({ ...user, ...params, customFields }));
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
 			}
-			setSaving(false);
 
-			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
+			setValue('saving', false);
+			setValue('currentPassword', null);
+			setTwoFactorCode(null);
 		} catch (e: any) {
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
-					const code = await twoFactor({ method: e?.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
-					return this.setState({ twoFactorCode: code }, () => this.submit());
+					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
+					setTwoFactorCode(code as any);
+					return submit();
 				} catch {
-					// cancelled twoFactor modal
+					// Two-factor modal canceled
 				}
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
-			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
+			setValue('saving', false);
+			setValue('currentPassword', null);
+			setTwoFactorCode(null);
 			handleError(e, 'saving_profile');
-		}
-	}; */
-
-	const renderCustomFields = () => {
-		if (!Accounts_CustomFields) {
-			return null;
-		}
-		try {
-			const parsedCustomFields = JSON.parse(Accounts_CustomFields);
-			return Object.keys(parsedCustomFields).map((key, index, array) => {
-				if (parsedCustomFields[key].type === 'select') {
-					const options = parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
-					return (
-						<RNPickerSelect
-							key={key}
-							items={options}
-							onValueChange={value => {
-								const newValue: { [key: string]: string } = {};
-								newValue[key] = value;
-								setCustomFields({ ...customFields, ...newValue });
-							}}
-							value={customFields[key]}>
-							<FormTextInput
-								inputRef={e => {
-									// @ts-ignore
-									this[key] = e;
-								}}
-								label={key}
-								placeholder={key}
-								value={customFields[key]}
-								testID='settings-view-language'
-							/>
-						</RNPickerSelect>
-					);
-				}
-
-				return (
-					<FormTextInput
-						inputRef={e => {
-							// @ts-ignore
-							this[key] = e;
-						}}
-						key={key}
-						label={key}
-						placeholder={key}
-						value={customFields[key]}
-						onChangeText={value => {
-							const newValue: { [key: string]: string } = {};
-							newValue[key] = value;
-							setCustomFields({ ...customFields, ...newValue });
-						}}
-						onSubmitEditing={() => {
-							if (array.length - 1 > index) {
-								// @ts-ignore
-								return this[array[index + 1]].focus();
-							}
-						}}
-					/>
-				);
-			});
-		} catch (error) {
-			return null;
 		}
 	};
 
@@ -357,6 +278,7 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 					<View style={styles.avatarContainer} testID='profile-view-avatar'>
 						<AvatarWithEdit text={user.username} handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined} />
 					</View>
+
 					<ControlledFormTextInput
 						required
 						name='name'
@@ -372,7 +294,7 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 					/>
 					<ControlledFormTextInput
 						required
-						name='email'
+						name='username'
 						control={control}
 						editable={Accounts_AllowUsernameChange}
 						inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
@@ -428,7 +350,6 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 						editable={Accounts_AllowPasswordChange}
 						inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 						label={I18n.t('New_Password')}
-						placeholder={I18n.t('New_Password')}
 						onSubmitEditing={() => {
 							if (Accounts_CustomFields && Object.keys(customFields).length) {
 								// @ts-ignore
@@ -438,14 +359,20 @@ const ProfileView = ({ navigation }: IProfileViewProps) => {
 						secureTextEntry
 						testID='profile-view-new-password'
 					/>
-					{renderCustomFields()}
+
+					<CustomFields
+						Accounts_CustomFields={Accounts_CustomFields}
+						customFields={customFields}
+						onCustomFieldChange={value => setCustomFields(value)}
+					/>
+
 					<Button
 						title={I18n.t('Save_Changes')}
 						type='primary'
-						onPress={() => {}}
-						disabled={!validateFormInfo()}
+						onPress={handleSubmit(submit)}
+						disabled={!enableSaveChangesButton()}
 						testID='profile-view-submit'
-						loading={saving}
+						loading={getValues().saving}
 					/>
 					<Button
 						title={I18n.t('Logout_from_other_logged_in_locations')}
