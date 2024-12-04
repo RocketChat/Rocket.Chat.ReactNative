@@ -1,18 +1,21 @@
 import React, { ReactElement } from 'react';
 import { Text, TextStyle, View, ViewStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
+import { TSupportedThemes } from '../../theme';
+import { themes } from '../../lib/constants';
 import styles from './styles';
 import Switch from '../../containers/Switch';
-import i18n from '../../i18n';
 
 interface ISwitchContainer {
 	children?: ReactElement | null;
 	value: boolean;
 	disabled?: boolean;
 	leftLabelPrimary: string;
-	leftLabelSecondary?: string;
+	leftLabelSecondary: string;
+	rightLabelPrimary?: string;
+	rightLabelSecondary?: string;
 	onValueChange: (value: any) => void;
+	theme: TSupportedThemes;
 	testID: string;
 	labelContainerStyle?: ViewStyle;
 	leftLabelStyle?: TextStyle;
@@ -26,36 +29,41 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 		onValueChange,
 		leftLabelPrimary,
 		leftLabelSecondary,
+		rightLabelPrimary,
+		rightLabelSecondary,
+		theme,
 		testID,
 		labelContainerStyle,
 		leftLabelStyle
-	}) => {
-		const { colors } = useTheme();
-
-		return (
-			<View
-				accessibilityLabel={`${disabled ? i18n.t('Disabled') : i18n.t('Enabled')} ${leftLabelPrimary} ${
-					leftLabelSecondary && leftLabelSecondary
-				}`}>
-				<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
-					{leftLabelPrimary && (
-						<View style={[styles.switchLabelContainer, labelContainerStyle]}>
-							<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
-								{leftLabelPrimary}
-							</Text>
-							{leftLabelSecondary && (
-								<Text style={[styles.switchLabelSecondary, { color: colors.fontSecondaryInfo }, leftLabelStyle]}>
-									{leftLabelSecondary}
-								</Text>
-							)}
-						</View>
-					)}
-					<Switch style={styles.switch} onValueChange={onValueChange} value={value} disabled={disabled} testID={testID} />
-				</View>
-				{children}
+	}) => (
+		<>
+			<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
+				{leftLabelPrimary && (
+					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
+							{leftLabelPrimary}
+						</Text>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
+							{leftLabelSecondary}
+						</Text>
+					</View>
+				)}
+				<Switch style={styles.switch} onValueChange={onValueChange} value={value} disabled={disabled} testID={testID} />
+				{rightLabelPrimary && (
+					<View style={[styles.switchLabelContainer, labelContainerStyle]}>
+						<Text style={[styles.switchLabelPrimary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
+							{rightLabelPrimary}
+						</Text>
+						<Text style={[styles.switchLabelSecondary, { color: themes[theme].fontTitlesLabels }, leftLabelStyle]}>
+							{rightLabelSecondary}
+						</Text>
+					</View>
+				)}
 			</View>
-		);
-	}
+			{children}
+			<View key='switch-divider' style={[styles.divider, { borderColor: themes[theme].strokeLight }]} />
+		</>
+	)
 );
 
 export default SwitchContainer;

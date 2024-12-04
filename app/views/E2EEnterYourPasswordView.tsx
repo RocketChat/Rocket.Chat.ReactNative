@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	info: {
 		fontSize: 16,
 		lineHeight: 24,
-		marginTop: 24,
+		marginVertical: 4,
 		...sharedStyles.textRegular
 	}
 });
@@ -66,9 +66,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => (
-				<HeaderButton.CloseModal accessibilityLabel={I18n.t('Close')} testID='e2e-enter-your-password-view-close' />
-			),
+			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
 			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);
@@ -84,14 +82,10 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}>
 			<StatusBar />
-			<ScrollView
-				{...scrollPersistTaps}
-				style={sharedStyles.container}
-				contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 24 }}>
+			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
 					<FormTextInput
-						containerStyle={{ marginBottom: 36 }}
-						label={I18n.t('Password')}
+						placeholder={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
 						onSubmitEditing={submit}
