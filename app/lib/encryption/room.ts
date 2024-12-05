@@ -285,16 +285,73 @@ export default class EncryptionRoom {
 		await this.encryptRoomKey();
 	};
 
-	async encryptGroupKeyForParticipantsWaitingForTheKeys(users: any) {
+	async encryptOldKeysForParticipant(publicKey: any, oldRoomKeys: any) {
+		if (!oldRoomKeys || oldRoomKeys.length === 0) {
+			return;
+		}
+
+		let userKey;
+
+		try {
+			userKey = await SimpleCrypto.RSA.importKey(EJSON.parse(publicKey));
+		} catch (e) {
+			log(e);
+			return;
+		}
+
+		try {
+			const keys = [];
+			for await (const oldRoomKey of oldRoomKeys) {
+				if (!oldRoomKey.E2EKey) {
+					continue;
+				}
+				const encryptedKey = await SimpleCrypto.RSA.encrypt(oldRoomKey.E2EKey, userKey);
+				const encryptedUserKey = oldRoomKey.e2eKeyId + encryptedKey;
+				keys.push({ ...oldRoomKey, E2EKey: encryptedUserKey });
+			}
+			return keys;
+		} catch (e) {
+			log(e);
+		}
+	}
+
+	async exportOldRoomKeys(oldKeys: any) {
+		if (!oldKeys || oldKeys.length === 0) {
+			return;
+		}
+
+		const keys = [];
+		for await (const key of oldKeys) {
+			try {
+				if (!key.E2EKey || !Encryption.privateKey) {
+					continue;
+				}
+
+				const { sessionKeyExportedString } = await this.importRoomKey(key.E2EKey, Encryption.privateKey);
+				keys.push({
+					...key,
+					E2EKey: sessionKeyExportedString
+				});
+			} catch (e) {
+				log(e);
+			}
+		}
+
+		return keys;
+	}
+
+	async encryptGroupKeyForParticipantsWaitingForTheKeys(users: any[]) {
 		if (!this.ready) {
 			return;
 		}
 
+		const decryptedOldGroupKeys = await this.exportOldRoomKeys(this.subscription?.oldRoomKeys);
 		const usersWithKeys = await Promise.all(
-			users.map(async (user: any) => {
+			users.map(async user => {
 				const { _id, public_key } = user;
 				const key = await this.encryptRoomKeyForUser(public_key);
-				return { _id, key };
+				const oldKeys = await this.encryptOldKeysForParticipant(public_key, decryptedOldGroupKeys);
+				return { _id, key, ...(oldKeys && { oldKeys }) };
 			})
 		);
 
