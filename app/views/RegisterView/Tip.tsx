@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../theme';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import I18n from '../../i18n';
+import sharedStyles from '../../views/Styles';
 
 interface ITipProps {
 	iconType?: 'success' | 'error' | 'info';
@@ -13,6 +14,11 @@ interface ITipProps {
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row'
+	},
+	text: {
+		...sharedStyles.textRegular,
+		lineHeight: 16,
+		fontSize: 12
 	}
 });
 
@@ -37,13 +43,13 @@ const Tip = ({ iconType, description }: ITipProps) => {
 		<View style={styles.container}>
 			<CustomIcon
 				accessible
-				accessibilityLabel={accessibilityLabel}
+				accessibilityLabel={`${accessibilityLabel}.`}
 				color={color}
 				name={icon}
 				size={16}
 				style={{ marginRight: 4 }}
 			/>
-			<Text accessible accessibilityLabel={description}>
+			<Text style={{ ...styles.text, color }} accessible accessibilityLabel={description}>
 				{description}
 			</Text>
 		</View>

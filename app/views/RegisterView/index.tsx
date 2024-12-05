@@ -212,9 +212,12 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		<FormContainer testID='register-view'>
 			<FormContainerInner>
 				<LoginServices separator />
-				<Text accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels }]}>
-					{I18n.t('Sign_Up')}
-				</Text>
+				<View accessible accessibilityLabel={I18n.t('Sign_Up')}>
+					<Text accessible accessibilityLabel={I18n.t('Sign_Up')} style={[styles.title, { color: colors.fontTitlesLabels }]}>
+						{I18n.t('Sign_Up')}
+					</Text>
+				</View>
+
 				<View style={styles.inputs}>
 					<Controller
 						name='name'
