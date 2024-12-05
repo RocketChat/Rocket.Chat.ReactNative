@@ -12,24 +12,25 @@ import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
 	subtitleText: {
-		fontSize: 14,
 		...sharedStyles.textRegular,
-		marginBottom: 10
+		fontSize: 16,
+		lineHeight: 24
 	},
 	buttonSeparator: {
-		marginRight: 8
+		marginRight: 12
 	},
 	footerButtonsContainer: {
 		flexDirection: 'row',
 		paddingTop: 16
 	},
 	titleContainerText: {
+		...sharedStyles.textBold,
 		fontSize: 16,
-		...sharedStyles.textSemibold
+		lineHeight: 24
 	},
 	titleContainer: {
 		paddingRight: 80,
-		marginBottom: 16,
+		marginBottom: 12,
 		flexDirection: 'row',
 		alignItems: 'center'
 	}
@@ -120,7 +121,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 				<FormTextInput
 					key={inputConfig.key}
 					value={inputValues[index]}
-					placeholder={inputConfig.placeholder}
 					onChangeText={value => handleInputChange(value, index)}
 					onSubmitEditing={() => {
 						if (index < inputs.length - 1) {
@@ -143,7 +143,6 @@ const ActionSheetContentWithInputAndSubmit = ({
 		return (
 			<FormTextInput
 				value={inputValues[0]}
-				placeholder={placeholder}
 				onChangeText={value => handleInputChange(value, 0)}
 				onSubmitEditing={() => {
 					setTimeout(() => {
@@ -151,9 +150,11 @@ const ActionSheetContentWithInputAndSubmit = ({
 					}, 100);
 					if (inputValues[0]) onSubmit(inputValues[0]);
 				}}
+				accessibilityLabel={placeholder}
 				testID={`${testID}-input`}
 				secureTextEntry={secureTextEntry}
 				bottomSheet={isIOS}
+				containerStyle={{ marginTop: 12, marginBottom: 36 }}
 			/>
 		);
 	};
@@ -166,7 +167,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 			<>
 				<View style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
-					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 16 : 0 }]}>{title}</Text>
+					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
 				</View>
 				{description ? <Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{description}</Text> : null}
 				{customText}
