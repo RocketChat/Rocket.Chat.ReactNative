@@ -205,7 +205,7 @@ export default class EncryptionRoom {
 	createRoomKey = async () => {
 		this.createNewRoomKey();
 		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
-		await this.encryptRoomKey();
+		await this.encryptKeyForOtherParticipants();
 	};
 
 	async resetRoomKey() {
@@ -242,21 +242,37 @@ export default class EncryptionRoom {
 	);
 
 	// Create an encrypted key for this room based on users
-	encryptRoomKey = async () => {
+	encryptKeyForOtherParticipants = async () => {
 		try {
+			const decryptedOldGroupKeys = await this.exportOldRoomKeys(this.subscription?.oldRoomKeys);
 			const result = await Services.e2eGetUsersOfRoomWithoutKey(this.roomId);
 			if (result.success) {
 				const { users } = result;
-				await Promise.all(
-					users.map(async user => {
-						if (user.e2e?.public_key) {
-							const key = await this.encryptRoomKeyForUser(user.e2e.public_key);
-							if (key) {
-								await Services.e2eUpdateGroupKey(user?._id, this.roomId, key);
+				if (!users.length) {
+					return;
+				}
+				const { version } = store.getState().server;
+				if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
+					const usersSuggestedGroupKeys = { [this.roomId]: [] as any[] };
+					for await (const user of users) {
+						const key = await this.encryptRoomKeyForUser(user.e2e!.public_key);
+						const oldKeys = await this.encryptOldKeysForParticipant(user.e2e?.public_key, decryptedOldGroupKeys);
+
+						usersSuggestedGroupKeys[this.roomId].push({ _id: user._id, key, ...(oldKeys && { oldKeys }) });
+					}
+					await Services.provideUsersSuggestedGroupKeys(usersSuggestedGroupKeys);
+				} else {
+					await Promise.all(
+						users.map(async user => {
+							if (user.e2e?.public_key) {
+								const key = await this.encryptRoomKeyForUser(user.e2e.public_key);
+								if (key) {
+									await Services.e2eUpdateGroupKey(user?._id, this.roomId, key);
+								}
 							}
-						}
-					})
-				);
+						})
+					);
+				}
 			}
 		} catch (e) {
 			log(e);
@@ -282,7 +298,7 @@ export default class EncryptionRoom {
 			return;
 		}
 
-		await this.encryptRoomKey();
+		await this.encryptKeyForOtherParticipants();
 	};
 
 	async encryptOldKeysForParticipant(publicKey: any, oldRoomKeys: any) {
@@ -317,7 +333,7 @@ export default class EncryptionRoom {
 
 	async exportOldRoomKeys(oldKeys: any) {
 		if (!oldKeys || oldKeys.length === 0) {
-			return;
+			return [];
 		}
 
 		const keys = [];
