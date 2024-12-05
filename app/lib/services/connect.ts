@@ -335,7 +335,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWeb
 			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 				const { details } = e.data;
 				try {
-					const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
+					const code = await twoFactor({ params, method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));

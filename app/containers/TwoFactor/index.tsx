@@ -4,18 +4,17 @@ import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import { connect } from 'react-redux';
 
 import { FormTextInput } from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { IApplicationState } from '../../definitions';
+import { ICredentials } from '../../definitions';
 import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
@@ -32,6 +31,7 @@ interface IMethods {
 }
 
 interface EventListenerMethod {
+	params?: ICredentials;
 	method?: keyof IMethods;
 	submit?: (param: string) => void;
 	cancel?: () => void;
@@ -55,15 +55,28 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) => {
-	const { theme } = useTheme();
+const TwoFactor = React.memo(() => {
+	const { colors } = useTheme();
+	const { isMasterDetail } = useAppSelector(state => ({
+		isMasterDetail: state.app.isMasterDetail as boolean
+	}));
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const [code, setCode] = useState<string>('');
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
-	const sendEmail = () => Services.sendEmailCode();
+	const params = data?.params;
+
+	const sendEmail = async () => {
+		try {
+			if (params?.user) {
+				await Services.sendEmailCode(params?.user);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -102,7 +115,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		setData({});
 	};
 
-	const color = themes[theme].fontTitlesLabels;
+	const color = colors.fontTitlesLabels;
 	return (
 		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
@@ -110,7 +123,7 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme].surfaceTint }
+						{ backgroundColor: colors.surfaceTint }
 					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
@@ -141,8 +154,4 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 	);
 });
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(TwoFactor);
+export default TwoFactor;
