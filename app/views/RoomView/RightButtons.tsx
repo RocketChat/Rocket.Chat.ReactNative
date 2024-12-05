@@ -22,7 +22,6 @@ import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
 import { TColors, TSupportedThemes, withTheme } from '../../theme';
-import { toggleRoomE2EE } from '../../lib/encryption/helpers/toggleRoomE2EE';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -391,6 +390,24 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 	};
 
+	goE2EEToggleRoomView = () => {
+		logEvent(events.ROOM_GO_SEARCH);
+		const { rid, navigation, isMasterDetail } = this.props;
+		if (!rid) {
+			return;
+		}
+		if (isMasterDetail) {
+			// @ts-ignore TODO: find a way to make this work
+			navigation.navigate('ModalStackNavigator', {
+				screen: 'E2EEToggleRoomView',
+				params: { rid }
+			});
+		} else {
+			// @ts-ignore
+			navigation.navigate('E2EEToggleRoomView', { rid });
+		}
+	};
+
 	toggleFollowThread = () => {
 		logEvent(events.ROOM_TOGGLE_FOLLOW_THREADS);
 		const { isFollowingThread } = this.state;
@@ -442,7 +459,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return (
 			<HeaderButton.Container onLayout={this.onLayout}>
 				{hasE2EEWarning ? (
-					<HeaderButton.Item iconName='encrypted' onPress={() => toggleRoomE2EE(rid)} disabled={!canToggleEncryption} />
+					<HeaderButton.Item iconName='encrypted' onPress={this.goE2EEToggleRoomView} disabled={!canToggleEncryption} />
 				) : null}
 				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item

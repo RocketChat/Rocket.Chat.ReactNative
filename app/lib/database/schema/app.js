@@ -56,6 +56,7 @@ export default appSchema({
 				{ name: 'livechat_data', type: 'string', isOptional: true },
 				{ name: 'tags', type: 'string', isOptional: true },
 				{ name: 'e2e_key', type: 'string', isOptional: true },
+				{ name: 'old_room_keys', type: 'string', isOptional: true },
 				{ name: 'e2e_suggested_key', type: 'string', isOptional: true },
 				{ name: 'encrypted', type: 'boolean', isOptional: true },
 				{ name: 'e2e_key_id', type: 'string', isOptional: true },

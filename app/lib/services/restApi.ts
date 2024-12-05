@@ -938,6 +938,11 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
 }
 
+export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
+	// RC ?
+	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
+}
+
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0

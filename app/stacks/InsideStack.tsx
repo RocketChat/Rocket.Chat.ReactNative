@@ -22,6 +22,7 @@ import MessagesView from '../views/MessagesView';
 import AutoTranslateView from '../views/AutoTranslateView';
 import DirectoryView from '../views/DirectoryView';
 import NotificationPrefView from '../views/NotificationPreferencesView';
+import E2EEToggleRoomView from '../views/E2EEToggleRoomView';
 import ForwardLivechatView from '../views/ForwardLivechatView';
 import CloseLivechatView from '../views/CloseLivechatView';
 import LivechatEditView from '../views/LivechatEditView';
@@ -122,6 +123,7 @@ const ChatsStackNavigator = () => {
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='DirectoryView' component={DirectoryView} options={DirectoryView.navigationOptions} />
 			<ChatsStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
+			<ChatsStack.Screen name='E2EEToggleRoomView' component={E2EEToggleRoomView} />
 			<ChatsStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			{/* @ts-ignore */}

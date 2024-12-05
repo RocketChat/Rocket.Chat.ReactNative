@@ -35,6 +35,8 @@ export enum ERoomTypes {
 
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
 
+type OldKey = { e2eKeyId: string; ts: Date; E2EKey: string };
+
 export interface ISubscription {
 	_id: string;
 	id: string;
@@ -93,6 +95,7 @@ export interface ISubscription {
 	livechatData?: any;
 	tags?: string[];
 	E2EKey?: string;
+	oldRoomKeys?: OldKey[];
 	E2ESuggestedKey?: string | null;
 	encrypted?: boolean;
 	e2eKeyId?: string;
@@ -154,6 +157,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 	onHold?: boolean;
 	encrypted?: boolean;
 	E2EKey?: string;
+	oldRoomKeys?: OldKey[];
 	E2ESuggestedKey?: string | null;
 	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';

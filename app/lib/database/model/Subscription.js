@@ -127,6 +127,8 @@ export default class Subscription extends Model {
 
 	@field('e2e_key') E2EKey;
 
+	@json('old_room_keys', sanitizer) oldRoomKeys;
+
 	@field('e2e_suggested_key') E2ESuggestedKey;
 
 	@field('encrypted') encrypted;
@@ -203,6 +205,7 @@ export default class Subscription extends Model {
 			livechatData: this.livechatData,
 			tags: this.tags,
 			E2EKey: this.E2EKey,
+			oldKeys: this.oldKeys,
 			E2ESuggestedKey: this.E2ESuggestedKey,
 			encrypted: this.encrypted,
 			e2eKeyId: this.e2eKeyId,

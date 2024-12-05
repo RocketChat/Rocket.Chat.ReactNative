@@ -227,7 +227,7 @@
   "Dont_activate": "Don't activate now",
   "Dont_Have_An_Account": "Don't you have an account?",
   "Downloaded_file": "Downloaded file",
-  "E2E_Encryption": "E2E encryption",
+  "E2E_Encryption": "End-to-end encryption",
   "E2E_encryption_change_password_confirmation": "Yes, change it",
   "E2E_encryption_change_password_description": "You can now create encrypted private groups and direct messages. You may also change existing private groups or DMs to encrypted. \nThis is end to end encryption so the key to encode/decode your messages will not be saved on the workspace. For that reason you need to store your password somewhere safe. You will be required to enter it on other devices you wish to use e2e encryption on.",
   "E2E_encryption_change_password_error": "Error while changing E2E key password!",
@@ -866,5 +866,14 @@
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Your invite link will expire on {{date}} or after {{usesLeft}} uses.",
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
+  "Reset_room_key_title": "Reset encryption key",
+  "Reset_room_key_message": "All members may lose access to previously encrypted content.",
+  "Encryption_keys_reset": "Encryption keys reset",
+  "Encryption_keys_reset_failed": "Encryption keys reset failed",
+  "Reset": "Reset",
+  "Encrypt__room_type__": "Encrypt {{room_type}}",
+  "Encrypt__room_type__info__room_name__": "Ensure only intended recipients can access messages and files in {{room_name}}.",
+  "Reset_encryption_keys": "Reset encryption keys",
+  "Reset_encryption_keys_info__room_type__": "Resetting E2EE keys is only recommend if no {{room_type}} member has a valid key to regain access to the previously encrypted content."
 }

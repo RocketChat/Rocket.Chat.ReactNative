@@ -21,6 +21,7 @@ import MessagesView from '../../views/MessagesView';
 import AutoTranslateView from '../../views/AutoTranslateView';
 import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
+import E2EEToggleRoomView from '../../views/E2EEToggleRoomView';
 import PushTroubleshootView from '../../views/PushTroubleshootView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
 import ForwardMessageView from '../../views/ForwardMessageView';
@@ -141,6 +142,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				/>
 				<ModalStack.Screen name='QueueListView' component={QueueListView} />
 				<ModalStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
+				<ModalStack.Screen name='E2EEToggleRoomView' component={E2EEToggleRoomView} />
 				<ModalStack.Screen name='ForwardMessageView' component={ForwardMessageView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
