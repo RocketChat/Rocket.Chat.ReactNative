@@ -676,6 +676,7 @@
   "Translate": "Fordítás",
   "Try_again": "Próbálja újra",
   "Two_Factor_Authentication": "Kétfaktoros hitelesítés",
+  "Two_Factor_Success_message": "Kétfaktoros hitelesítési kód elküldve! Kérjük, ellenőrizze az emailjét.",
   "Type_message": "Üzenet típusa",
   "Types": "Típusok",
   "UNARCHIVE": "ARCHIVÁLÁS MEGSZÜNTETÉS",

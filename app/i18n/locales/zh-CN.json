@@ -438,6 +438,7 @@
   "Translate": "翻译",
   "Try_again": "再试一次",
   "Two_Factor_Authentication": "双重认证",
+  "Two_Factor_Success_message": "已发送双因素验证代码！请检查您的电子邮件。",
   "Type_message": "输入信息",
   "UNARCHIVE": "取消封存",
   "unarchive": "取消封存",
