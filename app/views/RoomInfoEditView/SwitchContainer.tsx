@@ -33,13 +33,15 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 		const { colors } = useTheme();
 
 		return (
-			<View
-				accessibilityLabel={`${disabled ? i18n.t('Disabled') : i18n.t('Enabled')} ${leftLabelPrimary} ${
-					leftLabelSecondary && leftLabelSecondary
-				}`}>
+			<View>
 				<View key='switch-container' style={[styles.switchContainer, !!children && styles.switchMargin]}>
 					{leftLabelPrimary && (
-						<View style={[styles.switchLabelContainer, labelContainerStyle]}>
+						<View
+							accessible
+							accessibilityLabel={`${disabled ? i18n.t('Disabled') : i18n.t('Enabled')}. ${leftLabelPrimary}. ${
+								leftLabelSecondary ?? ''
+							}. `}
+							style={[styles.switchLabelContainer, labelContainerStyle]}>
 							<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
 								{leftLabelPrimary}
 							</Text>
@@ -50,7 +52,14 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 							)}
 						</View>
 					)}
-					<Switch style={styles.switch} onValueChange={onValueChange} value={value} disabled={disabled} testID={testID} />
+					<Switch
+						accessible
+						style={styles.switch}
+						onValueChange={onValueChange}
+						value={value}
+						disabled={disabled}
+						testID={testID}
+					/>
 				</View>
 				{children}
 			</View>
