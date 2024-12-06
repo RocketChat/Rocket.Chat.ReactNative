@@ -52,6 +52,7 @@ describe('Create team screen', () => {
 		describe('Usage', () => {
 			it('should create private team', async () => {
 				await element(by.id('create-channel-name')).replaceText(teamName);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
