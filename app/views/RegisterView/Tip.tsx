@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '../../theme';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import I18n from '../../i18n';
-import sharedStyles from '../../views/Styles';
+import sharedStyles from '../Styles';
 
 interface ITipProps {
 	iconType?: 'success' | 'error' | 'info';
