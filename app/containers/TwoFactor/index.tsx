@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, InteractionManager, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { InteractionManager, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
@@ -66,7 +66,6 @@ const TwoFactor = React.memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const [code, setCode] = useState<string>('');
-	const overlayRef = useRef(null);
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
@@ -95,11 +94,7 @@ const TwoFactor = React.memo(() => {
 	}, [data]);
 
 	const showTwoFactor = (args: EventListenerMethod) => {
-		const overlayReactTag = overlayRef.current;
 		setData(args);
-		if (overlayReactTag) {
-			AccessibilityInfo.setAccessibilityFocus(overlayReactTag);
-		}
 	};
 
 	useEffect(() => {
@@ -130,10 +125,14 @@ const TwoFactor = React.memo(() => {
 
 	const color = colors.fontTitlesLabels;
 	return (
-		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+		<Modal
+			accessibilityLabel={I18n.t('Close_Modal')}
+			avoidKeyboard
+			useNativeDriver
+			isVisible={visible}
+			hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
 				<View
-					ref={overlayRef}
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
@@ -144,6 +143,9 @@ const TwoFactor = React.memo(() => {
 						<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 						{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 						<FormTextInput
+							accessibilityLabel={I18n.t(
+								data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
+							)}
 							value={code}
 							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 							returnKeyType='send'
