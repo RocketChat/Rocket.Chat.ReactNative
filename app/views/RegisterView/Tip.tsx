@@ -13,7 +13,8 @@ interface ITipProps {
 
 const styles = StyleSheet.create({
 	container: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		gap: 4
 	},
 	text: {
 		...sharedStyles.textRegular,
@@ -41,14 +42,7 @@ const Tip = ({ iconType, description }: ITipProps) => {
 
 	return (
 		<View style={styles.container}>
-			<CustomIcon
-				accessible
-				accessibilityLabel={`${accessibilityLabel}.`}
-				color={color}
-				name={icon}
-				size={16}
-				style={{ marginRight: 4 }}
-			/>
+			<CustomIcon accessible accessibilityLabel={`${accessibilityLabel}.`} color={color} name={icon} size={16} />
 			<Text style={{ ...styles.text, color }} accessible accessibilityLabel={description}>
 				{description}
 			</Text>
