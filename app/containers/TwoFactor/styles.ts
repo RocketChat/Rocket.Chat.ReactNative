@@ -6,7 +6,7 @@ export default StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		padding: 16
 	},
 	content: {
 		padding: 16,
@@ -15,13 +15,14 @@ export default StyleSheet.create({
 	},
 	title: {
 		fontSize: 16,
-		paddingBottom: 8,
+		lineHeight: 24,
+		marginBottom: 12,
 		...sharedStyles.textBold,
 		...sharedStyles.textAlignCenter
 	},
 	subtitle: {
 		fontSize: 14,
-		paddingBottom: 8,
+		marginBottom: 12,
 		...sharedStyles.textRegular,
 		...sharedStyles.textAlignCenter
 	},

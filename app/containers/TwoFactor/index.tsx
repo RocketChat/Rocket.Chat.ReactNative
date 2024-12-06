@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, InteractionManager, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import { connect } from 'react-redux';
 
 import { FormTextInput } from '../TextInput';
 import I18n from '../../i18n';
@@ -14,8 +13,8 @@ import { themes } from '../../lib/constants';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { IApplicationState } from '../../definitions';
 import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
@@ -55,11 +54,15 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) => {
+const TwoFactor = React.memo(() => {
+	const { isMasterDetail } = useAppSelector(state => {
+		return { isMasterDetail: state.app.isMasterDetail };
+	});
 	const { theme } = useTheme();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const [code, setCode] = useState<string>('');
+	const overlayRef = useRef(null);
 
 	const method = data.method ? methods[data.method] : null;
 	const isEmail = data.method === 'email';
@@ -74,7 +77,13 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		}
 	}, [data]);
 
-	const showTwoFactor = (args: EventListenerMethod) => setData(args);
+	const showTwoFactor = (args: EventListenerMethod) => {
+		const overlayReactTag = overlayRef.current;
+		setData(args);
+		if (overlayReactTag) {
+			AccessibilityInfo.setAccessibilityFocus(overlayReactTag);
+		}
+	};
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
@@ -107,25 +116,31 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
 				<View
+					ref={overlayRef}
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: themes[theme].surfaceTint }
 					]}>
-					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-					<FormTextInput
-						value={code}
-						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
-						returnKeyType='send'
-						autoCapitalize='none'
-						onChangeText={setCode}
-						onSubmitEditing={onSubmit}
-						keyboardType={method?.keyboardType}
-						secureTextEntry={method?.secureTextEntry}
-						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
-						testID='two-factor-input'
-					/>
+					<View
+						accessibilityLabel={`${method?.text ? I18n.t(method.text) : I18n.t(method?.title || 'Two_Factor_Authentication')}`}>
+						<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+						{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
+						<FormTextInput
+							value={code}
+							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+							returnKeyType='send'
+							autoCapitalize='none'
+							onChangeText={setCode}
+							onSubmitEditing={onSubmit}
+							keyboardType={method?.keyboardType}
+							secureTextEntry={method?.secureTextEntry}
+							error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
+							testID='two-factor-input'
+							containerStyle={{ marginBottom: 36 }}
+						/>
+					</View>
+
 					{isEmail ? (
 						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
 							{I18n.t('Resend_email')}
@@ -141,8 +156,4 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 	);
 });
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(TwoFactor);
+export default TwoFactor;
