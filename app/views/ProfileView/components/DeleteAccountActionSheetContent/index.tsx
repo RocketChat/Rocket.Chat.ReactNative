@@ -95,7 +95,6 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			description={i18n.t('Deleting_a_user_will_delete_all_messages')}
 			onCancel={hideActionSheet}
 			onSubmit={handleDeleteAccount}
-			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
 			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}

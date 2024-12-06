@@ -54,7 +54,6 @@ const FooterButtons = ({
 					styles.buttonSeparator,
 					{ flex: 1, backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }
 				]}
-				color={colors.backdropColor}
 				title={cancelTitle}
 				onPress={cancelAction}
 				testID={`${testID}-cancel`}
@@ -165,7 +164,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	return (
 		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
 			<>
-				<View style={styles.titleContainer}>
+				<View accessible accessibilityLabel={title} style={styles.titleContainer}>
 					{iconName ? <CustomIcon name={iconName} size={32} color={iconColor || colors.buttonBackgroundDangerDefault} /> : null}
 					<Text style={[styles.titleContainerText, { color: colors.fontDefault, paddingLeft: iconName ? 12 : 0 }]}>{title}</Text>
 				</View>
