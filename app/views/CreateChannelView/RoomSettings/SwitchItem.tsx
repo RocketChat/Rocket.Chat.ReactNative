@@ -41,20 +41,24 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 	const { colors } = useTheme();
 
 	return (
-		<Pressable
-			disabled={disabled}
-			onPress={() => onValueChange(!value)}
-			accessible
-			accessibilityLabel={`${I18n.t(label)}, ${I18n.t(hint)}`}>
-			<View style={[styles.switchContainer, { backgroundColor: colors.surfaceRoom }]}>
-				<View style={styles.switchTextContainer}>
-					<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
-					<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
-						{I18n.t(hint)}
-					</Text>
-				</View>
-				<Switch value={value} onValueChange={onValueChange} testID={`create-channel-${id}`} disabled={disabled} />
+		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceRoom }]}>
+			<View
+				accessible
+				accessibilityLabel={`${disabled ? I18n.t('Disabled') : I18n.t('Enabled')}. ${I18n.t(label)}. ${I18n.t(hint)}. `}
+				style={styles.switchTextContainer}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
+				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
+					{I18n.t(hint)}
+				</Text>
 			</View>
-		</Pressable>
+			<Switch
+				accessibilityRole='switch'
+				accessible
+				value={value}
+				onValueChange={onValueChange}
+				testID={`create-channel-${id}`}
+				disabled={disabled}
+			/>
+		</View>
 	);
 };
