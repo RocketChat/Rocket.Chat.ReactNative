@@ -68,9 +68,14 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 	);
 }
 
-const AlertText = ({ text = '' }) => {
+const AlertText = ({ text = '', marginTop = 0, marginBottom = 24 }) => {
 	const { colors } = useTheme();
-	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.fontDanger }}>{text}</Text>;
+	return (
+		<Text
+			style={{ fontSize: 16, ...sharedStyles.textRegular, marginTop, marginBottom, color: colors.fontDanger, lineHeight: 24 }}>
+			{text}
+		</Text>
+	);
 };
 
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
@@ -90,15 +95,14 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			description={i18n.t('Deleting_a_user_will_delete_all_messages')}
 			onCancel={hideActionSheet}
 			onSubmit={handleDeleteAccount}
-			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
 			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 			showInput={false}
 			customText={
 				<>
-					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} />}
-					{!!removedRooms && <AlertText text={removedRooms} />}
+					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} marginTop={24} />}
+					{!!removedRooms && <AlertText text={removedRooms} marginBottom={36} />}
 				</>
 			}
 		/>
