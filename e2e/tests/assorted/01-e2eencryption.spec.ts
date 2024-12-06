@@ -384,7 +384,7 @@ describe('E2E Encryption', () => {
 				.toBeVisible()
 				.withTimeout(60000);
 			await element(by.id('workspace-view-register')).tap();
-			await waitFor(element(by.id('register-view')))
+			await waitFor(element(by.id('register-view-name')))
 				.toBeVisible()
 				.withTimeout(2000);
 
@@ -398,6 +398,9 @@ describe('E2E Encryption', () => {
 			await element(by.id('register-view-email')).tapReturnKey();
 			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
+			await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
+			await element(by.id('register-view-confirm-password')).tapReturnKey();
+
 			await expectValidRegisterOrRetry(device.getPlatform());
 			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 
