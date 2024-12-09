@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { dequal } from 'dequal';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -35,7 +35,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	status?: string;
 	dispatch: Dispatch;
 	encrypted?: boolean;
-	navigation: StackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList & TNavigation, 'RoomView'>;
 	omnichannelPermissions: {
 		canForwardGuest: boolean;
 		canReturnQueue: boolean;
@@ -51,6 +51,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	notificationsDisabled?: boolean;
 	hasE2EEWarning: boolean;
 	toggleRoomE2EEncryptionPermission?: string[];
+	onLayout: Function;
 }
 
 interface IRigthButtonsState {
@@ -252,36 +253,40 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	};
 
 	closeLivechat = async () => {
-		const { rid, departmentId } = this.props;
-		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
-		let departmentInfo: ILivechatDepartment | undefined;
-		let tagsList: ILivechatTag[] | undefined;
+		try {
+			const { rid, departmentId } = this.props;
+			const { livechatRequestComment, isMasterDetail, navigation } = this.props;
+			let departmentInfo: ILivechatDepartment | undefined;
+			let tagsList: ILivechatTag[] | undefined;
 
-		if (departmentId) {
-			const result = await Services.getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
-			}
-		}
-
-		if (departmentInfo?.requestTagBeforeClosingChat) {
-			tagsList = await Services.getTagsList();
-		}
-
-		if (rid) {
-			if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
-				const comment = i18n.t('Chat_closed_by_agent');
-				return closeLivechatService({ rid, isMasterDetail, comment });
+			if (departmentId) {
+				const result = await Services.getDepartmentInfo(departmentId);
+				if (result.success) {
+					departmentInfo = result.department as ILivechatDepartment;
+				}
 			}
 
-			if (isMasterDetail) {
-				navigation.navigate('ModalStackNavigator', {
-					screen: 'CloseLivechatView',
-					params: { rid, departmentId, departmentInfo, tagsList }
-				});
-			} else {
-				navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+			if (departmentInfo?.requestTagBeforeClosingChat) {
+				tagsList = await Services.getTagsList();
 			}
+
+			if (rid) {
+				if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+					const comment = i18n.t('Chat_closed_by_agent');
+					return closeLivechatService({ rid, isMasterDetail, comment });
+				}
+
+				if (isMasterDetail) {
+					navigation.navigate('ModalStackNavigator', {
+						screen: 'CloseLivechatView',
+						params: { rid, departmentId, departmentInfo, tagsList }
+					});
+				} else {
+					navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+				}
+			}
+		} catch {
+			// do nothing
 		}
 	};
 
@@ -400,6 +405,11 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return status === 'queued';
 	};
 
+	onLayout = (l: any) => {
+		const { onLayout } = this.props;
+		onLayout(l);
+	};
+
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
 		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
@@ -411,7 +421,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
-					<HeaderButton.Container>
+					<HeaderButton.Container onLayout={this.onLayout}>
 						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
 					</HeaderButton.Container>
 				);
@@ -420,7 +430,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		if (tmid) {
 			return (
-				<HeaderButton.Container>
+				<HeaderButton.Container onLayout={this.onLayout}>
 					<HeaderButton.Item
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
@@ -430,7 +440,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			);
 		}
 		return (
-			<HeaderButton.Container>
+			<HeaderButton.Container onLayout={this.onLayout}>
 				{hasE2EEWarning ? (
 					<HeaderButton.Item iconName='encrypted' onPress={() => toggleRoomE2EE(rid)} disabled={!canToggleEncryption} />
 				) : null}

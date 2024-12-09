@@ -5,7 +5,7 @@ import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { useDispatch } from 'react-redux';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
@@ -39,7 +39,7 @@ type TLogScreenName = 'SE_GO_LANGUAGE' | 'SE_GO_DEFAULTBROWSER' | 'SE_GO_THEME' 
 
 const SettingsView = (): React.ReactElement => {
 	const { colors, theme } = useTheme();
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'SettingsView'>>();
 	const dispatch = useDispatch();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const userId = useAppSelector(state => getUserSelector(state).id);
@@ -105,7 +105,7 @@ const SettingsView = (): React.ReactElement => {
 				await FastImage.clearMemoryCache();
 				await FastImage.clearDiskCache();
 				Services.disconnect();
-				dispatch(selectServerRequest(server));
+				dispatch(selectServerRequest(server, version, true));
 			}
 		});
 	};

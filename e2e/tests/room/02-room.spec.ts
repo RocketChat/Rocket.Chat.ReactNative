@@ -10,7 +10,8 @@ import {
 	TTextMatcher,
 	mockMessage,
 	navigateToRoom,
-	navigateToRecentRoom
+	navigateToRecentRoom,
+	checkMessage
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, deleteCreatedUsers, ITestUser, sendMessage } from '../../helpers/data_setup';
 import data from '../../data';
@@ -284,7 +285,10 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await waitFor(element(by[textMatcher]('Edit')))
+				.toBeVisible()
+				.withTimeout(3000);
 			await element(by[textMatcher]('Edit')).atIndex(0).tap();
 			await element(by.id('message-composer-input')).typeText('ed');
 			await element(by.id('message-composer-send')).tap();
@@ -312,6 +316,7 @@ describe('Room screen', () => {
 			await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
 				.toBeVisible()
 				.withTimeout(3000);
+			await element(by[textMatcher](quotedMessage)).atIndex(0).tap();
 			await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
 				.toBeVisible()
 				.withTimeout(3000);
@@ -321,6 +326,9 @@ describe('Room screen', () => {
 			const expectedLastMessage = `You: ${quotedMessage}`;
 			await sleep(300);
 			await tapBack();
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await waitFor(element(by.id(`markdown-preview-${expectedLastMessage}`)))
 				.toBeVisible()
 				.withTimeout(5000);
@@ -403,6 +411,26 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(60000);
 			await element(by[textMatcher](replyMessage)).atIndex(0).tap();
+			await tapBack();
+		});
+
+		it('should save draft, check it, send it and clear it', async () => {
+			await navigateToRoom(room);
+			const draftMessage = 'draft';
+			await element(by.id('message-composer-input')).typeText(draftMessage);
+			await tapBack();
+			await navigateToRecentRoom(room);
+			await sleep(500); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText(draftMessage);
+			await waitFor(element(by.id('message-composer-send')))
+				.toExist()
+				.withTimeout(5000);
+			await element(by.id('message-composer-send')).tap();
+			await checkMessage(draftMessage);
+			await tapBack();
+			await navigateToRecentRoom(room);
+			await sleep(500); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText('');
 			await tapBack();
 		});
 

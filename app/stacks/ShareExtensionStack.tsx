@@ -1,19 +1,18 @@
 import React from 'react';
-import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ThemeContext } from '../theme';
-import { StackAnimation, defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import SelectServerView from '../views/SelectServerView';
 import ShareListView from '../views/ShareListView';
 import ShareView from '../views/ShareView';
 
-const ShareExtension = createStackNavigator<any>();
+const ShareExtension = createNativeStackNavigator<any>();
 const ShareExtensionStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<ShareExtension.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), ...StackAnimation } as StackNavigationOptions}>
+		<ShareExtension.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			{/* @ts-ignore */}
 			<ShareExtension.Screen name='ShareListView' component={ShareListView} />
 			{/* @ts-ignore */}

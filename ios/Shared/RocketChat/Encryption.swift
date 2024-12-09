@@ -43,7 +43,7 @@ final class Encryption {
     self.server = server
     self.rid = rid
     
-    if let E2EKey = Database(server: server).readRoomEncryptionKey(rid: rid) {
+    if let E2EKey = Database(server: server).readRoomEncryptionKey(for: rid) {
       self.roomKey = decryptRoomKey(E2EKey: E2EKey)
     }
   }
@@ -78,9 +78,14 @@ final class Encryption {
         let iv = data.subdata(in: 0..<kCCBlockSizeAES128)
         let cypher = data.subdata(in: kCCBlockSizeAES128..<data.count)
         if let decrypted = Aes.aes128CBC("decrypt", data: cypher, key: roomKey, iv: Shared.toHex(iv)) {
-          if let m = try? (JSONDecoder().decode(Message.self, from: decrypted)) {
-            return m.text
-          }
+            // First try decoding as DecryptedContent
+            if let decryptedContent = try? JSONDecoder().decode(DecryptedContent.self, from: decrypted) {
+                return decryptedContent.msg
+            }
+            // If decoding as DecryptedContent fails, try decoding as Message
+            else if let messageContent = try? JSONDecoder().decode(Message.self, from: decrypted) {
+                return messageContent.text
+            }
         }
       }
     }

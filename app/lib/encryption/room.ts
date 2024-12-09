@@ -8,7 +8,7 @@ import { sha256 } from 'js-sha256';
 import getSingleMessage from '../methods/getSingleMessage';
 import { IAttachment, IMessage, IUpload, TSendFileMessageFileInfo, IUser, IServerAttachment } from '../../definitions';
 import Deferred from './helpers/deferred';
-import { debounce } from '../methods/helpers';
+import { compareServerVersion, debounce } from '../methods/helpers';
 import database from '../database';
 import log from '../methods/helpers/log';
 import {
@@ -35,6 +35,7 @@ import { mapMessageFromDB } from './helpers/mapMessageFromDB';
 import { createQuoteAttachment } from './helpers/createQuoteAttachment';
 import { getMessageById } from '../database/services/Message';
 import { TEncryptFileResult, TGetContent } from './definitions';
+import { store } from '../store/auxStore';
 
 export default class EncryptionRoom {
 	ready: boolean;
@@ -82,7 +83,21 @@ export default class EncryptionRoom {
 			// Find the subscription
 			const subscription = await subCollection.find(this.roomId);
 
-			const { E2EKey, e2eKeyId } = subscription;
+			// Similar to Encryption.evaluateSuggestedKey
+			const { E2EKey, e2eKeyId, E2ESuggestedKey } = subscription;
+			if (E2EKey && E2ESuggestedKey && Encryption.privateKey) {
+				try {
+					const { keyID, roomKey, sessionKeyExportedString } = await this.importRoomKey(E2ESuggestedKey, Encryption.privateKey);
+					this.keyID = keyID;
+					this.roomKey = roomKey;
+					this.sessionKeyExportedString = sessionKeyExportedString;
+					await Services.e2eAcceptSuggestedGroupKey(this.roomId);
+					this.readyPromise.resolve();
+					return;
+				} catch (e) {
+					await Services.e2eRejectSuggestedGroupKey(this.roomId);
+				}
+			}
 
 			// If this room has a E2EKey, we import it
 			if (E2EKey && Encryption.privateKey) {
@@ -123,7 +138,13 @@ export default class EncryptionRoom {
 			const decryptedKey = await SimpleCrypto.RSA.decrypt(roomE2EKey, privateKey);
 			const sessionKeyExportedString = toString(decryptedKey);
 
-			const keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
+			let keyID = '';
+			const { version } = store.getState().server;
+			if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
+				keyID = (await SimpleCrypto.SHA.sha256(sessionKeyExportedString as string)).slice(0, 12);
+			} else {
+				keyID = Base64.encode(sessionKeyExportedString as string).slice(0, 12);
+			}
 
 			// Extract K from Web Crypto Secret Key
 			// K is a base64URL encoded array of bytes
@@ -161,7 +182,13 @@ export default class EncryptionRoom {
 		};
 
 		this.sessionKeyExportedString = EJSON.stringify(sessionKeyExported);
-		this.keyID = Base64.encode(this.sessionKeyExportedString).slice(0, 12);
+
+		const { version } = store.getState().server;
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '7.0.0')) {
+			this.keyID = (await SimpleCrypto.SHA.sha256(this.sessionKeyExportedString as string)).slice(0, 12);
+		} else {
+			this.keyID = Base64.encode(this.sessionKeyExportedString as string).slice(0, 12);
+		}
 
 		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
 
@@ -176,7 +203,11 @@ export default class EncryptionRoom {
 	// this will be called again and run once in 5 seconds
 	requestRoomKey = debounce(
 		async (e2eKeyId: string) => {
-			await Services.e2eRequestRoomKey(this.roomId, e2eKeyId);
+			try {
+				await Services.e2eRequestRoomKey(this.roomId, e2eKeyId);
+			} catch {
+				// do nothing
+			}
 		},
 		5000,
 		true
