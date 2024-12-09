@@ -42,5 +42,10 @@ export default StyleSheet.create({
 	},
 	tablet: {
 		height: undefined
+	},
+	overlay: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });

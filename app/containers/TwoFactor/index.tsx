@@ -126,7 +126,12 @@ const TwoFactor = React.memo(() => {
 	const color = colors.fontTitlesLabels;
 	return (
 		<Modal
-			accessibilityLabel={I18n.t('Close_Modal')}
+			customBackdrop={
+				<View
+					accessible
+					accessibilityLabel={I18n.t('Close_Modal')}
+					style={[styles.overlay, { backgroundColor: colors.overlayBackground }]}></View>
+			}
 			avoidKeyboard
 			useNativeDriver
 			isVisible={visible}
