@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 	info: {
 		fontSize: 16,
 		lineHeight: 24,
-		marginVertical: 4,
+		marginTop: 24,
 		...sharedStyles.textRegular
 	}
 });
@@ -66,7 +66,9 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
+			headerLeft: () => (
+				<HeaderButton.CloseModal accessibilityLabel={I18n.t('Close')} testID='e2e-enter-your-password-view-close' />
+			),
 			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);
@@ -82,18 +84,28 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 			contentContainerStyle={sharedStyles.container}
 			keyboardVerticalOffset={128}>
 			<StatusBar />
-			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
+			<ScrollView
+				{...scrollPersistTaps}
+				style={sharedStyles.container}
+				contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 24 }}>
 				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
 					<FormTextInput
-						placeholder={I18n.t('Password')}
+						label={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
 						onSubmitEditing={submit}
 						onChangeText={setPassword}
 						testID='e2e-enter-your-password-view-password'
 						textContentType='password'
+						containerStyle={{ marginBottom: 0 }}
 					/>
-					<Button onPress={submit} title={I18n.t('Confirm')} disabled={!password} testID='e2e-enter-your-password-view-confirm' />
+					<Button
+						onPress={submit}
+						title={I18n.t('Confirm')}
+						disabled={!password}
+						testID='e2e-enter-your-password-view-confirm'
+						style={{ marginTop: 36 }}
+					/>
 					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 				</SafeAreaView>
 			</ScrollView>
