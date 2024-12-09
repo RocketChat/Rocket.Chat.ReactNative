@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	},
 	containerTextInput: {
 		paddingHorizontal: 16,
-		marginTop: 16
+		marginTop: 32
 	},
 	containerStyle: {
 		marginBottom: 16
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16
 	},
 	buttonCreate: {
-		margin: 16
+		marginTop: 32,
+		marginHorizontal: 16
 	}
 });
 
@@ -148,6 +149,7 @@ const CreateChannelView = () => {
 				<ScrollView {...scrollPersistTaps}>
 					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
+							required
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							testID='create-channel-name'
 							returnKeyType='done'
