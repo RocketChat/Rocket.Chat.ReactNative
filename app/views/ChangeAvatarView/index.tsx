@@ -65,7 +65,7 @@ function reducer(state: IState, action: IReducerAction) {
 
 const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const [url, setUrl] = useState('');
+	const [rawImageUrl, setRawImageUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
 	const { userId, username, server } = useAppSelector(
@@ -119,7 +119,7 @@ const ChangeAvatarView = () => {
 	};
 
 	const onChangeText = useDebounce(async (value: string) => {
-		const result = await isImageURL(url);
+		const result = await isImageURL(rawImageUrl);
 
 		if (!result || !value) {
 			dispatchAvatar({
@@ -128,15 +128,15 @@ const ChangeAvatarView = () => {
 			});
 		}
 
-		setUrl(value);
+		setRawImageUrl(value);
 	}, 500);
 
 	const fetchImageFromURL = async () => {
-		const result = await isImageURL(url);
+		const result = await isImageURL(rawImageUrl);
 		if (result) {
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url, data: url, service: 'url' }
+				payload: { url: rawImageUrl, data: rawImageUrl, service: 'url' }
 			});
 		}
 	};
@@ -267,7 +267,7 @@ const ChangeAvatarView = () => {
 							backgroundColor={colors.buttonBackgroundSecondaryDefault}
 							onPress={() => pickImage(true)}
 							testID='change-avatar-view-take-a-photo'
-							style={{ marginBottom: 0, marginTop: 0 }}
+							style={styles.containerInput}
 						/>
 						<Button
 							title={I18n.t('Upload_image')}
@@ -276,7 +276,7 @@ const ChangeAvatarView = () => {
 							backgroundColor={colors.buttonBackgroundSecondaryDefault}
 							onPress={pickImage}
 							testID='change-avatar-view-upload-image'
-							style={{ marginBottom: 0, marginTop: 0 }}
+							style={styles.containerInput}
 						/>
 						{context === 'room' ? (
 							<Button
@@ -286,7 +286,7 @@ const ChangeAvatarView = () => {
 								backgroundColor={colors.buttonBackgroundDangerDefault}
 								onPress={() => dispatchAvatar({ type: AvatarStateActions.RESET_ROOM_AVATAR, payload: { data: null } })}
 								testID='change-avatar-view-delete-my-account'
-								style={{ marginBottom: 0, marginTop: 0 }}
+								style={styles.containerInput}
 							/>
 						) : null}
 						<Button
@@ -296,7 +296,7 @@ const ChangeAvatarView = () => {
 							loading={saving}
 							onPress={submit}
 							testID='change-avatar-view-submit'
-							style={{ marginBottom: 0, marginTop: 0 }}
+							style={styles.containerInput}
 						/>
 					</View>
 				</ScrollView>

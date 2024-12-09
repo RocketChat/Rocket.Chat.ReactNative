@@ -26,6 +26,10 @@ export default StyleSheet.create({
 		flexWrap: 'wrap',
 		flexDirection: 'row'
 	},
+	containerInput: {
+		marginTop: 0,
+		marginBottom: 0
+	},
 	buttons: {
 		gap: 12
 	}
