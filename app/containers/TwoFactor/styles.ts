@@ -51,10 +51,5 @@ export default StyleSheet.create({
 	},
 	containerInput: {
 		marginBottom: 0
-	},
-	resendEmailText: {
-		...sharedStyles.textBold,
-		fontSize: 12,
-		lineHeight: 18
 	}
 });
