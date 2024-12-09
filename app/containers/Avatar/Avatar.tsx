@@ -31,7 +31,8 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
-		cdnPrefix
+		cdnPrefix,
+		accessibilityLabel
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -80,11 +81,15 @@ const Avatar = React.memo(
 		}
 
 		if (onPress) {
-			image = <Touchable onPress={onPress}>{image}</Touchable>;
+			image = (
+				<Touchable accessibilityLabel={accessibilityLabel} onPress={onPress}>
+					{image}
+				</Touchable>
+			);
 		}
 
 		return (
-			<View style={[avatarStyle, style]} testID='avatar'>
+			<View accessibilityLabel={!onPress ? accessibilityLabel : undefined} style={[avatarStyle, style]} testID='avatar'>
 				{image}
 				{children}
 			</View>
