@@ -81,11 +81,15 @@ const Avatar = React.memo(
 		}
 
 		if (onPress) {
-			image = <Touchable onPress={onPress}>{image}</Touchable>;
+			image = (
+				<Touchable accessibilityLabel={accessibilityLabel} onPress={onPress}>
+					{image}
+				</Touchable>
+			);
 		}
 
 		return (
-			<View accessibilityLabel={accessibilityLabel} style={[avatarStyle, style]} testID='avatar'>
+			<View accessibilityLabel={!onPress ? accessibilityLabel : undefined} style={[avatarStyle, style]} testID='avatar'>
 				{image}
 				{children}
 			</View>
