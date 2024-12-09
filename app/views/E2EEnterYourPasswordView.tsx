@@ -90,7 +90,6 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 				contentContainerStyle={{ ...sharedStyles.containerScrollView, paddingTop: 24 }}>
 				<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-enter-your-password-view'>
 					<FormTextInput
-						containerStyle={{ marginBottom: 36 }}
 						label={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
@@ -98,8 +97,15 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						onChangeText={setPassword}
 						testID='e2e-enter-your-password-view-password'
 						textContentType='password'
+						containerStyle={{ marginBottom: 0 }}
 					/>
-					<Button onPress={submit} title={I18n.t('Confirm')} disabled={!password} testID='e2e-enter-your-password-view-confirm' />
+					<Button
+						onPress={submit}
+						title={I18n.t('Confirm')}
+						disabled={!password}
+						testID='e2e-enter-your-password-view-confirm'
+						style={{ marginTop: 36 }}
+					/>
 					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Enter_E2EE_Password_description')}</Text>
 				</SafeAreaView>
 			</ScrollView>
