@@ -143,7 +143,15 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 						<Text style={[styles.description, { color: themes[theme].fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
 						<View style={{ gap: 12, paddingTop: 12 }}>
 							<SelectChannel
-								required
+								server={server}
+								userId={user.id}
+								token={user.token}
+								initial={this.channel && { text: getRoomTitle(this.channel) }}
+								onChannelSelect={this.selectChannel}
+								blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+								serverVersion={serverVersion}
+							/>
+							<SelectChannel
 								server={server}
 								userId={user.id}
 								token={user.token}
@@ -185,7 +193,7 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 						<Button
 							testID='create-discussion-submit'
 							disabled={!this.valid()}
-							style={{ marginTop: 24 }}
+							style={{ marginTop: 36 }}
 							title={I18n.t('Create_Discussion')}
 							onPress={this.submit}
 						/>

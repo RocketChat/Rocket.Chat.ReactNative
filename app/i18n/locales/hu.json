@@ -2,7 +2,6 @@
   "__count__empty_room_will_be_removed_automatically": "{{count}} üres szoba lesz törölve.",
   "__count__empty_rooms_will_be_removed_automatically": "{{count}} üres szoba lesz törölve.",
   "1_person_reacted": "1 személy reagált",
-  "A_meaningful_name_for_the_discussion_room": "Egy értelmes név a megbeszélés szobájának",
   "A_new_owner_will_be_assigned_automatically_to__count__room": "Az új tulajdonos automatikus hozzárendelésre kerül {{count}} szobához.",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Az új tulajdonos automatikus hozzárendelésre kerül {{count}} szobához.",
   "accept": "Elfogadom",

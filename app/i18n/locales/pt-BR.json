@@ -2,7 +2,6 @@
   "__count__empty_room_will_be_removed_automatically": "{{count}} sala vazia será excluída.",
   "__count__empty_rooms_will_be_removed_automatically": "{{count}} salas vazias serão excluídas.",
   "1_person_reacted": "1 pessoa reagiu",
-  "A_meaningful_name_for_the_discussion_room": "Um nome significativo para o canal de discussão",
   "A_new_owner_will_be_assigned_automatically_to__count__room": "Um novo proprietário será atribuído automaticamente a {{count}} sala.",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Um novo proprietário será atribuído automaticamente a {{count}} salas.",
   "accept": "Aceitar",

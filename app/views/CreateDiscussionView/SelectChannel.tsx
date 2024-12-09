@@ -18,8 +18,7 @@ const SelectChannel = ({
 	onChannelSelect,
 	initial,
 	blockUnauthenticatedAccess,
-	serverVersion,
-	required
+	serverVersion
 }: ICreateDiscussionViewSelectChannel): React.ReactElement => {
 	const [channels, setChannels] = useState<ISearchLocal[]>([]);
 	const { colors } = useTheme();
@@ -56,10 +55,10 @@ const SelectChannel = ({
 		});
 
 	return (
-		<View accessibilityLabel={`${I18n.t('Parent_channel_or_group')} - ${required ? I18n.t('Required') : ''}`}>
+		<View accessibilityLabel={`${I18n.t('Parent_channel_or_group')}, ${I18n.t('Required')}`}>
 			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
 				{I18n.t('Parent_channel_or_group')}{' '}
-				{required && <Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>({I18n.t('Required')})</Text>}
+				<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>({I18n.t('Required')})</Text>
 			</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
@@ -73,7 +72,7 @@ const SelectChannel = ({
 					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => getChannels('')}
-				placeholder={{ text: `${I18n.t('Select_a_Channel')}` }}
+				placeholder={{ text: I18n.t('Select_a_Channel') }}
 			/>
 		</View>
 	);

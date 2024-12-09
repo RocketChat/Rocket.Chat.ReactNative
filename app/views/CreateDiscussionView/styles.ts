@@ -17,7 +17,7 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	inputStyle: {
-		marginBottom: 16
+		marginBottom: 0
 	},
 	description: {
 		lineHeight: 24,
