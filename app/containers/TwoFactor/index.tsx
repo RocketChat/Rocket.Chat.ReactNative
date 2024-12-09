@@ -126,12 +126,7 @@ const TwoFactor = React.memo(() => {
 	const color = colors.fontTitlesLabels;
 	return (
 		<Modal
-			customBackdrop={
-				<View
-					accessible
-					accessibilityLabel={I18n.t('Close_Modal')}
-					style={[styles.overlay, { backgroundColor: colors.overlayBackground }]}></View>
-			}
+			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			avoidKeyboard
 			useNativeDriver
 			isVisible={visible}
@@ -143,27 +138,24 @@ const TwoFactor = React.memo(() => {
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 						{ backgroundColor: colors.surfaceTint }
 					]}>
-					<View
-						accessibilityLabel={`${method?.text ? I18n.t(method.text) : I18n.t(method?.title || 'Two_Factor_Authentication')}`}>
-						<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
-						{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
-						<FormTextInput
-							accessibilityLabel={I18n.t(
-								data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
-							)}
-							value={code}
-							inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
-							returnKeyType='send'
-							autoCapitalize='none'
-							onChangeText={setCode}
-							onSubmitEditing={onSubmit}
-							keyboardType={method?.keyboardType}
-							secureTextEntry={method?.secureTextEntry}
-							error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
-							testID='two-factor-input'
-							containerStyle={{ marginBottom: 36 }}
-						/>
-					</View>
+					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
+					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
+					<FormTextInput
+						returnKeyType='send'
+						autoCapitalize='none'
+						testID='two-factor-input'
+						accessibilityLabel={I18n.t(
+							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
+						)}
+						value={code}
+						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+						onChangeText={setCode}
+						onSubmitEditing={onSubmit}
+						keyboardType={method?.keyboardType}
+						secureTextEntry={method?.secureTextEntry}
+						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
+						containerStyle={styles.containerInput}
+					/>
 
 					{isEmail ? (
 						<Button

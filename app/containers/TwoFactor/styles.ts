@@ -38,7 +38,8 @@ export default StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		marginTop: 36
 	},
 	tablet: {
 		height: undefined
@@ -47,5 +48,13 @@ export default StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center'
+	},
+	containerInput: {
+		marginBottom: 0
+	},
+	resendEmailText: {
+		...sharedStyles.textBold,
+		fontSize: 12,
+		lineHeight: 18
 	}
 });
