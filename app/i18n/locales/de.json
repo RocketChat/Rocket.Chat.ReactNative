@@ -296,7 +296,6 @@
   "Invalid_or_expired_invite_token": "Ungültiger oder abgelaufener Einladungscode",
   "Invalid_server_version": "Der Server, mit dem Sie sich verbinden möchten, verwendet eine Version, die von der App nicht mehr unterstützt wird: {{currentVersion}}.\n\nWir benötigen Version {{minVersion}}.",
   "Invalid_workspace_URL": "Ungültige Arbeitsbereichs-URL",
-  "Invisible": "Unsichtbar",
   "Invite_Link": "Einladungs-Link",
   "Invite_user_to_join_channel": "Benutzer in diesen Channel einladen",
   "Invite_user_to_join_channel_all_from": "Alle Benutzer des Channels [#channel] einladen, diesem Channel zu folgen",

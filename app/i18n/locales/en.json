@@ -344,7 +344,6 @@
   "Invalid_or_expired_invite_token": "Invalid or expired invite token",
   "Invalid_server_version": "The workspace you're trying to connect is using a version that's not supported by the app anymore: {{currentVersion}}.\n\nWe require version {{minVersion}}",
   "Invalid_workspace_URL": "Invalid workspace URL",
-  "Invisible": "Invisible",
   "Invite_Link": "Invite link",
   "Invite_user_to_join_channel": "Invite one user to join this channel",
   "Invite_user_to_join_channel_all_from": "Invite all users from [#channel] to join this channel",

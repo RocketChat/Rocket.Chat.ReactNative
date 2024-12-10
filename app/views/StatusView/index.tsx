@@ -47,7 +47,7 @@ const STATUS: IStatus[] = [
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		paddingHorizontal: 12,
+		paddingHorizontal: 16,
 		marginTop: 24,
 		marginBottom: 12
 	},
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 	},
 	footerComponent: {
 		marginTop: 36,
-		paddingHorizontal: 12
+		paddingHorizontal: 16
 	}
 });
 
@@ -75,7 +75,7 @@ const Status = ({
 	return (
 		<>
 			<List.Item
-				additionalAcessibilityLabel={` - ${status === id ? I18n.t('Current_Status') : ''}`}
+				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
 				title={name}
 				onPress={() => {
 					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
@@ -146,16 +146,16 @@ const StatusView = (): React.ReactElement => {
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
+	const isStatusMatching = () => {
+		const isStatusEqual = status === user.status;
+		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText);
+
+		return isStatusEqual && isStatusTextEqual;
+	};
+
 	const FooterComponent = () => (
 		<View style={styles.footerComponent}>
-			<Button
-				testID='status-view-submit'
-				disabled={
-					status === user.status && ((!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText))
-				}
-				onPress={submit}
-				title={I18n.t('Save')}
-			/>
+			<Button testID='status-view-submit' disabled={isStatusMatching()} onPress={submit} title={I18n.t('Save')} />
 		</View>
 	);
 

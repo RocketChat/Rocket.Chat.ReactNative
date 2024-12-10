@@ -327,7 +327,6 @@
   "Invalid_or_expired_invite_token": "Neplatný nebo vypršela platnost tokenu pozvánky",
   "Invalid_server_version": "Pracovní prostor, který se pokoušíte připojit, používá verzi, která již není aplikací podporována: {{currentVersion}}.\n\nPožadujeme verzi {{minVersion}}",
   "Invalid_workspace_URL": "Neplatná URL adresa pracovního prostoru",
-  "Invisible": "Neviditelný",
   "Invite_Link": "Odkaz na pozvánku",
   "Invite_user_to_join_channel": "Pozvat jednoho uživatele, aby se připojil k tomuto kanálu",
   "Invite_user_to_join_channel_all_from": "Pozvat všechny uživatele z [#channel], aby se připojili k tomuto kanálu",

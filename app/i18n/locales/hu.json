@@ -303,7 +303,6 @@
   "Invalid_or_expired_invite_token": "Érvénytelen vagy lejárt meghívási token",
   "Invalid_server_version": "A munkaterület, amelyhez csatlakozni próbál, olyan verziót használ, amelyet az alkalmazás már nem támogat: {{currentVersion}}. \n\nA {{minVersion}} verzióra van szükségünk",
   "Invalid_workspace_URL": "Érvénytelen munkaterület URL",
-  "Invisible": "Láthatatlan",
   "Invite_Link": "Meghívási hivatkozás",
   "Invite_users": "Felhasználók meghívása",
   "IP": "IP-cím",

@@ -200,7 +200,6 @@
   "Invalid_or_expired_invite_token": "Geçersiz veya süresi dolmuş davet belirteci (token)",
   "Invalid_server_version": "Bağlanmaya çalıştığınız sunucu artık uygulama tarafından desteklenmeyen bir sürüm kullanıyor: {{currentVersion}}.\n\n{{minVersion}} sürümüne ihtiyacımız var",
   "Invalid_workspace_URL": "Geçersiz çalışma alanı URL'si",
-  "Invisible": "Görünmez",
   "Invite_Link": "Davet Bağlantısı",
   "Invite_user_to_join_channel": "Bu kanala katılması için bir kullanıcı davet",
   "Invite_user_to_join_channel_all_from": "[#kanal] 'daki tüm kullanıcıları bu kanala katılmaya davet et",
