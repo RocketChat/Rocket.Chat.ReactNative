@@ -5,7 +5,7 @@ import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
@@ -14,7 +14,7 @@ import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
-import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
+import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -28,7 +28,6 @@ import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
-import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
@@ -50,8 +49,8 @@ import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -65,7 +64,6 @@ interface IRoomsListViewProps {
 	searchText: string;
 	changingServer: boolean;
 	loadingServer: boolean;
-	showServerDropdown: boolean;
 	sortBy: string;
 	groupByType: boolean;
 	showFavorites: boolean;
@@ -105,6 +103,7 @@ interface IRoomsListViewState {
 	chats?: IRoomItem[];
 	item?: ISubscription;
 	canCreateRoom?: boolean;
+	headerTitleWidth?: number;
 }
 
 interface IRoomItem extends ISubscription {
@@ -133,7 +132,6 @@ const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
 const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
-	'showServerDropdown',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
@@ -193,14 +191,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
-			canCreateRoom: false
+			canCreateRoom: false,
+			headerTitleWidth: 0
 		};
 		this.setHeader();
 		this.getSubscriptions();
 	}
 
 	componentDidMount() {
-		const { navigation, dispatch } = this.props;
+		const { navigation } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
@@ -219,7 +218,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
-			dispatch(closeServerDropdown());
 			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
@@ -294,9 +292,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return false;
 		}
 
-		const { loading, search } = this.state;
+		const { loading, search, headerTitleWidth } = this.state;
 		const { width, insets, subscribedRoom } = this.props;
 		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.headerTitleWidth !== headerTitleWidth) {
 			return true;
 		}
 		if (nextProps.width !== width) {
@@ -322,7 +323,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IRoomsListViewProps) {
+	componentDidUpdate(prevProps: IRoomsListViewProps, prevState: IRoomsListViewState) {
 		const {
 			sortBy,
 			groupByType,
@@ -342,7 +343,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			issuesWithNotifications,
 			supportedVersionsStatus
 		} = this.props;
-		const { item } = this.state;
+		const { item, headerTitleWidth } = this.state;
 
 		if (
 			!(
@@ -363,6 +364,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
+			headerTitleWidth !== prevState.headerTitleWidth ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
 			issuesWithNotifications !== prevProps.issuesWithNotifications ||
 			supportedVersionsStatus !== prevProps.supportedVersionsStatus
@@ -419,15 +421,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
-	getHeader = (): StackNavigationOptions => {
-		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme, user } =
-			this.props;
+	getHeader = (): any => {
+		const { searching, canCreateRoom, headerTitleWidth } = this.state;
+		const {
+			navigation,
+			isMasterDetail,
+			notificationPresenceCap,
+			issuesWithNotifications,
+			supportedVersionsStatus,
+			theme,
+			user,
+			width
+		} = this.props;
 		if (searching) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
@@ -451,9 +458,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.Drawer
 					navigation={navigation}
@@ -468,9 +472,16 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					disabled={disabled}
 				/>
 			),
-			headerTitle: () => <RoomsListHeaderView />,
+			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
 			headerRight: () => (
-				<HeaderButton.Container>
+				<HeaderButton.Container
+					onLayout={
+						isTablet
+							? undefined
+							: ({ nativeEvent }: { nativeEvent: any }) => {
+									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+							  }
+					}>
 					{issuesWithNotifications ? (
 						<HeaderButton.Item
 							iconName='notification-disabled'
@@ -626,11 +637,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	initSearching = () => {
 		logEvent(events.RL_SEARCH);
-		const { dispatch, showServerDropdown } = this.props;
+		const { dispatch } = this.props;
 		this.internalSetState({ searching: true }, () => {
-			if (showServerDropdown) {
-				dispatch(closeServerDropdown());
-			}
 			dispatch(openSearchHeader());
 			this.handleSearch('');
 			this.setHeader();
@@ -897,7 +905,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
-		const options = this.getHeader();
+		let options = this.getHeader();
+		options = {
+			...options,
+			headerTitleAlign: 'left',
+			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
+		};
 		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 
@@ -995,14 +1009,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme } = this.props;
+		const { theme } = this.props;
 
 		return (
 			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{showServerDropdown ? <ServerDropdown /> : null}
 			</SafeAreaView>
 		);
 	};
@@ -1017,7 +1030,6 @@ const mapStateToProps = (state: IApplicationState) => ({
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
-	showServerDropdown: state.rooms.showServerDropdown,
 	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,

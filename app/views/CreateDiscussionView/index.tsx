@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, Text } from 'react-native';
-import { StackNavigationOptions } from '@react-navigation/stack';
 
 import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
@@ -84,9 +83,9 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
 						</HeaderButton.Container>
 				  )
-				: null,
+				: () => null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
-		} as StackNavigationOptions);
+		});
 	};
 
 	submit = () => {
@@ -185,6 +184,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 									title='Encrypted'
 									testID='room-actions-encrypt'
 									right={() => <Switch value={encrypted} onValueChange={this.onEncryptedChange} />}
+									additionalAcessibilityLabel={encrypted}
 								/>
 							</>
 						) : null}

@@ -1,13 +1,18 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
+import { Model } from '@nozbe/watermelondb';
 
-import { TAttachmentEncryption } from '../../definitions';
+import { IAttachment, TAttachmentEncryption, TMessageModel } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
 import { emitter } from './helpers';
 import { Encryption } from '../encryption';
+import { getMessageById } from '../database/services/Message';
+import { getThreadMessageById } from '../database/services/ThreadMessage';
+import database from '../database';
+import { getThreadById } from '../database/services/Thread';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
@@ -194,6 +199,55 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
+const mapAttachments = ({
+	attachments,
+	uri,
+	encryption
+}: {
+	attachments?: IAttachment[];
+	uri: string;
+	encryption: boolean;
+}): TMessageModel['attachments'] =>
+	attachments?.map(att => ({
+		...att,
+		title_link: uri,
+		e2e: encryption ? 'done' : undefined
+	}));
+
+const persistMessage = async (messageId: string, uri: string, encryption: boolean) => {
+	const db = database.active;
+	const batch: Model[] = [];
+	const messageRecord = await getMessageById(messageId);
+	if (messageRecord) {
+		batch.push(
+			messageRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	const threadRecord = await getThreadById(messageId);
+	if (threadRecord) {
+		batch.push(
+			threadRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	const threadMessageRecord = await getThreadMessageById(messageId);
+	if (threadMessageRecord) {
+		batch.push(
+			threadMessageRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	if (batch.length) {
+		await db.write(async () => {
+			await db.batch(batch);
+		});
+	}
+};
+
 export function downloadMediaFile({
 	messageId,
 	type,
@@ -228,7 +282,9 @@ export function downloadMediaFile({
 				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
 			}
 
-			emitter.emit(`downloadMedia${messageId}`, result.uri);
+			await persistMessage(messageId, result.uri, !!encryption);
+
+			emitter.emit(`downloadMedia${downloadUrl}`, result.uri);
 			return resolve(result.uri);
 		} catch (e) {
 			console.error(e);

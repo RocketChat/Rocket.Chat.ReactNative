@@ -57,7 +57,7 @@ describe('Status screen', () => {
 			await element(by.id('status-view-input')).replaceText('status-text-new');
 			await element(by.id('status-view-submit')).tap();
 			await sleep(3000); // Wait until the loading hide
-			await waitFor(element(by.label('status-text-new')))
+			await waitFor(element(by.text('status-text-new')))
 				.toExist()
 				.withTimeout(5000);
 		});

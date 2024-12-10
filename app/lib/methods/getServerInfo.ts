@@ -9,6 +9,7 @@ import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
+import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 
 interface IServerInfoFailure {
@@ -52,7 +53,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			if (!serverInfo?.success) {
 				return {
 					success: false,
-					message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+					message: I18n.t('Not_RC_Server')
 				};
 			}
 
@@ -109,19 +110,23 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			}
 			return {
 				success: false,
-				message: e.message
+				message: I18n.t('Not_RC_Server')
 			};
 		}
 	}
 
 	return {
 		success: false,
-		message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+		message: I18n.t('Not_RC_Server')
 	};
 }
 
 const getUniqueId = async (server: string): Promise<string> => {
-	const response = await fetch(`${server}/api/v1/settings.public?query={"_id": "uniqueID"}`);
+	const serverVersion = store.getState().server.version;
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? `${server}/api/v1/settings.public?_id=uniqueID`
+		: `${server}/api/v1/settings.public?query={"_id": "uniqueID"}`;
+	const response = await fetch(url);
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };

@@ -148,6 +148,8 @@ export type ChatsStackParamList = {
 	};
 	AddChannelTeamView: {
 		teamId: string;
+		rid: string;
+		t: 'c' | 'p';
 	};
 	AddExistingChannelView: {
 		teamId: string;
@@ -211,6 +213,7 @@ export type SettingsStackParamList = {
 	DisplayPrefsView: undefined;
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
+	GetHelpView: undefined;
 };
 
 export type AdminPanelStackParamList = {

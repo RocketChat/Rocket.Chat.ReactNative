@@ -105,6 +105,9 @@ export const defaultSettings = {
 	E2E_Enabled_Default_PrivateRooms: {
 		type: 'valueAsBoolean'
 	},
+	E2E_Enable_Encrypt_Files: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},
@@ -249,11 +252,20 @@ export const defaultSettings = {
 	CDN_PREFIX: {
 		type: 'valueAsString'
 	},
-	Accounts_RequirePasswordConfirmation:{
+	Accounts_RequirePasswordConfirmation: {
 		type: 'valueAsBoolean'
 	},
-	Accounts_ConfirmPasswordPlaceholder:{
+	Accounts_ConfirmPasswordPlaceholder: {
 		type: 'valueAsString'
+	},
+	E2E_Enabled_Mentions: {
+		type: 'valueAsBoolean'
+	},
+	UTF8_User_Names_Validation: {
+		type: 'valueAsString'
+	},
+	Cloud_Workspace_AirGapped_Restrictions_Remaining_Days: {
+		type: 'valueAsNumber'
 	},
 	...deprecatedSettings
 } as const;

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -8,6 +8,7 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
+import { isIOS } from '../../lib/methods/helpers';
 
 const HIT_SLOP = {
 	top: 5,
@@ -22,7 +23,6 @@ const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	titleContainer: {
@@ -75,6 +75,7 @@ interface IRoomHeader {
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
+	rightButtonsWidth?: number;
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
@@ -141,7 +142,8 @@ const Header = React.memo(
 		testID,
 		usersTyping = [],
 		sourceType,
-		disabled
+		disabled,
+		rightButtonsWidth = 0
 	}: IRoomHeader) => {
 		const { colors } = useTheme();
 		const portrait = height > width;
@@ -174,19 +176,28 @@ const Header = React.memo(
 
 		const handleOnPress = useCallback(() => onPress(), []);
 
+		const accessibilityLabel = useMemo(() => {
+			if (tmid) {
+				return `${title} ${parentTitle}`;
+			}
+			return title;
+		}, [title, parentTitle, tmid]);
+
 		return (
 			<TouchableOpacity
 				testID='room-header'
-				accessibilityLabel={title}
+				accessibilityLabel={accessibilityLabel}
 				onPress={handleOnPress}
 				style={[
 					styles.container,
 					{
-						opacity: disabled ? 0.5 : 1
+						opacity: disabled ? 0.5 : 1,
+						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0)
 					}
 				]}
 				disabled={disabled}
-				hitSlop={HIT_SLOP}>
+				hitSlop={HIT_SLOP}
+				accessibilityRole='header'>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon

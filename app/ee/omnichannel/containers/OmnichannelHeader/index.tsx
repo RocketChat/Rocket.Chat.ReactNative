@@ -63,6 +63,7 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 				title='Omnichannel'
 				color={themes[theme].fontDefault}
 				onPress={toggleLivechat}
+				additionalAcessibilityLabel={status}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						<Switch value={status} onValueChange={toggleLivechat} />

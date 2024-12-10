@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
-		flexDirection: 'column',
+		flexDirection: 'row',
 		paddingVertical: 4,
 		paddingLeft: 8
 	},
@@ -42,6 +42,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 8
+	},
+	titleAndDescriptionContainer: {
+		flexDirection: 'column',
+		flex: 1,
+		width: 200
 	},
 	author: {
 		fontSize: 16,
@@ -72,11 +77,12 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
-		height: 200,
-		flex: 1,
+		height: 80,
+		width: 80,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4,
-		marginBottom: 1
+		marginBottom: 1,
+		marginLeft: 20
 	},
 	title: {
 		flex: 1,
@@ -223,9 +229,9 @@ const Reply = React.memo(
 			openLink(url, theme);
 		};
 
-		let { strokeExtraLight } = themes[theme];
+		let { strokeLight } = themes[theme];
 		if (attachment.color) {
-			strokeExtraLight = attachment.color;
+			strokeLight = attachment.color;
 		}
 
 		return (
@@ -239,34 +245,36 @@ const Reply = React.memo(
 						index > 0 && styles.marginTop,
 						msg && styles.marginBottom,
 						{
-							borderColor: strokeExtraLight
+							borderColor: strokeLight
 						}
 					]}
 					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
-						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<View style={styles.titleAndDescriptionContainer}>
+							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							<Attachments
+								attachments={attachment.attachments}
+								getCustomEmoji={getCustomEmoji}
+								timeFormat={timeFormat}
+								style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
+								isReply
+								showAttachment={showAttachment}
+							/>
+							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							{loading ? (
+								<View style={[styles.backdrop]}>
+									<View
+										style={[
+											styles.backdrop,
+											{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
+										]}></View>
+									<RCActivityIndicator />
+								</View>
+							) : null}
+						</View>
 						<UrlImage image={attachment.thumb_url} />
-						<Attachments
-							attachments={attachment.attachments}
-							getCustomEmoji={getCustomEmoji}
-							timeFormat={timeFormat}
-							style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
-							isReply
-							showAttachment={showAttachment}
-						/>
-						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-						{loading ? (
-							<View style={[styles.backdrop]}>
-								<View
-									style={[
-										styles.backdrop,
-										{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
-									]}></View>
-								<RCActivityIndicator />
-							</View>
-						) : null}
 					</View>
 				</Touchable>
 				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />

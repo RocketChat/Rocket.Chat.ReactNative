@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { toggleServerDropdown, closeServerDropdown, setSearch } from '../../../actions/rooms';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { setSearch } from '../../../actions/rooms';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';
+import { showActionSheetRef } from '../../../containers/ActionSheet';
+import ServersList from '../ServersList';
 
 interface IRoomsListHeaderViewProps {
-	showServerDropdown: boolean;
 	showSearchHeader: boolean;
 	serverName: string;
 	connecting: boolean;
@@ -16,6 +16,7 @@ interface IRoomsListHeaderViewProps {
 	isFetching: boolean;
 	server: string;
 	dispatch: Dispatch;
+	width?: number;
 }
 
 class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {
@@ -25,36 +26,29 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 	};
 
 	onPress = () => {
-		logEvent(events.RL_TOGGLE_SERVER_DROPDOWN);
-		const { showServerDropdown, dispatch } = this.props;
-		if (showServerDropdown) {
-			dispatch(closeServerDropdown());
-		} else {
-			dispatch(toggleServerDropdown());
-		}
+		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 	};
 
 	render() {
-		const { serverName, showServerDropdown, showSearchHeader, connecting, connected, isFetching, server } = this.props;
+		const { serverName, showSearchHeader, connecting, connected, isFetching, server, width } = this.props;
 
 		return (
 			<Header
 				serverName={serverName}
 				server={server}
-				showServerDropdown={showServerDropdown}
 				showSearchHeader={showSearchHeader}
 				connecting={connecting}
 				connected={connected}
 				isFetching={isFetching}
 				onPress={this.onPress}
 				onSearchChangeText={this.onSearchChangeText}
+				width={width}
 			/>
 		);
 	}
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	showServerDropdown: state.rooms.showServerDropdown,
 	showSearchHeader: state.rooms.showSearchHeader,
 	connecting: state.meteor.connecting || state.server.loading,
 	connected: state.meteor.connected,

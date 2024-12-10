@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StackNavigationOptions } from '@react-navigation/stack';
 import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
@@ -43,7 +42,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 
 	private observable?: Subscription;
 
-	static navigationOptions = (): StackNavigationOptions => ({
+	static navigationOptions = () => ({
 		title: I18n.t('Screen_lock')
 	});
 
@@ -185,6 +184,8 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					right={() => (this.isSelected(value) ? this.renderIcon() : null)}
 					disabled={disabled}
 					translateTitle={false}
+					additionalAcessibilityLabel={this.isSelected(value)}
+					additionalAcessibilityLabelCheck
 				/>
 				<List.Separator />
 			</>
@@ -244,6 +245,7 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 					title={I18n.t('Local_authentication_unlock_with_label', { label: biometryLabel })}
 					right={() => this.renderBiometrySwitch()}
 					translateTitle={false}
+					additionalAcessibilityLabel={this.state.biometry ? I18n.t('Enabled') : I18n.t('Disabled')}
 				/>
 				<List.Separator />
 			</List.Section>
@@ -258,7 +260,11 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 				<List.Container>
 					<List.Section>
 						<List.Separator />
-						<List.Item title='Local_authentication_unlock_option' right={() => this.renderAutoLockSwitch()} />
+						<List.Item
+							title='Local_authentication_unlock_option'
+							right={() => this.renderAutoLockSwitch()}
+							additionalAcessibilityLabel={autoLock}
+						/>
 						{autoLock ? (
 							<>
 								<List.Separator />

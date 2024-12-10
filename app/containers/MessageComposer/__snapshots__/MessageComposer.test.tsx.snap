@@ -626,10 +626,12 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontWeight": "400",
+                    "lineHeight": 22,
                     "textAlign": "left",
                   },
                   {
                     "color": "#2F343D",
+                    "lineHeight": undefined,
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1044,10 +1046,12 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontWeight": "400",
+                    "lineHeight": 22,
                     "textAlign": "left",
                   },
                   {
                     "color": "#2F343D",
+                    "lineHeight": undefined,
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1219,10 +1223,12 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontWeight": "400",
+                    "lineHeight": 22,
                     "textAlign": "left",
                   },
                   {
                     "color": "#2F343D",
+                    "lineHeight": undefined,
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1637,10 +1643,12 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontWeight": "400",
+                    "lineHeight": 22,
                     "textAlign": "left",
                   },
                   {
                     "color": "#2F343D",
+                    "lineHeight": undefined,
                   },
                   {
                     "backgroundColor": "transparent",
@@ -1812,10 +1820,12 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 16,
                     "fontWeight": "400",
+                    "lineHeight": 22,
                     "textAlign": "left",
                   },
                   {
                     "color": "#2F343D",
+                    "lineHeight": undefined,
                   },
                   {
                     "backgroundColor": "transparent",

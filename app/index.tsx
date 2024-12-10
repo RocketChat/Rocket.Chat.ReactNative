@@ -1,11 +1,9 @@
 import React from 'react';
 import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Orientation from 'react-native-orientation-locker';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import RNScreens from 'react-native-screens';
 import { Provider } from 'react-redux';
-import Clipboard from '@react-native-clipboard/clipboard';
 
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
@@ -60,14 +58,23 @@ interface IState {
 const parseDeepLinking = (url: string) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth|invite)\?/;
-		if (url.match(regex)) {
-			url = url.replace(regex, '').trim();
-			if (url) {
-				return parseQuery(url);
+		const regex = /^(room|auth|invite|shareextension)\?/;
+		const match = url.match(regex);
+		if (match) {
+			const matchedPattern = match[1];
+			const query = url.replace(regex, '').trim();
+
+			if (query) {
+				const parsedQuery = parseQuery(query);
+				return {
+					...parsedQuery,
+					type: matchedPattern === 'shareextension' ? matchedPattern : parsedQuery?.type
+				};
 			}
 		}
 	}
+
+	// Return null if the URL doesn't match or is not valid
 	return null;
 };
 
@@ -93,9 +100,6 @@ export default class Root extends React.Component<{}, IState> {
 		};
 		if (isTablet) {
 			this.initTablet();
-			Orientation.unlockAllOrientations();
-		} else {
-			Orientation.lockToPortrait();
 		}
 		setNativeTheme(theme);
 	}
@@ -135,7 +139,6 @@ export default class Root extends React.Component<{}, IState> {
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		if (parsedDeepLinkingURL) {
-			Clipboard.setString(JSON.stringify(parsedDeepLinkingURL));
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
 		}
@@ -208,8 +211,7 @@ export default class Root extends React.Component<{}, IState> {
 							themePreferences,
 							setTheme: this.setTheme,
 							colors: colors[theme]
-						}}
-					>
+						}}>
 						<DimensionsContext.Provider
 							value={{
 								width,
@@ -217,8 +219,7 @@ export default class Root extends React.Component<{}, IState> {
 								scale,
 								fontScale,
 								setDimensions: this.setDimensions
-							}}
-						>
+							}}>
 							<GestureHandlerRootView>
 								<ActionSheetProvider>
 									<AppContainer />

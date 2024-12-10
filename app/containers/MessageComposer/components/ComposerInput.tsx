@@ -6,7 +6,7 @@ import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useSubscription, useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -58,7 +58,9 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
 
-		useAutoSaveDraft(textRef.current);
+		// subscribe to changes on mic state to update draft after a message is sent
+		useMicOrSend();
+		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
 
 		// Draft/Canned Responses
 		useEffect(() => {
@@ -142,7 +144,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('');
+				setInput('', undefined, true);
 				return text;
 			},
 			getText: () => textRef.current,
@@ -151,12 +153,16 @@ export const ComposerInput = memo(
 			onAutocompleteItemSelected
 		}));
 
-		const setInput: TSetInput = (text, selection) => {
+		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
 			const message = text.trim();
 			textRef.current = message;
-			if (inputRef.current) {
-				inputRef.current.setNativeProps({ text });
+
+			if (forceUpdateDraftMessage) {
+				saveMessageDraft('');
 			}
+
+			inputRef.current?.setNativeProps?.({ text });
+
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
 				setTimeout(() => {
@@ -168,9 +174,11 @@ export const ComposerInput = memo(
 		};
 
 		const focus = () => {
-			if (inputRef.current) {
-				inputRef.current.focus();
-			}
+			setTimeout(() => {
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			}, 300);
 		};
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {

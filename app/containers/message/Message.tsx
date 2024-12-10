@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
@@ -20,6 +20,8 @@ import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
+import i18n from '../../i18n';
+import { getInfoMessage } from './utils';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	if (props.isPreview) {
@@ -139,6 +141,28 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
+	// temp accessibilityLabel
+	const accessibilityLabel = useMemo(() => {
+		let label = '';
+		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+		if (props.isThreadReply) {
+			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
+		}
+		if (props.isThreadSequential) {
+			label = `thread message ${props.msg}`;
+		}
+		if (props.isEncrypted) {
+			label = i18n.t('Encrypted_message');
+		}
+		if (props.isInfo) {
+			// @ts-ignore
+			label = getInfoMessage({ ...props });
+		}
+		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
+		const user = props.useRealName ? props.author?.name : props.author?.username || '';
+		return `${user} ${hour} ${label}`;
+	}, []);
+
 	if (props.hasError) {
 		return (
 			<View>
@@ -153,7 +177,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
 			style={{ backgroundColor }}>
-			<View>
+			<View accessible accessibilityLabel={accessibilityLabel}>
 				<Message {...props} />
 			</View>
 		</Touchable>

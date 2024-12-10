@@ -36,8 +36,8 @@ describe('Delete server', () => {
 
 	it('should add server', async () => {
 		await sleep(5000);
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id('rooms-list-header-server-add')).tap();
@@ -58,8 +58,11 @@ describe('Delete server', () => {
 		// Register new user
 		const randomUser = data.randomUser();
 		await element(by.id('register-view-name')).replaceText(randomUser.name);
+		await element(by.id('register-view-name')).tapReturnKey();
 		await element(by.id('register-view-username')).replaceText(randomUser.username);
+		await element(by.id('register-view-username')).tapReturnKey();
 		await element(by.id('register-view-email')).replaceText(randomUser.email);
+		await element(by.id('register-view-email')).tapReturnKey();
 		await element(by.id('register-view-password')).replaceText(randomUser.password);
 		await element(by.id('register-view-password')).tapReturnKey();
 		await expectValidRegisterOrRetry(device.getPlatform());
@@ -69,17 +72,17 @@ describe('Delete server', () => {
 	});
 
 	it('should delete server', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.server}`)).longPress(1500);
+		await element(by.id(`server-item-${data.server}`)).longPress(1500);
 		await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await waitFor(element(by.id(`rooms-list-header-server-${data.server}`)))
+		await waitFor(element(by.id(`server-item-${data.server}`)))
 			.toBeNotVisible()
 			.withTimeout(10000);
 	});

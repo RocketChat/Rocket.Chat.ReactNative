@@ -102,13 +102,13 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				Alert.alert(I18n.t('Oops'), serverInfoResult.message);
+				Alert.alert(I18n.t('Invalid_workspace_URL'), serverInfoResult.message);
 				yield put(serverFailure());
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				Alert.alert(I18n.t('Oops'), websocketInfo.message);
+				Alert.alert(I18n.t('Invalid_workspace_URL'), websocketInfo.message);
 				yield put(serverFailure());
 				return;
 			}
@@ -185,7 +185,10 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 			yield put(clearSettings());
 			yield put(setUser(user));
 			yield connect({ server, logoutOnError: true });
-			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			const currentRoot = yield* appSelector(state => state.app.root);
+			if (currentRoot !== RootEnum.ROOT_SHARE_EXTENSION && currentRoot !== RootEnum.ROOT_LOADING_SHARE_EXTENSION) {
+				yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			}
 			UserPreferences.setString(CURRENT_SERVER, server); // only set server after have a user
 		} else {
 			yield put(clearUser());
@@ -208,7 +211,7 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 		}
 
 		// Return server version even when offline
-		const serverVersion = (serverInfo && serverInfo.version) || (version as string);
+		const serverVersion = serverInfo?.version || version;
 
 		// we'll set serverVersion as metadata for bugsnag
 		logServerVersion(serverVersion);
@@ -233,7 +236,7 @@ const handleServerRequest = function* handleServerRequest({ server, username, fr
 
 		if (serverInfo) {
 			yield Services.getLoginServices(server);
-			yield getLoginSettings({ server });
+			yield getLoginSettings({ server, serverVersion: serverInfo.version });
 			Navigation.navigate('WorkspaceView');
 
 			const Accounts_iframe_enabled = yield* appSelector(state => state.settings.Accounts_iframe_enabled);

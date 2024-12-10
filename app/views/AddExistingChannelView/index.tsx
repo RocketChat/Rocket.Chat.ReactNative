@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -18,11 +18,11 @@ import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import { ChatsStackParamList } from '../../stacks/types';
 import { TSubscriptionModel, SubscriptionType } from '../../definitions';
-import { getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, hasPermission, useDebounce } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 
-type TNavigation = StackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
+type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'AddExistingChannelView'>;
 type TRoute = RouteProp<ChatsStackParamList, 'AddExistingChannelView'>;
 
 const QUERY_SIZE = 50;
@@ -38,9 +38,11 @@ const AddExistingChannelView = () => {
 		params: { teamId }
 	} = useRoute<TRoute>();
 
-	const { addTeamChannelPermission, isMasterDetail } = useAppSelector(state => ({
+	const { serverVersion, addTeamChannelPermission, isMasterDetail, moveRoomToTeamPermission } = useAppSelector(state => ({
+		serverVersion: state.server.version,
 		isMasterDetail: state.app.isMasterDetail,
-		addTeamChannelPermission: state.permissions['add-team-channel']
+		addTeamChannelPermission: state.permissions['add-team-channel'],
+		moveRoomToTeamPermission: state.permissions['move-room-to-team']
 	}));
 
 	useLayoutEffect(() => {
@@ -52,7 +54,7 @@ const AddExistingChannelView = () => {
 	}, []);
 
 	const setHeader = () => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitle: I18n.t('Add_Existing_Channel')
 		};
 
@@ -68,6 +70,15 @@ const AddExistingChannelView = () => {
 			);
 
 		navigation.setOptions(options);
+	};
+
+	const hasCreatePermission = async (id: string) => {
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const result = await hasPermission([moveRoomToTeamPermission], id);
+			return result[0];
+		}
+		const result = await hasPermission([addTeamChannelPermission], id);
+		return result[0];
 	};
 
 	const query = async (stringToSearch = '') => {
@@ -90,11 +101,8 @@ const AddExistingChannelView = () => {
 						if (channel.prid) {
 							return false;
 						}
-						const permissions = await hasPermission([addTeamChannelPermission], channel.rid);
-						if (!permissions[0]) {
-							return false;
-						}
-						return true;
+						const result = await hasCreatePermission(channel.rid);
+						return result;
 					})
 				);
 
@@ -163,6 +171,8 @@ const AddExistingChannelView = () => {
 							testID={`add-existing-channel-view-item-${item.name}`}
 							left={() => <List.Icon name={icon} />}
 							right={() => (isChecked(item.rid) ? <List.Icon name='check' color={colors.fontHint} /> : null)}
+							additionalAcessibilityLabel={isChecked(item.rid)}
+							additionalAcessibilityLabelCheck
 						/>
 					);
 				}}

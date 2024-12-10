@@ -1,4 +1,4 @@
-import { Q } from '@nozbe/watermelondb';
+import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 
 import { MESSAGE_TYPE_ANY_LOAD } from '../constants';
@@ -136,6 +136,7 @@ export default async function updateMessages({
 			try {
 				return message.prepareUpdate(
 					protectedFunction((m: TMessageModel) => {
+						const { attachments } = m;
 						if (newMessage && !newMessage?.blocks) {
 							newMessage.blocks = null;
 						}
@@ -143,6 +144,11 @@ export default async function updateMessages({
 							newMessage.md = undefined;
 						}
 						Object.assign(m, newMessage);
+
+						// If image_url didn't change, keep the same attachments, trying to stick to already downloaded media inside att.title_link (starting with file://)
+						if (attachments?.[0]?.image_url === newMessage?.attachments?.[0]?.image_url) {
+							m.attachments = attachments;
+						}
 					})
 				);
 			} catch {
@@ -192,9 +198,9 @@ export default async function updateMessages({
 			...threadsToUpdate,
 			...threadMessagesToCreate,
 			...threadMessagesToUpdate
-		];
+		] as Model[];
 
-		await db.batch(...allRecords);
+		await db.batch(allRecords);
 		return allRecords.length;
 	});
 }

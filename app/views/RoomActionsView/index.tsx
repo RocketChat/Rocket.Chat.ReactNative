@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Text, View } from 'react-native';
@@ -9,7 +9,6 @@ import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { leaveRoom } from '../../actions/room';
-import { setLoading } from '../../actions/selectedUsers';
 import Avatar from '../../containers/Avatar';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
@@ -76,13 +75,14 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	viewBroadcastMemberListPermission?: string[];
 	createTeamPermission?: string[];
 	addTeamChannelPermission?: string[];
+	moveRoomToTeamPermission?: string[];
 	convertTeamPermission?: string[];
 	viewCannedResponsesPermission?: string[];
 	livechatAllowManualOnHold?: boolean;
 	livechatRequestComment?: boolean;
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+		NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
@@ -123,8 +123,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	static navigationOptions = ({
 		navigation,
 		isMasterDetail
-	}: Pick<IRoomActionsViewProps, 'navigation' | 'isMasterDetail'>): StackNavigationOptions => {
-		const options: StackNavigationOptions = {
+	}: Pick<IRoomActionsViewProps, 'navigation' | 'isMasterDetail'>): NativeStackNavigationOptions => {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Actions')
 		};
 		if (isMasterDetail) {
@@ -223,7 +223,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const canToggleEncryption = await this.canToggleEncryption();
 			const canViewMembers = await this.canViewMembers();
 			const canCreateTeam = await this.canCreateTeam();
-			const canAddChannelToTeam = await this.canAddChannelToTeam();
+			const canAddChannelToTeam = await this.hasMoveToTeamPermission(room.rid);
 			const canConvertTeam = await this.canConvertTeam();
 			const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
 				encryptionEnabled,
@@ -314,14 +314,14 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		return canCreateTeam;
 	};
 
-	canAddChannelToTeam = async () => {
-		const { room } = this.state;
-		const { addTeamChannelPermission } = this.props;
-		const { rid } = room;
-		const permissions = await hasPermission([addTeamChannelPermission], rid);
-
-		const canAddChannelToTeam = permissions[0];
-		return canAddChannelToTeam;
+	hasMoveToTeamPermission = async (rid: string) => {
+		const { addTeamChannelPermission, moveRoomToTeamPermission, serverVersion } = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const result = await hasPermission([moveRoomToTeamPermission], rid);
+			return result[0];
+		}
+		const result = await hasPermission([addTeamChannelPermission], rid);
+		return result[0];
 	};
 
 	canConvertTeam = async () => {
@@ -375,30 +375,34 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	};
 
 	closeLivechat = async () => {
-		const {
-			room: { rid, departmentId }
-		} = this.state;
-		const { livechatRequestComment, isMasterDetail, navigation } = this.props;
-		let departmentInfo: ILivechatDepartment | undefined;
-		let tagsList: ILivechatTag[] | undefined;
+		try {
+			const {
+				room: { rid, departmentId }
+			} = this.state;
+			const { livechatRequestComment, isMasterDetail, navigation } = this.props;
+			let departmentInfo: ILivechatDepartment | undefined;
+			let tagsList: ILivechatTag[] | undefined;
 
-		if (departmentId) {
-			const result = await Services.getDepartmentInfo(departmentId);
-			if (result.success) {
-				departmentInfo = result.department as ILivechatDepartment;
+			if (departmentId) {
+				const result = await Services.getDepartmentInfo(departmentId);
+				if (result.success) {
+					departmentInfo = result.department as ILivechatDepartment;
+				}
 			}
-		}
 
-		if (departmentInfo?.requestTagBeforeClosingChat) {
-			tagsList = await Services.getTagsList();
-		}
+			if (departmentInfo?.requestTagBeforeClosingChat) {
+				tagsList = await Services.getTagsList();
+			}
 
-		if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
-			const comment = I18n.t('Chat_closed_by_agent');
-			return closeLivechat({ rid, isMasterDetail, comment });
-		}
+			if (!livechatRequestComment && !departmentInfo?.requestTagBeforeClosingChat) {
+				const comment = I18n.t('Chat_closed_by_agent');
+				return closeLivechat({ rid, isMasterDetail, comment });
+			}
 
-		navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+			navigation.navigate('CloseLivechatView', { rid, departmentId, departmentInfo, tagsList });
+		} catch (e) {
+			log(e);
+		}
 	};
 
 	placeOnHoldLivechat = () => {
@@ -450,21 +454,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		} catch (e) {
 			log(e);
 			this.setState({ member: {} });
-		}
-	};
-
-	addUser = async () => {
-		const { room } = this.state;
-		const { dispatch, navigation } = this.props;
-		const { rid } = room;
-		try {
-			dispatch(setLoading(true));
-			await Services.addUsersToRoom(rid);
-			navigation.pop();
-		} catch (e) {
-			log(e);
-		} finally {
-			dispatch(setLoading(false));
 		}
 	};
 
@@ -709,7 +698,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 	searchTeam = async (onChangeText: string) => {
 		logEvent(events.RA_SEARCH_TEAM);
 		try {
-			const { addTeamChannelPermission, createTeamPermission } = this.props;
 			const QUERY_SIZE = 50;
 			const db = database.active;
 			const teams = await db
@@ -725,11 +713,8 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const asyncFilter = async (teamArray: TSubscriptionModel[]) => {
 				const results = await Promise.all(
 					teamArray.map(async team => {
-						const permissions = await hasPermission([addTeamChannelPermission, createTeamPermission], team.rid);
-						if (!permissions[0]) {
-							return false;
-						}
-						return true;
+						const result = await this.hasMoveToTeamPermission(team.rid);
+						return result;
 					})
 				);
 
@@ -831,6 +816,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 						testID='room-actions-encrypt'
 						left={() => <List.Icon name='encrypted' />}
 						right={this.renderEncryptedSwitch}
+						additionalAcessibilityLabel={!!room.encrypted}
 					/>
 					<List.Separator />
 				</List.Section>
@@ -1305,6 +1291,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewBroadcastMemberListPermission: state.permissions['view-broadcast-member-list'],
 	createTeamPermission: state.permissions['create-team'],
 	addTeamChannelPermission: state.permissions['add-team-channel'],
+	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	convertTeamPermission: state.permissions['convert-team'],
 	viewCannedResponsesPermission: state.permissions['view-canned-responses'],
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
