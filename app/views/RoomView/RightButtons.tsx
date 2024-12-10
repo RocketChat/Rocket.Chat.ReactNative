@@ -459,7 +459,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return (
 			<HeaderButton.Container onLayout={this.onLayout}>
 				{hasE2EEWarning ? (
-					<HeaderButton.Item iconName='encrypted' onPress={this.goE2EEToggleRoomView} disabled={!canToggleEncryption} />
+					<HeaderButton.Item
+						iconName='encrypted'
+						onPress={this.goE2EEToggleRoomView}
+						disabled={!canToggleEncryption}
+						testID='room-view-header-encryption'
+					/>
 				) : null}
 				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item
