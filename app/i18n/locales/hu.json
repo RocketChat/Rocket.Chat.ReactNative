@@ -57,6 +57,7 @@
   "Automatic": "Automatikus",
   "Avatar": "Avatar",
   "Avatar_changed_successfully": "Az avatar sikeresen megváltozott!",
+  "Avatar_Photo": "{{username}} Avatar",
   "Avatar_Url": "Avatar URL",
   "Avatars": "Avatarok",
   "Away": "Távol",

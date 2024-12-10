@@ -40,6 +40,7 @@
   "Auto-join": "Rejoindre automatiquement",
   "Automatic": "Automatique",
   "Avatar_changed_successfully": "Avatar changé avec succès !",
+  "Avatar_Photo": "Avatar de {{username}}",
   "Avatar_Url": "URL de l'avatar",
   "Avatars": "Avatars",
   "Away": "Absent",

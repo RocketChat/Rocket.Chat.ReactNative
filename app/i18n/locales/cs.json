@@ -60,6 +60,7 @@
   "Automatic": "Automatický",
   "Avatar": "Avatar",
   "Avatar_changed_successfully": "Avatar se úspěšně změnil!",
+  "Avatar_Photo": "{{username}} Avatar",
   "Avatar_Url": "Adresa URL avatara",
   "Avatars": "Avataři",
   "Away": "Pryč",

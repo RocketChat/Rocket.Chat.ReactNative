@@ -8,6 +8,7 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
+import I18n from '../../i18n';
 
 const Avatar = React.memo(
 	({
@@ -38,6 +39,7 @@ const Avatar = React.memo(
 			return null;
 		}
 
+		const avatarAccessibilityLabel = accessibilityLabel ?? I18n.t('Avatar_Photo', { username: text });
 		const avatarStyle = {
 			width: size,
 			height: size,
@@ -82,14 +84,18 @@ const Avatar = React.memo(
 
 		if (onPress) {
 			image = (
-				<Touchable accessibilityLabel={accessibilityLabel} onPress={onPress}>
+				<Touchable accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
 					{image}
 				</Touchable>
 			);
 		}
 
 		return (
-			<View accessibilityLabel={!onPress ? accessibilityLabel : undefined} style={[avatarStyle, style]} testID='avatar'>
+			<View
+				accessible
+				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
+				style={[avatarStyle, style]}
+				testID='avatar'>
 				{image}
 				{children}
 			</View>

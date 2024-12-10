@@ -60,6 +60,7 @@
   "Automatic": "Automatic",
   "Avatar": "Avatar",
   "Avatar_changed_successfully": "Avatar changed successfully!",
+  "Avatar_Photo": "{{username}} Avatar",
   "Avatar_Url": "Avatar URL",
   "Avatars": "Avatars",
   "Away": "Away",
