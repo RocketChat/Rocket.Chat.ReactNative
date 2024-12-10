@@ -120,7 +120,6 @@ function ProfileView({
 
 	const setHeader = () => {
 		const options: StackNavigationOptions = {
-
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
