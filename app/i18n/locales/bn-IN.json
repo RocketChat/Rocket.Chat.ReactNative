@@ -27,6 +27,7 @@
   "admin-video-conf-provider-not-configured-header": "কনফারেন্স কল সক্ষম হয়নি",
   "After_seconds_set_by_admin": "{{seconds}} সেকেন্ড পরে (প্রশাসক দ্বারা সেট করা)",
   "Agent": "এজেন্ট",
+  "AI_actions": "এআই ক্রিয়াকলাপ",
   "AirGapped_workspace_read_only_description": "অ্যাডমিনরা এটি ইন্টারনেটের সাথে সংযুক্ত করে বা একটি প্রিমিয়াম পরিকল্পনায় আপগ্রেড করে সম্পূর্ণ কার্যকারিতা পুনরুদ্ধার করতে পারেন।",
   "AirGapped_workspace_read_only_share_extension_title": "কর্মস্থান পড়ার মোডে থাকার কারণে শেয়ারিং অক্ষম।",
   "AirGapped_workspace_read_only_title": "কর্মস্থান পড়ার মোডে।",

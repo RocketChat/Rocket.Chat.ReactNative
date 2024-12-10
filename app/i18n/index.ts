@@ -18,6 +18,8 @@ interface ILanguage {
 	file: () => any;
 }
 
+type TAppTranslations = { id: string; languages: { [language: string]: { [key: string]: string } }; }[];
+
 export const LANGUAGES: ILanguage[] = [
 	{
 		label: 'English',
@@ -161,7 +163,7 @@ export const setLanguage = (l: string) => {
 		return;
 	}
 	i18n.locale = locale;
-	i18n.translations = { ...i18n.translations, [locale]: translations[locale]?.() };
+	i18n.translations = { ...i18n.translations, [locale]: { ...i18n.translations[locale], ...translations[locale]?.() } };
 	I18nManager.forceRTL(isRTL(locale));
 	I18nManager.swapLeftAndRightInRTL(isRTL(locale));
 	// TODO: Review this logic
@@ -186,5 +188,19 @@ type Ti18n = {
 	t(scope: TTranslatedKeys, options?: any): string;
 	isTranslated: (text?: string) => boolean;
 } & typeof i18n;
+
+export const setAppTranslations = (appTranslations: TAppTranslations) => {	
+	appTranslations.forEach(({ id: appId, languages }) => {
+		Object.entries(languages).forEach(([language, translations]) => {
+			i18n.translations = {
+				...i18n.translations,
+				[language]: {
+					...i18n.translations[language],
+					[`apps-${appId}`]: translations
+				}
+			}
+		})
+	})
+};
 
 export default i18n as Ti18n;

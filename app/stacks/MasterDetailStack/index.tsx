@@ -73,6 +73,7 @@ import {
 import { isIOS } from '../../lib/methods/helpers';
 import { TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
+import AIAppActionsView from '../../views/AIAppActionsView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<MasterDetailChatsStackParamList>();
@@ -156,6 +157,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
+				<ModalStack.Screen name='AIAppActionsView' component={AIAppActionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
