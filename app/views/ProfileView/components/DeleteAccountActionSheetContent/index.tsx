@@ -1,6 +1,6 @@
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { Keyboard, Text } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { deleteAccount } from '../../../../actions/login';
@@ -12,7 +12,7 @@ import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { getTranslations } from './getTranslations';
-import sharedStyles from '../../../Styles';
+import AlertText from './AlertText';
 
 export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const { hideActionSheet, showActionSheet } = useActionSheet();
@@ -68,16 +68,6 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 	);
 }
 
-const AlertText = ({ text = '', marginTop = 0, marginBottom = 24 }) => {
-	const { colors } = useTheme();
-	return (
-		<Text
-			style={{ fontSize: 16, ...sharedStyles.textRegular, marginTop, marginBottom, color: colors.fontDanger, lineHeight: 24 }}>
-			{text}
-		</Text>
-	);
-};
-
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
 	const { hideActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
@@ -101,8 +91,8 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			showInput={false}
 			customText={
 				<>
-					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} marginTop={24} />}
-					{!!removedRooms && <AlertText text={removedRooms} marginBottom={36} />}
+					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} style={{ marginTop: 24 }} />}
+					{!!removedRooms && <AlertText text={removedRooms} style={{ marginBottom: 36 }} />}
 				</>
 			}
 		/>
