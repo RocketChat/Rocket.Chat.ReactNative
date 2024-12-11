@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Keyboard, Text, View } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -24,20 +23,16 @@ import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
 import PasswordTips from './PasswordTips';
-import getParsedCustomFields from './methods/getParsedCustomFields';
 import getCustomFields from './methods/getCustomFields';
+import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
+import CustomFields from '../../containers/CustomFields';
+import useParsedCustomFields from '../../lib/hooks/useCustomFields';
 import styles from './styles';
 
-const passwordRules = /^(?!.*(.)\1{2})^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
 const validationSchema = yup.object().shape({
 	name: yup.string().min(1).required(),
 	email: yup.string().email().required(),
-	username: yup.string().min(1).required(),
-	password: yup.string().matches(passwordRules).required(),
-	confirmPassword: yup
-		.string()
-		.oneOf([yup.ref('password'), null])
-		.required()
+	username: yup.string().min(1).required()
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
@@ -71,9 +66,12 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		resolver: yupResolver(validationSchema)
 	});
 	const password = watch('password');
-	const parsedCustomFields = getParsedCustomFields(Accounts_CustomFields);
+	const confirmPassword = watch('confirmPassword');
+	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
+
+	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
 
 	const login = () => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
@@ -131,71 +129,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			}
 		} finally {
 			setSaving(false);
-		}
-	};
-
-	const renderCustomFields = () => {
-		if (!Accounts_CustomFields) {
-			return null;
-		}
-		try {
-			return (
-				<>
-					{Object.keys(parsedCustomFields).map((key, index, array) => {
-						if (parsedCustomFields[key].type === 'select') {
-							const options = parsedCustomFields[key].options.map((option: string) => ({ label: option, value: option }));
-							return (
-								<RNPickerSelect
-									key={key}
-									items={options}
-									onValueChange={value => {
-										const newValue: { [key: string]: string | number } = {};
-										newValue[key] = value;
-										setCustomFields({ customFields: { ...customFields, ...newValue } });
-									}}
-									value={customFields[key]}>
-									<FormTextInput
-										inputRef={e => {
-											// @ts-ignore
-											this[key] = e;
-										}}
-										placeholder={key}
-										value={customFields[key]}
-										testID='register-view-custom-picker'
-									/>
-								</RNPickerSelect>
-							);
-						}
-
-						return (
-							<FormTextInput
-								inputRef={e => {
-									// @ts-ignore
-									this[key] = e;
-								}}
-								key={key}
-								label={key}
-								placeholder={key}
-								value={customFields[key]}
-								onChangeText={(value: string) => {
-									const newValue: { [key: string]: string | number } = {};
-									newValue[key] = value;
-									setCustomFields({ customFields: { ...customFields, ...newValue } });
-								}}
-								onSubmitEditing={() => {
-									if (array.length - 1 > index) {
-										// @ts-ignore
-										return this[array[index + 1]].focus();
-									}
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						);
-					})}
-				</>
-			);
-		} catch (error) {
-			return null;
 		}
 	};
 
@@ -320,11 +253,16 @@ const RegisterView = ({ navigation, route }: IProps) => {
 							/>
 						)}
 					/>
-					{renderCustomFields()}
+					<CustomFields
+						Accounts_CustomFields={Accounts_CustomFields}
+						customFields={customFields}
+						onCustomFieldChange={value => setCustomFields(value)}
+					/>
 				</View>
-				<PasswordTips isDirty={isDirty} password={password} />
+				{passwordPolicies && <PasswordTips tips={passwordPolicies} isDirty={isDirty} password={password} />}
+
 				<Button
-					disabled={!isValid}
+					disabled={!isValid && !isPasswordValid}
 					testID='register-view-submit'
 					title={I18n.t('Register')}
 					type='primary'
