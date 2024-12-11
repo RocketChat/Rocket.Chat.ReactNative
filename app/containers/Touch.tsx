@@ -16,7 +16,6 @@ const Touch = React.forwardRef<RectButton, ITouchProps>(
 		const { colors } = useTheme();
 
 		return (
-			// container for accessibility
 			<RectButton
 				ref={ref}
 				onPress={onPress}
