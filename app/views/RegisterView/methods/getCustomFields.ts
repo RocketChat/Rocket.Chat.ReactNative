@@ -1,5 +1,5 @@
 const getCustomFields = (parsedCustomFields: any) => {
-	let customFields: any;
+	let customFields: any = {};
 	Object.keys(parsedCustomFields).forEach((key: string) => {
 		if (parsedCustomFields[key].defaultValue) {
 			customFields[key] = parsedCustomFields[key].defaultValue;

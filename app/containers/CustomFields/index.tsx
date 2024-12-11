@@ -34,15 +34,14 @@ const CustomFields = ({ Accounts_CustomFields, customFields, onCustomFieldChange
 								// @ts-ignore
 								this[key] = e;
 							}}
+							required={parsedCustomFields[key]?.required}
 							label={key}
-							placeholder={key}
 							value={customFields[key]}
 							testID='settings-view-language'
 						/>
 					</RNPickerSelect>
 				);
 			}
-
 			return (
 				<FormTextInput
 					inputRef={e => {
@@ -51,7 +50,6 @@ const CustomFields = ({ Accounts_CustomFields, customFields, onCustomFieldChange
 					}}
 					key={key}
 					label={key}
-					placeholder={key}
 					value={customFields[key]}
 					onChangeText={value => {
 						const newValue: { [key: string]: string } = {};
@@ -64,6 +62,8 @@ const CustomFields = ({ Accounts_CustomFields, customFields, onCustomFieldChange
 							return this[array[index + 1]].focus();
 						}
 					}}
+					required={parsedCustomFields[key]?.required}
+					maxLength={parsedCustomFields[key]?.maxLength ?? undefined}
 					containerStyle={{ marginBottom: 0, marginTop: 0 }}
 				/>
 			);

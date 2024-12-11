@@ -8,12 +8,12 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 
 const styles = StyleSheet.create({
-	passwordTipsTitle: {
+	passwordPoliciesTitle: {
 		...sharedStyles.textMedium,
 		fontSize: 14,
 		lineHeight: 20
 	},
-	tips: {
+	policies: {
 		gap: 8,
 		paddingTop: 8
 	}
@@ -22,10 +22,10 @@ const styles = StyleSheet.create({
 interface IPasswordTips {
 	isDirty: boolean;
 	password: string;
-	tips: IPasswordPolicy[];
+	policies: IPasswordPolicy[];
 }
 
-const PasswordTips = ({ isDirty, password, tips }: IPasswordTips) => {
+const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 	const { colors } = useTheme();
 
 	const selectTipIconType = (name: string, validation: RegExp) => {
@@ -48,11 +48,11 @@ const PasswordTips = ({ isDirty, password, tips }: IPasswordTips) => {
 			<Text
 				accessibilityLabel={i18n.t('Your_Password_Must_Have')}
 				accessible
-				style={[styles.passwordTipsTitle, { color: colors.fontDefault }]}>
+				style={[styles.passwordPoliciesTitle, { color: colors.fontDefault }]}>
 				{i18n.t('Your_Password_Must_Have')}
 			</Text>
-			<View style={styles.tips}>
-				{tips.map(item => (
+			<View style={styles.policies}>
+				{policies.map(item => (
 					<Tip iconType={selectTipIconType(item.name, item.regex)} description={item.label} />
 				))}
 			</View>
@@ -60,4 +60,4 @@ const PasswordTips = ({ isDirty, password, tips }: IPasswordTips) => {
 	);
 };
 
-export default PasswordTips;
+export default PasswordPolicies;

@@ -22,7 +22,7 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
-import PasswordTips from './PasswordTips';
+import PasswordPolicies from './PasswordPolicies';
 import getCustomFields from './methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';
@@ -80,12 +80,16 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const validateDefaultFormInfo = () => {
 		const isValid = validationSchema.isValidSync(getValues());
 		let requiredCheck = true;
+		let minLengthCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
 			if (parsedCustomFields[key].required) {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
+			if (parsedCustomFields[key].minLength) {
+				minLengthCheck = customFields[key].length < parsedCustomFields[key].minLength;
+			}
 		});
-		return isValid && requiredCheck;
+		return isValid && minLengthCheck && requiredCheck;
 	};
 
 	const onSubmit = async (data: any) => {
@@ -259,10 +263,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onCustomFieldChange={value => setCustomFields(value)}
 					/>
 				</View>
-				{passwordPolicies && <PasswordTips tips={passwordPolicies} isDirty={isDirty} password={password} />}
+				{passwordPolicies && <PasswordPolicies policies={passwordPolicies} isDirty={isDirty} password={password} />}
 
 				<Button
-					disabled={!isValid && !isPasswordValid}
+					disabled={!isValid || !isPasswordValid}
 					testID='register-view-submit'
 					title={I18n.t('Register')}
 					type='primary'
