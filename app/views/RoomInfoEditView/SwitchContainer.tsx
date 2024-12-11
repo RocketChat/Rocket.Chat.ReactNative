@@ -4,7 +4,6 @@ import { Text, TextStyle, View, ViewStyle } from 'react-native';
 import { useTheme } from '../../theme';
 import styles from './styles';
 import Switch from '../../containers/Switch';
-import i18n from '../../i18n';
 
 interface ISwitchContainer {
 	children?: ReactElement | null;
@@ -38,9 +37,7 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 					{leftLabelPrimary && (
 						<View
 							accessible
-							accessibilityLabel={`${disabled ? i18n.t('Disabled') : i18n.t('Enabled')}. ${leftLabelPrimary}. ${
-								leftLabelSecondary ?? ''
-							}. `}
+							accessibilityLabel={`${leftLabelPrimary}. ${leftLabelSecondary ?? ''}. `}
 							style={[styles.switchLabelContainer, labelContainerStyle]}>
 							<Text style={[styles.switchLabelPrimary, { color: colors.fontTitlesLabels }, leftLabelStyle]}>
 								{leftLabelPrimary}
@@ -53,6 +50,7 @@ const SwitchContainer: React.FC<ISwitchContainer> = React.memo(
 						</View>
 					)}
 					<Switch
+						accessibilityRole='switch'
 						accessible
 						style={styles.switch}
 						onValueChange={onValueChange}
