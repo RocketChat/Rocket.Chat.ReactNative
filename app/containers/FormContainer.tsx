@@ -49,7 +49,7 @@ const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IF
 				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
 				{...scrollPersistTaps}
 				{...props}>
-				<SafeAreaView accessible testID={testID} style={{ backgroundColor: themes[theme].surfaceRoom }}>
+				<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].surfaceRoom }}>
 					{children}
 					<>{showAppVersion && <AppVersion theme={theme} />}</>
 				</SafeAreaView>
