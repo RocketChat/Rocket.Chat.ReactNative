@@ -41,6 +41,7 @@ const ROOM_KEY_EXCHANGE_SIZE = 10;
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
+	publicKey: string | null;
 	readyPromise: Deferred;
 	userId: string | null;
 	roomInstances: {
@@ -55,6 +56,7 @@ class Encryption {
 			encryptFile: TEncryptFile;
 			encryptUpload: Function;
 			importRoomKey: Function;
+			resetRoomKey: Function;
 			hasSessionKey: () => boolean;
 			encryptGroupKeyForParticipantsWaitingForTheKeys: (params: any) => Promise<any>;
 		};
@@ -67,6 +69,7 @@ class Encryption {
 		this.userId = '';
 		this.ready = false;
 		this.privateKey = null;
+		this.publicKey = null;
 		this.roomInstances = {};
 		this.readyPromise = new Deferred();
 		this.readyPromise
@@ -112,6 +115,7 @@ class Encryption {
 	stop = () => {
 		this.userId = null;
 		this.privateKey = null;
+		this.publicKey = null;
 		this.roomInstances = {};
 		// Cancel ongoing encryption/decryption requests
 		this.readyPromise.reject();
@@ -155,7 +159,8 @@ class Encryption {
 	// Persist keys on UserPreferences
 	persistKeys = async (server: string, publicKey: string, privateKey: string) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
-		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
+		this.publicKey = EJSON.stringify(publicKey);
+		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
 		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 

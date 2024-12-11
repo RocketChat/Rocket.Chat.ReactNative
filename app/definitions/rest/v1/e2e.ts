@@ -32,4 +32,7 @@ export type E2eEndpoints = {
 	'e2e.fetchMyKeys': {
 		GET: () => { public_key: string; private_key: string };
 	};
+	'e2e.resetRoomKey': {
+		POST: (params: { rid: string; e2eKey: string; e2eKeyId: string }) => void;
+	};
 };
