@@ -21,7 +21,7 @@ import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -38,6 +38,8 @@ import getParsedCustomFields from './methods/getParsedCustomFields';
 import getCustomFields from './methods/getCustomFields';
 import CustomFields from './components/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
+import handleError from './methods/handleError';
+import logoutOtherLocations from './methods/logoutOtherLocations';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -121,41 +123,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		return isFormInfoValid && isDirty;
 	};
 
-	const handleError = (e: any, action: string) => {
-		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
-			return showErrorAlert(e.data.error);
-		}
-		if (I18n.isTranslated(e.error)) {
-			return showErrorAlert(I18n.t(e.error));
-		}
-		let msg = I18n.t('There_was_an_error_while_action', { action: I18n.t(action) });
-		let title = '';
-		if (typeof e.reason === 'string') {
-			title = msg;
-			msg = e.reason;
-		}
-		showErrorAlert(msg, title);
-	};
-
 	const handleEditAvatar = () => {
 		navigation.navigate('ChangeAvatarView', { context: 'profile' });
-	};
-
-	const logoutOtherLocations = () => {
-		logEvent(events.PL_OTHER_LOCATIONS);
-		showConfirmationAlert({
-			message: I18n.t('You_will_be_logged_out_from_other_locations'),
-			confirmationText: I18n.t('Logout'),
-			onPress: async () => {
-				try {
-					await Services.logoutOtherLocations();
-					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
-				} catch {
-					logEvent(events.PL_OTHER_LOCATIONS_F);
-					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
-				}
-			}
-		});
 	};
 
 	const deleteOwnAccount = () => {
@@ -289,7 +258,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							onSubmitEditing={() => {
 								setFocus('username');
 							}}
-							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							containerStyle={styles.inputContainer}
 							testID='profile-view-name'
 						/>
 						<ControlledFormTextInput
@@ -303,7 +272,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							onSubmitEditing={() => {
 								setFocus('email');
 							}}
-							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							containerStyle={styles.inputContainer}
 							testID='profile-view-username'
 						/>
 						<ControlledFormTextInput
@@ -317,7 +286,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							onSubmitEditing={() => {
 								setFocus('nickname');
 							}}
-							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							containerStyle={styles.inputContainer}
 							testID='profile-view-email'
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
@@ -330,7 +299,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 								}}
 								testID='profile-view-nickname'
 								maxLength={MAX_NICKNAME_LENGTH}
-								containerStyle={{ marginBottom: 0, marginTop: 0 }}
+								containerStyle={styles.inputContainer}
 							/>
 						) : null}
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
@@ -345,7 +314,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 									setFocus('newPassword');
 								}}
 								testID='profile-view-bio'
-								containerStyle={{ marginBottom: 0, marginTop: 0 }}
+								containerStyle={styles.inputContainer}
 							/>
 						) : null}
 						<ControlledFormTextInput
@@ -361,7 +330,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 								}
 							}}
 							secureTextEntry
-							containerStyle={{ marginBottom: 0, marginTop: 0 }}
+							containerStyle={styles.inputContainer}
 							testID='profile-view-new-password'
 						/>
 
