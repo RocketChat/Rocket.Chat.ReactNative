@@ -70,7 +70,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
-
 	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
 
 	const login = () => {

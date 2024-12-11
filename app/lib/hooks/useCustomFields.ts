@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
-import log from '../../lib/methods/helpers/log';
 
-const useParsedCustomFields = (Accounts_CustomFields: string) => {
+import log from '../methods/helpers/log';
+
+const useParsedCustomFields: any = (Accounts_CustomFields: string) => {
 	const parsedCustomFields = useMemo(() => {
-		let parsed: any = {};
+		let parsed = {};
 		if (Accounts_CustomFields) {
 			try {
 				parsed = JSON.parse(Accounts_CustomFields);

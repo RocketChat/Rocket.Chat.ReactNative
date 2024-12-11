@@ -11,10 +11,11 @@ interface ICustomFields {
 }
 
 const CustomFields = ({ Accounts_CustomFields, customFields, onCustomFieldChange }: ICustomFields) => {
+	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
+
 	if (!Accounts_CustomFields) {
 		return null;
 	}
-	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	try {
 		return Object.keys(parsedCustomFields).map((key: string, index: number, array: any) => {
 			if (parsedCustomFields[key].type === 'select') {
