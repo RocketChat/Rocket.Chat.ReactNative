@@ -14,6 +14,7 @@ import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import encryption from './encryption';
 import videoConf from './videoConf';
+import voip from './voip';
 import troubleshootingNotification from './troubleshootingNotification';
 
 const root = function* root() {
@@ -32,6 +33,7 @@ const root = function* root() {
 		inquiry(),
 		encryption(),
 		videoConf(),
+		voip(),
 		troubleshootingNotification()
 	]);
 };
