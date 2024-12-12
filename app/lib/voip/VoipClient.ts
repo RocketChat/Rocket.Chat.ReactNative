@@ -24,16 +24,19 @@ import type {
 	SignalingSocketEvents,
 	VoipSession,
 	IMediaStreamRenderer,
-	VoipEvents as CoreVoipEvents
+	VoipEvents as CoreVoipEvents,
+	VoipIncomingSession
 } from './definitions';
 import LocalStream from './LocalStream';
 import RemoteStream from './RemoteStream';
 import { VoIPUserConfiguration } from './definitions/VoIPUserConfiguration';
 
-export type VoipEvents = Omit<CoreVoipEvents, 'ringing' | 'callestablished' | 'incomingcall'> & {
+export type VoipEvents = Omit<CoreVoipEvents, 'hold' | 'ringing' | 'callestablished' | 'incomingcall'> & {
 	callestablished: ContactInfo;
-	incomingcall: ContactInfo;
+	incomingcall: VoipIncomingSession;
 	outgoingcall: ContactInfo;
+	mute: boolean;
+	hold: boolean;
 	dialer: { open: boolean };
 };
 
@@ -331,6 +334,7 @@ class VoipClient {
 						this.muted = mute;
 						this.toggleMediaStreamTracks('sender', !this.muted);
 						this.toggleMediaStreamTracks('receiver', !this.muted);
+						this.emit('mute', mute);
 						this.emit('stateChanged');
 					},
 					onReject: (): void => {
@@ -620,8 +624,13 @@ class VoipClient {
 			case 'INCOMING':
 			case 'ONGOING':
 			case 'OUTGOING':
+				if (!this.session) {
+					return null;
+				}
+
 				return {
 					type,
+					id: this.session.id,
 					contact: this.getContactInfo() as ContactInfo,
 					transferedBy: this.getReferredBy(),
 					isMuted: this.isMuted(),
@@ -829,7 +838,7 @@ class VoipClient {
 
 		this.initSession(invitation);
 
-		this.emit('incomingcall', this.getContactInfo() as ContactInfo);
+		this.emit('incomingcall', this.getSession() as VoipIncomingSession);
 		this.emit('stateChanged');
 	};
 

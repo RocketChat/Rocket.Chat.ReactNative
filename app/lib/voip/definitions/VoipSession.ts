@@ -6,6 +6,7 @@ export type ContactInfo = {
 
 export type VoipGenericSession = {
 	type: 'INCOMING' | 'OUTGOING' | 'ONGOING' | 'ERROR';
+	id?: string;
 	contact: ContactInfo | null;
 	transferedBy?: ContactInfo | null;
 	isMuted?: boolean;
@@ -20,6 +21,7 @@ export type VoipGenericSession = {
 
 export type VoipOngoingSession = VoipGenericSession & {
 	type: 'ONGOING';
+	id: string;
 	contact: ContactInfo;
 	isMuted: boolean;
 	isHeld: boolean;
@@ -31,6 +33,7 @@ export type VoipOngoingSession = VoipGenericSession & {
 
 export type VoipIncomingSession = VoipGenericSession & {
 	type: 'INCOMING';
+	id: string;
 	contact: ContactInfo;
 	transferedBy: ContactInfo | null;
 	end(): void;
@@ -39,6 +42,7 @@ export type VoipIncomingSession = VoipGenericSession & {
 
 export type VoipOutgoingSession = VoipGenericSession & {
 	type: 'OUTGOING';
+	id: string;
 	contact: ContactInfo;
 	end(): void;
 };
