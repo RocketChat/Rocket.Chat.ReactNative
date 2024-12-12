@@ -364,7 +364,7 @@ commands:
     steps:
       - run:
           command: |
-            echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
+            echo $E2E_ACCOUNT_NEW | base64 --decode > ./e2e_account.ts
           working_directory: e2e
 
 version: 2.1

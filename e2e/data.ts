@@ -14,7 +14,7 @@ export type TDataKeys = keyof TData;
 export type TDataChannels = keyof typeof data.channels;
 
 const data = {
-	server: 'https://mobile.rocket.chat',
+	server: 'https://mobile.qa.rocket.chat',
 	alternateServer: 'https://stable.rocket.chat',
 	...account,
 	channels: {
