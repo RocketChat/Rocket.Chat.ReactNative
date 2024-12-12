@@ -32,7 +32,6 @@ const _OutsideStack = () => {
 			<Outside.Screen name='SendEmailConfirmationView' component={SendEmailConfirmationView} />
 			{/* @ts-ignore */}
 			<Outside.Screen name='RegisterView' component={RegisterView} options={RegisterView.navigationOptions} />
-			{/* @ts-ignore */}
 			<Outside.Screen name='LegalView' component={LegalView} />
 		</Outside.Navigator>
 	);
