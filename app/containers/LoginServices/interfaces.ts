@@ -50,6 +50,7 @@ export interface IServiceList {
 	CAS_login_url: string;
 	Gitlab_URL: string;
 	server: string;
+	collapsed: boolean;
 }
 
 export interface IServicesSeparator {
