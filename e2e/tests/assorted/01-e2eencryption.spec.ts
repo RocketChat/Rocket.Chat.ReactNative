@@ -128,7 +128,7 @@ describe('E2E Encryption', () => {
 
 	describe('Create room as UserA and send a message', () => {
 		it('should create encrypted room', async () => {
-			await device.launchApp({ permissions: { notifications: 'YES' } });
+			await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 			await element(by.id('rooms-list-view-create-channel')).tap();
 			await waitFor(element(by.id('new-message-view')))
 				.toBeVisible()
@@ -219,7 +219,7 @@ describe('E2E Encryption', () => {
 		});
 
 		it('should reset room E2EE key', async () => {
-			await device.launchApp({ permissions: { notifications: 'YES' } });
+			await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 			await navigateToRoom(room);
 			await waitFor(element(by.id('room-view-header-encryption')))
 				.toBeVisible()
