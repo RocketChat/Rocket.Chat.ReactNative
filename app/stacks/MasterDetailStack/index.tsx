@@ -45,6 +45,7 @@ import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
+import LegalView from '../../views/LegalView';
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
 import MediaAutoDownloadView from '../../views/MediaAutoDownloadView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
@@ -166,6 +167,8 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='SettingsView' component={SettingsView} />
+				{/* @ts-ignore */}
+				<ModalStack.Screen name='LegalView' component={LegalView} />
 				<ModalStack.Screen name='LanguageView' component={LanguageView} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />
 				<ModalStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
