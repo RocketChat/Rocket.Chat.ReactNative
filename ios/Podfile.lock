@@ -1235,6 +1235,8 @@ PODS:
     - React
   - RNBootSplash (4.6.0):
     - React-Core
+  - RNCallKeep (4.3.16):
+    - React
   - RNCAsyncStorage (1.22.3):
     - React-Core
   - RNCClipboard (1.13.2):
@@ -1402,6 +1404,7 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
+  - RNCallKeep (from `../node_modules/react-native-callkeep`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
@@ -1610,6 +1613,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-ui-lib"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
+  RNCallKeep:
+    :path: "../node_modules/react-native-callkeep"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
@@ -1759,6 +1764,7 @@ SPEC CHECKSUMS:
   ReactCommon: 2aa35648354bd4c4665b9a5084a7d37097b89c10
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
   RNBootSplash: 91e0c16bfc96703cb5b0562785b9a8cbfeb298fe
+  RNCallKeep: 94bbe46b807ccf58e9f6ec11bc4d6087323a1954
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
   RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906

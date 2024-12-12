@@ -77,6 +77,10 @@
 	<string>Give $(PRODUCT_NAME) permission to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Upload photos to share with other users or to change your avatar</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>We need Bluetooth permission to connect to audio devices.</string>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>We need access to the local network for call signaling.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>custom.ttf</string>
@@ -108,5 +112,27 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+			<key>NSExceptionDomains</key>
+			<dict>
+					<key>tc-freeswitch.dev.rocket.chat</key>
+					<dict>
+							<!--Include to allow subdomains-->
+							<key>NSIncludesSubdomains</key>
+							<true/>
+							<!--Include to allow HTTP requests-->
+							<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+							<true/>
+							<!--Include to specify minimum TLS version-->
+							<key>NSTemporaryExceptionMinimumTLSVersion</key>
+							<string>TLSv1.1</string>
+							<key>NSExceptionRequiresForwardSecrecy</key>
+            	<false/>
+							<key>NSAllowsArbitraryLoadsInWebContent</key>
+            	<true/>
+					</dict>
+			</dict>
+	</dict>
 </dict>
 </plist>

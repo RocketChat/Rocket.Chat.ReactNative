@@ -1,15 +1,87 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import { call } from 'typed-redux-saga';
 import { eventChannel } from 'redux-saga';
+import RNCallKeep from 'react-native-callkeep';
+import { PermissionsAndroid } from 'react-native';
+import { uniqueId } from 'lodash';
 
 import { VOIP } from '../actions/actionsTypes';
 import VoipClient from '../lib/voip/VoipClient';
 import { appSelector } from '../lib/hooks';
 import { parseStringToIceServers } from '../containers/Voip/utils/parseStringToIceServers';
 import { Services } from '../lib/services';
-import { clientError, updateSession } from '../actions/voip';
+import {
+	clientError,
+	TEndCallAction,
+	// THoldCallAction,
+	// TIncomingCallAction,
+	// TMuteCallAction,
+	TRegisterAction,
+	// TSendDTMFAction,
+	TStartCallAction,
+	TUnregisterAction,
+	updateSession
+} from '../actions/voip';
 
-export let voipClient: VoipClient;
+// let voipClient: VoipClient;
+
+function* attachCallKeepListeners(voipClient: VoipClient) {
+	return eventChannel(() => {
+		// RNCallKeep.addEventListener('didDisplayIncomingCall', onIncomingCallDisplayed);
+		RNCallKeep.addEventListener('answerCall', () => voipClient.answer());
+		RNCallKeep.addEventListener('endCall', () => voipClient.endCall());
+		RNCallKeep.addEventListener('didPerformSetMutedCallAction', ({ muted }) => voipClient.setMute(muted));
+		RNCallKeep.addEventListener('didPerformDTMFAction', ({ digits }) => voipClient.sendDTMF(digits));
+		RNCallKeep.addEventListener('didReceiveStartCallAction', ({ handle }: { handle: string }) => {
+			if (voipClient.isInCall()) {
+				return;
+			}
+
+			voipClient.call(handle);
+		});
+
+		return () => {
+			RNCallKeep.removeEventListener('didReceiveStartCallAction');
+			RNCallKeep.removeEventListener('answerCall');
+			RNCallKeep.removeEventListener('endCall');
+			RNCallKeep.removeEventListener('didPerformSetMutedCallAction');
+			RNCallKeep.removeEventListener('didPerformDTMFAction');
+		};
+	});
+}
+
+function* attachClientListeners(voipClient: VoipClient) {
+	return eventChannel(emit => {
+		voipClient.on('stateChanged', () => {
+			emit(updateSession(voipClient.getSession()));
+		});
+
+		voipClient.on('incomingcall', session => {
+			RNCallKeep.displayIncomingCall(session.id, session.contact.name || 'Unknown', session.contact.name, 'number', true);
+		});
+
+		voipClient.on('registered', () => {
+			RNCallKeep.setAvailable(true);
+		});
+
+		voipClient.on('unregistered', () => {
+			RNCallKeep.setAvailable(false);
+		});
+
+		voipClient.on('mute', muted => {
+			RNCallKeep.setMutedCall('uniqueid', muted);
+		});
+
+		voipClient.on('hold', held => {
+			RNCallKeep.setOnHold('uniqueid', held);
+		});
+
+		return () => {
+			voipClient.off('stateChanged');
+			voipClient.off('incomingcall');
+		};
+	});
+}
 
 function* getWebRtcServers() {
 	const servers = yield* appSelector(state => state.settings.WebRTC_Servers);
@@ -54,31 +126,97 @@ function* getConfig() {
 	return config;
 }
 
-function* attachListeners(voipClient: VoipClient) {
-	return eventChannel(emit => {
-		voipClient.on('stateChanged', () => {
-			emit(updateSession(voipClient.getSession()));
-		});
-
-		return () => {
-			voipClient.off('stateChanged');
+function* initCallKeep() {
+	try {
+		const options = {
+			ios: {
+				appName: 'Rocket.Chat',
+				includesCallsInRecents: false
+			},
+			android: {
+				alertTitle: 'Permissions required',
+				alertDescription: 'This application needs to access your phone accounts',
+				cancelButton: 'Cancel',
+				okButton: 'Ok',
+				imageName: 'phone_account_icon',
+				additionalPermissions: [
+					PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
+					PermissionsAndroid.PERMISSIONS.CALL_PHONE,
+					PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+				],
+				// Required to get audio in background when using Android 11
+				foregroundService: {
+					channelId: 'chat.rocket',
+					channelName: 'Foreground service for my app',
+					notificationTitle: 'My app is running on background',
+					notificationIcon: 'Path to the resource icon of the notification'
+				}
+			}
 		};
+
+		RNCallKeep.setup(options);
+	} catch (e) {
+		if (!(e instanceof Error)) return;
+
+		yield put(clientError(e.message));
+	}
+}
+
+function* initVoipClient() {
+	const config = yield* getConfig();
+
+	const voipClient = new VoipClient(config);
+
+	yield call({ context: voipClient, fn: voipClient.init });
+
+	return voipClient;
+}
+
+function* takeVoipActions(voipClient: VoipClient) {
+	yield takeEvery<TStartCallAction>(VOIP.START_CALL, ({ payload: number }) => {
+		voipClient.call(number);
+		RNCallKeep.startCall(uniqueId(), number, number, 'number', false);
 	});
+
+	yield takeEvery<TEndCallAction>(VOIP.END_CALL, () => {
+		if (!voipClient.isInCall()) {
+			return;
+		}
+
+		voipClient.endCall();
+		RNCallKeep.endCall(voipClient.getCallId());
+	});
+
+	yield takeEvery<TRegisterAction>(VOIP.REGISTER, () => {
+		voipClient.register();
+	});
+
+	yield takeEvery<TUnregisterAction>(VOIP.UNREGISTER, () => {
+		voipClient.unregister();
+	});
+
+	// yield takeEvery<TTransferCallAction>(VOIP.TRANSFER_CALL, handleTransferCall);
+
+	// yield takeEvery<TChangeAudioOutputDevice>(VOIP.CHANGE_AUDIO_INPUT_DEVICE, handleOutputDevice);
+	// yield takeEvery<TChangeAudioInputDevice>(VOIP.CHANGE_AUDIO_OUTPUT_DEVICE, handleAudioInputDevice);
+
+	// yield takeEvery<TMuteCallAction>(VOIP.MUTE_CALL, ({ payload }) => voipClient.setMute(payload));
+	// yield takeEvery<THoldCallAction>(VOIP.HOLD_CALL, ({ payload }) => voipClient.setHold(payload));
+	// yield takeEvery<TSendDTMFAction>(VOIP.SEND_DTMF, ({ payload }) => voipClient.sendDTMF(payload));
 }
 
 function* handleVoipInit() {
 	try {
-		const config = yield* getConfig();
+		// const voipClient = yield* initVoipClient();
+		// yield takeVoipActions(voipClient);
+		// yield attachListeners(voipClient);
 
-		const voipClient = new VoipClient(config);
-
-		yield call({ context: voipClient, fn: voipClient.init });
-
-		yield attachListeners(voipClient);
+		yield initCallKeep();
+		// yield attachCallKeepListeners(voipClient);
 	} catch (e) {
 		if (!(e instanceof Error)) return;
 
-		yield put(clientError(e.stack));
+		yield put(clientError(e.message));
 	}
 }
 
