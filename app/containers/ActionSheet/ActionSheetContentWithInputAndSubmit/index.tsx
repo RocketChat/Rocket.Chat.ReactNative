@@ -55,6 +55,7 @@ const FooterButtons = ({
 					{ flex: 1, backgroundColor: cancelBackgroundColor || colors.buttonBackgroundSecondaryDefault }
 				]}
 				title={cancelTitle}
+				color={colors.buttonFontSecondary}
 				onPress={cancelAction}
 				testID={`${testID}-cancel`}
 			/>
