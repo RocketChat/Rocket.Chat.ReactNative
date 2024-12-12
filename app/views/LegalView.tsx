@@ -7,14 +7,10 @@ import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import { OutsideParamList, SettingsStackParamList } from '../stacks/types';
-import { IBaseScreen, IApplicationState } from '../definitions';
+import { SettingsStackParamList } from '../stacks/types';
+import { IApplicationState } from '../definitions';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-interface ILegalViewProps extends IBaseScreen<OutsideParamList, 'LegalView'> {
-	server: string;
-}
 
 const LegalView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LegalView'>>();
