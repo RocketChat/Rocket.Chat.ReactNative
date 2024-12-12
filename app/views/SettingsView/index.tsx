@@ -288,6 +288,13 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						title='Legal'
+						onPress={() => navigateToScreen('LegalView')}
+						testID='settings-view-legal'
+						left={() => <List.Icon name='book' />}
+					/>
+					<List.Separator />
+					<List.Item
 						title={I18n.t('Version_no', { version: getReadableVersion })}
 						onPress={copyAppVersion}
 						testID='settings-view-version'
