@@ -609,7 +609,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 
 							<SwitchContainer
 								value={ro}
-								leftLabelPrimary={I18n.t('Collaborative')}
+								leftLabelPrimary={I18n.t('Read_Only')}
 								leftLabelSecondary={
 									room.teamMain
 										? I18n.t('All_users_in_the_team_can_write_new_messages')
