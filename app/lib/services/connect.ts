@@ -363,6 +363,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWeb
 					);
 				} catch {
 					// twoFactor was canceled
+					store.dispatch({ type: 'LOGIN_CANCEL' });
 					return reject();
 				}
 			} else {
