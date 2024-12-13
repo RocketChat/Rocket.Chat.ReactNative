@@ -248,7 +248,11 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					testID='profile-view-list'
 					{...scrollPersistTaps}>
 					<View style={styles.avatarContainer} testID='profile-view-avatar'>
-						<AvatarWithEdit text={user.username} handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined} />
+						<AvatarWithEdit
+							editAccessibilityLabel={I18n.t('Edit_Avatar')}
+							text={user.username}
+							handleEdit={Accounts_AllowUserAvatarChange ? handleEditAvatar : undefined}
+						/>
 					</View>
 					<View style={styles.inputs}>
 						<ControlledFormTextInput
