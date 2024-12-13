@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { TUsersRoles } from '../reducers/usersRoles';
+import { TUsersRoles } from '@reducers/usersRoles';
 import { USERS_ROLES } from './actionsTypes';
 
 export type TActionUsersRoles = Action & { usersRoles: TUsersRoles };

@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
 import { SET_CUSTOM_EMOJIS } from './actionsTypes';
-import { ICustomEmojis } from '../definitions';
+import { ICustomEmojis } from '@/definitions';
 
 export interface ISetCustomEmojis extends Action {
 	emojis: ICustomEmojis;

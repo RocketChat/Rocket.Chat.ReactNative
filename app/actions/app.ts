@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 import { NetInfoStateType } from '@react-native-community/netinfo';
 
-import { RootEnum } from '../definitions';
+import { RootEnum } from '@/definitions';
 import { APP } from './actionsTypes';
 
 interface IAppStart extends Action {
