@@ -1,7 +1,8 @@
 const REQUEST = 'REQUEST';
 const SUCCESS = 'SUCCESS';
 const FAILURE = 'FAILURE';
-const defaultTypes = [REQUEST, SUCCESS, FAILURE];
+const CANCEL = 'CANCEL';
+const defaultTypes = [REQUEST, SUCCESS, FAILURE, CANCEL];
 function createRequestTypes(base = {}, types = defaultTypes): Record<string, string> {
 	const res: Record<string, string> = {};
 	types.forEach(type => (res[type] = `${base}_${type}`));
