@@ -226,10 +226,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.Drawer navigation={navigation} />;
+			options.headerLeft = () => <HeaderButton.Drawer accessibilityLabel={I18n.t('Menu')} navigation={navigation} />;
 		}
 		options.headerRight = () => (
-			<HeaderButton.Preferences onPress={() => navigation?.navigate('UserPreferencesView')} testID='preferences-view-open' />
+			<HeaderButton.Preferences
+				accessibilityLabel={I18n.t('Preferences')}
+				onPress={() => navigation?.navigate('UserPreferencesView')}
+				testID='preferences-view-open'
+			/>
 		);
 
 		navigation.setOptions(options);
