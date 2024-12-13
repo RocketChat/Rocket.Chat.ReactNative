@@ -32,18 +32,18 @@ const Tip = ({ iconType, description }: ITipProps) => {
 	if (iconType === 'success') {
 		icon = 'success-circle';
 		color = colors.statusFontSuccess;
-		accessibilityLabel = I18n.t('Password_Tip_Success');
+		accessibilityLabel = `${I18n.t('Password_Tip_Success')}, `;
 	}
 	if (iconType === 'error') {
 		icon = 'error-circle';
 		color = colors.statusFontDanger;
-		accessibilityLabel = I18n.t('Password_Tip_Error');
+		accessibilityLabel = `${I18n.t('Password_Tip_Error')}, `;
 	}
 
 	return (
 		<View style={styles.container}>
-			<CustomIcon accessible accessibilityLabel={`${accessibilityLabel}.`} color={color} name={icon} size={16} />
-			<Text style={{ ...styles.text, color }} accessible accessibilityLabel={description}>
+			<CustomIcon color={color} name={icon} size={16} />
+			<Text style={{ ...styles.text, color }} accessible accessibilityLabel={`${accessibilityLabel}${description}`}>
 				{description}
 			</Text>
 		</View>
