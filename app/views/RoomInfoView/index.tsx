@@ -51,7 +51,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const isDirect = roomType === SubscriptionType.DIRECT;
 	const isLivechat = roomType === SubscriptionType.OMNICHANNEL;
 
-	// Prevents setHeader with canEdit set to false from running twice and overwriting a potential setHeader call with canEdit set to true.
+	//prevents overwriting the setHeader after loadRoom .
 	const initialHeaderTitleLoaded = useRef<boolean>(false);
 	const subscription = useRef<Subscription | undefined>(undefined);
 
