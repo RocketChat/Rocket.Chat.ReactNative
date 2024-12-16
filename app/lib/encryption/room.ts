@@ -203,7 +203,7 @@ export default class EncryptionRoom {
 	};
 
 	createRoomKey = async () => {
-		this.createNewRoomKey();
+		await this.createNewRoomKey();
 		await Services.e2eSetRoomKeyID(this.roomId, this.keyID);
 		await this.encryptKeyForOtherParticipants();
 	};

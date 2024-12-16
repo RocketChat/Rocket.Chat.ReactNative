@@ -78,7 +78,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 	}
 
 	async componentDidMount() {
-		const { tmid, rid } = this.props;
+		const { tmid, rid, hasE2EEWarning } = this.props;
 		const db = database.active;
 		if (tmid) {
 			try {
@@ -97,7 +97,9 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				console.log("Can't find subscription to observe.");
 			}
 		}
-		this.setCanToggleEncryption();
+		if (hasE2EEWarning) {
+			this.setCanToggleEncryption();
+		}
 	}
 
 	shouldComponentUpdate(nextProps: IRightButtonsProps, nextState: IRigthButtonsState) {
@@ -160,7 +162,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	componentDidUpdate(prevProps: Readonly<IRightButtonsProps>): void {
 		const { toggleRoomE2EEncryptionPermission } = this.props;
-		if (prevProps.toggleRoomE2EEncryptionPermission !== toggleRoomE2EEncryptionPermission) {
+		if (!dequal(prevProps.toggleRoomE2EEncryptionPermission, toggleRoomE2EEncryptionPermission)) {
 			this.setCanToggleEncryption();
 		}
 	}
@@ -190,6 +192,11 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		const subObservable = subRecord.observe();
 		this.subSubscription = subObservable.subscribe(sub => {
 			this.updateSubscription(sub);
+
+			const { hasE2EEWarning } = this.props;
+			if (hasE2EEWarning) {
+				this.setCanToggleEncryption();
+			}
 		});
 	};
 
@@ -459,7 +466,12 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return (
 			<HeaderButton.Container onLayout={this.onLayout}>
 				{hasE2EEWarning ? (
-					<HeaderButton.Item iconName='encrypted' onPress={this.goE2EEToggleRoomView} disabled={!canToggleEncryption} />
+					<HeaderButton.Item
+						iconName='encrypted'
+						onPress={this.goE2EEToggleRoomView}
+						disabled={!canToggleEncryption}
+						testID='room-view-header-encryption'
+					/>
 				) : null}
 				{issuesWithNotifications || notificationsDisabled ? (
 					<HeaderButton.Item

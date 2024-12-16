@@ -45,7 +45,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 	const roomName = getRoomTitle(room);
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView testID='e2ee-toggle-room-view'>
 			<StatusBar />
 			<List.Container>
 				<List.Section>
@@ -62,7 +62,12 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 				{isMissingRoomKey ? (
 					<List.Section>
 						<List.Separator />
-						<List.Item title='Reset_encryption_keys' color={colors.fontDanger} onPress={() => resetRoomKey(rid)} />
+						<List.Item
+							title='Reset_encryption_keys'
+							color={colors.fontDanger}
+							onPress={() => resetRoomKey(rid)}
+							testID='e2ee-toggle-room-reset-key'
+						/>
 						<List.Separator />
 						<List.Info
 							info={I18n.t('Reset_encryption_keys_info__room_type__', { room_type: roomType.toLowerCase() })}
