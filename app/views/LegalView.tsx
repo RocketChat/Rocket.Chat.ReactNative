@@ -12,7 +12,6 @@ import * as List from '../containers/List';
 import { SettingsStackParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
 
-
 const LegalView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LegalView'>>();
 	const server = useSelector((state: IApplicationState) => state.server.server);
