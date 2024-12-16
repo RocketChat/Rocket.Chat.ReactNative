@@ -137,10 +137,10 @@ async function searchRoom(
 		.toExist()
 		.withTimeout(30000);
 
-	await waitFor(element(by.id(testID)))
-		.toBeVisible()
-		.withTimeout(2000);
 	try {
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(2000);
 		await expect(element(by.id(testID))).toBeVisible();
 	} catch {
 		await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
