@@ -22,8 +22,8 @@ import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailSt
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isIOS, isTablet } from '../../../lib/methods/helpers';
 
 type TNavigation = CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'QueueListView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList>
+NativeStackNavigationProp<ChatsStackParamList, 'QueueListView'>,
+NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;

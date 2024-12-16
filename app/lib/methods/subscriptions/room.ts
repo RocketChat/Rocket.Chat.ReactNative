@@ -80,7 +80,7 @@ export default class RoomSubscription {
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
 			try {
-				const subscriptions = (await this.promises) || [];
+				const subscriptions = await this.promises || [];
 				subscriptions.forEach(sub => sub.unsubscribe().catch(() => console.log('unsubscribeRoom')));
 			} catch (e) {
 				// do nothing

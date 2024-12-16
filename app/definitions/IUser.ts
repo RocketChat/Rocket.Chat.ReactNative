@@ -48,10 +48,10 @@ export type Username = string;
 
 export type ILoginUsername =
 	| {
-			username: string;
+		username: string;
 	  }
 	| {
-			email: string;
+		email: string;
 	  };
 export type LoginUsername = string | ILoginUsername;
 
@@ -157,15 +157,15 @@ export type IUserDataEvent = {
 	id: unknown;
 } & (
 	| ({
-			type: 'inserted';
+		type: 'inserted';
 	  } & IUser)
 	| {
-			type: 'removed';
+		type: 'removed';
 	  }
 	| {
-			type: 'updated';
-			diff: Partial<IUser>;
-			unset: Record<keyof IUser, boolean | 0 | 1>;
+		type: 'updated';
+		diff: Partial<IUser>;
+		unset: Record<keyof IUser, boolean | 0 | 1>;
 	  }
 );
 

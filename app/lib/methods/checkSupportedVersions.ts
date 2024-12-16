@@ -36,11 +36,11 @@ export const checkSupportedVersions = function ({
 	supportedVersions?: ISupportedVersionsData;
 	serverVersion: string;
 }): {
-	status: TSVStatus;
-	message?: TSVMessage;
-	i18n?: TSVDictionary;
-	expiration?: string;
-} {
+		status: TSVStatus;
+		message?: TSVMessage;
+		i18n?: TSVDictionary;
+		expiration?: string;
+	} {
 	const serverVersionTilde = `~${serverVersion.split('.').slice(0, 2).join('.')}`;
 	let sv: ISupportedVersionsData;
 	if (!supportedVersions || supportedVersions.timestamp < builtInSupportedVersions.timestamp) {

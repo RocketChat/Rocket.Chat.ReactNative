@@ -81,8 +81,8 @@ interface IRoomActionsViewProps extends IActionSheetProvider, IBaseScreen<StackT
 	livechatAllowManualOnHold?: boolean;
 	livechatRequestComment?: boolean;
 	navigation: CompositeNavigationProp<
-		NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	videoConf_Enable_DMs: boolean;
 	videoConf_Enable_Channels: boolean;
@@ -204,7 +204,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 				}
 			}
 
-			if (room && room.t !== 'd' && (await this.canViewMembers())) {
+			if (room && room.t !== 'd' && await this.canViewMembers()) {
 				try {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {

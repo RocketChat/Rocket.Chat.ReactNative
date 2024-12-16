@@ -223,7 +223,7 @@ const MessageActions = React.memo(
 						const subRecord = await subCollection.find(rid);
 						await db.write(async () => {
 							try {
-								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
+								await subRecord.update(sub => sub.lastOpen = ts as Date); // TODO: reevaluate IMessage
 							} catch {
 								// do nothing
 							}

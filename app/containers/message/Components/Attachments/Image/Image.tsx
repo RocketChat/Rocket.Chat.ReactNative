@@ -33,8 +33,8 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 	const containerStyle: ViewStyle = {
 		alignItems: 'center',
 		justifyContent: 'center',
-		...(imageDimensions.width <= 64 && { width: 64 }),
-		...(imageDimensions.height <= 64 && { height: 64 })
+		...imageDimensions.width <= 64 && { width: 64 },
+		...imageDimensions.height <= 64 && { height: 64 }
 	};
 
 	const borderStyle: ViewStyle = {

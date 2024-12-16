@@ -22,23 +22,23 @@ export type ISetting = ISettingBase | ISettingEnterprise | ISettingColor | ISett
 export interface ISettingBase {
 	_id: SettingId;
 	type:
-		| 'boolean'
-		| 'timezone'
-		| 'string'
-		| 'relativeUrl'
-		| 'password'
-		| 'int'
-		| 'select'
-		| 'multiSelect'
-		| 'language'
-		| 'color'
-		| 'font'
-		| 'code'
-		| 'action'
-		| 'asset'
-		| 'roomPick'
-		| 'group'
-		| 'date';
+	| 'boolean'
+	| 'timezone'
+	| 'string'
+	| 'relativeUrl'
+	| 'password'
+	| 'int'
+	| 'select'
+	| 'multiSelect'
+	| 'language'
+	| 'color'
+	| 'font'
+	| 'code'
+	| 'action'
+	| 'asset'
+	| 'roomPick'
+	| 'group'
+	| 'date';
 	public: boolean;
 	env: boolean;
 	group?: GroupId;

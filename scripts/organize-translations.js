@@ -6,11 +6,11 @@ const translationsPath = './app/i18n/locales';
 // Read the files in the folder
 fs.readdir(translationsPath, (err, files) => {
     if (err) {
-        console.error("Error listing folder files:", err);
+        console.error('Error listing folder files:', err);
         return;
     }
 
-    files.forEach(file => {
+    files.forEach((file) => {
         // Check if the file is a .json
         if (path.extname(file) === '.json') {
             const filePath = path.join(translationsPath, file);

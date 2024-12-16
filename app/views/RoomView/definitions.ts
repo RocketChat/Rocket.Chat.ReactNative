@@ -34,18 +34,18 @@ export interface IRoomViewState {
 	[key: string]: any;
 	joined: boolean;
 	room:
-		| TSubscriptionModel
-		| {
-				rid: string;
-				t: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				joinCodeRequired?: boolean;
-				status?: string;
-				lastMessage?: ILastMessage;
-				sysMes?: boolean;
-				onHold?: boolean;
+	| TSubscriptionModel
+	| {
+		rid: string;
+		t: string;
+		name?: string;
+		fname?: string;
+		prid?: string;
+		joinCodeRequired?: boolean;
+		status?: string;
+		lastMessage?: ILastMessage;
+		sysMes?: boolean;
+		onHold?: boolean;
 		  };
 	roomUpdate: {
 		[K in TRoomUpdate]?: any;

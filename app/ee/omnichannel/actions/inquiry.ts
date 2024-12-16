@@ -24,10 +24,10 @@ interface IInquiryFailure extends Action {
 }
 
 export type TActionInquiry = IInquirySetEnabled &
-	IInquiryQueueAddAndUpdate &
-	IInquirySuccess &
-	IInquiryQueueRemove &
-	IInquiryFailure;
+IInquiryQueueAddAndUpdate &
+IInquirySuccess &
+IInquiryQueueRemove &
+IInquiryFailure;
 
 export function inquirySetEnabled(enabled: boolean): IInquirySetEnabled {
 	return {

@@ -20,8 +20,8 @@ import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
 import Switch from '../../containers/Switch';
 
 type TNavigation = CompositeNavigationProp<
-	NativeStackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList>
+NativeStackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
+NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 const UserNotificationPreferencesView = () => {

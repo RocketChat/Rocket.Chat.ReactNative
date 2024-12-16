@@ -138,7 +138,7 @@ export const search = async ({ text = '', filterUsers = true, filterRooms = true
 		if (searchText && localSearchData.length < 7) {
 			const { users, rooms } = (await Promise.race([
 				spotlight(searchText, usernames, { users: filterUsers, rooms: filterRooms }, rid),
-				new Promise((resolve, reject) => (debounce = reject))
+				new Promise((resolve, reject) => debounce = reject)
 			])) as { users: ISearch[]; rooms: ISearch[] };
 
 			if (filterUsers) {

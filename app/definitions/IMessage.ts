@@ -156,9 +156,9 @@ export interface IMessage extends IMessageFromServer {
 }
 
 export type TMessageModel = IMessage &
-	Model & {
-		asPlain: () => IMessage;
-	};
+Model & {
+	asPlain: () => IMessage;
+};
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;

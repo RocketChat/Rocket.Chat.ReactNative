@@ -54,6 +54,6 @@ export function usePermissions(permissions: TSupportedPermissions[], rid?: strin
 	const permissionsRedux = useAppSelector(state => getPermissionsSelector(state, permissions), shallowEqual);
 	const subscriptionRoles = useSubscriptionRoles(rid);
 
-	const mergedRoles = [...new Set([...(subscriptionRoles || []), ...userRoles])];
+	const mergedRoles = [...new Set([...subscriptionRoles || [], ...userRoles])];
 	return permissionsRedux.map(permission => (permission ?? []).some(r => mergedRoles.includes(r)));
 }

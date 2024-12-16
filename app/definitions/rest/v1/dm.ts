@@ -6,10 +6,10 @@ export type DmEndpoints = {
 		POST: (
 			params: (
 				| {
-						username: Exclude<IUser['username'], undefined>;
+					username: Exclude<IUser['username'], undefined>;
 				  }
 				| {
-						usernames: string;
+					usernames: string;
 				  }
 			) & {
 				excludeSelf?: boolean;

@@ -19,7 +19,7 @@ import BlurComponent from '../OverlayComponent';
 import { TDownloadState } from '../../../../lib/methods/handleMediaDownload';
 import messageStyles from '../../styles';
 
-const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...(isIOS ? [] : ['video/3gp', 'video/mkv'])];
+const SUPPORTED_TYPES = ['video/quicktime', 'video/mp4', ...isIOS ? [] : ['video/3gp', 'video/mkv']];
 const isTypeSupported = (type: string) => SUPPORTED_TYPES.indexOf(type) !== -1;
 
 const styles = StyleSheet.create({

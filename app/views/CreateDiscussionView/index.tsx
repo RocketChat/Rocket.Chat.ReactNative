@@ -79,9 +79,9 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 			title: I18n.t('Create_Discussion'),
 			headerRight: this.valid()
 				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
-						</HeaderButton.Container>
+					<HeaderButton.Container>
+						<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
+					</HeaderButton.Container>
 				  )
 				: () => null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined

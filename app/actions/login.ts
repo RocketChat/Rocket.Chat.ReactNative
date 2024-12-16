@@ -46,13 +46,13 @@ interface ISetLocalAuthenticated extends Action {
 }
 
 export type TActionsLogin = ILoginRequest &
-	ILoginSuccess &
-	ILoginFailure &
-	ILogout &
-	ISetUser &
-	ISetServices &
-	ISetPreference &
-	ISetLocalAuthenticated;
+ILoginSuccess &
+ILoginFailure &
+ILogout &
+ISetUser &
+ISetServices &
+ISetPreference &
+ISetLocalAuthenticated;
 
 export function loginRequest(
 	credentials: Partial<ICredentials>,

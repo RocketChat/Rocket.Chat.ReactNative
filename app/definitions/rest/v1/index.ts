@@ -23,25 +23,25 @@ import { AutoTranslateEndpoints } from './autotranslate';
 import { ModerationEndpoints } from './moderation';
 
 export type Endpoints = ChannelsEndpoints &
-	ChatEndpoints &
-	CustomUserStatusEndpoints &
-	DmEndpoints &
-	EmojiCustomEndpoints &
-	GroupsEndpoints &
-	ImEndpoints &
-	InvitesEndpoints &
-	OmnichannelEndpoints &
-	PermissionsEndpoints &
-	RolesEndpoints &
-	RoomsEndpoints &
-	OauthCustomConfiguration &
-	UsersEndpoints &
-	TeamsEndpoints &
-	E2eEndpoints &
-	SubscriptionsEndpoints &
-	VideoConferenceEndpoints &
-	CommandsEndpoints &
-	PushEndpoints &
-	DirectoryEndpoint &
-	AutoTranslateEndpoints &
-	ModerationEndpoints;
+ChatEndpoints &
+CustomUserStatusEndpoints &
+DmEndpoints &
+EmojiCustomEndpoints &
+GroupsEndpoints &
+ImEndpoints &
+InvitesEndpoints &
+OmnichannelEndpoints &
+PermissionsEndpoints &
+RolesEndpoints &
+RoomsEndpoints &
+OauthCustomConfiguration &
+UsersEndpoints &
+TeamsEndpoints &
+E2eEndpoints &
+SubscriptionsEndpoints &
+VideoConferenceEndpoints &
+CommandsEndpoints &
+PushEndpoints &
+DirectoryEndpoint &
+AutoTranslateEndpoints &
+ModerationEndpoints;

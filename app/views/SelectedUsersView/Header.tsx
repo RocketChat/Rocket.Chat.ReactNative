@@ -50,7 +50,7 @@ const Header = ({
 					</Text>
 					<FlatList
 						data={users}
-						ref={(ref: FlatList) => (flatlist.current = ref)}
+						ref={(ref: FlatList) => flatlist.current = ref}
 						onContentSizeChange={onContentSizeChange}
 						keyExtractor={item => item._id}
 						renderItem={({ item }) => {

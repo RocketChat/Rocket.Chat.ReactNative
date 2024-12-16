@@ -18,8 +18,8 @@ import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
 
 type TNavigation = CompositeNavigationProp<
-	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
-	NativeStackNavigationProp<OutsideModalParamList>
+NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
+NativeStackNavigationProp<OutsideModalParamList>
 >;
 
 const useWorkspaceViewSelector = () =>

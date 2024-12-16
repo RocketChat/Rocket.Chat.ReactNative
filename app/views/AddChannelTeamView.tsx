@@ -17,8 +17,8 @@ import { TSupportedPermissions } from '../reducers/permissions';
 type TRoute = RouteProp<ChatsStackParamList, 'AddChannelTeamView'>;
 
 type TNavigation = CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
-	CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<DrawerParamList>>
+NativeStackNavigationProp<ChatsStackParamList, 'AddChannelTeamView'>,
+CompositeNavigationProp<NativeStackNavigationProp<NewMessageStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 const useCreateNewPermission = (rid: string, t: 'c' | 'p') => {
@@ -71,11 +71,11 @@ const AddChannelTeamView = () => {
 							onPress={() =>
 								isMasterDetail
 									? navigation.navigate('SelectedUsersViewCreateChannel', {
-											nextAction: () => navigation.navigate('CreateChannelView', { teamId })
+										nextAction: () => navigation.navigate('CreateChannelView', { teamId })
 									  })
 									: navigation.navigate('SelectedUsersView', {
-											nextAction: () =>
-												navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
+										nextAction: () =>
+											navigation.navigate('ChatsStackNavigator', { screen: 'CreateChannelView', params: { teamId } })
 									  })
 							}
 							testID='add-channel-team-view-create-channel'

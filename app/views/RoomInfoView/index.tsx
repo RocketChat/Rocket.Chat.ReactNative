@@ -30,8 +30,8 @@ import styles from './styles';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList>
+NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
+NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TRoomInfoViewRouteProp = RouteProp<ChatsStackParamList, 'RoomInfoView'>;
@@ -163,7 +163,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const loadUser = async () => {
 		if (isEmpty(roomUser)) {
 			try {
-				const roomUserId = getUidDirectMessage({ ...(room || { rid, t }), itsMe });
+				const roomUserId = getUidDirectMessage({ ...room || { rid, t }, itsMe });
 				const result = await Services.getUserInfo(roomUserId);
 				if (result.success) {
 					const { user } = result;
@@ -196,7 +196,7 @@ const RoomInfoView = (): React.ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+				setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 			});
 		} else {
 			try {
@@ -209,7 +209,7 @@ const RoomInfoView = (): React.ReactElement => {
 			}
 		}
 		setShowEdit(canEdit);
-		setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
 	const createDirect = () =>

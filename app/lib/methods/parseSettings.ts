@@ -6,7 +6,7 @@ export function parseSettings(settings: any) {
 		ret[item._id] = defaultSettings[item._id] && item[defaultSettings[item._id].type];
 		if (item._id === 'Hide_System_Messages') {
 			ret[item._id] = ret[item._id].reduce(
-				(array: any, value: any) => [...array, ...(value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value])],
+				(array: any, value: any) => [...array, ...value === 'mute_unmute' ? ['user-muted', 'user-unmuted'] : [value]],
 				[]
 			);
 		}

@@ -29,6 +29,6 @@ export default StyleSheet.create({
 		alignItems: 'center'
 	},
 	actionIndicator: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
+		...I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {}
 	}
 });

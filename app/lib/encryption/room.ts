@@ -351,13 +351,13 @@ export default class EncryptionRoom {
 					image_url: fileUrl,
 					image_type: file.type,
 					image_size: file.size,
-					...(file.width &&
+					...file.width &&
 						file.height && {
-							image_dimensions: {
-								width: file.width,
-								height: file.height
-							}
-						})
+						image_dimensions: {
+							width: file.width,
+							height: file.height
+						}
+					}
 				};
 			} else if (file.type && /^audio\/.+/.test(file.type)) {
 				att = {

@@ -46,7 +46,7 @@ export const createRandomUser = async (customProps?: Object): Promise<ITestUser>
 			name: user.name,
 			password: user.password,
 			email: user.email,
-			...(customProps || {})
+			...customProps || {}
 		});
 		return user;
 	} catch (error) {

@@ -108,7 +108,7 @@ const removeFromTeam = async (
 		const result = await Services.removeTeamMember({
 			teamId: room.teamId,
 			userId,
-			...(selected && { rooms: selected })
+			...selected && { rooms: selected }
 		});
 		if (result.success) {
 			const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });

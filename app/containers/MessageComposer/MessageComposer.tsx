@@ -230,7 +230,7 @@ export const MessageComposer = ({
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<KeyboardAccessoryView
-				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
+				ref={(ref: ITrackingView) => trackingViewRef.current = ref}
 				renderContent={renderContent}
 				kbInputRef={composerInputRef}
 				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}

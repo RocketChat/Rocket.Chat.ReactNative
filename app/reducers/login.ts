@@ -100,10 +100,10 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 					...state.user,
 					settings: state.user?.settings
 						? {
-								...state.user?.settings,
-								preferences: state.user?.settings?.preferences
-									? { ...state.user.settings.preferences, ...action.preference }
-									: { ...action.preference }
+							...state.user?.settings,
+							preferences: state.user?.settings?.preferences
+								? { ...state.user.settings.preferences, ...action.preference }
+								: { ...action.preference }
 						  }
 						: { profile: {}, preferences: {} }
 				}

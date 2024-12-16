@@ -31,7 +31,7 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 				t: 'c',
 				rid: channels?.[index]._id
 			};
-			const room = navParam.rid && (await getSubscriptionByRoomId(navParam.rid));
+			const room = navParam.rid && await getSubscriptionByRoomId(navParam.rid);
 			if (room) {
 				goRoom({ item: room, isMasterDetail });
 			} else if (navParam.rid) {

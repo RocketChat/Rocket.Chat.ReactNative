@@ -7,7 +7,7 @@ import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	input: {
-		...(I18nManager.isRTL ? { textAlign: 'right' } : { textAlign: 'auto' })
+		...I18nManager.isRTL ? { textAlign: 'right' } : { textAlign: 'auto' }
 	}
 });
 

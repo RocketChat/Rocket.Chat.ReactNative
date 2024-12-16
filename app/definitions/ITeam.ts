@@ -50,8 +50,8 @@ export interface ITeamStats {
 
 export interface IServerTeamUpdateRoom
 	extends Omit<
-		IServerRoom,
-		'topic' | 'joinCodeRequired' | 'description' | 'jitsiTimeout' | 'usersCount' | 'e2eKeyId' | 'avatarETag'
+	IServerRoom,
+	'topic' | 'joinCodeRequired' | 'description' | 'jitsiTimeout' | 'usersCount' | 'e2eKeyId' | 'avatarETag'
 	> {
 	teamId: string;
 	teamDefault: boolean;
