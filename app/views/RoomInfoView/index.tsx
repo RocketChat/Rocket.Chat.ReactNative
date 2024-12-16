@@ -51,6 +51,8 @@ const RoomInfoView = (): React.ReactElement => {
 	const isDirect = roomType === SubscriptionType.DIRECT;
 	const isLivechat = roomType === SubscriptionType.OMNICHANNEL;
 
+	// Prevents setHeader with canEdit set to false from running twice and overwriting a potential setHeader call with canEdit set to true.
+	const initialHeaderTitleLoaded = useRef<boolean>(false);
 	const subscription = useRef<Subscription | undefined>(undefined);
 
 	const {
@@ -79,7 +81,9 @@ const RoomInfoView = (): React.ReactElement => {
 
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
 	useLayoutEffect(() => {
+		if (initialHeaderTitleLoaded.current) return;
 		setHeader(false);
+		initialHeaderTitleLoaded.current = true;
 	});
 
 	useEffect(() => {
@@ -196,7 +200,7 @@ const RoomInfoView = (): React.ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+				setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 			});
 		} else {
 			try {
@@ -209,7 +213,7 @@ const RoomInfoView = (): React.ReactElement => {
 			}
 		}
 		setShowEdit(canEdit);
-		setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
 	const createDirect = () =>
