@@ -1,11 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
-import { SubscriptionType } from '../../definitions';
+import { SubscriptionType, ImagePriority } from '../../definitions';
 import Emoji from '../markdown/Emoji';
 import { IAvatar } from './interfaces';
 
@@ -68,13 +68,13 @@ const Avatar = React.memo(
 			}
 
 			image = (
-				<FastImage
+				<Image
 					style={avatarStyle}
 					source={{
 						uri,
-						headers: RocketChatSettings.customHeaders,
-						priority: FastImage.priority.high
+						headers: RocketChatSettings.customHeaders
 					}}
+					priority={ImagePriority.high}
 				/>
 			);
 		}
