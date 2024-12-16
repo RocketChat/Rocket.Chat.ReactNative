@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { Keyboard, ScrollView, TextInput, View } from 'react-native';
+import { Keyboard, ScrollView, TextInput, View, Alert } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
@@ -79,7 +79,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private newPassword?: TextInput | null;
 	private nickname?: TextInput | null;
 	private bio?: TextInput | null;
-	private focusListener = () => {};
+	private focusListener : () =>void=()=> {};
+	private beforeRemoveListener : () => void=()=>{};
+	
+	
+	constructor(props: IProfileViewProps) {
+		super(props);
+		this.setHeader();
+	}
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
@@ -96,10 +103,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		navigation.setOptions(options);
 	};
 
-	constructor(props: IProfileViewProps) {
-		super(props);
-		this.setHeader();
-	}
+
 
 	state: IProfileViewState = {
 		saving: false,
@@ -115,13 +119,38 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	componentDidMount() {
+		const { navigation } = this.props;
 		this.focusListener = this.props.navigation.addListener('focus', () => {
 			this.init();
 		});
-	}
+		this.beforeRemoveListener = navigation.addListener('beforeRemove', (e) => {
+			if (!this.formIsChanged()) {
+				// If there are no unsaved changes, don't block navigation
+				return;
+			}
+		// Prevent default navigation action
+        e.preventDefault();
+		 // Show a confirmation dialog
+		 Alert.alert(
+            'Unsaved Changes',
+            'You have unsaved changes. Do you want to discard them and leave?',
+            [
+                { text: 'Cancel', style: 'cancel', onPress: () => {} },
+                {
+                    text: 'Discard',
+                    style: 'destructive',
+                    // Navigate anyway
+                    onPress: () => navigation.dispatch(e.data.action),
+                },
+            ]
+        );
+    });
+}	
+	
 
 	componentWillUnmount() {
 		this.focusListener();
+		this.beforeRemoveListener();
 	}
 
 	init = (user?: IUser) => {
