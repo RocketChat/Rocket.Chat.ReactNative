@@ -1,5 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -9,8 +11,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { SettingsStackParamList } from '../stacks/types';
 import { IApplicationState } from '../definitions';
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
 
 const LegalView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LegalView'>>();
@@ -21,7 +22,7 @@ const LegalView = () => {
 		navigation.setOptions({
 			title: I18n.t('Legal')
 		});
-	}, []);
+	}, [navigation]);
 
 	const onPressItem = ({ route }: { route: string }) => {
 		if (!server) {
