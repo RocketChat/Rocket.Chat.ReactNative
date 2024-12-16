@@ -205,6 +205,7 @@ export type ProfileStackParamList = {
 };
 
 export type SettingsStackParamList = {
+	LegalView: undefined;
 	SettingsView: undefined;
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
