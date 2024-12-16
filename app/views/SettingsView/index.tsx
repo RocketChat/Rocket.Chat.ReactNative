@@ -260,6 +260,14 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						title='Legal'
+						showActionIndicator
+						onPress={() => navigateToScreen('LegalView')}
+						testID='settings-view-legal'
+						left={() => <List.Icon name='book' />}
+					/>
+					<List.Separator />
+					<List.Item
 						title='Contact_us'
 						onPress={sendEmail}
 						testID='settings-view-contact'
@@ -285,13 +293,6 @@ const SettingsView = (): React.ReactElement => {
 						testID='settings-view-license'
 						left={() => <List.Icon name='file-document' />}
 						right={() => <NewWindowIcon />}
-					/>
-					<List.Separator />
-					<List.Item
-						title='Legal'
-						onPress={() => navigateToScreen('LegalView')}
-						testID='settings-view-legal'
-						left={() => <List.Icon name='book' />}
 					/>
 					<List.Separator />
 					<List.Item
