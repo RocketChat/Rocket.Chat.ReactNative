@@ -86,6 +86,11 @@ export const e2eRejectSuggestedGroupKey = (rid: string): Promise<{ success: bool
 	// RC 5.5
 	sdk.post('e2e.rejectSuggestedGroupKey', { rid });
 
+export const fetchUsersWaitingForGroupKey = (roomIds: string[]) => sdk.get('e2e.fetchUsersWaitingForGroupKey', { roomIds });
+
+export const provideUsersSuggestedGroupKeys = (usersSuggestedGroupKeys: any) =>
+	sdk.post('e2e.provideUsersSuggestedGroupKeys', { usersSuggestedGroupKeys });
+
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
 	sdk.post('video-conference/jitsi.update-timeout', { roomId });
@@ -931,6 +936,11 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 
 	// RC 0.72.0
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
+}
+
+export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
+	// RC ?
+	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
 }
 
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
