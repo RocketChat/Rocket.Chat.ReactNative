@@ -4,18 +4,16 @@ import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
 import Modal from 'react-native-modal';
 import useDeepCompareEffect from 'use-deep-compare-effect';
-import { connect } from 'react-redux';
 
 import { FormTextInput } from '../TextInput';
 import I18n from '../../i18n';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { IApplicationState } from '../../definitions';
 import { Services } from '../../lib/services';
+import { useAppSelector } from '../../lib/hooks';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
@@ -55,8 +53,11 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) => {
-	const { theme } = useTheme();
+const TwoFactor = React.memo(() => {
+	const { isMasterDetail } = useAppSelector(state => ({
+		isMasterDetail: state.app.isMasterDetail
+	}));
+	const { colors } = useTheme();
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<EventListenerMethod>({});
 	const [code, setCode] = useState<string>('');
@@ -74,7 +75,9 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		}
 	}, [data]);
 
-	const showTwoFactor = (args: EventListenerMethod) => setData(args);
+	const showTwoFactor = (args: EventListenerMethod) => {
+		setData(args);
+	};
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(TWO_FACTOR, showTwoFactor);
@@ -102,34 +105,48 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 		setData({});
 	};
 
-	const color = themes[theme].fontTitlesLabels;
+	const color = colors.fontTitlesLabels;
 	return (
-		<Modal avoidKeyboard useNativeDriver isVisible={visible} hideModalContentWhileAnimating>
+		<Modal
+			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
+			avoidKeyboard
+			useNativeDriver
+			isVisible={visible}
+			hideModalContentWhileAnimating>
 			<View style={styles.container} testID='two-factor'>
 				<View
 					style={[
 						styles.content,
 						isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-						{ backgroundColor: themes[theme].surfaceTint }
+						{ backgroundColor: colors.surfaceTint }
 					]}>
 					<Text style={[styles.title, { color }]}>{I18n.t(method?.title || 'Two_Factor_Authentication')}</Text>
 					{method?.text ? <Text style={[styles.subtitle, { color }]}>{I18n.t(method.text)}</Text> : null}
 					<FormTextInput
-						value={code}
-						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 						returnKeyType='send'
 						autoCapitalize='none'
+						testID='two-factor-input'
+						accessibilityLabel={I18n.t(
+							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
+						)}
+						value={code}
+						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
 						onChangeText={setCode}
 						onSubmitEditing={onSubmit}
 						keyboardType={method?.keyboardType}
 						secureTextEntry={method?.secureTextEntry}
 						error={data.invalid ? { error: 'totp-invalid', reason: I18n.t('Code_or_password_invalid') } : undefined}
-						testID='two-factor-input'
+						containerStyle={styles.containerInput}
 					/>
+
 					{isEmail ? (
-						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
-							{I18n.t('Resend_email')}
-						</Text>
+						<Button
+							small
+							title={I18n.t('Resend_email')}
+							style={[styles.button, { marginTop: 12 }]}
+							type='secondary'
+							onPress={sendEmail}
+						/>
 					) : null}
 					<View style={styles.buttonContainer}>
 						<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
@@ -141,8 +158,4 @@ const TwoFactor = React.memo(({ isMasterDetail }: { isMasterDetail: boolean }) =
 	);
 });
 
-const mapStateToProps = (state: IApplicationState) => ({
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(TwoFactor);
+export default TwoFactor;
