@@ -176,11 +176,12 @@ class Markdown extends PureComponent<IMarkdownProps, any> {
 						...styles.codeBlock,
 						backgroundColor: themes[theme!].surfaceNeutral,
 						borderColor: themes[theme!].strokeLight,
-						color: themes[theme!].fontDefault
+						color: themes[theme!].fontDefault,
+						marginBottom: 2,
 					},
 					...style
 				]}>
-				{literal}
+				{literal.replace(/\n$/, '')}
 			</Text>
 		);
 	};
