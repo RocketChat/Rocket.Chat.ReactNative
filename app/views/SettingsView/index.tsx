@@ -243,6 +243,7 @@ const SettingsView = (): React.ReactElement => {
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
 					<List.Item
 						title='Get_help'
 						left={() => <List.Icon name='support' />}
