@@ -12,7 +12,7 @@ import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { RootEnum } from '../../definitions';
-import I18n, { isRTL, LANGUAGES } from '../../i18n';
+import I18n, { isRTL, LANGUAGES, setLanguage } from '../../i18n';
 import database from '../../lib/database';
 import { getUserSelector } from '../../selectors/login';
 import { SettingsStackParamList } from '../../stacks/types';
@@ -42,7 +42,9 @@ const LanguageView = () => {
 			return;
 		}
 
-		const shouldRestart = isRTL(language) || isRTL(languageDefault);
+		setLanguage(language);
+
+		const shouldRestart = false
 
 		dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Change_language_loading') }));
 
@@ -58,7 +60,6 @@ const LanguageView = () => {
 
 	const changeLanguage = async (language: string) => {
 		logEvent(events.LANG_SET_LANGUAGE);
-
 		const params: { language?: string } = {};
 
 		// language
@@ -69,7 +70,6 @@ const LanguageView = () => {
 		try {
 			await Services.saveUserPreferences(params);
 			dispatch(setUser({ language: params.language }));
-
 			const serversDB = database.servers;
 			const usersCollection = serversDB.get('users');
 			await serversDB.write(async () => {
