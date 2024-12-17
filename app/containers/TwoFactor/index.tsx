@@ -17,6 +17,7 @@ import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import Toast from '../Toast';
 import { showToast } from '../../lib/methods/helpers/showToast';
+import log from '../../lib/methods/helpers/log';
 
 export const TWO_FACTOR = 'TWO_FACTOR';
 
@@ -78,8 +79,8 @@ const TwoFactor = React.memo(() => {
 					showToast(I18n.t('Two_Factor_Success_message'));
 				}
 			}
-		} catch (error) {
-			console.log(error, 'here');
+		} catch (e) {
+			log(e)
 		}
 	};
 
