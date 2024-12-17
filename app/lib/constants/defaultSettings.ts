@@ -270,5 +270,11 @@ export const defaultSettings = {
 	Cloud_Workspace_AirGapped_Restrictions_Remaining_Days: {
 		type: 'valueAsNumber'
 	},
+	WebRTC_Servers: {
+		type: 'valueAsString'
+	},
+	VoIP_TeamCollab_FreeSwitch_Host: {
+		type: 'valueAsString'
+	},
 	...deprecatedSettings
 } as const;

@@ -22,6 +22,7 @@ import encryption from './encryption';
 import permissions from './permissions';
 import roles from './roles';
 import videoConf from './videoConf';
+import voip from './voip';
 import usersRoles from './usersRoles';
 import troubleshootingNotification from './troubleshootingNotification';
 import supportedVersions from './supportedVersions';
@@ -50,6 +51,7 @@ export default combineReducers({
 	permissions,
 	roles,
 	videoConf,
+	voip,
 	usersRoles,
 	troubleshootingNotification,
 	supportedVersions,

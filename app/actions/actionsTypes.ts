@@ -104,3 +104,19 @@ export const VIDEO_CONF = createRequestTypes('VIDEO_CONF', [
 export const TROUBLESHOOTING_NOTIFICATION = createRequestTypes('TROUBLESHOOTING_NOTIFICATION', ['INIT', 'SET']);
 export const SUPPORTED_VERSIONS = createRequestTypes('SUPPORTED_VERSIONS', ['SET']);
 export const IN_APP_FEEDBACK = createRequestTypes('IN_APP_FEEDBACK', ['SET', 'REMOVE', 'CLEAR']);
+
+export const VOIP = createRequestTypes('VOIP', [
+	'INIT',
+	'CLIENT_ERROR',
+	'START_CALL',
+	'END_CALL',
+	'MUTE_CALL',
+	'HOLD_CALL',
+	'SEND_DTMF',
+	'REGISTER',
+	'UNREGISTER',
+	'CHANGE_AUDIO_INPUT_DEVICE',
+	'CHANGE_AUDIO_OUTPUT_DEVICE',
+	'TRANSFER_CALL',
+	'INCOMING_CALL'
+]);
