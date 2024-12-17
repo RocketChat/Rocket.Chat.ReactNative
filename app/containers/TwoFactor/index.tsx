@@ -145,9 +145,13 @@ const TwoFactor = React.memo(() => {
 						testID='two-factor-input'
 					/>
 					{isEmail ? (
-						<Text style={[styles.sendEmail, { color }]} onPress={sendEmail}>
-							{I18n.t('Resend_email')}
-						</Text>
+						<Button
+							small
+							title={I18n.t('Resend_email')}
+							style={[styles.button, { marginTop: 12 }]}
+							type='secondary'
+							onPress={sendEmail}
+						/>
 					) : null}
 					<View style={styles.buttonContainer}>
 						<Button title={I18n.t('Cancel')} type='secondary' style={styles.button} onPress={onCancel} />
