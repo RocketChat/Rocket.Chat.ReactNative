@@ -2,7 +2,7 @@ import React from 'react';
 import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
-import RNScreens from 'react-native-screens';
+import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
 import AppContainer from './AppContainer';
@@ -36,7 +36,7 @@ import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
-RNScreens.enableScreens();
+enableScreens();
 initStore(store);
 
 interface IDimensions {
