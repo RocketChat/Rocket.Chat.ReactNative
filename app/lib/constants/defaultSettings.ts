@@ -93,6 +93,9 @@ export const defaultSettings = {
 	Accounts_Iframe_api_method: {
 		type: 'valueAsString'
 	},
+	API_Embed: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
