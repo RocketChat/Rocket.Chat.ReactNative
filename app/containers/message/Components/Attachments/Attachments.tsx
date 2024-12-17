@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { dequal } from 'dequal';
+import { View } from 'react-native';
 
 import Image from './Image';
 import Audio from './Audio';
@@ -87,7 +88,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				/>
 			);
 		});
-		return <>{attachmentsElements}</>;
+		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );
