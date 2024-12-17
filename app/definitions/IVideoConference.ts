@@ -76,8 +76,8 @@ declare type LivechatVideoConferenceCreateData = Omit<ILivechatVideoConference, 
 	createdBy: IUser['_id'];
 };
 export declare type VideoConferenceCreateData = AtLeast<
-	DirectVideoConferenceCreateData | GroupVideoConferenceCreateData | LivechatVideoConferenceCreateData,
-	'createdBy' | 'type' | 'rid' | 'providerName' | 'providerData'
+DirectVideoConferenceCreateData | GroupVideoConferenceCreateData | LivechatVideoConferenceCreateData,
+'createdBy' | 'type' | 'rid' | 'providerName' | 'providerData'
 >;
 
 export type VideoConferenceCapabilities = {

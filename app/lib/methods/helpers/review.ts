@@ -70,7 +70,7 @@ const askReview = () =>
 	);
 
 const tryReview = async () => {
-	const data = (await AsyncStorage.getItem(reviewKey)) || '{}';
+	const data = await AsyncStorage.getItem(reviewKey) || '{}';
 	const reviewData = JSON.parse(data);
 	const { lastReview = 0, doneReview = false } = reviewData;
 	const lastReviewDate = new Date(lastReview);

@@ -60,12 +60,12 @@ export const setCurrentScreen = (currentScreen: string): void => {
 
 export const toggleCrashErrorsReport = (value: boolean): boolean => {
 	crashlytics().setCrashlyticsCollectionEnabled(value);
-	return (reportCrashErrors = value);
+	return reportCrashErrors = value;
 };
 
 export const toggleAnalyticsEventsReport = (value: boolean): boolean => {
 	analytics().setAnalyticsCollectionEnabled(value);
-	return (reportAnalyticsEvents = value);
+	return reportAnalyticsEvents = value;
 };
 
 export default (e: any): void => {

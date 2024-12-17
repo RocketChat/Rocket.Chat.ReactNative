@@ -6,34 +6,34 @@ import { APP_STATE } from '../../actions/actionsTypes';
 
 export default () =>
 	(createStore: any) =>
-	(...args: any) => {
-		const store = createStore(...args);
+		(...args: any) => {
+			const store = createStore(...args);
 
-		let currentState = '';
+			let currentState = '';
 
-		const handleAppStateChange = (nextAppState: any) => {
-			if (nextAppState !== 'inactive') {
-				if (currentState !== nextAppState) {
-					let type;
-					if (nextAppState === 'active') {
-						type = APP_STATE.FOREGROUND;
-						removeNotificationsAndBadge();
-					} else if (nextAppState === 'background') {
-						type = APP_STATE.BACKGROUND;
+			const handleAppStateChange = (nextAppState: any) => {
+				if (nextAppState !== 'inactive') {
+					if (currentState !== nextAppState) {
+						let type;
+						if (nextAppState === 'active') {
+							type = APP_STATE.FOREGROUND;
+							removeNotificationsAndBadge();
+						} else if (nextAppState === 'background') {
+							type = APP_STATE.BACKGROUND;
+						}
+						if (type) {
+							store.dispatch({
+								type
+							});
+						}
 					}
-					if (type) {
-						store.dispatch({
-							type
-						});
-					}
+					currentState = nextAppState;
 				}
-				currentState = nextAppState;
-			}
+			};
+
+			AppState.addEventListener('change', handleAppStateChange);
+
+			// setTimeout to allow redux-saga to catch the initial state fired by redux-enhancer-react-native-appstate library
+			setTimeout(() => handleAppStateChange(AppState.currentState));
+			return store;
 		};
-
-		AppState.addEventListener('change', handleAppStateChange);
-
-		// setTimeout to allow redux-saga to catch the initial state fired by redux-enhancer-react-native-appstate library
-		setTimeout(() => handleAppStateChange(AppState.currentState));
-		return store;
-	};

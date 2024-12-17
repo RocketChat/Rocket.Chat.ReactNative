@@ -9,7 +9,7 @@ export function createQuoteAttachment(message: IMessage, messageLink: string): I
 	return {
 		text: message.msg,
 		// this type is wrong
-		...('translations' in message && { translations: message?.translations as unknown as IAttachmentTranslations }),
+		...'translations' in message && { translations: message?.translations as unknown as IAttachmentTranslations },
 		message_link: messageLink,
 		author_name: message.alias || message.u.username,
 		author_icon: getAvatarURL({

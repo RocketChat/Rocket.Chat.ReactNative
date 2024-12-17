@@ -49,8 +49,8 @@ import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 type TNavigation = CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-	CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
+NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -479,7 +479,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						isTablet
 							? undefined
 							: ({ nativeEvent }: { nativeEvent: any }) => {
-									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+								this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
 							  }
 					}>
 					{issuesWithNotifications ? (
@@ -518,11 +518,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	internalSetState = (
 		state:
-			| ((
-					prevState: Readonly<IRoomsListViewState>,
-					props: Readonly<IRoomsListViewProps>
+		| ((
+			prevState: Readonly<IRoomsListViewState>,
+			props: Readonly<IRoomsListViewProps>
 			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
-			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
+		| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
 		callback?: () => void
 	) => {
 		if (this.animated) {
@@ -880,7 +880,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: FlatList) => this.scroll = ref;
 
 	renderListHeader = () => {
 		const { searching } = this.state;

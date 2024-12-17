@@ -75,24 +75,24 @@ export interface IApplicationState {
 }
 
 export type TApplicationActions = TActionActiveUsers &
-	TActionSelectedUsers &
-	TActionCustomEmojis &
-	TActionInviteLinks &
-	IActionRoles &
-	IActionSettings &
-	TActionEncryption &
-	TActionSortPreferences &
-	TActionUserTyping &
-	TActionCreateDiscussion &
-	TActionCreateChannel &
-	TActionsShare &
-	TActionServer &
-	TActionApp &
-	TActionInquiry &
-	TActionPermissions &
-	TActionEnterpriseModules &
-	TActionVideoConf &
-	TActionUsersRoles &
-	TActionTroubleshootingNotification &
-	TActionSupportedVersions &
-	TInAppFeedbackAction;
+TActionSelectedUsers &
+TActionCustomEmojis &
+TActionInviteLinks &
+IActionRoles &
+IActionSettings &
+TActionEncryption &
+TActionSortPreferences &
+TActionUserTyping &
+TActionCreateDiscussion &
+TActionCreateChannel &
+TActionsShare &
+TActionServer &
+TActionApp &
+TActionInquiry &
+TActionPermissions &
+TActionEnterpriseModules &
+TActionVideoConf &
+TActionUsersRoles &
+TActionTroubleshootingNotification &
+TActionSupportedVersions &
+TInAppFeedbackAction;
