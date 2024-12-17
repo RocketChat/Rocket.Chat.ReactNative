@@ -585,10 +585,10 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							testID='room-info-edit-view-announcement'
 						/>
 						{/* This TextInput avoid appears the password fill when typing into Announcements TextInput */}
-						<View style={{ height: StyleSheet.hairlineWidth, overflow: 'hidden' }}>
+						<View style={{ height: 1, overflow: 'hidden' }}>
 							<TextInput
 								style={{
-									height: StyleSheet.hairlineWidth
+									height: 1
 								}}
 							/>
 						</View>
