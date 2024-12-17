@@ -21,7 +21,7 @@ export async function getPermalinkMessage(message: TMessageModel): Promise<strin
 		c: 'channel',
 		d: 'direct'
 	}[room.t as TRoomType];
-	return `${server}/${roomType}/${isGroupChat(room) ? room.rid : room.name}?msg=${message.id}`;
+	return `${server}/${roomType}/${isGroupChat(room) ? room.rid : encodeURIComponent(room.name)}?msg=${message.id}`;
 }
 
 export function getPermalinkChannel(channel: TSubscriptionModel): string {
@@ -35,5 +35,5 @@ export function getPermalinkChannel(channel: TSubscriptionModel): string {
 	// @ts-ignore - wrong SubscriptionType
 	const room = roomType[channel.t];
 
-	return `${server}/${room}/${channel.name}`;
+	return `${server}/${room}/${encodeURIComponent(channel.name)}`;
 }
