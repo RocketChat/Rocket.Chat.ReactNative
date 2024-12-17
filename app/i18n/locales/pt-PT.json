@@ -356,6 +356,7 @@
   "topic": "tópico",
   "Try_again": "Tente novamente",
   "Two_Factor_Authentication": "Autenticação 2FA",
+  "Two_Factor_Success_message": "Código de autenticação de dois fatores enviado! Por favor, verifique o seu email.",
   "UNARCHIVE": "DESARQUIVAR",
   "unarchive": "desarquivar",
   "Unmute": "Retirar silêncio",
