@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
 import { isIOS } from '../lib/methods/helpers';
 import { useTheme } from '../theme';
 import { ChatsStackParamList } from '../stacks/types';
-import { IBaseScreen } from '../definitions';
 
-type IMarkdownTableViewProps = IBaseScreen<ChatsStackParamList, 'MarkdownTableView'>;
-
-const MarkdownTableView = ({ navigation, route }: IMarkdownTableViewProps): React.ReactElement => {
+const MarkdownTableView = (): React.ReactElement => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'MarkdownTableView'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'MarkdownTableView'>>();
+	
 	const renderRows = route.params?.renderRows;
 	const tableWidth = route.params?.tableWidth;
 	const { colors } = useTheme();
@@ -18,7 +20,7 @@ const MarkdownTableView = ({ navigation, route }: IMarkdownTableViewProps): Reac
 		navigation.setOptions({
 			title: I18n.t('Table')
 		});
-	}, []);
+	}, [navigation]);
 
 	if (isIOS) {
 		return (
