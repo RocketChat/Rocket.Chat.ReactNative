@@ -12,6 +12,7 @@ export interface IImageContainer {
 	getCustomEmoji?: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
+	onLongPress: (() => void) | null;
 }
 
 export interface IMessageImage {
