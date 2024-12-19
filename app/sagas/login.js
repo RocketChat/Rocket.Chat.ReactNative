@@ -229,8 +229,8 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		getUserPresence(user.id);
 
 		const server = yield select(getServer);
-		yield put(encryptionInit());
 		yield put(roomsRequest());
+		yield put(encryptionInit());
 		yield fork(fetchPermissionsFork);
 		yield fork(fetchCustomEmojisFork);
 		yield fork(fetchRolesFork);
