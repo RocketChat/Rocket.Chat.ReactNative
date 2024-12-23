@@ -1,5 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
+import React, { createRef, ForwardedRef, forwardRef, useContext, useState } from 'react';
 
 import { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
@@ -29,11 +29,15 @@ export type TActionSheetOptions = {
 export interface IActionSheetProvider {
 	showActionSheet: (item: TActionSheetOptions) => void;
 	hideActionSheet: () => void;
+	toggleImportantForAccessibility: () => void;
+	importantForAccessibility: any;
 }
 
 const context = React.createContext<IActionSheetProvider>({
 	showActionSheet: () => {},
-	hideActionSheet: () => {}
+	hideActionSheet: () => {},
+	toggleImportantForAccessibility: () => {},
+	importantForAccessibility: 'yes'
 });
 
 export const useActionSheet = () => useContext(context);
@@ -52,13 +56,28 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
 
 export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	const [importantForAccessibility, setImportantForAccessibility] = useState('yes');
+
+	const toggleImportantForAccessibility = () => {
+		if (importantForAccessibility === 'yes') {
+			setImportantForAccessibility('no-hide-descendants');
+			return;
+		}
+
+		setImportantForAccessibility('yes');
+	};
+
 	const getContext = (): IActionSheetProvider => ({
 		showActionSheet: options => {
 			actionSheetRef.current?.showActionSheet(options);
+			setImportantForAccessibility('no-hide-descendants');
 		},
 		hideActionSheet: () => {
 			actionSheetRef.current?.hideActionSheet();
-		}
+			setImportantForAccessibility('yes');
+		},
+		importantForAccessibility,
+		toggleImportantForAccessibility
 	});
 
 	return (

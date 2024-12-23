@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme';
 import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
-import { TActionSheetOptions } from './Provider';
+import { TActionSheetOptions, useActionSheet } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
 import styles, { ITEM_HEIGHT } from './styles';
 
@@ -25,6 +25,7 @@ const ANIMATION_CONFIG = {
 
 const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
+		const { toggleImportantForAccessibility } = useActionSheet();
 		const { colors } = useTheme();
 		const { height: windowHeight } = useWindowDimensions();
 		const { bottom } = useSafeAreaInsets();
@@ -123,6 +124,7 @@ const ActionSheet = React.memo(
 			toggleVisible();
 			data?.onClose && data?.onClose();
 			animatedDataSnaps.value = [];
+			toggleImportantForAccessibility();
 		};
 
 		const renderBackdrop = useCallback(

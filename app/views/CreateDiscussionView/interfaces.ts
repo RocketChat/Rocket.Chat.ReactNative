@@ -1,6 +1,7 @@
 import { NewMessageStackParamList } from '../../stacks/types';
 import { ISubscription, SubscriptionType } from '../../definitions/ISubscription';
 import { IBaseScreen, IMessage, ISearchLocal, IUser } from '../../definitions';
+import { IActionSheetProvider } from '../../containers/ActionSheet';
 
 export interface IResult {
 	rid: string;
@@ -11,7 +12,9 @@ export interface IResult {
 export interface IError {
 	reason: string;
 }
-export interface ICreateChannelViewProps extends IBaseScreen<NewMessageStackParamList, 'CreateDiscussionView'> {
+export interface ICreateChannelViewProps
+	extends IActionSheetProvider,
+		IBaseScreen<NewMessageStackParamList, 'CreateDiscussionView'> {
 	server: string;
 	user: IUser;
 	create: Function;

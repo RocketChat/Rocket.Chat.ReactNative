@@ -437,6 +437,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				<StatusBar />
 				<SafeAreaView testID='profile-view'>
 					<ScrollView
+						importantForAccessibility={this.props.importantForAccessibility}
 						contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: themes[theme].surfaceTint }]}
 						testID='profile-view-list'
 						{...scrollPersistTaps}>
