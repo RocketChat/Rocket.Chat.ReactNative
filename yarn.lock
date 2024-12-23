@@ -12142,6 +12142,11 @@ react-native-scrollable-tab-view@ptomasroos/react-native-scrollable-tab-view:
     prop-types "^15.6.0"
     react-timer-mixin "^0.13.3"
 
+react-native-share@^11.0.4:
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-11.0.4.tgz#9d7ed7b15e68aa739fc0cbb67738b650f878ed80"
+  integrity sha512-i91n1Pcdaxxr39uxR5KduXjqi5FSEXuEO6rmeHl8OPs5rqo4No36qJXUU6du4TZUI6tFSENdxnzZMh3OsMF+ug==
+
 react-native-simple-crypto@RocketChat/react-native-simple-crypto#fix.6.1.0:
   version "0.6.1"
   resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/467905c61df8132e2257b6408a072521fc5a3d27"
@@ -12211,6 +12216,11 @@ react-native-vector-icons@9.2.0:
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-view-shot@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-3.1.2.tgz#8c8e84c67a4bc8b603e697dbbd59dbc9b4f84825"
+  integrity sha512-9u9fPtp6a52UMoZ/UCPrCjKZk8tnkI9To0Eh6yYnLKFEGkRZ7Chm6DqwDJbYJHeZrheCCopaD5oEOnRqhF4L2Q==
 
 react-native-webview@11.26.1, react-native-webview@^11.18.2:
   version "11.26.1"
