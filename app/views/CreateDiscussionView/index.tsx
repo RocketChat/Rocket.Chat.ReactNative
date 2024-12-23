@@ -24,6 +24,7 @@ import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
 import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
+import { withActionSheet } from '../../containers/ActionSheet';
 
 class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;
@@ -142,7 +143,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 
 	render() {
 		const { name, users, encrypted } = this.state;
-		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
+		const { server, user, blockUnauthenticatedAccess, theme, serverVersion, importantForAccessibility } = this.props;
 		return (
 			<KeyboardView
 				style={{ backgroundColor: themes[theme].surfaceHover }}
@@ -150,7 +151,7 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 				keyboardVerticalOffset={128}>
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view' style={styles.container}>
-					<ScrollView {...scrollPersistTaps}>
+					<ScrollView importantForAccessibility={importantForAccessibility} {...scrollPersistTaps}>
 						<Text style={[styles.description, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Discussion_Desc')}</Text>
 						<SelectChannel
 							server={server}
@@ -208,4 +209,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	encryptionEnabled: state.encryption.enabled
 });
 
-export default connect(mapStateToProps)(withTheme(CreateChannelView));
+export default connect(mapStateToProps)(withTheme(withActionSheet(CreateChannelView)));
