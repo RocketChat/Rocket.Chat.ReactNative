@@ -376,6 +376,7 @@
   "Translate": "翻訳",
   "Try_again": "再度お試しください。",
   "Two_Factor_Authentication": "２段階認証",
+  "Two_Factor_Success_message": "二要素認証コードが送信されました！メールを確認してください。",
   "Type_message": "メッセージを入力",
   "UNARCHIVE": "アーカイブ解除",
   "unarchive": "アーカイブ解除",
