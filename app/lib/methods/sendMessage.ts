@@ -1,4 +1,5 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
+import { parse } from '@rocket.chat/message-parser';
 import { Model } from '@nozbe/watermelondb';
 
 import database from '../database';
@@ -92,6 +93,7 @@ export async function sendMessage(
 	tshow?: boolean
 ): Promise<void> {
 	try {
+		console.log('here', parse(msg));
 		const db = database.active;
 		const subsCollection = db.get('subscriptions');
 		const msgCollection = db.get('messages');
