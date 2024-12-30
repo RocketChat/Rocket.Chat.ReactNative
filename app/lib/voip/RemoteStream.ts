@@ -11,28 +11,13 @@
  * detecting voice energy etc. Which will be implemented as when needed
  */
 
+import { MediaStream, RTCPeerConnection } from 'react-native-webrtc';
+
 import Stream from './Stream';
 
 export default class RemoteStream extends Stream {
-	private renderingMediaElement: HTMLMediaElement | undefined;
-
 	constructor(mediaStream: MediaStream) {
 		super(mediaStream);
-	}
-
-	/**
-	 * Called for initializing the class
-	 * @remarks
-	 */
-
-	init(rmElement: HTMLMediaElement): void {
-		if (this.renderingMediaElement) {
-			// Someone already has setup the stream and initializing it once again
-			// Clear the existing stream object
-			this.renderingMediaElement.pause();
-			this.renderingMediaElement.srcObject = null;
-		}
-		this.renderingMediaElement = rmElement;
 	}
 
 	/**
@@ -41,35 +26,14 @@ export default class RemoteStream extends Stream {
 	 * Plays the stream on media element. Stream will be autoplayed and muted based on the settings.
 	 * throws and error if the play fails.
 	 */
-
-	play(autoPlay = true, muteAudio = false): void {
-		if (this.renderingMediaElement && this.mediaStream) {
-			this.renderingMediaElement.autoplay = autoPlay;
-			this.renderingMediaElement.srcObject = this.mediaStream;
-			if (autoPlay) {
-				this.renderingMediaElement.play().catch((error: Error) => {
-					throw error;
-				});
-			}
-			if (muteAudio) {
-				this.renderingMediaElement.volume = 0;
-			}
+	play(): void {
+		if (!this.mediaStream || this.mediaStream.getAudioTracks().length === 0) {
+			throw Error('No audio tracks available in the media stream.');
 		}
-	}
 
-	/**
-	 * Called for pausing the stream
-	 * @remarks
-	 */
-	pause(): void {
-		this.renderingMediaElement?.pause();
-	}
+		const [audioTrack] = this.mediaStream.getAudioTracks();
+		const peerConnection = new RTCPeerConnection();
 
-	clear(): void {
-		super.clear();
-		if (this.renderingMediaElement) {
-			this.renderingMediaElement.pause();
-			this.renderingMediaElement.srcObject = null;
-		}
+		peerConnection.addTrack(audioTrack, this.mediaStream);
 	}
 }

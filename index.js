@@ -25,7 +25,14 @@ if (!isFDroidBuild && isAndroid) {
 }
 
 AppRegistry.registerComponent(appName, () => require('./app/index').default);
+AppRegistry.registerHeadlessTask(
+	'RNCallKeepBackgroundMessage',
+	() =>
+		({ name, callUUID, handle }) =>
+			// Make your call here
 
+			Promise.resolve()
+);
 // For storybook, comment everything above and uncomment below
 // import 'react-native-gesture-handler';
 // import 'react-native-console-time-polyfill';

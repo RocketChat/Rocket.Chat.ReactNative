@@ -1,3 +1,5 @@
+import { MediaStream } from 'react-native-webrtc';
+
 /**
  * This class is used for stream manipulation.
  * @remarks
@@ -36,8 +38,8 @@ export default class Stream {
 	 * @remarks
 	 */
 
-	onTrackAdded(callBack: any): void {
-		this.mediaStream?.onaddtrack?.(callBack);
+	onTrackAdded(callback: any): void {
+		this.mediaStream?.addEventListener('addtrack', callback);
 	}
 
 	/**
@@ -45,8 +47,12 @@ export default class Stream {
 	 * @remarks
 	 */
 
-	onTrackRemoved(callBack: any): void {
-		this.mediaStream?.onremovetrack?.(callBack);
+	onTrackRemoved(callback: any): void {
+		this.mediaStream?.addEventListener('removetrack', callback);
+	}
+
+	getURL() {
+		return this.mediaStream?.toURL();
 	}
 
 	/**

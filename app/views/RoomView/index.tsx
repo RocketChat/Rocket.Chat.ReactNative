@@ -8,6 +8,7 @@ import { dequal } from 'dequal';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import * as Haptics from 'expo-haptics';
+import { RTCView } from 'react-native-webrtc';
 
 import { getRoutingConfig } from '../../lib/services/restApi';
 import Touch from '../../containers/Touch';
@@ -1478,7 +1479,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
 		const { room, loading, action, selectedMessages } = this.state;
-		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
+		const { remoteStreamUrl, user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
 		let announcement;
@@ -1515,6 +1516,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					getText: this.getText
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+					{remoteStreamUrl ? <RTCView streamURL={remoteStreamUrl} /> : null}
+
 					<StatusBar />
 					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
 					<List
@@ -1555,7 +1558,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	livechatAllowManualOnHold: state.settings.Livechat_allow_manual_on_hold as boolean,
 	airGappedRestrictionRemainingDays: state.settings.Cloud_Workspace_AirGapped_Restrictions_Remaining_Days,
 	inAppFeedback: state.inAppFeedback,
-	encryptionEnabled: state.encryption.enabled
+	encryptionEnabled: state.encryption.enabled,
+	remoteStreamUrl: state.voip.remoteStreamUrl
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(withActionSheet(RoomView)))));
