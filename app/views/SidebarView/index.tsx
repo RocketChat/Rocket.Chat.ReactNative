@@ -25,6 +25,7 @@ import * as List from '../../containers/List';
 import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
+import { register, unregister } from '../../actions/voip';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -50,7 +51,15 @@ interface ISidebarProps {
 	viewUserAdministrationPermission: string[];
 	viewPrivilegedSettingPermission: string[];
 	showActionSheet: IActionSheetProvider['showActionSheet'];
+	voipRegisterStatus: 'REGISTERED' | 'REGISTERING' | 'UNREGISTERED' | 'UNREGISTERING';
 }
+
+const VOIP_STATUSES = {
+	REGISTERED: 'Disable_voice_calling',
+	UNREGISTERED: 'Enable_voice_calling',
+	REGISTERING: 'Enabling_voice_calling',
+	UNREGISTERING: 'Disabling_voice_calling'
+};
 
 class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	constructor(props: ISidebarProps) {
@@ -76,7 +85,8 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			viewStatisticsPermission,
 			viewRoomAdministrationPermission,
 			viewUserAdministrationPermission,
-			viewPrivilegedSettingPermission
+			viewPrivilegedSettingPermission,
+			voipRegisterStatus
 		} = this.props;
 		// Drawer navigation state
 		if (state?.index !== nextProps.state?.index) {
@@ -127,6 +137,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (!dequal(nextProps.viewPrivilegedSettingPermission, viewPrivilegedSettingPermission)) {
 			return true;
 		}
+
+		if (nextProps.voipRegisterStatus !== voipRegisterStatus) {
+			return true;
+		}
+
 		return false;
 	}
 
@@ -233,7 +248,8 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	renderNavigation = () => {
-		const { theme } = this.props;
+		const { theme, dispatch, voipRegisterStatus } = this.props;
+
 		return (
 			<>
 				<List.Item
@@ -268,6 +284,13 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					testID='sidebar-settings'
 				/>
 				{this.renderAdmin()}
+				<List.Separator />
+				<List.Item
+					title={VOIP_STATUSES[voipRegisterStatus]}
+					left={() => <List.Icon name='phone' />}
+					disabled={voipRegisterStatus === 'REGISTERING' || voipRegisterStatus === 'UNREGISTERING'}
+					onPress={() => (voipRegisterStatus === 'UNREGISTERED' ? dispatch(register()) : dispatch(unregister()))}
+				/>
 			</>
 		);
 	};
@@ -321,7 +344,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	render() {
-		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
+		const { voipRegisterStatus, user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
 
 		if (!user) {
 			return null;
@@ -350,6 +373,10 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					</TouchableWithoutFeedback>
 
 					{this.renderSupportedVersionsWarn()}
+
+					<List.Separator />
+
+					<Text>{voipRegisterStatus}</Text>
 
 					<List.Separator />
 
@@ -384,7 +411,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	viewStatisticsPermission: state.permissions['view-statistics'] as string[],
 	viewRoomAdministrationPermission: state.permissions['view-room-administration'] as string[],
 	viewUserAdministrationPermission: state.permissions['view-user-administration'] as string[],
-	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting'] as string[]
+	viewPrivilegedSettingPermission: state.permissions['view-privileged-setting'] as string[],
+	voipRegisterStatus: state.voip.registerStatus
 });
 
 export default connect(mapStateToProps)(withActionSheet(withTheme(Sidebar)));
