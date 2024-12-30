@@ -12,11 +12,6 @@ export type VoipGenericSession = {
 	isMuted?: boolean;
 	isHeld?: boolean;
 	error?: { status?: number; reason: string };
-	accept?(): Promise<void>;
-	end?(): void;
-	mute?(mute?: boolean): void;
-	hold?(held?: boolean): void;
-	dtmf?(digit: string): void;
 };
 
 export type VoipOngoingSession = VoipGenericSession & {
@@ -25,10 +20,6 @@ export type VoipOngoingSession = VoipGenericSession & {
 	contact: ContactInfo;
 	isMuted: boolean;
 	isHeld: boolean;
-	end(): void;
-	mute(muted?: boolean): void;
-	hold(held?: boolean): void;
-	dtmf(digit: string): void;
 };
 
 export type VoipIncomingSession = VoipGenericSession & {
@@ -36,22 +27,18 @@ export type VoipIncomingSession = VoipGenericSession & {
 	id: string;
 	contact: ContactInfo;
 	transferedBy: ContactInfo | null;
-	end(): void;
-	accept(): Promise<void>;
 };
 
 export type VoipOutgoingSession = VoipGenericSession & {
 	type: 'OUTGOING';
 	id: string;
 	contact: ContactInfo;
-	end(): void;
 };
 
 export type VoipErrorSession = VoipGenericSession & {
 	type: 'ERROR';
 	contact: ContactInfo;
 	error: { status?: number; reason: string };
-	end(): void;
 };
 
 export type VoipSession = VoipIncomingSession | VoipOngoingSession | VoipOutgoingSession | VoipErrorSession;

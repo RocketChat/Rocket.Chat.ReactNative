@@ -1,12 +1,13 @@
 import { Action } from 'redux';
 
 import { VOIP } from './actionsTypes';
-import { VoipSession } from '../lib/voip/definitions';
+import { VoipSession, VoipState } from '../lib/voip/definitions';
 import { Device } from '../lib/voip/definitions/Device';
 
 type ActionWithPayload<P> = Action<string> & { payload: P };
 
 export type TUpdateSessionAction = ActionWithPayload<VoipSession | null>;
+export type TUpdateStateAction = ActionWithPayload<VoipState | null>;
 export type TIncomingCallAction = ActionWithPayload<{ id: string; number: string }>;
 export type TSendDTMFAction = ActionWithPayload<string>;
 export type TMuteCallAction = ActionWithPayload<boolean>;
@@ -19,6 +20,10 @@ export type TChangeAudioOutputDevice = ActionWithPayload<Device>;
 export type TEndCallAction = Action;
 export type TRegisterAction = Action;
 export type TUnregisterAction = Action;
+export type TCallAction = Action;
+export type TUpdateRegisterStatusAction = ActionWithPayload<'REGISTERED' | 'UNREGISTERED' | 'REGISTERING' | 'UNREGISTERING'>;
+export type TSetupRemoteMediaAction = ActionWithPayload<string>;
+export type TAnswerCallAction = Action;
 
 export type TActionVoip =
 	| TUpdateSessionAction
@@ -30,7 +35,12 @@ export type TActionVoip =
 	| TStartCallAction
 	| TClientErrorAction
 	| TChangeAudioInputDevice
-	| TChangeAudioOutputDevice;
+	| TChangeAudioOutputDevice
+	| TUpdateStateAction
+	| TCallAction
+	| TRegisterAction
+	| TSetupRemoteMediaAction
+	| TAnswerCallAction;
 
 export function initVoip(): Action {
 	return { type: VOIP.INIT };
@@ -44,8 +54,8 @@ export function incomingCall(payload: TIncomingCallAction['payload']): TIncoming
 	return { type: VOIP.INCOMING_CALL, payload };
 }
 
-export function accept(): Action {
-	return { type: VOIP.ACCEPT_CALL };
+export function answerCall(): TAnswerCallAction {
+	return { type: VOIP.ANSWER_CALL };
 }
 
 export function decline(): Action {
@@ -60,7 +70,7 @@ export function unregister(): Action {
 	return { type: VOIP.UNREGISTER };
 }
 
-export function call(payload: TStartCallAction['payload']): TStartCallAction {
+export function startCall(payload: TStartCallAction['payload']): TStartCallAction {
 	return { type: VOIP.START_CALL, payload };
 }
 
@@ -88,10 +98,14 @@ export function updateSession(payload: TUpdateSessionAction['payload']): TUpdate
 	return { type: VOIP.UPDATE_SESSION, payload };
 }
 
-export function changeAudioInputDevice(payload: TChangeAudioInputDevice['payload']): TChangeAudioInputDevice {
-	return { type: VOIP.CHANGE_AUDIO_INPUT_DEVICE, payload };
+export function updateState(payload: TUpdateStateAction['payload']): TUpdateStateAction {
+	return { type: VOIP.UPDATE_STATE, payload };
 }
 
-export function changeAudioOutputDevice(payload: TChangeAudioOutputDevice['payload']): TChangeAudioOutputDevice {
-	return { type: VOIP.CHANGE_AUDIO_OUTPUT_DEVICE, payload };
+export function updateRegisterStatus(payload: TUpdateRegisterStatusAction['payload']): TUpdateRegisterStatusAction {
+	return { type: VOIP.UPDATE_REGISTER_STATUS, payload };
+}
+
+export function setupRemoteMedia(payload: TSetupRemoteMediaAction['payload']): TSetupRemoteMediaAction {
+	return { type: VOIP.SETUP_REMOTE_MEDIA, payload };
 }
