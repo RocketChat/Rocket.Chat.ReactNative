@@ -118,11 +118,12 @@ function* initVoipClient() {
 
 function* attachCallKeepListeners(voipClient: VoipClient) {
 	const channel = eventChannel<TActionVoip>(emit => {
-		RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+		RNCallKeep.addEventListener('answerCall', () => {
+			const sessionId = voipClient.getSessionId();
 			RNCallKeep.backToForeground();
 			voipClient.answer();
-			RNCallKeep.setCurrentCallActive(callUUID);
-			console.log(`anwerCall ${callUUID}`);
+			RNCallKeep.setCurrentCallActive(sessionId);
+			console.log(`anwerCall ${sessionId}`);
 		});
 
 		RNCallKeep.addEventListener('endCall', () => {
@@ -235,11 +236,10 @@ function* attachClientListeners(voipClient: VoipClient) {
 }
 
 function* takeVoipActions(voipClient: VoipClient) {
-	yield takeEvery<TStartCallAction>(VOIP.START_CALL, ({ payload: number }) => {
-		voipClient.call(number).then(() => {
-			const session = voipClient.getSession() as VoipOutgoingSession;
-			RNCallKeep.startCall(session.id, number, number, 'number', false);
-		});
+	yield takeEvery<TStartCallAction>(VOIP.START_CALL, async ({ payload: number }) => {
+		await voipClient.call(number);
+		console.log(`STARTING CALL ${voipClient.getSessionId()}`);
+		RNCallKeep.startCall(voipClient.getSessionId(), number, number, 'number', false);
 	});
 
 	yield takeEvery<TEndCallAction>(VOIP.END_CALL, () => {

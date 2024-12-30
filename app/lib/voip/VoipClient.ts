@@ -612,6 +612,14 @@ class VoipClient {
 		return null;
 	}
 
+	public getSessionId(): string {
+		if (!this.session?.dialog) {
+			throw Error('no active call');
+		}
+
+		return this.session.dialog.id.substring(0, 36); // UUID
+	}
+
 	public getSession(): VoipSession | null {
 		const type = this.getSessionType();
 
@@ -634,7 +642,7 @@ class VoipClient {
 
 				return {
 					type,
-					id: this.session.id,
+					id: this.getSessionId(),
 					contact: this.getContactInfo() as ContactInfo,
 					transferedBy: this.getReferredBy(),
 					isMuted: this.isMuted(),
