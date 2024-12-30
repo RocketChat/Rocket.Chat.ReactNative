@@ -21,6 +21,18 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
+    <!-- permissions related to voip -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!-- <uses-permission android:name="android.permission.MANAGE_OWN_CALLS" /> -->
+    <!-- <uses-permission android:name="android.permission.CALL_PHONE" /> -->
+    <uses-feature android:name="android.hardware.audio.output" />
+    <uses-feature android:name="android.hardware.microphone" />
+
     <application
         android:name="chat.rocket.reactnative.MainApplication"
         android:allowBackup="false"
@@ -77,6 +89,19 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+
+        <service android:name="io.wazo.callkeep.VoiceConnectionService"
+            android:label="Wazo"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+            android:exported="true"
+            android:foregroundServiceType="microphone"
+            >
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
+
+        <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" />
     </application>
 
     <queries>

@@ -116,7 +116,7 @@
 	<dict>
 			<key>NSExceptionDomains</key>
 			<dict>
-					<key>tc-freeswitch.dev.rocket.chat</key>
+					<key>voip-cert.dev.rocket.chat</key>
 					<dict>
 							<!--Include to allow subdomains-->
 							<key>NSIncludesSubdomains</key>
