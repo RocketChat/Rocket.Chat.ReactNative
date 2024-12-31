@@ -1,11 +1,11 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
-import { MarkdownAST, parse } from '@rocket.chat/message-parser';
+import { MarkdownAST } from '@rocket.chat/message-parser';
 
 import NewMarkdown from './new';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { TSupportedThemes } from '../../theme';
 
 export { default as MarkdownPreview } from './Preview';
 
@@ -37,49 +37,39 @@ interface IMarkdownProps {
 //	module.exports = require('./dist/messageParser.production.js');
 //  }
 
-class Markdown extends PureComponent<IMarkdownProps, any> {
-	constructor(props: IMarkdownProps) {
-		super(props);
+// to do: fix webpack issue on @rocket.chat/message-parser;
+// to investigate: sometimes the order of messages change;
+
+const Markdown: React.FC<IMarkdownProps> = ({
+	msg,
+	md,
+	mentions,
+	channels,
+	navToRoomInfo,
+	useRealName,
+	username = '',
+	getCustomEmoji,
+	onLinkPress,
+	isTranslated
+}: IMarkdownProps) => {
+	if (!msg) {
+		return null;
 	}
-
-	get isNewMarkdown(): boolean {
-		const { md } = this.props;
-		return !!md;
+	if (!isTranslated) {
+		return (
+			<NewMarkdown
+				username={username}
+				getCustomEmoji={getCustomEmoji}
+				useRealName={useRealName}
+				tokens={md}
+				mentions={mentions}
+				channels={channels}
+				navToRoomInfo={navToRoomInfo}
+				onLinkPress={onLinkPress}
+			/>
+		);
 	}
+	return null;
+};
 
-	render() {
-		const {
-			msg,
-			md,
-			mentions,
-			channels,
-			navToRoomInfo,
-			useRealName,
-			username = '',
-			getCustomEmoji,
-			onLinkPress,
-			isTranslated
-		} = this.props;
-
-		if (!msg) {
-			return null;
-		}
-		if (!isTranslated) {
-			const tokens = md ?? parse(msg);
-			return (
-				<NewMarkdown
-					username={username}
-					getCustomEmoji={getCustomEmoji}
-					useRealName={useRealName}
-					tokens={tokens}
-					mentions={mentions}
-					channels={channels}
-					navToRoomInfo={navToRoomInfo}
-					onLinkPress={onLinkPress}
-				/>
-			);
-		}
-	}
-}
-
-export default withTheme(Markdown);
+export default Markdown;
