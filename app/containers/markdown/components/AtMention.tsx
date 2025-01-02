@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
-import { useTheme } from '../../theme';
-import { themes } from '../../lib/constants';
-import styles from './styles';
-import { events, logEvent } from '../../lib/methods/helpers/log';
-import { IUserMention } from './interfaces';
+import { useTheme } from '../../../theme';
+import { themes } from '../../../lib/constants';
+import styles from '../styles';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { IUserMention } from '../interfaces';
 
 interface IAtMention {
 	mention: string;

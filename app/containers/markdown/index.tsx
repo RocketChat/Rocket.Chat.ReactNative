@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import { MarkdownAST, parse } from '@rocket.chat/message-parser';
 
-import Body from './new';
+import Body from './components';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { TSupportedThemes } from '../../theme';

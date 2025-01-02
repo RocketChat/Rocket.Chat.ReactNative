@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
-import Hashtag from '../Hashtag';
-import AtMention from '../AtMention';
+import Hashtag from './Hashtag';
+import AtMention from './AtMention';
 import styles from '../styles';
 import Link from './Link';
 import Plain from './Plain';
