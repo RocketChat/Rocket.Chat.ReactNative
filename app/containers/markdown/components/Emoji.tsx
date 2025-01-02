@@ -11,9 +11,10 @@ import MarkdownContext from './MarkdownContext';
 interface IEmojiProps {
 	block: EmojiProps;
 	isBigEmoji?: boolean;
+	style?: object;
 }
 
-const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
+const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 
@@ -28,7 +29,8 @@ const Emoji = ({ block, isBigEmoji }: IEmojiProps) => {
 		return <CustomEmoji style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
 	}
 	return (
-		<Text style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text]}>
+		<Text
+			style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text, style]}>
 			{emojiUnicode}
 		</Text>
 	);
