@@ -1,8 +1,6 @@
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
-
 export interface IAvatar {
 	server?: string;
 	style?: ViewStyle;
@@ -16,7 +14,6 @@ export interface IAvatar {
 	userId?: string;
 	token?: string;
 	onPress?: () => void;
-	getCustomEmoji?: TGetCustomEmoji;
 	avatarETag?: string;
 	isStatic?: boolean | string;
 	rid?: string;

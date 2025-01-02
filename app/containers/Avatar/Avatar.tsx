@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/components/Emoji';
@@ -18,7 +19,6 @@ const Avatar = React.memo(
 		token,
 		onPress,
 		emoji,
-		getCustomEmoji,
 		avatarETag,
 		isStatic,
 		rid,

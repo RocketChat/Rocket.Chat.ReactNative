@@ -38,7 +38,6 @@ const AvatarWithEdit = ({
 	type,
 	children,
 	onPress,
-	getCustomEmoji,
 	isStatic,
 	rid,
 	handleEdit
@@ -61,7 +60,6 @@ const AvatarWithEdit = ({
 				type={type}
 				children={children}
 				onPress={onPress}
-				getCustomEmoji={getCustomEmoji}
 				isStatic={isStatic}
 				rid={rid}
 			/>

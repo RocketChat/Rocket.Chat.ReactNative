@@ -1,4 +1,4 @@
-import { previewFormatText } from '../utils/previewFormatText';
+import { previewFormatText } from './previewFormatText';
 
 describe('Format preview message', () => {
 	test('empty to be empty', () => {

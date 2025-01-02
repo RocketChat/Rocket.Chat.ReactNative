@@ -37,9 +37,7 @@ export const WithETag = () => (
 
 export const WithoutETag = () => <Avatar type='d' text='djorkaeff.alexandre' server={server} size={56} />;
 
-export const Emoji = () => (
-	<Avatar emoji='troll' getCustomEmoji={() => ({ name: 'troll', extension: 'jpg' })} server={server} size={56} />
-);
+export const Emoji = () => <Avatar emoji='troll' server={server} size={56} />;
 
 export const Direct = () => <Avatar text='diego.mello' server={server} type='d' size={56} />;
 
