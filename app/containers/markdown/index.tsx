@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
 import { MarkdownAST, parse } from '@rocket.chat/message-parser';
 
-import Body from './components';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { TSupportedThemes } from '../../theme';
+import Body from './components';
 
 export { default as MarkdownPreview } from './Preview';
 
