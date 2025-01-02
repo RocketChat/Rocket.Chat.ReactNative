@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { MarkdownAST, parse } from '@rocket.chat/message-parser';
 
-import NewMarkdown from './new';
+import Body from './new';
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
 import { TSupportedThemes } from '../../theme';
@@ -30,16 +30,6 @@ interface IMarkdownProps {
 	isTranslated?: boolean;
 }
 
-//	to fix the debug issue on @rocket.chat/message-parser we need to update the archive messageParser.js:
-//	if (process.env.NODE_ENV === 'production') {
-//	module.exports = require('./dist/messageParser.production.js');
-//  } else {
-//	module.exports = require('./dist/messageParser.production.js');
-//  }
-
-// to do: fix webpack issue on @rocket.chat/message-parser;
-// to investigate: sometimes the order of messages change;
-
 const Markdown: React.FC<IMarkdownProps> = ({
 	msg,
 	md,
@@ -56,12 +46,13 @@ const Markdown: React.FC<IMarkdownProps> = ({
 		return null;
 	}
 	if (!isTranslated) {
+		const tokens = md ?? parse(msg);
 		return (
-			<NewMarkdown
+			<Body
 				username={username}
 				getCustomEmoji={getCustomEmoji}
 				useRealName={useRealName}
-				tokens={md}
+				tokens={tokens}
 				mentions={mentions}
 				channels={channels}
 				navToRoomInfo={navToRoomInfo}
