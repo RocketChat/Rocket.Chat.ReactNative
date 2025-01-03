@@ -13,7 +13,6 @@ import {
 	clientError,
 	TAnswerCallAction,
 	TActionVoip,
-	TEndCallAction,
 	TRegisterAction,
 	TStartCallAction,
 	TUnregisterAction,
@@ -22,9 +21,6 @@ import {
 	endCall,
 	updateState
 } from '../actions/voip';
-import { VoipOutgoingSession } from '../lib/voip/definitions';
-
-let voipClient: VoipClient;
 
 function* getWebRtcServers() {
 	const servers = yield* appSelector(state => state.settings.WebRTC_Servers);
@@ -204,8 +200,10 @@ function* attachClientListeners(voipClient: VoipClient) {
 		});
 
 		voipClient.on('callterminated', () => {
+			RNCallKeep.backToForeground();
 			RNCallKeep.endAllCalls();
-			emit(endCall());
+			voipClient.endCall();
+
 			console.log(`ENDING CALL`);
 		});
 
@@ -240,15 +238,6 @@ function* takeVoipActions(voipClient: VoipClient) {
 		RNCallKeep.startCall(voipClient.getSessionId(), number, number, 'number', false);
 	});
 
-	yield takeEvery<TEndCallAction>(VOIP.END_CALL, () => {
-		if (!voipClient.isInCall()) {
-			return;
-		}
-
-		voipClient.endCall();
-		RNCallKeep.endAllCalls();
-	});
-
 	yield takeEvery<TRegisterAction>(VOIP.REGISTER, function* () {
 		yield put(updateRegisterStatus('REGISTERING'));
 		voipClient.register();
@@ -266,7 +255,7 @@ function* takeVoipActions(voipClient: VoipClient) {
 
 function* handleVoipInit() {
 	try {
-		voipClient = yield* initVoipClient();
+		const voipClient = yield* initVoipClient();
 		yield fork(takeVoipActions, voipClient);
 		yield fork(attachClientListeners, voipClient);
 
