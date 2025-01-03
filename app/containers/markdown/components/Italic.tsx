@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Italic as ItalicProps } from '@rocket.chat/message-parser';
 
-import { Bold, Strike, Plain, Link } from './components';
+import Bold from './Bold';
+import Strike from './Strike';
+import Plain from './Plain';
+import Link from './Link';
 
 interface IItalicProps {
 	value: ItalicProps['value'];
