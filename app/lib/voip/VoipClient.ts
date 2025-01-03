@@ -2,6 +2,7 @@
 // import type { IMediaStreamRenderer, SignalingSocketEvents, VoipEvents as CoreVoipEvents } from '@rocket.chat/core-typings';
 // import { type VoIPUserConfiguration } from '@rocket.chat/core-typings';
 // import { Emitter } from '@rocket.chat/emitter';
+import uuid from 'react-native-uuid';
 import type { InvitationAcceptOptions, Message, Referral, Session, SessionInviteOptions } from 'sip.js';
 import {
 	Registerer,
@@ -69,6 +70,8 @@ class VoipClient {
 	private error: SessionError | null = null;
 
 	private contactInfo: ContactInfo | null = null;
+
+	private sessionIds = new Map();
 
 	constructor(private readonly config: VoIPUserConfiguration) {
 		this.emitter = mitt<VoipEvents>();
@@ -144,8 +147,14 @@ class VoipClient {
 		return voip;
 	}
 
+	private storeSessionId(session: Session) {
+		this.sessionIds.set(session.id, uuid.v4());
+	}
+
 	protected initSession(session: Session): void {
 		this.session = session;
+
+		this.storeSessionId(session);
 
 		this.updateContactInfoFromSession(session);
 
@@ -613,11 +622,11 @@ class VoipClient {
 	}
 
 	public getSessionId(): string {
-		if (!this.session?.dialog) {
-			throw Error('no active call');
+		if (!this.session) {
+			throw Error('No active call');
 		}
 
-		return this.session.dialog.id.substring(0, 36); // UUID
+		return this.sessionIds.get(this.session.id);
 	}
 
 	public getSession(): VoipSession | null {
@@ -905,6 +914,7 @@ class VoipClient {
 
 	private onSessionTerminated = (): void => {
 		this.session = undefined;
+		this.sessionIds.clear();
 		this.muted = false;
 		this.held = false;
 		this.remoteStream?.clear();

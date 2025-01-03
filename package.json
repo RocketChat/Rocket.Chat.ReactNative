@@ -127,6 +127,7 @@
 		"react-native-svg": "13.8.0",
 		"react-native-ui-lib": "RocketChat/react-native-ui-lib#7.2.0",
 		"react-native-url-polyfill": "2.0.0",
+		"react-native-uuid": "^2.0.3",
 		"react-native-vector-icons": "9.2.0",
 		"react-native-webrtc": "^124.0.4",
 		"react-native-webview": "11.26.1",
