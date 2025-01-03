@@ -22,7 +22,6 @@ export type TRegisterAction = Action;
 export type TUnregisterAction = Action;
 export type TCallAction = Action;
 export type TUpdateRegisterStatusAction = ActionWithPayload<'REGISTERED' | 'UNREGISTERED' | 'REGISTERING' | 'UNREGISTERING'>;
-export type TSetupRemoteMediaAction = ActionWithPayload<string>;
 export type TAnswerCallAction = Action;
 
 export type TActionVoip =
@@ -39,7 +38,6 @@ export type TActionVoip =
 	| TUpdateStateAction
 	| TCallAction
 	| TRegisterAction
-	| TSetupRemoteMediaAction
 	| TAnswerCallAction;
 
 export function initVoip(): Action {
@@ -104,8 +102,4 @@ export function updateState(payload: TUpdateStateAction['payload']): TUpdateStat
 
 export function updateRegisterStatus(payload: TUpdateRegisterStatusAction['payload']): TUpdateRegisterStatusAction {
 	return { type: VOIP.UPDATE_REGISTER_STATUS, payload };
-}
-
-export function setupRemoteMedia(payload: TSetupRemoteMediaAction['payload']): TSetupRemoteMediaAction {
-	return { type: VOIP.SETUP_REMOTE_MEDIA, payload };
 }

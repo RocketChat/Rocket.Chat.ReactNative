@@ -30,7 +30,7 @@ import type {
 	VoipOutgoingSession
 } from './definitions';
 import LocalStream from './LocalStream';
-import RemoteStream from './RemoteStream';
+import Stream from './Stream';
 import { VoIPUserConfiguration } from './definitions/VoIPUserConfiguration';
 
 export type VoipEvents = Omit<CoreVoipEvents, 'hold' | 'ringing' | 'callestablished' | 'incomingcall'> & {
@@ -59,7 +59,7 @@ class VoipClient {
 
 	public networkEmitter: Emitter<SignalingSocketEvents>;
 
-	private remoteStream: RemoteStream | undefined;
+	private remoteStream: Stream | undefined;
 
 	private held = false;
 
@@ -692,24 +692,8 @@ class VoipClient {
 	}
 
 	private setupRemoteMedia() {
-		// const { peerConnection } = this.sessionDescriptionHandler;
-		// const remoteStream = new MediaStream();
-		// peerConnection?.getReceivers().forEach(receiver => {
-		// 	if (receiver.track) {
-		// 		remoteStream.addTrack(receiver.track as unknown as MediaStreamTrack);
-		// 	}
-		// });
-		// this.remoteStream = new RemoteStream(remoteStream);
 		const { remoteMediaStream } = this.sessionDescriptionHandler;
-		this.remoteStream = new RemoteStream(remoteMediaStream as unknown as MediaStream);
-	}
-
-	public getRemoteStreamURL(): string {
-		if (!this.remoteStream) {
-			throw Error('remote stream not found');
-		}
-
-		return this.remoteStream.getURL() as string;
+		this.remoteStream = new Stream(remoteMediaStream as unknown as MediaStream);
 	}
 
 	private makeURI(calleeURI: string): URI | undefined {

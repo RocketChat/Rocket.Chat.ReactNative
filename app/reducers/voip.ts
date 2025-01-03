@@ -6,12 +6,10 @@ export interface IVoip {
 	state: VoipState;
 	session: VoipSession | null;
 	registerStatus: 'UNREGISTERED' | 'REGISTERED' | 'REGISTERING' | 'UNREGISTERING';
-	remoteStreamUrl: string | undefined;
 }
 
 export const initialState: IVoip = {
 	registerStatus: 'UNREGISTERED',
-	remoteStreamUrl: undefined,
 	session: null,
 	state: {
 		isRegistered: false,
@@ -46,12 +44,6 @@ export default (state = initialState, action: TActionVoip): IVoip => {
 			return {
 				...state,
 				remoteStreamUrl: action.payload
-			};
-		}
-		case VOIP.END_CALL: {
-			return {
-				...state,
-				remoteStreamUrl: undefined
 			};
 		}
 		default:

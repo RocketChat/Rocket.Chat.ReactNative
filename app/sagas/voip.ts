@@ -11,7 +11,6 @@ import { parseStringToIceServers } from '../containers/Voip/utils/parseStringToI
 import { Services } from '../lib/services';
 import {
 	clientError,
-	setupRemoteMedia,
 	TAnswerCallAction,
 	TActionVoip,
 	TEndCallAction,
@@ -175,7 +174,6 @@ function* attachClientListeners(voipClient: VoipClient) {
 
 		voipClient.on('callestablished', session => {
 			RNCallKeep.setCurrentCallActive(session.id);
-			emit(setupRemoteMedia(voipClient.getRemoteStreamURL()));
 			console.log(`ANSWERING CALL ${session.id}`);
 		});
 
