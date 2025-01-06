@@ -34,7 +34,7 @@ const ImageContainer = ({
 	if (msg) {
 		return (
 			<View>
-				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
 				{image}
 			</View>
 		);

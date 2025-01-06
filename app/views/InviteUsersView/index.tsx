@@ -81,7 +81,7 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 
 	const renderExpiration = () => {
 		const expirationMessage = linkExpirationText();
-		return <Markdown msg={expirationMessage} theme={theme} />;
+		return <Markdown msg={expirationMessage} />;
 	};
 
 	return (

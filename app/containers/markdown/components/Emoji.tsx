@@ -6,7 +6,7 @@ import shortnameToUnicode from '../../../lib/methods/helpers/shortnameToUnicode'
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import CustomEmoji from '../../EmojiPicker/CustomEmoji';
-import MarkdownContext from './MarkdownContext';
+import MarkdownContext from '../contexts/MarkdownContext';
 
 interface IEmojiProps {
 	block: EmojiProps;

@@ -13,7 +13,7 @@ import Italic from './Italic';
 import Emoji from './Emoji';
 import InlineCode from './InlineCode';
 import Image from './Image';
-import MarkdownContext from './MarkdownContext';
+import MarkdownContext from '../contexts/MarkdownContext';
 // import { InlineKaTeX, KaTeX } from './Katex';
 
 interface IParagraphProps {

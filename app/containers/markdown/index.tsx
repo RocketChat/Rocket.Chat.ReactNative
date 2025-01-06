@@ -1,18 +1,16 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
-import { MarkdownAST, parse } from '@rocket.chat/message-parser';
+import { Root, parse } from '@rocket.chat/message-parser';
 
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
-import { TSupportedThemes } from '../../theme';
 import Body from './components';
 
-export { default as MarkdownPreview } from './Preview';
+export { default as MarkdownPreview } from './components/Preview';
 
 interface IMarkdownProps {
 	msg?: string | null;
-	theme?: TSupportedThemes;
-	md?: MarkdownAST;
+	md?: Root;
 	mentions?: IUserMention[];
 	getCustomEmoji?: TGetCustomEmoji;
 	username?: string;

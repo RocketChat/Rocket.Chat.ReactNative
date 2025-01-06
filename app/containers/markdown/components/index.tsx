@@ -1,5 +1,5 @@
 import React from 'react';
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import Quote from './Quote';
@@ -11,12 +11,12 @@ import OrderedList from './OrderedList';
 import UnorderedList from './UnorderedList';
 import { IUserMention, IUserChannel, TOnLinkPress } from '../interfaces';
 import TaskList from './TaskList';
-import MarkdownContext from './MarkdownContext';
+import MarkdownContext from '../contexts/MarkdownContext';
 import LineBreak from './LineBreak';
 import { KaTeX } from './Katex';
 
 interface IBodyProps {
-	tokens?: MarkdownAST;
+	tokens?: Root;
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
 	getCustomEmoji?: Function;

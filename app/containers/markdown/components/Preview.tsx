@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text, TextStyle } from 'react-native';
 
-import { themes } from '../../lib/constants';
-import { useTheme } from '../../theme';
-import styles from './styles';
-import { previewFormatText } from './utils/previewFormatText';
+import { themes } from '../../../lib/constants';
+import { useTheme } from '../../../theme';
+import styles from '../styles';
+import { previewFormatText } from '../utils/previewFormatText';
 
 interface IMarkdownPreview {
 	msg?: string;

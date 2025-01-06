@@ -1,5 +1,4 @@
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { parse } from '@rocket.chat/message-parser';
 import { Model } from '@nozbe/watermelondb';
 
 import database from '../database';
@@ -105,7 +104,6 @@ export async function sendMessage(
 			_id: messageId,
 			rid,
 			msg,
-			md: parse(msg),
 			tmid,
 			tshow
 		} as IMessage);
@@ -142,7 +140,6 @@ export async function sendMessage(
 							tm.msg = tMessageRecord.msg;
 							tm.ts = tMessageRecord.ts;
 							tm._updatedAt = messageDate;
-							tm.md = parse(msg);
 							tm.status = messagesStatus.SENT; // Original message was sent already
 							tm.u = tMessageRecord.u;
 							tm.t = message.t;
@@ -163,7 +160,6 @@ export async function sendMessage(
 						}
 						tm.rid = tmid;
 						tm.msg = msg;
-						tm.md = parse(msg);
 						tm.ts = messageDate;
 						tm._updatedAt = messageDate;
 						tm.status = messagesStatus.TEMP;
@@ -194,7 +190,6 @@ export async function sendMessage(
 				m.ts = messageDate;
 				m._updatedAt = messageDate;
 				m.status = messagesStatus.TEMP;
-				m.md = parse(msg);
 				m.u = {
 					_id: user.id || '1',
 					username: user.username,
