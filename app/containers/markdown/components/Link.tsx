@@ -3,9 +3,7 @@ import { Text } from 'react-native';
 import { Link as LinkProps } from '@rocket.chat/message-parser';
 import Clipboard from '@react-native-clipboard/clipboard';
 
-import Bold from './Bold';
-import Italic from './Italic';
-import Strike from './Strike';
+import { Italic, Strike, Bold } from './typographyComponents';
 import I18n from '../../../i18n';
 import { LISTENER } from '../../Toast';
 import { useTheme } from '../../../theme';

@@ -147,8 +147,6 @@ export const Headers = () => (
 		<Markdown msg='## Header 2' theme={theme} />
 		<Markdown msg='### Header 3' theme={theme} />
 		<Markdown msg='#### Header 4' theme={theme} />
-		<Markdown msg='##### Header 5' theme={theme} />
-		<Markdown msg='###### Header 6' theme={theme} />
 	</View>
 );
 
