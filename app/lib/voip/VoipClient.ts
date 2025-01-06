@@ -1,7 +1,3 @@
-/* eslint-disable require-await */
-// import type { IMediaStreamRenderer, SignalingSocketEvents, VoipEvents as CoreVoipEvents } from '@rocket.chat/core-typings';
-// import { type VoIPUserConfiguration } from '@rocket.chat/core-typings';
-// import { Emitter } from '@rocket.chat/emitter';
 import uuid from 'react-native-uuid';
 import type { InvitationAcceptOptions, Message, Referral, Session, SessionInviteOptions } from 'sip.js';
 import {
@@ -29,7 +25,6 @@ import type {
 	VoipOngoingSession,
 	VoipOutgoingSession
 } from './definitions';
-import LocalStream from './LocalStream';
 import Stream from './Stream';
 import { VoIPUserConfiguration } from './definitions/VoIPUserConfiguration';
 
@@ -290,7 +285,7 @@ class VoipClient {
 		return this.session.reject();
 	};
 
-	public endCall = async (): Promise<OutgoingByeRequest | void> => {
+	endCall(): Promise<OutgoingByeRequest | void> {
 		if (!this.session) {
 			return Promise.reject(new Error('No active call.'));
 		}
@@ -317,7 +312,7 @@ class VoipClient {
 		}
 
 		return Promise.resolve();
-	};
+	}
 
 	public setMute = async (mute: boolean): Promise<void> => {
 		if (this.muted === mute) {
@@ -450,7 +445,7 @@ class VoipClient {
 		return this.session.info({ requestOptions }).then(() => undefined);
 	};
 
-	private async attemptReconnection(reconnectionAttempt = 0, checkRegistration = false): Promise<void> {
+	private attemptReconnection(reconnectionAttempt = 0, checkRegistration = false) {
 		const { connectionRetryCount } = this.config;
 
 		if (!this.userAgent) {
@@ -470,40 +465,6 @@ class VoipClient {
 			});
 		}, reconnectionDelay * 1000);
 	}
-
-	public async changeAudioInputDevice(constraints: MediaStreamConstraints): Promise<boolean> {
-		if (!this.session) {
-			console.warn('changeAudioInputDevice() : No session.');
-			return false;
-		}
-
-		const newStream = await LocalStream.requestNewStream(constraints, this.session);
-
-		if (!newStream) {
-			console.warn('changeAudioInputDevice() : Unable to get local stream.');
-			return false;
-		}
-
-		const { peerConnection } = this.sessionDescriptionHandler;
-
-		if (!peerConnection) {
-			console.warn('changeAudioInputDevice() : No peer connection.');
-			return false;
-		}
-
-		LocalStream.replaceTrack(peerConnection, newStream, 'audio');
-		return true;
-	}
-
-	// public switchMediaRenderer(mediaRenderer: IMediaStreamRenderer): void {
-	// 	if (!this.remoteStream) {
-	// 		return;
-	// 	}
-
-	// 	// this.mediaStreamRendered = mediaRenderer;
-	// 	// this.remoteStream.init(mediaRenderer.remoteMediaElement);
-	// 	this.remoteStream.play();
-	// }
 
 	private setContactInfo(contact: ContactInfo) {
 		this.contactInfo = contact;
@@ -856,7 +817,7 @@ class VoipClient {
 		this.sendInvite(referral.makeInviter());
 	};
 
-	private onMessageReceived = async (message: Message): Promise<void> => {
+	private onMessageReceived = (message: Message) => {
 		if (!message.request.hasHeader('X-Message-Type')) {
 			message.reject();
 			return;
