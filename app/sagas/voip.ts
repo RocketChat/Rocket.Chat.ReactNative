@@ -7,18 +7,16 @@ import { call, take } from 'typed-redux-saga';
 import { VOIP } from '../actions/actionsTypes';
 import VoipClient from '../lib/voip/VoipClient';
 import { appSelector } from '../lib/hooks';
-import { parseStringToIceServers } from '../containers/Voip/utils/parseStringToIceServers';
+import { parseStringToIceServers } from '../lib/voip/utils';
 import { Services } from '../lib/services';
 import {
 	clientError,
-	TAnswerCallAction,
 	TActionVoip,
 	TRegisterAction,
 	TStartCallAction,
 	TUnregisterAction,
 	updateRegisterStatus,
 	updateSession,
-	endCall,
 	updateState
 } from '../actions/voip';
 
@@ -122,7 +120,8 @@ function* attachCallKeepListeners(voipClient: VoipClient) {
 		});
 
 		RNCallKeep.addEventListener('endCall', () => {
-			emit(endCall());
+			RNCallKeep.backToForeground();
+			voipClient.endCall();
 		});
 
 		RNCallKeep.addEventListener('didPerformSetMutedCallAction', ({ muted }) => {
@@ -164,13 +163,13 @@ function* attachClientListeners(voipClient: VoipClient) {
 		});
 
 		voipClient.on('incomingcall', session => {
-			RNCallKeep.displayIncomingCall(session.id, session.contact.id, session.contact.name || 'Unknown', 'number', false);
 			console.log(`INCOMING CALL ${session.id}`);
+			RNCallKeep.displayIncomingCall(session.id, session.contact.id, session.contact.name || 'Unknown', 'number', false);
 		});
 
 		voipClient.on('callestablished', session => {
-			RNCallKeep.setCurrentCallActive(session.id);
 			console.log(`ANSWERING CALL ${session.id}`);
+			RNCallKeep.setCurrentCallActive(session.id);
 		});
 
 		voipClient.on('registered', () => {
@@ -183,14 +182,6 @@ function* attachClientListeners(voipClient: VoipClient) {
 			emit(updateRegisterStatus('UNREGISTERED'));
 		});
 
-		voipClient.on('registrationerror', e => {
-			console.log(e as string);
-		});
-
-		voipClient.on('callfailed', e => {
-			console.log(e as string);
-		});
-
 		voipClient.on('mute', ({ muted, session }) => {
 			RNCallKeep.setMutedCall(session.id, muted);
 		});
@@ -200,11 +191,10 @@ function* attachClientListeners(voipClient: VoipClient) {
 		});
 
 		voipClient.on('callterminated', () => {
+			console.log(`ENDING CALL`);
 			RNCallKeep.backToForeground();
 			RNCallKeep.endAllCalls();
 			voipClient.endCall();
-
-			console.log(`ENDING CALL`);
 		});
 
 		return () => {
@@ -246,10 +236,6 @@ function* takeVoipActions(voipClient: VoipClient) {
 	yield takeEvery<TUnregisterAction>(VOIP.UNREGISTER, function* () {
 		yield put(updateRegisterStatus('UNREGISTERING'));
 		voipClient.unregister();
-	});
-
-	yield takeEvery<TAnswerCallAction>(VOIP.ANSWER_CALL, () => {
-		voipClient.answer();
 	});
 }
 

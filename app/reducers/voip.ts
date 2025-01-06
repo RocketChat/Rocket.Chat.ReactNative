@@ -40,12 +40,6 @@ export default (state = initialState, action: TActionVoip): IVoip => {
 				...state,
 				registerStatus: action.payload
 			};
-		case VOIP.SETUP_REMOTE_MEDIA: {
-			return {
-				...state,
-				remoteStreamUrl: action.payload
-			};
-		}
 		default:
 			return state;
 	}

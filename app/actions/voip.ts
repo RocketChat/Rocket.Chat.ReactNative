@@ -2,43 +2,28 @@ import { Action } from 'redux';
 
 import { VOIP } from './actionsTypes';
 import { VoipSession, VoipState } from '../lib/voip/definitions';
-import { Device } from '../lib/voip/definitions/Device';
 
-type ActionWithPayload<P> = Action<string> & { payload: P };
+type ActionWithPayload<T = string, P = {}> = Action<T> & { payload: P };
 
-export type TUpdateSessionAction = ActionWithPayload<VoipSession | null>;
-export type TUpdateStateAction = ActionWithPayload<VoipState | null>;
-export type TIncomingCallAction = ActionWithPayload<{ id: string; number: string }>;
-export type TSendDTMFAction = ActionWithPayload<string>;
-export type TMuteCallAction = ActionWithPayload<boolean>;
-export type THoldCallAction = ActionWithPayload<boolean>;
-export type TTransferCallAction = ActionWithPayload<string>;
-export type TStartCallAction = ActionWithPayload<string>;
-export type TClientErrorAction = ActionWithPayload<string>;
-export type TChangeAudioInputDevice = ActionWithPayload<Device>;
-export type TChangeAudioOutputDevice = ActionWithPayload<Device>;
-export type TEndCallAction = Action;
-export type TRegisterAction = Action;
-export type TUnregisterAction = Action;
-export type TCallAction = Action;
-export type TUpdateRegisterStatusAction = ActionWithPayload<'REGISTERED' | 'UNREGISTERED' | 'REGISTERING' | 'UNREGISTERING'>;
-export type TAnswerCallAction = Action;
+export type TUpdateSessionAction = ActionWithPayload<'VOIP_UPDATE_SESSION', VoipSession | null>;
+
+export type TUpdateStateAction = ActionWithPayload<'VOIP_UPDATE_STATE', VoipState | null>;
+export type TStartCallAction = ActionWithPayload<'VOIP_START_CALL', string>;
+export type TClientErrorAction = ActionWithPayload<'VOIP_CLIENT_ERROR', string>;
+export type TRegisterAction = Action<'VOIP_REGISTER'>;
+export type TUnregisterAction = Action<'VOIP_UNREGISTER'>;
+export type TUpdateRegisterStatusAction = ActionWithPayload<
+	'VOIP_UPDATE_REGISTER_STATUS',
+	'REGISTERED' | 'UNREGISTERED' | 'REGISTERING' | 'UNREGISTERING'
+>;
 
 export type TActionVoip =
 	| TUpdateSessionAction
-	| TIncomingCallAction
-	| TSendDTMFAction
-	| TMuteCallAction
-	| THoldCallAction
-	| TTransferCallAction
 	| TStartCallAction
 	| TClientErrorAction
-	| TChangeAudioInputDevice
-	| TChangeAudioOutputDevice
 	| TUpdateStateAction
-	| TCallAction
 	| TRegisterAction
-	| TAnswerCallAction;
+	| TUpdateRegisterStatusAction;
 
 export function initVoip(): Action {
 	return { type: VOIP.INIT };
@@ -46,18 +31,6 @@ export function initVoip(): Action {
 
 export function clientError(payload: string): TClientErrorAction {
 	return { type: VOIP.CLIENT_ERROR, payload };
-}
-
-export function incomingCall(payload: TIncomingCallAction['payload']): TIncomingCallAction {
-	return { type: VOIP.INCOMING_CALL, payload };
-}
-
-export function answerCall(): TAnswerCallAction {
-	return { type: VOIP.ANSWER_CALL };
-}
-
-export function decline(): Action {
-	return { type: VOIP.DECLINE_CALL };
 }
 
 export function register(): Action {
@@ -70,26 +43,6 @@ export function unregister(): Action {
 
 export function startCall(payload: TStartCallAction['payload']): TStartCallAction {
 	return { type: VOIP.START_CALL, payload };
-}
-
-export function endCall(): TEndCallAction {
-	return { type: VOIP.END_CALL };
-}
-
-export function sendDtmf(payload: TSendDTMFAction['payload']): TSendDTMFAction {
-	return { type: VOIP.SEND_DTMF, payload };
-}
-
-export function mute(payload: TMuteCallAction['payload']): TMuteCallAction {
-	return { type: VOIP.MUTE_CALL, payload };
-}
-
-export function hold(payload: THoldCallAction['payload']): THoldCallAction {
-	return { type: VOIP.HOLD_CALL, payload };
-}
-
-export function transfer(payload: TTransferCallAction['payload']): TTransferCallAction {
-	return { type: VOIP.HOLD_CALL, payload };
 }
 
 export function updateSession(payload: TUpdateSessionAction['payload']): TUpdateSessionAction {
