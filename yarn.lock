@@ -11892,11 +11892,6 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-native-a11y-order@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-a11y-order/-/react-native-a11y-order-0.2.2.tgz#cefefa851acb06c35708dfa44159a9ca6541b3ae"
-  integrity sha512-njUSURENgSqIcH6T6bZ1NWngb3lsqHCgkS8cUQqid7cGw6JwurMiHuuSRyRAiZZKubKUF5nML099F4mUHGeX+Q==
-
 react-native-animatable@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
