@@ -13,7 +13,7 @@ import sharedStyles from '../../views/Styles';
 
 const styles = StyleSheet.create({
 	editAvatarButton: {
-		marginTop: 8,
+		marginTop: 16,
 		paddingVertical: 8,
 		paddingHorizontal: 12,
 		marginBottom: 0,
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
 
 interface IAvatarContainer extends Omit<IAvatar, 'size'> {
 	handleEdit?: () => void;
+	editAccessibilityLabel?: string;
 }
 
 const AvatarWithEdit = ({
@@ -41,7 +42,8 @@ const AvatarWithEdit = ({
 	getCustomEmoji,
 	isStatic,
 	rid,
-	handleEdit
+	handleEdit,
+	editAccessibilityLabel
 }: IAvatarContainer): React.ReactElement => {
 	const { colors } = useTheme();
 
@@ -67,6 +69,7 @@ const AvatarWithEdit = ({
 			/>
 			{handleEdit && serverVersion && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.6.0') ? (
 				<Button
+					accessibilityLabel={editAccessibilityLabel}
 					title={I18n.t('Edit')}
 					type='secondary'
 					onPress={handleEdit}
