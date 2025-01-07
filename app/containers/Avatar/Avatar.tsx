@@ -9,7 +9,6 @@ import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/components/Emoji';
 import { IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
-import { store } from '../../lib/store/auxStore';
 
 const Avatar = React.memo(
 	({
@@ -32,7 +31,8 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
-		cdnPrefix
+		cdnPrefix,
+		getCustomEmoji
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
@@ -46,21 +46,14 @@ const Avatar = React.memo(
 
 		let image;
 		if (emoji) {
-			const getCustomEmoji = () => {
-				if (process.env.STORYBOOK_ENABLED) {
-					return { name: 'troll', extension: 'jpg' };
-				}
-				const customEmojis = store?.getState()?.customEmojis;
-				const customEmoji = customEmojis[emoji];
-				if (customEmoji) {
-					return customEmoji;
-				}
-				return null;
+			const getStorybookCustomEmoji = () => {
+				return { name: 'troll', extension: 'jpg' };
 			};
+
 			image = (
 				<MarkdownContext.Provider
 					value={{
-						getCustomEmoji
+						getCustomEmoji: process.env.USE_STORYBOOK ? getStorybookCustomEmoji : getCustomEmoji
 					}}>
 					<Emoji block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }} style={avatarStyle} />
 				</MarkdownContext.Provider>
