@@ -46,9 +46,7 @@ const Avatar = React.memo(
 
 		let image;
 		if (emoji) {
-			const getStorybookCustomEmoji = () => {
-				return { name: 'troll', extension: 'jpg' };
-			};
+			const getStorybookCustomEmoji = () => ({ name: 'troll', extension: 'jpg' });
 
 			image = (
 				<MarkdownContext.Provider
