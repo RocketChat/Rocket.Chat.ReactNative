@@ -47,7 +47,7 @@ const Avatar = React.memo(
 		let image;
 		if (emoji) {
 			const getCustomEmoji = () => {
-				if (!process.env.STORYBOOK_ENABLED) {
+				if (process.env.STORYBOOK_ENABLED) {
 					return { name: 'troll', extension: 'jpg' };
 				}
 				const customEmojis = store?.getState()?.customEmojis;
