@@ -26,7 +26,7 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const emoji = getCustomEmoji?.(block.value?.value);
 
 	if (emoji) {
-		return <CustomEmoji style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji]} emoji={emoji} />;
+		return <CustomEmoji style={[isBigEmoji ? styles.customEmojiBig : styles.customEmoji, style]} emoji={emoji} />;
 	}
 	return (
 		<Text
