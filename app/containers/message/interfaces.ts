@@ -102,11 +102,11 @@ export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | '
 
 export interface IMessageInner
 	extends IMessageContent,
-		IMessageCallButton,
-		IMessageBlocks,
-		IMessageThread,
-		IMessageAttachments,
-		IMessageBroadcast {
+	IMessageCallButton,
+	IMessageBlocks,
+	IMessageThread,
+	IMessageAttachments,
+	IMessageBroadcast {
 	type: MessageType;
 	blocks: [];
 	urls?: IUrl[];

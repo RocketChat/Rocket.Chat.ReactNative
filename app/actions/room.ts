@@ -55,13 +55,13 @@ export interface IRoomHistoryFinished extends Action {
 }
 
 export type TActionsRoom = TSubscribeRoom &
-	TUnsubscribeRoom &
-	ILeaveRoom &
-	IDeleteRoom &
-	IForwardRoom &
-	IUserTyping &
-	IRoomHistoryRequest &
-	IRoomHistoryFinished;
+TUnsubscribeRoom &
+ILeaveRoom &
+IDeleteRoom &
+IForwardRoom &
+IUserTyping &
+IRoomHistoryRequest &
+IRoomHistoryFinished;
 
 export function subscribeRoom(rid: string): TSubscribeRoom {
 	return {

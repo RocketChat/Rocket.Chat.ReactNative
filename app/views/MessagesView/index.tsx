@@ -45,8 +45,8 @@ interface IMessagesViewProps {
 	};
 	baseUrl: string;
 	navigation: CompositeNavigationProp<
-		NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
-		NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
+	NativeStackNavigationProp<ChatsStackParamList, 'MessagesView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'MessagesView'>;
 	customEmojis: { [key: string]: ICustomEmoji };

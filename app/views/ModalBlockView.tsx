@@ -63,7 +63,7 @@ interface IModalBlockViewProps {
 }
 
 // eslint-disable-next-line no-sequences
-Object.fromEntries = Object.fromEntries || ((arr: any[]) => arr.reduce((acc, [k, v]) => ((acc[k] = v), acc), {}));
+Object.fromEntries = Object.fromEntries || ((arr: any[]) => arr.reduce((acc, [k, v]) => (acc[k] = v, acc), {}));
 const groupStateByBlockIdMap = (obj: any, [key, { blockId, value }]: TElementToState) => {
 	obj[blockId] = obj[blockId] || {};
 	obj[blockId][key] = value;
@@ -147,16 +147,16 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 			title: textParser([title]),
 			headerLeft: close
 				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
-						</HeaderButton.Container>
+					<HeaderButton.Container>
+						<HeaderButton.Item title={textParser([close.text])} onPress={this.cancel} testID='close-modal-uikit' />
+					</HeaderButton.Container>
 				  )
 				: undefined,
 			headerRight: submit
 				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
-						</HeaderButton.Container>
+					<HeaderButton.Container>
+						<HeaderButton.Item title={textParser([submit.text])} onPress={this.submit} testID='submit-modal-uikit' />
+					</HeaderButton.Container>
 				  )
 				: undefined
 		});

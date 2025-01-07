@@ -18,12 +18,12 @@ export interface IVideoConfGenericAction extends Action {
 }
 
 export type TActionVideoConf = IHandleVideoConfIncomingWebsocketMessages &
-	IVideoConfGenericAction &
-	TSetCallingAction &
-	Action &
-	TInitCallAction &
-	TCancelCallAction &
-	TAcceptCallAction;
+IVideoConfGenericAction &
+TSetCallingAction &
+Action &
+TInitCallAction &
+TCancelCallAction &
+TAcceptCallAction;
 
 export function handleVideoConfIncomingWebsocketMessages(data: any): IHandleVideoConfIncomingWebsocketMessages {
 	return {

@@ -589,7 +589,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				await RoomServices.getMessages({
 					rid: room.rid,
 					t: room.t as RoomType,
-					...('lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {})
+					...'lastOpen' in room && room.lastOpen ? { lastOpen: room.lastOpen } : {}
 				});
 
 				// if room is joined
@@ -1457,7 +1457,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={ref => this.messageActions = ref}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1469,7 +1469,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions ref={ref => this.messageErrorActions = ref} tmid={this.tmid} />
 			</>
 		);
 	};

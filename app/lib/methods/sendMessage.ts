@@ -75,7 +75,7 @@ export async function resendMessage(message: TMessageModel, tmid?: string) {
 			_id: message.id,
 			rid: message.subscription ? message.subscription.id : '',
 			msg: message.msg,
-			...(tmid && { tmid })
+			...tmid && { tmid }
 		} as IMessage);
 
 		await sendMessageCall(m);

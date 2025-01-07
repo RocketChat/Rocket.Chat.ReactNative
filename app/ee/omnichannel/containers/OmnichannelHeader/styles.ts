@@ -18,6 +18,6 @@ export default StyleSheet.create({
 		fontSize: 12
 	},
 	actionIndicator: {
-		...(I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {})
+		...I18nManager.isRTL ? { transform: [{ rotate: '180deg' }] } : {}
 	}
 });

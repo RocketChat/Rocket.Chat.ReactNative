@@ -50,7 +50,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 	const items = options.map(option => ({ label: textParser([option.text]), value: option.value }));
 	const pickerStyle = {
 		...styles.viewContainer,
-		...(isIOS ? styles.iosPadding : {}),
+		...isIOS ? styles.iosPadding : {},
 		borderColor: themes[theme].strokeLight,
 		backgroundColor: themes[theme].surfaceRoom
 	};

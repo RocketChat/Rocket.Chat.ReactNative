@@ -23,8 +23,8 @@ import { Services } from '../../lib/services';
 import KeyboardView from '../../containers/KeyboardView';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
-	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
-	NativeStackNavigationProp<MasterDetailInsideStackParamList>
+NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
+NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TReportUserViewRouteProp = RouteProp<ChatsStackParamList, 'ReportUserView'>;

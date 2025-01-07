@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { Keyboard, ScrollView, TextInput, View } from 'react-native';
+import { Keyboard, ScrollView, TextInput, View, Alert } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
@@ -79,7 +79,14 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	private newPassword?: TextInput | null;
 	private nickname?: TextInput | null;
 	private bio?: TextInput | null;
-	private focusListener = () => {};
+	private focusListener : () =>void=()=> {};
+	private beforeRemoveListener : () => void=()=>{};
+	
+	
+	constructor(props: IProfileViewProps) {
+		super(props);
+		this.setHeader();
+	}
 
 	setHeader = () => {
 		const { navigation, isMasterDetail } = this.props;
@@ -96,10 +103,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		navigation.setOptions(options);
 	};
 
-	constructor(props: IProfileViewProps) {
-		super(props);
-		this.setHeader();
-	}
+
 
 	state: IProfileViewState = {
 		saving: false,
@@ -115,13 +119,38 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	componentDidMount() {
+		const { navigation } = this.props;
 		this.focusListener = this.props.navigation.addListener('focus', () => {
 			this.init();
 		});
-	}
+		this.beforeRemoveListener = navigation.addListener('beforeRemove', (e) => {
+			if (!this.formIsChanged()) {
+				// If there are no unsaved changes, don't block navigation
+				return;
+			}
+			// Prevent default navigation action
+			e.preventDefault();
+		 // Show a confirmation dialog
+		 Alert.alert(
+				'Unsaved Changes',
+				'You have unsaved changes. Do you want to discard them and leave?',
+				[
+					{ text: 'Cancel', style: 'cancel', onPress: () => {} },
+					{
+						text: 'Discard',
+						style: 'destructive',
+						// Navigate anyway
+						onPress: () => navigation.dispatch(e.data.action)
+					}
+				]
+			);
+		});
+	}	
+	
 
 	componentWillUnmount() {
 		this.focusListener();
+		this.beforeRemoveListener();
 	}
 
 	init = (user?: IUser) => {
@@ -237,8 +266,8 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		try {
 			const twoFactorOptions = params.currentPassword
 				? {
-						twoFactorCode: params.currentPassword,
-						twoFactorMethod: TwoFactorMethods.PASSWORD
+					twoFactorCode: params.currentPassword,
+					twoFactorMethod: TwoFactorMethods.PASSWORD
 				  }
 				: null;
 
@@ -449,7 +478,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowRealNameChange}
 							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
-							inputRef={e => (this.name = e)}
+							inputRef={e => this.name = e}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							value={name}
@@ -462,7 +491,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowUsernameChange}
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
-							inputRef={e => (this.username = e)}
+							inputRef={e => this.username = e}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
 							value={username}
@@ -475,7 +504,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowEmailChange}
 							inputStyle={[!Accounts_AllowEmailChange && styles.disabled]}
-							inputRef={e => (this.email = e)}
+							inputRef={e => this.email = e}
 							label={I18n.t('Email')}
 							placeholder={I18n.t('Email')}
 							value={email || undefined}
@@ -487,7 +516,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<FormTextInput
-								inputRef={e => (this.nickname = e)}
+								inputRef={e => this.nickname = e}
 								label={I18n.t('Nickname')}
 								value={nickname}
 								onChangeText={value => this.setState({ nickname: value })}
@@ -500,7 +529,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						) : null}
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.1.0') ? (
 							<FormTextInput
-								inputRef={e => (this.bio = e)}
+								inputRef={e => this.bio = e}
 								label={I18n.t('Bio')}
 								inputStyle={styles.inputBio}
 								multiline
@@ -516,7 +545,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 						<FormTextInput
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							inputRef={e => (this.newPassword = e)}
+							inputRef={e => this.newPassword = e}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							value={newPassword || undefined}

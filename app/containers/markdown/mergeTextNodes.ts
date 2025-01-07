@@ -5,7 +5,7 @@ export default function mergeTextNodes(ast: any) {
 	const walker = ast.walker();
 	let event;
 	// eslint-disable-next-line no-cond-assign
-	while ((event = walker.next())) {
+	while (event = walker.next()) {
 		const { entering, node } = event;
 		const { type } = node;
 		if (entering && type === 'text') {

@@ -29,7 +29,7 @@ describe('getMentionRegexpUser', function () {
 	});
 
 	test('removing query text on user suggestion autocomplete (special characters in query)', () => {
-		const message = "Hey @'=test123";
+		const message = 'Hey @\'=test123';
 		expect(message.replace(regexp, '')).toBe('Hey @');
 	});
 });
