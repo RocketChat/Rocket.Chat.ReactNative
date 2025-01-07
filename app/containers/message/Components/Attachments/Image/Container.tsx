@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { View } from 'react-native';
 
-import { useTheme } from '../../../../../theme';
 import Markdown from '../../../../markdown';
 import { useMediaAutoDownload } from '../../../hooks/useMediaAutoDownload';
 import { Button } from './Button';
@@ -20,7 +19,6 @@ const ImageContainer = ({
 	msg
 }: IImageContainer): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
-	const { theme } = useTheme();
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const image = (

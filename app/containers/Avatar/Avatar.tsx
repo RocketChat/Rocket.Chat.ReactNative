@@ -3,11 +3,12 @@ import { View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import Emoji from '../markdown/components/Emoji';
 import { IAvatar } from './interfaces';
-import MarkdownContext from '../../containers/markdown/contexts/MarkdownContext';
+import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import { store } from '../../lib/store/auxStore';
 
 const Avatar = React.memo(
@@ -59,7 +60,7 @@ const Avatar = React.memo(
 			image = (
 				<MarkdownContext.Provider
 					value={{
-						getCustomEmoji: getCustomEmoji
+						getCustomEmoji
 					}}>
 					<Emoji block={{ type: 'EMOJI', value: { type: 'PLAIN_TEXT', value: emoji }, shortCode: emoji }} style={avatarStyle} />
 				</MarkdownContext.Provider>

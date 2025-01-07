@@ -82,7 +82,7 @@ const Video = ({
 	msg
 }: IMessageVideo): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const _onPress = async () => {

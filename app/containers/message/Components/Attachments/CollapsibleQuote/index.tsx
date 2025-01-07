@@ -91,7 +91,6 @@ interface IMessageReply {
 
 const AttText = React.memo(
 	({ text, getCustomEmoji }: IMessageAttText) => {
-		const { theme } = useTheme();
 		const { user } = useContext(MessageContext);
 
 		if (!text) {
