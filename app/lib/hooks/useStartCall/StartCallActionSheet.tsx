@@ -51,10 +51,10 @@ function StartCallActionSheet({ rid, ruid }: { ruid: string; rid: string }): Rea
 			title={item.label}
 			type='secondary'
 			onPress={item.onPress}
-			style={styles.buttonCreateWorkspace}
+			style={styles.button}
 			color={colors.badgeBackgroundLevel2}
 			backgroundColor={colors.surfaceRoom}
-			styleText={[styles.serverHeaderAdd, { textAlign: 'center', color: colors.fontInfo }]}
+			styleText={[styles.buttonText, { textAlign: 'center', color: colors.fontInfo }]}
 		/>
 	);
 
