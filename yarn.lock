@@ -3842,8 +3842,8 @@
     tldts "~5.7.112"
 
 "@rocket.chat/sdk@RocketChat/Rocket.Chat.js.SDK#mobile":
-  version "1.3.1-mobile"
-  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/501cd6ceec5f198af288aadc355f2fbbeda2b353"
+  version "1.3.3-mobile"
+  resolved "https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f"
   dependencies:
     js-sha256 "^0.9.0"
     lru-cache "^4.1.1"

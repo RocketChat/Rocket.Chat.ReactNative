@@ -53,6 +53,7 @@ export const merge = (
 		}
 		mergedSubscription.encrypted = room?.encrypted;
 		mergedSubscription.e2eKeyId = room?.e2eKeyId;
+		mergedSubscription.usersWaitingForE2EKeys = room?.usersWaitingForE2EKeys;
 		mergedSubscription.avatarETag = room?.avatarETag;
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
