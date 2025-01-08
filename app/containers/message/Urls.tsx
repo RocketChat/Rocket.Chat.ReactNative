@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 import { dequal } from 'dequal';
 
 import { useAppSelector } from '../../lib/hooks';
@@ -14,7 +14,7 @@ import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { IUrl } from '../../definitions';
+import { IUrl, ImageResizeMode } from '../../definitions';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
@@ -112,11 +112,10 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	return (
 		<View style={containerStyle}>
-			<FastImage
-				fallback={isAndroid}
+			<ExpoImage
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
-				resizeMode={FastImage.resizeMode.contain}
+				resizeMode={ImageResizeMode.contain}
 				onError={() => setImageLoadedState('error')}
 				onLoad={() => setImageLoadedState('done')}
 			/>
