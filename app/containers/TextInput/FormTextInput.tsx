@@ -1,6 +1,6 @@
-import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 
 import i18n from '../../i18n';
@@ -9,6 +9,7 @@ import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
+import { isIOS } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	error: {
@@ -98,10 +99,12 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 
+	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
+	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value}` : '';
 	return (
 		<View
 			accessible
-			accessibilityLabel={accessibilityLabel ?? `${label} - ${required ? i18n.t('Required') : ''}`}
+			accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
 			style={[styles.inputContainer, containerStyle]}>
 			{label ? (
 				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
@@ -169,6 +172,7 @@ export const FormTextInput = ({
 
 				{secureTextEntry ? (
 					<Touchable
+						style={[styles.iconContainer, styles.iconRight]}
 						accessible
 						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
 						onPress={() => setShowPassword(!showPassword)}>
