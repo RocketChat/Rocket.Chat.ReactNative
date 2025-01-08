@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -100,7 +100,7 @@ export const FormTextInput = ({
 	return (
 		<View
 			accessible
-			accessibilityLabel={`${label} - ${required ? i18n.t('Required') : ''}`}
+			accessibilityLabel={accessibilityLabel ?? `${label} - ${required ? i18n.t('Required') : ''}`}
 			style={[styles.inputContainer, containerStyle]}>
 			{label ? (
 				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
@@ -117,7 +117,7 @@ export const FormTextInput = ({
 						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
 							backgroundColor: colors.surfaceRoom,
-							borderColor: colors.strokeLight,
+							borderColor: colors.strokeMedium,
 							color: colors.fontTitlesLabels
 						},
 						error?.error && {
