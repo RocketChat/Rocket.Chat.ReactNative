@@ -97,6 +97,7 @@ export const FormTextInput = ({
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
+
 	return (
 		<View
 			accessible
@@ -109,7 +110,7 @@ export const FormTextInput = ({
 				</Text>
 			) : null}
 
-			<View style={styles.wrap}>
+			<View accessible style={styles.wrap}>
 				<Input
 					style={[
 						styles.input,
@@ -167,7 +168,10 @@ export const FormTextInput = ({
 				) : null}
 
 				{secureTextEntry ? (
-					<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
+					<Touchable
+						accessible
+						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
+						onPress={() => setShowPassword(!showPassword)}>
 						<CustomIcon
 							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 							testID={testID ? `${testID}-icon-password` : undefined}
