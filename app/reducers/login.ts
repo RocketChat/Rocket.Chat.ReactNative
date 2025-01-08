@@ -52,14 +52,6 @@ export default function login(state = initialState, action: TActionsLogin): ILog
 				failure: false,
 				error: {}
 			};
-		case types.LOGIN.CANCEL:
-			return {
-				...state,
-				isFetching: false,
-				isAuthenticated: false,
-				failure: false,
-				error: {}
-			};
 		case types.LOGIN.SUCCESS:
 			return {
 				...state,
