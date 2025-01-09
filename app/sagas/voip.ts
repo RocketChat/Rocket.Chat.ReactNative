@@ -110,7 +110,7 @@ function* initVoipClient() {
 }
 
 function* attachCallKeepListeners(voipClient: VoipClient) {
-	const channel = eventChannel<TActionVoip>(emit => {
+	const channel = eventChannel<TActionVoip>(() => {
 		RNCallKeep.addEventListener('answerCall', () => {
 			const sessionId = voipClient.getSessionId();
 			RNCallKeep.backToForeground();
