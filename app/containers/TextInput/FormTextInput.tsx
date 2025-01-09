@@ -171,6 +171,7 @@ export const FormTextInput = ({
 
 				{secureTextEntry ? (
 					<Touchable
+						style={[styles.iconContainer, styles.iconRight]}
 						accessible
 						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
 						onPress={() => setShowPassword(!showPassword)}>
