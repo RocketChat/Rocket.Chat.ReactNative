@@ -12,7 +12,7 @@ import Service from './Service';
 const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server, collapsed }: IServiceList) => (
 	<>
 		{Object.values(services).map((service: IItemService, index: number) => {
-			if (index > 2 && collapsed) return <></>;
+			if (index > 2 && collapsed) return null;
 			return (
 				<Service
 					key={service._id}
