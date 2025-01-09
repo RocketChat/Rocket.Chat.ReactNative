@@ -31,8 +31,8 @@ const PasswordPolicies = ({ isDirty, password, policies }: IPasswordTips) => {
 	const selectTipIconType = (name: string, validation: RegExp) => {
 		if (!isDirty) return 'info';
 
-		// This regex checks if there are more than 3 consecutive repeating characters in a string.
-		// If the test is successful, the error icon and color should be selected.
+		// This regex checks if the number of consecutive repeating characters exceeds the limit set by the admin.
+		// If the check passes, the error icon and color should be applied.
 		if (name === 'ForbidRepeatingCharacters') {
 			if (!validation.test(password)) return 'success';
 			return 'error';
