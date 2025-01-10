@@ -2,10 +2,10 @@ import React from 'react';
 import { UnorderedList as UnorderedListProps } from '@rocket.chat/message-parser';
 import { View, Text } from 'react-native';
 
-import Inline from './Inline';
-import styles from '../styles';
-import { themes } from '../../../lib/constants';
-import { useTheme } from '../../../theme';
+import Inline from '../Inline';
+import styles from '../../styles';
+import { themes } from '../../../../lib/constants';
+import { useTheme } from '../../../../theme';
 
 interface IUnorderedListProps {
 	value: UnorderedListProps['value'];

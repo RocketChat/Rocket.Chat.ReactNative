@@ -4,7 +4,7 @@ import { Strike as StrikeProps } from '@rocket.chat/message-parser';
 
 import Bold from './Bold';
 import Italic from './Italic';
-import Plain from './Plain';
+import Plain from '../Plain';
 import Link from './Link';
 
 interface IStrikeProps {

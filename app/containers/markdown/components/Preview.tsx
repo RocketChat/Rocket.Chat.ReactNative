@@ -3,8 +3,8 @@ import { Text, TextStyle } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
+import { previewFormatText } from '../../../lib/helpers/previewFormatText';
 import styles from '../styles';
-import { previewFormatText } from '../utils/previewFormatText';
 
 interface IMarkdownPreview {
 	msg?: string;

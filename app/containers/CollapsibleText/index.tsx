@@ -3,8 +3,8 @@ import { TextStyle, Text, StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
-import { previewFormatText } from '../markdown/utils/previewFormatText';
 import I18n from '../../i18n';
+import { previewFormatText } from '../../lib/helpers/previewFormatText';
 
 interface ICollapsibleText {
 	msg?: string;

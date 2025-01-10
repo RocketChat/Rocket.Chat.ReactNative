@@ -1,20 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Italic as ItalicProps } from '@rocket.chat/message-parser';
+import { Bold as BoldProps } from '@rocket.chat/message-parser';
 
-import { Bold, Link, Plain, Strike } from './typographyComponents';
+import { Italic, Link, Strike } from './index';
+import Plain from '../Plain';
+import sharedStyles from '../../../../views/Styles';
 
-interface IItalicProps {
-	value: ItalicProps['value'];
+interface IBoldProps {
+	value: BoldProps['value'];
 }
 
 const styles = StyleSheet.create({
 	text: {
-		fontStyle: 'italic'
+		...sharedStyles.textBold
 	}
 });
 
-const Italic = ({ value }: IItalicProps) => (
+const Bold = ({ value }: IBoldProps) => (
 	<Text style={styles.text}>
 		{value.map(block => {
 			switch (block.type) {
@@ -24,8 +26,8 @@ const Italic = ({ value }: IItalicProps) => (
 					return <Plain value={block.value} />;
 				case 'STRIKE':
 					return <Strike value={block.value} />;
-				case 'BOLD':
-					return <Bold value={block.value} />;
+				case 'ITALIC':
+					return <Italic value={block.value} />;
 				case 'MENTION_CHANNEL':
 					return <Plain value={`#${block.value.value}`} />;
 				default:
@@ -35,4 +37,4 @@ const Italic = ({ value }: IItalicProps) => (
 	</Text>
 );
 
-export default Italic;
+export default Bold;
