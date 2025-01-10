@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
+import { useAppSelector } from '../../lib/hooks';
 import Touchable from './Touchable';
 import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
@@ -96,8 +97,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 			overflow: 'hidden',
 			alignItems: 'center',
 			justifyContent: 'center',
-			...(imageDimensions.width <= 64 && { width: 64 }),
-			...(imageDimensions.height <= 64 && { height: 64 })
+			...imageDimensions.width <= 64 && { width: 64 },
+			...imageDimensions.height <= 64 && { height: 64 }
 		};
 		if (!hasContent) {
 			containerStyle = {
@@ -128,6 +129,7 @@ type TImageLoadedState = 'loading' | 'done' | 'error';
 const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
+	const API_Embed = useAppSelector(state => state.settings.API_Embed);
 	const getImageUrl = () => {
 		const imageUrl = url.image || url.url;
 
@@ -146,7 +148,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse) {
+	if (!url || url?.ignoreParse || !API_Embed) {
 		return null;
 	}
 
