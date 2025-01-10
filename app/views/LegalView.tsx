@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import I18n from '../i18n';
@@ -18,7 +18,7 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const { theme } = useTheme();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Legal')
 		});
