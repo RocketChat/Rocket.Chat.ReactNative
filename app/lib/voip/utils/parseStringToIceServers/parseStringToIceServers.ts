@@ -10,12 +10,12 @@ export const parseStringToIceServer = (server: string): IceServer => {
 		...(username &&
 			credential && {
 				username: decodeURIComponent(username),
-				credential: decodeURIComponent(credential),
-			}),
+				credential: decodeURIComponent(credential)
+			})
 	};
 };
 
 export const parseStringToIceServers = (string: string): IceServer[] => {
 	const lines = string.trim() ? string.split(',') : [];
-	return lines.map((line) => parseStringToIceServer(line));
+	return lines.map(line => parseStringToIceServer(line));
 };
