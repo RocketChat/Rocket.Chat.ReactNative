@@ -8,8 +8,7 @@ export default StyleSheet.create({
 	serverItemContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 15,
-		paddingVertical: 12
+		padding: 12
 	},
 	serverIcon: {
 		width: 44,
