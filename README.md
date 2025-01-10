@@ -21,7 +21,7 @@ Check [our docs](https://developer.rocket.chat/docs/mobile-app) for  beta and Ex
 
 Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
 
-## Contributing
+## ContributingALO
 
 Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
 
