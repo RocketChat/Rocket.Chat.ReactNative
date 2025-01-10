@@ -29,8 +29,7 @@ const Banner = React.memo(
 					<BorderlessButton
 						style={[styles.bannerContainer, { backgroundColor: themes[theme].surfaceNeutral }]}
 						testID='room-view-banner'
-						onPress={toggleModal}
-					>
+						onPress={toggleModal}>
 						<MarkdownPreview msg={text} style={[styles.bannerText]} />
 						<BorderlessButton onPress={closeBanner} hitSlop={10}>
 							<CustomIcon color={themes[theme].fontSecondaryInfo} name='close' size={20} />
@@ -42,8 +41,7 @@ const Banner = React.memo(
 						useNativeDriver
 						isVisible={showModal}
 						animationIn='fadeIn'
-						animationOut='fadeOut'
-					>
+						animationOut='fadeOut'>
 						<View style={[styles.modalView, { backgroundColor: themes[theme].surfaceNeutral }]}>
 							<Text style={[styles.bannerModalTitle, { color: themes[theme].fontSecondaryInfo }]}>{title}</Text>
 							<ScrollView style={styles.modalScrollView}>

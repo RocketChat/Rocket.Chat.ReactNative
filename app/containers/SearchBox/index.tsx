@@ -23,7 +23,7 @@ const SearchBox = ({ onChangeText, onSubmitEditing, testID }: TextInputProps): J
 	}, []);
 
 	return (
-		<View testID='searchbox' style={{ backgroundColor: colors.surfaceRoom }} >
+		<View testID='searchbox' style={{ backgroundColor: colors.surfaceRoom }}>
 			<FormTextInput
 				autoCapitalize='none'
 				autoCorrect={false}

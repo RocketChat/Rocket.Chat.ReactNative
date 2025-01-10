@@ -31,8 +31,7 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 			onPress={() => onSelect(item)}
 			style={[styles.chip, { backgroundColor: colors.surfaceHover }, style]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}
-			testID={`multi-select-chip-${item.value}`}
-		>
+			testID={`multi-select-chip-${item.value}`}>
 			<>
 				{item.imageUrl ? <FastImage style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
 				<Text numberOfLines={1} style={[styles.chipText, { color: colors.fontTitlesLabels }]}>

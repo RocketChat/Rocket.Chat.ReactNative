@@ -84,8 +84,7 @@ const JoinCode = React.memo(
 							styles.content,
 							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
 							{ backgroundColor: themes[theme].surfaceRoom }
-						]}
-					>
+						]}>
 						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}

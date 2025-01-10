@@ -25,8 +25,7 @@ const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeBu
 			underlayColor={colors.buttonBackgroundSecondaryDefault}
 			rippleColor={colors.buttonBackgroundSecondaryPress}
 			enabled={!disabled}
-			onPress={press}
-		>
+			onPress={press}>
 			{icon ? (
 				<CustomIcon name={icon} size={36} />
 			) : (
