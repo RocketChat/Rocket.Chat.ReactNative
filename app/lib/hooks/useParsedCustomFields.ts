@@ -22,7 +22,7 @@ interface IParsedCustomFields {
 }
 
 interface IUseParsedCustomFields {
-	(Accounts_CustomFields: string): { parsedCustomFields: IParsedCustomFields };
+	(Accounts_CustomFields: string): { parsedCustomFields: IParsedCustomFields | null };
 }
 
 const useParsedCustomFields: IUseParsedCustomFields = (Accounts_CustomFields: string) => {
@@ -35,7 +35,7 @@ const useParsedCustomFields: IUseParsedCustomFields = (Accounts_CustomFields: st
 				log(error);
 			}
 		}
-		return parsed;
+		return Object.keys(parsed).length === 0 ? null : parsed;
 	}, [Accounts_CustomFields]);
 
 	return { parsedCustomFields };

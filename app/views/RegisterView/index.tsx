@@ -5,7 +5,6 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import isEmpty from 'lodash/isEmpty';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
@@ -27,7 +26,7 @@ import PasswordPolicies from './PasswordPolicies';
 import getCustomFields from './methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';
-import useParsedCustomFields from '../../lib/hooks/useCustomFields';
+import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
 const validationSchema = yup.object().shape({
@@ -75,6 +74,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
 
 	const focusOnCustomFields = () => {
+		if (!parsedCustomFields) return;
 		const [firstCustomFieldKey] = Object.keys(parsedCustomFields);
 
 		customFieldsRef.current[firstCustomFieldKey]?.focus();
@@ -85,6 +85,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
+		if (!parsedCustomFields) return true;
 		const isValid = validationSchema.isValidSync(getValues());
 		let requiredCheck = true;
 		let minLengthCheck = true;
@@ -263,11 +264,11 @@ const RegisterView = ({ navigation, route }: IProps) => {
 								value={value}
 								onChangeText={onChange}
 								onSubmitEditing={() => {
-									if (isEmpty(parsedCustomFields)) {
+									if (parsedCustomFields) {
 										focusOnCustomFields();
 										return;
 									}
-									handleSubmit(onSubmit);
+									handleSubmit(onSubmit)();
 								}}
 								secureTextEntry
 								containerStyle={styles.inputContainer}
