@@ -1,10 +1,11 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { Keyboard, Text, View } from 'react-native';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { Keyboard, Text, TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
@@ -71,6 +72,13 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
 	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
+	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
+
+	const focusOnCustomFields = () => {
+		const [firstCustomFieldKey] = Object.keys(parsedCustomFields);
+
+		customFieldsRef.current[firstCustomFieldKey]?.focus();
+	};
 
 	const login = () => {
 		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
@@ -84,8 +92,9 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			if (parsedCustomFields[key].required) {
 				requiredCheck = requiredCheck && customFields[key] && Boolean(customFields[key].trim());
 			}
-			if (parsedCustomFields[key].minLength) {
-				minLengthCheck = customFields[key].length < parsedCustomFields[key].minLength;
+			const { minLength } = parsedCustomFields[key];
+			if (minLength !== undefined && customFields[key]) {
+				minLengthCheck = customFields[key]?.length > minLength;
 			}
 		});
 		return isValid && minLengthCheck && requiredCheck;
@@ -232,6 +241,9 @@ const RegisterView = ({ navigation, route }: IProps) => {
 								value={value}
 								onChangeText={onChange}
 								secureTextEntry
+								onSubmitEditing={() => {
+									setFocus('confirmPassword');
+								}}
 								containerStyle={styles.inputContainer}
 							/>
 						)}
@@ -250,22 +262,30 @@ const RegisterView = ({ navigation, route }: IProps) => {
 								required
 								value={value}
 								onChangeText={onChange}
-								onSubmitEditing={handleSubmit(onSubmit)}
+								onSubmitEditing={() => {
+									if (isEmpty(parsedCustomFields)) {
+										focusOnCustomFields();
+										return;
+									}
+									handleSubmit(onSubmit);
+								}}
 								secureTextEntry
 								containerStyle={styles.inputContainer}
 							/>
 						)}
 					/>
 					<CustomFields
+						customFieldsRef={customFieldsRef}
 						Accounts_CustomFields={Accounts_CustomFields}
 						customFields={customFields}
 						onCustomFieldChange={value => setCustomFields(value)}
+						onSubmit={handleSubmit(onSubmit)}
 					/>
 				</View>
 				{passwordPolicies && <PasswordPolicies policies={passwordPolicies} isDirty={isDirty} password={password} />}
 
 				<Button
-					disabled={!isValid || !isPasswordValid}
+					disabled={!isValid || !isPasswordValid || !validateDefaultFormInfo()}
 					testID='register-view-submit'
 					title={I18n.t('Register')}
 					type='primary'
