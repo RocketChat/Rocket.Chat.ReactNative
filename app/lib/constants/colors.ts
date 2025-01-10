@@ -1,4 +1,5 @@
 const backdropColor = '#000000';
+const overlayBackground = 'rgba(31, 35, 41, 0.65)';
 
 const light = {
 	surfaceLight: '#FFFFFF',
@@ -280,18 +281,21 @@ export const colors = {
 	light: {
 		...light,
 		backdropColor,
+		overlayBackground,
 		backdropOpacity: 0.3,
 		attachmentLoadingOpacity: 0.7
 	},
 	dark: {
 		...dark,
 		backdropColor,
+		overlayBackground,
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3
 	},
 	black: {
 		...black,
 		backdropColor,
+		overlayBackground,
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3
 	}
