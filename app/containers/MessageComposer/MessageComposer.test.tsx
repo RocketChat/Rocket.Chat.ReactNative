@@ -102,7 +102,7 @@ describe('MessageComposer', () => {
 		expect(screen.getByTestId('message-composer-send-audio')).toBeOnTheScreen();
 		expect(screen.queryByTestId('message-composer-send')).not.toBeOnTheScreen();
 
-		await user.type(screen.getByTestId('message-composer-input'), 'test');
+		fireEvent.changeText(screen.getByTestId('message-composer-input'), 'test');
 		expect(screen.getByTestId('message-composer-input')).not.toBe('');
 		expect(screen.queryByTestId('message-composer-send-audio')).not.toBeOnTheScreen();
 		expect(screen.getByTestId('message-composer-send')).toBeOnTheScreen();
