@@ -16,6 +16,8 @@ PODS:
     - ExpoModulesCore
     - ZXingObjC/OneD
     - ZXingObjC/PDF417
+  - ExpoClipboard (5.0.1):
+    - ExpoModulesCore
   - ExpoDocumentPicker (11.10.1):
     - ExpoModulesCore
   - ExpoFileSystem (16.0.8):
@@ -1233,8 +1235,6 @@ PODS:
     - React-Core
   - RNCAsyncStorage (1.22.3):
     - React-Core
-  - RNCClipboard (1.13.2):
-    - React-Core
   - RNCMaskedView (0.3.1):
     - React-Core
   - RNConfigReader (1.0.0):
@@ -1328,6 +1328,7 @@ DEPENDENCIES:
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
+  - ExpoClipboard (from `../node_modules/expo-clipboard/ios`)
   - ExpoDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
   - ExpoHaptics (from `../node_modules/expo-haptics/ios`)
@@ -1398,7 +1399,6 @@ DEPENDENCIES:
   - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
-  - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-masked-view/masked-view`)"
   - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNCPicker (from `../node_modules/@react-native-picker/picker`)"
@@ -1469,6 +1469,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-apple-authentication/ios"
   ExpoCamera:
     :path: "../node_modules/expo-camera/ios"
+  ExpoClipboard:
+    :path: "../node_modules/expo-clipboard/ios"
   ExpoDocumentPicker:
     :path: "../node_modules/expo-document-picker/ios"
   ExpoFileSystem:
@@ -1604,8 +1606,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
-  RNCClipboard:
-    :path: "../node_modules/@react-native-clipboard/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-masked-view/masked-view"
   RNConfigReader:
@@ -1662,6 +1662,7 @@ SPEC CHECKSUMS:
   Expo: e01a77c6fa4bc80a6d1bb949cda1d12d21044abd
   ExpoAppleAuthentication: 4fc9972356977f009911f2f3a5f56319c2a5b11b
   ExpoCamera: 53f5ef81bab088b2edcf94d05e4da3bc84f46383
+  ExpoClipboard: b597982124f067ff9f5b89093eb3d97898d5d877
   ExpoDocumentPicker: 70254802886e29a45d4ad25486e64b6fc9c8f0cc
   ExpoFileSystem: eecaf6796aed0f4dd20042dc2ca2cac6c4bc1185
   ExpoHaptics: 28a771b630353cd6e8dcf1b1e3e693e38ad7c3c3
@@ -1750,7 +1751,6 @@ SPEC CHECKSUMS:
   ReactNativeUiLib: 33521c0747ea376d292b62b6415e0f1d75bd3c10
   RNBootSplash: 91e0c16bfc96703cb5b0562785b9a8cbfeb298fe
   RNCAsyncStorage: 10591b9e0a91eaffee14e69b3721009759235125
-  RNCClipboard: 60fed4b71560d7bfe40e9d35dea9762b024da86d
   RNCMaskedView: 090213d32d8b3bb83a4dcb7d12c18f0152591906
   RNConfigReader: 396da6a6444182a76e8ae0930b9436c7575045cb
   RNCPicker: b18aaf30df596e9b1738e7c1f9ee55402a229dca
@@ -1782,4 +1782,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 23b05e7d7ba785e3452040d94d4b7ab4a920ee60
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2
