@@ -1,18 +1,19 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
+import { StyleSheet, TextInputProps, InteractionManager, Alert } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import PasteInput, { PastedFile } from "@mattermost/react-native-paste-input";
 
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
-import { useSubscription, useAutoSaveDraft } from '../hooks';
+import { useSubscription, useAutoSaveDraft, useCanUploadFile } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
-import { getRoomTitle, isTablet, parseJson } from '../../../lib/methods/helpers';
+import { canUploadFile, getRoomTitle, isTablet, parseJson } from '../../../lib/methods/helpers';
 import {
 	MAX_HEIGHT,
 	MIN_HEIGHT,
@@ -31,6 +32,8 @@ import log from '../../../lib/methods/helpers/log';
 import { useAppSelector, usePrevious } from '../../../lib/hooks';
 import { ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
+import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
+import { getThreadById } from '../../../lib/database/services/Thread';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
@@ -57,6 +60,10 @@ export const ComposerInput = memo(
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
+		const permissionToUpload = useCanUploadFile(rid);
+		const { FileUpload_MediaTypeWhiteList, FileUpload_MaxFileSize } = useAppSelector(state => state.settings);
+		const allowList = FileUpload_MediaTypeWhiteList as string;
+		const maxFileSize = FileUpload_MaxFileSize as number;
 
 		// subscribe to changes on mic state to update draft after a message is sent
 		useMicOrSend();
@@ -344,8 +351,62 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping));
 		};
 
+		const startShareView = () => {
+			return {
+				selectedMessages,
+				text: ''
+			};
+		};
+
+		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
+
+		const onPaste = async (error: string | null | undefined, files: PastedFile[]) => {
+			if(error) {
+				handleError(error);
+				return;
+			}
+			
+			if (!rid) return;
+			
+			const room = await getSubscriptionByRoomId(rid);
+			let thread;
+			if (tmid) {
+				thread = await getThreadById(tmid);
+			}
+
+			const file = {
+				filename: files[0].fileName,
+				size: files[0].fileSize,
+				mime: files[0].type,
+				path: files[0].uri
+			} as any;
+
+			const canUploadResult = canUploadFile({
+				file,
+				allowList,
+				maxFileSize,
+				permissionToUploadFile: permissionToUpload
+			});
+			if (canUploadResult.success) {
+				Navigation.navigate('ShareView', {
+					room,
+					thread: thread || tmid,
+					attachments: [file],
+					action,
+					finishShareView,
+					startShareView
+				});
+			} else {
+				handleError(canUploadResult.error);
+			}
+		}
+
+		const handleError = (error?: string) => {
+			Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
+		};
+
 		return (
-			<TextInput
+			<PasteInput
 				style={[styles.textInput, { color: colors.fontDefault }]}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
@@ -361,6 +422,7 @@ export const ComposerInput = memo(
 				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 				// eslint-disable-next-line no-nested-ternary
 				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
+				onPaste={onPaste}
 			/>
 		);
 	})
