@@ -1,6 +1,5 @@
 import React from 'react';
 import '@testing-library/react-native/extend-expect';
-import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
@@ -23,8 +22,6 @@ jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager'
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
-
-jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
 jest.mock('react-native-file-viewer', () => ({
 	open: jest.fn(() => null)
