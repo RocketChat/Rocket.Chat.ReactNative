@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import styles from '../styles';
@@ -24,7 +24,7 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 	const { colors } = useTheme();
 
 	const copyInfoToClipboard = (data: string) => {
-		Clipboard.setString(data);
+		Clipboard.setStringAsync(data);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 

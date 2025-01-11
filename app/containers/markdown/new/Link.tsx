@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { Link as LinkProps } from '@rocket.chat/message-parser';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 
 import styles from '../styles';
 import I18n from '../../../i18n';
@@ -32,7 +32,7 @@ const Link = ({ value }: ILinkProps) => {
 	};
 
 	const onLongPress = () => {
-		Clipboard.setString(src.value);
+		Clipboard.setStringAsync(src.value);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 

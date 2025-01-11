@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 
 import styles from './styles';
 import { themes } from '../../lib/constants';
@@ -31,7 +31,7 @@ const Link = React.memo(({ children, link, theme, onLinkPress }: ILink) => {
 
 	const childLength = React.Children.toArray(children).filter(o => o).length;
 	const onLongPress = () => {
-		Clipboard.setString(link);
+		Clipboard.setStringAsync(link);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 

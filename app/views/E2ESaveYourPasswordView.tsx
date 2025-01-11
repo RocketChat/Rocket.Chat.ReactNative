@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -90,7 +90,7 @@ const E2ESaveYourPasswordView = () => {
 	const onCopy = () => {
 		logEvent(events.E2E_SAVE_PW_COPY);
 		if (password) {
-			Clipboard.setString(password);
+			Clipboard.setStringAsync(password);
 			EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 		}
 	};

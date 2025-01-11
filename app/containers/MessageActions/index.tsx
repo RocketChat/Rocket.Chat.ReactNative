@@ -1,6 +1,6 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { Alert, Share } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import { connect } from 'react-redux';
 import moment from 'moment';
 
@@ -240,7 +240,7 @@ const MessageActions = React.memo(
 				logEvent(events.ROOM_MSG_ACTION_PERMALINK);
 				try {
 					const permalink = await getPermalink(message);
-					Clipboard.setString(permalink ?? '');
+					Clipboard.setStringAsync(permalink ?? '');
 					EventEmitter.emit(LISTENER, { message: I18n.t('Permalink_copied_to_clipboard') });
 				} catch {
 					logEvent(events.ROOM_MSG_ACTION_PERMALINK_F);
@@ -249,7 +249,7 @@ const MessageActions = React.memo(
 
 			const handleCopy = async (message: TAnyMessageModel) => {
 				logEvent(events.ROOM_MSG_ACTION_COPY);
-				await Clipboard.setString((message?.attachments?.[0]?.description || message.msg) ?? '');
+				await Clipboard.setStringAsync((message?.attachments?.[0]?.description || message.msg) ?? '');
 				EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 			};
 

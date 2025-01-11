@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import Clipboard from '@react-native-clipboard/clipboard';
+import * as Clipboard from 'expo-clipboard';
 import FastImage from 'react-native-fast-image';
 import { dequal } from 'dequal';
 
@@ -142,7 +142,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	const onPress = () => openLink(url.url, theme);
 
 	const onLongPress = () => {
-		Clipboard.setString(url.url);
+		Clipboard.setStringAsync(url.url);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 
