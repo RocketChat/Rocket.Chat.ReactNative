@@ -3,7 +3,7 @@ import { StyleSheet, TextInputProps, InteractionManager, Alert } from 'react-nat
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
-import PasteInput, { PastedFile } from "@mattermost/react-native-paste-input";
+import PasteInput, { PastedFile } from '@mattermost/react-native-paste-input';
 
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
@@ -361,13 +361,13 @@ export const ComposerInput = memo(
 		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
 		const onPaste = async (error: string | null | undefined, files: PastedFile[]) => {
-			if(error) {
+			if (error) {
 				handleError(error);
 				return;
 			}
-			
+
 			if (!rid) return;
-			
+
 			const room = await getSubscriptionByRoomId(rid);
 			let thread;
 			if (tmid) {
@@ -399,7 +399,7 @@ export const ComposerInput = memo(
 			} else {
 				handleError(canUploadResult.error);
 			}
-		}
+		};
 
 		const handleError = (error?: string) => {
 			Alert.alert(I18n.t('Error_uploading'), error && I18n.isTranslated(error) ? I18n.t(error) : error);
