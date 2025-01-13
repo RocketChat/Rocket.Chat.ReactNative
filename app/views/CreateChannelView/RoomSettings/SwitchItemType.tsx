@@ -20,11 +20,8 @@ export const SwitchItemType = ({
 	if (isTeam && !type) {
 		hint = 'Team_hint_public';
 	}
-	if (!isTeam && type) {
+	if (!isTeam) {
 		hint = 'Channel_hint_private';
-	}
-	if (!isTeam && !type) {
-		hint = 'Channel_hint_public';
 	}
 
 	return (

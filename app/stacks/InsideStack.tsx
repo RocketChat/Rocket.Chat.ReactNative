@@ -22,6 +22,7 @@ import MessagesView from '../views/MessagesView';
 import AutoTranslateView from '../views/AutoTranslateView';
 import DirectoryView from '../views/DirectoryView';
 import NotificationPrefView from '../views/NotificationPreferencesView';
+import E2EEToggleRoomView from '../views/E2EEToggleRoomView';
 import ForwardLivechatView from '../views/ForwardLivechatView';
 import CloseLivechatView from '../views/CloseLivechatView';
 import LivechatEditView from '../views/LivechatEditView';
@@ -73,6 +74,7 @@ import AddExistingChannelView from '../views/AddExistingChannelView';
 import SelectListView from '../views/SelectListView';
 import DiscussionsView from '../views/DiscussionsView';
 import ChangeAvatarView from '../views/ChangeAvatarView';
+import LegalView from '../views/LegalView';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
@@ -122,6 +124,7 @@ const ChatsStackNavigator = () => {
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='DirectoryView' component={DirectoryView} options={DirectoryView.navigationOptions} />
 			<ChatsStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
+			<ChatsStack.Screen name='E2EEToggleRoomView' component={E2EEToggleRoomView} />
 			<ChatsStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<ChatsStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
 			{/* @ts-ignore */}
@@ -186,6 +189,8 @@ const SettingsStackNavigator = () => {
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 			<SettingsStack.Screen name='GetHelpView' component={GetHelpView} />
+			{/* @ts-ignore */}
+			<SettingsStack.Screen name='LegalView' component={LegalView} />
 			<SettingsStack.Screen
 				name='ScreenLockConfigView'
 				// @ts-ignore
