@@ -1,6 +1,5 @@
 {
   "1_person_reacted": "1 人回复了",
-  "A_meaningful_name_for_the_discussion_room": "取一个有意义的讨论区的名称",
   "Accessibility_statement": "无障碍声明",
   "Actions": "操作",
   "Activity": "按活动时间排列",
@@ -108,7 +107,7 @@
   "Desktop_Notifications": "桌面通知",
   "Direct_Messages": "私訊",
   "Directory": "目录",
-  "Discussion_Desc": "帮助保持事态更新！ 通过创建讨论，一个和所选频道双向关联的子频道将会被创建。",
+  "Discussion_Desc": "讨论允许在频道或团队内围绕特定主题进行单独的对话，可以添加任何工作区成员。",
   "Discussion_name": "讨论区名称",
   "Discussions": "讨论区",
   "Do_you_have_a_certificate": "您有此工作区的证书吗？",

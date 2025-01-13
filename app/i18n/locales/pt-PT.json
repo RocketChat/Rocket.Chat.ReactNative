@@ -1,6 +1,5 @@
 {
   "1_person_reacted": "1 pessoa reagiu",
-  "A_meaningful_name_for_the_discussion_room": "Um nome significativo para a sala de discussão",
   "Accessibility_statement": "Declaração de acessibilidade",
   "Actions": "Acções",
   "Activity": "Actividade",
@@ -106,7 +105,7 @@
   "Direct_message_someone": "Enviar mensagem directa para alguém",
   "Direct_Messages": "Mensagens Directas",
   "Directory": "Directório",
-  "Discussion_Desc": "Ajude a manter uma visão geral sobre o que está acontecendo! Ao criar uma discussão, é criado um sub-canal do que você selecionou e ambos estão ligados.",
+  "Discussion_Desc": "As discussões permitem conversas separadas sobre um tópico específico dentro de um canal ou equipa, onde qualquer membro do espaço de trabalho pode ser adicionado.",
   "Discussion_name": "Nome da discussão",
   "Discussions": "Discussões",
   "Displays_action_text": "Exibe texto da acção",
