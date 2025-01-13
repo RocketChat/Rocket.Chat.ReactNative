@@ -1,6 +1,5 @@
 {
   "1_person_reacted": "1人がリアクション",
-  "A_meaningful_name_for_the_discussion_room": "ディスカッションルームわかりやすい名前",
   "Accessibility_statement": "アクセシビリティ声明",
   "Actions": "アクション",
   "Activity": "アクティビティ順",
@@ -110,7 +109,7 @@
   "Direct_message_someone": "ユーザーへダイレクトメッセージする",
   "Direct_Messages": "ダイレクトメッセージ",
   "Directory": "ディレクトリ",
-  "Discussion_Desc": "状況の概要を把握するのに役立ちます。ディスカッションを作成すると、選択したチャンネルのサブチャンネルが作成され、両方のチャンネルがリンクされます。",
+  "Discussion_Desc": "ディスカッションでは、チャンネルやチーム内で特定のトピックに関する個別の会話を行うことができ、ワークスペースのメンバーを追加することができます。",
   "Discussion_name": "ディスカッション名",
   "Discussions": "ディスカッション",
   "Displays_action_text": "アクションテキストを表示",

@@ -1,6 +1,5 @@
 {
   "1_person_reacted": "1 kişi tepki verdi.",
-  "A_meaningful_name_for_the_discussion_room": "Tartışma odası için anlamlı bir isim",
   "Accessibility_statement": "Erişilebilirlik beyanı",
   "Actions": "İşlemler",
   "Activity": "Etkinlik",
@@ -111,7 +110,7 @@
   "Direct_message_someone": "Birine doğrudan ileti gönder",
   "Direct_Messages": "Özel İletiler",
   "Directory": "Dizin",
-  "Discussion_Desc": "Neler olup bittiğini gözden geçirmeye yardımcı olun! Bir tartışma oluşturarak, seçtiğinizin bir alt kanalı oluşturulur ve her ikisi de bağlanır.",
+  "Discussion_Desc": "Tartışmalar, bir kanalda veya ekipte belirli bir konu etrafında ayrı sohbetler yapılmasına olanak tanır ve herhangi bir çalışma alanı üyesi eklenebilir.",
   "Discussion_name": "Tartışma adı",
   "Discussions": "Tartışmalar",
   "Displays_action_text": "Görüntüler aksiyon metni",

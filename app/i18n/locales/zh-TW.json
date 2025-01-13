@@ -1,6 +1,5 @@
 {
   "1_person_reacted": "1 人回覆了",
-  "A_meaningful_name_for_the_discussion_room": "取一個有意義的討論區名稱",
   "Accessibility_statement": "无障碍声明",
   "Actions": "操作",
   "Activity": "以活動時間排序",
@@ -113,7 +112,7 @@
   "Direct_message_someone": "私訊其他人",
   "Direct_Messages": "私訊",
   "Directory": "目錄",
-  "Discussion_Desc": "幫助保持事態更新！透過建立討論，一個和所選頻道雙向關聯的子頻道將會被建立。",
+  "Discussion_Desc": "討論允許在特定主題下於頻道或團隊內進行獨立的對話，其中可以新增任何工作區成員。",
   "Discussion_name": "討論區名稱",
   "Discussions": "討論區",
   "Displays_action_text": "顯示文字行動",

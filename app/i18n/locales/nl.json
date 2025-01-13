@@ -1,6 +1,5 @@
 {
   "1_person_reacted": "1 persoon heeft gereageerd",
-  "A_meaningful_name_for_the_discussion_room": "Een betekenisvolle naam voor de discussieruimte",
   "Accessibility_statement": "Toegankelijkheidsverklaring",
   "Actions": "Acties",
   "Activity": "Activiteit",
@@ -142,7 +141,7 @@
   "Direct_message_someone": "Stuur iemand een privébericht",
   "Direct_Messages": "Directe berichten",
   "Directory": "Map",
-  "Discussion_Desc": "Help het overzicht te houden over wat er aan de hand is! Door een discussie aan te maken, wordt een subkanaal van het geselecteerde kanaal aangemaakt en worden beide gekoppeld.",
+  "Discussion_Desc": "Discussies maken afzonderlijke gesprekken mogelijk rond een specifiek onderwerp binnen een kanaal of team, waar elk lid van de werkruimte kan worden toegevoegd.",
   "Discussion_name": "Discussienaam",
   "Discussions": "Discussies",
   "Display": "Weergave",
