@@ -9,6 +9,7 @@ import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
 import { IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
+import I18n from '../../i18n';
 
 const Avatar = React.memo(
 	({
@@ -32,12 +33,14 @@ const Avatar = React.memo(
 		type = SubscriptionType.DIRECT,
 		avatarExternalProviderUrl,
 		roomAvatarExternalProviderUrl,
-		cdnPrefix
+		cdnPrefix,
+		accessibilityLabel
 	}: IAvatar) => {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
 
+		const avatarAccessibilityLabel = accessibilityLabel ?? I18n.t('Avatar_Photo', { username: text });
 		const avatarStyle = {
 			width: size,
 			height: size,
@@ -88,11 +91,19 @@ const Avatar = React.memo(
 		}
 
 		if (onPress) {
-			image = <Touchable onPress={onPress}>{image}</Touchable>;
+			image = (
+				<Touchable accessibilityLabel={avatarAccessibilityLabel} onPress={onPress}>
+					{image}
+				</Touchable>
+			);
 		}
 
 		return (
-			<View style={[avatarStyle, style]} testID='avatar'>
+			<View
+				accessible
+				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
+				style={[avatarStyle, style]}
+				testID='avatar'>
 				{image}
 				{children}
 			</View>
