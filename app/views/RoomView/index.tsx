@@ -513,7 +513,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
-					disabled={e2eeWarning}
 					rightButtonsWidth={rightButtonsWidth}
 				/>
 			),
@@ -1516,7 +1515,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
 					<StatusBar />
-					<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+					{
+						(!this.tmid) ? (
+							<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
+						) : null
+					}
 					<List
 						ref={this.list}
 						listRef={this.flatList}
