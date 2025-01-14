@@ -1,5 +1,16 @@
-import React, { useState } from 'react';
-import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+	StyleProp,
+	StyleSheet,
+	Text,
+	TextInput as RNTextInput,
+	TextInputProps,
+	TextStyle,
+	View,
+	ViewStyle,
+	AccessibilityInfo,
+	findNodeHandle
+} from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 
@@ -10,6 +21,7 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
+import { subscribeToAccessibilityEvents } from '../../A11yEventEmitterModule/index';
 
 const styles = StyleSheet.create({
 	error: {
@@ -94,6 +106,16 @@ export const FormTextInput = ({
 	accessibilityLabel,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
+	const a11yOrderRef = useRef<Touchable>(null);
+
+	const focusNextInput = () => {
+		if (a11yOrderRef.current) {
+			const reactTag = findNodeHandle(a11yOrderRef.current);
+			if (!reactTag) return;
+			AccessibilityInfo.setAccessibilityFocus(reactTag);
+		}
+	};
+
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
@@ -101,8 +123,14 @@ export const FormTextInput = ({
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value}` : '';
+
+	useEffect(() => {
+		subscribeToAccessibilityEvents();
+	}, []);
 	return (
 		<View
+			onAccessibilityAction={e => focusNextInput()}
+			onAccessibilityEscape={() => focusNextInput()}
 			accessible
 			accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
 			style={[styles.inputContainer, containerStyle]}>
@@ -172,6 +200,7 @@ export const FormTextInput = ({
 
 				{secureTextEntry ? (
 					<Touchable
+						ref={a11yOrderRef}
 						style={[styles.iconContainer, styles.iconRight]}
 						accessible
 						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
