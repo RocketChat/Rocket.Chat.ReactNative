@@ -1,15 +1,23 @@
-import { NativeModules, DeviceEventEmitter } from 'react-native';
+import { NativeModules } from 'react-native';
 
-const { A11YEventEmitter } = NativeModules;
+const { A11yEvent } = NativeModules;
 
-export const subscribeToAccessibilityEvents = () => {
-	console.log(A11YEventEmitter, NativeModules, 'nativeModules');
+// Function to get the next accessibility focusable element
+const getNextFocusableElement = async () => {
+	try {
+		const elementDescription = await new Promise((resolve, reject) => {
+			A11yEvent.getNextAccessibilityFocus((response: any) => {
+				if (response) {
+					resolve(response);
+				} else {
+					reject('No focusable element found');
+				}
+			});
+		});
+		console.log('Next Focusable Element:', elementDescription);
+	} catch (error) {
+		console.error('Error:', error);
+	}
 };
 
-/* DeviceEventEmitter.addListener('onAccessibilityEvent', (event) => {
-  console.log('Accessibility event received: ', event.message);
-});
-
-// Call the native method
-A11YEventEmitter.sendAccessibilityEvent('Test accessibility event');
- */
+export { getNextFocusableElement };

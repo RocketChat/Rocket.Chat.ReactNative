@@ -1,5 +1,5 @@
-import React, { useLayoutEffect } from 'react';
-import { Text, View } from 'react-native';
+import React, { useLayoutEffect, useRef } from 'react';
+import { AccessibilityInfo, findNodeHandle, NativeModules, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
@@ -16,6 +16,8 @@ import ServerAvatar from './ServerAvatar';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
+import { getNextFocusableElement } from '../../A11yEventEmitterModule';
+import { FormTextInput } from '../../containers/TextInput';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
@@ -75,13 +77,31 @@ const WorkspaceView = () => {
 		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
 
+	const rcTag = useRef(null);
+	const testChangeFocusUsingRCTag = () => {
+		const tag = findNodeHandle(rcTag.current);
+		if (!tag) return;
+		AccessibilityInfo.setAccessibilityFocus(tag);
+	};
+
 	return (
 		<FormContainer testID='workspace-view'>
 			<FormContainerInner>
-				<View style={styles.alignItemsCenter}>
-					<ServerAvatar url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</Text>
-					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
+				<TouchableOpacity accessibilityRole='button' onPress={testChangeFocusUsingRCTag}>
+					<Text>Teste II</Text>
+				</TouchableOpacity>
+				<Button accessible title={'TEST'} type='secondary' onPress={testChangeFocusUsingRCTag} testID='workspace-view-register' />
+
+				<FormTextInput
+					accessibilityLabel='Test'
+					secureTextEntry
+					returnKeyType='send'
+					autoCapitalize='none'
+					testID='two-factor-input'
+					onChangeText={() => {}}
+				/>
+				<View accessible accessibilityLabel='FOCUS HERE' ref={rcTag}>
+					<Text>FOCUS HERE</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
 				{showRegistrationButton ? (
