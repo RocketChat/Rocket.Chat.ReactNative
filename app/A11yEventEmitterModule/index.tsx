@@ -1,19 +1,15 @@
-import { NativeEventEmitter, NativeModules } from 'react-native';
+import { NativeModules, DeviceEventEmitter } from 'react-native';
 
-const { A11yEventEmitter } = NativeModules;
-const a11yEmitter = new NativeEventEmitter(A11yEventEmitter);
+const { A11YEventEmitter } = NativeModules;
 
 export const subscribeToAccessibilityEvents = () => {
-	const focusChangeSubscription = a11yEmitter.addListener('onAccessibilityFocusChange', event => {
-		console.log('Focus changed:', event);
-	});
-
-	const voiceOverStatusSubscription = a11yEmitter.addListener('onVoiceOverStatusChanged', event => {
-		console.log('VoiceOver status changed:', event);
-	});
-
-	return () => {
-		focusChangeSubscription.remove();
-		voiceOverStatusSubscription.remove();
-	};
+	console.log(A11YEventEmitter, NativeModules, 'nativeModules');
 };
+
+/* DeviceEventEmitter.addListener('onAccessibilityEvent', (event) => {
+  console.log('Accessibility event received: ', event.message);
+});
+
+// Call the native method
+A11YEventEmitter.sendAccessibilityEvent('Test accessibility event');
+ */
