@@ -1,17 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import {
-	StyleProp,
-	StyleSheet,
-	Text,
-	TextInput as RNTextInput,
-	TextInputProps,
-	TextStyle,
-	View,
-	ViewStyle,
-	AccessibilityInfo,
-	findNodeHandle,
-	NativeModules
-} from 'react-native';
+import React, { useState } from 'react';
+import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 
@@ -106,9 +94,6 @@ export const FormTextInput = ({
 	accessibilityLabel,
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
-	const firstViewRef = useRef<View>(null);
-	const secondViewRef = useRef<View>(null);
-
 	const { colors } = useTheme();
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
@@ -116,24 +101,11 @@ export const FormTextInput = ({
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value}` : '';
-
-	const { A11yEvent } = NativeModules;
-
-	/* const setNextFocus = async () => {
-		const firstViewTag = findNodeHandle(firstViewRef.current);
-		const secondViewTag = findNodeHandle(secondViewRef.current);
-
-		if (!firstViewTag || !secondViewTag) return;
-		await A11yEvent.setA11yOrder([firstViewTag, secondViewTag]);
-	};
-
-	useEffect(() => {
-		console.log('here');
-		setNextFocus();
-	}, []);
- */
 	return (
-		<View ref={firstViewRef} accessible accessibilityLabel={`Testing`} style={[styles.inputContainer, containerStyle]}>
+		<View
+			accessible
+			accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
+			style={[styles.inputContainer, containerStyle]}>
 			{label ? (
 				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
 					{label}{' '}
@@ -141,7 +113,7 @@ export const FormTextInput = ({
 				</Text>
 			) : null}
 
-			<View style={styles.wrap}>
+			<View accessible style={styles.wrap}>
 				<Input
 					style={[
 						styles.input,
@@ -199,19 +171,18 @@ export const FormTextInput = ({
 				) : null}
 
 				{secureTextEntry ? (
-					<View style={[styles.iconContainer, styles.iconRight]} accessible accessibilityLabel='TEST II' ref={secondViewRef}>
-						<Touchable
-							accessible
-							accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
-							onPress={() => setShowPassword(!showPassword)}>
-							<CustomIcon
-								name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
-								testID={testID ? `${testID}-icon-password` : undefined}
-								size={20}
-								color={colors.fontDefault}
-							/>
-						</Touchable>
-					</View>
+					<Touchable
+						style={[styles.iconContainer, styles.iconRight]}
+						accessible
+						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
+						onPress={() => setShowPassword(!showPassword)}>
+						<CustomIcon
+							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
+							testID={testID ? `${testID}-icon-password` : undefined}
+							size={20}
+							color={colors.fontDefault}
+						/>
+					</Touchable>
 				) : null}
 
 				{loading ? (

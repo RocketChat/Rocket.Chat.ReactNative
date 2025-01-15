@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef } from 'react';
-import { AccessibilityInfo, findNodeHandle, NativeModules, Text, TouchableOpacity, View } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
@@ -8,15 +8,11 @@ import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
-import { useTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
 import { getShowLoginButton } from '../../selectors/login';
-import ServerAvatar from './ServerAvatar';
-import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
-import { getNextFocusableElement } from '../../A11yEventEmitterModule';
 import { FormTextInput } from '../../containers/TextInput';
 
 type TNavigation = CompositeNavigationProp<
@@ -39,20 +35,9 @@ const useWorkspaceViewSelector = () =>
 const WorkspaceView = () => {
 	const navigation = useNavigation<TNavigation>();
 
-	const { colors } = useTheme();
-
 	const workspaceDomain = useWorkspaceDomain();
 
-	const {
-		Accounts_iframe_enabled,
-		Assets_favicon_512,
-		Site_Name,
-		Site_Url,
-		inviteLinkToken,
-		registrationForm,
-		server,
-		showLoginButton
-	} = useWorkspaceViewSelector();
+	const { Accounts_iframe_enabled, inviteLinkToken, registrationForm, server, showLoginButton } = useWorkspaceViewSelector();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
