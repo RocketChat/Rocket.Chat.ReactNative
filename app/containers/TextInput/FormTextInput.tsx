@@ -20,7 +20,7 @@ import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
-import { isAndroid, isIOS } from '../../lib/methods/helpers';
+import { isIOS } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	error: {
@@ -115,14 +115,13 @@ export const FormTextInput = ({
 	const { A11yEvent } = NativeModules;
 
 	const setAccessibilityOrder = () => {
-		if (isAndroid) return;
 		const parentRcTag = findNodeHandle(parentRef.current);
 		const firstRcTag = findNodeHandle(firstComponentRef.current);
 		const secondRcTag = findNodeHandle(secondComponentRef.current);
 
 		if (!parentRcTag || !firstRcTag || !secondRcTag) return;
 
-		A11yEvent.setA11yOrder([firstRcTag, secondRcTag], parentRcTag);
+		A11yEvent.setA11yOrder([secondRcTag, firstRcTag], parentRcTag);
 	};
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
