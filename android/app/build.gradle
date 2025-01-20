@@ -106,6 +106,7 @@ android {
 
     signingConfigs {
         release {
+            v1SigningEnabled false
             if (project.hasProperty('KEYSTORE')) {
                 storeFile file(KEYSTORE)
                 storePassword KEYSTORE_PASSWORD
