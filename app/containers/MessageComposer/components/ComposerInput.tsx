@@ -351,12 +351,10 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping));
 		};
 
-		const startShareView = () => {
-			return {
-				selectedMessages,
-				text: ''
-			};
-		};
+		const startShareView = () => ({
+			selectedMessages,
+			text: ''
+		});
 
 		const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
