@@ -210,7 +210,8 @@ dependencies {
     androidTestImplementation('com.wix:detox:+')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.facebook.soloader:soloader:0.10.4'
-    implementation("com.facebook.fresco:animated-gif:2.5.0")
+    implementation 'com.facebook.fresco:fresco:3.2.0'
+    implementation("com.facebook.fresco:animated-gif:3.2.0")
     implementation "com.facebook.fresco:imagepipeline-okhttp3:3.1.3"
 }
 
