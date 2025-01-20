@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { AccessibilityInfo, findNodeHandle, Text, TouchableOpacity, View } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
@@ -8,12 +8,14 @@ import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
 import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
+import { useTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
 import { getShowLoginButton } from '../../selectors/login';
+import ServerAvatar from './ServerAvatar';
+import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
-import { FormTextInput } from '../../containers/TextInput';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
@@ -35,9 +37,20 @@ const useWorkspaceViewSelector = () =>
 const WorkspaceView = () => {
 	const navigation = useNavigation<TNavigation>();
 
+	const { colors } = useTheme();
+
 	const workspaceDomain = useWorkspaceDomain();
 
-	const { Accounts_iframe_enabled, inviteLinkToken, registrationForm, server, showLoginButton } = useWorkspaceViewSelector();
+	const {
+		Accounts_iframe_enabled,
+		Assets_favicon_512,
+		Site_Name,
+		Site_Url,
+		inviteLinkToken,
+		registrationForm,
+		server,
+		showLoginButton
+	} = useWorkspaceViewSelector();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -62,31 +75,13 @@ const WorkspaceView = () => {
 		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
 
-	const rcTag = useRef(null);
-	const testChangeFocusUsingRCTag = () => {
-		const tag = findNodeHandle(rcTag.current);
-		if (!tag) return;
-		AccessibilityInfo.setAccessibilityFocus(tag);
-	};
-
 	return (
 		<FormContainer testID='workspace-view'>
 			<FormContainerInner>
-				<TouchableOpacity accessibilityRole='button' onPress={testChangeFocusUsingRCTag}>
-					<Text>Teste II</Text>
-				</TouchableOpacity>
-				<Button accessible title={'TEST'} type='secondary' onPress={testChangeFocusUsingRCTag} testID='workspace-view-register' />
-
-				<FormTextInput
-					accessibilityLabel='Test'
-					secureTextEntry
-					returnKeyType='send'
-					autoCapitalize='none'
-					testID='two-factor-input'
-					onChangeText={() => {}}
-				/>
-				<View accessible accessibilityLabel='FOCUS HERE' ref={rcTag}>
-					<Text>FOCUS HERE</Text>
+				<View style={styles.alignItemsCenter}>
+					<ServerAvatar url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
+					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</Text>
+					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
 				{showRegistrationButton ? (

@@ -18,7 +18,6 @@ import expo.modules.ApplicationLifecycleDispatcher
 import expo.modules.ReactNativeHostWrapper
 import chat.rocket.reactnative.networking.SSLPinningPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
-import chat.rocket.reactnative.a11yeventmodule.A11yEventPackage;
 import android.content.res.Configuration;
 
 open class MainApplication : Application(), ReactApplication {
@@ -30,7 +29,6 @@ open class MainApplication : Application(), ReactApplication {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               add(RNCViewPagerPackage())
               add(SSLPinningPackage())
-              add(A11yEventPackage())
               addAll(AdditionalModules().getAdditionalModules())
             }
 
