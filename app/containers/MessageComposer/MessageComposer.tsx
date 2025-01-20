@@ -71,7 +71,8 @@ export const MessageComposer = ({
 		closeEmojiKeyboard,
 		closeSearchEmojiKeyboard,
 		setTrackingViewHeight,
-		setAlsoSendThreadToChannel
+		setAlsoSendThreadToChannel,
+		setAutocompleteParams
 	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	useKeyboardListener(trackingViewRef);
@@ -146,6 +147,9 @@ export const MessageComposer = ({
 				return;
 			}
 		}
+
+		// Hide autocomplete
+		setAutocompleteParams({ text: '', type: null, params: '' });
 
 		// Text message
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);

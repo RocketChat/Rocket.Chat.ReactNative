@@ -7,12 +7,12 @@ export const ROW_HEIGHT = 56;
 export default StyleSheet.create({
 	serverItemContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		padding: 12
 	},
 	serverIcon: {
 		width: 44,
 		height: 44,
-		margin: 12,
 		borderRadius: 4,
 		resizeMode: 'contain'
 	},
@@ -20,7 +20,8 @@ export default StyleSheet.create({
 		flex: 1,
 		flexDirection: 'column',
 		justifyContent: 'center',
-		paddingRight: 18
+		paddingRight: 18,
+		paddingLeft: 12
 	},
 	serverName: {
 		fontSize: 18,
