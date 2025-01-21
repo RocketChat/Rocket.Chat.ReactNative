@@ -1,4 +1,4 @@
-import ImagePicker, { Image as ImageInterface } from 'react-native-image-crop-picker';
+// import ImagePicker, { Image as ImageInterface } from 'react-native-image-crop-picker';
 
-export type Image = ImageInterface;
-export default ImagePicker;
+export type Image = any; // ImageInterface;
+export default {};

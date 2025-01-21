@@ -1,24 +1,27 @@
-import { Options } from 'react-native-image-crop-picker';
+// import { Options } from 'react-native-image-crop-picker';
+import { ImagePickerOptions, MediaTypeOptions } from 'expo-image-picker';
 
 import { TMarkdownStyle } from './interfaces';
 
-export const IMAGE_PICKER_CONFIG = {
-	cropping: true,
-	avoidEmptySpaceAroundImage: false,
-	freeStyleCropEnabled: true,
-	forceJpg: true,
-	includeExif: true
+export const IMAGE_PICKER_CONFIG: ImagePickerOptions = {
+	// cropping: true,
+	// avoidEmptySpaceAroundImage: false,
+	// freeStyleCropEnabled: true,
+	// forceJpg: true,
+	// includeExif: true
+	quality: 1
 };
 
-export const LIBRARY_PICKER_CONFIG: Options = {
-	multiple: true,
-	compressVideoPreset: 'Passthrough',
-	mediaType: 'any',
-	includeExif: true
+export const LIBRARY_PICKER_CONFIG: ImagePickerOptions = {
+	allowsMultipleSelection: true,
+	// multiple: true,
+	// compressVideoPreset: 'Passthrough',
+	// mediaType: 'any',
+	exif: true
 };
 
-export const VIDEO_PICKER_CONFIG: Options = {
-	mediaType: 'video'
+export const VIDEO_PICKER_CONFIG: ImagePickerOptions = {
+	mediaTypes: MediaTypeOptions.Videos
 };
 
 export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;

@@ -25,7 +25,7 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+// import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
@@ -164,30 +164,30 @@ const ChangeAvatarView = () => {
 		return navigation.goBack();
 	};
 
-	const pickImage = async (isCam = false) => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
-		try {
-			const response: Image =
-				isCam === true
-					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
-					: await ImagePicker.openPicker(options);
-			dispatchAvatar({
-				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
-			});
-		} catch (error: any) {
-			if (error?.code !== 'E_PICKER_CANCELLED') {
-				log(error);
-			}
-		}
+	const pickImage = async () => {
+		// const options = {
+		// 	cropping: true,
+		// 	compressImageQuality: 0.8,
+		// 	freeStyleCropEnabled: true,
+		// 	cropperAvoidEmptySpaceAroundImage: false,
+		// 	cropperChooseText: I18n.t('Choose'),
+		// 	cropperCancelText: I18n.t('Cancel'),
+		// 	includeBase64: true
+		// };
+		// try {
+		// 	const response: Image =
+		// 		isCam === true
+		// 			? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
+		// 			: await ImagePicker.openPicker(options);
+		// 	dispatchAvatar({
+		// 		type: AvatarStateActions.CHANGE_AVATAR,
+		// 		payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
+		// 	});
+		// } catch (error: any) {
+		// 	if (error?.code !== 'E_PICKER_CANCELLED') {
+		// 		log(error);
+		// 	}
+		// }
 	};
 
 	const deletingRoomAvatar = context === 'room' && state.data === null;
@@ -265,7 +265,7 @@ const ChangeAvatarView = () => {
 							type='secondary'
 							disabled={saving}
 							backgroundColor={colors.buttonBackgroundSecondaryDefault}
-							onPress={() => pickImage(true)}
+							onPress={() => {}}
 							testID='change-avatar-view-take-a-photo'
 							style={styles.containerInput}
 						/>
