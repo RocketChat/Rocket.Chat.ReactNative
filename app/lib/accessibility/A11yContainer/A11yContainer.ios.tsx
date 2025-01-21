@@ -5,12 +5,12 @@ import { AccessibilityOrderProvider } from '../contexts/useAccessibilityOrder';
 
 interface IA11yContainer extends ViewProps {}
 
-const A11yContainer = ({ ...rest }: IA11yContainer) => {
+const A11yContainer = ({ children, ...rest }: IA11yContainer) => {
 	const containerRef = useRef<View>(null);
 
 	return (
 		<AccessibilityOrderProvider containerRef={containerRef}>
-			<View accessible ref={containerRef} {...rest} />
+			<View ref={containerRef}>{children}</View>
 		</AccessibilityOrderProvider>
 	);
 };

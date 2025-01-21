@@ -173,7 +173,10 @@ export const FormTextInput = ({
 
 						{secureTextEntry ? (
 							<A11yElement order={2} style={[styles.iconContainer, styles.iconRight]}>
-								<Touchable onPress={() => setShowPassword(!showPassword)}>
+								<Touchable
+									accessible
+									accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
+									onPress={() => setShowPassword(!showPassword)}>
 									<CustomIcon
 										name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 										testID={testID ? `${testID}-icon-password` : undefined}

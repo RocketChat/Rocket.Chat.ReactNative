@@ -23,7 +23,7 @@ const A11yElement = ({ order, children, ...rest }: IA11yElementProps) => {
 	}, []);
 
 	return (
-		<View accessible ref={elementRef} {...rest}>
+		<View {...rest} ref={elementRef}>
 			{children}
 		</View>
 	);
