@@ -1,5 +1,5 @@
 //
-//  A11yEventModule.m
+//  A11yFlowModule.m
 //  RocketChatRN
 //
 //  Created by Otávio Stasiak on 15/01/25.
@@ -7,15 +7,15 @@
 //
 
 
-#import "A11yEventModule.h"
+#import "A11yFlowModule.h"
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
 #import <UIKit/UIKit.h>
 
-@implementation A11yEventModule
+@implementation A11yFlowModule
 @synthesize bridge = _bridge;
 
-RCT_EXPORT_MODULE(A11yEvent);
+RCT_EXPORT_MODULE(A11yFlow);
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(isVoiceOverEnabled)
 {

@@ -7,7 +7,6 @@
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
 #import <React/RCTBridgeModule.h>
-#import <React/RCTEventEmitter.h>
 
 @implementation AppDelegate
 

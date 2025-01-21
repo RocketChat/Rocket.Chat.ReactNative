@@ -1,5 +1,5 @@
 //
-//  A11yEventModule.h
+//  A11yFlowModule.h
 //  RocketChatRN
 //
 //  Created by Otávio Stasiak on 15/01/25.
@@ -7,6 +7,6 @@
 //
 
 #import <React/RCTBridgeModule.h>
-@interface A11yEventModule : NSObject <RCTBridgeModule>
+@interface A11yFlowModule : NSObject <RCTBridgeModule>
 @end
 

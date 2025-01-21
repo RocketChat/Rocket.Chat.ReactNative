@@ -2,18 +2,18 @@ import { NativeModules } from 'react-native';
 
 import { isIOS } from '../../methods/helpers';
 
-const { A11yEvent } = NativeModules;
+const { A11yFlow } = NativeModules;
 
-interface IA11yModule {
+interface IA11yFlowModule {
 	setA11yOrder: (elements: number[], node: number) => void;
 }
 
-const A11yEventModule: IA11yModule = {
+const A11yFlowModule: IA11yFlowModule = {
 	setA11yOrder: (elements, node) => {
 		if (isIOS) {
-			A11yEvent.setA11yOrder(elements, node);
+			A11yFlow.setA11yOrder(elements, node);
 		}
 	}
 };
 
-export default A11yEventModule;
+export default A11yFlowModule;
