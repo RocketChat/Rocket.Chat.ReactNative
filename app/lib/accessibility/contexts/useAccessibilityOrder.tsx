@@ -1,10 +1,14 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { findNodeHandle, View } from 'react-native';
 
-import A11yModule from '../A11yModule/index';
+import A11yFlowModule from '../A11yModule/index';
 
+interface IElement {
+	tag: number;
+	order?: number;
+}
 interface IAccessibilityContextData {
-	updatedOrder: ({ tag, order }: { tag: number; order?: number }) => void;
+	updateElementsList: (element: IElement) => void;
 }
 
 interface IAccessibilityOrderProviderProps {
@@ -15,24 +19,29 @@ interface IAccessibilityOrderProviderProps {
 export const AccessibilityOrderContext = createContext({} as IAccessibilityContextData);
 
 function AccessibilityOrderProvider({ children, containerRef }: IAccessibilityOrderProviderProps) {
-	const [elements, setElements] = useState<{ tag: number; order?: number }[]>([]);
+	const [elements, setElements] = useState<IElement[]>([]);
 
-	const updatedOrder = useCallback(({ tag, order }: { tag: number; order?: number }) => {
+	const sortElements = (elementsList: IElement[]) => elementsList.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+	const extractTags = (elements: IElement[]) => elements.map(item => item.tag);
+
+	const updateElementsList = (element: IElement) => {
+		setElements(prevState => sortElements([...prevState, element]));
+	};
+
+	const updateAccessibilityOrder = () => {
 		const parentTag = findNodeHandle(containerRef.current);
 
-		if (!parentTag) throw new Error('OOPS');
-		setElements(prev => {
-			const updated = [...prev.filter(el => el.tag !== tag), { tag, order }];
-			return updated.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-		});
-		console.log('here');
-		A11yModule.setA11yOrder(
-			elements.map(item => item.tag),
-			parentTag
-		);
-	}, []);
+		if (!parentTag) return;
 
-	return <AccessibilityOrderContext.Provider value={{ updatedOrder }}>{children}</AccessibilityOrderContext.Provider>;
+		A11yFlowModule.setA11yOrder(extractTags(elements), parentTag);
+	};
+
+	useEffect(() => {
+		updateAccessibilityOrder();
+	}, [elements]);
+
+	return <AccessibilityOrderContext.Provider value={{ updateElementsList }}>{children}</AccessibilityOrderContext.Provider>;
 }
 
 function useAccessibilityOrder() {

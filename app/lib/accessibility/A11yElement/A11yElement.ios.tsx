@@ -9,13 +9,13 @@ interface IA11yElementProps extends ViewProps {
 
 const A11yElement = ({ order, children, ...rest }: IA11yElementProps) => {
 	const elementRef = useRef<View>(null);
-	const { updatedOrder } = useAccessibilityOrder();
+	const { updateElementsList } = useAccessibilityOrder();
 
 	const handleUpdateOrder = () => {
 		const tag = findNodeHandle(elementRef.current);
-
 		if (!tag) return;
-		updatedOrder({ tag, order });
+
+		updateElementsList({ tag, order });
 	};
 
 	useEffect(() => {
