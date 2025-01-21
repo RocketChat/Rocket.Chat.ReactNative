@@ -10,7 +10,7 @@ const A11yContainer = ({ ...rest }: IA11yContainer) => {
 
 	return (
 		<AccessibilityOrderProvider containerRef={containerRef}>
-			<View ref={containerRef} {...rest} />
+			<View accessible ref={containerRef} {...rest} />
 		</AccessibilityOrderProvider>
 	);
 };

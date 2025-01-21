@@ -23,7 +23,7 @@ const A11yElement: React.FC<IA11yElementProps> = ({ order, children, ...rest }) 
 	}, []);
 
 	return (
-		<View ref={elementRef} {...rest}>
+		<View accessible ref={elementRef} {...rest}>
 			{children}
 		</View>
 	);
