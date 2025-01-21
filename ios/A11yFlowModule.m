@@ -1,12 +1,3 @@
-//
-//  A11yFlowModule.m
-//  RocketChatRN
-//
-//  Created by Otávio Stasiak on 15/01/25.
-//  Copyright © 2025 Facebook. All rights reserved.
-//
-
-
 #import "A11yFlowModule.h"
 #import <React/RCTLog.h>
 #import <React/RCTUIManager.h>
@@ -40,7 +31,6 @@ RCT_EXPORT_METHOD(
       
       parentView.accessibilityElements = orderedElements;
       
-      // Optionally notify VoiceOver of the change
       UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, parentView);
     }
   });

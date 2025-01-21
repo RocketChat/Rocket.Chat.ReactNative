@@ -6,7 +6,6 @@
 #import <Firebase.h>
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
-#import <React/RCTBridgeModule.h>
 
 @implementation AppDelegate
 
@@ -23,8 +22,6 @@
   
   [RNNotifications startMonitorNotifications];
   [ReplyNotification configure];
-
-
   self.moduleName = @"RocketChatRN";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.

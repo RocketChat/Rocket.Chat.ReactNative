@@ -10,7 +10,9 @@ const A11yContainer = ({ children, ...rest }: IA11yContainer) => {
 
 	return (
 		<AccessibilityOrderProvider containerRef={containerRef}>
-			<View ref={containerRef}>{children}</View>
+			<View {...rest} ref={containerRef}>
+				{children}
+			</View>
 		</AccessibilityOrderProvider>
 	);
 };
