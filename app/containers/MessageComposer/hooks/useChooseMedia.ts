@@ -34,8 +34,13 @@ export const useChooseMedia = ({
 
 	const takePhoto = async () => {
 		try {
-			let image = await ImagePicker.openCamera({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
-			image = forceJpgExtension(image);
+			const result = await ImagePicker.launchCameraAsync({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
+			if (result.canceled) {
+				return;
+			}
+			const image = result.assets[0];
+			console.log('🚀 ~ takePhoto ~ image:', image);
+			// image = forceJpgExtension(image);
 			const file = image as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
 				file,
@@ -43,6 +48,7 @@ export const useChooseMedia = ({
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
+			console.log('🚀 ~ takePhoto ~ canUploadResult:', canUploadResult);
 			if (canUploadResult.success) {
 				return openShareView([image]);
 			}
@@ -55,7 +61,11 @@ export const useChooseMedia = ({
 
 	const takeVideo = async () => {
 		try {
-			const video = await ImagePicker.openCamera({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
+			const result = await ImagePicker.launchCameraAsync({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
+			if (result.canceled) {
+				return;
+			}
+			const video = result.assets[0];
 			const file = video as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
 				file,
@@ -76,12 +86,16 @@ export const useChooseMedia = ({
 	const chooseFromLibrary = async () => {
 		try {
 			// The type can be video or photo, however the lib understands that it is just one of them.
-			let attachments = (await ImagePicker.openPicker({
+			const result = await ImagePicker.launchImageLibraryAsync({
 				...LIBRARY_PICKER_CONFIG,
 				...libPickerLabels
-			})) as unknown as ImageOrVideo[]; // FIXME: type this
-			attachments = attachments.map(att => forceJpgExtension(att));
-			openShareView(attachments);
+			});
+			if (result.canceled) {
+				return;
+			}
+			console.log('🚀 ~ chooseFromLibrary ~ attachments:', result);
+			// const assets = result.assets.map(att => forceJpgExtension(att));
+			openShareView(result.assets);
 		} catch (e) {
 			log(e);
 		}

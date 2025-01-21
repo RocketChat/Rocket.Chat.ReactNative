@@ -1,8 +1,6 @@
-import { Image } from 'react-native-image-crop-picker';
-
 import { forceJpgExtension } from './forceJpgExtension';
 
-const attachment: Image = {
+const attachment = {
 	exif: null,
 	filename: 'IMG_0040.PNG',
 	path: 'tmp/temp',
