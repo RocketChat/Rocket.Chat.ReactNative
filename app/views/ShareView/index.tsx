@@ -262,6 +262,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Send attachment
 			if (attachments.length) {
 				await Promise.all(
+					// @ts-ignore
 					attachments.map(({ fileName, mimeType, description, filesize, uri, canUpload, height, width, exif }) => {
 						if (!canUpload) {
 							return Promise.resolve();
