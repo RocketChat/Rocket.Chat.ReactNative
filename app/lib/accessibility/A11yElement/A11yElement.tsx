@@ -1,32 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { View, ViewProps, findNodeHandle } from 'react-native';
-
-import { useAccessibilityOrder } from '../contexts/useAccessibilityOrder';
+import { ViewProps } from 'react-native';
 
 interface IA11yElementProps extends ViewProps {
 	order?: number;
 }
 
-const A11yElement: React.FC<IA11yElementProps> = ({ order, children, ...rest }) => {
-	const elementRef = useRef<View>(null);
-	const { updatedOrder } = useAccessibilityOrder();
-
-	const handleUpdateOrder = () => {
-		const tag = findNodeHandle(elementRef.current);
-
-		if (!tag) return;
-		updatedOrder({ tag, order });
-	};
-
-	useEffect(() => {
-		handleUpdateOrder();
-	}, []);
-
-	return (
-		<View accessible ref={elementRef} {...rest}>
-			{children}
-		</View>
-	);
-};
+const A11yElement = ({ children }: IA11yElementProps) => <>{children}</>;
 
 export default A11yElement;

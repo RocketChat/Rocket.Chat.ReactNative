@@ -25,7 +25,7 @@ function AccessibilityOrderProvider({ children, containerRef }: IAccessibilityOr
 			const updated = [...prev.filter(el => el.tag !== tag), { tag, order }];
 			return updated.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 		});
-
+		console.log('here');
 		A11yModule.setA11yOrder(
 			elements.map(item => item.tag),
 			parentTag

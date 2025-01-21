@@ -1,18 +1,7 @@
-import React, { useRef } from 'react';
-import { View, ViewProps } from 'react-native';
-
-import { AccessibilityOrderProvider } from '../contexts/useAccessibilityOrder';
+import { ViewProps } from 'react-native';
 
 interface IA11yContainer extends ViewProps {}
 
-const A11yContainer = ({ ...rest }: IA11yContainer) => {
-	const containerRef = useRef<View>(null);
-
-	return (
-		<AccessibilityOrderProvider containerRef={containerRef}>
-			<View accessible ref={containerRef} {...rest} />
-		</AccessibilityOrderProvider>
-	);
-};
+const A11yContainer = ({ children }: IA11yContainer) => <>{children}</>;
 
 export default A11yContainer;
