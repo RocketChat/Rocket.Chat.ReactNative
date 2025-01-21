@@ -25,38 +25,36 @@ interface IRoomTypeIcon {
 	sourceType?: IOmnichannelSource;
 }
 
-const RoomTypeIcon = React.memo(
-	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {
-		const { theme } = useTheme();
+const RoomTypeIcon = React.memo(({ userId, type, isGroupChat, status, style, teamMain, size = 16 }: IRoomTypeIcon) => {
+	const { theme } = useTheme();
 
-		if (!type) {
-			return null;
-		}
-
-		const iconStyle = [styles.icon, style];
-
-		if (type === 'd' && !isGroupChat && userId) {
-			return <Status id={userId} style={iconStyle} size={size} status={status} />;
-		}
-
-		if (type === 'l') {
-			return <OmnichannelRoomIcon style={iconStyle} size={size} type={type} status={status} sourceType={sourceType} />;
-		}
-
-		// TODO: move this to a separate function
-		let icon: TIconsName = 'channel-private';
-		if (teamMain) {
-			icon = `teams${type === 'p' ? '-private' : ''}`;
-		} else if (type === 'discussion') {
-			icon = 'discussions';
-		} else if (type === 'c') {
-			icon = 'channel-public';
-		} else if (type === 'd' && isGroupChat) {
-			icon = 'message';
-		}
-
-		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
+	if (!type) {
+		return null;
 	}
-);
+
+	const iconStyle = [styles.icon, style];
+
+	if (type === 'd' && !isGroupChat && userId) {
+		return <Status id={userId} style={iconStyle} size={size} status={status} />;
+	}
+
+	if (type === 'l') {
+		return <OmnichannelRoomIcon />;
+	}
+
+	// TODO: move this to a separate function
+	let icon: TIconsName = 'channel-private';
+	if (teamMain) {
+		icon = `teams${type === 'p' ? '-private' : ''}`;
+	} else if (type === 'discussion') {
+		icon = 'discussions';
+	} else if (type === 'c') {
+		icon = 'channel-public';
+	} else if (type === 'd' && isGroupChat) {
+		icon = 'message';
+	}
+
+	return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
+});
 
 export default RoomTypeIcon;
