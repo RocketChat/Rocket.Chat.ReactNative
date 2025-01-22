@@ -1,6 +1,6 @@
 import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
+import shortnameToUnicode from '../methods/helpers/shortnameToUnicode';
 import { formatText } from './formatText';
 import { formatHyperlink } from './formatHyperlink';
 

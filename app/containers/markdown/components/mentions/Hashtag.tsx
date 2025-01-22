@@ -1,17 +1,17 @@
 import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
-import i18n from '../../i18n';
-import { themes } from '../../lib/constants';
-import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
-import { useAppSelector } from '../../lib/hooks';
-import { showErrorAlert } from '../../lib/methods/helpers';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { Services } from '../../lib/services';
-import { useTheme } from '../../theme';
-import { sendLoadingEvent } from '../Loading';
-import { IUserChannel } from './interfaces';
-import styles from './styles';
+import i18n from '../../../../i18n';
+import { themes } from '../../../../lib/constants';
+import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
+import { useAppSelector } from '../../../../lib/hooks';
+import { showErrorAlert } from '../../../../lib/methods/helpers';
+import { goRoom } from '../../../../lib/methods/helpers/goRoom';
+import { Services } from '../../../../lib/services';
+import { useTheme } from '../../../../theme';
+import { sendLoadingEvent } from '../../../Loading';
+import { IUserChannel } from '../../interfaces';
+import styles from '../../styles';
 
 interface IHashtag {
 	hashtag: string;

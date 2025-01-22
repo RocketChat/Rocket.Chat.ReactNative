@@ -2,18 +2,14 @@ import React, { useContext } from 'react';
 import { Text } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
-import Hashtag from '../Hashtag';
-import AtMention from '../AtMention';
 import styles from '../styles';
-import Link from './Link';
+import { AtMention, Hashtag } from './mentions';
+import { Emoji } from './emoji';
+import { Bold, Italic, Link, Strike } from './inline/index';
 import Plain from './Plain';
-import Bold from './Bold';
-import Strike from './Strike';
-import Italic from './Italic';
-import Emoji from './Emoji';
 import InlineCode from './InlineCode';
 import Image from './Image';
-import MarkdownContext from './MarkdownContext';
+import MarkdownContext from '../contexts/MarkdownContext';
 // import { InlineKaTeX, KaTeX } from './Katex';
 
 interface IParagraphProps {
