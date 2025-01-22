@@ -52,7 +52,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
 		try {
-			changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
+			changeNavigationBarColor(themes[theme].surfaceNeutral, isLightTheme, true);
 			StatusBar.setBackgroundColor(themes[theme].surfaceNeutral);
 			StatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
 		} catch (error) {
