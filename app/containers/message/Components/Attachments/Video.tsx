@@ -82,7 +82,7 @@ const Video = ({
 	msg
 }: IMessageVideo): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 	const { status, onPress, url, isEncrypted, currentFile } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const _onPress = async () => {
@@ -110,7 +110,7 @@ const Video = ({
 
 	return (
 		<>
-			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} theme={theme} />
+			<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} style={[isReply && style]} />
 			<Touchable onPress={_onPress} style={messageStyles.image} background={Touchable.Ripple(colors.surfaceNeutral)}>
 				<Thumbnail status={status} encrypted={isEncrypted} />
 			</Touchable>
