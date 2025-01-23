@@ -163,6 +163,12 @@ class ShareRocketChatRN: UIViewController {
                     let savedUrl = self.saveDataToSharedContainer(data: data, filename: filename)
                     mediaUriInfo = savedUrl?.absoluteString
                 }
+            } else if let image = data as? UIImage {
+                if let imageData = image.pngData() {
+                    let filename = UUID().uuidString + ".png"
+                    let savedUrl = self.saveDataToSharedContainer(data: imageData, filename: filename)
+                    mediaUriInfo = savedUrl?.absoluteString
+                }
             }
 
             completion(mediaUriInfo)
