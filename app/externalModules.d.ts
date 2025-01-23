@@ -13,4 +13,5 @@ declare module 'rn-root-view';
 declare module 'react-native-math-view';
 declare module '@env' {
 	export const RUNNING_E2E_TESTS: string;
+	export const USE_STORYBOOK: string;
 }
