@@ -310,10 +310,14 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='E2EEnterYourPasswordStackNavigator'
 				component={E2EEnterYourPasswordStackNavigator}
-				options={{ headerShown: false }}
+				options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }}
 			/>
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
-			<InsideStack.Screen name='StatusView' component={StatusView} />
+			<InsideStack.Screen
+				name='StatusView'
+				component={StatusView}
+				options={{ presentation: 'transparentModal', animation: 'slide_from_bottom' }}
+			/>
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}

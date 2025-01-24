@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, SwitchProps, Pressable } from 'react-native';
+import { StyleSheet, Text, View, SwitchProps } from 'react-native';
 
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
@@ -12,19 +12,20 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		maxHeight: 80,
-		marginBottom: 12
+		maxHeight: 80
 	},
 	switchTextContainer: {
 		flex: 1,
 		marginRight: 8
 	},
 	label: {
-		fontSize: 14,
+		fontSize: 16,
+		lineHeight: 24,
 		...sharedStyles.textMedium
 	},
 	hint: {
 		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	}
 });
@@ -40,21 +41,21 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 	const { colors } = useTheme();
 
 	return (
-		<Pressable
-			disabled={disabled}
-			onPress={() => onValueChange(!value)}
-			accessible
-			accessibilityLabel={`${I18n.t(label)}, ${value ? I18n.t('Enabled') : I18n.t('Disabled')}, ${I18n.t(hint)}`}
-			accessibilityRole='switch'>
-			<View style={[styles.switchContainer, { backgroundColor: colors.surfaceRoom }]}>
-				<View style={styles.switchTextContainer}>
-					<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
-					<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
-						{I18n.t(hint)}
-					</Text>
-				</View>
-				<Switch value={value} onValueChange={onValueChange} testID={`create-channel-${id}`} disabled={disabled} />
+		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceRoom }]}>
+			<View accessible accessibilityLabel={`${I18n.t(label)}, ${I18n.t(hint)}`} style={styles.switchTextContainer}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
+				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
+					{I18n.t(hint)}
+				</Text>
 			</View>
-		</Pressable>
+			<Switch
+				accessibilityRole='switch'
+				accessible
+				value={value}
+				onValueChange={onValueChange}
+				testID={`create-channel-${id}`}
+				disabled={disabled}
+			/>
+		</View>
 	);
 };
