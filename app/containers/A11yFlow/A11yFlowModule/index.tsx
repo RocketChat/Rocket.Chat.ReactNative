@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-import { isIOS } from '../../methods/helpers';
+import { isIOS } from '../../../lib/methods/helpers';
 
 const { A11yFlow } = NativeModules;
 

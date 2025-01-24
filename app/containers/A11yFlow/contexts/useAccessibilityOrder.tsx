@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { findNodeHandle, View } from 'react-native';
 
-import A11yFlowModule from '../A11yModule/index';
+import A11yFlowModule from '../A11yFlowModule/index';
 
 interface IElement {
 	tag: number;

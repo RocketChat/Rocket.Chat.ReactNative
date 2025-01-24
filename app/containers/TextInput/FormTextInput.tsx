@@ -10,7 +10,7 @@ import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
 import { isIOS } from '../../lib/methods/helpers';
-import { A11yContainer, A11yElement } from '../../lib/accessibility';
+import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
 	error: {
