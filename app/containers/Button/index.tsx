@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	normalButton: {
-		paddingHorizontal: 14,
-		justifyContent: 'center',
-		height: 48
+		paddingVertical: 14,
+		paddingHorizontal: 16,
+		justifyContent: 'center'
 	},
 	smallButton: {
 		paddingHorizontal: 12,
