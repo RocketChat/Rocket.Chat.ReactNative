@@ -51,7 +51,7 @@ const UrlContent = ({ title, description }: { title: string; description: string
 	return (
 		<View style={styles.textContainer}>
 			{title ? (
-				<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
 					{title}
 				</Text>
 			) : null}
@@ -97,8 +97,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 			overflow: 'hidden',
 			alignItems: 'center',
 			justifyContent: 'center',
-			...imageDimensions.width <= 64 && { width: 64 },
-			...imageDimensions.height <= 64 && { height: 64 }
+			...(imageDimensions.width <= 64 && { width: 64 }),
+			...(imageDimensions.height <= 64 && { height: 64 })
 		};
 		if (!hasContent) {
 			containerStyle = {
