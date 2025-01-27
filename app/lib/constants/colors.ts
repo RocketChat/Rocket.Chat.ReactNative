@@ -56,7 +56,7 @@ const light = {
 	badgeBackgroundLevel4: '#F5455C',
 
 	userPresenceOnline: '#158D65',
-	userPresenceBusy: '#DA1F37',
+	userPresenceBusy: '#D40C26',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#F38C39',
@@ -148,7 +148,7 @@ const dark = {
 	badgeBackgroundLevel4: '#B43C4C',
 
 	userPresenceOnline: '#1CBF89',
-	userPresenceBusy: '#C14454',
+	userPresenceBusy: '#C75765',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
@@ -240,7 +240,7 @@ const black = {
 	badgeBackgroundLevel4: '#B43C4C',
 
 	userPresenceOnline: '#1CBF89',
-	userPresenceBusy: '#C14454',
+	userPresenceBusy: '#C75765',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
