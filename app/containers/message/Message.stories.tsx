@@ -378,7 +378,7 @@ export const WithImage = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'This is a description :nyan_rocket:',
 					image_url: '/dummypath'
 				}
 			]}
@@ -387,7 +387,21 @@ export const WithImage = () => (
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description :nyan_rocket:',
+					description: 'Header false',
+					image_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
 					image_url: '/dummypath'
 				}
 			]}
@@ -419,6 +433,21 @@ export const WithVideo = () => (
 			attachments={[
 				{
 					title: 'This is a title',
+					description: 'Header false',
+					video_url: '/dummypath'
+				}
+			]}
+			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					title: 'This is a title',
+					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
 					video_url: '/dummypath'
 				}
 			]}
@@ -437,34 +466,28 @@ export const WithAudio = () => (
 				}
 			]}
 		/>
-		<Message msg='First message' isHeader={false} />
 		<Message
 			attachments={[
 				{
 					title: 'This is a title',
-					description: 'This is a description',
+					description: 'Header false',
 					audio_url: '/dummypath'
 				}
 			]}
 			isHeader={false}
 		/>
 		<Message
+			msg='multi file'
 			attachments={[
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
+				},
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
 				}
 			]}
-			isHeader={false}
-		/>
-		<Message
-			attachments={[
-				{
-					title: 'This is a title',
-					audio_url: '/dummypath'
-				}
-			]}
-			isHeader={false}
 		/>
 	</>
 );
@@ -483,10 +506,21 @@ export const WithFile = () => (
 			attachments={[
 				{
 					text: 'File.pdf',
-					description: 'This is a description :nyan_rocket:'
+					description: 'Header false'
 				}
 			]}
 			isHeader={false}
+		/>
+		<Message
+			msg='multi file'
+			attachments={[
+				{
+					text: 'File.pdf'
+				},
+				{
+					text: 'File.pdf'
+				}
+			]}
 		/>
 	</>
 );
