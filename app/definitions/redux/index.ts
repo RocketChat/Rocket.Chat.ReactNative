@@ -44,6 +44,8 @@ import { ITroubleshootingNotification } from '../../reducers/troubleshootingNoti
 import { TActionTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { ISupportedVersionsState } from '../../reducers/supportedVersions';
 import { IInAppFeedbackState } from '../../reducers/inAppFeedback';
+import { IVoip } from '../../reducers/voip';
+import { TActionVoip } from '../../actions/voip';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -68,6 +70,7 @@ export interface IApplicationState {
 	permissions: IPermissionsState;
 	roles: IRoles;
 	videoConf: IVideoConf;
+	voip: IVoip;
 	usersRoles: TUsersRoles;
 	troubleshootingNotification: ITroubleshootingNotification;
 	supportedVersions: ISupportedVersionsState;
@@ -92,6 +95,7 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionPermissions &
 	TActionEnterpriseModules &
 	TActionVideoConf &
+	TActionVoip &
 	TActionUsersRoles &
 	TActionTroubleshootingNotification &
 	TActionSupportedVersions &

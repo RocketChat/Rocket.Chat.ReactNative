@@ -44,6 +44,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	showActionSheet: Function;
 	departmentId?: string;
 	rid?: string;
+	roomUserId?: string;
 	theme?: TSupportedThemes;
 	colors?: TColors;
 	issuesWithNotifications: boolean;
@@ -436,7 +437,8 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
+		const { t, tmid, threadsEnabled, rid, roomUserId, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } =
+			this.props;
 
 		if (!rid) {
 			return null;
@@ -482,7 +484,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton rid={rid} disabled={hasE2EEWarning} /> : null}
+				{rid ? <HeaderCallButton rid={rid} ruid={roomUserId || ''} disabled={hasE2EEWarning} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						iconName='threads'

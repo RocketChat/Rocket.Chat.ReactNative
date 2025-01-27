@@ -5,11 +5,12 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { CustomIcon, TIconsName } from '../../../containers/CustomIcon';
 import { ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
-import { useVideoConf } from '../../../lib/hooks/useVideoConf';
+// import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import { useE2EEWarning } from '../hooks';
+import { useStartCall } from '../../../lib/hooks/useStartCall';
 
 function BaseButton({
 	danger,
@@ -41,15 +42,26 @@ function BaseButton({
 	return null;
 }
 
-function CallButton({ rid, roomFromRid }: { rid: string; isDirect: boolean; roomFromRid: boolean }): React.ReactElement | null {
-	const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
+function CallButton({
+	rid,
+	ruid
+}: // roomFromRid
+{
+	rid: string;
+	ruid: string;
+	isDirect: boolean;
+	roomFromRid: boolean;
+}): React.ReactElement | null {
+	// const { callEnabled, disabledTooltip, showInitCallActionSheet } = useVideoConf(rid);
+	const { startCall } = useStartCall({ rid, ruid });
+
 	return (
 		<BaseButton
-			onPress={showInitCallActionSheet}
+			onPress={startCall}
 			iconName='phone'
 			label={i18n.t('Call')}
-			enabled={!disabledTooltip}
-			showIcon={callEnabled && !roomFromRid}
+			// enabled={!disabledTooltip}
+			// showIcon={callEnabled && !roomFromRid}
 		/>
 	);
 }
@@ -100,7 +112,7 @@ export const RoomInfoButtons = ({
 	return (
 		<View style={styles.roomButtonsContainer}>
 			<BaseButton onPress={handleCreateDirectMessage} label={i18n.t('Message')} iconName='message' />
-			{hasE2EEWarning ? null : <CallButton isDirect={isDirect} rid={rid} roomFromRid={!!roomFromRid} />}
+			{hasE2EEWarning ? null : <CallButton isDirect={isDirect} rid={rid} ruid={roomUserId || ''} roomFromRid={!!roomFromRid} />}
 			<BaseButton
 				onPress={handleIgnoreUser}
 				label={i18n.t(isIgnored ? 'Unignore' : 'Ignore')}

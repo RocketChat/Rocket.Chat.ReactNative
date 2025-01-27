@@ -7,4 +7,8 @@
                 tools:ignore="AcceptsUserCertificates" />
         </trust-anchors>
     </base-config>
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">voip-cert.dev.rocket.chat</domain>
+    </domain-config>
 </network-security-config>
