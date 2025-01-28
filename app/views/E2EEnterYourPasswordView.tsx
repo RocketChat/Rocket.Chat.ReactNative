@@ -96,7 +96,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 						onSubmitEditing={submit}
 						onChangeText={setPassword}
 						testID='e2e-enter-your-password-view-password'
-						textContentType='password'
+						autoComplete='password'
 						containerStyle={{ marginBottom: 0 }}
 					/>
 					<Button
