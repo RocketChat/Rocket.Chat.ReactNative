@@ -5,6 +5,7 @@
   "A_new_owner_will_be_assigned_automatically_to__count__room": "{{count}} कमरे को स्वच्छता से नया मालिक सौंपा जाएगा।",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "{{count}} कमरों को स्वच्छता से नया मालिक सौंपा जाएगा।",
   "accept": "स्वीकार करें",
+  "Accessibility": "प्रवेशयोग्यता",
   "Accessibility_statement": "पहुंच उपलब्धता विवरण",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "उपयोगकर्ताओं को 'चैनल में भी भेजें' व्यवहार का चयन करने की अनुमति दें",
   "Actions": "क्रियाएँ",

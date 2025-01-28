@@ -5,6 +5,7 @@
   "A_new_owner_will_be_assigned_automatically_to__count__room": "Ein neuer Besitzer wird automatisch zu {{count}} Raum zugeordnet.",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Ein neuer Besitzer wird automatisch zu {{count}} Räumen zugeordnet.",
   "accept": "Annehmen",
+  "Accessibility": "Barrierefreiheit",
   "Accessibility_statement": "Barrierefreiheits-Erklärung",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Nutzern erlauben das Verhalten für \"auch an den Kanal senden\" zu bestimmen.",
   "Actions": "Aktionen",

@@ -5,6 +5,7 @@
   "A_new_owner_will_be_assigned_automatically_to__count__room": "Az új tulajdonos automatikus hozzárendelésre kerül {{count}} szobához.",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Az új tulajdonos automatikus hozzárendelésre kerül {{count}} szobához.",
   "accept": "Elfogadom",
+  "Accessibility": "Akadálymentesség",
   "Accessibility_statement": "Hozzáférhetőségi nyilatkozat",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Engedélyezze a felhasználóknak a \"Küldés a csatornára is” viselkedés kiválasztását",
   "Actions": "Tevékenységek",

@@ -4,6 +4,7 @@
   "1_person_reacted": "1 henkilö reagoi",
   "A_new_owner_will_be_assigned_automatically_to__count__room": "Uusi omistaja liitetään automaattisesti {{count}} huoneeseen.",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Uusi omistaja liitetään automaattisesti {{count}} huoneeseen.",
+  "Accessibility": "Saavutettavuus",
   "Accessibility_statement": "Saavutettavuusilmoitus",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Salli käyttäjien valita Lähetä myös kanavalle -toiminta",
   "Actions": "Toimet",

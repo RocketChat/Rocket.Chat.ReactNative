@@ -5,6 +5,7 @@
   "A_new_owner_will_be_assigned_automatically_to__count__room": "A new owner will be assigned automatically to {{count}} room.",
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "A new owner will be assigned automatically to {{count}} rooms.",
   "accept": "Accept",
+  "Accessibility": "Accessibility",
   "Accessibility_statement": "Accessibility statement",
   "Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description": "Allow users to select the 'Also send to channel' behavior",
   "Actions": "Actions",
