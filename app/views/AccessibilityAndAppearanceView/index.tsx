@@ -1,4 +1,5 @@
 import React, { useLayoutEffect } from 'react';
+import { Switch } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,10 +10,18 @@ import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
+import { useMentionsPreferences } from '../../MentionsPreferences';
 
 const AccessibilityAndAppearanceView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
+	const { roomsWithHashTagSymbol, mentionsWithAtSymbol, toggleMentionsWithAtSymbol, togglRoomsWithHashTag } =
+		useMentionsPreferences();
+
+	const renderMentionsWithAtSymbolSwitch = () => (
+		<Switch value={mentionsWithAtSymbol} onValueChange={toggleMentionsWithAtSymbol} />
+	);
+	const renderRoomsWithHashTagSwitch = () => <Switch value={roomsWithHashTagSymbol} onValueChange={togglRoomsWithHashTag} />;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -25,9 +34,6 @@ const AccessibilityAndAppearanceView = (): React.ReactElement => {
 				)
 		});
 	}, []);
-
-	// const renderAvatarSwitch = (value: boolean) => <Switch value={value} onValueChange={() => console.log()} />;
-
 	return (
 		<SafeAreaView>
 			<StatusBar />
@@ -52,9 +58,9 @@ const AccessibilityAndAppearanceView = (): React.ReactElement => {
 
 				<List.Section>
 					<List.Separator />
-					<List.Item title='Mentions_With_@_Symbol' />
+					<List.Item title='Mentions_With_@_Symbol' right={renderMentionsWithAtSymbolSwitch} />
 					<List.Separator />
-					<List.Item title='Rooms_With_#_Symbol' />
+					<List.Item title='Rooms_With_#_Symbol' right={renderRoomsWithHashTagSwitch} />
 					<List.Separator />
 				</List.Section>
 			</List.Container>

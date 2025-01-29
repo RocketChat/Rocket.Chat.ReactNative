@@ -12,6 +12,7 @@ import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import { IUserChannel } from '../../interfaces';
 import styles from '../../styles';
+import { useMentionsPreferences } from '../../../../MentionsPreferences';
 
 interface IHashtag {
 	hashtag: string;
@@ -22,8 +23,9 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
+	const { roomsWithHashTagSymbol } = useMentionsPreferences();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-
+	const preffix = roomsWithHashTagSymbol ? '#' : '';
 	const handlePress = async () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
 		if (typeof index !== 'undefined' && navToRoomInfo) {
@@ -59,11 +61,11 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					...style
 				]}
 				onPress={handlePress}>
-				{`#${hashtag}`}
+				{`${preffix}${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontInfo }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontInfo }, ...style]}>{`${preffix}${hashtag}`}</Text>;
 });
 
 export default Hashtag;

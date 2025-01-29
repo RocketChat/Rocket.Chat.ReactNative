@@ -16,6 +16,7 @@ export const E2E_ROOM_TYPES: Record<string, string> = {
 };
 
 export const THEME_PREFERENCES_KEY = 'RC_THEME_PREFERENCES_KEY';
+export const MENTIONS_PREFERENCES_KEY = 'RC_MENTIONS_PREFERENCES_KEY';
 export const CRASH_REPORT_KEY = 'RC_CRASH_REPORT_KEY';
 export const ANALYTICS_EVENTS_KEY = 'RC_ANALYTICS_EVENTS_KEY';
 export const TOKEN_KEY = 'reactnativemeteor_usertoken';
