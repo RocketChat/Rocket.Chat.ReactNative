@@ -48,6 +48,7 @@ const AccessibilityAndAppearanceView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						testID='accessibility-display-button'
 						showActionIndicator
 						title='Display'
 						left={() => <List.Icon name='sort' />}

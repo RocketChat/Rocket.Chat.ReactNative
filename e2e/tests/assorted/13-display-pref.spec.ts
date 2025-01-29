@@ -6,9 +6,12 @@ import { createRandomUser } from '../../helpers/data_setup';
 const goToDisplayPref = async () => {
 	await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
 	await element(by.id('rooms-list-view-sidebar')).tap();
-	await expect(element(by.id('sidebar-display'))).toBeVisible();
-	await element(by.id('sidebar-display')).tap();
+	await expect(element(by.id('sidebar-accessibility'))).toBeVisible();
+	await element(by.id('sidebar-accessibility')).tap();
+	await expect(element(by.id('accessibility-display-button'))).toBeVisible();
+	await element(by.id('accessibility-display-button')).tap();
 };
+
 const goToRoomList = async () => {
 	await expect(element(by.id('display-view-drawer'))).toBeVisible();
 	await element(by.id('display-view-drawer')).tap();

@@ -257,7 +257,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 					left={() => <List.Icon name='accessibility' />}
 					onPress={() => this.sidebarNavigate('AccessibilityStackNavigator')}
 					backgroundColor={this.currentItemKey === 'AccessibilityStackNavigator' ? themes[theme!].strokeLight : undefined}
-					testID='sidebar-display'
+					testID='sidebar-accessibility'
 				/>
 				<List.Separator />
 				<List.Item
