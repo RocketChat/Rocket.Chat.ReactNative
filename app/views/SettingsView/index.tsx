@@ -217,14 +217,6 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
-						title='Theme'
-						showActionIndicator
-						onPress={() => navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						left={() => <List.Icon name='moon' />}
-					/>
-					<List.Separator />
-					<List.Item
 						title='Media_auto_download'
 						showActionIndicator
 						onPress={() => navigateToScreen('MediaAutoDownloadView')}

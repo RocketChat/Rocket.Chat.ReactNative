@@ -78,7 +78,6 @@ import LegalView from '../views/LegalView';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
-	DisplayPrefStackParamList,
 	DrawerParamList,
 	E2EEnterYourPasswordStackParamList,
 	E2ESaveYourPasswordStackParamList,
@@ -90,6 +89,7 @@ import {
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
+import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
@@ -219,6 +219,7 @@ const AccessibilityStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<AccessibilityStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+			<AccessibilityStack.Screen name='AccessibilityAndAppearanceView' component={AccessibilityAndAppearanceView} />
 			<AccessibilityStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
 			<AccessibilityStack.Screen name='ThemeView' component={ThemeView} />
 		</AccessibilityStack.Navigator>
