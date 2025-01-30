@@ -15,32 +15,33 @@ import { useMentionsPreferences } from '../../MentionsPreferences';
 const AccessibilityAndAppearanceView = (): React.ReactElement => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
-	const { roomsWithHashTagSymbol, mentionsWithAtSymbol, toggleMentionsWithAtSymbol, togglRoomsWithHashTag } =
+	const { roomsWithHashTagSymbol, mentionsWithAtSymbol, toggleMentionsWithAtSymbol, toggleRoomsWithHashTag } =
 		useMentionsPreferences();
 
 	const renderMentionsWithAtSymbolSwitch = () => (
 		<Switch value={mentionsWithAtSymbol} onValueChange={toggleMentionsWithAtSymbol} />
 	);
-	const renderRoomsWithHashTagSwitch = () => <Switch value={roomsWithHashTagSymbol} onValueChange={togglRoomsWithHashTag} />;
+	const renderRoomsWithHashTagSwitch = () => <Switch value={roomsWithHashTagSymbol} onValueChange={toggleRoomsWithHashTag} />;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Accessibility_and_Appearance'),
 			headerLeft: () =>
 				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='settings-view-close' />
+					<HeaderButton.CloseModal navigation={navigation} testID='accessibility-view-close' />
 				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='settings-view-drawer' />
+					<HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
 				)
 		});
 	}, []);
 	return (
 		<SafeAreaView>
 			<StatusBar />
-			<List.Container testID='display-view-list'>
+			<List.Container testID='accessibility-view-list'>
 				<List.Section>
 					<List.Separator />
 					<List.Item
+						testID='accessibility-theme-button'
 						showActionIndicator
 						title='Theme'
 						left={() => <List.Icon name='moon' />}
@@ -59,9 +60,19 @@ const AccessibilityAndAppearanceView = (): React.ReactElement => {
 
 				<List.Section>
 					<List.Separator />
-					<List.Item title='Mentions_With_@_Symbol' right={renderMentionsWithAtSymbolSwitch} />
+					<List.Item
+						testID='accessibility-mentions-with-at-symbol-switch'
+						title='Mentions_With_@_Symbol'
+						right={renderMentionsWithAtSymbolSwitch}
+						onPress={toggleMentionsWithAtSymbol}
+					/>
 					<List.Separator />
-					<List.Item title='Rooms_With_#_Symbol' right={renderRoomsWithHashTagSwitch} />
+					<List.Item
+						testID='accessibility-rooms-with-hashtag-symbol-switch'
+						title='Rooms_With_#_Symbol'
+						right={renderRoomsWithHashTagSwitch}
+						onPress={toggleRoomsWithHashTag}
+					/>
 					<List.Separator />
 				</List.Section>
 			</List.Container>

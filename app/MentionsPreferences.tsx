@@ -6,7 +6,7 @@ import UserPreferences from './lib/methods/userPreferences';
 
 interface IMentionsPreferencesContextProps extends IMentionsPreferences {
 	toggleMentionsWithAtSymbol: () => void;
-	togglRoomsWithHashTag: () => void;
+	toggleRoomsWithHashTag: () => void;
 }
 
 interface IMentionsPreferencesProvider {
@@ -22,21 +22,18 @@ const defaultPreferences: IMentionsPreferences = {
 export const MentionsPreferencesContext = React.createContext<IMentionsPreferencesContextProps>({
 	...defaultPreferences,
 	toggleMentionsWithAtSymbol: () => {},
-	togglRoomsWithHashTag: () => {}
+	toggleRoomsWithHashTag: () => {}
 });
 
-export const MentionsPreferencesProvider: React.FC<IMentionsPreferencesProvider> = ({
-	children,
-	mentionsPreferences = defaultPreferences
-}) => {
-	const [preferences, setPreferences] = useState<IMentionsPreferences>(mentionsPreferences);
+export const MentionsPreferencesProvider: React.FC<IMentionsPreferencesProvider> = ({ children, mentionsPreferences }) => {
+	const [preferences, setPreferences] = useState<IMentionsPreferences>(mentionsPreferences ?? defaultPreferences);
 
 	const toggleMentionsWithAtSymbol = () => {
 		setPreferences({ ...preferences, mentionsWithAtSymbol: !preferences.mentionsWithAtSymbol });
 		UserPreferences.setMap(MENTIONS_PREFERENCES_KEY, { ...preferences, mentionsWithAtSymbol: !preferences.mentionsWithAtSymbol });
 	};
 
-	const togglRoomsWithHashTag = () => {
+	const toggleRoomsWithHashTag = () => {
 		setPreferences({ ...preferences, roomsWithHashTagSymbol: !preferences.roomsWithHashTagSymbol });
 		UserPreferences.setMap(MENTIONS_PREFERENCES_KEY, {
 			...preferences,
@@ -45,7 +42,7 @@ export const MentionsPreferencesProvider: React.FC<IMentionsPreferencesProvider>
 	};
 
 	return (
-		<MentionsPreferencesContext.Provider value={{ ...preferences, toggleMentionsWithAtSymbol, togglRoomsWithHashTag }}>
+		<MentionsPreferencesContext.Provider value={{ ...preferences, toggleMentionsWithAtSymbol, toggleRoomsWithHashTag }}>
 			{children}
 		</MentionsPreferencesContext.Provider>
 	);
