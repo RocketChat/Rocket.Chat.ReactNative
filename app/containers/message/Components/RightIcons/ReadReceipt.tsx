@@ -6,15 +6,11 @@ import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
 	const { colors } = useTheme();
+	const iconName = !unread && unread !== null ? 'check-double' : 'check';
+	const iconColor = !unread && unread !== null ? colors.fontInfo : colors.fontAnnotation;
+
 	if (isReadReceiptEnabled) {
-		return (
-			<CustomIcon
-				name='check'
-				color={!unread && unread !== null ? colors.badgeBackgroundLevel2 : colors.fontHint}
-				size={16}
-				style={styles.rightIcons}
-			/>
-		);
+		return <CustomIcon name={iconName} color={iconColor} size={16} style={styles.rightIcons} />;
 	}
 	return null;
 });
