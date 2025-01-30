@@ -85,7 +85,7 @@ const RoomItem = ({
 				type: prid ? 'discussion' : type,
 				userId
 			})} ${name} ${capitalize(date)} ${memoizedMessage}`,
-		[name, date, statusState, memoizedMessage]
+		[name, date, isGroupChat, status, statusState, teamMain, userId, prid, type, memoizedMessage]
 	);
 	return (
 		<Touchable
