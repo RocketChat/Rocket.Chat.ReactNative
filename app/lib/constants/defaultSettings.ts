@@ -171,6 +171,9 @@ export const defaultSettings = {
 	UI_Allow_room_names_with_special_chars: {
 		type: 'valueAsBoolean'
 	},
+	UI_Use_Name_Avatar: {
+		type: 'valueAsBoolean'
+	},
 	UI_Use_Real_Name: {
 		type: 'valueAsBoolean'
 	},
