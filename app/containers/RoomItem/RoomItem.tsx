@@ -15,8 +15,8 @@ import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import { capitalize } from '../../lib/methods/helpers';
-import getRoomAccessibilityLabel from './getRoomAccessibilityLabel';
 import { useAppSelector } from '../../lib/hooks';
+import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 
 const RoomItem = ({
 	rid,

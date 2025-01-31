@@ -9,6 +9,7 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
+import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 
 const HIT_SLOP = {
 	top: 5,
@@ -149,6 +150,18 @@ const Header = React.memo(
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const statusState = useAppSelector(state => {
+			if (state.settings.Presence_broadcast_disabled) {
+				return 'disabled';
+			}
+			if (state.meteor.connected && roomUserId && state.activeUsers[roomUserId]) {
+				return state.activeUsers[roomUserId].status;
+			}
+			if (!state.meteor.connected) {
+				return 'offline';
+			}
+			return 'loading';
+		});
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
@@ -177,11 +190,18 @@ const Header = React.memo(
 		const handleOnPress = useCallback(() => onPress(), []);
 
 		const accessibilityLabel = useMemo(() => {
+			const iconOrStatusLabel = getRoomAccessibilityLabel({
+				isGroupChat,
+				status: status ?? statusState,
+				teamMain,
+				type: prid ? 'discussion' : type,
+				userId: roomUserId
+			});
 			if (tmid) {
-				return `${title} ${parentTitle}`;
+				return `${iconOrStatusLabel} ${title} ${parentTitle}`;
 			}
-			return title;
-		}, [title, parentTitle, tmid]);
+			return `${iconOrStatusLabel} ${title} ${subtitle ?? ''}`;
+		}, [title, parentTitle, tmid, isGroupChat, status, statusState, teamMain, type, roomUserId, prid]);
 
 		return (
 			<TouchableOpacity

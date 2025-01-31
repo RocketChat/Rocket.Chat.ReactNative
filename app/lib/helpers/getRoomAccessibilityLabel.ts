@@ -2,7 +2,7 @@ import I18n from '../../i18n';
 import { TUserStatus } from '../../definitions';
 
 interface IGetAccessibilityRoomLabel {
-	userId?: string;
+	userId?: string | null;
 	type?: string;
 	isGroupChat?: boolean;
 	teamMain?: boolean;
@@ -26,11 +26,11 @@ const getRoomAccessibilityLabel = ({ type, userId, isGroupChat, status, teamMain
 
 	if (type === 'discussion') return I18n.t('Discussion');
 
-	if (type === 'c') return I18n.t('Channel_public');
+	if (type === 'c') return I18n.t('Public_channel');
 
 	if (type === 'd' && isGroupChat) return I18n.t('Message');
 
-	return I18n.t('Channel_private');
+	return I18n.t('Private_channel');
 };
 
 export default getRoomAccessibilityLabel;
