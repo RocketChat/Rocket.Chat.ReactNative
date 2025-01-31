@@ -24,6 +24,10 @@ import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	const hasQuote = props.attachments?.some(
+		file => !file.image_url && !file.video_url && !file.audio_url && !file.actions && typeof file.collapsed !== 'boolean'
+	);
+
 	if (props.isPreview) {
 		return (
 			<>
@@ -63,6 +67,22 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
+			</>
+		);
+	}
+
+	if (hasQuote) {
+		return (
+			<>
+				<User {...props} />
+				<>
+					<Attachments {...props} />
+					<Content {...props} />
+				</>
+				<Urls {...props} />
+				<Thread {...props} />
+				<Reactions {...props} />
+				<Broadcast {...props} />
 			</>
 		);
 	}
