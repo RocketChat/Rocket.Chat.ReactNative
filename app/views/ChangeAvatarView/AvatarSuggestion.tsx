@@ -7,6 +7,7 @@ import I18n from '../../i18n';
 import styles from './styles';
 import { useTheme } from '../../theme';
 import AvatarSuggestionItem from './AvatarSuggestionItem';
+import { getDefaultAvatarInfo } from '../../lib/methods/helpers/getDefaultAvatarInfo';
 
 const AvatarSuggestion = ({
 	onPress,
@@ -18,6 +19,10 @@ const AvatarSuggestion = ({
 	resetAvatar?: () => void;
 }) => {
 	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
+	const defaultAvatarInfo = getDefaultAvatarInfo(username);
+	const defaultAvatarAccessibilityInfo = defaultAvatarInfo
+		? I18n.t('Avatar_default_photo', defaultAvatarInfo)
+		: I18n.t('Select_Uploaded_Image');
 
 	const { colors } = useTheme();
 
@@ -47,10 +52,21 @@ const AvatarSuggestion = ({
 			<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
 				{username && resetAvatar ? (
-					<AvatarSuggestionItem text={`@${username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
+					<AvatarSuggestionItem
+						accessibilityLabel={defaultAvatarAccessibilityInfo}
+						text={`@${username}`}
+						testID={`reset-avatar-suggestion`}
+						onPress={resetAvatar}
+					/>
 				) : null}
 				{avatarSuggestions.slice(0, 7).map(item => (
-					<AvatarSuggestionItem item={item} key={item?.url} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
+					<AvatarSuggestionItem
+						accessibilityLabel={I18n.t('Select_Uploaded_Image')}
+						item={item}
+						key={item?.url}
+						testID={`${item?.service}-avatar-suggestion`}
+						onPress={onPress}
+					/>
 				))}
 			</View>
 		</View>
