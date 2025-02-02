@@ -1,60 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
-import { useTheme } from '../../theme';
-import Avatar from '../../containers/Avatar';
-import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
-import { MarkdownPreview } from '../../containers/markdown';
-import { formatDateThreads, makeThreadName } from '../../lib/methods/helpers/room';
-import ThreadDetails from '../../containers/ThreadDetails';
-import { TThreadModel } from '../../definitions';
-
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		padding: 16
-	},
-	contentContainer: {
-		flexDirection: 'column',
-		flex: 1
-	},
-	titleContainer: {
-		flexDirection: 'row',
-		marginBottom: 2,
-		alignItems: 'center'
-	},
-	title: {
-		flexShrink: 1,
-		fontSize: 18,
-		...sharedStyles.textMedium
-	},
-	time: {
-		fontSize: 14,
-		marginLeft: 4,
-		...sharedStyles.textRegular
-	},
-	avatar: {
-		marginRight: 8
-	},
-	threadDetails: {
-		marginTop: 8
-	},
-	badge: {
-		width: 8,
-		height: 8,
-		borderRadius: 4,
-		marginHorizontal: 8,
-		alignSelf: 'center'
-	},
-	messageContainer: {
-		flexDirection: 'row'
-	},
-	markdown: {
-		flex: 1
-	}
-});
+import { useTheme } from '../../../../theme';
+import Avatar from '../../../../containers/Avatar';
+import { themes } from '../../../../lib/constants';
+import { MarkdownPreview } from '../../../../containers/markdown';
+import { formatDateThreads, makeThreadName } from '../../../../lib/methods/helpers/room';
+import ThreadDetails from '../../../../containers/ThreadDetails';
+import { TThreadModel } from '../../../../definitions';
+import styles from './styles';
 
 export interface IItem {
 	item: TThreadModel;
@@ -77,8 +32,7 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].surfaceRoom }}
-		>
+			style={{ backgroundColor: themes[theme].surfaceRoom }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
