@@ -3,6 +3,7 @@
         <item name="android:colorEdgeEffect">#aaaaaa</item>
         <item name="colorPrimaryDark">@color/splashBackground</item>
         <item name="android:forceDarkAllowed">false</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogTheme</item>
         <!-- RN 0.68.2 -->
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item> 
     </style>
@@ -26,5 +27,11 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="AlertDialogTheme" parent="Base.Theme.AppCompat.Dialog.Alert">
+        <item name="android:background">@color/alert_background</item>
+        <item name="android:textColor">@color/alert_text</item>
+        <item name="android:textColorPrimary">@color/alert_text</item>
     </style>
 </resources>

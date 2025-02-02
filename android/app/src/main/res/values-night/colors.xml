@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<item name="splashBackground" type="color">#000000</item>
+	<color name="alert_background">#1F2329</color>
+    <color name="alert_text">#F2F3F5</color>
 </resources>
