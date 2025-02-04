@@ -147,8 +147,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	};
 
 	const hasContent = !!(url.title || url.description);
-
-	if (!url || url?.ignoreParse || !API_Embed || (!hasContent && !image)) {
+	if (!url || url?.ignoreParse || !API_Embed || (!hasContent && image?.includes('.pdf'))) {
 		return null;
 	}
 
