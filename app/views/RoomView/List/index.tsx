@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { Platform, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { isAndroid, useDebounce } from '../../../lib/methods/helpers';
