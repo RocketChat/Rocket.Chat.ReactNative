@@ -1,5 +1,5 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import { Platform, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
 import { isAndroid, useDebounce } from '../../../lib/methods/helpers';
@@ -62,13 +62,18 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
 
+		const [test, setTest] = useState(1);
+
 		return (
 			<>
+				<TouchableOpacity onPress={() => setTest(test + 1)} style={{ width: 100, height: 100, backgroundColor: 'blue' }}>
+					<Text>INCREASE</Text>
+				</TouchableOpacity>
 				<EmptyRoom rid={rid} length={messages.length} />
 				<Container>
 					<List
 						listRef={listRef}
-						data={messages.filter(item => (item.ts as any) > getTimestampOneWeekAgo())}
+						data={messages.filter(item => (item.ts as any) > getTimestampOneWeekAgo()).slice(0, test)}
 						renderItem={renderItem}
 						onEndReached={onEndReached}
 						ListFooterComponent={renderFooter}
