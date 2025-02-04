@@ -97,8 +97,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 			overflow: 'hidden',
 			alignItems: 'center',
 			justifyContent: 'center',
-			...imageDimensions.width <= 64 && { width: 64 },
-			...imageDimensions.height <= 64 && { height: 64 }
+			...(imageDimensions.width <= 64 && { width: 64 }),
+			...(imageDimensions.height <= 64 && { height: 64 })
 		};
 		if (!hasContent) {
 			containerStyle = {
@@ -131,10 +131,10 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
 	const getImageUrl = () => {
-		const imageUrl = url.image || url.url;
+		const imageUrl = url?.image || url?.url;
 
 		if (!imageUrl) return null;
-		if (imageUrl.includes('http')) return imageUrl;
+		if (imageUrl?.includes('http')) return imageUrl;
 		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	};
 	const image = getImageUrl();
@@ -148,7 +148,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse || !API_Embed) {
+	if (!url || url?.ignoreParse || !API_Embed || (!hasContent && !image)) {
 		return null;
 	}
 

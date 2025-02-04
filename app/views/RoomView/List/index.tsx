@@ -53,16 +53,10 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			}
 			return null;
 		};
-		function getTimestampOneWeekAgo() {
-			const now = Date.now();
-			const oneWeekAgo = now - 7 * 24 * 60 * 60 * 1000;
-			return oneWeekAgo;
-		}
+
 		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
 			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
-
-		const [test, setTest] = useState(5);
 
 		return (
 			<>
@@ -73,7 +67,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 				<Container>
 					<List
 						listRef={listRef}
-						data={messages.filter(item => (item.ts as any) > getTimestampOneWeekAgo()).slice(test, 6)}
+						data={messages}
 						renderItem={renderItem}
 						onEndReached={onEndReached}
 						ListFooterComponent={renderFooter}
