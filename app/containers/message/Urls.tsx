@@ -148,6 +148,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 	if (!url || url?.ignoreParse || !API_Embed || (!hasContent && image?.includes('.pdf'))) {
+		console.log('caiu aqui');
 		return null;
 	}
 
