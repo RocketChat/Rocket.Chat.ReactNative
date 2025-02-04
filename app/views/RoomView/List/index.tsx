@@ -62,11 +62,11 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
 		);
 
-		const [test, setTest] = useState(1);
+		const [test, setTest] = useState(5);
 
 		return (
 			<>
-				<TouchableOpacity onPress={() => setTest(test + 1)} style={{ width: 100, height: 100, backgroundColor: 'blue' }}>
+				<TouchableOpacity onPress={() => setTest(test - 1)} style={{ width: 100, height: 100, backgroundColor: 'blue' }}>
 					<Text>INCREASE</Text>
 				</TouchableOpacity>
 				<EmptyRoom rid={rid} length={messages.length} />
