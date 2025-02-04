@@ -1,4 +1,4 @@
-import React, { forwardRef, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useImperativeHandle } from 'react';
 import { Platform, StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 
 import ActivityIndicator from '../../../containers/ActivityIndicator';
@@ -60,9 +60,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 
 		return (
 			<>
-				<TouchableOpacity onPress={() => setTest(test - 1)} style={{ width: 100, height: 100, backgroundColor: 'blue' }}>
-					<Text>INCREASE</Text>
-				</TouchableOpacity>
 				<EmptyRoom rid={rid} length={messages.length} />
 				<Container>
 					<List
