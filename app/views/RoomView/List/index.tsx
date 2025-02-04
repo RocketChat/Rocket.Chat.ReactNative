@@ -68,7 +68,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 				<Container>
 					<List
 						listRef={listRef}
-						data={messages.filter(item => (item.ts as any) < getTimestampOneWeekAgo())}
+						data={messages.filter(item => (item.ts as any) > getTimestampOneWeekAgo())}
 						renderItem={renderItem}
 						onEndReached={onEndReached}
 						ListFooterComponent={renderFooter}
