@@ -86,8 +86,6 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 	let imageStyle = {};
 	let containerStyle: ViewStyle = {};
 
-	if (imageLoadedState === 'error') return null;
-
 	if (imageLoadedState === 'done') {
 		const width = Math.min(imageDimensions.width, maxSize) || 0;
 		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
@@ -135,7 +133,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	const getImageUrl = () => {
 		const imageUrl = url?.image || url?.url;
 
-		if (!imageUrl) return null;
+		if (!imageUrl || imageUrl?.includes('.pdf')) return null;
 		if (imageUrl?.includes('http')) return imageUrl;
 		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	};
