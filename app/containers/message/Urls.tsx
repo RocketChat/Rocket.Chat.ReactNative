@@ -86,6 +86,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 	let imageStyle = {};
 	let containerStyle: ViewStyle = {};
 
+	if (imageLoadedState === 'error') return null;
+
 	if (imageLoadedState === 'done') {
 		const width = Math.min(imageDimensions.width, maxSize) || 0;
 		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
@@ -147,8 +149,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	};
 
 	const hasContent = !!(url.title || url.description);
-	if (!url || url?.ignoreParse || !API_Embed || (!hasContent && image?.includes('.pdf'))) {
-		console.log('caiu aqui');
+	if (!url || url?.ignoreParse || !API_Embed) {
 		return null;
 	}
 
