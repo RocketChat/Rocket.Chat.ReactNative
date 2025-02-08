@@ -142,11 +142,6 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
 		yield put(inquiryReset());
 		yield put(encryptionStop());
 		yield put(clearActiveUsers());
@@ -224,12 +219,6 @@ const handleSelectServer = function* handleSelectServer({ server, version, fetch
 
 const handleServerRequest = function* handleServerRequest({ server, username, fromServerHistory }: IServerRequestAction) {
 	try {
-		// SSL Pinning - Read certificate alias and set it to be used by network requests
-		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
-		if (certificate) {
-			SSLPinning?.setCertificate(certificate, server);
-		}
-
 		const serverInfo = yield* getServerInfoSaga({ server });
 		const serversDB = database.servers;
 		const serversHistoryCollection = serversDB.get('servers_history');

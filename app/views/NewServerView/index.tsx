@@ -198,6 +198,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			// Save info - SSL Pinning
 			if (certificate) {
 				UserPreferences.setString(`${CERTIFICATE_KEY}-${server}`, certificate);
+				SSLPinning?.setCertificate(certificate, server)
 			}
 
 			// Save info - HTTP Basic Authentication
