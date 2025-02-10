@@ -24,3 +24,112 @@ index 59c4ce3..1f9186d 100644
    @SuppressLint("WrongConstant", "DiscouragedApi")
    override fun definition() = ModuleDefinition {
      Name("ExponentFileSystem")
+diff --git a/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m b/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m
+index a976d6b..ddafaa4 100644
+--- a/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m
++++ b/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m
+@@ -2,6 +2,10 @@
+ 
+ #import <ExpoFileSystem/EXSessionTaskDispatcher.h>
+ #import <ExpoFileSystem/EXSessionResumableDownloadTaskDelegate.h>
++#import <MMKV/MMKV.h>
++#import <SDWebImage/SDWebImageDownloader.h>
++#import "SecureStorage.h"
++#import <os/log.h>
+ 
+ @interface EXSessionTaskDispatcher ()
+ 
+@@ -93,4 +97,93 @@
+   }
+ }
+ 
++- (void)URLSession:(NSURLSession *)session
++                task:(NSURLSessionTask *)task
++    didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
++    completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
++{
++    os_log_with_type(OS_LOG_DEFAULT, OS_LOG_TYPE_DEBUG, "challenge running");
++    NSString *host = challenge.protectionSpace.host;
++
++    // Read the clientSSL info from MMKV
++    __block NSString *clientSSL;
++    SecureStorage *secureStorage = [[SecureStorage alloc] init];
++
++    // String to Hex logic integrated directly
++    NSString *keyString = @"com.MMKV.default";
++    char *utf8 = (char *)[keyString UTF8String];
++    NSMutableString *hex = [NSMutableString string];
++    while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++    NSString *key = [secureStorage getSecureKey:[NSString stringWithFormat:@"%@", hex].lowercaseString];
++    
++    NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++
++    if (key == NULL) {
++        return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
++    }
++
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++    clientSSL = [mmkv getStringForKey:host];
++
++    if (clientSSL) {
++        NSData *data = [clientSSL dataUsingEncoding:NSUTF8StringEncoding];
++        id dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
++        NSString *path = [dict objectForKey:@"path"];
++        NSString *password = [dict objectForKey:@"password"];
++        
++        // Lógica do getUrlCredential integrada
++        NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++        SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++        if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
++            credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++        } else if (path && password) {
++            NSMutableArray *policies = [NSMutableArray array];
++            [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++            SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++            SecTrustResultType result;
++            SecTrustEvaluate(serverTrust, &result);
++
++            if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
++                credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++            } else {
++                NSData *p12data = [NSData dataWithContentsOfFile:path];
++                NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
++                CFArrayRef rawItems = NULL;
++                OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                                  (__bridge CFDictionaryRef)options,
++                                                  &rawItems);
++
++                if (status != noErr) {
++                    credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++                } else {
++                    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++                    NSDictionary* firstItem = nil;
++                    if ((status == errSecSuccess) && ([items count]>0)) {
++                        firstItem = items[0];
++                    }
++
++                    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++                    SecCertificateRef certificate = NULL;
++                    if (identity) {
++                        SecIdentityCopyCertificate(identity, &certificate);
++                        if (certificate) { CFRelease(certificate); }
++                    }
++
++                    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++                    [certificates addObject:CFBridgingRelease(certificate)];
++
++                    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++
++                    credential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++                }
++            }
++        }
++    }
++
++    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
++}
++
+ @end
