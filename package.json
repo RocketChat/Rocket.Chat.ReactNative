@@ -65,7 +65,7 @@
 		"expo-av": "^13.10.5",
 		"expo-camera": "^14.1.1",
 		"expo-document-picker": "11.10.1",
-		"expo-file-system": "16.0.8",
+		"expo-file-system": "^16.0.8",
 		"expo-haptics": "^12.8.1",
 		"expo-keep-awake": "^12.8.2",
 		"expo-local-authentication": "^13.8.0",
