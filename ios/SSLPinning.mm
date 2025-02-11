@@ -12,6 +12,7 @@
 #import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
 #import "SRWebSocket.h"
+#import "EXSessionTaskDispatcher.h"
 
 @implementation Challenge : NSObject
 +(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
@@ -115,6 +116,18 @@
 @implementation RCTHTTPRequestHandler (Challenge)
 
 - (void) URLSession:(NSURLSession *)session didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable credential))completionHandler
+{
+  [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
+}
+
+@end
+
+@implementation EXSessionTaskDispatcher (Challenge)
+
+- (void)URLSession:(NSURLSession *)session
+                task:(NSURLSessionTask *)task
+    didReceiveChallenge:(NSURLAuthenticationChallenge *)challenge
+    completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential *credential))completionHandler
 {
   [Challenge runChallenge:session didReceiveChallenge:challenge completionHandler:completionHandler];
 }
