@@ -1,3 +1,29 @@
+diff --git a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
+index 59c4ce3..1f9186d 100644
+--- a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
++++ b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
+@@ -82,11 +82,20 @@ private fun slashifyFilePath(path: String?): String? {
+ open class FileSystemModule : Module() {
+   private val context: Context
+     get() = appContext.reactContext ?: throw Exceptions.AppContextLost()
+-  private var client: OkHttpClient? = null
+   private var dirPermissionsRequest: Promise? = null
+   private val taskHandlers: MutableMap<String, TaskHandler> = HashMap()
+   private val moduleCoroutineScope = CoroutineScope(Dispatchers.Default)
+ 
++  companion object {
++    @JvmStatic
++    var client: OkHttpClient? = null
++
++    @JvmStatic
++    fun setOkHttpClient(okHttpClient: OkHttpClient) {
++      client = okHttpClient
++    }
++  }
++
+   @SuppressLint("WrongConstant", "DiscouragedApi")
+   override fun definition() = ModuleDefinition {
+     Name("ExponentFileSystem")
 diff --git a/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m b/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m
 index a976d6b..ddafaa4 100644
 --- a/node_modules/expo-file-system/ios/EXSessionTasks/EXSessionTaskDispatcher.m
@@ -107,29 +133,3 @@ index a976d6b..ddafaa4 100644
 +}
 +
  @end
-diff --git a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
-index 59c4ce3..1f9186d 100644
---- a/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
-+++ b/node_modules/expo-file-system/android/src/main/java/expo/modules/filesystem/FileSystemModule.kt
-@@ -82,11 +82,20 @@ private fun slashifyFilePath(path: String?): String? {
- open class FileSystemModule : Module() {
-   private val context: Context
-     get() = appContext.reactContext ?: throw Exceptions.AppContextLost()
--  private var client: OkHttpClient? = null
-   private var dirPermissionsRequest: Promise? = null
-   private val taskHandlers: MutableMap<String, TaskHandler> = HashMap()
-   private val moduleCoroutineScope = CoroutineScope(Dispatchers.Default)
- 
-+  companion object {
-+    @JvmStatic
-+    var client: OkHttpClient? = null
-+
-+    @JvmStatic
-+    fun setOkHttpClient(okHttpClient: OkHttpClient) {
-+      client = okHttpClient
-+    }
-+  }
-+
-   @SuppressLint("WrongConstant", "DiscouragedApi")
-   override fun definition() = ModuleDefinition {
-     Name("ExponentFileSystem")
