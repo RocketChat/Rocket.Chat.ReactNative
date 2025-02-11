@@ -163,7 +163,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse || !API_Embed) {
+	if (!url || url?.ignoreParse || !API_Embed ) {
 		return null;
 	}
 
@@ -183,7 +183,7 @@ const Url = ({ url }: { url: IUrl }) => {
 			]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			<>
-				{image ? (
+				{typeof image === 'string' ? (
 					<WidthAwareView>
 						<UrlImage image={image} hasContent={hasContent} />
 					</WidthAwareView>
