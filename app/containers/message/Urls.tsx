@@ -130,13 +130,28 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
-	const getImageUrl = () => {
-		const imageUrl = url.image || url.url;
 
-		if (!imageUrl || imageUrl.includes('.pdf')) return null;
+	async function urlIsFromPDF(url: string) {
+		if (url.includes('.pdf')) return false;
+		try {
+			const response = await fetch(url, { method: 'HEAD' });
+			const contentType = response.headers.get('content-type');
+			return contentType && contentType.includes('application/pdf');
+		} catch {
+			return false;
+		}
+	}
+
+	const getImageUrl = async () => {
+		const imageUrl = url.image || url.url;
+		const isPdf = await urlIsFromPDF(imageUrl);
+		if (!imageUrl || isPdf) return null;
+
 		if (imageUrl.includes('http')) return imageUrl;
+
 		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	};
+
 	const image = getImageUrl();
 
 	const onPress = () => openLink(url.url, theme);
@@ -147,6 +162,7 @@ const Url = ({ url }: { url: IUrl }) => {
 	};
 
 	const hasContent = !!(url.title || url.description);
+
 	if (!url || url?.ignoreParse || !API_Embed) {
 		return null;
 	}
