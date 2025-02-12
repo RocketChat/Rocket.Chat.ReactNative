@@ -47,6 +47,7 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import HeaderContainer from './HeaderContainer';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -458,54 +459,59 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerLeft: () => (
-				<HeaderButton.Drawer
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: // @ts-ignore
-							  () => navigation.toggleDrawer()
-					}
-					badge={() => getBadge()}
-					disabled={disabled}
-				/>
-			),
-			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
-			headerRight: () => (
-				<HeaderButton.Container
-					onLayout={
-						isTablet
-							? undefined
-							: ({ nativeEvent }: { nativeEvent: any }) => {
-									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
-							  }
-					}>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={this.navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={themes[theme].fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='create'
-							onPress={this.goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
-					<HeaderButton.Item
-						iconName='directory'
-						onPress={this.goDirectory}
-						testID='rooms-list-view-directory'
+			header: () => (
+				<HeaderContainer>
+					<HeaderButton.Drawer
+						navigation={navigation}
+						testID='rooms-list-view-sidebar'
+						onPress={
+							isMasterDetail
+								? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+								: // @ts-ignore
+								  () => navigation.toggleDrawer()
+						}
+						badge={() => getBadge()}
 						disabled={disabled}
 					/>
-				</HeaderButton.Container>
+					<RoomsListHeaderView width={headerTitleWidth} />
+					<HeaderButton.Container
+						onLayout={
+							isTablet
+								? undefined
+								: ({ nativeEvent }: { nativeEvent: any }) => {
+										this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+								  }
+						}>
+						{issuesWithNotifications ? (
+							<HeaderButton.Item
+								iconName='notification-disabled'
+								onPress={this.navigateToPushTroubleshootView}
+								testID='rooms-list-view-push-troubleshoot'
+								color={themes[theme].fontDanger}
+							/>
+						) : null}
+						{canCreateRoom ? (
+							<HeaderButton.Item
+								iconName='create'
+								onPress={this.goToNewMessage}
+								testID='rooms-list-view-create-channel'
+								disabled={disabled}
+							/>
+						) : null}
+						<HeaderButton.Item
+							iconName='search'
+							onPress={this.initSearching}
+							testID='rooms-list-view-search'
+							disabled={disabled}
+						/>
+						<HeaderButton.Item
+							iconName='directory'
+							onPress={this.goDirectory}
+							testID='rooms-list-view-directory'
+							disabled={disabled}
+						/>
+					</HeaderButton.Container>
+				</HeaderContainer>
 			)
 		};
 	};
