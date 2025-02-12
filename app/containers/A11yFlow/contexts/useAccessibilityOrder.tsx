@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { findNodeHandle, View } from 'react-native';
 
-import A11yFlowModule from '../A11yFlowModule/index';
+import A11yFlowModule from '../A11yFlowModule';
 
 interface IElement {
 	tag: number;
@@ -34,7 +34,7 @@ function AccessibilityOrderProvider({ children, containerRef }: IAccessibilityOr
 
 		if (!parentTag) return;
 
-		A11yFlowModule.setA11yOrder(extractTags(elements), parentTag);
+		A11yFlowModule?.setA11yOrder(extractTags(elements), parentTag);
 	};
 
 	useEffect(() => {
