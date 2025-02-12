@@ -19,7 +19,7 @@ const getRoomAccessibilityLabel = ({ type, userId, isGroupChat, status, teamMain
 
 	if (teamMain) {
 		if (type === 'p') {
-			return I18n.t('Private-team');
+			return I18n.t('Private_team');
 		}
 		return I18n.t('Team');
 	}
