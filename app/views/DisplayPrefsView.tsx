@@ -163,6 +163,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread)}
 						additionalAcessibilityLabel={showUnread}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -172,6 +173,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites)}
 						additionalAcessibilityLabel={showFavorites}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -181,6 +183,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleGroupByType}
 						right={() => renderCheckBox(groupByType)}
 						additionalAcessibilityLabel={groupByType}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 				</List.Section>
