@@ -1,0 +1,22 @@
+appId: chat.rocket.reactnative
+name: "Text Message"
+jsEngine: graaljs
+---
+- launchApp:
+    label: "Launch app"
+- evalScript: ${output.textMessage = "Hello " + Date.now()}
+- tapOn:
+    text: "detox-public"
+    label: "Open channel"
+- tapOn:
+    id: "message-composer-input"
+    label: "Focus on the message input"
+- inputText:
+    text: ${output.textMessage}
+    label: "Type message into the textinput"
+- tapOn:
+    id: "message-composer-send"
+    label: "Send the text message"
+- assertVisible:
+    text: ${output.textMessage}
+    label: "Verify the sent message is visible"

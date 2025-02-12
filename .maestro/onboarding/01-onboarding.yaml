@@ -1,0 +1,29 @@
+appId: chat.rocket.reactnative
+name: "Onboarding Flow"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../setup.js"
+---
+
+- clearState
+- launchApp
+
+- assertVisible:
+    id: "new-server-view"
+- tapOn:
+    id: "new-server-view-input"
+- inputText: "https://invalid.rocket.chat"
+- pressKey: Enter
+- assertVisible:
+    text: "Invalid workspace URL"
+- tapOn:
+    text: "OK"
+- tapOn:
+    id: "new-server-view-input"
+- eraseText
+- inputText: ${output.config.workspaceUrl}
+- pressKey: Enter
+- assertVisible:
+    id: "workspace-view"
+- assertVisible:
+    text: ${output.config.workspaceName}

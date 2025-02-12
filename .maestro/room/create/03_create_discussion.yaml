@@ -1,0 +1,25 @@
+appId: chat.rocket.reactnative
+name: "Create discussion from message composer"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../../setup.js"
+---
+- launchApp:
+    label: "Launch app"
+- evalScript: ${output.discussionName = "direct-discussion-" + Date.now()}
+- tapOn:
+    id: "rooms-list-view-create-channel"
+- tapOn:
+    id: "new-message-view-create-discussion"
+- tapOn: "Select a channel"
+- tapOn: "Search"
+- inputText: "detox-public"
+- tapOn:
+    id: "multi-select-item-detox-public"
+- tapOn:
+    id: "multi-select-discussion-name"
+- inputText: ${output.discussionName}
+- tapOn:
+    id: "create-discussion-submit"
+- assertVisible:
+    id: ${"room-view-title-"+output.discussionName}

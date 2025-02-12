@@ -1,0 +1,30 @@
+appId: chat.rocket.reactnative
+name: "Register Flow"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../setup.js"
+---
+
+- clearState
+- launchApp
+- runFlow: "../helpers/navigateToRegister.yaml"
+- runScript: "../utils/randomUser.js"
+
+- tapOn:
+    id: "register-view-name"
+- inputText: "${output.randomUser.username}"
+- pressKey: Enter
+- tapOn:
+    id: "register-view-username"
+- inputText: "${output.randomUser.username}"
+- pressKey: Enter
+- tapOn:
+    id: "register-view-email"
+- inputText: "${output.randomUser.email}"
+- pressKey: Enter
+- tapOn:
+    id: "register-view-password"
+- inputText: "${output.randomUser.password}"
+- pressKey: Enter
+- assertVisible:
+    id: "rooms-list-view"

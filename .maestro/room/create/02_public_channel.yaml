@@ -1,0 +1,28 @@
+appId: chat.rocket.reactnative
+name: "Create Public Channel"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../../setup.js"
+---
+- launchApp:
+    label: "Launch app"
+- evalScript: ${output.channelName = "test-" + Date.now()}
+- tapOn:
+    id: "rooms-list-view-create-channel"
+- tapOn:
+    id: "new-message-view-create-channel"
+- tapOn:
+    id: "selected-users-view-submit"
+- tapOn:
+    id: "create-channel-name"
+- inputText: ${output.channelName}
+- pressKey: "Enter"
+- tapOn:
+    id: "create-channel-type"
+- tapOn:
+    id: "create-channel-submit"
+- assertVisible:
+    id: ${"room-view-title-"+output.channelName}
+- tapOn:
+    id: ${"room-view-title-"+output.channelName}
+- assertVisible: ""

@@ -1,0 +1,27 @@
+appId: chat.rocket.reactnative
+name: "Roomlist Flow"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../setup.js"
+---
+
+- launchApp
+- assertVisible:
+    id: "rooms-list-view"
+    label: "should have rooms list screen"
+- assertVisible:
+    id: "rooms-list-view-create-channel"
+    label: "Should have create channel button"
+- tapOn:
+    id: "rooms-list-view-search"
+- tapOn:
+    id: "rooms-list-view-search-input"
+- inputText: "rocket.cat"
+- pressKey: Enter
+- tapOn: "rocket.cat  No message"
+- assertVisible:
+    id: "room-view"
+    label: "Should have room view"
+- assertVisible:
+    id: "room-view-title-rocket.cat"
+    label: "Should have room title"

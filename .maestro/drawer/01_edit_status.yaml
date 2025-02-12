@@ -1,0 +1,39 @@
+appId: chat.rocket.reactnative
+name: "Join Channel"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../setup.js"
+---
+- launchApp
+- tapOn:
+    id: "rooms-list-view-sidebar"
+- assertVisible:
+    id: "sidebar-custom-status-online"
+- tapOn:
+    id: "sidebar-custom-status-online"
+- tapOn: "Busy"
+- tapOn: "Save"
+- assertVisible: Status saved successfully!
+- assertVisible:
+    id: "sidebar-custom-status-busy"
+- tapOn:
+    id: "sidebar-custom-status-busy"
+- tapOn: "Away"
+- tapOn: "Save"
+- assertVisible: Status saved successfully!
+- assertVisible:
+    id: "sidebar-custom-status-away"
+- tapOn:
+    id: "sidebar-custom-status-away"
+- tapOn: "Offline"
+- tapOn: "Save"
+- assertVisible: Status saved successfully!
+- assertVisible:
+    id: "sidebar-custom-status-offline"
+- tapOn:
+    id: "sidebar-custom-status-offline"
+- tapOn: "Online"
+- tapOn: "Save"
+- assertVisible: Status saved successfully!
+- assertVisible:
+    id: "sidebar-custom-status-online"
