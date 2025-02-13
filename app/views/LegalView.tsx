@@ -7,6 +7,7 @@ import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
+import NewWindowIcon from '../containers/NewWindowIcon';
 import { OutsideParamList } from '../stacks/types';
 import { IBaseScreen, IApplicationState } from '../definitions';
 
@@ -41,14 +42,16 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 						title='Terms_of_Service'
 						onPress={() => onPressItem({ route: 'terms-of-service' })}
 						testID='legal-terms-button'
-						showActionIndicator
+						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Privacy_Policy'
 						onPress={() => onPressItem({ route: 'privacy-policy' })}
 						testID='legal-privacy-button'
-						showActionIndicator
+						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 				</List.Section>
