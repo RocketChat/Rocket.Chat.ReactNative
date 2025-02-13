@@ -24,7 +24,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].statusFontWarning
+						color: themes[theme].statusFontService
 					},
 					...style
 				]}>
