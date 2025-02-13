@@ -97,8 +97,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 			overflow: 'hidden',
 			alignItems: 'center',
 			justifyContent: 'center',
-			...imageDimensions.width <= 64 && { width: 64 },
-			...imageDimensions.height <= 64 && { height: 64 }
+			...(imageDimensions.width <= 64 && { width: 64 }),
+			...(imageDimensions.height <= 64 && { height: 64 })
 		};
 		if (!hasContent) {
 			containerStyle = {
@@ -130,29 +130,33 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
+	const [imageUrl, setImageUrl] = useState('');
 
-	async function urlIsFromPDF(url: string) {
-		if (url.includes('.pdf')) return false;
-		try {
-			const response = await fetch(url, { method: 'HEAD' });
-			const contentType = response.headers.get('content-type');
-			return contentType && contentType.includes('application/pdf');
-		} catch {
-			return false;
-		}
-	}
+	useEffect(() => {
+		const verifyUrlIsImage = async () => {
+			try {
+				const imageUrl = getImageUrl();
+				if (!imageUrl) return;
 
-	const getImageUrl = async () => {
-		const imageUrl = url.image || url.url;
-		const isPdf = await urlIsFromPDF(imageUrl);
-		if (!imageUrl || isPdf) return null;
+				const response = await fetch(imageUrl, { method: 'HEAD' });
+				const contentType = response.headers.get('content-type');
+				if (contentType?.startsWith?.('image/')) {
+					setImageUrl(imageUrl);
+				}
+			} catch {
+				// do nothing
+			}
+		};
+		verifyUrlIsImage();
+	}, [url.image, url.url]);
 
-		if (imageUrl.includes('http')) return imageUrl;
+	const getImageUrl = () => {
+		const _imageUrl = url.image || url.url;
 
-		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
+		if (!_imageUrl) return null;
+		if (_imageUrl.includes('http')) return _imageUrl;
+		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	};
-
-	const image = getImageUrl();
 
 	const onPress = () => openLink(url.url, theme);
 
@@ -163,7 +167,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse || !API_Embed ) {
+	if (!url || url?.ignoreParse || !API_Embed) {
 		return null;
 	}
 
@@ -183,9 +187,9 @@ const Url = ({ url }: { url: IUrl }) => {
 			]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			<>
-				{typeof image === 'string' ? (
+				{imageUrl ? (
 					<WidthAwareView>
-						<UrlImage image={image} hasContent={hasContent} />
+						<UrlImage image={imageUrl} hasContent={hasContent} />
 					</WidthAwareView>
 				) : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}
