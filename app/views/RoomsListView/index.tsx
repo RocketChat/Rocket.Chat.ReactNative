@@ -6,7 +6,6 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
@@ -20,7 +19,6 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themedHeader } from '../../lib/methods/helpers/navigation';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -47,6 +45,7 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import HeaderContainer from '../../containers/HeaderContainer';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -435,13 +434,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		if (searching) {
 			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <RoomsListHeaderView />,
-				headerRight: () => null
+				header: () => (
+					<HeaderContainer>
+						<HeaderButton.Container left>
+							<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
+						</HeaderButton.Container>
+						<RoomsListHeaderView />
+					</HeaderContainer>
+				)
 			};
 		}
 
@@ -458,54 +458,61 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerLeft: () => (
-				<HeaderButton.Drawer
-					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: // @ts-ignore
-							  () => navigation.toggleDrawer()
-					}
-					badge={() => getBadge()}
-					disabled={disabled}
-				/>
-			),
-			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
-			headerRight: () => (
-				<HeaderButton.Container
-					onLayout={
-						isTablet
-							? undefined
-							: ({ nativeEvent }: { nativeEvent: any }) => {
-									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
-							  }
-					}>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={this.navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={themes[theme].fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='create'
-							onPress={this.goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
-					<HeaderButton.Item
-						iconName='directory'
-						onPress={this.goDirectory}
-						testID='rooms-list-view-directory'
+			header: () => (
+				<HeaderContainer>
+					<HeaderButton.Drawer
+						left={false}
+						style={{ marginLeft: isTablet ? 5 : -5, marginRight: 4 }}
+						navigation={navigation}
+						testID='rooms-list-view-sidebar'
+						onPress={
+							isMasterDetail
+								? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+								: // @ts-ignore
+								  () => navigation.toggleDrawer()
+						}
+						badge={() => getBadge()}
 						disabled={disabled}
 					/>
-				</HeaderButton.Container>
+					<RoomsListHeaderView width={headerTitleWidth} />
+					<HeaderButton.Container
+						onLayout={
+							isTablet
+								? undefined
+								: ({ nativeEvent }: { nativeEvent: any }) => {
+										this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+								  }
+						}>
+						{issuesWithNotifications ? (
+							<HeaderButton.Item
+								iconName='notification-disabled'
+								onPress={this.navigateToPushTroubleshootView}
+								testID='rooms-list-view-push-troubleshoot'
+								color={themes[theme].fontDanger}
+							/>
+						) : null}
+						{canCreateRoom ? (
+							<HeaderButton.Item
+								iconName='create'
+								onPress={this.goToNewMessage}
+								testID='rooms-list-view-create-channel'
+								disabled={disabled}
+							/>
+						) : null}
+						<HeaderButton.Item
+							iconName='search'
+							onPress={this.initSearching}
+							testID='rooms-list-view-search'
+							disabled={disabled}
+						/>
+						<HeaderButton.Item
+							iconName='directory'
+							onPress={this.goDirectory}
+							testID='rooms-list-view-directory'
+							disabled={disabled}
+						/>
+					</HeaderButton.Container>
+				</HeaderContainer>
 			)
 		};
 	};
@@ -899,20 +906,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail, theme } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
-		let options = this.getHeader();
-		options = {
-			...options,
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
-		};
-		return <Header title='' {...themedHeader(theme)} {...options} />;
+		const options = this.getHeader();
+
+		return options.header();
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {

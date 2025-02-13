@@ -103,6 +103,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import HeaderContainer from '../../containers/HeaderContainer';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -482,8 +483,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
 		);
 		navigation.setOptions({
-			headerLeft: () =>
-				isIOS && (unreadsCount || isMasterDetail) ? (
+			header: () => (
+				<HeaderContainer>
 					<LeftButtons
 						rid={rid}
 						tmid={tmid}
@@ -497,43 +498,41 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 						goRoomActionsView={this.goRoomActionsView}
 						isMasterDetail={isMasterDetail}
 					/>
-				) : undefined,
-			headerTitle: () => (
-				<RoomHeader
-					prid={prid}
-					tmid={tmid}
-					title={title}
-					teamMain={teamMain}
-					parentTitle={parentTitle}
-					subtitle={subtitle}
-					type={t}
-					roomUserId={roomUserId}
-					visitor={visitor}
-					isGroupChat={isGroupChatConst}
-					onPress={this.goRoomActionsView}
-					testID={`room-view-title-${title}`}
-					sourceType={sourceType}
-					rightButtonsWidth={rightButtonsWidth}
-				/>
-			),
-			headerRight: () => (
-				<RightButtons
-					rid={rid}
-					tmid={tmid}
-					teamId={teamId}
-					joined={joined}
-					status={room.status}
-					omnichannelPermissions={omnichannelPermissions}
-					t={(this.t || t) as SubscriptionType}
-					encrypted={encrypted}
-					navigation={navigation}
-					toggleFollowThread={this.toggleFollowThread}
-					showActionSheet={this.showActionSheet}
-					departmentId={departmentId}
-					notificationsDisabled={iSubRoom?.disableNotifications}
-					onLayout={onLayout}
-					hasE2EEWarning={e2eeWarning}
-				/>
+
+					<RoomHeader
+						prid={prid}
+						tmid={tmid}
+						title={title}
+						teamMain={teamMain}
+						parentTitle={parentTitle}
+						subtitle={subtitle}
+						type={t}
+						roomUserId={roomUserId}
+						visitor={visitor}
+						isGroupChat={isGroupChatConst}
+						onPress={this.goRoomActionsView}
+						testID={`room-view-title-${title}`}
+						sourceType={sourceType}
+						rightButtonsWidth={rightButtonsWidth}
+					/>
+					<RightButtons
+						rid={rid}
+						tmid={tmid}
+						teamId={teamId}
+						joined={joined}
+						status={room.status}
+						omnichannelPermissions={omnichannelPermissions}
+						t={(this.t || t) as SubscriptionType}
+						encrypted={encrypted}
+						navigation={navigation}
+						toggleFollowThread={this.toggleFollowThread}
+						showActionSheet={this.showActionSheet}
+						departmentId={departmentId}
+						notificationsDisabled={iSubRoom?.disableNotifications}
+						onLayout={onLayout}
+						hasE2EEWarning={e2eeWarning}
+					/>
+				</HeaderContainer>
 			)
 		});
 	};
@@ -1515,11 +1514,14 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
 					<StatusBar />
-					{
-						(!this.tmid) ? (
-							<Banner title={I18n.t('Announcement')} text={announcement} bannerClosed={bannerClosed} closeBanner={this.closeBanner} />
-						) : null
-					}
+					{!this.tmid ? (
+						<Banner
+							title={I18n.t('Announcement')}
+							text={announcement}
+							bannerClosed={bannerClosed}
+							closeBanner={this.closeBanner}
+						/>
+					) : null}
 					<List
 						ref={this.list}
 						listRef={this.flatList}
