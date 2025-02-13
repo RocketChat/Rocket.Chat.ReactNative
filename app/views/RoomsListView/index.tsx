@@ -436,13 +436,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		if (searching) {
 			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <RoomsListHeaderView />,
-				headerRight: () => null
+				header: () => (
+					<HeaderContainer>
+						<HeaderButton.Container left>
+							<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
+						</HeaderButton.Container>
+						<RoomsListHeaderView />
+					</HeaderContainer>
+				)
 			};
 		}
 
@@ -905,20 +906,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail, theme } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
 		let options = this.getHeader();
-		options = {
-			...options,
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
-		};
-		return <Header title='' {...themedHeader(theme)} {...options} />;
+
+		return options.header();
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
