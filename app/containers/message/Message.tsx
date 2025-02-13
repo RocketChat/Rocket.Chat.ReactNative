@@ -160,8 +160,10 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		}
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
-		return `${user} ${hour} ${label}`;
-	}, []);
+		const readOrUnreadLabel = !props.unread && props.unread !== null ? i18n.t('Read') : i18n.t('Unread');
+		const readReceipt = props.isReadReceiptEnabled ? readOrUnreadLabel : '';
+		return `${user} ${hour} ${label} ${readReceipt}`;
+	}, [props.unread]);
 
 	if (props.hasError) {
 		return (
