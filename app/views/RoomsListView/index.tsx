@@ -6,7 +6,6 @@ import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
@@ -20,7 +19,6 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themedHeader } from '../../lib/methods/helpers/navigation';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -47,7 +45,7 @@ import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import HeaderContainer from './HeaderContainer';
+import HeaderContainer from '../../containers/HeaderContainer';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -463,6 +461,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			header: () => (
 				<HeaderContainer>
 					<HeaderButton.Drawer
+						left={false}
+						style={{ marginLeft: isTablet ? 5 : -5, marginRight: 4 }}
 						navigation={navigation}
 						testID='rooms-list-view-sidebar'
 						onPress={
@@ -912,7 +912,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
-		let options = this.getHeader();
+		const options = this.getHeader();
 
 		return options.header();
 	};

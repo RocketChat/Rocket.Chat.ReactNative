@@ -2,7 +2,7 @@ import React from 'react';
 import { View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useTheme } from '../../../theme';
+import { useTheme } from '../../theme';
 
 interface IHeaderContainer extends ViewProps {}
 
