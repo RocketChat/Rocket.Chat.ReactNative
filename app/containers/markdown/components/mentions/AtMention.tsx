@@ -24,7 +24,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 				style={[
 					styles.mention,
 					{
-						color: themes[theme].badgeBackgroundLevel3
+						color: themes[theme].statusFontService
 					},
 					...style
 				]}>
@@ -37,7 +37,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	let mentionStyle = {};
 	if (itsMe) {
 		mentionStyle = {
-			color: themes[theme].badgeBackgroundLevel4
+			color: themes[theme].statusFontDanger
 		};
 	} else {
 		mentionStyle = {
@@ -67,7 +67,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		);
 	}
 
-	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`@${mention}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].statusFontWarning }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;
