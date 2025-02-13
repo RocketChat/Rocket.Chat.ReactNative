@@ -43,6 +43,7 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 						onPress={() => onPressItem({ route: 'terms-of-service' })}
 						testID='legal-terms-button'
 						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 					<List.Item
@@ -50,6 +51,7 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 						onPress={() => onPressItem({ route: 'privacy-policy' })}
 						testID='legal-privacy-button'
 						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 				</List.Section>
