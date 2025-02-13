@@ -19,6 +19,6 @@ if (__DEV__) {
 	// @ts-ignore
 	console.warn = Reactotron.log;
 	// @ts-ignore
-	console.log = Reactotron.log;
+	//console.log = Reactotron.log;
 	LogBox.ignoreAllLogs(true);
 }
