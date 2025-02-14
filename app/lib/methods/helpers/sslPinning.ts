@@ -12,7 +12,7 @@ const { documentDirectory } = FileSystem;
 
 const extractFileScheme = (path: string) => path.replace('file://', ''); // file:// isn't allowed by obj-C
 
-const getPath = (name: string) => `${documentDirectory}/${name}`;
+const getPath = (name: string) => `${documentDirectory}${name}`;
 
 const persistCertificate = (name: string, password: string) => {
 	const certificatePath = getPath(name);
