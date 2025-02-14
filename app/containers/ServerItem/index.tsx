@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-blasted-image';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
@@ -40,10 +40,9 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 					<FastImage
 						source={{
 							uri: item.iconURL,
-							priority: FastImage.priority.high
+							// priority: 'high'
 						}}
-						// @ts-ignore TODO: Remove when updating FastImage
-						defaultSource={defaultLogo}
+						fallbackSource={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
 					/>

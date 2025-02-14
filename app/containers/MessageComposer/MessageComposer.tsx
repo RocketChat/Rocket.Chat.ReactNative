@@ -1,6 +1,6 @@
 import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
-import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
+import { View, StyleSheet, NativeModules, InputAccessoryView } from 'react-native';
+// import { Keyboard } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
@@ -233,7 +233,7 @@ export const MessageComposer = ({
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<KeyboardAccessoryView
+			<InputAccessoryView
 				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
 				renderContent={renderContent}
 				kbInputRef={composerInputRef}

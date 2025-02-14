@@ -61,7 +61,7 @@ interface IShareListViewProps extends INavigationOption {
 	theme: TSupportedThemes;
 	airGappedRestrictionRemainingDays: number | undefined;
 	shareExtensionParams: Record<string, any>;
-	dispatch: Dispatch;
+	dispatch: Dispatch<any>;
 }
 
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });

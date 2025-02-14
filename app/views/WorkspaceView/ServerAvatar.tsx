@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-blasted-image';
 
 import { isTablet } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';

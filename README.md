@@ -1,36 +1,50 @@
-# Rocket.Chat Mobile
+# Welcome to your Expo app 👋
 
-- **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 13.4+
-- **Supported Android versions**: 6.0+
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Download
+## Get started
 
-<a href="https://play.google.com/store/apps/details?id=chat.rocket.android">
-  <img alt="Download on Google Play" src="https://play.google.com/intl/en_us/badges/images/badge_new.png" height=43>
-</a>
-<a href="https://apps.apple.com/us/app/rocket-chat/id1148741252">
-  <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
-</a>
+1. Install dependencies
 
-Check [our docs](https://developer.rocket.chat/docs/mobile-app) for  beta and Experimental versions.
+   ```bash
+   npm install
+   ```
 
-## Reporting an Issue
+2. Start the app
 
-[Github Issues](https://github.com/RocketChat/Rocket.Chat.ReactNative/issues) are used to track todos, bugs, feature requests, and more.
+   ```bash
+    npx expo start
+   ```
 
-Also check the [#react-native](https://open.rocket.chat/channel/react-native) community on [open.rocket.chat](https://open.rocket.chat). We'd like to help.
+In the output, you'll find options to open the app in a
 
-## Contributing
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Whitelabel
-Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app/mobile-app-white-labelling)
+## Get a fresh project
 
-## Engage with us
-### Share your story
-We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [blog](https://www.rocket.chat/blog?utm_source=github&utm_medium=readme&utm_campaign=community).
+When you're ready, run:
 
-### Subscribe for Updates
-Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)
+```bash
+npm run reset-project
+```
+
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+
+## Learn more
+
+To learn more about developing your project with Expo, look at the following resources:
+
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+
+## Join the community
+
+Join our community of developers creating universal apps.
+
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

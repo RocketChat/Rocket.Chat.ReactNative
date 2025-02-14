@@ -1,7 +1,0 @@
-__tests__
-node_modules
-coverage
-e2e/docker
-android
-ios
-.eslintrc.js

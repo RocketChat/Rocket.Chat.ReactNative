@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
+// import { KeyboardRegistry } from 'react-native-keyboard-input';
 import { Provider } from 'react-redux';
 
 import store from '../../../lib/store';
@@ -9,10 +9,10 @@ import { ThemeContext, TSupportedThemes } from '../../../theme';
 import { EventTypes } from '../../EmojiPicker/interfaces';
 import { IEmoji } from '../../../definitions';
 import { colors } from '../../../lib/constants';
-
-const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
+// import { keyboard} from 'react-native-keyboard-controller';
+export const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	const onItemClicked = (eventType: EventTypes, emoji?: IEmoji) => {
-		KeyboardRegistry.onItemSelected('EmojiKeyboard', { eventType, emoji });
+		// KeyboardRegistry.onItemSelected('EmojiKeyboard', { eventType, emoji });
 	};
 
 	return (
@@ -30,4 +30,4 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	);
 };
 
-KeyboardRegistry.registerKeyboard('EmojiKeyboard', () => EmojiKeyboard);
+// KeyboardRegistry.registerKeyboard('EmojiKeyboard', () => EmojiKeyboard);

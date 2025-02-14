@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-blasted-image';
 import { FlatList } from 'react-native-gesture-handler';
 
 import * as List from '../../List';

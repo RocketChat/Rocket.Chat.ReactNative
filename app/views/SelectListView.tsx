@@ -2,7 +2,7 @@ import React from 'react';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { RadioButton } from 'react-native-ui-lib';
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import { RouteProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../stacks/types';
@@ -150,9 +150,10 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const checked = this.isChecked(item.rid) ? 'check' : '';
 
 		const showRadio = () => (
-			<RadioButton
+			<SegmentedControl
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				selected={selected.includes(item.rid)}
+				values={['', '']}
+				selectedIndex={selected.indexOf(item.rid)}
 				color={themes[theme].fontHint}
 				size={ICON_SIZE}
 			/>

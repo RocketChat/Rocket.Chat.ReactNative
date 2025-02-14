@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import FastImage from 'react-native-fast-image';
+import FastImage from 'react-native-blasted-image';
 
 import { useTheme } from '../../theme';
 

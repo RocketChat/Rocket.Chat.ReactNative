@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import { TSupportedThemes, withTheme } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';

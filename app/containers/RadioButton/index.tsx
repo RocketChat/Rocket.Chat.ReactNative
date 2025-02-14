@@ -1,14 +1,14 @@
 import React from 'react';
-import { RadioButton as RadioButtonUiLib } from 'react-native-ui-lib';
+import SegmentedControl, {  } from '@react-native-segmented-control/segmented-control';
 
 import { useTheme } from '../../theme';
 
 export const RadioButton = ({ check, testID, size }: { check: boolean; testID?: string; size?: number }): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<RadioButtonUiLib
+		<SegmentedControl
 			testID={testID}
-			selected={check}
+			selectedIndex={check}
 			size={size || 20}
 			color={check ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled}
 		/>

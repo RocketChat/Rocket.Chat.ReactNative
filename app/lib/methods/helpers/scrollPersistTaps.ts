@@ -1,4 +1,4 @@
-import { KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollViewProps } from 'react-native-keyboard-controller';
 
 const scrollPersistTaps: Partial<KeyboardAwareScrollViewProps> = {
 	keyboardShouldPersistTaps: 'handled',

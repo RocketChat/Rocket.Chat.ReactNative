@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleProp } from 'react-native';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
+import { StyleProp, type ViewStyle } from 'react-native';
+import FastImage from 'react-native-blasted-image';
 
 import { useAppSelector } from '../../lib/hooks';
 import { ICustomEmoji } from '../../definitions';
 
 interface ICustomEmojiProps {
 	emoji: ICustomEmoji;
-	style: StyleProp<ImageStyle>;
+	style: StyleProp<ViewStyle>;
 }
 
 const CustomEmoji = React.memo(
