@@ -404,6 +404,9 @@ importers:
       '@types/hoist-non-react-statics':
         specifier: ^3.3.6
         version: 3.3.6
+      '@types/i18n-js':
+        specifier: ^3.8.3
+        version: 3.8.9
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.14
@@ -2527,6 +2530,9 @@ packages:
 
   '@types/hoist-non-react-statics@3.3.6':
     resolution: {integrity: sha512-lPByRJUer/iN/xa4qpyL0qmL11DqNW81iU/IG1S3uvRUq4oKagz8VCxZjiWkumgt66YT3vOdDgZ0o32sGKtCEw==}
+
+  '@types/i18n-js@3.8.9':
+    resolution: {integrity: sha512-bSxgya4x5O+x+QhfCGckiDDE+17XGPp1TNBgBA/vfF5EwdiZC70F4cKG5QK2v44+v62oY7/t/InreRhxskulcA==}
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
@@ -10521,6 +10527,8 @@ snapshots:
     dependencies:
       '@types/react': 18.3.18
       hoist-non-react-statics: 3.3.2
+
+  '@types/i18n-js@3.8.9': {}
 
   '@types/istanbul-lib-coverage@2.0.6': {}
 

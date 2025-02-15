@@ -28,7 +28,7 @@ if (__DEV__) {
 	enhancers = compose(applyAppStateMiddleware(), applyInternetStateMiddleware(), applyMiddleware(sagaMiddleware));
 }
 
-const store = createStore(reducers, enhancers);
+const store = createStore(reducers, undefined, enhancers);
 sagaMiddleware.run(sagas);
 
 export default store;

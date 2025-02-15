@@ -63,7 +63,7 @@ export interface IApplicationState {
 	inviteLinks: IInviteLinks;
 	createDiscussion: ICreateDiscussion;
 	inquiry: IInquiry;
-	enterpriseModules: IEnterpriseModules;
+	enterpriseModules: IEnterpriseModules[];
 	encryption: IEncryption;
 	permissions: IPermissionsState;
 	roles: IRoles;

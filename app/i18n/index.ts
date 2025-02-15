@@ -15,10 +15,10 @@ export { isRTL };
 interface ILanguage {
 	label: string;
 	value: string;
-	file: () => any;
+	file: () => Record<TTranslatedKeys, string>;
 }
 
-export const LANGUAGES: ILanguage[] = [
+export const LANGUAGES = [
 	{
 		label: 'English',
 		value: 'en',
@@ -136,11 +136,11 @@ export const LANGUAGES: ILanguage[] = [
 		value: 'zh-TW',
 		file: () => require('./locales/zh-TW.json')
 	}
-];
+] as const satisfies ILanguage[];
 
-interface ITranslations {
-	[language: string]: () => typeof englishJson;
-}
+type ITranslations = {
+	[K in typeof LANGUAGES[number]['value']]: () => typeof englishJson;
+};
 
 const translations = LANGUAGES.reduce((ret, item) => {
 	ret[item.value] = item.file;

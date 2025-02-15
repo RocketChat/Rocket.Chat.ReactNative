@@ -1,17 +1,16 @@
 import React from 'react';
-import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import type { IconProps } from 'react-native-vector-icons/Icon';
+import createIconSetFromIcoMoon from '@expo/vector-icons/createIconSetFromIcoMoon';
+import icoMoonConfig from './selection.json';
 
 import { mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
-
-const icoMoonConfig = require('./selection.json');
+import type { IconProps } from '@expo/vector-icons/build/createIconSet';
 
 export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
 
 export type TIconsName = keyof typeof mappedIcons;
 
-export interface ICustomIcon extends IconProps {
+export interface ICustomIcon extends IconProps<string> {
 	name: TIconsName;
 	size: number;
 	color?: string;

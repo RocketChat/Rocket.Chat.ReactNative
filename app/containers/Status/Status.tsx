@@ -12,7 +12,7 @@ const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: I
 	const userStatusColor = useUserStatusColor(status);
 
 	const name: TIconsName = `status-${status}`;
-	const isNameValid = IconSet.hasIcon(name);
+	const isNameValid = name in IconSet;
 	const iconName = isNameValid ? name : 'status-offline';
 	const calculatedStyle: StyleProp<TextStyle> = [
 		{

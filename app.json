@@ -2,7 +2,6 @@
   "expo": {
     "name": "RocketChatRN",
     "slug": "rocket-chat-reactnative",
-    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rocketchat",
@@ -11,7 +10,6 @@
     "githubUrl": "https://github.com/RocketChat/Rocket.Chat.ReactNative",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-    
     "platforms": [
       "ios",
       "android"
@@ -21,8 +19,10 @@
       "bundleIdentifier": "chat.rocket.reactnative",
       "googleServicesFile": "./GoogleService-Info.plist",
       "associatedDomains": ["applinks:go.rocket.chat"],
+      "usesAppleSignIn": true,
       "entitlements": {
-        "com.apple.security.application-groups": ["group.ios.chat.rocket"]
+        "com.apple.security.application-groups": ["group.ios.chat.rocket"],
+        "keychain-access-groups": ["$(AppIdentifierPrefix)chat.rocket.reactnative"]
       }
     },
     "android": {

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "expo start --dev-client",
-    "prepare": "expo prebuild --clean",
+    "clean": "expo prebuild --clean",
     "xcode": "open ios/RocketChatRN.xcworkspace",
     "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
@@ -149,6 +149,7 @@
     "@testing-library/react-native": "^13.0.1",
     "@types/ejson": "^2.2.2",
     "@types/hoist-non-react-statics": "^3.3.6",
+    "@types/i18n-js": "^3.8.3",
     "@types/jest": "^29.5.12",
     "@types/jsrsasign": "^10.5.15",
     "@types/lodash": "^4.17.15",

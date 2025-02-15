@@ -15,10 +15,10 @@ import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, themes } from './lib/constants';
-// import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
 import { debounce, isTablet } from './lib/methods/helpers';
-// import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import {
 	getTheme,
@@ -150,14 +150,14 @@ export const Root = (function Root()  {
 
 	React.useEffect(() => {
 		init();
-		// if (!isFDroidBuild) {
-		// 	getAllowCrashReport().then(allowCrashReport => {
-		// 		toggleCrashErrorsReport(allowCrashReport);
-		// 	});
-		// 	getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
-		// 		toggleAnalyticsEventsReport(allowAnalyticsEvents);
-		// 	});
-		// }
+		if (!isFDroidBuild) {
+			getAllowCrashReport().then(allowCrashReport => {
+				toggleCrashErrorsReport(allowCrashReport);
+			});
+			getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
+				toggleAnalyticsEventsReport(allowAnalyticsEvents);
+			});
+		}
 		if (isTablet) {
 			setMasterDetail(state.width);
 		}
