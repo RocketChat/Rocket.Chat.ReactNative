@@ -278,7 +278,7 @@ const handleLoginSuccess = function* handleLoginSuccess({ user }) {
 		UserPreferences.setString(CURRENT_SERVER, server);
 		if (isIOS) {
 			yield Keychain.setInternetCredentials(server, user.id, user.token, {
-				accessGroup: 'group.ios.chat.rocket',
+				accessGroup: appGroupSuiteName,
 				securityLevel: Keychain.SECURITY_LEVEL.SECURE_SOFTWARE
 			});
 		}
