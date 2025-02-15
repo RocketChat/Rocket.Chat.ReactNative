@@ -29,8 +29,8 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>myapp</string>
-          <string>chat.rocket.RocketChatRN</string>
+          <string>rocketchat</string>
+          <string>chat.rocket.reactnative</string>
         </array>
       </dict>
       <dict>

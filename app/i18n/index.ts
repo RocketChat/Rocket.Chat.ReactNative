@@ -173,7 +173,7 @@ export const setLanguage = (l: string) => {
 i18n.translations = { en: translations.en?.() };
 const defaultLanguage = { languageTag: 'en', isRTL: false };
 const availableLanguages = Object.keys(translations);
-const { languageTag } = RNLocalize.findBestAvailableLanguage(availableLanguages) || defaultLanguage;
+const { languageTag } = RNLocalize.findBestLanguageTag(availableLanguages) || defaultLanguage;
 
 // @ts-ignore
 i18n.isTranslated = (text?: string) => text in englishJson;

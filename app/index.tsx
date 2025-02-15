@@ -15,10 +15,10 @@ import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
-import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, themes } from './lib/constants';
+// import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
 import { debounce, isTablet } from './lib/methods/helpers';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+// import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
 import parseQuery from './lib/methods/helpers/parseQuery';
 import {
 	getTheme,
@@ -78,19 +78,12 @@ const parseDeepLinking = (url: string) => {
 	return null;
 };
 
-export default class Root extends React.Component<{}, IState> {
-	private listenerTimeout!: any;
-	private dimensionsListener?: EmitterSubscription;
-
-	constructor(props: any) {
-		super(props);
-		this.init();
-		if (!isFDroidBuild) {
-			this.initCrashReport();
-		}
+export const Root = (function Root()  {
+	const [state, setState] = React.useState<IState>(() => {
 		const { width, height, scale, fontScale } = Dimensions.get('window');
 		const theme = initialTheme();
-		this.state = {
+		setNativeTheme(theme);
+		return {
 			theme: getTheme(theme),
 			themePreferences: theme,
 			width,
@@ -98,32 +91,12 @@ export default class Root extends React.Component<{}, IState> {
 			scale,
 			fontScale
 		};
-		if (isTablet) {
-			this.initTablet();
-		}
-		setNativeTheme(theme);
-	}
+	});
 
-	componentDidMount() {
-		this.listenerTimeout = setTimeout(() => {
-			Linking.addEventListener('url', ({ url }) => {
-				const parsedDeepLinkingURL = parseDeepLinking(url);
-				if (parsedDeepLinkingURL) {
-					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
-				}
-			});
-		}, 5000);
-		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
-	}
+	const listenerTimeout = React.useRef<any>();
+	const dimensionsListener = React.useRef<EmitterSubscription>();
 
-	componentWillUnmount() {
-		clearTimeout(this.listenerTimeout);
-		this.dimensionsListener?.remove?.();
-
-		unsubscribeTheme();
-	}
-
-	init = async () => {
+	const init = React.useCallback(async () => {
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
@@ -145,96 +118,102 @@ export default class Root extends React.Component<{}, IState> {
 
 		// Open app from app icon
 		store.dispatch(appInit());
-	};
+	}, []);
 
-	getMasterDetail = (width: number) => {
+	const getMasterDetail = React.useCallback((width: number) => {
 		if (!isTablet) {
 			return false;
 		}
 		return width > MIN_WIDTH_MASTER_DETAIL_LAYOUT;
-	};
+	}, []);
 
-	setMasterDetail = (width: number) => {
-		const isMasterDetail = this.getMasterDetail(width);
+	const setMasterDetail = React.useCallback((width: number) => {
+		const isMasterDetail = getMasterDetail(width);
 		store.dispatch(setMasterDetailAction(isMasterDetail));
-	};
+	}, [getMasterDetail]);
 
-	// Dimensions update fires twice
-	onDimensionsChange = debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
-		this.setDimensions({
-			width,
-			height,
-			scale,
-			fontScale
+	const onDimensionsChange = React.useCallback(
+		debounce(({ window: { width, height, scale, fontScale } }: { window: IDimensions }) => {
+			setState(prev => ({ ...prev, width, height, scale, fontScale }));
+			setMasterDetail(width);
+		}),
+		[setMasterDetail]
+	);
+
+	const setTheme = React.useCallback((newTheme = {}) => {
+		setState(prevState => {
+			const nextState = newThemeState(prevState, newTheme as IThemePreference);
+			subscribeTheme(nextState.themePreferences, setTheme);
+			return { ...prevState, ...nextState };
 		});
-		this.setMasterDetail(width);
-	});
+	}, []);
 
-	setTheme = (newTheme = {}) => {
-		// change theme state
-		this.setState(
-			prevState => newThemeState(prevState, newTheme as IThemePreference),
-			() => {
-				const { themePreferences } = this.state;
-				// subscribe to Appearance changes
-				subscribeTheme(themePreferences, this.setTheme);
-			}
-		);
-	};
+	React.useEffect(() => {
+		init();
+		// if (!isFDroidBuild) {
+		// 	getAllowCrashReport().then(allowCrashReport => {
+		// 		toggleCrashErrorsReport(allowCrashReport);
+		// 	});
+		// 	getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
+		// 		toggleAnalyticsEventsReport(allowAnalyticsEvents);
+		// 	});
+		// }
+		if (isTablet) {
+			setMasterDetail(state.width);
+		}
 
-	setDimensions = ({ width, height, scale, fontScale }: IDimensions) => {
-		this.setState({ width, height, scale, fontScale });
-	};
+		listenerTimeout.current = setTimeout(() => {
+			Linking.addEventListener('url', ({ url }) => {
+				const parsedDeepLinkingURL = parseDeepLinking(url);
+				if (parsedDeepLinkingURL) {
+					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
+				}
+			});
+		}, 5000);
 
-	initTablet = () => {
-		const { width } = this.state;
-		this.setMasterDetail(width);
-	};
+		dimensionsListener.current = Dimensions.addEventListener('change', onDimensionsChange);
 
-	initCrashReport = () => {
-		getAllowCrashReport().then(allowCrashReport => {
-			toggleCrashErrorsReport(allowCrashReport);
-		});
-		getAllowAnalyticsEvents().then(allowAnalyticsEvents => {
-			toggleAnalyticsEventsReport(allowAnalyticsEvents);
-		});
-	};
+		return () => {
+			clearTimeout(listenerTimeout.current);
+			dimensionsListener.current?.remove?.();
+			unsubscribeTheme();
+		};
+	}, [init, onDimensionsChange, setMasterDetail, state.width]);
 
-	render() {
-		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
-		return (
-			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
-				<Provider store={store}>
-					<ThemeContext.Provider
+	const { themePreferences, theme, width, height, scale, fontScale } = state;
+
+	return (
+		<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[theme].surfaceRoom }}>
+			<Provider store={store}>
+				<ThemeContext.Provider
+					value={{
+						theme,
+						themePreferences,
+						setTheme,
+						colors: colors[theme]
+					}}>
+					<DimensionsContext.Provider
 						value={{
-							theme,
-							themePreferences,
-							setTheme: this.setTheme,
-							colors: colors[theme]
+							width,
+							height,
+							scale,
+							fontScale,
+							setDimensions: dims => setState(prev => ({ ...prev, ...dims }))
 						}}>
-						<DimensionsContext.Provider
-							value={{
-								width,
-								height,
-								scale,
-								fontScale,
-								setDimensions: this.setDimensions
-							}}>
-							<GestureHandlerRootView>
-								<ActionSheetProvider>
-									<AppContainer />
-									<TwoFactor />
-									<ScreenLockedView />
-									<ChangePasscodeView />
-									<InAppNotification />
-									<Toast />
-									<Loading />
-								</ActionSheetProvider>
-							</GestureHandlerRootView>
-						</DimensionsContext.Provider>
-					</ThemeContext.Provider>
-				</Provider>
-			</SafeAreaProvider>
-		);
-	}
-}
+						<GestureHandlerRootView>
+							<ActionSheetProvider>
+								<AppContainer />
+								<TwoFactor />
+								<ScreenLockedView />
+								<ChangePasscodeView />
+								<InAppNotification />
+								<Toast />
+								<Loading />
+							</ActionSheetProvider>
+						</GestureHandlerRootView>
+					</DimensionsContext.Provider>
+				</ThemeContext.Provider>
+			</Provider>
+		</SafeAreaProvider>
+	);
+}) satisfies React.ComponentType;

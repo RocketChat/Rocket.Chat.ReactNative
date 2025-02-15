@@ -2,9 +2,10 @@ import firebaseAnalytics from '@react-native-firebase/analytics';
 
 import { isFDroidBuild } from '../../../constants/environment';
 import events from './events';
+import type { Breadcrumb } from '@bugsnag/expo';
 
 const analytics = firebaseAnalytics || '';
-let bugsnag: any = '';
+let bugsnag: typeof import('@bugsnag/expo').default | undefined;
 let crashlytics: any;
 let reportCrashErrors = true;
 let reportAnalyticsEvents = true;
@@ -13,12 +14,12 @@ export const getReportCrashErrorsValue = (): boolean => reportCrashErrors;
 export const getReportAnalyticsEventsValue = (): boolean => reportAnalyticsEvents;
 
 if (!isFDroidBuild) {
-	bugsnag = require('@bugsnag/react-native').default;
-	bugsnag.start({
+	bugsnag = require('@bugsnag/expo').default;
+	bugsnag?.start({
 		onBreadcrumb() {
 			return reportAnalyticsEvents;
 		},
-		onError(error: { breadcrumbs: string[] }) {
+		onError(error: { breadcrumbs: Breadcrumb[] }) {
 			if (!reportAnalyticsEvents) {
 				error.breadcrumbs = [];
 			}
@@ -29,7 +30,7 @@ if (!isFDroidBuild) {
 }
 
 export { analytics };
-export const loggerConfig = bugsnag.config;
+// export const loggerConfig = bugsnag?.config;
 export { events };
 
 let metadata = {};
@@ -44,7 +45,7 @@ export const logEvent = (eventName: string, payload?: { [key: string]: any }): v
 	try {
 		if (!isFDroidBuild) {
 			analytics().logEvent(eventName, payload);
-			bugsnag.leaveBreadcrumb(eventName, payload);
+			bugsnag?.leaveBreadcrumb(eventName, payload);
 		}
 	} catch {
 		// Do nothing
@@ -54,7 +55,7 @@ export const logEvent = (eventName: string, payload?: { [key: string]: any }): v
 export const setCurrentScreen = (currentScreen: string): void => {
 	if (!isFDroidBuild) {
 		analytics().logScreenView({ screen_class: currentScreen, screen_name: currentScreen });
-		bugsnag.leaveBreadcrumb(currentScreen, { type: 'navigation' });
+		bugsnag?.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };
 

@@ -5,27 +5,6 @@ PODS:
     - SDWebImageAVIFCoder
     - SDWebImageSVGCoder
   - boost (1.84.0)
-  - BugsnagReactNative (8.2.0):
-    - DoubleConversion
-    - glog
-    - hermes-engine
-    - RCT-Folly (= 2024.01.01.00)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - Yoga
   - DoubleConversion (1.1.6)
   - EXApplication (6.0.2):
     - ExpoModulesCore
@@ -2228,6 +2207,49 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSVG (15.8.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - RNSVG/common (= 15.8.0)
+    - Yoga
+  - RNSVG/common (15.8.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNVectorIcons (10.2.0):
     - DoubleConversion
     - glog
@@ -2273,7 +2295,6 @@ PODS:
 DEPENDENCIES:
   - BlastedImage (from `../node_modules/react-native-blasted-image`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
-  - "BugsnagReactNative (from `../node_modules/@bugsnag/react-native`)"
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXAV (from `../node_modules/expo-av/ios`)
@@ -2393,6 +2414,7 @@ DEPENDENCIES:
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - "simdjson (from `/Users/cardoso/Documents/RocketChat/Rocket.Chat.ReactNative/node_modules/@nozbe/simdjson`)"
   - "WatermelonDB (from `../node_modules/@nozbe/watermelondb`)"
@@ -2432,8 +2454,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-blasted-image"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
-  BugsnagReactNative:
-    :path: "../node_modules/@bugsnag/react-native"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
@@ -2669,6 +2689,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   simdjson:
@@ -2681,7 +2703,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   BlastedImage: 3a3bc109b908c575727d2227c46be0bbff3d98dd
   boost: 1dca942403ed9342f98334bf4c3621f011aa7946
-  BugsnagReactNative: f3dd557a11a0f308c927250456a805d8870322d1
   DoubleConversion: f16ae600a246532c4020132d54af21d0ddb2a385
   EXApplication: 4c72f6017a14a65e338c5e74fca418f35141e819
   EXAV: 4c41f0a6ae54a0b96597abc90e37962ab2ee0d85
@@ -2819,6 +2840,7 @@ SPEC CHECKSUMS:
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
   RNReanimated: 23d4dd74e67d9eb5648839dcaabc00be8aba6af4
   RNScreens: f5762e2dd74e365dcee2007dc96942a528ac25d4
+  RNSVG: b5087ac7a1b96b793cddb461b0e166e809a114b8
   RNVectorIcons: 959270651e3b1bd49d6c469fc9ac52149f67f55c
   SDWebImage: 73c6079366fea25fa4bb9640d5fb58f0893facd8
   SDWebImageAVIFCoder: 00310d246aab3232ce77f1d8f0076f8c4b021d90

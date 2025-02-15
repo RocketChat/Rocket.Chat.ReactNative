@@ -29,8 +29,8 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="myapp"/>
-        <data android:scheme="chat.rocket.RocketChatRN"/>
+        <data android:scheme="rocketchat"/>
+        <data android:scheme="chat.rocket.reactnative"/>
       </intent-filter>
     </activity>
   </application>

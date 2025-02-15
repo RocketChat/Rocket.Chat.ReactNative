@@ -1,33 +1,37 @@
 {
   "expo": {
     "name": "RocketChatRN",
-    "slug": "RocketChatRN",
+    "slug": "rocket-chat-reactnative",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "rocketchat",
+    "sdkVersion": "52.0.35",
+    "jsEngine": "hermes",
+    "githubUrl": "https://github.com/RocketChat/Rocket.Chat.ReactNative",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    
     "platforms": [
       "ios",
       "android"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "chat.rocket.RocketChatRN",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "bundleIdentifier": "chat.rocket.reactnative",
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "associatedDomains": ["applinks:go.rocket.chat"],
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.ios.chat.rocket"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "chat.rocket.RocketChatRN"
-    },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "package": "chat.rocket.reactnative",
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
       "@morrowdigital/watermelondb-expo-plugin",
@@ -48,7 +52,9 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics"
     ],
     "extra": {
       "bugsnag": {
