@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@rocket.chat/message-parser@0.31.32':
+    hash: 003fe4dce48379fe3644bbe53971ee8b2eb8307efeda3ba9db9a2dc511aeb507
+    path: patches/@rocket.chat__message-parser@0.31.32.patch
+
 importers:
 
   .:
@@ -76,7 +81,7 @@ importers:
         version: 7.0.14(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       '@rocket.chat/message-parser':
         specifier: ^0.31.32
-        version: 0.31.32
+        version: 0.31.32(patch_hash=003fe4dce48379fe3644bbe53971ee8b2eb8307efeda3ba9db9a2dc511aeb507)
       '@rocket.chat/sdk':
         specifier: RocketChat/Rocket.Chat.js.SDK#mobile
         version: https://codeload.github.com/RocketChat/Rocket.Chat.js.SDK/tar.gz/b6d2b3f25b0ff8283dd71faf6dae720c47fecd8f
@@ -294,8 +299,8 @@ importers:
         specifier: ~4.4.0
         version: 4.4.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-scrollable-tab-view:
-        specifier: ^1.0.0
-        version: 1.0.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
+        specifier: ptomasroos/react-native-scrollable-tab-view
+        version: https://codeload.github.com/ptomasroos/react-native-scrollable-tab-view/tar.gz/583a66f7fd3eb2cac1a05c71d7167d78a8ad9de6(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       react-native-simple-crypto:
         specifier: RocketChat/react-native-simple-crypto#fix.6.1.0
         version: https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/467905c61df8132e2257b6408a072521fc5a3d27
@@ -2051,8 +2056,8 @@ packages:
   '@react-native-community/slider@4.5.5':
     resolution: {integrity: sha512-x2N415pg4ZxIltArOKczPwn7JEYh+1OxQ4+hTnafomnMsqs65HZuEWcX+Ch8c5r8V83DiunuQUf5hWGWlw8hQQ==}
 
-  '@react-native-community/viewpager@2.0.2':
-    resolution: {integrity: sha512-CKVhIZdX/Cmb80muog8sKpi5vM8npwFp4tx4Dj1IvTBidZweuO22+VH2rDOj7E0LzdV9IYRJ4FGBwcPBD2qUrQ==}
+  '@react-native-community/viewpager@3.3.0':
+    resolution: {integrity: sha512-tyzh79l4t/hxiyS9QD3LRmWMs8KVkZzjrkQ8U8+8To1wmvVCBtp8BenvNsDLTBO7CpO/YmiThpmIdEZMr1WuVw==}
     deprecated: This library is no longer supported. Please use react-native-pager-view instead
     peerDependencies:
       react: ^16.0
@@ -6241,8 +6246,9 @@ packages:
       react: '*'
       react-native: '*'
 
-  react-native-scrollable-tab-view@1.0.0:
-    resolution: {integrity: sha512-lpZ9xz+PBdgSzpk93VjCIfxV0zvJDX9iEUP8ImDg3p1QJGHOWbWyfDx+lcx5VCDVrrdZdtuVAAdc0tkYXZyQDw==}
+  react-native-scrollable-tab-view@https://codeload.github.com/ptomasroos/react-native-scrollable-tab-view/tar.gz/583a66f7fd3eb2cac1a05c71d7167d78a8ad9de6:
+    resolution: {tarball: https://codeload.github.com/ptomasroos/react-native-scrollable-tab-view/tar.gz/583a66f7fd3eb2cac1a05c71d7167d78a8ad9de6}
+    version: 1.1.0
     peerDependencies:
       react-native: '>=0.20.0'
 
@@ -9832,7 +9838,7 @@ snapshots:
 
   '@react-native-community/slider@4.5.5': {}
 
-  '@react-native-community/viewpager@2.0.2(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)':
+  '@react-native-community/viewpager@3.3.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-native: 0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1)
@@ -10186,7 +10192,7 @@ snapshots:
 
   '@rocket.chat/icons@0.40.0': {}
 
-  '@rocket.chat/message-parser@0.31.32':
+  '@rocket.chat/message-parser@0.31.32(patch_hash=003fe4dce48379fe3644bbe53971ee8b2eb8307efeda3ba9db9a2dc511aeb507)':
     dependencies:
       tldts: 5.7.112
 
@@ -14993,10 +14999,11 @@ snapshots:
       react-native: 0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1)
       warn-once: 0.1.1
 
-  react-native-scrollable-tab-view@1.0.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
+  react-native-scrollable-tab-view@https://codeload.github.com/ptomasroos/react-native-scrollable-tab-view/tar.gz/583a66f7fd3eb2cac1a05c71d7167d78a8ad9de6(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1):
     dependencies:
-      '@react-native-community/viewpager': 2.0.2(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
+      '@react-native-community/viewpager': 3.3.0(react-native@0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1))(react@18.3.1)
       create-react-class: 15.7.0
+      deprecated-react-native-prop-types: 2.3.0
       prop-types: 15.8.1
       react-native: 0.76.7(@babel/core@7.26.9)(@babel/preset-env@7.26.9(@babel/core@7.26.9))(@types/react@18.3.18)(react@18.3.1)
       react-timer-mixin: 0.13.4

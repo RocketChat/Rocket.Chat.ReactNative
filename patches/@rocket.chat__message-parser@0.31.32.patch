@@ -1,0 +1,14 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+deleted file mode 100644
+index aeafafed3bc7f94d030cd0c4dcd3714e68ef7954..0000000000000000000000000000000000000000
+diff --git a/messageParser.js b/messageParser.js
+index c1dc1bda949a61db963e65f7b4c5b9f7c45100f4..d25c5ed3ae0bb3318521a32ccb127786f0abe2e9 100644
+--- a/messageParser.js
++++ b/messageParser.js
+@@ -3,5 +3,5 @@
+ if (process.env.NODE_ENV === 'production') {
+   module.exports = require('./dist/messageParser.production.js');
+ } else {
+-  module.exports = require('./dist/messageParser.development.js');
++  module.exports = require('./dist/messageParser.production.js');
+ }
