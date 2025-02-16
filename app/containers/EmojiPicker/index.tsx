@@ -8,10 +8,10 @@ import Footer from './Footer';
 import styles from './styles';
 import { categories, emojisByCategory } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import { IEmoji, ICustomEmojis } from '../../definitions';
+import type { IEmoji, ICustomEmojis } from '../../definitions';
 import { useAppSelector, useFrequentlyUsedEmoji } from '../../lib/hooks';
 import { addFrequentlyUsed } from '../../lib/methods';
-import { IEmojiPickerProps, EventTypes } from './interfaces';
+import { type IEmojiPickerProps, EventTypes } from './interfaces';
 
 const EmojiPicker = ({
 	onItemClicked,

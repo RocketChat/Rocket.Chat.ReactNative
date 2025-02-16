@@ -1,23 +1,23 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { TInvite } from '../reducers/inviteLinks';
+import type { TInvite } from '../reducers/inviteLinks';
 import { INVITE_LINKS } from './actionsTypes';
 
-interface IInviteLinksGeneric extends Action {
+type IInviteLinksGeneric = Action & {
 	token: string;
 }
 
-interface IInviteLinksCreate extends Action {
+type IInviteLinksCreate = Action  & {
 	rid: string;
 }
 
-interface IInviteLinksSetInvite extends Action {
+type IInviteLinksSetInvite = Action & {
 	invite: TInvite;
 }
 
 type TParams = Record<string, any>;
 
-interface IInviteLinksSetParams extends Action {
+type IInviteLinksSetParams = Action & {
 	params: TParams;
 }
 

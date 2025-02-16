@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { ISelectedUser } from '../reducers/selectedUsers';
+import type { ISelectedUser } from '../reducers/selectedUsers';
 import * as types from './actionsTypes';
 
 type TUser = {
@@ -9,9 +9,7 @@ type TUser = {
 
 type TAction = Action & TUser;
 
-interface ISetLoading extends Action {
-	loading: boolean;
-}
+type ISetLoading = Action & { loading: boolean; }
 
 export type TActionSelectedUsers = TAction & ISetLoading;
 

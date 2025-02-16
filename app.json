@@ -5,7 +5,6 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rocketchat",
-    "sdkVersion": "52.0.35",
     "jsEngine": "hermes",
     "githubUrl": "https://github.com/RocketChat/Rocket.Chat.ReactNative",
     "userInterfaceStyle": "automatic",

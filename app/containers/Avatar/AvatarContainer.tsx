@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
-import { IApplicationState } from '../../definitions';
+import type { IApplicationState } from '../../definitions';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
-import { IAvatar } from './interfaces';
+import type { IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
 
 const AvatarContainer = ({

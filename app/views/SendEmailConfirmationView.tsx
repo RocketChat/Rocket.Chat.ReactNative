@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { OutsideParamList } from '../stacks/types';
+import type { OutsideParamList } from '../stacks/types';
 import { FormTextInput } from '../containers/TextInput';
 import Button from '../containers/Button';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
@@ -8,7 +8,7 @@ import I18n from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { IBaseScreen } from '../definitions';
+import type { IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
 
 type ISendEmailConfirmationViewProps = IBaseScreen<OutsideParamList, 'SendEmailConfirmationView'>;

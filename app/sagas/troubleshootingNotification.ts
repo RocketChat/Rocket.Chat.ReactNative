@@ -9,9 +9,7 @@ import log from '../lib/methods/helpers/log';
 import { appSelector } from '../lib/hooks';
 import { compareServerVersion } from '../lib/methods/helpers';
 
-interface IGenericAction extends Action {
-	type: string;
-}
+type IGenericAction = Action & { type: string; }
 
 function* init() {
 	const serverVersion = yield* appSelector(state => state.server.version);

@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
-import { ITabBarProps } from './interfaces';
+import type { ITabBarProps } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import { CustomIcon } from '../CustomIcon';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 
-import { IEmoji } from '../../definitions/IEmoji';
+import type { IEmoji } from '../../definitions/IEmoji';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { PressableEmoji } from './PressableEmoji';
 import { EMOJI_BUTTON_SIZE } from './styles';

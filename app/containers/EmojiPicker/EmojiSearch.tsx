@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInputProps } from 'react-native';
+import { StyleSheet, type TextInputProps } from 'react-native';
 
 import { FormTextInput } from '../TextInput/FormTextInput';
 import { useTheme } from '../../theme';

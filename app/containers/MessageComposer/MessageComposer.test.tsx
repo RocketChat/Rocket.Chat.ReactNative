@@ -8,10 +8,10 @@ import { addSettings } from '../../actions/settings';
 import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
-import { IPermissionsState } from '../../reducers/permissions';
-import { IMessage } from '../../definitions';
+import type { IPermissionsState } from '../../reducers/permissions';
+import type { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
-import { IRoomContext, RoomContext } from '../../views/RoomView/context';
+import { type IRoomContext, RoomContext } from '../../views/RoomView/context';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { Bold as BoldProps } from '@rocket.chat/message-parser';
+import type { Bold as BoldProps } from '@rocket.chat/message-parser';
 
 import { Italic, Link, Strike } from './index';
 import Plain from '../Plain';
@@ -18,18 +18,18 @@ const styles = StyleSheet.create({
 
 const Bold = ({ value }: IBoldProps) => (
 	<Text style={styles.text}>
-		{value.map(block => {
+		{value.map((block, index) => {
 			switch (block.type) {
 				case 'LINK':
-					return <Link value={block.value} />;
+					return <Link key={index} value={block.value} />;
 				case 'PLAIN_TEXT':
-					return <Plain value={block.value} />;
+					return <Plain key={index} value={block.value} />;
 				case 'STRIKE':
-					return <Strike value={block.value} />;
+					return <Strike key={index} value={block.value} />;
 				case 'ITALIC':
-					return <Italic value={block.value} />;
+					return <Italic key={index} value={block.value} />;
 				case 'MENTION_CHANNEL':
-					return <Plain value={`#${block.value.value}`} />;
+					return <Plain key={index} value={`#${block.value.value}`} />;
 				default:
 					return null;
 			}

@@ -1,11 +1,9 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { ICallInfo } from '../reducers/videoConf';
+import type { ICallInfo } from '../reducers/videoConf';
 import { VIDEO_CONF } from './actionsTypes';
 
-interface IHandleVideoConfIncomingWebsocketMessages extends Action {
-	data: any;
-}
+type IHandleVideoConfIncomingWebsocketMessages = Action & { data: any; }
 
 export type TCallProps = { mic: boolean; cam: boolean; direct: boolean; rid: string; uid: string };
 type TInitCallAction = Action & { payload: TCallProps };
@@ -13,9 +11,7 @@ type TSetCallingAction = Action & { payload: boolean };
 type TCancelCallAction = Action & { payload: { callId?: string } };
 type TAcceptCallAction = Action & { payload: { callId: string } };
 
-export interface IVideoConfGenericAction extends Action {
-	payload: ICallInfo;
-}
+export type IVideoConfGenericAction = Action & { payload: ICallInfo; }
 
 export type TActionVideoConf = IHandleVideoConfIncomingWebsocketMessages &
 	IVideoConfGenericAction &

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
-import { IThemePreference, TDarkLevel, TThemeMode } from '../definitions/ITheme';
+import type { IThemePreference, TDarkLevel, TThemeMode } from '../definitions/ITheme';
 import I18n from '../i18n';
 import { THEME_PREFERENCES_KEY } from '../lib/constants';
 import { supportSystemTheme } from '../lib/methods/helpers';

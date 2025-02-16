@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 
 import { acceptCall, cancelCall } from '../../../actions/videoConf';
-import { ISubscription, SubscriptionType } from '../../../definitions';
+import { type ISubscription, SubscriptionType } from '../../../definitions';
 import i18n from '../../../i18n';
 import { useAppSelector } from '../../../lib/hooks';
 import { useEndpointData } from '../../../lib/hooks/useEndpointData';
@@ -32,7 +32,7 @@ export interface INotifierComponent {
 const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const IncomingCallHeader = React.memo(
-	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
+	function IncomingCallHeader({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string })  {
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const [audio, setAudio] = useState(true);

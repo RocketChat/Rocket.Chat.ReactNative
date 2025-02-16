@@ -1,12 +1,10 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 import { IN_APP_FEEDBACK } from './actionsTypes';
 
-interface IInAppFeedbackAction {
+export type TInAppFeedbackAction = Action & {
 	msgId: string;
 }
-
-export type TInAppFeedbackAction = IInAppFeedbackAction & Action;
 
 export function setInAppFeedback(msgId: string): TInAppFeedbackAction {
 	return {

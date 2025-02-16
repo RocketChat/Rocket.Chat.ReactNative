@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
-import { IEmoji } from '../../definitions/IEmoji';
+import type { IEmoji } from '../../definitions/IEmoji';
 
 interface IEmojiProps {
 	emoji: IEmoji;

@@ -3,25 +3,15 @@ import { Action } from 'redux';
 import { IOmnichannelRoom } from '../../../definitions';
 import { INQUIRY } from '../../../actions/actionsTypes';
 
-interface IInquirySetEnabled extends Action {
-	enabled: boolean;
-}
+type IInquirySetEnabled = Action & { enabled: boolean; }
 
-interface IInquiryQueueAddAndUpdate extends Action {
-	inquiry: IOmnichannelRoom;
-}
+type IInquiryQueueAddAndUpdate = Action & { inquiry: IOmnichannelRoom; }
 
-interface IInquirySuccess extends Action {
-	inquiries: IOmnichannelRoom[];
-}
+type IInquirySuccess = Action & { inquiries: IOmnichannelRoom[]; }
 
-interface IInquiryQueueRemove extends Action {
-	inquiryId: string;
-}
+type IInquiryQueueRemove = Action & { inquiryId: string; }
 
-interface IInquiryFailure extends Action {
-	error: unknown;
-}
+type IInquiryFailure = Action & { error: unknown; }
 
 export type TActionInquiry = IInquirySetEnabled &
 	IInquiryQueueAddAndUpdate &

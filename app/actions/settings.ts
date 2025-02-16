@@ -1,15 +1,11 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { TSettingsState, TSupportedSettings, TSettingsValues } from '../reducers/settings';
+import type { TSettingsState, TSupportedSettings, TSettingsValues } from '../reducers/settings';
 import { SETTINGS } from './actionsTypes';
 
-interface IAddSettings extends Action {
-	payload: TSettingsState;
-}
+type IAddSettings = Action & { payload: TSettingsState; }
 
-interface IUpdateSettings extends Action {
-	payload: { id: TSupportedSettings; value: TSettingsValues };
-}
+type IUpdateSettings = Action & { payload: { id: TSupportedSettings; value: TSettingsValues }; }
 
 export type IActionSettings = IAddSettings & IUpdateSettings;
 

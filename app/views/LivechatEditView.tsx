@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import log from '../lib/methods/helpers/log';
-import { TSupportedThemes, withTheme } from '../theme';
+import { type TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import { FormTextInput } from '../containers/TextInput';
 import KeyboardView from '../containers/KeyboardView';
@@ -18,9 +18,9 @@ import { getUserSelector } from '../selectors/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
 import { MultiSelect } from '../containers/UIKit/MultiSelect';
-import { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
-import { IApplicationState, IUser } from '../definitions';
-import { ChatsStackParamList } from '../stacks/types';
+import type { ICustomFields, IInputsRefs, TParams, ITitle, ILivechat } from '../definitions/ILivechatEditView';
+import type { IApplicationState, IUser } from '../definitions';
+import type { ChatsStackParamList } from '../stacks/types';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
 import { usePermissions } from '../lib/hooks';
@@ -71,7 +71,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		livechat.rid
 	);
 
-	const getCustomFields = async () => {
+	const getCustomFields = useCallback(async () => {
 		const result = await Services.getCustomFields();
 		if (result.success && result.customFields?.length) {
 			const visitorCustomFields = result.customFields
@@ -86,7 +86,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 			return setCustomFields({ visitor: visitorCustomFields, livechat: livechatCustomFields });
 		}
-	};
+	}, [livechat.livechatData, visitor.livechatData]);
 
 	const [tagParam, setTags] = useState(livechat?.tags || []);
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
@@ -100,18 +100,18 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		const arr = [...tagParam, ...availableUserTags];
 		const uniqueArray = arr.filter((val, i) => arr.indexOf(val) === i);
 		setTags(uniqueArray);
-	}, [availableUserTags]);
+	}, [availableUserTags, tagParam]);
 
-	const handleGetTagsList = async (agentDepartments: string[]) => {
+	const handleGetTagsList = useCallback(async (agentDepartments: string[]) => {
 		const tags = await Services.getTagsList();
 		const isAdmin = ['admin', 'livechat-manager'].find(role => user.roles?.includes(role));
 		const availableTags = tags
 			.filter(({ departments }) => isAdmin || departments.length === 0 || departments.some(i => agentDepartments.indexOf(i) > -1))
 			.map(({ name }) => name);
 		setAvailableUserTags(availableTags);
-	};
+	}, [user.roles]);
 
-	const handleGetAgentDepartments = async () => {
+	const handleGetAgentDepartments = useCallback(async () => {
 		try {
 			const result = await Services.getAgentDepartments(visitor?._id);
 			if (result.success) {
@@ -121,7 +121,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		} catch {
 			// do nothing
 		}
-	};
+	}, [handleGetTagsList, visitor?._id]);
 
 	const submit = async () => {
 		try {
@@ -188,7 +188,7 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 		});
 		handleGetAgentDepartments();
 		getCustomFields();
-	}, []);
+	}, [getCustomFields, handleGetAgentDepartments, navigation]);
 
 	return (
 		<KeyboardView

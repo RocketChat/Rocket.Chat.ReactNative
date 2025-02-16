@@ -8,9 +8,9 @@ import Button from '../../containers/Button';
 import { FormTextInput } from '../../containers/TextInput';
 import sharedStyles from '../Styles';
 import { themes } from '../../lib/constants';
-import { IApplicationState } from '../../definitions';
+import type { IApplicationState } from '../../definitions';
 import { Services } from '../../lib/services';
-import { TSupportedThemes } from '../../theme';
+import type { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {

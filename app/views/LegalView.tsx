@@ -7,8 +7,8 @@ import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
-import { OutsideParamList } from '../stacks/types';
-import { IBaseScreen, IApplicationState } from '../definitions';
+import type { OutsideParamList } from '../stacks/types';
+import type { IBaseScreen, IApplicationState } from '../definitions';
 
 interface ILegalViewProps extends IBaseScreen<OutsideParamList, 'LegalView'> {
 	server: string;

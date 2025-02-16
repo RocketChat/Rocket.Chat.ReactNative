@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { I18nManager, type StyleProp, StyleSheet, Text, type TextStyle, View } from 'react-native';
 
 import Touch from '../Touch';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../../views/Styles';
-import { TSupportedThemes, useTheme } from '../../theme';
+import { type TSupportedThemes, useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';

@@ -1,19 +1,13 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { IBanner } from '../reducers/encryption';
+import type { IBanner } from '../reducers/encryption';
 import { ENCRYPTION } from './actionsTypes';
 
-export interface IEncryptionSet extends Action {
-	enabled: boolean;
-	banner: IBanner;
-}
+export type IEncryptionSet = Action & { enabled: boolean;
+	banner: IBanner; }
 
-export interface IEncryptionSetBanner extends Action {
-	banner: IBanner;
-}
-export interface IEncryptionDecodeKey extends Action {
-	password: string;
-}
+export type IEncryptionSetBanner = Action & { banner: IBanner; }
+export type IEncryptionDecodeKey = Action & { password: string; }
 
 export type TActionEncryption = IEncryptionSet & IEncryptionSetBanner & IEncryptionDecodeKey;
 

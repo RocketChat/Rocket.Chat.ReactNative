@@ -1,6 +1,5 @@
-import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
-import { View, StyleSheet, NativeModules, InputAccessoryView } from 'react-native';
-// import { Keyboard } from 'react-native';
+import React, { type ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
+import { View, StyleSheet, NativeModules } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
@@ -16,12 +15,12 @@ import {
 	useShowEmojiKeyboard,
 	useShowEmojiSearchbar
 } from './context';
-import { IComposerInput, ITrackingView } from './interfaces';
+import type { IComposerInput, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
-import { IEmoji } from '../../definitions';
+import type { IEmoji } from '../../definitions';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
@@ -31,7 +30,7 @@ import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
 import { emitter } from '../../lib/methods/helpers/emitter';
-
+import KeyboardAccessoryView from '../../views/KeyboardAccessoryView';
 const styles = StyleSheet.create({
 	container: {
 		borderTopWidth: 1,
@@ -80,7 +79,7 @@ export const MessageComposer = ({
 	useFocusEffect(
 		useCallback(() => {
 			trackingViewRef.current?.resetTracking();
-		}, [recordingAudio])
+		}, [])
 	);
 
 	useImperativeHandle(forwardedRef, () => ({
@@ -233,8 +232,8 @@ export const MessageComposer = ({
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<InputAccessoryView
-				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
+			<KeyboardAccessoryView
+				ref={(ref) => ref && (trackingViewRef.current = ref)}
 				renderContent={renderContent}
 				kbInputRef={composerInputRef}
 				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}

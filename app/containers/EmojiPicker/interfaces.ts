@@ -1,5 +1,5 @@
-import { TIconsName } from '../CustomIcon';
-import { IEmoji } from '../../definitions';
+import type { TIconsName } from '../CustomIcon';
+import type { IEmoji } from '../../definitions';
 
 export enum EventTypes {
 	EMOJI_PRESSED = 'emojiPressed',

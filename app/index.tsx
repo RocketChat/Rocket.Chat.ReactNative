@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, EmitterSubscription, Linking } from 'react-native';
+import { Dimensions, type EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -13,7 +13,7 @@ import InAppNotification from './containers/InAppNotification';
 import Loading from './containers/Loading';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import { IThemePreference } from './definitions/ITheme';
+import type { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
 import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
@@ -32,7 +32,7 @@ import { initializePushNotifications, onNotification } from './lib/notifications
 import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
 import store from './lib/store';
 import { initStore } from './lib/store/auxStore';
-import { TSupportedThemes, ThemeContext } from './theme';
+import { type TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 

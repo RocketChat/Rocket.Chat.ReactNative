@@ -8,9 +8,9 @@ export const RadioButton = ({ check, testID, size }: { check: boolean; testID?: 
 	return (
 		<SegmentedControl
 			testID={testID}
-			selectedIndex={check}
-			size={size || 20}
-			color={check ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled}
+			values={['']}
+			selectedIndex={0}
+			style={{ width: size || 20, height: size || 20, backgroundColor: check ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundPrimaryDisabled }}
 		/>
 	);
 };

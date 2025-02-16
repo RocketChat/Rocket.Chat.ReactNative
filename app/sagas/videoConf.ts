@@ -21,9 +21,7 @@ import { Services } from '../lib/services';
 import { notifyUser } from '../lib/services/restApi';
 import { ICallInfo } from '../reducers/videoConf';
 
-interface IGenericAction extends Action {
-	type: string;
-}
+type IGenericAction = Action & { type: string; }
 
 type THandleGeneric = IGenericAction & {
 	data: any;

@@ -1,17 +1,17 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { TCreateChannelResult } from '../reducers/createChannel';
+import type { TCreateChannelResult } from '../reducers/createChannel';
 import { CREATE_CHANNEL } from './actionsTypes';
 
-interface ICreateChannelRequest extends Action {
+type ICreateChannelRequest = Action & {
 	data: TCreateChannelResult;
 }
 
-interface ICreateChannelSuccess extends Action {
+type ICreateChannelSuccess = Action & {
 	data: TCreateChannelResult;
 }
 
-interface ICreateChannelFailure extends Action {
+type ICreateChannelFailure = Action & {
 	err: any;
 	isTeam: boolean;
 }

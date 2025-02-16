@@ -1,29 +1,23 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 import { SERVER } from './actionsTypes';
 
-export interface ISelectServerAction extends Action {
+export type ISelectServerAction = Action & {
 	server: string;
 	version: string;
 	fetchVersion: boolean;
 	changeServer: boolean;
 }
 
-interface ISelectServerSuccess extends Action {
-	server: string;
+type ISelectServerSuccess = Action & { server: string;
 	version: string;
-	name: string;
-}
+	name: string; }
 
-export interface IServerRequestAction extends Action {
-	server: string;
+export type IServerRequestAction = Action & { server: string;
 	username: string | null;
-	fromServerHistory: boolean;
-}
+	fromServerHistory: boolean; }
 
-interface IServerInit extends Action {
-	previousServer: string;
-}
+type IServerInit = Action & { previousServer: string; }
 
 export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit;
 

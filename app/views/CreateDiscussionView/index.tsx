@@ -11,15 +11,15 @@ import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { FormTextInput } from '../../containers/TextInput';
-import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
+import { createDiscussionRequest, type ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
-import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
-import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
+import type { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
+import type { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
 import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
@@ -202,7 +202,7 @@ const mapStateToProps = (state: IApplicationState) => ({
 	failure: state.createDiscussion.failure,
 	loading: state.createDiscussion.isFetching,
 	result: state.createDiscussion.result as IResult,
-	blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
+	blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true,
 	serverVersion: state.server.version as string,
 	isMasterDetail: state.app.isMasterDetail,
 	encryptionEnabled: state.encryption.enabled

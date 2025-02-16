@@ -1,25 +1,17 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 import { NetInfoStateType } from '@react-native-community/netinfo';
 
 import { RootEnum } from '../definitions';
 import { APP } from './actionsTypes';
 
-interface IAppStart extends Action {
-	root: RootEnum;
-	text?: string;
-}
+type IAppStart = Action & { root: RootEnum;
+	text?: string; }
 
-interface ISetMasterDetail extends Action {
-	isMasterDetail: boolean;
-}
+type ISetMasterDetail = Action & { isMasterDetail: boolean; }
 
-interface ISetNotificationPresenceCap extends Action {
-	show: boolean;
-}
+type ISetNotificationPresenceCap = Action & { show: boolean; }
 
-interface ISetNetInfoState extends Action {
-	netInfoState: NetInfoStateType;
-}
+type ISetNetInfoState = Action & { netInfoState: NetInfoStateType; }
 
 export type TActionApp = IAppStart & ISetMasterDetail & ISetNotificationPresenceCap & ISetNetInfoState;
 

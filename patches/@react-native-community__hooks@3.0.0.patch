@@ -1,0 +1,15 @@
+diff --git a/lib/useBackHandler.js b/lib/useBackHandler.js
+index 58ed98b9c03d345a38ab56b40c207be524d342cf..74d35bcbf12ee79d43fb4274f610dd0e07d4b0ae 100644
+--- a/lib/useBackHandler.js
++++ b/lib/useBackHandler.js
+@@ -5,8 +5,8 @@ var react_1 = require("react");
+ var react_native_1 = require("react-native");
+ function useBackHandler(handler) {
+     (0, react_1.useEffect)(function () {
+-        react_native_1.BackHandler.addEventListener('hardwareBackPress', handler);
+-        return function () { return react_native_1.BackHandler.removeEventListener('hardwareBackPress', handler); };
++        const subscription = react_native_1.BackHandler.addEventListener('hardwareBackPress', handler);
++        return function () { return subscription.remove(); };
+     }, [handler]);
+ }
+ exports.useBackHandler = useBackHandler;

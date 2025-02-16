@@ -2,7 +2,7 @@ import { Q } from '@nozbe/watermelondb';
 import { useEffect, useState } from 'react';
 import { Observable, Subscription } from 'rxjs';
 
-import { TLoggedUserModel, TSubscriptionModel, TUserModel } from '../../definitions';
+import type { TLoggedUserModel, TSubscriptionModel, TUserModel } from '../../definitions';
 import database from '../../lib/database';
 
 export const useAvatarETag = ({

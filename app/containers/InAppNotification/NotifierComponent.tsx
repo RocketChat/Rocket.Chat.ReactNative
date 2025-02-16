@@ -11,7 +11,7 @@ import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
+import { type IApplicationState, type ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
 
 export interface INotifierComponent {

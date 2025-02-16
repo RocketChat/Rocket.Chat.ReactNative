@@ -2,17 +2,17 @@ import React from 'react';
 import { View } from 'react-native';
 import FastImage from 'react-native-blasted-image';
 import Touchable from 'react-native-platform-touchable';
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk/index';
 
 import Emoji from '../markdown/components/emoji/Emoji';
 import { getAvatarURL } from '../../lib/methods/helpers/getAvatarUrl';
 import { SubscriptionType } from '../../definitions';
-import { IAvatar } from './interfaces';
+import type { IAvatar } from './interfaces';
 import MarkdownContext from '../markdown/contexts/MarkdownContext';
 import I18n from '../../i18n';
 
 const Avatar = React.memo(
-	({
+	function Avatar({
 		server,
 		style,
 		avatar,
@@ -35,7 +35,7 @@ const Avatar = React.memo(
 		roomAvatarExternalProviderUrl,
 		cdnPrefix,
 		accessibilityLabel
-	}: IAvatar) => {
+	}: IAvatar) {
 		if ((!text && !avatar && !emoji && !rid) || !server) {
 			return null;
 		}
@@ -81,10 +81,11 @@ const Avatar = React.memo(
 			image = (
 				<FastImage
 					style={avatarStyle}
+					fallbackSource={{uri,headers: RocketChatSettings.customHeaders}}
 					source={{
-						uri,
-						headers: RocketChatSettings.customHeaders,
-						priority: 'high'
+						uri: uri || 'https://rocket.chat/images/logo/logo.svg',
+						cloudUrl: uri,
+						hybridAssets: true,
 					}}
 				/>
 			);

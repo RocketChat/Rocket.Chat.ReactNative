@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { IUser } from '../definitions';
+import type { IUser } from '../definitions';
 import * as types from './actionsTypes';
 
 interface ICredentials {
@@ -9,41 +9,27 @@ interface ICredentials {
 	password: string;
 }
 
-interface ILoginRequest extends Action {
+type ILoginRequest = Action & {
 	credentials: any;
 	logoutOnError?: boolean;
 	isFromWebView?: boolean;
 	registerCustomFields?: any;
 }
 
-interface ILoginSuccess extends Action {
-	user: Partial<IUser>;
-}
+type ILoginSuccess = Action & { user: Partial<IUser>; }
 
-interface ILoginFailure extends Action {
-	err: Partial<IUser>;
-}
+type ILoginFailure = Action & { err: Partial<IUser>; }
 
-interface ILogout extends Action {
-	forcedByServer: boolean;
-	message: string;
-}
+type ILogout = Action & { forcedByServer: boolean;
+	message: string; }
 
-interface ISetUser extends Action {
-	user: Partial<IUser>;
-}
+type ISetUser = Action & { user: Partial<IUser>; }
 
-interface ISetServices extends Action {
-	data: Record<string, string>;
-}
+type ISetServices = Action & { data: Record<string, string>; }
 
-interface ISetPreference extends Action {
-	preference: Record<string, any>;
-}
+type ISetPreference = Action & { preference: Record<string, any>; }
 
-interface ISetLocalAuthenticated extends Action {
-	isLocalAuthenticated: boolean;
-}
+type ISetLocalAuthenticated = Action & { isLocalAuthenticated: boolean; }
 
 export type TActionsLogin = ILoginRequest &
 	ILoginSuccess &

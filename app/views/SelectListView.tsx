@@ -1,25 +1,25 @@
 import React from 'react';
-import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import { RouteProp } from '@react-navigation/native';
+import type { RouteProp } from '@react-navigation/native';
 
-import { ChatsStackParamList } from '../stacks/types';
+import type { ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
-import { TSupportedThemes, withTheme } from '../theme';
+import { type TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
-import { IApplicationState } from '../definitions';
-import { TDataSelect } from '../definitions/IDataSelect';
+import type { IApplicationState } from '../definitions';
+import type { TDataSelect } from '../definitions/IDataSelect';
+import { RadioButton } from '../containers/RadioButton';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -150,11 +150,10 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const checked = this.isChecked(item.rid) ? 'check' : '';
 
 		const showRadio = () => (
-			<SegmentedControl
+			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				values={['', '']}
-				selectedIndex={selected.indexOf(item.rid)}
-				color={themes[theme].fontHint}
+				check={selected.includes(item.rid)}
+				// color={themes[theme].fontHint}
 				size={ICON_SIZE}
 			/>
 		);

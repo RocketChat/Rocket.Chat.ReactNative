@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Text } from 'react-native';
-import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import type { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
@@ -40,20 +40,21 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 
 				switch (block.type) {
 					case 'IMAGE':
-						return <Image value={block.value} />;
+						return <Image key={index} value={block.value} />;
 					case 'PLAIN_TEXT':
-						return <Plain value={block.value} />;
+						return <Plain key={index} value={block.value} />;
 					case 'BOLD':
-						return <Bold value={block.value} />;
+						return <Bold key={index} value={block.value} />;
 					case 'STRIKE':
-						return <Strike value={block.value} />;
+						return <Strike key={index} value={block.value} />;
 					case 'ITALIC':
-						return <Italic value={block.value} />;
+						return <Italic key={index} value={block.value} />;
 					case 'LINK':
-						return <Link value={block.value} />;
+						return <Link key={index} value={block.value} />;
 					case 'MENTION_USER':
 						return (
 							<AtMention
+								key={index}
 								mention={block.value.value}
 								useRealName={useRealName}
 								username={username}
@@ -62,14 +63,14 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji block={block} />;
+						return <Emoji key={index} block={block} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+						return <Hashtag key={index} hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
 					case 'INLINE_CODE':
-						return <InlineCode value={block.value} />;
+						return <InlineCode key={index} value={block.value} />;
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
-						return <Text>{block.value}</Text>;
+						return <Text key={index}>{block.value}</Text>;
 					default:
 						return null;
 				}

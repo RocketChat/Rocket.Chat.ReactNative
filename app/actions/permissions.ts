@@ -1,15 +1,11 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { IPermissionsState, TSupportedPermissions } from '../reducers/permissions';
+import type { IPermissionsState, TSupportedPermissions } from '../reducers/permissions';
 import { PERMISSIONS } from './actionsTypes';
 
-interface ISetPermissions extends Action {
-	permissions: IPermissionsState;
-}
+type ISetPermissions = Action & { permissions: IPermissionsState; }
 
-interface IUpdatePermissions extends Action {
-	payload: { id: TSupportedPermissions; roles: string[] };
-}
+type IUpdatePermissions = Action & { payload: { id: TSupportedPermissions; roles: string[] }; }
 
 export type TActionPermissions = ISetPermissions & IUpdatePermissions;
 

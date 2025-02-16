@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 import { DEEP_LINKING } from './actionsTypes';
 
@@ -12,9 +12,7 @@ interface IParams {
 	token: string;
 }
 
-interface IDeepLinkingOpen extends Action {
-	params: Partial<IParams>;
-}
+type IDeepLinkingOpen = Action & { params: Partial<IParams>; }
 
 export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
 	return {

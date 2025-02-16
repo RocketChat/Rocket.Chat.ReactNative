@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-native",
+    "verbatimModuleSyntax": true,
     "paths": {
       "@/*": [
         "./*"

@@ -17,7 +17,7 @@ interface IBannerProps {
 }
 
 const Banner = React.memo(
-	({ text, title, bannerClosed, closeBanner }: IBannerProps) => {
+	function Banner({ text, title, bannerClosed, closeBanner }: IBannerProps) {
 		const [showModal, openModal] = useState(false);
 		const { theme } = useTheme();
 

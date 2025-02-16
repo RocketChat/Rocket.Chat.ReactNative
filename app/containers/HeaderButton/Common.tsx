@@ -4,7 +4,7 @@ import { StackActions, useNavigation } from '@react-navigation/native';
 import I18n from '../../i18n';
 import { isIOS } from '../../lib/methods/helpers';
 import Container from './HeaderButtonContainer';
-import Item, { IHeaderButtonItem } from './HeaderButtonItem';
+import Item, { type IHeaderButtonItem } from './HeaderButtonItem';
 import { useTheme } from '../../theme';
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import Chip, { IChip } from './index';
+import Chip, { type IChip } from './index';
 
 const styles = StyleSheet.create({
 	container: {

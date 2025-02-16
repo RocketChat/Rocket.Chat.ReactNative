@@ -1,11 +1,9 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 import { MESSAGES } from './actionsTypes';
-import { IMessage } from '../definitions';
+import type { IMessage } from '../definitions';
 
-interface IReplyBroadcast extends Action {
-	message: IMessage;
-}
+type IReplyBroadcast = Action & { message: IMessage; }
 
 export function replyBroadcast(message: IMessage): IReplyBroadcast {
 	return {

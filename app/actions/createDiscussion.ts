@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 import { CREATE_DISCUSSION } from './actionsTypes';
 
@@ -10,15 +10,15 @@ export interface ICreateDiscussionRequestData {
 	users: string[];
 	encrypted?: boolean;
 }
-interface ICreateDiscussionRequest extends Action {
+type ICreateDiscussionRequest = Action & {
 	data: ICreateDiscussionRequestData;
 }
 
-interface ICreateDiscussionSuccess extends Action {
+type ICreateDiscussionSuccess = Action & {
 	data: any;
 }
 
-interface ICreateDiscussionFailure extends Action {
+type ICreateDiscussionFailure = Action & {
 	err: any;
 }
 

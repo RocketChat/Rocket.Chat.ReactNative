@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
-import { TSupportedThemes, withTheme } from '../theme';
+import { type TSupportedThemes, withTheme } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/HeaderButton';
@@ -13,10 +13,10 @@ import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
 import Navigation from '../lib/navigation/appNavigation';
-import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
+import type { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
-import { IApplicationState } from '../definitions';
+import type { IApplicationState } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {

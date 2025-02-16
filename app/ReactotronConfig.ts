@@ -2,7 +2,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NativeModules, LogBox } from 'react-native';
 import Reactotron from 'reactotron-react-native';
 import { reactotronRedux } from 'reactotron-redux';
-import sagaPlugin from 'reactotron-redux-saga';
 
 if (__DEV__) {
 	const { scriptURL } = NativeModules.SourceCode;
@@ -11,7 +10,7 @@ if (__DEV__) {
 		.configure({ host: scriptHostname })
 		.useReactNative()
 		.use(reactotronRedux())
-		.use(sagaPlugin({}))
+		// .use(reactotronReduxSaga())
 		.connect();
 	// Running on android device
 	// $ adb reverse tcp:9090 tcp:9090

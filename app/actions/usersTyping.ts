@@ -1,10 +1,8 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 import { USERS_TYPING } from './actionsTypes';
 
-export interface IUsersTypingGenericAction extends Action {
-	username: string;
-}
+export type IUsersTypingGenericAction = Action & { username: string; }
 
 export type TActionUserTyping = IUsersTypingGenericAction & Action;
 

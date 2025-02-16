@@ -1,8 +1,8 @@
-import React, { ElementType, memo, useEffect } from 'react';
+import React, { type ElementType, memo, useCallback, useEffect } from 'react';
 import { Easing, Notifier, NotifierRoot } from 'react-native-notifier';
 import { useDispatch } from 'react-redux';
 
-import NotifierComponent, { INotifierComponent } from './NotifierComponent';
+import NotifierComponent, { type INotifierComponent } from './NotifierComponent';
 import EventEmitter from '../../lib/methods/helpers/events';
 import Navigation from '../../lib/navigation/appNavigation';
 import { getActiveRoute } from '../../lib/methods/helpers/navigation';
@@ -11,7 +11,8 @@ import { setInAppFeedback } from '../../actions/inAppFeedback';
 
 export const INAPP_NOTIFICATION_EMITTER = 'NotificationInApp';
 
-const InAppNotification = memo(() => {
+const InAppNotification = memo(
+	function InAppNotification()  {
 	const { appState, subscribedRoom } = useAppSelector(state => ({
 		subscribedRoom: state.room.subscribedRoom,
 		appState: state.app.ready && state.app.foreground ? 'foreground' : 'background'
@@ -19,7 +20,7 @@ const InAppNotification = memo(() => {
 
 	const dispatch = useDispatch();
 
-	const show = (
+	const show = useCallback((
 		notification: INotifierComponent['notification'] & {
 			customComponent?: ElementType;
 			customTime?: number;
@@ -53,14 +54,14 @@ const InAppNotification = memo(() => {
 				swipeEnabled: notification.swipeEnabled ?? true
 			});
 		}
-	};
+	}, [appState, subscribedRoom, dispatch]);
 
 	useEffect(() => {
 		const listener = EventEmitter.addEventListener(INAPP_NOTIFICATION_EMITTER, show);
 		return () => {
 			EventEmitter.removeListener(INAPP_NOTIFICATION_EMITTER, listener);
 		};
-	}, [subscribedRoom, appState]);
+	}, [subscribedRoom, appState, show]);
 
 	return <NotifierRoot />;
 });

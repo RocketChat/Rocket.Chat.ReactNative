@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleProp, TextStyle } from 'react-native';
-import { Root, parse } from '@rocket.chat/message-parser';
+import type { StyleProp, TextStyle } from 'react-native';
+import { type Root, parse } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
-import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
-import { TGetCustomEmoji } from '../../definitions/IEmoji';
+import type { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
+import type { TGetCustomEmoji } from '../../definitions/IEmoji';
 import MarkdownContext from './contexts/MarkdownContext';
 import LineBreak from './components/LineBreak';
 import { KaTeX } from './components/Katex';
@@ -68,32 +68,32 @@ const Markdown: React.FC<IMarkdownProps> = ({
 				getCustomEmoji,
 				onLinkPress
 			}}>
-			{tokens?.map(block => {
+			{tokens?.map((block, key) => {
 				switch (block.type) {
 					case 'BIG_EMOJI':
-						return <BigEmoji value={block.value} />;
+						return <BigEmoji key={key} value={block.value} />;
 					case 'UNORDERED_LIST':
-						return <UnorderedList value={block.value} />;
+						return <UnorderedList key={key} value={block.value} />;
 					case 'ORDERED_LIST':
-						return <OrderedList value={block.value} />;
+						return <OrderedList key={key} value={block.value} />;
 					case 'TASKS':
-						return <TaskList value={block.value} />;
+						return <TaskList key={key} value={block.value} />;
 					case 'QUOTE':
-						return <Quote value={block.value} />;
+						return <Quote key={key} value={block.value} />;
 					case 'PARAGRAPH':
-						return <Paragraph value={block.value} />;
+						return <Paragraph key={key} value={block.value} />;
 					case 'CODE':
-						return <Code value={block.value} />;
+						return <Code key={key} value={block.value} />;
 					case 'HEADING':
-						return <Heading value={block.value} level={block.level} />;
+						return <Heading key={key} value={block.value} level={block.level} />;
 					case 'LINE_BREAK':
-						return <LineBreak />;
+						return <LineBreak key={key} />;
 					// This prop exists, but not even on the web it is treated, so...
 					// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
 					// case 'LIST_ITEM':
 					// 	return <View />;
 					case 'KATEX':
-						return <KaTeX value={block.value} />;
+						return <KaTeX key={key} value={block.value} />;
 					default:
 						return null;
 				}

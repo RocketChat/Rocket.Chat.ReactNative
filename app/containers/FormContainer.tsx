@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, ScrollViewProps, StyleSheet, View } from 'react-native';
+import { ScrollView, type ScrollViewProps, StyleSheet, View } from 'react-native';
 
 import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';

@@ -1,6 +1,6 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
+import { type RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { getPermalinkMessage } from '../../lib/methods';
 import KeyboardView from '../../containers/KeyboardView';
@@ -14,7 +14,7 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import styles from './styles';
 import SelectPersonOrChannel from './SelectPersonOrChannel';
 import { useAppSelector } from '../../lib/hooks';
-import { NewMessageStackParamList } from '../../stacks/types';
+import type { NewMessageStackParamList } from '../../stacks/types';
 import { postMessage } from '../../lib/services/restApi';
 import MessagePreview from '../../containers/message/Preview';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -33,9 +33,23 @@ const ForwardMessageView = () => {
 	const { blockUnauthenticatedAccess, server, serverVersion, user } = useAppSelector(state => ({
 		user: getUserSelector(state),
 		server: state.server.server,
-		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true,
-		serverVersion: state.server.version as string
+		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true,
+		serverVersion: state.server.version
 	}));
+
+	const handlePostMessage = useCallback(async () => {
+			setSending(true);
+			const permalink = await getPermalinkMessage(message);
+			const msg = `[ ](${permalink})\n`;
+			try {
+				await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
+				EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
+				navigation.dispatch(StackActions.pop());
+			} catch (e: any) {
+				Alert.alert(I18n.t('Oops'), e.message);
+			}
+			setSending(false);
+	}, [rooms, message, navigation]);
 
 	useLayoutEffect(() => {
 		const isSendButtonEnabled = rooms.length && !sending;
@@ -54,21 +68,9 @@ const ForwardMessageView = () => {
 			),
 			headerLeft: () => <HeaderButton.CloseModal />
 		});
-	}, [rooms.length, navigation, sending]);
+	}, [rooms.length, navigation, sending, colors.fontHint, colors.fontSecondaryInfo, handlePostMessage]);
 
-	const handlePostMessage = async () => {
-		setSending(true);
-		const permalink = await getPermalinkMessage(message);
-		const msg = `[ ](${permalink})\n`;
-		try {
-			await Promise.all(rooms.map(roomId => postMessage(roomId, msg)));
-			EventEmitter.emit(LISTENER, { message: I18n.t('Message_has_been_shared') });
-			navigation.dispatch(StackActions.pop());
-		} catch (e: any) {
-			Alert.alert(I18n.t('Oops'), e.message);
-		}
-		setSending(false);
-	};
+	
 
 	const selectRooms = ({ value }: { value: string[] }) => {
 		setRooms(value);

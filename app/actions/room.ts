@@ -1,6 +1,6 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { ERoomType, RoomType } from '../definitions';
+import { ERoomType, type RoomType } from '../definitions';
 import { ROOM } from './actionsTypes';
 
 // TYPE RETURN RELATED
@@ -13,46 +13,34 @@ export interface ITransferData {
 }
 
 // ACTION RETURN RELATED
-interface IBaseReturn extends Action {
-	rid: string;
-}
+type IBaseReturn = Action & { rid: string; }
 
 type TSubscribeRoom = IBaseReturn;
 type TUnsubscribeRoom = IBaseReturn;
 
 type TRoom = Record<string, any>;
 
-interface ILeaveRoom extends Action {
+type ILeaveRoom = Action & { roomType: ERoomType;
+	room: TRoom;
+	selected?: ISelected; }
+
+type IDeleteRoom = Action & {
 	roomType: ERoomType;
 	room: TRoom;
 	selected?: ISelected;
 }
 
-interface IDeleteRoom extends Action {
-	roomType: ERoomType;
-	room: TRoom;
-	selected?: ISelected;
-}
+type IForwardRoom = Action & { transferData: ITransferData;
+	rid: string; }
 
-interface IForwardRoom extends Action {
-	transferData: ITransferData;
-	rid: string;
-}
+type IUserTyping = Action & { rid: string;
+	status: boolean; }
 
-interface IUserTyping extends Action {
-	rid: string;
-	status: boolean;
-}
-
-export interface IRoomHistoryRequest extends Action {
-	rid: string;
+export type IRoomHistoryRequest = Action & { rid: string;
 	t: RoomType;
-	loaderId: string;
-}
+	loaderId: string; }
 
-export interface IRoomHistoryFinished extends Action {
-	loaderId: string;
-}
+export type IRoomHistoryFinished = Action & { loaderId: string; }
 
 export type TActionsRoom = TSubscribeRoom &
 	TUnsubscribeRoom &

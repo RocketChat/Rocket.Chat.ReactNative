@@ -1,12 +1,12 @@
-import { Text, ViewProps } from 'react-native';
+import { Text, type ViewProps } from 'react-native';
 import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
 import { useTheme } from '../../theme';
-import { IActionSheetItem, Item } from './Item';
-import { TActionSheetOptionsItem } from './Provider';
+import { type IActionSheetItem, Item } from './Item';
+import type { TActionSheetOptionsItem } from './Provider';
 import styles from './styles';
 import * as List from '../List';
 import Touch from '../Touch';
@@ -19,7 +19,8 @@ interface IBottomSheetContentProps {
 	onLayout: ViewProps['onLayout'];
 }
 
-const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
+const BottomSheetContent = React.memo(
+	function BottomSheetContent({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
 

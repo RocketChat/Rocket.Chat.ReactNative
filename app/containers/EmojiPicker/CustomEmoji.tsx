@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleProp, type ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import FastImage from 'react-native-blasted-image';
 
 import { useAppSelector } from '../../lib/hooks';
-import { ICustomEmoji } from '../../definitions';
+import type { ICustomEmoji } from '../../definitions';
 
 interface ICustomEmojiProps {
 	emoji: ICustomEmoji;
@@ -11,16 +11,15 @@ interface ICustomEmojiProps {
 }
 
 const CustomEmoji = React.memo(
-	({ emoji, style }: ICustomEmojiProps) => {
+	function CustomEmoji({ emoji, style }: ICustomEmojiProps) {
 		const baseUrl = useAppSelector(state => state.server.server);
 		return (
 			<FastImage
 				style={style}
 				source={{
-					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`,
-					priority: FastImage.priority.high
+					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`
 				}}
-				resizeMode={FastImage.resizeMode.contain}
+				resizeMode={'contain'}
 			/>
 		);
 	},

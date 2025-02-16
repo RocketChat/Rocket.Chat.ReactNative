@@ -12,7 +12,7 @@ import { useTheme } from '../../theme';
 import Button from '../Button';
 import sharedStyles from '../../views/Styles';
 import styles from './styles';
-import { ICredentials } from '../../definitions';
+import type { ICredentials } from '../../definitions';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import Toast from '../Toast';

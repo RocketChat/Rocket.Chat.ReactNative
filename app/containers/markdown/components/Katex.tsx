@@ -1,6 +1,6 @@
-import { KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
+import type { KaTeX as KaTeXProps } from '@rocket.chat/message-parser';
 import React from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 import Katex from 'react-native-katex';
 // import MathView, { MathText } from 'react-native-math-view';
 

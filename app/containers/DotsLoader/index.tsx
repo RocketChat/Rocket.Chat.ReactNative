@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleProp, View, ViewStyle, StyleSheet } from 'react-native';
+import { type StyleProp, View, type ViewStyle, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { useTheme } from '../../theme';
@@ -18,7 +18,7 @@ function Dot({ active }: { active: boolean }): JSX.Element {
 		scale.value = withTiming(active ? ANIMATION_SCALE : 1, {
 			duration: ANIMATION_DURATION
 		});
-	}, [active]);
+	}, [active, scale]);
 
 	const animatedStyle = useAnimatedStyle(() => ({
 		transform: [{ scale: scale.value }]

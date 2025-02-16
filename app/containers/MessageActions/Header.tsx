@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 
-import { TSupportedThemes, useTheme } from '../../theme';
+import { type TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
@@ -9,7 +9,7 @@ import { addFrequentlyUsed } from '../../lib/methods';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';
-import { IEmoji, TAnyMessageModel } from '../../definitions';
+import type { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
 
 export interface IHeader {
@@ -83,7 +83,8 @@ const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	</Touch>
 );
 
-const Header = React.memo(({ handleReaction, message, isMasterDetail }: IHeader) => {
+const Header = React.memo(
+	function Header({ handleReaction, message, isMasterDetail }: IHeader) {
 	const { width } = useWindowDimensions();
 	const { theme } = useTheme();
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji(true);

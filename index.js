@@ -1,6 +1,6 @@
 // @ts-check
 import 'react-native-gesture-handler';
-import 'react-native-console-time-polyfill';
+// import 'react-native-console-time-polyfill';
 import { registerRootComponent } from 'expo';
 import { Root } from './app/index';
 

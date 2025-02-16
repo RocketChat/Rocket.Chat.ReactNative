@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import { PlatformPressable } from '@react-navigation/elements';
 
-import { CustomIcon, TIconsName } from '../CustomIcon';
+import { CustomIcon, type TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 

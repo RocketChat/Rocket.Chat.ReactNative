@@ -1,4 +1,4 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "debug.javascript.unmapMissingSources": true
+    "debug.javascript.unmapMissingSources": true,
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

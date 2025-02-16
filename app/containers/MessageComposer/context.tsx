@@ -1,7 +1,7 @@
-import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
+import React, { createContext, type ReactElement, useContext, useMemo, useReducer } from 'react';
 
-import { IEmoji } from '../../definitions';
-import { IAutocompleteBase, TMicOrSend } from './interfaces';
+import type { IEmoji } from '../../definitions';
+import type { IAutocompleteBase, TMicOrSend } from './interfaces';
 import { animateNextTransition } from '../../lib/methods/helpers';
 
 type TMessageComposerContextApi = {

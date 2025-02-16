@@ -1,19 +1,13 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
-import { IRoles } from '../reducers/roles';
+import type { IRoles } from '../reducers/roles';
 import { ROLES } from './actionsTypes';
 
-export interface ISetRoles extends Action {
-	roles: IRoles;
-}
+export type ISetRoles = Action & { roles: IRoles; }
 
-export interface IUpdateRoles extends Action {
-	payload: { id: string; desc: string };
-}
+export type IUpdateRoles = Action & { payload: { id: string; desc: string }; }
 
-export interface IRemoveRoles extends Action {
-	payload: { id: string };
-}
+export type IRemoveRoles = Action & { payload: { id: string }; }
 
 export type IActionRoles = ISetRoles & IUpdateRoles & IRemoveRoles;
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
 import { ScrollView, View } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { type RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/elements';
 
@@ -20,12 +20,12 @@ import Avatar from '../../containers/Avatar';
 import AvatarPresentational from '../../containers/Avatar/Avatar';
 import Button from '../../containers/Button';
 import I18n from '../../i18n';
-import { ChatsStackParamList } from '../../stacks/types';
-import { IAvatar } from '../../definitions';
+import type { ChatsStackParamList } from '../../stacks/types';
+import type { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker, { type Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
@@ -85,14 +85,14 @@ const ChangeAvatarView = () => {
 			title: titleHeader || I18n.t('Avatar'),
 			headerLeft: () => (
 				<HeaderBackButton
-					labelVisible={false}
+					labelStyle={false}
 					onPress={() => navigation.goBack()}
 					tintColor={colors.fontDefault}
 					testID='header-back'
 				/>
 			)
 		});
-	}, [titleHeader, navigation]);
+	}, [titleHeader, navigation, colors.fontDefault]);
 
 	useEffect(() => {
 		navigation.addListener('beforeRemove', e => {
