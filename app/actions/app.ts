@@ -4,8 +4,7 @@ import { NetInfoStateType } from '@react-native-community/netinfo';
 import { RootEnum } from '../definitions';
 import { APP } from './actionsTypes';
 
-type IAppStart = Action & { root: RootEnum;
-	text?: string; }
+type IAppStart = Action & { root: RootEnum; text?: string; }
 
 type ISetMasterDetail = Action & { isMasterDetail: boolean; }
 

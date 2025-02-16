@@ -72,8 +72,7 @@ interface IListItemContent {
 	additionalAcessibilityLabelCheck?: boolean;
 }
 
-const Content = React.memo(
-	({
+const Content = React.memo(function Content({
 		title,
 		subtitle,
 		disabled,
@@ -90,8 +89,7 @@ const Content = React.memo(
 		styleTitle,
 		additionalAcessibilityLabel,
 		additionalAcessibilityLabelCheck
-	}: IListItemContent) => {
-		const { fontScale } = useDimensions();
+	}: IListItemContent) { const { fontScale } = useDimensions();
 
 		const handleAcessibilityLabel = useMemo(() => {
 			let label = '';
@@ -149,9 +147,7 @@ const Content = React.memo(
 					</View>
 				) : null}
 			</View>
-		);
-	}
-);
+		); });
 
 interface IListButtonPress extends IListItemButton {
 	onPress: Function;
@@ -180,8 +176,7 @@ interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButto
 	onPress?: Function;
 }
 
-const ListItem = React.memo(({ ...props }: IListItem) => {
-	const { theme } = useTheme();
+const ListItem = React.memo(function ListItem({ ...props }: IListItem) { const { theme } = useTheme();
 
 	if (props.onPress) {
 		const { onPress } = props;
@@ -191,8 +186,7 @@ const ListItem = React.memo(({ ...props }: IListItem) => {
 		<View style={{ backgroundColor: props.backgroundColor || themes[theme].surfaceRoom }}>
 			<Content {...props} theme={theme} />
 		</View>
-	);
-});
+	); });
 
 ListItem.displayName = 'List.Item';
 

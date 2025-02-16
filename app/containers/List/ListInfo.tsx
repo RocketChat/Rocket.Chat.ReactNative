@@ -24,14 +24,12 @@ interface IListInfo {
 	translateInfo?: boolean;
 }
 
-const ListInfo = React.memo(({ info, translateInfo = true }: IListInfo) => {
-	const { theme } = useTheme();
+const ListInfo = React.memo(function ListInfo({ info, translateInfo = true }: IListInfo) { const { theme } = useTheme();
 	return (
 		<View style={styles.container}>
 			<Text style={[styles.text, { color: themes[theme].fontHint }]}>{translateInfo ? I18n.t(info) : info}</Text>
 		</View>
-	);
-});
+	); });
 
 ListInfo.displayName = 'List.Info';
 

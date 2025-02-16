@@ -103,8 +103,7 @@ export interface INavigation {
 }
 
 const ModalStack = createNativeStackNavigator<ModalStackParamList & TNavigation>();
-const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
-	const { theme } = React.useContext(ThemeContext);
+const ModalStackNavigator = React.memo(function ModalStackNavigator({ navigation }: INavigation) { const { theme } = React.useContext(ThemeContext);
 	return (
 		<ModalContainer navigation={navigation} theme={theme}>
 			<ModalStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
@@ -201,8 +200,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='SupportedVersionsWarning' component={SupportedVersionsWarning} />
 			</ModalStack.Navigator>
 		</ModalContainer>
-	);
-});
+	); });
 
 // InsideStackNavigator
 const InsideStack = createNativeStackNavigator<MasterDetailInsideStackParamList & TNavigation>();

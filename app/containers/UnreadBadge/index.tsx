@@ -42,8 +42,7 @@ export interface IUnreadBadge {
 	hideMentionStatus?: boolean;
 }
 
-const UnreadBadge = React.memo(
-	({
+const UnreadBadge = React.memo(function UnreadBadge({
 		unread,
 		userMentions,
 		groupMentions,
@@ -54,8 +53,7 @@ const UnreadBadge = React.memo(
 		small,
 		hideMentionStatus,
 		hideUnreadStatus
-	}: IUnreadBadge) => {
-		const { theme } = useTheme();
+	}: IUnreadBadge) { const { theme } = useTheme();
 
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
@@ -108,8 +106,6 @@ const UnreadBadge = React.memo(
 					{text}
 				</Text>
 			</View>
-		);
-	}
-);
+		); });
 
 export default UnreadBadge;

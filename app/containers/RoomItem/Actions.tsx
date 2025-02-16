@@ -21,8 +21,7 @@ import I18n from '../../i18n';
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
 
-export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
-	const { colors } = useTheme();
+export const LeftActions = React.memo(function LeftActions({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) { const { colors } = useTheme();
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -52,11 +51,9 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 				</View>
 			</Animated.View>
 		</View>
-	);
-});
+	); });
 
-export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
-	const { colors } = useTheme();
+export const RightActions = React.memo(function RightActions({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) { const { colors } = useTheme();
 
 	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
@@ -157,5 +154,4 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 				</RectButton>
 			</Animated.View>
 		</View>
-	);
-});
+	); });

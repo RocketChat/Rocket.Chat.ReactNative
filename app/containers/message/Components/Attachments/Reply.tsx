@@ -4,12 +4,12 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-blasted-image';
 
-import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
+import type { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
 import openLink from '../../../../lib/methods/helpers/openLink';
-import { TSupportedThemes, useTheme } from '../../../../theme';
+import { type TSupportedThemes, useTheme } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
 import RCActivityIndicator from '../../../ActivityIndicator';
 import Markdown from '../../../markdown';
@@ -101,9 +101,7 @@ interface IMessageReply {
 	showAttachment?: (file: IAttachment) => void;
 }
 
-const Title = React.memo(
-	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
-		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+const Title = React.memo(function Title({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) { const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
@@ -114,9 +112,7 @@ const Title = React.memo(
 				{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
 				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
 			</View>
-		);
-	}
-);
+		); });
 
 const Description = React.memo(
 	({
@@ -159,7 +155,7 @@ const Description = React.memo(
 );
 
 const UrlImage = React.memo(
-	({ image }: { image?: string }) => {
+	function UrlImage({ image }: { image?: string }) {
 		const { baseUrl, user } = useContext(MessageContext);
 
 		if (!image) {

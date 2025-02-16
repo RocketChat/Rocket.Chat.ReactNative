@@ -2,13 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "jsx": "react-native",
-    "verbatimModuleSyntax": true,
-    "paths": {
-      "@/*": [
-        "./*"
-      ]
-    }
+    "verbatimModuleSyntax": true
   },
   "include": [
     "**/*.ts",

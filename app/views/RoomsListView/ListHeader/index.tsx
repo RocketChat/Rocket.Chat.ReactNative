@@ -18,9 +18,7 @@ interface IRoomListHeader {
 	user: IUser;
 }
 
-const ListHeader = React.memo(
-	({ searching, goEncryption, goQueue, queueSize, inquiryEnabled, encryptionBanner, user }: IRoomListHeader) => {
-		const { theme } = useTheme();
+const ListHeader = React.memo(function ListHeader({ searching, goEncryption, goQueue, queueSize, inquiryEnabled, encryptionBanner, user }: IRoomListHeader) { const { theme } = useTheme();
 
 		if (searching) {
 			return null;
@@ -53,8 +51,6 @@ const ListHeader = React.memo(
 					user={user}
 				/>
 			</>
-		);
-	}
-);
+		); });
 
 export default ListHeader;

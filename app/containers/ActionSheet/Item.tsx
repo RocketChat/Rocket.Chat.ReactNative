@@ -15,8 +15,7 @@ export interface IActionSheetItem {
 	hide(): void;
 }
 
-export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
-	const enabled = item?.enabled ?? true;
+export const Item = React.memo(function Item({ item, hide }: IActionSheetItem) { const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
 	const onPress = () => {
 		if (enabled) {
@@ -47,5 +46,4 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 				{item.right ? <View style={styles.rightContainer}>{item.right ? item.right() : null}</View> : null}
 			</Touch>
 		</View>
-	);
-});
+	); });

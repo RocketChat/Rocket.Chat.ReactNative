@@ -78,8 +78,7 @@ interface IRoomHeader {
 	rightButtonsWidth?: number;
 }
 
-const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
-	const { colors } = useTheme();
+const SubTitle = React.memo(function SubTitle({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) { const { colors } = useTheme();
 	const fontSize = getSubTitleSize(scale);
 	// typing
 	if (usersTyping.length) {
@@ -107,11 +106,9 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
-	return null;
-});
+	return null; });
 
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
-	const { colors } = useTheme();
+const HeaderTitle = React.memo(function HeaderTitle({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) { const { colors } = useTheme();
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
@@ -121,11 +118,9 @@ const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeade
 		);
 	}
 
-	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
-});
+	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />; });
 
-const Header = React.memo(
-	({
+const Header = React.memo(function Header({
 		title,
 		subtitle,
 		parentTitle,
@@ -144,8 +139,7 @@ const Header = React.memo(
 		sourceType,
 		disabled,
 		rightButtonsWidth = 0
-	}: IRoomHeader) => {
-		const { colors } = useTheme();
+	}: IRoomHeader) { const { colors } = useTheme();
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -213,8 +207,6 @@ const Header = React.memo(
 				</View>
 				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
 			</TouchableOpacity>
-		);
-	}
-);
+		); });
 
 export default Header;

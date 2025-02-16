@@ -28,8 +28,7 @@ interface IMessageReactions {
 	getCustomEmoji: TGetCustomEmoji;
 }
 
-const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
-	const { reactionInit } = useContext(MessageContext);
+const AddReaction = React.memo(function AddReaction({ theme }: { theme: TSupportedThemes }) { const { reactionInit } = useContext(MessageContext);
 	return (
 		<Touchable
 			onPress={reactionInit}
@@ -43,11 +42,9 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 				<CustomIcon name='reaction-add' size={21} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		</Touchable>
-	);
-});
+	); });
 
-const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
-	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
+const Reaction = React.memo(function Reaction({ reaction, getCustomEmoji, theme }: IMessageReaction) { const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 	return (
 		<Touchable
@@ -74,11 +71,9 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
 			</View>
 		</Touchable>
-	);
-});
+	); });
 
-const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) => {
-	const { theme } = useTheme();
+const Reactions = React.memo(function Reactions({ reactions, getCustomEmoji }: IMessageReactions) { const { theme } = useTheme();
 
 	if (!Array.isArray(reactions) || reactions.length === 0) {
 		return null;
@@ -90,8 +85,7 @@ const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) 
 			))}
 			<AddReaction theme={theme} />
 		</View>
-	);
-});
+	); });
 
 Reaction.displayName = 'MessageReaction';
 Reactions.displayName = 'MessageReactions';

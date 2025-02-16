@@ -13,8 +13,7 @@ interface IPasscodeDots {
 	length: number;
 }
 
-const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
-	const { colors } = useTheme();
+const Dots = React.memo(function Dots({ passcode, length }: IPasscodeDots) { const { colors } = useTheme();
 
 	return (
 		<View style={styles.dotsContainer}>
@@ -47,7 +46,6 @@ const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
 				);
 			})}
 		</View>
-	);
-});
+	); });
 
 export default Dots;

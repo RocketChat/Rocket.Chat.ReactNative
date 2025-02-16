@@ -24,8 +24,7 @@ interface IRoomHeaderContainerProps {
 	rightButtonsWidth?: number;
 }
 
-const RoomHeaderContainer = React.memo(
-	({
+const RoomHeaderContainer = React.memo(function RoomHeaderContainer({
 		isGroupChat,
 		onPress,
 		parentTitle,
@@ -41,8 +40,7 @@ const RoomHeaderContainer = React.memo(
 		visitor,
 		disabled,
 		rightButtonsWidth
-	}: IRoomHeaderContainerProps) => {
-		let subtitle: string | undefined;
+	}: IRoomHeaderContainerProps) { let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
 		const { width, height } = useDimensions();
@@ -93,8 +91,6 @@ const RoomHeaderContainer = React.memo(
 				disabled={disabled}
 				rightButtonsWidth={rightButtonsWidth}
 			/>
-		);
-	}
-);
+		); });
 
 export default RoomHeaderContainer;

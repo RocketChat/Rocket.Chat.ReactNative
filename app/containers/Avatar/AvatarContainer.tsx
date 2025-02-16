@@ -6,6 +6,7 @@ import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
 import type { IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
+import { createSelector } from 'reselect';
 
 const AvatarContainer = ({
 	style,
@@ -37,7 +38,7 @@ const AvatarContainer = ({
 		avatarExternalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string,
 		roomAvatarExternalProviderUrl: state.settings.Accounts_RoomAvatarExternalProviderUrl as string,
 		cdnPrefix: state.settings.CDN_PREFIX as string
-	}));
+	}), shallowEqual);
 	const blockUnauthenticatedAccess = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
 	) as boolean;

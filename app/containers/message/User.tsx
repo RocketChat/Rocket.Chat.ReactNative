@@ -64,8 +64,7 @@ interface IMessageUser {
 	isTranslated: boolean;
 }
 
-const User = React.memo(
-	({
+const User = React.memo(function User({
 		isHeader,
 		useRealName,
 		author,
@@ -78,8 +77,7 @@ const User = React.memo(
 		isEdited,
 		isTranslated,
 		...props
-	}: IMessageUser) => {
-		const { user } = useContext(MessageContext);
+	}: IMessageUser) { const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
 
 		if (isHeader) {
@@ -131,9 +129,7 @@ const User = React.memo(
 				</View>
 			);
 		}
-		return null;
-	}
-);
+		return null; });
 
 User.displayName = 'MessageUser';
 

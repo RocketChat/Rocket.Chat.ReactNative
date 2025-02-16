@@ -4,8 +4,7 @@ import { CustomIcon } from '../../../CustomIcon';
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
 
-const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
-	const { colors } = useTheme();
+const ReadReceipt = React.memo(function ReadReceipt({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) { const { colors } = useTheme();
 	if (isReadReceiptEnabled) {
 		return (
 			<CustomIcon
@@ -16,8 +15,7 @@ const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceip
 			/>
 		);
 	}
-	return null;
-});
+	return null; });
 ReadReceipt.displayName = 'MessageReadReceipt';
 
 export default ReadReceipt;

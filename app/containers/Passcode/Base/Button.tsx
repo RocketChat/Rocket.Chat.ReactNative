@@ -14,8 +14,7 @@ interface IPasscodeButton {
 	style?: StyleProp<ViewStyle>;
 }
 
-const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeButton) => {
-	const { colors } = useTheme();
+const Button = React.memo(function Button({ style, text, disabled, onPress, icon }: IPasscodeButton) { const { colors } = useTheme();
 
 	const press = () => onPress && onPress(text);
 
@@ -33,7 +32,6 @@ const Button = React.memo(({ style, text, disabled, onPress, icon }: IPasscodeBu
 				<Text style={[styles.buttonText, { color: colors.fontDefault }]}>{text}</Text>
 			)}
 		</Touch>
-	);
-});
+	); });
 
 export default Button;

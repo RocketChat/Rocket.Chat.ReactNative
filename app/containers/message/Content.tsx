@@ -8,13 +8,13 @@ import Markdown, { MarkdownPreview } from '../markdown';
 import User from './User';
 import { messageHaveAuthorName, getInfoMessage } from './utils';
 import MessageContext from './Context';
-import { IMessageContent } from './interfaces';
+import type { IMessageContent } from './interfaces';
 import { useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
-import { MessageTypesValues } from '../../definitions';
+import type { MessageTypesValues } from '../../definitions';
 
-const Content = React.memo(
-	(props: IMessageContent) => {
+const MessageContent = React.memo(
+	function MessageContent(props: IMessageContent) {
 		const { theme } = useTheme();
 		const { user, onLinkPress } = useContext(MessageContext);
 
@@ -105,6 +105,4 @@ const Content = React.memo(
 	}
 );
 
-Content.displayName = 'MessageContent';
-
-export default Content;
+export default MessageContent;

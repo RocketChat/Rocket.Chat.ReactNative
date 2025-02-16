@@ -135,7 +135,7 @@ const ActionSheet = React.memo(
 					opacity={colors.backdropOpacity}
 				/>
 			),
-			[]
+			[colors.backdropOpacity]
 		);
 
 		const bottomSheet = isTablet ? styles.bottomSheet : {};

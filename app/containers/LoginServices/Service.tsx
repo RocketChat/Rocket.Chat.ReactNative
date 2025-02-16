@@ -3,27 +3,29 @@ import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { TIconsName } from '../CustomIcon';
-import { IItemService, IOauthProvider } from './interfaces';
+import type { TIconsName } from '../CustomIcon';
+import type { IItemService, IOauthProvider } from './interfaces';
 import styles from './styles';
 import * as ServiceLogin from './serviceLogin';
 import ButtonService from './ButtonService';
 
-const Service = React.memo(
-	({
-		CAS_enabled,
-		CAS_login_url,
-		Gitlab_URL,
-		server,
-		service
-	}: {
+interface ServiceProps {
 		service: IItemService;
 		server: string;
 		Gitlab_URL: string;
 		CAS_enabled: boolean;
 		CAS_login_url: string;
 		storiesTestOnPress?: () => void;
-	}) => {
+	};
+
+const Service = React.memo(
+	function Service({
+		CAS_enabled,
+		CAS_login_url,
+		Gitlab_URL,
+		server,
+		service
+	}: ServiceProps) {
 		const { colors } = useTheme();
 		const onPress = useRef<any>();
 		const buttonText = useRef<React.ReactElement>();

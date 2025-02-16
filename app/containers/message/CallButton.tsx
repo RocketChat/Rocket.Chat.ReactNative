@@ -7,11 +7,10 @@ import styles from './styles';
 import I18n from '../../i18n';
 import { CustomIcon } from '../CustomIcon';
 import { themes } from '../../lib/constants';
-import { IMessageCallButton } from './interfaces';
+import type { IMessageCallButton } from './interfaces';
 import { useTheme } from '../../theme';
 
-const CallButton = React.memo(({ handleEnterCall }: IMessageCallButton) => {
-	const { theme } = useTheme();
+const CallButton = React.memo(function CallButton({ handleEnterCall }: IMessageCallButton) { const { theme } = useTheme();
 	return (
 		<View style={styles.buttonContainer}>
 			<Touchable
@@ -26,8 +25,7 @@ const CallButton = React.memo(({ handleEnterCall }: IMessageCallButton) => {
 				</>
 			</Touchable>
 		</View>
-	);
-});
+	); });
 
 CallButton.displayName = 'CallButton';
 

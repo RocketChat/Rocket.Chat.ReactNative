@@ -30,14 +30,12 @@ interface IServerAvatar {
 }
 
 // TODO: missing skeleton
-const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
-	const { colors } = useTheme();
+const ServerAvatar = React.memo(function ServerAvatar({ url, image }: IServerAvatar) { const { colors } = useTheme();
 
 	return (
 		<View style={styles.container}>
 			{image && <FastImage style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
 		</View>
-	);
-});
+	); });
 
 export default ServerAvatar;

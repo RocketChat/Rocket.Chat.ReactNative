@@ -6,8 +6,7 @@ import { capitalize } from '../../lib/methods/helpers/room';
 import { IUpdatedAtProps } from './interfaces';
 import { useTheme } from '../../theme';
 
-const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps) => {
-	const { colors } = useTheme();
+const UpdatedAt = React.memo(function UpdatedAt({ date, hideUnreadStatus, alert }: IUpdatedAtProps) { const { colors } = useTheme();
 
 	if (!date) {
 		return null;
@@ -31,7 +30,6 @@ const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps
 			numberOfLines={1}>
 			{capitalize(date)}
 		</Text>
-	);
-});
+	); });
 
 export default UpdatedAt;

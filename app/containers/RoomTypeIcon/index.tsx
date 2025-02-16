@@ -25,9 +25,7 @@ interface IRoomTypeIcon {
 	sourceType?: IOmnichannelSource;
 }
 
-const RoomTypeIcon = React.memo(
-	({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) => {
-		const { theme } = useTheme();
+const RoomTypeIcon = React.memo(function RoomTypeIcon({ userId, type, isGroupChat, status, style, teamMain, size = 16, sourceType }: IRoomTypeIcon) { const { theme } = useTheme();
 
 		if (!type) {
 			return null;
@@ -55,8 +53,6 @@ const RoomTypeIcon = React.memo(
 			icon = 'message';
 		}
 
-		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
-	}
-);
+		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />; });
 
 export default RoomTypeIcon;

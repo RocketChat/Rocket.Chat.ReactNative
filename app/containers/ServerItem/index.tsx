@@ -24,8 +24,7 @@ export interface IServerItem {
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
-	const { theme } = useTheme();
+const ServerItem = React.memo(function ServerItem({ item, onPress, onLongPress, hasCheck }: IServerItem) { const { theme } = useTheme();
 	return (
 		<Pressable
 			onPress={onPress}
@@ -60,7 +59,6 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 				{hasCheck ? <Check /> : null}
 			</View>
 		</Pressable>
-	);
-});
+	); });
 
 export default ServerItem;

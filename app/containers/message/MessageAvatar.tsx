@@ -6,8 +6,7 @@ import MessageContext from './Context';
 import { IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
 
-const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
-	const { user } = useContext(MessageContext);
+const MessageAvatar = React.memo(function MessageAvatar({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) { const { user } = useContext(MessageContext);
 	if (isHeader && author) {
 		const onPress = () =>
 			navToRoomInfo({
@@ -28,8 +27,7 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 			/>
 		);
 	}
-	return null;
-});
+	return null; });
 
 MessageAvatar.displayName = 'MessageAvatar';
 

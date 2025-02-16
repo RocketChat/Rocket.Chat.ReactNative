@@ -21,8 +21,7 @@ export const Drawer = ({ navigation, testID, onPress = () => navigation?.toggleD
 	);
 };
 
-export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
-	const { dispatch } = useNavigation();
+export const CloseModal = React.memo(function CloseModal({ testID, onPress, ...props }: IHeaderButtonCommon) { const { dispatch } = useNavigation();
 	return (
 		<Container left>
 			<Item
@@ -35,8 +34,7 @@ export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButt
 				{...props}
 			/>
 		</Container>
-	);
-});
+	); });
 
 export const CancelModal = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
 	<Container left>

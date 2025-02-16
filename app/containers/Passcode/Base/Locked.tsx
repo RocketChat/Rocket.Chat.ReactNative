@@ -20,8 +20,7 @@ interface IPasscodeLocked {
 	setStatus: Function;
 }
 
-const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
-	const calcTimeLeft = () => {
+const Timer = React.memo(function Timer({ time, setStatus }: IPasscodeTimer) { const calcTimeLeft = () => {
 		const diff = getDiff(time || 0);
 		if (diff > 0) {
 			return Math.floor((diff / 1000) % 60);
@@ -44,11 +43,9 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 		return null;
 	}
 
-	return <Subtitle text={I18n.t('Passcode_app_locked_subtitle', { timeLeft })} />;
-});
+	return <Subtitle text={I18n.t('Passcode_app_locked_subtitle', { timeLeft })} />; });
 
-const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
-	const [lockedUntil, setLockedUntil] = useState<Date | null>(null);
+const Locked = React.memo(function Locked({ setStatus }: IPasscodeLocked) { const [lockedUntil, setLockedUntil] = useState<Date | null>(null);
 	const { colors } = useTheme();
 
 	const readItemFromStorage = async () => {
@@ -66,7 +63,6 @@ const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
 			<Title text={I18n.t('Passcode_app_locked_title')} />
 			<Timer time={lockedUntil} setStatus={setStatus} />
 		</Grid>
-	);
-});
+	); });
 
 export default Locked;

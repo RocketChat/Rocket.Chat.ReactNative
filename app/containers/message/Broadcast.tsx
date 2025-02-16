@@ -8,11 +8,10 @@ import { BUTTON_HIT_SLOP } from './utils';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
-import { IMessageBroadcast } from './interfaces';
+import type { IMessageBroadcast } from './interfaces';
 import { useTheme } from '../../theme';
 
-const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
-	const { user, replyBroadcast } = useContext(MessageContext);
+const Broadcast = React.memo(function Broadcast({ author, broadcast }: IMessageBroadcast) { const { user, replyBroadcast } = useContext(MessageContext);
 	const { theme } = useTheme();
 	const isOwn = author?._id === user.id;
 
@@ -33,8 +32,7 @@ const Broadcast = React.memo(({ author, broadcast }: IMessageBroadcast) => {
 			</View>
 		);
 	}
-	return null;
-});
+	return null; });
 
 Broadcast.displayName = 'MessageBroadcast';
 

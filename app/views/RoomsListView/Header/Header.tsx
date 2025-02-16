@@ -47,8 +47,7 @@ interface IRoomHeader {
 	onPress: TouchableOpacityProps['onPress'];
 }
 
-const Header = React.memo(
-	({
+const Header = React.memo(function Header({
 		connecting,
 		connected,
 		isFetching,
@@ -58,8 +57,7 @@ const Header = React.memo(
 		width,
 		onSearchChangeText,
 		onPress
-	}: IRoomHeader) => {
-		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
+	}: IRoomHeader) { const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
 		const { width: windowWidth } = useWindowDimensions();
 
@@ -101,8 +99,6 @@ const Header = React.memo(
 					) : null}
 				</TouchableOpacity>
 			</View>
-		);
-	}
-);
+		); });
 
 export default Header;

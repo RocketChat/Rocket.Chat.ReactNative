@@ -63,8 +63,7 @@ interface IPreview {
 	length: number;
 }
 
-const Preview = React.memo(({ item, theme, length }: IPreview) => {
-	const type = item?.mime;
+const Preview = React.memo(function Preview({ item, theme, length }: IPreview) { const type = item?.mime;
 	const { width, height } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const headerHeight = useHeaderHeight();
@@ -123,7 +122,6 @@ const Preview = React.memo(({ item, theme, length }: IPreview) => {
 			height={calculatedHeight}
 			danger
 		/>
-	);
-});
+	); });
 
 export default Preview;

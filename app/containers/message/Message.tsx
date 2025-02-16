@@ -14,7 +14,7 @@ import Blocks from './Blocks';
 import Reactions from './Reactions';
 import Broadcast from './Broadcast';
 import Discussion from './Discussion';
-import Content from './Content';
+import MessageContent from './Content';
 import CallButton from './CallButton';
 import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
@@ -23,13 +23,12 @@ import RightIcons from './Components/RightIcons';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 
-const MessageInner = React.memo((props: IMessageInner) => {
-	if (props.isPreview) {
+const MessageInner = React.memo(function MessageInner(props: IMessageInner) { if (props.isPreview) {
 		return (
 			<>
 				<User {...props} />
 				<>
-					<Content {...props} />
+					<MessageContent {...props} />
 					<Attachments {...props} />
 				</>
 				<Urls {...props} />
@@ -50,7 +49,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
-				<Content {...props} isInfo />
+				<MessageContent {...props} isInfo />
 				<CallButton {...props} />
 			</>
 		);
@@ -71,7 +70,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		<>
 			<User {...props} />
 			<>
-				<Content {...props} />
+				<MessageContent {...props} />
 				<Attachments {...props} />
 			</>
 			<Urls {...props} />
@@ -79,12 +78,10 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			<Reactions {...props} />
 			<Broadcast {...props} />
 		</>
-	);
-});
+	); });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessage) => {
-	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
+const Message = React.memo(function Message(props: IMessage) { if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
@@ -92,7 +89,7 @@ const Message = React.memo((props: IMessage) => {
 				<View style={styles.flex}>
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
-						<Content {...props} />
+						<MessageContent {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
 								<Attachments {...props} />
@@ -125,12 +122,10 @@ const Message = React.memo((props: IMessage) => {
 				) : null}
 			</View>
 		</View>
-	);
-});
+	); });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
-	const { onPress, onLongPress } = useContext(MessageContext);
+const MessageTouchable = React.memo(function MessageTouchable(props: IMessageTouchable & IMessage) { const { onPress, onLongPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
 	let backgroundColor = undefined;
@@ -181,8 +176,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 				<Message {...props} />
 			</View>
 		</Touchable>
-	);
-});
+	); });
 
 MessageTouchable.displayName = 'MessageTouchable';
 

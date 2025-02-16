@@ -6,8 +6,7 @@ export enum ERingerSounds {
 	RINGTONE = 'ringtone'
 }
 
-const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
-	const sound = useRef(new Audio.Sound());
+const Ringer = React.memo(function Ringer({ ringer }: { ringer: ERingerSounds }) { const sound = useRef(new Audio.Sound());
 
 	useEffect(() => {
 		const loadAndPlay = async () => {
@@ -28,7 +27,6 @@ const Ringer = React.memo(({ ringer }: { ringer: ERingerSounds }) => {
 		};
 	}, []);
 
-	return null;
-});
+	return null; });
 
 export default Ringer;

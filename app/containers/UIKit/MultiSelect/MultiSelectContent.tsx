@@ -23,9 +23,7 @@ interface IMultiSelectContentProps {
 	selectedItems: IItemData[];
 }
 
-export const MultiSelectContent = React.memo(
-	({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) => {
-		const { colors } = useTheme();
+export const MultiSelectContent = React.memo(function MultiSelectContent({ onSearch, options, multiselect, select, onChange, setCurrentValue, onHide, selectedItems }: IMultiSelectContentProps) { const { colors } = useTheme();
 		const [selected, setSelected] = useState<IItemData[]>(Array.isArray(selectedItems) ? selectedItems : []);
 		const [items, setItems] = useState<IItemData[] | undefined>(options);
 		const { hideActionSheet } = useActionSheet();
@@ -82,6 +80,4 @@ export const MultiSelectContent = React.memo(
 				</View>
 				<Items items={items || []} selected={selected} onSelect={onSelect} />
 			</View>
-		);
-	}
-);
+		); });

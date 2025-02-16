@@ -72,8 +72,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
-	const { theme } = useTheme();
+const NotifierComponent = React.memo(function NotifierComponent({ notification, isMasterDetail }: INotifierComponent) { const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
@@ -130,8 +129,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				<CustomIcon name='close' size={20} style={styles.close} />
 			</Touchable>
 		</View>
-	);
-});
+	); });
 
 const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail

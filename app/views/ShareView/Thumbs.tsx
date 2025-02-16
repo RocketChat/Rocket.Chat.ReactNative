@@ -70,8 +70,7 @@ interface IThumbs extends Omit<IThumb, 'item'> {
 	attachments: IShareAttachment[];
 }
 
-const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
-	const type = item?.mime;
+const ThumbContent = React.memo(function ThumbContent({ item, theme }: IThumbContent) { const type = item?.mime;
 
 	if (type?.match(/image/)) {
 		return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].strokeLight }]} />;
@@ -89,8 +88,7 @@ const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 		<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
 			<CustomIcon name='attach' size={30} color={themes[theme].badgeBackgroundLevel2} />
 		</View>
-	);
-});
+	); });
 
 const ThumbButton: typeof React.Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 

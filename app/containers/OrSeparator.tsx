@@ -28,8 +28,7 @@ interface IOrSeparator {
 	theme: TSupportedThemes;
 }
 
-const OrSeparator = React.memo(({ theme }: IOrSeparator) => {
-	const line = { backgroundColor: themes[theme].strokeLight };
+const OrSeparator = React.memo(function OrSeparator({ theme }: IOrSeparator) { const line = { backgroundColor: themes[theme].strokeLight };
 	const text = { color: themes[theme].fontSecondaryInfo };
 	return (
 		<View style={styles.container}>
@@ -37,7 +36,6 @@ const OrSeparator = React.memo(({ theme }: IOrSeparator) => {
 			<Text style={[styles.text, text]}>{I18n.t('OR')}</Text>
 			<View style={[styles.line, line]} />
 		</View>
-	);
-});
+	); });
 
 export default OrSeparator;

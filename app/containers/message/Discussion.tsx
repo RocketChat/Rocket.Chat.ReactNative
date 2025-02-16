@@ -10,7 +10,7 @@ import { DISCUSSION } from './constants';
 import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import { formatDateThreads } from '../../lib/methods/helpers/room';
-import { IMessage } from '../../definitions';
+import type { IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 
 const Discussion = React.memo(

@@ -24,8 +24,7 @@ interface IListHeader {
 	numberOfLines?: number;
 }
 
-const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines = 1 }: IListHeader) => {
-	const { theme } = useTheme();
+const ListHeader = React.memo(function ListHeader({ title, translateTitle = true, numberOfLines = 1 }: IListHeader) { const { theme } = useTheme();
 
 	return (
 		<View style={styles.container}>
@@ -33,8 +32,7 @@ const ListHeader = React.memo(({ title, translateTitle = true, numberOfLines = 1
 				{translateTitle ? I18n.t(title) : title}
 			</Text>
 		</View>
-	);
-});
+	); });
 
 ListHeader.displayName = 'List.Header';
 

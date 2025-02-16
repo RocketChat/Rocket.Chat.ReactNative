@@ -6,8 +6,7 @@ import { CustomIcon, IconSet, type TIconsName } from '../CustomIcon';
 import type { IStatusComponentProps } from './definition';
 import { useUserStatusColor } from '../../lib/hooks/useUserStatusColor';
 
-const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) => {
-	const { colors } = useTheme();
+const Status = React.memo(function Status({ style, status = 'offline', size = 32, ...props }: IStatusComponentProps) { const { colors } = useTheme();
 	const userStatusColor = useUserStatusColor(status);
 
 	const name: TIconsName = `status-${status}`;
@@ -30,7 +29,6 @@ const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: I
 			name={iconName}
 			color={userStatusColor ?? colors.userPresenceOffline}
 		/>
-	);
-});
+	); });
 
 export default Status;

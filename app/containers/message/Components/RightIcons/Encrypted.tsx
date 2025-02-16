@@ -7,8 +7,7 @@ import MessageContext from '../../Context';
 import styles from '../../styles';
 import { E2E_MESSAGE_TYPE } from '../../../../lib/constants';
 
-const Encrypted = React.memo(({ type }: { type: string }) => {
-	const { onEncryptedPress } = useContext(MessageContext);
+const Encrypted = React.memo(function Encrypted({ type }: { type: string }) { const { onEncryptedPress } = useContext(MessageContext);
 
 	if (type !== E2E_MESSAGE_TYPE) {
 		return null;
@@ -18,7 +17,6 @@ const Encrypted = React.memo(({ type }: { type: string }) => {
 		<Touchable onPress={onEncryptedPress} style={styles.rightIcons} hitSlop={BUTTON_HIT_SLOP}>
 			<CustomIcon name='encrypted' size={16} />
 		</Touchable>
-	);
-});
+	); });
 
 export default Encrypted;

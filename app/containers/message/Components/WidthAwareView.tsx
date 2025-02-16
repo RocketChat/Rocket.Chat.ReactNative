@@ -1,4 +1,4 @@
-import { createContext, ReactElement, useState } from 'react';
+import { createContext, type ReactElement, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 export const WidthAwareContext = createContext(0);

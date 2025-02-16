@@ -40,8 +40,7 @@ interface IHeader {
 	thread: TThreadModel | string;
 }
 
-const Header = React.memo(({ room, thread }: IHeader) => {
-	const [title, setTitle] = useState('');
+const Header = React.memo(function Header({ room, thread }: IHeader) { const [title, setTitle] = useState('');
 	const { theme } = useTheme();
 	let type;
 	if ((thread as TThreadModel)?.id || typeof thread === 'string') {
@@ -109,7 +108,6 @@ const Header = React.memo(({ room, thread }: IHeader) => {
 				</Text>
 			</View>
 		</View>
-	);
-});
+	); });
 
 export default Header;

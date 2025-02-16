@@ -29,12 +29,10 @@ interface IDirectoryItem {
 	teamMain?: boolean;
 }
 
-const DirectoryItemLabel = React.memo(({ text, theme }: IDirectoryItemLabel) => {
-	if (!text) {
+const DirectoryItemLabel = React.memo(function DirectoryItemLabel({ text, theme }: IDirectoryItemLabel) { if (!text) {
 		return null;
 	}
-	return <Text style={[styles.directoryItemLabel, { color: themes[theme].fontSecondaryInfo }]}>{text}</Text>;
-});
+	return <Text style={[styles.directoryItemLabel, { color: themes[theme].fontSecondaryInfo }]}>{text}</Text>; });
 
 const DirectoryItem = ({
 	title,

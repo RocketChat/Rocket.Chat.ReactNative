@@ -4,7 +4,7 @@ import { Base64 } from 'js-base64';
 
 import { Services } from '../../lib/services';
 import Navigation from '../../lib/navigation/appNavigation';
-import { IItemService, IOpenOAuth, IServiceLogin } from './interfaces';
+import type { IItemService, IOpenOAuth, IServiceLogin } from './interfaces';
 import { random } from '../../lib/methods/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 

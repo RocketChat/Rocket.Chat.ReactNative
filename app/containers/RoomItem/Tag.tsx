@@ -10,8 +10,7 @@ interface ITag {
 	testID?: string;
 }
 
-const Tag = React.memo(({ name, testID }: ITag) => {
-	const { theme } = useTheme();
+const Tag = React.memo(function Tag({ name, testID }: ITag) { const { theme } = useTheme();
 
 	return (
 		<View style={[styles.tagContainer, { backgroundColor: themes[theme].strokeLight }]}>
@@ -19,7 +18,6 @@ const Tag = React.memo(({ name, testID }: ITag) => {
 				{name}
 			</Text>
 		</View>
-	);
-});
+	); });
 
 export default Tag;

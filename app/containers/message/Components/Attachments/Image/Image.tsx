@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, ViewStyle, Image } from 'react-native';
+import { View, type ViewStyle, Image } from 'react-native';
 import FastImage from 'react-native-blasted-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
 import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
-import { IMessageImage } from './definitions';
+import type { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
-	const { colors } = useTheme();
+export const MessageImage = React.memo(function MessageImage({ uri, status, encrypted = false }: IMessageImage) { const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
 	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
@@ -70,7 +69,6 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 				/>
 			) : null}
 		</>
-	);
-});
+	); });
 
 MessageImage.displayName = 'MessageImage';

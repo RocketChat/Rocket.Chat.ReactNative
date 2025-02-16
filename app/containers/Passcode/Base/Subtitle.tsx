@@ -10,8 +10,7 @@ interface IPasscodeSubtitle {
 	text: string;
 }
 
-const Subtitle = React.memo(({ text }: IPasscodeSubtitle) => {
-	const { theme } = useTheme();
+const Subtitle = React.memo(function Subtitle({ text }: IPasscodeSubtitle) { const { theme } = useTheme();
 
 	return (
 		<Row style={styles.row}>
@@ -19,7 +18,6 @@ const Subtitle = React.memo(({ text }: IPasscodeSubtitle) => {
 				<Text style={[styles.textSubtitle, { color: themes[theme].fontDanger }]}>{text}</Text>
 			</View>
 		</Row>
-	);
-});
+	); });
 
 export default Subtitle;

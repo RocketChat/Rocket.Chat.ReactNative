@@ -9,8 +9,7 @@ interface IPasscodeTitle {
 	text: string;
 }
 
-const Title = React.memo(({ text }: IPasscodeTitle) => {
-	const { colors } = useTheme();
+const Title = React.memo(function Title({ text }: IPasscodeTitle) { const { colors } = useTheme();
 
 	return (
 		<Row style={styles.row}>
@@ -18,7 +17,6 @@ const Title = React.memo(({ text }: IPasscodeTitle) => {
 				<Text style={[styles.textTitle, { color: colors.fontTitlesLabels }]}>{text}</Text>
 			</View>
 		</Row>
-	);
-});
+	); });
 
 export default Title;

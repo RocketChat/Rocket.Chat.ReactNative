@@ -40,8 +40,7 @@ interface IMultiSelect {
 	innerInputStyle?: object;
 }
 
-export const MultiSelect = React.memo(
-	({
+export const MultiSelect = React.memo(function MultiSelect({
 		options = [],
 		onChange,
 		placeholder = { text: 'Search' },
@@ -54,8 +53,7 @@ export const MultiSelect = React.memo(
 		disabled,
 		inputStyle,
 		innerInputStyle
-	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) => {
-		const { colors } = useTheme();
+	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) { const { colors } = useTheme();
 		const [selected, select] = useState<IItemData[]>(Array.isArray(values) ? values : []);
 		const [currentValue, setCurrentValue] = useState('');
 
@@ -137,6 +135,4 @@ export const MultiSelect = React.memo(
 			);
 		}
 
-		return <>{button}</>;
-	}
-);
+		return <>{button}</>; });
