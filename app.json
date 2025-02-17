@@ -13,16 +13,24 @@
       "ios",
       "android"
     ],
-    "experiments": {"tsconfigPaths": true},
+    "experiments": {
+      "tsconfigPaths": true
+    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "chat.rocket.reactnative",
       "googleServicesFile": "./GoogleService-Info.plist",
-      "associatedDomains": ["applinks:go.rocket.chat"],
+      "associatedDomains": [
+        "applinks:go.rocket.chat"
+      ],
       "usesAppleSignIn": true,
       "entitlements": {
-        "com.apple.security.application-groups": ["group.ios.chat.rocket"],
-        "keychain-access-groups": ["$(AppIdentifierPrefix)chat.rocket.reactnative"]
+        "com.apple.security.application-groups": [
+          "group.ios.chat.rocket"
+        ],
+        "keychain-access-groups": [
+          "$(AppIdentifierPrefix)chat.rocket.reactnative"
+        ]
       }
     },
     "android": {
@@ -54,7 +62,9 @@
       ],
       "expo-secure-store",
       "@react-native-firebase/app",
-      "@react-native-firebase/crashlytics"
+      "@react-native-firebase/crashlytics",
+      "expo-asset",
+      ["expo-font", { "fonts": ["./assets/fonts/custom.ttf", "./assets/fonts/SpaceMono-Regular.ttf"] }]
     ],
     "extra": {
       "bugsnag": {

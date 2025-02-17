@@ -14,8 +14,8 @@ import Touch from '../../containers/Touch';
 import { replyBroadcast } from '../../actions/messages';
 import database from '../../lib/database';
 import Message from '../../containers/message';
-import MessageActions, { IMessageActions } from '../../containers/MessageActions';
-import MessageErrorActions, { IMessageErrorActions } from '../../containers/MessageErrorActions';
+import MessageActions, { type IMessageActions } from '../../containers/MessageActions';
+import MessageErrorActions, { type IMessageErrorActions } from '../../containers/MessageErrorActions';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
@@ -44,23 +44,23 @@ import Banner from './Banner';
 import RightButtons from './RightButtons';
 import LeftButtons from './LeftButtons';
 import styles from './styles';
-import JoinCode, { IJoinCode } from './JoinCode';
+import JoinCode, { type IJoinCode } from './JoinCode';
 import UploadProgress from './UploadProgress';
 import ReactionPicker from './ReactionPicker';
 import List from './List';
 import {
-	IApplicationState,
-	IAttachment,
-	IMessage,
-	IOmnichannelSource,
-	ISubscription,
-	IVisitor,
+	type IApplicationState,
+	type IAttachment,
+	type IMessage,
+	type IOmnichannelSource,
+	type ISubscription,
+	type IVisitor,
 	SubscriptionType,
-	TAnyMessageModel,
-	TSubscriptionModel,
-	IEmoji,
-	TGetCustomEmoji,
-	RoomType
+	type TAnyMessageModel,
+	type TSubscriptionModel,
+	type IEmoji,
+	type TGetCustomEmoji,
+	type RoomType
 } from '../../definitions';
 import {
 	E2E_MESSAGE_TYPE,
@@ -70,7 +70,7 @@ import {
 	themes,
 	NOTIFICATION_IN_APP_VIBRATION
 } from '../../lib/constants';
-import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
+import type { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import {
 	callJitsi,
 	loadSurroundingMessages,
@@ -90,17 +90,17 @@ import {
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import { withActionSheet } from '../../containers/ActionSheet';
-import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
-import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
+import { goRoom, type TGoRoomItem } from '../../lib/methods/helpers/goRoom';
+import { type IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { RoomContext } from './context';
 import AudioManager from '../../lib/methods/AudioManager';
-import { IListContainerRef, TListRef } from './List/definitions';
+import type  { IListContainerRef, TListRef } from './List/definitions';
 import { getMessageById } from '../../lib/database/services/Message';
 import { getThreadById } from '../../lib/database/services/Thread';
 import { hasE2EEWarning, isE2EEDisabledEncryptedRoom, isMissingRoomE2EEKey } from '../../lib/encryption/utils';
 import { clearInAppFeedback, removeInAppFeedback } from '../../actions/inAppFeedback';
 import UserPreferences from '../../lib/methods/userPreferences';
-import { IRoomViewProps, IRoomViewState } from './definitions';
+import type { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
 

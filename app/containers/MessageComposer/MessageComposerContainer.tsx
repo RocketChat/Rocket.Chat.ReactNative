@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 
 import { MessageComposerProvider } from './context';
 import type { IMessageComposerContainerProps, IMessageComposerRef } from './interfaces';
@@ -9,6 +9,5 @@ export const MessageComposerContainer = forwardRef<IMessageComposerRef, IMessage
 		return <MessageComposerProvider>
 			<MessageComposer forwardedRef={ref}>{children}</MessageComposer>
 		</MessageComposerProvider>
-	
 	}
 );

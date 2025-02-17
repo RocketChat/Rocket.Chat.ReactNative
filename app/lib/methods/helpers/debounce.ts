@@ -1,11 +1,9 @@
-import { useDebouncedCallback, Options } from 'use-debounce';
+import { useDebouncedCallback, type Options } from 'use-debounce';
 
-export function debounce(func: Function, wait?: number, immediate?: boolean) {
+export function debounce<F extends Function>(func: F, wait?: number, immediate?: boolean) {
 	let timeout: ReturnType<typeof setTimeout> | null;
-	function _debounce(...args: any[]) {
-		// @ts-ignore
-		// eslint-disable-next-line @typescript-eslint/no-this-alias
-		const context = this;
+	function _debounce(this: ThisParameterType<F>, ...args: unknown[]) {
+		const context: ThisParameterType<F> = this;
 		const later = function __debounce() {
 			timeout = null;
 			if (!immediate) {
@@ -14,7 +12,6 @@ export function debounce(func: Function, wait?: number, immediate?: boolean) {
 		};
 		const callNow = immediate && !timeout;
 		clearTimeout(timeout!);
-		// @ts-ignore
 		timeout = setTimeout(later, wait);
 		if (callNow) {
 			func.apply(context, args);

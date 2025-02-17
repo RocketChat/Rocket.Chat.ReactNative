@@ -1,12 +1,13 @@
-import firebaseAnalytics from '@react-native-firebase/analytics';
-
+import { getAnalytics } from '@react-native-firebase/analytics';
+import { getCrashlytics } from '@react-native-firebase/crashlytics';
 import { isFDroidBuild } from '../../../constants/environment';
 import events from './events';
-import type { Breadcrumb } from '@bugsnag/expo';
 
-const analytics = firebaseAnalytics || '';
-let bugsnag: typeof import('@bugsnag/expo').default | undefined;
-let crashlytics: any;
+import type { default as Bugsnag } from '@bugsnag/expo';
+
+const analytics = getAnalytics();
+let bugsnag:  typeof Bugsnag | null = null;
+const crashlytics = getCrashlytics();
 let reportCrashErrors = true;
 let reportAnalyticsEvents = true;
 
@@ -19,18 +20,16 @@ if (!isFDroidBuild) {
 		onBreadcrumb() {
 			return reportAnalyticsEvents;
 		},
-		onError(error: { breadcrumbs: Breadcrumb[] }) {
+		onError(error) {
 			if (!reportAnalyticsEvents) {
 				error.breadcrumbs = [];
 			}
 			return reportCrashErrors;
 		}
 	});
-	crashlytics = require('@react-native-firebase/crashlytics').default;
 }
 
-export { analytics };
-// export const loggerConfig = bugsnag?.config;
+// export { analytics };
 export { events };
 
 let metadata = {};
@@ -44,7 +43,7 @@ export const logServerVersion = (serverVersion: string): void => {
 export const logEvent = (eventName: string, payload?: { [key: string]: any }): void => {
 	try {
 		if (!isFDroidBuild) {
-			analytics().logEvent(eventName, payload);
+			analytics.logEvent(eventName, payload);
 			bugsnag?.leaveBreadcrumb(eventName, payload);
 		}
 	} catch {
@@ -54,28 +53,28 @@ export const logEvent = (eventName: string, payload?: { [key: string]: any }): v
 
 export const setCurrentScreen = (currentScreen: string): void => {
 	if (!isFDroidBuild) {
-		analytics().logScreenView({ screen_class: currentScreen, screen_name: currentScreen });
+		analytics.logScreenView({ screen_class: currentScreen, screen_name: currentScreen });
 		bugsnag?.leaveBreadcrumb(currentScreen, { type: 'navigation' });
 	}
 };
 
 export const toggleCrashErrorsReport = (value: boolean): boolean => {
-	crashlytics().setCrashlyticsCollectionEnabled(value);
+	crashlytics.setCrashlyticsCollectionEnabled(value);
 	return (reportCrashErrors = value);
 };
 
 export const toggleAnalyticsEventsReport = (value: boolean): boolean => {
-	analytics().setAnalyticsCollectionEnabled(value);
+	analytics.setAnalyticsCollectionEnabled(value);
 	return (reportAnalyticsEvents = value);
 };
 
-export default (e: any): void => {
+export default function log(e: unknown): void {
 	if (e instanceof Error && bugsnag && e.message !== 'Aborted' && !__DEV__) {
-		bugsnag.notify(e, (event: { addMetadata: (arg0: string, arg1: {}) => void }) => {
+		bugsnag.notify(e, (event) => {
 			event.addMetadata('details', { ...metadata });
 		});
 		if (!isFDroidBuild) {
-			crashlytics().recordError(e);
+			crashlytics.recordError(e);
 		}
 	} else {
 		console.error(e);

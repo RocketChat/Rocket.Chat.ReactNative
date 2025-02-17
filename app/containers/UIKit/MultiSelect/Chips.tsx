@@ -6,7 +6,7 @@ import FastImage from '@d11/react-native-fast-image';
 import { textParser } from '../utils';
 import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
-import type { IItemData } from './index';
+import type { IItemData } from '.';
 import { useTheme } from '../../../theme';
 
 interface IChip {

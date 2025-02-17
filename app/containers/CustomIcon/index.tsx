@@ -1,12 +1,13 @@
 import React from 'react';
 import createIconSetFromIcoMoon from '@expo/vector-icons/createIconSetFromIcoMoon';
-import icoMoonConfig from './selection.json';
+// import type { IconProps } from '@expo/vector-icons';
 
 import { mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
 import type { IconProps } from '@expo/vector-icons/build/createIconSet';
 
-export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom.ttf');
+
+export const IconSet = createIconSetFromIcoMoon(require('./selection.json'), 'custom', 'custom.ttf');
 
 export type TIconsName = keyof typeof mappedIcons;
 

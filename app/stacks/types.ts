@@ -1,6 +1,6 @@
-import { NavigatorScreenParams } from '@react-navigation/core';
+import type { NavigatorScreenParams } from '@react-navigation/core';
 
-import {
+import type {
 	IAttachment,
 	ICannedResponse,
 	ILivechatDepartment,
@@ -16,8 +16,8 @@ import {
 	TSubscriptionModel,
 	TThreadModel
 } from '../definitions';
-import { ModalStackParamList } from './MasterDetailStack/types';
-import { TNavigation } from './stackType';
+import type { ModalStackParamList } from './MasterDetailStack/types';
+import type { TNavigation } from './stackType';
 
 export type ChatsStackParamList = {
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList & TNavigation>;

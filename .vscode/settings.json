@@ -1,4 +1,3 @@
 {
     "debug.javascript.unmapMissingSources": true,
-    "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }

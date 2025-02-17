@@ -2,7 +2,7 @@
 import 'react-native-gesture-handler';
 // import 'react-native-console-time-polyfill';
 import { registerRootComponent } from 'expo';
-import { Root } from './app/index';
+import Root from './app/index';
 
 // import { name as appName, share as shareName } from './app.json';
 // import { isFDroidBuild } from './app/lib/constants';

@@ -31,7 +31,8 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator<StackParamList>();
-const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
+const App = memo(
+	function App({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) {
 	const { theme } = useContext(ThemeContext);
 	useEffect(() => {
 		if (root) {

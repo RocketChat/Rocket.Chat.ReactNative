@@ -6,14 +6,15 @@ import protectedFunction from '../lib/methods/helpers/protectedFunction';
 import { useActionSheet } from './ActionSheet';
 import I18n from '../i18n';
 import log from '../lib/methods/helpers/log';
-import { TMessageModel } from '../definitions';
+import type { TMessageModel } from '../definitions';
 import { resendMessage } from '../lib/methods';
 
 export interface IMessageErrorActions {
 	showMessageErrorActions: (message: TMessageModel) => void;
 }
 
-const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(({ tmid }, ref) => {
+const MessageErrorActions = forwardRef<IMessageErrorActions, { tmid?: string }>(
+	function MessageErrorActions({ tmid }, ref) {
 	const { showActionSheet } = useActionSheet();
 
 	const handleResend = protectedFunction(async (message: TMessageModel) => {

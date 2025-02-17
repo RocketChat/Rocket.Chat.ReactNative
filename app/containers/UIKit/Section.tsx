@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import { themes } from '../../lib/constants';
-import { IAccessoryComponent, IFields, ISection } from './interfaces';
+import type { IAccessoryComponent, IFields, ISection } from './interfaces';
 import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({

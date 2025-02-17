@@ -5,7 +5,7 @@ import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../lib/methods/helpers';
 import I18n from '../i18n';
-import { TSupportedThemes } from '../theme';
+import type { TSupportedThemes } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {

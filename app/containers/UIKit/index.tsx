@@ -214,7 +214,7 @@ class ModalParser extends UiKitParserModal<React.ReactElement> {
 export const messageParser = new MessageParser();
 export const modalParser = new ModalParser();
 
-export const UiKitMessage = uiKitMessage(messageParser, { engine: 'rocket.chat' });
-export const UiKitModal = uiKitModal(modalParser);
+export const UiKitMessage = uiKitMessage(messageParser, { engine: 'rocket.chat' }) as any;
+export const UiKitModal = uiKitModal(modalParser) as any;
 
 export const UiKitComponent = ({ render, blocks }: any) => render(blocks);

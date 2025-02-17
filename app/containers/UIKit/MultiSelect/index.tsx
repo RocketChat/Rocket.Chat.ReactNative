@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Text, TextStyle } from 'react-native';
+import { Text, type TextStyle } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
 import Button from '../../Button';
 import { useTheme } from '../../../theme';
-import { IText } from '../interfaces';
+import type { IText } from '../interfaces';
 import Chips from './Chips';
 import Input from './Input';
 import styles from './styles';
@@ -40,7 +40,8 @@ interface IMultiSelect {
 	innerInputStyle?: object;
 }
 
-export const MultiSelect = React.memo(function MultiSelect({
+export const MultiSelect = React.memo(
+	({
 		options = [],
 		onChange,
 		placeholder = { text: 'Search' },
@@ -53,7 +54,8 @@ export const MultiSelect = React.memo(function MultiSelect({
 		disabled,
 		inputStyle,
 		innerInputStyle
-	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) { const { colors } = useTheme();
+	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) => {
+		const { colors } = useTheme();
 		const [selected, select] = useState<IItemData[]>(Array.isArray(values) ? values : []);
 		const [currentValue, setCurrentValue] = useState('');
 
@@ -135,4 +137,6 @@ export const MultiSelect = React.memo(function MultiSelect({
 			);
 		}
 
-		return <>{button}</>; });
+		return <>{button}</>;
+	}
+);

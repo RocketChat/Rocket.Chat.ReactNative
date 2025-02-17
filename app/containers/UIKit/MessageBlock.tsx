@@ -1,24 +1,22 @@
-import React, { type ContextType } from 'react';
+import React from 'react';
 
 import { UiKitMessage, UiKitModal } from './index';
-import { KitContext, type IKitContext } from './utils';
+import { KitContext } from './utils';
 
-export const messageBlockWithContext = (context: ContextType<typeof KitContext>) => function MessageBlockWithContext(props: { blocks: { type: string }[] } & Partial<IKitContext>) {
-	return (
+export const messageBlockWithContext = (context: any) => (props: any) =>
+	(
 		<KitContext.Provider value={context}>
 			<MessageBlock {...props} />
 		</KitContext.Provider>
 	);
-}
 
-const MessageBlock = ({ blocks }: { blocks: { type: string }[] }) => UiKitMessage(blocks);
+const MessageBlock = ({ blocks }: any) => UiKitMessage(blocks);
 
-export const modalBlockWithContext = (context: ContextType<typeof KitContext>) => function ModalBlockWithContext(props: { blocks: { type: string }[] } & Partial<IKitContext>) {
-	return (
-		<KitContext.Provider value={{ ...context, ...props }}>
-			<ModalBlock {...props} />
+export const modalBlockWithContext = (context: any) => (data: any) =>
+	(
+		<KitContext.Provider value={{ ...context, ...data }}>
+			<ModalBlock {...data} />
 		</KitContext.Provider>
 	);
-}
 
-const ModalBlock = ({ blocks }: { blocks: { type: string }[] }) => UiKitModal(blocks);
+const ModalBlock = ({ blocks }: any) => UiKitModal(blocks);
