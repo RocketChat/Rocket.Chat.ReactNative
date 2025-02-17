@@ -80,7 +80,7 @@ export const MessageComposer = ({
 	useFocusEffect(
 		useCallback(() => {
 			trackingViewRef.current?.resetTracking?.();
-		}, [trackingViewRef])
+		}, [recordingAudio])
 	);
 
 	useImperativeHandle(forwardedRef, () => ({
@@ -234,18 +234,15 @@ export const MessageComposer = ({
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<Keyboard.KeyboardAccessoryView
-				ref={(ref) => ref && (trackingViewRef.current = ref.trackingViewRef)}
+				ref={(ref) => (trackingViewRef.current = ref?.trackingViewRef)}
 				renderContent={renderContent}
-				kbInputRef={composerInputRef}	
+				kbInputRef={composerInputRef}
 				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : undefined}
 				kbInitialProps={{ theme }}
 				onKeyboardResigned={onKeyboardResigned}
 				onItemSelected={onKeyboardItemSelected}
-				// trackInteractive
-				requiresSameParentToManageScrollView
 				addBottomView
 				bottomViewColor={backgroundColor}
-				// iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				scrollBehavior={Keyboard.KeyboardAccessoryView.scrollBehaviors.FIXED_OFFSET}
 				onHeightChanged={onHeightChanged}
 			/>

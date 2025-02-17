@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
-import type { IAutocompleteItemProps, TAutocompleteItem } from '../../interfaces';
+import { IAutocompleteItemProps, TAutocompleteItem } from '../../interfaces';
 import { AutocompleteUserRoom } from './AutocompleteUserRoom';
 import { AutocompleteEmoji } from './AutocompleteEmoji';
 import { AutocompleteSlashCommand } from './AutocompleteSlashCommand';

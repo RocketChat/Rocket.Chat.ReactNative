@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { InteractionManager, Text, View } from 'react-native';
 import isEmpty from 'lodash/isEmpty';
 import { sha256 } from 'js-sha256';
@@ -58,7 +58,7 @@ const methods: IMethods = {
 	}
 };
 
-const TwoFactor = React.memo(() => {
+const TwoFactor = memo(() => {
 	const { colors } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => ({
 		isMasterDetail: state.app.isMasterDetail as boolean
@@ -176,5 +176,7 @@ const TwoFactor = React.memo(() => {
 		</Modal>
 	);
 });
+
+TwoFactor.displayName = 'TwoFactor';
 
 export default TwoFactor;

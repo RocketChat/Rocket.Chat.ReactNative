@@ -1,18 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Keyboard } from 'react-native-ui-lib';
+import { KeyboardRegistry } from 'react-native-ui-lib/keyboard';
 import { Provider } from 'react-redux';
 
 import store from '../../../lib/store';
 import EmojiPicker from '../../EmojiPicker';
-import { ThemeContext, type TSupportedThemes } from '../../../theme';
+import { ThemeContext, TSupportedThemes } from '../../../theme';
 import { EventTypes } from '../../EmojiPicker/interfaces';
-import type { IEmoji } from '../../../definitions';
+import { IEmoji } from '../../../definitions';
 import { colors } from '../../../lib/constants';
 
 const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	const onItemClicked = (eventType: EventTypes, emoji?: IEmoji) => {
-		Keyboard.KeyboardRegistry.onItemSelected('EmojiKeyboard', { eventType, emoji });
+		KeyboardRegistry.onItemSelected('EmojiKeyboard', { eventType, emoji });
 	};
 
 	return (
@@ -30,4 +30,4 @@ const EmojiKeyboard = ({ theme }: { theme: TSupportedThemes }) => {
 	);
 };
 
-Keyboard.KeyboardRegistry.registerKeyboard('EmojiKeyboard', () => EmojiKeyboard);
+KeyboardRegistry.registerKeyboard('EmojiKeyboard', () => EmojiKeyboard);

@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
-import { type FontVariant, Text } from 'react-native';
+import { FontVariant, Text } from 'react-native';
 import { Audio } from 'expo-av';
 
 import sharedStyles from '../../../../views/Styles';
@@ -10,8 +10,7 @@ export interface IDurationRef {
 	onRecordingStatusUpdate: (status: Audio.RecordingStatus) => void;
 }
 
-export const Duration = forwardRef<IDurationRef>(
-	function Duration(_, ref) {
+export const Duration = forwardRef<IDurationRef>((_, ref) => {
 	const [styles] = useStyle();
 	const [duration, setDuration] = React.useState('00:00');
 

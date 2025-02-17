@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import type { IAutocompleteSlashCommand } from '../../interfaces';
+import { IAutocompleteSlashCommand } from '../../interfaces';
 import I18n from '../../../../i18n';
 import { useStyle } from './styles';
 

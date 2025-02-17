@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { BaseButton } from './BaseButton';
-import { type TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
+import { TActionSheetOptionsItem, useActionSheet } from '../../../ActionSheet';
 import { MessageInnerContext } from '../../context';
 import I18n from '../../../../i18n';
 import Navigation from '../../../../lib/navigation/appNavigation';

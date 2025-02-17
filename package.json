@@ -6,15 +6,20 @@
     "start": "expo start --dev-client --clear",
     "clean": "expo prebuild --clean",
     "xcode": "open ios/RocketChatRN.xcworkspace",
-    "devtools": "react-devtools",
+    "devtools": "pnpm --allow-build=electron dlx react-devtools",
     "android": "expo run:android",
     "ios": "expo run:ios",
     "test": "jest --watchAll",
     "lint": "expo lint",
+    "nuke": "rm -rf ./node_modules && rm -rf ./ios && rm -rf ./android",
     "storybook-generate": "sb-rn-get-stories --config-path=./.storybook"
   },
   "jest": {
     "preset": "jest-expo"
+  },
+  "packageManager": "pnpm@10.4.1",
+  "engines": {
+    "node": ">=22.14.0"
   },
   "dependencies": {
     "@bugsnag/expo": "^52.0.0",
@@ -167,7 +172,6 @@
     "eslint-config-expo": "~8.0.1",
     "jest": "^29.2.1",
     "jest-expo": "~52.0.4",
-    "react-devtools": "6.1.1",
     "react-test-renderer": "18.3.1",
     "typescript": "^5.3.3"
   },

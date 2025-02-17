@@ -3,7 +3,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import I18n from '../../../../i18n';
-import { CustomIcon, type TIconsName } from '../../../CustomIcon';
+import { CustomIcon, TIconsName } from '../../../CustomIcon';
 
 export interface IBaseButton {
 	testID: string;
