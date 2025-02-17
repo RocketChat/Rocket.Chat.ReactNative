@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, type NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { ThemeContext } from '../../theme';
@@ -66,19 +66,20 @@ import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
 import DiscussionsView from '../../views/DiscussionsView';
 import { ModalContainer } from './ModalContainer';
-import {
+import type {
 	MasterDetailChatsStackParamList,
 	MasterDetailDrawerParamList,
 	MasterDetailInsideStackParamList,
 	ModalStackParamList
 } from './types';
 import { isIOS } from '../../lib/methods/helpers';
-import { TNavigation } from '../stackType';
+import type { TNavigation } from '../stackType';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<MasterDetailChatsStackParamList>();
-const ChatsStackNavigator = React.memo(() => {
+const ChatsStackNavigator = React.memo(
+	function ChatsStackNavigator() {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
@@ -226,7 +227,6 @@ const InsideStackNavigator = React.memo(() => {
 					animation: isIOS ? 'default' : 'none'
 				}}
 			/>
-			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 		</InsideStack.Navigator>
 	);

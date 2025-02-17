@@ -6,7 +6,7 @@ import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
-import { IMessageThread } from './interfaces';
+import type { IMessageThread } from './interfaces';
 import { useTheme } from '../../theme';
 
 const Thread = React.memo(

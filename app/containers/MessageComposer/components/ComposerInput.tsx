@@ -1,11 +1,11 @@
 import React, { forwardRef, memo, useCallback, useEffect, useImperativeHandle } from 'react';
-import { TextInput, StyleSheet, TextInputProps, InteractionManager } from 'react-native';
+import { TextInput, StyleSheet, type TextInputProps, InteractionManager } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
-import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
+import { type RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import I18n from '../../../i18n';
-import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
+import type { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
 import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useSubscription, useAutoSaveDraft } from '../hooks';
@@ -29,7 +29,7 @@ import { generateTriggerId } from '../../../lib/methods';
 import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector, usePrevious } from '../../../lib/hooks';
-import { ChatsStackParamList } from '../../../stacks/types';
+import type { ChatsStackParamList } from '../../../stacks/types';
 import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };

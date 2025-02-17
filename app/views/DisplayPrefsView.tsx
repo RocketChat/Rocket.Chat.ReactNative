@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
-import { RadioButton } from '../containers/RadioButton';
+import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';

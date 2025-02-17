@@ -6,7 +6,7 @@ import styles from './styles';
 import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
-import { IMessageRepliedThread } from './interfaces';
+import type { IMessageRepliedThread } from './interfaces';
 import { useTheme } from '../../theme';
 
 const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
@@ -17,7 +17,7 @@ const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncry
 		if (!msg) {
 			fetch();
 		}
-	}, []);
+	});
 
 	if (!tmid || !isHeader) {
 		return null;

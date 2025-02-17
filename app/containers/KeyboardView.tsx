@@ -1,5 +1,5 @@
 import React from 'react';
-import { KeyboardAwareScrollView, type KeyboardAwareScrollViewProps } from 'react-native-keyboard-controller';
+import { KeyboardAwareScrollView, type KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
 
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 
@@ -16,7 +16,7 @@ const KeyboardView = ({ style, contentContainerStyle, scrollEnabled, keyboardVer
 		contentContainerStyle={contentContainerStyle}
 		scrollEnabled={scrollEnabled}
 		alwaysBounceVertical={false}
-		bottomOffset={keyboardVerticalOffset}>
+		extraHeight={keyboardVerticalOffset}>
 		{children}
 	</KeyboardAwareScrollView>
 );

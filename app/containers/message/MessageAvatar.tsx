@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
-import { IMessageAvatar } from './interfaces';
+import type { IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
 
 const MessageAvatar = React.memo(function MessageAvatar({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) { const { user } = useContext(MessageContext);

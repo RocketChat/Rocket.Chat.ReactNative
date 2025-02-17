@@ -1882,7 +1882,7 @@ PODS:
     - React-logger (= 0.77.1)
     - React-perflogger (= 0.77.1)
     - React-utils (= 0.77.1)
-  - ReactNativeUiLib (3.0.4):
+  - ReactNativeUiLib (4.5.1):
     - React
   - RNBootSplash (6.3.3):
     - DoubleConversion
@@ -2830,7 +2830,7 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 41e9fb63606c32cce924653d2d410cb01ec81286
   ReactCodegen: 90bb8dd83136fc05f54b8aaab40345affc93aeff
   ReactCommon: 8953b677c1d2ed01905f3cd5dced07ead9ec4c8e
-  ReactNativeUiLib: 37b124b70e30ab204f667fada75d849597b71366
+  ReactNativeUiLib: 1304cb03d985f625706347c4e3474bd032502a12
   RNBootSplash: 31fc46306f9a697ca1916b5657b7305babdc32a9
   RNCAsyncStorage: 923af351d21a33b6c57ed32ac9c25317ddbb0dd4
   RNCClipboard: c02475c15dbcdd164d7fdff6c1e4e1eea28313c6

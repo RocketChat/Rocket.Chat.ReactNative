@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { type ReactElement } from 'react';
 
 import { MicOrSendButton, ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';

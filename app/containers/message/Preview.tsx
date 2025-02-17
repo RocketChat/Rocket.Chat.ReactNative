@@ -3,7 +3,7 @@ import React from 'react';
 import Message from './index';
 import { useAppSelector } from '../../lib/hooks';
 import { getUserSelector } from '../../selectors/login';
-import { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
+import type { TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 
 const MessagePreview = ({ message }: { message: TAnyMessageModel }) => {
 	const { user, baseUrl, Message_TimeFormat, customEmojis, useRealName } = useAppSelector(state => ({

@@ -28,16 +28,16 @@ export interface IMessageAvatar {
 
 export interface IBlockActionParams {
 	actionId: string;
-	appId?: string;
+	appId: string;
 	value: string;
-	blockId?: string;
+	blockId: string;
 	viewId?: string;
-	rid?: string;
-	mid?: string
+	rid: string;
+	mid: string
 };
 
 export interface IBlockAction {
-	(params: IBlockActionParams): Promise<void>;
+	(params: IBlockActionParams): void | Promise<void>;
 }
 
 export interface IBlock {
@@ -62,7 +62,7 @@ export interface IMessageCallButton {
 }
 
 export interface IMessageContent {
-	_id: string;
+	_id?: string;
 	isTemp: boolean;
 	isInfo: string | boolean;
 	tmid?: string;

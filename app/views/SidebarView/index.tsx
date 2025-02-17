@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import { DrawerNavigationState } from '@react-navigation/native';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { DrawerNavigationState } from '@react-navigation/native';
 import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import { Dispatch } from 'redux';
+import type { Dispatch } from 'redux';
 
 import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
@@ -14,15 +14,15 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import userPreferences from '../../lib/methods/userPreferences';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { NOTIFICATION_PRESENCE_CAP, themes } from '../../lib/constants';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/navigation/appNavigation';
 import styles from './styles';
-import { DrawerParamList } from '../../stacks/types';
-import { IApplicationState, IUser, TSVStatus } from '../../definitions';
+import type { DrawerParamList } from '../../stacks/types';
+import type { IApplicationState, IUser, TSVStatus } from '../../definitions';
 import * as List from '../../containers/List';
-import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
+import { type IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
 

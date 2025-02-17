@@ -1,5 +1,5 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import React, { type ReactElement, useContext, useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import FastImage from 'react-native-blasted-image';
 import { dequal } from 'dequal';
@@ -10,11 +10,11 @@ import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
-import { isAndroid } from '../../lib/methods/helpers';
+// import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { IUrl } from '../../definitions';
+import type { IUrl } from '../../definitions';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({

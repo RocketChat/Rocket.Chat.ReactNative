@@ -10,7 +10,7 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
 import { FormTextInput } from '../../containers/TextInput';
-import { IApplicationState, TUserStatus } from '../../definitions';
+import type { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
 import { Services } from '../../lib/services';

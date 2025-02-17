@@ -1,14 +1,14 @@
 import React from 'react';
-import { Keyboard, ViewStyle } from 'react-native';
+import { Keyboard, type ViewStyle } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
 import { debounce } from '../../lib/methods/helpers';
 import { getMessageTranslation } from './utils';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import openLink from '../../lib/methods/helpers/openLink';
-import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
-import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import type { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
+import type { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
 import MessageSeparator from '../MessageSeparator';
 
@@ -259,11 +259,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		try {
 			if (
 				previousItem &&
-				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+				// @ts-expect-error TODO: IMessage vs IMessageFromServer non-sense
 				previousItem.ts.toDateString() === item.ts.toDateString() &&
 				previousItem.u.username === item.u.username &&
 				!(previousItem.groupable === false || item.groupable === false || broadcast === true) &&
-				// @ts-ignore TODO: IMessage vs IMessageFromServer non-sense
+				// @ts-expect-error TODO: IMessage vs IMessageFromServer non-sense
 				item.ts - previousItem.ts < Message_GroupingPeriod * 1000 &&
 				previousItem.tmid === item.tmid &&
 				item.t !== 'rm' &&
@@ -453,7 +453,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isEncrypted: this.isEncrypted
 				}}>
 				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
-				{/* @ts-ignore*/}
 				<Message
 					id={id}
 					msg={message}

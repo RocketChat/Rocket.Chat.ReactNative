@@ -1,5 +1,6 @@
 import React, { type ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
 import { View, StyleSheet, NativeModules } from 'react-native';
+import { Keyboard } from 'react-native-ui-lib';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import { useFocusEffect } from '@react-navigation/native';
@@ -30,7 +31,7 @@ import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
 import { emitter } from '../../lib/methods/helpers/emitter';
-import KeyboardAccessoryView from '../../views/KeyboardAccessoryView';
+
 const styles = StyleSheet.create({
 	container: {
 		borderTopWidth: 1,
@@ -78,8 +79,8 @@ export const MessageComposer = ({
 
 	useFocusEffect(
 		useCallback(() => {
-			trackingViewRef.current?.resetTracking();
-		}, [])
+			trackingViewRef.current?.resetTracking?.();
+		}, [trackingViewRef])
 	);
 
 	useImperativeHandle(forwardedRef, () => ({
@@ -154,7 +155,7 @@ export const MessageComposer = ({
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
 	};
 
-	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
+	const onKeyboardItemSelected = (_keyboardId: string | undefined, params: { eventType: EventTypes; emoji: IEmoji }) => {
 		const { eventType, emoji } = params;
 		const text = composerInputComponentRef.current.getText();
 		let newText = '';
@@ -232,19 +233,20 @@ export const MessageComposer = ({
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<KeyboardAccessoryView
-				ref={(ref) => ref && (trackingViewRef.current = ref)}
+			<Keyboard.KeyboardAccessoryView
+				ref={(ref) => ref && (trackingViewRef.current = ref.trackingViewRef)}
 				renderContent={renderContent}
-				kbInputRef={composerInputRef}
-				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
+				kbInputRef={composerInputRef}	
+				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : undefined}
 				kbInitialProps={{ theme }}
 				onKeyboardResigned={onKeyboardResigned}
 				onItemSelected={onKeyboardItemSelected}
-				trackInteractive
+				// trackInteractive
 				requiresSameParentToManageScrollView
 				addBottomView
 				bottomViewColor={backgroundColor}
-				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+				// iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
+				scrollBehavior={Keyboard.KeyboardAccessoryView.scrollBehaviors.FIXED_OFFSET}
 				onHeightChanged={onHeightChanged}
 			/>
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />

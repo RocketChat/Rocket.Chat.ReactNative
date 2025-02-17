@@ -2,6 +2,7 @@ import React from 'react';
 import type { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
+import { RadioButton } from 'react-native-ui-lib';
 import type { RouteProp } from '@react-navigation/native';
 
 import type { ChatsStackParamList } from '../stacks/types';
@@ -11,7 +12,7 @@ import I18n from '../i18n';
 import * as HeaderButton from '../containers/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
-import { type TSupportedThemes, withTheme } from '../theme';
+import {type TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
@@ -19,7 +20,6 @@ import SearchBox from '../containers/SearchBox';
 import sharedStyles from './Styles';
 import type { IApplicationState } from '../definitions';
 import type { TDataSelect } from '../definitions/IDataSelect';
-import { RadioButton } from '../containers/RadioButton';
 
 const styles = StyleSheet.create({
 	buttonText: {
@@ -152,8 +152,8 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const showRadio = () => (
 			<RadioButton
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				check={selected.includes(item.rid)}
-				// color={themes[theme].fontHint}
+				selected={selected.includes(item.rid)}
+				color={themes[theme].fontHint}
 				size={ICON_SIZE}
 			/>
 		);

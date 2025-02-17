@@ -1,10 +1,10 @@
-import { MutableRefObject, useEffect } from 'react';
+import { type MutableRefObject, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 
 import { useMessageComposerApi } from '../context';
-import { ITrackingView } from '../interfaces';
-import { TKeyEmitterEvent, emitter } from '../../../lib/methods/helpers/emitter';
+import type { ITrackingView } from '../interfaces';
+import { type TKeyEmitterEvent, emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
 
 export const useKeyboardListener = (ref: MutableRefObject<ITrackingView>) => {

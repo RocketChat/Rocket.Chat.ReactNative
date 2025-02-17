@@ -1,7 +1,7 @@
 import React from 'react';
-import { Dispatch } from 'redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, Text, View } from 'react-native';
+import type { Dispatch } from 'redux';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { BackHandler, FlatList, Keyboard, Text, View, type NativeEventSubscription } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -18,12 +18,12 @@ import * as List from '../../containers/List';
 import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
-import { TSupportedThemes, withTheme } from '../../theme';
+import { type TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
-import { IApplicationState, RootEnum, TServerModel, TSubscriptionModel } from '../../definitions';
-import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
+import { type IApplicationState, RootEnum, type TServerModel, type TSubscriptionModel } from '../../definitions';
+import type { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
 import { shareSetParams } from '../../actions/share';
 import { appStart } from '../../actions/app';
@@ -71,6 +71,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
 
 	private unsubscribeBlur: (() => void) | undefined;
+	private backHandler: NativeEventSubscription | undefined;
 
 	constructor(props: IShareListViewProps) {
 		super(props);
@@ -88,10 +89,10 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		this.setHeader();
 		if (isAndroid) {
 			this.unsubscribeFocus = props.navigation.addListener('focus', () =>
-				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+				this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 			);
 			this.unsubscribeBlur = props.navigation.addListener('blur', () =>
-				BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+				this.backHandler?.remove()
 			);
 		}
 	}
@@ -281,7 +282,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			let serverInfo = {};
 			try {
 				serverInfo = await serversCollection.find(server);
-			} catch (error) {
+			} catch (e) {
+				console.error(e);
 				// Do nothing
 			}
 
