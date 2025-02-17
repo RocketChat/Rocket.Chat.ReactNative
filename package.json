@@ -19,6 +19,7 @@
   "dependencies": {
     "@bugsnag/expo": "^52.0.0",
     "@codler/react-native-keyboard-aware-scroll-view": "^2.0.1",
+    "@d11/react-native-fast-image": "^8.9.2",
     "@expo/vector-icons": "^14.0.2",
     "@gorhom/bottom-sheet": "^5.1.1",
     "@hookform/resolvers": "^4.0.0",
@@ -85,7 +86,6 @@
     "react-hook-form": "^7.54.2",
     "react-native": "0.77.1",
     "react-native-background-timer": "^2.4.1",
-    "react-native-blasted-image": "^1.1.0",
     "react-native-bootsplash": "^6.3.3",
     "react-native-config-reader": "^4.1.1",
     "react-native-console-time-polyfill": "^1.2.3",

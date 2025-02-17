@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 
 import { textParser } from '../utils';
 import { CustomIcon } from '../../CustomIcon';
 import styles from './styles';
-import { IItemData } from '.';
+import type { IItemData } from './index';
 import { useTheme } from '../../../theme';
 
 interface IChip {

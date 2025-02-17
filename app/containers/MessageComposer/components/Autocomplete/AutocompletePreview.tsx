@@ -1,6 +1,6 @@
 import React from 'react';
 import { RectButton } from 'react-native-gesture-handler';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 
 import type { IAutocompleteItemProps } from '../../interfaces';
 import { CustomIcon } from '../../../CustomIcon';
@@ -17,7 +17,7 @@ export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) =
 	if (item.type === '/preview') {
 		content =
 			item.preview.type === 'image' ? (
-				<FastImage style={styles.previewImage} source={{ uri: item.preview.value }} resizeMode={'cover'} />
+				<FastImage style={styles.previewImage} source={{ uri: item.preview.value }} resizeMode={FastImage.resizeMode.cover} />
 			) : (
 				<CustomIcon name='attach' size={36} />
 			);

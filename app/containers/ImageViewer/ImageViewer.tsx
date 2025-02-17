@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, type ImageStyle, View } from 'react-native';
+import { type LayoutChangeEvent, StyleSheet, type StyleProp, type ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import FastImage from 'react-native-blasted-image';
+import FastImage, { type ImageStyle } from '@d11/react-native-fast-image';
 
 import { useTheme } from '../../theme';
 
@@ -115,7 +115,6 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<FastImage
-						// @ts-ignore
 						style={styles.image}
 						resizeMode='contain'
 						source={{ uri }}

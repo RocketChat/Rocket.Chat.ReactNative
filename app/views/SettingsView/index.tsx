@@ -1,11 +1,11 @@
-import * as Clipboard from 'expo-clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 import { useDispatch } from 'react-redux';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { appStart } from '../../actions/app';
 import { logout } from '../../actions/login';
@@ -31,7 +31,7 @@ import openLink from '../../lib/methods/helpers/openLink';
 import { onReviewPress } from '../../lib/methods/helpers/review';
 import { Services } from '../../lib/services';
 import { getUserSelector } from '../../selectors/login';
-import { SettingsStackParamList } from '../../stacks/types';
+import type { SettingsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import SidebarView from '../SidebarView';
 
@@ -127,6 +127,9 @@ const SettingsView = (): React.ReactElement => {
 		try {
 			await Linking.openURL(`mailto:${email}?subject=${subject}&body=${description}`);
 		} catch (e) {
+			if (__DEV__) {
+				console.error(e);
+			}
 			logEvent(events.SE_CONTACT_US_F);
 			showErrorAlert(I18n.t('error-email-send-failed', { message: 'support@rocket.chat' }));
 		}
@@ -145,8 +148,8 @@ const SettingsView = (): React.ReactElement => {
 		Share.share({ message });
 	};
 
-	const saveToClipboard = async (content: string) => {
-		await Clipboard.setStringAsync(content);
+	const saveToClipboard = (content: string) => {
+		Clipboard.setString(content);
 		EventEmitter.emit(LISTENER, { message: I18n.t('Copied_to_clipboard') });
 	};
 

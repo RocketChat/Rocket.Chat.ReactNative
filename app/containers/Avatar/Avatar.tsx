@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 import Touchable from 'react-native-platform-touchable';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk/index';
 
@@ -81,11 +81,10 @@ const Avatar = React.memo(
 			image = (
 				<FastImage
 					style={avatarStyle}
-					fallbackSource={{uri,headers: RocketChatSettings.customHeaders}}
 					source={{
-						uri: uri || 'https://rocket.chat/images/logo/logo.svg',
-						cloudUrl: uri,
-						hybridAssets: true,
+						uri,
+						headers: RocketChatSettings.customHeaders,
+						priority: FastImage.priority.high
 					}}
 				/>
 			);

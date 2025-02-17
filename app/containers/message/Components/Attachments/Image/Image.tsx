@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, type ViewStyle, Image } from 'react-native';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
@@ -9,7 +9,8 @@ import OverlayComponent from '../../OverlayComponent';
 import type { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
 
-export const MessageImage = React.memo(function MessageImage({ uri, status, encrypted = false }: IMessageImage) { const { colors } = useTheme();
+export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
+	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
 	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
@@ -56,7 +57,7 @@ export const MessageImage = React.memo(function MessageImage({ uri, status, encr
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<FastImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={'cover'} />
+					<FastImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={FastImage.resizeMode.cover} />
 				</View>
 			) : (
 				<View style={[styles.image, borderStyle]} />
@@ -69,6 +70,7 @@ export const MessageImage = React.memo(function MessageImage({ uri, status, encr
 				/>
 			) : null}
 		</>
-	); });
+	);
+});
 
 MessageImage.displayName = 'MessageImage';

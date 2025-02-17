@@ -1,7 +1,7 @@
 import React, { type ReactElement, useContext, useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, type ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 import { dequal } from 'dequal';
 
 import { useAppSelector } from '../../lib/hooks';
@@ -10,7 +10,7 @@ import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
-// import { isAndroid } from '../../lib/methods/helpers';
+import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
@@ -113,10 +113,10 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 	return (
 		<View style={containerStyle}>
 			<FastImage
-				// fallback={isAndroid}
+				fallback={isAndroid}
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
-				resizeMode={'contain'}
+				resizeMode={FastImage.resizeMode.contain}
 				onError={() => setImageLoadedState('error')}
 				onLoad={() => setImageLoadedState('done')}
 			/>

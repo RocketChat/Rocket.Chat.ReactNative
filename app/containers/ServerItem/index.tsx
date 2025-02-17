@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
@@ -24,7 +24,9 @@ export interface IServerItem {
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const ServerItem = React.memo(function ServerItem({ item, onPress, onLongPress, hasCheck }: IServerItem) { const { theme } = useTheme();
+const ServerItem = React.memo(
+	function ServerItem({ item, onPress, onLongPress, hasCheck }: IServerItem) {
+	const { theme } = useTheme();
 	return (
 		<Pressable
 			onPress={onPress}
@@ -39,9 +41,9 @@ const ServerItem = React.memo(function ServerItem({ item, onPress, onLongPress, 
 					<FastImage
 						source={{
 							uri: item.iconURL,
-							// priority: 'high'
+							priority: FastImage.priority.high
 						}}
-						fallbackSource={defaultLogo}
+						defaultSource={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
 					/>
@@ -59,6 +61,7 @@ const ServerItem = React.memo(function ServerItem({ item, onPress, onLongPress, 
 				{hasCheck ? <Check /> : null}
 			</View>
 		</Pressable>
-	); });
+	);
+});
 
 export default ServerItem;

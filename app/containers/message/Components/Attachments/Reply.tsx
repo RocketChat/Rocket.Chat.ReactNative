@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 
 import type { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
@@ -101,7 +101,9 @@ interface IMessageReply {
 	showAttachment?: (file: IAttachment) => void;
 }
 
-const Title = React.memo(function Title({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) { const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
+const Title = React.memo(
+	({ attachment, timeFormat, theme }: { attachment: IAttachment; timeFormat?: string; theme: TSupportedThemes }) => {
+		const time = attachment.message_link && attachment.ts ? moment(attachment.ts).format(timeFormat) : null;
 		return (
 			<View style={styles.authorContainer}>
 				{attachment.author_name ? (
@@ -112,7 +114,9 @@ const Title = React.memo(function Title({ attachment, timeFormat, theme }: { att
 				{time ? <Text style={[messageStyles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text> : null}
 				{attachment.title ? <Text style={[styles.title, { color: themes[theme].fontDefault }]}>{attachment.title}</Text> : null}
 			</View>
-		); });
+		);
+	}
+);
 
 const Description = React.memo(
 	({
@@ -163,7 +167,7 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={'cover'} />;
+		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );

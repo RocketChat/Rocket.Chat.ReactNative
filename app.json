@@ -13,6 +13,7 @@
       "ios",
       "android"
     ],
+    "experiments": {"tsconfigPaths": true},
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "chat.rocket.reactnative",

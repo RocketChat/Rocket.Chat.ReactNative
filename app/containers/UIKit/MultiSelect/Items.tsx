@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-blasted-image';
+import FastImage from '@d11/react-native-fast-image';
 import { FlatList } from 'react-native-gesture-handler';
 
 import * as List from '../../List';
 import { textParser } from '../utils';
 import styles from './styles';
-import { IItemData } from '.';
+import type { IItemData } from '.';
 import { useTheme } from '../../../theme';
 import { CustomIcon } from '../../CustomIcon';
 
