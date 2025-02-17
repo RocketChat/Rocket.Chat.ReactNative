@@ -134,13 +134,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			headerTitle: () => <Header room={room} thread={thread} />
 		};
 
-		// if is share extension show default back button
-		if (!this.isShareExtension) {
-			options.headerLeft = () => (
-				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
-			);
-		}
-
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
 				<HeaderButton.Container>
