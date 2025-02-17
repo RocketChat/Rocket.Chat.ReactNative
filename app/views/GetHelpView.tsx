@@ -33,6 +33,7 @@ const GetHelpView = () => {
 					<List.Separator />
 					<List.Item
 						title='Rocket_Chat_Documentation'
+						accessibilityRole='link'
 						right={() => <NewWindowIcon />}
 						onPress={() => openLink(DOCS_LINK, theme)}
 						testID='settings-view-get-help-documentation'
@@ -40,6 +41,7 @@ const GetHelpView = () => {
 					<List.Separator />
 					<List.Item
 						title='Accessibility_statement'
+						accessibilityRole='link'
 						right={() => <NewWindowIcon />}
 						onPress={() => openLink(ACCESSIBILITY_LINK, theme)}
 						testID='settings-view-get-help-accessibility-statement'
@@ -47,6 +49,7 @@ const GetHelpView = () => {
 					<List.Separator />
 					<List.Item
 						title='Glossary_of_simplified_terms'
+						accessibilityRole='link'
 						right={() => <NewWindowIcon />}
 						onPress={() => openLink(GLOSSARY_LINK, theme)}
 						testID='settings-view-get-help-glossary'
