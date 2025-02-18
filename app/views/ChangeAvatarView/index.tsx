@@ -25,7 +25,7 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker, { ImagePickerOptions } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
@@ -165,23 +165,20 @@ const ChangeAvatarView = () => {
 	};
 
 	const pickImage = async (isCam = false) => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
 		try {
-			const response: Image =
-				isCam === true
-					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
-					: await ImagePicker.openPicker(options);
+			const options: ImagePickerOptions = {
+				exif: true,
+				base64: true
+			};
+			const response =
+				isCam === true ? await ImagePicker.launchCameraAsync(options) : await ImagePicker.launchImageLibraryAsync(options);
+			if (response.canceled) {
+				return;
+			}
+			const [asset] = response.assets;
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
+				payload: { url: asset.uri, data: `data:image/jpeg;base64,${asset.base64}`, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
