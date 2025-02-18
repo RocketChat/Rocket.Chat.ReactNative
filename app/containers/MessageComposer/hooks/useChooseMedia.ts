@@ -54,16 +54,15 @@ export const useChooseMedia = ({
 			if (result.canceled) {
 				return;
 			}
-			const image = result.assets[0];
+			const media = mapMediaResult(result.assets);
 			// image = forceJpgExtension(image);
 			const canUploadResult = canUploadFile({
-				file: image as any,
+				file: media[0],
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
 			if (canUploadResult.success) {
-				const media = mapMediaResult([image]);
 				return openShareView(media);
 			}
 
@@ -79,15 +78,14 @@ export const useChooseMedia = ({
 			if (result.canceled) {
 				return;
 			}
-			const video = result.assets[0];
+			const media = mapMediaResult(result.assets);
 			const canUploadResult = canUploadFile({
-				file: video as any,
+				file: media[0],
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
 			if (canUploadResult.success) {
-				const media = mapMediaResult([video]);
 				return openShareView(media);
 			}
 
