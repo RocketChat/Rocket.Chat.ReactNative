@@ -1,4 +1,5 @@
 export const mappedIcons = {
+	'accessibility': 59855,
 	'add': 59872,
 	'administration': 59662,
 	'adobe-reader-monochromatic': 59663,
