@@ -4,19 +4,11 @@ import { ImagePickerOptions, MediaTypeOptions } from 'expo-image-picker';
 import { TMarkdownStyle } from './interfaces';
 
 export const IMAGE_PICKER_CONFIG: ImagePickerOptions = {
-	// cropping: true,
-	// avoidEmptySpaceAroundImage: false,
-	// freeStyleCropEnabled: true,
-	// forceJpg: true,
-	// includeExif: true
-	quality: 1
+	exif: true
 };
 
 export const LIBRARY_PICKER_CONFIG: ImagePickerOptions = {
 	allowsMultipleSelection: true,
-	// multiple: true,
-	// compressVideoPreset: 'Passthrough',
-	// mediaType: 'any',
 	exif: true
 };
 

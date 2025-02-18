@@ -41,15 +41,10 @@ export const useChooseMedia = ({
 	const { action, setQuotesAndText, selectedMessages, getText } = useRoomContext();
 	const allowList = FileUpload_MediaTypeWhiteList as string;
 	const maxFileSize = FileUpload_MaxFileSize as number;
-	const libPickerLabels = {
-		cropperChooseText: I18n.t('Choose'),
-		cropperCancelText: I18n.t('Cancel'),
-		loadingLabelText: I18n.t('Processing')
-	};
 
 	const takePhoto = async () => {
 		try {
-			const result = await ImagePicker.launchCameraAsync({ ...IMAGE_PICKER_CONFIG, ...libPickerLabels });
+			const result = await ImagePicker.launchCameraAsync(IMAGE_PICKER_CONFIG);
 			if (result.canceled) {
 				return;
 			}
@@ -72,7 +67,7 @@ export const useChooseMedia = ({
 
 	const takeVideo = async () => {
 		try {
-			const result = await ImagePicker.launchCameraAsync({ ...VIDEO_PICKER_CONFIG, ...libPickerLabels });
+			const result = await ImagePicker.launchCameraAsync(VIDEO_PICKER_CONFIG);
 			if (result.canceled) {
 				return;
 			}
@@ -95,11 +90,7 @@ export const useChooseMedia = ({
 
 	const chooseFromLibrary = async () => {
 		try {
-			// The type can be video or photo, however the lib understands that it is just one of them.
-			const result = await ImagePicker.launchImageLibraryAsync({
-				...LIBRARY_PICKER_CONFIG,
-				...libPickerLabels
-			});
+			const result = await ImagePicker.launchImageLibraryAsync(LIBRARY_PICKER_CONFIG);
 			if (result.canceled) {
 				return;
 			}
