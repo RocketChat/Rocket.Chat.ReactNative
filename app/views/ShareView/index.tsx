@@ -254,7 +254,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
-				console.log('🚀 ~ ShareView ~ send= ~ attachments:', attachments);
 				await Promise.all(
 					attachments.map(({ filename: name, mime: type, description, size, path, canUpload, height, width, exif }) => {
 						if (!canUpload) {

@@ -95,7 +95,6 @@ export const useChooseMedia = ({
 			if (result.canceled) {
 				return;
 			}
-			// CAN UPLOAD?
 			const media = mapMediaResult(result.assets);
 			openShareView(media);
 		} catch (e) {
