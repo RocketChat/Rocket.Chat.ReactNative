@@ -254,8 +254,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			// Send attachment
 			if (attachments.length) {
+				console.log('🚀 ~ ShareView ~ send= ~ attachments:', attachments);
 				await Promise.all(
-					attachments.map(({ fileName, mimeType, description, filesize, uri, canUpload, height, width, exif }) => {
+					attachments.map(({ filename: name, mime: type, description, size, path, canUpload, height, width, exif }) => {
 						if (!canUpload) {
 							return Promise.resolve();
 						}
@@ -268,11 +269,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 							room.rid,
 							{
 								rid: room.rid,
-								name: fileName,
+								name,
 								description,
-								size: filesize,
-								type: mimeType,
-								path: uri,
+								size,
+								type,
+								path,
 								msg,
 								height,
 								width

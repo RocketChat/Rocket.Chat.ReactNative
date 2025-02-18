@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
-import { forceJpgExtension } from '../helpers';
+// import { forceJpgExtension } from '../helpers';
 import I18n from '../../../i18n';
 import { canUploadFile } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
@@ -11,7 +11,23 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
 import { useRoomContext } from '../../../views/RoomView/context';
-import ImagePicker, { ImageOrVideo } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker, { ImagePickerAsset } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { IShareAttachment } from '../../../definitions';
+
+const mapMediaResult = (assets: ImagePickerAsset[]): IShareAttachment[] =>
+	assets.map(asset => ({
+		filename: asset.fileName || 'temp',
+		size: asset.fileSize || 0,
+		mime: asset.mimeType,
+		path: asset.uri,
+		uri: asset.uri,
+		width: asset.width,
+		height: asset.height,
+		exif: {
+			Orientation: asset.exif?.Orientation
+		},
+		canUpload: true
+	}));
 
 export const useChooseMedia = ({
 	rid,
@@ -39,18 +55,16 @@ export const useChooseMedia = ({
 				return;
 			}
 			const image = result.assets[0];
-			console.log('🚀 ~ takePhoto ~ image:', image);
 			// image = forceJpgExtension(image);
-			const file = image as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
-				file,
+				file: image as any,
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
-			console.log('🚀 ~ takePhoto ~ canUploadResult:', canUploadResult);
 			if (canUploadResult.success) {
-				return openShareView([image]);
+				const media = mapMediaResult([image]);
+				return openShareView(media);
 			}
 
 			handleError(canUploadResult.error);
@@ -66,15 +80,15 @@ export const useChooseMedia = ({
 				return;
 			}
 			const video = result.assets[0];
-			const file = video as any; // FIXME: unify those types to remove the need for any
 			const canUploadResult = canUploadFile({
-				file,
+				file: video as any,
 				allowList,
 				maxFileSize,
 				permissionToUploadFile: permissionToUpload
 			});
 			if (canUploadResult.success) {
-				return openShareView([video]);
+				const media = mapMediaResult([video]);
+				return openShareView(media);
 			}
 
 			handleError(canUploadResult.error);
@@ -93,9 +107,10 @@ export const useChooseMedia = ({
 			if (result.canceled) {
 				return;
 			}
-			console.log('🚀 ~ chooseFromLibrary ~ attachments:', result);
+			// CAN UPLOAD?
 			// const assets = result.assets.map(att => forceJpgExtension(att));
-			openShareView(result.assets);
+			const media = mapMediaResult(result.assets);
+			openShareView(media);
 		} catch (e) {
 			log(e);
 		}
@@ -138,7 +153,7 @@ export const useChooseMedia = ({
 
 	const finishShareView = (text = '', quotes = []) => setQuotesAndText?.(text, quotes);
 
-	const openShareView = async (attachments: any) => {
+	const openShareView = async (attachments: IShareAttachment[]) => {
 		if (!rid) return;
 		const room = await getSubscriptionByRoomId(rid);
 		let thread;
