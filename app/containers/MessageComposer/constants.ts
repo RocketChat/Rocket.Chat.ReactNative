@@ -1,4 +1,3 @@
-// import { Options } from 'react-native-image-crop-picker';
 import { ImagePickerOptions, MediaTypeOptions } from 'expo-image-picker';
 
 import { TMarkdownStyle } from './interfaces';

@@ -16,11 +16,10 @@ import { IShareAttachment } from '../../../definitions';
 
 const mapMediaResult = (assets: ImagePickerAsset[]): IShareAttachment[] =>
 	assets.map(asset => ({
-		filename: asset.fileName || 'temp',
+		filename: asset.fileName || `${new Date().getTime().toString()}.jpg`,
 		size: asset.fileSize || 0,
 		mime: asset.mimeType,
 		path: asset.uri,
-		uri: asset.uri,
 		width: asset.width,
 		height: asset.height,
 		exif: {

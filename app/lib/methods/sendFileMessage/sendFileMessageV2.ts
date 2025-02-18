@@ -15,7 +15,6 @@ export async function sendFileMessageV2(
 	user: Partial<Pick<IUser, 'id' | 'token'>>,
 	isForceTryAgain?: boolean
 ): Promise<void> {
-	console.log('🚀 ~ fileInfo:', fileInfo);
 	let uploadPath: string | null = '';
 	let uploadRecord: TUploadModel | null;
 	try {
