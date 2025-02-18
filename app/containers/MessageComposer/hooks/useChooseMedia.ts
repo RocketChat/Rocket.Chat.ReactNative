@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
+import type { ImagePickerAsset } from 'expo-image-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import I18n from '../../../i18n';
@@ -10,7 +11,7 @@ import { getThreadById } from '../../../lib/database/services/Thread';
 import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
 import { useRoomContext } from '../../../views/RoomView/context';
-import ImagePicker, { ImagePickerAsset } from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { IShareAttachment } from '../../../definitions';
 
 const mapMediaResult = (assets: ImagePickerAsset[]): IShareAttachment[] =>

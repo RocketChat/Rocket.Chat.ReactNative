@@ -4,6 +4,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/elements';
+import type { ImagePickerOptions } from 'expo-image-picker';
 
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
@@ -25,7 +26,7 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { ImagePickerOptions } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
