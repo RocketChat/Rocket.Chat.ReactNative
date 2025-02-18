@@ -1958,8 +1958,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNConfigReader (1.0.0):
-    - React
   - RNDateTimePicker (8.2.0):
     - DoubleConversion
     - glog
@@ -2009,19 +2007,19 @@ PODS:
     - SDWebImageAVIFCoder (~> 0.11.0)
     - SDWebImageWebPCoder (~> 0.14)
     - Yoga
-  - RNFBAnalytics (21.10.0):
+  - RNFBAnalytics (21.10.1):
     - Firebase/Analytics (= 11.8.0)
     - React-Core
     - RNFBApp
-  - RNFBApp (21.10.0):
+  - RNFBApp (21.10.1):
     - Firebase/CoreOnly (= 11.8.0)
     - React-Core
-  - RNFBCrashlytics (21.10.0):
+  - RNFBCrashlytics (21.10.1):
     - Firebase/Crashlytics (= 11.8.0)
     - FirebaseCoreExtension
     - React-Core
     - RNFBApp
-  - RNFBMessaging (21.10.0):
+  - RNFBMessaging (21.10.1):
     - Firebase/Messaging (= 11.8.0)
     - FirebaseCoreExtension
     - React-Core
@@ -2192,7 +2190,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (4.6.0):
+  - RNScreens (4.7.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2213,9 +2211,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNScreens/common (= 4.6.0)
+    - RNScreens/common (= 4.7.0)
     - Yoga
-  - RNScreens/common (4.6.0):
+  - RNScreens/common (4.7.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2433,7 +2431,6 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
-  - RNConfigReader (from `../node_modules/react-native-config-reader`)
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFastImage (from `../node_modules/@d11/react-native-fast-image`)"
@@ -2702,8 +2699,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNCClipboard:
     :path: "../node_modules/@react-native-clipboard/clipboard"
-  RNConfigReader:
-    :path: "../node_modules/react-native-config-reader"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNDeviceInfo:
@@ -2875,14 +2870,13 @@ SPEC CHECKSUMS:
   RNBootSplash: 31fc46306f9a697ca1916b5657b7305babdc32a9
   RNCAsyncStorage: 923af351d21a33b6c57ed32ac9c25317ddbb0dd4
   RNCClipboard: c02475c15dbcdd164d7fdff6c1e4e1eea28313c6
-  RNConfigReader: 151efbfb6f2dddd04dd3c0b00fb292d8c7939215
   RNDateTimePicker: b2bdfdc155cf6bf04ce221fedeb8da9d9b85c93f
   RNDeviceInfo: d863506092aef7e7af3a1c350c913d867d795047
   RNFastImage: 2e4875d5621575b293d6c82e621deb413400b69e
-  RNFBAnalytics: 4c0a646465abebad2a26c99a5c255928388c239b
-  RNFBApp: c0e35c80b0da1c93767dcb0060491735518dbebb
-  RNFBCrashlytics: b753359110799c000510e8c9137626f838c0cfad
-  RNFBMessaging: b8d712a6e70f9c4710928749950aeeb595270939
+  RNFBAnalytics: 67d9d6bcd8ac605ab6dc532e70af9847d5aeb449
+  RNFBApp: 54ee335a7d8a72071f53c3786435cc537c2ecc40
+  RNFBCrashlytics: 1acdb4ad4e36031d4671b83f54f2618785f21eee
+  RNFBMessaging: 10e835be65989d7fe64c0e92a1afeff5b6398021
   RNFileViewer: 4b5d83358214347e4ab2d4ca8d5c1c90d869e251
   RNGestureHandler: 36aca36e4ef19f55dbf97239199d00fd58494e34
   RNImageCropPicker: b0afedeefd8655254a15c34103718455fde6ce59
@@ -2890,7 +2884,7 @@ SPEC CHECKSUMS:
   RNLocalize: 759649ec888d632e6d3ac50fb7756c2af777e1ae
   RNNotifee: 5e3b271e8ea7456a36eec994085543c9adca9168
   RNReanimated: 5b55896edb30f24afe430635cb6aecd110eb4b50
-  RNScreens: 907675c47a5b44b8dbc5b507c66e5c70c8cb22be
+  RNScreens: d20dd1ff40373dbf104f702d518ddbc9b9c999e2
   RNSVG: 3e108ca151039ab33ab448966f8f50b24d4b00fb
   RNVectorIcons: 1743deffb9c4b70f253704075dbac432cc802e74
   SDWebImage: 73c6079366fea25fa4bb9640d5fb58f0893facd8

@@ -1,11 +1,11 @@
-import { settings as RocketChatSettings } from '@rocket.chat/sdk';
+import { settings as RocketChatSettings } from '@rocket.chat/sdk/index';
 
-import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../../definitions';
+import type { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../../definitions';
 import database from '../../database';
 import { Encryption } from '../../encryption';
 import { copyFileToCacheDirectoryIfNeeded, createUploadRecord, persistUploadError, uploadQueue } from './utils';
 import FileUpload from '../helpers/fileUpload';
-import { IFormData } from '../helpers/fileUpload/definitions';
+import type { IFormData } from '../helpers/fileUpload/definitions';
 
 export async function sendFileMessageV2(
 	rid: string,
@@ -22,8 +22,8 @@ export async function sendFileMessageV2(
 		const headers = {
 			...RocketChatSettings.customHeaders,
 			'Content-Type': 'multipart/form-data',
-			'X-Auth-Token': token,
-			'X-User-Id': id
+			'X-Auth-Token': token!,
+			'X-User-Id': id!
 		};
 		const db = database.active;
 

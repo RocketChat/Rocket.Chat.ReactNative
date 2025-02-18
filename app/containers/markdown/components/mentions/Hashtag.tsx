@@ -46,9 +46,6 @@ const Hashtag = React.memo(function Hashtag({
           await Services.getRoomInfo(navParam.rid);
           navToRoomInfo(navParam);
         } catch (e) {
-          if (__DEV__) {
-            console.error(e);
-          }
           showErrorAlert(
             i18n.t("The_room_does_not_exist"),
             i18n.t("Room_not_found")

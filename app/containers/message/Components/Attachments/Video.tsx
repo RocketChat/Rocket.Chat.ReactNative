@@ -104,9 +104,6 @@ const Video = ({
 				EventEmitter.emit(LISTENER, { message: I18n.t('saved_to_gallery') });
 			}
 		} catch (error) {
-			if (__DEV__) {
-				console.error(error);
-			}
 			EventEmitter.emit(LISTENER, { message: I18n.t('error-save-video') });
 		}
 	};

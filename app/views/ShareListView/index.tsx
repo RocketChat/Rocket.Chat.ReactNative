@@ -283,7 +283,6 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			try {
 				serverInfo = await serversCollection.find(server);
 			} catch (e) {
-				console.error(e);
 				// Do nothing
 			}
 

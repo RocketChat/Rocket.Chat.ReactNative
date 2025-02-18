@@ -160,9 +160,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		try {
 			this.serverInfo = await serversCollection.find(server);
 		} catch (e) {
-			if (__DEV__) {
-				console.error(e);
-			}
 			// Do nothing
 		}
 	};

@@ -1,5 +1,7 @@
-import RNConfigReader from 'react-native-config-reader';
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
-export const isFDroidBuild = RNConfigReader.FDROID_BUILD;
 
-export const isOfficial = RNConfigReader.IS_OFFICIAL;
+export const isFDroidBuild = Platform.OS === 'android' && Constants.expoConfig?.extra?.isFDroidBuild;
+
+export const isOfficial = !__DEV__;

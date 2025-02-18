@@ -1,0 +1,12 @@
+diff --git a/common/cpp/react/renderer/components/rnscreens/RNSScreenStackHeaderSubviewComponentDescriptor.h b/common/cpp/react/renderer/components/rnscreens/RNSScreenStackHeaderSubviewComponentDescriptor.h
+index a7e21e6193f0df2b4b6c375ec3d68923b742e9b4..340a377e1744cc3025caf3a0624eb3605a9d211b 100644
+--- a/common/cpp/react/renderer/components/rnscreens/RNSScreenStackHeaderSubviewComponentDescriptor.h
++++ b/common/cpp/react/renderer/components/rnscreens/RNSScreenStackHeaderSubviewComponentDescriptor.h
+@@ -8,7 +8,6 @@
+ #include <react/renderer/components/rnscreens/utils/RectUtil.h>
+ #include <react/renderer/core/ConcreteComponentDescriptor.h>
+ #include "RNSScreenStackHeaderSubviewShadowNode.h"
+-#include "utils/RectUtil.h"
+ 
+ namespace facebook::react {
+ 
