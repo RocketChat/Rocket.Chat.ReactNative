@@ -33,7 +33,7 @@ import {
 	TThreadModel
 } from '../../definitions';
 import { sendFileMessage, sendMessage } from '../../lib/methods';
-import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
+import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked, isIOS } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
 
@@ -133,6 +133,13 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const options: NativeStackNavigationOptions = {
 			headerTitle: () => <Header room={room} thread={thread} />
 		};
+
+		// if is share extension show default back button
+		if (!this.isShareExtension && isIOS) {
+			options.headerLeft = () => (
+				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
+			);
+		}
 
 		if (!attachments.length && !readOnly) {
 			options.headerRight = () => (
