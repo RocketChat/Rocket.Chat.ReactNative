@@ -25,8 +25,7 @@ const mapMediaResult = (assets: ImagePickerAsset[]): IShareAttachment[] =>
 		height: asset.height,
 		exif: {
 			Orientation: asset.exif?.Orientation
-		},
-		canUpload: true
+		}
 	}));
 
 export const useChooseMedia = ({
