@@ -120,7 +120,7 @@
     "react-native-scrollable-tab-view": "github:ptomasroos/react-native-scrollable-tab-view",
     "react-native-simple-crypto": "github:RocketChat/react-native-simple-crypto#fix.6.1.0",
     "react-native-skeleton-placeholder": "^5.2.4",
-    "react-native-svg": "15.8.0",
+    "react-native-svg": "~15.11.1",
     "react-native-ui-lib": "^7.37.2",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vector-icons": "^10.2.0",
@@ -184,6 +184,7 @@
     "install": {
       "exclude": [
         "react-native@~0.76.6",
+        "react-native-svg@~15.8.0",
         "react-native-reanimated@~3.16.1",
         "react-native-gesture-handler@~2.20.0",
         "react-native-screens@~4.4.0",
