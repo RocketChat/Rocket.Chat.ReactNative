@@ -100,7 +100,13 @@ const useVerifyPassword = (password: string, confirmPassword: string) => {
 		if (password !== confirmPassword) return false;
 
 		if (!passwordPolicies) return true;
-		return passwordPolicies.every(policy => policy.regex.test(password));
+
+		return passwordPolicies.every(policy => {
+			if (policy.name === 'ForbidRepeatingCharacters') {
+				return !policy.regex.test(password);
+			}
+			return policy.regex.test(password);
+		});
 	};
 
 	return {
