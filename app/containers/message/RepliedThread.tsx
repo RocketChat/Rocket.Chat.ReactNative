@@ -34,8 +34,8 @@ const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncry
 
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${msg}`}>
-			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].badgeBackgroundLevel2} />
-			<MarkdownPreview msg={msg} style={[styles.repliedThreadName, { color: themes[theme].badgeBackgroundLevel2 }]} />
+			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].fontInfo} />
+			<MarkdownPreview msg={msg} style={[styles.repliedThreadName, { color: themes[theme].fontInfo }]} />
 			<View style={styles.repliedThreadDisclosure}>
 				<CustomIcon name='chevron-right' color={themes[theme].fontSecondaryInfo} size={20} />
 			</View>
