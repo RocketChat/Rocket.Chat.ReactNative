@@ -283,7 +283,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onSubmit={handleSubmit(onSubmit)}
 					/>
 				</View>
-				{passwordPolicies && <PasswordPolicies policies={passwordPolicies} isDirty={isDirty} password={password} />}
+				{passwordPolicies ? <PasswordPolicies policies={passwordPolicies} isDirty={isDirty} password={password} /> : null}
 
 				<Button
 					disabled={!isValid || !isPasswordValid || !validateDefaultFormInfo()}
