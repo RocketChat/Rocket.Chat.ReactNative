@@ -519,6 +519,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			headerRight: () => (
 				<RightButtons
 					rid={rid}
+					roomUserId={roomUserId || ''}
 					tmid={tmid}
 					teamId={teamId}
 					joined={joined}

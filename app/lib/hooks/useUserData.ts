@@ -6,8 +6,17 @@ import { SubscriptionType } from '../../definitions';
 import { Services } from '../services';
 import { useAppSelector } from './useAppSelector';
 
+type UserState = {
+	username: string;
+	avatar: string;
+	uid: string;
+	type: string;
+	direct: boolean;
+	freeSwitchExtension?: string;
+};
+
 const useUserData = (rid: string) => {
-	const [user, setUser] = useState({ username: '', avatar: '', uid: '', type: '', direct: false });
+	const [user, setUser] = useState<UserState>({ username: '', avatar: '', uid: '', type: '', direct: false });
 	const { useRealName } = useAppSelector(state => ({
 		useRealName: state.settings.UI_Use_Real_Name as boolean
 	}));
@@ -36,7 +45,8 @@ const useUserData = (rid: string) => {
 							avatar: user.username,
 							uid: user._id,
 							type: SubscriptionType.DIRECT,
-							direct: true
+							direct: true,
+							freeSwitchExtension: user.freeSwitchExtension
 						});
 					}
 				} catch (error) {

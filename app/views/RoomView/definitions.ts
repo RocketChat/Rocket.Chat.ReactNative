@@ -25,6 +25,7 @@ export interface IRoomViewProps extends IActionSheetProvider, IBaseScreen<ChatsS
 	inAppFeedback?: { [key: string]: string };
 	encryptionEnabled: boolean;
 	airGappedRestrictionRemainingDays: number | undefined;
+	remoteStreamUrl: string;
 }
 
 export type TStateAttrsUpdate = keyof IRoomViewState;
