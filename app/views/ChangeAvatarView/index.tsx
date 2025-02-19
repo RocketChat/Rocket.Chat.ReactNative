@@ -27,6 +27,7 @@ import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
@@ -66,6 +67,7 @@ function reducer(state: IState, action: IReducerAction) {
 
 const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	console.log('🚀 ~ ChangeAvatarView ~ state:', state);
 	const [rawImageUrl, setRawImageUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
@@ -148,7 +150,7 @@ const ChangeAvatarView = () => {
 			if (context === 'room' && room?.rid) {
 				// Change Rooms Avatar
 				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url) {
+			} else if (state?.url || state?.data) {
 				// Change User's Avatar
 				await changeUserAvatar(state);
 			} else if (state.resetUserAvatar) {
@@ -176,10 +178,10 @@ const ChangeAvatarView = () => {
 			if (response.canceled) {
 				return;
 			}
-			const [asset] = response.assets;
+			const [media] = mapMediaResult(response.assets);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: asset.uri, data: `data:image/jpeg;base64,${asset.base64}`, service: 'upload' }
+				payload: { url: media.path, data: `data:image/jpeg;base64,${media.base64}`, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {

@@ -9,7 +9,7 @@ const image = {
 	path: `/tmp/expo-image-picker/${random(20)}.jpg`,
 	height: 152,
 	width: 152,
-	data: mockImageRocketBase64,
+	base64: mockImageRocketBase64,
 	modificationDate: null,
 	localIdentifier: 'CEEE9916-81FD-4544-9D86-7044DB6C4374/L0/001',
 	size: 5006,
@@ -25,14 +25,12 @@ const image = {
 	creationDate: '1679327100'
 };
 
-export function launchImageLibraryAsync(options: any): Promise<any> {
-	const mockImageRocketBase64 = options?.multiple ? [image] : image;
-	return Promise.resolve(mockImageRocketBase64);
+export function launchImageLibraryAsync(): Promise<any> {
+	return Promise.resolve({ assets: [image] });
 }
 
-export function launchCameraAsync(options: any): Promise<any> {
-	const mockImageRocketBase64 = options?.multiple ? [image] : image;
-	return Promise.resolve(mockImageRocketBase64);
+export function launchCameraAsync(): Promise<any> {
+	return Promise.resolve({ assets: [image] });
 }
 
 export default {

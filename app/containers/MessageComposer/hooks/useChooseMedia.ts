@@ -1,6 +1,5 @@
 import { Alert } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
-import type { ImagePickerAsset } from 'expo-image-picker';
 
 import { IMAGE_PICKER_CONFIG, LIBRARY_PICKER_CONFIG, VIDEO_PICKER_CONFIG } from '../constants';
 import I18n from '../../../i18n';
@@ -12,20 +11,8 @@ import Navigation from '../../../lib/navigation/appNavigation';
 import { useAppSelector } from '../../../lib/hooks';
 import { useRoomContext } from '../../../views/RoomView/context';
 import ImagePicker from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { mapMediaResult } from '../../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { IShareAttachment } from '../../../definitions';
-
-const mapMediaResult = (assets: ImagePickerAsset[]): IShareAttachment[] =>
-	assets.map(asset => ({
-		filename: asset.fileName || `${new Date().getTime().toString()}.jpg`,
-		size: asset.fileSize || 0,
-		mime: asset.mimeType,
-		path: asset.uri,
-		width: asset.width,
-		height: asset.height,
-		exif: {
-			Orientation: asset.exif?.Orientation
-		}
-	}));
 
 export const useChooseMedia = ({
 	rid,

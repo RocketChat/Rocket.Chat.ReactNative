@@ -88,4 +88,5 @@ export interface IShareAttachment {
 	exif?: {
 		Orientation: string;
 	};
+	base64?: string | null;
 }
