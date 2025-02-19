@@ -83,7 +83,7 @@ async function load({
 		lastOpenISOString = new Date(lastOpen).toISOString();
 	} else {
 		const lastUpdate = await getLastUpdate(roomId);
-		lastOpenISOString = lastUpdate?.toISOString();
+		lastOpenISOString = lastUpdate?.toISOString() ?? new Date().toISOString();
 	}
 	// RC 0.60.0
 	// @ts-ignore // this method dont have type
