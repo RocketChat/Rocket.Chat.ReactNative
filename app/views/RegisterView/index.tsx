@@ -292,7 +292,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 				) : null}
 
 				<Button
-					disabled={!isValid || !isPasswordValid || !validateDefaultFormInfo()}
+					disabled={!isValid || !isPasswordValid() || !validateDefaultFormInfo()}
 					testID='register-view-submit'
 					title={I18n.t('Register')}
 					type='primary'
