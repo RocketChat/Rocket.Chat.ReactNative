@@ -53,7 +53,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		setFocus,
 		getValues,
 		watch,
-		formState: { isValid, isDirty }
+		formState: { isValid, dirtyFields }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -283,7 +283,13 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onSubmit={handleSubmit(onSubmit)}
 					/>
 				</View>
-				{passwordPolicies ? <PasswordPolicies policies={passwordPolicies} isDirty={isDirty} password={password} /> : null}
+				{passwordPolicies ? (
+					<PasswordPolicies
+						policies={passwordPolicies}
+						isDirty={(dirtyFields.password || dirtyFields.confirmPassword) ?? false}
+						password={password}
+					/>
+				) : null}
 
 				<Button
 					disabled={!isValid || !isPasswordValid || !validateDefaultFormInfo()}
