@@ -476,7 +476,7 @@
   "Quote": "Lainaus",
   "Reactions_are_disabled": "Reaktiot eivät ole käytössä",
   "Reactions_are_enabled": "Reaktiot ovat käytössä",
-  "Read": "Lue",
+  "Read_correction_speaks_screen_reader": "Lukea",
   "Read_External_Permission": "Median lukuoikeus",
   "Read_External_Permission_Message": "Rocket.Chat tarvitsee pääsyn laitteesi valokuviin, mediaan ja tiedostoihin",
   "Read_Only": "Vain luku",

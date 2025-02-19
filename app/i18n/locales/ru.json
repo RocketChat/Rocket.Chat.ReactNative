@@ -466,7 +466,7 @@
   "Quote": "Цитата",
   "Reactions_are_disabled": "Реакции отключены",
   "Reactions_are_enabled": "Реакции активированы",
-  "Read": "Читать",
+  "Read_correction_speaks_screen_reader": "Лидо",
   "Read_External_Permission": "Разрешение на Чтение Медиа",
   "Read_External_Permission_Message": "Rocket.Chat необходим доступ к фотографиям, медиа и другим файлам на вашем устройстве",
   "Read_Only": "Только для чтения",

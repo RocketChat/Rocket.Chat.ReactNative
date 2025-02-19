@@ -515,7 +515,7 @@
   "Quote": "Idézet",
   "Reactions_are_disabled": "A reakciók le vannak tiltva",
   "Reactions_are_enabled": "A reakciók engedélyezve vannak",
-  "Read": "Olvasd/Olvasni",
+  "Read_correction_speaks_screen_reader": "Olvas",
   "Read_External_Permission": "Médiaengedély olvasása",
   "Read_External_Permission_Message": "A Rocket.Chat-nek hozzá kell férnie a készülékén lévő fényképekhez, médiához és fájlokhoz",
   "Read_Only": "Csak olvasható",

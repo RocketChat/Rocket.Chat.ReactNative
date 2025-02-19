@@ -501,7 +501,7 @@
   "Quote": "Zitat",
   "Reactions_are_disabled": "Reaktionen sind deaktiviert",
   "Reactions_are_enabled": "Reaktionen sind aktiviert",
-  "Read": "Lesen",
+  "Read_correction_speaks_screen_reader": "Lesen",
   "Read_External_Permission": "Lese-Zugriff auf Medien",
   "Read_External_Permission_Message": "Rocket.Chat benötigt Zugriff auf Ihre Fotos, Medien und Dateien auf Ihrem Gerät",
   "Read_Only": "Schreibgeschützt",

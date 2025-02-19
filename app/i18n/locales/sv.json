@@ -475,7 +475,7 @@
   "Quote": "Citat",
   "Reactions_are_disabled": "Reaktioner är inaktiverade",
   "Reactions_are_enabled": "Reaktioner är aktiverade",
-  "Read": "Läs",
+  "Read_correction_speaks_screen_reader": "Läsa",
   "Read_External_Permission": "Behörighet att läsa media",
   "Read_External_Permission_Message": "Rocket.Chat behöver åtkomst till foton, media och filer på enheten",
   "Read_Only": "Skrivskyddat",
