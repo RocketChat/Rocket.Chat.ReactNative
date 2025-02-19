@@ -121,7 +121,7 @@ const SetUsernameView = () => {
 						placeholder={I18n.t('Name')}
 						returnKeyType='send'
 						onSubmitEditing={handleSubmit(submit)}
-						testID='set-username-view-input'
+						testID='set-name-view-input'
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
 					/>
