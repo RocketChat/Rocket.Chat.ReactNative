@@ -51,6 +51,8 @@ const RoomInfoView = (): React.ReactElement => {
 	const isDirect = roomType === SubscriptionType.DIRECT;
 	const isLivechat = roomType === SubscriptionType.OMNICHANNEL;
 
+	// Prevents overwriting the setHeader after loadRoom.
+	const initialHeaderTitleLoaded = useRef<boolean>(false);
 	const subscription = useRef<Subscription | undefined>(undefined);
 
 	const {
@@ -79,7 +81,9 @@ const RoomInfoView = (): React.ReactElement => {
 
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
 	useLayoutEffect(() => {
+		if (initialHeaderTitleLoaded.current) return;
 		setHeader(false);
+		initialHeaderTitleLoaded.current = true;
 	});
 
 	useEffect(() => {
