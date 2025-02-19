@@ -494,8 +494,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 "borderLeftColor": "#9EA2A8",
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
-                "height": 64,
+                "flexDirection": "column",
+                "justifyContent": "space-between",
                 "marginRight": 8,
+                "maxHeight": 120,
+                "minHeight": 89,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -508,6 +511,8 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 {
                   "alignItems": "center",
                   "flexDirection": "row",
+                  "marginBottom": 4,
+                  "minHeight": 24,
                 }
               }
             >
@@ -616,38 +621,59 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 </View>
               </RNGestureHandlerButton>
             </View>
-            <Text
-              accessibilityLabel="Message abc"
-              numberOfLines={1}
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
+                {
+                  "flex": 1,
+                  "marginVertical": 4,
+                  "minHeight": 20,
+                }
               }
-              testID="markdown-preview-Message abc"
             >
-              Message abc
-            </Text>
+              <RCTScrollView
+                contentContainerStyle={
+                  {
+                    "flexGrow": 1,
+                  }
+                }
+                showsVerticalScrollIndicator={true}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View>
+                  <Text
+                    numberOfLines={2}
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#2F343D",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "lineHeight": 20,
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    Message abc
+                  </Text>
+                </View>
+              </RCTScrollView>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                  "minHeight": 20,
+                }
+              }
+            />
           </View>
         </View>
       </View>
@@ -914,8 +940,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 "borderLeftColor": "#9EA2A8",
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
-                "height": 64,
+                "flexDirection": "column",
+                "justifyContent": "space-between",
                 "marginRight": 8,
+                "maxHeight": 120,
+                "minHeight": 89,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -928,6 +957,8 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 {
                   "alignItems": "center",
                   "flexDirection": "row",
+                  "marginBottom": 4,
+                  "minHeight": 24,
                 }
               }
             >
@@ -1036,38 +1067,59 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 </View>
               </RNGestureHandlerButton>
             </View>
-            <Text
-              accessibilityLabel="Message abc"
-              numberOfLines={1}
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
+                {
+                  "flex": 1,
+                  "marginVertical": 4,
+                  "minHeight": 20,
+                }
               }
-              testID="markdown-preview-Message abc"
             >
-              Message abc
-            </Text>
+              <RCTScrollView
+                contentContainerStyle={
+                  {
+                    "flexGrow": 1,
+                  }
+                }
+                showsVerticalScrollIndicator={true}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View>
+                  <Text
+                    numberOfLines={2}
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#2F343D",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "lineHeight": 20,
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    Message abc
+                  </Text>
+                </View>
+              </RCTScrollView>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                  "minHeight": 20,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -1091,8 +1143,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 "borderLeftColor": "#9EA2A8",
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
-                "height": 64,
+                "flexDirection": "column",
+                "justifyContent": "space-between",
                 "marginRight": 8,
+                "maxHeight": 120,
+                "minHeight": 89,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -1105,6 +1160,8 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 {
                   "alignItems": "center",
                   "flexDirection": "row",
+                  "marginBottom": 4,
+                  "minHeight": 24,
                 }
               }
             >
@@ -1213,38 +1270,59 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 </View>
               </RNGestureHandlerButton>
             </View>
-            <Text
-              accessibilityLabel="Message def"
-              numberOfLines={1}
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
+                {
+                  "flex": 1,
+                  "marginVertical": 4,
+                  "minHeight": 20,
+                }
               }
-              testID="markdown-preview-Message def"
             >
-              Message def
-            </Text>
+              <RCTScrollView
+                contentContainerStyle={
+                  {
+                    "flexGrow": 1,
+                  }
+                }
+                showsVerticalScrollIndicator={true}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View>
+                  <Text
+                    numberOfLines={2}
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#2F343D",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "lineHeight": 20,
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    Message def
+                  </Text>
+                </View>
+              </RCTScrollView>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                  "minHeight": 20,
+                }
+              }
+            />
           </View>
         </View>
       </View>
@@ -1511,8 +1589,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 "borderLeftColor": "#9EA2A8",
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
-                "height": 64,
+                "flexDirection": "column",
+                "justifyContent": "space-between",
                 "marginRight": 8,
+                "maxHeight": 120,
+                "minHeight": 89,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -1525,6 +1606,8 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 {
                   "alignItems": "center",
                   "flexDirection": "row",
+                  "marginBottom": 4,
+                  "minHeight": 24,
                 }
               }
             >
@@ -1633,38 +1716,59 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 </View>
               </RNGestureHandlerButton>
             </View>
-            <Text
-              accessibilityLabel="Message abc"
-              numberOfLines={1}
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
+                {
+                  "flex": 1,
+                  "marginVertical": 4,
+                  "minHeight": 20,
+                }
               }
-              testID="markdown-preview-Message abc"
             >
-              Message abc
-            </Text>
+              <RCTScrollView
+                contentContainerStyle={
+                  {
+                    "flexGrow": 1,
+                  }
+                }
+                showsVerticalScrollIndicator={true}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View>
+                  <Text
+                    numberOfLines={2}
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#2F343D",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "lineHeight": 20,
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    Message abc
+                  </Text>
+                </View>
+              </RCTScrollView>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                  "minHeight": 20,
+                }
+              }
+            />
           </View>
         </View>
         <View
@@ -1688,8 +1792,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 "borderLeftColor": "#9EA2A8",
                 "borderTopRightRadius": 4,
                 "borderWidth": 1,
-                "height": 64,
+                "flexDirection": "column",
+                "justifyContent": "space-between",
                 "marginRight": 8,
+                "maxHeight": 120,
+                "minHeight": 89,
                 "padding": 8,
                 "paddingLeft": 16,
                 "width": 320,
@@ -1702,6 +1809,8 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 {
                   "alignItems": "center",
                   "flexDirection": "row",
+                  "marginBottom": 4,
+                  "minHeight": 24,
                 }
               }
             >
@@ -1810,38 +1919,59 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 </View>
               </RNGestureHandlerButton>
             </View>
-            <Text
-              accessibilityLabel="Message def"
-              numberOfLines={1}
+            <View
               style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
+                {
+                  "flex": 1,
+                  "marginVertical": 4,
+                  "minHeight": 20,
+                }
               }
-              testID="markdown-preview-Message def"
             >
-              Message def
-            </Text>
+              <RCTScrollView
+                contentContainerStyle={
+                  {
+                    "flexGrow": 1,
+                  }
+                }
+                showsVerticalScrollIndicator={true}
+                style={
+                  {
+                    "flex": 1,
+                  }
+                }
+              >
+                <View>
+                  <Text
+                    numberOfLines={2}
+                    style={
+                      {
+                        "backgroundColor": "transparent",
+                        "color": "#2F343D",
+                        "fontFamily": "Inter",
+                        "fontSize": 14,
+                        "fontWeight": "400",
+                        "lineHeight": 20,
+                        "textAlign": "left",
+                      }
+                    }
+                  >
+                    Message def
+                  </Text>
+                </View>
+              </RCTScrollView>
+            </View>
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "gap": 8,
+                  "justifyContent": "flex-start",
+                  "minHeight": 20,
+                }
+              }
+            />
           </View>
         </View>
       </View>
