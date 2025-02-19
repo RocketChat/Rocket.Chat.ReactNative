@@ -198,9 +198,9 @@ const Header = React.memo(
 				userId: roomUserId
 			});
 			if (tmid) {
-				return `${iconOrStatusLabel} ${title} ${parentTitle}. ${I18n.t('Actions')}`;
+				return `${iconOrStatusLabel} ${title} ${parentTitle}.`;
 			}
-			return `${iconOrStatusLabel} ${title} ${subtitle ?? ''}. ${I18n.t('Actions')}`;
+			return `${iconOrStatusLabel} ${title} ${subtitle ?? ''}.`;
 		}, [title, parentTitle, tmid, isGroupChat, status, statusState, teamMain, type, roomUserId, prid]);
 
 		return (
