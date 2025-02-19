@@ -135,8 +135,21 @@ export const Pinned = () => (
 
 export const Translated = () => (
 	<>
-		<Message msg='Message header' isTranslated />
-		<Message msg='Message without header' isTranslated isHeader={false} />
+		<Message
+			msg='Message translated'
+			md={[
+				{
+					type: 'PARAGRAPH',
+					value: [
+						{
+							type: 'PLAIN_TEXT',
+							value: 'md is never translated'
+						}
+					]
+				}
+			]}
+			isTranslated
+		/>
 	</>
 );
 

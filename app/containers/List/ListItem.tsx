@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { AccessibilityRole, I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole } from 'react-native';
 
 import Touch from '../Touch';
 import { themes } from '../../lib/constants';
@@ -69,6 +69,7 @@ interface IListItemContent {
 	heightContainer?: number;
 	styleTitle?: StyleProp<TextStyle>;
 	additionalAcessibilityLabel?: string | boolean;
+	accessibilityRole?: AccessibilityRole;
 	additionalAcessibilityLabelCheck?: boolean;
 	accessibilityRole?: AccessibilityRole;
 }
@@ -91,7 +92,7 @@ const Content = React.memo(
 		styleTitle,
 		additionalAcessibilityLabel,
 		additionalAcessibilityLabelCheck,
-		accessibilityRole = 'button'
+		accessibilityRole
 	}: IListItemContent) => {
 		const { fontScale } = useDimensions();
 
@@ -122,7 +123,7 @@ const Content = React.memo(
 				testID={testID}
 				accessible
 				accessibilityLabel={handleAcessibilityLabel}
-				accessibilityRole={accessibilityRole}>
+				accessibilityRole={accessibilityRole ?? 'button'}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
