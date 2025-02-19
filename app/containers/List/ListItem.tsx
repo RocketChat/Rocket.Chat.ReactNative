@@ -71,7 +71,6 @@ interface IListItemContent {
 	additionalAcessibilityLabel?: string | boolean;
 	accessibilityRole?: AccessibilityRole;
 	additionalAcessibilityLabelCheck?: boolean;
-	accessibilityRole?: AccessibilityRole;
 }
 
 const Content = React.memo(
