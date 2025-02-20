@@ -51,9 +51,9 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	onLinkPress,
 	isTranslated
 }: IMarkdownProps) => {
-	if (!msg || isTranslated) return null;
+	if (!msg) return null;
 
-	const tokens = md ?? parse(msg);
+	const tokens = !isTranslated && md ? md : parse(msg);
 
 	if (isEmpty(tokens)) return null;
 
