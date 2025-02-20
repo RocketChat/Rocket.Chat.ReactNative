@@ -9,18 +9,21 @@ import { SERVICES_COLLAPSED_HEIGHT, SERVICE_HEIGHT } from './styles';
 import ServicesSeparator from './ServicesSeparator';
 import Service from './Service';
 
-const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server }: IServiceList) => (
+const ServiceList = ({ services, CAS_enabled, CAS_login_url, Gitlab_URL, server, collapsed }: IServiceList) => (
 	<>
-		{Object.values(services).map((service: IItemService) => (
-			<Service
-				key={service._id}
-				CAS_enabled={CAS_enabled}
-				CAS_login_url={CAS_login_url}
-				Gitlab_URL={Gitlab_URL}
-				server={server}
-				service={service}
-			/>
-		))}
+		{Object.values(services).map((service: IItemService, index: number) => {
+			if (index > 2 && collapsed) return null;
+			return (
+				<Service
+					key={service._id}
+					CAS_enabled={CAS_enabled}
+					CAS_login_url={CAS_login_url}
+					Gitlab_URL={Gitlab_URL}
+					server={server}
+					service={service}
+				/>
+			);
+		})}
 	</>
 );
 
@@ -61,6 +64,7 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 						CAS_login_url={CAS_login_url}
 						Gitlab_URL={Gitlab_URL}
 						server={server}
+						collapsed={collapsed}
 					/>
 				</Animated.View>
 				<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
@@ -75,6 +79,7 @@ const LoginServices = ({ separator }: { separator: boolean }): React.ReactElemen
 				CAS_login_url={CAS_login_url}
 				Gitlab_URL={Gitlab_URL}
 				server={server}
+				collapsed={collapsed}
 			/>
 			<ServicesSeparator services={services} separator={separator} collapsed={collapsed} onPress={onPressButtonSeparator} />
 		</>
