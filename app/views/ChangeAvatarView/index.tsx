@@ -67,7 +67,6 @@ function reducer(state: IState, action: IReducerAction) {
 
 const ChangeAvatarView = () => {
 	const [state, dispatch] = useReducer(reducer, initialState);
-	console.log('🚀 ~ ChangeAvatarView ~ state:', state);
 	const [rawImageUrl, setRawImageUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
