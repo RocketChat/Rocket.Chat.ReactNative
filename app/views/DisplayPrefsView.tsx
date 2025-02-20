@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
-import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
@@ -95,7 +94,11 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderRadio = (value: boolean) => (
-		<RadioButton selected={!!value} color={value ? colors.fontHint : colors.fontSecondaryInfo} size={ICON_SIZE} />
+		<List.Icon
+			name={value ? 'radio-checked' : 'radio-unchecked'}
+			color={value ? colors.strokeHighlight : colors.strokeMedium}
+			size={ICON_SIZE}
+		/>
 	);
 
 	return (
