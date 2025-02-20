@@ -10,7 +10,7 @@ const Radio = ({ check, testID, size }: { check: boolean; testID?: string; size?
 			testID={testID}
 			name={check ? 'radio-checked' : 'radio-unchecked'}
 			size={size || 20}
-			color={check ? colors.strokeHighlight : colors.strokeMedium}
+			color={check ? colors.buttonBackgroundPrimaryDefault : colors.strokeMedium}
 		/>
 	);
 };
