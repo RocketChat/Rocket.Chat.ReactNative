@@ -11,6 +11,7 @@ import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
+import Radio from '../containers/Radio';
 import { IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
@@ -93,13 +94,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
-	const renderRadio = (value: boolean) => (
-		<List.Icon
-			name={value ? 'radio-checked' : 'radio-unchecked'}
-			color={value ? colors.strokeHighlight : colors.strokeMedium}
-			size={ICON_SIZE}
-		/>
-	);
+	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
 
 	return (
 		<SafeAreaView>
