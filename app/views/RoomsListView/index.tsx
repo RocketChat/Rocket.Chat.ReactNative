@@ -474,7 +474,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						badge={() => getBadge()}
 						disabled={disabled}
 					/>
-					<RoomsListHeaderView width={headerTitleWidth} />
+					<View style={{ flex: 1 }}>
+						<RoomsListHeaderView width={headerTitleWidth} />
+					</View>
 					<HeaderButton.Container
 						onLayout={
 							isTablet
