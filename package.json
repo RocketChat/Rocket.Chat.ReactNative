@@ -68,7 +68,7 @@
 		"expo-document-picker": "11.10.1",
 		"expo-file-system": "16.0.8",
 		"expo-haptics": "^12.8.1",
-		"expo-image": "~1.10.6",
+		"expo-image": "1.10.6",
 		"expo-keep-awake": "^12.8.2",
 		"expo-local-authentication": "^13.8.0",
 		"expo-video-thumbnails": "^7.9.0",
@@ -231,7 +231,6 @@
 				"expo-application",
 				"expo-asset",
 				"expo-constants",
-				"expo-font",
 				"expo-error-recovery"
 			]
 		}
