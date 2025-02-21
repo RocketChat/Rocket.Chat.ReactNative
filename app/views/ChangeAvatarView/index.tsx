@@ -274,7 +274,7 @@ const ChangeAvatarView = () => {
 							type='secondary'
 							disabled={saving}
 							backgroundColor={colors.buttonBackgroundSecondaryDefault}
-							onPress={pickImage}
+							onPress={() => pickImage()}
 							testID='change-avatar-view-upload-image'
 							style={styles.containerInput}
 						/>
