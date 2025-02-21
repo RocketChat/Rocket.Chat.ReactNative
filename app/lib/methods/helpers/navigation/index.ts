@@ -4,9 +4,11 @@ import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
+import BackButton from '../../../../containers/BackButton';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	headerBackTitleVisible: false
+	headerBackTitleVisible: false,
+	headerLeft: BackButton
 };
 
 export const drawerStyle = {
