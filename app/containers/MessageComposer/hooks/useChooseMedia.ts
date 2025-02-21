@@ -12,6 +12,7 @@ import { useAppSelector } from '../../../lib/hooks';
 import { useRoomContext } from '../../../views/RoomView/context';
 import ImagePicker from '../../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { mapMediaResult } from '../../../lib/methods/helpers/ImagePicker/mapMediaResult';
+import { getPermissions } from '../../../lib/methods/helpers/ImagePicker/getPermissions';
 import { IShareAttachment } from '../../../definitions';
 
 export const useChooseMedia = ({
@@ -30,6 +31,7 @@ export const useChooseMedia = ({
 
 	const takePhoto = async () => {
 		try {
+			await getPermissions('camera');
 			const result = await ImagePicker.launchCameraAsync(IMAGE_PICKER_CONFIG);
 			if (result.canceled) {
 				return;
@@ -53,6 +55,7 @@ export const useChooseMedia = ({
 
 	const takeVideo = async () => {
 		try {
+			await getPermissions('camera');
 			const result = await ImagePicker.launchCameraAsync(VIDEO_PICKER_CONFIG);
 			if (result.canceled) {
 				return;
@@ -76,6 +79,7 @@ export const useChooseMedia = ({
 
 	const chooseFromLibrary = async () => {
 		try {
+			await getPermissions('library');
 			const result = await ImagePicker.launchImageLibraryAsync(LIBRARY_PICKER_CONFIG);
 			if (result.canceled) {
 				return;

@@ -27,6 +27,7 @@ import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
@@ -172,8 +173,8 @@ const ChangeAvatarView = () => {
 				exif: true,
 				base64: true
 			};
-			const response =
-				isCam === true ? await ImagePicker.launchCameraAsync(options) : await ImagePicker.launchImageLibraryAsync(options);
+			await getPermissions(isCam ? 'camera' : 'library');
+			const response = isCam ? await ImagePicker.launchCameraAsync(options) : await ImagePicker.launchImageLibraryAsync(options);
 			if (response.canceled) {
 				return;
 			}
