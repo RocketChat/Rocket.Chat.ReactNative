@@ -432,6 +432,11 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
 		const { rid, tmid } = this;
+
+		if (!rid) {
+			navigation.setOptions({ headerLeft: () => null });
+			return;
+		}
 		if (!room.rid) {
 			return;
 		}
