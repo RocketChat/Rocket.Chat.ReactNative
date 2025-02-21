@@ -32,10 +32,12 @@ const styles = StyleSheet.create({
 
 interface ISubmit {
 	username: string;
+	name: string;
 }
 
 const schema = yup.object().shape({
-	username: yup.string().required()
+	username: yup.string().required(),
+	name: yup.string().required()
 });
 
 const SetUsernameView = () => {
@@ -67,13 +69,13 @@ const SetUsernameView = () => {
 		init();
 	}, []);
 
-	const submit = async ({ username }: ISubmit) => {
+	const submit = async ({ username, name }: ISubmit) => {
 		if (!isValid) {
 			return;
 		}
 		setLoading(true);
 		try {
-			await Services.saveUserProfile({ username });
+			await Services.saveUserProfile({ username, name });
 			dispatch(loginRequest({ resume: token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
@@ -100,6 +102,26 @@ const SetUsernameView = () => {
 						returnKeyType='send'
 						onSubmitEditing={handleSubmit(submit)}
 						testID='set-username-view-input'
+						clearButtonMode='while-editing'
+						containerStyle={sharedStyles.inputLastChild}
+					/>
+					<Text
+						style={[
+							sharedStyles.loginTitle,
+							sharedStyles.textBold,
+							styles.loginTitle,
+							{ color: colors.fontTitlesLabels, marginBottom: 10 }
+						]}>
+						{I18n.t('Name')}
+					</Text>
+					<ControlledFormTextInput
+						control={control}
+						name='name'
+						autoFocus
+						placeholder={I18n.t('Name')}
+						returnKeyType='send'
+						onSubmitEditing={handleSubmit(submit)}
+						testID='set-name-view-input'
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
 					/>

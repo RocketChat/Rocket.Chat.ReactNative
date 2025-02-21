@@ -16,6 +16,7 @@ export default function NotificationDelay(): React.ReactElement {
 			<List.Item
 				title='Documentation'
 				onPress={openNotificationDocumentation}
+				accessibilityRole='link'
 				right={() => <NewWindowIcon size={32} color={colors.fontAnnotation} />}
 				testID='push-troubleshoot-view-notification-delay'
 			/>
