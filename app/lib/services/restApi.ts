@@ -7,7 +7,6 @@ import {
 	IRoom,
 	IRoomNotifications,
 	IServerRoom,
-	IUser,
 	RoomType,
 	SubscriptionType
 } from '../../definitions';
@@ -85,6 +84,11 @@ export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: bool
 export const e2eRejectSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
 	// RC 5.5
 	sdk.post('e2e.rejectSuggestedGroupKey', { rid });
+
+export const fetchUsersWaitingForGroupKey = (roomIds: string[]) => sdk.get('e2e.fetchUsersWaitingForGroupKey', { roomIds });
+
+export const provideUsersSuggestedGroupKeys = (usersSuggestedGroupKeys: any) =>
+	sdk.post('e2e.provideUsersSuggestedGroupKeys', { usersSuggestedGroupKeys });
 
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
@@ -622,7 +626,7 @@ export const saveRoomSettings = (
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
 export const saveUserProfile = (
-	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	data: IProfileParams | Pick<IProfileParams, 'username' | 'name'>,
 	customFields?: { [key: string | number]: string }
 ) =>
 	// RC 0.62.2
@@ -933,6 +937,11 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
 }
 
+export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
+	// RC ?
+	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
+}
+
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0
@@ -974,11 +983,8 @@ export const pushTest = () => sdk.post('push.test');
 // RC 6.5.0
 export const pushInfo = () => sdk.get('push.info');
 
-export const sendEmailCode = () => {
-	const { username } = reduxStore.getState().login.user as IUser;
-	// RC 3.1.0
-	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-};
+// RC 3.1.0
+export const sendEmailCode = (emailOrUsername: string) => sdk.post('users.2fa.sendEmailCode', { emailOrUsername });
 
 export const getRoomMembers = async ({
 	rid,

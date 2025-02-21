@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { Image as ExpoImage } from 'expo-image';
 import { dequal } from 'dequal';
 
+import { useAppSelector } from '../../lib/hooks';
 import Touchable from './Touchable';
 import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
@@ -50,7 +51,7 @@ const UrlContent = ({ title, description }: { title: string; description: string
 	return (
 		<View style={styles.textContainer}>
 			{title ? (
-				<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
 					{title}
 				</Text>
 			) : null}
@@ -127,6 +128,7 @@ type TImageLoadedState = 'loading' | 'done' | 'error';
 const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
+	const API_Embed = useAppSelector(state => state.settings.API_Embed);
 	const getImageUrl = () => {
 		const imageUrl = url.image || url.url;
 
@@ -145,7 +147,7 @@ const Url = ({ url }: { url: IUrl }) => {
 
 	const hasContent = !!(url.title || url.description);
 
-	if (!url || url?.ignoreParse) {
+	if (!url || url?.ignoreParse || !API_Embed) {
 		return null;
 	}
 

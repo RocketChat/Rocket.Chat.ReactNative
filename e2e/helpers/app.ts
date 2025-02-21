@@ -132,20 +132,28 @@ async function searchRoom(
 	nativeElementAction: keyof Pick<Detox.NativeElementActions, 'typeText' | 'replaceText'> = 'typeText',
 	roomTestID?: string
 ) {
+	const testID = roomTestID || `rooms-list-view-item-${room}`;
 	await waitFor(element(by.id('rooms-list-view')))
 		.toExist()
 		.withTimeout(30000);
-	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	if (nativeElementAction === 'replaceText') {
-		// trigger the input's onChangeText
-		await element(by.id('rooms-list-view-search-input')).typeText(' ');
+
+	try {
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(2000);
+		await expect(element(by.id(testID))).toBeVisible();
+	} catch {
+		await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
+		if (nativeElementAction === 'replaceText') {
+			// trigger the input's onChangeText
+			await element(by.id('rooms-list-view-search-input')).typeText(' ');
+		}
+		await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
+		await sleep(500);
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(60000);
 	}
-	await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
-	await sleep(500);
-	await sleep(500);
-	await waitFor(element(by.id(roomTestID || `rooms-list-view-item-${room}`)))
-		.toBeVisible()
-		.withTimeout(60000);
 }
 
 async function navigateToRoom(room: string) {

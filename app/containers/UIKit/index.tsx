@@ -77,7 +77,7 @@ class MessageParser extends UiKitParserMessage<React.ReactElement> {
 				<MarkdownPreview msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} numberOfLines={0} />
 			);
 		}
-		return <Markdown msg={element.text} theme={theme} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} />;
+		return <Markdown msg={element.text} style={[isContext && { color: themes[theme].fontSecondaryInfo }]} />;
 	}
 
 	button(element: IButton, context: BlockContext) {

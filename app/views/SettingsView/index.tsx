@@ -260,7 +260,16 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						title='Legal'
+						showActionIndicator
+						onPress={() => navigateToScreen('LegalView')}
+						testID='settings-view-legal'
+						left={() => <List.Icon name='book' />}
+					/>
+					<List.Separator />
+					<List.Item
 						title='Contact_us'
+						accessibilityRole='link'
 						onPress={sendEmail}
 						testID='settings-view-contact'
 						left={() => <List.Icon name='mail' />}
@@ -271,6 +280,7 @@ const SettingsView = (): React.ReactElement => {
 						<>
 							<List.Item
 								title='Review_this_app'
+								accessibilityRole='link'
 								onPress={onReviewPress}
 								testID='settings-view-review-app'
 								left={() => <List.Icon name='star' />}
@@ -281,6 +291,7 @@ const SettingsView = (): React.ReactElement => {
 					<List.Separator />
 					<List.Item
 						title='License'
+						accessibilityRole='link'
 						onPress={onPressLicense}
 						testID='settings-view-license'
 						left={() => <List.Icon name='file-document' />}
