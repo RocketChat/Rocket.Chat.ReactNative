@@ -484,7 +484,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		);
 		navigation.setOptions({
 			header: () => (
-				<HeaderContainer>
+				<HeaderContainer isMasterDetail={isMasterDetail}>
 					<LeftButtons
 						rid={rid}
 						tmid={tmid}
