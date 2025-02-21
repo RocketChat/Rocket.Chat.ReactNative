@@ -435,7 +435,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (searching) {
 			return {
 				header: () => (
-					<HeaderContainer isMasterDetail={isMasterDetail}>
+					<HeaderContainer>
 						<HeaderButton.Container left>
 							<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
 						</HeaderButton.Container>

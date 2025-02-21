@@ -4,9 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';
 
-interface IHeaderContainer extends ViewProps {
-	isMasterDetail?: boolean;
-}
+interface IHeaderContainer extends ViewProps {}
 
 const HeaderContainer = (props: IHeaderContainer) => {
 	const insets = useSafeAreaInsets();
@@ -24,7 +22,7 @@ const HeaderContainer = (props: IHeaderContainer) => {
 				paddingVertical,
 				paddingTop: insets.top + paddingVertical,
 				paddingHorizontal: 16,
-				gap: props.isMasterDetail ? 16 : 0,
+				gap: 16,
 				backgroundColor: colors.surfaceNeutral
 			}}
 		/>
