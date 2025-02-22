@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={213}
+        handlerTag={206}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -171,7 +171,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={214}
+        handlerTag={207}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -276,6 +276,1054 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
+          handlerTag={193}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 16,
+              "left": 16,
+              "right": 16,
+              "top": 16,
+            }
+          }
+          onActiveStateChange={[Function]}
+          onGestureEvent={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "height": 24,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 24,
+            }
+          }
+          testID="message-composer-actions"
+        >
+          <View
+            accessibilityLabel="Message actions"
+            accessibilityRole="button"
+            accessible={true}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </View>
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
+        blurOnSubmit={false}
+        defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
+        keyboardAppearance="light"
+        mostRecentEventCount={0}
+        multiline={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onChangeText={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
+        onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
+        placeholder=""
+        placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
+        style={
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
+        }
+        submitBehavior="newline"
+        testID="message-composer-input"
+        text=""
+        underlineColorAndroid="transparent"
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 48,
+            "paddingLeft": 12,
+          }
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={194}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 16,
+              "left": 16,
+              "right": 16,
+              "top": 16,
+            }
+          }
+          onActiveStateChange={[Function]}
+          onGestureEvent={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "height": 24,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 24,
+            }
+          }
+          testID="message-composer-send-audio"
+        >
+          <View
+            accessibilityLabel="Send audio message"
+            accessibilityRole="button"
+            accessible={true}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </View>
+    </View>
+    <RCTScrollView
+      data={
+        [
+          "abc",
+        ]
+      }
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={true}
+      keyExtractor={[Function]}
+      onContentSizeChange={[Function]}
+      onLayout={[Function]}
+      onMomentumScrollBegin={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={0.0001}
+      stickyHeaderIndices={[]}
+      viewabilityConfigCallbackPairs={[]}
+    >
+      <View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderBottomRightRadius": 4,
+                "borderColor": "#EBECEF",
+                "borderLeftColor": "#9EA2A8",
+                "borderTopRightRadius": 4,
+                "borderWidth": 1,
+                "height": 64,
+                "marginRight": 8,
+                "padding": 8,
+                "paddingLeft": 16,
+                "width": 320,
+              }
+            }
+            testID="composer-quote-abc"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "700",
+                      "lineHeight": 20,
+                      "paddingRight": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#9EA2A8",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+              </View>
+              <RNGestureHandlerButton
+                activeOpacity={0.3}
+                borderless={true}
+                collapsable={false}
+                delayLongPress={600}
+                handlerTag={195}
+                handlerType="NativeViewGestureHandler"
+                hitSlop={
+                  {
+                    "bottom": 16,
+                    "left": 16,
+                    "right": 16,
+                    "top": 16,
+                  }
+                }
+                onActiveStateChange={[Function]}
+                onGestureEvent={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onHandlerStateChange={[Function]}
+                onPress={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "height": 24,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "width": 24,
+                  }
+                }
+                testID="composer-quote-remove-abc"
+              >
+                <View
+                  accessibilityLabel="Remove quote message"
+                  accessibilityRole="button"
+                  accessible={true}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </View>
+            <Text
+              accessibilityLabel="Message abc"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                ]
+              }
+              testID="markdown-preview-Message abc"
+            >
+              Message abc
+            </Text>
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>
+</keyboard-accessory-view-mock>
+`;
+
+exports[`MessageComposer Quote Add quote \`def\` 1`] = `
+<keyboard-accessory-view-mock>
+  <View
+    style={
+      [
+        {
+          "borderTopWidth": 1,
+          "minHeight": 48,
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderTopColor": "#CBCED1",
+        },
+      ]
+    }
+    testID="message-composer"
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "height": 48,
+            "justifyContent": "center",
+            "paddingRight": 12,
+          }
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={196}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 16,
+              "left": 16,
+              "right": 16,
+              "top": 16,
+            }
+          }
+          onActiveStateChange={[Function]}
+          onGestureEvent={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "height": 24,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 24,
+            }
+          }
+          testID="message-composer-actions"
+        >
+          <View
+            accessibilityLabel="Message actions"
+            accessibilityRole="button"
+            accessible={true}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </View>
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
+        blurOnSubmit={false}
+        defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
+        keyboardAppearance="light"
+        mostRecentEventCount={0}
+        multiline={true}
+        onBlur={[Function]}
+        onChange={[Function]}
+        onChangeText={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
+        onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
+        placeholder=""
+        placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
+        style={
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
+        }
+        submitBehavior="newline"
+        testID="message-composer-input"
+        text=""
+        underlineColorAndroid="transparent"
+      />
+      <View
+        style={
+          {
+            "alignItems": "center",
+            "flexDirection": "row",
+            "height": 48,
+            "paddingLeft": 12,
+          }
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
+          handlerTag={197}
+          handlerType="NativeViewGestureHandler"
+          hitSlop={
+            {
+              "bottom": 16,
+              "left": 16,
+              "right": 16,
+              "top": 16,
+            }
+          }
+          onActiveStateChange={[Function]}
+          onGestureEvent={[Function]}
+          onGestureHandlerEvent={[Function]}
+          onGestureHandlerStateChange={[Function]}
+          onHandlerStateChange={[Function]}
+          onPress={[Function]}
+          style={
+            {
+              "alignItems": "center",
+              "height": 24,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 24,
+            }
+          }
+          testID="message-composer-send-audio"
+        >
+          <View
+            accessibilityLabel="Send audio message"
+            accessibilityRole="button"
+            accessible={true}
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 24,
+                  },
+                  [
+                    {
+                      "lineHeight": 24,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </RNGestureHandlerButton>
+      </View>
+    </View>
+    <RCTScrollView
+      data={
+        [
+          "abc",
+          "def",
+        ]
+      }
+      getItem={[Function]}
+      getItemCount={[Function]}
+      horizontal={true}
+      keyExtractor={[Function]}
+      onContentSizeChange={[Function]}
+      onLayout={[Function]}
+      onMomentumScrollBegin={[Function]}
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollBeginDrag={[Function]}
+      onScrollEndDrag={[Function]}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={0.0001}
+      stickyHeaderIndices={[]}
+      viewabilityConfigCallbackPairs={[]}
+    >
+      <View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderBottomRightRadius": 4,
+                "borderColor": "#EBECEF",
+                "borderLeftColor": "#9EA2A8",
+                "borderTopRightRadius": 4,
+                "borderWidth": 1,
+                "height": 64,
+                "marginRight": 8,
+                "padding": 8,
+                "paddingLeft": 16,
+                "width": 320,
+              }
+            }
+            testID="composer-quote-abc"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "700",
+                      "lineHeight": 20,
+                      "paddingRight": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#9EA2A8",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+              </View>
+              <RNGestureHandlerButton
+                activeOpacity={0.3}
+                borderless={true}
+                collapsable={false}
+                delayLongPress={600}
+                handlerTag={198}
+                handlerType="NativeViewGestureHandler"
+                hitSlop={
+                  {
+                    "bottom": 16,
+                    "left": 16,
+                    "right": 16,
+                    "top": 16,
+                  }
+                }
+                onActiveStateChange={[Function]}
+                onGestureEvent={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onHandlerStateChange={[Function]}
+                onPress={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "height": 24,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "width": 24,
+                  }
+                }
+                testID="composer-quote-remove-abc"
+              >
+                <View
+                  accessibilityLabel="Remove quote message"
+                  accessibilityRole="button"
+                  accessible={true}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </View>
+            <Text
+              accessibilityLabel="Message abc"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                ]
+              }
+              testID="markdown-preview-Message abc"
+            >
+              Message abc
+            </Text>
+          </View>
+        </View>
+        <View
+          onFocusCapture={[Function]}
+          onLayout={[Function]}
+          style={
+            [
+              {
+                "flexDirection": "row",
+              },
+              null,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#F7F8FA",
+                "borderBottomRightRadius": 4,
+                "borderColor": "#EBECEF",
+                "borderLeftColor": "#9EA2A8",
+                "borderTopRightRadius": 4,
+                "borderWidth": 1,
+                "height": 64,
+                "marginRight": 8,
+                "padding": 8,
+                "paddingLeft": 16,
+                "width": 320,
+              }
+            }
+            testID="composer-quote-def"
+          >
+            <View
+              style={
+                {
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flex": 1,
+                    "flexDirection": "row",
+                  }
+                }
+              >
+                <Text
+                  numberOfLines={1}
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#1F2329",
+                      "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "700",
+                      "lineHeight": 20,
+                      "paddingRight": 4,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+                <Text
+                  style={
+                    {
+                      "backgroundColor": "transparent",
+                      "color": "#9EA2A8",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "400",
+                      "lineHeight": 16,
+                      "textAlign": "left",
+                    }
+                  }
+                />
+              </View>
+              <RNGestureHandlerButton
+                activeOpacity={0.3}
+                borderless={true}
+                collapsable={false}
+                delayLongPress={600}
+                handlerTag={199}
+                handlerType="NativeViewGestureHandler"
+                hitSlop={
+                  {
+                    "bottom": 16,
+                    "left": 16,
+                    "right": 16,
+                    "top": 16,
+                  }
+                }
+                onActiveStateChange={[Function]}
+                onGestureEvent={[Function]}
+                onGestureHandlerEvent={[Function]}
+                onGestureHandlerStateChange={[Function]}
+                onHandlerStateChange={[Function]}
+                onPress={[Function]}
+                style={
+                  {
+                    "alignItems": "center",
+                    "height": 24,
+                    "justifyContent": "center",
+                    "opacity": 1,
+                    "width": 24,
+                  }
+                }
+                testID="composer-quote-remove-def"
+              >
+                <View
+                  accessibilityLabel="Remove quote message"
+                  accessibilityRole="button"
+                  accessible={true}
+                >
+                  <Text
+                    allowFontScaling={false}
+                    selectable={false}
+                    style={
+                      [
+                        {
+                          "color": "#2F343D",
+                          "fontSize": 24,
+                        },
+                        [
+                          {
+                            "lineHeight": 24,
+                          },
+                          undefined,
+                        ],
+                        {
+                          "fontFamily": "custom",
+                          "fontStyle": "normal",
+                          "fontWeight": "normal",
+                        },
+                        {},
+                      ]
+                    }
+                  >
+                    
+                  </Text>
+                </View>
+              </RNGestureHandlerButton>
+            </View>
+            <Text
+              accessibilityLabel="Message def"
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "backgroundColor": "transparent",
+                    "color": "#2F343D",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "lineHeight": 20,
+                    "textAlign": "left",
+                  },
+                ]
+              }
+              testID="markdown-preview-Message def"
+            >
+              Message def
+            </Text>
+          </View>
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>
+</keyboard-accessory-view-mock>
+`;
+
+exports[`MessageComposer Quote Remove a quote 1`] = `
+<keyboard-accessory-view-mock>
+  <View
+    style={
+      [
+        {
+          "borderTopWidth": 1,
+          "minHeight": 48,
+          "paddingHorizontal": 16,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderTopColor": "#CBCED1",
+        },
+      ]
+    }
+    testID="message-composer"
+  >
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <View
+        style={
+          {
+            "height": 48,
+            "justifyContent": "center",
+            "paddingRight": 12,
+          }
+        }
+      >
+        <RNGestureHandlerButton
+          activeOpacity={0.3}
+          borderless={true}
+          collapsable={false}
+          delayLongPress={600}
           handlerTag={200}
           handlerType="NativeViewGestureHandler"
           hitSlop={
@@ -337,39 +1385,55 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           </View>
         </RNGestureHandlerButton>
       </View>
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
       <View
@@ -453,6 +1517,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
       data={
         [
           "abc",
+          "def",
         ]
       }
       getItem={[Function]}
@@ -650,426 +1715,6 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             </Text>
           </View>
         </View>
-      </View>
-    </RCTScrollView>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer Quote Add quote \`def\` 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={203}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 24,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 24,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={204}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 24,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 24,
-            }
-          }
-          testID="message-composer-send-audio"
-        >
-          <View
-            accessibilityLabel="Send audio message"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-    </View>
-    <RCTScrollView
-      data={
-        [
-          "abc",
-          "def",
-        ]
-      }
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={0.0001}
-      stickyHeaderIndices={[]}
-      viewabilityConfigCallbackPairs={[]}
-    >
-      <View>
-        <View
-          onFocusCapture={[Function]}
-          onLayout={[Function]}
-          style={
-            [
-              {
-                "flexDirection": "row",
-              },
-              null,
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#F7F8FA",
-                "borderBottomRightRadius": 4,
-                "borderColor": "#EBECEF",
-                "borderLeftColor": "#9EA2A8",
-                "borderTopRightRadius": 4,
-                "borderWidth": 1,
-                "height": 64,
-                "marginRight": 8,
-                "padding": 8,
-                "paddingLeft": 16,
-                "width": 320,
-              }
-            }
-            testID="composer-quote-abc"
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#1F2329",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "700",
-                      "lineHeight": 20,
-                      "paddingRight": 4,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#9EA2A8",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "lineHeight": 16,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-              </View>
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                handlerTag={205}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 16,
-                    "left": 16,
-                    "right": 16,
-                    "top": 16,
-                  }
-                }
-                onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
-                onPress={[Function]}
-                style={
-                  {
-                    "alignItems": "center",
-                    "height": 24,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 24,
-                  }
-                }
-                testID="composer-quote-remove-abc"
-              >
-                <View
-                  accessibilityLabel="Remove quote message"
-                  accessibilityRole="button"
-                  accessible={true}
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </RNGestureHandlerButton>
-            </View>
-            <Text
-              accessibilityLabel="Message abc"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
-              }
-              testID="markdown-preview-Message abc"
-            >
-              Message abc
-            </Text>
-          </View>
-        </View>
         <View
           onFocusCapture={[Function]}
           onLayout={[Function]}
@@ -1152,604 +1797,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={206}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 16,
-                    "left": 16,
-                    "right": 16,
-                    "top": 16,
-                  }
-                }
-                onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
-                onPress={[Function]}
-                style={
-                  {
-                    "alignItems": "center",
-                    "height": 24,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 24,
-                  }
-                }
-                testID="composer-quote-remove-def"
-              >
-                <View
-                  accessibilityLabel="Remove quote message"
-                  accessibilityRole="button"
-                  accessible={true}
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </RNGestureHandlerButton>
-            </View>
-            <Text
-              accessibilityLabel="Message def"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
-              }
-              testID="markdown-preview-Message def"
-            >
-              Message def
-            </Text>
-          </View>
-        </View>
-      </View>
-    </RCTScrollView>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer Quote Remove a quote 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={207}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 24,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 24,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={208}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 24,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 24,
-            }
-          }
-          testID="message-composer-send-audio"
-        >
-          <View
-            accessibilityLabel="Send audio message"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 24,
-                  },
-                  [
-                    {
-                      "lineHeight": 24,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-    </View>
-    <RCTScrollView
-      data={
-        [
-          "abc",
-          "def",
-        ]
-      }
-      getItem={[Function]}
-      getItemCount={[Function]}
-      horizontal={true}
-      keyExtractor={[Function]}
-      onContentSizeChange={[Function]}
-      onLayout={[Function]}
-      onMomentumScrollBegin={[Function]}
-      onMomentumScrollEnd={[Function]}
-      onScroll={[Function]}
-      onScrollBeginDrag={[Function]}
-      onScrollEndDrag={[Function]}
-      removeClippedSubviews={false}
-      renderItem={[Function]}
-      scrollEventThrottle={0.0001}
-      stickyHeaderIndices={[]}
-      viewabilityConfigCallbackPairs={[]}
-    >
-      <View>
-        <View
-          onFocusCapture={[Function]}
-          onLayout={[Function]}
-          style={
-            [
-              {
-                "flexDirection": "row",
-              },
-              null,
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#F7F8FA",
-                "borderBottomRightRadius": 4,
-                "borderColor": "#EBECEF",
-                "borderLeftColor": "#9EA2A8",
-                "borderTopRightRadius": 4,
-                "borderWidth": 1,
-                "height": 64,
-                "marginRight": 8,
-                "padding": 8,
-                "paddingLeft": 16,
-                "width": 320,
-              }
-            }
-            testID="composer-quote-abc"
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#1F2329",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "700",
-                      "lineHeight": 20,
-                      "paddingRight": 4,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#9EA2A8",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "lineHeight": 16,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-              </View>
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                handlerTag={209}
-                handlerType="NativeViewGestureHandler"
-                hitSlop={
-                  {
-                    "bottom": 16,
-                    "left": 16,
-                    "right": 16,
-                    "top": 16,
-                  }
-                }
-                onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
-                onGestureHandlerEvent={[Function]}
-                onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
-                onPress={[Function]}
-                style={
-                  {
-                    "alignItems": "center",
-                    "height": 24,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 24,
-                  }
-                }
-                testID="composer-quote-remove-abc"
-              >
-                <View
-                  accessibilityLabel="Remove quote message"
-                  accessibilityRole="button"
-                  accessible={true}
-                >
-                  <Text
-                    allowFontScaling={false}
-                    selectable={false}
-                    style={
-                      [
-                        {
-                          "color": "#2F343D",
-                          "fontSize": 24,
-                        },
-                        [
-                          {
-                            "lineHeight": 24,
-                          },
-                          undefined,
-                        ],
-                        {
-                          "fontFamily": "custom",
-                          "fontStyle": "normal",
-                          "fontWeight": "normal",
-                        },
-                        {},
-                      ]
-                    }
-                  >
-                    
-                  </Text>
-                </View>
-              </RNGestureHandlerButton>
-            </View>
-            <Text
-              accessibilityLabel="Message abc"
-              numberOfLines={1}
-              style={
-                [
-                  {
-                    "backgroundColor": "transparent",
-                    "fontFamily": "Inter",
-                    "fontSize": 16,
-                    "fontWeight": "400",
-                    "lineHeight": 22,
-                    "textAlign": "left",
-                  },
-                  {
-                    "color": "#2F343D",
-                    "lineHeight": undefined,
-                  },
-                  {
-                    "backgroundColor": "transparent",
-                    "color": "#2F343D",
-                    "fontFamily": "Inter",
-                    "fontSize": 14,
-                    "fontWeight": "400",
-                    "lineHeight": 20,
-                    "textAlign": "left",
-                  },
-                ]
-              }
-              testID="markdown-preview-Message abc"
-            >
-              Message abc
-            </Text>
-          </View>
-        </View>
-        <View
-          onFocusCapture={[Function]}
-          onLayout={[Function]}
-          style={
-            [
-              {
-                "flexDirection": "row",
-              },
-              null,
-            ]
-          }
-        >
-          <View
-            style={
-              {
-                "backgroundColor": "#F7F8FA",
-                "borderBottomRightRadius": 4,
-                "borderColor": "#EBECEF",
-                "borderLeftColor": "#9EA2A8",
-                "borderTopRightRadius": 4,
-                "borderWidth": 1,
-                "height": 64,
-                "marginRight": 8,
-                "padding": 8,
-                "paddingLeft": 16,
-                "width": 320,
-              }
-            }
-            testID="composer-quote-def"
-          >
-            <View
-              style={
-                {
-                  "alignItems": "center",
-                  "flexDirection": "row",
-                }
-              }
-            >
-              <View
-                style={
-                  {
-                    "alignItems": "center",
-                    "flex": 1,
-                    "flexDirection": "row",
-                  }
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#1F2329",
-                      "flexShrink": 1,
-                      "fontFamily": "Inter",
-                      "fontSize": 14,
-                      "fontWeight": "700",
-                      "lineHeight": 20,
-                      "paddingRight": 4,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-                <Text
-                  style={
-                    {
-                      "backgroundColor": "transparent",
-                      "color": "#9EA2A8",
-                      "fontFamily": "Inter",
-                      "fontSize": 12,
-                      "fontWeight": "400",
-                      "lineHeight": 16,
-                      "textAlign": "left",
-                    }
-                  }
-                />
-              </View>
-              <RNGestureHandlerButton
-                activeOpacity={0.3}
-                borderless={true}
-                collapsable={false}
-                delayLongPress={600}
-                handlerTag={210}
+                handlerTag={203}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1875,39 +1923,55 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -1924,7 +1988,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={59}
+        handlerTag={52}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1996,7 +2060,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={60}
+        handlerTag={53}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2068,7 +2132,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={61}
+        handlerTag={54}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2140,7 +2204,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={62}
+        handlerTag={55}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2212,7 +2276,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={63}
+        handlerTag={56}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2284,7 +2348,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={64}
+        handlerTag={57}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2356,7 +2420,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={58}
+        handlerTag={51}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2446,39 +2510,55 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -2495,7 +2575,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={137}
+        handlerTag={130}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2567,7 +2647,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={138}
+        handlerTag={131}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2639,7 +2719,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={139}
+        handlerTag={132}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2711,7 +2791,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={140}
+        handlerTag={133}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2783,7 +2863,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={141}
+        handlerTag={134}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2855,7 +2935,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={142}
+        handlerTag={135}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2927,7 +3007,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={136}
+        handlerTag={129}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3017,39 +3097,55 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -3066,7 +3162,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={163}
+        handlerTag={156}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3138,7 +3234,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={164}
+        handlerTag={157}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3210,7 +3306,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={165}
+        handlerTag={158}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3282,7 +3378,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={166}
+        handlerTag={159}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3354,7 +3450,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={167}
+        handlerTag={160}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3426,7 +3522,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={168}
+        handlerTag={161}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3498,7 +3594,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={162}
+        handlerTag={155}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3588,39 +3684,55 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -3637,7 +3749,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={85}
+        handlerTag={78}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3709,7 +3821,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={86}
+        handlerTag={79}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3781,7 +3893,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={87}
+        handlerTag={80}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3853,7 +3965,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={88}
+        handlerTag={81}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3925,7 +4037,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={89}
+        handlerTag={82}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3997,7 +4109,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={90}
+        handlerTag={83}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4069,7 +4181,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={84}
+        handlerTag={77}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4159,39 +4271,55 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -4208,7 +4336,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={46}
+        handlerTag={39}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4280,7 +4408,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={47}
+        handlerTag={40}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4352,7 +4480,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={48}
+        handlerTag={41}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4424,7 +4552,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={49}
+        handlerTag={42}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4496,7 +4624,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={50}
+        handlerTag={43}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4568,7 +4696,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={51}
+        handlerTag={44}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4640,7 +4768,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={45}
+        handlerTag={38}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4730,39 +4858,55 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -4779,7 +4923,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={111}
+        handlerTag={104}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4851,7 +4995,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={112}
+        handlerTag={105}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4923,7 +5067,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={113}
+        handlerTag={106}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4995,7 +5139,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={114}
+        handlerTag={107}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5067,7 +5211,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={115}
+        handlerTag={108}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5139,7 +5283,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={116}
+        handlerTag={109}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5211,7 +5355,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={110}
+        handlerTag={103}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5301,39 +5445,55 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -5350,7 +5510,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={72}
+        handlerTag={65}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5422,7 +5582,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={73}
+        handlerTag={66}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5494,7 +5654,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={74}
+        handlerTag={67}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5566,7 +5726,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={75}
+        handlerTag={68}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5638,7 +5798,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={76}
+        handlerTag={69}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5710,7 +5870,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={77}
+        handlerTag={70}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5782,7 +5942,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={71}
+        handlerTag={64}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5872,39 +6032,55 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -5921,7 +6097,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={150}
+        handlerTag={143}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5993,7 +6169,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={151}
+        handlerTag={144}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6065,7 +6241,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={152}
+        handlerTag={145}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6137,7 +6313,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={153}
+        handlerTag={146}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6209,7 +6385,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={154}
+        handlerTag={147}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6281,7 +6457,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={155}
+        handlerTag={148}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6353,7 +6529,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={149}
+        handlerTag={142}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6443,39 +6619,55 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -6492,7 +6684,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={176}
+        handlerTag={169}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6564,7 +6756,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={177}
+        handlerTag={170}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6636,7 +6828,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={178}
+        handlerTag={171}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6708,7 +6900,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={179}
+        handlerTag={172}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6780,7 +6972,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={180}
+        handlerTag={173}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6852,7 +7044,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={181}
+        handlerTag={174}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6924,7 +7116,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={175}
+        handlerTag={168}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7014,39 +7206,55 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -7063,7 +7271,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={98}
+        handlerTag={91}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7135,7 +7343,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={99}
+        handlerTag={92}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7207,7 +7415,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={100}
+        handlerTag={93}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7279,7 +7487,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={101}
+        handlerTag={94}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7351,7 +7559,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={102}
+        handlerTag={95}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7423,7 +7631,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={103}
+        handlerTag={96}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7495,7 +7703,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={97}
+        handlerTag={90}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7585,39 +7793,55 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -7634,7 +7858,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={124}
+        handlerTag={117}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7706,7 +7930,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={125}
+        handlerTag={118}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7778,7 +8002,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={126}
+        handlerTag={119}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7850,7 +8074,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={127}
+        handlerTag={120}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7922,7 +8146,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={128}
+        handlerTag={121}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7994,7 +8218,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={129}
+        handlerTag={122}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8066,7 +8290,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={123}
+        handlerTag={116}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8156,39 +8380,55 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -8205,7 +8445,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={24}
+        handlerTag={17}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8277,7 +8517,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={25}
+        handlerTag={18}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8349,7 +8589,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={26}
+        handlerTag={19}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8421,7 +8661,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={27}
+        handlerTag={20}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8493,7 +8733,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={28}
+        handlerTag={21}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8583,39 +8823,55 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -8632,7 +8888,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={36}
+        handlerTag={29}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8704,7 +8960,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={37}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8776,7 +9032,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={38}
+        handlerTag={31}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8866,39 +9122,55 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -8915,7 +9187,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={184}
+        handlerTag={177}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8987,7 +9259,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={185}
+        handlerTag={178}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9059,7 +9331,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={186}
+        handlerTag={179}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9131,7 +9403,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={187}
+        handlerTag={180}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9203,7 +9475,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={188}
+        handlerTag={181}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9343,39 +9615,55 @@ exports[`MessageComposer renders correctly 1`] = `
           </View>
         </RNGestureHandlerButton>
       </View>
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
       <View
@@ -9534,39 +9822,55 @@ exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
           </View>
         </RNGestureHandlerButton>
       </View>
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
       <View
@@ -9684,39 +9988,55 @@ exports[`MessageComposer renders correctly with audio recorder disabled and with
           </View>
         </RNGestureHandlerButton>
       </View>
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
       <View
@@ -9834,39 +10154,55 @@ exports[`MessageComposer renders correctly without audio upload permissions 1`] 
           </View>
         </RNGestureHandlerButton>
       </View>
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
       <View
@@ -9909,39 +10245,55 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         }
       }
     >
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
     </View>
@@ -10350,7 +10702,7 @@ exports[`MessageComposer send message 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={20}
+          handlerTag={13}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -10411,39 +10763,55 @@ exports[`MessageComposer send message 1`] = `
           </View>
         </RNGestureHandlerButton>
       </View>
-      <TextInput
+      <PasteTextInput
+        accessible={true}
+        allowFontScaling={true}
         blurOnSubmit={false}
         defaultValue=""
+        focusable={true}
+        forwardedRef={[Function]}
         keyboardAppearance="light"
+        mostRecentEventCount={0}
         multiline={true}
         onBlur={[Function]}
+        onChange={[Function]}
         onChangeText={[Function]}
+        onClick={[Function]}
         onFocus={[Function]}
+        onPaste={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onScroll={[Function]}
         onSelectionChange={[Function]}
+        onSelectionChangeShouldSetResponder={[Function]}
+        onStartShouldSetResponder={[Function]}
         placeholder=""
         placeholderTextColor="#9EA2A8"
+        rejectResponderTermination={true}
+        selection={null}
         style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
+          {
+            "backgroundColor": "transparent",
+            "color": "#2F343D",
+            "flex": 1,
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "400",
+            "lineHeight": 22,
+            "maxHeight": 200,
+            "minHeight": 48,
+            "paddingBottom": 12,
+            "paddingTop": 12,
+            "textAlign": "left",
+            "textAlignVertical": "center",
+          }
         }
+        submitBehavior="newline"
         testID="message-composer-input"
+        text=""
         underlineColorAndroid="transparent"
       />
       <View
@@ -10461,7 +10829,7 @@ exports[`MessageComposer send message 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={21}
+          handlerTag={14}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
