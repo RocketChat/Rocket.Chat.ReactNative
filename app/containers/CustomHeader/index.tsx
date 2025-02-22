@@ -37,11 +37,16 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
-	const isRoomViewMasterDetail = isMasterDetail && route.name !== 'RoomView' && route.name !== 'RoomsListView';
+	const isRoomViewMasterDetail =
+		!isMasterDetail ||
+		route.name === 'RoomView' ||
+		route.name === 'RoomsListView' ||
+		route.name === 'ShareListView' ||
+		route.name === 'ShareView';
 
 	return (
-		<HeaderContainer addExtraNotchadding={!isRoomViewMasterDetail}>
-			{!!headerLeft ? (
+		<HeaderContainer addExtraNotchadding={isRoomViewMasterDetail}>
+			{headerLeft ? (
 				headerLeft({ canGoBack: false })
 			) : (
 				<HeaderBackButton
@@ -53,7 +58,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 				/>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />
-			{!!headerRight ? headerRight({ canGoBack: false }) : <></>}
+			{headerRight ? headerRight({ canGoBack: false }) : null}
 		</HeaderContainer>
 	);
 };

@@ -904,7 +904,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
-		let options = this.getHeader();
+		const options = this.getHeader();
 		return <CustomHeader options={options} navigation={this.props.navigation} route={this.props.route} />;
 	};
 
