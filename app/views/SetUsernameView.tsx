@@ -51,8 +51,10 @@ const SetUsernameView = () => {
 
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const { server, token } = useAppSelector(state => ({ server: state.server.server, token: getUserSelector(state).token }));
-
+	const { server, user } = useAppSelector(state => ({
+		server: state.server.server,
+		user: getUserSelector(state)
+	}));
 	const navigation = useNavigation<NativeStackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>>();
 
 	useLayoutEffect(() => {
@@ -69,6 +71,12 @@ const SetUsernameView = () => {
 		init();
 	}, []);
 
+	useEffect(() => {
+		if (user) {
+			setValue('name', user.name ?? '', { shouldValidate: true });
+		}
+	}, [user]);
+
 	const submit = async ({ username, name }: ISubmit) => {
 		if (!isValid) {
 			return;
@@ -76,7 +84,7 @@ const SetUsernameView = () => {
 		setLoading(true);
 		try {
 			await Services.saveUserProfile({ username, name });
-			dispatch(loginRequest({ resume: token }));
+			dispatch(loginRequest({ resume: user.token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
