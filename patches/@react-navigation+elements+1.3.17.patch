@@ -1,0 +1,43 @@
+diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
+index 3977e85..5c5f920 100644
+--- a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
++++ b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
+@@ -172,14 +172,8 @@ const styles = StyleSheet.create({
+   container: {
+     alignItems: 'center',
+     flexDirection: 'row',
+     minWidth: StyleSheet.hairlineWidth, // Avoid collapsing when title is long
+-    ...Platform.select({
+-      ios: null,
+-      default: {
+-        marginVertical: 3,
+-        marginHorizontal: 11,
+-      },
+-    }),
++    padding: 6
+   },
+   disabled: {
+     opacity: 0.5,
+@@ -198,20 +192,16 @@ const styles = StyleSheet.create({
+   },
+   icon: Platform.select({
+     ios: {
+-      height: 21,
+-      width: 13,
+-      marginLeft: 8,
+-      marginRight: 22,
+-      marginVertical: 12,
++      height: 24,
++      width: 24,
+       resizeMode: 'contain',
+       transform: [{ scaleX: I18nManager.getConstants().isRTL ? -1 : 1 }],
+     },
+     default: {
+       height: 24,
+       width: 24,
+-      margin: 3,
+       resizeMode: 'contain',
+      transform: [{ scaleX: I18nManager.getConstants().isRTL ? -1 : 1 }],
+     },
+   }),
+   iconWithLabel:
