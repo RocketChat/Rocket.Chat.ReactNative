@@ -10,7 +10,6 @@ import { useTheme } from '../../theme';
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {
 	navigation?: any; // TODO: Evaluate proper type
-	left?: boolean;
 	style?: StyleProp<ViewStyle>;
 }
 
@@ -18,14 +17,13 @@ interface IHeaderButtonCommon extends IHeaderButtonItem {
 export const Drawer = ({
 	navigation,
 	testID,
-	left = true,
 	style = {},
 	onPress = () => navigation?.toggleDrawer(),
 	...props
 }: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
 	return (
-		<Container left={left} style={style}>
+		<Container style={style}>
 			<Item iconName='hamburguer' onPress={onPress} testID={testID} color={colors.fontDefault} {...props} />
 		</Container>
 	);
