@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { ThemeContext } from '../theme';
-import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
+import { defaultOutsideHeader, themedHeader } from '../lib/methods/helpers/navigation';
 // Outside Stack
 import NewServerView from '../views/NewServerView';
 import WorkspaceView from '../views/WorkspaceView';
@@ -21,7 +21,7 @@ const _OutsideStack = () => {
 	const { theme } = React.useContext(ThemeContext);
 
 	return (
-		<Outside.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+		<Outside.Navigator screenOptions={{ ...defaultOutsideHeader, ...themedHeader(theme) }}>
 			{/* @ts-ignore */}
 			<Outside.Screen name='NewServerView' component={NewServerView} options={NewServerView.navigationOptions} />
 			<Outside.Screen name='WorkspaceView' component={WorkspaceView} />
@@ -51,7 +51,7 @@ const OutsideStackModal = () => {
 
 	return (
 		<OutsideModal.Navigator
-			screenOptions={{ ...defaultHeader, ...themedHeader(theme), presentation: 'containedTransparentModal' }}>
+			screenOptions={{ ...defaultOutsideHeader, ...themedHeader(theme), presentation: 'containedTransparentModal' }}>
 			<OutsideModal.Screen name='OutsideStack' component={OutsideStack} options={{ headerShown: false }} />
 			<OutsideModal.Screen name='AuthenticationWebView' component={AuthenticationWebView} />
 		</OutsideModal.Navigator>
