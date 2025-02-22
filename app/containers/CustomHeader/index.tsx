@@ -40,7 +40,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const isRoomViewMasterDetail = isMasterDetail && route.name !== 'RoomView' && route.name !== 'RoomsListView';
 
 	return (
-		<HeaderContainer increaseNotchPadding={!isRoomViewMasterDetail}>
+		<HeaderContainer addExtraNotchadding={!isRoomViewMasterDetail}>
 			{!!headerLeft ? (
 				headerLeft({ canGoBack: false })
 			) : (

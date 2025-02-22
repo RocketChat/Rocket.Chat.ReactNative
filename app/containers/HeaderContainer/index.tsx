@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme';
 
 interface IHeaderContainer extends ViewProps {
-	increaseStatusBarPadding?: boolean;
+	addExtraNotchadding?: boolean;
 }
 
 const HeaderContainer = (props: IHeaderContainer) => {
@@ -14,7 +14,7 @@ const HeaderContainer = (props: IHeaderContainer) => {
 	const { height, width } = useWindowDimensions();
 	const isPortrait = height > width;
 	const paddingVertical = isPortrait ? 12 : 4;
-	const statusBarPadding = props.increaseStatusBarPadding ? insets.top : 0;
+	const statusBarPadding = props.addExtraNotchadding ? insets.top : 0;
 
 	return (
 		<View
