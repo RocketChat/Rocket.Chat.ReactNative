@@ -488,56 +488,57 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			'encrypted' in room && hasE2EEWarning({ encryptionEnabled, E2EKey: room.E2EKey, roomEncrypted: room.encrypted })
 		);
 		navigation.setOptions({
-			header: () => (
-				<HeaderContainer>
-					<LeftButtons
-						rid={rid}
-						tmid={tmid}
-						unreadsCount={unreadsCount}
-						baseUrl={baseUrl}
-						userId={userId}
-						token={token}
-						title={avatar}
-						theme={theme}
-						t={t}
-						goRoomActionsView={this.goRoomActionsView}
-						isMasterDetail={isMasterDetail}
-					/>
-
-					<RoomHeader
-						prid={prid}
-						tmid={tmid}
-						title={title}
-						teamMain={teamMain}
-						parentTitle={parentTitle}
-						subtitle={subtitle}
-						type={t}
-						roomUserId={roomUserId}
-						visitor={visitor}
-						isGroupChat={isGroupChatConst}
-						onPress={this.goRoomActionsView}
-						testID={`room-view-title-${title}`}
-						sourceType={sourceType}
-						rightButtonsWidth={rightButtonsWidth}
-					/>
-					<RightButtons
-						rid={rid}
-						tmid={tmid}
-						teamId={teamId}
-						joined={joined}
-						status={room.status}
-						omnichannelPermissions={omnichannelPermissions}
-						t={(this.t || t) as SubscriptionType}
-						encrypted={encrypted}
-						navigation={navigation}
-						toggleFollowThread={this.toggleFollowThread}
-						showActionSheet={this.showActionSheet}
-						departmentId={departmentId}
-						notificationsDisabled={iSubRoom?.disableNotifications}
-						onLayout={onLayout}
-						hasE2EEWarning={e2eeWarning}
-					/>
-				</HeaderContainer>
+			headerLeft: () => (
+				<LeftButtons
+					rid={rid}
+					tmid={tmid}
+					unreadsCount={unreadsCount}
+					baseUrl={baseUrl}
+					userId={userId}
+					token={token}
+					title={avatar}
+					theme={theme}
+					t={t}
+					goRoomActionsView={this.goRoomActionsView}
+					isMasterDetail={isMasterDetail}
+				/>
+			),
+			headerTitle: () => (
+				<RoomHeader
+					prid={prid}
+					tmid={tmid}
+					title={title}
+					teamMain={teamMain}
+					parentTitle={parentTitle}
+					subtitle={subtitle}
+					type={t}
+					roomUserId={roomUserId}
+					visitor={visitor}
+					isGroupChat={isGroupChatConst}
+					onPress={this.goRoomActionsView}
+					testID={`room-view-title-${title}`}
+					sourceType={sourceType}
+					rightButtonsWidth={rightButtonsWidth}
+				/>
+			),
+			headerRight: () => (
+				<RightButtons
+					rid={rid}
+					tmid={tmid}
+					teamId={teamId}
+					joined={joined}
+					status={room.status}
+					omnichannelPermissions={omnichannelPermissions}
+					t={(this.t || t) as SubscriptionType}
+					encrypted={encrypted}
+					navigation={navigation}
+					toggleFollowThread={this.toggleFollowThread}
+					showActionSheet={this.showActionSheet}
+					departmentId={departmentId}
+					notificationsDisabled={iSubRoom?.disableNotifications}
+					onLayout={onLayout}
+					hasE2EEWarning={e2eeWarning}
+				/>
 			)
 		});
 	};
