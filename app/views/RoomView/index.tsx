@@ -433,7 +433,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		const { rid, tmid } = this;
 
 		if (!rid) {
-			navigation.setOptions({ headerLeft: () => null });
+			// Adding an empty View to prevent rendering the back button while maintaining the same header height.
+			navigation.setOptions({ headerLeft: () => <View style={{ height: 36 }} /> });
 			return;
 		}
 		if (!room.rid) {
