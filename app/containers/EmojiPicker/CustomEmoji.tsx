@@ -3,7 +3,7 @@ import { StyleProp } from 'react-native';
 import { Image, ImageStyle } from 'expo-image';
 
 import { useAppSelector } from '../../lib/hooks';
-import { ICustomEmoji, ImagePriority, ImageResizeMode } from '../../definitions';
+import { ICustomEmoji } from '../../definitions';
 
 interface ICustomEmojiProps {
 	emoji: ICustomEmoji;
@@ -19,8 +19,7 @@ const CustomEmoji = React.memo(
 				source={{
 					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`
 				}}
-				priority={ImagePriority.high}
-				resizeMode={ImageResizeMode.contain}
+				contentFit='contain'
 			/>
 		);
 	},

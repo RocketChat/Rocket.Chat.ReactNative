@@ -6,29 +6,28 @@ import { Image as ExpoImage } from 'expo-image';
 
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
-import styles from '../../message/styles';
-import { ImagePriority } from '../../../definitions';
+import styles from '../styles';
 
 interface IImageProps {
 	value: ImageProps['value'];
 }
 
-type TMessageImage = {
+type TMarkdownImage = {
 	img: string;
 	theme: TSupportedThemes;
 };
 
 const ImageProgress = createImageProgress(ExpoImage);
 
-const MessageImage = ({ img, theme }: TMessageImage) => (
+const MarkdownImage = ({ img, theme }: TMarkdownImage) => (
 	<ImageProgress
 		style={[styles.inlineImage, { borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
-		resizeMode={ImagePriority.high}
 		indicator={Progress.Pie}
 		indicatorProps={{
 			color: themes[theme].fontHint
 		}}
+		contentFit='contain'
 	/>
 );
 
@@ -36,7 +35,7 @@ const Image = ({ value }: IImageProps) => {
 	const { theme } = useTheme();
 	const { src } = value;
 
-	return <MessageImage img={src.value} theme={theme} />;
+	return <MarkdownImage img={src.value} theme={theme} />;
 };
 
 export default Image;

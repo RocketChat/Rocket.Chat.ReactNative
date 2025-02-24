@@ -6,7 +6,6 @@ import { IAutocompleteItemProps } from '../../interfaces';
 import { CustomIcon } from '../../../CustomIcon';
 import { AutocompleteItemLoading } from './AutocompleteItemLoading';
 import { useStyle } from './styles';
-import { ImageResizeMode } from '../../../../definitions';
 
 export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) => {
 	const [styles, colors] = useStyle();
@@ -18,7 +17,7 @@ export const AutocompletePreview = ({ item, onPress }: IAutocompleteItemProps) =
 	if (item.type === '/preview') {
 		content =
 			item.preview.type === 'image' ? (
-				<Image style={styles.previewImage} source={{ uri: item.preview.value }} resizeMode={ImageResizeMode.cover} />
+				<Image style={styles.previewImage} source={{ uri: item.preview.value }} contentFit='cover' />
 			) : (
 				<CustomIcon name='attach' size={36} />
 			);

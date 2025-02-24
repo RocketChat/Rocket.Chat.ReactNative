@@ -117,7 +117,7 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 					<Image
 						// @ts-ignore
 						style={styles.image}
-						resizeMode='contain'
+						contentFit='contain'
 						source={{ uri }}
 						{...props}
 					/>

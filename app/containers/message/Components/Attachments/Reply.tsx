@@ -4,7 +4,7 @@ import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import { IAttachment, TGetCustomEmoji, ImageResizeMode } from '../../../../definitions';
+import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
 import { fileDownloadAndPreview } from '../../../../lib/methods/helpers';
 import { formatAttachmentUrl } from '../../../../lib/methods/helpers/formatAttachmentUrl';
@@ -167,7 +167,7 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <Image source={{ uri: image }} style={styles.image} resizeMode={ImageResizeMode.cover} />;
+		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );

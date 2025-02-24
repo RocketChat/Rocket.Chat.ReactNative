@@ -1,13 +1,12 @@
 import React from 'react';
 import { Pressable, Text, View } from 'react-native';
-import { Image, ImageStyle } from 'expo-image';
+import { Image } from 'expo-image';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
 import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
-import { ImagePriority } from '../../definitions';
 
 export { ROW_HEIGHT };
 
@@ -40,15 +39,15 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 				{item.iconURL ? (
 					<Image
 						source={{
-							uri: item.iconURL,
+							uri: item.iconURL
 						}}
-						priority={ImagePriority.high}
 						placeholder={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
+						contentFit='contain'
 					/>
 				) : (
-					<Image source={defaultLogo} style={styles.serverIcon} />
+					<Image source={defaultLogo} style={styles.serverIcon} contentFit='contain' />
 				)}
 				<View style={styles.serverTextContainer}>
 					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>

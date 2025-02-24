@@ -8,7 +8,6 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
-import { ImageResizeMode } from '../../../../../definitions';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
 	const { colors } = useTheme();
@@ -58,7 +57,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={ImageResizeMode.cover} />
+					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
 			) : (
 				<View style={[styles.image, borderStyle]} />

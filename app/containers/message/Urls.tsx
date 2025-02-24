@@ -10,11 +10,10 @@ import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
-import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
-import { IUrl, ImageResizeMode } from '../../definitions';
+import { IUrl } from '../../definitions';
 import { WidthAwareContext, WidthAwareView } from './Components/WidthAwareView';
 
 const styles = StyleSheet.create({
@@ -115,7 +114,7 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 			<ExpoImage
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
-				resizeMode={ImageResizeMode.contain}
+				contentFit='contain'
 				onError={() => setImageLoadedState('error')}
 				onLoad={() => setImageLoadedState('done')}
 			/>
