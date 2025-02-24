@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
-import HeaderContainer from '../HeaderContainer';
+import HeaderContainer from './components/HeaderContainer';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import { styles } from './styles';
