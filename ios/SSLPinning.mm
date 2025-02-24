@@ -9,7 +9,7 @@
 #import <objc/runtime.h>
 #import "SSLPinning.h"
 #import <MMKV/MMKV.h>
-//#import <SDWebImage/SDWebImageDownloader.h>
+#import <SDWebImage/SDWebImageDownloader.h>
 #import "SecureStorage.h"
 #import "SRWebSocket.h"
 #import "EXSessionTaskDispatcher.h"
@@ -62,7 +62,7 @@
     NSMutableArray *certificates = [[NSMutableArray alloc] init];
     [certificates addObject:CFBridgingRelease(certificate)];
 
-//    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
+    [SDWebImageDownloader sharedDownloader].config.urlCredential = [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
 
     return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
   }
