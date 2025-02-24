@@ -109,6 +109,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
 						additionalAcessibilityLabel={displayMode === DisplayMode.Expanded}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -118,6 +119,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
 						additionalAcessibilityLabel={displayMode === DisplayMode.Condensed}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -139,6 +141,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={sortByActivity}
 						right={() => renderRadio(sortBy === SortBy.Activity)}
 						additionalAcessibilityLabel={sortBy === SortBy.Activity}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -148,6 +151,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={sortByName}
 						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
 						additionalAcessibilityLabel={sortBy === SortBy.Alphabetical}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 				</List.Section>
