@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, PixelRatio } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
-import RoomItem, { ROW_HEIGHT } from '../../../containers/RoomItem';
+import RoomItem from '../../../containers/RoomItem';
 import { getUserSelector } from '../../../selectors/login';
 import { useTheme } from '../../../theme';
 import { useDimensions } from '../../../dimensions';
@@ -27,11 +27,14 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => ({
-	length: ROW_HEIGHT,
-	offset: ROW_HEIGHT * index,
-	index
-});
+const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
+	const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+	return {
+		length: ROW_HEIGHT,
+		offset: ROW_HEIGHT * index,
+		index
+	};
+};
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
 const QueueListView = React.memo(() => {

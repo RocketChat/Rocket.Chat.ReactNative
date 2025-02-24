@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
-import { Alert, FlatList, Keyboard } from 'react-native';
+import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
@@ -20,7 +20,7 @@ import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
-import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
+import RoomItem from '../containers/RoomItem';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
@@ -31,11 +31,14 @@ import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
 
-const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => ({
-	length: data?.length || 0,
-	offset: ROW_HEIGHT * index,
-	index
-});
+const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => {
+	const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+	return {
+		length: data?.length || 0,
+		offset: ROW_HEIGHT * index,
+		index
+	};
+};
 const keyExtractor = (item: IItem) => item._id;
 
 export interface IItem {

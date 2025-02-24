@@ -6,6 +6,7 @@ import { DisplayMode } from '../../lib/constants';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
 import { IIconOrAvatar } from './interfaces';
+import { useRowHeight } from './useRowHeight';
 
 const IconOrAvatar = ({
 	avatar,
@@ -21,6 +22,8 @@ const IconOrAvatar = ({
 	displayMode,
 	sourceType
 }: IIconOrAvatar): React.ReactElement | null => {
+	const { ROW_HEIGHT } = useRowHeight();
+
 	if (showAvatar) {
 		return (
 			<Avatar text={avatar} size={displayMode === DisplayMode.Condensed ? 36 : 48} type={type} style={styles.avatar} rid={rid} />
@@ -29,7 +32,7 @@ const IconOrAvatar = ({
 
 	if (displayMode === DisplayMode.Expanded && showLastMessage) {
 		return (
-			<View style={styles.typeIcon}>
+			<View style={[styles.typeIcon, { height: ROW_HEIGHT }]}>
 				<TypeIcon
 					userId={userId}
 					type={type}

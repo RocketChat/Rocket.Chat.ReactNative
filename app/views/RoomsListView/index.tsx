@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, NativeEventSubscription, PixelRatio, RefreshControl, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
@@ -10,7 +10,7 @@ import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
 import database from '../../lib/database';
-import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
+import RoomItem from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
@@ -961,7 +961,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
-
+		const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+		const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {
