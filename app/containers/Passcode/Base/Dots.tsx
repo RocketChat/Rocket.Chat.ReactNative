@@ -24,7 +24,7 @@ const Dots = React.memo(({ passcode, length }: IPasscodeDots) => {
 				const width = lengthSup ? SIZE_FULL : SIZE_EMPTY;
 				let backgroundColor = '';
 				if (lengthSup && passcode.length > 0) {
-					backgroundColor = colors.strokeDark;
+					backgroundColor = colors.fontHint;
 				} else {
 					backgroundColor = colors.strokeLight;
 				}
