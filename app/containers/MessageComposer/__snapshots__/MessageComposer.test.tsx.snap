@@ -30,11 +30,11 @@ exports[`MessageComposer Audio tap record 1`] = `
           [
             {
               "color": "#D40C26",
-              "fontSize": 24,
+              "fontSize": 48,
             },
             [
               {
-                "lineHeight": 24,
+                "lineHeight": 48,
               },
               undefined,
             ],
@@ -121,11 +121,11 @@ exports[`MessageComposer Audio tap record 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -211,11 +211,11 @@ exports[`MessageComposer Audio tap record 1`] = `
               [
                 {
                   "color": "#FFFFFF",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -315,11 +315,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -426,11 +426,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -594,11 +594,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -734,11 +734,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -845,11 +845,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -1014,11 +1014,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1191,11 +1191,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1331,11 +1331,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -1442,11 +1442,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -1611,11 +1611,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1788,11 +1788,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1963,11 +1963,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2035,11 +2035,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2107,11 +2107,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2179,11 +2179,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2251,11 +2251,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2323,11 +2323,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2395,11 +2395,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2534,11 +2534,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2606,11 +2606,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2678,11 +2678,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2750,11 +2750,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2822,11 +2822,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2894,11 +2894,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2966,11 +2966,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3105,11 +3105,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3177,11 +3177,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3249,11 +3249,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3321,11 +3321,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3393,11 +3393,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3465,11 +3465,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3537,11 +3537,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3676,11 +3676,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3748,11 +3748,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3820,11 +3820,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3892,11 +3892,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3964,11 +3964,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4036,11 +4036,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4108,11 +4108,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4247,11 +4247,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4319,11 +4319,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4391,11 +4391,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4463,11 +4463,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4535,11 +4535,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4607,11 +4607,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4679,11 +4679,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4818,11 +4818,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4890,11 +4890,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4962,11 +4962,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5034,11 +5034,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5106,11 +5106,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5178,11 +5178,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5250,11 +5250,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5389,11 +5389,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5461,11 +5461,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5533,11 +5533,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5605,11 +5605,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5677,11 +5677,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5749,11 +5749,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5821,11 +5821,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5960,11 +5960,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6032,11 +6032,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6104,11 +6104,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6176,11 +6176,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6248,11 +6248,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6320,11 +6320,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6392,11 +6392,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6531,11 +6531,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6603,11 +6603,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6675,11 +6675,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6747,11 +6747,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6819,11 +6819,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6891,11 +6891,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6963,11 +6963,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7102,11 +7102,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7174,11 +7174,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7246,11 +7246,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7318,11 +7318,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7390,11 +7390,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7462,11 +7462,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7534,11 +7534,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7673,11 +7673,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7745,11 +7745,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7817,11 +7817,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7889,11 +7889,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7961,11 +7961,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8033,11 +8033,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8105,11 +8105,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8244,11 +8244,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8316,11 +8316,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8388,11 +8388,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8460,11 +8460,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8532,11 +8532,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8671,11 +8671,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8743,11 +8743,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8815,11 +8815,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8954,11 +8954,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9026,11 +9026,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9098,11 +9098,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9170,11 +9170,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9242,11 +9242,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9512,11 +9512,11 @@ exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -9662,11 +9662,11 @@ exports[`MessageComposer renders correctly with audio recorder disabled and with
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -9812,11 +9812,11 @@ exports[`MessageComposer renders correctly without audio upload permissions 1`] 
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -9997,11 +9997,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10069,11 +10069,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10141,11 +10141,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10213,11 +10213,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10285,11 +10285,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10389,11 +10389,11 @@ exports[`MessageComposer send message 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -10500,11 +10500,11 @@ exports[`MessageComposer send message 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
