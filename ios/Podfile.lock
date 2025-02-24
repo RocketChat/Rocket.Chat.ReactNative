@@ -8,8 +8,6 @@ PODS:
   - EXAV (13.10.5):
     - ExpoModulesCore
     - ReactCommon/turbomodule/core
-  - EXFont (11.10.3):
-    - ExpoModulesCore
   - Expo (50.0.14):
     - ExpoModulesCore
   - ExpoAppleAuthentication (6.3.0):
@@ -1344,7 +1342,6 @@ DEPENDENCIES:
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EXAV (from `../node_modules/expo-av/ios`)
-  - EXFont (from `../node_modules/expo-font/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
@@ -1488,8 +1485,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXAV:
     :path: "../node_modules/expo-av/ios"
-  EXFont:
-    :path: "../node_modules/expo-font/ios"
   Expo:
     :path: "../node_modules/expo"
   ExpoAppleAuthentication:
@@ -1686,7 +1681,6 @@ SPEC CHECKSUMS:
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   DoubleConversion: fea03f2699887d960129cc54bba7e52542b6f953
   EXAV: 07e50f934907fa8274dd06fbcd20ee4b9478c619
-  EXFont: f20669cb266ef48b004f1eb1f2b20db96cd1df9f
   Expo: e01a77c6fa4bc80a6d1bb949cda1d12d21044abd
   ExpoAppleAuthentication: 4fc9972356977f009911f2f3a5f56319c2a5b11b
   ExpoCamera: 53f5ef81bab088b2edcf94d05e4da3bc84f46383

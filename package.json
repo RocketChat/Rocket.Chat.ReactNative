@@ -231,6 +231,7 @@
 				"expo-application",
 				"expo-asset",
 				"expo-constants",
+				"expo-font",
 				"expo-error-recovery"
 			]
 		}
