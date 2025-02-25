@@ -205,17 +205,28 @@ export default class RoomSubscription {
 		} else if (ev === 'deleteMessageBulk') {
 			InteractionManager.runAfterInteractions(async () => {
 				try {
-					const { rid, excludePinned, ignoreDiscussion, ts, users } = ddpMessage.fields.args[0];
-					const { $date: gt } = ts.$gt;
-					const { $date: lt } = ts.$lt;
-
+					const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0];
+					const { $gt, $lt, $gte, $lte } = ts || {};
 					const db = database.active;
 
 					const query: Q.Clause[] = [
-						Q.where('rid', rid),
-						Q.where('ts', Q.gt(gt)),
-						Q.where('ts', Q.lt(lt))
+						Q.where('rid', rid)
 					];
+
+					if($gt?.$date && $lt?.$date){
+						query.push(
+							Q.where('ts', Q.gt(ts.$gt.$date)),
+							Q.where('ts', Q.lt(ts.$lt.$date))
+						);
+					}
+
+					//only present when inclusive is true in api
+					if($gte?.$date && $lte?.$date){
+						query.push(
+							Q.where('ts', Q.gte(ts.$gte.$date)),
+							Q.where('ts', Q.lte(ts.$lte.$date))
+						);
+					}
 
 					users.forEach((user: string) => {
 						query.push(Q.where('u', Q.like(`%\"username\":\"${user}\",%`)));
@@ -234,8 +245,12 @@ export default class RoomSubscription {
 						query.push(Q.where('drid', null));
 					}
 
-					const messages = await db.get('messages').query(...query).fetch();
+					if(ids){
+						query.push(Q.where('id', Q.oneOf(ids)));
+					}
 
+					const messages = await db.get('messages').query(...query).fetch();
+					
 					await db.write(async () => {
 						await db.batch(...messages.map(message => message.prepareDestroyPermanently()));
 					});
