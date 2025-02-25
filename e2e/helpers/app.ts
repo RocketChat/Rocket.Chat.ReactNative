@@ -68,7 +68,7 @@ async function login(username: string, password: string) {
 
 async function logout() {
 	const deviceType = device.getPlatform();
-	const { scrollViewType, textMatcher } = platformTypes[deviceType];
+	const { textMatcher } = platformTypes[deviceType];
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -77,10 +77,10 @@ async function logout() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await waitFor(element(by.id('settings-view')))
+	await element(by.id('settings-view')).swipe('up');
+	await waitFor(element(by.id('settings-logout')))
 		.toBeVisible()
 		.withTimeout(2000);
-	await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 	await element(by.id('settings-logout')).tap();
 	const logoutAlertMessage = 'You will be logged out of this application.';
 	await waitFor(element(by[textMatcher](logoutAlertMessage)).atIndex(0))
@@ -94,26 +94,37 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
-async function mockMessage(message: string, isThread = false) {
+async function checkMessage(message: string) {
 	const deviceType = device.getPlatform();
 	const { textMatcher } = platformTypes[deviceType];
-	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
-	await element(by.id(input)).typeText(message);
-	await element(by.id('message-composer-send')).tap();
 	await waitFor(element(by[textMatcher](message)))
 		.toExist()
 		.withTimeout(60000);
 	await element(by[textMatcher](message)).atIndex(0).tap();
+}
+
+async function mockMessage(message: string, isThread = false) {
+	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
+	await element(by.id(input)).typeText(message);
+	await element(by.id('message-composer-send')).tap();
+	await checkMessage(message);
 	return message;
 }
 
 async function tapBack() {
-	try {
-		await element(by.id('header-back')).atIndex(0).tap();
-	} catch (error) {
-		await device.pressBack();
+	if (device.getPlatform() === 'ios') {
+		try {
+			await element(by.type('UIAccessibilityBackButtonElement')).tap();
+		} catch (error) {
+			await element(by.id('header-back')).atIndex(0).tap();
+		}
+	} else {
+		try {
+			await element(by.label('Navigate up')).tap();
+		} catch (error) {
+			await element(by.id('header-back')).atIndex(0).tap();
+		}
 	}
-	await sleep(300); // Wait for animation to finish
 }
 
 async function searchRoom(
@@ -121,26 +132,48 @@ async function searchRoom(
 	nativeElementAction: keyof Pick<Detox.NativeElementActions, 'typeText' | 'replaceText'> = 'typeText',
 	roomTestID?: string
 ) {
+	const testID = roomTestID || `rooms-list-view-item-${room}`;
 	await waitFor(element(by.id('rooms-list-view')))
 		.toExist()
 		.withTimeout(30000);
-	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	if (nativeElementAction === 'replaceText') {
-		// trigger the input's onChangeText
-		await element(by.id('rooms-list-view-search-input')).typeText(' ');
+
+	try {
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(2000);
+		await expect(element(by.id(testID))).toBeVisible();
+	} catch {
+		await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
+		if (nativeElementAction === 'replaceText') {
+			// trigger the input's onChangeText
+			await element(by.id('rooms-list-view-search-input')).typeText(' ');
+		}
+		await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
+		await sleep(500);
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(60000);
 	}
-	await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
-	await sleep(500);
-	await sleep(500);
-	await waitFor(element(by.id(roomTestID || `rooms-list-view-item-${room}`)))
-		.toBeVisible()
-		.withTimeout(60000);
 }
 
 async function navigateToRoom(room: string) {
 	await searchRoom(room);
 	await element(by.id(`rooms-list-view-item-${room}`)).tap();
 	await checkRoomTitle(room);
+}
+
+async function navigateToRecentRoom(room: string) {
+	await waitFor(element(by.id('rooms-list-view')))
+		.toExist()
+		.withTimeout(10000);
+	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
+	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
+		.toBeVisible()
+		.withTimeout(10000);
+	await element(by.id(`rooms-list-view-item-${room}`)).tap();
+	await waitFor(element(by.id(`room-view-title-${room}`)))
+		.toBeVisible()
+		.withTimeout(10000);
 }
 
 async function tryTapping(
@@ -201,6 +234,9 @@ async function checkRoomTitle(room: string) {
 
 const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -250,6 +286,7 @@ export {
 	navigateToRegister,
 	login,
 	logout,
+	checkMessage,
 	mockMessage,
 	tapBack,
 	sleep,
@@ -261,5 +298,6 @@ export {
 	checkServer,
 	platformTypes,
 	expectValidRegisterOrRetry,
-	jumpToQuotedMessage
+	jumpToQuotedMessage,
+	navigateToRecentRoom
 };

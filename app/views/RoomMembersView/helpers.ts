@@ -1,4 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
+import { Alert } from 'react-native';
 
 import { LISTENER } from '../../containers/Toast';
 import { IGetRoomRoles, IUser, SubscriptionType, TSubscriptionModel, TUserModel } from '../../definitions';
@@ -11,6 +12,7 @@ import appNavigation from '../../lib/navigation/appNavigation';
 import { Services } from '../../lib/services';
 import database from '../../lib/database';
 import { RoomTypes } from '../../lib/methods';
+import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
 
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
@@ -89,8 +91,8 @@ export const navToDirectMessage = async (item: IUser, isMasterDetail: boolean): 
 				handleGoRoom({ rid: result.room?._id as string, name: item.username, t: SubscriptionType.DIRECT }, isMasterDetail);
 			}
 		}
-	} catch (e) {
-		log(e);
+	} catch (e: any) {
+		emitErrorCreateDirectMessage(e?.data);
 	}
 };
 
@@ -207,7 +209,14 @@ export const handleRemoveUserFromRoom = async (
 		const message = I18n.t('User_has_been_removed_from_s', { s: getRoomTitle(room) });
 		EventEmitter.emit(LISTENER, { message });
 		callback();
-	} catch (e) {
+	} catch (e: any) {
+		if (e.data && e.data.errorType === 'error-you-are-last-owner') {
+			Alert.alert(I18n.t('Oops'), I18n.t(e.data.errorType));
+		} else if (e?.data?.error === 'last-owner-can-not-be-removed') {
+			Alert.alert(I18n.t('Oops'), I18n.t(e.data.error));
+		} else {
+			Alert.alert(I18n.t('Oops'), I18n.t('There_was_an_error_while_action', { action: I18n.t('leaving_room') }));
+		}
 		log(e);
 	}
 };

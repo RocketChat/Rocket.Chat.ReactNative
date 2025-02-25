@@ -23,30 +23,34 @@ const AvatarSuggestion = ({
 
 	useEffect(() => {
 		const getAvatarSuggestion = async () => {
-			const result = await Services.getAvatarSuggestion();
-			const suggestions = Object.keys(result).map(service => {
-				const { url, blob, contentType } = result[service];
-				return {
-					url,
-					data: blob,
-					service,
-					contentType
-				};
-			});
-			setAvatarSuggestions(suggestions);
+			try {
+				const result = await Services.getAvatarSuggestion();
+				const suggestions = Object.keys(result).map(service => {
+					const { url, blob, contentType } = result[service];
+					return {
+						url,
+						data: blob,
+						service,
+						contentType
+					};
+				});
+				setAvatarSuggestions(suggestions);
+			} catch {
+				// do nothing
+			}
 		};
 		getAvatarSuggestion();
 	}, []);
 
 	return (
 		<View style={styles.containerImagesUploaded}>
-			<Text style={[styles.itemLabel, { color: colors.titleText }]}>{I18n.t('Images_uploaded')}</Text>
+			<Text style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>{I18n.t('Images_uploaded')}</Text>
 			<View style={styles.containerAvatarSuggestion}>
 				{username && resetAvatar ? (
 					<AvatarSuggestionItem text={`@${username}`} testID={`reset-avatar-suggestion`} onPress={resetAvatar} />
 				) : null}
 				{avatarSuggestions.slice(0, 7).map(item => (
-					<AvatarSuggestionItem item={item} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
+					<AvatarSuggestionItem item={item} key={item?.url} testID={`${item?.service}-avatar-suggestion`} onPress={onPress} />
 				))}
 			</View>
 		</View>

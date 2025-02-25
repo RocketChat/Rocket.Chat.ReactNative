@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { StackActions, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 
 const E2ESaveYourPasswordView = () => {
 	const server = useAppSelector(state => state.server.server);
-	const navigation = useNavigation<StackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<E2ESaveYourPasswordStackParamList, 'E2ESaveYourPasswordView'>>();
 	const dispatch = useDispatch();
 	const [password, setPassword] = useState('');
 	const { colors } = useTheme();
@@ -101,26 +101,26 @@ const E2ESaveYourPasswordView = () => {
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='e2e-save-password-view'>
+		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-save-password-view'>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
-				<View style={[styles.container, { backgroundColor: colors.backgroundColor }]}>
-					<Text style={[styles.warning, { color: colors.dangerColor }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
+				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
+					<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>
 					<View style={styles.content}>
-						<Text style={[styles.passwordText, { color: colors.bodyText }]}>{I18n.t('Your_password_is')}</Text>
-						<Text style={[styles.password, { color: colors.bodyText }]}>{password}</Text>
+						<Text style={[styles.passwordText, { color: colors.fontDefault }]}>{I18n.t('Your_password_is')}</Text>
+						<Text style={[styles.password, { color: colors.fontDefault }]}>{password}</Text>
 						<Button
 							onPress={onCopy}
-							style={[styles.copyButton, { backgroundColor: colors.auxiliaryBackground }]}
+							style={[styles.copyButton, { backgroundColor: colors.surfaceHover }]}
 							title={I18n.t('Copy')}
 							type='secondary'
 							fontSize={14}
 						/>
 					</View>
-					<Text style={[styles.info, { color: colors.bodyText }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
+					<Text style={[styles.info, { color: colors.fontDefault }]}>{I18n.t('Save_Your_Encryption_Password_info')}</Text>
 					<Button
 						onPress={onHowItWorks}
-						style={{ backgroundColor: colors.auxiliaryBackground }}
+						style={{ backgroundColor: colors.surfaceHover }}
 						title={I18n.t('How_It_Works')}
 						type='secondary'
 						testID='e2e-save-password-view-how-it-works'

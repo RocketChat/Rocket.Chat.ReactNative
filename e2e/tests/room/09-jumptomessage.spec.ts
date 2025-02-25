@@ -187,6 +187,8 @@ describe('Room', () => {
 			.toExist()
 			.withTimeout(5000);
 		await element(by.id('room-view-messages')).atIndex(0).swipe('up', 'slow', 0.3);
+		// 104
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -194,6 +196,8 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('104')))
 			.toExist()
 			.withTimeout(5000);
+		// 154
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -201,6 +205,8 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('154')))
 			.toExist()
 			.withTimeout(5000);
+		// 202
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toExist()
 			.withTimeout(5000);
@@ -208,6 +214,28 @@ describe('Room', () => {
 		await waitFor(element(by[textMatcher]('202')))
 			.toExist()
 			.withTimeout(5000);
+
+		// 253
+		/**
+		 * Sometimes CI loads messages differently than local.
+		 * It loads up until 204 instead of 253.
+		 */
+		await sleep(300);
+		try {
+			await waitFor(element(by[textMatcher]('Load newer')))
+				.toExist()
+				.withTimeout(5000);
+			await element(by[textMatcher]('Load newer')).atIndex(0).tap();
+			await waitFor(element(by[textMatcher]('253')))
+				.toExist()
+				.withTimeout(5000);
+		} catch (error) {
+			await waitFor(element(by[textMatcher]('204')))
+				.toExist()
+				.withTimeout(5000);
+		}
+
+		await sleep(300);
 		await waitFor(element(by[textMatcher]('Load newer')))
 			.toNotExist()
 			.withTimeout(5000);

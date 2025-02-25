@@ -1,34 +1,34 @@
 import * as FileSystem from 'expo-file-system';
 import * as mime from 'react-native-mime-types';
 import { isEmpty } from 'lodash';
+import { Model } from '@nozbe/watermelondb';
 
+import { IAttachment, TAttachmentEncryption, TMessageModel } from '../../definitions';
 import { sanitizeLikeString } from '../database/utils';
 import { store } from '../store/auxStore';
 import log from './helpers/log';
+import { emitter } from './helpers';
+import { Encryption } from '../encryption';
+import { getMessageById } from '../database/services/Message';
+import { getThreadMessageById } from '../database/services/ThreadMessage';
+import database from '../database';
+import { getThreadById } from '../database/services/Thread';
 
 export type MediaTypes = 'audio' | 'image' | 'video';
-
 export type TDownloadState = 'to-download' | 'loading' | 'downloaded';
-
 const defaultType = {
 	audio: 'mp3',
 	image: 'jpg',
 	video: 'mp4'
 };
-
 export const LOCAL_DOCUMENT_DIRECTORY = FileSystem.documentDirectory;
 
-const sanitizeString = (value: string) => {
-	const urlWithoutQueryString = value.split('?')[0];
-	return sanitizeLikeString(urlWithoutQueryString.substring(urlWithoutQueryString.lastIndexOf('/') + 1));
-};
+const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeLikeString(serverURL)}/`;
 
-const serverUrlParsedAsPath = (serverURL: string) => `${sanitizeString(serverURL)}/`;
-
-const sanitizeFileName = (value: string) => {
+export const sanitizeFileName = (value: string) => {
 	const extension = value.substring(value.lastIndexOf('.') + 1);
 	const toSanitize = value.substring(0, value.lastIndexOf('.'));
-	return `${sanitizeString(toSanitize)}.${extension}`;
+	return `${sanitizeLikeString(toSanitize)}.${extension}`;
 };
 
 export const getFilename = ({
@@ -108,9 +108,17 @@ const ensureDirAsync = async (dir: string, intermediates = true): Promise<void> 
 	return ensureDirAsync(dir, intermediates);
 };
 
-const getFilePath = ({ type, mimeType, urlToCache }: { type: MediaTypes; mimeType?: string; urlToCache?: string }) => {
+export const getFilePath = ({
+	type,
+	mimeType,
+	urlToCache
+}: {
+	type: MediaTypes;
+	mimeType?: string;
+	urlToCache?: string;
+}): string | null => {
 	if (!urlToCache) {
-		return;
+		return null;
 	}
 	const folderPath = getFolderPath(urlToCache);
 	const urlWithoutQueryString = urlToCache.split('?')[0];
@@ -173,7 +181,7 @@ export const deleteMediaFiles = async (serverUrl: string): Promise<void> => {
 
 const downloadQueue: { [index: string]: FileSystem.DownloadResumable } = {};
 
-export const mediaDownloadKey = (messageUrl: string) => `${sanitizeString(messageUrl)}`;
+export const mediaDownloadKey = (messageUrl: string) => `${sanitizeLikeString(messageUrl)}`;
 
 export function isDownloadActive(messageUrl: string): boolean {
 	return !!downloadQueue[mediaDownloadKey(messageUrl)];
@@ -191,14 +199,69 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 	}
 }
 
+const mapAttachments = ({
+	attachments,
+	uri,
+	encryption
+}: {
+	attachments?: IAttachment[];
+	uri: string;
+	encryption: boolean;
+}): TMessageModel['attachments'] =>
+	attachments?.map(att => ({
+		...att,
+		title_link: uri,
+		e2e: encryption ? 'done' : undefined
+	}));
+
+const persistMessage = async (messageId: string, uri: string, encryption: boolean) => {
+	const db = database.active;
+	const batch: Model[] = [];
+	const messageRecord = await getMessageById(messageId);
+	if (messageRecord) {
+		batch.push(
+			messageRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	const threadRecord = await getThreadById(messageId);
+	if (threadRecord) {
+		batch.push(
+			threadRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	const threadMessageRecord = await getThreadMessageById(messageId);
+	if (threadMessageRecord) {
+		batch.push(
+			threadMessageRecord.prepareUpdate(m => {
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+			})
+		);
+	}
+	if (batch.length) {
+		await db.write(async () => {
+			await db.batch(batch);
+		});
+	}
+};
+
 export function downloadMediaFile({
+	messageId,
 	type,
 	mimeType,
-	downloadUrl
+	downloadUrl,
+	encryption,
+	originalChecksum
 }: {
+	messageId: string;
 	type: MediaTypes;
 	mimeType?: string;
 	downloadUrl: string;
+	encryption?: TAttachmentEncryption;
+	originalChecksum?: string;
 }): Promise<string> {
 	return new Promise(async (resolve, reject) => {
 		let downloadKey = '';
@@ -210,29 +273,21 @@ export function downloadMediaFile({
 			downloadKey = mediaDownloadKey(downloadUrl);
 			downloadQueue[downloadKey] = FileSystem.createDownloadResumable(downloadUrl, path);
 			const result = await downloadQueue[downloadKey].downloadAsync();
-			if (result?.uri) {
-				return resolve(result.uri);
-			}
-			return reject();
-		} catch {
-			return reject();
-		} finally {
-			delete downloadQueue[downloadKey];
-		}
-	});
-}
 
-export function resumeMediaFile({ downloadUrl }: { downloadUrl: string }): Promise<string> {
-	return new Promise(async (resolve, reject) => {
-		let downloadKey = '';
-		try {
-			downloadKey = mediaDownloadKey(downloadUrl);
-			const result = await downloadQueue[downloadKey].resumeAsync();
-			if (result?.uri) {
-				return resolve(result.uri);
+			if (!result) {
+				return reject();
 			}
-			return reject();
-		} catch {
+
+			if (encryption && originalChecksum) {
+				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
+			}
+
+			await persistMessage(messageId, result.uri, !!encryption);
+
+			emitter.emit(`downloadMedia${downloadUrl}`, result.uri);
+			return resolve(result.uri);
+		} catch (e) {
+			console.error(e);
 			return reject();
 		} finally {
 			delete downloadQueue[downloadKey];

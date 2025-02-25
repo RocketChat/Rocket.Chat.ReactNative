@@ -1,44 +1,24 @@
-import { StyleSheet } from 'react-native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
-import { isIOS } from '../deviceInfo';
 import sharedStyles from '../../../../views/Styles';
 
-export * from './animations';
-
-export const defaultHeader = {
-	headerBackTitleVisible: false,
-	headerBackTestID: 'header-back',
-	cardOverlayEnabled: true,
-	cardStyle: { backgroundColor: 'transparent' }
+export const defaultHeader: NativeStackNavigationOptions = {
+	headerBackTitleVisible: false
 };
-
-export const cardStyle = {
-	backgroundColor: 'rgba(0,0,0,0)'
-};
-
-export const borderBottom: any = (theme: TSupportedThemes) => ({
-	borderBottomWidth: StyleSheet.hairlineWidth,
-	borderBottomColor: themes[theme].headerBorder,
-	elevation: 0
-});
 
 export const drawerStyle = {
 	width: 320
 };
 
-// TODO: Remove it once we migrate dropdowns to action sheet
-export const headerHeight = isIOS ? 50 : 56;
-
-export const themedHeader = (theme: TSupportedThemes) => ({
+export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOptions => ({
 	headerStyle: {
-		...borderBottom(theme),
-		backgroundColor: themes[theme].headerBackground
+		backgroundColor: themes[theme].surfaceNeutral
 	},
-	headerTintColor: themes[theme].headerTintColor,
-	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].headerTitleColor, fontSize: 18 }
+	headerTintColor: themes[theme].fontDefault,
+	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 18 }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {
@@ -48,8 +28,8 @@ export const navigationTheme = (theme: TSupportedThemes) => {
 		...defaultNavTheme,
 		colors: {
 			...defaultNavTheme.colors,
-			background: themes[theme].backgroundColor,
-			border: themes[theme].borderColor
+			background: themes[theme].surfaceRoom,
+			border: themes[theme].strokeLight
 		}
 	};
 };

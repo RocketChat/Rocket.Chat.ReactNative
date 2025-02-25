@@ -45,3 +45,7 @@ export type RoomsEndpoints = {
 		POST: (params: { roomId: string; notifications: IRoomNotifications }) => {};
 	};
 };
+
+export type TRoomsMediaResponse = {
+	file: { _id: string; url: string };
+};

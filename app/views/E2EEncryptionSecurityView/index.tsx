@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
 });
 
 const E2EEncryptionSecurityView = () => {
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'E2EEncryptionSecurityView'>>();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
@@ -70,20 +70,19 @@ const E2EEncryptionSecurityView = () => {
 	};
 
 	return (
-		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.backgroundColor }}>
+		<SafeAreaView testID='e2e-encryption-security-view' style={{ backgroundColor: colors.surfaceRoom }}>
 			<StatusBar />
 			<List.Container>
 				<View style={styles.container}>
 					<ChangePassword />
 
 					<List.Section>
-						<Text style={[styles.title, { color: colors.headerTitleColor }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
-						<Text style={[styles.description, { color: colors.bodyText }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{I18n.t('E2E_encryption_reset_title')}</Text>
+						<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('E2E_encryption_reset_description')}</Text>
 						<Button
 							onPress={resetOwnKey}
 							title={I18n.t('E2E_encryption_reset_button')}
 							type='secondary'
-							backgroundColor={colors.chatComponentBackground}
 							testID='e2e-encryption-security-view-reset-key'
 						/>
 					</List.Section>

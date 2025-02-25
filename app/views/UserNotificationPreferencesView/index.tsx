@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { Switch } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
@@ -15,16 +14,26 @@ import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
 import log from '../../lib/methods/helpers/log';
+import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import { useUserPreferences } from '../../lib/methods';
-import { NOTIFICATION_IN_APP_VIBRATION, SWITCH_TRACK_COLOR } from '../../lib/constants';
+import { NOTIFICATION_IN_APP_VIBRATION } from '../../lib/constants';
+import Switch from '../../containers/Switch';
+
+type TNavigation = CompositeNavigationProp<
+	NativeStackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
+>;
 
 const UserNotificationPreferencesView = () => {
 	const [inAppVibration, setInAppVibration] = useUserPreferences<boolean>(NOTIFICATION_IN_APP_VIBRATION, true);
 	const [preferences, setPreferences] = useState({} as INotificationPreferences);
 	const [loading, setLoading] = useState(true);
 
-	const navigation = useNavigation<StackNavigationProp<ProfileStackParamList, 'UserNotificationPrefView'>>();
-	const userId = useAppSelector(state => getUserSelector(state).id);
+	const navigation = useNavigation<TNavigation>();
+	const { userId, isMasterDetail } = useAppSelector(state => ({
+		userId: getUserSelector(state).id,
+		isMasterDetail: state.app.isMasterDetail
+	}));
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -59,6 +68,14 @@ const UserNotificationPreferencesView = () => {
 		} catch (error) {
 			setPreferences(previousPreferences);
 			log(error);
+		}
+	};
+
+	const navigateToPushTroubleshootView = () => {
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
 		}
 	};
 
@@ -97,6 +114,13 @@ const UserNotificationPreferencesView = () => {
 								value={preferences.pushNotifications}
 							/>
 							<List.Separator />
+							<List.Item
+								title='Troubleshooting'
+								onPress={navigateToPushTroubleshootView}
+								testID='user-notification-preference-view-troubleshooting'
+								showActionIndicator
+							/>
+							<List.Separator />
 							<List.Info info='Push_Notifications_Alert_Info' />
 						</List.Section>
 
@@ -105,9 +129,7 @@ const UserNotificationPreferencesView = () => {
 							<List.Item
 								title='Vibrate'
 								testID='user-notification-preference-view-in-app-vibration'
-								right={() => (
-									<Switch value={inAppVibration} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleInAppVibration} />
-								)}
+								right={() => <Switch value={inAppVibration} onValueChange={toggleInAppVibration} />}
 							/>
 							<List.Separator />
 						</List.Section>

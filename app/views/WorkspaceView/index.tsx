@@ -1,12 +1,13 @@
 import React, { useLayoutEffect } from 'react';
 import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/core';
 
 import { OutsideModalParamList, OutsideParamList } from '../../stacks/types';
 import I18n from '../../i18n';
 import Button from '../../containers/Button';
+import { useWorkspaceDomain } from '../../lib/hooks/useWorkspaceDomain';
 import { useTheme } from '../../theme';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import { IAssetsFavicon512 } from '../../definitions/IAssetsFavicon512';
@@ -17,8 +18,8 @@ import { useAppSelector } from '../../lib/hooks';
 import RegisterDisabledComponent from './RegisterDisabledComponent';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<OutsideParamList, 'WorkspaceView'>,
-	StackNavigationProp<OutsideModalParamList>
+	NativeStackNavigationProp<OutsideParamList, 'WorkspaceView'>,
+	NativeStackNavigationProp<OutsideModalParamList>
 >;
 
 const useWorkspaceViewSelector = () =>
@@ -38,6 +39,8 @@ const WorkspaceView = () => {
 
 	const { colors } = useTheme();
 
+	const workspaceDomain = useWorkspaceDomain();
+
 	const {
 		Accounts_iframe_enabled,
 		Assets_favicon_512,
@@ -51,9 +54,9 @@ const WorkspaceView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: I18n.t('Your_workspace')
+			title: workspaceDomain
 		});
-	}, [navigation]);
+	}, [navigation, workspaceDomain]);
 
 	const showRegistrationButton = !!(
 		!Accounts_iframe_enabled &&
@@ -65,11 +68,11 @@ const WorkspaceView = () => {
 			navigation.navigate('AuthenticationWebView', { url: server, authType: 'iframe' });
 			return;
 		}
-		navigation.navigate('LoginView', { title: Site_Name });
+		navigation.navigate('LoginView', { title: workspaceDomain });
 	};
 
 	const register = () => {
-		navigation.navigate('RegisterView', { title: Site_Name });
+		navigation.navigate('RegisterView', { title: workspaceDomain });
 	};
 
 	return (
@@ -77,18 +80,12 @@ const WorkspaceView = () => {
 			<FormContainerInner>
 				<View style={styles.alignItemsCenter}>
 					<ServerAvatar url={server} image={Assets_favicon_512?.url ?? Assets_favicon_512?.defaultUrl} />
-					<Text style={[styles.serverName, { color: colors.titleText }]}>{Site_Name}</Text>
-					<Text style={[styles.serverUrl, { color: colors.auxiliaryText }]}>{Site_Url}</Text>
+					<Text style={[styles.serverName, { color: colors.fontTitlesLabels }]}>{Site_Name}</Text>
+					<Text style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>{Site_Url}</Text>
 				</View>
 				{showLoginButton ? <Button title={I18n.t('Login')} type='primary' onPress={login} testID='workspace-view-login' /> : null}
 				{showRegistrationButton ? (
-					<Button
-						title={I18n.t('Create_account')}
-						type='secondary'
-						backgroundColor={colors.chatComponentBackground}
-						onPress={register}
-						testID='workspace-view-register'
-					/>
+					<Button title={I18n.t('Create_account')} type='secondary' onPress={register} testID='workspace-view-register' />
 				) : (
 					<RegisterDisabledComponent />
 				)}

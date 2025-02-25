@@ -55,7 +55,7 @@ const RoomTypeIcon = React.memo(
 			icon = 'message';
 		}
 
-		return <CustomIcon name={icon} size={size} color={themes[theme].titleText} style={iconStyle} />;
+		return <CustomIcon name={icon} size={size} color={themes[theme].fontTitlesLabels} style={iconStyle} />;
 	}
 );
 

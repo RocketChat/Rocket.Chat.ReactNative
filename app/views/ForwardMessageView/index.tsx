@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Alert, ScrollView, View } from 'react-native';
-import { StackNavigationOptions } from '@react-navigation/stack';
 import { RouteProp, StackActions, useNavigation, useRoute } from '@react-navigation/native';
 
 import { getPermalinkMessage } from '../../lib/methods';
@@ -46,7 +45,7 @@ const ForwardMessageView = () => {
 				<HeaderButton.Container>
 					<HeaderButton.Item
 						title={I18n.t('Send')}
-						color={isSendButtonEnabled ? colors.actionTintColor : colors.headerTintColor}
+						color={isSendButtonEnabled ? colors.fontHint : colors.fontSecondaryInfo}
 						disabled={!isSendButtonEnabled}
 						onPress={handlePostMessage}
 						testID='forward-message-view-send'
@@ -54,7 +53,7 @@ const ForwardMessageView = () => {
 				</HeaderButton.Container>
 			),
 			headerLeft: () => <HeaderButton.CloseModal />
-		} as StackNavigationOptions);
+		});
 	}, [rooms.length, navigation, sending]);
 
 	const handlePostMessage = async () => {
@@ -77,10 +76,9 @@ const ForwardMessageView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.auxiliaryBackground }}
+			style={{ backgroundColor: colors.surfaceHover }}
 			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<SafeAreaView testID='forward-message-view' style={styles.container}>
 				<ScrollView {...scrollPersistTaps}>
@@ -92,7 +90,7 @@ const ForwardMessageView = () => {
 						blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 						serverVersion={serverVersion}
 					/>
-					<View pointerEvents='none' style={[styles.messageContainer, { backgroundColor: colors.backgroundColor }]}>
+					<View pointerEvents='none' style={[styles.messageContainer, { backgroundColor: colors.surfaceRoom }]}>
 						<MessagePreview message={message} />
 					</View>
 				</ScrollView>

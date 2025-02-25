@@ -11,7 +11,8 @@ export const stateAttrsUpdate = [
 	'member',
 	'canForwardGuest',
 	'canReturnQueue',
-	'canViewCannedResponse'
+	'canViewCannedResponse',
+	'rightButtonsWidth'
 ] as TStateAttrsUpdate[];
 
 export const roomAttrsUpdate = [
@@ -41,5 +42,7 @@ export const roomAttrsUpdate = [
 	't',
 	'autoTranslate',
 	'autoTranslateLanguage',
-	'unmuted'
+	'unmuted',
+	'E2EKey',
+	'encrypted'
 ] as TRoomUpdate[];

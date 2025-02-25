@@ -36,7 +36,7 @@ export interface ITestUser {
 	email: string;
 }
 
-export const createRandomUser = async (): Promise<ITestUser> => {
+export const createRandomUser = async (customProps?: Object): Promise<ITestUser> => {
 	try {
 		await login(data.adminUser, data.adminPassword);
 		const user = data.randomUser();
@@ -45,8 +45,10 @@ export const createRandomUser = async (): Promise<ITestUser> => {
 			username: user.username,
 			name: user.name,
 			password: user.password,
-			email: user.email
+			email: user.email,
+			...(customProps || {})
 		});
+		console.log(`Created ${user.username} / ${user.password}`);
 		return user;
 	} catch (error) {
 		console.log(JSON.stringify(error));

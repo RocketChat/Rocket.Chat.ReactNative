@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { FlatListProps, StyleSheet } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { StyleSheet } from 'react-native';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../../lib/methods/helpers';
@@ -8,9 +7,6 @@ import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps
 import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
-import { TAnyMessageModel } from '../../../../definitions';
-
-const AnimatedFlatList = Animated.createAnimatedComponent<FlatListProps<TAnyMessageModel>>(FlatList);
 
 const styles = StyleSheet.create({
 	list: {
@@ -36,14 +32,13 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 
 	return (
 		<>
-			<AnimatedFlatList
+			<Animated.FlatList
 				testID='room-view-messages'
-				// @ts-ignore createAnimatedComponent is making this fail
 				ref={listRef}
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted={isIOS}
+				inverted
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}

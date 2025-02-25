@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Switch, View } from 'react-native';
+import { View } from 'react-native';
 
 import * as List from '../../../../containers/List';
 import styles from './styles';
-import { SWITCH_TRACK_COLOR, themes } from '../../../../lib/constants';
+import { themes } from '../../../../lib/constants';
 import { useTheme } from '../../../../theme';
 import { IUser } from '../../../../definitions';
 import { showConfirmationAlert } from '../../../../lib/methods/helpers/info';
@@ -11,6 +11,7 @@ import I18n from '../../../../i18n';
 import { changeLivechatStatus, isOmnichannelStatusAvailable } from '../../lib';
 import OmnichannelQueue from './OmnichannelQueue';
 import { isOmnichannelModuleAvailable } from '../../../../lib/methods';
+import Switch from '../../../../containers/Switch';
 
 interface IOmnichannelStatus {
 	searching: boolean;
@@ -60,11 +61,12 @@ const OmnichannelStatus = memo(({ searching, goQueue, queueSize, user }: IOmnich
 		<>
 			<List.Item
 				title='Omnichannel'
-				color={themes[theme].bodyText}
+				color={themes[theme].fontDefault}
 				onPress={toggleLivechat}
+				additionalAcessibilityLabel={status}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
-						<Switch value={status} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleLivechat} />
+						<Switch value={status} onValueChange={toggleLivechat} />
 					</View>
 				)}
 			/>

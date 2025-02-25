@@ -102,11 +102,7 @@ export default StyleSheet.create({
 		width: '100%',
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		borderWidth: 1,
 		overflow: 'hidden'
-	},
-	imageBlurContainer: {
-		height: '100%'
 	},
 	imagePressed: {
 		opacity: 0.5

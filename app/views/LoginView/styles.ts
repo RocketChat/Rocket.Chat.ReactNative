@@ -10,27 +10,26 @@ export default StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textBold,
-		fontSize: 22
+		fontSize: 22,
+		marginBottom: 24
 	},
 	inputContainer: {
 		marginVertical: 16
 	},
+	credentialsContainer: {
+		gap: 20
+	},
 	bottomContainer: {
 		flexDirection: 'column',
-		alignItems: 'center'
+		gap: 32,
+		marginTop: 32
+	},
+	bottomContainerGroup: {
+		gap: 12
 	},
 	bottomContainerText: {
-		...sharedStyles.textRegular,
-		fontSize: 13
-	},
-	bottomContainerTextBold: {
-		...sharedStyles.textSemibold,
-		fontSize: 13
-	},
-	loginButton: {
-		marginTop: 16
-	},
-	ugcContainer: {
-		marginTop: 32
+		...sharedStyles.textMedium,
+		alignSelf: 'center',
+		fontSize: 14
 	}
 });

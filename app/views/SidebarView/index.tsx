@@ -13,12 +13,11 @@ import I18n from '../../i18n';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import userPreferences from '../../lib/methods/userPreferences';
 import { CustomIcon } from '../../containers/CustomIcon';
-import { NOTIFICATION_PRESENCE_CAP, STATUS_COLORS, themes } from '../../lib/constants';
+import { NOTIFICATION_PRESENCE_CAP, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Navigation from '../../lib/navigation/appNavigation';
-import SidebarItem from './SidebarItem';
 import styles from './styles';
 import { DrawerParamList } from '../../stacks/types';
 import { IApplicationState, IUser, TSVStatus } from '../../definitions';
@@ -223,13 +222,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		return (
 			<>
 				<List.Separator />
-				<SidebarItem
-					text={I18n.t('Admin_Panel')}
-					left={<CustomIcon name='settings' size={20} color={themes[theme!].titleText} />}
+				<List.Item
+					title={'Admin_Panel'}
+					left={() => <List.Icon name='settings' />}
 					onPress={() => this.sidebarNavigate(routeName)}
-					testID='sidebar-admin'
-					theme={theme!}
-					current={this.currentItemKey === routeName}
+					backgroundColor={this.currentItemKey === routeName ? themes[theme!].strokeLight : undefined}
 				/>
 			</>
 		);
@@ -239,37 +236,36 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const { theme } = this.props;
 		return (
 			<>
-				<SidebarItem
-					text={I18n.t('Chats')}
-					left={<CustomIcon name='message' size={20} color={themes[theme!].titleText} />}
+				<List.Item
+					title={'Chats'}
+					left={() => <List.Icon name='message' />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
+					backgroundColor={this.currentItemKey === 'ChatsStackNavigator' ? themes[theme!].strokeLight : undefined}
 					testID='sidebar-chats'
-					theme={theme!}
-					current={this.currentItemKey === 'ChatsStackNavigator'}
 				/>
-				<SidebarItem
-					text={I18n.t('Profile')}
-					left={<CustomIcon name='user' size={20} color={themes[theme!].titleText} />}
+				<List.Separator />
+				<List.Item
+					title={'Profile'}
+					left={() => <List.Icon name='user' />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
+					backgroundColor={this.currentItemKey === 'ProfileStackNavigator' ? themes[theme!].strokeLight : undefined}
 					testID='sidebar-profile'
-					theme={theme!}
-					current={this.currentItemKey === 'ProfileStackNavigator'}
 				/>
-				<SidebarItem
-					text={I18n.t('Display')}
-					left={<CustomIcon name='sort' size={20} color={themes[theme!].titleText} />}
+				<List.Separator />
+				<List.Item
+					title={'Display'}
+					left={() => <List.Icon name='sort' />}
 					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
+					backgroundColor={this.currentItemKey === 'DisplayPrefStackNavigator' ? themes[theme!].strokeLight : undefined}
 					testID='sidebar-display'
-					theme={theme!}
-					current={this.currentItemKey === 'DisplayPrefStackNavigator'}
 				/>
-				<SidebarItem
-					text={I18n.t('Settings')}
-					left={<CustomIcon name='administration' size={20} color={themes[theme!].titleText} />}
+				<List.Separator />
+				<List.Item
+					title={'Settings'}
+					left={() => <List.Icon name='administration' />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
+					backgroundColor={this.currentItemKey === 'SettingsStackNavigator' ? themes[theme!].strokeLight : undefined}
 					testID='sidebar-settings'
-					theme={theme!}
-					current={this.currentItemKey === 'SettingsStackNavigator'}
 				/>
 				{this.renderAdmin()}
 			</>
@@ -284,20 +280,22 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			status = 'disabled';
 		}
 
-		let right: React.ReactElement | undefined = <CustomIcon name='edit' size={20} color={themes[theme!].titleText} />;
+		let right: (() => JSX.Element | null) | undefined = () => (
+			<CustomIcon name='edit' size={20} color={themes[theme!].fontTitlesLabels} />
+		);
 		if (notificationPresenceCap) {
-			right = <View style={[styles.customStatusDisabled, { backgroundColor: STATUS_COLORS.disabled }]} />;
+			right = () => <View style={[styles.customStatusDisabled, { backgroundColor: themes[theme!].userPresenceDisabled }]} />;
 		} else if (Presence_broadcast_disabled) {
 			right = undefined;
 		}
 
 		return (
-			<SidebarItem
-				text={user.statusText || I18n.t('Edit_Status')}
-				left={<Status size={24} status={status} />}
-				theme={theme!}
+			<List.Item
+				title={user.statusText || 'Edit_Status'}
+				left={() => <Status size={24} status={status} />}
 				right={right}
 				onPress={() => (Presence_broadcast_disabled ? this.onPressPresenceLearnMore() : this.sidebarNavigate('StatusView'))}
+				translateTitle={!user.statusText}
 				testID={`sidebar-custom-status-${user.status}`}
 			/>
 		);
@@ -307,14 +305,16 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		const { theme, supportedVersionsStatus } = this.props;
 		if (supportedVersionsStatus === 'warn') {
 			return (
-				<SidebarItem
-					text={I18n.t('Supported_versions_warning_update_required')}
-					textColor={themes[theme!].dangerColor}
-					left={<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />}
-					theme={theme!}
-					onPress={() => this.onPressSupportedVersionsWarning()}
-					testID={`sidebar-supported-versions-warn`}
-				/>
+				<>
+					<List.Separator />
+					<List.Item
+						title={'Supported_versions_warning_update_required'}
+						color={themes[theme!].fontDanger}
+						left={() => <CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
+						onPress={() => this.onPressSupportedVersionsWarning()}
+						testID={`sidebar-supported-versions-warn`}
+					/>
+				</>
 			);
 		}
 		return null;
@@ -327,51 +327,43 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			return null;
 		}
 		return (
-			<SafeAreaView testID='sidebar-view' style={{ backgroundColor: themes[theme!].focusedBackground }} vertical={isMasterDetail}>
-				<ScrollView
-					style={[
-						styles.container,
-						{
-							backgroundColor: isMasterDetail ? themes[theme!].backgroundColor : themes[theme!].focusedBackground
-						}
-					]}
-					{...scrollPersistTaps}
-				>
+			<SafeAreaView testID='sidebar-view' vertical={isMasterDetail}>
+				<ScrollView style={styles.container} {...scrollPersistTaps}>
+					<List.Separator />
 					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
-						<View style={styles.header}>
+						<View style={[styles.header, { backgroundColor: themes[theme!].surfaceRoom }]}>
 							<Avatar text={user.username} style={styles.avatar} size={30} />
 							<View style={styles.headerTextContainer}>
 								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].titleText }]}>
+									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].fontTitlesLabels }]}>
 										{useRealName ? user.name : user.username}
 									</Text>
 								</View>
 								<Text
-									style={[styles.currentServerText, { color: themes[theme!].titleText }]}
+									style={[styles.currentServerText, { color: themes[theme!].fontTitlesLabels }]}
 									numberOfLines={1}
-									accessibilityLabel={`Connected to ${baseUrl}`}
-								>
+									accessibilityLabel={`Connected to ${baseUrl}`}>
 									{Site_Name}
 								</Text>
 							</View>
 						</View>
 					</TouchableWithoutFeedback>
 
-					<List.Separator />
 					{this.renderSupportedVersionsWarn()}
 
 					<List.Separator />
 
-					{allowStatusMessage ? this.renderCustomStatus() : null}
+					{allowStatusMessage !== false ? this.renderCustomStatus() : null}
 					{!isMasterDetail ? (
 						<>
 							<List.Separator />
 							{this.renderNavigation()}
-							<List.Separator />
 						</>
 					) : (
 						<>{this.renderAdmin()}</>
 					)}
+
+					<List.Separator />
 				</ScrollView>
 			</SafeAreaView>
 		);

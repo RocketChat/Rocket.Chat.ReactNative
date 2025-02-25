@@ -4,6 +4,7 @@ import { FlatList, Text, View } from 'react-native';
 import { shallowEqual } from 'react-redux';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -62,7 +63,7 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 			testID={check ? `action-sheet-set-${label}-checked` : `action-sheet-set-${label}-unchecked`}
 			name={check ? 'checkbox-checked' : 'checkbox-unchecked'}
 			size={20}
-			color={check ? colors.tintActive : colors.auxiliaryTintColor}
+			color={check ? colors.fontHint : undefined}
 		/>
 	);
 };
@@ -74,15 +75,20 @@ const RoomMembersView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
-	const { isMasterDetail, serverVersion, useRealName, user } = useAppSelector(
+	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
 		state => ({
 			isMasterDetail: state.app.isMasterDetail,
 			useRealName: state.settings.UI_Use_Real_Name,
 			user: getUserSelector(state),
-			serverVersion: state.server.version
+			serverVersion: state.server.version,
+			loading: state.selectedUsers.loading
 		}),
 		shallowEqual
 	);
+
+	useEffect(() => {
+		sendLoadingEvent({ visible: loading });
+	}, [loading]);
 
 	const [state, updateState] = useReducer(
 		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
@@ -379,9 +385,9 @@ const RoomMembersView = (): React.ReactElement => {
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (
-					<View style={{ backgroundColor: colors.backgroundColor }}>
+					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
-							name={item.name as string}
+							name={item.name || item.username}
 							username={item.username}
 							onPress={() => onPressUser(item)}
 							testID={`room-members-view-item-${item.username}`}
@@ -401,7 +407,9 @@ const RoomMembersView = (): React.ReactElement => {
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers(state.allUsers)}
 				ListEmptyComponent={() =>
-					state.end ? <Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_members_found')}</Text> : null
+					state.end ? (
+						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
+					) : null
 				}
 				{...scrollPersistTaps}
 			/>

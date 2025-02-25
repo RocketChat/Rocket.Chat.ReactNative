@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { ScrollView, StatusBar } from 'react-native';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -23,8 +23,8 @@ import { Services } from '../../lib/services';
 import KeyboardView from '../../containers/KeyboardView';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 type TReportUserViewRouteProp = RouteProp<ChatsStackParamList, 'ReportUserView'>;
@@ -78,12 +78,11 @@ const ReportUserView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.auxiliaryBackground }}
+			style={{ backgroundColor: colors.surfaceTint }}
 			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}
-		>
-			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.auxiliaryBackground }]} testID='report-user-view'>
-				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.auxiliaryBackground }]}>
+			keyboardVerticalOffset={128}>
+			<SafeAreaView style={[styles.containerView]} testID='report-user-view'>
+				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceTint }]}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
@@ -98,7 +97,6 @@ const ReportUserView = () => {
 					<Button
 						title={I18n.t('Report')}
 						type='primary'
-						backgroundColor={colors.dangerColor}
 						disabled={!isValid}
 						onPress={handleSubmit(submit)}
 						testID='report-user-view-submit'

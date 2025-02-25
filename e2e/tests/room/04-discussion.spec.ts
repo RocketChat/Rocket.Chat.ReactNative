@@ -47,14 +47,14 @@ describe('Discussion', () => {
 			.toExist()
 			.withTimeout(60000);
 		await expect(element(by.id('create-discussion-view'))).toExist();
-		await element(by[textMatcher]('Select a channel...')).tap();
+		await element(by[textMatcher]('Select a channel')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${room}`);
 		await waitFor(element(by.id(`multi-select-item-${room}`)))
 			.toExist()
 			.withTimeout(10000);
 		await element(by.id(`multi-select-item-${room}`)).tap();
 		await element(by.id('multi-select-discussion-name')).replaceText(discussionFromNewMessage);
-		await element(by[textMatcher]('Select users...')).tap();
+		await element(by[textMatcher]('Select users')).tap();
 		await element(by.id('multi-select-search')).replaceText(`${selectUser}`);
 		await waitFor(element(by.id(`multi-select-item-${selectUser}`)))
 			.toExist()

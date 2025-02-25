@@ -24,6 +24,7 @@ export interface ILoggedUser {
 	alsoSendThreadToChannel: 'default' | 'always' | 'never';
 	bio?: string;
 	nickname?: string;
+	requirePasswordChange?: boolean;
 }
 
 export interface ILoggedUserResultFromServer

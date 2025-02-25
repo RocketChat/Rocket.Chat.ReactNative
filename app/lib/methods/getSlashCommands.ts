@@ -63,13 +63,14 @@ export function getSlashCommands() {
 					const allRecords = [...slashCommandsToCreate, ...slashCommandsToUpdate, ...slashCommandsToDelete];
 
 					try {
-						await db.batch(...allRecords);
+						await db.batch(allRecords);
 					} catch (e) {
 						log(e);
 					}
 					return allRecords.length;
 				});
 			}
+			return resolve();
 		} catch (e) {
 			log(e);
 			return resolve();

@@ -7,7 +7,7 @@ module.exports = {
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['@rocket.chat/eslint-config', 'prettier'],
+	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -17,7 +17,7 @@ module.exports = {
 			legacyDecorators: true
 		}
 	},
-	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'jest', 'react-hooks'],
+	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'react-hooks', 'jest'],
 	env: {
 		browser: true,
 		commonjs: true,
@@ -25,6 +25,7 @@ module.exports = {
 		node: true,
 		jquery: true,
 		mocha: true,
+		jest: true,
 		'jest/globals': true
 	},
 	rules: {
@@ -225,7 +226,8 @@ module.exports = {
 				'new-cap': 'off',
 				'lines-between-class-members': 'off',
 				'react-hooks/rules-of-hooks': 'error',
-				'react-hooks/exhaustive-deps': 'warn'
+				'react-hooks/exhaustive-deps': 'warn',
+				'jest/no-conditional-expect': 'off'
 			},
 			globals: {
 				JSX: true
@@ -241,7 +243,8 @@ module.exports = {
 		{
 			files: ['e2e/**'],
 			rules: {
-				'no-await-in-loop': 0
+				'no-await-in-loop': 0,
+				'jest/expect-expect': 'off'
 			}
 		}
 	]

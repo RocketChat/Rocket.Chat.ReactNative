@@ -93,6 +93,9 @@ export const defaultSettings = {
 	Accounts_Iframe_api_method: {
 		type: 'valueAsString'
 	},
+	API_Embed: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -103,6 +106,9 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	E2E_Enabled_Default_PrivateRooms: {
+		type: 'valueAsBoolean'
+	},
+	E2E_Enable_Encrypt_Files: {
 		type: 'valueAsBoolean'
 	},
 	Accounts_Directory_DefaultView: {
@@ -248,6 +254,21 @@ export const defaultSettings = {
 	},
 	CDN_PREFIX: {
 		type: 'valueAsString'
+	},
+	Accounts_RequirePasswordConfirmation: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_ConfirmPasswordPlaceholder: {
+		type: 'valueAsString'
+	},
+	E2E_Enabled_Mentions: {
+		type: 'valueAsBoolean'
+	},
+	UTF8_User_Names_Validation: {
+		type: 'valueAsString'
+	},
+	Cloud_Workspace_AirGapped_Restrictions_Remaining_Days: {
+		type: 'valueAsNumber'
 	},
 	...deprecatedSettings
 } as const;

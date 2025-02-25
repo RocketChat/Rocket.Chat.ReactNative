@@ -27,9 +27,10 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
-import { prepareQuoteMessage } from './helpers';
+import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
+import { emitter } from '../../lib/methods/helpers/emitter';
 
 const styles = StyleSheet.create({
 	container: {
@@ -65,8 +66,14 @@ export const MessageComposer = ({
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { openSearchEmojiKeyboard, closeEmojiKeyboard, closeSearchEmojiKeyboard, setTrackingViewHeight } =
-		useMessageComposerApi();
+	const {
+		openSearchEmojiKeyboard,
+		closeEmojiKeyboard,
+		closeSearchEmojiKeyboard,
+		setTrackingViewHeight,
+		setAlsoSendThreadToChannel,
+		setAutocompleteParams
+	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	useKeyboardListener(trackingViewRef);
 
@@ -99,6 +106,10 @@ export const MessageComposer = ({
 
 	const handleSendMessage = async () => {
 		if (!rid) return;
+
+		if (alsoSendThreadToChannel) {
+			setAlsoSendThreadToChannel(false);
+		}
 
 		if (sharing) {
 			onSendMessage?.();
@@ -137,6 +148,9 @@ export const MessageComposer = ({
 			}
 		}
 
+		// Hide autocomplete
+		setAutocompleteParams({ text: '', type: null, params: '' });
+
 		// Text message
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
 	};
@@ -169,9 +183,8 @@ export const MessageComposer = ({
 				} else {
 					emojiText = `:${emoji.name}:`;
 				}
-				newText = `${text.substr(0, cursor)}${emojiText}${text.substr(cursor)}`;
-				newCursor = cursor + emojiText.length;
-				composerInputComponentRef.current.setInput(newText, { start: newCursor, end: newCursor });
+				const { updatedCursor, updatedText } = insertEmojiAtCursor(text, emojiText, cursor);
+				composerInputComponentRef.current.setInput(updatedText, { start: updatedCursor, end: updatedCursor });
 				break;
 			case EventTypes.SEARCH_PRESSED:
 				openSearchEmojiKeyboard();
@@ -193,12 +206,12 @@ export const MessageComposer = ({
 
 	const onHeightChanged = (height: number) => {
 		setTrackingViewHeight(height);
+		emitter.emit(`setComposerHeight${tmid ? 'Thread' : ''}`, height);
 	};
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
-		console.count('[MessageComposer] renderContent');
 		if (recordingAudio) {
 			return <RecordAudio />;
 		}

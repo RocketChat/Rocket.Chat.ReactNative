@@ -1,5 +1,5 @@
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
@@ -31,7 +31,7 @@ const NewMessageView = () => {
 
 	const { colors } = useTheme();
 
-	const navigation = useNavigation<StackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 
 	const { isMasterDetail, maxUsers, useRealName } = useAppSelector(
 		state => ({
@@ -55,7 +55,7 @@ const NewMessageView = () => {
 				const db = database.active;
 				const c = await db
 					.get('subscriptions')
-					.query(Q.where('t', 'd'), Q.experimentalTake(QUERY_SIZE), Q.experimentalSortBy('room_updated_at', Q.desc))
+					.query(Q.where('t', 'd'), Q.take(QUERY_SIZE), Q.sortBy('room_updated_at', Q.desc))
 					.fetch();
 				setChats(c);
 			} catch (e) {
@@ -102,7 +102,7 @@ const NewMessageView = () => {
 				}}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={List.Separator}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

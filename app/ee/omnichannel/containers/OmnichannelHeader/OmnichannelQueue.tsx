@@ -21,19 +21,22 @@ const OmnichannelQueue = ({ queueSize, onPress }: IOmnichannelQueue) => {
 			<List.Item
 				title='Omnichannel_queue'
 				heightContainer={50}
-				left={() => <List.Icon name='queue' size={24} color={themes[theme].auxiliaryTintColor} />}
-				color={themes[theme].bodyText}
+				left={() => <List.Icon name='queue' size={24} color={themes[theme].fontHint} />}
+				color={themes[theme].fontDefault}
 				onPress={queueSize ? onPress : undefined}
 				styleTitle={styles.titleOmnichannelQueue}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
 						{queueSize ? (
 							<>
-								<UnreadBadge style={[styles.queueIcon, { backgroundColor: themes[theme].tintColor }]} unread={queueSize} />
-								<CustomIcon name='chevron-right' style={styles.actionIndicator} color={themes[theme].bodyText} size={24} />
+								<UnreadBadge
+									style={[styles.queueIcon, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
+									unread={queueSize}
+								/>
+								<CustomIcon name='chevron-right' style={styles.actionIndicator} color={themes[theme].fontDefault} size={24} />
 							</>
 						) : (
-							<Text style={[styles.emptyText, { color: themes[theme].auxiliaryTintColor }]}>{i18n.t('Empty')}</Text>
+							<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{i18n.t('Empty')}</Text>
 						)}
 					</View>
 				)}

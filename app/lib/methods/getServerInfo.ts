@@ -1,4 +1,3 @@
-import RNFetchBlob from 'rn-fetch-blob';
 import { settings as RocketChatSettings } from '@rocket.chat/sdk';
 import { KJUR } from 'jsrsasign';
 import moment from 'moment';
@@ -10,6 +9,7 @@ import { store } from '../store/auxStore';
 import I18n from '../../i18n';
 import { SIGNED_SUPPORTED_VERSIONS_PUBLIC_KEY } from '../constants';
 import { getServerById } from '../database/services/Server';
+import { compareServerVersion } from './helpers';
 import log from './helpers/log';
 
 interface IServerInfoFailure {
@@ -45,20 +45,20 @@ const verifyJWT = (jwt?: string): ISupportedVersionsData | null => {
 
 export async function getServerInfo(server: string): Promise<TServerInfoResult> {
 	try {
-		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, {
+		const response = await fetch(`${server}/api/info`, {
 			...RocketChatSettings.customHeaders
 		});
 		try {
-			const jsonRes: IApiServerInfo = response.json();
-			if (!jsonRes?.success) {
+			const serverInfo: IApiServerInfo = await response.json();
+			if (!serverInfo?.success) {
 				return {
 					success: false,
-					message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+					message: I18n.t('Not_RC_Server')
 				};
 			}
 
 			// Makes use of signed JWT to get supported versions
-			const supportedVersions = verifyJWT(jsonRes.supportedVersions?.signed);
+			const supportedVersions = verifyJWT(serverInfo.supportedVersions?.signed);
 
 			// if backend doesn't have supported versions or JWT is invalid, request from cloud
 			if (!supportedVersions) {
@@ -69,7 +69,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 					moment(new Date()).diff(serverRecord?.supportedVersionsUpdatedAt, 'hours') <= SV_CLOUD_UPDATE_INTERVAL
 				) {
 					return {
-						...jsonRes,
+						...serverInfo,
 						success: true
 					};
 				}
@@ -79,7 +79,7 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 				// Allows airgapped servers to use the app until enforcementStartDate
 				if (!cloudInfo) {
 					return {
-						...jsonRes,
+						...serverInfo,
 						success: true
 					};
 				}
@@ -88,14 +88,14 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 				const supportedVersionsCloud = verifyJWT(cloudInfo?.signed);
 
 				return {
-					...jsonRes,
+					...serverInfo,
 					success: true,
 					supportedVersions: supportedVersionsCloud
 				};
 			}
 
 			return {
-				...jsonRes,
+				...serverInfo,
 				success: true,
 				supportedVersions
 			};
@@ -110,19 +110,23 @@ export async function getServerInfo(server: string): Promise<TServerInfoResult> 
 			}
 			return {
 				success: false,
-				message: e.message
+				message: I18n.t('Not_RC_Server')
 			};
 		}
 	}
 
 	return {
 		success: false,
-		message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
+		message: I18n.t('Not_RC_Server')
 	};
 }
 
 const getUniqueId = async (server: string): Promise<string> => {
-	const response = await fetch(`${server}/api/v1/settings.public?query={"_id": "uniqueID"}`);
+	const serverVersion = store.getState().server.version;
+	const url = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')
+		? `${server}/api/v1/settings.public?_id=uniqueID`
+		: `${server}/api/v1/settings.public?query={"_id": "uniqueID"}`;
+	const response = await fetch(url);
 	const result = await response.json();
 	return result?.settings?.[0]?.value;
 };

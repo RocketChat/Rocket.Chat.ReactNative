@@ -1,6 +1,6 @@
 import { Text, ViewProps } from 'react-native';
 import React from 'react';
-import { BottomSheetView, BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';
@@ -27,10 +27,10 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 		hasCancel ? (
 			<Touch
 				onPress={hide}
-				style={[styles.button, { backgroundColor: colors.auxiliaryBackground }]}
+				style={[styles.button, { backgroundColor: colors.surfaceHover }]}
 				accessibilityLabel={I18n.t('Cancel')}
 			>
-				<Text style={[styles.text, { color: colors.bodyText }]}>{I18n.t('Cancel')}</Text>
+				<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
 			</Touch>
 		) : null;
 
@@ -45,10 +45,10 @@ const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onL
 				keyExtractor={item => item.title}
 				bounces={false}
 				renderItem={renderItem}
-				style={{ backgroundColor: colors.focusedBackground }}
+				style={{ backgroundColor: colors.strokeExtraDark }}
 				keyboardDismissMode='interactive'
 				indicatorStyle='black'
-				contentContainerStyle={{ paddingBottom: bottom }}
+				contentContainerStyle={{ paddingBottom: bottom, backgroundColor: colors.surfaceLight }}
 				ItemSeparatorComponent={List.Separator}
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={renderFooter}

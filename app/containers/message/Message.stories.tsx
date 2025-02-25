@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import MessageComponent from './Message';
 import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
-import MessageSeparator from '../../views/RoomView/Separator';
+import MessageSeparator from '../MessageSeparator';
 import MessageContext from './Context';
 
 const _theme = 'light';
@@ -43,7 +43,7 @@ export default {
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<ScrollView style={{ backgroundColor: themes[_theme].backgroundColor }}>
+				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
 					<MessageContext.Provider
 						value={{
 							user,
@@ -56,9 +56,8 @@ export default {
 							onReactionPress: () => {},
 							onDiscussionPress: () => {},
 							onReactionLongPress: () => {},
-							threadBadgeColor: themes.light.tunreadColor
-						}}
-					>
+							threadBadgeColor: themes.light.fontInfo
+						}}>
 						<Story />
 					</MessageContext.Provider>
 				</ScrollView>
@@ -124,6 +123,33 @@ export const Edited = () => (
 	<>
 		<Message msg='Message header' isEdited />
 		<Message msg='Message without header' isEdited isHeader={false} />
+	</>
+);
+
+export const Pinned = () => (
+	<>
+		<Message msg='Message header' pinned />
+		<Message msg='Message without header' pinned isHeader={false} />
+	</>
+);
+
+export const Translated = () => (
+	<>
+		<Message
+			msg='Message translated'
+			md={[
+				{
+					type: 'PARAGRAPH',
+					value: [
+						{
+							type: 'PLAIN_TEXT',
+							value: 'md is never translated'
+						}
+					]
+				}
+			]}
+			isTranslated
+		/>
 	</>
 );
 
@@ -939,6 +965,7 @@ export const LongNameUser = () => (
 	<>
 		<Message msg={'this is a normal message'} author={longNameAuthor} />
 		<Message msg={'Edited message'} author={longNameAuthor} isEdited />
+		<Message msg={'Translated message'} author={longNameAuthor} isTranslated />
 		<Message msg={'Encrypted message'} author={longNameAuthor} type={E2E_MESSAGE_TYPE} />
 		<Message msg={'Error message'} author={longNameAuthor} hasError />
 		<Message msg={'Message with read receipt'} author={longNameAuthor} isReadReceiptEnabled read />
@@ -947,6 +974,7 @@ export const LongNameUser = () => (
 			msg={'Show all icons '}
 			author={longNameAuthor}
 			isEdited
+			isTranslated
 			type={E2E_MESSAGE_TYPE}
 			hasError
 			isReadReceiptEnabled
@@ -958,6 +986,7 @@ export const LongNameUser = () => (
 			author={longNameAuthor}
 			isHeader={false}
 			isEdited
+			isTranslated
 			type={E2E_MESSAGE_TYPE}
 			hasError
 			isReadReceiptEnabled
@@ -969,6 +998,7 @@ export const LongNameUser = () => (
 			author={longNameAuthor}
 			isHeader={false}
 			isEdited
+			isTranslated
 			type={E2E_MESSAGE_TYPE}
 			hasError
 			isReadReceiptEnabled

@@ -6,17 +6,23 @@ import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
-import { loadDraftMessage, saveDraftMessage, fetchIsAllOrHere, getMentionRegexp } from '../helpers';
-import { useSubscription } from '../hooks';
+import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
+import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
+import { useSubscription, useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
 import { useTheme } from '../../../theme';
 import { userTyping } from '../../../actions/room';
-import { getRoomTitle } from '../../../lib/methods/helpers';
-import { MAX_HEIGHT, MIN_HEIGHT, NO_CANNED_RESPONSES, MARKDOWN_STYLES } from '../constants';
+import { getRoomTitle, isTablet, parseJson } from '../../../lib/methods/helpers';
+import {
+	MAX_HEIGHT,
+	MIN_HEIGHT,
+	NO_CANNED_RESPONSES,
+	MARKDOWN_STYLES,
+	COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH
+} from '../constants';
 import database from '../../../lib/database';
 import Navigation from '../../../lib/navigation/appNavigation';
-import { emitter } from '../emitter';
+import { emitter } from '../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../views/RoomView/context';
 import { getMessageById } from '../../../lib/database/services/Message';
 import { generateTriggerId } from '../../../lib/methods';
@@ -24,17 +30,19 @@ import { Services } from '../../../lib/services';
 import log from '../../../lib/methods/helpers/log';
 import { useAppSelector, usePrevious } from '../../../lib/hooks';
 import { ChatsStackParamList } from '../../../stacks/types';
+import { loadDraftMessage } from '../../../lib/methods/draftMessage';
 
 const defaultSelection: IInputSelection = { start: 0, end: 0 };
 
 export const ComposerInput = memo(
 	forwardRef<IComposerInput, IComposerInputProps>(({ inputRef }, ref) => {
 		const { colors, theme } = useTheme();
-		const { rid, tmid, sharing, action, selectedMessages } = useRoomContext();
+		const { rid, tmid, sharing, action, selectedMessages, setQuotesAndText } = useRoomContext();
 		const focused = useFocused();
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
+		const firstRender = React.useRef(false);
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
@@ -42,34 +50,39 @@ export const ComposerInput = memo(
 		let placeholder = tmid ? I18n.t('Add_thread_reply') : '';
 		if (subscription && !tmid) {
 			placeholder = I18n.t('Message_roomname', { roomName: (subscription.t === 'd' ? '@' : '#') + getRoomTitle(subscription) });
+			if (!isTablet && placeholder.length > COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH) {
+				placeholder = `${placeholder.slice(0, COMPOSER_INPUT_PLACEHOLDER_MAX_LENGTH)}...`;
+			}
 		}
 		const route = useRoute<RouteProp<ChatsStackParamList, 'RoomView'>>();
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
+
+		// subscribe to changes on mic state to update draft after a message is sent
+		useMicOrSend();
+		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
 
 		// Draft/Canned Responses
 		useEffect(() => {
 			const setDraftMessage = async () => {
 				const draftMessage = await loadDraftMessage({ rid, tmid });
 				if (draftMessage) {
-					setInput(draftMessage);
+					const parsedDraft = parseJson(draftMessage);
+					if (parsedDraft?.msg || parsedDraft?.quotes) {
+						setQuotesAndText?.(parsedDraft.msg, parsedDraft.quotes);
+					} else {
+						setInput(draftMessage);
+					}
 				}
 			};
 
 			if (sharing) return;
-
-			if (usedCannedResponse) {
-				setInput(usedCannedResponse);
-			} else if (action !== 'edit') {
+			if (usedCannedResponse) setInput(usedCannedResponse);
+			if (action !== 'edit' && !firstRender.current) {
+				firstRender.current = true;
 				setDraftMessage();
 			}
-
-			return () => {
-				if (action !== 'edit') {
-					saveDraftMessage({ rid, tmid, draftMessage: textRef.current });
-				}
-			};
-		}, [action, rid, tmid, usedCannedResponse]);
+		}, [action, rid, tmid, usedCannedResponse, firstRender.current]);
 
 		// Edit/quote
 		useEffect(() => {
@@ -91,7 +104,7 @@ export const ComposerInput = memo(
 				fetchMessageAndSetInput();
 				return;
 			}
-			if (action === 'quote' && selectedMessages.length === 1) {
+			if (action === 'quote' && selectedMessages.length) {
 				focus();
 			}
 		}, [action, selectedMessages]);
@@ -131,7 +144,7 @@ export const ComposerInput = memo(
 		useImperativeHandle(ref, () => ({
 			getTextAndClear: () => {
 				const text = textRef.current;
-				setInput('');
+				setInput('', undefined, true);
 				return text;
 			},
 			getText: () => textRef.current,
@@ -140,11 +153,16 @@ export const ComposerInput = memo(
 			onAutocompleteItemSelected
 		}));
 
-		const setInput: TSetInput = (text, selection) => {
-			textRef.current = text;
-			if (inputRef.current) {
-				inputRef.current.setNativeProps({ text });
+		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
+			const message = text.trim();
+			textRef.current = message;
+
+			if (forceUpdateDraftMessage) {
+				saveMessageDraft('');
 			}
+
+			inputRef.current?.setNativeProps?.({ text });
+
 			if (selection) {
 				// setSelection won't trigger onSelectionChange, so we need it to be ran after new text is set
 				setTimeout(() => {
@@ -152,13 +170,15 @@ export const ComposerInput = memo(
 					selectionRef.current = selection;
 				}, 50);
 			}
-			setMicOrSend(text.length === 0 ? 'mic' : 'send');
+			setMicOrSend(message.length === 0 ? 'mic' : 'send');
 		};
 
 		const focus = () => {
-			if (inputRef.current) {
-				inputRef.current.focus();
-			}
+			setTimeout(() => {
+				if (inputRef.current) {
+					inputRef.current.focus();
+				}
+			}, 300);
 		};
 
 		const onChangeText: TextInputProps['onChangeText'] = text => {
@@ -339,7 +359,8 @@ export const ComposerInput = memo(
 				defaultValue=''
 				multiline
 				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
-				testID={`message-composer-input${tmid ? '-thread' : ''}`}
+				// eslint-disable-next-line no-nested-ternary
+				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}
 			/>
 		);
 	})

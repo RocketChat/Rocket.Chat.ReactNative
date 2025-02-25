@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as List from '../../containers/List';
 import { useTheme } from '../../theme';
+import i18n from '../../i18n';
 
 const LanguageItem = ({
 	item,
@@ -22,8 +23,9 @@ const LanguageItem = ({
 			title={label}
 			onPress={() => submit(value)}
 			testID={`language-view-${value}`}
-			right={() => (isSelected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
 			translateTitle={false}
+			additionalAcessibilityLabel={isSelected ? i18n.t('Checked') : i18n.t('Unchecked')}
 		/>
 	);
 };

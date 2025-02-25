@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import I18n from '../i18n';
@@ -7,6 +7,7 @@ import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
+import NewWindowIcon from '../containers/NewWindowIcon';
 import { OutsideParamList } from '../stacks/types';
 import { IBaseScreen, IApplicationState } from '../definitions';
 
@@ -18,7 +19,7 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const { theme } = useTheme();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Legal')
 		});
@@ -41,14 +42,16 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 						title='Terms_of_Service'
 						onPress={() => onPressItem({ route: 'terms-of-service' })}
 						testID='legal-terms-button'
-						showActionIndicator
+						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Privacy_Policy'
 						onPress={() => onPressItem({ route: 'privacy-policy' })}
 						testID='legal-privacy-button'
-						showActionIndicator
+						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 				</List.Section>

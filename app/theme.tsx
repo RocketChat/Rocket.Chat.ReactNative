@@ -6,7 +6,7 @@ import { TNavigationOptions } from './definitions/navigationTypes';
 import { colors } from './lib/constants';
 
 export type TSupportedThemes = keyof typeof colors;
-export type TColors = typeof colors[TSupportedThemes];
+export type TColors = (typeof colors)[TSupportedThemes];
 
 export interface IThemeContextProps {
 	theme: TSupportedThemes;

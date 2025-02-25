@@ -9,7 +9,7 @@ import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
-import { PASSCODE_LENGTH, themes } from '../../../lib/constants';
+import { PASSCODE_LENGTH } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
@@ -35,7 +35,7 @@ export interface IBase {
 
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
-		const { theme } = useTheme();
+		const { colors } = useTheme();
 		const { height } = useDimensions();
 
 		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
@@ -101,7 +101,7 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 
 		return (
 			<Animatable.View ref={rootRef} style={styles.container}>
-				<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]}>
+				<Grid style={[styles.grid, { backgroundColor: colors.surfaceNeutral }]}>
 					<LockIcon />
 					<Title text={title} />
 					{subtitle ? <Subtitle text={subtitle} /> : null}

@@ -1,5 +1,5 @@
 import Model from '@nozbe/watermelondb/Model';
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 
 import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
@@ -65,7 +65,7 @@ export interface ILastMessage {
 	urls?: IUrlFromServer[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
-	md?: MarkdownAST;
+	md?: Root;
 	attachments?: IAttachment[];
 	reactions?: IReaction[];
 	unread?: boolean;
@@ -80,6 +80,11 @@ interface IMessageFile {
 	type: string;
 }
 
+export type IMessageE2EEContent = {
+	algorithm: 'rc.v1.aes-sha2';
+	ciphertext: string; // Encrypted subset JSON of IMessage
+};
+
 export interface IMessageFromServer {
 	_id: string;
 	rid: string;
@@ -90,7 +95,7 @@ export interface IMessageFromServer {
 	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
-	md?: MarkdownAST;
+	md?: Root;
 	file?: IMessageFile;
 	files?: IMessageFile[];
 	groupable?: boolean;
@@ -107,6 +112,7 @@ export interface IMessageFromServer {
 		username: string;
 	};
 	score?: number;
+	content?: IMessageE2EEContent;
 }
 
 export interface ILoadMoreMessage {

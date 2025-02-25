@@ -14,28 +14,12 @@ final class RocketChat {
   
   let server: Server
   let api: API?
-  
-  static var instances: [Server: RocketChat] = [:]
-  var encryptionInstances: [RoomId: Encryption] = [:]
-  
-  static private var queue = DispatchQueue(label: "chat.rocket.instanceQueue")
+
   private var encryptionQueue = DispatchQueue(label: "chat.rocket.encryptionQueue")
   
   init(server: Server) {
     self.server = server
     self.api = API(server: server)
-  }
-  
-  static func instanceForServer(server: Server) -> RocketChat {
-    queue.sync {
-      if let rocketchat = instances[server] {
-        return rocketchat
-      }
-      
-      let rocketchat = RocketChat(server: server)
-      instances[server] = rocketchat
-      return rocketchat
-    }
   }
   
   func getPushWithId(_ msgId: String, completion: @escaping((Notification?) -> Void)) {
@@ -56,7 +40,7 @@ final class RocketChat {
     let id = String.random(length: 17)
     
     var msg = message
-    let encrypted = Database(server: server).readRoomEncrypted(rid: rid)
+    let encrypted = Database(server: server).readRoomEncrypted(for: rid)
     if encrypted {
       msg = encryptMessage(rid: rid, id: id, message: message)
     }
@@ -75,24 +59,14 @@ final class RocketChat {
   
   func decryptMessage(rid: String, message: String) -> String? {
     encryptionQueue.sync {
-      if let encryption = encryptionInstances[rid] {
-        return encryption.decryptMessage(message: message)
-      }
-      
       let encryption = Encryption(server: server, rid: rid)
-      encryptionInstances[rid] = encryption
       return encryption.decryptMessage(message: message)
     }
   }
   
   func encryptMessage(rid: String, id: String, message: String) -> String {
     encryptionQueue.sync {
-      if let encryption = encryptionInstances[rid] {
-        return encryption.encryptMessage(id: id, message: message)
-      }
-      
       let encryption = Encryption(server: server, rid: rid)
-      encryptionInstances[rid] = encryption
       return encryption.encryptMessage(id: id, message: message)
     }
   }

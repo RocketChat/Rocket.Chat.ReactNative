@@ -1,6 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import React, { useEffect, useState } from 'react';
-import { Switch, Text } from 'react-native';
+import { Text } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -9,7 +10,6 @@ import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
 import I18n from '../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks';
 import { showErrorAlertWithEMessage } from '../../lib/methods/helpers';
 import { compareServerVersion } from '../../lib/methods/helpers/compareServerVersion';
@@ -19,6 +19,7 @@ import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
 import { OPTIONS } from './options';
+import Switch from '../../containers/Switch';
 
 type TOptions = keyof typeof OPTIONS;
 type TRoomNotifications = keyof IRoomNotifications;
@@ -56,19 +57,18 @@ const RenderListPicker = ({
 			onChangeValue(preference, { [preference]: i.value.toString() }, () => setOption(option));
 			setOption(i);
 		},
-		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+		right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 	}));
+
+	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label;
 
 	return (
 		<List.Item
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options })}
-			right={() => (
-				<Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.actionTintColor }]}>
-					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label, second: option?.second }) : option?.label}
-				</Text>
-			)}
+			right={() => <Text style={[{ ...sharedStyles.textRegular, fontSize: 16 }, { color: colors.fontHint }]}>{label}</Text>}
+			additionalAcessibilityLabel={label}
 		/>
 	);
 };
@@ -79,7 +79,6 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 		<Switch
 			value={switchValue}
 			testID={preference as string}
-			trackColor={SWITCH_TRACK_COLOR}
 			onValueChange={value => {
 				onChangeValue(preference, { [preference]: switchValue ? '1' : '0' }, () => setSwitchValue(switchValue));
 				setSwitchValue(value);
@@ -91,8 +90,11 @@ const RenderSwitch = ({ preference, room, onChangeValue }: IBaseParams) => {
 const NotificationPreferencesView = (): React.ReactElement => {
 	const route = useRoute<RouteProp<ChatsStackParamList, 'NotificationPrefView'>>();
 	const { rid, room } = route.params;
-	const navigation = useNavigation();
-	const serverVersion = useAppSelector(state => state.server.version);
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'NotificationPrefView'>>();
+	const { serverVersion, isMasterDetail } = useAppSelector(state => ({
+		serverVersion: state.server.version,
+		isMasterDetail: state.app.isMasterDetail
+	}));
 	const [hideUnreadStatus, setHideUnreadStatus] = useState(room.hideUnreadStatus);
 
 	useEffect(() => {
@@ -107,6 +109,14 @@ const NotificationPreferencesView = (): React.ReactElement => {
 			setHideUnreadStatus(data.hideUnreadStatus);
 		});
 	}, []);
+
+	const navigateToPushTroubleshootView = () => {
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
 
 	const saveNotificationSettings = async (key: TUnionOptionsRoomNotifications, params: IRoomNotifications, onError: Function) => {
 		try {
@@ -132,6 +142,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Receive_Notification'
 						testID='notification-preference-view-receive-notification'
 						right={() => <RenderSwitch preference='disableNotifications' room={room} onChangeValue={saveNotificationSettings} />}
+						additionalAcessibilityLabel={!room.disableNotifications}
 					/>
 					<List.Separator />
 					<List.Info info={I18n.t('Receive_notifications_from', { name: room.name })} translateInfo={false} />
@@ -143,6 +154,8 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Receive_Group_Mentions'
 						testID='notification-preference-view-group-mentions'
 						right={() => <RenderSwitch preference='muteGroupMentions' room={room} onChangeValue={saveNotificationSettings} />}
+						// @ts-ignore
+						additionalAcessibilityLabel={!room.muteGroupMentions}
 					/>
 					<List.Separator />
 					<List.Info info='Receive_Group_Mentions_Info' />
@@ -154,6 +167,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Mark_as_unread'
 						testID='notification-preference-view-mark-as-unread'
 						right={() => <RenderSwitch preference='hideUnreadStatus' room={room} onChangeValue={saveNotificationSettings} />}
+						additionalAcessibilityLabel={!room.hideUnreadStatus}
 					/>
 					<List.Separator />
 					<List.Info info='Mark_as_unread_Info' />
@@ -166,6 +180,7 @@ const NotificationPreferencesView = (): React.ReactElement => {
 							title='Show_badge_for_mentions'
 							testID='notification-preference-view-badge-for-mentions'
 							right={() => <RenderSwitch preference='hideMentionStatus' room={room} onChangeValue={saveNotificationSettings} />}
+							additionalAcessibilityLabel={!room.hideMentionStatus}
 						/>
 						<List.Separator />
 						<List.Info info='Show_badge_for_mentions_Info' />
@@ -200,6 +215,13 @@ const NotificationPreferencesView = (): React.ReactElement => {
 						title='Alert'
 						testID='notification-preference-view-push-notification'
 						onChangeValue={saveNotificationSettings}
+					/>
+					<List.Separator />
+					<List.Item
+						title='Troubleshooting'
+						onPress={navigateToPushTroubleshootView}
+						testID='notification-preference-view-troubleshooting'
+						showActionIndicator
 					/>
 					<List.Separator />
 					<List.Info info='Push_Notifications_Alert_Info' />

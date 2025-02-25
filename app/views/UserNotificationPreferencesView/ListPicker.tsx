@@ -45,19 +45,18 @@ const ListPicker = ({
 				hideActionSheet();
 				onChangeValue({ [preference]: i.value.toString() });
 			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
 		}));
+
+	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
 	return (
 		<List.Item
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
-			right={() => (
-				<Text style={[styles.pickerText, { color: colors.actionTintColor }]}>
-					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label}
-				</Text>
-			)}
+			right={() => <Text style={[styles.pickerText, { color: colors.fontHint }]}>{label}</Text>}
+			additionalAcessibilityLabel={label}
 		/>
 	);
 };

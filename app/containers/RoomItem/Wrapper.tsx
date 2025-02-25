@@ -13,16 +13,16 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 		<View
 			style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
 			accessibilityLabel={accessibilityLabel}
-		>
+			accessible
+			accessibilityRole='button'>
 			<IconOrAvatar displayMode={displayMode} {...props} />
 			<View
 				style={[
 					styles.centerContainer,
 					{
-						borderColor: colors.separatorColor
+						borderColor: colors.strokeLight
 					}
-				]}
-			>
+				]}>
 				{children}
 			</View>
 		</View>

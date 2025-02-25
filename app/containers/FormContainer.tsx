@@ -14,6 +14,7 @@ import SafeAreaView from './SafeAreaView';
 interface IFormContainer extends ScrollViewProps {
 	testID: string;
 	children: React.ReactElement | React.ReactElement[] | null;
+	showAppVersion?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -22,29 +23,35 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const FormContainerInner = ({ children }: { children: (React.ReactElement | null)[] }) => (
-	<View style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>{children}</View>
+export const FormContainerInner = ({
+	children,
+	accessibilityLabel
+}: {
+	children: (React.ReactElement | null)[];
+	accessibilityLabel?: string;
+}) => (
+	<View accessibilityLabel={accessibilityLabel} style={[sharedStyles.container, isTablet && sharedStyles.tabletScreenContent]}>
+		{children}
+	</View>
 );
 
-const FormContainer = ({ children, testID, ...props }: IFormContainer) => {
+const FormContainer = ({ children, testID, showAppVersion = true, ...props }: IFormContainer) => {
 	const { theme } = useTheme();
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].backgroundColor }}
+			style={{ backgroundColor: themes[theme].surfaceRoom }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
 			<ScrollView
 				style={sharedStyles.container}
 				contentContainerStyle={[sharedStyles.containerScrollView, styles.scrollView]}
 				{...scrollPersistTaps}
-				{...props}
-			>
-				<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].backgroundColor }}>
+				{...props}>
+				<SafeAreaView testID={testID} style={{ backgroundColor: themes[theme].surfaceRoom }}>
 					{children}
-					<AppVersion theme={theme} />
+					<>{showAppVersion && <AppVersion theme={theme} />}</>
 				</SafeAreaView>
 			</ScrollView>
 		</KeyboardView>

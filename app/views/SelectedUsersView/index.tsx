@@ -5,7 +5,7 @@ import { FlatList } from 'react-native';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { addUser, removeUser, reset } from '../../actions/selectedUsers';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -28,7 +28,7 @@ import { useAppSelector } from '../../lib/hooks';
 import Header from './Header';
 
 type TRoute = RouteProp<ChatsStackParamList, 'SelectedUsersView'>;
-type TNavigation = StackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
+type TNavigation = NativeStackNavigationProp<ChatsStackParamList, 'SelectedUsersView'>;
 
 const SelectedUsersView = () => {
 	const [chats, setChats] = useState<ISelectedUser[]>([]);
@@ -165,14 +165,15 @@ const SelectedUsersView = () => {
 							onPress={() => _onPressItem(item)}
 							testID={`select-users-view-item-${item.name}`}
 							icon={isChecked(username) ? 'checkbox-checked' : 'checkbox-unchecked'}
-							iconColor={isChecked(username) ? colors.actionTintColor : colors.separatorColor}
+							iconColor={isChecked(username) ? colors.fontHint : colors.strokeLight}
+							isChecked={isChecked(username)}
 						/>
 					);
 				}}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={<List.Separator />}
 				ListHeaderComponent={<Header useRealName={useRealName} onChangeText={handleSearch} onPressItem={toggleUser} />}
-				contentContainerStyle={{ backgroundColor: colors.backgroundColor }}
+				contentContainerStyle={{ backgroundColor: colors.surfaceRoom }}
 				keyboardShouldPersistTaps='always'
 			/>
 		</SafeAreaView>

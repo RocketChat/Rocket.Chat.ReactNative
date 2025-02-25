@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import ImageContainer from '../message/Image';
+import ImageContainer from '../message/Components/Attachments/Image';
 import Navigation from '../../lib/navigation/appNavigation';
 import { IThumb, IImage, IElement } from './interfaces';
 import { IAttachment } from '../../definitions';
@@ -30,8 +30,7 @@ export const Thumb = ({ element, size = 88 }: IThumb) => (
 export const Media = ({ element }: IImage) => {
 	const showAttachment = (attachment: IAttachment) => Navigation.navigate('AttachmentView', { attachment });
 	const imageUrl = element?.imageUrl ?? '';
-
-	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} />;
+	return <ImageContainer file={{ image_url: imageUrl }} showAttachment={showAttachment} />;
 };
 
 const genericImage = (element: IElement, context?: number) => {

@@ -1,25 +1,28 @@
-import RNFetchBlob from 'rn-fetch-blob';
-
-import { TMethods } from '../fetch';
-import { IFileUpload } from './interfaces';
+import { TRoomsMediaResponse } from '../../../../definitions/rest/v1/rooms';
+import { Upload } from './Upload';
+import { IFormData } from './definitions';
 
 class FileUpload {
-	fetch = (method: TMethods, url: string, headers: { [key: string]: string }, data: IFileUpload[]) => {
-		const formData = data.map(item => {
-			if (item.uri) {
-				return {
-					name: item.name,
-					type: item.type,
-					filename: item.filename,
-					data: RNFetchBlob.wrap(decodeURI(item.uri))
-				};
-			}
-			return item;
-		});
+	private upload: Upload;
 
-		return RNFetchBlob.fetch(method, url, headers, formData);
-	};
+	constructor(
+		url: string,
+		headers: { [key: string]: string },
+		data: IFormData[],
+		progressCallback?: (loaded: number, total: number) => void
+	) {
+		this.upload = new Upload();
+		this.upload.setupRequest(url, headers, progressCallback);
+		data.forEach(item => this.upload.appendFile(item));
+	}
+
+	public send(): Promise<TRoomsMediaResponse> {
+		return this.upload.send();
+	}
+
+	public cancel(): void {
+		this.upload.cancel();
+	}
 }
 
-const fileUpload = new FileUpload();
-export default fileUpload;
+export default FileUpload;

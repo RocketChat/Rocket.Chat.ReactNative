@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Switch, Text, View, SwitchProps } from 'react-native';
+import { StyleSheet, Text, View, SwitchProps } from 'react-native';
 
 import I18n from '../../../i18n';
-import { SWITCH_TRACK_COLOR } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
+import Switch from '../../../containers/Switch';
 
 const styles = StyleSheet.create({
 	switchContainer: {
@@ -12,19 +12,20 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		flexDirection: 'row',
-		maxHeight: 80,
-		marginBottom: 12
+		maxHeight: 80
 	},
 	switchTextContainer: {
 		flex: 1,
 		marginRight: 8
 	},
 	label: {
-		fontSize: 14,
+		fontSize: 16,
+		lineHeight: 24,
 		...sharedStyles.textMedium
 	},
 	hint: {
 		fontSize: 14,
+		lineHeight: 20,
 		...sharedStyles.textRegular
 	}
 });
@@ -40,18 +41,19 @@ export const SwitchItem = ({ id, value, label, hint, onValueChange, disabled = f
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.switchContainer, { backgroundColor: colors.backgroundColor }]}>
-			<View style={styles.switchTextContainer}>
-				<Text style={[styles.label, { color: colors.titleText }]}>{I18n.t(label)}</Text>
-				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.auxiliaryText }]}>
+		<View style={[styles.switchContainer, { backgroundColor: colors.surfaceRoom }]}>
+			<View accessible accessibilityLabel={`${I18n.t(label)}, ${I18n.t(hint)}`} style={styles.switchTextContainer}>
+				<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t(label)}</Text>
+				<Text testID={`create-channel-${id}-hint`} style={[styles.hint, { color: colors.fontSecondaryInfo }]}>
 					{I18n.t(hint)}
 				</Text>
 			</View>
 			<Switch
+				accessibilityRole='switch'
+				accessible
 				value={value}
 				onValueChange={onValueChange}
 				testID={`create-channel-${id}`}
-				trackColor={SWITCH_TRACK_COLOR}
 				disabled={disabled}
 			/>
 		</View>

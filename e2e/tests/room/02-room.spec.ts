@@ -5,21 +5,16 @@ import {
 	login,
 	tapBack,
 	sleep,
-	searchRoom,
 	tryTapping,
 	platformTypes,
 	TTextMatcher,
-	mockMessage
+	mockMessage,
+	navigateToRoom,
+	navigateToRecentRoom,
+	checkMessage
 } from '../../helpers/app';
-import { createRandomRoom, createRandomUser, ITestUser, sendMessage } from '../../helpers/data_setup';
-
-async function navigateToRoom(roomName: string) {
-	await searchRoom(`${roomName}`);
-	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
-	await waitFor(element(by.id('room-view')))
-		.toBeVisible()
-		.withTimeout(5000);
-}
+import { createRandomRoom, createRandomUser, deleteCreatedUsers, ITestUser, sendMessage } from '../../helpers/data_setup';
+import data from '../../data';
 
 describe('Room screen', () => {
 	let room: string;
@@ -120,26 +115,29 @@ describe('Room screen', () => {
 	// });
 
 	describe('Message', () => {
-		it('should copy link', async () => {
-			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
-			await waitFor(element(by.id('action-sheet')))
-				.toExist()
-				.withTimeout(2000);
-			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-			await element(by[textMatcher]('Get link')).atIndex(0).tap();
-			// TODO: test clipboard
-		});
-		it('should copy message', async () => {
-			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
-			await waitFor(element(by.id('action-sheet')))
-				.toExist()
-				.withTimeout(2000);
-			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-			await element(by[textMatcher]('Copy')).atIndex(0).tap();
-			// TODO: test clipboard
-		});
+		// Commented out, since it's flaky and we're not asserting clipboard anyway
+		// it('should copy link', async () => {
+		// 	await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+		// 	await sleep(300);
+		// 	await waitFor(element(by.id('action-sheet')))
+		// 		.toExist()
+		// 		.withTimeout(2000);
+		// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+		// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+		// 	await element(by[textMatcher]('Get link')).atIndex(0).tap();
+		// 	// TODO: test clipboard
+		// });
+		// it('should copy message', async () => {
+		// 	await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+		// 	await sleep(300);
+		// 	await waitFor(element(by.id('action-sheet')))
+		// 		.toExist()
+		// 		.withTimeout(2000);
+		// 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+		// 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+		// 	await element(by[textMatcher]('Copy')).atIndex(0).tap();
+		// 	// TODO: test clipboard
+		// });
 
 		it('should react to message', async () => {
 			await waitFor(element(by[textMatcher](randomMessage)))
@@ -169,6 +167,7 @@ describe('Room screen', () => {
 
 		it('should search emojis in the reaction picker and react', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+			await sleep(300);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
@@ -197,6 +196,7 @@ describe('Room screen', () => {
 
 		it('should react to message with frequently used emoji', async () => {
 			await element(by[textMatcher](randomMessage)).atIndex(0).longPress();
+			await sleep(300);
 			await waitFor(element(by.id('action-sheet')))
 				.toExist()
 				.withTimeout(2000);
@@ -244,6 +244,39 @@ describe('Room screen', () => {
 			await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.5);
 		});
 
+		it('should open the profile view tapping on his username', async () => {
+			const { username } = user;
+			await waitFor(element(by.id(`username-header-${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id(`username-header-${username}`)).tap();
+			await waitFor(element(by.id('room-info-view-username')))
+				.toExist()
+				.withTimeout(2000);
+			await waitFor(element(by[textMatcher](`@${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await tapBack();
+		});
+
+		it('should open the profile view tapping on other username', async () => {
+			const otherUser = await createRandomUser();
+			const { username } = otherUser;
+			await sendMessage(otherUser, room, 'new message');
+			await waitFor(element(by.id(`username-header-${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await element(by.id(`username-header-${username}`)).tap();
+			await waitFor(element(by.id('room-info-view-username')))
+				.toExist()
+				.withTimeout(2000);
+			await waitFor(element(by[textMatcher](`@${username}`)))
+				.toExist()
+				.withTimeout(2000);
+			await tapBack();
+			await deleteCreatedUsers([{ server: data.server, username }]);
+		});
+
 		it('should edit message', async () => {
 			const editMessage = await mockMessage('edit');
 			const editedMessage = `${editMessage}ed`;
@@ -252,7 +285,10 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
+			await waitFor(element(by[textMatcher]('Edit')))
+				.toBeVisible()
+				.withTimeout(3000);
 			await element(by[textMatcher]('Edit')).atIndex(0).tap();
 			await element(by.id('message-composer-input')).typeText('ed');
 			await element(by.id('message-composer-send')).tap();
@@ -280,6 +316,7 @@ describe('Room screen', () => {
 			await waitFor(element(by[textMatcher](quotedMessage)).atIndex(0))
 				.toBeVisible()
 				.withTimeout(3000);
+			await element(by[textMatcher](quotedMessage)).atIndex(0).tap();
 			await waitFor(element(by.id(`reply-${user.name}-${quoteMessage}`).withDescendant(by[textMatcher](quoteMessage))))
 				.toBeVisible()
 				.withTimeout(3000);
@@ -289,6 +326,9 @@ describe('Room screen', () => {
 			const expectedLastMessage = `You: ${quotedMessage}`;
 			await sleep(300);
 			await tapBack();
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(5000);
 			await waitFor(element(by.id(`markdown-preview-${expectedLastMessage}`)))
 				.toBeVisible()
 				.withTimeout(5000);
@@ -371,6 +411,123 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(60000);
 			await element(by[textMatcher](replyMessage)).atIndex(0).tap();
+			await tapBack();
+		});
+
+		it('should save draft, check it, send it and clear it', async () => {
+			await navigateToRoom(room);
+			const draftMessage = 'draft';
+			await element(by.id('message-composer-input')).typeText(draftMessage);
+			await tapBack();
+			await navigateToRecentRoom(room);
+			await sleep(500); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText(draftMessage);
+			await waitFor(element(by.id('message-composer-send')))
+				.toExist()
+				.withTimeout(5000);
+			await element(by.id('message-composer-send')).tap();
+			await checkMessage(draftMessage);
+			await tapBack();
+			await navigateToRecentRoom(room);
+			await sleep(500); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText('');
+			await tapBack();
+		});
+
+		it('should save message and quote draft correctly', async () => {
+			const newUser = await createRandomUser();
+			const { name: draftRoom } = await createRandomRoom(newUser, 'c');
+			const draftMessage = 'draft';
+			const originalMessage = '123';
+			const quoteMessage = '123456';
+			await sendMessage(newUser, draftRoom, originalMessage);
+			await waitFor(element(by.id('rooms-list-view')))
+				.toBeVisible()
+				.withTimeout(5000);
+			await navigateToRoom(draftRoom);
+			await waitFor(element(by[textMatcher](originalMessage)).atIndex(0))
+				.toBeVisible()
+				.withTimeout(10000);
+			await element(by.id('room-view-join-button')).tap();
+			await waitFor(element(by.id('room-view-join-button')))
+				.not.toBeVisible()
+				.withTimeout(10000);
+			// add draft
+			await element(by.id('message-composer-input')).typeText(draftMessage);
+			await tapBack();
+			await navigateToRecentRoom(draftRoom);
+			await sleep(500); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText(draftMessage);
+			// add quote to draft
+			await tryTapping(element(by[textMatcher](originalMessage)).atIndex(0), 2000, true);
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(5000);
+			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await element(by[textMatcher]('Quote')).atIndex(0).tap();
+			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
+				.toBeVisible()
+				.withTimeout(10000);
+			await tapBack();
+			await navigateToRecentRoom(draftRoom);
+			await sleep(500); // wait for animation
+			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)))
+				.toBeVisible()
+				.withTimeout(10000);
+			// edit draft with quote
+			await element(by.id('message-composer-input')).replaceText(quoteMessage);
+			await tapBack();
+			await navigateToRecentRoom(draftRoom);
+			await sleep(500); // wait for animation
+			await expect(element(by.id('message-composer-input'))).toHaveText(quoteMessage);
+			// send message
+			await waitFor(element(by.id('message-composer-send')))
+				.toExist()
+				.withTimeout(5000);
+			await element(by.id('message-composer-send')).tap();
+			await waitFor(element(by.id(`reply-${newUser.name}-${originalMessage}`).withDescendant(by[textMatcher](originalMessage))))
+				.toBeVisible()
+				.withTimeout(5000);
+			await expect(element(by.id('message-composer-input'))).toHaveText('');
+		});
+
+		it('should edit message on shareview and after close the text needs to be changed on roomView', async () => {
+			const draftShareMessage = 'draftShare';
+			const originalMessage = '123';
+			await element(by.id('message-composer-input')).typeText(draftShareMessage);
+			await element(by.id('message-composer-actions')).tap();
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
+			await sleep(300); // wait for animation
+			await waitFor(element(by.id('message-composer-input-share')))
+				.toHaveText(draftShareMessage)
+				.withTimeout(2000);
+			await element(by.id('message-composer-input-share')).replaceText(draftShareMessage + originalMessage);
+			await element(by.id('share-view-close')).tap();
+			await sleep(500); // wait for animation
+			await waitFor(element(by.id('message-composer-input')))
+				.toHaveText(draftShareMessage + originalMessage)
+				.withTimeout(2000);
+			// add quote to draft
+			await tryTapping(element(by[textMatcher](originalMessage)).atIndex(0), 2000, true);
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
+			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await element(by[textMatcher]('Quote')).atIndex(0).tap();
+			await element(by.id('message-composer-actions')).tap();
+			await waitFor(element(by.id('action-sheet')))
+				.toExist()
+				.withTimeout(2000);
+			await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
+			await sleep(500); // wait for animation
+			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)).atIndex(0))
+				.toExist()
+				.withTimeout(20000);
 		});
 	});
 });

@@ -25,7 +25,7 @@ const DEFAULT_BROWSERS: IBrowsersValues[] = [
 		value: 'inApp'
 	},
 	{
-		title: isIOS ? 'Safari' : 'Browser',
+		title: 'System_default',
 		value: 'systemDefault:'
 	}
 ];
@@ -96,7 +96,7 @@ const DefaultBrowserView = () => {
 				)}
 				ListHeaderComponent={
 					<>
-						<List.Header title='Choose_where_you_want_links_be_opened' />
+						<List.Header title='Choose_where_you_want_links_be_opened' numberOfLines={2} />
 						<List.Separator />
 					</>
 				}

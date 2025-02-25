@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -6,6 +6,7 @@ import { MessageTypeLoad } from '../../../lib/constants';
 import { MessageType, RoomType } from '../../../definitions';
 import { useTheme } from '../../../theme';
 import Touch from '../../../containers/Touch';
+import MessageSeparator from '../../../containers/MessageSeparator';
 import sharedStyles from '../../Styles';
 import I18n from '../../../i18n';
 import { roomHistoryRequest } from '../../../actions/room';
@@ -29,13 +30,18 @@ const LoadMore = React.memo(
 		t,
 		loaderId,
 		type,
-		runOnRender
+		runOnRender,
+		dateSeparator,
+		showUnreadSeparator
 	}: {
 		rid: string;
 		t: RoomType;
 		loaderId: string;
 		type: MessageType;
 		runOnRender: boolean;
+		separator?: ReactElement | null;
+		dateSeparator?: Date | string | null;
+		showUnreadSeparator?: boolean;
 	}): React.ReactElement => {
 		const { colors } = useTheme();
 		const dispatch = useDispatch();
@@ -58,13 +64,16 @@ const LoadMore = React.memo(
 		}
 
 		return (
-			<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
-				{loading ? (
-					<ActivityIndicator color={colors.auxiliaryText} />
-				) : (
-					<Text style={[styles.text, { color: colors.titleText }]}>{I18n.t(text)}</Text>
-				)}
-			</Touch>
+			<>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
+				<Touch onPress={handleLoad} style={styles.button} enabled={!loading}>
+					{loading ? (
+						<ActivityIndicator color={colors.fontSecondaryInfo} />
+					) : (
+						<Text style={[styles.text, { color: colors.fontTitlesLabels }]}>{I18n.t(text)}</Text>
+					)}
+				</Touch>
+			</>
 		);
 	}
 );

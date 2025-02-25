@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToLogin, login, platformTypes, TTextMatcher, tapBack } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Settings screen', () => {
@@ -65,8 +65,12 @@ describe('Settings screen', () => {
 			await expect(element(by.id('settings-view-media-auto-download'))).toExist();
 		});
 
-		it('should have licence', async () => {
+		it('should have license', async () => {
 			await expect(element(by.id('settings-view-license'))).toExist();
+		});
+
+		it('should have legal', async () => {
+			await expect(element(by.id('settings-view-legal'))).toExist();
 		});
 
 		it('should have version no', async () => {
@@ -75,6 +79,17 @@ describe('Settings screen', () => {
 
 		it('should have server version', async () => {
 			await expect(element(by.id('settings-view-server-version'))).toExist();
+		});
+
+		it('should have get help', async () => {
+			await expect(element(by.id('settings-view-get-help'))).toExist();
+			await element(by.id('settings-view-get-help')).tap();
+			await waitFor(element(by.id('settings-view-get-help-documentation')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await expect(element(by.id('settings-view-get-help-accessibility-statement'))).toExist();
+			await expect(element(by.id('settings-view-get-help-glossary'))).toExist();
+			await tapBack();
 		});
 	});
 
@@ -94,6 +109,36 @@ describe('Settings screen', () => {
 			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toExist()
 				.withTimeout(10000);
+		});
+
+		describe('Legal button', () => {
+			it('should navigate to legalview', async () => {
+				await element(by.id('rooms-list-view-sidebar')).tap();
+				await waitFor(element(by.id('sidebar-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await waitFor(element(by.id('sidebar-settings')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('sidebar-settings')).tap();
+				await waitFor(element(by.id('settings-view')))
+					.toBeVisible()
+					.withTimeout(2000);
+
+				await expect(element(by.id('settings-view-legal'))).toExist();
+				await element(by.id('settings-view-legal')).tap();
+				await waitFor(element(by.id('legal-view')))
+					.toBeVisible()
+					.withTimeout(4000);
+			});
+
+			it('should have terms of service button', async () => {
+				await expect(element(by.id('legal-terms-button'))).toBeVisible();
+			});
+
+			it('should have privacy policy button', async () => {
+				await expect(element(by.id('legal-privacy-button'))).toBeVisible();
+			});
 		});
 	});
 });

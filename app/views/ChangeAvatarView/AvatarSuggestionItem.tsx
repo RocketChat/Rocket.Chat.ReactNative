@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import { IAvatar } from '../../definitions';
 import Avatar from '../../containers/Avatar';
 import { useTheme } from '../../theme';
+import i18n from '../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginRight: 20,
-		marginBottom: 12,
+
 		borderRadius: 4
 	}
 });
@@ -31,8 +32,14 @@ const AvatarSuggestionItem = ({
 	const { colors } = useTheme();
 
 	return (
-		<View key={item?.service} testID={testID} style={[styles.container, { backgroundColor: colors.borderColor }]}>
-			<Avatar avatar={item?.url} text={text} size={64} onPress={() => onPress(item)} />
+		<View key={item?.service} testID={testID} style={[styles.container, { backgroundColor: colors.strokeLight }]}>
+			<Avatar
+				accessibilityLabel={i18n.t('Select_Uploaded_Image')}
+				avatar={item?.url}
+				text={text}
+				size={64}
+				onPress={() => onPress(item)}
+			/>
 		</View>
 	);
 };

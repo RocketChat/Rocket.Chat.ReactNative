@@ -36,7 +36,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 			<Animated.View
 				style={[
 					styles.actionLeftButtonContainer,
-					{ width: width * 2, backgroundColor: colors.tintColor, right: '100%' },
+					{ width: width * 2, backgroundColor: colors.badgeBackgroundLevel2, right: '100%' },
 					viewHeight,
 					animatedStyles
 				]}
@@ -46,7 +46,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 						<CustomIcon
 							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 							name={isRead ? 'flag' : 'check'}
-							color={colors.buttonText}
+							color={colors.fontWhite}
 						/>
 					</RectButton>
 				</View>
@@ -118,18 +118,18 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					styles.actionRightButtonContainer,
 					{
 						width,
-						backgroundColor: colors.favoriteBackground,
+						backgroundColor: colors.statusFontWarning,
 						left: '100%'
 					},
 					viewHeight,
 					animatedFavStyles
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.favoriteBackground }]} onPress={toggleFav}>
+				<RectButton style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]} onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name={favorite ? 'star-filled' : 'star'}
-						color={colors.buttonText}
+						color={colors.fontWhite}
 					/>
 				</RectButton>
 			</Animated.View>
@@ -138,18 +138,21 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					styles.actionRightButtonContainer,
 					{
 						width: width * 2,
-						backgroundColor: colors.hideBackground,
+						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
 					isCondensed && { height: ROW_HEIGHT_CONDENSED },
 					animatedHideStyles
 				]}
 			>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.hideBackground }]} onPress={onHidePress}>
+				<RectButton
+					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
+					onPress={onHidePress}
+				>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name='unread-on-top-disabled'
-						color={colors.buttonText}
+						color={colors.fontWhite}
 					/>
 				</RectButton>
 			</Animated.View>

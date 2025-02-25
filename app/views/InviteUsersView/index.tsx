@@ -23,7 +23,7 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 	const rid = route.params?.rid;
 	const timeDateFormat = useSelector((state: IApplicationState) => state.settings.Message_TimeAndDateFormat as string);
 	const invite = useSelector((state: IApplicationState) => state.inviteLinks.invite);
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -81,21 +81,17 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 
 	const renderExpiration = () => {
 		const expirationMessage = linkExpirationText();
-		return <Markdown msg={expirationMessage} theme={theme} />;
+		return <Markdown msg={expirationMessage} />;
 	};
 
 	return (
-		<SafeAreaView style={{ backgroundColor: colors.backgroundColor }}>
-			<ScrollView
-				{...scrollPersistTaps}
-				style={{ backgroundColor: colors.auxiliaryBackground }}
-				showsVerticalScrollIndicator={false}
-			>
+		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }}>
+			<ScrollView {...scrollPersistTaps} style={{ backgroundColor: colors.surfaceHover }} showsVerticalScrollIndicator={false}>
 				<StatusBar />
 				<View style={styles.innerContainer}>
 					<FormTextInput label={I18n.t('Invite_Link')} value={invite && invite.url} editable={false} />
 					{renderExpiration()}
-					<View style={[styles.divider, { backgroundColor: colors.separatorColor }]} />
+					<View style={[styles.divider, { backgroundColor: colors.strokeLight }]} />
 					<Button title={I18n.t('Share_Link')} type='primary' onPress={share} />
 					<Button title={I18n.t('Edit_Invite')} type='secondary' onPress={edit} />
 				</View>
