@@ -163,7 +163,6 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 			user.nickname === nickname &&
 			!customFieldsChanged
 		);
-		
 	};
 
 	submit = async (): Promise<void> => {
