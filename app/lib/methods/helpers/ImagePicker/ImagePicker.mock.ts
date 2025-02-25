@@ -33,7 +33,17 @@ export function launchCameraAsync(): Promise<any> {
 	return Promise.resolve({ assets: [image] });
 }
 
+export function requestCameraPermissionsAsync(): Promise<any> {
+	return Promise.resolve({ canAskAgain: true, granted: true });
+}
+
+export function requestMediaLibraryPermissionsAsync(): Promise<any> {
+	return Promise.resolve({ canAskAgain: true, granted: true });
+}
+
 export default {
 	launchImageLibraryAsync,
-	launchCameraAsync
+	launchCameraAsync,
+	requestCameraPermissionsAsync,
+	requestMediaLibraryPermissionsAsync
 };
