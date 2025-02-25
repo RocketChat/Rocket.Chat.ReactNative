@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
@@ -199,6 +200,47 @@ export default class RoomSubscription {
 					} catch (e) {
 						log(e);
 					}
+				}
+			});
+		} else if (ev === 'deleteMessageBulk') {
+			InteractionManager.runAfterInteractions(async () => {
+				try {
+					const { rid, excludePinned, ignoreDiscussion, ts, users } = ddpMessage.fields.args[0];
+					const { $date: gt } = ts.$gt;
+					const { $date: lt } = ts.$lt;
+
+					const db = database.active;
+
+					const query: Q.Clause[] = [
+						Q.where('rid', rid),
+						Q.where('ts', Q.gt(gt)),
+						Q.where('ts', Q.lt(lt))
+					];
+
+					users.forEach((user: string) => {
+						query.push(Q.where('u', Q.like(`%\"username\":\"${user}\",%`)));
+					});
+
+					if (excludePinned) {
+						query.push(
+							Q.or(
+								Q.where('pinned', false),
+								Q.where('pinned', null)
+							)
+						);
+					}
+
+					if (ignoreDiscussion) {
+						query.push(Q.where('drid', null));
+					}
+
+					const messages = await db.get('messages').query(...query).fetch();
+
+					await db.write(async () => {
+						await db.batch(...messages.map(message => message.prepareDestroyPermanently()));
+					});
+				} catch (e) {
+					console.log(e);
 				}
 			});
 		}
