@@ -1,5 +1,3 @@
-import ImagePicker, { Image as ImageInterface, ImageOrVideo as ImageOrVideoType } from 'react-native-image-crop-picker';
+import * as ImagePicker from 'expo-image-picker';
 
-export type Image = ImageInterface;
-export type ImageOrVideo = ImageOrVideoType;
 export default ImagePicker;
