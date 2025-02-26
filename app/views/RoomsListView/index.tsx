@@ -473,6 +473,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					options={{
 						headerLeft: () => (
 							<HeaderButton.Drawer
+								style={{ marginLeft: 12 }}
 								navigation={navigation}
 								testID='rooms-list-view-sidebar'
 								onPress={

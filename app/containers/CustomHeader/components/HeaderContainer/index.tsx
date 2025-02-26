@@ -24,7 +24,7 @@ const HeaderContainer = (props: IHeaderContainer) => {
 				flexDirection: 'row',
 				paddingVertical,
 				paddingTop: statusBarPadding + paddingVertical,
-				paddingHorizontal: 16,
+				paddingRight: 16,
 				gap: 16,
 				backgroundColor: colors.surfaceNeutral
 			}}
