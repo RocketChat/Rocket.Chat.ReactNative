@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { View, ViewStyle, Image } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
 import { useTheme } from '../../../../../theme';
@@ -57,7 +57,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<FastImage style={imageStyle} source={{ uri: encodeURI(uri) }} resizeMode={FastImage.resizeMode.cover} />
+					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
 			) : (
 				<View style={[styles.image, borderStyle]} />

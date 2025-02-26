@@ -99,7 +99,10 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	const { serverURL, authorizePath, clientId, scope, service } = loginService;
 	const redirectUri = `${server}/_oauth/${service}`;
 	const state = getOAuthState();
-	const params = `?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}&scope=${scope}`;
+	const separator = authorizePath.indexOf('?') !== -1 ? '&' : '?';
+	const params = `${separator}client_id=${clientId}&redirect_uri=${encodeURIComponent(
+		redirectUri
+	)}&response_type=code&state=${state}&scope=${encodeURIComponent(scope)}`;
 	const domain = `${serverURL}`;
 	const absolutePath = `${authorizePath}${params}`;
 	const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;
