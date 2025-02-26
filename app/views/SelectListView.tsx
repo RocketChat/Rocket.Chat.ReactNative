@@ -2,7 +2,6 @@ import React from 'react';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { RadioButton } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../stacks/types';
@@ -17,6 +16,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
+import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
 import { IApplicationState } from '../definitions';
 import { TDataSelect } from '../definitions/IDataSelect';
@@ -150,10 +150,9 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const checked = this.isChecked(item.rid) ? 'check' : '';
 
 		const showRadio = () => (
-			<RadioButton
+			<Radio
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				selected={selected.includes(item.rid)}
-				color={themes[theme].fontHint}
+				check={selected.includes(item.rid)}
 				size={ICON_SIZE}
 			/>
 		);

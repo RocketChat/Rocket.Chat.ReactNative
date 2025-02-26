@@ -11,7 +11,7 @@ export interface ITouchProps extends RectButtonProps {
 	testID?: string;
 }
 
-const Touch = React.forwardRef<RectButton, ITouchProps>(
+const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
 	({ children, onPress, underlayColor, accessible, accessibilityLabel, ...props }, ref) => {
 		const { colors } = useTheme();
 
