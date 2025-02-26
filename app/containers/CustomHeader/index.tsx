@@ -39,7 +39,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const isRoomViewMasterDetail = !isMasterDetail || route.name === 'RoomView' || route.name === 'RoomsListView';
-	if (header) return header({ options: {}, navigation: navigation, route: route });
+	if (header) return header({ options: {}, navigation, route });
 
 	return (
 		<HeaderContainer addExtraNotchPadding={isRoomViewMasterDetail}>

@@ -423,6 +423,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	getHeader = (): any => {
 		const { searching, canCreateRoom, headerTitleWidth } = this.state;
 		const {
+			route,
 			navigation,
 			isMasterDetail,
 			notificationPresenceCap,
@@ -434,13 +435,21 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		if (searching) {
 			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <RoomsListHeaderView />,
-				headerRight: () => null
+				header: () => (
+					<CustomHeader
+						route={route}
+						navigation={navigation}
+						options={{
+							headerLeft: () => (
+								<HeaderButton.Container left>
+									<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
+								</HeaderButton.Container>
+							),
+							headerTitle: () => <RoomsListHeaderView />,
+							headerRight: () => null
+						}}
+					/>
+				)
 			};
 		}
 
@@ -457,54 +466,67 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerLeft: () => (
-				<HeaderButton.Drawer
+			header: () => (
+				<CustomHeader
+					route={this.props.route}
 					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: // @ts-ignore
-							  () => navigation.toggleDrawer()
-					}
-					badge={() => getBadge()}
-					disabled={disabled}
+					options={{
+						headerLeft: () => (
+							<HeaderButton.Drawer
+								navigation={navigation}
+								testID='rooms-list-view-sidebar'
+								onPress={
+									isMasterDetail
+										? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+										: // @ts-ignore
+										  () => navigation.toggleDrawer()
+								}
+								badge={() => getBadge()}
+								disabled={disabled}
+							/>
+						),
+						headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
+						headerRight: () => (
+							<HeaderButton.Container
+								onLayout={
+									isTablet
+										? undefined
+										: ({ nativeEvent }: { nativeEvent: any }) => {
+												this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+										  }
+								}>
+								{issuesWithNotifications ? (
+									<HeaderButton.Item
+										iconName='notification-disabled'
+										onPress={this.navigateToPushTroubleshootView}
+										testID='rooms-list-view-push-troubleshoot'
+										color={themes[theme].fontDanger}
+									/>
+								) : null}
+								{canCreateRoom ? (
+									<HeaderButton.Item
+										iconName='create'
+										onPress={this.goToNewMessage}
+										testID='rooms-list-view-create-channel'
+										disabled={disabled}
+									/>
+								) : null}
+								<HeaderButton.Item
+									iconName='search'
+									onPress={this.initSearching}
+									testID='rooms-list-view-search'
+									disabled={disabled}
+								/>
+								<HeaderButton.Item
+									iconName='directory'
+									onPress={this.goDirectory}
+									testID='rooms-list-view-directory'
+									disabled={disabled}
+								/>
+							</HeaderButton.Container>
+						)
+					}}
 				/>
-			),
-			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
-			headerRight: () => (
-				<HeaderButton.Container
-					onLayout={
-						isTablet
-							? undefined
-							: ({ nativeEvent }: { nativeEvent: any }) => {
-									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
-							  }
-					}>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={this.navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={themes[theme].fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='create'
-							onPress={this.goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
-					<HeaderButton.Item
-						iconName='directory'
-						onPress={this.goDirectory}
-						testID='rooms-list-view-directory'
-						disabled={disabled}
-					/>
-				</HeaderButton.Container>
 			)
 		};
 	};

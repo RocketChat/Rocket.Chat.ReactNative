@@ -4,11 +4,9 @@ import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import CustomHeader from '../../../../containers/CustomHeader';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	headerBackTitleVisible: false,
-	header: CustomHeader
+	headerBackTitleVisible: false
 };
 
 export const defaultOutsideHeader: NativeStackNavigationOptions = {
@@ -24,7 +22,7 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 		backgroundColor: themes[theme].surfaceNeutral
 	},
 	headerTintColor: themes[theme].fontDefault,
-	headerTitleStyle: { ...sharedStyles.textBold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
+	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {
