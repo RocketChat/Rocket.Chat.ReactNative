@@ -3,7 +3,7 @@ import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -102,8 +102,8 @@ const SettingsView = (): React.ReactElement => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
 				await deleteMediaFiles(server);
 				await clearCache({ server });
-				await FastImage.clearMemoryCache();
-				await FastImage.clearDiskCache();
+				await Image.clearMemoryCache();
+				await Image.clearDiskCache();
 				Services.disconnect();
 				dispatch(selectServerRequest(server, version, true));
 			}
