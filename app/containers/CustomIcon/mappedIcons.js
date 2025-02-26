@@ -166,6 +166,8 @@ export const mappedIcons = {
 	'prune': 59817,
 	'queue': 59818,
 	'quote': 59819,
+	'radio-checked': 59855,
+	'radio-unchecked': 59867,
 	'reaction-add': 59820,
 	'record': 59821,
 	'refresh': 59822,

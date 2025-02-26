@@ -9,11 +9,11 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import { RadioButton } from '../../containers/RadioButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
+import Radio from '../../containers/Radio';
 import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
@@ -180,13 +180,13 @@ const RoomMembersView = (): React.ReactElement => {
 									{
 										title: I18n.t('Online'),
 										onPress: () => toggleStatus(true),
-										right: () => <RadioButton check={allUsers} />,
+										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
 										onPress: () => toggleStatus(false),
-										right: () => <RadioButton check={!allUsers} />,
+										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
