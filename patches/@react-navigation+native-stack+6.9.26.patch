@@ -1,0 +1,75 @@
+diff --git a/node_modules/@react-navigation/native-stack/src/navigators/createNativeStackNavigator.tsx b/node_modules/@react-navigation/native-stack/src/navigators/createNativeStackNavigator.tsx
+index 6ad44d2..4caa894 100644
+--- a/node_modules/@react-navigation/native-stack/src/navigators/createNativeStackNavigator.tsx
++++ b/node_modules/@react-navigation/native-stack/src/navigators/createNativeStackNavigator.tsx
+@@ -66,7 +66,6 @@ function NativeStackNavigator({
+       }),
+     [navigation, state.index, state.key]
+   );
+-
+   return (
+     <NavigationContent>
+       <NativeStackView
+diff --git a/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx b/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx
+index ab840e1..688ef99 100644
+--- a/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx
+@@ -3,6 +3,7 @@ import { Route, useTheme } from '@react-navigation/native';
+ import * as React from 'react';
+ import {
+   I18nManager,
++  PixelRatio,
+   Platform,
+   StyleSheet,
+   TextStyle,
+@@ -32,6 +33,7 @@ type Props = NativeStackNavigationOptions & {
+ };
+ 
+ export default function HeaderConfig({
+
+   headerBackImageSource,
+   headerBackButtonMenuEnabled,
+   headerBackTitle,
+@@ -146,8 +148,8 @@ export default function HeaderConfig({
+     // When using a SearchBar or large title, the header needs to be translucent for it to work on iOS
+     ((hasHeaderSearchBar || headerLargeTitle) &&
+       Platform.OS === 'ios' &&
+       headerTransparent !== false);
+
+   return (
+     <ScreenStackHeaderConfig
+       backButtonInCustomView={backButtonInCustomView}
+@@ -166,6 +168,7 @@ export default function HeaderConfig({
+       backTitleVisible={headerBackTitleVisible}
+       backTitleFontFamily={backTitleFontFamily}
+       backTitleFontSize={headerBackTitleStyleFlattened.fontSize}     
+       blurEffect={headerBlurEffect}
+       color={tintColor}
+       direction={I18nManager.getConstants().isRTL ? 'rtl' : 'ltr'}
+@@ -187,13 +190,14 @@ export default function HeaderConfig({
+       title={titleText}
+       titleColor={titleColor}
+       titleFontFamily={titleFontFamily}
+-      titleFontSize={titleFontSize}
++      titleFontSize={(titleFontSize ?? 16) * PixelRatio.getFontScale()}
+       titleFontWeight={titleFontWeight}
+       topInsetEnabled={headerTopInsetEnabled}
+       translucent={
+         // This defaults to `true`, so we can't pass `undefined`
+         translucent === true
+       }  
+     >
+       {Platform.OS === 'ios' ? (
+         <>
+diff --git a/node_modules/@react-navigation/native-stack/src/views/NativeStackView.tsx b/node_modules/@react-navigation/native-stack/src/views/NativeStackView.tsx
+index 1646c68..890d59e 100644
+--- a/node_modules/@react-navigation/native-stack/src/views/NativeStackView.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/NativeStackView.tsx
+@@ -33,7 +33,6 @@ const TRANSPARENT_PRESENTATIONS = [
+ 
+ export default function NativeStackView({ state, descriptors }: Props) {
+   const parentHeaderBack = React.useContext(HeaderBackContext);
+-
+   return (
+     <SafeAreaProviderCompat>
+       <View style={styles.container}>
