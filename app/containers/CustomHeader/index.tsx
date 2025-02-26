@@ -34,19 +34,15 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 interface IHeader extends NativeStackHeaderProps {}
 
 const CustomHeader = ({ options, navigation, route }: IHeader) => {
-	const { headerLeft, headerTitle, headerRight, title } = options;
+	const { header, headerLeft, headerTitle, headerRight, title } = options;
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
-	const isRoomViewMasterDetail =
-		!isMasterDetail ||
-		route.name === 'RoomView' ||
-		route.name === 'RoomsListView' ||
-		route.name === 'ShareListView' ||
-		route.name === 'ShareView';
+	const isRoomViewMasterDetail = !isMasterDetail || route.name === 'RoomView' || route.name === 'RoomsListView';
+	if (header) return header({ options: {}, navigation: navigation, route: route });
 
 	return (
-		<HeaderContainer addExtraNotchadding={isRoomViewMasterDetail}>
+		<HeaderContainer addExtraNotchPadding={isRoomViewMasterDetail}>
 			{headerLeft ? (
 				headerLeft({ canGoBack: false })
 			) : (
