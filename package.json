@@ -96,7 +96,7 @@
 		"react-native-easy-toast": "2.3.0",
 		"react-native-fast-image": "RocketChat/react-native-fast-image.git#bump-version",
 		"react-native-file-viewer": "2.1.4",
-		"react-native-gesture-handler": "^2.16.0",
+		"react-native-gesture-handler": "2.18.1",
 		"react-native-image-crop-picker": "RocketChat/react-native-image-crop-picker#54e1e1c7e7d4b731c74ce9dd1bf9eb5148065092",
 		"react-native-image-progress": "1.1.1",
 		"react-native-katex": "0.5.1",

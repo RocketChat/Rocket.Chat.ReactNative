@@ -1263,7 +1263,7 @@ PODS:
     - RNFBApp
   - RNFileViewer (2.1.4):
     - React-Core
-  - RNGestureHandler (2.16.0):
+  - RNGestureHandler (2.18.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1762,7 +1762,7 @@ SPEC CHECKSUMS:
   RNFBApp: 614f1621b49db54ebd258df8c45427370d8d84a2
   RNFBCrashlytics: c39e903af97cb426f36a10d3268fb0623a1ccddf
   RNFileViewer: 83cc066ad795b1f986791d03b56fe0ee14b6a69f
-  RNGestureHandler: bc2cdb2dc42facdf34992ae364b8a728e19a3686
+  RNGestureHandler: 1155b1898ceddefeebf77792927360d44fe11e77
   RNImageCropPicker: 97289cd94fb01ab79db4e5c92938be4d0d63415d
   RNKeychain: bfe3d12bf4620fe488771c414530bf16e88f3678
   RNLocalize: 82a569022724d35461e2dc5b5d015a13c3ca995b
