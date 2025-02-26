@@ -36,10 +36,9 @@ import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
 
-import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
-
 import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
 import expo.modules.filesystem.FileSystemModule;
+import expo.modules.image.okhttp.ExpoImageOkHttpClientGlideModule;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
@@ -98,6 +97,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
     @ReactMethod
     public void setCertificate(String data, Promise promise) {
         this.alias = data;
+        OkHttpClient client = getOkHttpClient();
 
         // HTTP Fetch react-native layer
         NetworkingModule.setCustomClientBuilder(new CustomClient());
@@ -105,17 +105,18 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         WebSocketModule.setCustomClientBuilder(new CustomClient());
         // Image networking react-native layer
         ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-            .newBuilder(this.reactContext, getOkHttpClient())
+            .newBuilder(this.reactContext, client)
             .build();
         Fresco.initialize(this.reactContext, config);
         // RNCWebView onReceivedClientCertRequest
         RNCWebViewManager.setCertificateAlias(data);
-        // FastImage Glide network layer
-        FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
+
         // Expo AV network layer
-        SharedCookiesDataSourceFactory.setOkHttpClient(getOkHttpClient());
+        SharedCookiesDataSourceFactory.setOkHttpClient(client);
         // Expo File System network layer
-        FileSystemModule.setOkHttpClient(getOkHttpClient());
+        FileSystemModule.setOkHttpClient(client);
+        // Expo Image network layer
+        ExpoImageOkHttpClientGlideModule.Companion.setOkHttpClient(client);
 
         promise.resolve(null);
     }

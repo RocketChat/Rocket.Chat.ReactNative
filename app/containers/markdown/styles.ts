@@ -73,8 +73,7 @@ export default StyleSheet.create({
 	},
 	inlineImage: {
 		width: 300,
-		height: 300,
-		resizeMode: 'contain'
+		height: 300
 	},
 	codeInline: {
 		fontSize: 16,

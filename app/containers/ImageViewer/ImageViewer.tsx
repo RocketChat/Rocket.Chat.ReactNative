@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
-import FastImage from 'react-native-fast-image';
+import { Image, ImageStyle } from 'expo-image';
 
 import { useTheme } from '../../theme';
 
@@ -114,10 +114,10 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
-					<FastImage
+					<Image
 						// @ts-ignore
 						style={styles.image}
-						resizeMode='contain'
+						contentFit='contain'
 						source={{ uri }}
 						{...props}
 					/>

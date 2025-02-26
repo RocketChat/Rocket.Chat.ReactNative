@@ -1,6 +1,6 @@
 import { Root } from '@rocket.chat/message-parser';
 import { StyleProp, TextStyle } from 'react-native';
-import { ImageStyle } from 'react-native-fast-image';
+import { ImageStyle } from 'expo-image';
 
 import { IUserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';

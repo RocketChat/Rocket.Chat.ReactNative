@@ -2,32 +2,32 @@ import React from 'react';
 import { Image as ImageProps } from '@rocket.chat/message-parser';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
-import styles from '../../message/styles';
+import styles from '../styles';
 
 interface IImageProps {
 	value: ImageProps['value'];
 }
 
-type TMessageImage = {
+type TMarkdownImage = {
 	img: string;
 	theme: TSupportedThemes;
 };
 
-const ImageProgress = createImageProgress(FastImage);
+const ImageProgress = createImageProgress(ExpoImage);
 
-const MessageImage = ({ img, theme }: TMessageImage) => (
+const MarkdownImage = ({ img, theme }: TMarkdownImage) => (
 	<ImageProgress
 		style={[styles.inlineImage, { borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
-		resizeMode={FastImage.resizeMode.cover}
 		indicator={Progress.Pie}
 		indicatorProps={{
 			color: themes[theme].fontHint
 		}}
+		contentFit='contain'
 	/>
 );
 
@@ -35,7 +35,7 @@ const Image = ({ value }: IImageProps) => {
 	const { theme } = useTheme();
 	const { src } = value;
 
-	return <MessageImage img={src.value} theme={theme} />;
+	return <MarkdownImage img={src.value} theme={theme} />;
 };
 
 export default Image;
