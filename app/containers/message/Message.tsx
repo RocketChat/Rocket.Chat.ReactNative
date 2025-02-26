@@ -161,7 +161,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		const readOrUnreadLabel =
-			!props.unread && props.unread !== null ? i18n.t('Read_correction_speaks_screen_reader') : i18n.t('Unread');
+			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 		const readReceipt = props.isReadReceiptEnabled ? readOrUnreadLabel : '';
 		return `${user} ${hour} ${label}. ${readReceipt}`;
 	}, [props.unread]);
