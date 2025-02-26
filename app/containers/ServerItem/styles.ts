@@ -13,8 +13,7 @@ export default StyleSheet.create({
 	serverIcon: {
 		width: 44,
 		height: 44,
-		borderRadius: 4,
-		resizeMode: 'contain'
+		borderRadius: 4
 	},
 	serverTextContainer: {
 		flex: 1,
