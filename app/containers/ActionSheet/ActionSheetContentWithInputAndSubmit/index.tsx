@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TextInputProps, View } from 'react-native';
 
 import { CustomIcon, TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
@@ -85,7 +85,8 @@ const ActionSheetContentWithInputAndSubmit = ({
 	confirmBackgroundColor,
 	showInput = true,
 	inputs = [],
-	isDisabled
+	isDisabled,
+	autoComplete = undefined
 }: {
 	onSubmit: (inputValue: string | string[]) => void;
 	onCancel?: () => void;
@@ -102,6 +103,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	showInput?: boolean;
 	inputs?: { placeholder: string; secureTextEntry?: boolean; key: string }[];
 	isDisabled?: (inputValues: string[]) => boolean;
+	autoComplete?: TextInputProps['autoComplete'];
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
@@ -151,6 +153,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 					if (inputValues[0]) onSubmit(inputValues[0]);
 				}}
 				accessibilityLabel={placeholder}
+				autoComplete={autoComplete}
 				testID={`${testID}-input`}
 				secureTextEntry={secureTextEntry}
 				bottomSheet={isIOS}
