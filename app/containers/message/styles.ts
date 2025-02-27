@@ -105,14 +105,6 @@ export default StyleSheet.create({
 		overflow: 'hidden',
 		marginTop: 5
 	},
-	imagePressed: {
-		opacity: 0.5
-	},
-	inlineImage: {
-		width: 300,
-		height: 300,
-		resizeMode: 'contain'
-	},
 	text: {
 		fontSize: 16,
 		...sharedStyles.textRegular
