@@ -111,6 +111,9 @@ export const defaultSettings = {
 	E2E_Enable_Encrypt_Files: {
 		type: 'valueAsBoolean'
 	},
+	FileUpload_ProtectFiles: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_Directory_DefaultView: {
 		type: 'valueAsString'
 	},
