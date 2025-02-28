@@ -9,7 +9,7 @@ import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMessageImage) => {
+export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	const { colors } = useTheme();
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
@@ -48,7 +48,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 		return (
 			<>
 				<View style={styles.image} />
-				<OverlayComponent loading={false} style={styles.image} iconName='encrypted' />
+				<OverlayComponent loading={false} style={styles.image} iconName='encrypted' showBackground={true} />
 			</>
 		);
 	}
@@ -59,15 +59,21 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false }: IMes
 				<View style={[containerStyle, borderStyle]}>
 					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
-			) : (
-				<View style={[styles.image, borderStyle]} />
-			)}
+			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
-				<OverlayComponent
-					loading={['loading', 'downloaded'].includes(status)}
-					style={[styles.image, borderStyle]}
-					iconName='arrow-down-circle'
-				/>
+				<>
+					{imagePreview && imageType && !encrypted ? (
+						<ExpoImage style={styles.image} source={{ uri: `data:${imageType};base64,${imagePreview}` }} contentFit='cover' />
+					) : (
+						<View style={[styles.image, borderStyle]} />
+					)}
+					<OverlayComponent
+						loading={['loading', 'downloaded'].includes(status)}
+						style={[styles.image, borderStyle]}
+						iconName={status === 'to-download' ? 'arrow-down-circle' : 'loading'}
+						showBackground={!imagePreview || !imageType}
+					/>
+				</>
 			) : null}
 		</>
 	);
