@@ -13,8 +13,7 @@ const HeaderContainer = (props: IHeaderContainer) => {
 	const { colors } = useTheme();
 	const { height, width } = useWindowDimensions();
 	const isPortrait = height > width;
-	const paddingVertical = isPortrait ? 12 : 4;
-	const statusBarPadding = props.addExtraNotchadding ? insets.top : 0;
+	const paddingBottom = isPortrait ? 12 : 4;
 
 	return (
 		<View
@@ -22,8 +21,8 @@ const HeaderContainer = (props: IHeaderContainer) => {
 			style={{
 				alignItems: 'center',
 				flexDirection: 'row',
-				paddingVertical,
-				paddingTop: statusBarPadding + paddingVertical,
+				paddingBottom,
+				paddingTop: insets.top,
 				paddingHorizontal: 16,
 				gap: 16,
 				backgroundColor: colors.surfaceNeutral

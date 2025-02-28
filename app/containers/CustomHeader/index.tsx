@@ -1,9 +1,10 @@
 import React, { ReactNode } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
 import HeaderContainer from './components/HeaderContainer';
+import { isAndroid } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import { styles } from './styles';
@@ -16,15 +17,31 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 	const { colors } = useTheme();
 	if (!headerTitle) return null;
 	if (typeof headerTitle === 'string') {
+		if (isAndroid) {
+			return (
+				<Text
+					numberOfLines={1}
+					style={{
+						...styles.title,
+						paddingVertical: 4,
+						color: colors.fontTitlesLabels
+					}}>
+					{headerTitle}
+				</Text>
+			);
+		}
 		return (
-			<Text
-				numberOfLines={1}
-				style={{
-					...styles.title,
-					color: colors.fontTitlesLabels
-				}}>
-				{headerTitle}
-			</Text>
+			<View style={styles.headerTitleContainer}>
+				<Text
+					numberOfLines={1}
+					style={{
+						...styles.title,
+						paddingVertical: 6,
+						color: colors.fontTitlesLabels
+					}}>
+					{headerTitle}
+				</Text>
+			</View>
 		);
 	}
 
@@ -59,7 +76,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 				/>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />
-			{headerRight ? headerRight({ canGoBack: false }) : null}
+			{headerRight ? headerRight({ canGoBack: false }) : <View style={{ width: 24, height: 24 }} />}
 		</HeaderContainer>
 	);
 };

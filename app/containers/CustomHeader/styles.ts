@@ -13,5 +13,10 @@ export const styles = StyleSheet.create({
 	headerBackButton: {
 		margin: 0,
 		marginRight: isTablet ? 5 : -5
+	},
+	headerTitleContainer: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	}
 });
