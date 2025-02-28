@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/core';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
 import { textInputDebounceTime } from '../../lib/constants';
 import { IMessageFromServer, TThreadModel } from '../../definitions';
@@ -29,13 +29,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IDiscussionsViewProps {
-	navigation: NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
-	route: RouteProp<ChatsStackParamList, 'DiscussionsView'>;
-	item: TThreadModel;
-}
+const DiscussionsView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'DiscussionsView'>>();
 
-const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.ReactElement => {
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
