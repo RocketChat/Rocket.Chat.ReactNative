@@ -14,7 +14,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants';
+import { textInputDebounceTime, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -202,7 +202,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	searchDebounced = debounce(async (searchText: string) => {
 		await this.getMessages(searchText, true);
-	}, 1000);
+	}, textInputDebounceTime);
 
 	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
