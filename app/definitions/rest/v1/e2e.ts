@@ -18,10 +18,21 @@ export type E2eEndpoints = {
 	'e2e.rejectSuggestedGroupKey': {
 		POST: (params: { rid: string }) => {};
 	};
+	'e2e.fetchUsersWaitingForGroupKey': {
+		GET: (params: { roomIds: string[] }) => {
+			usersWaitingForE2EKeys: any;
+		};
+	};
+	'e2e.provideUsersSuggestedGroupKeys': {
+		POST: (params: { usersSuggestedGroupKeys: any }) => void;
+	};
 	'e2e.setRoomKeyID': {
 		POST: (params: { rid: string; keyID: string }) => {};
 	};
 	'e2e.fetchMyKeys': {
 		GET: () => { public_key: string; private_key: string };
+	};
+	'e2e.resetRoomKey': {
+		POST: (params: { rid: string; e2eKey: string; e2eKeyId: string }) => void;
 	};
 };

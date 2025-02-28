@@ -28,22 +28,22 @@ export type ChatsStackParamList = {
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
 	RoomView:
-		| {
-				rid: string;
-				t: SubscriptionType;
-				tmid?: string;
-				messageId?: string;
-				name?: string;
-				fname?: string;
-				prid?: string;
-				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
-				jumpToMessageId?: string;
-				jumpToThreadId?: string;
-				roomUserId?: string | null;
-				usedCannedResponse?: string;
-				status?: string;
+	| {
+		rid: string;
+		t: SubscriptionType;
+		tmid?: string;
+		messageId?: string;
+		name?: string;
+		fname?: string;
+		prid?: string;
+		room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
+		jumpToMessageId?: string;
+		jumpToThreadId?: string;
+		roomUserId?: string | null;
+		usedCannedResponse?: string;
+		status?: string;
 		  }
-		| undefined; // Navigates back to RoomView already on stack
+	| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
@@ -119,6 +119,9 @@ export type ChatsStackParamList = {
 		room: TSubscriptionModel;
 	};
 	DirectoryView: undefined;
+	E2EEToggleRoomView: {
+		rid: string;
+	};
 	NotificationPrefView: {
 		rid: string;
 		room: TSubscriptionModel;
@@ -202,6 +205,7 @@ export type ProfileStackParamList = {
 };
 
 export type SettingsStackParamList = {
+	LegalView: undefined;
 	SettingsView: undefined;
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;

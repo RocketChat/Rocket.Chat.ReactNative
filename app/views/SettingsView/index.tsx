@@ -3,7 +3,7 @@ import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -102,8 +102,8 @@ const SettingsView = (): React.ReactElement => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
 				await deleteMediaFiles(server);
 				await clearCache({ server });
-				await FastImage.clearMemoryCache();
-				await FastImage.clearDiskCache();
+				await Image.clearMemoryCache();
+				await Image.clearDiskCache();
 				Services.disconnect();
 				dispatch(selectServerRequest(server, version, true));
 			}
@@ -260,7 +260,16 @@ const SettingsView = (): React.ReactElement => {
 					/>
 					<List.Separator />
 					<List.Item
+						title='Legal'
+						showActionIndicator
+						onPress={() => navigateToScreen('LegalView')}
+						testID='settings-view-legal'
+						left={() => <List.Icon name='book' />}
+					/>
+					<List.Separator />
+					<List.Item
 						title='Contact_us'
+						accessibilityRole='link'
 						onPress={sendEmail}
 						testID='settings-view-contact'
 						left={() => <List.Icon name='mail' />}
@@ -271,6 +280,7 @@ const SettingsView = (): React.ReactElement => {
 						<>
 							<List.Item
 								title='Review_this_app'
+								accessibilityRole='link'
 								onPress={onReviewPress}
 								testID='settings-view-review-app'
 								left={() => <List.Icon name='star' />}
@@ -281,6 +291,7 @@ const SettingsView = (): React.ReactElement => {
 					<List.Separator />
 					<List.Item
 						title='License'
+						accessibilityRole='link'
 						onPress={onPressLicense}
 						testID='settings-view-license'
 						left={() => <List.Icon name='file-document' />}

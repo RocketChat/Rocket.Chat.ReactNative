@@ -1,9 +1,10 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text } from 'react-native';
+import { BackHandler, Keyboard, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
+import { Image } from 'expo-image';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
@@ -18,7 +19,7 @@ import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isTablet } from '../../lib/methods/helpers';
+import { isAndroid, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
@@ -31,15 +32,15 @@ import { getServerById } from '../../lib/database/services/Server';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
-		alignSelf: 'center',
-		resizeMode: 'contain'
+		alignSelf: 'center'
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
-		textAlign: 'center'
+		textAlign: 'center',
+		lineHeight: 20
 	},
 	connectButton: {
-		marginTop: 20
+		marginTop: 36
 	}
 });
 
@@ -52,6 +53,7 @@ interface INewServerViewState {
 	text: string;
 	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
+	showBottomInfo: boolean;
 }
 
 interface ISubmitParams {
@@ -67,10 +69,15 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		this.state = {
 			text: '',
 			certificate: null,
-			serversHistory: []
+			serversHistory: [],
+			showBottomInfo: true
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		if (isAndroid) {
+			Keyboard.addListener('keyboardDidShow', () => this.handleShowKeyboard());
+			Keyboard.addListener('keyboardDidHide', () => this.handleHideKeyboard());
+		}
 	}
 
 	componentDidMount() {
@@ -80,6 +87,11 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		if (isAndroid) {
+			Keyboard.removeAllListeners('keyboardDidShow');
+			Keyboard.removeAllListeners('keyboardDidHide');
+		}
+
 		const { previousServer, dispatch } = this.props;
 		if (previousServer) {
 			dispatch(serverFinishAdd());
@@ -116,6 +128,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			return true;
 		}
 		return false;
+	};
+
+	handleShowKeyboard = () => {
+		this.setState({ ...this.state, showBottomInfo: false });
+	};
+
+	handleHideKeyboard = () => {
+		this.setState({ ...this.state, showBottomInfo: true });
 	};
 
 	onChangeText = (text: string) => {
@@ -260,8 +280,11 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	renderCertificatePicker = () => {
-		const { certificate } = this.state;
+		const { certificate, showBottomInfo } = this.state;
 		const { theme, connecting } = this.props;
+
+		if (!showBottomInfo) return <></>;
+
 		return (
 			<>
 				<Text style={[styles.buttonPrompt, { color: themes[theme].fontSecondaryInfo }]}>
@@ -284,12 +307,16 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	render() {
 		const { connecting, theme, previousServer } = this.props;
-		const { text, serversHistory } = this.state;
+		const { text, serversHistory, showBottomInfo } = this.state;
 		const marginTop = previousServer ? 32 : 84;
 		const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 		return (
-			<FormContainer style={formContainerStyle} testID='new-server-view' keyboardShouldPersistTaps='never'>
-				<FormContainerInner>
+			<FormContainer
+				style={formContainerStyle}
+				showAppVersion={showBottomInfo}
+				testID='new-server-view'
+				keyboardShouldPersistTaps='handled'>
+				<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
 					<Image
 						style={[
 							styles.onboardingImage,
@@ -301,14 +328,20 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							}
 						]}
 						source={require('../../static/images/logo_with_name.png')}
-						fadeDuration={0}
+						contentFit='contain'
 					/>
-					<Text style={{ fontSize: 24, marginBottom: 24, color: themes[theme].fontTitlesLabels, ...sharedStyles.textBold }}>
+					<Text
+						style={{
+							fontSize: 24,
+							lineHeight: 36,
+							marginBottom: 24,
+							color: themes[theme].fontTitlesLabels,
+							...sharedStyles.textBold
+						}}>
 						{I18n.t('Add_server')}
 					</Text>
 					<ServerInput
 						text={text}
-						theme={theme}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}

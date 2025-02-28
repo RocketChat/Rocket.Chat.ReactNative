@@ -93,6 +93,9 @@ export const defaultSettings = {
 	Accounts_Iframe_api_method: {
 		type: 'valueAsString'
 	},
+	API_Embed: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -106,6 +109,9 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	E2E_Enable_Encrypt_Files: {
+		type: 'valueAsBoolean'
+	},
+	FileUpload_ProtectFiles: {
 		type: 'valueAsBoolean'
 	},
 	Accounts_Directory_DefaultView: {

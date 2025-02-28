@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { ISearchLocal } from '../../definitions';
@@ -55,8 +55,11 @@ const SelectChannel = ({
 		});
 
 	return (
-		<>
-			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>{I18n.t('Parent_channel_or_group')}</Text>
+		<View accessibilityLabel={`${I18n.t('Parent_channel_or_group')}, ${I18n.t('Required')}`}>
+			<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
+				{I18n.t('Parent_channel_or_group')}{' '}
+				<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>({I18n.t('Required')})</Text>
+			</Text>
 			<MultiSelect
 				inputStyle={styles.inputStyle}
 				onChange={onChannelSelect}
@@ -69,9 +72,9 @@ const SelectChannel = ({
 					imageUrl: getAvatar(channel)
 				}))}
 				onClose={() => getChannels('')}
-				placeholder={{ text: `${I18n.t('Select_a_Channel')}...` }}
+				placeholder={{ text: I18n.t('Select_a_Channel') }}
 			/>
-		</>
+		</View>
 	);
 };
 

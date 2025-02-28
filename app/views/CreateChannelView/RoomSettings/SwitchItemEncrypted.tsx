@@ -28,11 +28,8 @@ export const SwitchItemEncrypted = ({
 	if (isTeam && !type) {
 		hint = 'Team_hint_encrypted_not_available';
 	}
-	if (!isTeam && type) {
+	if (!isTeam) {
 		hint = 'Channel_hint_encrypted';
-	}
-	if (!isTeam && !type) {
-		hint = 'Channel_hint_encrypted_not_available';
 	}
 
 	return (

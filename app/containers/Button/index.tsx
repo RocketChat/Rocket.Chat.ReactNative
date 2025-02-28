@@ -38,6 +38,11 @@ const styles = StyleSheet.create({
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
 	},
+	smallText: {
+		...sharedStyles.textBold,
+		fontSize: 12,
+		lineHeight: 18
+	},
 	disabled: {
 		opacity: 0.3
 	}
@@ -75,7 +80,11 @@ const Button: React.FC<IButtonProps> = ({
 		style
 	];
 
-	const textStyle = [styles.text, { color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize }, styleText];
+	const textStyle = [
+		{ color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize },
+		small ? styles.smallText : styles.text,
+		styleText
+	];
 
 	return (
 		<Touchable
