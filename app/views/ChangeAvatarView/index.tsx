@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 
 import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/elements';
 
 import KeyboardView from '../../containers/KeyboardView';
@@ -28,6 +28,7 @@ import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitSe
 import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
+import { setUser } from '../../actions/login';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -79,6 +80,7 @@ const ChangeAvatarView = () => {
 	const isDirty = useRef<boolean>(false);
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'ChangeAvatarView'>>();
 	const { context, titleHeader, room, t } = useRoute<RouteProp<ChatsStackParamList, 'ChangeAvatarView'>>().params;
+	const dispatchRedux = useDispatch();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -150,9 +152,11 @@ const ChangeAvatarView = () => {
 			} else if (state?.url) {
 				// Change User's Avatar
 				await changeUserAvatar(state);
+				dispatchRedux(setUser({ avatarETag: Date.now().toString() }));
 			} else if (state.resetUserAvatar) {
 				// Change User's Avatar
 				await resetUserAvatar(userId);
+				dispatchRedux(setUser({ avatarETag: Date.now().toString() }));
 			}
 			isDirty.current = false;
 		} catch (e: any) {
