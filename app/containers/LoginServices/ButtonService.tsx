@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { PixelRatio, Text, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import Touch from '../Touch';
@@ -9,7 +9,7 @@ import styles from './styles';
 
 const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, accessibilityLabel }: IButtonService) => {
 	const { colors } = useTheme();
-
+	const size = 24 * PixelRatio.getFontScale();
 	return (
 		<Touch
 			key={name}
@@ -18,10 +18,11 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 			activeOpacity={0.5}
 			underlayColor={colors.fontWhite}
 			accessible
-			accessibilityLabel={accessibilityLabel}
-		>
+			accessibilityLabel={accessibilityLabel}>
 			<View style={styles.serviceButtonContainer}>
-				{authType === 'oauth' || authType === 'apple' ? <CustomIcon name={icon} size={24} style={styles.serviceIcon} /> : null}
+				{authType === 'oauth' || authType === 'apple' ? (
+					<CustomIcon name={icon} size={24} style={[styles.serviceIcon, { width: size, height: size }]} />
+				) : null}
 				<Text style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>{buttonText}</Text>
 			</View>
 		</Touch>
