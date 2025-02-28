@@ -106,7 +106,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	}
 
 	getHeader = (): NativeStackNavigationOptions => {
-		const { isSearching } = this.state;
+		const { isSearching, currentFilter } = this.state;
 		const { navigation, isMasterDetail } = this.props;
 
 		if (isSearching) {
@@ -128,7 +128,11 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerTitle: I18n.t('Threads'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={this.showFilters} />
+					<HeaderButton.Item 
+						iconName='filter' 
+						onPress={this.showFilters} 
+						badge={() => currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color='red' /> : null}
+					/>
 					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
 			)
@@ -434,7 +438,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onFilterSelected = (filter: Filter) => {
 		const { messages, subscription } = this.state;
 		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
-		this.setState({ currentFilter: filter, displayingThreads });
+		this.setState({ currentFilter: filter, displayingThreads }, () => {
+			this.setHeader();
+		});
 		UserPreferences.setString(THREADS_FILTER, filter);
 	};
 
