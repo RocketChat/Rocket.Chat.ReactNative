@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
+import { textInputDebounceTime } from '../../../lib/constants';
 import { MessageInnerContext, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
@@ -29,7 +30,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 		setSearchText(text);
 		const result = await searchEmojis(text);
 		setEmojis(result);
-	}, 300);
+	}, textInputDebounceTime);
 
 	const handleEmojiSelected = (emoji: IEmoji) => {
 		onEmojiSelected(emoji);
@@ -64,8 +65,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 					style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
 					onPress={openEmojiKeyboard}
 					hitSlop={BUTTON_HIT_SLOP}
-					testID='openback-emoji-keyboard'
-				>
+					testID='openback-emoji-keyboard'>
 					<CustomIcon name='chevron-left' size={24} />
 				</Pressable>
 				<View style={styles.inputContainer}>
