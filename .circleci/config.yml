@@ -12,7 +12,7 @@ orbs:
 
 macos: &macos
   macos:
-    xcode: "15.2.0"
+    xcode: "16.2.0"
   resource_class: macos.m1.medium.gen1
 
 bash-env: &bash-env
