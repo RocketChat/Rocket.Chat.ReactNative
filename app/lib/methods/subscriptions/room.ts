@@ -256,7 +256,7 @@ export default class RoomSubscription {
 						await db.batch(...messages.map(message => message.prepareDestroyPermanently()));
 					});
 				} catch (e) {
-					console.log(e);
+					log(e);
 				}
 			});
 		}
