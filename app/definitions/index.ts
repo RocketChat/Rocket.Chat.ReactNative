@@ -38,6 +38,7 @@ export * from './redux/TRootEnum';
 export * from './TChangeAvatarViewContext';
 export * from './IDataSelect';
 export * from './TUserStatus';
+export * from './IDeleteMessageBulkParams';
 
 export interface IBaseScreen<T extends Record<string, object | undefined>, S extends string> {
 	navigation: NativeStackNavigationProp<T & TNavigation, S>;
