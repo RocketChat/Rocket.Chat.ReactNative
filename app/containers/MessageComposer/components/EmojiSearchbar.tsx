@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, Pressable, FlatList, StyleSheet } from 'react-native';
 
-import { searchInputDebounceTime } from '../../../lib/constants';
+import { textInputDebounceTime } from '../../../lib/constants';
 import { MessageInnerContext, useMessageComposerApi, useShowEmojiSearchbar } from '../context';
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
@@ -30,7 +30,7 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 		setSearchText(text);
 		const result = await searchEmojis(text);
 		setEmojis(result);
-	}, searchInputDebounceTime);
+	}, textInputDebounceTime);
 
 	const handleEmojiSelected = (emoji: IEmoji) => {
 		onEmojiSelected(emoji);

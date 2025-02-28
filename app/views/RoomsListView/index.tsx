@@ -50,7 +50,7 @@ import {
 	MAX_SIDEBAR_WIDTH,
 	themes,
 	colors,
-	searchInputDebounceTime
+	textInputDebounceTime
 } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
@@ -695,7 +695,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: true
 		});
 		this.scrollToTop();
-	}, searchInputDebounceTime);
+	}, textInputDebounceTime);
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 

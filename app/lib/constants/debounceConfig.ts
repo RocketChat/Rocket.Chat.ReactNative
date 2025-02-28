@@ -1,1 +1,1 @@
-export const searchInputDebounceTime = 500;
+export const textInputDebounceTime = 500;
