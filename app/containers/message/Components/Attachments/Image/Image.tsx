@@ -63,11 +63,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<>
 					{imagePreview && imageType && !encrypted ? (
-						<FastImage
-							style={styles.image}
-							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
-							resizeMode={FastImage.resizeMode.cover}
-						/>
+						<ExpoImage style={styles.image} source={{ uri: `data:${imageType};base64,${imagePreview}` }} contentFit='cover' />
 					) : (
 						<View style={[styles.image, borderStyle]} />
 					)}
