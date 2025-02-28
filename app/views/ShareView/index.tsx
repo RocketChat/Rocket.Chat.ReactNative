@@ -211,7 +211,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Set a filename, if there isn't any
 				if (!item.filename) {
-					item.filename = item?.path?.split('/')?.pop() || `${new Date().toISOString()}.${item?.mime?.split('/')?.[1] || 'jpg'}`;
+					item.filename = item?.path?.split('/')?.pop();
 				}
 				return item;
 			})
