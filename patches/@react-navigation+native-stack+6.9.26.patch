@@ -1,0 +1,21 @@
+diff --git a/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx b/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx
+index ab840e1..5c05663 100644
+--- a/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/HeaderConfig.tsx
+@@ -3,6 +3,7 @@ import { Route, useTheme } from '@react-navigation/native';
+ import * as React from 'react';
+ import {
+   I18nManager,
++  PixelRatio,
+   Platform,
+   StyleSheet,
+   TextStyle,
+@@ -187,7 +188,7 @@ export default function HeaderConfig({
+       title={titleText}
+       titleColor={titleColor}
+       titleFontFamily={titleFontFamily}
+-      titleFontSize={titleFontSize}
++      titleFontSize={(titleFontSize ?? 16) * PixelRatio.getFontScale()}
+       titleFontWeight={titleFontWeight}
+       topInsetEnabled={headerTopInsetEnabled}
+       translucent={

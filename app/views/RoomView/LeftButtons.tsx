@@ -5,17 +5,20 @@ import { Platform, StyleSheet } from 'react-native';
 import Avatar from '../../containers/Avatar';
 import { themes } from '../../lib/constants';
 import { useAppNavigation } from '../../lib/hooks/navigation';
-import { isIOS } from '../../lib/methods/helpers';
+import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
 	container: {
-		marginLeft: -15,
 		...Platform.select({
 			ios: {
 				minWidth: 34
+			},
+			android: {
+				marginHorizontal: 0
 			}
-		})
+		}),
+		marginRight: isTablet ? 5 : -5
 	},
 	avatar: {
 		borderRadius: 10
@@ -66,7 +69,7 @@ const LeftButtons = ({
 		return (
 			<HeaderBackButton
 				label={label}
-				labelVisible={isIOS}
+				labelVisible={!!unreadsCount && isIOS}
 				onPress={goBack}
 				tintColor={themes[theme].fontDefault}
 				labelStyle={{ fontSize, marginLeft }}

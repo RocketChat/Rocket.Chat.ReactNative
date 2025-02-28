@@ -6,12 +6,14 @@ import { useTheme } from '../../theme';
 import IconOrAvatar from './IconOrAvatar';
 import { IWrapperProps } from './interfaces';
 import styles from './styles';
+import { useRowHeight } from './useRowHeight';
 
 const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapperProps): React.ReactElement => {
 	const { colors } = useTheme();
+	const { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } = useRowHeight();
 	return (
 		<View
-			style={[styles.container, displayMode === DisplayMode.Condensed && styles.containerCondensed]}
+			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT }]}
 			accessibilityLabel={accessibilityLabel}
 			accessible
 			accessibilityRole='button'>

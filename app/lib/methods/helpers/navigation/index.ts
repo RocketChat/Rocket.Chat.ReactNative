@@ -9,6 +9,10 @@ export const defaultHeader: NativeStackNavigationOptions = {
 	headerBackTitleVisible: false
 };
 
+export const defaultOutsideHeader: NativeStackNavigationOptions = {
+	headerBackTitleVisible: false
+};
+
 export const drawerStyle = {
 	width: 320
 };
@@ -18,7 +22,7 @@ export const themedHeader = (theme: TSupportedThemes): NativeStackNavigationOpti
 		backgroundColor: themes[theme].surfaceNeutral
 	},
 	headerTintColor: themes[theme].fontDefault,
-	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 18 }
+	headerTitleStyle: { ...sharedStyles.textSemibold, color: themes[theme].fontTitlesLabels, fontSize: 16 }
 });
 
 export const navigationTheme = (theme: TSupportedThemes) => {
