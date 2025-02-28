@@ -32,7 +32,6 @@ import LivechatEditView from '../../views/LivechatEditView';
 import PickerView from '../../views/PickerView';
 import ThreadMessagesView from '../../views/ThreadMessagesView';
 import TeamChannelsView from '../../views/TeamChannelsView';
-import MarkdownTableView from '../../views/MarkdownTableView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
 import DisplayPrefsView from '../../views/DisplayPrefsView';
@@ -160,8 +159,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 				<ModalStack.Screen
 					name='ReadReceiptsView'
 					// @ts-ignore
