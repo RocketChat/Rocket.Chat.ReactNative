@@ -244,7 +244,8 @@ export default class RoomSubscription {
 					if (ignoreDiscussion) {
 						query.push(Q.where('drid', null));
 					}
-
+					
+					// ids are present when we set limit in api
 					if(ids){
 						query.push(Q.where('id', Q.oneOf(ids)));
 					}
