@@ -689,7 +689,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: true
 		});
 		this.scrollToTop();
-	}, 400);
+	}, 300);
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
