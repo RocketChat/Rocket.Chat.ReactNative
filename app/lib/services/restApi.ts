@@ -7,7 +7,6 @@ import {
 	IRoom,
 	IRoomNotifications,
 	IServerRoom,
-	IUser,
 	RoomType,
 	SubscriptionType
 } from '../../definitions';
@@ -627,7 +626,7 @@ export const saveRoomSettings = (
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
 export const saveUserProfile = (
-	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	data: IProfileParams | Pick<IProfileParams, 'username' | 'name'>,
 	customFields?: { [key: string | number]: string }
 ) =>
 	// RC 0.62.2
@@ -984,11 +983,8 @@ export const pushTest = () => sdk.post('push.test');
 // RC 6.5.0
 export const pushInfo = () => sdk.get('push.info');
 
-export const sendEmailCode = () => {
-	const { username } = reduxStore.getState().login.user as IUser;
-	// RC 3.1.0
-	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-};
+// RC 3.1.0
+export const sendEmailCode = (emailOrUsername: string) => sdk.post('users.2fa.sendEmailCode', { emailOrUsername });
 
 export const getRoomMembers = async ({
 	rid,
