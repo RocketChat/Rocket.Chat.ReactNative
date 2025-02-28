@@ -4,6 +4,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
 
+import { searchInputDebounceTime } from '../../lib/constants';
 import * as List from '../../containers/List';
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -117,7 +118,7 @@ const AddExistingChannelView = () => {
 
 	const onSearchChangeText = useDebounce((text: string) => {
 		query(text);
-	}, 300);
+	}, searchInputDebounceTime);
 
 	const isChecked = (rid: string) => selected.includes(rid);
 

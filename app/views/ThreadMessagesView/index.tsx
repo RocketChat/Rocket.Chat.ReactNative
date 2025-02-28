@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { themes } from '../../lib/constants';
+import { searchInputDebounceTime, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -369,7 +369,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onSearchChangeText = debounce((searchText: string) => {
 		const { subscription } = this.state;
 		this.setState({ searchText }, () => this.subscribeMessages(subscription, searchText));
-	}, 300);
+	}, searchInputDebounceTime);
 
 	onThreadPress = debounce(
 		(item: any) => {

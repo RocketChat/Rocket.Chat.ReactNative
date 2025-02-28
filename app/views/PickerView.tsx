@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInputProps } from 'react-native';
 
+import { searchInputDebounceTime } from '../lib/constants';
 import * as List from '../containers/List';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchBox from '../containers/SearchBox';
@@ -77,7 +78,7 @@ const PickerView = (): React.ReactElement => {
 			setSearchText(text);
 			setData(search?.data);
 		}
-	}, 500);
+	}, searchInputDebounceTime);
 
 	const handleOnEndReached = async () => {
 		if (onEndReached && total && data.length < total) {

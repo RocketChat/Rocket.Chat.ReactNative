@@ -5,6 +5,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/elements';
 
+import { searchInputDebounceTime } from '../../lib/constants';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -129,7 +130,7 @@ const ChangeAvatarView = () => {
 		}
 
 		setRawImageUrl(value);
-	}, 500);
+	}, searchInputDebounceTime);
 
 	const fetchImageFromURL = async () => {
 		const result = await isImageURL(rawImageUrl);

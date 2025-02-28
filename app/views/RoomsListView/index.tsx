@@ -43,7 +43,15 @@ import {
 	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors } from '../../lib/constants';
+import {
+	E2E_BANNER_TYPE,
+	DisplayMode,
+	SortBy,
+	MAX_SIDEBAR_WIDTH,
+	themes,
+	colors,
+	searchInputDebounceTime
+} from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
@@ -687,7 +695,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			searching: true
 		});
 		this.scrollToTop();
-	}, 300);
+	}, searchInputDebounceTime);
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 

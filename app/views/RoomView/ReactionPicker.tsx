@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { searchInputDebounceTime } from '../../lib/constants/index';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { IEmoji } from '../../definitions';
@@ -23,7 +24,7 @@ const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReaction
 	const handleTextChange = useDebounce((text: string) => {
 		setSearching(text !== '');
 		handleSearchEmojis(text);
-	}, 300);
+	}, searchInputDebounceTime);
 
 	const handleSearchEmojis = async (text: string) => {
 		logEvent(events.REACTION_PICKER_SEARCH_EMOJIS);
