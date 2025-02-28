@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, EmitterSubscription, Linking } from 'react-native';
+import { Dimensions, EmitterSubscription, Linking, NativeModules, Platform, Appearance } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -35,6 +35,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+const { ThemeManager } = NativeModules;
 
 enableScreens();
 initStore(store);
@@ -101,6 +102,14 @@ export default class Root extends React.Component<{}, IState> {
 		if (isTablet) {
 			this.initTablet();
 		}
+
+		if(Platform.OS === 'android') {
+			const systemTheme = Appearance.getColorScheme();
+			const isDarkTheme = (theme as IThemePreference).currentTheme === 'dark' || (theme as IThemePreference).currentTheme === 'automatic' && systemTheme === 'dark';
+			
+			ThemeManager.setDarkTheme(isDarkTheme);
+		}
+
 		setNativeTheme(theme);
 	}
 
@@ -171,6 +180,13 @@ export default class Root extends React.Component<{}, IState> {
 	});
 
 	setTheme = (newTheme = {}) => {
+		if(Platform.OS === 'android') {
+			const systemTheme = Appearance.getColorScheme();
+			const isDarkTheme = (newTheme as IThemePreference).currentTheme === 'dark' || (newTheme as IThemePreference).currentTheme === 'automatic' && systemTheme === 'dark';
+			
+			ThemeManager.setDarkTheme(isDarkTheme);
+		}
+
 		// change theme state
 		this.setState(
 			prevState => newThemeState(prevState, newTheme as IThemePreference),
