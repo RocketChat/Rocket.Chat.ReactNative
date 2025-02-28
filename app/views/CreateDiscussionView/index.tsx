@@ -151,15 +151,6 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 								blockUnauthenticatedAccess={blockUnauthenticatedAccess}
 								serverVersion={serverVersion}
 							/>
-							<SelectChannel
-								server={server}
-								userId={user.id}
-								token={user.token}
-								initial={this.channel && { text: getRoomTitle(this.channel) }}
-								onChannelSelect={this.selectChannel}
-								blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-								serverVersion={serverVersion}
-							/>
 							<FormTextInput
 								required
 								label={I18n.t('Discussion_name')}

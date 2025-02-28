@@ -78,7 +78,8 @@ We use [Jest](https://jestjs.io/) and [Storybook](https://storybook.js.org/) on 
 
 Storybook is a tool for developing UI Components and has some plugins to make Jest generate snapshots of them.
 
-[On the root of the project](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/index.js#L24), comment everything leaving only the last import to Storybook left  and refresh your project.
+To open the Storybook, run yarn `storybook:start`, and then use `yarn android` or `yarn ios` to launch it on your desired platform.
+
 You'll see some tests like this:
 
 <img src="https://user-images.githubusercontent.com/804994/89677725-56393200-d8c4-11ea-84b0-213be1d24e98.png" width="350" />
