@@ -15,7 +15,7 @@ import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actio
 import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel, IDeleteMessageBulkParams } from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
@@ -205,7 +205,7 @@ export default class RoomSubscription {
 		} else if (ev === 'deleteMessageBulk') {
 			InteractionManager.runAfterInteractions(async () => {
 				try {
-					const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0];
+					const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0] as IDeleteMessageBulkParams;
 					const { $gt, $lt, $gte, $lte } = ts || {};
 					const db = database.active;
 
@@ -215,16 +215,16 @@ export default class RoomSubscription {
 
 					if($gt?.$date && $lt?.$date){
 						query.push(
-							Q.where('ts', Q.gt(ts.$gt.$date)),
-							Q.where('ts', Q.lt(ts.$lt.$date))
+							Q.where('ts', Q.gt($gt.$date)),
+							Q.where('ts', Q.lt($lt.$date))
 						);
 					}
 
 					// only present when inclusive is true in api
 					if($gte?.$date && $lte?.$date){
 						query.push(
-							Q.where('ts', Q.gte(ts.$gte.$date)),
-							Q.where('ts', Q.lte(ts.$lte.$date))
+							Q.where('ts', Q.gte($gte.$date)),
+							Q.where('ts', Q.lte($lte.$date))
 						);
 					}
 
