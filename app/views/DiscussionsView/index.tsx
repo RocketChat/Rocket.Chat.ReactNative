@@ -3,6 +3,7 @@ import { FlatList, StyleSheet } from 'react-native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
+import { textInputDebounceTime } from '../../lib/constants';
 import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -84,7 +85,7 @@ const DiscussionsView = () => {
 		searchText.current = text;
 		offset.current = 0;
 		load();
-	}, 500);
+	}, textInputDebounceTime);
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
