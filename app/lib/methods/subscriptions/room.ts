@@ -220,7 +220,7 @@ export default class RoomSubscription {
 						);
 					}
 
-					//only present when inclusive is true in api
+					// only present when inclusive is true in api
 					if($gte?.$date && $lte?.$date){
 						query.push(
 							Q.where('ts', Q.gte(ts.$gte.$date)),
