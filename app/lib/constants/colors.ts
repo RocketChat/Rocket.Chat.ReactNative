@@ -1,4 +1,5 @@
 const backdropColor = '#000000';
+const overlayBackground = 'rgba(31, 35, 41, 0.65)';
 
 const light = {
 	surfaceLight: '#FFFFFF',
@@ -44,7 +45,7 @@ const light = {
 	statusFontInfo: '#095AD2',
 	statusFontSuccess: '#148660',
 	statusFontDanger: '#9B1325',
-	statusFontWarning: '#B88D00',
+	statusFontWarning: '#8E6300',
 	statusFontWarning2: '#2F343D',
 	statusFontService: '#974809',
 	statusFontService2: '#7F1B9F',
@@ -55,7 +56,7 @@ const light = {
 	badgeBackgroundLevel4: '#F5455C',
 
 	userPresenceOnline: '#158D65',
-	userPresenceBusy: '#DA1F37',
+	userPresenceBusy: '#D40C26',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#F38C39',
@@ -147,7 +148,7 @@ const dark = {
 	badgeBackgroundLevel4: '#B43C4C',
 
 	userPresenceOnline: '#1CBF89',
-	userPresenceBusy: '#C14454',
+	userPresenceBusy: '#C75765',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
@@ -239,7 +240,7 @@ const black = {
 	badgeBackgroundLevel4: '#B43C4C',
 
 	userPresenceOnline: '#1CBF89',
-	userPresenceBusy: '#C14454',
+	userPresenceBusy: '#C75765',
 	userPresenceAway: '#AC892F',
 	userPresenceOffline: '#6C727A',
 	userPresenceDisabled: '#955828',
@@ -280,18 +281,21 @@ export const colors = {
 	light: {
 		...light,
 		backdropColor,
+		overlayBackground,
 		backdropOpacity: 0.3,
 		attachmentLoadingOpacity: 0.7
 	},
 	dark: {
 		...dark,
 		backdropColor,
+		overlayBackground,
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3
 	},
 	black: {
 		...black,
 		backdropColor,
+		overlayBackground,
 		backdropOpacity: 0.9,
 		attachmentLoadingOpacity: 0.3
 	}

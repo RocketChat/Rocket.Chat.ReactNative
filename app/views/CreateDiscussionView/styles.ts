@@ -5,20 +5,26 @@ import sharedStyles from '../Styles';
 export default StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 8
+		paddingHorizontal: 16,
+		paddingVertical: 32
 	},
 	multiline: {
 		height: 130
 	},
 	label: {
-		marginBottom: 10,
 		fontSize: 14,
+		lineHeight: 24,
 		...sharedStyles.textSemibold
 	},
 	inputStyle: {
-		marginBottom: 16
+		marginBottom: 0
 	},
 	description: {
-		paddingBottom: 16
+		lineHeight: 24,
+		...sharedStyles.textRegular
+	},
+	required: {
+		fontSize: 14,
+		...sharedStyles.textMedium
 	}
 });

@@ -103,6 +103,7 @@ const RoomInfoView = (): React.ReactElement => {
 		const HeaderRight = () => (
 			<HeaderButton.Container>
 				<HeaderButton.Item
+					accessibilityLabel={I18n.t('Room_Info_Edit')}
 					iconName='edit'
 					onPress={() => {
 						if (!room) return;
@@ -196,7 +197,7 @@ const RoomInfoView = (): React.ReactElement => {
 			const sub = subRoom.observe();
 			subscription.current = sub.subscribe(changes => {
 				setRoom(changes.asPlain());
-				setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+				setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 			});
 		} else {
 			try {
@@ -209,7 +210,7 @@ const RoomInfoView = (): React.ReactElement => {
 			}
 		}
 		setShowEdit(canEdit);
-		setHeader((roomType === SubscriptionType.DIRECT) ? false : canEdit);
+		setHeader(roomType === SubscriptionType.DIRECT ? false : canEdit);
 	};
 
 	const createDirect = () =>
