@@ -5,7 +5,7 @@ import { Alert, FlatList, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
-import { DisplayMode, themes } from '../lib/constants';
+import { DisplayMode, textInputDebounceTime, themes } from '../lib/constants';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
@@ -279,7 +279,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				}
 			}
 		);
-	}, 300);
+	}, textInputDebounceTime);
 
 	onCancelSearchPress = () => {
 		logEvent(events.TC_CANCEL_SEARCH);

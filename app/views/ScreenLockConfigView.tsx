@@ -7,7 +7,12 @@ import { TSupportedThemes, withTheme } from '../theme';
 import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
-import { changePasscode, checkHasPasscode, supportedBiometryLabel } from '../lib/methods/helpers/localAuthentication';
+import {
+	changePasscode,
+	checkHasPasscode,
+	supportedBiometryLabel,
+	handleLocalAuthentication
+} from '../lib/methods/helpers/localAuthentication';
 import { BIOMETRY_ENABLED_KEY, DEFAULT_AUTO_LOCK, themes } from '../lib/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import { events, logEvent } from '../lib/methods/helpers/log';
@@ -125,6 +130,10 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 	};
 
 	changePasscode = async ({ force }: { force: boolean }) => {
+		const { autoLock } = this.state;
+		if (autoLock) {
+			await handleLocalAuthentication(true);
+		}
 		logEvent(events.SLC_CHANGE_PASSCODE);
 		await changePasscode({ force });
 	};

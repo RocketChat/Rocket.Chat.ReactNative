@@ -4275,10 +4275,10 @@
   resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-2.0.4.tgz#7eb47726c391b7345a6ec35ad7f4de469cf5ba4f"
   integrity sha512-D0CFMMtydbJAegzOyHjtiKPLlvnm3iTZyZRSZoLq2mRhDdmLfIWOCYPfQJ4cu2erKghU++QvjcUjp/5h7hESpA==
 
-"@types/i18n-js@^3.8.3":
-  version "3.8.9"
-  resolved "https://registry.yarnpkg.com/@types/i18n-js/-/i18n-js-3.8.9.tgz#074d1389539d2db992e6afd7eb379aa02929ef93"
-  integrity sha512-bSxgya4x5O+x+QhfCGckiDDE+17XGPp1TNBgBA/vfF5EwdiZC70F4cKG5QK2v44+v62oY7/t/InreRhxskulcA==
+"@types/i18n-js@3.8.3":
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/@types/i18n-js/-/i18n-js-3.8.3.tgz#9aac0ac81c0b5f16d864b395607442eebb382528"
+  integrity sha512-Y20B7kgoNrchIYCfty20zQYeFFJMHdegwy9VopCEKdByp7Tlv0jtWrfoRb+3r2mIvgrwp/eMwXhhXOBYKEFkTA==
 
 "@types/invariant@2.2.37":
   version "2.2.37"
