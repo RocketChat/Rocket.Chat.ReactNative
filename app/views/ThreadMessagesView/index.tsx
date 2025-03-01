@@ -35,6 +35,7 @@ import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscripti
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import UserPreferences from '../../lib/methods/userPreferences';
+import { colors } from '../../lib/constants';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -107,7 +108,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	getHeader = (): NativeStackNavigationOptions => {
 		const { isSearching, currentFilter } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { navigation, isMasterDetail, theme } = this.props;
 
 		if (isSearching) {
 			return {
@@ -131,7 +132,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 					<HeaderButton.Item 
 						iconName='filter' 
 						onPress={this.showFilters} 
-						badge={() => currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color='red' /> : null}
+						badge={() => currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null}
 					/>
 					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
