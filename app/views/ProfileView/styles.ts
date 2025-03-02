@@ -26,5 +26,21 @@ export default StyleSheet.create({
 	inputBio: {
 		height: 100,
 		textAlignVertical: 'top'
+	},
+	passwordSettingsContainer: {
+		flexDirection: 'column',
+		marginHorizontal: 8,
+		marginBottom: 10
+	},
+	passwordConditionMet: {
+		color: 'green'
+	},
+	passwordConditionNotMet: {
+		color: 'red'
+	},
+	passwordSettingRow: {
+		flexDirection: 'row',
+		marginVertical: 2,
+		alignItems: 'center'
 	}
 });

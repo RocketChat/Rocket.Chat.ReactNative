@@ -1,10 +1,11 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { Keyboard, ScrollView, TextInput, View } from 'react-native';
+import { Keyboard, ScrollView, TextInput, View, Text } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
+import emojis from '../../lib/methods/helpers/shortnameToUnicode';
 import { setUser } from '../../actions/login';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
@@ -21,7 +22,7 @@ import { IApplicationState, IAvatarButton, IBaseScreen, IProfileParams, IUser } 
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
 import { themes } from '../../lib/constants';
-import { compareServerVersion, showConfirmationAlert, showErrorAlert } from '../../lib/methods/helpers';
+import { compareServerVersion, showConfirmationAlert, showErrorAlert, camelCaseToWords } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -69,7 +70,17 @@ interface IProfileViewState {
 		twoFactorCode: string;
 		twoFactorMethod: string;
 	};
+	newPasswordSettings: {
+		atleastSevenCharacters: boolean;
+		atleastOneSymbol: boolean;
+		atleastOneNumber: boolean;
+		atleastOneUppercase: boolean;
+		atleastOneLowercase: boolean;
+		maxThreeRepeatingChars: boolean;
+	};
 }
+
+type PasswordSettingKeys = keyof IProfileViewState['newPasswordSettings'];
 
 class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> {
 	private name?: TextInput | null;
@@ -111,7 +122,15 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		newPassword: '',
 		currentPassword: '',
 		customFields: {},
-		twoFactorCode: null
+		twoFactorCode: null,
+		newPasswordSettings: {
+			atleastSevenCharacters: false,
+			atleastOneSymbol: false,
+			atleastOneNumber: false,
+			atleastOneUppercase: false,
+			atleastOneLowercase: false,
+			maxThreeRepeatingChars: true
+		}
 	};
 
 	componentDidMount() {
@@ -141,7 +160,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 	};
 
 	formIsChanged = () => {
-		const { name, username, email, newPassword, customFields, bio, nickname } = this.state;
+		const { name, username, email, newPassword, customFields, bio, nickname, newPasswordSettings } = this.state;
 		const { user } = this.props;
 		let customFieldsChanged = false;
 
@@ -152,6 +171,11 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 					customFieldsChanged = true;
 				}
 			});
+		}
+
+		if (newPassword?.trim()) {
+			if (Object.keys(newPasswordSettings).filter(key => newPasswordSettings[key as PasswordSettingKeys] === false).length > 0)
+				return false;
 		}
 
 		return !(
@@ -291,6 +315,20 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 	};
 
+	handleNewPassword = (e: any) => {
+		const newPwd = e;
+		this.setState({
+			newPasswordSettings: {
+				atleastSevenCharacters: newPwd.length >= 7,
+				atleastOneSymbol: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(newPwd),
+				atleastOneNumber: /\d/.test(newPwd),
+				atleastOneUppercase: /[A-Z]/.test(newPwd),
+				atleastOneLowercase: /[a-z]/.test(newPwd),
+				maxThreeRepeatingChars: !/(.)\1\1/.test(newPwd)
+			}
+		});
+		this.setState({ newPassword: newPwd });
+	};
 	handleError = (e: any, action: string) => {
 		if (e.data && e.data.error.includes('[error-too-many-requests]')) {
 			return showErrorAlert(e.data.error);
@@ -519,7 +557,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							value={newPassword || undefined}
-							onChangeText={value => this.setState({ newPassword: value })}
+							onChangeText={this.handleNewPassword}
 							onSubmitEditing={() => {
 								if (Accounts_CustomFields && Object.keys(customFields).length) {
 									// @ts-ignore
@@ -530,6 +568,23 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							secureTextEntry
 							testID='profile-view-new-password'
 						/>
+						<View style={styles.passwordSettingsContainer}>
+							{Object.keys(this.state.newPasswordSettings).map(key => (
+								<View key={key} style={styles.passwordSettingRow}>
+									<Text style={{ marginRight: 3, fontSize: 12 }}>
+										{this.state.newPasswordSettings[key as PasswordSettingKeys] ? emojis[':white_check_mark:'] : emojis[':x:']}
+									</Text>
+									<Text
+										style={
+											this.state.newPasswordSettings[key as PasswordSettingKeys]
+												? styles.passwordConditionMet
+												: styles.passwordConditionNotMet
+										}>
+										{camelCaseToWords(key)}
+									</Text>
+								</View>
+							))}
+						</View>
 						{this.renderCustomFields()}
 						<Button
 							title={I18n.t('Save_Changes')}
