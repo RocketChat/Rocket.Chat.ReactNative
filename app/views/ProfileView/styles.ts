@@ -29,7 +29,6 @@ export default StyleSheet.create({
 	},
 	passwordSettingsContainer: {
 		flexDirection: 'column',
-		marginHorizontal: 8,
 		marginBottom: 10
 	},
 	passwordConditionMet: {

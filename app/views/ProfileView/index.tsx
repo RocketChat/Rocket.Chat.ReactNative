@@ -5,7 +5,7 @@ import { Keyboard, ScrollView, TextInput, View, Text } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
 
-import emojis from '../../lib/methods/helpers/shortnameToUnicode';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { setUser } from '../../actions/login';
 import { IActionSheetProvider, withActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
@@ -572,7 +572,11 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							{Object.keys(this.state.newPasswordSettings).map(key => (
 								<View key={key} style={styles.passwordSettingRow}>
 									<Text style={{ marginRight: 3, fontSize: 12 }}>
-										{this.state.newPasswordSettings[key as PasswordSettingKeys] ? emojis[':white_check_mark:'] : emojis[':x:']}
+										{this.state.newPasswordSettings[key as PasswordSettingKeys] ? (
+											<CustomIcon name='check' color='green' size={15} />
+										) : (
+											<CustomIcon name='close' color='red' size={15} />
+										)}
 									</Text>
 									<Text
 										style={
