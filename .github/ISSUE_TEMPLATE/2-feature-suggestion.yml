@@ -1,0 +1,89 @@
+name: "Feature Suggestion"
+description: "Suggest a new feature to improve our mobile application."
+title: "[feature]: "
+labels: ["enhancement"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Thank you for suggesting a new feature for our mobile application!
+        Please provide as much detail as possible below so we can evaluate your idea.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: "Feature Description"
+      description: "A clear and concise description of the proposed feature."
+      placeholder: "Describe the feature you are proposing..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Motivation and Use Case"
+      description: "Explain why this feature would improve the mobile experience and describe any specific use cases or issues it addresses."
+      placeholder: "Explain the benefits and use case for the feature..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: implementation-ideas
+    attributes:
+      label: "Implementation Ideas"
+      description: "Share any thoughts on how this feature might be implemented."
+      placeholder: "Share your ideas or potential solutions..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: existing-feature
+    attributes:
+      label: "Is this feature available in the API or web version?"
+      description: "Select an option if this feature is already present elsewhere."
+      options:
+        - "Available in API"
+        - "Available in Web Version"
+        - "Not available"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: input
+    id: server-version
+    attributes:
+      label: "Rocket.Chat Server Version"
+      placeholder: "Enter the server version"
+    validations:
+      required: false
+
+  - type: input
+    id: app-version
+    attributes:
+      label: "Rocket.Chat App Version"
+      placeholder: "Enter the app version"
+    validations:
+      required: false
+
+  - type: input
+    id: device-name
+    attributes:
+      label: "Device Name"
+      placeholder: "e.g., iPhone 13, Samsung Galaxy S22"
+    validations:
+      required: false
+
+  - type: input
+    id: os-version
+    attributes:
+      label: "OS Version"
+      placeholder: "e.g., iOS 17, Android 14"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: "Additional Context"
+      description: "Any additional information or context to help us better understand your suggestion."
