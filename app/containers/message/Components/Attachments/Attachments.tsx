@@ -35,6 +35,8 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 							isReply={isReply}
 							author={author}
 							msg={msg}
+						  imagePreview={file.image_preview}
+						  imageType={file.image_type}
 						/>
 						<Text style={{ color: colors.fontDefault, marginTop: 2, fontWeight: '500' }}>{file.title}</Text>
 					</>
