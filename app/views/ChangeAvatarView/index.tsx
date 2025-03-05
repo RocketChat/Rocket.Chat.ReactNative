@@ -6,6 +6,7 @@ import { shallowEqual } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/elements';
 import type { ImagePickerOptions } from 'expo-image-picker';
 
+import { textInputDebounceTime } from '../../lib/constants';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -132,7 +133,7 @@ const ChangeAvatarView = () => {
 		}
 
 		setRawImageUrl(value);
-	}, 500);
+	}, textInputDebounceTime);
 
 	const fetchImageFromURL = async () => {
 		const result = await isImageURL(rawImageUrl);

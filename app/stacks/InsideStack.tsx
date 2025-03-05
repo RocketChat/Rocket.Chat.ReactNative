@@ -29,7 +29,6 @@ import LivechatEditView from '../views/LivechatEditView';
 import PickerView from '../views/PickerView';
 import ThreadMessagesView from '../views/ThreadMessagesView';
 import TeamChannelsView from '../views/TeamChannelsView';
-import MarkdownTableView from '../views/MarkdownTableView';
 import ReadReceiptsView from '../views/ReadReceiptView';
 import CannedResponsesListView from '../views/CannedResponsesListView';
 import CannedResponseDetail from '../views/CannedResponseDetail';
@@ -138,8 +137,6 @@ const ChatsStackNavigator = () => {
 			<ChatsStack.Screen name='CreateChannelView' component={CreateChannelView} />
 			<ChatsStack.Screen name='AddChannelTeamView' component={AddChannelTeamView} />
 			<ChatsStack.Screen name='AddExistingChannelView' component={AddExistingChannelView} />
-			{/* @ts-ignore */}
-			<ChatsStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 			{/* @ts-ignore */}
 			<ChatsStack.Screen name='ReadReceiptsView' component={ReadReceiptsView} options={ReadReceiptsView.navigationOptions} />
 			<ChatsStack.Screen name='QueueListView' component={QueueListView} />
