@@ -1,15 +1,7 @@
 import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
-import {
-	sleep,
-	navigateToLogin,
-	login,
-	checkServer,
-	platformTypes,
-	TTextMatcher,
-	expectValidRegisterOrRetry
-} from '../../helpers/app';
+import { sleep, navigateToLogin, login, checkServer, platformTypes, TTextMatcher, signup } from '../../helpers/app';
 import { createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 
 describe('Delete server', () => {
@@ -56,17 +48,8 @@ describe('Delete server', () => {
 			.withTimeout(2000);
 
 		// Register new user
-		const randomUser = data.randomUser();
-		await element(by.id('register-view-name')).replaceText(randomUser.name);
-		await element(by.id('register-view-name')).tapReturnKey();
-		await element(by.id('register-view-username')).replaceText(randomUser.username);
-		await element(by.id('register-view-username')).tapReturnKey();
-		await element(by.id('register-view-email')).replaceText(randomUser.email);
-		await element(by.id('register-view-email')).tapReturnKey();
-		await element(by.id('register-view-password')).replaceText(randomUser.password);
-		await element(by.id('register-view-password')).tapReturnKey();
-		await expectValidRegisterOrRetry(device.getPlatform());
-		deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
+		const username = await signup();
+		deleteUsersAfterAll.push({ server: data.alternateServer, username });
 
 		await checkServer(data.alternateServer);
 	});

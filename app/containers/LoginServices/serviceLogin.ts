@@ -49,7 +49,7 @@ export const onPressGoogle = ({ service, server }: IServiceLogin) => {
 	const { clientId } = service;
 	const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 	const redirect_uri = `${server}/_oauth/google?close`;
-	const scope = 'email';
+	const scope = encodeURIComponent('profile email');
 	const state = getOAuthState('redirect');
 	const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
 	Linking.openURL(`${endpoint}${params}`);
