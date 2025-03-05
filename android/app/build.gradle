@@ -93,7 +93,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode VERSIONCODE as Integer
-        versionName "4.58.0"
+        versionName "4.59.0"
         vectorDrawables.useSupportLibrary = true
         if (!isFoss) {
             manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
