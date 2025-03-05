@@ -10,6 +10,7 @@ import Animated, {
 	withSequence,
 	withTiming
 } from 'react-native-reanimated';
+import { Image } from 'expo-image';
 
 import { useTheme } from '../../theme';
 import EventEmitter from '../../lib/methods/helpers/events';
@@ -19,6 +20,8 @@ export const LOADING_TEST_ID = 'loading';
 export const LOADING_BUTTON_TEST_ID = 'loading-button';
 export const LOADING_IMAGE_TEST_ID = 'loading-image';
 
+const AnimatedImage = Animated.createAnimatedComponent(Image);
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -27,8 +30,7 @@ const styles = StyleSheet.create({
 	},
 	image: {
 		width: PixelRatio.get() * 40,
-		height: PixelRatio.get() * 40,
-		resizeMode: 'contain'
+		height: PixelRatio.get() * 40
 	}
 });
 
@@ -114,10 +116,11 @@ const Loading = (): React.ReactElement | null => {
 							animatedOpacity
 						]}
 					/>
-					<Animated.Image
+					<AnimatedImage
 						source={require('../../static/images/logo.png')}
 						style={[styles.image, animatedScale]}
 						testID={LOADING_IMAGE_TEST_ID}
+						contentFit='contain'
 					/>
 				</View>
 			</TouchableWithoutFeedback>

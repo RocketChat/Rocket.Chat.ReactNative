@@ -140,6 +140,8 @@ const handleLoginRequest = function* handleLoginRequest({
 				return;
 			}
 			yield put(logoutAction(true));
+		} else {
+			yield put(loginFailure(e));
 		}
 	}
 };
