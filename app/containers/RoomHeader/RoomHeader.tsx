@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { PixelRatio, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -150,6 +150,7 @@ const Header = React.memo(
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const fontScale = PixelRatio.getFontScale();
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
@@ -199,7 +200,7 @@ const Header = React.memo(
 				disabled={disabled}
 				hitSlop={HIT_SLOP}
 				accessibilityRole='header'>
-				<View style={styles.titleContainer}>
+				<View style={[styles.titleContainer, { height: 36.9 * fontScale }]}>
 					{tmid ? null : (
 						<RoomTypeIcon
 							userId={roomUserId}

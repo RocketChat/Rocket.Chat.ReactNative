@@ -1,5 +1,5 @@
 import React from 'react';
-import { InteractionManager, Text, View } from 'react-native';
+import { InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -434,7 +434,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 		if (!rid) {
 			// Adding an empty View to prevent rendering the back button while maintaining the same header height.
-			navigation.setOptions({ headerLeft: () => <View style={{ height: 36 }} /> });
+			navigation.setOptions({ headerLeft: () => <View style={{ height: 36.9 * PixelRatio.getFontScale() }} /> });
 			return;
 		}
 		if (!room.rid) {
