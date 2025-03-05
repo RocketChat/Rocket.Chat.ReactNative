@@ -1,17 +1,16 @@
 import React from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, NativeEventSubscription, PixelRatio, RefreshControl, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
 import database from '../../lib/database';
-import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
+import RoomItem from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
@@ -20,7 +19,6 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themedHeader } from '../../lib/methods/helpers/navigation';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -55,6 +53,7 @@ import {
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import CustomHeader from '../../containers/CustomHeader';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -432,6 +431,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	getHeader = (): any => {
 		const { searching, canCreateRoom, headerTitleWidth } = this.state;
 		const {
+			route,
 			navigation,
 			isMasterDetail,
 			notificationPresenceCap,
@@ -443,13 +443,21 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		} = this.props;
 		if (searching) {
 			return {
-				headerLeft: () => (
-					<HeaderButton.Container left>
-						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-					</HeaderButton.Container>
-				),
-				headerTitle: () => <RoomsListHeaderView />,
-				headerRight: () => null
+				header: () => (
+					<CustomHeader
+						route={route}
+						navigation={navigation}
+						options={{
+							headerLeft: () => (
+								<HeaderButton.Container left>
+									<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
+								</HeaderButton.Container>
+							),
+							headerTitle: () => <RoomsListHeaderView />,
+							headerRight: () => null
+						}}
+					/>
+				)
 			};
 		}
 
@@ -466,54 +474,68 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
-			headerLeft: () => (
-				<HeaderButton.Drawer
+			header: () => (
+				<CustomHeader
+					route={this.props.route}
 					navigation={navigation}
-					testID='rooms-list-view-sidebar'
-					onPress={
-						isMasterDetail
-							? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
-							: // @ts-ignore
-							  () => navigation.toggleDrawer()
-					}
-					badge={() => getBadge()}
-					disabled={disabled}
+					options={{
+						headerLeft: () => (
+							<HeaderButton.Drawer
+								style={{ marginLeft: 12 }}
+								navigation={navigation}
+								testID='rooms-list-view-sidebar'
+								onPress={
+									isMasterDetail
+										? () => navigation.navigate('ModalStackNavigator', { screen: 'SettingsView' })
+										: // @ts-ignore
+										  () => navigation.toggleDrawer()
+								}
+								badge={() => getBadge()}
+								disabled={disabled}
+							/>
+						),
+						headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
+						headerRight: () => (
+							<HeaderButton.Container
+								onLayout={
+									isTablet
+										? undefined
+										: ({ nativeEvent }: { nativeEvent: any }) => {
+												this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+										  }
+								}>
+								{issuesWithNotifications ? (
+									<HeaderButton.Item
+										iconName='notification-disabled'
+										onPress={this.navigateToPushTroubleshootView}
+										testID='rooms-list-view-push-troubleshoot'
+										color={themes[theme].fontDanger}
+									/>
+								) : null}
+								{canCreateRoom ? (
+									<HeaderButton.Item
+										iconName='create'
+										onPress={this.goToNewMessage}
+										testID='rooms-list-view-create-channel'
+										disabled={disabled}
+									/>
+								) : null}
+								<HeaderButton.Item
+									iconName='search'
+									onPress={this.initSearching}
+									testID='rooms-list-view-search'
+									disabled={disabled}
+								/>
+								<HeaderButton.Item
+									iconName='directory'
+									onPress={this.goDirectory}
+									testID='rooms-list-view-directory'
+									disabled={disabled}
+								/>
+							</HeaderButton.Container>
+						)
+					}}
 				/>
-			),
-			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
-			headerRight: () => (
-				<HeaderButton.Container
-					onLayout={
-						isTablet
-							? undefined
-							: ({ nativeEvent }: { nativeEvent: any }) => {
-									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
-							  }
-					}>
-					{issuesWithNotifications ? (
-						<HeaderButton.Item
-							iconName='notification-disabled'
-							onPress={this.navigateToPushTroubleshootView}
-							testID='rooms-list-view-push-troubleshoot'
-							color={themes[theme].fontDanger}
-						/>
-					) : null}
-					{canCreateRoom ? (
-						<HeaderButton.Item
-							iconName='create'
-							onPress={this.goToNewMessage}
-							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
-					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
-					<HeaderButton.Item
-						iconName='directory'
-						onPress={this.goDirectory}
-						testID='rooms-list-view-directory'
-						disabled={disabled}
-					/>
-				</HeaderButton.Container>
 			)
 		};
 	};
@@ -909,20 +931,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail, theme } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
-		let options = this.getHeader();
-		options = {
-			...options,
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
-		};
-		return <Header title='' {...themedHeader(theme)} {...options} />;
+		const options = this.getHeader();
+		return <CustomHeader options={options} navigation={this.props.navigation} route={this.props.route} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
@@ -978,7 +994,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
-
+		const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+		const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
 		if (loading) {

@@ -27,7 +27,7 @@ import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
 import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
-import { isImageURL, useDebounce } from '../../lib/methods/helpers';
+import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
 enum AvatarStateActions {
@@ -90,6 +90,7 @@ const ChangeAvatarView = () => {
 					onPress={() => navigation.goBack()}
 					tintColor={colors.fontDefault}
 					testID='header-back'
+					style={{ margin: 0, marginRight: isTablet ? 5 : -5 }}
 				/>
 			)
 		});
