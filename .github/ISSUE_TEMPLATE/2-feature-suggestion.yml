@@ -1,7 +1,7 @@
 name: "Feature Suggestion"
 description: "Suggest a new feature to improve our mobile application."
-title: "[feature]: "
-labels: ["enhancement"]
+title: "feature request: "
+labels: ["🎉 feature"]
 assignees: []
 body:
   - type: markdown
