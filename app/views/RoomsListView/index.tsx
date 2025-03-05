@@ -43,7 +43,15 @@ import {
 	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes, colors } from '../../lib/constants';
+import {
+	E2E_BANNER_TYPE,
+	DisplayMode,
+	SortBy,
+	MAX_SIDEBAR_WIDTH,
+	themes,
+	colors,
+	textInputDebounceTime
+} from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
@@ -675,6 +683,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	// eslint-disable-next-line react/sort-comp
 	handleSearch = debounce(async (text: string) => {
+		this.setState({ loading: true });
 		const result = await search({ text });
 
 		// if the search was cancelled before the promise is resolved
@@ -682,12 +691,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (!searching) {
 			return;
 		}
+		this.setState({ loading: false });
 		this.internalSetState({
 			search: result as IRoomItem[],
 			searching: true
 		});
 		this.scrollToTop();
-	}, 300);
+	}, textInputDebounceTime);
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 

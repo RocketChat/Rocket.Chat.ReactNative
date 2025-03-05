@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { OutsideParamList } from '../stacks/types';
 import { FormTextInput } from '../containers/TextInput';
@@ -8,12 +10,12 @@ import I18n from '../i18n';
 import FormContainer, { FormContainerInner } from '../containers/FormContainer';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
 import sharedStyles from './Styles';
-import { IBaseScreen } from '../definitions';
 import { Services } from '../lib/services';
 
-type ISendEmailConfirmationViewProps = IBaseScreen<OutsideParamList, 'SendEmailConfirmationView'>;
+const SendEmailConfirmationView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'SendEmailConfirmationView'>>();
+	const route = useRoute<RouteProp<OutsideParamList, 'SendEmailConfirmationView'>>();
 
-const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmationViewProps): React.ReactElement => {
 	const [email, setEmail] = useState('');
 	const [invalidEmail, setInvalidEmail] = useState(true);
 	const [isFetching, setIsFetching] = useState(false);
@@ -51,7 +53,7 @@ const SendEmailConfirmationView = ({ navigation, route }: ISendEmailConfirmation
 		if (route.params?.user) {
 			validate(route.params.user);
 		}
-	}, []);
+	}, [navigation, route.params?.user]);
 
 	return (
 		<FormContainer testID='send-email-confirmation-view'>
