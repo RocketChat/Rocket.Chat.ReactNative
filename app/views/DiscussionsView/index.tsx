@@ -105,7 +105,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		if (isSearching) {
 			options = {
 				headerLeft: () => (
-					<HeaderButton.Container left>
+					<HeaderButton.Container style={{ marginLeft: 1 }} left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
 					</HeaderButton.Container>
 				),
@@ -118,7 +118,7 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 
 		options = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: I18n.t('Discussions'),
 			headerRight: () => (
 				<HeaderButton.Container>

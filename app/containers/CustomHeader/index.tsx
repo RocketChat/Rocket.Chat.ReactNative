@@ -23,7 +23,8 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 					numberOfLines={1}
 					style={{
 						...styles.title,
-						paddingVertical: 4,
+						paddingVertical: 10,
+						//height: 36.9 * PixelRatio.getFontScale(),
 						color: colors.fontTitlesLabels
 					}}>
 					{headerTitle}
