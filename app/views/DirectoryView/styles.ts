@@ -16,7 +16,8 @@ export default StyleSheet.create({
 	filterItemContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingRight: 15
 	},
 	filterItemText: {
 		fontSize: 18,
