@@ -89,7 +89,7 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 const CannedResponseDetail = (): JSX.Element => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
-	
+
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => state.app);
