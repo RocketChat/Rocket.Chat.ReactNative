@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { PixelRatio, Text, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
@@ -54,6 +54,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const fontScale = PixelRatio.getFontScale();
 
 	const isRoomViewMasterDetail =
 		!isMasterDetail ||
@@ -76,7 +77,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 				/>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />
-			{headerRight ? headerRight({ canGoBack: false }) : <View style={{ width: 24, height: 24 }} />}
+			{headerRight ? headerRight({ canGoBack: false }) : <View style={{ width: 32.5 * fontScale, height: 32.5 * fontScale }} />}
 		</HeaderContainer>
 	);
 };
