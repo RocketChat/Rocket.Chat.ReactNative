@@ -24,11 +24,7 @@ const ImageContainer = ({
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const image = (
-		<Button
-			onPress={onPress}
-			customStyles={{
-				marginTop: 4
-			}}>
+		<Button onPress={onPress}>
 			<WidthAwareView>
 				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
 			</WidthAwareView>

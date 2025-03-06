@@ -96,7 +96,8 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flexDirection: 'column',
-		borderRadius: 4
+		borderRadius: 4,
+		marginTop: 4
 	},
 	image: {
 		width: '100%',
