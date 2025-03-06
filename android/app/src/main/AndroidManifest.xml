@@ -75,6 +75,18 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name="chat.rocket.reactnative.ReplyBroadcast"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name="chat.rocket.reactnative.DismissNotification"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="${BugsnagAPIKey}" />
     </application>
 
     <queries>
