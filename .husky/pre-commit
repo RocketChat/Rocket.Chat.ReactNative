@@ -1,0 +1,10 @@
+#!/bin/bash
+
+echo "Running code formatting on all files before commit..."
+
+yarn prettier --write .
+
+git add -u
+
+echo "✅ Code formatting complete. Proceeding with commit."
+exit 0
