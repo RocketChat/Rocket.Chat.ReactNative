@@ -5,6 +5,10 @@ on:
     branches:
       - '*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   format:
     if: ${{ github.repository != 'RocketChat/Rocket.Chat.ReactNative' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/single-server') }}
@@ -48,6 +52,7 @@ jobs:
           fi
       
       - name: Commit and push changes
+        if: env.changes == 'true'
         run: |
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
