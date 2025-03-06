@@ -36,8 +36,8 @@ import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
-enableScreens();
-initStore(store);
+	enableScreens();
+	initStore(store);
 
 interface IDimensions {
 	width: number;
