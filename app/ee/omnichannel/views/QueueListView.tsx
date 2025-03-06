@@ -28,10 +28,10 @@ type TNavigation = CompositeNavigationProp<
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
-	const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+	const rowHeight = 75 * PixelRatio.getFontScale();
 	return {
-		length: ROW_HEIGHT,
-		offset: ROW_HEIGHT * index,
+		length: rowHeight,
+		offset: rowHeight * index,
 		index
 	};
 };

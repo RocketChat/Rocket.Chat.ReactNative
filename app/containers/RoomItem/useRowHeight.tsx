@@ -1,8 +1,8 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, ReactElement, useContext } from 'react';
 import { PixelRatio } from 'react-native';
 
 interface IRowHeightProvider {
-	children: React.ReactNode;
+	children: ReactElement | null;
 }
 
 interface IRowHeightContextProps {

@@ -961,9 +961,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
-		const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
-		const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
-		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
+		const rowHeight = 75 * PixelRatio.getFontScale();
+		const rowHeightCondensed = 60 * PixelRatio.getFontScale();
+		const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
 
 		if (loading) {
 			return <ActivityIndicator />;

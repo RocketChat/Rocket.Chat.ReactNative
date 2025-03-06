@@ -32,10 +32,10 @@ import { Services } from '../lib/services';
 const API_FETCH_COUNT = 25;
 
 const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => {
-	const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
+	const rowHeight = 75 * PixelRatio.getFontScale();
 	return {
 		length: data?.length || 0,
-		offset: ROW_HEIGHT * index,
+		offset: rowHeight * index,
 		index
 	};
 };

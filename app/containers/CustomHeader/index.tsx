@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { PixelRatio, Text, View } from 'react-native';
+import React from 'react';
+import { PixelRatio, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
@@ -8,43 +8,6 @@ import { isAndroid } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import { styles } from './styles';
-
-interface IHeaderTitle {
-	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
-}
-
-const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
-	const { colors } = useTheme();
-	if (!headerTitle) return null;
-	if (typeof headerTitle === 'string') {
-		if (isAndroid) {
-			return (
-				<Text
-					numberOfLines={1}
-					style={{
-						...styles.androidTitle,
-						color: colors.fontTitlesLabels
-					}}>
-					{headerTitle}
-				</Text>
-			);
-		}
-		return (
-			<View style={styles.headerTitleContainer}>
-				<Text
-					numberOfLines={1}
-					style={{
-						...styles.title,
-						color: colors.fontTitlesLabels
-					}}>
-					{headerTitle}
-				</Text>
-			</View>
-		);
-	}
-
-	return headerTitle({ children: '', tintColor: colors.fontTitlesLabels });
-};
 
 interface IHeader extends NativeStackHeaderProps {}
 
@@ -79,7 +42,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 					style={styles.headerBackButton}
 				/>
 			)}
-			<HeaderTitle headerTitle={headerTitle ?? title} />
+			<headerTitle headerTitle={headerTitle ?? title} />
 			{headerRight ? (
 				headerRight({ canGoBack: false })
 			) : (
