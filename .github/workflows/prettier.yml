@@ -5,6 +5,10 @@ on:
     branches:
       - '*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   format:
     if: ${{ github.repository != 'RocketChat/Rocket.Chat.ReactNative' || (github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop' && github.ref != 'refs/heads/single-server') }}
