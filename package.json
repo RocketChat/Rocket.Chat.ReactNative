@@ -27,7 +27,8 @@
 		"e2e:ios-test": "yarn detox test -c ios.sim.release",
 		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start",
 		"storybook:start": "USE_STORYBOOK=true npx react-native start --reset-cache",
-		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
+		"bugsnag:upload-android": "bugsnag-cli upload react-native-android",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
