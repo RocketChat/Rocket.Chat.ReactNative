@@ -89,7 +89,7 @@ const ChangeAvatarView = () => {
 					onPress={() => navigation.goBack()}
 					tintColor={colors.fontDefault}
 					testID='header-back'
-					style={{ margin: 0, marginRight: isTablet ? 5 : -5 }}
+					style={{ margin: 0, marginRight: isTablet ? 5 : -5, marginLeft: -12 }}
 				/>
 			)
 		});

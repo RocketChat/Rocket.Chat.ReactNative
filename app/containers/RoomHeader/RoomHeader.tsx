@@ -194,13 +194,14 @@ const Header = React.memo(
 					styles.container,
 					{
 						opacity: disabled ? 0.5 : 1,
-						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0)
+						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0),
+						height: 36.9 * fontScale
 					}
 				]}
 				disabled={disabled}
 				hitSlop={HIT_SLOP}
 				accessibilityRole='header'>
-				<View style={[styles.titleContainer, { height: 36.9 * fontScale }]}>
+				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
 							userId={roomUserId}

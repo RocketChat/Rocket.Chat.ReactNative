@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
 	container: {
 		...Platform.select({
 			ios: {
-				minWidth: 34
+				minWidth: 34,
+				marginLeft: -12
 			},
 			android: {
 				marginHorizontal: 0

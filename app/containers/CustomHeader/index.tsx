@@ -24,7 +24,6 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 					style={{
 						...styles.title,
 						paddingVertical: 10,
-						//height: 36.9 * PixelRatio.getFontScale(),
 						color: colors.fontTitlesLabels
 					}}>
 					{headerTitle}
@@ -62,10 +61,15 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 		route.name === 'RoomView' ||
 		route.name === 'RoomsListView' ||
 		route.name === 'ShareListView' ||
-		route.name === 'ShareView';
+		route.name === 'ShareView' ||
+		route.name === 'AttachmentView';
 
 	return (
-		<HeaderContainer addExtraNotchadding={isRoomViewMasterDetail}>
+		<HeaderContainer
+			customRightIcon={!!headerRight}
+			customLeftIcon={!!headerLeft}
+			addExtraNotchPadding={isRoomViewMasterDetail}
+			isMasterDetail={isMasterDetail}>
 			{headerLeft ? (
 				headerLeft({ canGoBack: false })
 			) : (
@@ -78,7 +82,11 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 				/>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />
-			{headerRight ? headerRight({ canGoBack: false }) : <View style={{ width: 32.5 * fontScale, height: 32.5 * fontScale }} />}
+			{headerRight ? (
+				headerRight({ canGoBack: false })
+			) : (
+				<View style={{ width: isAndroid ? undefined : 32.5 * fontScale, height: 32.5 * fontScale }} />
+			)}
 		</HeaderContainer>
 	);
 };
