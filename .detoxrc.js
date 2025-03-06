@@ -29,13 +29,13 @@ module.exports = {
 		},
 		'android.debug': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimental/debug/app-experimental-play-debug.apk',
+			binaryPath: 'android/app/build/outputs/apk/experimental/debug/app-experimental-debug.apk',
 			build: 'cd android ; ./gradlew assembleExperimentalDebug assembleExperimentalDebugAndroidTest -DtestBuildType=debug ; cd -',
 			reversePorts: [8081]
 		},
 		'android.release': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimental/release/app-experimental-play-release.apk',
+			binaryPath: 'android/app/build/outputs/apk/experimental/release/app-experimental-release.apk',
 			build:
 				'cd android ; ./gradlew assembleExperimentalRelease assembleExperimentalReleaseAndroidTest -DtestBuildType=release ; cd -'
 		}
