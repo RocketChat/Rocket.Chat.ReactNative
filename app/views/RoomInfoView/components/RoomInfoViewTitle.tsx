@@ -34,16 +34,14 @@ const RoomInfoViewTitle = ({ room, name, username, statusText, type }: IRoomInfo
 				<Text
 					onLongPress={() => (name ? copyInfoToClipboard(name) : {})}
 					testID='room-info-view-name'
-					style={[styles.roomTitle, { color: colors.fontTitlesLabels }]}
-				>
+					style={[styles.roomTitle, { color: colors.fontTitlesLabels }]}>
 					{name}
 				</Text>
 				{username && (
 					<Text
 						onLongPress={() => copyInfoToClipboard(username)}
 						testID='room-info-view-username'
-						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}
-					>{`@${username}`}</Text>
+						style={[styles.roomUsername, { color: colors.fontSecondaryInfo }]}>{`@${username}`}</Text>
 				)}
 				{!!statusText && (
 					<View testID='room-info-view-custom-status'>

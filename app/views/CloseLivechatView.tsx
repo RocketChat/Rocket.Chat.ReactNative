@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 const CloseLivechatView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CloseLivechatView'>>();
 	const route = useRoute<RouteProp<ChatsStackParamList, 'CloseLivechatView'>>();
-	
+
 	const rid = route.params?.rid;
 	const departmentInfo = route.params?.departmentInfo;
 	const tagsList = route.params?.tagsList;
