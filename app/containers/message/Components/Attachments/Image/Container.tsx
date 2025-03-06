@@ -27,7 +27,7 @@ const ImageContainer = ({
 		<Button
 			onPress={onPress}
 			customStyles={{
-				marginTop: 5
+				marginTop: 4
 			}}>
 			<WidthAwareView>
 				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />

@@ -173,7 +173,7 @@ const AudioPlayer = ({
 		<View
 			style={[
 				styles.audioContainer,
-				{ backgroundColor: colors.surfaceLight, borderColor: colors.strokeExtraLight, marginTop: 5 }
+				{ backgroundColor: colors.surfaceLight, borderColor: colors.strokeExtraLight, marginTop: 4 }
 			]}>
 			<PlayButton disabled={disabled} audioState={audioState} onPress={onPress} />
 			<Seek currentTime={currentTime} duration={duration} loaded={!disabled && isDownloaded} onChangeTime={setPosition} />

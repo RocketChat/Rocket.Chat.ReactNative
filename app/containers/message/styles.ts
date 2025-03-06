@@ -103,7 +103,7 @@ export default StyleSheet.create({
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
 		overflow: 'hidden',
-		marginTop: 5
+		marginTop: 4
 	},
 	text: {
 		fontSize: 16,
