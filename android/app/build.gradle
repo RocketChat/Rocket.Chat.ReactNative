@@ -1,14 +1,9 @@
-def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
-def isFoss = taskRequests.contains("foss")
-
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
 apply plugin: "com.facebook.react"
 
-if (!isFoss) {
-    apply plugin: 'com.google.firebase.crashlytics'
-    apply plugin: 'com.bugsnag.android.gradle'
-}
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.bugsnag.android.gradle'
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -95,10 +90,8 @@ android {
         versionCode VERSIONCODE as Integer
         versionName "4.59.0"
         vectorDrawables.useSupportLibrary = true
-        if (!isFoss) {
-            manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
-            missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
-        }
+        manifestPlaceholders = [BugsnagAPIKey: BugsnagAPIKey as String]
+        missingDimensionStrategy "RNNotifications.reactNativeVersion", "reactNative60" // See note below!
         resValue "string", "rn_config_reader_custom_package", "chat.rocket.reactnative"
         testBuildType System.getProperty('testBuildType', 'debug')
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -120,12 +113,10 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            if (!isFoss) {
-                firebaseCrashlytics {
-                    nativeSymbolUploadEnabled true
-                    strippedNativeLibsDir 'build/intermediates/stripped_native_libs/release/out/lib'
-                    unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
-                }
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                strippedNativeLibsDir 'build/intermediates/stripped_native_libs/release/out/lib'
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
             }
         }
     }
@@ -211,6 +202,4 @@ dependencies {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-if (!isFoss) {
-    apply plugin: 'com.google.gms.google-services'
-}
+apply plugin: 'com.google.gms.google-services'

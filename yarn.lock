@@ -11834,11 +11834,6 @@ react-native-bootsplash@4.6.0:
     picocolors "^1.0.0"
     sharp "^0.32.0"
 
-react-native-config-reader@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.1.tgz#478b69e32adcc2e9a14f6ef5fa2cbbe012b9a27e"
-  integrity sha512-f+I9DkmJS5UYE++vgSBIFG/TUxxCy9GSpcDFmVj7TDNW9w+Nozc98pdene/VYFzg9QRE7hejRoA6yV1Lv+QbCw==
-
 react-native-console-time-polyfill@1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-native-console-time-polyfill/-/react-native-console-time-polyfill-1.2.3.tgz#1039dab1bb9e2d8040f5e19de68e0da781dc9b60"
