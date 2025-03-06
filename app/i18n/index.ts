@@ -25,14 +25,19 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/en.json')
 	},
 	{
-		label: '简体中文',
-		value: 'zh-CN',
-		file: () => require('./locales/zh-CN.json')
+		label: 'العربية',
+		value: 'ar',
+		file: () => require('./locales/ar.json')
 	},
 	{
-		label: '繁體中文',
-		value: 'zh-TW',
-		file: () => require('./locales/zh-TW.json')
+		label: 'বাংলা',
+		value: 'bn',
+		file: () => require('./locales/bn-IN.json')
+	},
+	{
+		label: 'Czech',
+		value: 'cs',
+		file: () => require('./locales/cs.json')
 	},
 	{
 		label: 'Deutsch',
@@ -40,14 +45,46 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/de.json')
 	},
 	{
-		label: 'Español (ES)',
-		value: 'es-ES',
-		file: () => require('./locales/es-ES.json')
+		label: 'Español',
+		value: 'es',
+		file: () => require('./locales/es.json')
+	},
+	{
+		label: 'Finnish',
+		value: 'fi',
+		file: () => require('./locales/fi.json')
 	},
 	{
 		label: 'Français',
 		value: 'fr',
 		file: () => require('./locales/fr.json')
+	},
+	{
+		label: 'हिन्दी',
+		value: 'hi',
+		file: () => require('./locales/hi-IN.json')
+	},
+
+	{
+		label: 'Hungarian',
+		value: 'hu',
+		file: () => require('./locales/hu.json')
+	},
+
+	{
+		label: 'Italiano',
+		value: 'it',
+		file: () => require('./locales/it.json')
+	},
+	{
+		label: '日本語',
+		value: 'ja',
+		file: () => require('./locales/ja.json')
+	},
+	{
+		label: 'Nederlands',
+		value: 'nl',
+		file: () => require('./locales/nl.json')
 	},
 	{
 		label: 'Português (BR)',
@@ -65,24 +102,24 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/ru.json')
 	},
 	{
-		label: 'Nederlands',
-		value: 'nl',
-		file: () => require('./locales/nl.json')
+		label: 'Slovenian (Slovenia)',
+		value: 'sl-SI',
+		file: () => require('./locales/sl-SI.json')
 	},
 	{
-		label: 'Italiano',
-		value: 'it',
-		file: () => require('./locales/it.json')
+		label: 'Swedish',
+		value: 'sv',
+		file: () => require('./locales/sv.json')
 	},
 	{
-		label: '日本語',
-		value: 'ja',
-		file: () => require('./locales/ja.json')
+		label: 'தமிழ்',
+		value: 'ta',
+		file: () => require('./locales/ta-IN.json')
 	},
 	{
-		label: 'العربية',
-		value: 'ar',
-		file: () => require('./locales/ar.json')
+		label: 'తెలుగు',
+		value: 'te',
+		file: () => require('./locales/te-IN.json')
 	},
 	{
 		label: 'Türkçe',
@@ -90,9 +127,14 @@ export const LANGUAGES: ILanguage[] = [
 		file: () => require('./locales/tr.json')
 	},
 	{
-		label: 'Slovenian (Slovenia)',
-		value: 'sl-SI',
-		file: () => require('./locales/sl-SI.json')
+		label: '简体中文',
+		value: 'zh-CN',
+		file: () => require('./locales/zh-CN.json')
+	},
+	{
+		label: '繁體中文',
+		value: 'zh-TW',
+		file: () => require('./locales/zh-TW.json')
 	}
 ];
 

@@ -22,5 +22,8 @@ export interface IAvatar {
 	rid?: string;
 	blockUnauthenticatedAccess?: boolean;
 	serverVersion?: string | null;
-	externalProviderUrl?: string;
+	avatarExternalProviderUrl?: string;
+	roomAvatarExternalProviderUrl?: string;
+	cdnPrefix?: string;
+	accessibilityLabel?: string;
 }

@@ -10,7 +10,7 @@ const getSingleMessage = (messageId: string): Promise<IMessage> =>
 			}
 			return reject();
 		} catch (e) {
-			return reject();
+			return reject(e);
 		}
 	});
 

@@ -9,6 +9,9 @@ import database from '../database';
 import { IUser } from '../../definitions';
 import sdk from '../services/sdk';
 import { compareServerVersion } from './helpers';
+import userPreferences from './userPreferences';
+import { NOTIFICATION_PRESENCE_CAP } from '../constants';
+import { setNotificationPresenceCap } from '../../actions/app';
 
 export const _activeUsersSubTimeout: { activeUsersSubTimeout: boolean | ReturnType<typeof setTimeout> | number } = {
 	activeUsersSubTimeout: false
@@ -124,3 +127,16 @@ export function getUserPresence(uid: string) {
 		usersBatch.push(uid);
 	}
 }
+
+export const setPresenceCap = async (enabled: boolean) => {
+	if (enabled) {
+		const notificationPresenceCap = await userPreferences.getBool(NOTIFICATION_PRESENCE_CAP);
+		if (notificationPresenceCap !== false) {
+			userPreferences.setBool(NOTIFICATION_PRESENCE_CAP, true);
+			reduxStore.dispatch(setNotificationPresenceCap(true));
+		}
+	} else {
+		userPreferences.removeItem(NOTIFICATION_PRESENCE_CAP);
+		reduxStore.dispatch(setNotificationPresenceCap(false));
+	}
+};

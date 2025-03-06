@@ -6,8 +6,6 @@ import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import { themes } from '../lib/constants';
 import { TextInput } from './TextInput';
-import { isIOS, isTablet } from '../lib/methods/helpers';
-import { useOrientation } from '../dimensions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -16,7 +14,8 @@ const styles = StyleSheet.create({
 		marginLeft: 0
 	},
 	title: {
-		...sharedStyles.textSemibold
+		...sharedStyles.textSemibold,
+		fontSize: 16
 	}
 });
 
@@ -28,15 +27,12 @@ interface ISearchHeaderProps {
 const SearchHeader = ({ onSearchChangeText, testID }: ISearchHeaderProps): JSX.Element => {
 	const { theme } = useTheme();
 	const isLight = theme === 'light';
-	const { isLandscape } = useOrientation();
-	const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
-	const titleFontSize = 16 * scale;
 
 	return (
 		<View style={styles.container}>
 			<TextInput
 				autoFocus
-				style={[styles.title, isLight && { color: themes[theme].headerTitleColor }, { fontSize: titleFontSize }]}
+				style={[styles.title, isLight && { color: themes[theme].fontTitlesLabels }]}
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
 				testID={testID}

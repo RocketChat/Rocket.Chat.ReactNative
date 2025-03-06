@@ -11,4 +11,6 @@ import Foundation
 enum RoomType: String, Codable {
   case direct = "d"
   case group = "p"
+  case channel = "c"
+  case livechat = "l"
 }

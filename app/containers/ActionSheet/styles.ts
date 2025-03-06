@@ -19,15 +19,12 @@ export default StyleSheet.create({
 	separator: {
 		marginHorizontal: 16
 	},
-	content: {
-		paddingTop: 16
-	},
 	titleContainer: {
 		flex: 1
 	},
 	title: {
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textMedium
 	},
 	handle: {
 		justifyContent: 'center',

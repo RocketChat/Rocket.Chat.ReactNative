@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -51,21 +51,29 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 	const pickerStyle = {
 		...styles.viewContainer,
 		...(isIOS ? styles.iosPadding : {}),
-		borderColor: themes[theme].separatorColor,
-		backgroundColor: themes[theme].backgroundColor
+		borderColor: themes[theme].strokeLight,
+		backgroundColor: themes[theme].surfaceRoom
 	};
+
+	const placeholderObject = useMemo(
+		() =>
+			placeholder && !items.some(item => item.label === textParser([placeholder]))
+				? { label: textParser([placeholder]), value: null }
+				: {},
+		[items.length, placeholder?.text]
+	);
 
 	const Icon = () =>
 		loading ? (
 			<ActivityIndicator style={styles.loading} />
 		) : (
-			<CustomIcon size={22} name='chevron-down' style={isAndroid && styles.icon} color={themes[theme].auxiliaryText} />
+			<CustomIcon size={22} name='chevron-down' style={isAndroid && styles.icon} color={themes[theme].fontSecondaryInfo} />
 		);
 
 	return (
 		<RNPickerSelect
 			items={items}
-			placeholder={placeholder ? { label: textParser([placeholder]), value: null } : {}}
+			placeholder={placeholderObject}
 			useNativeAndroidPickerStyle={false}
 			value={selected}
 			disabled={disabled}
@@ -81,7 +89,7 @@ export const Select = ({ options = [], placeholder, onChange, loading, disabled,
 			textInputProps={{
 				// style property was Omitted in lib, but can be used normally
 				// @ts-ignore
-				style: { ...styles.pickerText, color: selected ? themes[theme].titleText : themes[theme].auxiliaryText }
+				style: { ...styles.pickerText, color: selected ? themes[theme].fontTitlesLabels : themes[theme].fontSecondaryInfo }
 			}}
 		/>
 	);

@@ -33,6 +33,7 @@ export type ChatEndpoints = {
 		GET: (params: { roomId: IServerRoom['_id']; text?: string; offset: number; count: number }) => {
 			messages: IMessageFromServer[];
 			total: number;
+			count: number;
 		};
 	};
 	'chat.getThreadsList': {
@@ -80,5 +81,11 @@ export type ChatEndpoints = {
 	};
 	'chat.getMessageReadReceipts': {
 		GET: (params: { messageId: string }) => { receipts: IReadReceipts[] };
+	};
+	'chat.postMessage': {
+		POST: (params: { roomId: string; text: string }) => {
+			message: IMessage;
+			success: boolean;
+		};
 	};
 };

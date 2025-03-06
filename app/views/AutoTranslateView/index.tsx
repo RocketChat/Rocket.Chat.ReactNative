@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, Switch } from 'react-native';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
-import { ChatsStackParamList } from '../../stacks/types';
-import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import { SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
-import { withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
+import StatusBar from '../../containers/StatusBar';
+import { ISubscription } from '../../definitions';
+import I18n from '../../i18n';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { IBaseScreen, ISubscription } from '../../definitions';
 import { Services } from '../../lib/services';
+import { ChatsStackParamList } from '../../stacks/types';
+import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	list: {
@@ -19,144 +19,124 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TAutoTranslateViewProps = IBaseScreen<ChatsStackParamList, 'AutoTranslateView'>;
+const AutoTranslateView = (): React.ReactElement => {
+	const navigation = useNavigation();
+	const {
+		params: { rid, room }
+	} = useRoute<RouteProp<ChatsStackParamList, 'AutoTranslateView'>>();
+	const { colors } = useTheme();
 
-class AutoTranslateView extends React.Component<TAutoTranslateViewProps, any> {
-	static navigationOptions = () => ({
-		title: I18n.t('Auto_Translate')
-	});
+	const [languages, setLanguages] = useState<{ language: string; name: string }[]>([]);
+	const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(room?.autoTranslateLanguage);
+	const [enableAutoTranslate, setEnableAutoTranslate] = useState<boolean | undefined>(room?.autoTranslate);
+	const subscription = useRef<Subscription | null>(null);
 
-	private mounted: boolean;
-	private rid: string;
-	private roomObservable?: Observable<ISubscription>;
-	private subscription?: Subscription;
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: I18n.t('Auto_Translate')
+		});
+	}, [navigation]);
 
-	constructor(props: TAutoTranslateViewProps) {
-		super(props);
-		this.mounted = false;
-		this.rid = props.route.params?.rid ?? '';
-		const room = props.route.params?.room;
+	useEffect(() => {
+		(async () => {
+			try {
+				const languages = await Services.getSupportedLanguagesAutoTranslate();
+				setLanguages(languages);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
 
-		if (room && room.observe) {
-			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe((changes: ISubscription) => {
-				if (this.mounted) {
-					const { selectedLanguage, enableAutoTranslate } = this.state;
-					if (selectedLanguage !== changes.autoTranslateLanguage) {
-						this.setState({ selectedLanguage: changes.autoTranslateLanguage });
-					}
-					if (enableAutoTranslate !== changes.autoTranslate) {
-						this.setState({ enableAutoTranslate: changes.autoTranslate });
-					}
-				}
-			});
-		}
-		this.state = {
-			languages: [],
-			selectedLanguage: room?.autoTranslateLanguage,
-			enableAutoTranslate: room?.autoTranslate
-		};
-	}
+	useEffect(() => {
+		let letSelectedLanguage = selectedLanguage;
+		let letAutoTranslate = enableAutoTranslate;
+		subscription.current = room.observe().subscribe((changes: ISubscription) => {
+			if (letSelectedLanguage !== changes.autoTranslateLanguage) {
+				setSelectedLanguage(changes.autoTranslateLanguage);
+				letSelectedLanguage = changes.autoTranslateLanguage;
+			}
+			if (letAutoTranslate !== changes.autoTranslate) {
+				setEnableAutoTranslate(changes.autoTranslate);
+				letAutoTranslate = changes.autoTranslate;
+			}
+		});
+		return () => subscription.current?.unsubscribe && subscription.current.unsubscribe();
+	}, []);
 
-	async componentDidMount() {
-		this.mounted = true;
-		try {
-			const languages = await Services.getSupportedLanguagesAutoTranslate();
-			this.setState({ languages });
-		} catch (error) {
-			console.log(error);
-		}
-	}
-
-	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
-		}
-	}
-
-	toggleAutoTranslate = async () => {
+	const toggleAutoTranslate = async () => {
 		logEvent(events.AT_TOGGLE_TRANSLATE);
-		const { enableAutoTranslate } = this.state;
 		try {
+			setEnableAutoTranslate(!enableAutoTranslate);
 			await Services.saveAutoTranslate({
-				rid: this.rid,
+				rid,
 				field: 'autoTranslate',
 				value: enableAutoTranslate ? '0' : '1',
 				options: { defaultLanguage: 'en' }
 			});
-			this.setState({ enableAutoTranslate: !enableAutoTranslate });
 		} catch (error) {
+			setEnableAutoTranslate(!enableAutoTranslate);
 			logEvent(events.AT_TOGGLE_TRANSLATE_F);
-			console.log(error);
 		}
 	};
 
-	saveAutoTranslateLanguage = async (language: string) => {
+	const saveAutoTranslateLanguage = async (selectedLanguage: string) => {
 		logEvent(events.AT_SET_LANG);
 		try {
 			await Services.saveAutoTranslate({
-				rid: this.rid,
+				rid,
 				field: 'autoTranslateLanguage',
-				value: language
+				value: selectedLanguage
 			});
-			this.setState({ selectedLanguage: language });
+			setSelectedLanguage(selectedLanguage);
 		} catch (error) {
 			logEvent(events.AT_SET_LANG_F);
-			console.log(error);
 		}
 	};
 
-	renderIcon = () => {
-		const { theme } = this.props;
-		return <List.Icon name='check' color={themes[theme].tintColor} />;
-	};
+	const LanguageItem = React.memo(({ language, name }: { language: string; name?: string }) => (
+		<List.Item
+			title={name || language}
+			onPress={() => saveAutoTranslateLanguage(language)}
+			testID={`auto-translate-view-${language}`}
+			right={() =>
+				selectedLanguage === language ? (
+					<List.Icon testID={`auto-translate-view-${language}-check`} name='check' color={colors.badgeBackgroundLevel2} />
+				) : null
+			}
+			translateTitle={false}
+			additionalAcessibilityLabel={selectedLanguage === language}
+			additionalAcessibilityLabelCheck
+		/>
+	));
 
-	renderSwitch = () => {
-		const { enableAutoTranslate } = this.state;
-		return <Switch value={enableAutoTranslate} trackColor={SWITCH_TRACK_COLOR} onValueChange={this.toggleAutoTranslate} />;
-	};
-
-	renderItem = ({ item }: { item: { language: string; name: string } }) => {
-		const { selectedLanguage } = this.state;
-		const { language, name } = item;
-		const isSelected = selectedLanguage === language;
-
-		return (
-			<List.Item
-				title={name || language}
-				onPress={() => this.saveAutoTranslateLanguage(language)}
-				testID={`auto-translate-view-${language}`}
-				right={() => (isSelected ? this.renderIcon() : null)}
-				translateTitle={false}
+	return (
+		<SafeAreaView>
+			<StatusBar />
+			<FlatList
+				testID='auto-translate-view'
+				data={languages}
+				keyExtractor={item => item.name || item.language}
+				renderItem={({ item: { language, name } }) => <LanguageItem language={language} name={name} />}
+				ListHeaderComponent={
+					<>
+						<List.Separator />
+						<List.Item
+							title='Enable_Auto_Translate'
+							right={() => (
+								<Switch testID='auto-translate-view-switch' value={enableAutoTranslate} onValueChange={toggleAutoTranslate} />
+							)}
+							additionalAcessibilityLabel={enableAutoTranslate}
+						/>
+						<List.Separator />
+					</>
+				}
+				ItemSeparatorComponent={List.Separator}
+				ListFooterComponent={List.Separator}
+				contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list]}
 			/>
-		);
-	};
+		</SafeAreaView>
+	);
+};
 
-	render() {
-		const { languages } = this.state;
-		return (
-			<SafeAreaView testID='auto-translate-view'>
-				<StatusBar />
-				<List.Container testID='auto-translate-view-list'>
-					<List.Section>
-						<List.Separator />
-						<List.Item title='Enable_Auto_Translate' testID='auto-translate-view-switch' right={() => this.renderSwitch()} />
-						<List.Separator />
-					</List.Section>
-					<FlatList
-						data={languages}
-						extraData={this.state}
-						keyExtractor={item => item.language}
-						renderItem={this.renderItem}
-						ItemSeparatorComponent={List.Separator}
-						ListFooterComponent={List.Separator}
-						ListHeaderComponent={List.Separator}
-						contentContainerStyle={[List.styles.contentContainerStyleFlatList, styles.list]}
-					/>
-				</List.Container>
-			</SafeAreaView>
-		);
-	}
-}
-
-export default withTheme(AutoTranslateView);
+export default AutoTranslateView;

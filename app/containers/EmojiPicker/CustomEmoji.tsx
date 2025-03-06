@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleProp } from 'react-native';
-import FastImage, { ImageStyle } from 'react-native-fast-image';
+import { Image, ImageStyle } from 'expo-image';
 
 import { useAppSelector } from '../../lib/hooks';
 import { ICustomEmoji } from '../../definitions';
@@ -12,15 +12,14 @@ interface ICustomEmojiProps {
 
 const CustomEmoji = React.memo(
 	({ emoji, style }: ICustomEmojiProps) => {
-		const baseUrl = useAppSelector(state => state.share.server.server || state.server.server);
+		const baseUrl = useAppSelector(state => state.server.server);
 		return (
-			<FastImage
+			<Image
 				style={style}
 				source={{
-					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`,
-					priority: FastImage.priority.high
+					uri: `${baseUrl}/emoji-custom/${encodeURIComponent(emoji.name)}.${emoji.extension}`
 				}}
-				resizeMode={FastImage.resizeMode.contain}
+				contentFit='contain'
 			/>
 		);
 	},

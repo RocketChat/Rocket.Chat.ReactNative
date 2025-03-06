@@ -14,8 +14,8 @@ const Tag = React.memo(({ name, testID }: ITag) => {
 	const { theme } = useTheme();
 
 	return (
-		<View style={[styles.tagContainer, { backgroundColor: themes[theme].borderColor }]}>
-			<Text style={[styles.tagText, { color: themes[theme].infoText }]} numberOfLines={1} testID={testID}>
+		<View style={[styles.tagContainer, { backgroundColor: themes[theme].strokeLight }]}>
+			<Text style={[styles.tagText, { color: themes[theme].fontHint }]} numberOfLines={1} testID={testID}>
 				{name}
 			</Text>
 		</View>

@@ -36,6 +36,11 @@ export interface ILivechatVisitor extends IRocketChatRecord {
 	utc?: number;
 }
 
+export interface ILivechatVisitorModified extends ILivechatVisitor {
+	os?: string;
+	browser?: string;
+}
+
 export interface ILivechatVisitorDTO {
 	id: string;
 	token: string;

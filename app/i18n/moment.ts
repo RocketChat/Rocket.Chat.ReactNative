@@ -1,15 +1,20 @@
 const localeKeys: { [key: string]: string } = {
 	en: 'en',
-	ru: 'ru',
-	'pt-BR': 'pt-br',
-	'zh-CN': 'zh-cn',
-	fr: 'fr',
+	ar: 'ar',
 	de: 'de',
-	'pt-PT': 'pt',
+	'es-ES': 'es',
+	fi: 'fi',
+	fr: 'fr',
 	it: 'it',
 	ja: 'ja',
 	nl: 'nl',
-	'es-ES': 'es',
+	'pt-BR': 'pt-br',
+	'pt-PT': 'pt',
+	ru: 'ru',
+	'sl-SI': 'sl',
+	sv: 'sv',
+	tr: 'tr',
+	'zh-CN': 'zh-cn',
 	'zh-TW': 'zh-tw'
 };
 

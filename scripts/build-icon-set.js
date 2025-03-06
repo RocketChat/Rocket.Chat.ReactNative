@@ -1,20 +1,38 @@
 const fs = require('fs');
-const icoMoonConfig = require('../app/containers/CustomIcon/selection.json');
+const customIcons = require('../app/containers/CustomIcon/selection.json');
 
-let iconsName = 'export const mappedIcons = {\n';
-icoMoonConfig.icons.forEach((icon) => {
+const sortObject = o => Object.keys(o).sort().reduce((r, k) => (r[k] = o[k], r), {});
+
+let icons = {};
+
+// map icons
+customIcons.icons.forEach((icon) => {
 	icon.properties.name.split(/\s*,\s*/g).forEach((name) => {
-		iconsName += `\t'${name}': ${icon.properties.code},\n`;
+		icons = {...icons, [name]: icon.properties.code};
 	});
 });
-iconsName = `${iconsName.slice(0, -2) }\n};\n`;
 
-fs.writeFile('app/containers/CustomIcon/mappedIcons.js', iconsName, 'utf8', function (err) {
+// sort icons by name
+icons = sortObject(icons);
+
+// generate mappedIcons file
+let mappedIcons = 'export const mappedIcons = {\n';
+
+// map icons to file
+Object.keys(icons).forEach((icon)=> {
+	mappedIcons += `\t'${icon}': ${icons[icon]},\n`;
+});
+
+// close file
+mappedIcons = `${mappedIcons.slice(0, -2) }\n};\n`;
+
+// write file
+fs.writeFile('app/containers/CustomIcon/mappedIcons.js', mappedIcons, 'utf8', function (err) {
 	if (err) {
 		console.log('An error occurred while writing Object to File.');
 		console.log(err);
 		return;
 	}
 
-	console.log('🚀   Icons name generated.');
+	console.log('🚀 Icons name generated.');
 });

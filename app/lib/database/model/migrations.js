@@ -239,6 +239,89 @@ export default schemaMigrations({
 					columns: [{ name: 'hide_mention_status', type: 'boolean', isOptional: true }]
 				})
 			]
+		},
+		{
+			toVersion: 19,
+			steps: [
+				addColumns({
+					table: 'uploads',
+					columns: [{ name: 'tmid', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 20,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'e2e_suggested_key', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 21,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'users_count', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 22,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'sanitized_fname', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 23,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'unmuted', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 24,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'disable_notifications', type: 'boolean', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 25,
+			steps: [
+				addColumns({
+					table: 'messages',
+					columns: [{ name: 'content', type: 'string', isOptional: true }]
+				}),
+				addColumns({
+					table: 'threads',
+					columns: [{ name: 'content', type: 'string', isOptional: true }]
+				}),
+				addColumns({
+					table: 'thread_messages',
+					columns: [{ name: 'content', type: 'string', isOptional: true }]
+				})
+			]
+		},
+		{
+			toVersion: 26,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [
+						{ name: 'users_waiting_for_e2e_keys', type: 'string', isOptional: true },
+						{ name: 'old_room_keys', type: 'string', isOptional: true }
+					]
+				})
+			]
 		}
 	]
 });

@@ -32,9 +32,9 @@ class ReplyNotification: RNNotificationEventHandler {
         if let data = (notification["ejson"] as? String)?.data(using: .utf8) {
           if let payload = try? JSONDecoder().decode(Payload.self, from: data), let rid = payload.rid {
             if let msg = (response as? UNTextInputNotificationResponse)?.userText {
-              let rocketchat = RocketChat.instanceForServer(server: payload.host.removeTrailingSlash())
+              let rocketchat = RocketChat(server: payload.host.removeTrailingSlash())
               let backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
-              rocketchat.sendMessage(rid: rid, message: msg) { response in
+              rocketchat.sendMessage(rid: rid, message: msg, threadIdentifier: payload.tmid) { response in
                 guard let response = response, response.success else {
                   let content = UNMutableNotificationContent()
                   content.body = "Failed to reply message."

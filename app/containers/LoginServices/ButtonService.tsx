@@ -7,7 +7,7 @@ import { CustomIcon } from '../CustomIcon';
 import { IButtonService } from './interfaces';
 import styles from './styles';
 
-const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon }: IButtonService) => {
+const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, accessibilityLabel }: IButtonService) => {
 	const { colors } = useTheme();
 
 	return (
@@ -16,13 +16,12 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 			onPress={onPress}
 			style={[styles.serviceButton, { backgroundColor }]}
 			activeOpacity={0.5}
-			underlayColor={colors.buttonText}
-		>
+			underlayColor={colors.fontWhite}
+			accessible
+			accessibilityLabel={accessibilityLabel}>
 			<View style={styles.serviceButtonContainer}>
-				{authType === 'oauth' || authType === 'apple' ? (
-					<CustomIcon name={icon} size={24} color={colors.titleText} style={styles.serviceIcon} />
-				) : null}
-				<Text style={[styles.serviceText, { color: colors.titleText }]}>{buttonText}</Text>
+				{authType === 'oauth' || authType === 'apple' ? <CustomIcon name={icon} size={24} style={styles.serviceIcon} /> : null}
+				<Text style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>{buttonText}</Text>
 			</View>
 		</Touch>
 	);

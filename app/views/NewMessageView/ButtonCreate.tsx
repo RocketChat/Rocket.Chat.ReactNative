@@ -20,8 +20,8 @@ const ButtonCreate = ({ onPress, testID, title, icon }: IButton) => {
 			<List.Item
 				onPress={onPress}
 				testID={testID}
-				left={() => <CustomIcon name={icon} size={24} color={themes[theme].bodyText} />}
-				right={() => <CustomIcon name={'chevron-right'} size={24} color={themes[theme].bodyText} />}
+				left={() => <CustomIcon name={icon} size={24} color={themes[theme].fontDefault} />}
+				right={() => <CustomIcon name={'chevron-right'} size={24} color={themes[theme].fontDefault} />}
 				title={title}
 			/>
 			<List.Separator />

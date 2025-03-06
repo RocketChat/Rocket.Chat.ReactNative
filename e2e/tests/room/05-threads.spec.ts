@@ -1,117 +1,90 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import data from '../../data';
 import {
 	navigateToLogin,
 	login,
-	mockMessage,
 	tapBack,
 	sleep,
-	searchRoom,
 	platformTypes,
-	dismissReviewNag,
-	TTextMatcher
+	TTextMatcher,
+	tapAndWaitFor,
+	navigateToRoom,
+	mockMessage,
+	tryTapping
 } from '../../helpers/app';
-
-async function navigateToRoom(roomName: string) {
-	await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-	await navigateToLogin();
-	await login(data.users.regular.username, data.users.regular.password);
-	await searchRoom(`${roomName}`);
-	await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
-	await waitFor(element(by.id(`room-view-title-${roomName}`)))
-		.toExist()
-		.withTimeout(5000);
-}
+import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
 
 describe('Threads', () => {
-	const mainRoom = data.groups.private.name;
+	let room: string;
 	let textMatcher: TTextMatcher;
+	let alertButtonType: string;
 
-	before(async () => {
-		({ textMatcher } = platformTypes[device.getPlatform()]);
-		await navigateToRoom(mainRoom);
+	beforeAll(async () => {
+		const user = await createRandomUser();
+		({ name: room } = await createRandomRoom(user));
+		({ textMatcher, alertButtonType } = platformTypes[device.getPlatform()]);
+		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
+		await navigateToLogin();
+		await login(user.username, user.password);
+		await navigateToRoom(room);
 	});
 
 	describe('Render', () => {
 		it('should have room screen', async () => {
-			await waitFor(element(by.id(`room-view-title-${mainRoom}`)))
+			await waitFor(element(by.id(`room-view-title-${room}`)))
 				.toExist()
 				.withTimeout(5000);
 		});
 
 		// Render - Header
 		describe('Header', () => {
-			it('should have actions button ', async () => {
+			it('should have actions button', async () => {
 				await expect(element(by.id('room-header'))).toExist();
 			});
 
-			it('should have threads button ', async () => {
+			it('should have threads button', async () => {
 				await expect(element(by.id('room-view-header-threads'))).toExist();
-			});
-		});
-
-		// Render - Messagebox
-		describe('Messagebox', () => {
-			it('should have messagebox', async () => {
-				await expect(element(by.id('messagebox'))).toExist();
-			});
-
-			it('should have open emoji button', async () => {
-				if (device.getPlatform() === 'android') {
-					await expect(element(by.id('messagebox-open-emoji'))).toExist();
-				}
-			});
-
-			it('should have message input', async () => {
-				await expect(element(by.id('messagebox-input'))).toExist();
-			});
-
-			it('should have audio button', async () => {
-				await expect(element(by.id('messagebox-send-audio'))).toExist();
-			});
-
-			it('should have actions button', async () => {
-				await expect(element(by.id('messagebox-actions'))).toExist();
 			});
 		});
 	});
 
 	describe('Usage', () => {
 		describe('Thread', () => {
-			const thread = `${data.random}thread`;
+			let thread: string;
 			it('should create thread', async () => {
-				await mockMessage('thread');
+				thread = await mockMessage('thread');
+				await element(by[textMatcher](thread)).atIndex(0).tap();
 				await element(by[textMatcher](thread)).atIndex(0).longPress();
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-				await element(by[textMatcher]('Reply in Thread')).atIndex(0).tap();
-				await element(by.id('messagebox-input')).replaceText('replied');
-				await waitFor(element(by.id('messagebox-send-message')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('messagebox-send-message')).tap();
-				await waitFor(element(by.id(`message-thread-button-${thread}`)))
+				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
+				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
 					.withTimeout(5000);
-				await expect(element(by.id(`message-thread-button-${thread}`))).toExist();
+				await element(by.id('message-composer-input-thread')).replaceText('replied');
+				await waitFor(element(by.id('message-composer-send')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('message-composer-send')).tap();
+				await waitFor(element(by[textMatcher]('replied')))
+					.toExist()
+					.withTimeout(60000);
+				await element(by[textMatcher]('replied')).atIndex(0).tap();
 			});
 
 			it('should navigate to thread from button', async () => {
+				await tapBack();
+				await waitFor(element(by.id(`room-view-title-${room}`)))
+					.toExist()
+					.withTimeout(5000);
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
 					.withTimeout(5000);
-				await expect(element(by.id(`room-view-title-${thread}`))).toExist();
-				await tapBack();
 			});
 
 			it('should toggle follow thread', async () => {
-				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id(`room-view-title-${thread}`)))
-					.toExist()
-					.withTimeout(5000);
 				await element(by.id('room-view-header-unfollow')).tap();
 				await waitFor(element(by.id('room-view-header-follow')))
 					.toExist()
@@ -125,16 +98,15 @@ describe('Threads', () => {
 			});
 
 			it('should send message in thread only', async () => {
-				const messageText = 'threadonly';
-				await mockMessage(messageText, true);
+				const messageText = await mockMessage('threadonly', true);
 				await tapBack();
-				await waitFor(element(by.id(`room-view-title-${data.random}thread`)))
+				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.not.toExist()
 					.withTimeout(5000);
-				await waitFor(element(by.id(`room-view-title-${mainRoom}`)))
+				await waitFor(element(by.id(`room-view-title-${room}`)))
 					.toExist()
 					.withTimeout(5000);
-				await waitFor(element(by[textMatcher](`${data.random}${messageText}`)).atIndex(0))
+				await waitFor(element(by[textMatcher](messageText)).atIndex(0))
 					.toNotExist()
 					.withTimeout(2000);
 			});
@@ -142,17 +114,17 @@ describe('Threads', () => {
 			it('should mark send to channel and show on main channel', async () => {
 				const messageText = 'sendToChannel';
 				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id('messagebox-input-thread')))
+				await waitFor(element(by.id('message-composer-input-thread')))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).replaceText(messageText);
-				await element(by.id('messagebox-send-to-channel')).tap();
-				await element(by.id('messagebox-send-message')).tap();
+				await element(by.id('message-composer-input-thread')).replaceText(messageText);
+				await element(by.id('message-composer-send-to-channel')).tap();
+				await element(by.id('message-composer-send')).tap();
 				await tapBack();
-				await waitFor(element(by.id(`room-view-title-${data.random}thread`)))
+				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.not.toExist()
 					.withTimeout(5000);
-				await waitFor(element(by.id(`room-view-title-${mainRoom}`)))
+				await waitFor(element(by.id(`room-view-title-${room}`)))
 					.toExist()
 					.withTimeout(5000);
 				await waitFor(element(by[textMatcher](messageText)).atIndex(0))
@@ -162,20 +134,19 @@ describe('Threads', () => {
 
 			it('should navigate to thread from thread name', async () => {
 				const messageText = 'navthreadname';
-				await mockMessage('dummymessagebetweenthethread'); // TODO: Create a proper test for this elsewhere.
-				await dismissReviewNag();
+				await mockMessage('dummymessagebetweenthethread');
 				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id('messagebox-input-thread')))
+				await waitFor(element(by.id('message-composer-input-thread')))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).replaceText(messageText);
-				await element(by.id('messagebox-send-to-channel')).tap();
-				await element(by.id('messagebox-send-message')).tap();
+				await element(by.id('message-composer-input-thread')).replaceText(messageText);
+				await element(by.id('message-composer-send-to-channel')).tap();
+				await element(by.id('message-composer-send')).tap();
 				await tapBack();
-				await waitFor(element(by.id(`room-view-title-${data.random}thread`)))
+				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.not.toExist()
 					.withTimeout(5000);
-				await waitFor(element(by.id(`room-view-title-${mainRoom}`)))
+				await waitFor(element(by.id(`room-view-title-${room}`)))
 					.toExist()
 					.withTimeout(5000);
 				await waitFor(element(by.id(`message-thread-replied-on-${thread}`)))
@@ -218,22 +189,42 @@ describe('Threads', () => {
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
 					.withTimeout(5000);
-				await element(by.id('messagebox-input-thread')).replaceText(`${thread}draft`);
+				await element(by.id('message-composer-input-thread')).replaceText(`${thread}draft`);
 				await tapBack();
 
-				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id(`room-view-title-${thread}`)))
-					.toExist()
-					.withTimeout(5000);
-				await expect(element(by.id('messagebox-input-thread'))).toHaveText(`${thread}draft`);
-				await element(by.id('messagebox-input-thread')).clearText();
+				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
+				await expect(element(by.id('message-composer-input-thread'))).toHaveText(`${thread}draft`);
+				await element(by.id('message-composer-input-thread')).clearText();
 				await tapBack();
 
-				await element(by.id(`message-thread-button-${thread}`)).tap();
-				await waitFor(element(by.id(`room-view-title-${thread}`)))
+				await tapAndWaitFor(element(by.id(`message-thread-button-${thread}`)), element(by.id(`room-view-title-${thread}`)), 2000);
+				await expect(element(by.id('message-composer-input-thread'))).toHaveText('');
+				await tapBack();
+			});
+
+			it('should create thread delete the message and the thread show the correct number of messages', async () => {
+				thread = await mockMessage('thread-message-count');
+				await element(by[textMatcher](thread)).atIndex(0).tap();
+				await element(by[textMatcher](thread)).atIndex(0).longPress();
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
+				await waitFor(element(by.id(`room-view-title-thread-message-count`)))
 					.toExist()
 					.withTimeout(5000);
-				await expect(element(by.id('messagebox-input-thread'))).toHaveText('');
+				await element(by.id('message-composer-input-thread')).typeText('replied');
+				await element(by.id('message-composer-send')).tap();
+				await tryTapping(element(by[textMatcher]('replied')).atIndex(0), 2000, true);
+				// Fix android flaky test. Close the action sheet, then re-open again
+				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(1000); // wait for animation
+				await element(by.id('action-sheet')).swipe('up', 'fast', 0.5);
+				await sleep(300); // wait for animation
+				await element(by[textMatcher]('Delete')).atIndex(0).tap();
+				await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
+				await tapBack();
+				await waitFor(element(by.id(`thread-count-0`)))
+					.toExist()
+					.withTimeout(5000);
 			});
 		});
 	});

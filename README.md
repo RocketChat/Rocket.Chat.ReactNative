@@ -1,12 +1,7 @@
 # Rocket.Chat Mobile
 
-[![Project Dependencies](https://david-dm.org/RocketChat/Rocket.Chat.ReactNative.svg)](https://david-dm.org/RocketChat/Rocket.Chat.ReactNative)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/bb15e2392a71473ea59d3f634f35c54e)](https://www.codacy.com/app/RocketChat/Rocket.Chat.ReactNative?utm_source=github.com&utm_medium=referral&utm_content=RocketChat/Rocket.Chat.ReactNative&utm_campaign=badger)
-[![codecov](https://codecov.io/gh/RocketChat/Rocket.Chat.ReactNative/branch/master/graph/badge.svg)](https://codecov.io/gh/RocketChat/Rocket.Chat.ReactNative)
-[![CodeFactor](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative/badge)](https://www.codefactor.io/repository/github/rocketchat/rocket.chat.reactnative)
-
 - **Supported server versions:** 0.70.0+
-- **Supported iOS versions**: 12+
+- **Supported iOS versions**: 13.4+
 - **Supported Android versions**: 6.0+
 
 ## Download
@@ -18,7 +13,7 @@
   <img alt="Download on App Store" src="https://user-images.githubusercontent.com/7317008/43209852-4ca39622-904b-11e8-8ce1-cdc3aee76ae9.png" height=43>
 </a>
 
-Check [our docs](https://docs.rocket.chat/installation/mobile-and-desktop-apps#mobile-apps) for  beta and Experimental versions.
+Check [our docs](https://developer.rocket.chat/docs/mobile-app) for  beta and Experimental versions.
 
 ## Reporting an Issue
 
@@ -35,7 +30,7 @@ Do you want to make the app run on your own server only? [Follow our whitelabel 
 
 ## Engage with us
 ### Share your story
-We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [blog](https://rocket.chat/case-studies/?utm_source=github&utm_medium=readme&utm_campaign=community).
+We’d love to hear about [your experience](https://survey.zohopublic.com/zs/e4BUFG) and potentially feature it on our [blog](https://www.rocket.chat/blog?utm_source=github&utm_medium=readme&utm_campaign=community).
 
 ### Subscribe for Updates
 Once a month our marketing team releases an email update with news about product releases, company related topics, events and use cases. [Sign up!](https://rocket.chat/newsletter/?utm_source=github&utm_medium=readme&utm_campaign=community)

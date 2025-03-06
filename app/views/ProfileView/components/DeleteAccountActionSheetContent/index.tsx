@@ -1,7 +1,6 @@
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { Keyboard, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { deleteAccount } from '../../../../actions/login';
@@ -13,12 +12,11 @@ import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { getTranslations } from './getTranslations';
-import sharedStyles from '../../../Styles';
+import AlertText from './AlertText';
 
 export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const { hideActionSheet, showActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
-	const insets = useSafeAreaInsets();
 	const { colors } = useTheme();
 
 	const handleDeleteAccount = async (password: string) => {
@@ -40,8 +38,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 								removedRooms={removedRooms}
 								password={sha256(password)}
 							/>
-						),
-						headerHeight: 225 + insets.bottom
+						)
 					});
 				}, 250); // timeout for hide effect
 			} else if (error.data.errorType === 'error-invalid-password') {
@@ -61,20 +58,15 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			title={i18n.t('Are_you_sure_you_want_to_delete_your_account')}
 			description={i18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
 			onCancel={hideActionSheet}
-			onSubmit={password => handleDeleteAccount(password)}
+			onSubmit={password => handleDeleteAccount(password as string)}
 			placeholder={i18n.t('Password')}
 			testID='profile-view-delete-account-sheet'
 			iconName='warning'
 			confirmTitle={i18n.t('Delete_Account')}
-			confirmBackgroundColor={colors.dangerColor}
+			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 		/>
 	);
 }
-
-const AlertText = ({ text = '' }) => {
-	const { colors } = useTheme();
-	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.dangerColor }}>{text}</Text>;
-};
 
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
 	const { hideActionSheet } = useActionSheet();
@@ -93,15 +85,14 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			description={i18n.t('Deleting_a_user_will_delete_all_messages')}
 			onCancel={hideActionSheet}
 			onSubmit={handleDeleteAccount}
-			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
-			confirmBackgroundColor={colors.dangerColor}
+			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 			showInput={false}
 			customText={
 				<>
-					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} />}
-					{!!removedRooms && <AlertText text={removedRooms} />}
+					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} style={{ marginTop: 24 }} />}
+					{!!removedRooms && <AlertText text={removedRooms} style={{ marginBottom: 36 }} />}
 				</>
 			}
 		/>

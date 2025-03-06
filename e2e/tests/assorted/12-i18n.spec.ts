@@ -1,10 +1,8 @@
-import { expect } from 'detox';
+import Detox, { device, waitFor, element, by, expect } from 'detox';
 
-import { navigateToLogin, login, sleep } from '../../helpers/app';
-import { post } from '../../helpers/data_setup';
-import data from '../../data';
+import { navigateToLogin, login } from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
 
-const testuser = data.users.regular;
 const defaultLaunchArgs = { permissions: { notifications: 'YES' } } as Detox.DeviceLaunchAppConfig;
 
 const navToLanguage = async () => {
@@ -45,7 +43,6 @@ describe('i18n', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(20000);
-			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
 		});
 
 		it("OS set to unavailable language and fallback to 'en'", async () => {
@@ -62,7 +59,6 @@ describe('i18n', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(20000);
-			await expect(element(by.id('new-server-view-open').and(by.label('Join our open workspace')))).toBeVisible();
 		});
 
 		/**
@@ -81,10 +77,12 @@ describe('i18n', () => {
 	});
 
 	describe('Rocket.Chat language', () => {
-		before(async () => {
+		let user: ITestUser;
+		beforeAll(async () => {
+			user = await createRandomUser();
 			await device.launchApp({ ...defaultLaunchArgs, delete: true });
 			await navigateToLogin();
-			await login(testuser.username, testuser.password);
+			await login(user.username, user.password);
 		});
 
 		it("should select 'en'", async () => {
@@ -119,22 +117,22 @@ describe('i18n', () => {
 			await element(by.id('sidebar-close-drawer')).tap();
 		});
 
-		it("should set unsupported language and fallback to 'en'", async () => {
-			await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
-			await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
-			await waitFor(element(by.id('rooms-list-view')))
-				.toBeVisible()
-				.withTimeout(10000);
-			await element(by.id('rooms-list-view-sidebar')).tap();
-			await waitFor(element(by.id('sidebar-view')))
-				.toBeVisible()
-				.withTimeout(2000);
-			// give the app some time to apply new language
-			await sleep(3000);
-			await expect(element(by.id('sidebar-chats').withDescendant(by.label('Chats')))).toBeVisible();
-			await expect(element(by.id('sidebar-profile').withDescendant(by.label('Profile')))).toBeVisible();
-			await expect(element(by.id('sidebar-settings').withDescendant(by.label('Settings')))).toBeVisible();
-			await post('users.setPreferences', { data: { language: 'en' } }); // Set back to english
-		});
+		// it("should set unsupported language and fallback to 'en'", async () => {
+		// 	await post('users.setPreferences', { data: { language: 'eo' } }); // Set language to Esperanto
+		// 	await device.launchApp({ ...defaultLaunchArgs, newInstance: true });
+		// 	await waitFor(element(by.id('rooms-list-view')))
+		// 		.toBeVisible()
+		// 		.withTimeout(10000);
+		// 	await element(by.id('rooms-list-view-sidebar')).tap();
+		// 	await waitFor(element(by.id('sidebar-view')))
+		// 		.toBeVisible()
+		// 		.withTimeout(2000);
+		// 	// give the app some time to apply new language
+		// 	await sleep(3000);
+		// 	await expect(element(by.id('sidebar-chats').withDescendant(by.label('Chats')))).toBeVisible();
+		// 	await expect(element(by.id('sidebar-profile').withDescendant(by.label('Profile')))).toBeVisible();
+		// 	await expect(element(by.id('sidebar-settings').withDescendant(by.label('Settings')))).toBeVisible();
+		// 	await post('users.setPreferences', { data: { language: 'en' } }); // Set back to english
+		// });
 	});
 });

@@ -1,18 +1,11 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, mockMessage, tapBack, searchRoom, platformTypes, TTextMatcher } from '../../helpers/app';
+import { navigateToLogin, login, tapBack, platformTypes, TTextMatcher, mockMessage, navigateToRoom } from '../../helpers/app';
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
-const testuser = data.users.regular;
 const room = data.channels.detoxpublic.name;
-
-async function navigateToRoom() {
-	await searchRoom(room);
-	await element(by.id(`rooms-list-view-item-${room}`)).tap();
-	await waitFor(element(by.id('room-view')).atIndex(0))
-		.toExist()
-		.withTimeout(5000);
-}
 
 async function navigateToRoomActions() {
 	await element(by.id(`room-view-title-${room}`)).tap();
@@ -24,12 +17,15 @@ async function navigateToRoomActions() {
 describe('Join public room', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(testuser.username, testuser.password);
-		await navigateToRoom();
+		await login(user.username, user.password);
+		await navigateToRoom(room);
 	});
 
 	describe('Render', () => {
@@ -39,7 +35,7 @@ describe('Join public room', () => {
 
 		// Render - Header
 		describe('Header', () => {
-			it('should have actions button ', async () => {
+			it('should have actions button', async () => {
 				await expect(element(by.id('room-header'))).toBeVisible();
 			});
 		});
@@ -58,13 +54,13 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-view-join-button'))).toBeVisible();
 			});
 
-			it('should not have messagebox', async () => {
-				await expect(element(by.id('messagebox'))).toBeNotVisible();
+			it('should not have message composer', async () => {
+				await expect(element(by.id('message-composer'))).toBeNotVisible();
 			});
 		});
 
 		describe('Room Actions', () => {
-			before(async () => {
+			beforeAll(async () => {
 				await navigateToRoomActions();
 			});
 
@@ -110,7 +106,7 @@ describe('Join public room', () => {
 				await expect(element(by.id('room-actions-leave-channel'))).toBeNotVisible();
 			});
 
-			after(async () => {
+			afterAll(async () => {
 				await tapBack();
 				await waitFor(element(by.id('room-view')))
 					.toBeVisible()
@@ -122,20 +118,20 @@ describe('Join public room', () => {
 	describe('Usage', () => {
 		it('should join room', async () => {
 			await element(by.id('room-view-join-button')).tap();
+			await waitFor(element(by.id('room-view-join-button')))
+				.not.toBeVisible()
+				.withTimeout(2000);
 			await tapBack();
-			await element(by.id(`rooms-list-view-item-${room}`)).tap();
-			await waitFor(element(by.id('room-view')))
+			await navigateToRoom(room);
+			await waitFor(element(by.id('message-composer')))
 				.toBeVisible()
-				.withTimeout(5000);
-			await waitFor(element(by.id('messagebox')))
-				.toBeVisible()
-				.withTimeout(60000);
-			await expect(element(by.id('messagebox'))).toBeVisible();
+				.withTimeout(10000);
+			await expect(element(by.id('message-composer'))).toBeVisible();
 			await expect(element(by.id('room-view-join'))).toBeNotVisible();
 		});
 
 		it('should send message', async () => {
-			await mockMessage('message');
+			await mockMessage(`${random()}message`);
 		});
 
 		it('should have notifications and leave channel', async () => {
@@ -164,7 +160,7 @@ describe('Join public room', () => {
 				.withTimeout(10000);
 			await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 				.toBeNotVisible()
-				.withTimeout(60000); // flaky on Android
+				.withTimeout(60000);
 		});
 	});
 });

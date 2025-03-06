@@ -29,4 +29,10 @@ export default class User extends Model {
 	@field('is_from_webview') isFromWebView;
 
 	@field('enable_message_parser_early_adoption') enableMessageParserEarlyAdoption;
+
+	@field('nickname') nickname;
+
+	@field('bio') bio;
+
+	@field('require_password_change') requirePasswordChange;
 }

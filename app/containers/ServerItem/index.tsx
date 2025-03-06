@@ -1,9 +1,7 @@
 import React from 'react';
-// @ts-ignore // TODO: Remove on react-native update
 import { Pressable, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
-import { IServerInfo } from '../../definitions';
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
 import { themes } from '../../lib/constants';
@@ -13,7 +11,12 @@ import { useTheme } from '../../theme';
 export { ROW_HEIGHT };
 
 export interface IServerItem {
-	item: IServerInfo;
+	item: {
+		id: string;
+		iconURL: string;
+		name: string;
+		useRealName?: boolean;
+	};
 	onPress(): void;
 	onLongPress?(): void;
 	hasCheck?: boolean;
@@ -27,32 +30,30 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 		<Pressable
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
-			testID={`rooms-list-header-server-${item.id}`}
-			android_ripple={{ color: themes[theme].bannerBackground }}
+			testID={`server-item-${item.id}`}
+			android_ripple={{ color: themes[theme].surfaceNeutral }}
 			style={({ pressed }: { pressed: boolean }) => ({
-				backgroundColor: isIOS && pressed ? themes[theme].bannerBackground : themes[theme].backgroundColor
-			})}
-		>
+				backgroundColor: isIOS && pressed ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom
+			})}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
-					<FastImage
+					<Image
 						source={{
-							uri: item.iconURL,
-							priority: FastImage.priority.high
+							uri: item.iconURL
 						}}
-						// @ts-ignore TODO: Remove when updating FastImage
-						defaultSource={defaultLogo}
+						placeholder={defaultLogo}
 						style={styles.serverIcon}
 						onError={() => console.log('err_loading_server_icon')}
+						contentFit='contain'
 					/>
 				) : (
-					<FastImage source={defaultLogo} style={styles.serverIcon} />
+					<Image source={defaultLogo} style={styles.serverIcon} contentFit='contain' />
 				)}
 				<View style={styles.serverTextContainer}>
-					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].titleText }]}>
+					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>
 						{item.name || item.id}
 					</Text>
-					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].auxiliaryText }]}>
+					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].fontSecondaryInfo }]}>
 						{item.id}
 					</Text>
 				</View>

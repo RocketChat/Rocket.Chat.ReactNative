@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import I18n from '../i18n';
@@ -79,19 +79,17 @@ interface IItem {
 const Item = ({ label, content, theme, testID }: IItem) =>
 	content ? (
 		<View style={styles.item} testID={testID}>
-			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
+			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
+			<Markdown style={[styles.itemContent, { color: themes[theme].fontSecondaryInfo }]} msg={content} />
 		</View>
 	) : null;
 
-interface ICannedResponseDetailProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>;
-	route: RouteProp<ChatsStackParamList, 'CannedResponseDetail'>;
-}
+const CannedResponseDetail = (): JSX.Element => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 
-const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps): JSX.Element => {
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => state.app);
@@ -100,7 +98,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 		navigation.setOptions({
 			title: `!${cannedResponse?.shortcut}`
 		});
-	}, []);
+	}, [navigation, cannedResponse?.shortcut]);
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		const { room } = route.params;
@@ -112,7 +110,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 
 	return (
 		<SafeAreaView>
-			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].messageboxBackground }]}>
+			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceTint }]}>
 				<StatusBar />
 				<View style={styles.container}>
 					<Item label={I18n.t('Shortcut')} content={`!${cannedResponse?.shortcut}`} theme={theme} />
@@ -120,16 +118,16 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 					<Item label={I18n.t('Sharing')} content={cannedResponse?.scopeName} theme={theme} />
 
 					<View style={styles.item}>
-						<Text style={[styles.itemLabel, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
+						<Text style={[styles.itemLabel, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 						<View style={styles.cannedTagContainer}>
 							{cannedResponse?.tags?.length > 0 ? (
 								cannedResponse.tags.map(t => (
-									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].searchboxBackground }]}>
-										<Text style={[styles.cannedTag, { color: themes[theme].auxiliaryTintColor }]}>{t}</Text>
+									<View style={[styles.cannedTagWrap, { backgroundColor: themes[theme].strokeExtraLight }]}>
+										<Text style={[styles.cannedTag, { color: themes[theme].fontHint }]}>{t}</Text>
 									</View>
 								))
 							) : (
-								<Text style={[styles.cannedText, { color: themes[theme].auxiliaryTintColor }]}>-</Text>
+								<Text style={[styles.cannedText, { color: themes[theme].fontHint }]}>-</Text>
 							)}
 						</View>
 					</View>

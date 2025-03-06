@@ -5,7 +5,6 @@ import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/me
 import { APP_STATE } from '../actions/actionsTypes';
 import { RootEnum } from '../definitions';
 import { Services } from '../lib/services';
-import { setBadgeCount } from '../lib/notifications';
 
 const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	const appRoot = yield select(state => state.app.root);
@@ -20,7 +19,6 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	try {
 		yield localAuthenticate(server.server);
 		Services.checkAndReopen();
-		setBadgeCount();
 		return yield Services.setUserPresenceOnline();
 	} catch (e) {
 		log(e);

@@ -16,6 +16,8 @@ export default class Upload extends Model {
 
 	@field('name') name;
 
+	@field('tmid') tmid;
+
 	@field('description') description;
 
 	@field('size') size;
@@ -27,4 +29,18 @@ export default class Upload extends Model {
 	@field('progress') progress;
 
 	@field('error') error;
+
+	asPlain() {
+		return {
+			id: this.id,
+			rid: this.subscription.id,
+			path: this.path,
+			name: this.name,
+			tmid: this.tmid,
+			description: this.description,
+			size: this.size,
+			type: this.type,
+			store: this.store
+		};
+	}
 }

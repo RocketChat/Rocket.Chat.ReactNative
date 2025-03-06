@@ -1,4 +1,4 @@
-import { Appearance } from 'react-native';
+import { Appearance, StatusBar } from 'react-native';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import setRootViewColor from 'rn-root-view';
 
@@ -47,18 +47,19 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = async (themePreferences: IThemePreference): Promise<void> => {
+export const setNativeTheme = async (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
+	const isLightTheme = theme === 'light';
 	if (isAndroid) {
-		const iconsLight = theme === 'light';
 		try {
-			// The late param as default is true @ react-native-navigation-bar-color/src/index.js line 8
-			await changeNavigationBarColor(themes[theme].navbarBackground, iconsLight, true);
+			StatusBar.setBackgroundColor(themes[theme].surfaceNeutral);
+			StatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
+			await changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
 		} catch (error) {
 			// Do nothing
 		}
 	}
-	setRootViewColor(themes[theme].backgroundColor);
+	setRootViewColor(themes[theme].surfaceRoom);
 };
 
 export const unsubscribeTheme = () => {
@@ -77,6 +78,5 @@ export const subscribeTheme = (themePreferences: IThemePreference, setTheme: () 
 		// unsubscribe appearance changes when automatic was disabled
 		unsubscribeTheme();
 	}
-	// set native components theme
 	setNativeTheme(themePreferences);
 };

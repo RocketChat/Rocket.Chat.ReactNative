@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import isEmpty from 'lodash/isEmpty';
 import Modal from 'react-native-modal';
 import Touchable from 'react-native-platform-touchable';
 
-import { useTheme } from '../theme';
-import { hasNotch, isTablet } from '../lib/methods/helpers';
+import { hasNotch } from '../lib/methods/helpers';
 import { PasscodeChoose } from '../containers/Passcode';
 import EventEmitter from '../lib/methods/helpers/events';
 import { CustomIcon } from '../containers/CustomIcon';
-import { CHANGE_PASSCODE_EMITTER, themes } from '../lib/constants';
+import { CHANGE_PASSCODE_EMITTER } from '../lib/constants';
 
 const styles = StyleSheet.create({
 	modal: {
@@ -33,8 +31,6 @@ interface IArgs {
 const ChangePasscodeView = React.memo(() => {
 	const [visible, setVisible] = useState(false);
 	const [data, setData] = useState<Partial<IArgs>>({});
-
-	const { theme } = useTheme();
 
 	useDeepCompareEffect(() => {
 		if (!isEmpty(data)) {
@@ -65,14 +61,8 @@ const ChangePasscodeView = React.memo(() => {
 	};
 
 	useEffect(() => {
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 		const listener = EventEmitter.addEventListener(CHANGE_PASSCODE_EMITTER, showChangePasscode);
 		return () => {
-			if (!isTablet) {
-				Orientation.unlockAllOrientations();
-			}
 			EventEmitter.removeListener(CHANGE_PASSCODE_EMITTER, listener);
 		};
 	}, []);
@@ -82,7 +72,7 @@ const ChangePasscodeView = React.memo(() => {
 			<PasscodeChoose finishProcess={onSubmit} force={data?.force} />
 			{!data?.force ? (
 				<Touchable onPress={onCancel} style={styles.close}>
-					<CustomIcon name='close' color={themes[theme].passcodePrimary} size={30} />
+					<CustomIcon name='close' size={30} />
 				</Touchable>
 			) : null}
 		</Modal>

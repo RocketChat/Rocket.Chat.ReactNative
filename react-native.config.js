@@ -14,6 +14,11 @@ module.exports = {
 			platforms: {
 				android: null
 			}
+		},
+		'@react-native-firebase/messaging': {
+			platforms: {
+				ios: null
+			}
 		}
 	}
 };

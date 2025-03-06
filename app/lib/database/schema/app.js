@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
 
 export default appSchema({
-	version: 18,
+	version: 26,
 	tables: [
 		tableSchema({
 			name: 'subscriptions',
@@ -13,6 +13,7 @@ export default appSchema({
 				{ name: 'ls', type: 'number' },
 				{ name: 'name', type: 'string', isIndexed: true },
 				{ name: 'fname', type: 'string' },
+				{ name: 'sanitized_fname', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: 'open', type: 'boolean' },
 				{ name: 'alert', type: 'boolean' },
@@ -55,14 +56,20 @@ export default appSchema({
 				{ name: 'livechat_data', type: 'string', isOptional: true },
 				{ name: 'tags', type: 'string', isOptional: true },
 				{ name: 'e2e_key', type: 'string', isOptional: true },
+				{ name: 'old_room_keys', type: 'string', isOptional: true },
+				{ name: 'e2e_suggested_key', type: 'string', isOptional: true },
 				{ name: 'encrypted', type: 'boolean', isOptional: true },
 				{ name: 'e2e_key_id', type: 'string', isOptional: true },
+				{ name: 'users_waiting_for_e2e_keys', type: 'string', isOptional: true },
 				{ name: 'avatar_etag', type: 'string', isOptional: true },
 				{ name: 'team_id', type: 'string', isIndexed: true },
 				{ name: 'team_main', type: 'boolean', isOptional: true }, // Use `Q.notEq(true)` to get false or null
 				{ name: 'on_hold', type: 'boolean', isOptional: true },
 				{ name: 'source', type: 'string', isOptional: true },
-				{ name: 'hide_mention_status', type: 'boolean', isOptional: true }
+				{ name: 'hide_mention_status', type: 'boolean', isOptional: true },
+				{ name: 'users_count', type: 'number', isOptional: true },
+				{ name: 'unmuted', type: 'string', isOptional: true },
+				{ name: 'disable_notifications', type: 'boolean', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -120,6 +127,7 @@ export default appSchema({
 				{ name: 'e2e', type: 'string', isOptional: true },
 				{ name: 'tshow', type: 'boolean', isOptional: true },
 				{ name: 'md', type: 'string', isOptional: true },
+				{ name: 'content', type: 'string', isOptional: true },
 				{ name: 'comment', type: 'string', isOptional: true }
 			]
 		}),
@@ -158,6 +166,7 @@ export default appSchema({
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
 				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'content', type: 'string', isOptional: true },
 				{ name: 'draft_message', type: 'string', isOptional: true }
 			]
 		}),
@@ -195,7 +204,8 @@ export default appSchema({
 				{ name: 'unread', type: 'boolean', isOptional: true },
 				{ name: 'auto_translate', type: 'boolean', isOptional: true },
 				{ name: 'translations', type: 'string', isOptional: true },
-				{ name: 'e2e', type: 'string', isOptional: true }
+				{ name: 'e2e', type: 'string', isOptional: true },
+				{ name: 'content', type: 'string', isOptional: true }
 			]
 		}),
 		tableSchema({
@@ -222,6 +232,7 @@ export default appSchema({
 				{ name: 'path', type: 'string', isOptional: true },
 				{ name: 'rid', type: 'string', isIndexed: true },
 				{ name: 'name', type: 'string', isOptional: true },
+				{ name: 'tmid', type: 'string', isOptional: true },
 				{ name: 'description', type: 'string', isOptional: true },
 				{ name: 'size', type: 'number' },
 				{ name: 'type', type: 'string', isOptional: true },

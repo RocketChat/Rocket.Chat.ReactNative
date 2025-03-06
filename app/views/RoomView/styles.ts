@@ -12,7 +12,8 @@ export default StyleSheet.create({
 	readOnly: {
 		justifyContent: 'flex-end',
 		alignItems: 'center',
-		marginVertical: 15
+		margin: 16,
+		marginBottom: 32
 	},
 	reactionSearchContainer: {
 		marginHorizontal: 12,
@@ -66,7 +67,14 @@ export default StyleSheet.create({
 	},
 	previewMode: {
 		fontSize: 16,
-		...sharedStyles.textMedium
+		lineHeight: 24,
+		...sharedStyles.textSemibold
+	},
+	readOnlyDescription: {
+		fontSize: 16,
+		lineHeight: 24,
+		...sharedStyles.textRegular,
+		textAlign: 'center'
 	},
 	searchbarContainer: {
 		height: 56,

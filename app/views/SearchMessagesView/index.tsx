@@ -1,5 +1,5 @@
 import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/core';
 import { FlatList, Text, View } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -14,7 +14,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants';
+import { textInputDebounceTime, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -39,6 +39,7 @@ import {
 	ICustomEmoji
 } from '../../definitions';
 import { Services } from '../../lib/services';
+import { TNavigation } from '../../stacks/stackType';
 
 const QUERY_SIZE = 50;
 
@@ -54,12 +55,13 @@ export interface IRoomInfoParam {
 	rid: string;
 	t: SubscriptionType;
 	joined?: boolean;
+	itsMe?: boolean;
 }
 
 interface INavigationOption {
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
-		StackNavigationProp<InsideStackParamList>
+		NativeStackNavigationProp<ChatsStackParamList, 'SearchMessagesView'>,
+		NativeStackNavigationProp<InsideStackParamList & TNavigation>
 	>;
 	route: RouteProp<ChatsStackParamList, 'SearchMessagesView'>;
 }
@@ -86,7 +88,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	private room?: IRoomInfoResult;
 
 	static navigationOptions = ({ navigation, route }: INavigationOption) => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Search')
 		};
 		const showCloseModal = route.params?.showCloseModal;
@@ -200,7 +202,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	searchDebounced = debounce(async (searchText: string) => {
 		await this.getMessages(searchText, true);
-	}, 1000);
+	}, textInputDebounceTime);
 
 	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
@@ -271,8 +273,8 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	renderEmpty = () => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.noDataFound, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
+				<Text style={[styles.noDataFound, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
 			</View>
 		);
 	};
@@ -311,7 +313,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			<FlatList
 				data={messages}
 				renderItem={this.renderItem}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				keyExtractor={item => item._id}
 				onEndReached={this.onEndReached}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
@@ -325,7 +327,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	render() {
 		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='search-messages-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='search-messages-view'>
 				<StatusBar />
 				<View style={styles.searchContainer}>
 					<FormTextInput
@@ -335,8 +337,8 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
-					<View style={[styles.divider, { backgroundColor: themes[theme].separatorColor }]} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
+					<View style={[styles.divider, { backgroundColor: themes[theme].strokeLight }]} />
 				</View>
 				{this.renderList()}
 			</SafeAreaView>

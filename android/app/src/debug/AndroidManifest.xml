@@ -3,13 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:name="chat.rocket.reactnative.MainDebugApplication"
-        tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:name"
+        android:usesCleartextTraffic="true"
         tools:targetApi="28"
-        android:networkSecurityConfig="@xml/network_security_config">
-        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="true" />
-    </application>
-
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+        tools:ignore="GoogleAppIndexingWarning"/>
 </manifest>

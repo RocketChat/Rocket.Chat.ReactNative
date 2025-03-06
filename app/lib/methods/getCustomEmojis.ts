@@ -62,7 +62,7 @@ const updateEmojis = async ({ update = [], remove = [], allRecords }: IUpdateEmo
 
 	try {
 		await db.write(async () => {
-			await db.batch(...emojisToCreate, ...emojisToUpdate, ...emojisToDelete);
+			await db.batch([...emojisToCreate, ...emojisToUpdate, ...emojisToDelete]);
 		});
 		return true;
 	} catch (e) {
@@ -146,6 +146,8 @@ export function getCustomEmojis() {
 			if (changedEmojis) {
 				setCustomEmojis();
 			}
+
+			return resolve();
 		} catch (e) {
 			log(e);
 			return resolve();

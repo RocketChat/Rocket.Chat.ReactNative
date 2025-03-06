@@ -23,10 +23,9 @@ const SafeAreaView = React.memo(({ style, children, vertical = true, ...props }:
 	const { theme } = useTheme();
 	return (
 		<SafeAreaContext
-			style={[styles.view, { backgroundColor: themes[theme].auxiliaryBackground }, style]}
+			style={[styles.view, { backgroundColor: themes[theme].surfaceHover }, style]}
 			edges={vertical ? ['right', 'left'] : undefined}
-			{...props}
-		>
+			{...props}>
 			{children}
 		</SafeAreaContext>
 	);

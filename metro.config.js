@@ -1,25 +1,21 @@
-/**
- * Metro configuration for React Native
- * https://github.com/facebook/react-native
- *
- * @format
- */
+const path = require('path');
+const { generate } = require('@storybook/react-native/scripts/generate');
+const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const blocklist = require('metro-config/src/defaults/exclusionList');
+generate({
+	configPath: path.resolve(__dirname, './.storybook')
+});
 
-module.exports = {
+const sourceExts = [...defaultSourceExts, 'mjs'];
+
+const config = {
 	transformer: {
-		getTransformOptions: () => ({
-			transform: {
-				// experimentalImportSupport: true,
-				inlineRequires: true
-			}
-		})
+		unstable_allowRequireContext: true
 	},
-	maxWorkers: 2,
 	resolver: {
-		blocklistRE: blocklist([/ios\/Pods\/JitsiMeetSDK\/Frameworks\/JitsiMeet.framework\/assets\/node_modules\/react-native\/.*/]),
-		resolverMainFields: ['sbmodern', 'react-native', 'browser', 'main']
+		sourceExts: process.env.RUNNING_E2E_TESTS ? ['mock.ts', ...sourceExts] : sourceExts
 	}
 };
+
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);

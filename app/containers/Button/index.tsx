@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
 import Touchable, { PlatformTouchableProps } from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
@@ -9,35 +9,49 @@ import ActivityIndicator from '../ActivityIndicator';
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	onPress: () => void;
-	type?: string;
+	type?: 'primary' | 'secondary';
 	backgroundColor?: string;
 	loading?: boolean;
 	color?: string;
 	fontSize?: number;
-	styleText?: StyleProp<TextStyle>[];
+	style?: StyleProp<ViewStyle> | StyleProp<ViewStyle>[];
+	styleText?: StyleProp<TextStyle> | StyleProp<TextStyle>[];
+	small?: boolean;
 }
 
 const styles = StyleSheet.create({
 	container: {
+		marginBottom: 12,
+		borderRadius: 4
+	},
+	normalButton: {
 		paddingHorizontal: 14,
 		justifyContent: 'center',
-		height: 48,
-		borderRadius: 4,
-		marginBottom: 12
+		height: 48
+	},
+	smallButton: {
+		paddingHorizontal: 12,
+		paddingVertical: 8,
+		alignSelf: 'center'
 	},
 	text: {
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
+	},
+	smallText: {
+		...sharedStyles.textBold,
+		fontSize: 12,
+		lineHeight: 18
 	},
 	disabled: {
 		opacity: 0.3
 	}
 });
 
-const Button = ({
+const Button: React.FC<IButtonProps> = ({
 	type = 'primary',
-	disabled = false,
-	loading = false,
+	disabled,
+	loading,
 	fontSize = 16,
 	title,
 	onPress,
@@ -45,36 +59,42 @@ const Button = ({
 	color,
 	style,
 	styleText,
+	small,
 	...otherProps
-}: IButtonProps): React.ReactElement => {
+}) => {
 	const { colors } = useTheme();
 	const isPrimary = type === 'primary';
+	const isDisabled = disabled || loading;
 
-	let textColor = isPrimary ? colors.buttonText : colors.bodyText;
-	if (color) {
-		textColor = color;
-	}
+	const defaultBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDefault : colors.buttonBackgroundSecondaryDefault;
+	const disabledBackgroundColor = isPrimary ? colors.buttonBackgroundPrimaryDisabled : colors.buttonBackgroundSecondaryDisabled;
+
+	const resolvedBackgroundColor = backgroundColor || defaultBackgroundColor;
+	const resolvedTextColor = color || (isPrimary ? colors.fontWhite : colors.fontDefault);
+
+	const containerStyle = [
+		small ? styles.smallButton : styles.normalButton,
+		styles.container,
+		{ backgroundColor: isDisabled ? disabledBackgroundColor : resolvedBackgroundColor },
+		isDisabled && backgroundColor ? styles.disabled : {},
+		style
+	];
+
+	const textStyle = [
+		{ color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize },
+		small ? styles.smallText : styles.text,
+		styleText
+	];
 
 	return (
 		<Touchable
 			onPress={onPress}
-			disabled={disabled || loading}
-			style={[
-				styles.container,
-				backgroundColor ? { backgroundColor } : { backgroundColor: isPrimary ? colors.actionTintColor : colors.backgroundColor },
-				disabled && styles.disabled,
-				style
-			]}
+			disabled={isDisabled}
+			style={containerStyle}
 			accessibilityLabel={title}
-			{...otherProps}
-		>
-			{loading ? (
-				<ActivityIndicator color={textColor} />
-			) : (
-				<Text style={[styles.text, { color: textColor, fontSize }, styleText]} accessibilityLabel={title}>
-					{title}
-				</Text>
-			)}
+			accessibilityRole='button'
+			{...otherProps}>
+			{loading ? <ActivityIndicator color={resolvedTextColor} /> : <Text style={textStyle}>{title}</Text>}
 		</Touchable>
 	);
 };

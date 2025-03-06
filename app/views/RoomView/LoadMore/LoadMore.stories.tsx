@@ -11,28 +11,28 @@ export default {
 	title: 'RoomView/LoadMore'
 };
 
-const load = () => new Promise(res => setTimeout(res, 1000));
-
-const LoadMore = ({ ...props }) => <LoadMoreComponent type={MessageTypeLoad.MORE} load={load} runOnRender={false} {...props} />;
+const LoadMore = ({ ...props }) => (
+	<LoadMoreComponent rid='rid' t='c' loaderId='loaderId' type={MessageTypeLoad.MORE} runOnRender={false} {...props} />
+);
 
 export const Basic = () => (
 	<>
-		<LoadMore />
-		<LoadMore runOnRender />
-		<LoadMore type={MessageTypeLoad.PREVIOUS_CHUNK} />
-		<LoadMore type={MessageTypeLoad.NEXT_CHUNK} />
+		<LoadMore loaderId='1' />
+		<LoadMore loaderId='2' runOnRender />
+		<LoadMore loaderId='3' type={MessageTypeLoad.PREVIOUS_CHUNK} />
+		<LoadMore loaderId='4' type={MessageTypeLoad.NEXT_CHUNK} />
 	</>
 );
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: themes[theme] }}>
-		<ScrollView style={{ backgroundColor: themes[theme].backgroundColor }}>
-			<LoadMore type={MessageTypeLoad.PREVIOUS_CHUNK} />
+		<ScrollView style={{ backgroundColor: themes[theme].surfaceRoom }}>
+			<LoadMore loaderId='5' type={MessageTypeLoad.PREVIOUS_CHUNK} />
 			<Message msg='Hey!' theme={theme} />
 			<Message msg={longText} theme={theme} isHeader={false} />
 			<Message msg='Older message' theme={theme} isHeader={false} />
-			<LoadMore type={MessageTypeLoad.NEXT_CHUNK} />
-			<LoadMore type={MessageTypeLoad.MORE} />
+			<LoadMore loaderId='6' type={MessageTypeLoad.NEXT_CHUNK} />
+			<LoadMore loaderId='7' type={MessageTypeLoad.MORE} />
 			<Message msg={longText} theme={theme} />
 			<Message msg='This is the third message' isHeader={false} theme={theme} />
 			<Message msg='This is the second message' isHeader={false} theme={theme} />

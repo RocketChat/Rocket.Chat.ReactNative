@@ -1,7 +1,10 @@
 /* eslint-disable complexity */
+import { IAttachment } from '../../definitions';
 import { MessageTypesValues, TMessageModel } from '../../definitions/IMessage';
 import I18n from '../../i18n';
 import { DISCUSSION } from './constants';
+
+export const DEFAULT_MESSAGE_HEIGHT = 150;
 
 export const formatMessageCount = (count?: number, type?: string): string | null => {
 	const discussion = type === DISCUSSION;
@@ -155,7 +158,7 @@ export const getInfoMessage = ({ type, role, msg, author, comment }: TInfoMessag
 		case 'subscription-role-removed':
 			return I18n.t('Removed_user_as_role', { user: msg, role });
 		case 'message_pinned':
-			return I18n.t('Message_pinned');
+			return I18n.t('Pinned_a_message');
 
 		// without author name
 		case 'ul':
@@ -193,4 +196,15 @@ export const getMessageTranslation = (message: TMessageModel, autoTranslateLangu
 		return translation?.value || null;
 	}
 	return null;
+};
+
+export const getMessageFromAttachment = (attachment: IAttachment, translateLanguage?: string): string | undefined => {
+	let msg = attachment.description;
+	if (translateLanguage) {
+		const translatedMessage = attachment.translations?.[translateLanguage];
+		if (translatedMessage) {
+			msg = translatedMessage;
+		}
+	}
+	return msg;
 };

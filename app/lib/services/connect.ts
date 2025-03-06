@@ -1,5 +1,4 @@
-import RNFetchBlob from 'rn-fetch-blob';
-import { settings as RocketChatSettings, Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
+import { Rocketchat as RocketchatClient } from '@rocket.chat/sdk';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
 import { Q } from '@nozbe/watermelondb';
@@ -8,10 +7,9 @@ import log from '../methods/helpers/log';
 import { setActiveUsers } from '../../actions/activeUsers';
 import protectedFunction from '../methods/helpers/protectedFunction';
 import database from '../database';
-import { selectServerFailure } from '../../actions/server';
 import { twoFactor } from './twoFactor';
 import { store } from '../store/auxStore';
-import { loginRequest, setLoginServices, setUser } from '../../actions/login';
+import { loginRequest, logout, setLoginServices, setUser } from '../../actions/login';
 import sdk from './sdk';
 import I18n from '../../i18n';
 import { ICredentials, ILoggedUser, STATUSES } from '../../definitions';
@@ -19,8 +17,17 @@ import { connectRequest, connectSuccess, disconnect as disconnectAction } from '
 import { updatePermission } from '../../actions/permissions';
 import EventEmitter from '../methods/helpers/events';
 import { updateSettings } from '../../actions/settings';
-import { defaultSettings, MIN_ROCKETCHAT_VERSION } from '../constants';
-import { getSettings, IActiveUsers, unsubscribeRooms, _activeUsers, _setUser, _setUserTimer, onRolesChanged } from '../methods';
+import { defaultSettings } from '../constants';
+import {
+	getSettings,
+	IActiveUsers,
+	unsubscribeRooms,
+	_activeUsers,
+	_setUser,
+	_setUserTimer,
+	onRolesChanged,
+	setPresenceCap
+} from '../methods';
 import { compareServerVersion, isIOS, isSsl } from '../methods/helpers';
 
 interface IServices {
@@ -39,8 +46,9 @@ let usersListener: any;
 let notifyAllListener: any;
 let rolesListener: any;
 let notifyLoggedListener: any;
+let logoutListener: any;
 
-function connect({ server, logoutOnError = false }: { server: string; logoutOnError: boolean }): Promise<void> {
+function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
 		if (sdk.current?.client?.host === server) {
 			return resolve();
@@ -80,6 +88,10 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 
 		if (notifyLoggedListener) {
 			notifyLoggedListener.then(stopListener);
+		}
+
+		if (logoutListener) {
+			logoutListener.then(stopListener);
 		}
 
 		unsubscribeRooms();
@@ -131,21 +143,31 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 					const { _id, value } = ddpMessage.fields.args[1];
 					const db = database.active;
 					const settingsCollection = db.get('settings');
-					try {
-						const settingsRecord = await settingsCollection.find(_id);
-						// @ts-ignore
-						const { type } = defaultSettings[_id];
-						if (type) {
-							await db.write(async () => {
-								await settingsRecord.update(u => {
-									// @ts-ignore
-									u[type] = value;
+
+					// Check if the _id exists in defaultSettings
+					if (defaultSettings.hasOwnProperty(_id)) {
+						try {
+							const settingsRecord = await settingsCollection.find(_id);
+							// @ts-ignore
+							const { type } = defaultSettings[_id];
+							if (type) {
+								await db.write(async () => {
+									await settingsRecord.update(u => {
+										// @ts-ignore
+										u[type] = value;
+									});
 								});
-							});
+							}
+							store.dispatch(updateSettings(_id, value));
+
+							if (_id === 'Presence_broadcast_disabled') {
+								setPresenceCap(value);
+							}
+						} catch (e) {
+							log(e);
 						}
-						store.dispatch(updateSettings(_id, value));
-					} catch (e) {
-						log(e);
+					} else {
+						console.warn(`Setting with _id '${_id}' is not present in defaultSettings.`);
 					}
 				}
 			})
@@ -253,6 +275,8 @@ function connect({ server, logoutOnError = false }: { server: string; logoutOnEr
 			})
 		);
 
+		logoutListener = sdk.current.onStreamData('stream-force_logout', () => store.dispatch(logout(true)));
+
 		resolve();
 	});
 }
@@ -291,7 +315,10 @@ async function login(credentials: ICredentials, isFromWebView = false): Promise<
 			isFromWebView,
 			showMessageInMainThread,
 			enableMessageParserEarlyAdoption,
-			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel
+			alsoSendThreadToChannel: result.me.settings?.preferences?.alsoSendThreadToChannel,
+			bio: result.me.bio,
+			nickname: result.me.nickname,
+			requirePasswordChange: result.me.requirePasswordChange
 		};
 		return user;
 	}
@@ -308,7 +335,7 @@ function loginTOTP(params: ICredentials, loginEmailPassword?: boolean, isFromWeb
 			if (e.data?.error && (e.data.error === 'totp-required' || e.data.error === 'totp-invalid')) {
 				const { details } = e.data;
 				try {
-					const code = await twoFactor({ method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
+					const code = await twoFactor({ params, method: details?.method || 'totp', invalid: details?.error === 'totp-invalid' });
 
 					if (loginEmailPassword) {
 						store.dispatch(setUser({ username: params.user || params.username }));
@@ -386,51 +413,11 @@ function disconnect() {
 	return sdk.disconnect();
 }
 
-async function getServerInfo(server: string) {
-	try {
-		const response = await RNFetchBlob.fetch('GET', `${server}/api/info`, { ...RocketChatSettings.customHeaders });
-		try {
-			// Try to resolve as json
-			const jsonRes: { version?: string; success: boolean } = response.json();
-			if (!jsonRes?.success) {
-				return {
-					success: false,
-					message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
-				};
-			}
-			if (compareServerVersion(jsonRes.version, 'lowerThan', MIN_ROCKETCHAT_VERSION)) {
-				return {
-					success: false,
-					message: I18n.t('Invalid_server_version', {
-						currentVersion: jsonRes.version,
-						minVersion: MIN_ROCKETCHAT_VERSION
-					})
-				};
-			}
-			return jsonRes;
-		} catch (error) {
-			// Request is successful, but response isn't a json
-		}
-	} catch (e: any) {
-		if (e?.message) {
-			if (e.message === 'Aborted') {
-				store.dispatch(selectServerFailure());
-				throw e;
-			}
-			return {
-				success: false,
-				message: e.message
-			};
-		}
-	}
-
-	return {
-		success: false,
-		message: I18n.t('Not_RC_Server', { contact: I18n.t('Contact_your_server_admin') })
-	};
-}
-
-async function getWebsocketInfo({ server }: { server: string }) {
+async function getWebsocketInfo({
+	server
+}: {
+	server: string;
+}): Promise<{ success: true } | { success: false; message: string }> {
 	const websocketSdk = new RocketchatClient({ host: server, protocol: 'ddp', useSsl: isSsl(server) });
 
 	try {
@@ -515,7 +502,6 @@ export {
 	abort,
 	connect,
 	disconnect,
-	getServerInfo,
 	getWebsocketInfo,
 	stopListener,
 	getLoginServices,

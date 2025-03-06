@@ -86,7 +86,7 @@ const Service = React.memo(
 			);
 		}
 
-		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.chatComponentBackground;
+		const backgroundColor = isSaml && service.buttonColor ? service.buttonColor : colors.buttonBackgroundSecondaryDefault;
 
 		return (
 			<ButtonService
@@ -96,6 +96,7 @@ const Service = React.memo(
 				icon={icon}
 				name={service.name}
 				authType={service.authType}
+				accessibilityLabel={`${I18n.t('Continue_with')} ${modifiedName.current}`}
 			/>
 		);
 	}

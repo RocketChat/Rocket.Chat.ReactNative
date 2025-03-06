@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 
 import * as List from '../../containers/List';
@@ -21,7 +21,7 @@ type TKey = 'desktopNotifications' | 'pushNotifications' | 'emailNotificationMod
 interface IBaseParams {
 	preference: TKey;
 	value: string;
-	onChangeValue: (param: { [key: string]: string }, onError: () => void) => void;
+	onChangeValue: (param: { [key: string]: string }) => void;
 }
 
 const ListPicker = ({
@@ -36,31 +36,27 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const [option, setOption] = useState(
-		value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0]
-	);
+	const option = value ? OPTIONS[preference].find(option => option.value === value) : OPTIONS[preference][0];
 
 	const getOptions = () =>
 		OPTIONS[preference].map(i => ({
 			title: I18n.t(i.label, { defaultValue: i.label }),
 			onPress: () => {
 				hideActionSheet();
-				onChangeValue({ [preference]: i.value.toString() }, () => setOption(option));
-				setOption(i);
+				onChangeValue({ [preference]: i.value.toString() });
 			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.tintActive} /> : undefined
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
 		}));
+
+	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;
 
 	return (
 		<List.Item
 			title={title}
 			testID={testID}
 			onPress={() => showActionSheet({ options: getOptions() })}
-			right={() => (
-				<Text style={[styles.pickerText, { color: colors.actionTintColor }]}>
-					{option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label}
-				</Text>
-			)}
+			right={() => <Text style={[styles.pickerText, { color: colors.fontHint }]}>{label}</Text>}
+			additionalAcessibilityLabel={label}
 		/>
 	);
 };

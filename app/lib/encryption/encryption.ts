@@ -1,17 +1,20 @@
-import EJSON from 'ejson';
-import SimpleCrypto from 'react-native-simple-crypto';
+import { Model, Q } from '@nozbe/watermelondb';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
-import { Q, Model } from '@nozbe/watermelondb';
+import EJSON from 'ejson';
+import { deleteAsync } from 'expo-file-system';
+import SimpleCrypto from 'react-native-simple-crypto';
+import { sampleSize } from 'lodash';
 
-import UserPreferences from '../methods/userPreferences';
-import database from '../database';
-import protectedFunction from '../methods/helpers/protectedFunction';
-import Deferred from './helpers/deferred';
-import log from '../methods/helpers/log';
-import { store } from '../store/auxStore';
-import { joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
-import { EncryptionRoom } from './index';
-import { IMessage, ISubscription, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../definitions';
+import {
+	IMessage,
+	IServerAttachment,
+	ISubscription,
+	TMessageModel,
+	TSendFileMessageFileInfo,
+	TSubscriptionModel,
+	TThreadMessageModel,
+	TThreadModel
+} from '../../definitions';
 import {
 	E2E_BANNER_TYPE,
 	E2E_MESSAGE_TYPE,
@@ -20,11 +23,25 @@ import {
 	E2E_RANDOM_PASSWORD_KEY,
 	E2E_STATUS
 } from '../constants';
+import database from '../database';
+import { getSubscriptionByRoomId } from '../database/services/Subscription';
+import log from '../methods/helpers/log';
+import protectedFunction from '../methods/helpers/protectedFunction';
+import UserPreferences from '../methods/userPreferences';
+import { compareServerVersion } from '../methods/helpers';
 import { Services } from '../services';
+import { store } from '../store/auxStore';
+import { MAX_CONCURRENT_QUEUE } from './constants';
+import { IDecryptionFileQueue, TDecryptFile, TEncryptFile } from './definitions';
+import Deferred from './helpers/deferred';
+import EncryptionRoom from './room';
+import { decryptAESCTR, joinVectorData, randomPassword, splitVectorData, toString, utf8ToBuffer } from './utils';
 
+const ROOM_KEY_EXCHANGE_SIZE = 10;
 class Encryption {
 	ready: boolean;
 	privateKey: string | null;
+	publicKey: string | null;
 	readyPromise: Deferred;
 	userId: string | null;
 	roomInstances: {
@@ -33,14 +50,26 @@ class Encryption {
 			provideKeyToUser: Function;
 			handshake: Function;
 			decrypt: Function;
+			decryptFileContent: Function;
 			encrypt: Function;
+			encryptText: Function;
+			encryptFile: TEncryptFile;
+			encryptUpload: Function;
+			importRoomKey: Function;
+			resetRoomKey: Function;
+			hasSessionKey: () => boolean;
+			encryptGroupKeyForParticipantsWaitingForTheKeys: (params: any) => Promise<any>;
 		};
 	};
+	decryptionFileQueue: IDecryptionFileQueue[];
+	decryptionFileQueueActiveCount: number;
+	keyDistributionInterval: ReturnType<typeof setInterval> | null;
 
 	constructor() {
 		this.userId = '';
 		this.ready = false;
 		this.privateKey = null;
+		this.publicKey = null;
 		this.roomInstances = {};
 		this.readyPromise = new Deferred();
 		this.readyPromise
@@ -50,6 +79,9 @@ class Encryption {
 			.catch(() => {
 				this.ready = false;
 			});
+		this.decryptionFileQueue = [];
+		this.decryptionFileQueueActiveCount = 0;
+		this.keyDistributionInterval = null;
 	}
 
 	// Initialize Encryption client
@@ -61,15 +93,16 @@ class Encryption {
 		// so they can run parallelized
 		this.decryptPendingSubscriptions();
 		this.decryptPendingMessages();
+		this.initiateKeyDistribution();
 
 		// Mark Encryption client as ready
 		this.readyPromise.resolve();
 	};
 
 	get establishing() {
-		const { banner } = store.getState().encryption;
+		const { banner, enabled } = store.getState().encryption;
 		// If the password was not inserted yet
-		if (!banner || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
+		if (!enabled || banner === E2E_BANNER_TYPE.REQUEST_PASSWORD) {
 			// We can't decrypt/encrypt, so, reject this try
 			return Promise.reject();
 		}
@@ -82,6 +115,7 @@ class Encryption {
 	stop = () => {
 		this.userId = null;
 		this.privateKey = null;
+		this.publicKey = null;
 		this.roomInstances = {};
 		// Cancel ongoing encryption/decryption requests
 		this.readyPromise.reject();
@@ -95,6 +129,10 @@ class Encryption {
 			.catch(() => {
 				this.ready = false;
 			});
+	};
+
+	stopRoom = (rid: string) => {
+		delete this.roomInstances[rid];
 	};
 
 	// When a new participant join and request a new room encryption key
@@ -112,13 +150,17 @@ class Encryption {
 		}
 
 		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
+			return;
+		}
 		return roomE2E.provideKeyToUser(keyId);
 	};
 
 	// Persist keys on UserPreferences
 	persistKeys = async (server: string, publicKey: string, privateKey: string) => {
 		this.privateKey = await SimpleCrypto.RSA.importKey(EJSON.parse(privateKey));
-		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, EJSON.stringify(publicKey));
+		this.publicKey = EJSON.stringify(publicKey);
+		UserPreferences.setString(`${server}-${E2E_PUBLIC_KEY}`, this.publicKey);
 		UserPreferences.setString(`${server}-${E2E_PRIVATE_KEY}`, privateKey);
 	};
 
@@ -182,8 +224,8 @@ class Encryption {
 	};
 
 	// Create a random password to local created keys
-	createRandomPassword = (server: string) => {
-		const password = randomPassword();
+	createRandomPassword = async (server: string) => {
+		const password = await randomPassword();
 		UserPreferences.setString(`${server}-${E2E_RANDOM_PASSWORD_KEY}`, password);
 		return password;
 	};
@@ -194,30 +236,66 @@ class Encryption {
 
 		// Encode the private key
 		const encodedPrivateKey = await this.encodePrivateKey(EJSON.stringify(privateKey), password, this.userId as string);
+
+		// This public key is already encoded using EJSON.stringify in the `persistKeys` method
 		const publicKey = UserPreferences.getString(`${server}-${E2E_PUBLIC_KEY}`);
 
+		if (!publicKey) {
+			throw new Error('Public key not found in local storage, password not changed');
+		}
+
+		// Only send force param for newer worspace versions
+		const { version } = store.getState().server;
+		let force = false;
+		if (compareServerVersion(version, 'greaterThanOrEqualTo', '6.10.0')) {
+			force = true;
+		}
+
 		// Send the new keys to the server
-		await Services.e2eSetUserPublicAndPrivateKeys(EJSON.stringify(publicKey), encodedPrivateKey);
+		await Services.e2eSetUserPublicAndPrivateKeys(publicKey, encodedPrivateKey, force);
 	};
 
 	// get a encryption room instance
 	getRoomInstance = async (rid: string) => {
-		// Prevent handshake again
-		if (this.roomInstances[rid]?.ready) {
-			return this.roomInstances[rid];
-		}
-
-		// If doesn't have a instance of this room
-		if (!this.roomInstances[rid]) {
+		try {
+			// Prevent handshake again
+			if (this.roomInstances[rid]) {
+				await this.roomInstances[rid].handshake();
+				return this.roomInstances[rid];
+			}
 			this.roomInstances[rid] = new EncryptionRoom(rid, this.userId as string);
+
+			const roomE2E = this.roomInstances[rid];
+
+			// Start Encryption Room instance handshake
+			await roomE2E.handshake();
+
+			return roomE2E;
+		} catch (e) {
+			log(e);
+			return null;
 		}
+	};
 
-		const roomE2E = this.roomInstances[rid];
+	evaluateSuggestedKey = async (rid: string, E2ESuggestedKey: string) => {
+		if (this.privateKey) {
+			try {
+				const roomE2E = await this.getRoomInstance(rid);
+				if (!roomE2E) {
+					return;
+				}
 
-		// Start Encryption Room instance handshake
-		await roomE2E.handshake();
-
-		return roomE2E;
+				try {
+					await roomE2E.importRoomKey(E2ESuggestedKey, this.privateKey);
+				} catch (error) {
+					await Services.e2eRejectSuggestedGroupKey(rid);
+					return;
+				}
+				await Services.e2eAcceptSuggestedGroupKey(rid);
+			} catch (e) {
+				console.error(e);
+			}
+		}
 	};
 
 	// Logic to decrypt all pending messages/threads/threadMessages
@@ -251,7 +329,7 @@ class Encryption {
 			];
 			toDecrypt = (await Promise.all(
 				toDecrypt.map(async message => {
-					const { t, msg, tmsg } = message;
+					const { t, msg, tmsg, attachments, content } = message;
 					let newMessage: TMessageModel = {} as TMessageModel;
 					if (message.subscription) {
 						const { id: rid } = message.subscription;
@@ -260,7 +338,9 @@ class Encryption {
 							t,
 							rid,
 							msg: msg as string,
-							tmsg
+							tmsg,
+							attachments,
+							content
 						});
 					}
 
@@ -277,7 +357,7 @@ class Encryption {
 			)) as (TThreadModel | TThreadMessageModel)[];
 
 			await db.write(async () => {
-				await db.batch(...toDecrypt);
+				await db.batch(toDecrypt);
 			});
 		} catch (e) {
 			log(e);
@@ -292,17 +372,9 @@ class Encryption {
 		try {
 			// Find all rooms that can have a lastMessage encrypted
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
-			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null))).fetch();
-			// We can't do this on database level since lastMessage is not a database object
-			const subsToDecrypt = subsEncrypted.filter(
-				(sub: ISubscription) =>
-					// Encrypted message
-					sub?.lastMessage?.t === E2E_MESSAGE_TYPE &&
-					// Message pending decrypt
-					sub?.lastMessage?.e2e === E2E_STATUS.PENDING
-			);
-			await Promise.all(
-				subsToDecrypt.map(async (sub: TSubscriptionModel) => {
+			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
+			const preparedSubscriptions: (Model | null)[] = await Promise.all(
+				subsEncrypted.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
 					try {
@@ -318,12 +390,106 @@ class Encryption {
 			);
 
 			await db.write(async () => {
-				await db.batch(...subsToDecrypt);
+				await db.batch(preparedSubscriptions.filter((record): record is Model => record !== null));
 			});
 		} catch (e) {
 			log(e);
 		}
 	};
+
+	async getSuggestedE2EEKeys(usersWaitingForE2EKeys: Record<string, { _id: string; public_key: string }[]>) {
+		const roomIds = Object.keys(usersWaitingForE2EKeys);
+		return Object.fromEntries(
+			// @ts-ignore
+			(
+				await Promise.all(
+					roomIds.map(async room => {
+						const roomE2E = await this.getRoomInstance(room);
+						if (!roomE2E || !roomE2E?.hasSessionKey()) {
+							return;
+						}
+						const usersWithKeys = await roomE2E.encryptGroupKeyForParticipantsWaitingForTheKeys(usersWaitingForE2EKeys[room]);
+
+						if (!usersWithKeys) {
+							return;
+						}
+
+						return [room, usersWithKeys];
+					})
+				)
+			).filter(Boolean)
+		);
+	}
+
+	async getSample(roomIds: string[], limit = 3): Promise<string[]> {
+		if (limit === 0) {
+			return [];
+		}
+
+		const randomRoomIds = sampleSize(roomIds, ROOM_KEY_EXCHANGE_SIZE);
+
+		const sampleIds: string[] = [];
+		for await (const roomId of randomRoomIds) {
+			const roomE2E = await this.getRoomInstance(roomId);
+			if (!roomE2E || !roomE2E?.hasSessionKey()) {
+				continue;
+			}
+
+			sampleIds.push(roomId);
+		}
+
+		if (!sampleIds.length && roomIds.length > limit) {
+			return this.getSample(roomIds, limit - 1);
+		}
+
+		return sampleIds;
+	}
+
+	initiateKeyDistribution = async () => {
+		if (this.keyDistributionInterval) {
+			return;
+		}
+
+		const keyDistribution = async () => {
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			try {
+				const subscriptions = await subCollection.query(Q.where('users_waiting_for_e2e_keys', Q.notEq(null)));
+				if (subscriptions) {
+					const filteredSubs = subscriptions
+						.filter(sub => sub.usersWaitingForE2EKeys && !sub.usersWaitingForE2EKeys.some(user => user.userId === this.userId))
+						.map(sub => sub.rid);
+
+					const sampleIds = await this.getSample(filteredSubs);
+
+					if (!sampleIds.length) {
+						return;
+					}
+
+					const result = await Services.fetchUsersWaitingForGroupKey(sampleIds);
+					if (!result.success || !Object.keys(result.usersWaitingForE2EKeys).length) {
+						return;
+					}
+
+					const userKeysWithRooms = await this.getSuggestedE2EEKeys(result.usersWaitingForE2EKeys);
+
+					if (!Object.keys(userKeysWithRooms).length) {
+						return;
+					}
+
+					await Services.provideUsersSuggestedGroupKeys(userKeysWithRooms);
+				}
+			} catch (e) {
+				log(e);
+			}
+		};
+
+		await keyDistribution();
+		this.keyDistributionInterval = setInterval(keyDistribution, 10000);
+	};
+
+	// Creating the instance is enough to generate room e2ee key
+	encryptSubscription = (rid: string) => this.getRoomInstance(rid as string);
 
 	// Decrypt a subscription lastMessage
 	decryptSubscription = async (subscription: Partial<ISubscription>) => {
@@ -353,18 +519,15 @@ class Encryption {
 		}
 
 		const { rid } = subscription;
-		const db = database.active;
-		const subCollection = db.get('subscriptions');
-
-		let subRecord;
-		try {
-			subRecord = await subCollection.find(rid as string);
-		} catch {
-			// Do nothing
+		if (!rid) {
+			return subscription;
 		}
+		const subRecord = await getSubscriptionByRoomId(rid);
 
 		try {
-			const batch: (Model | null | void | false | Promise<void>)[] = [];
+			const db = database.active;
+			const subCollection = db.get('subscriptions');
+			const batch: Model[] = [];
 			// If the subscription doesn't exists yet
 			if (!subRecord) {
 				// Let's create the subscription with the data received
@@ -391,7 +554,7 @@ class Encryption {
 			// If batch has some operation
 			if (batch.length) {
 				await db.write(async () => {
-					await db.batch(...batch);
+					await db.batch(batch);
 				});
 			}
 		} catch {
@@ -402,11 +565,22 @@ class Encryption {
 
 		// Get a instance using the subscription
 		const roomE2E = await this.getRoomInstance(rid as string);
+		if (!roomE2E) {
+			return;
+		}
 		const decryptedMessage = await roomE2E.decrypt(lastMessage);
 		return {
 			...subscription,
 			lastMessage: decryptedMessage
 		};
+	};
+
+	encryptText = async (rid: string, text: string) => {
+		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
+			return;
+		}
+		return roomE2E.encryptText(text);
 	};
 
 	// Encrypt a message
@@ -432,6 +606,9 @@ class Encryption {
 			}
 
 			const roomE2E = await this.getRoomInstance(rid);
+			if (!roomE2E || !roomE2E?.hasSessionKey()) {
+				return;
+			}
 			return roomE2E.encrypt(message);
 		} catch {
 			// Subscription not found
@@ -443,7 +620,7 @@ class Encryption {
 	};
 
 	// Decrypt a message
-	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg'>) => {
+	decryptMessage = async (message: Pick<IMessage, 't' | 'e2e' | 'rid' | 'msg' | 'tmsg' | 'attachments' | 'content'>) => {
 		const { t, e2e } = message;
 
 		// Prevent create a new instance if this room was encrypted sometime ago
@@ -465,15 +642,105 @@ class Encryption {
 
 		const { rid } = message;
 		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
+			return message;
+		}
 		return roomE2E.decrypt(message);
 	};
+
+	decryptFileContent = async (file: IServerAttachment) => {
+		const roomE2E = await this.getRoomInstance(file.rid);
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
+			return file;
+		}
+
+		return roomE2E.decryptFileContent(file);
+	};
+
+	encryptFile = async (rid: string, file: TSendFileMessageFileInfo) => {
+		const subscription = await getSubscriptionByRoomId(rid);
+		if (!subscription) {
+			throw new Error('Subscription not found');
+		}
+
+		const { E2E_Enable_Encrypt_Files } = store.getState().settings;
+		if (!subscription.encrypted || (E2E_Enable_Encrypt_Files !== undefined && !E2E_Enable_Encrypt_Files)) {
+			// Send a non encrypted message
+			return { file };
+		}
+
+		// If the client is not ready
+		if (!this.ready) {
+			// Wait for ready status
+			await this.establishing;
+		}
+
+		const roomE2E = await this.getRoomInstance(rid);
+		if (!roomE2E || !roomE2E?.hasSessionKey()) {
+			return { file };
+		}
+		return roomE2E.encryptFile(rid, file);
+	};
+
+	decryptFile: TDecryptFile = async (messageId, path, encryption, originalChecksum) => {
+		const decryptedFile = await decryptAESCTR(path, encryption.key.k, encryption.iv);
+		if (decryptedFile) {
+			const checksum = await SimpleCrypto.utils.calculateFileChecksum(decryptedFile);
+			if (checksum !== originalChecksum) {
+				await deleteAsync(decryptedFile);
+				return null;
+			}
+		}
+		return decryptedFile;
+	};
+
+	addFileToDecryptFileQueue: TDecryptFile = (messageId, path, encryption, originalChecksum) =>
+		new Promise((resolve, reject) => {
+			this.decryptionFileQueue.push({
+				params: [messageId, path, encryption, originalChecksum],
+				resolve,
+				reject
+			});
+			this.processFileQueue();
+		});
+
+	async processFileQueue() {
+		if (this.decryptionFileQueueActiveCount >= MAX_CONCURRENT_QUEUE || this.decryptionFileQueue.length === 0) {
+			return;
+		}
+		const queueItem = this.decryptionFileQueue.shift();
+		// FIXME: TS not getting decryptionFileQueue is not empty. TS 5.5 fix?
+		if (!queueItem) {
+			return;
+		}
+		const { params, resolve, reject } = queueItem;
+		this.decryptionFileQueueActiveCount += 1;
+
+		try {
+			const result = await this.decryptFile(...params);
+			resolve(result);
+		} catch (error) {
+			reject(error);
+		} finally {
+			this.decryptionFileQueueActiveCount -= 1;
+			this.processFileQueue();
+		}
+	}
 
 	// Decrypt multiple messages
 	decryptMessages = (messages: Partial<IMessage>[]) =>
 		Promise.all(messages.map((m: Partial<IMessage>) => this.decryptMessage(m as IMessage)));
 
 	// Decrypt multiple subscriptions
-	decryptSubscriptions = (subscriptions: ISubscription[]) => Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+	decryptSubscriptions = (subscriptions: ISubscription[]) => {
+		if (!this.ready) {
+			return subscriptions;
+		}
+		return Promise.all(subscriptions.map(s => this.decryptSubscription(s)));
+	};
+
+	// Decrypt multiple files
+	decryptFiles = (files: IServerAttachment[]) => Promise.all(files.map(f => this.decryptFileContent(f)));
 }
 
 const encryption = new Encryption();

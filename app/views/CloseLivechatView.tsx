@@ -1,8 +1,9 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { ChatsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
@@ -29,7 +30,10 @@ const styles = StyleSheet.create({
 	buttonMarginVertical: { marginVertical: 20 }
 });
 
-const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamList, 'CloseLivechatView'>) => {
+const CloseLivechatView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CloseLivechatView'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'CloseLivechatView'>>();
+
 	const rid = route.params?.rid;
 	const departmentInfo = route.params?.departmentInfo;
 	const tagsList = route.params?.tagsList;
@@ -73,10 +77,9 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.auxiliaryBackground }}
+			style={{ backgroundColor: colors.surfaceHover }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<FormTextInput
@@ -92,7 +95,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 
 					{requestTags ? (
 						<>
-							<Text style={[styles.subtitleText, { color: colors.titleText }]}>{I18n.t('Tags')}</Text>
+							<Text style={[styles.subtitleText, { color: colors.fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 							<MultiSelect
 								options={tagsList?.map(({ name }) => ({ text: { text: name }, value: name }))}
 								onChange={({ value }: { value: string[] }) => {
@@ -102,7 +105,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 								value={tagParamSelected}
 								context={BlockContext.FORM}
 								multiselect
-								inputStyle={{ borderColor: colors.separatorColor }}
+								inputStyle={{ borderColor: colors.strokeLight }}
 							/>
 						</>
 					) : null}
@@ -110,7 +113,7 @@ const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamLis
 						title={I18n.t('Close')}
 						onPress={submit}
 						disabled={!canSubmit()}
-						backgroundColor={colors.dangerColor}
+						backgroundColor={colors.buttonBackgroundDangerDefault}
 						type='primary'
 						style={styles.buttonMarginVertical}
 					/>

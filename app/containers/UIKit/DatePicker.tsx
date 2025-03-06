@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, unstable_batchedUpdates, View } from 'react-native';
-import DateTimePicker, { Event } from '@react-native-community/datetimepicker';
+import DateTimePicker, { BaseProps } from '@react-native-community/datetimepicker';
 import Touchable from 'react-native-platform-touchable';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import moment from 'moment';
@@ -45,9 +45,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));
 
-	// timestamp as number exists in Event
-	// @ts-ignore
-	const onChange = ({ nativeEvent: { timestamp } }: Event, date?: Date) => {
+	const onChange: BaseProps['onChange'] = ({ nativeEvent: { timestamp } }, date?) => {
 		if (date || timestamp) {
 			const newDate = date || new Date(timestamp);
 			unstable_batchedUpdates(() => {
@@ -66,11 +64,14 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 		button = (
 			<Touchable
 				onPress={() => onShow(!show)}
-				style={{ backgroundColor: themes[theme].backgroundColor }}
-				background={Touchable.Ripple(themes[theme].bannerBackground)}
-			>
-				<View style={[styles.input, { borderColor: error ? themes[theme].dangerColor : themes[theme].separatorColor }]}>
-					<Text style={[styles.inputText, { color: error ? themes[theme].dangerColor : themes[theme].titleText }]}>
+				style={{ backgroundColor: themes[theme].surfaceRoom }}
+				background={Touchable.Ripple(themes[theme].surfaceNeutral)}>
+				<View
+					style={[
+						styles.input,
+						{ borderColor: error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].strokeLight }
+					]}>
+					<Text style={[styles.inputText, { color: error ? themes[theme].fontDanger : themes[theme].fontTitlesLabels }]}>
 						{currentDate.toLocaleDateString(language)}
 					</Text>
 					{loading ? (
@@ -79,7 +80,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 						<CustomIcon
 							name='calendar'
 							size={20}
-							color={error ? themes[theme].dangerColor : themes[theme].auxiliaryText}
+							color={error ? themes[theme].buttonBackgroundDangerDefault : themes[theme].fontSecondaryInfo}
 							style={styles.icon}
 						/>
 					)}
@@ -94,7 +95,7 @@ export const DatePicker = ({ element, language, action, context, loading, value,
 			display={isAndroid ? 'default' : 'inline'}
 			value={currentDate}
 			onChange={onChange}
-			textColor={themes[theme].titleText}
+			textColor={themes[theme].fontTitlesLabels}
 		/>
 	) : null;
 

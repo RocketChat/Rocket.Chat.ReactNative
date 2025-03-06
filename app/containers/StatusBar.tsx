@@ -1,7 +1,6 @@
 import React from 'react';
 import { StatusBar as StatusBarRN } from 'react-native';
 
-import { themes } from '../lib/constants';
 import { useTheme } from '../theme';
 
 const supportedStyles = {
@@ -14,15 +13,15 @@ interface IStatusBar {
 	backgroundColor?: string;
 }
 
-const StatusBar = React.memo(({ barStyle, backgroundColor }: IStatusBar) => {
-	const { theme } = useTheme();
+const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
+	const { theme, colors } = useTheme();
 	if (!barStyle) {
 		barStyle = 'light-content';
 		if (theme === 'light') {
 			barStyle = 'dark-content';
 		}
 	}
-	return <StatusBarRN backgroundColor={backgroundColor ?? themes[theme].headerBackground} barStyle={barStyle} animated />;
-});
+	return <StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} barStyle={barStyle} animated />;
+};
 
 export default StatusBar;

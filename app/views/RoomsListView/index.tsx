@@ -1,12 +1,11 @@
 import React from 'react';
 import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
-import { batch, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { dequal } from 'dequal';
-import Orientation from 'react-native-orientation-locker';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
@@ -15,35 +14,20 @@ import database from '../../lib/database';
 import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
-import { closeSearchHeader, closeServerDropdown, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import { appStart } from '../../actions/app';
+import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { serverInitAdd } from '../../actions/server';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
-import EventEmitter from '../../lib/methods/helpers/events';
 import { themedHeader } from '../../lib/methods/helpers/navigation';
-import {
-	KEY_COMMAND,
-	handleCommandAddNewServer,
-	handleCommandNextRoom,
-	handleCommandPreviousRoom,
-	handleCommandSearching,
-	handleCommandSelectRoom,
-	handleCommandShowNewMessage,
-	handleCommandShowPreferences,
-	IKeyCommandEvent
-} from '../../commands';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, ISubscription, IUser, RootEnum, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
-import ServerDropdown from './ServerDropdown';
 import ListHeader, { TEncryptionBanner } from './ListHeader';
 import RoomsListHeaderView from './Header';
 import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
@@ -56,14 +40,25 @@ import {
 	isRead,
 	debounce,
 	isIOS,
-	isTablet
+	isTablet,
+	compareServerVersion
 } from '../../lib/methods/helpers';
-import { E2E_BANNER_TYPE, DisplayMode, SortBy, MAX_SIDEBAR_WIDTH, themes } from '../../lib/constants';
+import {
+	E2E_BANNER_TYPE,
+	DisplayMode,
+	SortBy,
+	MAX_SIDEBAR_WIDTH,
+	themes,
+	colors,
+	textInputDebounceTime
+} from '../../lib/constants';
 import { Services } from '../../lib/services';
+import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
+import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-	CompositeNavigationProp<StackNavigationProp<ChatsStackParamList>, StackNavigationProp<DrawerParamList>>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
+	CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
 >;
 
 interface IRoomsListViewProps {
@@ -77,7 +72,6 @@ interface IRoomsListViewProps {
 	searchText: string;
 	changingServer: boolean;
 	loadingServer: boolean;
-	showServerDropdown: boolean;
 	sortBy: string;
 	groupByType: boolean;
 	showFavorites: boolean;
@@ -86,6 +80,8 @@ interface IRoomsListViewProps {
 	StoreLastMessage: boolean;
 	useRealName: boolean;
 	isMasterDetail: boolean;
+	notificationPresenceCap: boolean;
+	supportedVersionsStatus: TSVStatus;
 	subscribedRoom: string;
 	width: number;
 	insets: {
@@ -102,6 +98,8 @@ interface IRoomsListViewProps {
 	createPublicChannelPermission: [];
 	createPrivateChannelPermission: [];
 	createDiscussionPermission: [];
+	serverVersion: string;
+	issuesWithNotifications: boolean;
 }
 
 interface IRoomsListViewState {
@@ -113,6 +111,7 @@ interface IRoomsListViewState {
 	chats?: IRoomItem[];
 	item?: ISubscription;
 	canCreateRoom?: boolean;
+	headerTitleWidth?: number;
 }
 
 interface IRoomItem extends ISubscription {
@@ -132,7 +131,7 @@ const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
 const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
 const QUERY_SIZE = 20;
 
-const filterIsUnread = (s: TSubscriptionModel) => (s.unread > 0 || s.tunread?.length > 0 || s.alert) && !s.hideUnreadStatus;
+const filterIsUnread = (s: TSubscriptionModel) => (s.alert || s.unread) && !s.hideUnreadStatus;
 const filterIsFavorite = (s: TSubscriptionModel) => s.f;
 const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
 const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
@@ -141,11 +140,11 @@ const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
 const shouldUpdateProps = [
 	'searchText',
 	'loadingServer',
-	'showServerDropdown',
 	'useRealName',
 	'StoreLastMessage',
 	'theme',
 	'isMasterDetail',
+	'notificationPresenceCap',
 	'refreshing',
 	'queueSize',
 	'inquiryEnabled',
@@ -154,19 +153,22 @@ const shouldUpdateProps = [
 	'createDirectMessagePermission',
 	'createPublicChannelPermission',
 	'createPrivateChannelPermission',
-	'createDiscussionPermission'
+	'createDiscussionPermission',
+	'issuesWithNotifications',
+	'supportedVersionsStatus'
 ];
 
 const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', 'showUnread'];
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ISubscription[] | null | undefined, index: number, height: number) => ({
+const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
 	length: height,
 	offset: height * index,
 	index
 });
-const keyExtractor = (item: ISubscription) => item.rid;
+// isSearching is needed to trigger RoomItem's useEffect properly after searching
+const keyExtractor = (item: ISubscription, isSearching = false) => `${item.rid}-${isSearching}`;
 
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
@@ -197,22 +199,18 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
-			canCreateRoom: false
+			canCreateRoom: false,
+			headerTitleWidth: 0
 		};
 		this.setHeader();
 		this.getSubscriptions();
 	}
 
 	componentDidMount() {
-		const { navigation, dispatch } = this.props;
+		const { navigation } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
-
-		if (isTablet) {
-			EventEmitter.addEventListener(KEY_COMMAND, this.handleCommands);
-		}
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
-			Orientation.unlockAllOrientations();
 			this.animated = true;
 			// Check if there were changes with sort preference, then call getSubscription to remount the list
 			if (this.sortPreferencesChanged) {
@@ -228,7 +226,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		});
 		this.unsubscribeBlur = navigation.addListener('blur', () => {
 			this.animated = false;
-			dispatch(closeServerDropdown());
 			this.cancelSearch();
 			if (this.backHandler && this.backHandler.remove) {
 				this.backHandler.remove();
@@ -255,21 +252,18 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
 		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
-		// eslint-disable-next-line react/destructuring-assignment
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
 		}
 
 		// check if some display props are changed to force update when focus this view again
-		// eslint-disable-next-line react/destructuring-assignment
 		const displayUpdated = displayPropsShouldUpdate.some(key => nextProps[key] !== this.props[key]);
 		if (displayUpdated) {
 			this.shouldUpdate = true;
 		}
 
 		// check if some sort preferences are changed to getSubscription() when focus this view again
-		// eslint-disable-next-line react/destructuring-assignment
 		const sortPreferencesUpdate = sortPreferencesShouldUpdate.some(key => nextProps[key] !== this.props[key]);
 		if (sortPreferencesUpdate) {
 			this.sortPreferencesChanged = true;
@@ -306,9 +300,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return false;
 		}
 
-		const { loading, search } = this.state;
+		const { loading, search, headerTitleWidth } = this.state;
 		const { width, insets, subscribedRoom } = this.props;
 		if (nextState.loading !== loading) {
+			return true;
+		}
+		if (nextState.headerTitleWidth !== headerTitleWidth) {
 			return true;
 		}
 		if (nextProps.width !== width) {
@@ -328,10 +325,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			this.shouldUpdate = false;
 			return true;
 		}
+		if (nextProps?.user?.requirePasswordChange !== this.props?.user?.requirePasswordChange) {
+			return true;
+		}
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IRoomsListViewProps) {
+	componentDidUpdate(prevProps: IRoomsListViewProps, prevState: IRoomsListViewState) {
 		const {
 			sortBy,
 			groupByType,
@@ -339,6 +339,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showUnread,
 			subscribedRoom,
 			isMasterDetail,
+			notificationPresenceCap,
 			insets,
 			createTeamPermission,
 			createPublicChannelPermission,
@@ -346,9 +347,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			createDirectMessagePermission,
 			createDiscussionPermission,
 			showAvatar,
-			displayMode
+			displayMode,
+			issuesWithNotifications,
+			supportedVersionsStatus
 		} = this.props;
-		const { item } = this.state;
+		const { item, headerTitleWidth } = this.state;
 
 		if (
 			!(
@@ -366,7 +369,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (isMasterDetail && item?.rid !== subscribedRoom && subscribedRoom !== prevProps.subscribedRoom) {
 			this.setState({ item: { rid: subscribedRoom } as ISubscription });
 		}
-		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
+		if (
+			insets.left !== prevProps.insets.left ||
+			insets.right !== prevProps.insets.right ||
+			headerTitleWidth !== prevState.headerTitleWidth ||
+			notificationPresenceCap !== prevProps.notificationPresenceCap ||
+			issuesWithNotifications !== prevProps.issuesWithNotifications ||
+			supportedVersionsStatus !== prevProps.supportedVersionsStatus
+		) {
 			this.setHeader();
 		}
 
@@ -378,6 +388,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			!dequal(createDiscussionPermission, prevProps.createDiscussionPermission)
 		) {
 			this.handleHasPermission();
+			this.setHeader();
+		}
+		if (prevProps.user.requirePasswordChange !== this.props.user.requirePasswordChange) {
 			this.setHeader();
 		}
 	}
@@ -392,9 +405,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 		if (this.backHandler && this.backHandler.remove) {
 			this.backHandler.remove();
-		}
-		if (isTablet) {
-			EventEmitter.removeListener(KEY_COMMAND, this.handleCommands);
 		}
 		console.countReset(`${this.constructor.name}.render calls`);
 	}
@@ -419,14 +429,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
-	getHeader = (): StackNavigationOptions => {
-		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+	getHeader = (): any => {
+		const { searching, canCreateRoom, headerTitleWidth } = this.state;
+		const {
+			navigation,
+			isMasterDetail,
+			notificationPresenceCap,
+			issuesWithNotifications,
+			supportedVersionsStatus,
+			theme,
+			user,
+			width
+		} = this.props;
 		if (searching) {
 			return {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
@@ -437,10 +453,19 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			};
 		}
 
+		const getBadge = () => {
+			if (supportedVersionsStatus === 'warn') {
+				return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
+			}
+			if (notificationPresenceCap) {
+				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
+			}
+			return null;
+		};
+
+		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
+
 		return {
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
 			headerLeft: () => (
 				<HeaderButton.Drawer
 					navigation={navigation}
@@ -451,16 +476,43 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
+					badge={() => getBadge()}
+					disabled={disabled}
 				/>
 			),
-			headerTitle: () => <RoomsListHeaderView />,
+			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
 			headerRight: () => (
-				<HeaderButton.Container>
-					{canCreateRoom ? (
-						<HeaderButton.Item iconName='create' onPress={this.goToNewMessage} testID='rooms-list-view-create-channel' />
+				<HeaderButton.Container
+					onLayout={
+						isTablet
+							? undefined
+							: ({ nativeEvent }: { nativeEvent: any }) => {
+									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+							  }
+					}>
+					{issuesWithNotifications ? (
+						<HeaderButton.Item
+							iconName='notification-disabled'
+							onPress={this.navigateToPushTroubleshootView}
+							testID='rooms-list-view-push-troubleshoot'
+							color={themes[theme].fontDanger}
+						/>
 					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' />
-					<HeaderButton.Item iconName='directory' onPress={this.goDirectory} testID='rooms-list-view-directory' />
+					{canCreateRoom ? (
+						<HeaderButton.Item
+							iconName='create'
+							onPress={this.goToNewMessage}
+							testID='rooms-list-view-create-channel'
+							disabled={disabled}
+						/>
+					) : null}
+					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
+					<HeaderButton.Item
+						iconName='directory'
+						onPress={this.goDirectory}
+						testID='rooms-list-view-directory'
+						disabled={disabled}
+					/>
 				</HeaderButton.Container>
 			)
 		};
@@ -508,9 +560,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const defaultWhereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 		if (sortBy === SortBy.Alphabetical) {
-			defaultWhereClause.push(Q.experimentalSortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
+			defaultWhereClause.push(Q.sortBy(`${this.useRealName ? 'fname' : 'name'}`, Q.asc));
 		} else {
-			defaultWhereClause.push(Q.experimentalSortBy('room_updated_at', Q.desc));
+			defaultWhereClause.push(Q.sortBy('room_updated_at', Q.desc));
 		}
 
 		// When we're grouping by something
@@ -518,13 +570,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			observable = await db
 				.get('subscriptions')
 				.query(...defaultWhereClause)
-				.observeWithColumns(['alert', 'on_hold']);
+				.observeWithColumns(['alert', 'on_hold', 'f']);
 			// When we're NOT grouping
 		} else {
 			this.count += QUERY_SIZE;
 			observable = await db
 				.get('subscriptions')
-				.query(...defaultWhereClause, Q.experimentalSkip(0), Q.experimentalTake(this.count))
+				.query(...defaultWhereClause, Q.skip(0), Q.take(this.count))
 				.observeWithColumns(['on_hold']);
 		}
 
@@ -631,6 +683,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	// eslint-disable-next-line react/sort-comp
 	handleSearch = debounce(async (text: string) => {
+		this.setState({ loading: true });
 		const result = await search({ text });
 
 		// if the search was cancelled before the promise is resolved
@@ -638,12 +691,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (!searching) {
 			return;
 		}
+		this.setState({ loading: false });
 		this.internalSetState({
 			search: result as IRoomItem[],
 			searching: true
 		});
 		this.scrollToTop();
-	}, 300);
+	}, textInputDebounceTime);
 
 	isSwipeEnabled = (item: IRoomItem) => !(item?.search || item?.joinCodeRequired || item?.outside);
 
@@ -694,9 +748,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	toggleRead = async (rid: string, tIsRead: boolean) => {
 		logEvent(tIsRead ? events.RL_UNREAD_CHANNEL : events.RL_READ_CHANNEL);
+		const { serverVersion } = this.props;
 		try {
 			const db = database.active;
-			const result = await Services.toggleRead(tIsRead, rid);
+			const includeThreads = compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.4.0');
+			const result = await Services.toggleReadStatus(tIsRead, rid, includeThreads);
 
 			if (result.success) {
 				const subCollection = db.get('subscriptions');
@@ -706,6 +762,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 						await subRecord.update(sub => {
 							sub.alert = tIsRead;
 							sub.unread = 0;
+							if (includeThreads) {
+								sub.tunread = [];
+							}
 						});
 					} catch (e) {
 						log(e);
@@ -750,6 +809,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
+	navigateToPushTroubleshootView = () => {
+		const { navigation, isMasterDetail } = this.props;
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'PushTroubleshootView' });
+		} else {
+			navigation.navigate('PushTroubleshootView');
+		}
+	};
+
 	goQueue = () => {
 		logEvent(events.RL_GO_QUEUE);
 		const { navigation, isMasterDetail, inquiryEnabled } = this.props;
@@ -780,57 +848,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		goRoom({ item, isMasterDetail });
 	};
 
-	goRoomByIndex = (index: number) => {
-		const { chats } = this.state;
-		const { isMasterDetail } = this.props;
-		const filteredChats = chats ? chats.filter(c => !c.separator) : [];
-		const room = filteredChats[index - 1];
-		if (room) {
-			this.goRoom({ item: room, isMasterDetail });
-		}
-	};
-
-	findOtherRoom = (index: number, sign: number): ISubscription | void => {
-		const { chats } = this.state;
-		const otherIndex = index + sign;
-		const otherRoom = chats?.length ? chats[otherIndex] : ({} as IRoomItem);
-		if (!otherRoom) {
-			return;
-		}
-		if (otherRoom.separator) {
-			return this.findOtherRoom(otherIndex, sign);
-		}
-		return otherRoom;
-	};
-
-	// Go to previous or next room based on sign (-1 or 1)
-	// It's used by iPad key commands
-	goOtherRoom = (sign: number) => {
-		const { item } = this.state;
-		if (!item) {
-			return;
-		}
-
-		// Don't run during search
-		const { search } = this.state;
-		if (search && search?.length > 0) {
-			return;
-		}
-
-		const { chats } = this.state;
-		const { isMasterDetail } = this.props;
-
-		if (!chats?.length) {
-			return;
-		}
-
-		const index = chats.findIndex(c => c.rid === item.rid);
-		const otherRoom = this.findOtherRoom(index, sign);
-		if (otherRoom) {
-			this.goRoom({ item: otherRoom, isMasterDetail });
-		}
-	};
-
 	goToNewMessage = () => {
 		logEvent(events.RL_GO_NEW_MSG);
 		const { navigation, isMasterDetail } = this.props;
@@ -852,34 +869,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			// @ts-ignore
 			navigation.navigate(screen);
-		}
-	};
-
-	handleCommands = ({ event }: { event: IKeyCommandEvent }) => {
-		const { navigation, server, isMasterDetail, dispatch } = this.props;
-		const { input } = event;
-		if (handleCommandShowPreferences(event)) {
-			navigation.navigate('SettingsView');
-		} else if (handleCommandSearching(event)) {
-			this.initSearching();
-		} else if (handleCommandSelectRoom(event)) {
-			this.goRoomByIndex(input);
-		} else if (handleCommandPreviousRoom(event)) {
-			this.goOtherRoom(-1);
-		} else if (handleCommandNextRoom(event)) {
-			this.goOtherRoom(1);
-		} else if (handleCommandShowNewMessage(event)) {
-			if (isMasterDetail) {
-				navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
-			} else {
-				navigation.navigate('NewMessageStack');
-			}
-		} else if (handleCommandAddNewServer(event)) {
-			batch(() => {
-				dispatch(appStart({ root: RootEnum.ROOT_OUTSIDE }));
-				dispatch(serverInitAdd(server));
-			});
 		}
 	};
 
@@ -924,7 +915,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return null;
 		}
 
-		const options = this.getHeader();
+		let options = this.getHeader();
+		options = {
+			...options,
+			headerTitleAlign: 'left',
+			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
+			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
+		};
 		return <Header title='' {...themedHeader(theme)} {...options} />;
 	};
 
@@ -943,7 +940,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			showAvatar,
 			displayMode
 		} = this.props;
-		const id = getUidDirectMessage(item);
+		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
 		const swipeEnabled = this.isSwipeEnabled(item);
 
 		return (
@@ -972,15 +969,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderSectionHeader = (header: string) => {
 		const { theme } = this.props;
 		return (
-			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].backgroundColor }]}>
-				<Text style={[styles.groupTitle, { color: themes[theme].controlText }]}>{I18n.t(header)}</Text>
+			<View style={[styles.groupTitleContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
+				<Text style={[styles.groupTitle, { color: themes[theme].fontHint }]}>{I18n.t(header)}</Text>
 			</View>
 		);
 	};
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode } = this.props;
+		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
 
 		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
 
@@ -988,13 +985,21 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return <ActivityIndicator />;
 		}
 
+		if (supportedVersionsStatus === 'expired') {
+			return <SupportedVersionsExpired />;
+		}
+
+		if (user.requirePasswordChange) {
+			return <ChangePasswordRequired />;
+		}
+
 		return (
 			<FlatList
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				keyExtractor={keyExtractor}
-				style={[styles.list, { backgroundColor: themes[theme].backgroundColor }]}
+				keyExtractor={item => keyExtractor(item, searching)}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
 				getItemLayout={(data, index) => getItemLayout(data, index, height)}
@@ -1002,27 +1007,25 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].auxiliaryText} />
+					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				}
 				windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
+				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
 			/>
 		);
 	};
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { showServerDropdown, theme, navigation } = this.props;
+		const { theme } = this.props;
 
 		return (
-			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].backgroundColor }}>
+			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				{/* TODO - this ts-ignore is here because the route props, on IBaseScreen*/}
-				{/* @ts-ignore*/}
-				{showServerDropdown ? <ServerDropdown navigation={navigation} theme={theme} /> : null}
 			</SafeAreaView>
 		);
 	};
@@ -1031,11 +1034,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 const mapStateToProps = (state: IApplicationState) => ({
 	user: getUserSelector(state),
 	isMasterDetail: state.app.isMasterDetail,
+	notificationPresenceCap: state.app.notificationPresenceCap,
+	supportedVersionsStatus: state.supportedVersions.status,
 	server: state.server.server,
 	changingServer: state.server.changingServer,
 	searchText: state.rooms.searchText,
 	loadingServer: state.server.loading,
-	showServerDropdown: state.rooms.showServerDropdown,
 	refreshing: state.rooms.refreshing,
 	sortBy: state.sortPreferences.sortBy,
 	groupByType: state.sortPreferences.groupByType,
@@ -1053,7 +1057,9 @@ const mapStateToProps = (state: IApplicationState) => ({
 	createDirectMessagePermission: state.permissions['create-d'],
 	createPublicChannelPermission: state.permissions['create-c'],
 	createPrivateChannelPermission: state.permissions['create-p'],
-	createDiscussionPermission: state.permissions['start-discussion']
+	createDiscussionPermission: state.permissions['start-discussion'],
+	serverVersion: state.server.version,
+	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications
 });
 
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));

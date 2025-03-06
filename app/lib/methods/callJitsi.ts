@@ -46,8 +46,8 @@ export function callJitsiWithoutServer(path: string): void {
 	Navigation.navigate('JitsiMeetView', { url, onlyAudio: false });
 }
 
-export async function callJitsi(room: ISubscription, onlyAudio = false): Promise<void> {
-	logEvent(onlyAudio ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
+export async function callJitsi({ room, cam = false }: { room: ISubscription; cam?: boolean }): Promise<void> {
+	logEvent(cam ? events.RA_JITSI_AUDIO : events.RA_JITSI_VIDEO);
 	const url = await jitsiURL({ room });
-	Navigation.navigate('JitsiMeetView', { url, onlyAudio, rid: room?.rid });
+	Navigation.navigate('JitsiMeetView', { url, onlyAudio: cam, rid: room?.rid });
 }

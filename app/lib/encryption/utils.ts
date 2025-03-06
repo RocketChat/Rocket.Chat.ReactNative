@@ -1,8 +1,10 @@
 import ByteBuffer from 'bytebuffer';
 import SimpleCrypto from 'react-native-simple-crypto';
 
-import { random } from '../methods/helpers';
+import { compareServerVersion } from '../methods/helpers';
 import { fromByteArray, toByteArray } from './helpers/base64-js';
+import { TSubscriptionModel } from '../../definitions';
+import { store } from '../store/auxStore';
 
 const BASE64URI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 
@@ -57,4 +59,131 @@ export const toString = (thing: string | ByteBuffer | Buffer | ArrayBuffer | Uin
 	// @ts-ignore
 	return new ByteBuffer.wrap(thing).toString('binary');
 };
-export const randomPassword = (): string => `${random(3)}-${random(3)}-${random(3)}`.toLowerCase();
+
+// https://github.com/RocketChat/Rocket.Chat/blob/b94db45cab297a3bcbafca4d135d83c898222380/apps/meteor/app/mentions/lib/MentionsParser.ts#L50
+const userMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)@(${pattern}(@(${pattern}))?(:([0-9a-zA-Z-_.]+))?)`, 'gm');
+const channelMentionRegex = (pattern: string) => new RegExp(`(^|\\s|>)#(${pattern}(@(${pattern}))?)`, 'gm');
+
+export const getE2EEMentions = (message?: string) => {
+	const e2eEnabledMentions = store.getState().settings.E2E_Enabled_Mentions;
+	if (!e2eEnabledMentions || !message) {
+		return undefined;
+	}
+	const utf8UserNamesValidation = store.getState().settings.UTF8_User_Names_Validation as string;
+
+	return {
+		e2eUserMentions: (message.match(userMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim()),
+		e2eChannelMentions: (message.match(channelMentionRegex(utf8UserNamesValidation)) || []).map(match => match.trim())
+	};
+};
+
+export const randomPassword = async (): Promise<string> => {
+	const random = await Promise.all(Array.from({ length: 4 }, () => SimpleCrypto.utils.getRandomValues(3)));
+	return `${random[0]}-${random[1]}-${random[2]}-${random[3]}`;
+};
+
+export const generateAESCTRKey = () => SimpleCrypto.utils.randomBytes(32);
+
+interface IExportedKey {
+	kty: string;
+	alg: string;
+	k: string;
+	ext: boolean;
+	key_ops: string[];
+}
+
+export const exportAESCTR = (key: ArrayBuffer): IExportedKey => {
+	// Web Crypto format of a Secret Key
+	const exportedKey = {
+		// Type of Secret Key
+		kty: 'oct',
+		// Algorithm
+		alg: 'A256CTR',
+		// Base64URI encoded array of bytes
+		k: bufferToB64URI(key),
+		// Specific Web Crypto properties
+		ext: true,
+		key_ops: ['encrypt', 'decrypt']
+	};
+
+	return exportedKey;
+};
+
+export const encryptAESCTR = (path: string, key: string, vector: string): Promise<string> =>
+	SimpleCrypto.AES.encryptFile(path, key, vector);
+
+export const decryptAESCTR = (path: string, key: string, vector: string): Promise<string> =>
+	SimpleCrypto.AES.decryptFile(path, key, vector);
+
+// Missing room encryption key
+export const isMissingRoomE2EEKey = ({
+	encryptionEnabled,
+	roomEncrypted,
+	E2EKey
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+	E2EKey: TSubscriptionModel['E2EKey'];
+}): boolean => {
+	const serverVersion = store.getState().server.version;
+	const e2eeEnabled = store.getState().settings.E2E_Enable;
+	if (!e2eeEnabled) {
+		return false;
+	}
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	return (encryptionEnabled && roomEncrypted && !E2EKey) ?? false;
+};
+
+// Encrypted room, but user session is not encrypted
+export const isE2EEDisabledEncryptedRoom = ({
+	encryptionEnabled,
+	roomEncrypted
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+}): boolean => {
+	const serverVersion = store.getState().server.version;
+	const e2eeEnabled = store.getState().settings.E2E_Enable;
+	if (!e2eeEnabled) {
+		return false;
+	}
+	if (compareServerVersion(serverVersion, 'lowerThan', '6.10.0')) {
+		return false;
+	}
+	return (!encryptionEnabled && roomEncrypted) ?? false;
+};
+
+export const hasE2EEWarning = ({
+	encryptionEnabled,
+	roomEncrypted,
+	E2EKey
+}: {
+	encryptionEnabled: boolean;
+	roomEncrypted: TSubscriptionModel['encrypted'];
+	E2EKey: TSubscriptionModel['E2EKey'];
+}): boolean => {
+	if (isMissingRoomE2EEKey({ encryptionEnabled, roomEncrypted, E2EKey })) {
+		return true;
+	}
+	if (isE2EEDisabledEncryptedRoom({ encryptionEnabled, roomEncrypted })) {
+		return true;
+	}
+	return false;
+};
+
+// https://github.com/RocketChat/Rocket.Chat/blob/7a57f3452fd26a603948b70af8f728953afee53f/apps/meteor/lib/utils/getFileExtension.ts#L1
+export const getFileExtension = (fileName?: string): string => {
+	if (!fileName) {
+		return 'file';
+	}
+
+	const arr = fileName.split('.');
+
+	if (arr.length < 2 || (arr[0] === '' && arr.length === 2)) {
+		return 'file';
+	}
+
+	return arr.pop()?.toLocaleUpperCase() || 'file';
+};

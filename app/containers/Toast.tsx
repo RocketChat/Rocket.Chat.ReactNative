@@ -24,7 +24,7 @@ let listener: Function;
 let toast: EasyToast | null | undefined;
 
 const Toast = (): React.ReactElement => {
-	const { colors } = useTheme();
+	const { colors, theme } = useTheme();
 
 	useEffect(() => {
 		listener = EventEmitter.addEventListener(LISTENER, showToast);
@@ -44,10 +44,9 @@ const Toast = (): React.ReactElement => {
 	return (
 		<EasyToast
 			ref={getToastRef}
-			// @ts-ignore
 			position='center'
-			style={[styles.toast, { backgroundColor: colors.toastBackground }]}
-			textStyle={[styles.text, { color: colors.buttonText }]}
+			style={[styles.toast, { backgroundColor: colors.surfaceDark }]}
+			textStyle={[styles.text, { color: theme === 'light' ? colors.fontWhite : colors.fontPureBlack }]}
 			opacity={0.9}
 		/>
 	);

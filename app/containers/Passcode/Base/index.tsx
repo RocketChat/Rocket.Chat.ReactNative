@@ -1,22 +1,20 @@
-import React, { forwardRef, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import range from 'lodash/range';
 import { View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import * as Haptics from 'expo-haptics';
-import Orientation from 'react-native-orientation-locker';
 
 import styles from './styles';
 import Button from './Button';
 import Dots from './Dots';
 import { TYPE } from '../constants';
-import { PASSCODE_LENGTH, themes } from '../../../lib/constants';
+import { PASSCODE_LENGTH } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
 import { useDimensions } from '../../../dimensions';
-import { isTablet } from '../../../lib/methods/helpers';
 
 interface IPasscodeBase {
 	type: string;
@@ -37,19 +35,7 @@ export interface IBase {
 
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
-		useLayoutEffect(() => {
-			if (!isTablet) {
-				Orientation.lockToPortrait();
-			}
-
-			return () => {
-				if (!isTablet) {
-					Orientation.unlockAllOrientations();
-				}
-			};
-		}, []);
-
-		const { theme } = useTheme();
+		const { colors } = useTheme();
 		const { height } = useDimensions();
 
 		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
@@ -115,7 +101,7 @@ const Base = forwardRef<IBase, IPasscodeBase>(
 
 		return (
 			<Animatable.View ref={rootRef} style={styles.container}>
-				<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]}>
+				<Grid style={[styles.grid, { backgroundColor: colors.surfaceNeutral }]}>
 					<LockIcon />
 					<Title text={title} />
 					{subtitle ? <Subtitle text={subtitle} /> : null}

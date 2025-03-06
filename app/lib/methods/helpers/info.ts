@@ -5,12 +5,17 @@ import I18n from '../../../i18n';
 export const showErrorAlert = (message: string, title?: string, onPress = () => {}): void =>
 	Alert.alert(title || '', message, [{ text: 'OK', onPress }], { cancelable: true });
 
-export const showErrorAlertWithEMessage = (e: any): void => {
-	const messageError =
-		e.data && e.data.error.includes('[error-too-many-requests]')
-			? I18n.t('error-too-many-requests', { seconds: e.data.error.replace(/\D/g, '') })
-			: e.data.errorType;
-	showErrorAlert(messageError);
+export const showErrorAlertWithEMessage = (e: any, title?: string): void => {
+	let errorMessage: string = e?.data?.error;
+
+	if (errorMessage?.includes('[error-too-many-requests]')) {
+		const seconds = errorMessage.replace(/\D/g, '');
+		errorMessage = I18n.t('error-too-many-requests', { seconds });
+	} else {
+		errorMessage = I18n.isTranslated(errorMessage) ? I18n.t(errorMessage) : errorMessage;
+	}
+
+	showErrorAlert(errorMessage, title);
 };
 
 interface IShowConfirmationAlert {

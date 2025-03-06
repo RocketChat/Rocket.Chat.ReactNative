@@ -3,7 +3,7 @@ import { FlatList, Text, View, RefreshControl } from 'react-native';
 import { dequal } from 'dequal';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/core';
 
 import * as List from '../../containers/List';
@@ -25,7 +25,7 @@ interface IReadReceiptViewState {
 }
 
 interface INavigationOption {
-	navigation: StackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	route: RouteProp<ChatsStackParamList, 'ReadReceiptsView'>;
 	isMasterDetail: boolean;
 }
@@ -39,7 +39,7 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 	private messageId: string;
 
 	static navigationOptions = ({ navigation, isMasterDetail }: INavigationOption) => {
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Read_Receipt')
 		};
 		if (isMasterDetail) {
@@ -105,11 +105,8 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 			return null;
 		}
 		return (
-			<View
-				style={[styles.listEmptyContainer, { backgroundColor: themes[theme].chatComponentBackground }]}
-				testID='read-receipt-view'
-			>
-				<Text style={[styles.emptyText, { color: themes[theme].auxiliaryTintColor }]}>{I18n.t('No_Read_Receipts')}</Text>
+			<View style={[styles.listEmptyContainer, { backgroundColor: themes[theme].surfaceTint }]} testID='read-receipt-view'>
+				<Text style={[styles.emptyText, { color: themes[theme].fontHint }]}>{I18n.t('No_Read_Receipts')}</Text>
 			</View>
 		);
 	};
@@ -121,21 +118,20 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 			return null;
 		}
 		return (
-			<View style={[styles.itemContainer, { backgroundColor: themes[theme].backgroundColor }]}>
+			<View style={[styles.itemContainer, { backgroundColor: themes[theme].surfaceRoom }]}>
 				<Avatar text={item.user.username} size={40} />
 				<View style={styles.infoContainer}>
 					<View style={styles.item}>
-						<Text style={[styles.name, { color: themes[theme].titleText }]}>{item?.user?.name}</Text>
-						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.name, { color: themes[theme].fontTitlesLabels }]}>{item?.user?.name}</Text>
+						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 					</View>
 					<Text
 						style={[
 							styles.username,
 							{
-								color: themes[theme].auxiliaryText
+								color: themes[theme].fontSecondaryInfo
 							}
-						]}
-					>{`@${item.user.username}`}</Text>
+						]}>{`@${item.user.username}`}</Text>
 				</View>
 			</View>
 		);
@@ -157,11 +153,13 @@ class ReadReceiptView extends React.Component<IReadReceiptViewProps, IReadReceip
 					style={[
 						styles.list,
 						{
-							backgroundColor: themes[theme].chatComponentBackground,
-							borderColor: themes[theme].separatorColor
+							backgroundColor: themes[theme].surfaceTint,
+							borderColor: themes[theme].strokeLight
 						}
 					]}
-					refreshControl={<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].auxiliaryText} />}
+					refreshControl={
+						<RefreshControl refreshing={loading} onRefresh={this.load} tintColor={themes[theme].fontSecondaryInfo} />
+					}
 					keyExtractor={item => item._id}
 				/>
 			</SafeAreaView>

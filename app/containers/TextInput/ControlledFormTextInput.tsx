@@ -3,7 +3,7 @@ import { Control, Controller } from 'react-hook-form';
 
 import { FormTextInput, IRCTextInputProps } from './FormTextInput';
 
-interface IControlledFormTextInputProps extends IRCTextInputProps {
+interface IControlledFormTextInputProps extends Omit<IRCTextInputProps, 'inputRef'> {
 	control: Control<any>;
 	name: string;
 }
@@ -12,6 +12,8 @@ export const ControlledFormTextInput = ({ control, name, ...props }: IControlled
 	<Controller
 		control={control}
 		name={name}
-		render={({ field: { onChange, value } }) => <FormTextInput onChangeText={onChange} value={value} {...props} />}
+		render={({ field: { onChange, value, ref } }) => (
+			<FormTextInput onChangeText={onChange} value={value} inputRef={ref} {...props} />
+		)}
 	/>
 );

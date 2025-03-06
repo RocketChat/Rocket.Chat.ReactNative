@@ -9,14 +9,17 @@ function normalizeAttachments(msg: TMsg) {
 	if (typeof msg.attachments !== typeof [] || !msg.attachments || !msg.attachments.length) {
 		msg.attachments = [];
 	}
-	msg.attachments = msg.attachments.map(att => {
-		att.fields = att.fields || [];
-		if (att.ts) {
-			att.ts = moment(att.ts).toDate();
-		}
-		att = normalizeAttachments(att as TMsg);
-		return att;
-	});
+
+	msg.attachments = msg.attachments
+		.filter(att => !!att)
+		.map(att => {
+			att.fields = att.fields || [];
+			if (att.ts) {
+				att.ts = moment(att.ts).toDate();
+			}
+			att = normalizeAttachments(att as TMsg);
+			return att;
+		});
 	return msg;
 }
 

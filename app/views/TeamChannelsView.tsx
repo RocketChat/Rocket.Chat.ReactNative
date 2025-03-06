@@ -1,12 +1,11 @@
 import { Q } from '@nozbe/watermelondb';
-import { StackNavigationOptions } from '@react-navigation/stack';
-import { HeaderBackButton } from '@react-navigation/elements';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
 import { Alert, FlatList, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
-import { DisplayMode, themes } from '../lib/constants';
+import { DisplayMode, textInputDebounceTime, themes } from '../lib/constants';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
@@ -22,18 +21,17 @@ import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
 import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
-import { getUserSelector } from '../selectors/login';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS } from '../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
 
-const getItemLayout = (data: IItem[] | null | undefined, index: number) => ({
+const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => ({
 	length: data?.length || 0,
 	offset: ROW_HEIGHT * index,
 	index
@@ -72,14 +70,22 @@ interface ITeamChannelsViewState {
 }
 
 interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamChannelsView'> {
+	serverVersion: string;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;
 	addTeamChannelPermission: string[];
+	moveRoomToTeamPermission: string[];
 	editTeamChannelPermission: string[];
 	removeTeamChannelPermission: string[];
+	createCPermission: string[];
+	createTeamChannelPermission: string[];
+	createPPermission: string[];
+	createTeamGroupPermission: string[];
 	deleteCPermission: string[];
 	deletePPermission: string[];
+	deleteTeamChannelPermission: string[];
+	deleteTeamGroupPermission: string[];
 	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
 	displayMode: DisplayMode;
@@ -114,8 +120,28 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		this.load();
 	}
 
+	hasCreatePermission = async () => {
+		const {
+			addTeamChannelPermission,
+			moveRoomToTeamPermission,
+			serverVersion,
+			createCPermission,
+			createPPermission,
+			createTeamChannelPermission,
+			createTeamGroupPermission
+		} = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const createPermissions =
+				this.team.t === 'c' ? [createCPermission, createTeamChannelPermission] : [createPPermission, createTeamGroupPermission];
+			const result = await hasPermission([moveRoomToTeamPermission, ...createPermissions], this.team.rid);
+			return result.some(Boolean);
+		}
+		const createPermissions = this.team.t === 'c' ? [createCPermission] : [createPPermission];
+		const result = await hasPermission([addTeamChannelPermission, ...createPermissions], this.team.rid);
+		return result.some(Boolean);
+	};
+
 	loadTeam = async () => {
-		const { addTeamChannelPermission } = this.props;
 		const { loading, data } = this.state;
 
 		const db = database.active;
@@ -129,8 +155,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				throw new Error();
 			}
 
-			const permissions = await hasPermission([addTeamChannelPermission], this.team.rid);
-			if (permissions[0]) {
+			const hasCreatePermission = await this.hasCreatePermission();
+			if (hasCreatePermission) {
 				this.setState({ showCreate: true }, () => this.setHeader());
 			}
 
@@ -186,8 +212,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 	}, 300);
 
 	setHeader = () => {
-		const { isSearching, showCreate, data } = this.state;
-		const { navigation, isMasterDetail, theme } = this.props;
+		const { isSearching, showCreate } = this.state;
+		const { navigation } = this.props;
 
 		const { team } = this;
 		if (!team) {
@@ -195,10 +221,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		}
 
 		if (isSearching) {
-			const options: StackNavigationOptions = {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
+			const options: NativeStackNavigationOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={this.onCancelSearchPress} />
@@ -212,19 +235,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			return navigation.setOptions(options);
 		}
 
-		const options: StackNavigationOptions = {
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginLeft: 0, marginRight: 4, maxWidth: undefined },
-			headerLeftContainerStyle: { minWidth: 60 },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined },
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={themes[theme].headerTintColor}
-					testID='header-back'
-				/>
-			),
+		const options: NativeStackNavigationOptions = {
+			headerLeft: () => null,
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
 			),
@@ -234,17 +246,15 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						<HeaderButton.Item
 							iconName='create'
 							testID='team-channels-view-create'
-							onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId, teamChannels: data })}
+							onPress={() =>
+								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
+							}
 						/>
 					) : null}
 					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
 				</HeaderButton.Container>
 			)
 		};
-
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} />;
-		}
 
 		navigation.setOptions(options);
 	};
@@ -269,7 +279,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				}
 			}
 		);
-	}, 300);
+	}, textInputDebounceTime);
 
 	onCancelSearchPress = () => {
 		logEvent(events.TC_CANCEL_SEARCH);
@@ -424,6 +434,20 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		);
 	};
 
+	hasDeletePermission = async (rid: string, t: 'c' | 'p') => {
+		const { serverVersion, deleteCPermission, deletePPermission, deleteTeamChannelPermission, deleteTeamGroupPermission } =
+			this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const permissions =
+				t === 'c' ? [deleteTeamChannelPermission, deleteTeamGroupPermission] : [deletePPermission, deletePPermission];
+			const result = await hasPermission(permissions, rid);
+			return result[0] && result[1];
+		}
+
+		const result = await hasPermission([t === 'c' ? deleteCPermission : deletePPermission], rid);
+		return result[0];
+	};
+
 	showChannelActions = async (item: IItem) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
@@ -436,7 +460,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		} = this.props;
 		const isAutoJoinChecked = item.teamDefault;
 		const autoJoinIcon = isAutoJoinChecked ? 'checkbox-checked' : 'checkbox-unchecked';
-		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].tintActive : themes[theme].auxiliaryTintColor;
+		const autoJoinIconColor = isAutoJoinChecked ? themes[theme].fontHint : themes[theme].fontDefault;
 
 		const options: TActionSheetOptionsItem[] = [];
 
@@ -520,10 +544,10 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 			return <BackgroundContainer loading />;
 		}
 		if (isSearching && !search.length) {
-			return <BackgroundContainer text={searchText ? I18n.t('No_team_channels_found') : ''} />;
+			return <BackgroundContainer text={searchText ? I18n.t('No_channels_in_team') : ''} />;
 		}
 		if (!isSearching && !data.length) {
-			return <BackgroundContainer text={I18n.t('No_team_channels_found')} />;
+			return <BackgroundContainer text={I18n.t('No_channels_in_team')} />;
 		}
 
 		return (
@@ -554,16 +578,22 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
+	serverVersion: state.server.version,
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions['add-team-channel'],
+	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
 	deleteCPermission: state.permissions['delete-c'],
+	createCPermission: state.permissions['create-c'],
+	createTeamChannelPermission: state.permissions['create-team-channel'],
+	createPPermission: state.permissions['create-p'],
+	createTeamGroupPermission: state.permissions['create-team-group'],
+	deleteTeamChannelPermission: state.permissions['delete-team-channel'],
 	deletePPermission: state.permissions['delete-p'],
+	deleteTeamGroupPermission: state.permissions['delete-team-group'],
 	showAvatar: state.sortPreferences.showAvatar,
 	displayMode: state.sortPreferences.displayMode
 });

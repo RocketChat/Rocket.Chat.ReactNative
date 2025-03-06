@@ -1,6 +1,6 @@
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 import { StyleProp, TextStyle } from 'react-native';
-import { ImageStyle } from 'react-native-fast-image';
+import { ImageStyle } from 'expo-image';
 
 import { IUserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -14,7 +14,7 @@ export interface IMessageAttachments {
 	isReply?: boolean;
 	showAttachment?: (file: IAttachment) => void;
 	getCustomEmoji: TGetCustomEmoji;
-	id: string;
+	author?: IUserMessage;
 }
 
 export interface IMessageAvatar {
@@ -40,7 +40,7 @@ export interface IMessageBroadcast {
 }
 
 export interface IMessageCallButton {
-	callJitsi?: () => void;
+	handleEnterCall?: () => void;
 }
 
 export interface IMessageContent {
@@ -50,7 +50,7 @@ export interface IMessageContent {
 	tmid?: string;
 	isThreadRoom: boolean;
 	msg?: string;
-	md?: MarkdownAST;
+	md?: Root;
 	isEdited: boolean;
 	isEncrypted: boolean;
 	getCustomEmoji: TGetCustomEmoji;
@@ -64,6 +64,7 @@ export interface IMessageContent {
 	hasError: boolean;
 	isHeader: boolean;
 	isTranslated: boolean;
+	pinned?: boolean;
 }
 
 export interface IMessageEmoji {
@@ -90,6 +91,7 @@ export interface IMessageTouchable {
 	alias?: string;
 	role?: string;
 	drid?: string;
+	isBeingEdited?: boolean;
 }
 
 export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {
@@ -108,6 +110,7 @@ export interface IMessageInner
 	type: MessageType;
 	blocks: [];
 	urls?: IUrl[];
+	isPreview?: boolean;
 }
 
 export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessageAvatar {

@@ -1,3 +1,5 @@
+import { NetInfoStateType } from '@react-native-community/netinfo';
+
 import { TActionApp } from '../actions/app';
 import { RootEnum } from '../definitions';
 import { APP, APP_STATE } from '../actions/actionsTypes';
@@ -9,6 +11,8 @@ export interface IApp {
 	ready: boolean;
 	foreground: boolean;
 	background: boolean;
+	notificationPresenceCap: boolean;
+	netInfoState?: NetInfoStateType | null;
 }
 
 export const initialState: IApp = {
@@ -17,7 +21,9 @@ export const initialState: IApp = {
 	text: undefined,
 	ready: false,
 	foreground: true,
-	background: false
+	background: false,
+	notificationPresenceCap: false,
+	netInfoState: null
 };
 
 export default function app(state = initialState, action: TActionApp): IApp {
@@ -54,6 +60,16 @@ export default function app(state = initialState, action: TActionApp): IApp {
 			return {
 				...state,
 				isMasterDetail: action.isMasterDetail
+			};
+		case APP.SET_NOTIFICATION_PRESENCE_CAP:
+			return {
+				...state,
+				notificationPresenceCap: action.show
+			};
+		case APP.SET_NET_INFO_STATE:
+			return {
+				...state,
+				netInfoState: action.netInfoState
 			};
 		default:
 			return state;

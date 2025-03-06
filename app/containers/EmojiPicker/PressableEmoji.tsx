@@ -14,14 +14,13 @@ export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (em
 			key={typeof emoji === 'string' ? emoji : emoji.name}
 			onPress={() => onPress(emoji)}
 			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.name}`}
-			android_ripple={{ color: colors.bannerBackground, borderless: true, radius: EMOJI_BUTTON_SIZE / 2 }}
+			android_ripple={{ color: colors.buttonBackgroundSecondaryPress, borderless: true, radius: EMOJI_BUTTON_SIZE / 2 }}
 			style={({ pressed }: { pressed: boolean }) => [
 				styles.emojiButton,
 				{
-					backgroundColor: isIOS && pressed ? colors.bannerBackground : 'transparent'
+					backgroundColor: isIOS && pressed ? colors.buttonBackgroundSecondaryPress : 'transparent'
 				}
-			]}
-		>
+			]}>
 			<Emoji emoji={emoji} />
 		</Pressable>
 	);

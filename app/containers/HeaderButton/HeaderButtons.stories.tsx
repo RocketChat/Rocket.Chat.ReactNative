@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { Header, HeaderBackground } from '@react-navigation/elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -32,7 +33,7 @@ const HeaderExample = ({ left, right, colors, title = '' }: IHeader) => (
 		title={title}
 		headerLeft={left}
 		headerRight={right}
-		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.headerBackground }} />}
+		headerBackground={() => <HeaderBackground style={{ backgroundColor: colors?.surfaceNeutral }} />}
 	/>
 );
 
@@ -103,9 +104,10 @@ export const Badge = () => (
 		<HeaderExample
 			left={() => (
 				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} />} />
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} tunreadUser={[1]} />} />
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} tunreadGroup={[1]} />} />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} />} />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} tunreadUser={[1]} />} />
+					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} tunreadGroup={[1]} />} />
+					<HeaderButton.Drawer badge={() => <HeaderButton.BadgeWarn color='red' />} />
 				</HeaderButton.Container>
 			)}
 		/>
@@ -114,20 +116,23 @@ export const Badge = () => (
 
 const ThemeStory = ({ theme }: { theme: TSupportedThemes }) => (
 	<ThemeContext.Provider value={{ theme, colors: colors[theme] }}>
-		<HeaderExample
-			left={() => (
-				<HeaderButton.Container left>
-					<HeaderButton.Item iconName='threads' />
-				</HeaderButton.Container>
-			)}
-			right={() => (
-				<HeaderButton.Container>
-					<HeaderButton.Item title='Threads' />
-					<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.Badge tunread={[1]} />} />
-				</HeaderButton.Container>
-			)}
-			colors={colors[theme]}
-		/>
+		<View style={{ flexDirection: 'column' }}>
+			<HeaderExample
+				left={() => (
+					<HeaderButton.Container left>
+						<HeaderButton.Drawer badge={() => <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />} />
+						<HeaderButton.Item iconName='threads' />
+					</HeaderButton.Container>
+				)}
+				right={() => (
+					<HeaderButton.Container>
+						<HeaderButton.Item title='Threads' />
+						<HeaderButton.Item iconName='threads' badge={() => <HeaderButton.BadgeUnread tunread={[1]} />} />
+					</HeaderButton.Container>
+				)}
+				colors={colors[theme]}
+			/>
+		</View>
 	</ThemeContext.Provider>
 );
 

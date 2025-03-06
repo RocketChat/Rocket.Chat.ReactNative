@@ -6,7 +6,9 @@ import com.facebook.react.modules.network.NetworkingModule;
 import com.facebook.react.modules.network.CustomClientBuilder;
 import com.facebook.react.modules.network.ReactCookieJarContainer;
 import com.facebook.react.modules.websocket.WebSocketModule;
-import com.facebook.react.modules.fresco.ReactOkHttpNetworkFetcher;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Promise;
 
@@ -32,13 +34,11 @@ import android.security.KeyChainAliasCallback;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import com.RNFetchBlob.RNFetchBlob;
-
 import com.reactnativecommunity.webview.RNCWebViewManager;
 
-import com.dylanvann.fastimage.FastImageOkHttpUrlLoader;
-
 import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
+import expo.modules.filesystem.FileSystemModule;
+import expo.modules.image.okhttp.ExpoImageOkHttpClientGlideModule;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
@@ -97,21 +97,26 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
     @ReactMethod
     public void setCertificate(String data, Promise promise) {
         this.alias = data;
+        OkHttpClient client = getOkHttpClient();
 
         // HTTP Fetch react-native layer
         NetworkingModule.setCustomClientBuilder(new CustomClient());
         // Websocket react-native layer
         WebSocketModule.setCustomClientBuilder(new CustomClient());
         // Image networking react-native layer
-        ReactOkHttpNetworkFetcher.setOkHttpClient(getOkHttpClient());
-        // RNFetchBlob networking layer
-        RNFetchBlob.applyCustomOkHttpClient(getOkHttpClient());
+        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
+            .newBuilder(this.reactContext, client)
+            .build();
+        Fresco.initialize(this.reactContext, config);
         // RNCWebView onReceivedClientCertRequest
         RNCWebViewManager.setCertificateAlias(data);
-        // FastImage Glide network layer
-        FastImageOkHttpUrlLoader.setOkHttpClient(getOkHttpClient());
+
         // Expo AV network layer
-        SharedCookiesDataSourceFactory.setOkHttpClient(getOkHttpClient());
+        SharedCookiesDataSourceFactory.setOkHttpClient(client);
+        // Expo File System network layer
+        FileSystemModule.setOkHttpClient(client);
+        // Expo Image network layer
+        ExpoImageOkHttpClientGlideModule.Companion.setOkHttpClient(client);
 
         promise.resolve(null);
     }

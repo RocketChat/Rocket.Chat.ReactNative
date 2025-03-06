@@ -1,11 +1,10 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Orientation from 'react-native-orientation-locker';
+import { BackHandler, Keyboard, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
+import { Image } from 'expo-image';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
@@ -13,71 +12,48 @@ import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
 import * as HeaderButton from '../../containers/HeaderButton';
-import OrSeparator from '../../containers/OrSeparator';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
-import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { OutsideParamList } from '../../stacks/types';
 import { withTheme } from '../../theme';
-import { isTablet } from '../../lib/methods/helpers';
+import { isAndroid, isTablet } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { BASIC_AUTH_KEY, setBasicAuth } from '../../lib/methods/helpers/fetch';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import { moderateScale, verticalScale } from './scaling';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
 import ServerInput from './ServerInput';
 import { serializeAsciiUrl } from '../../lib/methods';
+import { getServerById } from '../../lib/database/services/Server';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
-		alignSelf: 'center',
-		resizeMode: 'contain'
-	},
-	title: {
-		...sharedStyles.textBold,
-		letterSpacing: 0,
 		alignSelf: 'center'
 	},
-	subtitle: {
+	buttonPrompt: {
 		...sharedStyles.textRegular,
-		alignSelf: 'center'
-	},
-	certificatePicker: {
-		alignItems: 'center',
-		justifyContent: 'flex-end'
-	},
-	chooseCertificateTitle: {
-		...sharedStyles.textRegular
-	},
-	chooseCertificate: {
-		...sharedStyles.textSemibold
-	},
-	description: {
-		...sharedStyles.textRegular,
-		textAlign: 'center'
+		textAlign: 'center',
+		lineHeight: 20
 	},
 	connectButton: {
-		marginBottom: 0
+		marginTop: 36
 	}
 });
 
 interface INewServerViewProps extends IBaseScreen<OutsideParamList, 'NewServerView'> {
 	connecting: boolean;
 	previousServer: string | null;
-	width: number;
-	height: number;
 }
 
 interface INewServerViewState {
 	text: string;
-	connectingOpen: boolean;
 	certificate: string | null;
 	serversHistory: TServerHistoryModel[];
+	showBottomInfo: boolean;
 }
 
 interface ISubmitParams {
@@ -88,19 +64,20 @@ interface ISubmitParams {
 class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
 	constructor(props: INewServerViewProps) {
 		super(props);
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 		this.setHeader();
 
 		this.state = {
 			text: '',
-			connectingOpen: false,
 			certificate: null,
-			serversHistory: []
+			serversHistory: [],
+			showBottomInfo: true
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
 		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		if (isAndroid) {
+			Keyboard.addListener('keyboardDidShow', () => this.handleShowKeyboard());
+			Keyboard.addListener('keyboardDidHide', () => this.handleHideKeyboard());
+		}
 	}
 
 	componentDidMount() {
@@ -110,6 +87,11 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
 		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		if (isAndroid) {
+			Keyboard.removeAllListeners('keyboardDidShow');
+			Keyboard.removeAllListeners('keyboardDidHide');
+		}
+
 		const { previousServer, dispatch } = this.props;
 		if (previousServer) {
 			dispatch(serverFinishAdd());
@@ -126,7 +108,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { previousServer, navigation, connecting } = this.props;
 		if (previousServer) {
 			return navigation.setOptions({
-				headerTitle: I18n.t('Workspaces'),
+				headerTitle: I18n.t('Add_server'),
 				headerLeft: () =>
 					!connecting ? (
 						<HeaderButton.CloseModal navigation={navigation} onPress={this.close} testID='new-server-view-close' />
@@ -148,6 +130,14 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		return false;
 	};
 
+	handleShowKeyboard = () => {
+		this.setState({ ...this.state, showBottomInfo: false });
+	};
+
+	handleHideKeyboard = () => {
+		this.setState({ ...this.state, showBottomInfo: true });
+	};
+
 	onChangeText = (text: string) => {
 		this.setState({ text });
 		this.queryServerHistory(text);
@@ -157,7 +147,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
-			let whereClause = [Q.where('username', Q.notEq(null)), Q.experimentalSortBy('updated_at', Q.desc), Q.experimentalTake(3)];
+			let whereClause = [Q.where('username', Q.notEq(null)), Q.sortBy('updated_at', Q.desc), Q.take(3)];
 			if (text) {
 				const likeString = sanitizeLikeString(text);
 				whereClause = [...whereClause, Q.where('url', Q.like(`%${likeString}%`))];
@@ -169,12 +159,15 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		}
 	};
 
-	close = () => {
+	close = async () => {
 		const { dispatch, previousServer } = this.props;
 
 		dispatch(inviteLinksClear());
 		if (previousServer) {
-			dispatch(selectServerRequest(previousServer));
+			const serverRecord = await getServerById(previousServer);
+			if (serverRecord) {
+				dispatch(selectServerRequest(previousServer, serverRecord.version));
+			}
 		}
 	};
 
@@ -198,8 +191,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 		const { text, certificate } = this.state;
 		const { dispatch } = this.props;
 
-		this.setState({ connectingOpen: false });
-
 		if (text) {
 			Keyboard.dismiss();
 			const server = this.completeUrl(text);
@@ -218,13 +209,6 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 				dispatch(serverRequest(server));
 			}
 		}
-	};
-
-	connectOpen = () => {
-		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
-		this.setState({ connectingOpen: true });
-		const { dispatch } = this.props;
-		dispatch(serverRequest('https://open.rocket.chat'));
 	};
 
 	basicAuth = (server: string, text: string) => {
@@ -296,87 +280,68 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 	};
 
 	renderCertificatePicker = () => {
-		const { certificate } = this.state;
-		const { theme, width, height, previousServer } = this.props;
+		const { certificate, showBottomInfo } = this.state;
+		const { theme, connecting } = this.props;
+
+		if (!showBottomInfo) return <></>;
+
 		return (
-			<View
-				style={[
-					styles.certificatePicker,
-					{
-						marginBottom: verticalScale({ size: previousServer && !isTablet ? 10 : 30, height })
-					}
-				]}
-			>
-				<Text
-					style={[
-						styles.chooseCertificateTitle,
-						{ color: themes[theme].auxiliaryText, fontSize: moderateScale({ size: 13, width }) }
-					]}
-				>
+			<>
+				<Text style={[styles.buttonPrompt, { color: themes[theme].fontSecondaryInfo }]}>
 					{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 				</Text>
-				<TouchableOpacity
+				<Button
 					onPress={certificate ? this.handleRemove : this.chooseCertificate}
 					testID='new-server-choose-certificate'
-				>
-					<Text
-						style={[styles.chooseCertificate, { color: themes[theme].tintColor, fontSize: moderateScale({ size: 13, width }) }]}
-					>
-						{certificate ?? I18n.t('Apply_Your_Certificate')}
-					</Text>
-				</TouchableOpacity>
-			</View>
+					title={certificate ?? I18n.t('Apply_Certificate')}
+					type='secondary'
+					disabled={connecting}
+					style={{ marginTop: 12, marginBottom: 24 }}
+					fontSize={12}
+					styleText={{ ...sharedStyles.textBold, textAlign: 'center' }}
+					small
+				/>
+			</>
 		);
 	};
 
 	render() {
-		const { connecting, theme, previousServer, width, height } = this.props;
-		const { text, connectingOpen, serversHistory } = this.state;
-		const marginTop = previousServer ? 0 : 35;
-
+		const { connecting, theme, previousServer } = this.props;
+		const { text, serversHistory, showBottomInfo } = this.state;
+		const marginTop = previousServer ? 32 : 84;
+		const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 		return (
-			<FormContainer testID='new-server-view' keyboardShouldPersistTaps='never'>
-				<FormContainerInner>
+			<FormContainer
+				style={formContainerStyle}
+				showAppVersion={showBottomInfo}
+				testID='new-server-view'
+				keyboardShouldPersistTaps='handled'>
+				<FormContainerInner accessibilityLabel={I18n.t('Add_server')}>
 					<Image
 						style={[
 							styles.onboardingImage,
 							{
-								marginBottom: verticalScale({ size: 10, height }),
-								marginTop: isTablet ? 0 : verticalScale({ size: marginTop, height }),
-								width: verticalScale({ size: 100, height }),
-								height: verticalScale({ size: 100, height })
+								marginBottom: 32,
+								marginTop: isTablet ? 0 : marginTop,
+								width: 250,
+								height: 50
 							}
 						]}
-						source={require('../../static/images/logo.png')}
-						fadeDuration={0}
+						source={require('../../static/images/logo_with_name.png')}
+						contentFit='contain'
 					/>
 					<Text
-						style={[
-							styles.title,
-							{
-								color: themes[theme].titleText,
-								fontSize: moderateScale({ size: 22, width }),
-								marginBottom: verticalScale({ size: 8, height })
-							}
-						]}
-					>
-						Rocket.Chat
-					</Text>
-					<Text
-						style={[
-							styles.subtitle,
-							{
-								color: themes[theme].controlText,
-								fontSize: moderateScale({ size: 16, width }),
-								marginBottom: verticalScale({ size: 30, height })
-							}
-						]}
-					>
-						{I18n.t('Onboarding_subtitle')}
+						style={{
+							fontSize: 24,
+							lineHeight: 36,
+							marginBottom: 24,
+							color: themes[theme].fontTitlesLabels,
+							...sharedStyles.textBold
+						}}>
+						{I18n.t('Add_server')}
 					</Text>
 					<ServerInput
 						text={text}
-						theme={theme}
 						serversHistory={serversHistory}
 						onChangeText={this.onChangeText}
 						onSubmit={this.submit}
@@ -388,31 +353,9 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 						type='primary'
 						onPress={this.submit}
 						disabled={!text || connecting}
-						loading={!connectingOpen && connecting}
-						style={[styles.connectButton, { marginTop: verticalScale({ size: 16, height }) }]}
+						loading={connecting}
+						style={styles.connectButton}
 						testID='new-server-view-button'
-					/>
-					<OrSeparator theme={theme} />
-					<Text
-						style={[
-							styles.description,
-							{
-								color: themes[theme].auxiliaryText,
-								fontSize: moderateScale({ size: 14, width }),
-								marginBottom: verticalScale({ size: 16, height })
-							}
-						]}
-					>
-						{I18n.t('Onboarding_join_open_description')}
-					</Text>
-					<Button
-						title={I18n.t('Join_our_open_workspace')}
-						type='secondary'
-						backgroundColor={themes[theme].chatComponentBackground}
-						onPress={this.connectOpen}
-						disabled={connecting}
-						loading={connectingOpen && connecting}
-						testID='new-server-view-open'
 					/>
 				</FormContainerInner>
 				{this.renderCertificatePicker()}
@@ -426,4 +369,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	previousServer: state.server.previousServer
 });
 
-export default connect(mapStateToProps)(withDimensions(withTheme(NewServerView)));
+export default connect(mapStateToProps)(withTheme(NewServerView));

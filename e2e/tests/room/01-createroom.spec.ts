@@ -1,20 +1,22 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import data from '../../data';
-import { tapBack, navigateToLogin, login, tryTapping, platformTypes, TTextMatcher } from '../../helpers/app';
+import { tapBack, navigateToLogin, login, platformTypes, TTextMatcher, tapAndWaitFor, searchRoom } from '../../helpers/app';
+import { createRandomUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 describe('Create room screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	beforeAll(async () => {
+		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('New Message', () => {
-		before(async () => {
+		beforeAll(async () => {
 			await waitFor(element(by.id('rooms-list-view-create-channel')))
 				.toBeVisible()
 				.withTimeout(10000);
@@ -46,11 +48,7 @@ describe('Create room screen', () => {
 					.toBeVisible()
 					.withTimeout(5000);
 
-				await tryTapping(element(by.id('rooms-list-view-create-channel')), 3000);
-				// await element(by.id('rooms-list-view-create-channel')).tap();
-				await waitFor(element(by.id('new-message-view')))
-					.toExist()
-					.withTimeout(5000);
+				await tapAndWaitFor(element(by.id('rooms-list-view-create-channel')), element(by.id('new-message-view')), 2000);
 			});
 
 			it('should search user and navigate', async () => {
@@ -74,8 +72,11 @@ describe('Create room screen', () => {
 			it('should navigate to select users', async () => {
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toExist()
@@ -130,6 +131,7 @@ describe('Create room screen', () => {
 		describe('Usage', () => {
 			it('should get invalid room', async () => {
 				await element(by.id('create-channel-name')).replaceText('general');
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -142,9 +144,9 @@ describe('Create room screen', () => {
 			});
 
 			it('should create public room', async () => {
-				const room = `public${data.random}`;
-				await element(by.id('create-channel-name')).replaceText('');
+				const room = `public${random()}`;
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await element(by.id('create-channel-type')).tap();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
@@ -169,14 +171,17 @@ describe('Create room screen', () => {
 			});
 
 			it('should create private room', async () => {
-				const room = `private${data.random}`;
+				const room = `private${random()}`;
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(5000);
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toExist()
@@ -187,9 +192,10 @@ describe('Create room screen', () => {
 					.withTimeout(5000);
 				await element(by.id('selected-users-view-submit')).tap();
 				await waitFor(element(by.id('create-channel-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -213,15 +219,17 @@ describe('Create room screen', () => {
 			});
 
 			it('should create empty room', async () => {
-				const room = `empty${data.random}`;
+				const room = `empty${random()}`;
 				await waitFor(element(by.id('rooms-list-view')))
 					.toExist()
 					.withTimeout(10000);
-				// await device.launchApp({ newInstance: true });
 				await element(by.id('rooms-list-view-create-channel')).tap();
 				await waitFor(element(by.id('new-message-view')))
-					.toExist()
+					.toBeVisible()
 					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('new-message-view-create-channel')).tap();
 				await waitFor(element(by.id('select-users-view')))
 					.toExist()
@@ -230,7 +238,11 @@ describe('Create room screen', () => {
 				await waitFor(element(by.id('create-channel-view')))
 					.toExist()
 					.withTimeout(10000);
+				await waitFor(element(by.id('create-channel-name')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('create-channel-name')).replaceText(room);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -251,6 +263,61 @@ describe('Create room screen', () => {
 					.toExist()
 					.withTimeout(60000);
 				await expect(element(by.id(`rooms-list-view-item-${room}`))).toExist();
+			});
+
+			it('should create a room with non-latin alphabet and do a case insensitive search for it', async () => {
+				const randomValue = random();
+				const roomName = `ПРОВЕРКА${randomValue}`;
+				const roomNameLower = roomName.toLowerCase();
+
+				await waitFor(element(by.id('rooms-list-view')))
+					.toExist()
+					.withTimeout(10000);
+				await element(by.id('rooms-list-view-create-channel')).tap();
+				await waitFor(element(by.id('new-message-view')))
+					.toBeVisible()
+					.withTimeout(5000);
+				await waitFor(element(by.id('new-message-view-create-channel')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('new-message-view-create-channel')).tap();
+				await waitFor(element(by.id('select-users-view')))
+					.toExist()
+					.withTimeout(5000);
+				await element(by.id('selected-users-view-submit')).tap();
+				await waitFor(element(by.id('create-channel-view')))
+					.toExist()
+					.withTimeout(10000);
+				await waitFor(element(by.id('create-channel-name')))
+					.toBeVisible()
+					.withTimeout(2000);
+				await element(by.id('create-channel-name')).replaceText(roomName);
+				await element(by.id('create-channel-name')).tapReturnKey();
+				await waitFor(element(by.id('create-channel-submit')))
+					.toExist()
+					.withTimeout(2000);
+				await element(by.id('create-channel-submit')).tap();
+				await waitFor(element(by.id('room-view')))
+					.toExist()
+					.withTimeout(60000);
+				await expect(element(by.id('room-view'))).toExist();
+				await waitFor(element(by.id(`room-view-title-${roomName}`)))
+					.toExist()
+					.withTimeout(60000);
+				await expect(element(by.id(`room-view-title-${roomName}`))).toExist();
+				await tapBack();
+				await waitFor(element(by.id('rooms-list-view')))
+					.toExist()
+					.withTimeout(2000);
+				await waitFor(element(by.id(`rooms-list-view-item-${roomName}`)))
+					.toExist()
+					.withTimeout(60000);
+				await expect(element(by.id(`rooms-list-view-item-${roomName}`))).toExist();
+				await searchRoom(roomNameLower, 'replaceText', `rooms-list-view-item-${roomName}`);
+				await element(by.id(`rooms-list-view-item-${roomName}`)).tap();
+				await waitFor(element(by.id('room-view')))
+					.toBeVisible()
+					.withTimeout(5000);
 			});
 		});
 	});

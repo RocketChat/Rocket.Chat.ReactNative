@@ -1,7 +1,7 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, navigateToLogin } from '../../helpers/app';
-import data from '../../data';
+import { createRandomUser } from '../../helpers/data_setup';
 
 const goToDisplayPref = async () => {
 	await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
@@ -17,10 +17,11 @@ const goToRoomList = async () => {
 };
 
 describe('Display prefs', () => {
-	before(async () => {
+	beforeAll(async () => {
+		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Render', () => {
@@ -72,14 +73,14 @@ describe('Display prefs', () => {
 			it('should appear the last message in RoomList when is Expanded', async () => {
 				await element(by.id('display-pref-view-expanded')).tap();
 				await goToRoomList();
-				await expect(element(by.id('room-item-last-message')).atIndex(0)).toBeVisible();
+				await expect(element(by.id('room-item-last-message-container')).atIndex(0)).toBeVisible();
 			});
 
 			it('should not appear the last message in RoomList when is Condensed', async () => {
 				await goToDisplayPref();
 				await element(by.id('display-pref-view-condensed')).tap();
 				await goToRoomList();
-				await expect(element(by.id('room-item-last-message'))).not.toBeVisible();
+				await expect(element(by.id('room-item-last-message-container'))).not.toBeVisible();
 			});
 		});
 

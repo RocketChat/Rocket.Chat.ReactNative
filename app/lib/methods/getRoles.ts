@@ -14,7 +14,7 @@ export async function setRoles(): Promise<void> {
 	const db = database.active;
 	const rolesCollection = db.get('roles');
 	const allRoles = await rolesCollection.query().fetch();
-	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.id }), {});
+	const parsed = allRoles.reduce((acc, item) => ({ ...acc, [item.id]: item.description || item.name || item.id }), {});
 	reduxStore.dispatch(setRolesAction(parsed));
 }
 
@@ -114,7 +114,7 @@ export function getRoles(): Promise<void> {
 					const allRecords: Model[] = [...rolesToCreate, ...rolesToUpdate];
 
 					try {
-						await db.batch(...allRecords);
+						await db.batch(allRecords);
 					} catch (e) {
 						log(e);
 					}

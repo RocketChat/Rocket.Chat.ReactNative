@@ -1,18 +1,17 @@
 import React from 'react';
-import { FlatList, ListRenderItem, Text, View } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { connect } from 'react-redux';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
+import { hideActionSheetRef, showActionSheetRef } from '../../containers/ActionSheet';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import * as List from '../../containers/List';
-import Touch from '../../containers/Touch';
 import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -27,11 +26,12 @@ import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../d
 import styles from './styles';
 import Options from './Options';
 import { Services } from '../../lib/services';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 
 interface IDirectoryViewProps {
 	navigation: CompositeNavigationProp<
-		StackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
-		StackNavigationProp<MasterDetailInsideStackParamList>
+		NativeStackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
+		NativeStackNavigationProp<MasterDetailInsideStackParamList>
 	>;
 	baseUrl: string;
 	isFederationEnabled: boolean;
@@ -46,22 +46,11 @@ interface IDirectoryViewState {
 	loading: boolean;
 	text: string;
 	total: number;
-	showOptionsDropdown: boolean;
 	globalUsers: boolean;
 	type: string;
 }
 
 class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
-	static navigationOptions = ({ navigation, isMasterDetail }: IDirectoryViewProps) => {
-		const options: StackNavigationOptions = {
-			title: I18n.t('Directory')
-		};
-		if (isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
-		}
-		return options;
-	};
-
 	constructor(props: IDirectoryViewProps) {
 		super(props);
 		this.state = {
@@ -69,15 +58,32 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			loading: false,
 			text: '',
 			total: -1,
-			showOptionsDropdown: false,
 			globalUsers: true,
 			type: props.directoryDefaultView
 		};
+		this.setHeader();
 	}
 
 	componentDidMount() {
 		this.load({});
 	}
+
+	setHeader = () => {
+		const { navigation, isMasterDetail } = this.props;
+		const options: NativeStackNavigationOptions = {
+			title: I18n.t('Directory'),
+			headerRight: () => (
+				<HeaderButton.Container>
+					<HeaderButton.Item iconName='filter' onPress={this.showFilters} testID='directory-view-filter' />
+				</HeaderButton.Container>
+			)
+		};
+		if (isMasterDetail) {
+			options.headerLeft = () => <HeaderButton.CloseModal navigation={navigation} testID='directory-view-close' />;
+		}
+
+		navigation.setOptions(options);
+	};
 
 	onSearchChangeText = (text: string) => {
 		this.setState({ text }, this.search);
@@ -102,9 +108,10 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 		try {
 			const { data, type, globalUsers } = this.state;
-			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			const directories = await Services.getDirectory({
-				query,
+				text,
+				type,
+				workspace: globalUsers ? 'all' : 'local',
 				offset: data.length,
 				count: 50,
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
@@ -138,6 +145,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		} else if (type === 'teams') {
 			logEvent(events.DIRECTORY_SEARCH_TEAMS);
 		}
+		hideActionSheetRef();
 	};
 
 	toggleWorkspace = () => {
@@ -147,8 +155,20 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		);
 	};
 
-	toggleDropdown = () => {
-		this.setState(({ showOptionsDropdown }) => ({ showOptionsDropdown: !showOptionsDropdown }));
+	showFilters = () => {
+		const { type, globalUsers } = this.state;
+		const { isFederationEnabled } = this.props;
+		showActionSheetRef({
+			children: (
+				<Options
+					type={type}
+					globalUsers={globalUsers}
+					changeType={this.changeType}
+					toggleWorkspace={this.toggleWorkspace}
+					isFederationEnabled={isFederationEnabled}
+				/>
+			)
+		});
 	};
 
 	goRoom = (item: TGoRoomItem) => {
@@ -157,75 +177,52 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	onPressItem = async (item: IServerRoom) => {
-		const { type } = this.state;
-		if (type === 'users') {
-			const result = await Services.createDirectMessage(item.username as string);
-			if (result.success) {
-				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+		try {
+			const { type } = this.state;
+			if (type === 'users') {
+				const result = await Services.createDirectMessage(item.username as string);
+				if (result.success) {
+					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+				}
+				return;
 			}
-		} else if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await Services.getRoomInfo(item._id);
-			if (result.success) {
+			const subscription = await getSubscriptionByRoomId(item._id);
+			if (subscription) {
+				this.goRoom(subscription);
+				return;
+			}
+			if (['p', 'c'].includes(item.t) && !item.teamMain) {
+				const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+				if (result) {
+					this.goRoom({
+						rid: item._id,
+						name: item.name,
+						joinCodeRequired: result.joinCodeRequired,
+						t: item.t as SubscriptionType,
+						search: true
+					});
+				}
+			} else {
 				this.goRoom({
 					rid: item._id,
 					name: item.name,
-					joinCodeRequired: result.room.joinCodeRequired,
 					t: item.t as SubscriptionType,
-					search: true
+					search: true,
+					teamMain: item.teamMain,
+					teamId: item.teamId
 				});
 			}
-		} else {
-			this.goRoom({
-				rid: item._id,
-				name: item.name,
-				t: item.t as SubscriptionType,
-				search: true,
-				teamMain: item.teamMain,
-				teamId: item.teamId
-			});
+		} catch {
+			// do nothing
 		}
 	};
 
-	renderHeader = () => {
-		const { type } = this.state;
-		const { theme } = this.props;
-		let text = 'Users';
-		let icon: TIconsName = 'user';
-
-		if (type === 'channels') {
-			text = 'Channels';
-			icon = 'channel-public';
-		}
-
-		if (type === 'teams') {
-			text = 'Teams';
-			icon = 'teams';
-		}
-
-		return (
-			<>
-				<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
-				<Touch onPress={this.toggleDropdown} style={styles.dropdownItemButton} testID='directory-view-dropdown'>
-					<View
-						style={[
-							sharedStyles.separatorVertical,
-							styles.toggleDropdownContainer,
-							{ borderColor: themes[theme].separatorColor }
-						]}
-					>
-						<CustomIcon name={icon} size={20} color={themes[theme].tintColor} style={styles.toggleDropdownIcon} />
-						<Text style={[styles.toggleDropdownText, { color: themes[theme].tintColor }]}>{I18n.t(text)}</Text>
-						<CustomIcon
-							name='chevron-down'
-							size={20}
-							color={themes[theme].auxiliaryTintColor}
-							style={styles.toggleDropdownArrow}
-						/>
-					</View>
-				</Touch>
-			</>
-		);
-	};
+	renderHeader = () => (
+		<>
+			<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
+			<List.Separator />
+		</>
+	);
 
 	renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
 		const { data, type } = this.state;
@@ -235,7 +232,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		if (index === data.length - 1) {
 			style = {
 				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].separatorColor
+				borderColor: themes[theme].strokeLight
 			};
 		}
 
@@ -243,7 +240,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 			title: item.name as string,
 			onPress: () => this.onPressItem(item),
 			baseUrl,
-			testID: `directory-view-item-${item.name}`.toLowerCase(),
+			testID: `directory-view-item-${item.name}`,
 			style,
 			user,
 			theme,
@@ -286,10 +283,10 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	render = () => {
-		const { data, loading, showOptionsDropdown, type, globalUsers } = this.state;
-		const { isFederationEnabled, theme } = this.props;
+		const { data, loading } = this.state;
+		const { theme } = this.props;
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].backgroundColor }} testID='directory-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
 				<StatusBar />
 				<FlatList
 					data={data}
@@ -304,17 +301,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 					ListFooterComponent={loading ? <ActivityIndicator /> : null}
 					onEndReached={() => this.load({})}
 				/>
-				{showOptionsDropdown ? (
-					<Options
-						theme={theme}
-						type={type}
-						globalUsers={globalUsers}
-						close={this.toggleDropdown}
-						changeType={this.changeType}
-						toggleWorkspace={this.toggleWorkspace}
-						isFederationEnabled={isFederationEnabled}
-					/>
-				) : null}
 			</SafeAreaView>
 		);
 	};

@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text } from 'react-native';
-import Orientation from 'react-native-orientation-locker';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -18,7 +17,7 @@ import I18n from '../i18n';
 import KeyboardView from '../containers/KeyboardView';
 import { getUserSelector } from '../selectors/login';
 import { useTheme } from '../theme';
-import { isTablet, showErrorAlert } from '../lib/methods/helpers';
+import { showErrorAlert } from '../lib/methods/helpers';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
@@ -33,10 +32,12 @@ const styles = StyleSheet.create({
 
 interface ISubmit {
 	username: string;
+	name: string;
 }
 
 const schema = yup.object().shape({
-	username: yup.string().required()
+	username: yup.string().required(),
+	name: yup.string().required()
 });
 
 const SetUsernameView = () => {
@@ -50,15 +51,14 @@ const SetUsernameView = () => {
 
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-	const { server, token } = useAppSelector(state => ({ server: state.server.server, token: getUserSelector(state).token }));
-
-	const navigation = useNavigation<StackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>>();
+	const { server, user } = useAppSelector(state => ({
+		server: state.server.server,
+		user: getUserSelector(state)
+	}));
+	const navigation = useNavigation<NativeStackNavigationProp<SetUsernameStackParamList, 'SetUsernameView'>>();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({ title: server });
-		if (!isTablet) {
-			Orientation.lockToPortrait();
-		}
 	}, [navigation, server]);
 
 	useEffect(() => {
@@ -71,14 +71,20 @@ const SetUsernameView = () => {
 		init();
 	}, []);
 
-	const submit = async ({ username }: ISubmit) => {
+	useEffect(() => {
+		if (user) {
+			setValue('name', user.name ?? '', { shouldValidate: true });
+		}
+	}, [user]);
+
+	const submit = async ({ username, name }: ISubmit) => {
 		if (!isValid) {
 			return;
 		}
 		setLoading(true);
 		try {
-			await Services.saveUserProfile({ username });
-			dispatch(loginRequest({ resume: token }));
+			await Services.saveUserProfile({ username, name });
+			dispatch(loginRequest({ resume: user.token }));
 		} catch (e: any) {
 			showErrorAlert(e.message, I18n.t('Oops'));
 		}
@@ -86,14 +92,14 @@ const SetUsernameView = () => {
 	};
 
 	return (
-		<KeyboardView style={{ backgroundColor: colors.auxiliaryBackground }} contentContainerStyle={sharedStyles.container}>
+		<KeyboardView style={{ backgroundColor: colors.surfaceHover }} contentContainerStyle={sharedStyles.container}>
 			<StatusBar />
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>
-					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.titleText }]}>
+					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>
 						{I18n.t('Username')}
 					</Text>
-					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.titleText }]}>
+					<Text style={[sharedStyles.loginSubtitle, sharedStyles.textRegular, { color: colors.fontTitlesLabels }]}>
 						{I18n.t('Set_username_subtitle')}
 					</Text>
 					<ControlledFormTextInput
@@ -104,6 +110,26 @@ const SetUsernameView = () => {
 						returnKeyType='send'
 						onSubmitEditing={handleSubmit(submit)}
 						testID='set-username-view-input'
+						clearButtonMode='while-editing'
+						containerStyle={sharedStyles.inputLastChild}
+					/>
+					<Text
+						style={[
+							sharedStyles.loginTitle,
+							sharedStyles.textBold,
+							styles.loginTitle,
+							{ color: colors.fontTitlesLabels, marginBottom: 10 }
+						]}>
+						{I18n.t('Name')}
+					</Text>
+					<ControlledFormTextInput
+						control={control}
+						name='name'
+						autoFocus
+						placeholder={I18n.t('Name')}
+						returnKeyType='send'
+						onSubmitEditing={handleSubmit(submit)}
+						testID='set-name-view-input'
 						clearButtonMode='while-editing'
 						containerStyle={sharedStyles.inputLastChild}
 					/>

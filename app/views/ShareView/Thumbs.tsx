@@ -7,7 +7,6 @@ import { themes } from '../../lib/constants';
 import { CustomIcon } from '../../containers/CustomIcon';
 import { isIOS } from '../../lib/methods/helpers';
 import { THUMBS_HEIGHT } from './constants';
-import { allowPreview } from './utils';
 import { TSupportedThemes } from '../../theme';
 import { IShareAttachment } from '../../definitions';
 
@@ -17,11 +16,6 @@ const styles = StyleSheet.create({
 	list: {
 		height: THUMBS_HEIGHT,
 		paddingHorizontal: 8
-	},
-	videoThumbIcon: {
-		position: 'absolute',
-		left: 0,
-		bottom: 0
 	},
 	dangerIcon: {
 		position: 'absolute',
@@ -76,40 +70,26 @@ interface IThumbs extends Omit<IThumb, 'item'> {
 	attachments: IShareAttachment[];
 }
 
-const ThumbContent = React.memo(({ item, theme, isShareExtension }: IThumbContent) => {
+const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 	const type = item?.mime;
 
 	if (type?.match(/image/)) {
-		// Disallow preview of images too big in order to prevent memory issues on iOS share extension
-		if (allowPreview(isShareExtension, item?.size)) {
-			return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].borderColor }]} />;
-		}
+		return <Image source={{ uri: item.path }} style={[styles.thumb, { borderColor: themes[theme].strokeLight }]} />;
+	}
+
+	if (type?.match(/video/)) {
 		return (
-			<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-				<CustomIcon name='image' size={30} color={themes[theme].tintColor} />
+			<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
+				<CustomIcon name='camera' size={30} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		);
 	}
 
-	if (type?.match(/video/)) {
-		if (isIOS) {
-			return (
-				<View style={[styles.thumb, { borderColor: themes[theme].borderColor }]}>
-					<CustomIcon name='camera' size={30} color={themes[theme].tintColor} />
-				</View>
-			);
-		}
-		const { uri } = item;
-		return (
-			<>
-				<Image source={{ uri }} style={styles.thumb} />
-				<CustomIcon name='camera-filled' size={20} color={themes[theme].buttonText} style={styles.videoThumbIcon} />
-			</>
-		);
-	}
-
-	// Multiple files upload of files different than image/video is not implemented, so there's no thumb
-	return null;
+	return (
+		<View style={[styles.thumb, { borderColor: themes[theme].strokeLight }]}>
+			<CustomIcon name='attach' size={30} color={themes[theme].badgeBackgroundLevel2} />
+		</View>
+	);
 });
 
 const ThumbButton: typeof React.Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
@@ -120,23 +100,22 @@ const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => 
 			<ThumbContent item={item} theme={theme} isShareExtension={isShareExtension} />
 			<RectButton
 				hitSlop={BUTTON_HIT_SLOP}
-				style={[styles.removeButton, { backgroundColor: themes[theme].bodyText, borderColor: themes[theme].auxiliaryBackground }]}
+				style={[styles.removeButton, { backgroundColor: themes[theme].fontDefault, borderColor: themes[theme].surfaceHover }]}
 				activeOpacity={1}
-				rippleColor={themes[theme].bannerBackground}
-				onPress={() => onRemove(item)}
-			>
-				<View style={[styles.removeView, { borderColor: themes[theme].auxiliaryBackground }]}>
-					<CustomIcon name='close' color={themes[theme].backgroundColor} size={14} />
+				rippleColor={themes[theme].surfaceNeutral}
+				onPress={() => onRemove(item)}>
+				<View style={[styles.removeView, { borderColor: themes[theme].surfaceHover }]}>
+					<CustomIcon name='close' color={themes[theme].surfaceRoom} size={14} />
 				</View>
 			</RectButton>
 			{!item?.canUpload ? (
-				<CustomIcon name='warning' size={20} color={themes[theme].dangerColor} style={styles.dangerIcon} />
+				<CustomIcon name='warning' size={20} color={themes[theme].buttonBackgroundDangerDefault} style={styles.dangerIcon} />
 			) : null}
 		</>
 	</ThumbButton>
 );
 
-const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
+const Thumbs = ({ attachments, theme, isShareExtension, onPress, onRemove }: IThumbs) => {
 	if (attachments?.length > 1) {
 		return (
 			<FlatList
@@ -152,11 +131,11 @@ const Thumbs = React.memo(({ attachments, theme, isShareExtension, onPress, onRe
 						onRemove={() => onRemove(item)}
 					/>
 				)}
-				style={[styles.list, { backgroundColor: themes[theme].messageboxBackground }]}
+				style={[styles.list, { backgroundColor: themes[theme].surfaceLight }]}
 			/>
 		);
 	}
 	return null;
-});
+};
 
 export default Thumbs;

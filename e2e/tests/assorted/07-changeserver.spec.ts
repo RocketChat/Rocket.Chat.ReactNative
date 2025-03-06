@@ -1,5 +1,8 @@
+import { device, waitFor, element, by } from 'detox';
+
 import data from '../../data';
-import { navigateToLogin, login, checkServer, sleep } from '../../helpers/app';
+import { navigateToLogin, login, checkServer, signup } from '../../helpers/app';
+import { createRandomRoom, createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
 	await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
@@ -10,18 +13,29 @@ const reopenAndCheckServer = async (server: string) => {
 };
 
 describe('Change server', () => {
-	before(async () => {
+	let user: ITestUser;
+	let room: string;
+
+	const deleteUsersAfterAll: IDeleteCreateUser[] = [];
+
+	beforeAll(async () => {
+		user = await createRandomUser();
+		({ name: room } = await createRandomRoom(user));
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
-		await waitFor(element(by.id('rooms-list-view')))
-			.toBeVisible()
-			.withTimeout(10000);
+		await login(user.username, user.password);
 	});
 
-	it('should open the dropdown button, have the server add button and create workspace button', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+	afterAll(async () => {
+		await deleteCreatedUsers(deleteUsersAfterAll);
+	});
+
+	it('should open the servers list, have the server add button and create workspace button', async () => {
+		await waitFor(element(by.id('rooms-list-header-servers-list-button')))
+			.toBeVisible()
+			.withTimeout(2000);
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await waitFor(element(by.id('rooms-list-header-server-add')))
@@ -37,7 +51,7 @@ describe('Change server', () => {
 		await waitFor(element(by.id('new-server-view')))
 			.toBeVisible()
 			.withTimeout(6000);
-		await element(by.id('new-server-view-input')).replaceText(`${data.alternateServer}`);
+		await element(by.id('new-server-view-input')).replaceText(data.alternateServer);
 		await element(by.id('new-server-view-input')).tapReturnKey();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
@@ -46,11 +60,11 @@ describe('Change server', () => {
 	});
 
 	it('should add server and create new user', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.alternateServer}`)).tap();
+		await element(by.id(`server-item-${data.alternateServer}`)).tap();
 		await waitFor(element(by.id('workspace-view')))
 			.toBeVisible()
 			.withTimeout(60000);
@@ -60,17 +74,10 @@ describe('Change server', () => {
 			.withTimeout(2000);
 
 		// Register new user
-		await sleep(5000);
-		await element(by.id('register-view-name')).replaceText(data.registeringUser2.username);
-		await element(by.id('register-view-username')).replaceText(data.registeringUser2.username);
-		await element(by.id('register-view-email')).replaceText(data.registeringUser2.email);
-		await element(by.id('register-view-password')).replaceText(data.registeringUser2.password);
-		await element(by.id('register-view-submit')).tap();
-		await waitFor(element(by.id('rooms-list-view')))
-			.toBeVisible()
-			.withTimeout(60000);
+		const username = await signup();
+		deleteUsersAfterAll.push({ server: data.alternateServer, username });
 
-		await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 			.toBeNotVisible()
 			.withTimeout(60000);
 		await checkServer(data.alternateServer);
@@ -81,15 +88,15 @@ describe('Change server', () => {
 	});
 
 	it('should change back to main server', async () => {
-		await element(by.id('rooms-list-header-server-dropdown-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-server-dropdown')))
+		await element(by.id('rooms-list-header-servers-list-button')).tap();
+		await waitFor(element(by.id('rooms-list-header-servers-list')))
 			.toBeVisible()
 			.withTimeout(5000);
-		await element(by.id(`rooms-list-header-server-${data.server}`)).tap();
+		await element(by.id(`server-item-${data.server}`)).tap();
 		await waitFor(element(by.id('rooms-list-view')))
 			.toBeVisible()
 			.withTimeout(10000);
-		await waitFor(element(by.id(`rooms-list-view-item-${data.groups.private.name}`)))
+		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 			.toBeVisible()
 			.withTimeout(60000);
 		await checkServer(data.server);

@@ -1,28 +1,30 @@
 import React, { useEffect, useLayoutEffect } from 'react';
 import { FlatList } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Q } from '@nozbe/watermelondb';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
-import { shareExtensionInit } from '../lib/methods/shareExtension';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
 import { ShareInsideStackParamList } from '../definitions/navigationTypes';
 import { TServerModel } from '../definitions';
 import { useAppSelector } from '../lib/hooks';
+import { selectServerRequest } from '../actions/server';
 
 const getItemLayout = (data: any, index: number) => ({ length: ROW_HEIGHT, offset: ROW_HEIGHT * index, index });
 const keyExtractor = (item: TServerModel) => item.id;
 
 const SelectServerView = () => {
 	const [servers, setServers] = React.useState<TServerModel[]>([]);
+	const dispatch = useDispatch();
 
-	const server = useAppSelector(state => state.share.server.server);
-	const navigation = useNavigation<StackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
+	const server = useAppSelector(state => state.server.server);
+	const navigation = useNavigation<NativeStackNavigationProp<ShareInsideStackParamList, 'SelectServerView'>>();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -40,20 +42,20 @@ const SelectServerView = () => {
 		init();
 	}, []);
 
-	const select = async (serverSelected: string) => {
-		navigation.navigate('ShareListView');
+	const select = (serverSelected: string, version: string) => {
 		if (serverSelected !== server) {
-			await shareExtensionInit(serverSelected);
+			dispatch(selectServerRequest(serverSelected, version));
 		}
+		navigation.pop();
 	};
 
 	return (
-		<SafeAreaView>
+		<SafeAreaView testID='select-server-view'>
 			<StatusBar />
 			<FlatList
 				data={servers}
 				renderItem={({ item }: { item: TServerModel }) => (
-					<ServerItem onPress={() => select(item.id)} item={item} hasCheck={item.id === server} />
+					<ServerItem onPress={() => select(item.id, item.version)} item={item} hasCheck={item.id === server} />
 				)}
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout} // Refactor row_height

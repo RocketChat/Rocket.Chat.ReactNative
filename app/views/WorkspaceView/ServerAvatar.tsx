@@ -1,15 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createImageProgress } from 'react-native-image-progress';
-import * as Progress from 'react-native-progress';
-import FastImage from 'react-native-fast-image';
+import { StyleSheet, View } from 'react-native';
+import { Image } from 'expo-image';
 
-import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
 import { isTablet } from '../../lib/methods/helpers';
-import { TSupportedThemes } from '../../theme';
-
-const ImageProgress = createImageProgress(FastImage);
+import { useTheme } from '../../theme';
 
 const SIZE = 96;
 const MARGIN_TOP = isTablet ? 0 : 64;
@@ -27,54 +21,23 @@ const styles = StyleSheet.create({
 		width: SIZE,
 		height: SIZE,
 		borderRadius: BORDER_RADIUS
-	},
-	fallback: {
-		width: SIZE,
-		height: SIZE,
-		borderRadius: BORDER_RADIUS,
-		alignItems: 'center',
-		justifyContent: 'center'
-	},
-	initial: {
-		...sharedStyles.textBold,
-		fontSize: 42
 	}
 });
 
-const getInitial = (url: string) => url && url.replace(/http(s?):\/\//, '').slice(0, 1);
-
-interface IFallback {
-	theme: TSupportedThemes;
-	initial: string;
-}
-const Fallback = ({ theme, initial }: IFallback) => (
-	<View style={[styles.container, styles.fallback, { backgroundColor: themes[theme].dangerColor }]}>
-		<Text style={[styles.initial, { color: themes[theme].buttonText }]}>{initial}</Text>
-	</View>
-);
-
 interface IServerAvatar {
-	theme: TSupportedThemes;
 	url: string;
 	image: string;
 }
-const ServerAvatar = React.memo(({ theme, url, image }: IServerAvatar) => (
-	<View style={styles.container}>
-		{image && (
-			<ImageProgress
-				style={[styles.image, { borderColor: themes[theme].borderColor }]}
-				source={{ uri: `${url}/${image}` }}
-				resizeMode={FastImage.resizeMode.cover}
-				indicator={Progress.Pie}
-				indicatorProps={{
-					color: themes[theme].actionTintColor
-				}}
-				renderError={() => <Fallback theme={theme} initial={getInitial(url)} />}
-			/>
-		)}
-	</View>
-));
 
-ServerAvatar.displayName = 'ServerAvatar';
+// TODO: missing skeleton
+const ServerAvatar = React.memo(({ url, image }: IServerAvatar) => {
+	const { colors } = useTheme();
+
+	return (
+		<View style={styles.container}>
+			{image && <Image style={[styles.image, { borderColor: colors.strokeLight }]} source={{ uri: `${url}/${image}` }} />}
+		</View>
+	);
+});
 
 export default ServerAvatar;

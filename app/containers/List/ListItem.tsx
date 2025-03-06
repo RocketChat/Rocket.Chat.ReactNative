@@ -1,5 +1,5 @@
-import React from 'react';
-import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View } from 'react-native';
+import React, { useMemo } from 'react';
+import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole } from 'react-native';
 
 import Touch from '../Touch';
 import { themes } from '../../lib/constants';
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 	title: {
 		flexShrink: 1,
 		fontSize: 16,
-		...sharedStyles.textRegular
+		...sharedStyles.textMedium
 	},
 	subtitle: {
 		fontSize: 14,
@@ -68,6 +68,9 @@ interface IListItemContent {
 	alert?: boolean;
 	heightContainer?: number;
 	styleTitle?: StyleProp<TextStyle>;
+	additionalAcessibilityLabel?: string | boolean;
+	accessibilityRole?: AccessibilityRole;
+	additionalAcessibilityLabelCheck?: boolean;
 }
 
 const Content = React.memo(
@@ -85,27 +88,58 @@ const Content = React.memo(
 		showActionIndicator = false,
 		theme,
 		heightContainer,
-		styleTitle
+		styleTitle,
+		additionalAcessibilityLabel,
+		additionalAcessibilityLabelCheck,
+		accessibilityRole
 	}: IListItemContent) => {
 		const { fontScale } = useDimensions();
+
+		const handleAcessibilityLabel = useMemo(() => {
+			let label = '';
+			if (title) {
+				label = translateTitle ? I18n.t(title) : title;
+			}
+			if (subtitle) {
+				label = translateSubtitle ? `${label} ${I18n.t(subtitle)}` : `${label} ${subtitle}`;
+			}
+			if (typeof additionalAcessibilityLabel === 'string') {
+				label = `${label} ${additionalAcessibilityLabel}`;
+			}
+			if (typeof additionalAcessibilityLabel === 'boolean') {
+				if (additionalAcessibilityLabelCheck) {
+					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Checked') : I18n.t('Unchecked')}`;
+				} else {
+					label = `${label} ${additionalAcessibilityLabel ? I18n.t('Enabled') : I18n.t('Disabled')}`;
+				}
+			}
+			return label;
+		}, [title, subtitle, translateTitle, translateSubtitle, additionalAcessibilityLabel, additionalAcessibilityLabelCheck]);
 
 		return (
 			<View
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}
-			>
+				accessible
+				accessibilityLabel={handleAcessibilityLabel}
+				accessibilityRole={accessibilityRole ?? 'button'}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
-						<Text style={[styles.title, styleTitle, { color: color || themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]} numberOfLines={1}>
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
-							<CustomIcon name='info' size={ICON_SIZE} color={themes[theme].dangerColor} style={styles.alertIcon} />
+							<CustomIcon
+								name='info'
+								size={ICON_SIZE}
+								color={themes[theme].buttonBackgroundDangerDefault}
+								style={styles.alertIcon}
+							/>
 						) : null}
 					</View>
 					{subtitle ? (
-						<Text style={[styles.subtitle, { color: themes[theme].auxiliaryText }]} numberOfLines={1}>
+						<Text style={[styles.subtitle, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
 							{translateSubtitle ? I18n.t(subtitle) : subtitle}
 						</Text>
 					) : null}
@@ -136,10 +170,9 @@ interface IListItemButton {
 const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }: IListButtonPress) => (
 	<Touch
 		onPress={() => onPress(props.title)}
-		style={{ backgroundColor: backgroundColor || themes[props.theme].backgroundColor }}
+		style={{ backgroundColor: backgroundColor || themes[props.theme].surfaceRoom }}
 		underlayColor={underlayColor}
-		enabled={!props.disabled}
-	>
+		enabled={!props.disabled}>
 		<Content {...props} />
 	</Touch>
 ));
@@ -157,7 +190,7 @@ const ListItem = React.memo(({ ...props }: IListItem) => {
 		return <Button {...props} theme={theme} onPress={onPress} />;
 	}
 	return (
-		<View style={{ backgroundColor: props.backgroundColor || themes[theme].backgroundColor }}>
+		<View style={{ backgroundColor: props.backgroundColor || themes[theme].surfaceRoom }}>
 			<Content {...props} theme={theme} />
 		</View>
 	);

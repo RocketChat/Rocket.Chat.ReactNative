@@ -1,8 +1,9 @@
 import React from 'react';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
-import { TextProps } from 'react-native';
+import type { IconProps } from 'react-native-vector-icons/Icon';
 
 import { mappedIcons } from './mappedIcons';
+import { useTheme } from '../../theme';
 
 const icoMoonConfig = require('./selection.json');
 
@@ -10,14 +11,15 @@ export const IconSet = createIconSetFromIcoMoon(icoMoonConfig, 'custom', 'custom
 
 export type TIconsName = keyof typeof mappedIcons;
 
-export interface ICustomIcon extends TextProps {
+export interface ICustomIcon extends IconProps {
 	name: TIconsName;
 	size: number;
-	color: string;
+	color?: string;
 }
 
-const CustomIcon = ({ name, size, color, ...props }: ICustomIcon) => (
-	// @ts-ignore TODO remove this after update @types/react-native to 0.65.0
-	<IconSet name={name} size={size} color={color} {...props} />
-);
+const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
+	const { colors } = useTheme();
+	return <IconSet name={name} size={size} color={color || colors.fontDefault} style={[{ lineHeight: size }, style]} {...props} />;
+};
+
 export { CustomIcon };

@@ -18,8 +18,7 @@ async function load({ tmid }: { tmid: string }) {
 			return [];
 		}
 		return EJSON.fromJSONValue(result);
-	} catch (error) {
-		console.log(error);
+	} catch {
 		return [];
 	}
 }
@@ -62,7 +61,9 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 						const newThreadMessage = data.find((t: TThreadMessageModel) => t._id === threadMessage.id);
 						return threadMessage.prepareUpdate(
 							protectedFunction((tm: TThreadMessageModel) => {
+								const { attachments } = tm;
 								Object.assign(tm, newThreadMessage);
+								tm.attachments = attachments;
 								if (threadMessage.tmid) {
 									tm.rid = threadMessage.tmid;
 								}
@@ -72,7 +73,7 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 					});
 
 					await db.write(async () => {
-						await db.batch(...threadMessagesToCreate, ...threadMessagesToUpdate);
+						await db.batch([...threadMessagesToCreate, ...threadMessagesToUpdate]);
 					});
 				} catch (e) {
 					log(e);

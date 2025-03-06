@@ -32,9 +32,11 @@ export default StyleSheet.create({
 	},
 	plainText: {
 		fontSize: 16,
-		flexShrink: 1
+		flexShrink: 1,
+		lineHeight: 22
 	},
 	text: {
+		lineHeight: 22,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
@@ -44,12 +46,13 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textBig: {
+		lineHeight: 43,
 		fontSize: 30,
 		...sharedStyles.textRegular
 	},
 	customEmoji: {
-		width: 20,
-		height: 20
+		width: 15,
+		height: 15
 	},
 	customEmojiBig: {
 		width: 30,
@@ -70,11 +73,11 @@ export default StyleSheet.create({
 	},
 	inlineImage: {
 		width: 300,
-		height: 300,
-		resizeMode: 'contain'
+		height: 300
 	},
 	codeInline: {
 		fontSize: 16,
+		lineHeight: 22,
 		...sharedStyles.textRegular,
 		...codeFontFamily,
 		borderWidth: 1,
@@ -89,6 +92,7 @@ export default StyleSheet.create({
 	},
 	codeBlockText: {
 		fontSize: 16,
+		lineHeight: 22,
 		...sharedStyles.textRegular,
 		...codeFontFamily
 	},
@@ -162,5 +166,8 @@ export default StyleSheet.create({
 	},
 	inline: {
 		flexShrink: 1
+	},
+	listPrefix: {
+		fontVariant: ['tabular-nums']
 	}
 });

@@ -1,6 +1,6 @@
 import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
@@ -14,8 +14,12 @@ import SetUsernameView from './views/SetUsernameView';
 import OutsideStack from './stacks/OutsideStack';
 import InsideStack from './stacks/InsideStack';
 import MasterDetailStack from './stacks/MasterDetailStack';
+import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
+import { themes } from './lib/constants';
+
+const createStackNavigator = createNativeStackNavigator;
 
 // SetUsernameStack
 const SetUsername = createStackNavigator<SetUsernameStackParamList>();
@@ -55,18 +59,20 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 					setCurrentScreen(currentRouteName);
 				}
 				Navigation.routeNameRef.current = currentRouteName;
-			}}
-		>
-			<Stack.Navigator screenOptions={{ headerShown: false, animationEnabled: false }}>
-				<>
-					{root === RootEnum.ROOT_LOADING ? <Stack.Screen name='AuthLoading' component={AuthLoadingView} /> : null}
-					{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
-					{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
-						<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
-					) : null}
-					{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
-					{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
-				</>
+			}}>
+			<Stack.Navigator screenOptions={{ headerShown: false, animation: 'none', navigationBarColor: themes[theme].surfaceLight }}>
+				{root === RootEnum.ROOT_LOADING || root === RootEnum.ROOT_LOADING_SHARE_EXTENSION ? (
+					<Stack.Screen name='AuthLoading' component={AuthLoadingView} />
+				) : null}
+				{root === RootEnum.ROOT_OUTSIDE ? <Stack.Screen name='OutsideStack' component={OutsideStack} /> : null}
+				{root === RootEnum.ROOT_INSIDE && isMasterDetail ? (
+					<Stack.Screen name='MasterDetailStack' component={MasterDetailStack} />
+				) : null}
+				{root === RootEnum.ROOT_INSIDE && !isMasterDetail ? <Stack.Screen name='InsideStack' component={InsideStack} /> : null}
+				{root === RootEnum.ROOT_SET_USERNAME ? <Stack.Screen name='SetUsernameStack' component={SetUsernameStack} /> : null}
+				{root === RootEnum.ROOT_SHARE_EXTENSION ? (
+					<Stack.Screen name='ShareExtensionStack' component={ShareExtensionStack} />
+				) : null}
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

@@ -14,14 +14,16 @@ const Thread = React.memo(
 		const { theme } = useTheme();
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
-		if (!tlm || isThreadRoom || tcount === 0) {
+		if (!tlm || isThreadRoom || tcount === null) {
 			return null;
 		}
 
 		return (
 			<View style={styles.buttonContainer}>
-				<View style={[styles.button, { backgroundColor: themes[theme].tintColor }]} testID={`message-thread-button-${msg}`}>
-					<Text style={[styles.buttonText, { color: themes[theme].buttonText }]}>{I18n.t('Reply')}</Text>
+				<View
+					style={[styles.button, { backgroundColor: themes[theme].badgeBackgroundLevel2 }]}
+					testID={`message-thread-button-${msg}`}>
+					<Text style={[styles.buttonText, { color: themes[theme].fontWhite }]}>{I18n.t('Reply')}</Text>
 				</View>
 				<ThreadDetails
 					item={{

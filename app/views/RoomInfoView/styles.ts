@@ -21,23 +21,25 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginBottom: 20,
-		paddingVertical: 8
+		paddingBottom: 8,
+		paddingTop: 32
 	},
 	avatar: {
 		marginHorizontal: 10
 	},
 	roomTitleContainer: {
-		paddingTop: 20,
+		paddingTop: 16,
 		marginHorizontal: 16,
-		alignItems: 'center'
+		alignItems: 'center',
+		flexDirection: 'row'
 	},
 	roomTitle: {
-		fontSize: 20,
+		fontSize: 16,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textMedium
 	},
 	roomUsername: {
-		fontSize: 18,
+		fontSize: 14,
 		...sharedStyles.textAlignCenter,
 		...sharedStyles.textRegular
 	},
@@ -73,14 +75,20 @@ export default StyleSheet.create({
 	},
 	roomButtonsContainer: {
 		flexDirection: 'row',
-		paddingTop: 30
+		paddingTop: 16
 	},
 	roomButton: {
 		alignItems: 'center',
-		paddingHorizontal: 20,
-		justifyContent: 'space-between'
+		marginHorizontal: 4,
+		justifyContent: 'space-between',
+		width: 80
 	},
 	roomButtonText: {
-		marginTop: 5
+		marginTop: 4
+	},
+	roomInfoViewTitleContainer: {
+		paddingTop: 16,
+		paddingHorizontal: 20,
+		alignItems: 'center'
 	}
 });

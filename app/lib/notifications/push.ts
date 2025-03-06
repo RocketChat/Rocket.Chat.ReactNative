@@ -7,6 +7,7 @@ import {
 	NotificationAction,
 	NotificationCategory
 } from 'react-native-notifications';
+import { PermissionsAndroid, Platform } from 'react-native';
 
 import { INotification } from '../../definitions';
 import { isIOS } from '../methods/helpers';
@@ -21,20 +22,37 @@ export const setNotificationsBadgeCount = (count = 0): void => {
 	}
 };
 
+export const removeAllNotifications = (): void => {
+	Notifications.removeAllDeliveredNotifications();
+};
+
 export const pushNotificationConfigure = (onNotification: (notification: INotification) => void): Promise<any> => {
 	if (isIOS) {
 		// init
 		Notifications.ios.registerRemoteNotifications();
-		// setCategories
+
 		const notificationAction = new NotificationAction('REPLY_ACTION', 'background', I18n.t('Reply'), true, {
 			buttonTitle: I18n.t('Reply'),
 			placeholder: I18n.t('Type_message')
 		});
+		const acceptAction = new NotificationAction('ACCEPT_ACTION', 'foreground', I18n.t('accept'), true);
+		const rejectAction = new NotificationAction('DECLINE_ACTION', 'foreground', I18n.t('decline'), true);
+
 		const notificationCategory = new NotificationCategory('MESSAGE', [notificationAction]);
-		Notifications.setCategories([notificationCategory]);
+		const videoConfCategory = new NotificationCategory('VIDEOCONF', [acceptAction, rejectAction]);
+
+		Notifications.setCategories([videoConfCategory, notificationCategory]);
+	} else if (Platform.OS === 'android' && Platform.constants.Version >= 33) {
+		// @ts-ignore
+		PermissionsAndroid.request('android.permission.POST_NOTIFICATIONS').then(permissionStatus => {
+			if (permissionStatus === 'granted') {
+				Notifications.registerRemoteNotifications();
+			} else {
+				// TODO: Ask user to enable notifications
+			}
+		});
 	} else {
-		// init
-		Notifications.android.registerRemoteNotifications();
+		Notifications.registerRemoteNotifications();
 	}
 
 	Notifications.events().registerRemoteNotificationsRegistered((event: Registered) => {

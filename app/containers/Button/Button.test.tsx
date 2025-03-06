@@ -8,7 +8,7 @@ const onPressMock = jest.fn();
 
 const testProps = {
 	title: 'Press me!',
-	type: 'primary',
+	type: 'primary' as const,
 	onPress: onPressMock,
 	testID: 'testButton',
 	initialText: 'Initial text',
@@ -19,7 +19,7 @@ const TestButton = ({ loading = false, disabled = false }) => (
 	<View>
 		<Button
 			title={testProps.title}
-			type={testProps.title}
+			type={testProps.type}
 			onPress={testProps.onPress}
 			testID={testProps.testID}
 			accessibilityLabel={testProps.title}
@@ -44,8 +44,8 @@ describe('ButtonTests', () => {
 	});
 
 	test('find button using accessibilityLabel', async () => {
-		const { findByA11yLabel } = render(<TestButton />);
-		const Button = await findByA11yLabel(testProps.title);
+		const { getByLabelText } = render(<TestButton />);
+		const Button = await getByLabelText(testProps.title);
 		expect(Button).toBeTruthy();
 	});
 

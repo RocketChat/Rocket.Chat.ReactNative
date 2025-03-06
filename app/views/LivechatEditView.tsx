@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
+import log from '../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import { FormTextInput } from '../containers/TextInput';
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
 
 interface ILivechatEditViewProps {
 	user: IUser;
-	navigation: StackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'LivechatEditView'>;
 	route: RouteProp<ChatsStackParamList, 'LivechatEditView'>;
 	theme: TSupportedThemes;
 	editOmnichannelContact: string[] | undefined;
@@ -53,7 +54,7 @@ interface ILivechatEditViewProps {
 }
 
 const Title = ({ title, theme }: ITitle) =>
-	title ? <Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text> : null;
+	title ? <Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{title}</Text> : null;
 
 const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewProps) => {
 	const [customFields, setCustomFields] = useState<ICustomFields>({});
@@ -90,6 +91,11 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	const [tagParam, setTags] = useState(livechat?.tags || []);
 	const [tagParamSelected, setTagParamSelected] = useState(livechat?.tags || []);
 
+	const tagOptions = tagParam.map((tag: string) => ({ text: { text: tag }, value: tag }));
+	const tagValues = Array.isArray(tagParamSelected)
+		? tagOptions.filter((option: any) => tagParamSelected.includes(option.value))
+		: [];
+
 	useEffect(() => {
 		const arr = [...tagParam, ...availableUserTags];
 		const uniqueArray = arr.filter((val, i) => arr.indexOf(val) === i);
@@ -106,61 +112,69 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	};
 
 	const handleGetAgentDepartments = async () => {
-		const result = await Services.getAgentDepartments(visitor?._id);
-		if (result.success) {
-			const agentDepartments = result.departments.map(dept => dept.departmentId);
-			handleGetTagsList(agentDepartments);
+		try {
+			const result = await Services.getAgentDepartments(visitor?._id);
+			if (result.success) {
+				const agentDepartments = result.departments.map(dept => dept.departmentId);
+				handleGetTagsList(agentDepartments);
+			}
+		} catch {
+			// do nothing
 		}
 	};
 
 	const submit = async () => {
-		const userData = { _id: visitor?._id } as TParams;
+		try {
+			const userData = { _id: visitor?._id } as TParams;
 
-		const { rid } = livechat;
-		const sms = livechat?.sms;
+			const { rid } = livechat;
+			const sms = livechat?.sms;
 
-		const roomData = { _id: rid } as TParams;
+			const roomData = { _id: rid } as TParams;
 
-		if (params.name) {
-			userData.name = params.name;
-		}
-		if (params.email) {
-			userData.email = params.email;
-		}
-		if (params.phone) {
-			userData.phone = params.phone;
-		}
-
-		userData.livechatData = {};
-		Object.entries(customFields?.visitor || {}).forEach(([key]) => {
-			if (params[key] || params[key] === '') {
-				userData.livechatData[key] = params[key];
+			if (params.name) {
+				userData.name = params.name;
 			}
-		});
-
-		if (params.topic) {
-			roomData.topic = params.topic;
-		}
-
-		roomData.tags = tagParamSelected;
-
-		roomData.livechatData = {};
-		Object.entries(customFields?.livechat || {}).forEach(([key]) => {
-			if (params[key] || params[key] === '') {
-				roomData.livechatData[key] = params[key];
+			if (params.email) {
+				userData.email = params.email;
 			}
-		});
+			if (params.phone) {
+				userData.phone = params.phone;
+			}
 
-		if (sms) {
-			delete userData.phone;
-		}
+			userData.livechatData = {};
+			Object.entries(customFields?.visitor || {}).forEach(([key]) => {
+				if (params[key] || params[key] === '') {
+					userData.livechatData[key] = params[key];
+				}
+			});
 
-		const { error } = await Services.editLivechat(userData, roomData);
-		if (error) {
-			EventEmitter.emit(LISTENER, { message: error });
-		} else {
-			EventEmitter.emit(LISTENER, { message: I18n.t('Saved') });
-			navigation.goBack();
+			if (params.topic) {
+				roomData.topic = params.topic;
+			}
+
+			roomData.tags = tagParamSelected;
+
+			roomData.livechatData = {};
+			Object.entries(customFields?.livechat || {}).forEach(([key]) => {
+				if (params[key] || params[key] === '') {
+					roomData.livechatData[key] = params[key];
+				}
+			});
+
+			if (sms) {
+				delete userData.phone;
+			}
+
+			const { error } = await Services.editLivechat(userData, roomData);
+			if (error) {
+				EventEmitter.emit(LISTENER, { message: error });
+			} else {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Saved') });
+				navigation.goBack();
+			}
+		} catch (e) {
+			log(e);
 		}
 	};
 
@@ -178,10 +192,9 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+			style={{ backgroundColor: themes[theme].surfaceHover }}
 			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<Title title={visitor?.username} theme={theme} />
@@ -252,14 +265,14 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 						editable={!!editLivechatRoomCustomFieldsPermission}
 					/>
 
-					<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Tags')}</Text>
+					<Text style={[styles.label, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Tags')}</Text>
 					<MultiSelect
-						options={tagParam.map((tag: string) => ({ text: { text: tag }, value: tag }))}
+						options={tagOptions}
 						onChange={({ value }: { value: string[] }) => {
 							setTagParamSelected([...value]);
 						}}
 						placeholder={{ text: I18n.t('Tags') }}
-						value={tagParamSelected}
+						value={tagValues}
 						context={BlockContext.FORM}
 						multiselect
 						disabled={!editLivechatRoomCustomFieldsPermission}

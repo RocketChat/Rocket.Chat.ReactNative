@@ -1,5 +1,5 @@
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -15,8 +15,8 @@ import { MasterDetailInsideStackParamList } from '../../../stacks/MasterDetailSt
 import { ChatsStackParamList } from '../../../stacks/types';
 
 type TNavigation = CompositeNavigationProp<
-	StackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
-	StackNavigationProp<MasterDetailInsideStackParamList>
+	NativeStackNavigationProp<ChatsStackParamList, 'RoomActionsView'>,
+	NativeStackNavigationProp<MasterDetailInsideStackParamList>
 >;
 
 interface IActionsSection {
@@ -46,6 +46,7 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 		route: keyof ChatsStackParamList;
 		params: ChatsStackParamList[keyof ChatsStackParamList];
 	}) => {
+		// @ts-ignore
 		navigate(route, params);
 		// @ts-ignore
 		logEvent(events[`RM_GO_${route.replace('View', '').toUpperCase()}`]);
@@ -75,7 +76,8 @@ export default function ActionsSection({ rid, t, joined }: IActionsSection): Rea
 								route: 'SelectedUsersView',
 								params: {
 									title: i18n.t('Add_users'),
-									nextAction: addUser
+									nextAction: addUser,
+									showSkipText: false
 								}
 							})
 						}

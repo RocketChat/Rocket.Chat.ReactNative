@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ScrollView, Switch, Text } from 'react-native';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { ScrollView, Text, View } from 'react-native';
 
 import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
@@ -21,10 +20,13 @@ import SelectUsers from './SelectUsers';
 import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError, ICreateChannelViewState } from './interfaces';
 import { IApplicationState, ISearchLocal, ISubscription } from '../../definitions';
-import { E2E_ROOM_TYPES, SWITCH_TRACK_COLOR, themes } from '../../lib/constants';
+import { E2E_ROOM_TYPES, themes } from '../../lib/constants';
 import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
+import * as List from '../../containers/List';
+import Switch from '../../containers/Switch';
+import Button from '../../containers/Button';
 
-class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
+class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICreateChannelViewState> {
 	private channel: ISubscription;
 
 	constructor(props: ICreateChannelViewProps) {
@@ -43,13 +45,8 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		this.setHeader();
 	}
 
-	componentDidUpdate(prevProps: ICreateChannelViewProps, prevState: ICreateChannelViewState) {
-		const { channel, name } = this.state;
+	componentDidUpdate(prevProps: ICreateChannelViewProps) {
 		const { loading, failure, error, result, isMasterDetail } = this.props;
-
-		if (channel?.rid !== prevState.channel?.rid || name !== prevState.name) {
-			this.setHeader();
-		}
 
 		if (loading !== prevProps.loading) {
 			sendLoadingEvent({ visible: loading });
@@ -76,15 +73,8 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
-			headerRight: this.valid()
-				? () => (
-						<HeaderButton.Container>
-							<HeaderButton.Item title={I18n.t('Create')} onPress={this.submit} testID='create-discussion-submit' />
-						</HeaderButton.Container>
-				  )
-				: null,
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
-		} as StackNavigationOptions);
+		});
 	};
 
 	submit = () => {
@@ -144,46 +134,60 @@ class CreateChannelView extends React.Component<ICreateChannelViewProps, ICreate
 		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
 			<KeyboardView
-				style={{ backgroundColor: themes[theme].auxiliaryBackground }}
+				style={{ backgroundColor: themes[theme].surfaceHover }}
 				contentContainerStyle={styles.container}
-				keyboardVerticalOffset={128}
-			>
+				keyboardVerticalOffset={128}>
 				<StatusBar />
-				<SafeAreaView testID='create-discussion-view' style={styles.container}>
+				<SafeAreaView testID='create-discussion-view'>
 					<ScrollView {...scrollPersistTaps}>
-						<Text style={[styles.description, { color: themes[theme].auxiliaryText }]}>{I18n.t('Discussion_Desc')}</Text>
-						<SelectChannel
-							server={server}
-							userId={user.id}
-							token={user.token}
-							initial={this.channel && { text: getRoomTitle(this.channel) }}
-							onChannelSelect={this.selectChannel}
-							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-							serverVersion={serverVersion}
-						/>
-						<FormTextInput
-							label={I18n.t('Discussion_name')}
-							testID='multi-select-discussion-name'
-							placeholder={I18n.t('A_meaningful_name_for_the_discussion_room')}
-							containerStyle={styles.inputStyle}
-							defaultValue={name}
-							onChangeText={(text: string) => this.setState({ name: text })}
-						/>
-						<SelectUsers
-							server={server}
-							userId={user.id}
-							token={user.token}
-							selected={users}
-							onUserSelect={this.selectUsers}
-							blockUnauthenticatedAccess={blockUnauthenticatedAccess}
-							serverVersion={serverVersion}
-						/>
+						<Text style={[styles.description, { color: themes[theme].fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
+						<View style={{ gap: 12, paddingTop: 12 }}>
+							<SelectChannel
+								server={server}
+								userId={user.id}
+								token={user.token}
+								initial={this.channel && { text: getRoomTitle(this.channel) }}
+								onChannelSelect={this.selectChannel}
+								blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+								serverVersion={serverVersion}
+							/>
+							<FormTextInput
+								required
+								label={I18n.t('Discussion_name')}
+								testID='multi-select-discussion-name'
+								containerStyle={styles.inputStyle}
+								defaultValue={name}
+								onChangeText={(text: string) => this.setState({ name: text })}
+							/>
+							<SelectUsers
+								server={server}
+								userId={user.id}
+								token={user.token}
+								selected={users}
+								onUserSelect={this.selectUsers}
+								blockUnauthenticatedAccess={blockUnauthenticatedAccess}
+								serverVersion={serverVersion}
+							/>
+						</View>
+
 						{this.isEncryptionEnabled ? (
 							<>
-								<Text style={[styles.label, { color: themes[theme].titleText }]}>{I18n.t('Encrypted')}</Text>
-								<Switch value={encrypted} onValueChange={this.onEncryptedChange} trackColor={SWITCH_TRACK_COLOR} />
+								<List.Item
+									title='Encrypted'
+									testID='room-actions-encrypt'
+									right={() => <Switch value={encrypted} onValueChange={this.onEncryptedChange} />}
+									additionalAcessibilityLabel={encrypted}
+								/>
 							</>
 						) : null}
+
+						<Button
+							testID='create-discussion-submit'
+							disabled={!this.valid()}
+							style={{ marginTop: 36 }}
+							title={I18n.t('Create_Discussion')}
+							onPress={this.submit}
+						/>
 					</ScrollView>
 				</SafeAreaView>
 			</KeyboardView>
@@ -204,4 +208,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	encryptionEnabled: state.encryption.enabled
 });
 
-export default connect(mapStateToProps)(withTheme(CreateChannelView));
+export default connect(mapStateToProps)(withTheme(CreateDiscussionView));

@@ -2,9 +2,9 @@ import { Action } from 'redux';
 
 import { SERVER } from './actionsTypes';
 
-interface ISelectServer extends Action {
+export interface ISelectServerAction extends Action {
 	server: string;
-	version?: string;
+	version: string;
 	fetchVersion: boolean;
 	changeServer: boolean;
 }
@@ -12,9 +12,10 @@ interface ISelectServer extends Action {
 interface ISelectServerSuccess extends Action {
 	server: string;
 	version: string;
+	name: string;
 }
 
-interface IServer extends Action {
+export interface IServerRequestAction extends Action {
 	server: string;
 	username: string | null;
 	fromServerHistory: boolean;
@@ -24,13 +25,14 @@ interface IServerInit extends Action {
 	previousServer: string;
 }
 
-interface IServerFailure extends Action {
-	err: any;
-}
+export type TActionServer = ISelectServerAction & ISelectServerSuccess & IServerRequestAction & IServerInit;
 
-export type TActionServer = ISelectServer & ISelectServerSuccess & IServer & IServerInit & IServerFailure;
-
-export function selectServerRequest(server: string, version?: string, fetchVersion = true, changeServer = false): ISelectServer {
+export function selectServerRequest(
+	server: string,
+	version: string,
+	fetchVersion = true,
+	changeServer = false
+): ISelectServerAction {
 	return {
 		type: SERVER.SELECT_REQUEST,
 		server,
@@ -40,11 +42,20 @@ export function selectServerRequest(server: string, version?: string, fetchVersi
 	};
 }
 
-export function selectServerSuccess(server: string, version: string): ISelectServerSuccess {
+export function selectServerSuccess({
+	server,
+	version,
+	name
+}: {
+	server: string;
+	version: string;
+	name: string;
+}): ISelectServerSuccess {
 	return {
 		type: SERVER.SELECT_SUCCESS,
 		server,
-		version
+		version,
+		name
 	};
 }
 
@@ -54,7 +65,7 @@ export function selectServerFailure(): Action {
 	};
 }
 
-export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServer {
+export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServerRequestAction {
 	return {
 		type: SERVER.REQUEST,
 		server,
@@ -69,10 +80,9 @@ export function serverSuccess(): Action {
 	};
 }
 
-export function serverFailure(err: any): IServerFailure {
+export function serverFailure(): Action {
 	return {
-		type: SERVER.FAILURE,
-		err
+		type: SERVER.FAILURE
 	};
 }
 

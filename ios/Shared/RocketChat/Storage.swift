@@ -1,60 +1,50 @@
-//
-//  Storage.swift
-//  NotificationService
-//
-//  Created by Djorkaeff Alexandre Vilela Pereira on 9/15/20.
-//  Copyright © 2020 Rocket.Chat. All rights reserved.
-//
-
 import Foundation
+import Security
 
 struct Credentials {
-  let userId: String
-  let userToken: String
+    let userId: String
+    let userToken: String
 }
 
-class Storage {
-  static let shared = Storage()
-
-  final var mmkv: MMKV? = nil
-
-  init() {
-    let mmapID = "default"
-    let instanceID = "com.MMKV.\(mmapID)"
-    let secureStorage = SecureStorage()
-
-    // get mmkv instance password from keychain
-    var key: Data?
-    if let password: String = secureStorage.getSecureKey(instanceID.toHex()) {
-      key = password.data(using: .utf8)
+final class Storage {
+    private let mmkv = MMKV.build()
+    
+    private var appGroupIdentifier: String? {
+        return Bundle.main.object(forInfoDictionaryKey: "AppGroup") as? String
     }
-
-    guard let cryptKey = key else {
-      return
+    
+    func getCredentials(server: String) -> Credentials? {
+        guard let appGroup = appGroupIdentifier else {
+            return nil
+        }
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassInternetPassword,
+            kSecAttrServer as String: server,
+            kSecAttrAccessGroup as String: appGroup,
+            kSecMatchLimit as String: kSecMatchLimitOne,
+            kSecReturnAttributes as String: true,
+            kSecReturnData as String: true
+        ]
+        
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query as CFDictionary, &item)
+        
+        guard status == errSecSuccess else {
+            return nil
+        }
+        
+        guard let existingItem = item as? [String: Any],
+              let account = existingItem[kSecAttrAccount as String] as? String,
+              let passwordData = existingItem[kSecValueData as String] as? Data,
+              let password = String(data: passwordData, encoding: .utf8) else {
+            return nil
+        }
+        
+        return .init(userId: account, userToken: password)
     }
-
-    // Get App Group directory
-    let suiteName = Bundle.main.object(forInfoDictionaryKey: "AppGroup") as! String
-    guard let directory = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: suiteName) else {
-      return
+    
+    func getPrivateKey(server: String) -> String? {
+        mmkv.privateKey(for: server)
     }
-
-    // Set App Group dir
-    MMKV.initialize(rootDir: nil, groupDir: directory.path, logLevel: MMKVLogLevel.none)
-    self.mmkv = MMKV(mmapID: mmapID, cryptKey: cryptKey, mode: MMKVMode.multiProcess)
-  }
-
-  func getCredentials(server: String) -> Credentials? {
-    if let userId = self.mmkv?.string(forKey: "reactnativemeteor_usertoken-\(server)") {
-      if let userToken = self.mmkv?.string(forKey: "reactnativemeteor_usertoken-\(userId)") {
-        return Credentials(userId: userId, userToken: userToken)
-      }
-    }
-
-    return nil
-  }
-
-  func getPrivateKey(server: String) -> String? {
-    return self.mmkv?.string(forKey: "\(server)-RC_E2E_PRIVATE_KEY")
-  }
 }

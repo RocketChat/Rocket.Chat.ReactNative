@@ -39,9 +39,10 @@ export interface ICreateDiscussionViewSelectChannel {
 	token: string;
 	userId: string;
 	initial: object;
-	onChannelSelect: Function;
+	onChannelSelect: ({ value }: { value: any }) => void;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
+	required?: boolean;
 }
 
 export interface ICreateDiscussionViewSelectUsers {
@@ -49,7 +50,7 @@ export interface ICreateDiscussionViewSelectUsers {
 	token: string;
 	userId: string;
 	selected: any[];
-	onUserSelect: Function;
+	onUserSelect: ({ value }: { value: string[] }) => void;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
 }

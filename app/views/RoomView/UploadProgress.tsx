@@ -10,8 +10,9 @@ import { CustomIcon } from '../../containers/CustomIcon';
 import { themes } from '../../lib/constants';
 import sharedStyles from '../Styles';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { IUser, TUploadModel } from '../../definitions';
-import { cancelUpload, isUploadActive, sendFileMessage } from '../../lib/methods';
+import { TSendFileMessageFileInfo, IUser, TUploadModel } from '../../definitions';
+import { sendFileMessage } from '../../lib/methods';
+import { cancelUpload, isUploadActive } from '../../lib/methods/sendFileMessage/utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -112,9 +113,10 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 	uploadCheck = () => {
 		this.ranInitialUploadCheck = true;
+		const { rid } = this.props;
 		const { uploads } = this.state;
 		uploads.forEach(async u => {
-			if (!isUploadActive(u.path)) {
+			if (!isUploadActive(u.path, rid)) {
 				try {
 					const db = database.active;
 					await db.write(async () => {
@@ -141,8 +143,9 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 	};
 
 	handleCancelUpload = async (item: TUploadModel) => {
+		const { rid } = this.props;
 		try {
-			await cancelUpload(item);
+			await cancelUpload(item, rid);
 		} catch (e) {
 			log(e);
 		}
@@ -158,7 +161,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 					item.error = false;
 				});
 			});
-			await sendFileMessage(rid, item, undefined, server, user);
+			await sendFileMessage(rid, item.asPlain() as TSendFileMessageFileInfo, item.tmid, server, user, true);
 		} catch (e) {
 			log(e);
 		}
@@ -170,33 +173,42 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 		if (!item.error) {
 			return [
 				<View key='row' style={styles.row}>
-					<CustomIcon name='attach' size={20} color={themes[theme!].auxiliaryText} />
+					<CustomIcon name='attach' size={20} color={themes[theme!].fontSecondaryInfo} />
 					<Text
-						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].auxiliaryText }]}
-						numberOfLines={1}
-					>
+						style={[styles.descriptionContainer, styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]}
+						numberOfLines={1}>
 						{I18n.t('Uploading')} {item.name}
 					</Text>
-					<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.handleCancelUpload(item)} />
+					<CustomIcon
+						name='close'
+						size={20}
+						color={themes[theme!].fontSecondaryInfo}
+						onPress={() => this.handleCancelUpload(item)}
+					/>
 				</View>,
 				<View
 					key='progress'
-					style={[styles.progress, { width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].tintColor }]}
+					style={[
+						styles.progress,
+						{ width: (width * (item.progress ?? 0)) / 100, backgroundColor: themes[theme!].badgeBackgroundLevel2 }
+					]}
 				/>
 			];
 		}
 		return (
 			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={themes[theme!].dangerColor} />
+				<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
 				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme!].auxiliaryText }]} numberOfLines={1}>
+					<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
 						{I18n.t('Error_uploading')} {item.name}
 					</Text>
 					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].tintColor }]}>{I18n.t('Try_again')}</Text>
+						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+							{I18n.t('Try_again')}
+						</Text>
 					</TouchableOpacity>
 				</View>
-				<CustomIcon name='close' size={20} color={themes[theme!].auxiliaryText} onPress={() => this.deleteUpload(item)} />
+				<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
 			</View>
 		);
 	};
@@ -210,13 +222,12 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 				key={item.path}
 				style={[
 					styles.item,
-					index !== 0 ? { marginTop: 10 } : {},
+					index !== 0 ? { marginTop: 4 } : {},
 					{
-						backgroundColor: themes[theme!].chatComponentBackground,
-						borderColor: themes[theme!].borderColor
+						backgroundColor: themes[theme!].surfaceTint,
+						borderColor: themes[theme!].strokeLight
 					}
-				]}
-			>
+				]}>
 				{this.renderItemContent(item)}
 			</View>
 		);

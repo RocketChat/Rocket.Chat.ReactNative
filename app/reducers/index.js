@@ -21,6 +21,11 @@ import enterpriseModules from './enterpriseModules';
 import encryption from './encryption';
 import permissions from './permissions';
 import roles from './roles';
+import videoConf from './videoConf';
+import usersRoles from './usersRoles';
+import troubleshootingNotification from './troubleshootingNotification';
+import supportedVersions from './supportedVersions';
+import inAppFeedback from './inAppFeedback';
 
 export default combineReducers({
 	settings,
@@ -43,5 +48,10 @@ export default combineReducers({
 	enterpriseModules,
 	encryption,
 	permissions,
-	roles
+	roles,
+	videoConf,
+	usersRoles,
+	troubleshootingNotification,
+	supportedVersions,
+	inAppFeedback
 });

@@ -17,18 +17,26 @@ export interface IItemData {
 	imageUrl?: string;
 }
 
+interface IMultiSelectWithMultiSelect extends IMultiSelect {
+	multiselect: true;
+	onChange: ({ value }: { value: string[] }) => void;
+}
+
+interface IMultiSelectWithoutMultiSelect extends IMultiSelect {
+	multiselect?: false;
+	onChange: ({ value }: { value: any }) => void;
+}
+
 interface IMultiSelect {
 	options?: IItemData[];
-	onChange: Function;
 	placeholder?: IText;
 	context?: BlockContext;
 	loading?: boolean;
-	multiselect?: boolean;
 	onSearch?: (keyword: string) => IItemData[] | Promise<IItemData[] | undefined>;
 	onClose?: () => void;
 	inputStyle?: TextStyle;
 	value?: any[];
-	disabled?: boolean | null;
+	disabled?: boolean;
 	innerInputStyle?: object;
 }
 
@@ -46,9 +54,9 @@ export const MultiSelect = React.memo(
 		disabled,
 		inputStyle,
 		innerInputStyle
-	}: IMultiSelect) => {
+	}: IMultiSelectWithMultiSelect | IMultiSelectWithoutMultiSelect) => {
 		const { colors } = useTheme();
-		const [selected, select] = useState<string[]>(Array.isArray(values) ? values : []);
+		const [selected, select] = useState<IItemData[]>(Array.isArray(values) ? values : []);
 		const [currentValue, setCurrentValue] = useState('');
 
 		const { showActionSheet, hideActionSheet } = useActionSheet();
@@ -57,7 +65,7 @@ export const MultiSelect = React.memo(
 			if (Array.isArray(values)) {
 				select(values);
 			}
-		}, [values]);
+		}, []);
 
 		useEffect(() => {
 			if (values && values.length && !multiselect) {
@@ -79,8 +87,7 @@ export const MultiSelect = React.memo(
 						selectedItems={selected}
 					/>
 				),
-				onClose,
-				headerHeight: 275
+				onClose
 			});
 		};
 		const onHide = () => {
@@ -95,13 +102,13 @@ export const MultiSelect = React.memo(
 			} = item;
 			if (multiselect) {
 				let newSelect = [];
-				if (!selected.includes(value)) {
-					newSelect = [...selected, value];
+				if (!selected.find(s => s.value === value)) {
+					newSelect = [...selected, item];
 				} else {
-					newSelect = selected.filter((s: any) => s !== value);
+					newSelect = selected.filter((s: any) => s.value !== value);
 				}
 				select(newSelect);
-				onChange({ value: newSelect });
+				onChange({ value: newSelect.map(s => s.value) });
 			} else {
 				onChange({ value });
 				setCurrentValue(text);
@@ -112,21 +119,19 @@ export const MultiSelect = React.memo(
 			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
 		) : (
 			<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
-				<Text style={[styles.pickerText, { color: currentValue ? colors.titleText : colors.auxiliaryText }]}>
+				<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
 					{currentValue || placeholder.text}
 				</Text>
 			</Input>
 		);
 
 		if (context === BlockContext.FORM) {
-			const items: any = options.filter((option: any) => selected.includes(option.value));
-
 			button = (
 				<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
-					{items.length ? (
-						<Chips items={items} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
+					{selected.length ? (
+						<Chips items={selected} onSelect={(item: any) => (disabled ? {} : onSelect(item))} />
 					) : (
-						<Text style={[styles.pickerText, { color: colors.auxiliaryText }]}>{placeholder.text}</Text>
+						<Text style={[styles.pickerText, { color: colors.fontSecondaryInfo }]}>{placeholder.text}</Text>
 					)}
 				</Input>
 			);

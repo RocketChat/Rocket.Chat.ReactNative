@@ -1,6 +1,4 @@
-import { exec } from 'child_process';
-
-import { by, expect, element } from 'detox';
+import Detox, { device, waitFor, element, by, expect } from 'detox';
 
 import data from '../data';
 
@@ -55,13 +53,29 @@ async function navigateToRegister(server?: string) {
 		.withTimeout(2000);
 }
 
+async function signup(): Promise<string> {
+	const randomUser = data.randomUser();
+	await element(by.id('register-view-name')).replaceText(randomUser.name);
+	await element(by.id('register-view-name')).tapReturnKey();
+	await element(by.id('register-view-username')).replaceText(randomUser.username);
+	await element(by.id('register-view-username')).tapReturnKey();
+	await element(by.id('register-view-email')).replaceText(randomUser.email);
+	await element(by.id('register-view-email')).tapReturnKey();
+	await element(by.id('register-view-password')).replaceText(randomUser.password);
+	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view-submit')).tap();
+	await expectValidRegisterOrRetry(device.getPlatform());
+	return randomUser.username;
+}
+
 async function login(username: string, password: string) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
 		.withTimeout(2000);
 	await element(by.id('login-view-email')).replaceText(username);
+	await element(by.id('login-view-email')).tapReturnKey();
 	await element(by.id('login-view-password')).replaceText(password);
-	await element(by.id('login-view-submit')).tap();
+	await element(by.id('login-view-password')).tapReturnKey();
 	await waitFor(element(by.id('rooms-list-view')))
 		.toExist()
 		.withTimeout(30000);
@@ -69,7 +83,7 @@ async function login(username: string, password: string) {
 
 async function logout() {
 	const deviceType = device.getPlatform();
-	const { scrollViewType, textMatcher } = platformTypes[deviceType];
+	const { textMatcher } = platformTypes[deviceType];
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -78,10 +92,10 @@ async function logout() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await waitFor(element(by.id('settings-view')))
+	await element(by.id('settings-view')).swipe('up');
+	await waitFor(element(by.id('settings-logout')))
 		.toBeVisible()
 		.withTimeout(2000);
-	await element(by.type(scrollViewType)).atIndex(1).scrollTo('bottom');
 	await element(by.id('settings-logout')).tap();
 	const logoutAlertMessage = 'You will be logged out of this application.';
 	await waitFor(element(by[textMatcher](logoutAlertMessage)).atIndex(0))
@@ -95,100 +109,149 @@ async function logout() {
 	await expect(element(by.id('new-server-view'))).toBeVisible();
 }
 
+async function checkMessage(message: string) {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await waitFor(element(by[textMatcher](message)))
+		.toExist()
+		.withTimeout(60000);
+	await element(by[textMatcher](message)).atIndex(0).tap();
+}
+
 async function mockMessage(message: string, isThread = false) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	const input = isThread ? 'messagebox-input-thread' : 'messagebox-input';
-	await element(by.id(input)).replaceText(`${data.random}${message}`);
-	await sleep(300);
-	await element(by.id('messagebox-send-message')).tap();
-	await waitFor(element(by[textMatcher](`${data.random}${message}`)))
-		.toExist()
-		.withTimeout(60000);
-	await element(by[textMatcher](`${data.random}${message}`))
-		.atIndex(0)
-		.tap();
-}
-
-async function starMessage(message: string) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	const messageLabel = `${data.random}${message}`;
-	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
-	await expect(element(by.id('action-sheet'))).toExist();
-	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by[textMatcher]('Star')).atIndex(0).tap();
-	await waitFor(element(by.id('action-sheet')))
-		.not.toExist()
-		.withTimeout(5000);
-}
-
-async function pinMessage(message: string) {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	const messageLabel = `${data.random}${message}`;
-	await waitFor(element(by[textMatcher](messageLabel)).atIndex(0)).toExist();
-	await element(by[textMatcher](messageLabel)).atIndex(0).longPress();
-	await expect(element(by.id('action-sheet'))).toExist();
-	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
-	await element(by[textMatcher]('Pin')).atIndex(0).tap();
-	await waitFor(element(by.id('action-sheet')))
-		.not.toExist()
-		.withTimeout(5000);
-}
-
-async function dismissReviewNag() {
-	const deviceType = device.getPlatform();
-	const { textMatcher } = platformTypes[deviceType];
-	await waitFor(element(by[textMatcher]('Are you enjoying this app?')))
-		.toExist()
-		.withTimeout(60000);
-	await element(by[textMatcher]('No')).atIndex(0).tap(); // Tap `no` on ask for review alert
+	const input = isThread ? 'message-composer-input-thread' : 'message-composer-input';
+	await element(by.id(input)).typeText(message);
+	await element(by.id('message-composer-send')).tap();
+	await checkMessage(message);
+	return message;
 }
 
 async function tapBack() {
-	await element(by.id('header-back')).atIndex(0).tap();
+	if (device.getPlatform() === 'ios') {
+		try {
+			await element(by.type('UIAccessibilityBackButtonElement')).tap();
+		} catch (error) {
+			await element(by.id('header-back')).atIndex(0).tap();
+		}
+	} else {
+		try {
+			await element(by.label('Navigate up')).tap();
+		} catch (error) {
+			await element(by.id('header-back')).atIndex(0).tap();
+		}
+	}
 }
 
-async function searchRoom(room: string) {
+async function searchRoom(
+	room: string,
+	nativeElementAction: keyof Pick<Detox.NativeElementActions, 'typeText' | 'replaceText'> = 'typeText',
+	roomTestID?: string
+) {
+	const testID = roomTestID || `rooms-list-view-item-${room}`;
 	await waitFor(element(by.id('rooms-list-view')))
-		.toBeVisible()
-		.withTimeout(30000);
-	await element(by.id('rooms-list-view-search')).tap();
-	await waitFor(element(by.id('rooms-list-view-search-input')))
 		.toExist()
-		.withTimeout(5000);
-	await expect(element(by.id('rooms-list-view-search-input'))).toExist();
-	await sleep(300);
-	await element(by.id('rooms-list-view-search-input')).typeText(room);
-	await sleep(300);
+		.withTimeout(30000);
+
+	try {
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(2000);
+		await expect(element(by.id(testID))).toBeVisible();
+	} catch {
+		await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
+		if (nativeElementAction === 'replaceText') {
+			// trigger the input's onChangeText
+			await element(by.id('rooms-list-view-search-input')).typeText(' ');
+		}
+		await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
+		await sleep(500);
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(60000);
+	}
+}
+
+async function navigateToRoom(room: string) {
+	await searchRoom(room);
+	await element(by.id(`rooms-list-view-item-${room}`)).tap();
+	await checkRoomTitle(room);
+}
+
+async function navigateToRecentRoom(room: string) {
+	await waitFor(element(by.id('rooms-list-view')))
+		.toExist()
+		.withTimeout(10000);
+	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
 	await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 		.toBeVisible()
-		.withTimeout(60000);
+		.withTimeout(10000);
+	await element(by.id(`rooms-list-view-item-${room}`)).tap();
+	await waitFor(element(by.id(`room-view-title-${room}`)))
+		.toBeVisible()
+		.withTimeout(10000);
 }
 
-// eslint-disable-next-line no-undef
-async function tryTapping(theElement: Detox.IndexableNativeElement, timeout: number, longtap = false) {
+async function tryTapping(
+	theElement: Detox.IndexableNativeElement | Detox.NativeElement,
+	timeout: number,
+	longPress = false
+): Promise<void> {
 	try {
-		if (longtap) {
+		if (longPress) {
+			await theElement.tap();
 			await theElement.longPress();
 		} else {
 			await theElement.tap();
 		}
 	} catch (e) {
 		if (timeout <= 0) {
-			// TODO: Maths. How closely has the timeout been honoured here?
+			throw e;
+		}
+		return tryTapping(theElement, timeout - 100);
+	}
+}
+
+async function jumpToQuotedMessage(theElement: Detox.IndexableNativeElement | Detox.NativeElement): Promise<void> {
+	const deviceType = device.getPlatform();
+	const { textMatcher } = platformTypes[deviceType];
+	await tryTapping(theElement, 2000, true);
+	await element(by[textMatcher]('Jump to message')).atIndex(0).tap();
+}
+
+async function tapAndWaitFor(
+	elementToTap: Detox.IndexableNativeElement | Detox.NativeElement,
+	elementToWaitFor: Detox.IndexableNativeElement | Detox.NativeElement,
+	timeout: number,
+	longPress = false
+) {
+	try {
+		if (longPress) {
+			elementToTap.longPress();
+		} else {
+			await elementToTap.tap();
+		}
+		await waitFor(elementToWaitFor).toBeVisible().withTimeout(1000);
+		await sleep(300); // Wait for animation
+	} catch (e) {
+		if (timeout <= 0) {
 			throw e;
 		}
 		await sleep(100);
-		await tryTapping(theElement, timeout - 100);
+		await tapAndWaitFor(elementToTap, elementToWaitFor, timeout - 100);
 	}
+}
+
+async function checkRoomTitle(room: string) {
+	await waitFor(element(by.id(`room-view-title-${room}`)))
+		.toBeVisible()
+		.withTimeout(60000);
 }
 
 const checkServer = async (server: string) => {
 	const label = `Connected to ${server}`;
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
 	await waitFor(element(by.id('sidebar-view')))
 		.toBeVisible()
@@ -200,32 +263,36 @@ const checkServer = async (server: string) => {
 		.toBeVisible()
 		.withTimeout(10000);
 	await element(by.id('sidebar-close-drawer')).tap();
-	await waitFor(element(by.id('sidebar-close-drawer')))
-		.not.toBeVisible()
-		.withTimeout(10000);
+
+	if (device.getPlatform() === 'ios') {
+		await waitFor(element(by.id('sidebar-close-drawer')))
+			.not.toBeVisible()
+			.withTimeout(10000);
+	} else {
+		// toBeVisible is not working on Android
+		// It is always visible, even when it's not
+		await sleep(2000);
+	}
 };
 
-function runCommand(command: string) {
-	return new Promise<void>((resolve, reject) => {
-		exec(command, (error, _stdout, stderr) => {
-			if (error) {
-				reject(new Error(`exec error: ${stderr}`));
-				return;
-			}
-			resolve();
-		});
-	});
-}
-
-async function prepareAndroid() {
-	if (device.getPlatform() !== 'android') {
-		return;
+// Useful to get rid of `Too many requests` alert on register
+async function expectValidRegisterOrRetry(platform: keyof typeof platformTypes, retries = 3) {
+	if (retries === 0) {
+		throw new Error('Too many retries');
 	}
-	await runCommand('adb shell settings put secure spell_checker_enabled 0');
-	await runCommand('adb shell settings put secure autofill_service null');
-	await runCommand('adb shell settings put global window_animation_scale 0.0');
-	await runCommand('adb shell settings put global transition_animation_scale 0.0');
-	await runCommand('adb shell settings put global animator_duration_scale 0.0');
+	try {
+		await waitFor(element(by.id('rooms-list-view')))
+			.toBeVisible()
+			.withTimeout(60000);
+	} catch (error) {
+		/**
+		 * We can't use regex to properly match by label, so we assume [error-too-many-requests] is visible.
+		 * We don't need to wait for another 60 seconds, because we already did above, so we just try again.
+		 *  */
+		await element(by[platformTypes[platform].textMatcher]('OK').and(by.type(platformTypes[platform].alertButtonType))).tap();
+		await element(by.id('register-view-submit')).tap();
+		await expectValidRegisterOrRetry(platform, retries - 1);
+	}
 }
 
 export {
@@ -234,15 +301,19 @@ export {
 	navigateToRegister,
 	login,
 	logout,
+	checkMessage,
 	mockMessage,
-	starMessage,
-	pinMessage,
-	dismissReviewNag,
 	tapBack,
 	sleep,
 	searchRoom,
+	navigateToRoom,
 	tryTapping,
+	tapAndWaitFor,
+	checkRoomTitle,
 	checkServer,
 	platformTypes,
-	prepareAndroid
+	expectValidRegisterOrRetry,
+	jumpToQuotedMessage,
+	navigateToRecentRoom,
+	signup
 };

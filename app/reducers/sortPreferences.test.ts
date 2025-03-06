@@ -10,7 +10,7 @@ describe('test sortPreferences reducer', () => {
 		expect(state).toEqual(initialState);
 	});
 
-	it('should return correctly value after call setPreference action', () => {
+	it('should return correctly value after call setAllPreferences action', () => {
 		const preferences: IPreferences = {
 			displayMode: DisplayMode.Condensed,
 			groupByType: true,

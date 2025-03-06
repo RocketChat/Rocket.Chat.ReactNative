@@ -34,6 +34,10 @@ public class Ejson {
     String senderName;
     String msg;
 
+    String tmid;
+
+    Content content;
+
     private MMKV mmkv;
 
     private String TOKEN_KEY = "reactnativemeteor_usertoken-";
@@ -99,5 +103,10 @@ public class Ejson {
     public class Sender {
         String username;
         String _id;
+    }
+
+    public class Content {
+        String ciphertext;
+        String algorithm;
     }
 }

@@ -14,7 +14,7 @@ export default {
 
 const HeaderExample = ({ title, theme = 'light' }: { title: Function; theme?: TSupportedThemes }) => (
 	// Using View directly instead of Header from react-navigation because it's easier to test.
-	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].headerBackground }}>{title()}</View>
+	<View style={{ flex: 1, maxHeight: 48, backgroundColor: themes[theme].surfaceNeutral }}>{title()}</View>
 );
 
 const RoomHeader = ({ ...props }) => (
@@ -63,14 +63,6 @@ export const Typing = () => (
 		<HeaderExample title={() => <RoomHeader usersTyping={['user 1']} />} />
 		<HeaderExample title={() => <RoomHeader usersTyping={['user 1', 'user 2']} />} />
 		<HeaderExample title={() => <RoomHeader usersTyping={['user 1', 'user 2', 'user 3', 'user 4', 'user 5']} />} />
-	</>
-);
-
-export const Landscape = () => (
-	<>
-		<HeaderExample title={() => <RoomHeader width={height} height={width} />} />
-		<HeaderExample title={() => <RoomHeader width={height} height={width} subtitle='subtitle' />} />
-		<HeaderExample title={() => <RoomHeader width={height} height={width} title={longText} subtitle={longText} />} />
 	</>
 );
 

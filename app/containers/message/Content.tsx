@@ -23,7 +23,7 @@ const Content = React.memo(
 			const infoMessage = getInfoMessage({ ...props });
 
 			const renderMessageContent = (
-				<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]} accessibilityLabel={infoMessage}>
+				<Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]} accessibilityLabel={infoMessage}>
 					{infoMessage}
 				</Text>
 			);
@@ -43,7 +43,9 @@ const Content = React.memo(
 
 		if (props.isEncrypted) {
 			content = (
-				<Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]} accessibilityLabel={I18n.t('Encrypted_message')}>
+				<Text
+					style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}
+					accessibilityLabel={I18n.t('Encrypted_message')}>
 					{I18n.t('Encrypted_message')}
 				</Text>
 			);
@@ -53,7 +55,7 @@ const Content = React.memo(
 			content = (
 				<Markdown
 					msg={props.msg}
-					md={props.md}
+					md={props.type !== 'e2e' ? props.md : undefined}
 					getCustomEmoji={props.getCustomEmoji}
 					enableMessageParser={user.enableMessageParserEarlyAdoption}
 					username={user.username}
@@ -62,7 +64,6 @@ const Content = React.memo(
 					navToRoomInfo={props.navToRoomInfo}
 					tmid={props.tmid}
 					useRealName={props.useRealName}
-					theme={theme}
 					onLinkPress={onLinkPress}
 					isTranslated={props.isTranslated}
 				/>
@@ -70,7 +71,7 @@ const Content = React.memo(
 		}
 
 		if (props.isIgnored) {
-			content = <Text style={[styles.textInfo, { color: themes[theme].auxiliaryText }]}>{I18n.t('Message_Ignored')}</Text>;
+			content = <Text style={[styles.textInfo, { color: themes[theme].fontSecondaryInfo }]}>{I18n.t('Message_Ignored')}</Text>;
 		}
 
 		return <View style={props.isTemp && styles.temp}>{content}</View>;

@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { delay, put, race, select, take, takeLatest } from 'redux-saga/effects';
+import { delay, put, race, select, take, takeLatest, actionChannel, throttle, fork, cancel } from 'redux-saga/effects';
 
 import EventEmitter from '../lib/methods/helpers/events';
 import Navigation from '../lib/navigation/appNavigation';
@@ -10,19 +10,55 @@ import I18n from '../i18n';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import { LISTENER } from '../containers/Toast';
 import { Services } from '../lib/services';
+import getMoreMessages from '../lib/methods/getMoreMessages';
+import { getMessageById } from '../lib/database/services/Message';
+
+function* watchHistoryRequests() {
+	const requestChan = yield actionChannel(types.ROOM.HISTORY_REQUEST);
+	while (true) {
+		const { rid, t, tmid, loaderId } = yield take(requestChan);
+
+		const loaderItem = yield getMessageById(loaderId);
+		if (loaderItem) {
+			try {
+				yield getMoreMessages({ rid, t, tmid, loaderItem });
+			} catch (e) {
+				log(e);
+			} finally {
+				yield put({ type: types.ROOM.HISTORY_FINISHED, loaderId });
+			}
+		}
+	}
+}
+
+let inactiveTypingTask = null;
+
+const clearUserTyping = function* clearUserTyping({ rid, status }) {
+	try {
+		if (!status) {
+			yield Services.emitTyping(rid, false);
+			if (inactiveTypingTask) {
+				yield cancel(inactiveTypingTask);
+			}
+		}
+	} catch (e) {
+		log(e);
+	}
+};
+
+const clearInactiveTyping = function* clearInactiveTyping({ rid }) {
+	yield delay(5000);
+	yield clearUserTyping({ rid, status: false });
+};
 
 const watchUserTyping = function* watchUserTyping({ rid, status }) {
-	const auth = yield select(state => state.login.isAuthenticated);
-	if (!auth) {
-		yield take(types.LOGIN.SUCCESS);
-	}
-
 	try {
-		yield Services.emitTyping(rid, status);
-
 		if (status) {
-			yield delay(5000);
-			yield Services.emitTyping(rid, false);
+			yield Services.emitTyping(rid, status);
+			if (inactiveTypingTask) {
+				yield cancel(inactiveTypingTask);
+			}
+			inactiveTypingTask = yield fork(clearInactiveTyping, { rid });
 		}
 	} catch (e) {
 		log(e);
@@ -128,9 +164,11 @@ const handleForwardRoom = function* handleForwardRoom({ transferData }) {
 };
 
 const root = function* root() {
-	yield takeLatest(types.ROOM.USER_TYPING, watchUserTyping);
+	yield takeLatest(types.ROOM.USER_TYPING, clearUserTyping);
+	yield throttle(3000, types.ROOM.USER_TYPING, watchUserTyping);
 	yield takeLatest(types.ROOM.LEAVE, handleLeaveRoom);
 	yield takeLatest(types.ROOM.DELETE, handleDeleteRoom);
 	yield takeLatest(types.ROOM.FORWARD, handleForwardRoom);
+	yield watchHistoryRequests();
 };
 export default root;

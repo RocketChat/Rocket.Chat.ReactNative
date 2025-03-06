@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -8,6 +8,7 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
+import { isIOS } from '../../lib/methods/helpers';
 
 const HIT_SLOP = {
 	top: 5,
@@ -22,7 +23,6 @@ const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	titleContainer: {
@@ -63,16 +63,19 @@ interface IRoomHeader {
 	type: string;
 	width: number;
 	height: number;
+	roomUserId?: string | null;
 	prid?: string;
 	tmid?: string;
 	teamMain?: boolean;
-	status: TUserStatus;
+	status?: TUserStatus;
 	usersTyping: [];
 	isGroupChat?: boolean;
 	parentTitle?: string;
 	onPress: Function;
 	testID?: string;
 	sourceType?: IOmnichannelSource;
+	disabled?: boolean;
+	rightButtonsWidth?: number;
 }
 
 const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
@@ -87,7 +90,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 			usersText = usersTyping.join(', ');
 		}
 		return (
-			<Text style={[styles.subtitle, { fontSize, color: colors.auxiliaryText }]} numberOfLines={1}>
+			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 				<Text style={styles.typingUsers}>{usersText} </Text>
 				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
 			</Text>
@@ -101,7 +104,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 	// subtitle
 	if (subtitle) {
-		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.auxiliaryText }]} />;
+		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
 	return null;
@@ -109,7 +112,7 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
-	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.headerTitleColor };
+	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
 			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
@@ -130,6 +133,7 @@ const Header = React.memo(
 		status,
 		width,
 		height,
+		roomUserId,
 		prid,
 		tmid,
 		onPress,
@@ -137,7 +141,9 @@ const Header = React.memo(
 		teamMain,
 		testID,
 		usersTyping = [],
-		sourceType
+		sourceType,
+		disabled,
+		rightButtonsWidth = 0
 	}: IRoomHeader) => {
 		const { colors } = useTheme();
 		const portrait = height > width;
@@ -154,8 +160,14 @@ const Header = React.memo(
 		if (tmid) {
 			renderFunc = () => (
 				<View style={styles.titleContainer}>
-					<RoomTypeIcon type={prid ? 'discussion' : type} isGroupChat={isGroupChat} status={status} teamMain={teamMain} />
-					<Text style={[styles.subtitle, { color: colors.auxiliaryText }]} numberOfLines={1}>
+					<RoomTypeIcon
+						userId={roomUserId}
+						type={prid ? 'discussion' : type}
+						isGroupChat={isGroupChat}
+						status={status}
+						teamMain={teamMain}
+					/>
+					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
 						{parentTitle}
 					</Text>
 				</View>
@@ -164,18 +176,32 @@ const Header = React.memo(
 
 		const handleOnPress = useCallback(() => onPress(), []);
 
+		const accessibilityLabel = useMemo(() => {
+			if (tmid) {
+				return `${title} ${parentTitle}`;
+			}
+			return title;
+		}, [title, parentTitle, tmid]);
+
 		return (
 			<TouchableOpacity
 				testID='room-header'
-				accessibilityLabel={title}
+				accessibilityLabel={accessibilityLabel}
 				onPress={handleOnPress}
-				style={styles.container}
-				disabled={!!tmid}
+				style={[
+					styles.container,
+					{
+						opacity: disabled ? 0.5 : 1,
+						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0)
+					}
+				]}
+				disabled={disabled}
 				hitSlop={HIT_SLOP}
-			>
+				accessibilityRole='header'>
 				<View style={styles.titleContainer}>
 					{tmid ? null : (
 						<RoomTypeIcon
+							userId={roomUserId}
 							type={prid ? 'discussion' : type}
 							isGroupChat={isGroupChat}
 							status={status}

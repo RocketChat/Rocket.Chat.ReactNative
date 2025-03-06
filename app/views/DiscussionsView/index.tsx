@@ -1,9 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
-import { HeaderBackButton } from '@react-navigation/elements';
-import { RouteProp } from '@react-navigation/core';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
+import { textInputDebounceTime } from '../../lib/constants';
 import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -29,13 +29,10 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface IDiscussionsViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'DiscussionsView'>;
-	route: RouteProp<ChatsStackParamList, 'DiscussionsView'>;
-	item: TThreadModel;
-}
+const DiscussionsView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'DiscussionsView'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'DiscussionsView'>>();
 
-const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.ReactElement => {
 	const rid = route.params?.rid;
 	const t = route.params?.t;
 
@@ -46,12 +43,13 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	const [discussions, setDiscussions] = useState<IMessageFromServer[]>([]);
 	const [search, setSearch] = useState<IMessageFromServer[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
-	const [total, setTotal] = useState(0);
-	const [searchTotal, setSearchTotal] = useState(0);
+	const total = useRef(0);
+	const searchText = useRef('');
+	const offset = useRef(0);
 
 	const { colors } = useTheme();
 
-	const load = async (text = '') => {
+	const load = async () => {
 		if (loading) {
 			return;
 		}
@@ -60,18 +58,18 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		try {
 			const result = await Services.getDiscussions({
 				roomId: rid,
-				offset: isSearching ? search.length : discussions.length,
+				offset: offset.current,
 				count: API_FETCH_COUNT,
-				text
+				text: searchText.current
 			});
 
 			if (result.success) {
+				offset.current += result.count;
+				total.current = result.total;
 				if (isSearching) {
-					setSearch(result.messages);
-					setSearchTotal(result.total);
+					setSearch(prevState => (offset.current ? [...prevState, ...result.messages] : result.messages));
 				} else {
 					setDiscussions(result.messages);
-					setTotal(result.total);
 				}
 			}
 			setLoading(false);
@@ -81,15 +79,19 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 	};
 
-	const onSearchChangeText = useDebounce(async (text: string) => {
+	const onSearchChangeText = useDebounce((text: string) => {
 		setIsSearching(true);
-		await load(text);
-	}, 500);
+		setSearch([]);
+		searchText.current = text;
+		offset.current = 0;
+		load();
+	}, textInputDebounceTime);
 
 	const onCancelSearchPress = () => {
 		setIsSearching(false);
 		setSearch([]);
-		setSearchTotal(0);
+		searchText.current = '';
+		offset.current = 0;
 	};
 
 	const onSearchPress = () => {
@@ -97,12 +99,9 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 	};
 
 	const setHeader = () => {
-		let options: Partial<StackNavigationOptions>;
+		let options: Partial<NativeStackNavigationOptions>;
 		if (isSearching) {
 			options = {
-				headerTitleAlign: 'left',
-				headerTitleContainerStyle: { flex: 1, marginHorizontal: 0, marginRight: 15, maxWidth: undefined },
-				headerRightContainerStyle: { flexGrow: 0 },
 				headerLeft: () => (
 					<HeaderButton.Container left>
 						<HeaderButton.Item iconName='close' onPress={onCancelSearchPress} />
@@ -117,17 +116,8 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 		}
 
 		options = {
-			headerTitleAlign: 'center',
+			headerLeft: () => null,
 			headerTitle: I18n.t('Discussions'),
-			headerRightContainerStyle: { flexGrow: 1 },
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.pop()}
-					tintColor={colors.headerTintColor}
-					testID='header-back'
-				/>
-			),
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item iconName='search' onPress={onSearchPress} />
@@ -181,12 +171,12 @@ const DiscussionsView = ({ navigation, route }: IDiscussionsViewProps): React.Re
 			<FlatList
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
-				keyExtractor={(item: any) => item.msg}
-				style={{ backgroundColor: colors.backgroundColor }}
+				keyExtractor={(item: any) => item._id}
+				style={{ backgroundColor: colors.surfaceRoom }}
 				contentContainerStyle={styles.contentContainer}
 				onEndReachedThreshold={0.5}
 				removeClippedSubviews={isIOS}
-				onEndReached={() => (isSearching ? searchTotal : total) > API_FETCH_COUNT ?? load()}
+				onEndReached={() => isSearching && offset.current < total.current && load()}
 				ItemSeparatorComponent={List.Separator}
 				ListFooterComponent={loading ? <ActivityIndicator /> : null}
 				scrollIndicatorInsets={{ right: 1 }}

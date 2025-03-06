@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { UseFormSetValue } from 'react-hook-form';
 
 import { useAppSelector } from '../../../lib/hooks';
@@ -9,20 +10,29 @@ import { SwitchItemReadOnly } from './SwitchItemReadOnly';
 import { SwitchItemEncrypted } from './SwitchItemEncrypted';
 import { IFormData } from '..';
 
+const styles = StyleSheet.create({
+	container: {
+		gap: 12,
+		paddingVertical: 12
+	}
+});
+
 export const RoomSettings = ({
 	isTeam,
 	setValue,
 	createChannelPermission,
-	createPrivateChannelPermission
+	createPrivateChannelPermission,
+	e2eEnabledDefaultPrivateRooms
 }: {
 	isTeam: boolean;
 	setValue: UseFormSetValue<IFormData>;
 	createChannelPermission: boolean;
 	createPrivateChannelPermission: boolean;
+	e2eEnabledDefaultPrivateRooms: boolean;
 }) => {
 	const [type, setType] = useState(true);
 	const [readOnly, setReadOnly] = useState(false);
-	const [encrypted, setEncrypted] = useState(false);
+	const [encrypted, setEncrypted] = useState(e2eEnabledDefaultPrivateRooms);
 	const [broadcast, setBroadcast] = useState(false);
 
 	const { encryptionEnabled } = useAppSelector(state => ({
@@ -64,12 +74,19 @@ export const RoomSettings = ({
 	const isDisabled = [createChannelPermission, createPrivateChannelPermission].filter(r => r === true).length <= 1;
 
 	return (
-		<>
+		<View style={styles.container}>
 			<SwitchItemType
 				isTeam={isTeam}
 				type={createPrivateChannelPermission ? type : false}
 				onValueChangeType={onValueChangeType}
 				isDisabled={isDisabled}
+			/>
+			<SwitchItem
+				id={'broadcast'}
+				value={broadcast}
+				label={'Broadcast'}
+				hint={'Broadcast_hint'}
+				onValueChange={onValueChangeBroadcast}
 			/>
 			<SwitchItemReadOnly
 				broadcast={broadcast}
@@ -84,13 +101,6 @@ export const RoomSettings = ({
 				encrypted={encrypted}
 				onValueChangeEncrypted={onValueChangeEncrypted}
 			/>
-			<SwitchItem
-				id={'broadcast'}
-				value={broadcast}
-				label={'Broadcast'}
-				hint={'Broadcast_hint'}
-				onValueChange={onValueChangeBroadcast}
-			/>
-		</>
+		</View>
 	);
 };

@@ -25,8 +25,10 @@ const Item = ({ title, value, browser, changeDefaultBrowser }: IRenderItem) => {
 			title={I18n.t(title, { defaultValue: title })}
 			onPress={() => changeDefaultBrowser(value)}
 			testID={`default-browser-view-${title}`}
-			right={() => (isSelected ? <List.Icon name='check' color={colors.tintColor} /> : null)}
+			right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
 			translateTitle={false}
+			additionalAcessibilityLabel={isSelected}
+			additionalAcessibilityLabelCheck
 		/>
 	);
 };

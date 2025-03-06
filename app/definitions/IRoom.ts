@@ -13,6 +13,8 @@ interface IRequestTranscript {
 	subject: string;
 }
 
+export type TUserWaitingForE2EKeys = { userId: string; ts: Date };
+
 export interface IRoom {
 	fname?: string;
 	_id: string;
@@ -34,11 +36,13 @@ export interface IRoom {
 	livechatData?: any;
 	tags?: string[];
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	avatarETag?: string;
 	latest?: string;
 	default?: boolean;
 	featured?: boolean;
 	muted?: string[];
+	unmuted?: string[];
 	teamId?: string;
 	ignored?: string;
 
@@ -216,6 +220,7 @@ export interface IServerRoom extends IRocketChatRecord {
 	reactWhenReadOnly?: boolean;
 	joinCodeRequired?: boolean;
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	v?: {
 		_id?: string;
 		token?: string;

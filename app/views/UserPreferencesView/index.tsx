@@ -1,6 +1,5 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
-import { Switch } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -10,15 +9,15 @@ import { compareServerVersion } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
-import { SWITCH_TRACK_COLOR } from '../../lib/constants';
 import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
+import Switch from '../../containers/Switch';
 
 interface IUserPreferencesViewProps {
-	navigation: StackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
+	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
@@ -34,6 +33,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 
 	const navigateToScreen = (screen: keyof ProfileStackParamList) => {
 		logEvent(events.UP_GO_USER_NOTIFICATION_PREF);
+		// @ts-ignore
 		navigation.navigate(screen);
 	};
 
@@ -56,10 +56,6 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		}
 	};
 
-	const renderMessageParserSwitch = (value: boolean) => (
-		<Switch value={value} trackColor={SWITCH_TRACK_COLOR} onValueChange={toggleMessageParser} />
-	);
-
 	return (
 		<SafeAreaView testID='preferences-view'>
 			<StatusBar />
@@ -80,7 +76,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<List.Item
 							title='Enable_Message_Parser'
 							testID='preferences-view-enable-message-parser'
-							right={() => renderMessageParserSwitch(enableMessageParserEarlyAdoption)}
+							right={() => <Switch value={enableMessageParserEarlyAdoption} onValueChange={toggleMessageParser} />}
 						/>
 						<List.Separator />
 					</List.Section>
@@ -92,7 +88,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 							onChangeValue={setAlsoSendThreadToChannel}
 							preference='alsoSendThreadToChannel'
 							value={alsoSendThreadToChannel}
-							title='Messagebox_Send_to_channel'
+							title='Message_composer_Send_to_channel'
 							testID='preferences-view-enable-message-parser'
 						/>
 						<List.Separator />

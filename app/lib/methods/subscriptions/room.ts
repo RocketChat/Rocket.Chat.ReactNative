@@ -1,6 +1,7 @@
 import EJSON from 'ejson';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { InteractionManager } from 'react-native';
+import { Q } from '@nozbe/watermelondb';
 
 import log from '../helpers/log';
 import protectedFunction from '../helpers/protectedFunction';
@@ -14,11 +15,19 @@ import { addUserTyping, clearUserTyping, removeUserTyping } from '../../../actio
 import { debounce } from '../helpers';
 import { subscribeRoom, unsubscribeRoom } from '../../../actions/room';
 import { Encryption } from '../../encryption';
-import { IMessage, TMessageModel, TSubscriptionModel, TThreadMessageModel, TThreadModel } from '../../../definitions';
+import {
+	IMessage,
+	TMessageModel,
+	TSubscriptionModel,
+	TThreadMessageModel,
+	TThreadModel,
+	IDeleteMessageBulkParams
+} from '../../../definitions';
 import { IDDPMessage } from '../../../definitions/IDDPMessage';
 import sdk from '../../services/sdk';
 import { readMessages } from '../readMessages';
 import { loadMissedMessages } from '../loadMissedMessages';
+import { updateLastOpen } from '../updateLastOpen';
 
 const WINDOW_TIME = 1000;
 
@@ -74,6 +83,7 @@ export default class RoomSubscription {
 
 	unsubscribe = async () => {
 		console.log(`[RCRN] Unsubscribing from room ${this.rid}`);
+		updateLastOpen(this.rid);
 		this.isAlive = false;
 		reduxStore.dispatch(unsubscribeRoom(this.rid));
 		if (this.promises) {
@@ -138,6 +148,23 @@ export default class RoomSubscription {
 					reduxStore.dispatch(removeUserTyping(name));
 				}
 			}
+		} else if (ev === 'user-activity') {
+			const { user } = reduxStore.getState().login;
+			const { UI_Use_Real_Name } = reduxStore.getState().settings;
+			const { subscribedRoom } = reduxStore.getState().room;
+			if (subscribedRoom !== _rid) {
+				return;
+			}
+			const [name, activities] = ddpMessage.fields.args;
+			const key = UI_Use_Real_Name ? 'name' : 'username';
+			if (name !== user[key]) {
+				if (activities.includes('user-typing')) {
+					reduxStore.dispatch(addUserTyping(name));
+				}
+				if (!activities.length) {
+					reduxStore.dispatch(removeUserTyping(name));
+				}
+			}
 		} else if (ev === 'deleteMessage') {
 			InteractionManager.runAfterInteractions(async () => {
 				if (ddpMessage && ddpMessage.fields && ddpMessage.fields.args.length > 0) {
@@ -180,6 +207,53 @@ export default class RoomSubscription {
 					} catch (e) {
 						log(e);
 					}
+				}
+			});
+		} else if (ev === 'deleteMessageBulk') {
+			InteractionManager.runAfterInteractions(async () => {
+				try {
+					const { rid, excludePinned, ignoreDiscussion, ts, users, ids } = ddpMessage.fields.args[0] as IDeleteMessageBulkParams;
+					const { $gt, $lt, $gte, $lte } = ts || {};
+					const db = database.active;
+
+					const query: Q.Clause[] = [Q.where('rid', rid)];
+
+					if ($gt?.$date && $lt?.$date) {
+						query.push(Q.where('ts', Q.gt($gt.$date)), Q.where('ts', Q.lt($lt.$date)));
+					}
+
+					// only present when inclusive is true in api
+					if ($gte?.$date && $lte?.$date) {
+						query.push(Q.where('ts', Q.gte($gte.$date)), Q.where('ts', Q.lte($lte.$date)));
+					}
+
+					users.forEach((user: string) => {
+						query.push(Q.where('u', Q.like(`%\"username\":\"${user}\",%`)));
+					});
+
+					if (excludePinned) {
+						query.push(Q.or(Q.where('pinned', false), Q.where('pinned', null)));
+					}
+
+					if (ignoreDiscussion) {
+						query.push(Q.where('drid', null));
+					}
+
+					// ids are present when we set limit in api
+					if (ids) {
+						query.push(Q.where('id', Q.oneOf(ids)));
+					}
+
+					const messages = await db
+						.get('messages')
+						.query(...query)
+						.fetch();
+
+					await db.write(async () => {
+						await db.batch(...messages.map(message => message.prepareDestroyPermanently()));
+					});
+				} catch (e) {
+					log(e);
 				}
 			});
 		}

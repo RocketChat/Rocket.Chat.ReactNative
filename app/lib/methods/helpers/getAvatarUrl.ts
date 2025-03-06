@@ -4,7 +4,10 @@ import { SubscriptionType } from '../../../definitions';
 import { IAvatar } from '../../../containers/Avatar/interfaces';
 import { compareServerVersion } from './compareServerVersion';
 
-const formatUrl = (url: string, size: number, query?: string) => `${url}?format=png&size=${PixelRatio.get() * size}${query}`;
+export const formatUrl = (url: string, size: number, query?: string) => {
+	const hasQuestionMark = /\/[^\/?]+\?/.test(url);
+	return `${url}${hasQuestionMark ? '&' : '?'}format=png&size=${PixelRatio.get() * size}${query || ''}`;
+};
 
 export const getAvatarURL = ({
 	type,
@@ -18,15 +21,20 @@ export const getAvatarURL = ({
 	rid,
 	blockUnauthenticatedAccess,
 	serverVersion,
-	externalProviderUrl
+	avatarExternalProviderUrl,
+	roomAvatarExternalProviderUrl,
+	cdnPrefix
 }: IAvatar): string => {
 	let room;
 	if (type === SubscriptionType.DIRECT) {
 		room = text;
-		if (externalProviderUrl) {
-			const externalUri = externalProviderUrl.trim().replace(/\/+$/, '').replace('{username}', room);
+		if (avatarExternalProviderUrl) {
+			const externalUri = avatarExternalProviderUrl.trim().replace(/\/+$/, '').replace('{username}', room);
 			return formatUrl(`${externalUri}`, size);
 		}
+	} else if (rid && compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.8.0') && roomAvatarExternalProviderUrl) {
+		const externalUri = roomAvatarExternalProviderUrl.trim().replace(/\/+$/, '').replace('{roomId}', rid);
+		return formatUrl(`${externalUri}`, size);
 	} else if (rid && !compareServerVersion(serverVersion, 'lowerThan', '3.6.0')) {
 		room = `room/${rid}`;
 	} else {
@@ -39,6 +47,11 @@ export const getAvatarURL = ({
 	}
 	if (avatarETag) {
 		query += `&etag=${avatarETag}`;
+	}
+
+	cdnPrefix = cdnPrefix?.trim();
+	if (cdnPrefix && cdnPrefix.startsWith('http')) {
+		server = cdnPrefix.replace(/\/+$/, '');
 	}
 
 	if (avatar) {

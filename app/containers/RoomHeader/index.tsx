@@ -20,6 +20,8 @@ interface IRoomHeaderContainerProps {
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	visitor?: IVisitor;
+	disabled?: boolean;
+	rightButtonsWidth?: number;
 }
 
 const RoomHeaderContainer = React.memo(
@@ -36,10 +38,12 @@ const RoomHeaderContainer = React.memo(
 		tmid,
 		type,
 		sourceType,
-		visitor
+		visitor,
+		disabled,
+		rightButtonsWidth
 	}: IRoomHeaderContainerProps) => {
 		let subtitle: string | undefined;
-		let status: TUserStatus = 'offline';
+		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
 		const { width, height } = useDimensions();
 
@@ -61,24 +65,23 @@ const RoomHeaderContainer = React.memo(
 
 		if (connected) {
 			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { status: statusActiveUser, statusText: statusTextActiveUser } = activeUser;
-				status = statusActiveUser;
+				const { statusText: statusTextActiveUser } = activeUser;
 				statusText = statusTextActiveUser;
 			} else if (type === 'l' && visitor?.status) {
-				const { status: statusVisitor } = visitor;
-				status = statusVisitor;
+				({ status: statusVisitor } = visitor);
 			}
 		}
 
 		return (
 			<RoomHeader
+				roomUserId={roomUserId}
 				prid={prid}
 				tmid={tmid}
 				title={title}
 				subtitle={type === 'd' ? statusText : subtitle}
 				type={type}
 				teamMain={teamMain}
-				status={status}
+				status={statusVisitor}
 				width={width}
 				height={height}
 				usersTyping={usersTyping}
@@ -87,6 +90,8 @@ const RoomHeaderContainer = React.memo(
 				testID={testID}
 				onPress={onPress}
 				sourceType={sourceType}
+				disabled={disabled}
+				rightButtonsWidth={rightButtonsWidth}
 			/>
 		);
 	}

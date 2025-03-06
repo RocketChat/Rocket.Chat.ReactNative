@@ -1,10 +1,19 @@
 defaults: &defaults
   working_directory: ~/repo
 
+android-executor: &android-executor
+  executor:
+    name: android/android-machine
+    resource-class: large
+    tag: 2024.01.1
+
+orbs:
+  android: circleci/android@2.5.0
+
 macos: &macos
   macos:
-    xcode: "13.3.0"
-  resource_class: large
+    xcode: "16.2.0"
+  resource_class: macos.m1.medium.gen1
 
 bash-env: &bash-env
   BASH_ENV: "~/.nvm/nvm.sh"
@@ -16,7 +25,9 @@ android-env: &android-env
 
 install-npm-modules: &install-npm-modules
   name: Install NPM modules
-  command: yarn
+  command: |
+    yarn global add node-gyp
+    yarn
 
 restore-npm-cache-linux: &restore-npm-cache-linux
   name: Restore NPM cache
@@ -51,15 +62,13 @@ save-gems-cache: &save-gems-cache
 update-fastlane-ios: &update-fastlane-ios
   name: Update Fastlane
   command: |
-    echo "ruby-2.6.4" > ~/.ruby-version
     bundle install
   working_directory: ios
 
 update-fastlane-android: &update-fastlane-android
   name: Update Fastlane
   command: |
-    echo "ruby-2.6.4" > ~/.ruby-version
-    bundle install
+    bundle install --path gems
   working_directory: android
 
 save-gradle-cache: &save-gradle-cache
@@ -74,6 +83,26 @@ restore_cache: &restore-gradle-cache
 
 # COMMANDS
 commands:
+
+  manage-ruby:
+    description: "Manage ruby version"
+    steps:
+      - restore_cache:
+          name: Restore ruby
+          key: ruby-v2-{{ checksum ".ruby-version" }}
+      - run:
+          name: Install ruby
+          command: |
+            if [ -d ~/.rbenv/versions/2.7.7 ]; then
+              echo "Ruby already installed"
+            else
+              rbenv install 2.7.7
+            fi
+      - save_cache:
+          name: Save ruby cache
+          key: ruby-v2-{{ checksum ".ruby-version" }}
+          paths:
+            - ~/.rbenv/versions/2.7.7
 
   manage-pods:
     description: "Restore/Get/Save cache of pods libs"
@@ -93,51 +122,58 @@ commands:
             - ~/.pods
             - ios/Pods
 
+  fetch-supported-versions:
+    description: "Fetch supported versions from Cloud"
+    steps:
+      - run:
+          name: "Fetch supported versions from Cloud"
+          command: sh ./scripts/fetch-supported-versions.sh
+      - store_artifacts:
+          path: ./app-supportedversions.json
+
   android-build:
     description: "Build Android app"
     steps:
       - checkout
-
       - restore_cache: *restore-npm-cache-linux
-
       - run: *install-npm-modules
-
       - restore_cache: *restore-gradle-cache
+      - fetch-supported-versions
 
       - run:
           name: Configure Gradle
           command: |
             echo -e "" > ./gradle.properties
-            # echo -e "android.enableAapt2=false" >> ./gradle.properties
             echo -e "android.useAndroidX=true" >> ./gradle.properties
             echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
             echo -e "newArchEnabled=false" >> ./gradle.properties
-            echo -e "FLIPPER_VERSION=0.125.0" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
             echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
 
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
               echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY_OFFICIAL" >> ./gradle.properties
-              echo $CHAT_ROCKET_ANDROID_STORE_FILE_BASE64_JKS | base64 --decode > ./app/$KEYSTORE_OFFICIAL
+              echo $KEYSTORE_OFFICIAL_BASE64 | base64 --decode > ./app/$KEYSTORE_OFFICIAL
               echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> ./gradle.properties
-              echo -e "KEYSTORE_PASSWORD=$CHAT_ROCKET_ANDROID_STORE_PASSWORD" >> ./gradle.properties
-              echo -e "KEY_ALIAS=$CHAT_ROCKET_ANDROID_KEY_ALIAS" >> ./gradle.properties
-              echo -e "KEY_PASSWORD=$CHAT_ROCKET_ANDROID_KEY_PASSWORD" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_OFFICIAL_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_OFFICIAL_PASSWORD" >> ./gradle.properties
             else
               echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
               echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
-              echo $KEYSTORE_BASE64 | base64 --decode > ./app/$KEYSTORE
-              echo -e "KEYSTORE=$KEYSTORE" >> ./gradle.properties
-              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
-              echo -e "KEY_ALIAS=$KEY_ALIAS" >> ./gradle.properties
-              echo -e "KEY_PASSWORD=$KEYSTORE_PASSWORD" >> ./gradle.properties
+              echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
+              echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
+              echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+              echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
+              echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
             fi
           working_directory: android
 
       - run:
           name: Set Google Services
           command: |
-            if [[ $KEYSTORE ]]; then
+            if [[ $GOOGLE_SERVICES_ANDROID ]]; then
               echo $GOOGLE_SERVICES_ANDROID | base64 --decode > google-services.json
             fi
           working_directory: android/app
@@ -151,29 +187,21 @@ commands:
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
               ./gradlew bundleExperimentalPlayRelease
             fi
-            if [[ ! $KEYSTORE ]]; then
+            if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
               ./gradlew assembleExperimentalPlayDebug
             fi
           working_directory: android
 
       - run:
-          name: Upload sourcemaps to Bugsnag
+          name: Upload sourcemaps/NDK symbols to Bugsnag
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              npx bugsnag-source-maps upload-react-native \
-                --api-key=$BUGSNAG_KEY_OFFICIAL \
-                --app-version-code=$CIRCLE_BUILD_NUM \
-                --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/officialPlay/release/app.bundle.map \
-                --bundle android/app/build/generated/assets/react/officialPlay/release/app.bundle
+              yarn bugsnag:upload-android --variant officialPlayRelease
+              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialPlayRelease/app-official-play-release.aab
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              npx bugsnag-source-maps upload-react-native \
-                --api-key=$BUGSNAG_KEY \
-                --app-version-code=$CIRCLE_BUILD_NUM \
-                --platform android \
-                --source-map=android/app/build/generated/sourcemaps/react/experimentalPlay/release/app.bundle.map \
-                --bundle android/app/build/generated/assets/react/experimentalPlay/release/app.bundle
+              yarn bugsnag:upload-android --variant experimentalPlayRelease
+              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab
             fi
 
       - store_artifacts:
@@ -194,14 +222,20 @@ commands:
       - checkout
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
       - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
+      - fetch-supported-versions
       - run:
           name: Set Google Services
           command: |
-            if [[ $KEYSTORE ]]; then
-              echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
+                echo $GOOGLE_SERVICES_IOS | base64 --decode > GoogleService-Info.plist
+              else 
+                echo $GOOGLE_SERVICES_IOS_EXPERIMENTAL | base64 --decode > GoogleService-Info.plist
+              fi
             fi
           working_directory: ios
       - run:
@@ -223,12 +257,12 @@ commands:
               /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
             fi
 
-            if [[ $APP_STORE_CONNECT_API_BASE64 ]]; then
-              echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+              echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
               if [[ $CIRCLE_JOB == "ios-build-official" ]]; then
                 bundle exec fastlane ios build_official
               else
-                if [[ $KEYSTORE ]]; then
+                if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
                   bundle exec fastlane ios build_experimental
                 else
                   bundle exec fastlane ios build_fork
@@ -313,15 +347,25 @@ commands:
           at: ios
       - restore_cache: *restore-gems-cache
       - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
+      - run: *install-npm-modules
       - run: *update-fastlane-ios
       - manage-pods
       - run:
           name: Fastlane Tesflight Upload
           command: |
-            echo $APP_STORE_CONNECT_API_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
+            echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
             bundle exec fastlane ios beta official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
+
+  create-e2e-account-file:
+    description: "Create e2e account file"
+    steps:
+      - run:
+          command: |
+            echo $E2E_ACCOUNT | base64 --decode > ./e2e_account.ts
+          working_directory: e2e
 
 version: 2.1
 
@@ -337,10 +381,8 @@ jobs:
   lint-testunit:
     <<: *defaults
     docker:
-      - image: cimg/node:16.14
+      - image: cimg/node:lts
     resource_class: large
-    environment:
-      CODECOV_TOKEN: caa771ab-3d45-4756-8e2a-e1f25996fef6
 
     steps:
       - checkout
@@ -357,54 +399,43 @@ jobs:
       - run:
           name: Test
           command: |
-            yarn test -w 8
-
-      - run:
-          name: Codecov
-          command: |
-            yarn codecov
+            yarn test --runInBand
 
       - save_cache: *save-npm-cache-linux
 
   # Android builds
   android-build-experimental:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
     # Android automatic builds
   android-automatic-build-experimental:
     <<: *defaults
-    docker:
-      - image: circleci/android:api-29-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
   android-build-official:
     <<: *defaults
-    docker:
-      - image: cimg/android:2022.03.1-node
+    <<: *android-executor
     environment:
       <<: *android-env
       <<: *bash-env
-    resource_class: large
     steps:
       - android-build
 
   android-internal-app-sharing-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-internal-app-sharing
@@ -412,7 +443,7 @@ jobs:
   android-google-play-beta-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-google-play-beta:
@@ -421,18 +452,103 @@ jobs:
   android-google-play-production-experimental:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
     steps:
       - upload-to-google-play-production
 
   android-google-play-beta-official:
     <<: *defaults
     docker:
-      - image: cimg/android:2022.03.1-node
+      - image: cimg/android:2023.11-node
 
     steps:
       - upload-to-google-play-beta:
           official: true
+
+  e2e-build-android:
+    <<: *defaults
+    <<: *android-executor
+    environment:
+      <<: *android-env
+    steps:
+      - checkout
+      - restore_cache: *restore-npm-cache-linux
+      - run: *install-npm-modules
+      - save_cache: *save-npm-cache-linux
+      - restore_cache: *restore-gradle-cache
+      - run:
+          name: Configure Gradle
+          command: |
+            echo -e "" > ./gradle.properties
+            echo -e "android.useAndroidX=true" >> ./gradle.properties
+            echo -e "android.enableJetifier=true" >> ./gradle.properties
+            echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+            echo -e "newArchEnabled=false" >> ./gradle.properties
+            echo -e "hermesEnabled=true" >> ./gradle.properties
+            echo -e "VERSIONCODE=$CIRCLE_BUILD_NUM" >> ./gradle.properties
+            echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+            echo -e "BugsnagAPIKey=$BUGSNAG_KEY" >> ./gradle.properties
+            echo $KEYSTORE_EXPERIMENTAL_BASE64 | base64 --decode > ./app/$KEYSTORE_EXPERIMENTAL
+            echo -e "KEYSTORE=$KEYSTORE_EXPERIMENTAL" >> ./gradle.properties
+            echo -e "KEYSTORE_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+            echo -e "KEY_ALIAS=$KEYSTORE_EXPERIMENTAL_ALIAS" >> ./gradle.properties
+            echo -e "KEY_PASSWORD=$KEYSTORE_EXPERIMENTAL_PASSWORD" >> ./gradle.properties
+          working_directory: android
+      - run:
+          name: Build Android
+          command: |
+            export RUNNING_E2E_TESTS=true
+            yarn e2e:android-build
+      - save_cache: *save-gradle-cache
+      - store_artifacts:
+          path: android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk
+      - store_artifacts:
+          path: android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
+      - persist_to_workspace:
+          root: /home/circleci/repo
+          paths:
+            - android/app/build/outputs/apk/
+
+  e2e-test-android:
+    <<: *defaults
+    executor:
+      name: android/android-machine
+      resource-class: xlarge
+      tag: 2024.01.1
+    parallelism: 4
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /home/circleci/repo
+      - restore_cache: *restore-npm-cache-linux
+      - run: *install-npm-modules
+      - save_cache: *save-npm-cache-linux
+      - run: mkdir ~/junit
+      - create-e2e-account-file
+      - android/create-avd:
+          avd-name: Pixel_API_31_AOSP
+          install: true
+          system-image: system-images;android-31;default;x86_64
+      - run:
+          name: Setup emulator
+          command: |
+            echo "hw.lcd.density = 440" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+            echo "hw.lcd.height = 2280" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+            echo "hw.lcd.width = 1080" >> ~/.android/avd/Pixel_API_31_AOSP.avd/config.ini
+      - run:
+          name: Run Detox Tests
+          command: |
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
+            yarn e2e:android-test $TEST
+      - store_artifacts:
+          path: artifacts
+      - run:
+          command: cp junit.xml ~/junit/
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
 
   # iOS builds
   ios-build-experimental:
@@ -457,10 +573,89 @@ jobs:
       - upload-to-testflight:
           official: true
 
+  e2e-build-ios:
+    executor: mac-env
+    steps:
+      - checkout
+      - restore_cache: *restore-gems-cache
+      - restore_cache: *restore-npm-cache-mac
+      - manage-ruby
+      - run: *install-npm-modules
+      - run: *update-fastlane-ios
+      - save_cache: *save-npm-cache-mac
+      - save_cache: *save-gems-cache
+      - manage-pods
+      - run:
+          name: Configure Detox
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+      - run:
+          name: Build
+          command: |
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY" ./ios/ShareRocketChatRN/Info.plist
+            yarn detox clean-framework-cache && yarn detox build-framework-cache
+            export RUNNING_E2E_TESTS=true
+            yarn e2e:ios-build
+      - persist_to_workspace:
+          root: /Users/distiller/project
+          paths:
+            - ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
+  
+  e2e-test-ios:
+    executor: mac-env
+    parallelism: 5
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /Users/distiller/project
+      - restore_cache: *restore-npm-cache-mac
+      - run: *install-npm-modules
+      - save_cache: *save-npm-cache-mac
+      - run: mkdir ~/junit
+      - run:
+          name: Configure Detox
+          command: |
+            brew tap wix/brew
+            brew install applesimutils
+            yarn detox clean-framework-cache && yarn detox build-framework-cache
+      - create-e2e-account-file
+      - run:
+          name: Run tests
+          command: |
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
+            yarn e2e:ios-test $TEST
+      - store_artifacts:
+          path: artifacts
+      - run:
+          command: cp junit.xml ~/junit/
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit
+
 workflows:
   build-and-test:
     jobs:
       - lint-testunit
+
+      # E2E tests
+      - e2e-hold:
+          type: approval
+      - e2e-build-ios:
+          requires:
+            - e2e-hold
+      - e2e-test-ios:
+          requires:
+            - e2e-build-ios
+      - e2e-build-android:
+          requires:
+            - e2e-hold
+      - e2e-test-android:
+          requires:
+            - e2e-build-android
 
       # iOS Experimental
       - ios-hold-build-experimental:

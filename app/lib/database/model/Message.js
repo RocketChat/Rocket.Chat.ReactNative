@@ -84,5 +84,51 @@ export default class Message extends Model {
 
 	@json('md', sanitizer) md;
 
+	@json('content', sanitizer) content;
+
 	@field('comment') comment;
+
+	asPlain() {
+		return {
+			id: this.id,
+			rid: this.subscription.id,
+			msg: this.msg,
+			t: this.t,
+			ts: this.ts,
+			u: this.u,
+			alias: this.alias,
+			parseUrls: this.parseUrls,
+			groupable: this.groupable,
+			avatar: this.avatar,
+			emoji: this.emoji,
+			attachments: this.attachments,
+			urls: this.urls,
+			_updatedAt: this._updatedAt,
+			status: this.status,
+			pinned: this.pinned,
+			starred: this.starred,
+			editedBy: this.editedBy,
+			reactions: this.reactions,
+			role: this.role,
+			drid: this.drid,
+			dcount: this.dcount,
+			dlm: this.dlm,
+			tmid: this.tmid,
+			tcount: this.tcount,
+			tlm: this.tlm,
+			replies: this.replies,
+			mentions: this.mentions,
+			channels: this.channels,
+			unread: this.unread,
+			autoTranslate: this.autoTranslate,
+			translations: this.translations,
+			tmsg: this.tmsg,
+			blocks: this.blocks,
+			e2e: this.e2e,
+			tshow: this.tshow,
+			md: this.md,
+			content: this.content,
+			comment: this.comment
+		};
+	}
 }

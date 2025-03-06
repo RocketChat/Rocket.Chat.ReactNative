@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-import isEmpty from 'lodash/isEmpty';
 
 import { IApplicationState, IUser } from '../definitions';
 
@@ -13,12 +12,7 @@ export interface IServices {
 	wordpress: { clientId: string; serverURL: string };
 }
 
-const getUser = (state: IApplicationState): IUser => {
-	if (!isEmpty(state.share?.user)) {
-		return state.share.user as IUser;
-	}
-	return state.login?.user as IUser;
-};
+const getUser = (state: IApplicationState): IUser => state.login?.user as IUser;
 const getLoginServices = (state: IApplicationState) => (state.login.services as IServices) || {};
 const getShowFormLoginSetting = (state: IApplicationState) => (state.settings.Accounts_ShowFormLogin as boolean) || false;
 const getIframeEnabledSetting = (state: IApplicationState) => (state.settings.Accounts_iframe_enabled as boolean) || false;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import { textInputDebounceTime } from '../../lib/constants/index';
 import EmojiPicker from '../../containers/EmojiPicker';
 import styles from './styles';
 import { IEmoji } from '../../definitions';
@@ -11,19 +12,19 @@ import { EmojiSearch } from '../../containers/EmojiPicker/EmojiSearch';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 
 interface IReactionPickerProps {
-	message?: any;
+	messageId?: string;
 	reactionClose: () => void;
 	onEmojiSelected: (emoji: IEmoji, id: string) => void;
 }
 
-const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPickerProps): React.ReactElement => {
+const ReactionPicker = ({ onEmojiSelected, messageId, reactionClose }: IReactionPickerProps): React.ReactElement => {
 	const [searchedEmojis, setSearchedEmojis] = React.useState<IEmoji[]>([]);
 	const [searching, setSearching] = React.useState<boolean>(false);
 
 	const handleTextChange = useDebounce((text: string) => {
 		setSearching(text !== '');
 		handleSearchEmojis(text);
-	}, 300);
+	}, textInputDebounceTime);
 
 	const handleSearchEmojis = async (text: string) => {
 		logEvent(events.REACTION_PICKER_SEARCH_EMOJIS);
@@ -33,8 +34,8 @@ const ReactionPicker = ({ onEmojiSelected, message, reactionClose }: IReactionPi
 
 	const handleEmojiSelect = (_eventType: EventTypes, emoji?: IEmoji) => {
 		logEvent(events.REACTION_PICKER_EMOJI_SELECTED);
-		if (message && emoji) {
-			onEmojiSelected(emoji, message.id);
+		if (messageId && emoji) {
+			onEmojiSelected(emoji, messageId);
 		}
 		reactionClose();
 	};

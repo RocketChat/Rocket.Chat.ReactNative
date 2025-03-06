@@ -1,16 +1,15 @@
+import moment from 'moment';
 import React, { useContext } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import moment from 'moment';
 
-import { themes } from '../../lib/constants';
-import { useTheme } from '../../theme';
-import sharedStyles from '../../views/Styles';
-import messageStyles from './styles';
-import MessageContext from './Context';
-import { messageHaveAuthorName } from './utils';
 import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
+import { useTheme } from '../../theme';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
+import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
+import MessageContext from './Context';
+import messageStyles from './styles';
+import { messageHaveAuthorName } from './utils';
 
 const styles = StyleSheet.create({
 	container: {
@@ -61,26 +60,41 @@ interface IMessageUser {
 	isEdited: boolean;
 	isReadReceiptEnabled?: boolean;
 	unread?: boolean;
+	pinned?: boolean;
+	isTranslated: boolean;
 }
 
 const User = React.memo(
-	({ isHeader, useRealName, author, alias, ts, timeFormat, hasError, navToRoomInfo, type, isEdited, ...props }: IMessageUser) => {
+	({
+		isHeader,
+		useRealName,
+		author,
+		alias,
+		ts,
+		timeFormat,
+		hasError,
+		navToRoomInfo,
+		type,
+		isEdited,
+		isTranslated,
+		...props
+	}: IMessageUser) => {
 		const { user } = useContext(MessageContext);
-		const { theme } = useTheme();
+		const { colors } = useTheme();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
-			const aliasUsername = alias ? (
-				<Text style={[styles.alias, { color: themes[theme].auxiliaryText }]}> @{username}</Text>
-			) : null;
+			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
 			const time = moment(ts).format(timeFormat);
+			const itsMe = author?._id === user.id;
+
 			const onUserPress = () => {
 				navToRoomInfo?.({
 					t: SubscriptionType.DIRECT,
-					rid: author?._id || ''
+					rid: author?._id || '',
+					itsMe
 				});
 			};
-			const isDisabled = author?._id === user.id;
 
 			const textContent = (
 				<>
@@ -88,14 +102,10 @@ const User = React.memo(
 					{aliasUsername}
 				</>
 			);
+
 			if (messageHaveAuthorName(type as MessageTypesValues)) {
 				return (
-					<Text
-						style={[styles.usernameInfoMessage, { color: themes[theme].titleText }]}
-						onPress={onUserPress}
-						// @ts-ignore // TODO - check this prop
-						disabled={isDisabled}
-					>
+					<Text style={[styles.usernameInfoMessage, { color: colors.fontTitlesLabels }]} onPress={onUserPress}>
 						{textContent}
 					</Text>
 				);
@@ -103,11 +113,11 @@ const User = React.memo(
 
 			return (
 				<View style={styles.container}>
-					<TouchableOpacity style={styles.titleContainer} onPress={onUserPress} disabled={isDisabled}>
-						<Text style={[styles.username, { color: themes[theme].titleText }]} numberOfLines={1}>
+					<TouchableOpacity testID={`username-header-${username}`} style={styles.titleContainer} onPress={onUserPress}>
+						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						<Text style={[messageStyles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
 					</TouchableOpacity>
 					<RightIcons
 						type={type}
@@ -115,6 +125,8 @@ const User = React.memo(
 						hasError={hasError}
 						isReadReceiptEnabled={props.isReadReceiptEnabled}
 						unread={props.unread}
+						pinned={props.pinned}
+						isTranslated={isTranslated}
 					/>
 				</View>
 			);

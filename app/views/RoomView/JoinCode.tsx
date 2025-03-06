@@ -83,10 +83,9 @@ const JoinCode = React.memo(
 						style={[
 							styles.content,
 							isMasterDetail && [sharedStyles.modalFormSheet, styles.tablet],
-							{ backgroundColor: themes[theme].backgroundColor }
-						]}
-					>
-						<Text style={[styles.title, { color: themes[theme].titleText }]}>{I18n.t('Insert_Join_Code')}</Text>
+							{ backgroundColor: themes[theme].surfaceRoom }
+						]}>
+						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]}>{I18n.t('Insert_Join_Code')}</Text>
 						<FormTextInput
 							value={code}
 							// TODO: find a way to type this ref
@@ -105,7 +104,7 @@ const JoinCode = React.memo(
 								title={I18n.t('Cancel')}
 								type='secondary'
 								style={styles.button}
-								backgroundColor={themes[theme].chatComponentBackground}
+								backgroundColor={themes[theme].surfaceTint}
 								testID='join-code-cancel'
 								onPress={hide}
 							/>

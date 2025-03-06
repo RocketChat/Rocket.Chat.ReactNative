@@ -1,5 +1,5 @@
 import Model from '@nozbe/watermelondb/Model';
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 
 import { IAttachment } from './IAttachment';
 import { IMessage, IUserChannel, IUserMention, IUserMessage } from './IMessage';
@@ -21,7 +21,7 @@ export interface IThreadResult {
 	files?: IFileThread[];
 	groupable?: boolean;
 	attachments?: IAttachment[];
-	md?: MarkdownAST;
+	md?: Root;
 	u: IUserMessage;
 	_updatedAt: string | Date;
 	urls?: IUrl[];
@@ -38,4 +38,7 @@ export interface IThread extends IMessage {
 	draftMessage?: string;
 }
 
-export type TThreadModel = IThread & Model;
+export type TThreadModel = IThread &
+	Model & {
+		asPlain: () => IMessage;
+	};

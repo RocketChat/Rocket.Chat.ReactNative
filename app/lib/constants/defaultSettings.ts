@@ -1,3 +1,31 @@
+// DEPRECATED: This settings are deprecated and will be removed in the LTS only support
+const deprecatedSettings = {
+	Jitsi_Enable_Teams: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_Enable_Channels: {
+		type: 'valuesAsBoolean'
+	},
+	Jitsi_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_SSL: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_Domain: {
+		type: 'valueAsString'
+	},
+	Jitsi_Enabled_TokenAuth: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_URL_Room_Hash: {
+		type: 'valueAsBoolean'
+	},
+	Jitsi_URL_Room_Prefix: {
+		type: 'valueAsString'
+	}
+};
+
 export const defaultSettings = {
 	Accounts_AllowEmailChange: {
 		type: 'valueAsBoolean'
@@ -65,6 +93,9 @@ export const defaultSettings = {
 	Accounts_Iframe_api_method: {
 		type: 'valueAsString'
 	},
+	API_Embed: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -72,6 +103,15 @@ export const defaultSettings = {
 		type: 'valueAsNumber'
 	},
 	E2E_Enable: {
+		type: 'valueAsBoolean'
+	},
+	E2E_Enabled_Default_PrivateRooms: {
+		type: 'valueAsBoolean'
+	},
+	E2E_Enable_Encrypt_Files: {
+		type: 'valueAsBoolean'
+	},
+	FileUpload_ProtectFiles: {
 		type: 'valueAsBoolean'
 	},
 	Accounts_Directory_DefaultView: {
@@ -88,24 +128,6 @@ export const defaultSettings = {
 	},
 	Livechat_request_comment_when_closing_conversation: {
 		type: 'valueAsBoolean'
-	},
-	Jitsi_Enabled: {
-		type: 'valueAsBoolean'
-	},
-	Jitsi_SSL: {
-		type: 'valueAsBoolean'
-	},
-	Jitsi_Domain: {
-		type: 'valueAsString'
-	},
-	Jitsi_Enabled_TokenAuth: {
-		type: 'valueAsBoolean'
-	},
-	Jitsi_URL_Room_Hash: {
-		type: 'valueAsBoolean'
-	},
-	Jitsi_URL_Room_Prefix: {
-		type: 'valueAsString'
 	},
 	Message_AllowDeleting: {
 		type: 'valueAsBoolean'
@@ -197,12 +219,6 @@ export const defaultSettings = {
 	Accounts_AllowInvisibleStatusOption: {
 		type: 'valueAsString'
 	},
-	Jitsi_Enable_Teams: {
-		type: 'valueAsBoolean'
-	},
-	Jitsi_Enable_Channels: {
-		type: 'valuesAsBoolean'
-	},
 	Canned_Responses_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -210,6 +226,9 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	Accounts_AvatarExternalProviderUrl: {
+		type: 'valueAsString'
+	},
+	Accounts_RoomAvatarExternalProviderUrl: {
 		type: 'valueAsString'
 	},
 	VideoConf_Enable_DMs: {
@@ -229,5 +248,30 @@ export const defaultSettings = {
 	},
 	Number_of_users_autocomplete_suggestions: {
 		type: 'valueAsNumber'
-	}
+	},
+	Presence_broadcast_disabled: {
+		type: 'valueAsBoolean'
+	},
+	Omnichannel_call_provider: {
+		type: 'valueAsBoolean'
+	},
+	CDN_PREFIX: {
+		type: 'valueAsString'
+	},
+	Accounts_RequirePasswordConfirmation: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_ConfirmPasswordPlaceholder: {
+		type: 'valueAsString'
+	},
+	E2E_Enabled_Mentions: {
+		type: 'valueAsBoolean'
+	},
+	UTF8_User_Names_Validation: {
+		type: 'valueAsString'
+	},
+	Cloud_Workspace_AirGapped_Restrictions_Remaining_Days: {
+		type: 'valueAsNumber'
+	},
+	...deprecatedSettings
 } as const;

@@ -1,0 +1,213 @@
+diff --git a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
+index 9cfe821..b7fe976 100644
+--- a/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
++++ b/node_modules/react-native-webview/android/src/main/java/com/reactnativecommunity/webview/RNCWebViewManager.java
+@@ -102,6 +102,12 @@ import java.util.Locale;
+ import java.util.Map;
+ import java.util.concurrent.atomic.AtomicReference;
+ 
++import java.security.cert.X509Certificate;
++import java.security.PrivateKey;
++import android.webkit.ClientCertRequest;
++import android.os.AsyncTask;
++import android.security.KeyChain;
++
+ /**
+  * Manages instances of {@link WebView}
+  * <p>
+@@ -166,6 +172,8 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+   protected @Nullable String mDownloadingMessage = null;
+   protected @Nullable String mLackPermissionToDownloadMessage = null;
+ 
++  private static String certificateAlias = null;
++
+   public RNCWebViewManager() {
+     mWebViewConfig = new WebViewConfig() {
+       public void configWebView(WebView webView) {
+@@ -177,6 +185,10 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+     mWebViewConfig = webViewConfig;
+   }
+ 
++  public static void setCertificateAlias(String alias) {
++    certificateAlias = alias;
++  }
++
+   @Override
+   public String getName() {
+     return REACT_CLASS;
+@@ -687,7 +699,7 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+   @Override
+   protected void addEventEmitters(ThemedReactContext reactContext, WebView view) {
+     // Do not register default touch emitter and let WebView implementation handle touches
+-    view.setWebViewClient(new RNCWebViewClient());
++    view.setWebViewClient(new RNCWebViewClient(reactContext));
+   }
+ 
+   @Override
+@@ -913,6 +925,50 @@ public class RNCWebViewManager extends SimpleViewManager<WebView> {
+     protected RNCWebView.ProgressChangedFilter progressChangedFilter = null;
+     protected @Nullable String ignoreErrFailedForThisURL = null;
+     protected @Nullable BasicAuthCredential basicAuthCredential = null;
++    protected ReactContext reactContext;
++
++    public RNCWebViewClient(ReactContext reactContext) {
++      this.reactContext = reactContext;
++    }
++
++    @Override
++    public void onReceivedClientCertRequest(WebView view, ClientCertRequest request) {
++      class SslStuff {
++        PrivateKey privKey;
++        X509Certificate[] certChain;
++
++        public SslStuff(PrivateKey privKey, X509Certificate[] certChain) {
++          this.privKey = privKey;
++          this.certChain = certChain;
++        }
++      }
++
++      if (certificateAlias != null) {
++        AsyncTask<Void, Void, SslStuff> task = new AsyncTask<Void, Void, SslStuff>() {
++          @Override
++          protected SslStuff doInBackground(Void... params) {
++            try {
++              PrivateKey privKey = KeyChain.getPrivateKey(reactContext, certificateAlias);
++              X509Certificate[] certChain = KeyChain.getCertificateChain(reactContext, certificateAlias);
++
++              return new SslStuff(privKey, certChain);
++            } catch (Exception e) {
++              return null;
++            }
++          }
++
++          @Override
++          protected void onPostExecute(SslStuff sslStuff) {
++            if (sslStuff != null) {
++              request.proceed(sslStuff.privKey, sslStuff.certChain);
++            }
++          }
++        };
++        task.execute();
++      } else {
++        super.onReceivedClientCertRequest(view, request);
++      }
++    }
+ 
+     public void setIgnoreErrFailedForThisURL(@Nullable String url) {
+       ignoreErrFailedForThisURL = url;
+diff --git a/node_modules/react-native-webview/apple/RNCWebView.m b/node_modules/react-native-webview/apple/RNCWebView.m
+index 7570d8d..eaa0e5d 100644
+--- a/node_modules/react-native-webview/apple/RNCWebView.m
++++ b/node_modules/react-native-webview/apple/RNCWebView.m
+@@ -17,6 +17,9 @@
+ 
+ #import "objc/runtime.h"
+ 
++#import "SecureStorage.h"
++#import <MMKV/MMKV.h>
++
+ static NSTimer *keyboardTimer;
+ static NSString *const HistoryShimName = @"ReactNativeHistoryShim";
+ static NSString *const MessageHandlerName = @"ReactNativeWebView";
+@@ -963,6 +966,68 @@ + (void)setCustomCertificatesForHost:(nullable NSDictionary*)certificates {
+   customCertificatesForHost = certificates;
+ }
+ 
++-(NSURLCredential *)getUrlCredential:(NSURLAuthenticationChallenge *)challenge path:(NSString *)path password:(NSString *)password
++{
++  NSString *authMethod = [[challenge protectionSpace] authenticationMethod];
++  SecTrustRef serverTrust = challenge.protectionSpace.serverTrust;
++
++  if ([authMethod isEqualToString:NSURLAuthenticationMethodServerTrust] || path == nil || password == nil) {
++    return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++  } else if (path && password) {
++    NSMutableArray *policies = [NSMutableArray array];
++    [policies addObject:(__bridge_transfer id)SecPolicyCreateSSL(true, (__bridge CFStringRef)challenge.protectionSpace.host)];
++    SecTrustSetPolicies(serverTrust, (__bridge CFArrayRef)policies);
++
++    SecTrustResultType result;
++    SecTrustEvaluate(serverTrust, &result);
++
++    if (![[NSFileManager defaultManager] fileExistsAtPath:path])
++    {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSData *p12data = [NSData dataWithContentsOfFile:path];
++    NSDictionary* options = @{ (id)kSecImportExportPassphrase:password };
++    CFArrayRef rawItems = NULL;
++    OSStatus status = SecPKCS12Import((__bridge CFDataRef)p12data,
++                                      (__bridge CFDictionaryRef)options,
++                                      &rawItems);
++
++    if (status != noErr) {
++      return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    }
++
++    NSArray* items = (NSArray*)CFBridgingRelease(rawItems);
++    NSDictionary* firstItem = nil;
++    if ((status == errSecSuccess) && ([items count]>0)) {
++        firstItem = items[0];
++    }
++
++    SecIdentityRef identity = (SecIdentityRef)CFBridgingRetain(firstItem[(id)kSecImportItemIdentity]);
++    SecCertificateRef certificate = NULL;
++    if (identity) {
++        SecIdentityCopyCertificate(identity, &certificate);
++        if (certificate) { CFRelease(certificate); }
++    }
++
++    NSMutableArray *certificates = [[NSMutableArray alloc] init];
++    [certificates addObject:CFBridgingRelease(certificate)];
++
++    return [NSURLCredential credentialWithIdentity:identity certificates:certificates persistence:NSURLCredentialPersistenceNone];
++  }
++
++  return [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++}
++
++- (NSString *)stringToHex:(NSString *)string
++{
++  char *utf8 = (char *)[string UTF8String];
++  NSMutableString *hex = [NSMutableString string];
++  while (*utf8) [hex appendFormat:@"%02X", *utf8++ & 0x00FF];
++
++  return [[NSString stringWithFormat:@"%@", hex] lowercaseString];
++}
++
+ - (void)                    webView:(WKWebView *)webView
+   didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+                   completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable))completionHandler
+@@ -972,7 +1037,31 @@ - (void)                    webView:(WKWebView *)webView
+     host = webView.URL.host;
+   }
+   if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
+-    completionHandler(NSURLSessionAuthChallengeUseCredential, clientAuthenticationCredential);
++    NSString *host = challenge.protectionSpace.host;
++
++    // Read the clientSSL info from MMKV
++    __block NSDictionary *clientSSL;
++    SecureStorage *secureStorage = [[SecureStorage alloc] init];
++    
++    // https://github.com/ammarahm-ed/react-native-mmkv-storage/blob/master/src/loader.js#L31
++    NSString *key = [secureStorage getSecureKey:[self stringToHex:@"com.MMKV.default"]];
++    NSURLCredential *credential = [NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust];
++    
++    if (key == NULL) {
++       return completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, credential);
++    }
++    
++    NSData *cryptKey = [key dataUsingEncoding:NSUTF8StringEncoding];
++    MMKV *mmkv = [MMKV mmkvWithID:@"default" cryptKey:cryptKey mode:MMKVMultiProcess];
++    clientSSL = [mmkv getObjectOfClass:[NSDictionary class] forKey:host];
++    
++    if (clientSSL != (id)[NSNull null]) {
++      NSString *path = [clientSSL objectForKey:@"path"];
++      NSString *password = [clientSSL objectForKey:@"password"];
++      credential = [self getUrlCredential:challenge path:path password:password];
++    }
++    
++    completionHandler(NSURLSessionAuthChallengeUseCredential, credential);
+     return;
+   }
+   if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {

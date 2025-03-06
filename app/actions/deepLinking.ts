@@ -7,7 +7,6 @@ interface IParams {
 	rid: string;
 	messageId: string;
 	host: string;
-	isCall: boolean;
 	fullURL: string;
 	type: string;
 	token: string;
@@ -20,6 +19,13 @@ interface IDeepLinkingOpen extends Action {
 export function deepLinkingOpen(params: Partial<IParams>): IDeepLinkingOpen {
 	return {
 		type: DEEP_LINKING.OPEN,
+		params
+	};
+}
+
+export function deepLinkingClickCallPush(params: any): IDeepLinkingOpen {
+	return {
+		type: DEEP_LINKING.OPEN_VIDEO_CONF,
 		params
 	};
 }

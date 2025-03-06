@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 
-import { TSupportedThemes, useTheme } from '../../theme';
-import sharedStyles from '../Styles';
-import { themes } from '../../lib/constants';
-import I18n from '../../i18n';
 import { ISubscription } from '../../definitions';
-import { ILivechatVisitorModified } from './index';
+import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
+import { ILivechatVisitorModified } from '../../definitions/ILivechatVisitor';
+import I18n from '../../i18n';
+import { Services } from '../../lib/services';
+import { useTheme } from '../../theme';
+import sharedStyles from '../Styles';
 import CustomFields from './CustomFields';
 import Item from './Item';
 import Timezone from './Timezone';
-import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
-import { Services } from '../../lib/services';
 
 const styles = StyleSheet.create({
 	title: {
@@ -21,13 +20,13 @@ const styles = StyleSheet.create({
 	}
 });
 
-const Title = ({ title, theme }: { title: string; theme: TSupportedThemes }) => (
-	<Text style={[styles.title, { color: themes[theme].titleText }]}>{title}</Text>
-);
+const Title = ({ title }: { title: string }) => {
+	const { colors } = useTheme();
+	return <Text style={[styles.title, { color: colors.fontTitlesLabels }]}>{title}</Text>;
+};
 
-const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }) => {
+const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechatVisitorModified }): React.ReactElement => {
 	const [department, setDepartment] = useState<ILivechatDepartment>({} as ILivechatDepartment);
-	const { theme } = useTheme();
 
 	const getDepartment = async (id: string) => {
 		if (id) {
@@ -38,19 +37,16 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 		}
 	};
 
-	const getRoom = () => {
-		if (room.departmentId) {
-			getDepartment(room.departmentId);
-		}
-	};
-
 	useEffect(() => {
+		const getRoom = () => {
+			if (room.departmentId) getDepartment(room.departmentId);
+		};
 		getRoom();
-	}, [room]);
+	}, [room.departmentId]);
 
 	return (
 		<>
-			<Title title={I18n.t('User')} theme={theme} />
+			<Title title={I18n.t('User')} />
 			<Timezone utcOffset={roomUser.utc} />
 			<Item label={I18n.t('Username')} content={roomUser.username} />
 			<Item
@@ -65,7 +61,7 @@ const Livechat = ({ room, roomUser }: { room: ISubscription; roomUser: ILivechat
 			<Item label={I18n.t('OS')} content={roomUser.os} />
 			<Item label={I18n.t('Browser')} content={roomUser.browser} />
 			<CustomFields customFields={roomUser.livechatData} />
-			<Title title={I18n.t('Conversation')} theme={theme} />
+			<Title title={I18n.t('Conversation')} />
 			<Item label={I18n.t('Agent')} content={room.servedBy?.username} />
 			{/* TODO: Will be deprecated */}
 			{/* @ts-ignore */}

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
-import { Subscription } from 'rxjs';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -11,6 +10,7 @@ import openLink from '../../lib/methods/helpers/openLink';
 import { IAttachment, TAnyMessageModel, TGetCustomEmoji } from '../../definitions';
 import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import { E2E_MESSAGE_TYPE, E2E_STATUS, messagesStatus } from '../../lib/constants';
+import MessageSeparator from '../MessageSeparator';
 
 interface IMessageContainerProps {
 	item: TAnyMessageModel;
@@ -29,7 +29,7 @@ interface IMessageContainerProps {
 	baseUrl: string;
 	Message_GroupingPeriod?: number;
 	isReadReceiptEnabled?: boolean;
-	isThreadRoom: boolean;
+	isThreadRoom?: boolean;
 	isSystemMessage?: boolean;
 	useRealName?: boolean;
 	autoTranslateRoom?: boolean;
@@ -45,20 +45,24 @@ interface IMessageContainerProps {
 	onThreadPress?: (item: TAnyMessageModel) => void;
 	errorActionsShow?: (item: TAnyMessageModel) => void;
 	replyBroadcast?: (item: TAnyMessageModel) => void;
-	reactionInit?: (item: TAnyMessageModel) => void;
+	reactionInit?: (messageId: string) => void;
 	fetchThreadName?: (tmid: string, id: string) => Promise<string | undefined>;
-	showAttachment: (file: IAttachment) => void;
+	showAttachment?: (file: IAttachment) => void;
 	onReactionLongPress?: (item: TAnyMessageModel) => void;
-	navToRoomInfo: (navParam: IRoomInfoParam) => void;
-	callJitsi?: () => void;
+	navToRoomInfo?: (navParam: IRoomInfoParam) => void;
+	handleEnterCall?: () => void;
 	blockAction?: (params: { actionId: string; appId: string; value: string; blockId: string; rid: string; mid: string }) => void;
-	onAnswerButtonPress?: (message: string, tmid?: string, tshow?: boolean) => void;
+	onAnswerButtonPress?: Function;
 	threadBadgeColor?: string;
 	toggleFollowThread?: (isFollowingThread: boolean, tmid?: string) => Promise<void>;
 	jumpToMessage?: (link: string) => void;
 	onPress?: () => void;
-	theme: TSupportedThemes;
+	theme?: TSupportedThemes;
 	closeEmojiAndAction?: (action?: Function, params?: any) => void;
+	isBeingEdited?: boolean;
+	isPreview?: boolean;
+	dateSeparator?: Date | string | null;
+	showUnreadSeparator?: boolean;
 }
 
 interface IMessageContainerState {
@@ -69,7 +73,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	static defaultProps = {
 		getCustomEmoji: () => null,
 		onLongPress: () => {},
-		callJitsi: () => {},
 		blockAction: () => {},
 		archived: false,
 		broadcast: false,
@@ -79,13 +82,16 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	state = { isManualUnignored: false };
 
-	private subscription?: Subscription;
+	private subscription?: Function;
 
 	componentDidMount() {
 		const { item } = this.props;
-		if (item && item.observe) {
-			const observable = item.observe();
-			this.subscription = observable.subscribe(() => {
+		// @ts-ignore
+		if (item && item.experimentalSubscribe) {
+			// TODO: Update watermelonDB to recognize experimentalSubscribe at types
+			// experimentalSubscribe(subscriber: (isDeleted: boolean) => void, debugInfo?: any): Unsubscribe
+			// @ts-ignore
+			this.subscription = item.experimentalSubscribe(() => {
 				this.forceUpdate();
 			});
 		}
@@ -93,7 +99,24 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 
 	shouldComponentUpdate(nextProps: IMessageContainerProps, nextState: IMessageContainerState) {
 		const { isManualUnignored } = this.state;
-		const { threadBadgeColor, isIgnored, highlighted, previousItem } = this.props;
+		const {
+			threadBadgeColor,
+			isIgnored,
+			highlighted,
+			previousItem,
+			autoTranslateRoom,
+			autoTranslateLanguage,
+			isBeingEdited,
+			showUnreadSeparator,
+			dateSeparator
+		} = this.props;
+
+		if (nextProps.showUnreadSeparator !== showUnreadSeparator) {
+			return true;
+		}
+		if (nextProps.dateSeparator !== dateSeparator) {
+			return true;
+		}
 		if (nextProps.highlighted !== highlighted) {
 			return true;
 		}
@@ -109,12 +132,21 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		if (nextProps.previousItem?._id !== previousItem?._id) {
 			return true;
 		}
+		if (isBeingEdited !== nextProps.isBeingEdited) {
+			return true;
+		}
+		if (nextProps.autoTranslateRoom !== autoTranslateRoom) {
+			return true;
+		}
+		if (nextProps.autoTranslateRoom !== autoTranslateRoom || nextProps.autoTranslateLanguage !== autoTranslateLanguage) {
+			return true;
+		}
 		return false;
 	}
 
 	componentWillUnmount() {
-		if (this.subscription && this.subscription.unsubscribe) {
-			this.subscription.unsubscribe();
+		if (this.subscription) {
+			this.subscription();
 		}
 	}
 
@@ -211,7 +243,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	onAnswerButtonPress = (msg: string) => {
 		const { onAnswerButtonPress } = this.props;
 		if (onAnswerButtonPress) {
-			onAnswerButtonPress(msg, undefined, false);
+			onAnswerButtonPress(msg, false);
 		}
 	};
 
@@ -300,7 +332,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 	reactionInit = () => {
 		const { reactionInit, item } = this.props;
 		if (reactionInit) {
-			reactionInit(item);
+			reactionInit(item.id);
 		}
 	};
 
@@ -335,16 +367,20 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			isReadReceiptEnabled,
 			autoTranslateRoom,
 			autoTranslateLanguage,
-			navToRoomInfo,
+			navToRoomInfo = () => {},
 			getCustomEmoji,
 			isThreadRoom,
-			callJitsi,
+			handleEnterCall,
 			blockAction,
 			rid,
 			threadBadgeColor,
 			toggleFollowThread,
 			jumpToMessage,
-			highlighted
+			highlighted,
+			isBeingEdited,
+			isPreview,
+			showUnreadSeparator,
+			dateSeparator
 		} = this.props;
 		const {
 			id,
@@ -374,22 +410,28 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 			autoTranslate: autoTranslateMessage,
 			replies,
 			md,
-			comment
+			comment,
+			pinned
 		} = item;
 
 		let message = msg;
 		let isTranslated = false;
+		const otherUserMessage = u?.username !== user?.username;
 		// "autoTranslateRoom" and "autoTranslateLanguage" are properties from the subscription
 		// "autoTranslateMessage" is a toggle between "View Original" and "Translate" state
-		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage) {
+		if (autoTranslateRoom && autoTranslateMessage && autoTranslateLanguage && otherUserMessage) {
 			const messageTranslated = getMessageTranslation(item, autoTranslateLanguage);
 			isTranslated = !!messageTranslated;
 			message = messageTranslated || message;
 		}
 
+		const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
+
 		return (
 			<MessageContext.Provider
 				value={{
+					id,
+					rid,
 					user,
 					baseUrl,
 					onPress: this.onPressAction,
@@ -406,8 +448,11 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					jumpToMessage,
 					threadBadgeColor,
 					toggleFollowThread,
-					replies
+					replies,
+					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
+					isEncrypted: this.isEncrypted
 				}}>
+				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
 				{/* @ts-ignore*/}
 				<Message
 					id={id}
@@ -447,7 +492,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isHeader={this.isHeader}
 					isThreadReply={this.isThreadReply}
 					isThreadSequential={this.isThreadSequential}
-					isThreadRoom={isThreadRoom}
+					isThreadRoom={!!isThreadRoom}
 					isInfo={this.isInfo}
 					isTemp={this.isTemp}
 					isEncrypted={this.isEncrypted}
@@ -455,11 +500,14 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					showAttachment={showAttachment}
 					getCustomEmoji={getCustomEmoji}
 					navToRoomInfo={navToRoomInfo}
-					callJitsi={callJitsi}
+					handleEnterCall={handleEnterCall}
 					blockAction={blockAction}
 					highlighted={highlighted}
 					comment={comment}
 					isTranslated={isTranslated}
+					isBeingEdited={isBeingEdited}
+					isPreview={isPreview}
+					pinned={pinned}
 				/>
 			</MessageContext.Provider>
 		);

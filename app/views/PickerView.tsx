@@ -1,17 +1,17 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { FlatList, StyleSheet, Text, TextInputProps } from 'react-native';
 
-import { IBaseScreen } from '../definitions';
-import I18n from '../i18n';
-import { TSupportedThemes, withTheme } from '../theme';
-import { themes } from '../lib/constants';
-import { debounce } from '../lib/methods/helpers';
+import { textInputDebounceTime } from '../lib/constants';
 import * as List from '../containers/List';
-import SearchBox from '../containers/SearchBox';
 import SafeAreaView from '../containers/SafeAreaView';
-import sharedStyles from './Styles';
-import { ChatsStackParamList } from '../stacks/types';
+import SearchBox from '../containers/SearchBox';
+import I18n from '../i18n';
+import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
+import { useDebounce } from '../lib/methods/helpers';
+import { TNavigation } from '../stacks/stackType';
+import { useTheme } from '../theme';
 import { IOptionsField } from './NotificationPreferencesView/options';
+import sharedStyles from './Styles';
 
 const styles = StyleSheet.create({
 	noResult: {
@@ -19,9 +19,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 56,
 		...sharedStyles.textSemibold,
 		...sharedStyles.textAlignCenter
-	},
-	listNoHeader: {
-		marginTop: 32
 	}
 });
 
@@ -29,120 +26,93 @@ interface IItem {
 	item: IOptionsField;
 	selected: boolean;
 	onItemPress: () => void;
-	theme: TSupportedThemes;
 }
 
-interface IRenderSearch {
-	hasSearch: boolean;
-	onChangeText: (text: string) => void;
-}
-
-interface IPickerViewState {
-	data: IOptionsField[];
-	value: string;
-	total: number;
-	searchText: string;
-}
-
-type IPickerViewProps = IBaseScreen<ChatsStackParamList, 'PickerView'>;
-
-const Item = React.memo(({ item, selected, onItemPress, theme }: IItem) => (
-	<List.Item
-		title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
-		right={() => (selected ? <List.Icon name='check' color={themes[theme].tintColor} /> : null)}
-		onPress={onItemPress}
-		translateTitle={false}
-	/>
-));
-
-const RenderSearch = ({ hasSearch, onChangeText }: IRenderSearch) => {
-	if (!hasSearch) {
-		return <List.Separator style={styles.listNoHeader} />;
-	}
+const Item = ({ item, selected, onItemPress }: IItem) => {
+	const { colors } = useTheme();
 	return (
-		<>
-			<SearchBox onChangeText={onChangeText} />
-			<List.Separator />
-		</>
+		<List.Item
+			title={I18n.t(item.label, { defaultValue: item.label, second: item?.second })}
+			right={() => (selected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
+			onPress={onItemPress}
+			translateTitle={false}
+			additionalAcessibilityLabel={selected}
+			additionalAcessibilityLabelCheck
+		/>
 	);
 };
 
-class PickerView extends React.PureComponent<IPickerViewProps, IPickerViewState> {
-	private onSearch?: (text?: string) => Promise<any>;
+const RenderSearch = ({ onChangeText }: TextInputProps) => (
+	<>
+		<SearchBox onChangeText={onChangeText} />
+		<List.Separator />
+	</>
+);
 
-	static navigationOptions = ({ route }: IPickerViewProps) => ({
-		title: route.params?.title ?? I18n.t('Select_an_option')
-	});
+const PickerView = (): React.ReactElement => {
+	const navigation = useAppNavigation();
+	const {
+		params: { title, data: paramData, value: paramValue, total: paramTotal, onSearch, onChangeValue, onEndReached }
+	} = useAppRoute<TNavigation, 'PickerView'>();
 
-	constructor(props: IPickerViewProps) {
-		super(props);
-		const data = props.route.params?.data ?? [];
-		const value = props.route.params?.value ?? '';
-		const total = props.route.params?.total ?? 0;
-		this.state = { data, value, total, searchText: '' };
-		this.onSearch = props.route.params?.onSearch;
-	}
+	const { colors } = useTheme();
 
-	onChangeValue = (value: string) => {
-		const { navigation, route } = this.props;
-		const goBack = route.params?.goBack ?? true;
-		const onChange = route.params?.onChangeValue ?? (() => {});
-		onChange(value);
-		if (goBack) {
-			navigation.goBack();
+	const [data, setData] = useState(paramData);
+	const [total, setTotal] = useState(paramTotal ?? 0);
+	const [searchText, setSearchText] = useState('');
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			title: title ?? I18n.t('Select_an_option')
+		});
+	}, [navigation, title]);
+
+	const handleChangeValue = (value: string | number) => {
+		onChangeValue(value);
+		navigation.goBack();
+	};
+
+	const onChangeText = useDebounce(async (text: string) => {
+		const search = await onSearch(text);
+		if (search?.data) {
+			setSearchText(text);
+			setData(search?.data);
+		}
+	}, textInputDebounceTime);
+
+	const handleOnEndReached = async () => {
+		if (onEndReached && total && data.length < total) {
+			const end = await onEndReached(searchText, data.length);
+			if (end?.data) {
+				setData([...data, ...end.data]);
+				setTotal(end.total);
+			}
 		}
 	};
 
-	onChangeText = debounce(async (searchText: string) => {
-		if (this.onSearch) {
-			const data = await this.onSearch(searchText);
-			if (data?.data) {
-				this.setState({ ...data, searchText });
-			}
-		}
-	}, 500);
+	return (
+		<SafeAreaView>
+			<FlatList
+				data={data}
+				keyExtractor={item => item.value as string}
+				renderItem={({ item }) => (
+					<Item
+						item={item}
+						selected={(paramValue || data[0]?.value) === item.value}
+						onItemPress={() => handleChangeValue(item.value)}
+					/>
+				)}
+				onEndReached={handleOnEndReached}
+				onEndReachedThreshold={0.5}
+				ItemSeparatorComponent={List.Separator}
+				ListHeaderComponent={<RenderSearch onChangeText={onChangeText} />}
+				ListFooterComponent={List.Separator}
+				ListEmptyComponent={() => (
+					<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_results_found')}</Text>
+				)}
+			/>
+		</SafeAreaView>
+	);
+};
 
-	onEndReached = async () => {
-		const { route } = this.props;
-		const { data, total, searchText } = this.state;
-		const onEndReached = route.params?.onEndReached;
-		if (onEndReached && data.length < total) {
-			const val = await onEndReached(searchText, data.length);
-			if (val?.data) {
-				this.setState({ ...val, data: [...data, ...val.data] });
-			}
-		}
-	};
-
-	render() {
-		const { data, value } = this.state;
-		const { theme } = this.props;
-
-		return (
-			<SafeAreaView>
-				<FlatList
-					data={data}
-					keyExtractor={item => item.value as string}
-					renderItem={({ item }) => (
-						<Item
-							item={item}
-							theme={theme}
-							selected={!this.onSearch && (value || data[0]?.value) === item.value}
-							onItemPress={() => this.onChangeValue(item.value as string)}
-						/>
-					)}
-					onEndReached={() => this.onEndReached()}
-					onEndReachedThreshold={0.5}
-					ItemSeparatorComponent={List.Separator}
-					ListHeaderComponent={<RenderSearch hasSearch={!!this.onSearch} onChangeText={this.onChangeText} />}
-					ListFooterComponent={List.Separator}
-					ListEmptyComponent={() => (
-						<Text style={[styles.noResult, { color: themes[theme].titleText }]}>{I18n.t('No_results_found')}</Text>
-					)}
-				/>
-			</SafeAreaView>
-		);
-	}
-}
-
-export default withTheme(PickerView);
+export default PickerView;

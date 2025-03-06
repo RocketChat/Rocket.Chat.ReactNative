@@ -1,5 +1,5 @@
+import { ICredentials } from '../../../definitions';
 import { IEmitUserInteraction } from '../../../containers/UIKit/interfaces';
-import { ICommand } from '../../../definitions/ICommand';
 import log from './log';
 
 type TEventEmitterEmmitArgs =
@@ -11,9 +11,9 @@ type TEventEmitterEmmitArgs =
 	| { force: boolean }
 	| { hasBiometry: boolean }
 	| { visible: boolean; onCancel?: null | Function }
-	| { event: string | ICommand }
 	| { cancel: () => void }
 	| { submit: (param: string) => void }
+	| { params: ICredentials }
 	| IEmitUserInteraction;
 
 class EventEmitter {
@@ -43,6 +43,9 @@ class EventEmitter {
 		}
 	}
 
+	/**
+	 * @deprecated use lib/methods/helpers/emitter.ts
+	 */
 	emit(event: string, ...args: TEventEmitterEmmitArgs[]) {
 		if (typeof this.events[event] === 'object') {
 			this.events[event].forEach((listener: Function) => {

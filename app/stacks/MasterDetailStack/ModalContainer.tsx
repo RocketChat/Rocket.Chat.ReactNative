@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { NavigationContainerProps } from '@react-navigation/core';
 import { useKeyboard } from '@react-native-community/hooks';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
@@ -12,7 +12,7 @@ import { isAndroid } from '../../lib/methods/helpers';
 const MODAL_MARGIN = 32;
 
 interface IModalContainer extends NavigationContainerProps {
-	navigation: StackNavigationProp<any>;
+	navigation: NativeStackNavigationProp<any>;
 	children: React.ReactNode;
 	theme: TSupportedThemes;
 }
@@ -52,8 +52,7 @@ export const ModalContainer = ({ navigation, children, theme }: IModalContainer)
 				style={{
 					...sharedStyles.modalFormSheet,
 					height: heightModal
-				}}
-			>
+				}}>
 				{children}
 			</View>
 		</View>

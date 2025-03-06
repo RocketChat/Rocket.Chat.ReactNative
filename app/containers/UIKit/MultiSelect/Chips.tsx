@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { textParser } from '../utils';
 import { CustomIcon } from '../../CustomIcon';
@@ -29,15 +29,15 @@ const Chip = ({ item, onSelect, style }: IChip) => {
 		<Touchable
 			key={item.value}
 			onPress={() => onSelect(item)}
-			style={[styles.chip, { backgroundColor: colors.auxiliaryBackground }, style]}
-			background={Touchable.Ripple(colors.bannerBackground)}
-		>
+			style={[styles.chip, { backgroundColor: colors.surfaceHover }, style]}
+			background={Touchable.Ripple(colors.surfaceNeutral)}
+			testID={`multi-select-chip-${item.value}`}>
 			<>
-				{item.imageUrl ? <FastImage style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
-				<Text numberOfLines={1} style={[styles.chipText, { color: colors.titleText }]}>
+				{item.imageUrl ? <Image style={styles.chipImage} source={{ uri: item.imageUrl }} /> : null}
+				<Text numberOfLines={1} style={[styles.chipText, { color: colors.fontTitlesLabels }]}>
 					{textParser([item.text])}
 				</Text>
-				<CustomIcon name='close' size={16} color={colors.auxiliaryText} />
+				<CustomIcon name='close' size={16} color={colors.fontSecondaryInfo} />
 			</>
 		</Touchable>
 	);

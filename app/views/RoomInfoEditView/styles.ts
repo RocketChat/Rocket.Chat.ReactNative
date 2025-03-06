@@ -39,18 +39,17 @@ export default StyleSheet.create({
 	},
 	switchLabelContainer: {
 		flex: 1,
-		paddingHorizontal: 10,
-		alignItems: 'flex-end'
+		alignItems: 'flex-start'
 	},
 	switchLabelPrimary: {
 		fontSize: 16,
-		paddingBottom: 6,
+		lineHeight: 24,
 		...sharedStyles.textRegular
 	},
 	switchLabelSecondary: {
-		fontSize: 12,
-		...sharedStyles.textRegular,
-		textAlign: 'right'
+		fontSize: 14,
+		lineHeight: 20,
+		...sharedStyles.textRegular
 	},
 	switch: {
 		alignSelf: 'center'
@@ -58,7 +57,7 @@ export default StyleSheet.create({
 	divider: {
 		height: StyleSheet.hairlineWidth,
 		borderBottomWidth: StyleSheet.hairlineWidth,
-		marginVertical: 20
+		marginVertical: 12
 	},
 	broadcast: {
 		...sharedStyles.textSemibold,
@@ -76,7 +75,8 @@ export default StyleSheet.create({
 	avatarContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
-		marginBottom: 10
+		marginBottom: 16,
+		marginTop: 16
 	},
 	resetButton: {
 		padding: 4,
@@ -84,5 +84,14 @@ export default StyleSheet.create({
 		position: 'absolute',
 		bottom: -8,
 		right: -8
+	},
+	inputs: {
+		flex: 1,
+		gap: 12
+	},
+	switches: {
+		flex: 1,
+		gap: 12,
+		marginBottom: 36
 	}
 });

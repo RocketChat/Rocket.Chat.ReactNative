@@ -1,7 +1,7 @@
-/* eslint-disable import/extensions, import/no-unresolved */
-import random from './helpers/random';
 // @ts-ignore
+// eslint-disable-next-line import/no-unresolved, import/extensions
 import account from './e2e_account';
+import random from './helpers/random';
 
 export interface IUser {
 	username: string;
@@ -11,40 +11,12 @@ export interface IUser {
 
 export type TData = typeof data;
 export type TDataKeys = keyof TData;
-export type TDataUsers = keyof typeof data.users;
 export type TDataChannels = keyof typeof data.channels;
-export type TUserRegularChannels = keyof typeof data.userRegularChannels;
-export type TDataGroups = keyof typeof data.groups;
-export type TDataTeams = keyof typeof data.teams;
 
-const value: string = random(20);
 const data = {
 	server: 'https://mobile.rocket.chat',
-	...account,
 	alternateServer: 'https://stable.rocket.chat',
-	users: {
-		regular: {
-			username: `userone${value}`,
-			password: '123',
-			email: `mobile+regular${value}@rocket.chat`
-		},
-		alternate: {
-			username: `usertwo${value}`,
-			password: '123',
-			email: `mobile+alternate${value}@rocket.chat`,
-			totpSecret: 'NA4GOMZGHBQSK6KEFRVT62DMGJJGSYZJFZIHO3ZOGVXWCYZ6MMZQ'
-		},
-		profileChanges: {
-			username: `userthree${value}`,
-			password: '123',
-			email: `mobile+profileChanges${value}@rocket.chat`
-		},
-		existing: {
-			username: `existinguser${value}`,
-			password: '123',
-			email: `mobile+existing${value}@rocket.chat`
-		}
-	},
+	...account,
 	channels: {
 		detoxpublic: {
 			name: 'detox-public'
@@ -54,48 +26,15 @@ const data = {
 			joinCode: '123'
 		}
 	},
-	userRegularChannels: {
-		detoxpublic: {
-			name: `detox-public-${value}`
-		}
-	},
-	groups: {
-		private: {
-			name: `detox-private-${value}`
-		},
-		alternate: {
-			name: `detox-alternate-${value}`
-		},
-		alternate2: {
-			name: `detox-alternate2-${value}`
-		}
-	},
-	teams: {
-		private: {
-			name: `detox-team-${value}`
-		}
-	},
-	registeringUser: {
-		username: `newuser${value}`,
-		password: `password${value}`,
-		email: `mobile+registering${value}@rocket.chat`
-	},
-	registeringUser2: {
-		username: `newusertwo${value}`,
-		password: `passwordtwo${value}`,
-		email: `mobile+registeringtwo${value}@rocket.chat`
-	},
-	registeringUser3: {
-		username: `newuserthree${value}`,
-		password: `passwordthree${value}`,
-		email: `mobile+registeringthree${value}@rocket.chat`
-	},
-	registeringUser4: {
-		username: `newuserfour${value}`,
-		password: `passwordfour${value}`,
-		email: `mobile+registeringfour${value}@rocket.chat`
-	},
-	random: value
+	randomUser: (): { username: string; name: string; password: string; email: string } => {
+		const randomVal = random();
+		return {
+			username: `user${randomVal}`,
+			name: `user${randomVal}`, // FIXME: apply a different name
+			password: `Password1@${randomVal}`,
+			email: `mobile+${randomVal}@rocket.chat`
+		};
+	}
 };
 
 export default data;

@@ -1,0 +1,34 @@
+diff --git a/node_modules/react-native-device-info/android/build.gradle b/node_modules/react-native-device-info/android/build.gradle
+index 6b10215..cc87aa5 100644
+--- a/node_modules/react-native-device-info/android/build.gradle
++++ b/node_modules/react-native-device-info/android/build.gradle
+@@ -57,16 +57,19 @@ repositories {
+ dependencies {
+   implementation "com.facebook.react:react-native:${safeExtGet('reactNativeVersion', '+')}"
+   implementation "com.android.installreferrer:installreferrer:${safeExtGet('installReferrerVersion', '1.1.2')}"
+-  def firebaseBomVersion = safeExtGet("firebaseBomVersion", null)
+-  def firebaseIidVersion = safeExtGet('firebaseIidVersion', null)
+-  if (firebaseBomVersion) {
+-      implementation platform("com.google.firebase:firebase-bom:${firebaseBomVersion}")
+-      implementation "com.google.firebase:firebase-iid"
+-  } else if(firebaseIidVersion){
+-      implementation "com.google.firebase:firebase-iid:${firebaseIidVersion}"
+-  }else{
+-      def iidVersion = safeExtGet('googlePlayServicesIidVersion', safeExtGet('googlePlayServicesVersion', '17.0.0'))
+-      implementation "com.google.android.gms:play-services-iid:$iidVersion"
++  def libreBuild = safeExtGet('libre_build', false)
++  if (!libreBuild) {
++    def firebaseBomVersion = safeExtGet("firebaseBomVersion", null)
++    def firebaseIidVersion = safeExtGet('firebaseIidVersion', null)
++    if (firebaseBomVersion) {
++        implementation platform("com.google.firebase:firebase-bom:${firebaseBomVersion}")
++        implementation "com.google.firebase:firebase-iid"
++    } else if(firebaseIidVersion){
++        implementation "com.google.firebase:firebase-iid:${firebaseIidVersion}"
++    }else{
++        def iidVersion = safeExtGet('googlePlayServicesIidVersion', safeExtGet('googlePlayServicesVersion', '17.0.0'))
++        implementation "com.google.android.gms:play-services-iid:$iidVersion"
++    }
+   }
+ 
+   testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'

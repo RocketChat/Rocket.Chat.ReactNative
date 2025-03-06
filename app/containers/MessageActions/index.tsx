@@ -16,20 +16,23 @@ import { TActionSheetOptionsItem, useActionSheet, ACTION_SHEET_ANIMATION_DURATIO
 import Header, { HEADER_HEIGHT, IHeader } from './Header';
 import events from '../../lib/methods/helpers/log/events';
 import { IApplicationState, IEmoji, ILoggedUser, TAnyMessageModel, TSubscriptionModel } from '../../definitions';
-import { getPermalinkMessage } from '../../lib/methods';
-import { getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
+import { getPermalinkMessage, getQuoteMessageLink } from '../../lib/methods';
+import { compareServerVersion, getRoomTitle, getUidDirectMessage, hasPermission } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 
 export interface IMessageActionsProps {
 	room: TSubscriptionModel;
 	tmid?: string;
 	user: Pick<ILoggedUser, 'id'>;
-	editInit: (message: TAnyMessageModel) => void;
-	reactionInit: (message: TAnyMessageModel) => void;
+	editInit: (messageId: string) => void;
+	reactionInit: (messageId: string) => void;
 	onReactionPress: (shortname: IEmoji, messageId: string) => void;
-	replyInit: (message: TAnyMessageModel, mention: boolean) => void;
+	replyInit: (messageId: string) => void;
+	quoteInit: (messageId: string) => void;
+	jumpToMessage?: (messageUrl?: string, isFromReply?: boolean) => Promise<void>;
 	isMasterDetail: boolean;
 	isReadOnly: boolean;
+	serverVersion?: string | null;
 	Message_AllowDeleting?: boolean;
 	Message_AllowDeleting_BlockDeleteInMinutes?: number;
 	Message_AllowEditing?: boolean;
@@ -43,6 +46,7 @@ export interface IMessageActionsProps {
 	deleteOwnMessagePermission?: string[];
 	pinMessagePermission?: string[];
 	createDirectMessagePermission?: string[];
+	createDiscussionOtherUserPermission?: string[];
 }
 
 export interface IMessageActions {
@@ -60,6 +64,8 @@ const MessageActions = React.memo(
 				reactionInit,
 				onReactionPress,
 				replyInit,
+				quoteInit,
+				jumpToMessage,
 				isReadOnly,
 				Message_AllowDeleting,
 				Message_AllowDeleting_BlockDeleteInMinutes,
@@ -74,7 +80,9 @@ const MessageActions = React.memo(
 				forceDeleteMessagePermission,
 				deleteOwnMessagePermission,
 				pinMessagePermission,
-				createDirectMessagePermission
+				createDirectMessagePermission,
+				createDiscussionOtherUserPermission,
+				serverVersion
 			},
 			ref
 		) => {
@@ -83,7 +91,9 @@ const MessageActions = React.memo(
 				hasDeletePermission: false,
 				hasForceDeletePermission: false,
 				hasPinPermission: false,
-				hasDeleteOwnPermission: false
+				hasDeleteOwnPermission: false,
+				hasCreateDirectMessagePermission: false,
+				hasCreateDiscussionOtherUserPermission: false
 			};
 			const { showActionSheet, hideActionSheet } = useActionSheet();
 
@@ -94,7 +104,9 @@ const MessageActions = React.memo(
 						deleteMessagePermission,
 						forceDeleteMessagePermission,
 						pinMessagePermission,
-						deleteOwnMessagePermission
+						deleteOwnMessagePermission,
+						createDirectMessagePermission,
+						createDiscussionOtherUserPermission
 					];
 					const result = await hasPermission(permission, room.rid);
 					permissions = {
@@ -102,7 +114,9 @@ const MessageActions = React.memo(
 						hasDeletePermission: result[1],
 						hasForceDeletePermission: result[2],
 						hasPinPermission: result[3],
-						hasDeleteOwnPermission: result[4]
+						hasDeleteOwnPermission: result[4],
+						hasCreateDirectMessagePermission: result[5],
+						hasCreateDiscussionOtherUserPermission: result[6]
 					};
 				} catch {
 					// Do nothing
@@ -117,7 +131,7 @@ const MessageActions = React.memo(
 				}
 				const editOwn = isOwn(message);
 
-				if (!(permissions.hasEditPermission || (Message_AllowEditing && editOwn))) {
+				if (!(permissions.hasEditPermission || (Message_AllowEditing !== false && editOwn))) {
 					return false;
 				}
 				const blockEditInMinutes = Message_AllowEditing_BlockEditInMinutes;
@@ -168,14 +182,14 @@ const MessageActions = React.memo(
 
 			const getPermalink = (message: TAnyMessageModel) => getPermalinkMessage(message);
 
-			const handleReply = (message: TAnyMessageModel) => {
+			const handleReply = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_REPLY);
-				replyInit(message, true);
+				replyInit(messageId);
 			};
 
-			const handleEdit = (message: TAnyMessageModel) => {
+			const handleEdit = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_EDIT);
-				editInit(message);
+				editInit(messageId);
 			};
 
 			const handleCreateDiscussion = (message: TAnyMessageModel) => {
@@ -185,6 +199,15 @@ const MessageActions = React.memo(
 					Navigation.navigate('ModalStackNavigator', { screen: 'CreateDiscussionView', params });
 				} else {
 					Navigation.navigate('NewMessageStackNavigator', { screen: 'CreateDiscussionView', params });
+				}
+			};
+
+			const handleShareMessage = (message: TAnyMessageModel) => {
+				const params = { message };
+				if (isMasterDetail) {
+					Navigation.navigate('ModalStackNavigator', { screen: 'ForwardMessageView', params });
+				} else {
+					Navigation.navigate('NewMessageStackNavigator', { screen: 'ForwardMessageView', params });
 				}
 			};
 
@@ -242,9 +265,9 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleQuote = (message: TAnyMessageModel) => {
+			const handleQuote = (messageId: string) => {
 				logEvent(events.ROOM_MSG_ACTION_QUOTE);
-				replyInit(message, false);
+				quoteInit(messageId);
 			};
 
 			const handleReplyInDM = async (message: TAnyMessageModel) => {
@@ -257,7 +280,7 @@ const MessageActions = React.memo(
 							name: getRoomTitle(room),
 							t: room.t,
 							roomUserId: getUidDirectMessage(room),
-							replyInDM: message
+							messageId: message.id
 						};
 						Navigation.replace('RoomView', params);
 					}
@@ -285,12 +308,12 @@ const MessageActions = React.memo(
 				}
 			};
 
-			const handleReaction: IHeader['handleReaction'] = (shortname, message) => {
+			const handleReaction: IHeader['handleReaction'] = (emoji, message) => {
 				logEvent(events.ROOM_MSG_ACTION_REACTION);
-				if (shortname) {
-					onReactionPress(shortname, message.id);
+				if (emoji) {
+					onReactionPress(emoji, message.id);
 				} else {
-					setTimeout(() => reactionInit(message), ACTION_SHEET_ANIMATION_DURATION);
+					setTimeout(() => reactionInit(message.id), ACTION_SHEET_ANIMATION_DURATION);
 				}
 				hideActionSheet();
 			};
@@ -311,7 +334,7 @@ const MessageActions = React.memo(
 					const db = database.active;
 					await db.write(async () => {
 						await message.update(m => {
-							m.autoTranslate = !m.autoTranslate;
+							m.autoTranslate = m.autoTranslate !== null ? !m.autoTranslate : false;
 							m._updatedAt = new Date();
 						});
 					});
@@ -355,12 +378,33 @@ const MessageActions = React.memo(
 				const options: TActionSheetOptionsItem[] = [];
 				const videoConfBlock = message.t === 'videoconf';
 
+				// Edit
+				const isEditAllowed = allowEdit(message);
+				if (!videoConfBlock && (isOwn(message) || isEditAllowed)) {
+					options.push({
+						title: I18n.t('Edit'),
+						icon: 'edit',
+						onPress: () => handleEdit(message.id),
+						enabled: isEditAllowed
+					});
+				}
+
+				// Jump to message
+				const quoteMessageLink = getQuoteMessageLink(message.attachments);
+				if (quoteMessageLink && jumpToMessage) {
+					options.push({
+						title: I18n.t('Jump_to_message'),
+						icon: 'jump-to-message',
+						onPress: () => jumpToMessage(quoteMessageLink, true)
+					});
+				}
+
 				// Quote
 				if (!isReadOnly && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Quote'),
 						icon: 'quote',
-						onPress: () => handleQuote(message)
+						onPress: () => handleQuote(message.id)
 					});
 				}
 
@@ -369,16 +413,17 @@ const MessageActions = React.memo(
 					options.push({
 						title: I18n.t('Reply_in_Thread'),
 						icon: 'threads',
-						onPress: () => handleReply(message)
+						onPress: () => handleReply(message.id)
 					});
 				}
 
 				// Reply in DM
-				if (room.t !== 'd' && room.t !== 'l' && createDirectMessagePermission && !videoConfBlock) {
+				if (room.t !== 'd' && room.t !== 'l' && !videoConfBlock) {
 					options.push({
 						title: I18n.t('Reply_in_direct_message'),
 						icon: 'arrow-back',
-						onPress: () => handleReplyInDM(message)
+						onPress: () => handleReplyInDM(message),
+						enabled: permissions.hasCreateDirectMessagePermission
 					});
 				}
 
@@ -386,8 +431,17 @@ const MessageActions = React.memo(
 				options.push({
 					title: I18n.t('Start_a_Discussion'),
 					icon: 'discussions',
-					onPress: () => handleCreateDiscussion(message)
+					onPress: () => handleCreateDiscussion(message),
+					enabled: permissions.hasCreateDiscussionOtherUserPermission
 				});
+
+				if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.2.0') && !videoConfBlock) {
+					options.push({
+						title: I18n.t('Forward'),
+						icon: 'arrow-forward',
+						onPress: () => handleShareMessage(message)
+					});
+				}
 
 				// Permalink
 				options.push({
@@ -412,21 +466,13 @@ const MessageActions = React.memo(
 					onPress: () => handleShare(message)
 				});
 
-				// Edit
-				if (allowEdit(message) && !videoConfBlock) {
-					options.push({
-						title: I18n.t('Edit'),
-						icon: 'edit',
-						onPress: () => handleEdit(message)
-					});
-				}
-
 				// Pin
-				if (Message_AllowPinning && permissions?.hasPinPermission && !videoConfBlock) {
+				if (Message_AllowPinning && !videoConfBlock) {
 					options.push({
 						title: I18n.t(message.pinned ? 'Unpin' : 'Pin'),
 						icon: 'pin',
-						onPress: () => handlePin(message)
+						onPress: () => handlePin(message),
+						enabled: permissions?.hasPinPermission
 					});
 				}
 
@@ -460,7 +506,7 @@ const MessageActions = React.memo(
 				// Toggle Auto-translate
 				if (room.autoTranslate && message.u && message.u._id !== user.id) {
 					options.push({
-						title: I18n.t(message.autoTranslate ? 'View_Original' : 'Translate'),
+						title: I18n.t(message.autoTranslate !== false ? 'View_Original' : 'Translate'),
 						icon: 'language',
 						onPress: () => handleToggleTranslation(message)
 					});
@@ -475,12 +521,14 @@ const MessageActions = React.memo(
 				});
 
 				// Delete
-				if (allowDelete(message)) {
+				const isDeleteAllowed = allowDelete(message);
+				if (isOwn(message) || isDeleteAllowed) {
 					options.push({
 						title: I18n.t('Delete'),
 						icon: 'delete',
 						danger: true,
-						onPress: () => handleDelete(message)
+						onPress: () => handleDelete(message),
+						enabled: isDeleteAllowed
 					});
 				}
 
@@ -493,10 +541,13 @@ const MessageActions = React.memo(
 				showActionSheet({
 					options: getOptions(message),
 					headerHeight: HEADER_HEIGHT,
-					customHeader:
-						!isReadOnly || room.reactWhenReadOnly ? (
-							<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
-						) : null
+					customHeader: (
+						<>
+							{!isReadOnly || room.reactWhenReadOnly ? (
+								<Header handleReaction={handleReaction} isMasterDetail={isMasterDetail} message={message} />
+							) : null}
+						</>
+					)
 				});
 			};
 
@@ -508,6 +559,7 @@ const MessageActions = React.memo(
 );
 const mapStateToProps = (state: IApplicationState) => ({
 	server: state.server.server,
+	serverVersion: state.server.version,
 	Message_AllowDeleting: state.settings.Message_AllowDeleting as boolean,
 	Message_AllowDeleting_BlockDeleteInMinutes: state.settings.Message_AllowDeleting_BlockDeleteInMinutes as number,
 	Message_AllowEditing: state.settings.Message_AllowEditing as boolean,
@@ -521,7 +573,8 @@ const mapStateToProps = (state: IApplicationState) => ({
 	deleteOwnMessagePermission: state.permissions['delete-own-message'],
 	forceDeleteMessagePermission: state.permissions['force-delete-message'],
 	pinMessagePermission: state.permissions['pin-message'],
-	createDirectMessagePermission: state.permissions['create-d']
+	createDirectMessagePermission: state.permissions['create-d'],
+	createDiscussionOtherUserPermission: state.permissions['start-discussion-other-user']
 });
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(MessageActions);

@@ -16,7 +16,7 @@ const updateRooms = function* updateRooms({ server, newRoomsUpdatedAt }) {
 	try {
 		const serverRecord = yield serversCollection.find(server);
 
-		return serversDB.action(async () => {
+		return serversDB.write(async () => {
 			await serverRecord.update(record => {
 				record.roomsUpdatedAt = newRoomsUpdatedAt;
 			});
@@ -66,7 +66,7 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				 */
 				.filter(sub => subscribedRoom !== sub.rid)
 				.map(sub => sub.lastMessage && buildMessage(sub.lastMessage))
-				.filter(lm => lm);
+				.filter(lm => lm && lm._id && lm.rid);
 			const lastMessagesIds = lastMessages.map(lm => lm._id).filter(lm => lm);
 			const existingMessages = yield messagesCollection.query(Q.where('id', Q.oneOf(lastMessagesIds))).fetch();
 			const messagesToUpdate = existingMessages.filter(i1 => lastMessages.find(i2 => i1.id === i2._id));
@@ -123,8 +123,8 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				})
 			];
 
-			yield db.action(async () => {
-				await db.batch(...allRecords);
+			yield db.write(async () => {
+				await db.batch(allRecords);
 			});
 		}
 

@@ -1,17 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import {
+	StyleSheet,
+	Text,
+	TextInputProps,
+	TouchableOpacity,
+	TouchableOpacityProps,
+	View,
+	useWindowDimensions
+} from 'react-native';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import { isIOS, isTablet } from '../../../lib/methods/helpers';
-import { useOrientation } from '../../../dimensions';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
+import { useAppSelector } from '../../../lib/hooks';
+import { isTablet } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: 'center'
 	},
 	button: {
@@ -20,13 +26,12 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		flexShrink: 1,
+		fontSize: 16,
 		...sharedStyles.textSemibold
 	},
 	subtitle: {
+		fontSize: 14,
 		...sharedStyles.textRegular
-	},
-	upsideDown: {
-		transform: [{ scaleY: -1 }]
 	}
 });
 
@@ -36,8 +41,8 @@ interface IRoomHeader {
 	isFetching: boolean;
 	serverName: string;
 	server: string;
-	showServerDropdown: boolean;
 	showSearchHeader: boolean;
+	width?: number;
 	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
 }
@@ -49,22 +54,22 @@ const Header = React.memo(
 		isFetching,
 		serverName = 'Rocket.Chat',
 		server,
-		showServerDropdown,
 		showSearchHeader,
+		width,
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
+		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
-		const { isLandscape } = useOrientation();
-		const scale = isIOS && isLandscape && !isTablet ? 0.8 : 1;
-		const titleFontSize = 16 * scale;
-		const subTitleFontSize = 14 * scale;
+		const { width: windowWidth } = useWindowDimensions();
 
 		if (showSearchHeader) {
 			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
 		}
 		let subtitle;
-		if (connecting) {
+		if (supportedVersionsStatus === 'expired') {
+			subtitle = 'Cannot connect';
+		} else if (connecting) {
 			subtitle = I18n.t('Connecting');
 		} else if (isFetching) {
 			subtitle = I18n.t('Updating');
@@ -73,26 +78,24 @@ const Header = React.memo(
 		} else {
 			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 		}
+		// improve copy
 		return (
-			<View style={styles.container}>
-				<TouchableOpacity onPress={onPress} testID='rooms-list-header-server-dropdown-button'>
+			<View
+				style={[styles.container, { width: width || (isTablet ? undefined : windowWidth) }]}
+				accessibilityLabel={`${serverName} ${subtitle}`}
+				accessibilityRole='header'
+				accessible>
+				<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
 					<View style={styles.button}>
-						<Text style={[styles.title, { fontSize: titleFontSize, color: colors.headerTitleColor }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{serverName}
 						</Text>
-						<CustomIcon
-							name='chevron-down'
-							color={colors.headerTintColor}
-							style={[showServerDropdown && styles.upsideDown]}
-							size={18}
-						/>
 					</View>
 					{subtitle ? (
 						<Text
 							testID='rooms-list-header-server-subtitle'
-							style={[styles.subtitle, { color: colors.auxiliaryText, fontSize: subTitleFontSize }]}
-							numberOfLines={1}
-						>
+							style={[styles.subtitle, { color: colors.fontSecondaryInfo }]}
+							numberOfLines={1}>
 							{subtitle}
 						</Text>
 					) : null}

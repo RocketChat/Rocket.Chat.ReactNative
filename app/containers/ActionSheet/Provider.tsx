@@ -1,5 +1,5 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
-import React, { ForwardedRef, forwardRef, useContext, useRef } from 'react';
+import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
 
 import { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
@@ -11,6 +11,7 @@ export type TActionSheetOptionsItem = {
 	testID?: string;
 	onPress: () => void;
 	right?: () => React.ReactElement;
+	enabled?: boolean;
 };
 
 export type TActionSheetOptions = {
@@ -18,8 +19,9 @@ export type TActionSheetOptions = {
 	headerHeight?: number;
 	customHeader?: React.ReactElement | null;
 	hasCancel?: boolean;
-	type?: string;
+	// children can both use snaps or dynamic
 	children?: React.ReactElement | null;
+	/** Required if your action sheet needs vertical scroll */
 	snaps?: (string | number)[];
 	onClose?: () => void;
 	enableContentPanningGesture?: boolean;
@@ -47,23 +49,31 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 	return WithActionSheetComponent;
 };
 
-export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
-	const ref: ForwardedRef<IActionSheetProvider> = useRef(null);
+const actionSheetRef: React.Ref<IActionSheetProvider> = createRef();
 
-	const getContext = () => ({
-		showActionSheet: (options: TActionSheetOptions) => {
-			ref.current?.showActionSheet(options);
+export const ActionSheetProvider = React.memo(({ children }: { children: React.ReactElement | React.ReactElement[] }) => {
+	const getContext = (): IActionSheetProvider => ({
+		showActionSheet: options => {
+			actionSheetRef.current?.showActionSheet(options);
 		},
 		hideActionSheet: () => {
-			ref.current?.hideActionSheet();
+			actionSheetRef.current?.hideActionSheet();
 		}
 	});
 
 	return (
 		<Provider value={getContext()}>
-			<ActionSheet ref={ref}>
+			<ActionSheet ref={actionSheetRef}>
 				<>{children}</>
 			</ActionSheet>
 		</Provider>
 	);
 });
+
+export const showActionSheetRef: IActionSheetProvider['showActionSheet'] = options => {
+	actionSheetRef?.current?.showActionSheet(options);
+};
+
+export const hideActionSheetRef: IActionSheetProvider['hideActionSheet'] = () => {
+	actionSheetRef?.current?.hideActionSheet();
+};

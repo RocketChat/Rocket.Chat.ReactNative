@@ -74,7 +74,48 @@ export default class Thread extends Model {
 
 	@json('translations', sanitizer) translations;
 
+	@json('content', sanitizer) content;
+
 	@field('e2e') e2e;
 
 	@field('draft_message') draftMessage;
+
+	asPlain() {
+		return {
+			id: this.id,
+			msg: this.msg,
+			t: this.t,
+			ts: this.ts,
+			u: this.u,
+			alias: this.alias,
+			parseUrls: this.parseUrls,
+			groupable: this.groupable,
+			avatar: this.avatar,
+			emoji: this.emoji,
+			attachments: this.attachments,
+			urls: this.urls,
+			_updatedAt: this._updatedAt,
+			status: this.status,
+			pinned: this.pinned,
+			starred: this.starred,
+			editedBy: this.editedBy,
+			reactions: this.reactions,
+			role: this.role,
+			drid: this.drid,
+			dcount: this.dcount,
+			dlm: this.dlm,
+			tmid: this.tmid,
+			tcount: this.tcount,
+			tlm: this.tlm,
+			replies: this.replies,
+			mentions: this.mentions,
+			channels: this.channels,
+			unread: this.unread,
+			autoTranslate: this.autoTranslate,
+			translations: this.translations,
+			e2e: this.e2e,
+			draftMessage: this.draftMessage,
+			content: this.content
+		};
+	}
 }

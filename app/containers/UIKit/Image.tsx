@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
-import ImageContainer from '../message/Image';
+import ImageContainer from '../message/Components/Attachments/Image';
 import Navigation from '../../lib/navigation/appNavigation';
 import { IThumb, IImage, IElement } from './interfaces';
 import { IAttachment } from '../../definitions';
@@ -24,14 +24,13 @@ const ThumbContext = (args: IThumb) => (
 );
 
 export const Thumb = ({ element, size = 88 }: IThumb) => (
-	<FastImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
+	<ExpoImage style={[{ width: size, height: size }, styles.image]} source={{ uri: element?.imageUrl }} />
 );
 
 export const Media = ({ element }: IImage) => {
 	const showAttachment = (attachment: IAttachment) => Navigation.navigate('AttachmentView', { attachment });
 	const imageUrl = element?.imageUrl ?? '';
-
-	return <ImageContainer file={{ image_url: imageUrl }} imageUrl={imageUrl} showAttachment={showAttachment} />;
+	return <ImageContainer file={{ image_url: imageUrl }} showAttachment={showAttachment} />;
 };
 
 const genericImage = (element: IElement, context?: number) => {

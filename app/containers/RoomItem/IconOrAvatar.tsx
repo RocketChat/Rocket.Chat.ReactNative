@@ -12,6 +12,7 @@ const IconOrAvatar = ({
 	type,
 	rid,
 	showAvatar,
+	userId,
 	prid,
 	status,
 	isGroupChat,
@@ -30,6 +31,7 @@ const IconOrAvatar = ({
 		return (
 			<View style={styles.typeIcon}>
 				<TypeIcon
+					userId={userId}
 					type={type}
 					prid={prid}
 					status={status}

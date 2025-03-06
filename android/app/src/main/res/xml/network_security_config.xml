@@ -7,4 +7,8 @@
                 tools:ignore="AcceptsUserCertificates" />
         </trust-anchors>
     </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">localhost</domain>
+	</domain-config>
 </network-security-config>

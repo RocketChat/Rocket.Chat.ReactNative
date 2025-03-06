@@ -6,9 +6,7 @@ import { IUser } from '../../../../definitions';
 import { VideoConferenceType } from '../../../../definitions/IVideoConference';
 import i18n from '../../../../i18n';
 import { useAppSelector } from '../../../../lib/hooks';
-import { useSnaps } from '../../../../lib/hooks/useSnaps';
-import { useActionSheet } from '../../../ActionSheet';
-import CallAgainActionSheet from './CallAgainActionSheet';
+import { useVideoConf } from '../../../../lib/hooks/useVideoConf';
 import { CallParticipants, TCallUsers } from './CallParticipants';
 import useStyle from './styles';
 import { VideoConferenceBaseContainer } from './VideoConferenceBaseContainer';
@@ -26,8 +24,7 @@ export default function VideoConferenceEnded({
 }): React.ReactElement {
 	const style = useStyle();
 	const username = useAppSelector(state => state.login.user.username);
-	const { showActionSheet } = useActionSheet();
-	const snaps = useSnaps([1250]);
+	const { showInitCallActionSheet } = useVideoConf(rid);
 
 	const onlyAuthorOnCall = users.length === 1 && users.some(user => user.username === createdBy.username);
 
@@ -35,17 +32,9 @@ export default function VideoConferenceEnded({
 		<VideoConferenceBaseContainer variant='ended'>
 			{type === 'direct' ? (
 				<>
-					<Touchable
-						style={style.callToActionCallBack}
-						onPress={() =>
-							showActionSheet({
-								children: <CallAgainActionSheet rid={rid} />,
-								snaps
-							})
-						}
-					>
+					<Touchable style={style.callToActionCallBack} onPress={showInitCallActionSheet}>
 						<Text style={style.callToActionCallBackText}>
-							{createdBy.username === username ? i18n.t('Call_back') : i18n.t('Call_again')}
+							{createdBy.username === username ? i18n.t('Call_again') : i18n.t('Call_back')}
 						</Text>
 					</Touchable>
 					<Text style={style.callBack}>{i18n.t('Call_was_not_answered')}</Text>

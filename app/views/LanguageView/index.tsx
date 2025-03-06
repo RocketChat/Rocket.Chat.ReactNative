@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAppSelector } from '../../lib/hooks';
 import { appStart } from '../../actions/app';
@@ -29,7 +29,7 @@ const LanguageView = () => {
 	const language = languageDefault || 'en';
 
 	const dispatch = useDispatch();
-	const navigation = useNavigation<StackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'LanguageView'>>();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({

@@ -2,6 +2,7 @@ import React from 'react';
 import { Keyboard, StyleSheet, Text, View, TextInput as RNTextInput } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { connect } from 'react-redux';
+import parse from 'url-parse';
 
 import { loginRequest } from '../actions/login';
 import { themes } from '../lib/constants';
@@ -17,9 +18,9 @@ import { OutsideParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { showErrorAlert, isValidEmail } from '../lib/methods/helpers';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import openLink from '../lib/methods/helpers/openLink';
 import sharedStyles from './Styles';
 import { Services } from '../lib/services';
+import UGCRules from '../containers/UserGeneratedContentRules';
 
 const styles = StyleSheet.create({
 	title: {
@@ -30,28 +31,25 @@ const styles = StyleSheet.create({
 		marginVertical: 16
 	},
 	bottomContainer: {
-		flexDirection: 'column',
-		alignItems: 'center',
-		marginBottom: 32,
-		marginHorizontal: 30
+		marginBottom: 32
 	},
 	bottomContainerText: {
-		...sharedStyles.textRegular,
-		fontSize: 13
-	},
-	bottomContainerTextBold: {
-		...sharedStyles.textSemibold,
-		fontSize: 13
+		...sharedStyles.textMedium,
+		fontSize: 14,
+		lineHeight: 22,
+		alignSelf: 'center'
 	},
 	registerButton: {
 		marginTop: 16,
 		marginBottom: 32
+	},
+	loginButton: {
+		marginTop: 12
 	}
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {
-	server: string;
-	Site_Name: string;
+	Site_Url: string;
 	Gitlab_URL: string;
 	CAS_enabled: boolean;
 	CAS_login_url: string;
@@ -100,8 +98,8 @@ class RegisterView extends React.Component<IProps, any> {
 	}
 
 	login = () => {
-		const { navigation, Site_Name } = this.props;
-		navigation.navigate('LoginView', { title: Site_Name });
+		const { navigation, Site_Url } = this.props;
+		navigation.navigate('LoginView', { title: new parse(Site_Url).hostname });
 	};
 
 	valid = () => {
@@ -156,14 +154,6 @@ class RegisterView extends React.Component<IProps, any> {
 		this.setState({ saving: false });
 	};
 
-	openContract = (route: string) => {
-		const { server, theme } = this.props;
-		if (!server) {
-			return;
-		}
-		openLink(`${server}/${route}`, theme);
-	};
-
 	renderCustomFields = () => {
 		const { customFields } = this.state;
 		const { Accounts_CustomFields } = this.props;
@@ -185,8 +175,7 @@ class RegisterView extends React.Component<IProps, any> {
 										newValue[key] = value;
 										this.setState({ customFields: { ...customFields, ...newValue } });
 									}}
-									value={customFields[key]}
-								>
+									value={customFields[key]}>
 									<FormTextInput
 										inputRef={e => {
 											// @ts-ignore
@@ -240,11 +229,13 @@ class RegisterView extends React.Component<IProps, any> {
 			<FormContainer testID='register-view'>
 				<FormContainerInner>
 					<LoginServices separator />
-					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].titleText }]}>{I18n.t('Sign_Up')}</Text>
+					<Text style={[styles.title, sharedStyles.textBold, { color: themes[theme].fontTitlesLabels }]}>
+						{I18n.t('Sign_Up')}
+					</Text>
 					<FormTextInput
 						label={I18n.t('Name')}
 						containerStyle={styles.inputContainer}
-						placeholder={I18n.t('Name')}
+						placeholder={I18n.t('Full_name')}
 						returnKeyType='next'
 						onChangeText={(name: string) => this.setState({ name })}
 						onSubmitEditing={() => {
@@ -260,7 +251,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.usernameInput = e;
 						}}
-						placeholder={I18n.t('Username')}
 						returnKeyType='next'
 						onChangeText={(username: string) => this.setState({ username })}
 						onSubmitEditing={() => {
@@ -276,7 +266,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.emailInput = e;
 						}}
-						placeholder={I18n.t('Email')}
 						returnKeyType='next'
 						onChangeText={(email: string) => this.setState({ email })}
 						onSubmitEditing={() => {
@@ -293,7 +282,6 @@ class RegisterView extends React.Component<IProps, any> {
 						inputRef={e => {
 							this.passwordInput = e;
 						}}
-						placeholder={I18n.t('Password')}
 						returnKeyType='send'
 						secureTextEntry
 						onChangeText={(value: string) => this.setState({ password: value })}
@@ -315,36 +303,16 @@ class RegisterView extends React.Component<IProps, any> {
 						style={styles.registerButton}
 					/>
 
-					<View style={styles.bottomContainer}>
-						<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
-							{`${I18n.t('Onboarding_agree_terms')}\n`}
-							<Text
-								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('terms-of-service')}
-							>
-								{I18n.t('Terms_of_Service')}
-							</Text>{' '}
-							{I18n.t('and')}
-							<Text
-								style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]}
-								onPress={() => this.openContract('privacy-policy')}
-							>
-								{' '}
-								{I18n.t('Privacy_Policy')}
-							</Text>
-						</Text>
-					</View>
-
 					{showLoginButton ? (
 						<View style={styles.bottomContainer}>
-							<Text style={[styles.bottomContainerText, { color: themes[theme].auxiliaryText }]}>
-								{I18n.t('Do_you_have_an_account')}
+							<Text style={[styles.bottomContainerText, { color: themes[theme].fontSecondaryInfo }]}>
+								{I18n.t('Already_have_an_account')}
 							</Text>
-							<Text style={[styles.bottomContainerTextBold, { color: themes[theme].actionTintColor }]} onPress={this.login}>
-								{I18n.t('Login')}
-							</Text>
+							<Button title={I18n.t('Login')} type='secondary' onPress={this.login} style={styles.loginButton} />
 						</View>
 					) : null}
+
+					<UGCRules />
 				</FormContainerInner>
 			</FormContainer>
 		);
@@ -352,8 +320,7 @@ class RegisterView extends React.Component<IProps, any> {
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	server: state.server.server,
-	Site_Name: state.settings.Site_Name as string,
+	Site_Url: state.settings.Site_Url as string,
 	Gitlab_URL: state.settings.API_Gitlab_URL as string,
 	CAS_enabled: state.settings.CAS_enabled as boolean,
 	CAS_login_url: state.settings.CAS_login_url as string,

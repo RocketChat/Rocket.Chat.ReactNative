@@ -77,16 +77,15 @@ const Item = ({ item, useRealName, user, badgeColor, onPress, toggleFollowThread
 		<Touchable
 			onPress={() => onPress(item)}
 			testID={`thread-messages-view-${item.msg}`}
-			style={{ backgroundColor: themes[theme].backgroundColor }}
-		>
+			style={{ backgroundColor: themes[theme].surfaceRoom }}>
 			<View style={styles.container}>
 				<Avatar style={styles.avatar} text={item?.u?.username} size={36} borderRadius={4} />
 				<View style={styles.contentContainer}>
 					<View style={styles.titleContainer}>
-						<Text style={[styles.title, { color: themes[theme].titleText }]} numberOfLines={1}>
+						<Text style={[styles.title, { color: themes[theme].fontTitlesLabels }]} numberOfLines={1}>
 							{username}
 						</Text>
-						<Text style={[styles.time, { color: themes[theme].auxiliaryText }]}>{time}</Text>
+						<Text style={[styles.time, { color: themes[theme].fontSecondaryInfo }]}>{time}</Text>
 					</View>
 					<View style={styles.messageContainer}>
 						<MarkdownPreview msg={makeThreadName(item)} numberOfLines={2} style={[styles.markdown]} />

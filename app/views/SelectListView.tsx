@@ -1,8 +1,7 @@
 import React from 'react';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { RadioButton } from 'react-native-ui-lib';
 import { RouteProp } from '@react-navigation/native';
 
 import { ChatsStackParamList } from '../stacks/types';
@@ -17,6 +16,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import { animateNextTransition } from '../lib/methods/helpers/layoutAnimation';
 import { ICON_SIZE } from '../containers/List/constants';
 import SearchBox from '../containers/SearchBox';
+import Radio from '../containers/Radio';
 import sharedStyles from './Styles';
 import { IApplicationState } from '../definitions';
 import { TDataSelect } from '../definitions/IDataSelect';
@@ -37,7 +37,7 @@ interface ISelectListViewState {
 }
 
 interface ISelectListViewProps {
-	navigation: StackNavigationProp<ChatsStackParamList, 'SelectListView'>;
+	navigation: NativeStackNavigationProp<ChatsStackParamList, 'SelectListView'>;
 	route: RouteProp<ChatsStackParamList, 'SelectListView'>;
 	theme: TSupportedThemes;
 	isMasterDetail: boolean;
@@ -81,7 +81,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { navigation, isMasterDetail } = this.props;
 		const { selected } = this.state;
 
-		const options: StackNavigationOptions = {
+		const options: NativeStackNavigationOptions = {
 			headerTitle: I18n.t(this.title)
 		};
 
@@ -101,8 +101,8 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 	renderInfoText = () => {
 		const { theme } = this.props;
 		return (
-			<View style={{ backgroundColor: themes[theme].backgroundColor }}>
-				<Text style={[styles.buttonText, { color: themes[theme].bodyText }]}>{I18n.t(this.infoText)}</Text>
+			<View style={{ backgroundColor: themes[theme].surfaceRoom }}>
+				<Text style={[styles.buttonText, { color: themes[theme].fontDefault }]}>{I18n.t(this.infoText)}</Text>
 			</View>
 		);
 	};
@@ -150,10 +150,9 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const checked = this.isChecked(item.rid) ? 'check' : '';
 
 		const showRadio = () => (
-			<RadioButton
+			<Radio
 				testID={selected ? `radio-button-selected-${item.name}` : `radio-button-unselected-${item.name}`}
-				selected={selected.includes(item.rid)}
-				color={themes[theme].actionTintColor}
+				check={selected.includes(item.rid)}
 				size={ICON_SIZE}
 			/>
 		);
@@ -162,9 +161,19 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 				<List.Icon
 					testID={checked ? `${item.name}-checked` : `${item.name}-unchecked`}
 					name={checked}
-					color={themes[theme].actionTintColor}
+					color={themes[theme].fontHint}
 				/>
 			) : null;
+
+		const handleAcessibilityLabel = (rid: string) => {
+			let label = '';
+			if (this.isRadio) {
+				label = this.isChecked(rid) ? I18n.t('Selected') : I18n.t('Unselected');
+			} else {
+				label = this.isChecked(rid) ? I18n.t('Checked') : I18n.t('Unchecked');
+			}
+			return label;
+		};
 
 		return (
 			<>
@@ -175,8 +184,9 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
 					alert={item.alert}
-					left={() => <List.Icon name={icon} color={themes[theme].controlText} />}
+					left={() => <List.Icon name={icon} color={themes[theme].fontHint} />}
 					right={() => (this.isRadio ? showRadio() : showCheck())}
+					additionalAcessibilityLabel={handleAcessibilityLabel(item.rid)}
 				/>
 			</>
 		);
@@ -194,7 +204,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 					keyExtractor={item => item.rid}
 					renderItem={this.renderItem}
 					ListHeaderComponent={this.isSearch ? this.renderSearch : this.renderInfoText}
-					contentContainerStyle={{ backgroundColor: themes[theme].backgroundColor }}
+					contentContainerStyle={{ backgroundColor: themes[theme].surfaceRoom }}
 					keyboardShouldPersistTaps='always'
 				/>
 			</SafeAreaView>

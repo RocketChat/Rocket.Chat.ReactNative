@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { StackNavigationOptions, StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
@@ -16,6 +16,7 @@ import Navigation from '../lib/navigation/appNavigation';
 import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/types';
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
+import { IApplicationState } from '../definitions';
 
 const styles = StyleSheet.create({
 	container: {
@@ -51,7 +52,7 @@ interface IModalBlockViewState {
 }
 
 interface IModalBlockViewProps {
-	navigation: StackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
+	navigation: NativeStackNavigationProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	route: RouteProp<MasterDetailInsideStackParamList, 'ModalBlockView'>;
 	theme: TSupportedThemes;
 	language: string;
@@ -95,7 +96,7 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 	private values: IValues;
 
-	static navigationOptions = ({ route }: Pick<IModalBlockViewProps, 'route'>): StackNavigationOptions => {
+	static navigationOptions = ({ route }: Pick<IModalBlockViewProps, 'route'>) => {
 		const data = route.params?.data;
 		const { view } = data;
 		const { title } = view;
@@ -255,9 +256,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 		return (
 			<KeyboardAwareScrollView
-				style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}
-				keyboardShouldPersistTaps='always'
-			>
+				style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}
+				keyboardShouldPersistTaps='always'>
 				<View style={styles.content}>
 					{React.createElement(
 						modalBlockWithContext({
@@ -279,8 +279,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 	}
 }
 
-const mapStateToProps = (state: any) => ({
-	language: state.login.user && state.login.user.language
+const mapStateToProps = (state: IApplicationState) => ({
+	language: state.login.user.language as string
 });
 
 export default connect(mapStateToProps)(withTheme(ModalBlockView));

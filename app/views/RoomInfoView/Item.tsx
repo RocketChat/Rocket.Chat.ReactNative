@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import Markdown from '../../containers/markdown';
-import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import styles from './styles';
 
@@ -12,19 +11,17 @@ interface IItem {
 	testID?: string;
 }
 
-const Item = ({ label, content, testID }: IItem) => {
-	const { theme } = useTheme();
+const Item = ({ label, content, testID }: IItem): React.ReactElement | null => {
+	const { colors } = useTheme();
 
-	if (!content) {
-		return null;
-	}
+	if (!content) return null;
 
 	return (
 		<View style={styles.item} testID={testID}>
-			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: themes[theme].titleText }]}>
+			<Text accessibilityLabel={label} style={[styles.itemLabel, { color: colors.fontTitlesLabels }]}>
 				{label}
 			</Text>
-			<Markdown style={[styles.itemContent, { color: themes[theme].auxiliaryText }]} msg={content} theme={theme} />
+			<Markdown style={[styles.itemContent, { color: colors.fontSecondaryInfo }]} msg={content} />
 		</View>
 	);
 };

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Grid } from 'react-native-easy-grid';
 
-import { themes } from '../../../lib/constants';
 import { resetAttempts } from '../../../lib/methods/helpers/localAuthentication';
 import { TYPE } from '../constants';
 import { getDiff, getLockedUntil } from '../utils';
@@ -50,7 +49,7 @@ const Timer = React.memo(({ time, setStatus }: IPasscodeTimer) => {
 
 const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
 	const [lockedUntil, setLockedUntil] = useState<Date | null>(null);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	const readItemFromStorage = async () => {
 		const l = await getLockedUntil();
@@ -62,7 +61,7 @@ const Locked = React.memo(({ setStatus }: IPasscodeLocked) => {
 	}, []);
 
 	return (
-		<Grid style={[styles.grid, { backgroundColor: themes[theme].passcodeBackground }]}>
+		<Grid style={[styles.grid, { backgroundColor: colors.strokeExtraLight }]}>
 			<LockIcon />
 			<Title text={I18n.t('Passcode_app_locked_title')} />
 			<Timer time={lockedUntil} setStatus={setStatus} />

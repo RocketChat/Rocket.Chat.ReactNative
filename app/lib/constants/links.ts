@@ -1,4 +1,4 @@
-import { getBundleId, isIOS } from '../methods/helpers';
+import { getBundleId, isIOS } from '../methods/helpers/deviceInfo';
 
 const APP_STORE_ID = '1148741252';
 

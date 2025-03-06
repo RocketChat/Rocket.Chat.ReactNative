@@ -1,11 +1,11 @@
-import { TextInputProps } from 'react-native';
 import { NavigatorScreenParams } from '@react-navigation/core';
 
 import { IAttachment } from '../../definitions/IAttachment';
-import { IMessage } from '../../definitions/IMessage';
-import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
+import { IMessage, TAnyMessageModel } from '../../definitions/IMessage';
+import { ISubscription, SubscriptionType, TSubscriptionModel } from '../../definitions/ISubscription';
+import { TChangeAvatarViewContext } from '../../definitions/TChangeAvatarViewContext';
 
 export type MasterDetailChatsStackParamList = {
 	RoomView: {
@@ -57,6 +57,12 @@ export type ModalStackParamList = {
 		isSearch?: boolean;
 		onSearch?: Function;
 		isRadio?: boolean;
+	};
+	ChangeAvatarView: {
+		context: TChangeAvatarViewContext;
+		titleHeader?: string;
+		room?: ISubscription;
+		t?: SubscriptionType;
 	};
 	RoomInfoEditView: {
 		rid: string;
@@ -111,6 +117,12 @@ export type ModalStackParamList = {
 		rid: string;
 		room: ISubscription;
 	};
+	E2EEToggleRoomView: {
+		rid: string;
+	};
+	ForwardMessageView: {
+		message: TAnyMessageModel;
+	};
 	ForwardLivechatView: {
 		rid: string;
 	};
@@ -136,14 +148,6 @@ export type ModalStackParamList = {
 		room: ISubscription;
 		roomUser: any; // TODO: Change
 	};
-	PickerView: {
-		title: string;
-		data: []; // TODO: Change
-		value: any; // TODO: Change
-		onChangeText: TextInputProps['onChangeText'];
-		goBack: Function;
-		onChangeValue: Function;
-	};
 	ThreadMessagesView: {
 		rid: string;
 		t: SubscriptionType;
@@ -151,10 +155,6 @@ export type ModalStackParamList = {
 	TeamChannelsView: {
 		teamId: string;
 		joined: boolean;
-	};
-	MarkdownTableView: {
-		renderRows: Function;
-		tableWidth: number;
 	};
 	ReadReceiptsView: {
 		messageId: string;
@@ -193,15 +193,23 @@ export type ModalStackParamList = {
 	UserPreferencesView: undefined;
 	UserNotificationPrefView: undefined;
 	SecurityPrivacyView: undefined;
+	MediaAutoDownloadView: undefined;
 	E2EEncryptionSecurityView: undefined;
+	PushTroubleshootView: undefined;
+	LegalView: undefined;
+	SupportedVersionsWarning: {
+		showCloseButton?: boolean;
+	};
+	ReportUserView: {
+		username: string;
+		userId: string;
+		name: string;
+	};
 };
 
 export type MasterDetailInsideStackParamList = {
 	DrawerNavigator: NavigatorScreenParams<Partial<MasterDetailDrawerParamList>>; // TODO: Change
 	ModalStackNavigator: NavigatorScreenParams<ModalStackParamList>;
-	AttachmentView: {
-		attachment: IAttachment;
-	};
 	ModalBlockView: {
 		data: any; // TODO: Change
 	};

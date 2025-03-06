@@ -1,13 +1,14 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
 import { login, navigateToLogin, logout, tapBack, searchRoom } from '../../helpers/app';
-import data from '../../data';
+import { createRandomUser } from '../../helpers/data_setup';
 
 describe('Rooms list screen', () => {
-	before(async () => {
+	beforeAll(async () => {
+		const user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true, delete: true });
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('Render', () => {

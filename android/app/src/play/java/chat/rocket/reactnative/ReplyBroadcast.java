@@ -123,7 +123,9 @@ public class ReplyBroadcast extends BroadcastReceiver {
         if (msg != message) {
             msgMap.put("t", "e2e");
         }
-        msgMap.put("tmid", null);
+        if(ejson.tmid != null) {
+            msgMap.put("tmid", ejson.tmid);
+        }
 
         Map m = new HashMap();
         m.put("message", msgMap);
@@ -138,7 +140,7 @@ public class ReplyBroadcast extends BroadcastReceiver {
 
         final Resources res = mContext.getResources();
         String packageName = mContext.getPackageName();
-        int smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
+        int smallIconResId = res.getIdentifier("ic_notification", "drawable", packageName);
 
         NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, NotificationManager.IMPORTANCE_LOW);
         notificationManager.createNotificationChannel(channel);

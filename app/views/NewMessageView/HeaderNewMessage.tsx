@@ -1,4 +1,4 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
 });
 
 const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChangeText: (text: string) => void }) => {
-	const navigation = useNavigation<StackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<NewMessageStackParamList, 'NewMessageView'>>();
 	const dispatch = useDispatch();
 	const { theme } = useTheme();
 
@@ -68,7 +68,7 @@ const HeaderNewMessage = ({ maxUsers, onChangeText }: { maxUsers: number; onChan
 
 	return (
 		<>
-			<View style={[styles.container, { backgroundColor: themes[theme].auxiliaryBackground }]}>
+			<View style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}>
 				<View style={styles.buttonContainer}>
 					{createPublicChannelPermission || createPrivateChannelPermission ? (
 						<ButtonCreate

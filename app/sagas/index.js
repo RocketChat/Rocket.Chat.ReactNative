@@ -13,6 +13,8 @@ import deepLinking from './deepLinking';
 import inviteLinks from './inviteLinks';
 import createDiscussion from './createDiscussion';
 import encryption from './encryption';
+import videoConf from './videoConf';
+import troubleshootingNotification from './troubleshootingNotification';
 
 const root = function* root() {
 	yield all([
@@ -28,7 +30,9 @@ const root = function* root() {
 		inviteLinks(),
 		createDiscussion(),
 		inquiry(),
-		encryption()
+		encryption(),
+		videoConf(),
+		troubleshootingNotification()
 	]);
 };
 

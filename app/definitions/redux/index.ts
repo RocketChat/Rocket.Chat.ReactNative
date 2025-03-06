@@ -16,6 +16,9 @@ import { TActionSortPreferences } from '../../actions/sortPreferences';
 import { TActionUserTyping } from '../../actions/usersTyping';
 import { TActionPermissions } from '../../actions/permissions';
 import { TActionEnterpriseModules } from '../../actions/enterpriseModules';
+import { TActionVideoConf } from '../../actions/videoConf';
+import { TActionSupportedVersions } from '../../actions/supportedVersions';
+import { TInAppFeedbackAction } from '../../actions/inAppFeedback';
 // REDUCERS
 import { IActiveUsers } from '../../reducers/activeUsers';
 import { IApp } from '../../reducers/app';
@@ -34,6 +37,13 @@ import { IShare } from '../../reducers/share';
 import { IInquiry } from '../../ee/omnichannel/reducers/inquiry';
 import { IPermissionsState } from '../../reducers/permissions';
 import { IEnterpriseModules } from '../../reducers/enterpriseModules';
+import { IVideoConf } from '../../reducers/videoConf';
+import { TActionUsersRoles } from '../../actions/usersRoles';
+import { TUsersRoles } from '../../reducers/usersRoles';
+import { ITroubleshootingNotification } from '../../reducers/troubleshootingNotification';
+import { TActionTroubleshootingNotification } from '../../actions/troubleshootingNotification';
+import { ISupportedVersionsState } from '../../reducers/supportedVersions';
+import { IInAppFeedbackState } from '../../reducers/inAppFeedback';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -57,6 +67,11 @@ export interface IApplicationState {
 	encryption: IEncryption;
 	permissions: IPermissionsState;
 	roles: IRoles;
+	videoConf: IVideoConf;
+	usersRoles: TUsersRoles;
+	troubleshootingNotification: ITroubleshootingNotification;
+	supportedVersions: ISupportedVersionsState;
+	inAppFeedback: IInAppFeedbackState;
 }
 
 export type TApplicationActions = TActionActiveUsers &
@@ -75,4 +90,9 @@ export type TApplicationActions = TActionActiveUsers &
 	TActionApp &
 	TActionInquiry &
 	TActionPermissions &
-	TActionEnterpriseModules;
+	TActionEnterpriseModules &
+	TActionVideoConf &
+	TActionUsersRoles &
+	TActionTroubleshootingNotification &
+	TActionSupportedVersions &
+	TInAppFeedbackAction;

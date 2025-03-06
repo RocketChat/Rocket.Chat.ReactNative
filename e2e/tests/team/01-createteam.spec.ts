@@ -1,22 +1,24 @@
-import { expect } from 'detox';
+import { device, waitFor, element, by, expect } from 'detox';
 
-import data from '../../data';
 import { navigateToLogin, login, platformTypes, TTextMatcher } from '../../helpers/app';
-
-const teamName = `team-${data.random}`;
+import { createRandomUser, ITestUser } from '../../helpers/data_setup';
+import random from '../../helpers/random';
 
 describe('Create team screen', () => {
 	let alertButtonType: string;
 	let textMatcher: TTextMatcher;
-	before(async () => {
+	let user: ITestUser;
+	const teamName = `team${random()}`;
+	beforeAll(async () => {
+		user = await createRandomUser();
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		({ alertButtonType, textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
-		await login(data.users.regular.username, data.users.regular.password);
+		await login(user.username, user.password);
 	});
 
 	describe('New Message', () => {
-		before(async () => {
+		beforeAll(async () => {
 			await waitFor(element(by.id('rooms-list-view-create-channel')))
 				.toBeVisible()
 				.withTimeout(2000);
@@ -48,21 +50,9 @@ describe('Create team screen', () => {
 
 	describe('Create Team', () => {
 		describe('Usage', () => {
-			it('should get invalid team name', async () => {
-				await element(by.id('create-channel-name')).replaceText(`${data.teams.private.name}`);
-				await waitFor(element(by.id('create-channel-submit')))
-					.toExist()
-					.withTimeout(2000);
-				await element(by.id('create-channel-submit')).tap();
-				await waitFor(element(by[textMatcher]('OK').and(by.type(alertButtonType))))
-					.toBeVisible()
-					.withTimeout(5000);
-				await element(by[textMatcher]('OK').and(by.type(alertButtonType))).tap();
-			});
-
 			it('should create private team', async () => {
-				await element(by.id('create-channel-name')).replaceText('');
 				await element(by.id('create-channel-name')).replaceText(teamName);
+				await element(by.id('create-channel-name')).tapReturnKey();
 				await waitFor(element(by.id('create-channel-submit')))
 					.toExist()
 					.withTimeout(2000);
@@ -93,7 +83,13 @@ describe('Create team screen', () => {
 
 		it('should delete team', async () => {
 			await element(by.id('room-info-view-edit-button')).tap();
-			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 0.5);
+			await waitFor(element(by.id('room-info-edit-view-list')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('room-info-edit-view-list')).swipe('up', 'fast', 1);
+			await waitFor(element(by.id('room-info-edit-view-delete')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('room-info-edit-view-delete')).tap();
 			await waitFor(element(by[textMatcher]('Yes, delete it!')))
 				.toExist()

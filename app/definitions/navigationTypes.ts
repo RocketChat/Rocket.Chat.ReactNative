@@ -1,5 +1,5 @@
 import { NavigatorScreenParams } from '@react-navigation/core';
-import { StackNavigationOptions } from '@react-navigation/stack';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 
 import { TSubscriptionModel } from './ISubscription';
 import { TServerModel } from './IServer';
@@ -14,7 +14,7 @@ interface INavigationProps {
 }
 
 export type TNavigationOptions = {
-	navigationOptions?(props: INavigationProps): StackNavigationOptions;
+	navigationOptions?(props: INavigationProps): NativeStackNavigationOptions;
 };
 
 export type SetUsernameStackParamList = {
@@ -29,6 +29,7 @@ export type StackParamList = {
 	InsideStack: NavigatorScreenParams<InsideStackParamList>;
 	MasterDetailStack: NavigatorScreenParams<MasterDetailInsideStackParamList>;
 	SetUsernameStack: NavigatorScreenParams<SetUsernameStackParamList>;
+	ShareExtensionStack: NavigatorScreenParams<ShareInsideStackParamList>;
 };
 
 export type ShareInsideStackParamList = {
@@ -43,14 +44,4 @@ export type ShareInsideStackParamList = {
 		thread?: any; // TODO: Change
 	};
 	SelectServerView: undefined;
-};
-
-export type ShareOutsideStackParamList = {
-	WithoutServersView: undefined;
-};
-
-export type ShareAppStackParamList = {
-	AuthLoading?: undefined;
-	OutsideStack?: NavigatorScreenParams<ShareOutsideStackParamList>;
-	InsideStack?: NavigatorScreenParams<ShareInsideStackParamList>;
 };

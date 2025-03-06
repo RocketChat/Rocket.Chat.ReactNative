@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, ImageStyle, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { Image, ImageStyle } from 'expo-image';
 
 import { useTheme } from '../../theme';
-import { ImageComponent } from './ImageComponent';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -12,7 +12,6 @@ interface ImageViewerProps {
 	imageContainerStyle?: StyleProp<ViewStyle>;
 
 	uri: string;
-	imageComponentType?: string;
 	width: number;
 	height: number;
 	onLoadEnd?: () => void;
@@ -27,7 +26,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...props }: ImageViewerProps): React.ReactElement => {
+export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerProps): React.ReactElement => {
 	const [centerX, setCenterX] = useState(0);
 	const [centerY, setCenterY] = useState(0);
 
@@ -109,18 +108,16 @@ export const ImageViewer = ({ uri = '', imageComponentType, width, height, ...pr
 
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
-	const Component = ImageComponent(imageComponentType);
-
 	const { colors } = useTheme();
 
 	return (
-		<View style={[styles.flex, { width, height, backgroundColor: colors.previewBackground }]}>
+		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
-					<Component
+					<Image
 						// @ts-ignore
 						style={styles.image}
-						resizeMode='contain'
+						contentFit='contain'
 						source={{ uri }}
 						{...props}
 					/>

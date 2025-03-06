@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -34,7 +34,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 
 	const [isFetching, setIsFetching] = useState(false);
 
-	const navigation = useNavigation<StackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { params } = useRoute<RouteProp<OutsideParamList, 'ForgotPasswordView'>>();
 	const { colors } = useTheme();
 
@@ -67,20 +67,21 @@ const ForgotPasswordView = (): React.ReactElement => {
 	return (
 		<FormContainer testID='forgot-password-view'>
 			<FormContainerInner>
-				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.titleText }]}>
-					{I18n.t('Forgot_password')}
+				<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, { color: colors.fontTitlesLabels, fontSize: 24 }]}>
+					{I18n.t('Reset_password')}
+				</Text>
+				<Text style={[sharedStyles.textMedium, { color: colors.fontTitlesLabels, lineHeight: 22, fontSize: 16 }]}>
+					{I18n.t('email')}
 				</Text>
 				<ControlledFormTextInput
 					name='email'
 					control={control}
 					autoFocus
-					placeholder={I18n.t('Email')}
 					keyboardType='email-address'
 					returnKeyType='send'
-					iconLeft='mail'
 					onSubmitEditing={handleSubmit(resetPassword)}
 					testID='forgot-password-view-email'
-					containerStyle={sharedStyles.inputLastChild}
+					containerStyle={{ marginBottom: 20 }}
 				/>
 				<Button
 					title={I18n.t('Reset_password')}

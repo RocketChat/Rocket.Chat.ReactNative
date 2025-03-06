@@ -1,33 +1,25 @@
 import React from 'react';
-import { Dimensions, Linking } from 'react-native';
-import { KeyCommandsEmitter } from 'react-native-keycommands';
-import { initialWindowMetrics, SafeAreaProvider } from 'react-native-safe-area-context';
-import RNScreens from 'react-native-screens';
-import { Provider } from 'react-redux';
+import { Dimensions, EmitterSubscription, Linking } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
+import { enableScreens } from 'react-native-screens';
+import { Provider } from 'react-redux';
 
+import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
-import AppContainer from './AppContainer';
-import { KEY_COMMAND } from './commands';
 import { ActionSheetProvider } from './containers/ActionSheet';
 import InAppNotification from './containers/InAppNotification';
+import Loading from './containers/Loading';
 import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
-import Loading from './containers/Loading';
-import { ICommand } from './definitions/ICommand';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { colors, isFDroidBuild, MIN_WIDTH_MASTER_DETAIL_LAYOUT, themes } from './lib/constants';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
-import parseQuery from './lib/methods/helpers/parseQuery';
-import { initializePushNotifications, onNotification } from './lib/notifications';
-import store from './lib/store';
-import { initStore } from './lib/store/auxStore';
-import { ThemeContext, TSupportedThemes } from './theme';
 import { debounce, isTablet } from './lib/methods/helpers';
-import EventEmitter from './lib/methods/helpers/events';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
+import parseQuery from './lib/methods/helpers/parseQuery';
 import {
 	getTheme,
 	initialTheme,
@@ -36,10 +28,15 @@ import {
 	subscribeTheme,
 	unsubscribeTheme
 } from './lib/methods/helpers/theme';
+import { initializePushNotifications, onNotification } from './lib/notifications';
+import { getInitialNotification } from './lib/notifications/videoConf/getInitialNotification';
+import store from './lib/store';
+import { initStore } from './lib/store/auxStore';
+import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 
-RNScreens.enableScreens();
+enableScreens();
 initStore(store);
 
 interface IDimensions {
@@ -61,30 +58,29 @@ interface IState {
 const parseDeepLinking = (url: string) => {
 	if (url) {
 		url = url.replace(/rocketchat:\/\/|https:\/\/go.rocket.chat\//, '');
-		const regex = /^(room|auth|invite)\?/;
-		if (url.match(regex)) {
-			url = url.replace(regex, '').trim();
-			if (url) {
-				return parseQuery(url);
-			}
-		}
-		const call = /^(https:\/\/)?jitsi.rocket.chat\//;
-		const fullURL = url;
+		const regex = /^(room|auth|invite|shareextension)\?/;
+		const match = url.match(regex);
+		if (match) {
+			const matchedPattern = match[1];
+			const query = url.replace(regex, '').trim();
 
-		if (url.match(call)) {
-			url = url.replace(call, '').trim();
-			if (url) {
-				return { path: url, isCall: true, fullURL };
+			if (query) {
+				const parsedQuery = parseQuery(query);
+				return {
+					...parsedQuery,
+					type: matchedPattern === 'shareextension' ? matchedPattern : parsedQuery?.type
+				};
 			}
 		}
 	}
+
+	// Return null if the URL doesn't match or is not valid
 	return null;
 };
 
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
-
-	private onKeyCommands: any;
+	private dimensionsListener?: EmitterSubscription;
 
 	constructor(props: any) {
 		super(props);
@@ -117,18 +113,14 @@ export default class Root extends React.Component<{}, IState> {
 				}
 			});
 		}, 5000);
-		Dimensions.addEventListener('change', this.onDimensionsChange);
+		this.dimensionsListener = Dimensions.addEventListener('change', this.onDimensionsChange);
 	}
 
 	componentWillUnmount() {
 		clearTimeout(this.listenerTimeout);
-		Dimensions.removeEventListener('change', this.onDimensionsChange);
+		this.dimensionsListener?.remove?.();
 
 		unsubscribeTheme();
-
-		if (this.onKeyCommands && this.onKeyCommands.remove) {
-			this.onKeyCommands.remove();
-		}
 	}
 
 	init = async () => {
@@ -140,6 +132,8 @@ export default class Root extends React.Component<{}, IState> {
 			onNotification(notification);
 			return;
 		}
+
+		await getInitialNotification();
 
 		// Open app from deep linking
 		const deepLinking = await Linking.getInitialURL();
@@ -195,9 +189,6 @@ export default class Root extends React.Component<{}, IState> {
 	initTablet = () => {
 		const { width } = this.state;
 		this.setMasterDetail(width);
-		this.onKeyCommands = KeyCommandsEmitter.addListener('onKeyCommand', (command: ICommand) => {
-			EventEmitter.emit(KEY_COMMAND, { event: command });
-		});
 	};
 
 	initCrashReport = () => {
@@ -212,10 +203,7 @@ export default class Root extends React.Component<{}, IState> {
 	render() {
 		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
-			<SafeAreaProvider
-				initialMetrics={initialWindowMetrics}
-				style={{ backgroundColor: themes[this.state.theme].backgroundColor }}
-			>
+			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
 					<ThemeContext.Provider
 						value={{
@@ -223,8 +211,7 @@ export default class Root extends React.Component<{}, IState> {
 							themePreferences,
 							setTheme: this.setTheme,
 							colors: colors[theme]
-						}}
-					>
+						}}>
 						<DimensionsContext.Provider
 							value={{
 								width,
@@ -232,9 +219,8 @@ export default class Root extends React.Component<{}, IState> {
 								scale,
 								fontScale,
 								setDimensions: this.setDimensions
-							}}
-						>
-							<GestureHandlerRootView style={{ flex: 1 }}>
+							}}>
+							<GestureHandlerRootView>
 								<ActionSheetProvider>
 									<AppContainer />
 									<TwoFactor />

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useLayoutEffect } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 
 import { useAppSelector, usePermissions } from '../../lib/hooks';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	},
 	containerTextInput: {
 		paddingHorizontal: 16,
-		marginTop: 16
+		marginTop: 32
 	},
 	containerStyle: {
 		marginBottom: 16
@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16
 	},
 	buttonCreate: {
-		margin: 16
+		marginTop: 32,
+		marginHorizontal: 16
 	}
 });
 
@@ -68,30 +69,37 @@ export interface IFormData {
 const CreateChannelView = () => {
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
+	const { isFetching, useRealName, users, e2eEnabledDefaultPrivateRooms } = useAppSelector(
+		state => ({
+			isFetching: state.createChannel.isFetching,
+			users: state.selectedUsers.users,
+			useRealName: state.settings.UI_Use_Real_Name as boolean,
+			e2eEnabledDefaultPrivateRooms: state.encryption.enabled && (state.settings.E2E_Enabled_Default_PrivateRooms as boolean)
+		}),
+		shallowEqual
+	);
+
 	const {
 		control,
 		handleSubmit,
 		formState: { isDirty },
 		setValue
 	} = useForm<IFormData>({
-		defaultValues: { channelName: '', broadcast: false, encrypted: false, readOnly: false, type: createPrivateChannelPermission }
+		defaultValues: {
+			channelName: '',
+			broadcast: false,
+			encrypted: e2eEnabledDefaultPrivateRooms,
+			readOnly: false,
+			type: createPrivateChannelPermission
+		}
 	});
 
-	const navigation = useNavigation<StackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const { params } = useRoute<RouteProp<ChatsStackParamList, 'CreateChannelView'>>();
 	const isTeam = params?.isTeam || false;
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
-
-	const { isFetching, useRealName, users } = useAppSelector(
-		state => ({
-			isFetching: state.createChannel.isFetching,
-			users: state.selectedUsers.users,
-			useRealName: state.settings.UI_Use_Real_Name as boolean
-		}),
-		shallowEqual
-	);
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: isFetching });
@@ -133,15 +141,15 @@ const CreateChannelView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.backgroundColor }}
+			style={{ backgroundColor: colors.surfaceRoom }}
 			contentContainerStyle={[sharedStyles.container, styles.container]}
-			keyboardVerticalOffset={128}
-		>
+			keyboardVerticalOffset={128}>
 			<StatusBar />
-			<SafeAreaView style={{ backgroundColor: colors.backgroundColor }} testID='create-channel-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
-					<View style={[styles.containerTextInput, { borderColor: colors.separatorColor }]}>
+					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>
 						<ControlledFormTextInput
+							required
 							label={isTeam ? I18n.t('Team_Name') : I18n.t('Channel_Name')}
 							testID='create-channel-name'
 							returnKeyType='done'
@@ -154,12 +162,13 @@ const CreateChannelView = () => {
 							createPrivateChannelPermission={createPrivateChannelPermission}
 							isTeam={isTeam}
 							setValue={setValue}
+							e2eEnabledDefaultPrivateRooms={e2eEnabledDefaultPrivateRooms}
 						/>
 					</View>
 					{users.length > 0 ? (
 						<>
 							<View style={styles.invitedHeader}>
-								<Text style={[styles.invitedCount, { color: colors.auxiliaryText }]}>
+								<Text style={[styles.invitedCount, { color: colors.fontSecondaryInfo }]}>
 									{I18n.t('N_Selected_members', { n: users.length })}
 								</Text>
 							</View>
@@ -170,8 +179,8 @@ const CreateChannelView = () => {
 								style={[
 									styles.list,
 									{
-										backgroundColor: colors.backgroundColor,
-										borderColor: colors.separatorColor
+										backgroundColor: colors.surfaceRoom,
+										borderColor: colors.strokeLight
 									}
 								]}
 								contentContainerStyle={styles.invitedList}

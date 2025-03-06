@@ -8,6 +8,10 @@ export interface ISearchLocal {
 	fname: string;
 	encrypted: boolean;
 	lastMessage?: ILastMessage;
+	status?: string;
+	teamMain?: boolean;
+	prid?: string;
+	f?: boolean;
 }
 
 export interface ISearch extends ISearchLocal {

@@ -2,12 +2,12 @@ module.exports = {
 	settings: {
 		'import/resolver': {
 			node: {
-				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js']
+				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js', '.ios.tsx', '.android.tsx']
 			}
 		}
 	},
 	parser: '@babel/eslint-parser',
-	extends: ['@rocket.chat/eslint-config', 'prettier'],
+	extends: ['plugin:jest/recommended', '@rocket.chat/eslint-config', 'prettier'],
 	parserOptions: {
 		sourceType: 'module',
 		ecmaVersion: 2017,
@@ -17,7 +17,7 @@ module.exports = {
 			legacyDecorators: true
 		}
 	},
-	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'jest', 'react-hooks'],
+	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'react-hooks', 'jest'],
 	env: {
 		browser: true,
 		commonjs: true,
@@ -25,6 +25,7 @@ module.exports = {
 		node: true,
 		jquery: true,
 		mocha: true,
+		jest: true,
 		'jest/globals': true
 	},
 	rules: {
@@ -225,7 +226,8 @@ module.exports = {
 				'new-cap': 'off',
 				'lines-between-class-members': 'off',
 				'react-hooks/rules-of-hooks': 'error',
-				'react-hooks/exhaustive-deps': 'warn'
+				'react-hooks/exhaustive-deps': 'warn',
+				'jest/no-conditional-expect': 'off'
 			},
 			globals: {
 				JSX: true
@@ -240,19 +242,9 @@ module.exports = {
 		},
 		{
 			files: ['e2e/**'],
-			globals: {
-				by: true,
-				detox: true,
-				device: true,
-				element: true,
-				waitFor: true
-			},
 			rules: {
-				'import/no-extraneous-dependencies': 0,
 				'no-await-in-loop': 0,
-				'no-restricted-syntax': 0,
-				// TODO: remove this rule when update Detox to 20 and test if the namespace Detox is available
-				'no-undef': 1
+				'jest/expect-expect': 'off'
 			}
 		}
 	]

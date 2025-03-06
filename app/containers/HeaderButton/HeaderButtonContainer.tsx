@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewProps } from 'react-native';
+
+import { isAndroid, isTablet } from '../../lib/methods/helpers';
 
 interface IHeaderButtonContainer {
 	children?: React.ReactElement | (React.ReactElement | null)[] | null;
 	left?: boolean;
+	onLayout?: ViewProps['onLayout'];
 }
 
 const styles = StyleSheet.create({
@@ -13,15 +16,18 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	left: {
-		marginLeft: 5
+		marginLeft: isTablet ? 5 : -5,
+		marginRight: isAndroid ? 25 : 0
 	},
 	right: {
-		marginRight: 5
+		marginRight: isTablet ? 5 : -5
 	}
 });
 
-const Container = ({ children, left = false }: IHeaderButtonContainer): React.ReactElement => (
-	<View style={[styles.container, left ? styles.left : styles.right]}>{children}</View>
+const Container = ({ children, left = false, onLayout }: IHeaderButtonContainer): React.ReactElement => (
+	<View style={[styles.container, left ? styles.left : styles.right]} onLayout={onLayout || undefined}>
+		{children}
+	</View>
 );
 
 Container.displayName = 'HeaderButton.Container';

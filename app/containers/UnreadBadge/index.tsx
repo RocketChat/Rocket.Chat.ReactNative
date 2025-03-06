@@ -103,8 +103,7 @@ const UnreadBadge = React.memo(
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
 					{ backgroundColor, minWidth },
 					style
-				]}
-			>
+				]}>
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>
 					{text}
 				</Text>

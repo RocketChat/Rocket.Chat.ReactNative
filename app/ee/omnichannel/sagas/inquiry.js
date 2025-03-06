@@ -14,8 +14,10 @@ const handleRequest = function* handleRequest() {
 		const showQueue = routingConfig.showQueue && isOmnichannelStatusAvailable(user);
 
 		if (showQueue) {
+			const serverVersion = yield select(state => state.server.version);
+
 			// get all the current chats on the queue
-			const result = yield getInquiriesQueued();
+			const result = yield getInquiriesQueued(serverVersion);
 			if (result.success) {
 				const { inquiries } = result;
 

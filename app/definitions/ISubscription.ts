@@ -3,7 +3,7 @@ import Relation from '@nozbe/watermelondb/Relation';
 
 import { ILastMessage, TMessageModel } from './IMessage';
 import { IRocketChatRecord } from './IRocketChatRecord';
-import { IOmnichannelSource, RoomID, RoomType } from './IRoom';
+import { IOmnichannelSource, RoomID, RoomType, TUserWaitingForE2EKeys } from './IRoom';
 import { IServedBy } from './IServedBy';
 import { TThreadModel } from './IThread';
 import { TThreadMessageModel } from './IThreadMessage';
@@ -35,6 +35,8 @@ export enum ERoomTypes {
 
 type RelationModified<T extends Model> = { fetch(): Promise<T[]> } & Relation<T>;
 
+type OldKey = { e2eKeyId: string; ts: Date; E2EKey: string };
+
 export interface ISubscription {
 	_id: string;
 	id: string;
@@ -46,6 +48,7 @@ export interface ISubscription {
 	ls: Date;
 	name: string;
 	fname?: string;
+	sanitizedFname?: string;
 	rid: string; // the same as id
 	open: boolean;
 	alert: boolean;
@@ -71,6 +74,7 @@ export interface ISubscription {
 	archived: boolean;
 	joinCodeRequired?: boolean;
 	muted?: string[];
+	unmuted?: string[];
 	ignored?: string[];
 	broadcast?: boolean;
 	prid?: string;
@@ -91,8 +95,11 @@ export interface ISubscription {
 	livechatData?: any;
 	tags?: string[];
 	E2EKey?: string;
+	oldRoomKeys?: OldKey[];
+	E2ESuggestedKey?: string | null;
 	encrypted?: boolean;
 	e2eKeyId?: string;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	avatarETag?: string;
 	teamId?: string;
 	teamMain?: boolean;
@@ -101,14 +108,19 @@ export interface ISubscription {
 	onHold?: boolean;
 	source?: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	usersCount?: number;
 	// https://nozbe.github.io/WatermelonDB/Relation.html#relation-api
 	messages: RelationModified<TMessageModel>;
 	threads: RelationModified<TThreadModel>;
 	threadMessages: RelationModified<TThreadMessageModel>;
 	uploads: RelationModified<TUploadModel>;
+	disableNotifications?: boolean;
 }
 
-export type TSubscriptionModel = ISubscription & Model;
+export type TSubscriptionModel = ISubscription &
+	Model & {
+		asPlain: () => ISubscription;
+	};
 export type TSubscription = TSubscriptionModel | ISubscription;
 
 // https://github.com/RocketChat/Rocket.Chat/blob/a88a96fcadd925b678ff27ada37075e029f78b5e/definition/ISubscription.ts#L8
@@ -145,6 +157,9 @@ export interface IServerSubscription extends IRocketChatRecord {
 	onHold?: boolean;
 	encrypted?: boolean;
 	E2EKey?: string;
+	oldRoomKeys?: OldKey[];
+	E2ESuggestedKey?: string | null;
+	usersWaitingForE2EKeys?: TUserWaitingForE2EKeys[];
 	unreadAlert?: 'default' | 'all' | 'mentions' | 'nothing';
 
 	fname?: unknown;

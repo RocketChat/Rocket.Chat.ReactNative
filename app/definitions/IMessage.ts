@@ -1,5 +1,5 @@
 import Model from '@nozbe/watermelondb/Model';
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 
 import { MessageTypeLoad } from '../lib/constants';
 import { IAttachment } from './IAttachment';
@@ -8,7 +8,17 @@ import { TThreadMessageModel } from './IThreadMessage';
 import { TThreadModel } from './IThread';
 import { IUrl, IUrlFromServer } from './IUrl';
 
-export type MessageType = 'jitsi_call_started' | 'discussion-created' | 'e2e' | 'load_more' | 'rm' | 'uj' | MessageTypeLoad | MessageTypesValues;
+export type TMessageAction = 'quote' | 'edit' | 'react' | null;
+
+export type MessageType =
+	| 'jitsi_call_started'
+	| 'discussion-created'
+	| 'e2e'
+	| 'load_more'
+	| 'rm'
+	| 'uj'
+	| MessageTypeLoad
+	| MessageTypesValues;
 
 export interface IUserMessage {
 	_id: string;
@@ -33,7 +43,7 @@ export interface IEditedBy {
 
 export type TOnLinkPress = (link: string) => void;
 
-export interface ITranslations {
+export interface IMessageTranslations {
 	_id: string;
 	language: string;
 	value: string;
@@ -55,7 +65,7 @@ export interface ILastMessage {
 	urls?: IUrlFromServer[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
-	md?: MarkdownAST;
+	md?: Root;
 	attachments?: IAttachment[];
 	reactions?: IReaction[];
 	unread?: boolean;
@@ -70,6 +80,11 @@ interface IMessageFile {
 	type: string;
 }
 
+export type IMessageE2EEContent = {
+	algorithm: 'rc.v1.aes-sha2';
+	ciphertext: string; // Encrypted subset JSON of IMessage
+};
+
 export interface IMessageFromServer {
 	_id: string;
 	rid: string;
@@ -80,7 +95,7 @@ export interface IMessageFromServer {
 	urls?: IUrl[];
 	mentions?: IUserMention[];
 	channels?: IUserChannel[];
-	md?: MarkdownAST;
+	md?: Root;
 	file?: IMessageFile;
 	files?: IMessageFile[];
 	groupable?: boolean;
@@ -97,6 +112,7 @@ export interface IMessageFromServer {
 		username: string;
 	};
 	score?: number;
+	content?: IMessageE2EEContent;
 }
 
 export interface ILoadMoreMessage {
@@ -128,7 +144,7 @@ export interface IMessage extends IMessageFromServer {
 	replies?: string[];
 	unread?: boolean;
 	autoTranslate?: boolean;
-	translations?: ITranslations[];
+	translations?: IMessageTranslations[];
 	tmsg?: string;
 	blocks?: any;
 	e2e?: E2EType;
@@ -139,7 +155,10 @@ export interface IMessage extends IMessageFromServer {
 	editedAt?: string | Date;
 }
 
-export type TMessageModel = IMessage & Model;
+export type TMessageModel = IMessage &
+	Model & {
+		asPlain: () => IMessage;
+	};
 
 export type TAnyMessageModel = TMessageModel | TThreadModel | TThreadMessageModel;
 export type TTypeMessages = IMessageFromServer | ILoadMoreMessage | IMessage;
@@ -232,3 +251,7 @@ export type MessageTypesValues =
 	| 'message_pinned'
 	| 'message_snippeted'
 	| 'jitsi_call_started';
+
+export interface IAttachmentTranslations {
+	[k: string]: string;
+}

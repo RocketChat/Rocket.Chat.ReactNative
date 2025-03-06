@@ -1,6 +1,6 @@
 import { Platform, StyleSheet, TextStyle } from 'react-native';
 
-import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants';
+import { MAX_SCREEN_CONTENT_WIDTH } from '../lib/constants/tablet';
 
 const defaultTextStyle: TextStyle = {
 	textAlign: 'left',
@@ -18,8 +18,9 @@ export default StyleSheet.create({
 		flexDirection: 'column'
 	},
 	containerScrollView: {
-		padding: 16,
-		paddingBottom: 30
+		paddingTop: 12,
+		paddingHorizontal: 16,
+		paddingBottom: 24
 	},
 	tabletScreenContent: {
 		justifyContent: 'center',
@@ -80,7 +81,8 @@ export default StyleSheet.create({
 				fontWeight: '400'
 			},
 			android: {
-				fontFamily: 'Inter-Regular'
+				fontFamily: 'Inter-Regular',
+				letterSpacing: 0.01
 			}
 		})
 	},
@@ -122,9 +124,5 @@ export default StyleSheet.create({
 	},
 	inputLastChild: {
 		marginBottom: 15
-	},
-	notchLandscapeContainer: {
-		marginTop: -34,
-		paddingHorizontal: 30
 	}
 });

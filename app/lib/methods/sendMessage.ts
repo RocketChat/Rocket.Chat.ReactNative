@@ -40,7 +40,7 @@ const changeMessageStatus = async (id: string, status: number, tmid?: string, me
 
 	try {
 		await db.write(async () => {
-			await db.batch(...successBatch);
+			await db.batch(successBatch);
 		});
 	} catch (error) {
 		// Do nothing
@@ -143,6 +143,7 @@ export async function sendMessage(
 							tm.status = messagesStatus.SENT; // Original message was sent already
 							tm.u = tMessageRecord.u;
 							tm.t = message.t;
+							tm.attachments = tMessageRecord.attachments;
 							if (message.t === E2E_MESSAGE_TYPE) {
 								tm.e2e = E2E_STATUS.DONE as E2EType;
 							}
@@ -222,7 +223,7 @@ export async function sendMessage(
 
 		try {
 			await db.write(async () => {
-				await db.batch(...batch);
+				await db.batch(batch);
 			});
 		} catch (e) {
 			log(e);

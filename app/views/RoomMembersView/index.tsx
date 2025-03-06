@@ -1,21 +1,23 @@
 import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useReducer } from 'react';
 import { FlatList, Text, View } from 'react-native';
+import { shallowEqual } from 'react-redux';
 
 import { TActionSheetOptionsItem, useActionSheet } from '../../containers/ActionSheet';
+import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { CustomIcon } from '../../containers/CustomIcon';
+import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
 import * as HeaderButton from '../../containers/HeaderButton';
 import * as List from '../../containers/List';
-import { RadioButton } from '../../containers/RadioButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
 import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
-import { TSubscriptionModel, TUserModel } from '../../definitions';
+import Radio from '../../containers/Radio';
+import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
-import { getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
@@ -49,7 +51,7 @@ interface IRoomMembersViewState {
 	members: TUserModel[];
 	room: TSubscriptionModel;
 	end: boolean;
-	roomRoles: any;
+	roomRoles?: IGetRoomRoles[];
 	filter: string;
 	page: number;
 }
@@ -61,7 +63,7 @@ const RightIcon = ({ check, label }: { check: boolean; label: string }) => {
 			testID={check ? `action-sheet-set-${label}-checked` : `action-sheet-set-${label}-unchecked`}
 			name={check ? 'checkbox-checked' : 'checkbox-unchecked'}
 			size={20}
-			color={check ? colors.tintActive : colors.auxiliaryTintColor}
+			color={check ? colors.fontHint : undefined}
 		/>
 	);
 };
@@ -73,10 +75,20 @@ const RoomMembersView = (): React.ReactElement => {
 	const { params } = useRoute<RouteProp<ModalStackParamList, 'RoomMembersView'>>();
 	const navigation = useNavigation<NavigationProp<ModalStackParamList, 'RoomMembersView'>>();
 
-	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const { isMasterDetail, serverVersion, useRealName, user, loading } = useAppSelector(
+		state => ({
+			isMasterDetail: state.app.isMasterDetail,
+			useRealName: state.settings.UI_Use_Real_Name,
+			user: getUserSelector(state),
+			serverVersion: state.server.version,
+			loading: state.selectedUsers.loading
+		}),
+		shallowEqual
+	);
 
-	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
-	const user = useAppSelector(state => getUserSelector(state));
+	useEffect(() => {
+		sendLoadingEvent({ visible: loading });
+	}, [loading]);
 
 	const [state, updateState] = useReducer(
 		(state: IRoomMembersViewState, newState: Partial<IRoomMembersViewState>) => ({ ...state, ...newState }),
@@ -87,7 +99,7 @@ const RoomMembersView = (): React.ReactElement => {
 			members: [],
 			room: params.room || ({} as TSubscriptionModel),
 			end: false,
-			roomRoles: null,
+			roomRoles: undefined,
 			filter: '',
 			page: 0
 		}
@@ -110,8 +122,8 @@ const RoomMembersView = (): React.ReactElement => {
 
 	useEffect(() => {
 		const subscription = params?.room?.observe && params.room.observe().subscribe(changes => updateState({ room: changes }));
-		setHeader(true);
-		fetchMembers(true);
+		setHeader(false);
+		fetchMembers(false);
 		return () => subscription?.unsubscribe();
 	}, []);
 
@@ -177,13 +189,13 @@ const RoomMembersView = (): React.ReactElement => {
 									{
 										title: I18n.t('Online'),
 										onPress: () => toggleStatus(true),
-										right: () => <RadioButton check={allUsers} />,
+										right: () => <Radio check={allUsers} />,
 										testID: 'room-members-view-toggle-status-online'
 									},
 									{
 										title: I18n.t('All'),
 										onPress: () => toggleStatus(false),
-										right: () => <RadioButton check={!allUsers} />,
+										right: () => <Radio check={!allUsers} />,
 										testID: 'room-members-view-toggle-status-all'
 									}
 								]
@@ -208,38 +220,6 @@ const RoomMembersView = (): React.ReactElement => {
 				onPress: () => navToDirectMessage(selectedUser, isMasterDetail)
 			}
 		];
-
-		// Ignore
-		if (selectedUser._id !== user.id) {
-			const { ignored } = room;
-			const isIgnored = ignored?.includes?.(selectedUser._id);
-			options.push({
-				icon: 'ignore',
-				title: I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
-				onPress: () => handleIgnore(selectedUser._id, !isIgnored, room.rid),
-				testID: 'action-sheet-ignore-user'
-			});
-		}
-
-		if (muteUserPermission) {
-			const { muted = [] } = room;
-			const userIsMuted = muted.find?.(m => m === selectedUser.username);
-			selectedUser.muted = !!userIsMuted;
-			options.push({
-				icon: userIsMuted ? 'audio' : 'audio-disabled',
-				title: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
-				onPress: () => {
-					showConfirmationAlert({
-						message: I18n.t(`The_user_${userIsMuted ? 'will' : 'wont'}_be_able_to_type_in_roomName`, {
-							roomName: getRoomTitle(room)
-						}),
-						confirmationText: I18n.t(userIsMuted ? 'Unmute' : 'Mute'),
-						onPress: () => handleMute(selectedUser, room.rid)
-					});
-				},
-				testID: 'action-sheet-mute-user'
-			});
-		}
 
 		// Owner
 		if (setOwnerPermission) {
@@ -283,6 +263,47 @@ const RoomMembersView = (): React.ReactElement => {
 					),
 				right: () => <RightIcon check={isModerator} label='moderator' />,
 				testID: 'action-sheet-set-moderator'
+			});
+		}
+
+		if (muteUserPermission) {
+			const { muted = [], ro: readOnly, unmuted = [] } = room;
+			let userIsMuted = !!muted.find?.(m => m === selectedUser.username);
+			let icon: TIconsName = userIsMuted ? 'audio' : 'audio-disabled';
+			let title = I18n.t(userIsMuted ? 'Unmute' : 'Mute');
+			if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '6.4.0')) {
+				if (readOnly) {
+					userIsMuted = !unmuted?.find?.(m => m === selectedUser.username);
+				}
+				icon = userIsMuted ? 'message' : 'message-disabled';
+				title = I18n.t(userIsMuted ? 'Enable_writing_in_room' : 'Disable_writing_in_room');
+			}
+			selectedUser.muted = !!userIsMuted;
+			options.push({
+				icon,
+				title,
+				onPress: () => {
+					showConfirmationAlert({
+						message: I18n.t(`The_user_${userIsMuted ? 'will' : 'wont'}_be_able_to_type_in_roomName`, {
+							roomName: getRoomTitle(room)
+						}),
+						confirmationText: title,
+						onPress: () => handleMute(selectedUser, room.rid)
+					});
+				},
+				testID: 'action-sheet-mute-user'
+			});
+		}
+
+		// Ignore
+		if (selectedUser._id !== user.id) {
+			const { ignored } = room;
+			const isIgnored = ignored?.includes?.(selectedUser._id);
+			options.push({
+				icon: 'ignore',
+				title: I18n.t(isIgnored ? 'Unignore' : 'Ignore'),
+				onPress: () => handleIgnore(selectedUser._id, !isIgnored, room.rid),
+				testID: 'action-sheet-ignore-user'
 			});
 		}
 
@@ -373,9 +394,9 @@ const RoomMembersView = (): React.ReactElement => {
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (
-					<View style={{ backgroundColor: colors.backgroundColor }}>
+					<View style={{ backgroundColor: colors.surfaceRoom }}>
 						<UserItem
-							name={item.name as string}
+							name={item.name || item.username}
 							username={item.username}
 							onPress={() => onPressUser(item)}
 							testID={`room-members-view-item-${item.username}`}
@@ -395,7 +416,9 @@ const RoomMembersView = (): React.ReactElement => {
 				onEndReachedThreshold={0.1}
 				onEndReached={() => fetchMembers(state.allUsers)}
 				ListEmptyComponent={() =>
-					state.end ? <Text style={[styles.noResult, { color: colors.titleText }]}>{I18n.t('No_members_found')}</Text> : null
+					state.end ? (
+						<Text style={[styles.noResult, { color: colors.fontTitlesLabels }]}>{I18n.t('No_members_found')}</Text>
+					) : null
 				}
 				{...scrollPersistTaps}
 			/>

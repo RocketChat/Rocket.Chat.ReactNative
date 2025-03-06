@@ -58,9 +58,13 @@ extension Request {
     
     if let userId = api.credentials?.userId {
       request.addValue(userId, forHTTPHeaderField: "x-user-id")
+    } else {
+        return nil
     }
     if let userToken = api.credentials?.userToken {
       request.addValue(userToken, forHTTPHeaderField: "x-auth-token")
+    } else {
+        return nil
     }
     
     return request
