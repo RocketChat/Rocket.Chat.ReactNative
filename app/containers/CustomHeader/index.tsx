@@ -22,8 +22,7 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 				<Text
 					numberOfLines={1}
 					style={{
-						...styles.title,
-						paddingVertical: 10,
+						...styles.androidTitle,
 						color: colors.fontTitlesLabels
 					}}>
 					{headerTitle}
@@ -36,7 +35,6 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 					numberOfLines={1}
 					style={{
 						...styles.title,
-						paddingVertical: 6,
 						color: colors.fontTitlesLabels
 					}}>
 					{headerTitle}

@@ -8,7 +8,15 @@ export const styles = StyleSheet.create({
 		...sharedStyles.textBold,
 		fontSize: 16,
 		flex: 1,
-		lineHeight: 24
+		lineHeight: 24,
+		paddingVertical: 6
+	},
+	androidTitle: {
+		...sharedStyles.textBold,
+		fontSize: 16,
+		flex: 1,
+		lineHeight: 24,
+		paddingVertical: 10
 	},
 	headerBackButton: {
 		margin: 0,
