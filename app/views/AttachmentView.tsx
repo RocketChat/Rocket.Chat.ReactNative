@@ -121,7 +121,7 @@ const AttachmentView = (): React.ReactElement => {
 			// Do nothing
 		}
 		const options = {
-			title: title ? title.substring(0, 27) + (title.length > 27 ? '...' : '') : '',
+			title: title || '',
 			headerLeft: () => (
 				<HeaderButton.CloseModal testID='close-attachment-view' navigation={navigation} color={colors.fontDefault} />
 			),
