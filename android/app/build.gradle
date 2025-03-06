@@ -121,7 +121,7 @@ android {
         }
     }
 
-    flavorDimensions "app", "type"
+    flavorDimensions "app"
     productFlavors {
         official {
             dimension = "app"
@@ -130,25 +130,6 @@ android {
         experimental {
             dimension = "app"
             buildConfigField "boolean", "IS_OFFICIAL", "false"
-        }
-    }
-    sourceSets {
-        // TODO: refactor making sure notifications are working properly both on debug and release
-        experimentalPlayDebug {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        experimentalPlayRelease {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        officialPlayDebug {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
-        }
-        officialPlayRelease {
-            java.srcDirs = ['src/main/java', 'src/play/java']
-            manifest.srcFile 'src/play/AndroidManifest.xml'
         }
     }
 }
@@ -165,11 +146,11 @@ dependencies {
     }
 
     implementation project(':@react-native-community_viewpager')
-    playImplementation project(':react-native-notifications')
-    playImplementation "com.google.firebase:firebase-messaging:23.3.1"
-    playImplementation project(':@react-native-firebase_app')
-    playImplementation project(':@react-native-firebase_analytics')
-    playImplementation project(':@react-native-firebase_crashlytics')
+    implementation project(':react-native-notifications')
+    implementation "com.google.firebase:firebase-messaging:23.3.1"
+    implementation project(':@react-native-firebase_app')
+    implementation project(':@react-native-firebase_analytics')
+    implementation project(':@react-native-firebase_crashlytics')
     implementation project(':watermelondb-jsi')
 
     implementation "com.google.code.gson:gson:2.8.9"
