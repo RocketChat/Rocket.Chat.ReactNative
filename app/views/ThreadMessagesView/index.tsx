@@ -128,12 +128,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerTitle: I18n.t('Threads'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item
-						iconName='filter'
-						onPress={this.showFilters}
-						badge={() =>
-							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
-						}
+					<HeaderButton.Item 
+						iconName='filter' 
+						onPress={this.showFilters} 
+						badge={() => currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null}
 					/>
 					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
