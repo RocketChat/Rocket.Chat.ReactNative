@@ -1,10 +1,17 @@
 #!/bin/bash
 
-echo "Running code formatting on all files before commit..."
+echo "Running code formatting on staged files before commit..."
 
-yarn prettier --write .
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx|css|scss|json|md|html|vue)$')
 
-git add -u
+if [ -n "$STAGED_FILES" ]; then
+  echo "$STAGED_FILES" | xargs yarn prettier --write
+  
+  echo "$STAGED_FILES" | xargs git add
+  
+  echo "✅ Code formatting complete on staged files. Proceeding with commit."
+else
+  echo "No files to format. Proceeding with commit."
+fi
 
-echo "✅ Code formatting complete. Proceeding with commit."
 exit 0
