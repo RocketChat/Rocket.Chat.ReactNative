@@ -40,7 +40,7 @@
 		"@react-native-camera-roll/camera-roll": "^7.5.0",
 		"@react-native-clipboard/clipboard": "^1.13.2",
 		"@react-native-community/datetimepicker": "^7.6.3",
-		"@react-native-community/hooks": "2.6.0",
+		"@react-native-community/hooks": "100.1.0",
 		"@react-native-community/netinfo": "^11.3.1",
 		"@react-native-community/slider": "^4.5.0",
 		"@react-native-cookies/cookies": "6.2.1",
