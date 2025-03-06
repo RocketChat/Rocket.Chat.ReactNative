@@ -11,26 +11,25 @@ interface IHeaderContainer extends ViewProps {
 	customRightIcon?: boolean;
 }
 
-const HeaderContainer = (props: IHeaderContainer) => {
+const HeaderContainer = ({ addExtraNotchPadding, isMasterDetail, customRightIcon, customLeftIcon }: IHeaderContainer) => {
 	const insets = useSafeAreaInsets();
 	const { colors } = useTheme();
 	const { height, width } = useWindowDimensions();
 	const isPortrait = height > width;
 	const paddingBottom = isPortrait ? 12 : 4;
-	const statusBarPadding = props.addExtraNotchPadding ? insets.top : 0;
-	const paddingRight = props.isMasterDetail || !props.customRightIcon ? 4 : 16;
+	const statusBarPadding = addExtraNotchPadding ? insets.top : 0;
+	const paddingRight = isMasterDetail || !customRightIcon ? 4 : 16;
 
 	return (
 		<View
-			{...props}
 			style={{
 				alignItems: 'center',
 				flexDirection: 'row',
 				paddingBottom,
 				paddingTop: statusBarPadding + paddingBottom,
 				paddingRight,
-				paddingLeft: props.customLeftIcon ? 16 : 4,
-				gap: props.isMasterDetail ? 4 : 16,
+				paddingLeft: customLeftIcon ? 16 : 4,
+				gap: isMasterDetail ? 4 : 16,
 				backgroundColor: colors.surfaceNeutral,
 				borderWidth: StyleSheet.hairlineWidth,
 				borderColor: colors.strokeLight
