@@ -46,7 +46,7 @@ const Toast = (): React.ReactElement => {
 			ref={getToastRef}
 			position='center'
 			style={[styles.toast, { backgroundColor: colors.surfaceDark }]}
-			textStyle={[styles.text, { color: theme === "light" ? colors.fontWhite : colors.fontPureBlack }]}
+			textStyle={[styles.text, { color: theme === 'light' ? colors.fontWhite : colors.fontPureBlack }]}
 			opacity={0.9}
 		/>
 	);
