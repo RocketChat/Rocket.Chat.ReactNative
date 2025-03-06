@@ -121,20 +121,6 @@ android {
         }
     }
 
-    // packagingOptions {
-    //     pickFirst '**/armeabi-v7a/libc++_shared.so'
-    //     pickFirst '**/x86/libc++_shared.so'
-    //     pickFirst '**/arm64-v8a/libc++_shared.so'
-    //     pickFirst '**/x86_64/libc++_shared.so'
-    // }
-
-    // FIXME: Remove when we update RN
-    // packagingOptions {
-    //     pickFirst '**/*.so'
-    // }
-
-    // applicationVariants are e.g. debug, release
-
     flavorDimensions "app", "type"
     productFlavors {
         official {
@@ -144,14 +130,6 @@ android {
         experimental {
             dimension = "app"
             buildConfigField "boolean", "IS_OFFICIAL", "false"
-        }
-        foss {
-            dimension = "type"
-            buildConfigField "boolean", "FDROID_BUILD", "true"
-        }
-        play {
-            dimension = "type"
-            buildConfigField "boolean", "FDROID_BUILD", "false"
         }
     }
     sourceSets {
