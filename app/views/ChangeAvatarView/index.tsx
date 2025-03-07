@@ -30,7 +30,7 @@ import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitSe
 import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
-import { isImageURL, useDebounce } from '../../lib/methods/helpers';
+import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
 enum AvatarStateActions {
@@ -93,6 +93,7 @@ const ChangeAvatarView = () => {
 					onPress={() => navigation.goBack()}
 					tintColor={colors.fontDefault}
 					testID='header-back'
+					style={{ margin: 0, marginRight: isTablet ? 5 : -5, marginLeft: -12 }}
 				/>
 			)
 		});

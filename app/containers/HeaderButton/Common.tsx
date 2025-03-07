@@ -1,5 +1,6 @@
 import React from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
+import { StyleProp, ViewStyle } from 'react-native';
 
 import I18n from '../../i18n';
 import { isIOS } from '../../lib/methods/helpers';
@@ -9,13 +10,20 @@ import { useTheme } from '../../theme';
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {
 	navigation?: any; // TODO: Evaluate proper type
+	style?: StyleProp<ViewStyle>;
 }
 
 // Left
-export const Drawer = ({ navigation, testID, onPress = () => navigation?.toggleDrawer(), ...props }: IHeaderButtonCommon) => {
+export const Drawer = ({
+	navigation,
+	testID,
+	style = {},
+	onPress = () => navigation?.toggleDrawer(),
+	...props
+}: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
 	return (
-		<Container left>
+		<Container style={style}>
 			<Item iconName='hamburguer' onPress={onPress} testID={testID} color={colors.fontDefault} {...props} />
 		</Container>
 	);

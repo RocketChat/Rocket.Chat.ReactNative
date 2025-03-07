@@ -30,11 +30,11 @@ exports[`MessageComposer Audio tap record 1`] = `
           [
             {
               "color": "#D40C26",
-              "fontSize": 24,
+              "fontSize": 48,
             },
             [
               {
-                "lineHeight": 24,
+                "lineHeight": 48,
               },
               undefined,
             ],
@@ -102,10 +102,10 @@ exports[`MessageComposer Audio tap record 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-delete-audio"
@@ -122,11 +122,11 @@ exports[`MessageComposer Audio tap record 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -213,11 +213,11 @@ exports[`MessageComposer Audio tap record 1`] = `
               [
                 {
                   "color": "#FFFFFF",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -298,10 +298,10 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -318,11 +318,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -410,10 +410,10 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-send-audio"
@@ -430,11 +430,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -579,10 +579,10 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "height": 24,
+                    "height": 48,
                     "justifyContent": "center",
                     "opacity": 1,
-                    "width": 24,
+                    "width": 48,
                   }
                 }
                 testID="composer-quote-remove-abc"
@@ -599,11 +599,11 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -720,10 +720,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -740,11 +740,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -832,10 +832,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-send-audio"
@@ -852,11 +852,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -1002,10 +1002,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "height": 24,
+                    "height": 48,
                     "justifyContent": "center",
                     "opacity": 1,
-                    "width": 24,
+                    "width": 48,
                   }
                 }
                 testID="composer-quote-remove-abc"
@@ -1022,11 +1022,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1180,10 +1180,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "height": 24,
+                    "height": 48,
                     "justifyContent": "center",
                     "opacity": 1,
-                    "width": 24,
+                    "width": 48,
                   }
                 }
                 testID="composer-quote-remove-def"
@@ -1200,11 +1200,11 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1321,10 +1321,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -1341,11 +1341,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -1433,10 +1433,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-send-audio"
@@ -1453,11 +1453,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -1603,10 +1603,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "height": 24,
+                    "height": 48,
                     "justifyContent": "center",
                     "opacity": 1,
-                    "width": 24,
+                    "width": 48,
                   }
                 }
                 testID="composer-quote-remove-abc"
@@ -1623,11 +1623,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1781,10 +1781,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 style={
                   {
                     "alignItems": "center",
-                    "height": 24,
+                    "height": 48,
                     "justifyContent": "center",
                     "opacity": 1,
-                    "width": 24,
+                    "width": 48,
                   }
                 }
                 testID="composer-quote-remove-def"
@@ -1801,11 +1801,11 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 24,
+                          "fontSize": 48,
                         },
                         [
                           {
-                            "lineHeight": 24,
+                            "lineHeight": 48,
                           },
                           undefined,
                         ],
@@ -1957,10 +1957,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -1977,11 +1977,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2030,10 +2030,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -2050,11 +2050,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2103,10 +2103,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -2123,11 +2123,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2176,10 +2176,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -2196,11 +2196,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2249,10 +2249,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -2269,11 +2269,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2322,10 +2322,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -2342,11 +2342,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2395,10 +2395,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -2415,11 +2415,11 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2535,10 +2535,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -2555,11 +2555,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2608,10 +2608,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -2628,11 +2628,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2681,10 +2681,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -2701,11 +2701,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2754,10 +2754,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -2774,11 +2774,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2827,10 +2827,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -2847,11 +2847,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2900,10 +2900,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -2920,11 +2920,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -2973,10 +2973,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -2993,11 +2993,11 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3113,10 +3113,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -3133,11 +3133,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3186,10 +3186,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -3206,11 +3206,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3259,10 +3259,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -3279,11 +3279,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3332,10 +3332,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -3352,11 +3352,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3405,10 +3405,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -3425,11 +3425,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3478,10 +3478,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -3498,11 +3498,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3551,10 +3551,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -3571,11 +3571,11 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3691,10 +3691,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -3711,11 +3711,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3764,10 +3764,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -3784,11 +3784,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3837,10 +3837,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -3857,11 +3857,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3910,10 +3910,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -3930,11 +3930,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -3983,10 +3983,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -4003,11 +4003,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4056,10 +4056,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -4076,11 +4076,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4129,10 +4129,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -4149,11 +4149,11 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4269,10 +4269,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -4289,11 +4289,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4342,10 +4342,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -4362,11 +4362,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4415,10 +4415,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -4435,11 +4435,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4488,10 +4488,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -4508,11 +4508,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4561,10 +4561,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -4581,11 +4581,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4634,10 +4634,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -4654,11 +4654,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4707,10 +4707,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -4727,11 +4727,11 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4847,10 +4847,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -4867,11 +4867,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4920,10 +4920,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -4940,11 +4940,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -4993,10 +4993,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -5013,11 +5013,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5066,10 +5066,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -5086,11 +5086,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5139,10 +5139,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -5159,11 +5159,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5212,10 +5212,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -5232,11 +5232,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5285,10 +5285,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -5305,11 +5305,11 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5425,10 +5425,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -5445,11 +5445,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5498,10 +5498,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -5518,11 +5518,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5571,10 +5571,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -5591,11 +5591,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5644,10 +5644,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -5664,11 +5664,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5717,10 +5717,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -5737,11 +5737,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5790,10 +5790,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -5810,11 +5810,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -5863,10 +5863,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -5883,11 +5883,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6003,10 +6003,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -6023,11 +6023,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6076,10 +6076,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -6096,11 +6096,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6149,10 +6149,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -6169,11 +6169,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6222,10 +6222,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -6242,11 +6242,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6295,10 +6295,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -6315,11 +6315,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6368,10 +6368,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -6388,11 +6388,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6441,10 +6441,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -6461,11 +6461,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6581,10 +6581,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -6601,11 +6601,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6654,10 +6654,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -6674,11 +6674,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6727,10 +6727,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -6747,11 +6747,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6800,10 +6800,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -6820,11 +6820,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6873,10 +6873,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -6893,11 +6893,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -6946,10 +6946,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -6966,11 +6966,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7019,10 +7019,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -7039,11 +7039,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7159,10 +7159,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -7179,11 +7179,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7232,10 +7232,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -7252,11 +7252,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7305,10 +7305,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -7325,11 +7325,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7378,10 +7378,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -7398,11 +7398,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7451,10 +7451,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -7471,11 +7471,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7524,10 +7524,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -7544,11 +7544,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7597,10 +7597,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -7617,11 +7617,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7737,10 +7737,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-markdown"
@@ -7757,11 +7757,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7810,10 +7810,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-bold"
@@ -7830,11 +7830,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7883,10 +7883,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-italic"
@@ -7903,11 +7903,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -7956,10 +7956,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-strike"
@@ -7976,11 +7976,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8029,10 +8029,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code"
@@ -8049,11 +8049,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8102,10 +8102,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-code-block"
@@ -8122,11 +8122,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8175,10 +8175,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -8195,11 +8195,11 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8315,10 +8315,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-actions"
@@ -8335,11 +8335,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8388,10 +8388,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-open-emoji"
@@ -8408,11 +8408,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8461,10 +8461,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-open-markdown"
@@ -8481,11 +8481,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8534,10 +8534,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-mention"
@@ -8554,11 +8554,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8607,10 +8607,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -8627,11 +8627,11 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8747,10 +8747,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-actions"
@@ -8767,11 +8767,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8820,10 +8820,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-close-emoji"
@@ -8840,11 +8840,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -8893,10 +8893,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -8913,11 +8913,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9033,10 +9033,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-actions"
@@ -9053,11 +9053,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9106,10 +9106,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-open-emoji"
@@ -9126,11 +9126,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9179,10 +9179,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-open-markdown"
@@ -9199,11 +9199,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9252,10 +9252,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-mention"
@@ -9272,11 +9272,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9325,10 +9325,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -9345,11 +9345,11 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -9430,10 +9430,10 @@ exports[`MessageComposer renders correctly 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -9517,10 +9517,10 @@ exports[`MessageComposer renders correctly 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-send-audio"
@@ -9598,10 +9598,10 @@ exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -9618,11 +9618,11 @@ exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -9749,10 +9749,10 @@ exports[`MessageComposer renders correctly with audio recorder disabled and with
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -9769,11 +9769,11 @@ exports[`MessageComposer renders correctly with audio recorder disabled and with
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -9900,10 +9900,10 @@ exports[`MessageComposer renders correctly without audio upload permissions 1`] 
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -9920,11 +9920,11 @@ exports[`MessageComposer renders correctly without audio upload permissions 1`] 
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -10086,10 +10086,10 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-actions"
@@ -10106,11 +10106,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10159,10 +10159,10 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-open-emoji"
@@ -10179,11 +10179,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10232,10 +10232,10 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-open-markdown"
@@ -10252,11 +10252,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10305,10 +10305,10 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-mention"
@@ -10325,11 +10325,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10378,10 +10378,10 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
         style={
           {
             "alignItems": "center",
-            "height": 24,
+            "height": 48,
             "justifyContent": "center",
             "opacity": 1,
-            "width": 24,
+            "width": 48,
           }
         }
         testID="message-composer-send-audio"
@@ -10398,11 +10398,11 @@ exports[`MessageComposer renders toolbar when focused 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 24,
+                  "fontSize": 48,
                 },
                 [
                   {
-                    "lineHeight": 24,
+                    "lineHeight": 48,
                   },
                   undefined,
                 ],
@@ -10483,10 +10483,10 @@ exports[`MessageComposer send message 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-actions"
@@ -10503,11 +10503,11 @@ exports[`MessageComposer send message 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],
@@ -10595,10 +10595,10 @@ exports[`MessageComposer send message 1`] = `
           style={
             {
               "alignItems": "center",
-              "height": 24,
+              "height": 48,
               "justifyContent": "center",
               "opacity": 1,
-              "width": 24,
+              "width": 48,
             }
           }
           testID="message-composer-send-audio"
@@ -10615,11 +10615,11 @@ exports[`MessageComposer send message 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 24,
+                    "fontSize": 48,
                   },
                   [
                     {
-                      "lineHeight": 24,
+                      "lineHeight": 48,
                     },
                     undefined,
                   ],

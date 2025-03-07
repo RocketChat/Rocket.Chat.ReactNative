@@ -44,7 +44,6 @@ const ListHeader = React.memo(
 						<List.Separator />
 					</>
 				) : null}
-				<List.Separator />
 				<OmnichannelStatus
 					searching={searching}
 					goQueue={goQueue}

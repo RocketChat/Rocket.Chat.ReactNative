@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const BUTTON_HEIGHT = 48;
 export const SERVICE_HEIGHT = 58;
 export const BORDER_RADIUS = 4;
 export const SERVICES_COLLAPSED_HEIGHT = 174;
@@ -15,7 +14,7 @@ export default StyleSheet.create({
 	serviceButtonContainer: {
 		borderRadius: BORDER_RADIUS,
 		width: '100%',
-		height: BUTTON_HEIGHT,
+		paddingVertical: 14,
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -23,10 +22,7 @@ export default StyleSheet.create({
 	},
 	serviceIcon: {
 		position: 'absolute',
-		left: 15,
-		top: 12,
-		width: 24,
-		height: 24
+		left: 15
 	},
 	serviceText: {
 		...sharedStyles.textRegular,

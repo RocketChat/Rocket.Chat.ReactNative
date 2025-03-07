@@ -9,10 +9,10 @@ import { CustomIcon } from '../CustomIcon';
 import sharedStyles from '../../views/Styles';
 import { themes } from '../../lib/constants';
 import { useTheme } from '../../theme';
-import { ROW_HEIGHT } from '../RoomItem';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
+import { useRowHeight } from '../../lib/hooks/useRowHeight';
 
 export interface INotifierComponent {
 	notification: {
@@ -33,7 +33,6 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const styles = StyleSheet.create({
 	container: {
-		height: ROW_HEIGHT,
 		paddingHorizontal: 14,
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -74,6 +73,7 @@ const styles = StyleSheet.create({
 
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
+	const { rowHeight } = useRowHeight();
 	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
@@ -105,7 +105,8 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 				{
 					backgroundColor: themes[theme].surfaceLight,
 					borderColor: themes[theme].strokeLight,
-					marginTop: insets.top
+					marginTop: insets.top,
+					height: rowHeight
 				}
 			]}>
 			<Touchable

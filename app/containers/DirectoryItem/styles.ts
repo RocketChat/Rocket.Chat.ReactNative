@@ -6,7 +6,7 @@ export const ROW_HEIGHT = 54;
 
 export default StyleSheet.create({
 	directoryItemButton: {
-		height: ROW_HEIGHT
+		paddingVertical: 12
 	},
 	directoryItemContainer: {
 		flex: 1,
