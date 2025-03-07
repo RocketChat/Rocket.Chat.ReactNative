@@ -12,7 +12,7 @@ import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
-import { useRowHeight } from '../RoomItem/useRowHeight';
+import { useRowHeight } from '../../lib/hooks/useRowHeight';
 
 export interface INotifierComponent {
 	notification: {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 
 const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifierComponent) => {
 	const { theme } = useTheme();
-	const { ROW_HEIGHT } = useRowHeight();
+	const { rowHeight } = useRowHeight();
 	const insets = useSafeAreaInsets();
 	const { text, payload } = notification;
 	const { type, rid } = payload;
@@ -106,7 +106,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 					backgroundColor: themes[theme].surfaceLight,
 					borderColor: themes[theme].strokeLight,
 					marginTop: insets.top,
-					height: ROW_HEIGHT
+					height: rowHeight
 				}
 			]}>
 			<Touchable

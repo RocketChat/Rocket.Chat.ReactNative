@@ -1,23 +1,24 @@
 import React, { createContext, ReactElement, useContext } from 'react';
-import { PixelRatio } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 
 interface IRowHeightProvider {
 	children: ReactElement | null;
 }
 
 interface IRowHeightContextProps {
-	ROW_HEIGHT: number;
-	ROW_HEIGHT_CONDENSED: number;
+	rowHeight: number;
+	rowHeightCondensed: number;
 }
 
 const RowHeightContext = createContext<IRowHeightContextProps>({} as IRowHeightContextProps);
 
 export const RowHeightProvider = ({ children }: IRowHeightProvider) => {
-	const RowHeight = PixelRatio.getFontScale();
-	const ROW_HEIGHT = 75 * RowHeight;
-	const ROW_HEIGHT_CONDENSED = 60 * RowHeight;
+	const { fontScale } = useWindowDimensions();
 
-	return <RowHeightContext.Provider value={{ ROW_HEIGHT, ROW_HEIGHT_CONDENSED }}>{children}</RowHeightContext.Provider>;
+	const rowHeight = 75 * fontScale;
+	const rowHeightCondensed = 60 * fontScale;
+
+	return <RowHeightContext.Provider value={{ rowHeight, rowHeightCondensed }}>{children}</RowHeightContext.Provider>;
 };
 
 export const useRowHeight = () => {

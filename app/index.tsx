@@ -35,7 +35,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-import { RowHeightProvider } from './containers/RoomItem/useRowHeight';
+import { RowHeightProvider } from './lib/hooks/useRowHeight';
 
 enableScreens();
 initStore(store);
