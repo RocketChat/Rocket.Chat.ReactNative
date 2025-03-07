@@ -1,5 +1,5 @@
-import React from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import React, { useState } from 'react';
+import { LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
@@ -14,6 +14,7 @@ interface IHeader extends NativeStackHeaderProps {}
 
 const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
+	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { fontScale } = useWindowDimensions();
@@ -30,6 +31,17 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 		route.name === 'ShareView' ||
 		route.name === 'AttachmentView';
 
+	const handleOnLayout = ({
+		nativeEvent: {
+			layout: { width }
+		}
+	}: LayoutChangeEvent) => {
+		if (isAndroid || !headerTitle) {
+			return;
+		}
+		setRightButtonsWidth(width + 12);
+	};
+
 	return (
 		<HeaderContainer
 			customRightIcon={!!headerRight}
@@ -39,16 +51,22 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 			{headerLeft ? (
 				headerLeft({ canGoBack: false })
 			) : (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.goBack()}
-					tintColor={colors.fontDefault}
-					testID='custom-header-back'
-					style={styles.headerBackButton}
-				/>
+				<View style={{ width: rightButtonsWidth }}>
+					<HeaderBackButton
+						labelVisible={false}
+						onPress={() => navigation.goBack()}
+						tintColor={colors.fontDefault}
+						testID='custom-header-back'
+						style={styles.headerBackButton}
+					/>
+				</View>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />
-			{headerRight ? headerRight({ canGoBack: false }) : <View style={{ width: isAndroid ? undefined : size, height: size }} />}
+			{headerRight ? (
+				<View onLayout={handleOnLayout}>{headerRight({ canGoBack: false })}</View>
+			) : (
+				<View style={{ width: isAndroid ? undefined : size, height: size }} />
+			)}
 		</HeaderContainer>
 	);
 };

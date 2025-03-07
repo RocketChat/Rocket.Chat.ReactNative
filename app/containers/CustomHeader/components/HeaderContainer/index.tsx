@@ -16,6 +16,7 @@ const HeaderContainer = ({
 	isMasterDetail,
 	customRightIcon,
 	customLeftIcon,
+	onLayout,
 	children
 }: IHeaderContainer) => {
 	const insets = useSafeAreaInsets();
@@ -28,6 +29,7 @@ const HeaderContainer = ({
 
 	return (
 		<View
+			onLayout={onLayout}
 			children={children}
 			style={{
 				alignItems: 'center',
