@@ -846,7 +846,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 							}
 							testID='room-actions-block-user'
 							left={() => <List.Icon name='ignore' />}
-							showActionIndicator
 						/>
 						<List.Separator />
 					</List.Section>
