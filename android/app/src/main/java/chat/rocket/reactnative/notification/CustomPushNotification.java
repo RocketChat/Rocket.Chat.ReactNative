@@ -1,4 +1,4 @@
-package chat.rocket.reactnative;
+package chat.rocket.reactnative.notification;
 
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 
@@ -36,6 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+
+import chat.rocket.reactnative.R;
 
 public class CustomPushNotification extends PushNotification {
     public static ReactApplicationContext reactApplicationContext;
