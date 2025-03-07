@@ -1,8 +1,35 @@
 diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
-index 3977e85..f05c7ca 100644
+index 3977e85..eb28e1a 100644
 --- a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
 +++ b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
-@@ -173,13 +173,7 @@ const styles = StyleSheet.create({
+@@ -5,6 +5,7 @@ import {
+   I18nManager,
+   Image,
+   LayoutChangeEvent,
++  PixelRatio,
+   Platform,
+   StyleSheet,
+   View,
+@@ -67,12 +68,18 @@ export default function HeaderBackButton({
+     if (backImage) {
+       return backImage({ tintColor });
+     } else {
++      const size = 24 * PixelRatio.getFontScale();
++  
+       return (
+         <Image
+           style={[
+             styles.icon,
+             Boolean(labelVisible) && styles.iconWithLabel,
+             Boolean(tintColor) && { tintColor },
++            {
++              width: size, 
++              height: size
++            }
+           ]}
+           source={require('../assets/back-icon.png')}
+           fadeDuration={0}
+@@ -173,13 +180,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      flexDirection: 'row',
      minWidth: StyleSheet.hairlineWidth, // Avoid collapsing when title is long
@@ -17,7 +44,7 @@ index 3977e85..f05c7ca 100644
    },
    disabled: {
      opacity: 0.5,
-@@ -198,18 +192,14 @@ const styles = StyleSheet.create({
+@@ -198,18 +199,14 @@ const styles = StyleSheet.create({
    },
    icon: Platform.select({
      ios: {
