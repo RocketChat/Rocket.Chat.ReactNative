@@ -126,18 +126,26 @@ async function mockMessage(message: string, isThread = false) {
 	return message;
 }
 
+async function tapCustomBackButton() {
+	try {
+		await element(by.id('custom-header-back')).atIndex(0).tap();
+	} catch (error) {
+		await element(by.id('header-back')).atIndex(0).tap();
+	}
+}
+
 async function tapBack() {
 	if (device.getPlatform() === 'ios') {
 		try {
-			await element(by.id('custom-header-back')).atIndex(0).tap();
+			await element(by.type('UIAccessibilityBackButtonElement')).tap();
 		} catch (error) {
-			await element(by.id('header-back')).atIndex(0).tap();
+			await tapCustomBackButton();
 		}
 	} else {
 		try {
 			await element(by.label('Navigate up')).tap();
 		} catch (error) {
-			await element(by.id('header-back')).atIndex(0).tap();
+			await tapCustomBackButton();
 		}
 	}
 }
