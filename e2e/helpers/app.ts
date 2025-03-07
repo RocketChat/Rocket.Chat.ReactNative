@@ -53,6 +53,21 @@ async function navigateToRegister(server?: string) {
 		.withTimeout(2000);
 }
 
+async function signup(): Promise<string> {
+	const randomUser = data.randomUser();
+	await element(by.id('register-view-name')).replaceText(randomUser.name);
+	await element(by.id('register-view-name')).tapReturnKey();
+	await element(by.id('register-view-username')).replaceText(randomUser.username);
+	await element(by.id('register-view-username')).tapReturnKey();
+	await element(by.id('register-view-email')).replaceText(randomUser.email);
+	await element(by.id('register-view-email')).tapReturnKey();
+	await element(by.id('register-view-password')).replaceText(randomUser.password);
+	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view-submit')).tap();
+	await expectValidRegisterOrRetry(device.getPlatform());
+	return randomUser.username;
+}
+
 async function login(username: string, password: string) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
@@ -299,5 +314,6 @@ export {
 	platformTypes,
 	expectValidRegisterOrRetry,
 	jumpToQuotedMessage,
-	navigateToRecentRoom
+	navigateToRecentRoom,
+	signup
 };

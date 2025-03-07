@@ -45,7 +45,7 @@ const light = {
 	statusFontInfo: '#095AD2',
 	statusFontSuccess: '#148660',
 	statusFontDanger: '#9B1325',
-	statusFontWarning: '#B88D00',
+	statusFontWarning: '#8E6300',
 	statusFontWarning2: '#2F343D',
 	statusFontService: '#974809',
 	statusFontService2: '#7F1B9F',

@@ -1,7 +1,7 @@
 import { device, waitFor, element, by } from 'detox';
 
 import data from '../../data';
-import { navigateToLogin, login, checkServer, expectValidRegisterOrRetry } from '../../helpers/app';
+import { navigateToLogin, login, checkServer, signup } from '../../helpers/app';
 import { createRandomRoom, createRandomUser, deleteCreatedUsers, IDeleteCreateUser, ITestUser } from '../../helpers/data_setup';
 
 const reopenAndCheckServer = async (server: string) => {
@@ -74,19 +74,8 @@ describe('Change server', () => {
 			.withTimeout(2000);
 
 		// Register new user
-		const randomUser = data.randomUser();
-		await element(by.id('register-view-name')).replaceText(randomUser.name);
-		await element(by.id('register-view-name')).tapReturnKey();
-		await element(by.id('register-view-username')).replaceText(randomUser.username);
-		await element(by.id('register-view-username')).tapReturnKey();
-		await element(by.id('register-view-email')).replaceText(randomUser.email);
-		await element(by.id('register-view-email')).tapReturnKey();
-		await element(by.id('register-view-password')).replaceText(randomUser.password);
-		await element(by.id('register-view-password')).tapReturnKey();
-		await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
-		await element(by.id('register-view-confirm-password')).tapReturnKey();
-		await expectValidRegisterOrRetry(device.getPlatform());
-		deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
+		const username = await signup();
+		deleteUsersAfterAll.push({ server: data.alternateServer, username });
 
 		await waitFor(element(by.id(`rooms-list-view-item-${room}`)))
 			.toBeNotVisible()
