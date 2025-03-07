@@ -233,13 +233,13 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
 				),
-				headerRight: () => null
+				headerRight: undefined
 			};
 			return navigation.setOptions(options);
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
 			),

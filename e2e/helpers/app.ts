@@ -129,7 +129,7 @@ async function mockMessage(message: string, isThread = false) {
 async function tapBack() {
 	if (device.getPlatform() === 'ios') {
 		try {
-			await element(by.type('UIAccessibilityBackButtonElement')).tap();
+			await element(by.id('custom-header-back')).atIndex(0).tap();
 		} catch (error) {
 			await element(by.id('header-back')).atIndex(0).tap();
 		}

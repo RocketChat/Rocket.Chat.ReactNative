@@ -43,7 +43,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 					labelVisible={false}
 					onPress={() => navigation.goBack()}
 					tintColor={colors.fontDefault}
-					testID='header-back'
+					testID='custom-header-back'
 					style={styles.headerBackButton}
 				/>
 			)}
