@@ -148,9 +148,6 @@ dependencies {
     implementation project(':@react-native-community_viewpager')
     implementation project(':react-native-notifications')
     implementation "com.google.firebase:firebase-messaging:23.3.1"
-    implementation project(':@react-native-firebase_app')
-    implementation project(':@react-native-firebase_analytics')
-    implementation project(':@react-native-firebase_crashlytics')
     implementation project(':watermelondb-jsi')
 
     implementation "com.google.code.gson:gson:2.8.9"

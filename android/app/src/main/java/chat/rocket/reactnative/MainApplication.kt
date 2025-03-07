@@ -22,12 +22,7 @@ import com.wix.reactnativenotifications.core.JsIOHelper
 import com.wix.reactnativenotifications.core.notification.INotificationsApplication
 import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
-import io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage;
-import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
-import io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsPackage;
-
 import expo.modules.ApplicationLifecycleDispatcher
-import expo.modules.ReactNativeHostWrapper
 import chat.rocket.reactnative.networking.SSLPinningPackage;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
@@ -40,9 +35,6 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
               // Packages that cannot be autolinked yet can be added manually here, for example:
               add(RNCViewPagerPackage())
               add(SSLPinningPackage())
-              add(ReactNativeFirebaseAnalyticsPackage())
-              add(ReactNativeFirebaseAppPackage())
-              add(ReactNativeFirebaseCrashlyticsPackage())
             }
 
         override fun getJSIModulePackage(): JSIModulePackage {
