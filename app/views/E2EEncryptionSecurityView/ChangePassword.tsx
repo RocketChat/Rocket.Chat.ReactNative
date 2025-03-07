@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, TextInput as RNTextInput } from 'react-native';
 
+import { textInputDebounceTime } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -42,7 +43,7 @@ const ChangePassword = () => {
 	}));
 	const newPasswordInputRef = useRef<RNTextInput | null>(null);
 
-	const onChangePasswordText = useDebounce((text: string) => setNewPassword(text), 300);
+	const onChangePasswordText = useDebounce((text: string) => setNewPassword(text), textInputDebounceTime);
 
 	const changePassword = () => {
 		if (!newPassword.trim()) {

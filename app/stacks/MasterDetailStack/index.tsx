@@ -114,7 +114,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={RoomActionsView}
 					options={props => RoomActionsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} />
 				<ModalStack.Screen name='ReportUserView' component={ReportUserView} />
 				{/* @ts-ignore */}
@@ -146,19 +145,15 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
 				<ModalStack.Screen name='E2EEToggleRoomView' component={E2EEToggleRoomView} />
 				<ModalStack.Screen name='ForwardMessageView' component={ForwardMessageView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 				<ModalStack.Screen name='PickerView' component={PickerView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
 				<ModalStack.Screen
@@ -168,7 +163,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='SettingsView' component={SettingsView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='LegalView' component={LegalView} />
 				<ModalStack.Screen name='LanguageView' component={LanguageView} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />

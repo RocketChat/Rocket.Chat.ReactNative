@@ -1,8 +1,9 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { StyleSheet, ScrollView, Text } from 'react-native';
 import { BlockContext } from '@rocket.chat/ui-kit';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { IBaseScreen } from '../definitions';
 import I18n from '../i18n';
 import { ChatsStackParamList } from '../stacks/types';
 import { useTheme } from '../theme';
@@ -29,7 +30,10 @@ const styles = StyleSheet.create({
 	buttonMarginVertical: { marginVertical: 20 }
 });
 
-const CloseLivechatView = ({ navigation, route }: IBaseScreen<ChatsStackParamList, 'CloseLivechatView'>) => {
+const CloseLivechatView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CloseLivechatView'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'CloseLivechatView'>>();
+
 	const rid = route.params?.rid;
 	const departmentInfo = route.params?.departmentInfo;
 	const tagsList = route.params?.tagsList;
