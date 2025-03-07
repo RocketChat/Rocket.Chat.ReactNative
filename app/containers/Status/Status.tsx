@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from 'react';
-import { PixelRatio, StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, useWindowDimensions } from 'react-native';
 
 import { useTheme } from '../../theme';
 import { CustomIcon, IconSet, TIconsName } from '../CustomIcon';
@@ -11,7 +11,8 @@ const Status = React.memo(({ style, status = 'offline', size = 32, ...props }: I
 	const { colors } = useTheme();
 	const userStatusColor = useUserStatusColor(status);
 
-	const fontScale = PixelRatio.getFontScale();
+	const { fontScale } = useWindowDimensions();
+
 	const name: TIconsName = `status-${status}`;
 	const isNameValid = IconSet.hasIcon(name);
 	const iconName = isNameValid ? name : 'status-offline';

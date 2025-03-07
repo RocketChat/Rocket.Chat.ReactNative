@@ -1,8 +1,9 @@
 import React from 'react';
-import { PixelRatio, View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { HeaderBackButton } from '@react-navigation/elements';
 
+import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
@@ -15,7 +16,11 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-	const fontScale = PixelRatio.getFontScale();
+	const { fontScale } = useWindowDimensions();
+
+	// It helps create an empty view to properly align the header when there is no component on the right.
+	// 32.5 is the value I found that makes it work correctly on both platforms.
+	const size = 32.5 * fontScale;
 
 	const isRoomViewMasterDetail =
 		!isMasterDetail ||
@@ -42,12 +47,8 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 					style={styles.headerBackButton}
 				/>
 			)}
-			<headerTitle headerTitle={headerTitle ?? title} />
-			{headerRight ? (
-				headerRight({ canGoBack: false })
-			) : (
-				<View style={{ width: isAndroid ? undefined : 32.5 * fontScale, height: 32.5 * fontScale }} />
-			)}
+			<HeaderTitle headerTitle={headerTitle ?? title} />
+			{headerRight ? headerRight({ canGoBack: false }) : <View style={{ width: isAndroid ? undefined : size, height: size }} />}
 		</HeaderContainer>
 	);
 };

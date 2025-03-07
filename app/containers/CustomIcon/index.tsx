@@ -1,5 +1,5 @@
 import React from 'react';
-import { PixelRatio } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
 
@@ -20,7 +20,7 @@ export interface ICustomIcon extends IconProps {
 
 const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
-	const fontScale = PixelRatio.getFontScale();
+	const { fontScale } = useWindowDimensions();
 
 	return (
 		<IconSet

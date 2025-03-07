@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-	PixelRatio,
 	StyleSheet,
 	Text,
 	TextInputProps,
@@ -63,17 +62,12 @@ const Header = React.memo(
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
-		const { width: windowWidth } = useWindowDimensions();
-		const fontScale = PixelRatio.getFontScale();
+		const { width: windowWidth, fontScale } = useWindowDimensions();
 
 		if (showSearchHeader) {
-			return (
-				<SearchHeader
-					onSearchChangeText={onSearchChangeText}
-					testID='rooms-list-view-search-input'
-					style={{ height: 36.9 * fontScale }}
-				/>
-			);
+			// This value is necessary to keep the alignment in MasterDetail.
+			const height = 37 * fontScale;
+			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' style={{ height }} />;
 		}
 		let subtitle;
 		if (supportedVersionsStatus === 'expired') {
