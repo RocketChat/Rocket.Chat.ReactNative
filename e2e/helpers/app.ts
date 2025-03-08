@@ -48,7 +48,7 @@ async function navigateToLogin(server?: string) {
 async function navigateToRegister(server?: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
-	await waitFor(element(by.id('register-view')))
+	await waitFor(element(by.id('register-view-name')))
 		.toExist()
 		.withTimeout(2000);
 }
