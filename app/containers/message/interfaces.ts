@@ -92,6 +92,7 @@ export interface IMessageTouchable {
 	role?: string;
 	drid?: string;
 	isBeingEdited?: boolean;
+	onThreadPress?: (tmid: string, id: string) => void;
 }
 
 export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {

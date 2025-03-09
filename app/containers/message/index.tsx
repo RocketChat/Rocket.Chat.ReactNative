@@ -508,6 +508,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
+					onThreadPress={this.onThreadPress}
 				/>
 			</MessageContext.Provider>
 		);
