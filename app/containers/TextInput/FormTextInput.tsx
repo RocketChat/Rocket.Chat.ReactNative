@@ -1,6 +1,6 @@
-import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
+import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 
 import i18n from '../../i18n';
@@ -9,6 +9,7 @@ import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TextInput } from './TextInput';
+import { isIOS } from '../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	error: {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		paddingVertical: 10,
 		borderWidth: 1,
-		borderRadius: 2
+		borderRadius: 4
 	},
 	inputIconLeft: {
 		paddingLeft: 45
@@ -97,10 +98,13 @@ export const FormTextInput = ({
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
+
+	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
+	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value}` : '';
 	return (
 		<View
 			accessible
-			accessibilityLabel={`${label} - ${required ? i18n.t('Required') : ''}`}
+			accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
 			style={[styles.inputContainer, containerStyle]}>
 			{label ? (
 				<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
@@ -109,7 +113,7 @@ export const FormTextInput = ({
 				</Text>
 			) : null}
 
-			<View style={styles.wrap}>
+			<View accessible style={styles.wrap}>
 				<Input
 					style={[
 						styles.input,
@@ -117,7 +121,7 @@ export const FormTextInput = ({
 						(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
 						{
 							backgroundColor: colors.surfaceRoom,
-							borderColor: colors.strokeLight,
+							borderColor: colors.strokeMedium,
 							color: colors.fontTitlesLabels
 						},
 						error?.error && {
@@ -167,7 +171,11 @@ export const FormTextInput = ({
 				) : null}
 
 				{secureTextEntry ? (
-					<Touchable onPress={() => setShowPassword(!showPassword)} style={[styles.iconContainer, styles.iconRight]}>
+					<Touchable
+						style={[styles.iconContainer, styles.iconRight]}
+						accessible
+						accessibilityLabel={showPassword ? i18n.t('Hide_Password') : i18n.t('Show_Password')}
+						onPress={() => setShowPassword(!showPassword)}>
 						<CustomIcon
 							name={showPassword ? 'unread-on-top' : 'unread-on-top-disabled'}
 							testID={testID ? `${testID}-icon-password` : undefined}

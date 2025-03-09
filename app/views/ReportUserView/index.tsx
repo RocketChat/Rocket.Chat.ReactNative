@@ -78,11 +78,11 @@ const ReportUserView = () => {
 
 	return (
 		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
+			style={{ backgroundColor: colors.surfaceTint }}
 			contentContainerStyle={styles.container}
 			keyboardVerticalOffset={128}>
-			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.strokeExtraDark }]} testID='report-user-view'>
-				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceHover }]}>
+			<SafeAreaView style={[styles.containerView]} testID='report-user-view'>
+				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceTint }]}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
@@ -97,7 +97,6 @@ const ReportUserView = () => {
 					<Button
 						title={I18n.t('Report')}
 						type='primary'
-						backgroundColor={colors.buttonBackgroundDangerDefault}
 						disabled={!isValid}
 						onPress={handleSubmit(submit)}
 						testID='report-user-view-submit'

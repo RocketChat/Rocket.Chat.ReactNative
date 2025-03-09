@@ -1,6 +1,6 @@
-import { MarkdownAST } from '@rocket.chat/message-parser';
+import { Root } from '@rocket.chat/message-parser';
 import { StyleProp, TextStyle } from 'react-native';
-import { ImageStyle } from 'react-native-fast-image';
+import { ImageStyle } from 'expo-image';
 
 import { IUserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -50,7 +50,7 @@ export interface IMessageContent {
 	tmid?: string;
 	isThreadRoom: boolean;
 	msg?: string;
-	md?: MarkdownAST;
+	md?: Root;
 	isEdited: boolean;
 	isEncrypted: boolean;
 	getCustomEmoji: TGetCustomEmoji;

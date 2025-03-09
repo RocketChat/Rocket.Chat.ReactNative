@@ -48,6 +48,7 @@ export const createRandomUser = async (customProps?: Object): Promise<ITestUser>
 			email: user.email,
 			...(customProps || {})
 		});
+		console.log(`Created ${user.username} / ${user.password}`);
 		return user;
 	} catch (error) {
 		console.log(JSON.stringify(error));

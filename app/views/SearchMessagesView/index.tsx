@@ -14,7 +14,7 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
-import { themes } from '../../lib/constants';
+import { textInputDebounceTime, themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -202,7 +202,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 	searchDebounced = debounce(async (searchText: string) => {
 		await this.getMessages(searchText, true);
-	}, 1000);
+	}, textInputDebounceTime);
 
 	getCustomEmoji: TGetCustomEmoji = name => {
 		const { customEmojis } = this.props;
@@ -337,7 +337,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 						placeholder={I18n.t('Search_Messages')}
 						testID='search-message-view-input'
 					/>
-					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} theme={theme} />
+					<Markdown msg={I18n.t('You_can_search_using_RegExp_eg')} />
 					<View style={[styles.divider, { backgroundColor: themes[theme].strokeLight }]} />
 				</View>
 				{this.renderList()}

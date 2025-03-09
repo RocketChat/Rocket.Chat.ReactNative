@@ -224,8 +224,7 @@ const Touchable = ({
 								testID={testID}
 								style={{
 									backgroundColor: isFocused ? colors.surfaceTint : colors.surfaceRoom
-								}}
-							>
+								}}>
 								{children}
 							</Touch>
 						</Animated.View>

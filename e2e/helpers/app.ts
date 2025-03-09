@@ -53,6 +53,21 @@ async function navigateToRegister(server?: string) {
 		.withTimeout(2000);
 }
 
+async function signup(): Promise<string> {
+	const randomUser = data.randomUser();
+	await element(by.id('register-view-name')).replaceText(randomUser.name);
+	await element(by.id('register-view-name')).tapReturnKey();
+	await element(by.id('register-view-username')).replaceText(randomUser.username);
+	await element(by.id('register-view-username')).tapReturnKey();
+	await element(by.id('register-view-email')).replaceText(randomUser.email);
+	await element(by.id('register-view-email')).tapReturnKey();
+	await element(by.id('register-view-password')).replaceText(randomUser.password);
+	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view-submit')).tap();
+	await expectValidRegisterOrRetry(device.getPlatform());
+	return randomUser.username;
+}
+
 async function login(username: string, password: string) {
 	await waitFor(element(by.id('login-view')))
 		.toExist()
@@ -132,20 +147,28 @@ async function searchRoom(
 	nativeElementAction: keyof Pick<Detox.NativeElementActions, 'typeText' | 'replaceText'> = 'typeText',
 	roomTestID?: string
 ) {
+	const testID = roomTestID || `rooms-list-view-item-${room}`;
 	await waitFor(element(by.id('rooms-list-view')))
 		.toExist()
 		.withTimeout(30000);
-	await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
-	if (nativeElementAction === 'replaceText') {
-		// trigger the input's onChangeText
-		await element(by.id('rooms-list-view-search-input')).typeText(' ');
+
+	try {
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(2000);
+		await expect(element(by.id(testID))).toBeVisible();
+	} catch {
+		await tapAndWaitFor(element(by.id('rooms-list-view-search')), element(by.id('rooms-list-view-search-input')), 5000);
+		if (nativeElementAction === 'replaceText') {
+			// trigger the input's onChangeText
+			await element(by.id('rooms-list-view-search-input')).typeText(' ');
+		}
+		await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
+		await sleep(500);
+		await waitFor(element(by.id(testID)))
+			.toBeVisible()
+			.withTimeout(60000);
 	}
-	await element(by.id('rooms-list-view-search-input'))[nativeElementAction](room);
-	await sleep(500);
-	await sleep(500);
-	await waitFor(element(by.id(roomTestID || `rooms-list-view-item-${room}`)))
-		.toBeVisible()
-		.withTimeout(60000);
 }
 
 async function navigateToRoom(room: string) {
@@ -291,5 +314,6 @@ export {
 	platformTypes,
 	expectValidRegisterOrRetry,
 	jumpToQuotedMessage,
-	navigateToRecentRoom
+	navigateToRecentRoom,
+	signup
 };
