@@ -4,7 +4,9 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { HeaderBackButton } from '@react-navigation/elements';
+import type { ImagePickerOptions } from 'expo-image-picker';
 
+import { textInputDebounceTime } from '../../lib/constants';
 import KeyboardView from '../../containers/KeyboardView';
 import sharedStyles from '../Styles';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -25,7 +27,9 @@ import { IAvatar } from '../../definitions';
 import AvatarSuggestion from './AvatarSuggestion';
 import log from '../../lib/methods/helpers/log';
 import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitServices';
-import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
+import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
+import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 import { setUser } from '../../actions/login';
@@ -131,7 +135,7 @@ const ChangeAvatarView = () => {
 		}
 
 		setRawImageUrl(value);
-	}, 500);
+	}, textInputDebounceTime);
 
 	const fetchImageFromURL = async () => {
 		const result = await isImageURL(rawImageUrl);
@@ -149,7 +153,7 @@ const ChangeAvatarView = () => {
 			if (context === 'room' && room?.rid) {
 				// Change Rooms Avatar
 				await changeRoomsAvatar(room.rid, state?.data);
-			} else if (state?.url) {
+			} else if (state?.url || state?.data) {
 				// Change User's Avatar
 				await changeUserAvatar(state);
 				dispatchRedux(setUser({ avatarETag: Date.now().toString() }));
@@ -169,23 +173,20 @@ const ChangeAvatarView = () => {
 	};
 
 	const pickImage = async (isCam = false) => {
-		const options = {
-			cropping: true,
-			compressImageQuality: 0.8,
-			freeStyleCropEnabled: true,
-			cropperAvoidEmptySpaceAroundImage: false,
-			cropperChooseText: I18n.t('Choose'),
-			cropperCancelText: I18n.t('Cancel'),
-			includeBase64: true
-		};
 		try {
-			const response: Image =
-				isCam === true
-					? await ImagePicker.openCamera({ ...options, useFrontCamera: true })
-					: await ImagePicker.openPicker(options);
+			const options: ImagePickerOptions = {
+				exif: true,
+				base64: true
+			};
+			await getPermissions(isCam ? 'camera' : 'library');
+			const response = isCam ? await ImagePicker.launchCameraAsync(options) : await ImagePicker.launchImageLibraryAsync(options);
+			if (response.canceled) {
+				return;
+			}
+			const [media] = mapMediaResult(response.assets);
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
-				payload: { url: response.path, data: `data:image/jpeg;base64,${response.data}`, service: 'upload' }
+				payload: { url: media.path, data: `data:image/jpeg;base64,${media.base64}`, service: 'upload' }
 			});
 		} catch (error: any) {
 			if (error?.code !== 'E_PICKER_CANCELLED') {
@@ -278,7 +279,7 @@ const ChangeAvatarView = () => {
 							type='secondary'
 							disabled={saving}
 							backgroundColor={colors.buttonBackgroundSecondaryDefault}
-							onPress={pickImage}
+							onPress={() => pickImage()}
 							testID='change-avatar-view-upload-image'
 							style={styles.containerInput}
 						/>

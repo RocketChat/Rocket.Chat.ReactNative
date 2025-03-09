@@ -96,13 +96,15 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flexDirection: 'column',
-		borderRadius: 4
+		borderRadius: 4,
+		marginTop: 4
 	},
 	image: {
 		width: '100%',
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		marginTop: 4
 	},
 	text: {
 		fontSize: 16,
