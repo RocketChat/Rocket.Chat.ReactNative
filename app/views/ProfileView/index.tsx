@@ -451,6 +451,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							inputRef={e => (this.name = e)}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
+							autoComplete='name'
 							value={name}
 							onChangeText={(value: string) => this.setState({ name: value })}
 							onSubmitEditing={() => {
@@ -464,6 +465,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							inputRef={e => (this.username = e)}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
+							autoComplete='email'
 							value={username}
 							onChangeText={value => this.setState({ username: value })}
 							onSubmitEditing={() => {
@@ -518,6 +520,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 							inputRef={e => (this.newPassword = e)}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
+							autoComplete='password-new'
 							value={newPassword || undefined}
 							onChangeText={value => this.setState({ newPassword: value })}
 							onSubmitEditing={() => {
