@@ -16,18 +16,18 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 		const { colors } = useTheme();
 
 		return (
-			// container for accessibility
-			<View accessible={accessible} accessibilityLabel={accessibilityLabel} accessibilityRole='button'>
-				<RectButton
-					ref={ref}
-					onPress={onPress}
-					activeOpacity={1}
-					underlayColor={underlayColor || colors.surfaceNeutral}
-					rippleColor={colors.surfaceNeutral}
-					{...props}>
+			<RectButton
+				ref={ref}
+				onPress={onPress}
+				activeOpacity={1}
+				underlayColor={underlayColor || colors.surfaceNeutral}
+				rippleColor={colors.surfaceNeutral}
+				{...props}
+				style={{}}>
+				<View accessible={accessible} accessibilityLabel={accessibilityLabel} accessibilityRole='button' style={props.style}>
 					{children}
-				</RectButton>
-			</View>
+				</View>
+			</RectButton>
 		);
 	}
 );
