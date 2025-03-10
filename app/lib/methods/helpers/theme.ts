@@ -47,14 +47,14 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = (themePreferences: IThemePreference) => {
+export const setNativeTheme = async (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
 		try {
-			changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
 			StatusBar.setBackgroundColor(themes[theme].surfaceNeutral);
 			StatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
+			await changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
 		} catch (error) {
 			// Do nothing
 		}

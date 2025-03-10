@@ -373,7 +373,7 @@ class Encryption {
 			// Find all rooms that can have a lastMessage encrypted
 			// If we select only encrypted rooms we can miss some room that changed their encrypted status
 			const subsEncrypted = await subCollection.query(Q.where('e2e_key_id', Q.notEq(null)), Q.where('encrypted', true)).fetch();
-			await Promise.all(
+			const preparedSubscriptions: (Model | null)[] = await Promise.all(
 				subsEncrypted.map(async (sub: TSubscriptionModel) => {
 					const { rid, lastMessage } = sub;
 					const newSub = await this.decryptSubscription({ rid, lastMessage });
@@ -390,7 +390,7 @@ class Encryption {
 			);
 
 			await db.write(async () => {
-				await db.batch(subsEncrypted);
+				await db.batch(preparedSubscriptions.filter((record): record is Model => record !== null));
 			});
 		} catch (e) {
 			log(e);
