@@ -172,7 +172,6 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 	return (
 		<Touchable
-			key={props.id}
 			onLongPress={onLongPress}
 			onPress={onPress}
 			rid={props.rid}
