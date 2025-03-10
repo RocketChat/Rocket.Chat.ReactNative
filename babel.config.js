@@ -23,9 +23,9 @@ module.exports = {
 				'@selectors': './app/selectors',
 				'@stacks': './app/stacks',
 				'@statics': './app/statics',
-				'@views': './app/views',
-			  },
-			},
+				'@views': './app/views'
+			  }
+			}
 		  ]
 	],
 	env: {

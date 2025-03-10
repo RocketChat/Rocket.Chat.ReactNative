@@ -70,7 +70,6 @@
 		"forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
 		"resolveJsonModule": true,
 		"paths": {
-			"@/*": ["*"],
 			"@actions/*": ["actions/*"],
 			"@containers/*": ["containers/*"],
 			"@definitions/*": ["definitions/*"],
