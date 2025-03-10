@@ -62,8 +62,12 @@ async function signup(): Promise<string> {
 	await element(by.id('register-view-email')).replaceText(randomUser.email);
 	await element(by.id('register-view-email')).tapReturnKey();
 	await element(by.id('register-view-password')).replaceText(randomUser.password);
+	await element(by.id('register-view-password')).tapReturnKey();
+	await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
 	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view')).swipe('up', 'fast');
 	await element(by.id('register-view-submit')).tap();
+
 	await expectValidRegisterOrRetry(device.getPlatform());
 	return randomUser.username;
 }
