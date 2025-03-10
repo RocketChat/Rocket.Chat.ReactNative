@@ -1,8 +1,8 @@
 module.exports = {
 	settings: {
 		'import/resolver': {
-			node: {
-				extensions: ['.ts', '.tsx', '.js', '.ios.js', '.android.js', '.native.js', '.ios.tsx', '.android.tsx']
+			typescript: {
+				project: 'tsconfig.json'
 			}
 		}
 	},
@@ -17,7 +17,7 @@ module.exports = {
 			legacyDecorators: true
 		}
 	},
-	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'react-hooks', 'jest'],
+	plugins: ['react', 'jsx-a11y', 'import', 'react-native', '@babel', 'react-hooks', 'jest', 'no-relative-import-paths'],
 	env: {
 		browser: true,
 		commonjs: true,
@@ -151,7 +151,11 @@ module.exports = {
 		'no-multiple-empty-lines': [0],
 		'no-sequences': 'off',
 		'react-hooks/rules-of-hooks': 'error',
-		'react-hooks/exhaustive-deps': 'warn'
+		'react-hooks/exhaustive-deps': 'warn',
+		"no-relative-import-paths/no-relative-import-paths": [
+			"warn",
+			{ "allowSameFolder": true, "rootDir": "app", "prefix": "@" }
+		]
 	},
 	globals: {
 		__DEV__: true

@@ -6,20 +6,20 @@ import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
 import AppContainer from './AppContainer';
-import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
-import { deepLinkingOpen } from './actions/deepLinking';
-import { ActionSheetProvider } from './containers/ActionSheet';
-import InAppNotification from './containers/InAppNotification';
-import Loading from './containers/Loading';
-import Toast from './containers/Toast';
-import TwoFactor from './containers/TwoFactor';
-import { IThemePreference } from './definitions/ITheme';
-import { DimensionsContext } from './dimensions';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
-import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
-import { debounce, isTablet } from './lib/methods/helpers';
-import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
-import parseQuery from './lib/methods/helpers/parseQuery';
+import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from '@actions/app';
+import { deepLinkingOpen } from '@actions/deepLinking';
+import { ActionSheetProvider } from '@containers/ActionSheet';
+import InAppNotification from '@containers/InAppNotification';
+import Loading from '@containers/Loading';
+import Toast from '@containers/Toast';
+import TwoFactor from '@containers/TwoFactor';
+import { IThemePreference } from '@definitions/ITheme';
+import { DimensionsContext } from '@/dimensions';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from '@lib/constants';
+import { getAllowAnalyticsEvents, getAllowCrashReport } from '@lib/methods';
+import { debounce, isTablet } from '@lib/methods/helpers';
+import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from '@lib/methods/helpers/log';
+import parseQuery from '@lib/methods/helpers/parseQuery';
 import {
 	getTheme,
 	initialTheme,

@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { TCreateChannelResult } from '../reducers/createChannel';
+import { TCreateChannelResult } from '@reducers/createChannel';
 import { CREATE_CHANNEL } from './actionsTypes';
 
 interface ICreateChannelRequest extends Action {

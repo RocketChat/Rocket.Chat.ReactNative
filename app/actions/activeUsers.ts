@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
-import { IActiveUsers } from '../reducers/activeUsers';
-import { ACTIVE_USERS } from './actionsTypes';
+import { IActiveUsers } from '@reducers/activeUsers';
+import { ACTIVE_USERS } from '@actions/actionsTypes';
 
 interface ISetActiveUsers extends Action {
 	activeUsers: IActiveUsers;

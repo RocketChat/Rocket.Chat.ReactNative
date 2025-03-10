@@ -3,12 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
 
-import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
-import Navigation from './lib/navigation/appNavigation';
-import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
-import { RootEnum } from './definitions';
+import { SetUsernameStackParamList, StackParamList } from '@definitions/navigationTypes';
+import Navigation from '@lib/navigation/appNavigation';
+import { defaultHeader, getActiveRouteName, navigationTheme } from '@lib/methods/helpers/navigation';
+import { RootEnum } from '@/definitions';
 // Stacks
-import AuthLoadingView from './views/AuthLoadingView';
+import AuthLoadingView from '@views/AuthLoadingView';
 // SetUsername Stack
 import SetUsernameView from './views/SetUsernameView';
 import OutsideStack from './stacks/OutsideStack';

@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 
-import { TSettingsState, TSupportedSettings, TSettingsValues } from '../reducers/settings';
+import { TSettingsState, TSupportedSettings, TSettingsValues } from '@reducers/settings';
 import { SETTINGS } from './actionsTypes';
 
 interface IAddSettings extends Action {

@@ -68,7 +68,21 @@
 		/* Advanced Options */
 		"skipLibCheck": true /* Skip type checking of declaration files. */,
 		"forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"paths": {
+			"@actions/*": ["actions/*"],
+			"@containers/*": ["containers/*"],
+			"@definitions/*": ["definitions/*"],
+			"@ee/*": ["ee/*"],
+			"@i18n/*": ["i18n/*"],
+			"@lib/*": ["lib/*"],
+			"@reducers/*": ["reducers/*"],
+			"@sagas/*": ["sagas/*"],
+			"@selectors/*": ["selectors/*"],
+			"@stacks/*": ["stacks/*"],
+			"@statics/*": ["statics/*"],
+			"@views/*": ["views/*"]
+		}
 	},
 	"exclude": ["node_modules", "__mocks__"]
 }
