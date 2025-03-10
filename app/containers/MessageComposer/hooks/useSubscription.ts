@@ -4,14 +4,12 @@ import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscrip
 import { ISubscription } from '../../../definitions';
 
 // TODO: Not reactive. Should we work on an official version?
-// Please let me know if you'd like me to remove the above comment?
 
 export const useSubscription = (rid?: string) => {
 	const [subscription, setSubscription] = useState<ISubscription>();
 
 	useEffect(() => {
-		// eslint-disable-next-line no-undef
-		let interval: NodeJS.Timeout;
+		let interval: ReturnType<typeof setTimeout> | null;
 		const loadRoom = async () => {
 			if (!rid) {
 				setSubscription(undefined);
@@ -27,7 +25,11 @@ export const useSubscription = (rid?: string) => {
 		if (rid) {
 			interval = setInterval(loadRoom, 50);
 		}
-		return () => clearInterval(interval);
+		return () => {
+			if (interval !== null) {
+				clearInterval(interval);
+			}
+		};
 	}, [rid]);
 
 	return subscription;
