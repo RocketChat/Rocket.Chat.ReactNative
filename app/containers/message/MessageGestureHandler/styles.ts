@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const WIDTH = 200;
+export const WIDTH = 100;
 
 export default StyleSheet.create({
 	actionsContainer: {

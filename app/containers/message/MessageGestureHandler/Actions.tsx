@@ -20,7 +20,7 @@ export const RightActions = React.memo(({ transX, handleThreadPress }: IRightAct
 			<Animated.View
 				style={[
 					styles.actionRightButtonContainer,
-					{ width: WIDTH * 2, backgroundColor: colors.surfaceDark, left: '100%' },
+					{ width: WIDTH * 2, backgroundColor: colors.badgeBackgroundLevel3, left: '100%' },
 					animatedStyles
 				]}>
 				<View style={styles.actionRightButtonContainer}>

@@ -161,7 +161,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		return `${user} ${hour} ${label}`;
-	}, []);
+	}, [props]);
 
 	if (props.hasError) {
 		return (
@@ -180,7 +180,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			tmid={props.tmid!}
 			id={props.id}
 			styles={{ backgroundColor }}
-			swipeEnabled={(!!props.tlm || !!props.tmid) && !props.isThreadRoom}
+			swipeEnabled={!props.isReadOnly && !props.tmid && !props.isThreadRoom}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}>
 			<View accessible accessibilityLabel={accessibilityLabel}>
 				<Message {...props} />
