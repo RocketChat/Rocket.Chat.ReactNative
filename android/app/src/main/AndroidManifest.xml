@@ -76,11 +76,11 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name="chat.rocket.reactnative.ReplyBroadcast"
+            android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
             android:enabled="true"
             android:exported="true" />
         <receiver
-            android:name="chat.rocket.reactnative.DismissNotification"
+            android:name="chat.rocket.reactnative.notification.DismissNotification"
             android:enabled="true"
             android:exported="true" >
         </receiver>
