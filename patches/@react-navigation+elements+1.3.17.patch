@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
-index 3977e85..eb28e1a 100644
+index 3977e85..6dd3940 100644
 --- a/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
 +++ b/node_modules/@react-navigation/elements/src/Header/HeaderBackButton.tsx
 @@ -5,6 +5,7 @@ import {
@@ -29,6 +29,15 @@ index 3977e85..eb28e1a 100644
            ]}
            source={require('../assets/back-icon.png')}
            fadeDuration={0}
+@@ -111,7 +118,7 @@ export default function HeaderBackButton({
+             labelStyle,
+           ]}
+           numberOfLines={1}
+-          allowFontScaling={!!allowFontScaling}
++          allowFontScaling
+         >
+           {leftLabelText}
+         </Animated.Text>
 @@ -173,13 +180,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
      flexDirection: 'row',
