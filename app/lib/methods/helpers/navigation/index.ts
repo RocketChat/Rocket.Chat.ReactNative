@@ -11,10 +11,6 @@ export const defaultHeader: NativeStackNavigationOptions = {
 	header: CustomHeader
 };
 
-export const defaultOutsideHeader: NativeStackNavigationOptions = {
-	headerBackTitleVisible: false
-};
-
 export const drawerStyle = {
 	width: 320
 };
