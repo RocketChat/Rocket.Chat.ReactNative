@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { View } from 'react-native';
 
-import Touchable from './MessageGestureHandler/Touchable';
+import Touchable from './Toucher';
 import MessageContext from './Context';
 import User from './User';
 import styles from './styles';

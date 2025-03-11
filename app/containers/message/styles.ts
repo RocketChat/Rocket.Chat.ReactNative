@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 import sharedStyles from '../../views/Styles';
 import { isTablet } from '../../lib/methods/helpers';
 
+export const WIDTH = 40;
+
 export default StyleSheet.create({
 	root: {
 		flexDirection: 'row'
@@ -174,5 +176,36 @@ export default StyleSheet.create({
 		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	actionsContainer: {
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: '100%'
+	},
+	actionsRightContainer: {
+		flexDirection: 'row',
+		position: 'absolute',
+		left: 0,
+		right: 0,
+		height: '100%',
+		marginRight: 10
+	},
+	actionRightButtonContainer: {
+		position: 'absolute',
+		top: 0,
+		height: '100%',
+		justifyContent: 'center',
+		alignItems: 'flex-end',
+		marginRight: 10
+	},
+	actionButton: {
+		width: 28,
+		height: 28,
+		backgroundColor: 'rgba(0, 0, 0, 0.15)',
+		borderRadius: 50,
+		alignItems: 'center',
+		justifyContent: 'center',
+		shadowOffset: { width: 5, height: 5 }
 	}
 });
