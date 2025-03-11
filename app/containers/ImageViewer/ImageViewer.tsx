@@ -5,6 +5,7 @@ import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } fr
 import { Image, ImageStyle } from 'expo-image';
 
 import { useTheme } from '../../theme';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;
@@ -109,9 +110,9 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
 	const { colors } = useTheme();
-
+	const { right, left } = useSafeAreaInsets();
 	return (
-		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View style={[styles.flex, { width: width - right - left, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Image
