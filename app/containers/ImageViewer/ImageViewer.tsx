@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Image, ImageStyle } from 'expo-image';
 
 import { useTheme } from '../../theme';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface ImageViewerProps {
 	style?: StyleProp<ImageStyle>;

@@ -31,6 +31,8 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 		route.name === 'ShareView' ||
 		route.name === 'AttachmentView';
 
+	const preventDuplicatedBorderOnMasterDetail = isMasterDetail && route.name === 'RoomView' ? { borderLeftWidth: 0 } : {};
+
 	const handleOnLayout = ({
 		nativeEvent: {
 			layout: { width }
@@ -42,8 +44,20 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 		setRightButtonsWidth(width + 12);
 	};
 
+	const renderHeaderRight = () => {
+		if (headerRight) {
+			return <View onLayout={handleOnLayout}>{headerRight({ canGoBack: false })}</View>;
+		}
+		if (route.name === 'ShareView') {
+			return null;
+		}
+
+		return <View style={{ width: isAndroid ? undefined : size, height: size }} />;
+	};
+
 	return (
 		<HeaderContainer
+			style={preventDuplicatedBorderOnMasterDetail}
 			customRightIcon={!!headerRight}
 			customLeftIcon={!!headerLeft}
 			addExtraNotchPadding={isRoomViewMasterDetail}
@@ -62,11 +76,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 				</View>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />
-			{headerRight ? (
-				<View onLayout={handleOnLayout}>{headerRight({ canGoBack: false })}</View>
-			) : (
-				<View style={{ width: isAndroid ? undefined : size, height: size }} />
-			)}
+			{renderHeaderRight()}
 		</HeaderContainer>
 	);
 };
