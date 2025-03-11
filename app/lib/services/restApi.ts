@@ -746,13 +746,12 @@ export const getMessages = ({
 	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
  
-export const getPinnedMessages = ({ roomId, offset, count }: { roomId: string; offset: number; count: number }) => {
-	return sdk.get(`chat.getPinnedMessages`, {
+export const getPinnedMessages = ({ roomId, offset, count }: { roomId: string; offset: number; count: number }) =>
+	sdk.get('chat.getPinnedMessages', {
 		roomId,
 		offset,
 		count
 	});
-};
 
 export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
