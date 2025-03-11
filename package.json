@@ -62,7 +62,7 @@
 		"dequal": "2.0.3",
 		"ejson": "2.2.3",
 		"expo": "^50.0.14",
-		"expo-apple-authentication": "^6.3.0",
+		"expo-apple-authentication": "6.3.0",
 		"expo-av": "^13.10.5",
 		"expo-camera": "^14.1.1",
 		"expo-document-picker": "11.10.1",
