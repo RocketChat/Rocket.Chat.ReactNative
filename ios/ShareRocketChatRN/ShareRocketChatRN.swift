@@ -211,7 +211,8 @@ class ShareRocketChatRN: UIViewController {
         var responder: UIResponder? = self
         while responder != nil {
             if let application = responder as? UIApplication {
-                return application.perform(#selector(openURL(_:)), with: url) != nil
+                application.open(url, options: [:], completionHandler: nil)
+                return true
             }
             responder = responder?.next
         }
