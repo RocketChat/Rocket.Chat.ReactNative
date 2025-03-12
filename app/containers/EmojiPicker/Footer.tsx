@@ -18,8 +18,7 @@ const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.Re
 					styles.footerButtonsContainer,
 					{ backgroundColor: isIOS && pressed ? colors.buttonBackgroundSecondaryPress : 'transparent' }
 				]}
-				testID='emoji-picker-search'
-			>
+				testID='emoji-picker-search'>
 				<CustomIcon size={24} name='search' />
 			</Pressable>
 
@@ -30,8 +29,7 @@ const Footer = ({ onSearchPressed, onBackspacePressed }: IFooterProps): React.Re
 					styles.footerButtonsContainer,
 					{ backgroundColor: isIOS && pressed ? colors.buttonBackgroundSecondaryPress : 'transparent' }
 				]}
-				testID='emoji-picker-backspace'
-			>
+				testID='emoji-picker-backspace'>
 				<CustomIcon size={24} name='backspace' />
 			</Pressable>
 		</View>
