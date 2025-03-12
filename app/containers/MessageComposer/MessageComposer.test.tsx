@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, fireEvent, render, screen, userEvent } from '@testing-library/react-native';
+import { act, fireEvent, render, renderHook, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
@@ -9,9 +9,11 @@ import { selectServerRequest } from '../../actions/server';
 import { setUser } from '../../actions/login';
 import { mockedStore } from '../../reducers/mockedStore';
 import { IPermissionsState } from '../../reducers/permissions';
-import { IMessage } from '../../definitions';
+import { IMessage, TSubscriptionModel } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
+import * as SubscriptionService from '../../lib/database/services/Subscription';
+import { useSubscription } from './hooks';
 
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
@@ -442,6 +444,111 @@ describe('MessageComposer', () => {
 				await fireEvent.press(screen.getByTestId('message-composer-send-audio'));
 			});
 			expect(screen.toJSON()).toMatchSnapshot();
+		});
+	});
+
+	describe('useSubscription hook', () => {
+		const mockSubscription1 = { _id: 'sub1', rid: 'room1', name: 'room one' } as unknown as TSubscriptionModel;
+		const mockSubscription2 = { _id: 'sub2', rid: 'room2', name: 'room two' } as unknown as TSubscriptionModel;
+
+		test('should return undefined when rid is not provided', () => {
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId');
+
+			const { result } = renderHook(() => useSubscription());
+
+			expect(result.current).toBeUndefined();
+			expect(spy).not.toHaveBeenCalled();
+		});
+
+		test('should fetch subscription when rid is provided', async () => {
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(mockSubscription1);
+
+			const { result } = renderHook(() => useSubscription('room1'));
+
+			await waitFor(() => {
+				expect(result.current).toEqual(mockSubscription1);
+			});
+
+			expect(spy).toHaveBeenCalledWith('room1');
+			spy.mockRestore();
+		});
+
+		test('should set up polling interval when rid is provided', async () => {
+			jest.useFakeTimers();
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(mockSubscription1);
+
+			const { unmount } = renderHook(() => useSubscription('room2'));
+			const initialCallCount = spy.mock.calls.length;
+
+			act(() => {
+				jest.advanceTimersByTime(100);
+			});
+
+			await act(async () => {
+				await Promise.resolve();
+			});
+
+			const finalCallCount = spy.mock.calls.length;
+			expect(finalCallCount).toBeGreaterThan(initialCallCount);
+
+			unmount();
+			jest.useRealTimers();
+			spy.mockRestore();
+		});
+
+		test('should clear interval on unmount', () => {
+			jest.useFakeTimers();
+
+			const spy = jest
+				.spyOn(SubscriptionService, 'getSubscriptionByRoomId')
+				.mockResolvedValue({ _id: 'sub1', rid: 'room3' } as unknown as TSubscriptionModel);
+			const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+
+			const { unmount } = renderHook(() => useSubscription('room3'));
+			unmount();
+
+			expect(clearIntervalSpy).toHaveBeenCalled();
+			clearIntervalSpy.mockRestore();
+			spy.mockRestore();
+			jest.useRealTimers();
+		});
+
+		test('should update subscription when rid changes', async () => {
+			// eslint-disable-next-line require-await
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockImplementation(async rid => {
+				if (rid === 'room1') return mockSubscription1;
+				if (rid === 'room2') return mockSubscription2;
+				return null;
+			});
+
+			const { result, rerender } = renderHook(({ roomId }) => useSubscription(roomId), { initialProps: { roomId: 'room1' } });
+
+			await waitFor(() => {
+				expect(result.current).toEqual(mockSubscription1);
+			});
+
+			rerender({ roomId: 'room2' });
+
+			await waitFor(() => {
+				expect(result.current).toEqual(mockSubscription2);
+			});
+
+			expect(spy).toHaveBeenCalledWith('room1');
+			expect(spy).toHaveBeenCalledWith('room2');
+			spy.mockRestore();
+		});
+
+		test('should handle null result from service', async () => {
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(null);
+
+			const { result } = renderHook(() => useSubscription('non-existent-room'));
+
+			await waitFor(() => {
+				expect(spy).toHaveBeenCalled();
+			});
+
+			expect(result.current).toBeUndefined();
+			spy.mockRestore();
 		});
 	});
 });
