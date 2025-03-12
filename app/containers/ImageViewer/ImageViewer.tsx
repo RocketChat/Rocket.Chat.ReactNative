@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, StyleProp, ViewStyle, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Image, ImageStyle } from 'expo-image';
@@ -110,9 +109,9 @@ export const ImageViewer = ({ uri = '', width, height, ...props }: ImageViewerPr
 	const gesture = Gesture.Simultaneous(pinchGesture, panGesture, doubleTapGesture);
 
 	const { colors } = useTheme();
-	const { right, left } = useSafeAreaInsets();
+
 	return (
-		<View style={[styles.flex, { width: width - right - left, height, backgroundColor: colors.surfaceNeutral }]}>
+		<View style={[styles.flex, { width, height, backgroundColor: colors.surfaceNeutral }]}>
 			<GestureDetector gesture={gesture}>
 				<Animated.View onLayout={onLayout} style={[styles.flex, style]}>
 					<Image
