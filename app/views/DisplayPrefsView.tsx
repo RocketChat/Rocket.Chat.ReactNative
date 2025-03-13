@@ -2,7 +2,6 @@ import React, { useLayoutEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
-import { RadioButton } from 'react-native-ui-lib';
 import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
@@ -11,6 +10,7 @@ import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
+import Radio from '../containers/Radio';
 import { IPreferences } from '../definitions';
 import I18n from '../i18n';
 import { SettingsStackParamList } from '../stacks/types';
@@ -87,9 +87,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
-	const renderRadio = (value: boolean) => (
-		<RadioButton selected={!!value} color={value ? colors.fontHint : colors.fontSecondaryInfo} size={ICON_SIZE} />
-	);
+	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
 
 	return (
 		<SafeAreaView>
@@ -104,6 +102,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						right={() => renderRadio(displayMode === DisplayMode.Expanded)}
 						onPress={displayExpanded}
 						additionalAcessibilityLabel={displayMode === DisplayMode.Expanded}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -113,6 +112,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						right={() => renderRadio(displayMode === DisplayMode.Condensed)}
 						onPress={displayCondensed}
 						additionalAcessibilityLabel={displayMode === DisplayMode.Condensed}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -134,6 +134,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={sortByActivity}
 						right={() => renderRadio(sortBy === SortBy.Activity)}
 						additionalAcessibilityLabel={sortBy === SortBy.Activity}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 					<List.Item
@@ -143,6 +144,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={sortByName}
 						right={() => renderRadio(sortBy === SortBy.Alphabetical)}
 						additionalAcessibilityLabel={sortBy === SortBy.Alphabetical}
+						accessibilityRole='radio'
 					/>
 					<List.Separator />
 				</List.Section>
@@ -156,6 +158,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleUnread}
 						right={() => renderCheckBox(showUnread)}
 						additionalAcessibilityLabel={showUnread}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -165,6 +168,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleGroupByFavorites}
 						right={() => renderCheckBox(showFavorites)}
 						additionalAcessibilityLabel={showFavorites}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 					<List.Item
@@ -174,6 +178,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 						onPress={toggleGroupByType}
 						right={() => renderCheckBox(groupByType)}
 						additionalAcessibilityLabel={groupByType}
+						accessibilityRole='checkbox'
 					/>
 					<List.Separator />
 				</List.Section>

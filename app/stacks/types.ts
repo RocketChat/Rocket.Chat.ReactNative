@@ -157,10 +157,6 @@ export type ChatsStackParamList = {
 	AddExistingChannelView: {
 		teamId: string;
 	};
-	MarkdownTableView: {
-		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
-		tableWidth: number;
-	};
 	ReadReceiptsView: {
 		messageId: string;
 	};
