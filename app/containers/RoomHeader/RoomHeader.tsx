@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { PixelRatio, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';

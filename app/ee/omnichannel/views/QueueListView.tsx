@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, ListRenderItem, PixelRatio, useWindowDimensions } from 'react-native';
+import { FlatList, ListRenderItem, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
@@ -27,15 +27,7 @@ type TNavigation = CompositeNavigationProp<
 >;
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
-const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
-	const { fontScale } = useWindowDimensions();
-	const rowHeight = 75 * fontScale;
-	return {
-		length: rowHeight,
-		offset: rowHeight * index,
-		index
-	};
-};
+
 const keyExtractor = (item: IOmnichannelRoom) => item.rid;
 
 const QueueListView = React.memo(() => {
@@ -43,6 +35,7 @@ const QueueListView = React.memo(() => {
 	const getScrollRef = useRef<FlatList<IOmnichannelRoom>>(null);
 	const { colors } = useTheme();
 	const { width } = useDimensions();
+	const { fontScale } = useWindowDimensions();
 
 	const { username } = useSelector(
 		(state: IApplicationState) => ({
@@ -74,6 +67,15 @@ const QueueListView = React.memo(() => {
 		}
 		navigation.setOptions(options);
 	}, [isMasterDetail, navigation]);
+
+	const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
+		const rowHeight = 75 * fontScale;
+		return {
+			length: rowHeight,
+			offset: rowHeight * index,
+			index
+		};
+	};
 
 	const onPressItem = (item = {} as IOmnichannelRoom) => {
 		logEvent(events.QL_GO_ROOM);
