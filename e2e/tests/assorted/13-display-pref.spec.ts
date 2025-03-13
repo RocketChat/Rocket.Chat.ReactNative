@@ -1,6 +1,6 @@
 import { device, waitFor, element, by, expect } from 'detox';
 
-import { login, navigateToLogin } from '../../helpers/app';
+import { login, navigateToLogin, tapBack } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 
 const goToDisplayPref = async () => {
@@ -13,8 +13,9 @@ const goToDisplayPref = async () => {
 };
 
 const goToRoomList = async () => {
-	await expect(element(by.id('display-view-drawer'))).toBeVisible();
-	await element(by.id('display-view-drawer')).tap();
+	await tapBack();
+	await expect(element(by.id('accessibility-view-drawer'))).toBeVisible();
+	await element(by.id('accessibility-view-drawer')).tap();
 	await expect(element(by.id('sidebar-chats'))).toBeVisible();
 	await element(by.id('sidebar-chats')).tap();
 };
