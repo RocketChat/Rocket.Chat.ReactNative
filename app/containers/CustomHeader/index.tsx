@@ -31,8 +31,6 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 		route.name === 'ShareView' ||
 		route.name === 'AttachmentView';
 
-	const preventDuplicatedBorderOnMasterDetail = isMasterDetail && route.name === 'RoomView' ? { borderLeftWidth: 0 } : {};
-
 	const handleOnLayout = ({
 		nativeEvent: {
 			layout: { width }
@@ -57,7 +55,6 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 
 	return (
 		<HeaderContainer
-			style={preventDuplicatedBorderOnMasterDetail}
 			customRightIcon={!!headerRight}
 			customLeftIcon={!!headerLeft}
 			addExtraNotchPadding={isRoomViewMasterDetail}

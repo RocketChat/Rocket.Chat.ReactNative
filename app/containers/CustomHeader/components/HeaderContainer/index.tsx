@@ -17,7 +17,6 @@ const HeaderContainer = ({
 	customRightIcon,
 	customLeftIcon,
 	onLayout,
-	style,
 	children
 }: IHeaderContainer) => {
 	const insets = useSafeAreaInsets();
@@ -33,21 +32,18 @@ const HeaderContainer = ({
 		<View
 			onLayout={onLayout}
 			children={children}
-			style={[
-				{
-					alignItems: 'center',
-					flexDirection: 'row',
-					paddingBottom,
-					paddingTop: statusBarPadding + paddingTop,
-					paddingRight: paddingRight + insets.right,
-					paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
-					gap: isMasterDetail ? 4 : 12,
-					backgroundColor: colors.surfaceNeutral,
-					borderWidth: StyleSheet.hairlineWidth,
-					borderColor: colors.strokeLight
-				},
-				style
-			]}
+			style={{
+				alignItems: 'center',
+				flexDirection: 'row',
+				paddingBottom,
+				paddingTop: statusBarPadding + paddingTop,
+				paddingRight: paddingRight + insets.right,
+				paddingLeft: insets.left + (customLeftIcon ? 10 : 4),
+				gap: isMasterDetail ? 4 : 12,
+				backgroundColor: colors.surfaceNeutral,
+				borderBottomWidth: StyleSheet.hairlineWidth,
+				borderBottomColor: colors.strokeLight
+			}}
 		/>
 	);
 };
