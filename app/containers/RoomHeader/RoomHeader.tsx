@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { PixelRatio, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { PixelRatio, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -147,10 +147,10 @@ const Header = React.memo(
 		rightButtonsWidth = 0
 	}: IRoomHeader) => {
 		const { colors } = useTheme();
+		const { fontScale } = useWindowDimensions();
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-		const fontScale = PixelRatio.getFontScale();
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {

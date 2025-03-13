@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlatList, ListRenderItem, PixelRatio } from 'react-native';
+import { FlatList, ListRenderItem, PixelRatio, useWindowDimensions } from 'react-native';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import I18n from '../../../i18n';
@@ -28,7 +28,8 @@ type TNavigation = CompositeNavigationProp<
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const getItemLayout = (data: ArrayLike<IOmnichannelRoom> | null | undefined, index: number) => {
-	const rowHeight = 75 * PixelRatio.getFontScale();
+	const { fontScale } = useWindowDimensions();
+	const rowHeight = 75 * fontScale;
 	return {
 		length: rowHeight,
 		offset: rowHeight * index,

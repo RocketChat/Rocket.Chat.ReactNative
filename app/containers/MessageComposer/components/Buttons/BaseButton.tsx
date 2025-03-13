@@ -1,6 +1,6 @@
 import { BorderlessButton } from 'react-native-gesture-handler';
 import React from 'react';
-import { View, StyleSheet, PixelRatio } from 'react-native';
+import { View, StyleSheet, PixelRatio, useWindowDimensions } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { CustomIcon, TIconsName } from '../../../CustomIcon';
@@ -21,7 +21,8 @@ export const hitSlop = {
 };
 
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
-	const size = 24 * PixelRatio.getFontScale();
+	const { fontScale } = useWindowDimensions();
+	const size = 24 * fontScale;
 
 	return (
 		<BorderlessButton
