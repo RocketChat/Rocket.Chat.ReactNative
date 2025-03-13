@@ -43,8 +43,7 @@ export default {
 						onDiscussionPress: () => {},
 						onReactionLongPress: () => {},
 						threadBadgeColor: themes.light.fontInfo
-					}}
-				>
+					}}>
 					<Story />
 				</MessageContext.Provider>
 			</ScrollView>
