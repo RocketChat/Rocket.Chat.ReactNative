@@ -18,7 +18,7 @@ import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
-import { APP_STORE_LINK, FDROID_MARKET_LINK, isFDroidBuild, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
+import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
 import database from '../../lib/database';
 import { useAppSelector } from '../../lib/hooks';
 import { clearCache } from '../../lib/methods';
@@ -136,9 +136,6 @@ const SettingsView = (): React.ReactElement => {
 		let message;
 		if (isAndroid) {
 			message = PLAY_MARKET_LINK;
-			if (isFDroidBuild) {
-				message = FDROID_MARKET_LINK;
-			}
 		} else {
 			message = APP_STORE_LINK;
 		}
@@ -268,18 +265,14 @@ const SettingsView = (): React.ReactElement => {
 						right={() => <NewWindowIcon />}
 					/>
 					<List.Separator />
-					{!isFDroidBuild ? (
-						<>
-							<List.Item
-								title='Review_this_app'
-								accessibilityRole='link'
-								onPress={onReviewPress}
-								testID='settings-view-review-app'
-								left={() => <List.Icon name='star' />}
-								right={() => <NewWindowIcon />}
-							/>
-						</>
-					) : null}
+					<List.Item
+						title='Review_this_app'
+						accessibilityRole='link'
+						onPress={onReviewPress}
+						testID='settings-view-review-app'
+						left={() => <List.Icon name='star' />}
+						right={() => <NewWindowIcon />}
+					/>
 					<List.Separator />
 					<List.Item
 						title='License'
