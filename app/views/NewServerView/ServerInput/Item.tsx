@@ -9,7 +9,7 @@ import Touch from '../../../containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {
-		height: 56,
+		paddingVertical: 8,
 		paddingHorizontal: 15,
 		flex: 1,
 		flexDirection: 'row',

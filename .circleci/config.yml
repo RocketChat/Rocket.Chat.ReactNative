@@ -182,13 +182,13 @@ commands:
           name: Build App
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              ./gradlew bundleOfficialPlayRelease
+              ./gradlew bundleOfficialRelease
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              ./gradlew bundleExperimentalPlayRelease
+              ./gradlew bundleExperimentalRelease
             fi
             if [[ ! $GOOGLE_SERVICES_ANDROID ]]; then
-              ./gradlew assembleExperimentalPlayDebug
+              ./gradlew assembleExperimentalDebug
             fi
           working_directory: android
 
@@ -196,12 +196,12 @@ commands:
           name: Upload sourcemaps/NDK symbols to Bugsnag
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              yarn bugsnag:upload-android --variant officialPlayRelease
-              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialPlayRelease/app-official-play-release.aab
+              yarn bugsnag:upload-android --variant officialRelease
+              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              yarn bugsnag:upload-android --variant experimentalPlayRelease
-              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalPlayRelease/app-experimental-play-release.aab
+              yarn bugsnag:upload-android --variant experimentalRelease
+              yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
             fi
 
       - store_artifacts:
@@ -501,9 +501,9 @@ jobs:
             yarn e2e:android-build
       - save_cache: *save-gradle-cache
       - store_artifacts:
-          path: android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk
+          path: android/app/build/outputs/apk/experimental/release/app-experimental-release.apk
       - store_artifacts:
-          path: android/app/build/outputs/apk/androidTest/experimentalPlay/release/app-experimental-play-release-androidTest.apk
+          path: android/app/build/outputs/apk/androidTest/experimental/release/app-experimental-release-androidTest.apk
       - persist_to_workspace:
           root: /home/circleci/repo
           paths:
