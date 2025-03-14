@@ -31,7 +31,9 @@ const styles = StyleSheet.create({
 		marginRight: 4
 	},
 	name: {
-		...sharedStyles.textSemibold
+		fontSize: 16,
+		...sharedStyles.textSemibold,
+		flex: 1
 	}
 });
 

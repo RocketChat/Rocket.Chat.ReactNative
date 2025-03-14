@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
-import { Root, parse } from '@rocket.chat/message-parser';
+import { parse } from '@rocket.chat/message-parser';
+import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
 
 import { IUserMention, IUserChannel, TOnLinkPress } from './interfaces';
@@ -16,6 +17,7 @@ import Quote from './components/Quote';
 import Paragraph from './components/Paragraph';
 import { Code } from './components/code';
 import Heading from './components/Heading';
+import log from '../../lib/methods/helpers/log';
 
 export { default as MarkdownPreview } from './components/Preview';
 
@@ -51,9 +53,15 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	onLinkPress,
 	isTranslated
 }: IMarkdownProps) => {
-	if (!msg || isTranslated) return null;
+	if (!msg) return null;
 
-	const tokens = md ?? parse(msg);
+	let tokens;
+	try {
+		tokens = !isTranslated && md ? md : parse(typeof msg === 'string' ? msg : String(msg || ''));
+	} catch (e) {
+		log(e);
+		return null;
+	}
 
 	if (isEmpty(tokens)) return null;
 

@@ -155,13 +155,12 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 		}
 
 		return !(
-			user.name === name &&
-			user.username === username &&
+			(!name?.trim() || user.name === name) &&
+			(!username?.trim() || user.username === username) &&
+			(!newPassword?.trim() || !newPassword) &&
+			(!email || !email?.trim() || (user.emails && user.emails[0].address === email)) &&
 			user.bio === bio &&
 			user.nickname === nickname &&
-			!newPassword &&
-			user.emails &&
-			user.emails[0].address === email &&
 			!customFieldsChanged
 		);
 	};
