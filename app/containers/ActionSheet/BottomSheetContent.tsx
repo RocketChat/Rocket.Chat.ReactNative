@@ -1,4 +1,4 @@
-import { Text, ViewProps } from 'react-native';
+import { Text, useWindowDimensions, ViewProps } from 'react-native';
 import React from 'react';
 import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,12 +22,14 @@ interface IBottomSheetContentProps {
 const BottomSheetContent = React.memo(({ options, hasCancel, hide, children, onLayout }: IBottomSheetContentProps) => {
 	const { colors } = useTheme();
 	const { bottom } = useSafeAreaInsets();
+	const { fontScale } = useWindowDimensions();
+	const height = 48 * fontScale;
 
 	const renderFooter = () =>
 		hasCancel ? (
 			<Touch
 				onPress={hide}
-				style={[styles.button, { backgroundColor: colors.surfaceHover }]}
+				style={[styles.button, { backgroundColor: colors.surfaceHover, height }]}
 				accessibilityLabel={I18n.t('Cancel')}>
 				<Text style={[styles.text, { color: colors.fontDefault }]}>{I18n.t('Cancel')}</Text>
 			</Touch>

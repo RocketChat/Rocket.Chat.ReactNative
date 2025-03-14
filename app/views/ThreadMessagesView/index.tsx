@@ -124,7 +124,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: I18n.t('Threads'),
 			headerRight: () => (
 				<HeaderButton.Container>

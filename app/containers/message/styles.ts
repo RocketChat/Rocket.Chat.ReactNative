@@ -49,7 +49,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 4,
 		borderWidth: 1,
-		height: 28,
 		minWidth: 46.3
 	},
 	reactionCount: {
