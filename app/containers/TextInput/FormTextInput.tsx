@@ -32,10 +32,9 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		...sharedStyles.textRegular,
-		height: 48,
 		fontSize: 16,
 		paddingHorizontal: 16,
-		paddingVertical: 10,
+		paddingVertical: 14,
 		borderWidth: 1,
 		borderRadius: 4
 	},
