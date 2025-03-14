@@ -7566,7 +7566,7 @@ expect@^29.0.0, expect@^29.7.0:
     jest-message-util "^29.7.0"
     jest-util "^29.7.0"
 
-expo-apple-authentication@^6.3.0:
+expo-apple-authentication@6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/expo-apple-authentication/-/expo-apple-authentication-6.3.0.tgz#0e591efbb70e97f87c1fcadfb8ca97a1d78bf47b"
   integrity sha512-eYoRMlh7qKkWdbNe5TV5n0/1mLMRDFDxt+uetyu0XMdn70vZSTaPr5yewyGzoFHRx5t4QCEj8wTobcjoqH5PGw==

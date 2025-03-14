@@ -15,7 +15,7 @@ import Toast from './containers/Toast';
 import TwoFactor from './containers/TwoFactor';
 import { IThemePreference } from './definitions/ITheme';
 import { DimensionsContext } from './dimensions';
-import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, isFDroidBuild, themes } from './lib/constants';
+import { MIN_WIDTH_MASTER_DETAIL_LAYOUT, colors, themes } from './lib/constants';
 import { getAllowAnalyticsEvents, getAllowCrashReport } from './lib/methods';
 import { debounce, isTablet } from './lib/methods/helpers';
 import { toggleAnalyticsEventsReport, toggleCrashErrorsReport } from './lib/methods/helpers/log';
@@ -86,9 +86,7 @@ export default class Root extends React.Component<{}, IState> {
 	constructor(props: any) {
 		super(props);
 		this.init();
-		if (!isFDroidBuild) {
-			this.initCrashReport();
-		}
+		this.initCrashReport();
 		const { width, height, scale, fontScale } = Dimensions.get('window');
 		const theme = initialTheme();
 		this.state = {
