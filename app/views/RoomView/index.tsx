@@ -1375,6 +1375,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isBeingEdited={isBeingEdited}
 					dateSeparator={dateSeparator}
 					showUnreadSeparator={showUnreadSeparator}
+					isReadOnly={this.state.readOnly}
 				/>
 			);
 		}
