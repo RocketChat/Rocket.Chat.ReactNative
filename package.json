@@ -144,7 +144,7 @@
 		"url-parse": "1.5.10",
 		"use-debounce": "9.0.4",
 		"use-deep-compare-effect": "1.6.1",
-		"xregexp": "5.0.2",
+		"xregexp": "5.1.2",
 		"yup": "0.32.11"
 	},
 	"resolutions": {
