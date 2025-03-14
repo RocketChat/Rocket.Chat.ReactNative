@@ -21,3 +21,206 @@ index 071907c..9f8cc5e 100644
      // We don't use the `GlideUrl` directly but we want to replace the default okhttp loader anyway
      // to make sure that the app will use only one client.
      registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(client))
+diff --git a/node_modules/expo-image/ios/AnimatedImage.swift b/node_modules/expo-image/ios/AnimatedImage.swift
+new file mode 100644
+index 0000000..34f8faf
+--- /dev/null
++++ b/node_modules/expo-image/ios/AnimatedImage.swift
+@@ -0,0 +1,37 @@
++// Copyright 2024-present 650 Industries. All rights reserved.
++
++import SDWebImage
++
++/**
++ Custom `SDAnimatedImage` that fixes issues with `images` and `duration` not being available.
++ */
++final class AnimatedImage: SDAnimatedImage {
++  var frames: [SDImageFrame]?
++
++  // MARK: - UIImage
++
++  override var images: [UIImage]? {
++    preloadAllFrames()
++    return frames?.map({ $0.image })
++  }
++
++  override var duration: TimeInterval {
++    preloadAllFrames()
++    return frames?.reduce(0, { $0 + $1.duration }) ?? 0.0
++  }
++
++  // MARK: - SDAnimatedImage
++
++  override func preloadAllFrames() {
++    if frames != nil {
++      return
++    }
++    frames = [UInt](0..<animatedImageFrameCount).compactMap { index in
++      guard let image = animatedImageFrame(at: index) else {
++        return nil
++      }
++      let duration = animatedImageDuration(at: index)
++      return SDImageFrame(image: image, duration: duration)
++    }
++  }
++}
+diff --git a/node_modules/expo-image/ios/ImageUtils.swift b/node_modules/expo-image/ios/ImageUtils.swift
+index d6c9e52..90194e3 100644
+--- a/node_modules/expo-image/ios/ImageUtils.swift
++++ b/node_modules/expo-image/ios/ImageUtils.swift
+@@ -4,16 +4,12 @@ import SDWebImage
+ import ExpoModulesCore
+ 
+ /**
+- Checks if the image is animated and returns an SDAnimatedImage if it does. Otherwise returns the UIImage.
++ An exception to throw when it its not possible to generate a blurhash for a given URL.
+  */
+-func createAnimatedIfNeeded(image: UIImage?, data: Data?) -> UIImage? {
+-  let isAnimated = image?.sd_isAnimated ?? false
+-
+-  if isAnimated, let data = data {
+-    return SDAnimatedImage(data: data)
++public final class BlurhashGenerationException: Exception {
++  override public var reason: String {
++    "Unable to generate blurhash, make sure the image exists at the given URL"
+   }
+-
+-  return image
+ }
+ 
+ func cacheTypeToString(_ cacheType: SDImageCacheType) -> String {
+@@ -107,18 +103,21 @@ func shouldDownscale(image: UIImage, toSize size: CGSize, scale: Double) -> Bool
+  Resizes the animated image to fit in the given size and scale.
+  */
+ func resize(animatedImage image: UIImage, toSize size: CGSize, scale: Double) async -> UIImage {
+-  // For animated images, the `images` member is non-nil and represents an array of animation frames.
+-  if let images = image.images {
+-    // Resize each animation frame separately.
+-    let resizedImages = await concurrentMap(images) { image in
+-      return resize(image: image, toSize: size, scale: scale)
+-    }
++  // If there are no image frames, only resize the main image.
++  guard let images = await image.images else {
++    return resize(image: image, toSize: size, scale: scale)
++  }
+ 
+-    // `animatedImage(with:duration:)` can return `nil`, probably when scales are not the same
+-    // so it should never happen in our case, but let's handle it gracefully.
+-    if let animatedImage = UIImage.animatedImage(with: resizedImages, duration: image.duration) {
+-      return animatedImage
+-    }
++  // Resize all animated image frames.
++  let resizedImages = await concurrentMap(images) { image in
++    return resize(image: image, toSize: size, scale: scale)
++  }
++
++  // Create the new animated image with the resized frames.
++  // `animatedImage(with:duration:)` can return `nil`, probably when scales are not the same
++  // so it should never happen in our case, but let's make sure to handle it gracefully.
++  if let newAnimatedImage = await UIImage.animatedImage(with: resizedImages, duration: image.duration) {
++    return newAnimatedImage
+   }
+   return resize(image: image, toSize: size, scale: scale)
+ }
+diff --git a/node_modules/expo-image/ios/ImageView.swift b/node_modules/expo-image/ios/ImageView.swift
+index 245d5c5..9211d92 100644
+--- a/node_modules/expo-image/ios/ImageView.swift
++++ b/node_modules/expo-image/ios/ImageView.swift
+@@ -129,6 +129,10 @@ public final class ImageView: ExpoView {
+     context[.cacheKeyFilter] = createCacheKeyFilter(source.cacheKey)
+     context[.imageTransformer] = createTransformPipeline()
+ 
++    // Tell SDWebImage to use our own class for animated formats,
++    // which has better compatibility with the UIImage and fixes issues with the image duration.
++    context[.animatedImageClass] = AnimatedImage.self
++
+     // Assets from the bundler have `scale` prop which needs to be passed to the context,
+     // otherwise they would be saved in cache with scale = 1.0 which may result in
+     // incorrectly rendered images for resize modes that don't scale (`center` and `repeat`).
+@@ -163,6 +167,11 @@ public final class ImageView: ExpoView {
+     context[ImageView.contextSourceKey] = source
+     context[ImageView.screenScaleKey] = screenScale
+ 
++    // Do it here so we don't waste resources trying to fetch from a remote URL
++    if maybeRenderLocalAsset(from: source) {
++      return
++    }
++
+     onLoadStart([:])
+ 
+     pendingOperation = imageManager.loadImage(
+@@ -217,8 +226,7 @@ public final class ImageView: ExpoView {
+       return
+     }
+ 
+-    // Create an SDAnimatedImage if needed then handle the image
+-    if let image = createAnimatedIfNeeded(image: image, data: data) {
++    if let image {
+       onLoad([
+         "cacheType": cacheTypeToString(cacheType),
+         "source": [
+@@ -249,6 +257,25 @@ public final class ImageView: ExpoView {
+     }
+   }
+ 
++  private func maybeRenderLocalAsset(from source: ImageSource) -> Bool {
++    let path: String? = {
++      // .path() on iOS 16 would remove the leading slash, but it doesn't on tvOS 16 🙃
++      // It also crashes with EXC_BREAKPOINT when parsing data:image uris
++      // manually drop the leading slash below iOS 16
++      if let path = source.uri?.path {
++        return String(path.dropFirst())
++      }
++      return nil
++    }()
++
++    if let path, let local = UIImage(named: path) {
++      renderImage(local)
++      return true
++    }
++
++    return false
++  }
++
+   // MARK: - Placeholder
+ 
+   /**
+@@ -296,6 +323,7 @@ public final class ImageView: ExpoView {
+ 
+     context[.imageScaleFactor] = placeholder.scale
+     context[.cacheKeyFilter] = createCacheKeyFilter(placeholder.cacheKey)
++    context[.animatedImageClass] = AnimatedImage.self
+ 
+     // Cache placeholders on the disk. Should we let the user choose whether
+     // to cache them or apply the same policy as with the proper image?
+@@ -389,11 +417,11 @@ public final class ImageView: ExpoView {
+       sdImageView.image = image
+     }
+ 
+-    #if !os(tvOS)
++#if !os(tvOS)
+     if enableLiveTextInteraction {
+       analyzeImage()
+     }
+-    #endif
++#endif
+   }
+ 
+   // MARK: - Helpers
+@@ -433,7 +461,7 @@ public final class ImageView: ExpoView {
+   }
+ 
+   // MARK: - Live Text Interaction
+-  #if !os(tvOS)
++#if !os(tvOS)
+   @available(iOS 16.0, macCatalyst 17.0, *)
+   static let imageAnalyzer = ImageAnalyzer.isSupported ? ImageAnalyzer() : nil
+ 
+@@ -483,5 +511,5 @@ public final class ImageView: ExpoView {
+     }
+     return interaction as? ImageAnalysisInteraction
+   }
+-  #endif
++#endif
+ }
+\ No newline at end of file
