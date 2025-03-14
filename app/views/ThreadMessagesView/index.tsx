@@ -212,6 +212,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			if (savedFilter) {
 				this.setState({ currentFilter: savedFilter as Filter }, () => {
 					this.setHeader();
+					resolve();
 				});
 			}
 			resolve();
