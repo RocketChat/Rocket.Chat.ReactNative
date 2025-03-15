@@ -1,12 +1,23 @@
 import React from 'react';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
-import { GestureDetector, Gesture, GestureHandlerRootView } from 'react-native-gesture-handler';
-import * as Haptics from 'expo-haptics';
+import Animated, {
+	useAnimatedGestureHandler,
+	useSharedValue,
+	useAnimatedStyle,
+	withSpring,
+	runOnJS
+} from 'react-native-reanimated';
+import {
+	LongPressGestureHandler,
+	PanGestureHandler,
+	State,
+	HandlerStateChangeEventPayload,
+	PanGestureHandlerEventPayload
+} from 'react-native-gesture-handler';
 
-import Touch from '../Touch';
-import { RightActions } from './Actions';
-import { ITouchableProps } from './interfaces';
-import { WIDTH } from './styles';
+import Touch from '../../Touch';
+import { RightActions } from '../Actions';
+import { ITouchableProps } from '../interfaces';
+import { WIDTH } from '../styles';
 
 const Touchable = ({
 	children,
@@ -17,7 +28,7 @@ const Touchable = ({
 	tmid,
 	id,
 	swipeEnabled,
-	styles
+	style
 }: ITouchableProps): React.ReactElement => {
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
@@ -30,17 +41,6 @@ const Touchable = ({
 		rowOffSet.value = 0;
 	};
 
-	const handlePress = () => {
-		if (rowState.value !== 0) {
-			close();
-			return;
-		}
-
-		if (onPress) {
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-			onPress();
-		}
-	};
 	const handleLongPress = () => {
 		if (rowState.value !== 0) {
 			close();
@@ -48,27 +48,28 @@ const Touchable = ({
 		}
 
 		if (onLongPress) {
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			onLongPress();
 		}
 	};
-
 	const handleThreadPress = () => {
 		if (onThreadPress) {
-			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 			onThreadPress(tmid, id);
 		}
 	};
-
-	const handleRelease = (translationX: number) => {
+	const onLongPressHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload }) => {
+		if (disabled) return;
+		if (nativeEvent.state === State.ACTIVE) {
+			handleLongPress();
+		}
+	};
+	const handleRelease = (event: PanGestureHandlerEventPayload) => {
+		const { translationX } = event;
 		_value += translationX;
 		let toValue = 0;
-
 		if (rowState.value === 0) {
 			if (translationX < 0 && translationX > -WIDTH) {
 				toValue = -WIDTH;
 				rowState.value = 1;
-				Haptics.selectionAsync();
 			} else if (translationX <= -WIDTH) {
 				toValue = 0;
 				rowState.value = 0;
@@ -87,21 +88,16 @@ const Touchable = ({
 				rowState.value = 0;
 			}
 		}
-
 		transX.value = withSpring(toValue, {
 			damping: 20,
 			stiffness: WIDTH,
 			overshootClamping: true
 		});
-
 		rowOffSet.value = toValue;
 		_value = toValue;
 	};
-
-	const panGesture = Gesture.Pan()
-		.enabled(!disabled && swipeEnabled)
-		.activeOffsetX([-20, 20])
-		.onUpdate(event => {
+	const onGestureEvent = useAnimatedGestureHandler({
+		onActive: event => {
 			if (event.translationX <= 0 || rowState.value === 1) {
 				transX.value = event.translationX + rowOffSet.value;
 
@@ -113,46 +109,29 @@ const Touchable = ({
 					transX.value = 0;
 				}
 			}
-		})
-		.onEnd(event => {
-			runOnJS(handleRelease)(event.translationX);
-		});
+		},
+		onEnd: event => {
+			runOnJS(handleRelease)(event);
+		}
+	});
 
-	const longPressGesture = Gesture.LongPress()
-		.enabled(!disabled)
-		.onStart(() => {
-			runOnJS(handleLongPress)();
-		});
-
-	const tapGesture = Gesture.Tap()
-		.enabled(!disabled)
-		.onEnd(() => {
-			if (handlePress) {
-				runOnJS(handlePress)();
-			}
-		});
-
-	const composedGestures = Gesture.Exclusive(panGesture, Gesture.Race(longPressGesture, tapGesture));
-
-	const animatedStyles = useAnimatedStyle(() => ({
-		transform: [{ translateX: transX.value }]
-	}));
+	const animatedStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
 	return (
-		<GestureHandlerRootView>
+		<LongPressGestureHandler onHandlerStateChange={onLongPressHandlerStateChange}>
 			<Animated.View>
-				<GestureDetector gesture={composedGestures}>
+				<PanGestureHandler activeOffsetX={[-20, 20]} onGestureEvent={onGestureEvent} enabled={!disabled && swipeEnabled}>
 					<Animated.View>
 						<RightActions transX={transX} handleThreadPress={handleThreadPress} />
 						<Animated.View style={animatedStyles}>
-							<Touch style={styles} onPress={undefined}>
+							<Touch onPress={onPress} style={style}>
 								{children}
 							</Touch>
 						</Animated.View>
 					</Animated.View>
-				</GestureDetector>
+				</PanGestureHandler>
 			</Animated.View>
-		</GestureHandlerRootView>
+		</LongPressGestureHandler>
 	);
 };
 

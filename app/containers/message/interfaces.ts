@@ -146,10 +146,9 @@ interface IRoomItemTouchables {
 
 export interface ITouchableProps extends IRoomItemTouchables {
 	children: JSX.Element;
-	rid: string;
 	disabled: boolean;
 	tmid: string;
 	id: string;
 	swipeEnabled: boolean;
-	styles: StyleProp<TextStyle>;
+	style: StyleProp<TextStyle>;
 }

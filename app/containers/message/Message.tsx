@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { View } from 'react-native';
 
-import Touchable from './Toucher';
+import Touchable from './MessageTouchable/Touchable';
 import MessageContext from './Context';
 import User from './User';
 import styles from './styles';
@@ -172,13 +172,12 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 	return (
 		<Touchable
+			id={props.id}
 			onLongPress={onLongPress}
 			onPress={onPress}
-			rid={props.rid}
 			onThreadPress={props.onThreadPress}
 			tmid={props.tmid!}
-			id={props.id}
-			styles={{ backgroundColor }}
+			style={{ backgroundColor }}
 			swipeEnabled={!props.isReadOnly && !props.tmid && !props.isThreadRoom}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}>
 			<View accessible accessibilityLabel={accessibilityLabel}>

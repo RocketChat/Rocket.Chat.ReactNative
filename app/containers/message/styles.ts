@@ -201,7 +201,6 @@ export default StyleSheet.create({
 	actionButton: {
 		width: 28,
 		height: 28,
-		backgroundColor: 'rgba(0, 0, 0, 0.15)',
 		borderRadius: 50,
 		alignItems: 'center',
 		justifyContent: 'center',

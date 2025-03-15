@@ -32,8 +32,15 @@ export const RightActions = React.memo(({ transX, handleThreadPress }: IRightAct
 			<Animated.View style={[styles.actionRightButtonContainer, { width: WIDTH * 2, left: '100%' }, animatedStyles]}>
 				<Animated.View style={styles.actionRightButtonContainer}>
 					<Animated.View style={buttonAnimatedStyle}>
-						<RectButton style={styles.actionButton} onPress={handleThreadPress}>
-							<CustomIcon size={20} name={'arrow-back'} color={colors.fontPureWhite} />
+						<RectButton
+							style={[
+								styles.actionButton,
+								{
+									backgroundColor: colors.surfaceTint
+								}
+							]}
+							onPress={handleThreadPress}>
+							<CustomIcon size={20} name={'arrow-back'} color={colors.surfaceSelected} />
 						</RectButton>
 					</Animated.View>
 				</Animated.View>
