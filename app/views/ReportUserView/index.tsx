@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { ScrollView, StatusBar, Text, View } from 'react-native';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
@@ -55,9 +55,13 @@ const ReportUserView = () => {
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
-			title: I18n.t('Report_user')
+			title: I18n.t('Report_user'),
+			headerStyle: {
+				backgroundColor: colors.surfaceTint
+			},
+			headerTintColor: colors.surfaceTint
 		});
-	}, [navigation]);
+	}, [navigation, colors]);
 
 	const submit = async ({ description }: ISubmit) => {
 		try {
@@ -81,27 +85,31 @@ const ReportUserView = () => {
 			style={{ backgroundColor: colors.surfaceTint }}
 			contentContainerStyle={styles.container}
 			keyboardVerticalOffset={128}>
-			<SafeAreaView style={[styles.containerView]} testID='report-user-view'>
-				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceTint }]}>
+			<SafeAreaView style={styles.containerView} testID='report-user-view'>
+				<ScrollView contentContainerStyle={styles.scroll}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
+					<Text style={[styles.labelText, { color: colors.fontInfo }]}>{I18n.t('Why_do_you_want_to_report')}</Text>
 					<ControlledFormTextInput
 						name='description'
 						control={control}
-						label={I18n.t('Why_do_you_want_to_report')}
 						multiline
-						inputStyle={styles.textInput}
+						inputStyle={[styles.textInput, { color: colors.fontDefault, backgroundColor: colors.surfaceNeutral }]}
 						testID='report-user-view-input'
+						placeholder={I18n.t('Why_do_you_want_to_report')}
 						containerStyle={styles.containerTextInput}
 					/>
-					<Button
-						title={I18n.t('Report')}
-						type='primary'
-						disabled={!isValid}
-						onPress={handleSubmit(submit)}
-						testID='report-user-view-submit'
-						loading={loading}
-					/>
+					<View style={styles.buttonContainer}>
+						<Button
+							title={I18n.t('Report')}
+							type='primary'
+							disabled={!isValid}
+							onPress={handleSubmit(submit)}
+							testID='report-user-view-submit'
+							loading={loading}
+							style={[styles.reportButton, { backgroundColor: colors.buttonBackgroundDangerDefault }]}
+						/>
+					</View>
 				</ScrollView>
 			</SafeAreaView>
 		</KeyboardView>
