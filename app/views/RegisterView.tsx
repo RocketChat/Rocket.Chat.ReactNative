@@ -66,11 +66,6 @@ class RegisterView extends React.Component<IProps, any> {
 	private emailInput?: RNTextInput | null;
 	private avatarUrl?: RNTextInput | null;
 
-	static navigationOptions = ({ route, navigation }: IProps) => ({
-		title: route?.params?.title ?? 'Rocket.Chat',
-		headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
-	});
-
 	constructor(props: IProps) {
 		super(props);
 		const customFields: any = {};
@@ -95,6 +90,7 @@ class RegisterView extends React.Component<IProps, any> {
 			saving: false,
 			customFields
 		};
+		this.setHeader();
 	}
 
 	login = () => {
@@ -220,6 +216,15 @@ class RegisterView extends React.Component<IProps, any> {
 		} catch (error) {
 			return null;
 		}
+	};
+
+	setHeader = () => {
+		const { navigation, route } = this.props;
+
+		navigation.setOptions({
+			title: route?.params?.title ?? 'Rocket.Chat',
+			headerRight: () => <HeaderButton.Legal testID='register-view-more' navigation={navigation} />
+		});
 	};
 
 	render() {

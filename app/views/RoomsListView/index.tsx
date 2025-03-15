@@ -1,17 +1,16 @@
 import React from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, NativeEventSubscription, PixelRatio, RefreshControl, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
 import { withSafeAreaInsets } from 'react-native-safe-area-context';
 import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Header } from '@react-navigation/elements';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
 
 import database from '../../lib/database';
-import RoomItem, { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from '../../containers/RoomItem';
+import RoomItem from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
@@ -20,7 +19,6 @@ import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
-import { themedHeader } from '../../lib/methods/helpers/navigation';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -55,6 +53,7 @@ import {
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import CustomHeader from '../../containers/CustomHeader';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -444,7 +443,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (searching) {
 			return {
 				headerLeft: () => (
-					<HeaderButton.Container left>
+					<HeaderButton.Container style={{ marginLeft: 1 }} left>
 						<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
 					</HeaderButton.Container>
 				),
@@ -909,20 +908,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	renderHeader = () => {
-		const { isMasterDetail, theme } = this.props;
+		const { isMasterDetail } = this.props;
 
 		if (!isMasterDetail) {
 			return null;
 		}
 
-		let options = this.getHeader();
-		options = {
-			...options,
-			headerTitleAlign: 'left',
-			headerTitleContainerStyle: { flex: 1, marginHorizontal: 4, maxWidth: undefined },
-			headerRightContainerStyle: { flexGrow: undefined, flexBasis: undefined }
-		};
-		return <Header title='' {...themedHeader(theme)} {...options} />;
+		const options = this.getHeader();
+		return <CustomHeader options={options} navigation={this.props.navigation} route={this.props.route} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
@@ -978,8 +971,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
-
-		const height = displayMode === DisplayMode.Condensed ? ROW_HEIGHT_CONDENSED : ROW_HEIGHT;
+		const fontScale = PixelRatio.getFontScale();
+		const rowHeight = 75 * fontScale;
+		const rowHeightCondensed = 60 * fontScale;
+		const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
 
 		if (loading) {
 			return <ActivityIndicator />;

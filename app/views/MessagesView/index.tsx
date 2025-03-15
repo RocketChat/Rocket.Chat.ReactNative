@@ -250,7 +250,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, pinned: true });
+					return Services.getPinnedMessages({ roomId: this.rid, offset: messages.length, count: 50 });
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',
