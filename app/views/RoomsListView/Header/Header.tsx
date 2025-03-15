@@ -18,6 +18,7 @@ import { isTablet } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		justifyContent: 'center'
 	},
 	button: {
@@ -61,10 +62,12 @@ const Header = React.memo(
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
-		const { width: windowWidth } = useWindowDimensions();
+		const { width: windowWidth, fontScale } = useWindowDimensions();
 
 		if (showSearchHeader) {
-			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' />;
+			// This value is necessary to keep the alignment in MasterDetail.
+			const height = 37 * fontScale;
+			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' style={{ height }} />;
 		}
 		let subtitle;
 		if (supportedVersionsStatus === 'expired') {

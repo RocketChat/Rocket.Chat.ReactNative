@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Text, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../CustomIcon';
@@ -30,6 +30,8 @@ interface IMessageReactions {
 
 const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 	const { reactionInit } = useContext(MessageContext);
+	const { fontScale } = useWindowDimensions();
+	const height = 28 * fontScale;
 	return (
 		<Touchable
 			onPress={reactionInit}
@@ -38,7 +40,7 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 			style={[styles.reactionButton, { backgroundColor: themes[theme].surfaceRoom }]}
 			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 			hitSlop={BUTTON_HIT_SLOP}>
-			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight }]}>
+			<View style={[styles.reactionContainer, { borderColor: themes[theme].strokeLight, height }]}>
 				<CustomIcon name='reaction-add' size={21} color={themes[theme].badgeBackgroundLevel2} />
 			</View>
 		</Touchable>
@@ -47,6 +49,8 @@ const AddReaction = React.memo(({ theme }: { theme: TSupportedThemes }) => {
 
 const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReaction) => {
 	const { onReactionPress, onReactionLongPress, user } = useContext(MessageContext);
+	const { fontScale } = useWindowDimensions();
+	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
 	return (
 		<Touchable
@@ -60,7 +64,7 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 			<View
 				style={[
 					styles.reactionContainer,
-					{ borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight }
+					{ borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight, height }
 				]}>
 				<Emoji
 					content={reaction.emoji}
