@@ -40,7 +40,7 @@ export const RightActions = React.memo(({ transX, handleThreadPress }: IRightAct
 								}
 							]}
 							onPress={handleThreadPress}>
-							<CustomIcon size={20} name={'arrow-back'} color={colors.surfaceSelected} />
+							<CustomIcon size={20} name={'arrow-back'} color={colors.surfaceDark} />
 						</RectButton>
 					</Animated.View>
 				</Animated.View>

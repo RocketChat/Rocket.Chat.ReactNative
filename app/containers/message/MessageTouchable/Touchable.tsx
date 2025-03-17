@@ -1,23 +1,16 @@
 import React from 'react';
-import Animated, {
-	useAnimatedGestureHandler,
-	useSharedValue,
-	useAnimatedStyle,
-	withSpring,
-	runOnJS
-} from 'react-native-reanimated';
-import {
-	LongPressGestureHandler,
-	PanGestureHandler,
-	State,
-	HandlerStateChangeEventPayload,
-	PanGestureHandlerEventPayload
-} from 'react-native-gesture-handler';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring, runOnJS } from 'react-native-reanimated';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 
 import Touch from '../../Touch';
 import { RightActions } from '../Actions';
 import { ITouchableProps } from '../interfaces';
 import { WIDTH } from '../styles';
+
+const CLOSED = 0;
+const OPEN = -WIDTH;
+const DRAG_THRESHOLD = -100;
 
 const Touchable = ({
 	children,
@@ -30,108 +23,97 @@ const Touchable = ({
 	swipeEnabled,
 	style
 }: ITouchableProps): React.ReactElement => {
-	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
-	const rowState = useSharedValue(0);
-	let _value = 0;
+	let initial = 0;
 
 	const close = () => {
-		rowState.value = 0;
-		transX.value = withSpring(0, { overshootClamping: true });
-		rowOffSet.value = 0;
+		transX.value = withSpring(CLOSED, { overshootClamping: true });
 	};
 
 	const handleLongPress = () => {
-		if (rowState.value !== 0) {
+		if (transX.value !== CLOSED) {
 			close();
 			return;
 		}
-
+		Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 		if (onLongPress) {
 			onLongPress();
 		}
 	};
+
 	const handleThreadPress = () => {
+		Haptics.selectionAsync();
 		if (onThreadPress) {
 			onThreadPress(tmid, id);
 		}
 	};
-	const onLongPressHandlerStateChange = ({ nativeEvent }: { nativeEvent: HandlerStateChangeEventPayload }) => {
-		if (disabled) return;
-		if (nativeEvent.state === State.ACTIVE) {
-			handleLongPress();
-		}
-	};
-	const handleRelease = (event: PanGestureHandlerEventPayload) => {
-		const { translationX } = event;
-		_value += translationX;
-		let toValue = 0;
-		if (rowState.value === 0) {
-			if (translationX < 0 && translationX > -WIDTH) {
-				toValue = -WIDTH;
-				rowState.value = 1;
-			} else if (translationX <= -WIDTH) {
-				toValue = 0;
-				rowState.value = 0;
-				handleThreadPress();
+
+	const panGesture = Gesture.Pan()
+		.enabled(swipeEnabled && !disabled)
+		.activeOffsetX([-20, 20])
+		.failOffsetY([-10, 10])
+		.onStart(() => {
+			initial = transX.value;
+		})
+		.onUpdate(event => {
+			let next = initial + event.translationX;
+			if (next > 0) next = 0;
+			if (next < -2 * WIDTH) next = -2 * WIDTH;
+			transX.value = next;
+		})
+		.onEnd(event => {
+			const final = initial + event.translationX;
+			if (final <= OPEN) {
+				runOnJS(handleThreadPress)();
+				transX.value = withSpring(CLOSED, {
+					damping: 20,
+					stiffness: WIDTH,
+					overshootClamping: true
+				});
+			} else if (final < DRAG_THRESHOLD) {
+				transX.value = withSpring(OPEN, {
+					damping: 20,
+					stiffness: WIDTH,
+					overshootClamping: true
+				});
 			} else {
-				toValue = 0;
-				rowState.value = 0;
+				transX.value = withSpring(CLOSED, {
+					damping: 20,
+					stiffness: WIDTH,
+					overshootClamping: true
+				});
 			}
-		} else if (rowState.value === 1) {
-			if (_value > -100) {
-				toValue = 0;
-				rowState.value = 0;
-			} else if (_value < -WIDTH) {
-				handleThreadPress();
-				toValue = 0;
-				rowState.value = 0;
-			}
-		}
-		transX.value = withSpring(toValue, {
-			damping: 20,
-			stiffness: WIDTH,
-			overshootClamping: true
 		});
-		rowOffSet.value = toValue;
-		_value = toValue;
-	};
-	const onGestureEvent = useAnimatedGestureHandler({
-		onActive: event => {
-			if (event.translationX <= 0 || rowState.value === 1) {
-				transX.value = event.translationX + rowOffSet.value;
 
-				if (transX.value < -2 * WIDTH) {
-					transX.value = -2 * WIDTH;
-				}
-
-				if (rowState.value === 0 && transX.value > 0) {
-					transX.value = 0;
-				}
+	const longPressGesture = Gesture.LongPress()
+		.minDuration(600)
+		.onStart(() => {
+			if (!disabled) {
+				runOnJS(handleLongPress)();
 			}
-		},
-		onEnd: event => {
-			runOnJS(handleRelease)(event);
+		});
+
+	const tapGesture = Gesture.Tap().onEnd(() => {
+		if (!disabled && onPress) {
+			runOnJS(onPress)();
 		}
 	});
 
-	const animatedStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
+	const composedGesture = Gesture.Race(tapGesture, longPressGesture, panGesture);
+
+	const animatedStyles = useAnimatedStyle(() => ({
+		transform: [{ translateX: transX.value }]
+	}));
 
 	return (
-		<LongPressGestureHandler onHandlerStateChange={onLongPressHandlerStateChange}>
+		<GestureDetector gesture={composedGesture}>
 			<Animated.View>
-				<PanGestureHandler activeOffsetX={[-20, 20]} onGestureEvent={onGestureEvent} enabled={!disabled && swipeEnabled}>
-					<Animated.View>
-						<RightActions transX={transX} handleThreadPress={handleThreadPress} />
-						<Animated.View style={animatedStyles}>
-							<Touch onPress={onPress} style={style}>
-								{children}
-							</Touch>
-						</Animated.View>
-					</Animated.View>
-				</PanGestureHandler>
+				<RightActions transX={transX} handleThreadPress={handleThreadPress} />
+				<Animated.View style={animatedStyles}>
+					<Touch style={style}>{children}</Touch>
+				</Animated.View>
 			</Animated.View>
-		</LongPressGestureHandler>
+		</GestureDetector>
 	);
 };
 

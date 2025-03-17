@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { Text, useWindowDimensions, View } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { runOnJS } from 'react-native-reanimated';
 
 import Touchable from './Touchable';
 import { CustomIcon } from '../CustomIcon';
@@ -52,29 +54,43 @@ const Reaction = React.memo(({ reaction, getCustomEmoji, theme }: IMessageReacti
 	const { fontScale } = useWindowDimensions();
 	const height = 28 * fontScale;
 	const reacted = reaction.usernames.findIndex((item: string) => item === user.username) !== -1;
+
+	const tapGesture = Gesture.Tap().onEnd(() => {
+		if (onReactionPress) {
+			runOnJS(onReactionPress)(reaction.emoji);
+		}
+	});
+	const longPressGesture = Gesture.LongPress().onStart(() => {
+		if (onReactionLongPress) {
+			runOnJS(onReactionLongPress)();
+		}
+	});
+	const composedGesture = Gesture.Exclusive(tapGesture, longPressGesture);
+
 	return (
-		<Touchable
-			onPress={() => onReactionPress(reaction.emoji)}
-			onLongPress={onReactionLongPress}
-			key={reaction.emoji}
-			testID={`message-reaction-${reaction.emoji}`}
-			style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}
-			background={Touchable.Ripple(themes[theme].surfaceNeutral)}
-			hitSlop={BUTTON_HIT_SLOP}>
+		<GestureDetector gesture={composedGesture}>
 			<View
-				style={[
-					styles.reactionContainer,
-					{ borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight, height }
-				]}>
-				<Emoji
-					content={reaction.emoji}
-					standardEmojiStyle={styles.reactionEmoji}
-					customEmojiStyle={styles.reactionCustomEmoji}
-					getCustomEmoji={getCustomEmoji}
-				/>
-				<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
+				testID={`message-reaction-${reaction.emoji}`}
+				hitSlop={BUTTON_HIT_SLOP}
+				style={[styles.reactionButton, { backgroundColor: reacted ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom }]}>
+				<View
+					style={[
+						styles.reactionContainer,
+						{
+							borderColor: reacted ? themes[theme].badgeBackgroundLevel2 : themes[theme].strokeLight,
+							height
+						}
+					]}>
+					<Emoji
+						content={reaction.emoji}
+						standardEmojiStyle={styles.reactionEmoji}
+						customEmojiStyle={styles.reactionCustomEmoji}
+						getCustomEmoji={getCustomEmoji}
+					/>
+					<Text style={[styles.reactionCount, { color: themes[theme].badgeBackgroundLevel2 }]}>{reaction.usernames.length}</Text>
+				</View>
 			</View>
-		</Touchable>
+		</GestureDetector>
 	);
 });
 
@@ -85,7 +101,7 @@ const Reactions = React.memo(({ reactions, getCustomEmoji }: IMessageReactions) 
 		return null;
 	}
 	return (
-		<View style={styles.reactionsContainer}>
+		<View style={[styles.reactionsContainer, { marginRight: 5 }]} pointerEvents='box-none'>
 			{reactions.map(reaction => (
 				<Reaction key={reaction.emoji} reaction={reaction} getCustomEmoji={getCustomEmoji} theme={theme} />
 			))}
