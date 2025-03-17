@@ -84,7 +84,7 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 					</Text>
 				</View>
 			</View>
-			<View style={styles.badgeContainer}>
+			<View style={styles.badgeContainer} pointerEvents='box-none'>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
 				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />

@@ -63,6 +63,7 @@ interface IMessageContainerProps {
 	isPreview?: boolean;
 	dateSeparator?: Date | string | null;
 	showUnreadSeparator?: boolean;
+	isReadOnly: boolean;
 }
 
 interface IMessageContainerState {
@@ -508,6 +509,8 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					isBeingEdited={isBeingEdited}
 					isPreview={isPreview}
 					pinned={pinned}
+					onThreadPress={this.onThreadPress}
+					isReadOnly={this.props.isReadOnly}
 				/>
 			</MessageContext.Provider>
 		);

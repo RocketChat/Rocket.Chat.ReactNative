@@ -1,7 +1,7 @@
 import React, { useContext, useMemo } from 'react';
 import { View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
+import Touchable from './MessageTouchable/Touchable';
 import MessageContext from './Context';
 import User from './User';
 import styles from './styles';
@@ -161,7 +161,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		return `${user} ${hour} ${label}`;
-	}, []);
+	}, [props]);
 
 	if (props.hasError) {
 		return (
@@ -170,13 +170,16 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			</View>
 		);
 	}
-
 	return (
 		<Touchable
+			id={props.id}
 			onLongPress={onLongPress}
 			onPress={onPress}
-			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}>
+			onThreadPress={props.onThreadPress}
+			tmid={props.tmid!}
+			style={{ backgroundColor }}
+			swipeEnabled={!props.isReadOnly && !props.tmid && !props.isThreadRoom}
+			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}>
 			<View accessible accessibilityLabel={accessibilityLabel}>
 				<Message {...props} />
 			</View>

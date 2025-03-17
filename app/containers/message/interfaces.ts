@@ -1,6 +1,7 @@
 import { Root } from '@rocket.chat/message-parser';
 import { StyleProp, TextStyle } from 'react-native';
 import { ImageStyle } from 'expo-image';
+import Animated from 'react-native-reanimated';
 
 import { IUserChannel } from '../markdown/interfaces';
 import { TGetCustomEmoji } from '../../definitions/IEmoji';
@@ -92,6 +93,7 @@ export interface IMessageTouchable {
 	role?: string;
 	drid?: string;
 	isBeingEdited?: boolean;
+	onThreadPress?: (tmid: string, id: string) => void;
 }
 
 export interface IMessageRepliedThread extends Pick<IThread, 'tmid' | 'tmsg' | 'id'> {
@@ -128,4 +130,25 @@ export interface IMessage extends IMessageRepliedThread, IMessageInner, IMessage
 	isIgnored: boolean;
 	dcount: number | undefined;
 	dlm: string | Date | undefined;
+	isReadOnly: boolean;
+}
+
+export interface IRightActionsProps {
+	transX: Animated.SharedValue<number>;
+	handleThreadPress: () => void;
+}
+
+interface IRoomItemTouchables {
+	onPress: (item?: any) => void;
+	onLongPress?: (item?: any) => void;
+	onThreadPress?: (tmid: string, id: string) => void;
+}
+
+export interface ITouchableProps extends IRoomItemTouchables {
+	children: JSX.Element;
+	disabled: boolean;
+	tmid: string;
+	id: string;
+	swipeEnabled: boolean;
+	style: StyleProp<TextStyle>;
 }
