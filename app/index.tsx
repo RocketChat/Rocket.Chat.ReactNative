@@ -38,6 +38,7 @@ import ScreenLockedView from './views/ScreenLockedView';
 import { MentionsPreferencesProvider } from './MentionsPreferences';
 import { initialMentionsPreferences } from './lib/methods/helpers/mentionsPreferences';
 import { IMentionsPreferences } from './definitions/IMentionsPreferences';
+import { RowHeightProvider } from './lib/hooks/useRowHeight';
 
 enableScreens();
 initStore(store);
@@ -216,26 +217,28 @@ export default class Root extends React.Component<{}, IState> {
 							colors: colors[theme]
 						}}>
 						<MentionsPreferencesProvider mentionsPreferences={mentionsPreferences}>
-							<DimensionsContext.Provider
-								value={{
-									width,
-									height,
-									scale,
-									fontScale,
-									setDimensions: this.setDimensions
-								}}>
-								<GestureHandlerRootView>
-									<ActionSheetProvider>
-										<AppContainer />
-										<TwoFactor />
-										<ScreenLockedView />
-										<ChangePasscodeView />
-										<InAppNotification />
-										<Toast />
-										<Loading />
-									</ActionSheetProvider>
-								</GestureHandlerRootView>
-							</DimensionsContext.Provider>
+							<RowHeightProvider>
+								<DimensionsContext.Provider
+									value={{
+										width,
+										height,
+										scale,
+										fontScale,
+										setDimensions: this.setDimensions
+									}}>
+									<GestureHandlerRootView>
+										<ActionSheetProvider>
+											<AppContainer />
+											<TwoFactor />
+											<ScreenLockedView />
+											<ChangePasscodeView />
+											<InAppNotification />
+											<Toast />
+											<Loading />
+										</ActionSheetProvider>
+									</GestureHandlerRootView>
+								</DimensionsContext.Provider>
+							</RowHeightProvider>
 						</MentionsPreferencesProvider>
 					</ThemeContext.Provider>
 				</Provider>
