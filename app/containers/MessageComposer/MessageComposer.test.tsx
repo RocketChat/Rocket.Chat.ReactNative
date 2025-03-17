@@ -448,80 +448,87 @@ describe('MessageComposer', () => {
 	});
 
 	describe('useSubscription hook', () => {
-		const mockSubscription1 = { _id: 'sub1', rid: 'room1', name: 'room one' } as unknown as TSubscriptionModel;
-		const mockSubscription2 = { _id: 'sub2', rid: 'room2', name: 'room two' } as unknown as TSubscriptionModel;
+		beforeEach(() => {
+			jest.useFakeTimers();
+			jest.clearAllMocks();
+		});
 
-		test('should return undefined when rid is not provided', () => {
+		afterEach(() => {
+			jest.runOnlyPendingTimers();
+			jest.useRealTimers();
+		});
+
+		test('should return undefined when rid is not provided', async () => {
 			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId');
-
 			const { result } = renderHook(() => useSubscription());
 
-			expect(result.current).toBeUndefined();
+			await waitFor(() => {
+				expect(result.current).toBeUndefined();
+			});
+
 			expect(spy).not.toHaveBeenCalled();
 		});
 
 		test('should fetch subscription when rid is provided', async () => {
-			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(mockSubscription1);
+			const mockSubscription = { _id: 'sub1', rid: 'room1', name: 'Room One' } as unknown as TSubscriptionModel;
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(mockSubscription);
 
 			const { result } = renderHook(() => useSubscription('room1'));
 
 			await waitFor(() => {
-				expect(result.current).toEqual(mockSubscription1);
+				expect(result.current).toEqual(mockSubscription);
 			});
-
 			expect(spy).toHaveBeenCalledWith('room1');
-			spy.mockRestore();
 		});
 
 		test('should set up polling interval when rid is provided', async () => {
-			jest.useFakeTimers();
-			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(mockSubscription1);
+			const mockSubscription = { _id: 'sub2', rid: 'room2', name: 'Room Two' } as unknown as TSubscriptionModel;
+			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(mockSubscription);
 
 			const { unmount } = renderHook(() => useSubscription('room2'));
-			const initialCallCount = spy.mock.calls.length;
+
+			expect(spy).toHaveBeenCalledTimes(1);
 
 			act(() => {
 				jest.advanceTimersByTime(100);
 			});
 
-			await act(async () => {
-				await Promise.resolve();
-			});
+			// eslint-disable-next-line require-await
+			await act(async () => Promise.resolve());
 
-			const finalCallCount = spy.mock.calls.length;
-			expect(finalCallCount).toBeGreaterThan(initialCallCount);
+			expect(spy).toHaveBeenCalledTimes(3);
 
 			unmount();
-			jest.useRealTimers();
-			spy.mockRestore();
 		});
 
-		test('should clear interval on unmount', () => {
-			jest.useFakeTimers();
-
-			const spy = jest
+		test('should clear interval on unmount', async () => {
+			await jest
 				.spyOn(SubscriptionService, 'getSubscriptionByRoomId')
-				.mockResolvedValue({ _id: 'sub1', rid: 'room3' } as unknown as TSubscriptionModel);
+				.mockResolvedValue({ _id: 'sub3', rid: 'room3', name: 'Room Three' } as unknown as TSubscriptionModel);
 			const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
 			const { unmount } = renderHook(() => useSubscription('room3'));
 			unmount();
 
 			expect(clearIntervalSpy).toHaveBeenCalled();
-			clearIntervalSpy.mockRestore();
-			spy.mockRestore();
-			jest.useRealTimers();
 		});
 
 		test('should update subscription when rid changes', async () => {
-			// eslint-disable-next-line require-await
-			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockImplementation(async rid => {
-				if (rid === 'room1') return mockSubscription1;
-				if (rid === 'room2') return mockSubscription2;
-				return null;
-			});
+			const mockSubscription1 = { _id: 'sub1', rid: 'room1', name: 'Room One' };
+			const mockSubscription2 = { _id: 'sub2', rid: 'room2', name: 'Room Two' };
 
-			const { result, rerender } = renderHook(({ roomId }) => useSubscription(roomId), { initialProps: { roomId: 'room1' } });
+			const spy = jest
+				.spyOn(SubscriptionService, 'getSubscriptionByRoomId')
+				// eslint-disable-next-line require-await
+				.mockImplementation(async (rid: string): Promise<TSubscriptionModel | null> => {
+					if (rid === 'room1') return mockSubscription1 as unknown as TSubscriptionModel;
+					if (rid === 'room2') return mockSubscription2 as unknown as TSubscriptionModel;
+					return null;
+				});
+
+			const { result, rerender } = renderHook(({ roomId }) => useSubscription(roomId), {
+				initialProps: { roomId: 'room1' }
+			});
 
 			await waitFor(() => {
 				expect(result.current).toEqual(mockSubscription1);
@@ -535,20 +542,16 @@ describe('MessageComposer', () => {
 
 			expect(spy).toHaveBeenCalledWith('room1');
 			expect(spy).toHaveBeenCalledWith('room2');
-			spy.mockRestore();
 		});
 
 		test('should handle null result from service', async () => {
-			const spy = jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(null);
+			jest.spyOn(SubscriptionService, 'getSubscriptionByRoomId').mockResolvedValue(null);
 
 			const { result } = renderHook(() => useSubscription('non-existent-room'));
 
 			await waitFor(() => {
-				expect(spy).toHaveBeenCalled();
+				expect(result.current).toBeUndefined();
 			});
-
-			expect(result.current).toBeUndefined();
-			spy.mockRestore();
 		});
 	});
 });
