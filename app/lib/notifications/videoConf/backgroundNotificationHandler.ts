@@ -1,5 +1,5 @@
 import notifee, { AndroidCategory, AndroidFlags, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ejson from 'ejson';
 
@@ -104,21 +104,21 @@ const displayVideoConferenceNotification = async (notification: NotificationData
 
 const setBackgroundNotificationHandler = () => {
 	createChannel();
-	messaging().setBackgroundMessageHandler(async message => {
-		if (message?.data?.ejson) {
-			const notification: NotificationData = ejson.parse(message?.data?.ejson as string);
-			if (notification?.notificationType === VIDEO_CONF_TYPE) {
-				if (notification.status === 0) {
-					await displayVideoConferenceNotification(notification);
-				} else if (notification.status === 4) {
-					const id = `${notification.rid}${notification.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
-					await notifee.cancelNotification(id);
-				}
-			}
-		}
+	// messaging().setBackgroundMessageHandler(async message => {
+	// 	if (message?.data?.ejson) {
+	// 		const notification: NotificationData = ejson.parse(message?.data?.ejson as string);
+	// 		if (notification?.notificationType === VIDEO_CONF_TYPE) {
+	// 			if (notification.status === 0) {
+	// 				await displayVideoConferenceNotification(notification);
+	// 			} else if (notification.status === 4) {
+	// 				const id = `${notification.rid}${notification.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
+	// 				await notifee.cancelNotification(id);
+	// 			}
+	// 		}
+	// 	}
 
-		return null;
-	});
+	// 	return null;
+	// });
 };
 
 setBackgroundNotificationHandler();

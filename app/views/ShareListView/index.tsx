@@ -90,9 +90,9 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			this.unsubscribeFocus = props.navigation.addListener('focus', () =>
 				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
 			);
-			this.unsubscribeBlur = props.navigation.addListener('blur', () =>
-				BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
-			);
+			// this.unsubscribeBlur = props.navigation.addListener('blur', () =>
+			// 	BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
+			// );
 		}
 	}
 
@@ -476,7 +476,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 							styles.readOnlyContainer,
 							{
 								backgroundColor: themes[theme].surfaceRoom,
-								...(serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 })
+								...serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 }
 							}
 						]}>
 						<Text style={[styles.readOnlyTitle, { color: themes[theme].fontDefault }]}>

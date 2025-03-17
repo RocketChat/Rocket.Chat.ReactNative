@@ -86,7 +86,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
-		BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		// BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
 		if (isAndroid) {
 			Keyboard.removeAllListeners('keyboardDidShow');
 			Keyboard.removeAllListeners('keyboardDidHide');
