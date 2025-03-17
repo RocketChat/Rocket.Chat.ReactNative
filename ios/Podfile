@@ -1,12 +1,12 @@
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
-platform :ios, '13.4'
+platform :ios, '15.1'
 install! 'cocoapods', :deterministic_uuids => false
 
 prepare_react_native_project!
 
-use_modular_headers!
+# use_modular_headers!
 
 plugin 'cocoapods-patch'
 
@@ -21,18 +21,8 @@ def all_pods
     :path => config[:reactNativePath],
     :hermes_enabled => true,
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/..",
-    # Note that if you have use_frameworks! enabled, Flipper will not work if enabled
-    # :flipper_configuration => flipper_config
+    :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
-
-  post_integrate do |installer|
-    begin
-      expo_patch_react_imports!(installer)
-    rescue => e
-      Pod::UI.warn e
-    end
-  end
 end
 
 abstract_target 'defaults' do
@@ -64,7 +54,8 @@ post_install do |installer|
   react_native_post_install(
     installer,
     # config[:reactNativePath],
-    # :mac_catalyst_enabled => false
+    # :mac_catalyst_enabled => false,
+    # :ccache_enabled => true
   )
 
   installer.pods_project.targets.each do |target|
