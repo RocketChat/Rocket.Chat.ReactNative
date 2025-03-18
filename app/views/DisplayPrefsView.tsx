@@ -91,7 +91,16 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
-		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
+		<Switch
+			value={value}
+			onValueChange={() => toggleAvatar()}
+			testID='display-pref-view-avatar-switch'
+			trackColor={{
+				false: colors.userPresenceOffline,
+				true: colors.userPresenceOffline
+			}}
+			ios_backgroundColor={colors.userPresenceOffline}
+		/>
 	);
 
 	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
