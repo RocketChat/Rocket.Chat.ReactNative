@@ -11,7 +11,7 @@ import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import database from '../lib/database';
 import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom, getServerInfo } from '../lib/methods';
-import { getUidDirectMessage } from '../lib/methods/helpers';
+import { emitter, getUidDirectMessage } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
@@ -20,6 +20,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
 import sdk from '../lib/services/sdk';
+import Navigation from '../lib/navigation/appNavigation';
 
 const roomTypes = {
 	channel: 'c',
@@ -39,7 +40,27 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
+const waitForNavigation = () => {
+	if (Navigation.navigationRef.current) {
+		console.log('navigation already ready');
+		return Promise.resolve();
+	}
+	console.log('waiting for navigation');
+	return new Promise((resolve) => {
+    const listener = () => {
+			console.log('navigation ready');
+			emitter.off('navigationReady', listener);
+      resolve();
+    };
+
+		console.log('adding listener');
+
+		emitter.on('navigationReady', listener);
+  });
+};
+
 const navigate = function* navigate({ params }) {
+	console.log('🚀 ~ navigate ~ params:', params);
 	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
@@ -62,6 +83,8 @@ const navigate = function* navigate({ params }) {
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const jumpToMessageId = params.messageId;
 
+				yield waitForNavigation();
+				console.log('navigating');
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
 			}
 		} else {
@@ -111,6 +134,7 @@ const handleShareExtension = function* handleOpen({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
+	console.log('🚀 ~ handleOpen ~ params:', params);
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -159,6 +183,7 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
+		console.log('🚀 ~ handleOpen ~ navigate:', params);
 		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists
