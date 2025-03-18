@@ -13,10 +13,11 @@ import * as Haptics from 'expo-haptics';
 
 import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '../../lib/constants';
-import styles, { ACTION_WIDTH, LONG_SWIPE, ROW_HEIGHT_CONDENSED } from './styles';
+import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
+import { useRowHeight } from '../../lib/hooks/useRowHeight';
 
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
@@ -24,12 +25,14 @@ const EXPANDED_ICON_SIZE = 28;
 export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
+	const { rowHeight, rowHeightCondensed } = useRowHeight();
+
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
 	}));
 
 	const isCondensed = displayMode === DisplayMode.Condensed;
-	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 
 	return (
 		<View style={[styles.actionsContainer, styles.actionsLeftContainer]} pointerEvents='box-none'>
@@ -56,6 +59,8 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 
 export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
 	const { colors } = useTheme();
+
+	const { rowHeight, rowHeightCondensed } = useRowHeight();
 
 	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
@@ -108,7 +113,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 	});
 
 	const isCondensed = displayMode === DisplayMode.Condensed;
-	const viewHeight = isCondensed ? { height: ROW_HEIGHT_CONDENSED } : null;
+	const viewHeight = { height: isCondensed ? rowHeightCondensed : rowHeight };
 
 	return (
 		<View style={[styles.actionsLeftContainer, viewHeight]} pointerEvents='box-none'>
@@ -139,7 +144,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
-					isCondensed && { height: ROW_HEIGHT_CONDENSED },
+					isCondensed && { height: rowHeightCondensed },
 					animatedHideStyles
 				]}>
 				<RectButton

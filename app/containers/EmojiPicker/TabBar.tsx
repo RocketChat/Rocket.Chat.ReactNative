@@ -1,7 +1,7 @@
 import React from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, useWindowDimensions, View } from 'react-native';
 
-import styles from './styles';
+import styles, { EMOJI_BUTTON_SIZE } from './styles';
 import { useTheme } from '../../theme';
 import { ITabBarProps } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
@@ -9,9 +9,11 @@ import { CustomIcon } from '../CustomIcon';
 
 const TabBar = ({ activeTab, tabs, goToPage }: ITabBarProps): React.ReactElement => {
 	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
+	const height = EMOJI_BUTTON_SIZE * fontScale;
 
 	return (
-		<View style={styles.tabsContainer}>
+		<View style={[styles.tabsContainer, { height }]}>
 			{tabs?.map((tab, i) => (
 				<Pressable
 					key={tab}

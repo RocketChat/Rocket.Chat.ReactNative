@@ -5,9 +5,6 @@ import { isGroupChat } from '../../lib/methods/helpers';
 import { formatDate } from '../../lib/methods/helpers/room';
 import { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
-import { ROW_HEIGHT, ROW_HEIGHT_CONDENSED } from './styles';
-
-export { ROW_HEIGHT, ROW_HEIGHT_CONDENSED };
 
 const attrs = ['width', 'isFocused', 'showLastMessage', 'autoJoin', 'showAvatar', 'displayMode'];
 
