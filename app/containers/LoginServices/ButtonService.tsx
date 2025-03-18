@@ -9,7 +9,6 @@ import styles from './styles';
 
 const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, accessibilityLabel }: IButtonService) => {
 	const { colors } = useTheme();
-
 	return (
 		<Touchable
 			key={name}

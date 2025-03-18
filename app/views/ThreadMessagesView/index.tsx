@@ -124,7 +124,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: I18n.t('Threads'),
 			headerRight: () => (
 				<HeaderButton.Container>
@@ -210,7 +210,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		new Promise<void>(resolve => {
 			const savedFilter = UserPreferences.getString(THREADS_FILTER);
 			if (savedFilter) {
-				this.setState({ currentFilter: savedFilter as Filter }, () => resolve());
+				this.setState({ currentFilter: savedFilter as Filter }, () => {
+					this.setHeader();
+					resolve();
+				});
 			}
 			resolve();
 		});
