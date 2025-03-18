@@ -106,7 +106,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const readOrUnreadLabel =
 			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
-		return `${user} ${hour} ${label}. ${readReceipt}`;
+		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
+		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	}, [props.unread]);
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
