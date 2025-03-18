@@ -83,13 +83,38 @@ const MessageInner = React.memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessage) => {
+const Message = React.memo((props: IMessageTouchable & IMessage) => {
+	const accessibilityLabel = useMemo(() => {
+		let label = '';
+		console.log(props);
+		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+		if (props.isThreadReply) {
+			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
+		}
+		if (props.isThreadSequential) {
+			label = `thread message ${props.msg}`;
+		}
+		if (props.isEncrypted) {
+			label = i18n.t('Encrypted_message');
+		}
+		if (props.isInfo) {
+			// @ts-ignore
+			label = getInfoMessage({ ...props });
+		}
+		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
+		const user = props.useRealName ? props.author?.name : props.author?.username || '';
+		const readOrUnreadLabel =
+			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
+		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
+		return `${user} ${hour} ${label}. ${readReceipt}`;
+	}, [props.unread]);
+
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View style={styles.flex}>
+				<View accessibilityLabel={accessibilityLabel} style={styles.flex}>
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
@@ -105,7 +130,7 @@ const Message = React.memo((props: IMessage) => {
 	}
 
 	return (
-		<View style={[styles.container, props.style]}>
+		<View accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
@@ -141,31 +166,6 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
-	// temp accessibilityLabel
-	const accessibilityLabel = useMemo(() => {
-		let label = '';
-		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
-		if (props.isThreadReply) {
-			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
-		}
-		if (props.isThreadSequential) {
-			label = `thread message ${props.msg}`;
-		}
-		if (props.isEncrypted) {
-			label = i18n.t('Encrypted_message');
-		}
-		if (props.isInfo) {
-			// @ts-ignore
-			label = getInfoMessage({ ...props });
-		}
-		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
-		const user = props.useRealName ? props.author?.name : props.author?.username || '';
-		const readOrUnreadLabel =
-			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
-		const readReceipt = props.isReadReceiptEnabled ? readOrUnreadLabel : '';
-		return `${user} ${hour} ${label}. ${readReceipt}`;
-	}, [props.unread]);
-
 	if (props.hasError) {
 		return (
 			<View>
@@ -180,9 +180,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 			onPress={onPress}
 			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
 			style={{ backgroundColor }}>
-			<View accessible accessibilityLabel={accessibilityLabel}>
-				<Message {...props} />
-			</View>
+			<Message {...props} />
 		</Touchable>
 	);
 });
