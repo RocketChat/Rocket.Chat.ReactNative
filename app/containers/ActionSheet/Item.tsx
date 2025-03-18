@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -18,6 +18,7 @@ export interface IActionSheetItem {
 export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	const enabled = item?.enabled ?? true;
 	const { colors } = useTheme();
+	const { fontScale } = useWindowDimensions();
 	const onPress = () => {
 		if (enabled) {
 			hide();
@@ -34,10 +35,11 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 	if (!enabled) {
 		color = colors.fontDisabled;
 	}
+	const height = 48 * fontScale;
 
 	return (
 		<View accessible accessibilityLabel={item.title}>
-			<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.surfaceLight }]} testID={item.testID}>
+			<Touch onPress={onPress} style={[styles.item, { backgroundColor: colors.surfaceLight, height }]} testID={item.testID}>
 				{item.icon ? <CustomIcon name={item.icon} size={24} color={color} /> : null}
 				<View style={styles.titleContainer}>
 					<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>

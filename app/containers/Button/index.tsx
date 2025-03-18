@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	normalButton: {
-		paddingHorizontal: 14,
-		justifyContent: 'center',
-		height: 48
+		paddingVertical: 14,
+		paddingHorizontal: 16,
+		justifyContent: 'center'
 	},
 	smallButton: {
 		paddingHorizontal: 12,
@@ -94,7 +94,7 @@ const Button: React.FC<IButtonProps> = ({
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
-			{loading ? <ActivityIndicator color={resolvedTextColor} /> : <Text style={textStyle}>{title}</Text>}
+			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
 		</Touchable>
 	);
 };

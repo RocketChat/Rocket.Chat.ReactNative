@@ -16,7 +16,9 @@ const ImageContainer = ({
 	style,
 	isReply,
 	author,
-	msg
+	msg,
+	imagePreview,
+	imageType
 }: IImageContainer): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
@@ -24,7 +26,7 @@ const ImageContainer = ({
 	const image = (
 		<Button onPress={onPress}>
 			<WidthAwareView>
-				<MessageImage uri={url} status={status} encrypted={isEncrypted} />
+				<MessageImage uri={url} status={status} encrypted={isEncrypted} imagePreview={imagePreview} imageType={imageType} />
 			</WidthAwareView>
 		</Button>
 	);

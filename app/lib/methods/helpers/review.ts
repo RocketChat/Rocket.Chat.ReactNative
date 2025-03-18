@@ -2,7 +2,7 @@ import { Alert, Linking } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import I18n from '../../../i18n';
-import { isFDroidBuild, STORE_REVIEW_LINK } from '../../constants';
+import { STORE_REVIEW_LINK } from '../../constants';
 import { showErrorAlert } from './info';
 import { isIOS } from './deviceInfo';
 import { events, logEvent } from './log';
@@ -86,7 +86,7 @@ class ReviewApp {
 	positiveEventCount = 0;
 
 	pushPositiveEvent = () => {
-		if (isFDroidBuild || process.env.RUNNING_E2E_TESTS === 'true') {
+		if (process.env.RUNNING_E2E_TESTS === 'true') {
 			return;
 		}
 		if (this.positiveEventCount >= numberOfPositiveEvent) {
