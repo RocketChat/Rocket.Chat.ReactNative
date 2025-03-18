@@ -423,7 +423,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover }} testID='share-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceNeutral }} testID='share-view'>
 				{this.renderContent()}
 			</SafeAreaView>
 		);
