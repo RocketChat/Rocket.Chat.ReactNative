@@ -114,7 +114,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View accessibilityLabel={accessibilityLabel} style={styles.flex}>
+				<View accessible accessibilityLabel={accessibilityLabel} style={styles.flex}>
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
@@ -166,7 +166,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
-	if (props.hasError) {
+	if (props.hasError || props.isInfo) {
 		return (
 			<View>
 				<Message {...props} />
