@@ -34,7 +34,7 @@
   "Auto_Translate": "自动翻译",
   "Automatic": "自动",
   "Avatar_changed_successfully": "头像更新成功！",
-  "Avatar_default_photo": "{{username}}的头像，用户首字母为{{firstLetter}}的{{backgroundColor}}头像",
+  "Avatar_default_photo": "{{username}}的默认头像",
   "Avatar_Photo": "{{username}}的头像",
   "Avatar_Url": "头像地址",
   "Away": "离开",

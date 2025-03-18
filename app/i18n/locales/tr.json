@@ -34,7 +34,7 @@
   "Auto_Translate": "Otomatik Çevir",
   "Automatic": "Otomatik",
   "Avatar_changed_successfully": "Profil fotoğrafı başarıyla değiştirildi!",
-  "Avatar_default_photo": "{{username}}'in avatarı, kullanıcı baş harfi {{firstLetter}} olan {{backgroundColor}} arka planlı avatar",
+  "Avatar_default_photo": "Varsayılan avatar {{username}} için",
   "Avatar_Photo": "{{username}}'nin avatarı",
   "Avatar_Url": "Profil fotoğrafı URL'si",
   "Away": "Uzakta",

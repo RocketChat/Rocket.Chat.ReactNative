@@ -56,7 +56,7 @@
   "Automatic": "தானாக",
   "Avatar": "அவதார்",
   "Avatar_changed_successfully": "அவதார் வேறுபடுத்தப்பட்டது!",
-  "Avatar_default_photo": "{{username}}'வின் அவதார், பயனர் துவக்கம் {{firstLetter}} உடன் {{backgroundColor}} அவதார்",
+  "Avatar_default_photo": "இயல்புநிலை அவதாரம் {{பயனர் பெயர்}} மற்று",
   "Avatar_Photo": "{{username}} இன் அவதார்",
   "Avatar_Url": "அவதார் URL",
   "Avatars": "அவதார்கள்",

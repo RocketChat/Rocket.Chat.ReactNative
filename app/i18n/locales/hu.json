@@ -56,7 +56,7 @@
   "Automatic": "Automatikus",
   "Avatar": "Avatar",
   "Avatar_changed_successfully": "Az avatar sikeresen megváltozott!",
-  "Avatar_default_photo": "{{username}} avatarja, {{backgroundColor}} avatar a felhasználó {{firstLetter}} kezdőbetűjével",
+  "Avatar_default_photo": "Alapértelmezett avatar {{username}} számára",
   "Avatar_Photo": "{{username}} avatárja",
   "Avatar_Url": "Avatar URL",
   "Avatars": "Avatarok",

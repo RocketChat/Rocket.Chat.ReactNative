@@ -48,7 +48,7 @@
   "Auto-join": "Anslut automatiskt",
   "Automatic": "Automatiskt",
   "Avatar_changed_successfully": "Avataren har ändrats",
-  "Avatar_default_photo": "{{username}}s avatar, {{backgroundColor}} avatar med användarinitial {{firstLetter}}",
+  "Avatar_default_photo": "Standardavatar för {{username}}",
   "Avatar_Photo": "{{username}}s avatar",
   "Avatar_Url": "URL till avatar",
   "Avatars": "Avatarer",

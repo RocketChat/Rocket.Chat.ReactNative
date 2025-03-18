@@ -56,7 +56,7 @@
   "Automatic": "स्वच्छता से",
   "Avatar": "अवतार",
   "Avatar_changed_successfully": "अवतार सफलता पर बदला गया है!",
-  "Avatar_default_photo": "{{username}} का अवतार, {{backgroundColor}} अवतार जिसमें उपयोगकर्ता का प्रथमाक्षर {{firstLetter}} है।",
+  "Avatar_default_photo": "{{username}} के लिए डिफ़ॉल्ट अवतार",
   "Avatar_Photo": "{{username}} का अवतार",
   "Avatar_Url": "अवतार URL",
   "Avatars": "अवतार",

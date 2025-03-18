@@ -56,7 +56,7 @@
   "Automatic": "স্বয়ংক্রিয়",
   "Avatar": "অবতার",
   "Avatar_changed_successfully": "অবতার সফলভাবে পরিবর্তন হয়েছে!",
-  "Avatar_default_photo": "{{username}}'এর অবতার, {{firstLetter}} অক্ষরযুক্ত {{backgroundColor}} অবতার",
+  "Avatar_default_photo": "{{username}}-এর জন্য ডিফল্ট অবতার",
   "Avatar_Photo": "{{username}}' এর অবতার",
   "Avatar_Url": "অবতার URL",
   "Avatars": "এভাটার",

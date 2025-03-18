@@ -59,7 +59,7 @@
   "Automatic": "Automatic",
   "Avatar": "Avatar",
   "Avatar_changed_successfully": "Avatar changed successfully!",
-  "Avatar_default_photo": "{{username}}'s avatar, {{backgroundColor}} avatar with user initial {{firstLetter}}",
+  "Avatar_default_photo": "Default avatar for {{username}}",
   "Avatar_Photo": "{{username}}'s avatar",
   "Avatar_Url": "Avatar URL",
   "Avatars": "Avatars",

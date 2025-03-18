@@ -56,7 +56,7 @@
   "Automatic": "Automatisch",
   "Avatar": "Profilbild",
   "Avatar_changed_successfully": "Avatar erfolgreich geändert!",
-  "Avatar_default_photo": "{{username}}s Avatar, {{backgroundColor}} Avatar mit Benutzerinitiale {{firstLetter}}",
+  "Avatar_default_photo": "Standardavatar für {{username}}",
   "Avatar_Photo": "{{username}}s Avatar",
   "Avatar_Url": "Avatar-URL",
   "Avatars": "Avatare",

@@ -7,7 +7,6 @@ import I18n from '../../i18n';
 import styles from './styles';
 import { useTheme } from '../../theme';
 import AvatarSuggestionItem from './AvatarSuggestionItem';
-import { getDefaultAvatarInfo } from '../../lib/methods/helpers/getDefaultAvatarInfo';
 
 const AvatarSuggestion = ({
 	onPress,
@@ -19,10 +18,8 @@ const AvatarSuggestion = ({
 	resetAvatar?: () => void;
 }) => {
 	const [avatarSuggestions, setAvatarSuggestions] = useState<IAvatar[]>([]);
-	const defaultAvatarInfo = getDefaultAvatarInfo(username);
-	const defaultAvatarAccessibilityInfo = defaultAvatarInfo
-		? I18n.t('Avatar_default_photo', defaultAvatarInfo)
-		: I18n.t('Select_Uploaded_Image');
+	const defaultAvatarAccessibilityInfo =
+		username && resetAvatar ? I18n.t('Avatar_default_photo', { username }) : I18n.t('Select_Uploaded_Image');
 
 	const { colors } = useTheme();
 

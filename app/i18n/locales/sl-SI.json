@@ -44,7 +44,7 @@
   "Auto-join": "Samodejna pridružitev",
   "Automatic": "Avtomatično",
   "Avatar_changed_successfully": "Avatar uspešno spremenjen",
-  "Avatar_default_photo": "{{username}}'s avatar, avatar z barvo ozadja {{backgroundColor}} z začetnico uporabnika {{firstLetter}}",
+  "Avatar_default_photo": "Privzeti avatar za {{username}}",
   "Avatar_Photo": "{{username}}'s avatar",
   "Avatar_Url": "Avatar URL",
   "Avatars": "Avatari",

@@ -59,7 +59,7 @@
   "Automatic": "Automatický",
   "Avatar": "Avatar",
   "Avatar_changed_successfully": "Avatar se úspěšně změnil!",
-  "Avatar_default_photo": "Avatar uživatele {{username}}, avatar s pozadím {{backgroundColor}} a iniciálou uživatele {{firstLetter}}.",
+  "Avatar_default_photo": "Výchozí avatar pro {{username}}",
   "Avatar_Photo": "Avatar uživatele {{username}}",
   "Avatar_Url": "Adresa URL avatara",
   "Avatars": "Avataři",

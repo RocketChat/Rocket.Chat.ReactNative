@@ -48,7 +48,7 @@
   "Auto-join": "Automaattinen liittyminen",
   "Automatic": "Automaattinen",
   "Avatar_changed_successfully": "Avatar on vaihdettu!",
-  "Avatar_default_photo": "{{username}}:n avatar, {{backgroundColor}} avatar käyttäjän kirjaimella {{firstLetter}}",
+  "Avatar_default_photo": "{{username}} oletusavatar",
   "Avatar_Photo": "{{username}}:n avatar",
   "Avatar_Url": "Avatarin URL-osoite",
   "Avatars": "Avatarit",

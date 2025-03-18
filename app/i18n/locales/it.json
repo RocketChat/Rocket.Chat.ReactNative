@@ -40,7 +40,7 @@
   "Auto_Translate": "Traduzione automatica",
   "Automatic": "Automatico",
   "Avatar_changed_successfully": "Avatar aggiornato correttamente!",
-  "Avatar_default_photo": "Avatar di {{username}}, avatar {{backgroundColor}} con iniziale dell'utente {{lettera}}",
+  "Avatar_default_photo": "Avatar predefinito per {{username}}",
   "Avatar_Photo": "L'avatar di {{username}}",
   "Avatar_Url": "URL avatar",
   "Away": "Assente",

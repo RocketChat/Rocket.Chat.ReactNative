@@ -35,7 +35,7 @@
   "Auto_Translate": "ترجمة تلقائية",
   "Automatic": "تلقائي",
   "Avatar_changed_successfully": "تم تغيير الصورة الرمزية بنجاح!",
-  "Avatar_default_photo": "الصورة الرمزية لـ {{username}}، صورة رمزية بلون الخلفية {{backgroundColor}} بحرف المستخدم الأول {{firstLetter}}",
+  "Avatar_default_photo": "صورة رمزية افتراضية لـ {{username}}",
   "Avatar_Photo": "الصورة الرمزية لـ{{username}}",
   "Avatar_Url": "عنوان ويب الصورة الرمزية",
   "Away": "غير متواجد",

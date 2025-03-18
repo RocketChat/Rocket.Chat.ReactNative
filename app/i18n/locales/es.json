@@ -31,7 +31,7 @@
   "Auto_Translate": "Traducción automática",
   "Automatic": "Automático",
   "Avatar_changed_successfully": "¡Avatar modificado correctamente!",
-  "Avatar_default_photo": "Avatar de {{username}}, avatar {{backgroundColor}} con la inicial del usuario {{firstLetter}}",
+  "Avatar_default_photo": "Avatar predeterminado para {{username}}",
   "Avatar_Photo": "El avatar de {{username}}",
   "Avatar_Url": "URL del Avatar",
   "Away": "Ausente",
