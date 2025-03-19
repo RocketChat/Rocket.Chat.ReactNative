@@ -12,7 +12,7 @@ export interface ITouchProps extends RectButtonProps {
 }
 
 const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
-	({ children, onPress, underlayColor, accessible, accessibilityLabel, ...props }, ref) => {
+	({ children, onPress, underlayColor, accessible, accessibilityLabel, style, ...props }, ref) => {
 		const { colors } = useTheme();
 
 		return (
@@ -23,7 +23,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
 				{...props}>
-				<View accessible={accessible} accessibilityLabel={accessibilityLabel} accessibilityRole='button'>
+				<View accessible={accessible} accessibilityLabel={accessibilityLabel} accessibilityRole='button' style={style}>
 					{children}
 				</View>
 			</RectButton>
