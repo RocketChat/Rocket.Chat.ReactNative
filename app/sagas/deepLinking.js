@@ -42,26 +42,19 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 
 const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
-		console.log('navigation already ready');
 		return Promise.resolve();
 	}
-	console.log('waiting for navigation');
 	return new Promise((resolve) => {
     const listener = () => {
-			console.log('navigation ready');
 			emitter.off('navigationReady', listener);
       resolve();
     };
-
-		console.log('adding listener');
 
 		emitter.on('navigationReady', listener);
   });
 };
 
 const navigate = function* navigate({ params }) {
-	console.log('🚀 ~ navigate ~ params:', params);
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
 		let name;
@@ -84,13 +77,13 @@ const navigate = function* navigate({ params }) {
 				const jumpToMessageId = params.messageId;
 
 				yield waitForNavigation();
-				console.log('navigating');
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
 			}
 		} else {
 			yield handleInviteLink({ params });
 		}
 	}
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 };
 
 const fallbackNavigation = function* fallbackNavigation() {
@@ -134,7 +127,6 @@ const handleShareExtension = function* handleOpen({ params }) {
 };
 
 const handleOpen = function* handleOpen({ params }) {
-	console.log('🚀 ~ handleOpen ~ params:', params);
 	if (params.type === 'shareextension') {
 		yield handleShareExtension({ params });
 		return;
@@ -183,7 +175,6 @@ const handleOpen = function* handleOpen({ params }) {
 			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
-		console.log('🚀 ~ handleOpen ~ navigate:', params);
 		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists

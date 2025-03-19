@@ -101,17 +101,13 @@ export default class Root extends React.Component<{}, IState> {
 			this.initTablet();
 		}
 		setNativeTheme(theme);
-		console.log('finished constructor')
 	}
 
 	componentDidMount() {
-		console.log('componentDidMount')
-		// this.init();
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
 				if (parsedDeepLinkingURL) {
-					console.log('deep link did mount')
 					store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 				}
 			});
@@ -127,14 +123,12 @@ export default class Root extends React.Component<{}, IState> {
 	}
 
 	init = async () => {
-		console.log('INDEX INIT INDEX INIT INDEX INIT INDEX INIT INDEX INIT INDEX INIT ')
 		store.dispatch(appInitLocalSettings());
 
 		// Open app from push notification
 		const notification = await initializePushNotifications();
 		if (notification) {
 			if ('configured' in notification) {
-				console.log('notification already configured')
 				return;
 			}
 			onNotification(notification);
@@ -147,7 +141,6 @@ export default class Root extends React.Component<{}, IState> {
 		const deepLinking = await Linking.getInitialURL();
 		const parsedDeepLinkingURL = parseDeepLinking(deepLinking!);
 		if (parsedDeepLinkingURL) {
-			console.log('deep link init')
 			store.dispatch(deepLinkingOpen(parsedDeepLinkingURL));
 			return;
 		}
