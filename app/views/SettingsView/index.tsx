@@ -177,10 +177,10 @@ const SettingsView = (): React.ReactElement => {
 						<List.Section>
 							<List.Separator />
 							<List.Item
-								title='Display'
-								onPress={() => navigateToScreen('DisplayPrefsView')}
+								title='Accessibility_and_Appearance'
+								onPress={() => navigateToScreen('AccessibilityAndAppearanceView')}
 								showActionIndicator
-								left={() => <List.Icon name='sort' />}
+								left={() => <List.Icon name='accessibility' />}
 							/>
 							<List.Separator />
 							<List.Item

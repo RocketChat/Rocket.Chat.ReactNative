@@ -205,6 +205,13 @@ export type ModalStackParamList = {
 		userId: string;
 		name: string;
 	};
+	AccessibilityAndAppearanceView: {
+		room: ISubscription;
+		member: any;
+		rid: string;
+		t: SubscriptionType;
+		showCloseModal?: boolean;
+	};
 };
 
 export type MasterDetailInsideStackParamList = {

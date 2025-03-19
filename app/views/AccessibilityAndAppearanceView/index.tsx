@@ -26,12 +26,9 @@ const AccessibilityAndAppearanceView = (): React.ReactElement => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Accessibility_and_Appearance'),
-			headerLeft: () =>
-				isMasterDetail ? (
-					<HeaderButton.CloseModal navigation={navigation} testID='accessibility-view-close' />
-				) : (
-					<HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
-				)
+			headerLeft: isMasterDetail
+				? undefined
+				: () => <HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
 		});
 	}, []);
 	return (
