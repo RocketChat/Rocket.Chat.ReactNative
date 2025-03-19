@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../../theme';
+import Touch from '../Touch';
 import { CustomIcon } from '../CustomIcon';
 import { IButtonService } from './interfaces';
 import styles from './styles';
@@ -10,7 +10,7 @@ import styles from './styles';
 const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, icon, accessibilityLabel }: IButtonService) => {
 	const { colors } = useTheme();
 	return (
-		<Touchable
+		<Touch
 			key={name}
 			onPress={onPress}
 			style={[styles.serviceButton, { backgroundColor }]}
@@ -18,11 +18,13 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 			underlayColor={colors.fontWhite}
 			accessible
 			accessibilityLabel={accessibilityLabel}>
-			<View style={styles.serviceButtonContainer}>
+			<View accessible={false} style={styles.serviceButtonContainer}>
 				{authType === 'oauth' || authType === 'apple' ? <CustomIcon name={icon} size={24} style={styles.serviceIcon} /> : null}
-				<Text style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>{buttonText}</Text>
+				<Text accessible={false} style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>
+					{buttonText}
+				</Text>
 			</View>
-		</Touchable>
+		</Touch>
 	);
 };
 
