@@ -1,5 +1,6 @@
 import { select, takeLatest } from 'redux-saga/effects';
 
+import Navigation from '../lib/navigation/appNavigation';
 import log from '../lib/methods/helpers/log';
 import { localAuthenticate, saveLastLocalAuthenticationSession } from '../lib/methods/helpers/localAuthentication';
 import { APP_STATE } from '../actions/actionsTypes';
@@ -13,7 +14,7 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	const login = yield select(state => state.login);
 	const server = yield select(state => state.server);
-	if (!login.isAuthenticated || login.isFetching || server.connecting || server.loading || server.changingServer) {
+	if (!login.isAuthenticated || login.isFetching || server.connecting || server.loading || server.changingServer || !Navigation.navigationRef.current) {
 		return;
 	}
 	try {
