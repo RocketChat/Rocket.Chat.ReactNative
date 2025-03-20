@@ -86,7 +86,6 @@ MessageInner.displayName = 'MessageInner';
 const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	const accessibilityLabel = useMemo(() => {
 		let label = '';
-		console.log(props);
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
 		if (props.isThreadReply) {
 			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
