@@ -44,14 +44,14 @@ const waitForNavigation = () => {
 	if (Navigation.navigationRef.current) {
 		return Promise.resolve();
 	}
-	return new Promise((resolve) => {
-    const listener = () => {
+	return new Promise(resolve => {
+		const listener = () => {
 			emitter.off('navigationReady', listener);
-      resolve();
-    };
+			resolve();
+		};
 
 		emitter.on('navigationReady', listener);
-  });
+	});
 };
 
 const navigate = function* navigate({ params }) {

@@ -14,7 +14,14 @@ const appHasComeBackToForeground = function* appHasComeBackToForeground() {
 	}
 	const login = yield select(state => state.login);
 	const server = yield select(state => state.server);
-	if (!login.isAuthenticated || login.isFetching || server.connecting || server.loading || server.changingServer || !Navigation.navigationRef.current) {
+	if (
+		!login.isAuthenticated ||
+		login.isFetching ||
+		server.connecting ||
+		server.loading ||
+		server.changingServer ||
+		!Navigation.navigationRef.current
+	) {
 		return;
 	}
 	try {
