@@ -200,7 +200,7 @@ const Header = React.memo(
 				userId: roomUserId
 			});
 			if (tmid) {
-				return `${iconOrStatusLabel} ${title} ${parentTitle}.`;
+				return `${iconOrStatusLabel} ${title} ${parentTitle ?? ''}.`;
 			}
 			return `${iconOrStatusLabel} ${title} ${subtitle ?? ''}.`;
 		}, [title, parentTitle, tmid, isGroupChat, status, statusState, teamMain, type, roomUserId, prid]);
