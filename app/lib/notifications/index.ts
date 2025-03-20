@@ -63,7 +63,7 @@ export const removeNotificationsAndBadge = () => {
 	removeAllNotifications();
 	setBadgeCount();
 };
-export const initializePushNotifications = (): Promise<INotification> | undefined => {
+export const initializePushNotifications = (): Promise<INotification | { configured: boolean }> | undefined => {
 	setBadgeCount();
 	return pushNotificationConfigure(onNotification);
 };
