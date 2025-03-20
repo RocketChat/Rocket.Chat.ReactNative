@@ -136,6 +136,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
+			options.headerBackVisible = false;
 			options.headerLeft = () => (
 				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
 			);
@@ -211,7 +212,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 				// Set a filename, if there isn't any
 				if (!item.filename) {
-					item.filename = `${new Date().toISOString()}.jpg`;
+					item.filename = item?.path?.split('/')?.pop();
 				}
 				return item;
 			})
@@ -422,7 +423,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceHover }} testID='share-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceNeutral }} testID='share-view'>
 				{this.renderContent()}
 			</SafeAreaView>
 		);

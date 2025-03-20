@@ -88,4 +88,9 @@ export type ChatEndpoints = {
 			success: boolean;
 		};
 	};
+	'chat.getPinnedMessages': {
+		GET: (params: { roomId: IServerRoom['_id']; offset: number; count: number }) => {
+			messages: IMessageFromServer[];
+		};
+	};
 };

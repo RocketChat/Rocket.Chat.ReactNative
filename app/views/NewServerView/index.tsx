@@ -1,9 +1,10 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Image, Keyboard, StyleSheet, Text } from 'react-native';
+import { BackHandler, Keyboard, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
+import { Image } from 'expo-image';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
@@ -31,8 +32,7 @@ import { getServerById } from '../../lib/database/services/Server';
 
 const styles = StyleSheet.create({
 	onboardingImage: {
-		alignSelf: 'center',
-		resizeMode: 'contain'
+		alignSelf: 'center'
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
@@ -328,7 +328,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 							}
 						]}
 						source={require('../../static/images/logo_with_name.png')}
-						fadeDuration={0}
+						contentFit='contain'
 					/>
 					<Text
 						style={{

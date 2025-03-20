@@ -10,7 +10,7 @@ export default StyleSheet.create({
 		paddingBottom: 30
 	},
 	filterItemButton: {
-		height: 46,
+		paddingVertical: 12,
 		justifyContent: 'center'
 	},
 	filterItemContainer: {
@@ -31,8 +31,6 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	filterItemIcon: {
-		width: 22,
-		height: 22,
 		marginHorizontal: 15
 	},
 	globalUsersContainer: {

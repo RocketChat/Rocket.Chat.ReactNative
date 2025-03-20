@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -24,6 +24,7 @@ const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
 
 const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		justifyContent: 'center'
 	},
 	titleContainer: {
@@ -147,6 +148,7 @@ const Header = React.memo(
 		rightButtonsWidth = 0
 	}: IRoomHeader) => {
 		const { colors } = useTheme();
+		const { fontScale } = useWindowDimensions();
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -212,7 +214,8 @@ const Header = React.memo(
 					styles.container,
 					{
 						opacity: disabled ? 0.5 : 1,
-						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0)
+						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0),
+						height: 36.9 * fontScale
 					}
 				]}
 				disabled={disabled}
