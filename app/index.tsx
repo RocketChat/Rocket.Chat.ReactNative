@@ -35,7 +35,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-import { MentionsPreferencesProvider } from './MentionsPreferences';
+import { MentionsPreferencesProvider } from './lib/hooks/useMentionsPreferences';
 import { initialMentionsPreferences } from './lib/methods/helpers/mentionsPreferences';
 import { IMentionsPreferences } from './definitions/IMentionsPreferences';
 import { RowHeightProvider } from './lib/hooks/useRowHeight';

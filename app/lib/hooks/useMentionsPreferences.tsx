@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-import { IMentionsPreferences } from './definitions/IMentionsPreferences';
-import { MENTIONS_PREFERENCES_KEY } from './lib/constants';
-import UserPreferences from './lib/methods/userPreferences';
+import { IMentionsPreferences } from '../../definitions/IMentionsPreferences';
+import { MENTIONS_PREFERENCES_KEY } from '../constants';
+import UserPreferences from '../methods/userPreferences';
 
 interface IMentionsPreferencesContextProps extends IMentionsPreferences {
 	toggleMentionsWithAtSymbol: () => void;
@@ -25,7 +25,7 @@ export const MentionsPreferencesContext = React.createContext<IMentionsPreferenc
 	toggleRoomsWithHashTag: () => {}
 });
 
-export const MentionsPreferencesProvider: React.FC<IMentionsPreferencesProvider> = ({ children, mentionsPreferences }) => {
+export const MentionsPreferencesProvider = ({ children, mentionsPreferences }: IMentionsPreferencesProvider) => {
 	const [preferences, setPreferences] = useState<IMentionsPreferences>(mentionsPreferences ?? defaultPreferences);
 
 	const toggleMentionsWithAtSymbol = () => {

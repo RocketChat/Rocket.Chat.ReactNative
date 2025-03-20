@@ -12,7 +12,7 @@ import { useTheme } from '../../../../theme';
 import { sendLoadingEvent } from '../../../Loading';
 import { IUserChannel } from '../../interfaces';
 import styles from '../../styles';
-import { useMentionsPreferences } from '../../../../MentionsPreferences';
+import { useMentionsPreferences } from '../../../../lib/hooks/useMentionsPreferences';
 
 interface IHashtag {
 	hashtag: string;

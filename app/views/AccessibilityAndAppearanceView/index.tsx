@@ -10,9 +10,9 @@ import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
-import { useMentionsPreferences } from '../../MentionsPreferences';
+import { useMentionsPreferences } from '../../lib/hooks/useMentionsPreferences';
 
-const AccessibilityAndAppearanceView = (): React.ReactElement => {
+const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
 	const { roomsWithHashTagSymbol, mentionsWithAtSymbol, toggleMentionsWithAtSymbol, toggleRoomsWithHashTag } =
