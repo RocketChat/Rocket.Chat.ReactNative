@@ -12,9 +12,9 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
+import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
-import com.facebook.react.bridge.JSIModulePackage;
 import com.wix.reactnativenotifications.core.AppLaunchHelper
 import com.wix.reactnativenotifications.core.AppLifecycleFacade
 import com.wix.reactnativenotifications.core.JsIOHelper
@@ -23,10 +23,10 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningPackage;
-import chat.rocket.reactnative.notification.CustomPushNotification;
+// import chat.rocket.reactnative.notification.CustomPushNotification;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
-open class MainApplication : Application(), ReactApplication, INotificationsApplication {
+open class MainApplication : Application(), ReactApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -35,11 +35,8 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
               // Packages that cannot be autolinked yet can be added manually here, for example:
               add(RNCViewPagerPackage())
               add(SSLPinningPackage())
+              add(WatermelonDBJSIPackage())
             }
-
-        override fun getJSIModulePackage(): JSIModulePackage {
-            return WatermelonDBJSIPackage()
-        }
 
         override fun getJSMainModuleName(): String = "index"
 
@@ -50,11 +47,11 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
       }
 
   override val reactHost: ReactHost
-    get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
+    get() = getDefaultReactHost(applicationContext, reactNativeHost)
 
   override fun onCreate() {
     super.onCreate()
-    SoLoader.init(this, false)
+    SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
 
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
@@ -69,18 +66,18 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
-  override fun getPushNotification(
-    context: Context,
-    bundle: Bundle,
-    defaultFacade: AppLifecycleFacade,
-    defaultAppLaunchHelper: AppLaunchHelper
-  ): IPushNotification {
-    return CustomPushNotification(
-      context,
-      bundle,
-      defaultFacade,
-      defaultAppLaunchHelper,
-      JsIOHelper()
-    )
-  }
+  // override fun getPushNotification(
+  //   context: Context,
+  //   bundle: Bundle,
+  //   defaultFacade: AppLifecycleFacade,
+  //   defaultAppLaunchHelper: AppLaunchHelper
+  // ): IPushNotification {
+  //   return CustomPushNotification(
+  //     context,
+  //     bundle,
+  //     defaultFacade,
+  //     defaultAppLaunchHelper,
+  //     JsIOHelper()
+  //   )
+  // }
 }
