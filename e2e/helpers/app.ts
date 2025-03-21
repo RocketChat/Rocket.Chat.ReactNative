@@ -48,7 +48,7 @@ async function navigateToLogin(server?: string) {
 async function navigateToRegister(server?: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
-	await waitFor(element(by.id('register-view')))
+	await waitFor(element(by.id('register-view-name')))
 		.toExist()
 		.withTimeout(2000);
 }
@@ -62,8 +62,14 @@ async function signup(): Promise<string> {
 	await element(by.id('register-view-email')).replaceText(randomUser.email);
 	await element(by.id('register-view-email')).tapReturnKey();
 	await element(by.id('register-view-password')).replaceText(randomUser.password);
+	await element(by.id('register-view-password')).tapReturnKey();
+	await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
+	await sleep(300);
 	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view')).swipe('up', 'fast');
+	await sleep(300);
 	await element(by.id('register-view-submit')).tap();
+
 	await expectValidRegisterOrRetry(device.getPlatform());
 	return randomUser.username;
 }
