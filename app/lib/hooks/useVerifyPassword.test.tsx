@@ -74,95 +74,97 @@ describe('useVerifyPassword', () => {
 		});
 	});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneLowercase policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_AtLeastOneLowercase: true
-			};
-			return settings[key] ?? null;
+	describe('validate password policies', () => {
+		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneLowercase policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_AtLeastOneLowercase: true
+				};
+				return settings[key] ?? null;
+			});
+
+			const { result } = renderHook(() => useVerifyPassword('UPPERCASEONLY', 'UPPERCASEONLY'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
 
-		const { result } = renderHook(() => useVerifyPassword('UPPERCASEONLY', 'UPPERCASEONLY'));
-		expect(result.current.isPasswordValid()).toBe(false);
-	});
+		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneUppercase policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_AtLeastOneUppercase: true
+				};
+				return settings[key] ?? null;
+			});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneUppercase policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_AtLeastOneUppercase: true
-			};
-			return settings[key] ?? null;
+			const { result } = renderHook(() => useVerifyPassword('lowercaseonly', 'lowercaseonly'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
 
-		const { result } = renderHook(() => useVerifyPassword('lowercaseonly', 'lowercaseonly'));
-		expect(result.current.isPasswordValid()).toBe(false);
-	});
+		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneSpecialCharacter policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_AtLeastOneSpecialCharacter: true
+				};
+				return settings[key] ?? null;
+			});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneSpecialCharacter policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_AtLeastOneSpecialCharacter: true
-			};
-			return settings[key] ?? null;
+			const { result } = renderHook(() => useVerifyPassword('NoSpecialCharacter', 'NoSpecialCharacter'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
 
-		const { result } = renderHook(() => useVerifyPassword('NoSpecialCharacter', 'NoSpecialCharacter'));
-		expect(result.current.isPasswordValid()).toBe(false);
-	});
+		it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneNumber policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_AtLeastOneNumber: true
+				};
+				return settings[key] ?? null;
+			});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_AtLeastOneNumber policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_AtLeastOneNumber: true
-			};
-			return settings[key] ?? null;
+			const { result } = renderHook(() => useVerifyPassword('NoNumber!', 'NoNumber!'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
 
-		const { result } = renderHook(() => useVerifyPassword('NoNumber!', 'NoNumber!'));
-		expect(result.current.isPasswordValid()).toBe(false);
-	});
+		it('should return false if password does not meet the Accounts_Password_Policy_ForbidRepeatingCharacters policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_ForbidRepeatingCharacters: true,
+					Accounts_Password_Policy_ForbidRepeatingCharactersCount: 3
+				};
+				return settings[key] ?? null;
+			});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_ForbidRepeatingCharacters policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_ForbidRepeatingCharacters: true,
-				Accounts_Password_Policy_ForbidRepeatingCharactersCount: 3
-			};
-			return settings[key] ?? null;
+			const { result } = renderHook(() => useVerifyPassword('rrrrepeating', 'rrrrepeating'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
 
-		const { result } = renderHook(() => useVerifyPassword('rrrrepeating', 'rrrrepeating'));
-		expect(result.current.isPasswordValid()).toBe(false);
-	});
+		it('should return false if password does not meet the Accounts_Password_Policy_MinLength policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_MinLength: 3
+				};
+				return settings[key] ?? null;
+			});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_MinLength policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_MinLength: 3
-			};
-			return settings[key] ?? null;
+			const { result } = renderHook(() => useVerifyPassword('12', '12'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
 
-		const { result } = renderHook(() => useVerifyPassword('12', '12'));
-		expect(result.current.isPasswordValid()).toBe(false);
-	});
+		it('should return false if password does not meet the Accounts_Password_Policy_MaxLength policy', () => {
+			mockUseSetting.mockImplementation((key: TPolicySettings) => {
+				const settings: Partial<Record<TPolicySettings, boolean | number>> = {
+					Accounts_Password_Policy_Enabled: true,
+					Accounts_Password_Policy_MaxLength: 4
+				};
+				return settings[key] ?? null;
+			});
 
-	it('should return false if password does not meet the Accounts_Password_Policy_MaxLength policy', () => {
-		mockUseSetting.mockImplementation((key: TPolicySettings) => {
-			const settings: Partial<Record<TPolicySettings, boolean | number>> = {
-				Accounts_Password_Policy_Enabled: true,
-				Accounts_Password_Policy_MaxLength: 4
-			};
-			return settings[key] ?? null;
+			const { result } = renderHook(() => useVerifyPassword('12345', '12345'));
+			expect(result.current.isPasswordValid()).toBe(false);
 		});
-
-		const { result } = renderHook(() => useVerifyPassword('12345', '12345'));
-		expect(result.current.isPasswordValid()).toBe(false);
 	});
 });
