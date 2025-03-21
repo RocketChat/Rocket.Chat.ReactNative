@@ -72,12 +72,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 		);
 	}
 
-	return (
-		<Text style={[styles.text, { color: themes[theme].statusFontWarning }, ...style]}>
-			{preffix}
-			{mention}
-		</Text>
-	);
+	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;

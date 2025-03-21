@@ -124,7 +124,19 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		return `${user} ${hour} ${label}`;
-	}, []);
+	}, [
+		props.msg,
+		props.tmid,
+		props.isThreadReply,
+		props.isThreadSequential,
+		props.isEncrypted,
+		props.isInfo,
+		props.ts,
+		props.useRealName,
+		props.author,
+		props.mentions,
+		props.channels
+	]);
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
