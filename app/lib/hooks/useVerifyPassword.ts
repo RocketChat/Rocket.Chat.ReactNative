@@ -67,15 +67,15 @@ const useVerifyPassword = (password: string, confirmPassword: string) => {
 			});
 		}
 
-		if (Accounts_Password_Policy_MaxLength !== -1) {
+		if (Accounts_Password_Policy_MaxLength && Accounts_Password_Policy_MaxLength !== -1) {
 			policies.push({
 				name: 'MaxLength',
 				label: i18n.t('At_Most_Characters', { quantity: Accounts_Password_Policy_MaxLength }),
-				regex: new RegExp(`.{1,${Accounts_Password_Policy_MaxLength}}`)
+				regex: new RegExp(`^.{1,${Accounts_Password_Policy_MaxLength}}$`)
 			});
 		}
 
-		if (Accounts_Password_Policy_MinLength !== -1) {
+		if (Accounts_Password_Policy_MinLength && Accounts_Password_Policy_MinLength !== -1) {
 			policies.push({
 				name: 'MinLength',
 				label: i18n.t('At_Least_Characters', { quantity: Accounts_Password_Policy_MinLength }),
