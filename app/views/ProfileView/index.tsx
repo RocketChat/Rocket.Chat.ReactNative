@@ -109,7 +109,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const validateFormInfo = () => {
 		const isValid = validationSchema.isValidSync(getValues());
-		if (!parsedCustomFields) return isValid;
+		if (!parsedCustomFields) {
+			return isValid;
+		}
 		let requiredCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
 			if (parsedCustomFields[key].required) {

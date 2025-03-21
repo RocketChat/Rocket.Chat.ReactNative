@@ -85,8 +85,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		if (!parsedCustomFields) return true;
 		const isValid = validationSchema.isValidSync(getValues());
+		if (!parsedCustomFields) {
+			return isValid;
+		}
 		let requiredCheck = true;
 		let minLengthCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
