@@ -1,0 +1,64 @@
+diff --git a/node_modules/@react-navigation/elements/package.json b/node_modules/@react-navigation/elements/package.json
+index bed0995..081d9ad 100644
+--- a/node_modules/@react-navigation/elements/package.json
++++ b/node_modules/@react-navigation/elements/package.json
+@@ -19,18 +19,18 @@
+   },
+   "homepage": "https://reactnavigation.org",
+   "source": "./src/index.tsx",
+-  "main": "./lib/commonjs/index.js",
+-  "module": "./lib/module/index.js",
+-  "types": "./lib/typescript/commonjs/src/index.d.ts",
++  "main": "./src/index.tsx",
++  "module": "./src/index.tsx",
++  "types": "./src/index.d.ts",
+   "exports": {
+     ".": {
+       "import": {
+-        "types": "./lib/typescript/module/src/index.d.ts",
+-        "default": "./lib/module/index.js"
++        "types": "./src/index.d.ts",
++        "default": "./src/index.tsx"
+       },
+       "require": {
+-        "types": "./lib/typescript/commonjs/src/index.d.ts",
+-        "default": "./lib/commonjs/index.js"
++        "types": "./src/index.d.ts",
++        "default": "./src/index.tsx"
+       }
+     }
+   },
+diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderButton.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderButton.tsx
+index 8df4098..1121ded 100644
+--- a/node_modules/@react-navigation/elements/src/Header/HeaderButton.tsx
++++ b/node_modules/@react-navigation/elements/src/Header/HeaderButton.tsx
+@@ -1,7 +1,8 @@
+ import { Platform, StyleSheet } from 'react-native';
+ 
+-import { PlatformPressable } from '../PlatformPressable';
++// import { PlatformPressable } from '../PlatformPressable';
+ import type { HeaderButtonProps } from '../types';
++import { BorderlessButton } from 'react-native-gesture-handler';
+ 
+ export function HeaderButton({
+   disabled,
+@@ -15,8 +16,8 @@ export function HeaderButton({
+   children,
+ }: HeaderButtonProps) {
+   return (
+-    <PlatformPressable
+-      disabled={disabled}
++    <BorderlessButton
++      enabled={!disabled}
+       href={href}
+       accessibilityLabel={accessibilityLabel}
+       testID={testID}
+@@ -31,7 +32,7 @@ export function HeaderButton({
+       })}
+     >
+       {children}
+-    </PlatformPressable>
++    </BorderlessButton>
+   );
+ }
+ 
