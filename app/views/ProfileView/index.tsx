@@ -40,16 +40,15 @@ import CustomFields from './components/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
+import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
-const passwordRules = /^(?!.*(.)\1{2})^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,24}$/;
 const validationSchema = yup.object().shape({
 	name: yup.string().min(1).required(),
 	email: yup.string().email().required(),
-	username: yup.string().min(1).required(),
-	newPassword: yup.string().nullable().notRequired().matches(passwordRules)
+	username: yup.string().min(1).required()
 });
 
 interface IProfileViewProps {
@@ -88,7 +87,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		setFocus,
 		getValues,
 		setValue,
-		formState: { isDirty }
+		watch,
+		formState: { isDirty, dirtyFields }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -103,6 +103,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
+	const newPassword = watch('newPassword') ?? '';
+	const { isPasswordValid } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -123,7 +125,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const enableSaveChangesButton = () => {
 		const isFormInfoValid = validateFormInfo();
-		return isFormInfoValid && isDirty;
+		const { newPassword: isNewPasswordDirty } = dirtyFields;
+		const passwordValid = isNewPasswordDirty && newPassword.length > 0 ? isPasswordValid() : true;
+		return isFormInfoValid && isDirty && passwordValid;
 	};
 
 	const handleEditAvatar = () => {
