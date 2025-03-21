@@ -2,6 +2,7 @@ const path = require('path');
 const { generate } = require('@storybook/react-native/scripts/generate');
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
 
 generate({
 	configPath: path.resolve(__dirname, './.storybook')
@@ -18,4 +19,4 @@ const config = {
 	}
 };
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config));
