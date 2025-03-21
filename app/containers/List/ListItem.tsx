@@ -23,6 +23,8 @@ const styles = StyleSheet.create({
 		paddingRight: PADDING_HORIZONTAL
 	},
 	rightContainer: {
+		flex: 1,
+		justifyContent: 'flex-end',
 		paddingLeft: PADDING_HORIZONTAL
 	},
 	disabled: {
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 4
 	},
 	title: {
+		flex: 1,
 		flexShrink: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
