@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, useWindowDimensions, View, ViewStyle } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 import { getUnreadStyle } from './getUnreadStyle';
@@ -7,16 +7,13 @@ import { useTheme } from '../../theme';
 
 const styles = StyleSheet.create({
 	unreadNumberContainerNormal: {
-		height: 21,
 		paddingVertical: 3,
 		paddingHorizontal: 5,
-		borderRadius: 10.5,
 		alignItems: 'center',
 		justifyContent: 'center',
 		marginLeft: 10
 	},
 	unreadNumberContainerSmall: {
-		borderRadius: 10.5,
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
@@ -56,6 +53,7 @@ const UnreadBadge = React.memo(
 		hideUnreadStatus
 	}: IUnreadBadge) => {
 		const { theme } = useTheme();
+		const { fontScale } = useWindowDimensions();
 
 		if ((!unread || unread <= 0) && !tunread?.length) {
 			return null;
@@ -96,12 +94,12 @@ const UnreadBadge = React.memo(
 		if (small) {
 			minWidth = 11 + text.length * 5;
 		}
-
+		const borderRadius = 10.5 * fontScale;
 		return (
 			<View
 				style={[
 					small ? styles.unreadNumberContainerSmall : styles.unreadNumberContainerNormal,
-					{ backgroundColor, minWidth },
+					{ backgroundColor, minWidth: minWidth * fontScale, borderRadius },
 					style
 				]}>
 				<Text style={[styles.unreadText, small && styles.textSmall, { color }]} numberOfLines={1}>

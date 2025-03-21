@@ -11,7 +11,7 @@ import { generateLoadMoreId } from './helpers/generateLoadMoreId';
 
 const COUNT = 50;
 
-async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }) {
+async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t: RoomTypes }): Promise<IMessage[]> {
 	let params = { roomId, count: COUNT } as { roomId: string; count: number; latest?: string };
 	if (latest) {
 		params = { ...params, latest: new Date(latest).toISOString() };
@@ -27,7 +27,7 @@ async function load({ rid: roomId, latest, t }: { rid: string; latest?: Date; t:
 	if (!data.success) {
 		return [];
 	}
-	return data.messages;
+	return data.messages as IMessage[];
 }
 
 export function loadMessagesForRoom(args: {
@@ -38,7 +38,7 @@ export function loadMessagesForRoom(args: {
 }): Promise<void> {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const data: Partial<IMessage>[] = await load(args);
+			const data = await load(args);
 			if (data?.length) {
 				const lastMessage = data[data.length - 1];
 				const lastMessageRecord = await getMessageById(lastMessage._id as string);
@@ -49,7 +49,7 @@ export function loadMessagesForRoom(args: {
 						ts: moment(lastMessage.ts).subtract(1, 'millisecond').toString(),
 						t: MessageTypeLoad.MORE,
 						msg: lastMessage.msg
-					};
+					} as IMessage;
 					data.push(loadMoreMessage);
 				}
 				await updateMessages({ rid: args.rid, update: data, loaderItem: args.loaderItem });

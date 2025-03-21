@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWindowDimensions } from 'react-native';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
 
@@ -19,7 +20,17 @@ export interface ICustomIcon extends IconProps {
 
 const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
-	return <IconSet name={name} size={size} color={color || colors.fontDefault} style={[{ lineHeight: size }, style]} {...props} />;
+	const { fontScale } = useWindowDimensions();
+
+	return (
+		<IconSet
+			name={name}
+			size={size * fontScale}
+			color={color || colors.fontDefault}
+			style={[{ lineHeight: size * fontScale }, style]}
+			{...props}
+		/>
+	);
 };
 
 export { CustomIcon };
