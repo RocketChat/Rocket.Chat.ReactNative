@@ -14,8 +14,8 @@ export default function DeviceNotificationSettings(): React.ReactElement {
 		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled
 	}));
 
-	const goToNotificationSettings = () => {
-		openAppSettings();
+	const goToNotificationSettings = async () => {
+		await openAppSettings();
 	};
 
 	const alertDeviceNotificationSettings = () => {

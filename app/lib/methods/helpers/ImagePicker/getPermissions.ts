@@ -11,7 +11,7 @@ export const getPermissions = async (type: 'camera' | 'library') => {
 	const method = type === 'camera' ? 'requestCameraPermissionsAsync' : 'requestMediaLibraryPermissionsAsync';
 	const requestResult = await ImagePicker[method]();
 	if (!requestResult.canAskAgain) {
-		openAppSettings();
+		await openAppSettings();
 		return Promise.reject();
 	}
 	if (!requestResult.granted) {
