@@ -34,8 +34,8 @@ import sharedStyles from '../Styles';
 import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
-import getParsedCustomFields from './methods/getParsedCustomFields';
-import getCustomFields from './methods/getCustomFields';
+import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
+import getCustomFields from '../../lib/methods/getCustomFields';
 import CustomFields from './components/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import handleError from './methods/handleError';
@@ -103,12 +103,13 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const parsedCustomFields = getParsedCustomFields(Accounts_CustomFields);
+	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
 
 	const validateFormInfo = () => {
 		const isValid = validationSchema.isValidSync(getValues());
+		if (!parsedCustomFields) return isValid;
 		let requiredCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
 			if (parsedCustomFields[key].required) {
