@@ -14,3 +14,4 @@ export * from './supportedVersions';
 export * from './tablet';
 export * from './mediaAutoDownload';
 export * from './userAgent';
+export * from './debounceConfig';

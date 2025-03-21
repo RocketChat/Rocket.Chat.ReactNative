@@ -12,10 +12,14 @@ export interface IImageContainer {
 	getCustomEmoji?: TGetCustomEmoji;
 	author?: IUserMessage;
 	msg?: string;
+	imagePreview?: string;
+	imageType?: string;
 }
 
 export interface IMessageImage {
 	uri: string;
 	status: TDownloadState;
 	encrypted: boolean;
+	imagePreview?: string;
+	imageType?: string;
 }

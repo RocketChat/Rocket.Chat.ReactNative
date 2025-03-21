@@ -1,10 +1,7 @@
 buildscript {
-    def taskRequests = getGradle().getStartParameter().getTaskRequests().toString().toLowerCase()
-    def isPlay = !taskRequests.contains("foss")
-
     ext {
         buildToolsVersion = "34.0.0"
-        minSdkVersion = 23
+        minSdkVersion = 24
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = "25.1.8937393"
@@ -12,7 +9,6 @@ buildscript {
         kotlin_version = kotlinVersion
         glideVersion = "4.11.0"
         supportLibVersion = "28.0.0"
-        libre_build = !(isPlay.toBoolean())
     }
 
     repositories {
@@ -21,11 +17,9 @@ buildscript {
     }
 
     dependencies {
-        if (isPlay) {
-            classpath 'com.google.gms:google-services:4.4.1'
-            classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
-            classpath "com.bugsnag:bugsnag-android-gradle-plugin:8.+"
-        }
+        classpath 'com.google.gms:google-services:4.4.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.0'
+        classpath "com.bugsnag:bugsnag-android-gradle-plugin:8.+"
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")

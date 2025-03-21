@@ -42,6 +42,7 @@ export interface ICreateDiscussionViewSelectChannel {
 	onChannelSelect: ({ value }: { value: any }) => void;
 	blockUnauthenticatedAccess: boolean;
 	serverVersion: string;
+	required?: boolean;
 }
 
 export interface ICreateDiscussionViewSelectUsers {

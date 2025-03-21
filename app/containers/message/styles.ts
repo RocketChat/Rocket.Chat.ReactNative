@@ -49,7 +49,6 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 4,
 		borderWidth: 1,
-		height: 28,
 		minWidth: 46.3
 	},
 	reactionCount: {
@@ -96,21 +95,15 @@ export default StyleSheet.create({
 	},
 	imageContainer: {
 		flexDirection: 'column',
-		borderRadius: 4
+		borderRadius: 4,
+		marginTop: 4
 	},
 	image: {
 		width: '100%',
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
-		overflow: 'hidden'
-	},
-	imagePressed: {
-		opacity: 0.5
-	},
-	inlineImage: {
-		width: 300,
-		height: 300,
-		resizeMode: 'contain'
+		overflow: 'hidden',
+		marginTop: 4
 	},
 	text: {
 		fontSize: 16,

@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
@@ -141,7 +141,6 @@ const Description = React.memo(
 				style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		);
 	},
@@ -168,7 +167,7 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );
@@ -194,7 +193,7 @@ const Fields = React.memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</View>
@@ -277,7 +276,7 @@ const Reply = React.memo(
 						<UrlImage image={attachment.thumb_url} />
 					</View>
 				</Touchable>
-				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
 			</>
 		);
 	},

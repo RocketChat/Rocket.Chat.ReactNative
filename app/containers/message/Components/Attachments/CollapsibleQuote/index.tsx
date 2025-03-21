@@ -91,16 +91,13 @@ interface IMessageReply {
 
 const AttText = React.memo(
 	({ text, getCustomEmoji }: IMessageAttText) => {
-		const { theme } = useTheme();
 		const { user } = useContext(MessageContext);
 
 		if (!text) {
 			return null;
 		}
 
-		return (
-			<Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} style={[styles.fieldText]} />
-		);
+		return <Markdown msg={text} username={user.username} getCustomEmoji={getCustomEmoji} style={[styles.fieldText]} />;
 	},
 	(prevProps, nextProps) => prevProps.text === nextProps.text
 );
@@ -125,7 +122,6 @@ const Fields = React.memo(
 							msg={field?.value || ''}
 							username={user.username}
 							getCustomEmoji={getCustomEmoji}
-							theme={theme}
 							style={[styles.markdownFontSize]}
 						/>
 					</View>

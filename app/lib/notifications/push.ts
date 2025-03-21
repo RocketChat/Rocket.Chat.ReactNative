@@ -26,7 +26,15 @@ export const removeAllNotifications = (): void => {
 	Notifications.removeAllDeliveredNotifications();
 };
 
+let configured = false;
+
 export const pushNotificationConfigure = (onNotification: (notification: INotification) => void): Promise<any> => {
+	if (configured) {
+		return Promise.resolve({ configured: true });
+	}
+
+	configured = true;
+
 	if (isIOS) {
 		// init
 		Notifications.ios.registerRemoteNotifications();

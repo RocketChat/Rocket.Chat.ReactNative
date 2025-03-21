@@ -28,7 +28,7 @@ final class SSLPinning: NSObject {
         }
 
         serversQuery.forEach { server in
-            guard let serverUrlString = server["url"] as? String,
+            guard let serverUrlString = server["id"] as? String,
                   let serverUrl = URL(string: serverUrlString),
                   let clientSSL = mmkv.clientSSL(for: serverUrl) else {
                 return
