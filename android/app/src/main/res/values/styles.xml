@@ -1,0 +1,30 @@
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:colorEdgeEffect">#aaaaaa</item>
+        <item name="colorPrimaryDark">@color/splashBackground</item>
+        <item name="android:forceDarkAllowed">false</item>
+        <!-- RN 0.68.2 -->
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item> 
+    </style>
+
+    <style name="ShareTheme" parent="AppTheme">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="BootTheme" parent="Theme.SplashScreen">
+      <item name="windowSplashScreenBackground">@color/splashBackground</item>
+      <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+      <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+
+    <!--  https://github.com/facebook/react-native/blob/d1ab03235cb4b93304150878d2b9057ab45bba77/ReactAndroid/src/main/res/views/modal/values/themes.xml#L5  -->
+    <style name="Theme.FullScreenDialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

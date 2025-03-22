@@ -1,0 +1,104 @@
+{
+	"signed": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0aW1lc3RhbXAiOiIyMDIzLTEwLTExVDE5OjI0OjEwLjc5OTkwNjgzWiIsIm1lc3NhZ2VzIjpbeyJyZW1haW5pbmdEYXlzIjozMCwidGl0bGUiOiJ2ZXJzaW9uX3Vuc3VwcG9ydGVkX3RpdGxlIiwic3VidGl0bGUiOiJ2ZXJzaW9uX3Vuc3VwcG9ydGVkX3N1YnRpdGxlIiwiZGVzY3JpcHRpb24iOiJ2ZXJzaW9uX3Vuc3VwcG9ydGVkX2JvZHkiLCJ0eXBlIjoiaW5mbyIsInBhcmFtcyI6e30sImxpbmsiOiIifV0sInZlcnNpb25zIjpbeyJ2ZXJzaW9uIjoiNi4zLjEiLCJzZWN1cml0eSI6ZmFsc2UsImluZm9VcmwiOiJodHRwczovL2dpdGh1Yi5jb20vUm9ja2V0Q2hhdC9Sb2NrZXQuQ2hhdC9yZWxlYXNlcy90YWcvNi4zLjEiLCJleHBpcmF0aW9uIjoiMjAyMy0xMi0yNlQwMDowMDowMFoifSx7InZlcnNpb24iOiI2LjMuMCIsInNlY3VyaXR5IjpmYWxzZSwiaW5mb1VybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9Sb2NrZXRDaGF0L1JvY2tldC5DaGF0L3JlbGVhc2VzL3RhZy82LjMuMCIsImV4cGlyYXRpb24iOiIyMDIzLTEyLTI2VDAwOjAwOjAwWiJ9LHsidmVyc2lvbiI6IjYuMy4yIiwic2VjdXJpdHkiOmZhbHNlLCJpbmZvVXJsIjoiaHR0cHM6Ly9naXRodWIuY29tL1JvY2tldENoYXQvUm9ja2V0LkNoYXQvcmVsZWFzZXMvdGFnLzYuMy4yIiwiZXhwaXJhdGlvbiI6IjIwMjMtMTItMjZUMDA6MDA6MDBaIn0seyJ2ZXJzaW9uIjoiNi4zLjMiLCJzZWN1cml0eSI6ZmFsc2UsImluZm9VcmwiOiJodHRwczovL2dpdGh1Yi5jb20vUm9ja2V0Q2hhdC9Sb2NrZXQuQ2hhdC9yZWxlYXNlcy90YWcvNi4zLjMiLCJleHBpcmF0aW9uIjoiMjAyMy0xMi0yNlQwMDowMDowMFoifSx7InZlcnNpb24iOiI2LjMuNCIsInNlY3VyaXR5IjpmYWxzZSwiaW5mb1VybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9Sb2NrZXRDaGF0L1JvY2tldC5DaGF0L3JlbGVhc2VzL3RhZy82LjMuNCIsImV4cGlyYXRpb24iOiIyMDIzLTEyLTI2VDAwOjAwOjAwWiJ9LHsidmVyc2lvbiI6IjYuMy41Iiwic2VjdXJpdHkiOmZhbHNlLCJpbmZvVXJsIjoiaHR0cHM6Ly9naXRodWIuY29tL1JvY2tldENoYXQvUm9ja2V0LkNoYXQvcmVsZWFzZXMvdGFnLzYuMy41IiwiZXhwaXJhdGlvbiI6IjIwMjMtMTItMjZUMDA6MDA6MDBaIn0seyJ2ZXJzaW9uIjoiNi4zLjYiLCJzZWN1cml0eSI6ZmFsc2UsImluZm9VcmwiOiJodHRwczovL2dpdGh1Yi5jb20vUm9ja2V0Q2hhdC9Sb2NrZXQuQ2hhdC9yZWxlYXNlcy90YWcvNi4zLjYiLCJleHBpcmF0aW9uIjoiMjAyMy0xMi0yNlQwMDowMDowMFoifSx7InZlcnNpb24iOiI2LjMuNyIsInNlY3VyaXR5IjpmYWxzZSwiaW5mb1VybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9Sb2NrZXRDaGF0L1JvY2tldC5DaGF0L3JlbGVhc2VzL3RhZy82LjMuNyIsImV4cGlyYXRpb24iOiIyMDIzLTEyLTI2VDAwOjAwOjAwWiJ9LHsidmVyc2lvbiI6IjYuMy44Iiwic2VjdXJpdHkiOmZhbHNlLCJpbmZvVXJsIjoiaHR0cHM6Ly9naXRodWIuY29tL1JvY2tldENoYXQvUm9ja2V0LkNoYXQvcmVsZWFzZXMvdGFnLzYuMy44IiwiZXhwaXJhdGlvbiI6IjIwMjMtMTItMjZUMDA6MDA6MDBaIn0seyJ2ZXJzaW9uIjoiNi40LjAiLCJzZWN1cml0eSI6ZmFsc2UsImluZm9VcmwiOiJodHRwczovL2dpdGh1Yi5jb20vUm9ja2V0Q2hhdC9Sb2NrZXQuQ2hhdC9yZWxlYXNlcy90YWcvNi40LjAiLCJleHBpcmF0aW9uIjoiMjAyNC0wMS0xMVQwMDowMDowMFoifSx7InZlcnNpb24iOiI2LjMuOSIsInNlY3VyaXR5IjpmYWxzZSwiaW5mb1VybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9Sb2NrZXRDaGF0L1JvY2tldC5DaGF0L3JlbGVhc2VzL3RhZy82LjMuOSIsImV4cGlyYXRpb24iOiIyMDIzLTEyLTI2VDAwOjAwOjAwWiJ9LHsidmVyc2lvbiI6IjYuMy4xMCIsInNlY3VyaXR5IjpmYWxzZSwiaW5mb1VybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9Sb2NrZXRDaGF0L1JvY2tldC5DaGF0L3JlbGVhc2VzL3RhZy82LjMuMTAiLCJleHBpcmF0aW9uIjoiMjAyMy0xMi0yNlQwMDowMDowMFoifSx7InZlcnNpb24iOiI2LjQuMSIsInNlY3VyaXR5IjpmYWxzZSwiaW5mb1VybCI6Imh0dHBzOi8vZ2l0aHViLmNvbS9Sb2NrZXRDaGF0L1JvY2tldC5DaGF0L3JlbGVhc2VzL3RhZy82LjQuMSIsImV4cGlyYXRpb24iOiIyMDI0LTAyLTA5VDIxOjA3OjUyLjMyOVoifSx7InZlcnNpb24iOiI2LjUuMC1kZXZlbG9wIiwic2VjdXJpdHkiOmZhbHNlLCJpbmZvVXJsIjoiIiwiZXhwaXJhdGlvbiI6IjIwMjMtMTAtMThUMTk6MjQ6MTAuODE0NzMxMTg5WiJ9XSwiaTE4biI6eyJlbiI6eyJ2ZXJzaW9uX3Vuc3VwcG9ydGVkX2JvZHkiOiJBbiBhdXRvbWF0aWMgMzAtZGF5IHdhcm5pbmcgcGVyaW9kIGhhcyBiZWVuIGFwcGxpZWQgdG8gYWxsb3cgdGltZSBmb3IgYSB3b3Jrc3BhY2UgYWRtaW4gdG8gdXBkYXRlIHdvcmtzcGFjZSB0byBhIHN1cHBvcnRlZCBzb2Z0d2FyZSB2ZXJzaW9uLiIsInZlcnNpb25fdW5zdXBwb3J0ZWRfc3VidGl0bGUiOiJNb2JpbGUgYW5kIGRlc2t0b3AgYXBwIGFjY2VzcyB0byB7e2luc3RhbmNlX3dzX25hbWV9fSB3aWxsIGJlIGN1dCBvZmYgaW4ge3tyZW1haW5pbmdfZGF5c319IGRheXMiLCJ2ZXJzaW9uX3Vuc3VwcG9ydGVkX3RpdGxlIjoie3tpbnN0YW5jZV93c19uYW1lfX0gaXMgcnVubmluZyBhbiB1bnN1cHBvcnRlZCB2ZXJzaW9uIG9mIFJvY2tldC5DaGF0In19LCJlbmZvcmNlbWVudFN0YXJ0RGF0ZSI6IjIwMjMtMTAtMzFUMDA6MDA6MDBaIn0.F83D93FJN-dQjSv4c2NjANHJ_aOou2WPioYiu7LMymvwSr9PvK87_xGA5wB_b532mRDThfbwkYU0mqvfaHylTKcteYpJn2zy1-ZGHj5Ugtt4wxBMYezW07_H7K8DEskwuGQQ5jmmy1VEwzIVcM7GoGQLDT2eafkloHBXQLRqmanhb03110NGiNu_9xkMU5cmsW2tP1-kShug89L-E4tHXzDG7TXX4yF4H_W3RdmdW6b5FNdmoYFF68I4HYGNmcgOZDBsw2gkA3xUg3vFsbnkjl_oyyBZqINFZRu0TtVu4S5OORnrM-9zJp_C6GMiueFLBy3lwjNIcAUPrZA93uu7Yg",
+	"timestamp": "2023-10-11T19:24:10.79990683Z",
+	"messages": [
+		{
+			"remainingDays": 30,
+			"title": "version_unsupported_title",
+			"subtitle": "version_unsupported_subtitle",
+			"description": "version_unsupported_body",
+			"type": "info",
+			"params": {},
+			"link": ""
+		}
+	],
+	"versions": [
+		{
+			"version": "6.3.1",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.1",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.0",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.0",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.2",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.2",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.3",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.3",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.4",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.4",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.5",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.5",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.6",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.6",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.7",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.7",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.8",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.8",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.4.0",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.4.0",
+			"expiration": "2024-01-11T00:00:00Z"
+		},
+		{
+			"version": "6.3.9",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.9",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.3.10",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.3.10",
+			"expiration": "2023-12-26T00:00:00Z"
+		},
+		{
+			"version": "6.4.1",
+			"security": false,
+			"infoUrl": "https://github.com/RocketChat/Rocket.Chat/releases/tag/6.4.1",
+			"expiration": "2024-02-09T21:07:52.329Z"
+		},
+		{ "version": "6.5.0-develop", "security": false, "infoUrl": "", "expiration": "2023-10-18T19:24:10.814731189Z" }
+	],
+	"i18n": {
+		"en": {
+			"version_unsupported_body": "An automatic 30-day warning period has been applied to allow time for a workspace admin to update workspace to a supported software version.",
+			"version_unsupported_subtitle": "Mobile and desktop app access to {{instance_ws_name}} will be cut off in {{remaining_days}} days",
+			"version_unsupported_title": "{{instance_ws_name}} is running an unsupported version of Rocket.Chat"
+		}
+	},
+	"enforcementStartDate": "2023-10-31T00:00:00Z"
+}

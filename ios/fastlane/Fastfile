@@ -1,0 +1,121 @@
+# Customize this file, documentation can be found here:
+# https://docs.fastlane.tools/actions/
+# All available actions: https://docs.fastlane.tools/actions
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "2.63.0"
+
+default_platform :ios
+
+platform :ios do
+  before_all do
+    setup_circle_ci	
+    create_keychain(	
+      name: ENV["MATCH_KEYCHAIN_NAME"],	
+      password: ENV["MATCH_KEYCHAIN_PASSWORD"],	
+      timeout: 1200	
+    )	
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  lane :beta do |options|
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: 'fastlane/app_store_connect_api_key.p8',
+      in_house: false
+    )
+    pilot(
+      ipa: 'ios/Rocket.Chat.ipa',
+      app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
+      skip_waiting_for_build_processing: true
+    )
+    upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
+    upload_symbols_to_bugsnag(
+      config_file: "./RocketChatRN/Info.plist",
+      dsym_path: "./ios/Rocket.Chat.app.dSYM.zip",
+      api_key: options[:official] ? ENV["BUGSNAG_KEY_OFFICIAL"] : ENV["BUGSNAG_KEY"]
+    )
+  end
+
+  desc "Build Experimental app"
+  lane :build_experimental do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: 'fastlane/app_store_connect_api_key.p8',
+      in_house: false
+    )
+    match(type: "appstore")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.ShareExtension")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.NotificationService")
+    get_provisioning_profile(app_identifier: "chat.rocket.reactnative.watchkitapp")
+    # pem(api_key: api_key) # still uses Spaceship http://docs.fastlane.tools/actions/pem/#how-does-it-work
+    gym(
+      scheme: "RocketChatRN",
+      workspace: "RocketChatRN.xcworkspace",
+      output_name: "Rocket.Chat"
+    )
+  end
+
+  desc "Build Official app"
+  lane :build_official do
+    sh "../../scripts/prepare_ios_official.sh"
+
+    match(
+      type: "appstore",
+      app_identifier: ["chat.rocket.ios", "chat.rocket.ios.NotificationService", "chat.rocket.ios.Rocket-Chat-ShareExtension", "chat.rocket.ios.watchkitapp"],
+      readonly: true,
+      output_path: './'
+    )
+
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.NotificationService",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "NotificationService",
+    )
+
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.Rocket-Chat-ShareExtension",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "ShareRocketChatRN",
+    )
+
+    update_code_signing_settings(
+      profile_name: "match AppStore chat.rocket.ios.watchkitapp",
+      build_configurations: "Release",
+      code_sign_identity: "iPhone Distribution",
+      targets: "Rocket.Chat.Watch",
+    )
+
+    gym(
+      scheme: "RocketChat",
+      workspace: "RocketChatRN.xcworkspace",
+      xcargs: "-allowProvisioningUpdates",
+      output_name: "Rocket.Chat"
+    )
+  end
+
+  desc "Build fork app"
+  lane :build_fork do
+    gym(scheme: "RocketChatRN", workspace: "RocketChatRN.xcworkspace", skip_codesigning: true, skip_archive: true)
+  end
+
+  after_all do |lane|
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
+  end	
+
+  error do |lane, exception|
+    delete_keychain(name: ENV["MATCH_KEYCHAIN_NAME"])	
+  end
+end
