@@ -18,6 +18,7 @@ import ShareExtensionStack from './stacks/ShareExtensionStack';
 import { ThemeContext } from './theme';
 import { setCurrentScreen } from './lib/methods/helpers/log';
 import { themes } from './lib/constants';
+import { emitter } from './lib/methods/helpers';
 
 const createStackNavigator = createNativeStackNavigator;
 
@@ -52,6 +53,9 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 		<NavigationContainer
 			theme={navTheme}
 			ref={Navigation.navigationRef}
+			onReady={() => {
+				emitter.emit('navigationReady');
+			}}
 			onStateChange={state => {
 				const previousRouteName = Navigation.routeNameRef.current;
 				const currentRouteName = getActiveRouteName(state);
