@@ -17,8 +17,6 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- android 13 media permission -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
     <application
@@ -77,6 +75,18 @@
                 <data android:mimeType="*/*" />
             </intent-filter>
         </activity>
+        <receiver
+            android:name="chat.rocket.reactnative.notification.ReplyBroadcast"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name="chat.rocket.reactnative.notification.DismissNotification"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <meta-data
+            android:name="com.bugsnag.android.API_KEY"
+            android:value="${BugsnagAPIKey}" />
     </application>
 
     <queries>

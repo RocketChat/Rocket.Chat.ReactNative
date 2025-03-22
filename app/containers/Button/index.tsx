@@ -25,9 +25,9 @@ const styles = StyleSheet.create({
 		borderRadius: 4
 	},
 	normalButton: {
-		paddingHorizontal: 14,
-		justifyContent: 'center',
-		height: 48
+		paddingVertical: 14,
+		paddingHorizontal: 16,
+		justifyContent: 'center'
 	},
 	smallButton: {
 		paddingHorizontal: 12,
@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
 	text: {
 		...sharedStyles.textMedium,
 		...sharedStyles.textAlignCenter
+	},
+	smallText: {
+		...sharedStyles.textBold,
+		fontSize: 12,
+		lineHeight: 18
 	},
 	disabled: {
 		opacity: 0.3
@@ -75,7 +80,11 @@ const Button: React.FC<IButtonProps> = ({
 		style
 	];
 
-	const textStyle = [styles.text, { color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize }, styleText];
+	const textStyle = [
+		{ color: isDisabled ? colors.buttonPrimaryDisabled : resolvedTextColor, fontSize },
+		small ? styles.smallText : styles.text,
+		styleText
+	];
 
 	return (
 		<Touchable
@@ -85,7 +94,7 @@ const Button: React.FC<IButtonProps> = ({
 			accessibilityLabel={title}
 			accessibilityRole='button'
 			{...otherProps}>
-			{loading ? <ActivityIndicator color={resolvedTextColor} /> : <Text style={textStyle}>{title}</Text>}
+			{loading ? <ActivityIndicator color={resolvedTextColor} style={{ padding: 0 }} /> : <Text style={textStyle}>{title}</Text>}
 		</Touchable>
 	);
 };

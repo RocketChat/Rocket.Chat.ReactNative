@@ -16,7 +16,7 @@ import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
-import { themes } from '../../lib/constants';
+import { textInputDebounceTime, themes, colors } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -106,8 +106,8 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	}
 
 	getHeader = (): NativeStackNavigationOptions => {
-		const { isSearching } = this.state;
-		const { navigation, isMasterDetail } = this.props;
+		const { isSearching, currentFilter } = this.state;
+		const { navigation, isMasterDetail, theme } = this.props;
 
 		if (isSearching) {
 			return {
@@ -124,11 +124,17 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: I18n.t('Threads'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={this.showFilters} />
+					<HeaderButton.Item
+						iconName='filter'
+						onPress={this.showFilters}
+						badge={() =>
+							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
+						}
+					/>
 					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
 				</HeaderButton.Container>
 			)
@@ -204,7 +210,10 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		new Promise<void>(resolve => {
 			const savedFilter = UserPreferences.getString(THREADS_FILTER);
 			if (savedFilter) {
-				this.setState({ currentFilter: savedFilter as Filter }, () => resolve());
+				this.setState({ currentFilter: savedFilter as Filter }, () => {
+					this.setHeader();
+					resolve();
+				});
 			}
 			resolve();
 		});
@@ -369,7 +378,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onSearchChangeText = debounce((searchText: string) => {
 		const { subscription } = this.state;
 		this.setState({ searchText }, () => this.subscribeMessages(subscription, searchText));
-	}, 300);
+	}, textInputDebounceTime);
 
 	onThreadPress = debounce(
 		(item: any) => {
@@ -434,7 +443,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onFilterSelected = (filter: Filter) => {
 		const { messages, subscription } = this.state;
 		const displayingThreads = this.getFilteredThreads(messages, subscription, filter);
-		this.setState({ currentFilter: filter, displayingThreads });
+		this.setState({ currentFilter: filter, displayingThreads }, () => {
+			this.setHeader();
+		});
 		UserPreferences.setString(THREADS_FILTER, filter);
 	};
 

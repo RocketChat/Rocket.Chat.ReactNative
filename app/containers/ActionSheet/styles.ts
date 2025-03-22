@@ -2,8 +2,6 @@ import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ITEM_HEIGHT = 48;
-
 export default StyleSheet.create({
 	container: {
 		overflow: 'hidden',
@@ -12,7 +10,6 @@ export default StyleSheet.create({
 	},
 	item: {
 		paddingHorizontal: 16,
-		height: ITEM_HEIGHT,
 		alignItems: 'center',
 		flexDirection: 'row'
 	},
@@ -48,7 +45,6 @@ export default StyleSheet.create({
 		marginHorizontal: 16,
 		paddingHorizontal: 14,
 		justifyContent: 'center',
-		height: ITEM_HEIGHT,
 		borderRadius: 4,
 		marginBottom: 12
 	},

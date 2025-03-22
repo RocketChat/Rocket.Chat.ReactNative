@@ -69,6 +69,33 @@ export const defaultSettings = {
 	Accounts_PasswordReset: {
 		type: 'valueAsBoolean'
 	},
+	Accounts_Password_Policy_Enabled: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_MinLength: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Password_Policy_MaxLength: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Password_Policy_ForbidRepeatingCharacters: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_ForbidRepeatingCharactersCount: {
+		type: 'valueAsNumber'
+	},
+	Accounts_Password_Policy_AtLeastOneLowercase: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_AtLeastOneUppercase: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_AtLeastOneNumber: {
+		type: 'valueAsBoolean'
+	},
+	Accounts_Password_Policy_AtLeastOneSpecialCharacter: {
+		type: 'valueAsBoolean'
+	},
 	Accounts_RegistrationForm: {
 		type: 'valueAsString'
 	},
@@ -93,6 +120,9 @@ export const defaultSettings = {
 	Accounts_Iframe_api_method: {
 		type: 'valueAsString'
 	},
+	API_Embed: {
+		type: 'valueAsBoolean'
+	},
 	CROWD_Enable: {
 		type: 'valueAsBoolean'
 	},
@@ -106,6 +136,9 @@ export const defaultSettings = {
 		type: 'valueAsBoolean'
 	},
 	E2E_Enable_Encrypt_Files: {
+		type: 'valueAsBoolean'
+	},
+	FileUpload_ProtectFiles: {
 		type: 'valueAsBoolean'
 	},
 	Accounts_Directory_DefaultView: {
