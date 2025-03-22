@@ -9,7 +9,7 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
-import HeaderTitle from 'containers/CustomHeader/components/HeaderTitle';
+import HeaderTitle from '../../containers/CustomHeader/components/HeaderTitle';
 const HIT_SLOP = {
 	top: 5,
 	right: 5,
@@ -115,9 +115,7 @@ const RoomHeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomH
 	const { colors } = useTheme();
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
-	
-			return <HeaderTitle headerTitle={title} />;
-		
+			return <HeaderTitle headerTitle={title} />
 	}
 
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
