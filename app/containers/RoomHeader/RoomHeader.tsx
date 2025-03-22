@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
-
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
@@ -9,7 +8,8 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
-import HeaderTitle from '../../containers/CustomHeader/components/HeaderTitle';
+import HeaderTitle from '../CustomHeader/components/HeaderTitle';
+
 const HIT_SLOP = {
 	top: 5,
 	right: 5,
