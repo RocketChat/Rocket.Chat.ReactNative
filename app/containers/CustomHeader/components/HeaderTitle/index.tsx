@@ -7,9 +7,10 @@ import { styles } from './styles';
 
 interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
+	style?: object; // Specify the type for style as an object
 }
 
-const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
+const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 	const { colors } = useTheme();
 	if (!headerTitle) {
 		return null;
@@ -20,22 +21,30 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 			return (
 				<Text
 					numberOfLines={1}
-					style={{
-						...styles.androidTitle,
-						color: colors.fontTitlesLabels
-					}}>
+					style={
+						style
+							? style
+							: {
+									...styles.androidTitle,
+									color: colors.fontTitlesLabels
+							  }
+					}>
 					{headerTitle}
 				</Text>
 			);
 		}
 		return (
-			<View style={styles.headerTitleContainer}>
+			<View style={[styles.headerTitleContainer]}>
 				<Text
 					numberOfLines={1}
-					style={{
-						...styles.title,
-						color: colors.fontTitlesLabels
-					}}>
+					style={
+						style
+							? style
+							: {
+									...styles.androidTitle,
+									color: colors.fontTitlesLabels
+							  }
+					}>
 					{headerTitle}
 				</Text>
 			</View>
