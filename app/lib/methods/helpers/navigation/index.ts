@@ -4,7 +4,7 @@ import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import CustomHeader from '../../../../containers/CustomHeader';
+import CustomHeader from '../../../../containers/Header';
 
 export const defaultHeader: NativeStackNavigationOptions = {
 	headerBackTitleVisible: false,
