@@ -20,7 +20,7 @@ interface IParagraphProps {
 const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
 	return (
-		<View style={[styles.inline]}>
+		<View style={styles.inline}>
 			{value.map((block, index) => {
 				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
 				// to clean the empty spaces

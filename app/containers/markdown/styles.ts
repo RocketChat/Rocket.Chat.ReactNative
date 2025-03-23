@@ -8,10 +8,6 @@ const codeFontFamily = Platform.select({
 });
 
 export default StyleSheet.create({
-	paragraphContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap'
-	},
 	container: {
 		alignItems: 'flex-start',
 		flexDirection: 'row'

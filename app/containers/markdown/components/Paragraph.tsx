@@ -3,9 +3,9 @@ import { Text } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
+import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
-import styles from '../styles';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
@@ -31,7 +31,6 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		}
 		forceTrim = true;
 	}
-	console.log('value', value);
 	return (
 		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
 			<Inline value={value} forceTrim={forceTrim} />
