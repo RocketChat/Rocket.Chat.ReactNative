@@ -8,10 +8,6 @@ const codeFontFamily = Platform.select({
 });
 
 export default StyleSheet.create({
-	paragraphContainer: {
-		flexDirection: 'row',
-		flexWrap: 'wrap'
-	},
 	container: {
 		alignItems: 'flex-start',
 		flexDirection: 'row'
@@ -69,9 +65,7 @@ export default StyleSheet.create({
 	},
 	inlineImage: {
 		width: 300,
-		height: 300,
-		resizeMode: 'contain',
-		borderRadius: 4
+		height: 300
 	},
 	codeInline: {
 		fontSize: 16,
