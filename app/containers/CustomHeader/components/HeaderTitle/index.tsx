@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text, View } from 'react-native';
+import { Text, TextStyle, View } from 'react-native';
 
 import { isAndroid } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
@@ -7,7 +7,7 @@ import { styles } from './styles';
 
 interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
-	style?: object; // Specify the type for style as an object
+	style?: TextStyle | object; // Specify the type for style as an object
 }
 const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 	const { colors } = useTheme();
