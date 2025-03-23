@@ -9,7 +9,6 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
-import HeaderTitle from '../CustomHeader/components/HeaderTitle';
 
 const HIT_SLOP = {
 	top: 5,
@@ -112,11 +111,15 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 	return null;
 });
 
-const RoomHeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
-		return <HeaderTitle style={[styles.title, titleStyle]} headerTitle={title} />;
+		return (
+			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
+				{title}
+			</Text>
+		);
 	}
 
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
@@ -209,7 +212,7 @@ const Header = React.memo(
 							sourceType={sourceType}
 						/>
 					)}
-					<RoomHeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
 				</View>
 				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
 			</TouchableOpacity>
