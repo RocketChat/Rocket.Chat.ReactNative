@@ -9,7 +9,6 @@ interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
 	style?: object; // Specify the type for style as an object
 }
-
 const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 	const { colors } = useTheme();
 	if (!headerTitle) {
@@ -19,32 +18,14 @@ const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 	if (typeof headerTitle === 'string') {
 		if (isAndroid) {
 			return (
-				<Text
-					numberOfLines={1}
-					style={
-						style
-							? style
-							: {
-									...styles.androidTitle,
-									color: colors.fontTitlesLabels
-							  }
-					}>
+				<Text numberOfLines={1} style={style || { ...styles.androidTitle, color: colors.fontTitlesLabels }}>
 					{headerTitle}
 				</Text>
 			);
 		}
 		return (
 			<View style={[styles.headerTitleContainer]}>
-				<Text
-					numberOfLines={1}
-					style={
-						style
-							? style
-							: {
-									...styles.androidTitle,
-									color: colors.fontTitlesLabels
-							  }
-					}>
+				<Text numberOfLines={1} style={style || { ...styles.androidTitle, color: colors.fontTitlesLabels }}>
 					{headerTitle}
 				</Text>
 			</View>
