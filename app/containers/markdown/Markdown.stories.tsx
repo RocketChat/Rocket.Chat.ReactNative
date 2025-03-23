@@ -1,10 +1,11 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Image as RNImage, Text as RNText } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
 import { themes } from '../../lib/constants';
 import { TGetCustomEmoji, ICustomEmoji } from '../../definitions/IEmoji';
+import {} from 'react-native';
 
 const theme = 'light';
 
@@ -131,9 +132,25 @@ export const Links = () => (
 	</View>
 );
 
+// export const Image = () => (
+// 	<View style={styles.container}>
+// 		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
+// 	</View>
+// );
+
+const mdText = `${lineBreakText}f ![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)`;
+
 export const Image = () => (
 	<View style={styles.container}>
-		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
+		<Markdown msg={mdText} />
+		<View style={{ height: 1, backgroundColor: 'red' }} />
+		<RNText>
+			{lineBreakText}{' '}
+			<RNImage
+				source={{ uri: 'https://play.google.com/intl/en_us/badges/images/badge_new.png' }}
+				style={{ width: 100, height: 100 }}
+			/>
+		</RNText>
 	</View>
 );
 
