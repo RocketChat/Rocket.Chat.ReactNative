@@ -102,6 +102,14 @@ export const checkHasPasscode = async ({ force = true }: { force?: boolean }): P
 	return Promise.resolve();
 };
 
+const hideSplashScreen = async () => {
+	try {
+		await RNBootSplash.hide({ fade: true });
+	} catch {
+		// Do nothing
+	}
+}
+
 export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// let hasBiometry = false;
 	let hasBiometry = UserPreferences.getBool(BIOMETRY_ENABLED_KEY) ?? false;
@@ -132,13 +140,6 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 		// Get time from server
 		const timesync = await getServerTimeSync(server);
 
-		// Make sure splash screen has been hidden
-		try {
-			await RNBootSplash.hide({ fade: true });
-		} catch {
-			// Do nothing
-		}
-
 		// Check if the app has passcode
 		const result = await checkHasPasscode({});
 
@@ -149,6 +150,8 @@ export const localAuthenticate = async (server: string): Promise<void> => {
 
 			// if it was not possible to get `timesync` from server or the last authenticated session is older than the configured auto lock time, authentication is required
 			if (!timesync || (serverRecord?.autoLockTime && diffToLastSession >= serverRecord.autoLockTime)) {
+				await hideSplashScreen();
+
 				// set isLocalAuthenticated to false
 				store.dispatch(setLocalAuthenticated(false));
 
