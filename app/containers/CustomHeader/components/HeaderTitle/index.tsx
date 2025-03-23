@@ -25,7 +25,7 @@ const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 		}
 		return (
 			<View style={[styles.headerTitleContainer]}>
-				<Text numberOfLines={1} style={[style, { ...styles.androidTitle, color: colors.fontTitlesLabels }]}>
+				<Text numberOfLines={1} style={[style || { ...styles.androidTitle, color: colors.fontTitlesLabels }]}>
 					{headerTitle}
 				</Text>
 			</View>
