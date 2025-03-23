@@ -7,7 +7,7 @@ import { styles } from './styles';
 
 interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
-	style?: StyleProp<ViewStyle | TextStyle>; // Specify the type for style as an object
+	style?: StyleProp<ViewStyle | TextStyle>;
 }
 const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 	const { colors } = useTheme();
