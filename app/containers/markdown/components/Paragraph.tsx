@@ -5,6 +5,7 @@ import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 import Inline from './Inline';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
+import styles from '../styles';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
@@ -32,7 +33,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 	}
 	console.log('value', value);
 	return (
-		<Text style={[{ color: themes[theme].fontDefault }]}>
+		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
 			<Inline value={value} forceTrim={forceTrim} />
 		</Text>
 	);
