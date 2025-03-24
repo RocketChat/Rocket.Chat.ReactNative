@@ -6,8 +6,8 @@ import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
 	const { colors } = useTheme();
-	const iconName = !unread && unread !== null ? 'check-double' : 'check';
-	const iconColor = !unread && unread !== null ? colors.fontInfo : colors.fontAnnotation;
+	const iconName = unread ? 'check' : 'check-double';
+	const iconColor = unread ? colors.fontAnnotation : colors.fontInfo;
 
 	if (isReadReceiptEnabled) {
 		return <CustomIcon name={iconName} color={iconColor} size={16} style={styles.rightIcons} />;
