@@ -18,9 +18,11 @@ const ButtonService = ({ name, authType, onPress, backgroundColor, buttonText, i
 			underlayColor={colors.fontWhite}
 			accessible
 			accessibilityLabel={accessibilityLabel}>
-			<View style={styles.serviceButtonContainer}>
+			<View accessible={false} style={styles.serviceButtonContainer}>
 				{authType === 'oauth' || authType === 'apple' ? <CustomIcon name={icon} size={24} style={styles.serviceIcon} /> : null}
-				<Text style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>{buttonText}</Text>
+				<Text accessible={false} style={[styles.serviceText, { color: colors.fontTitlesLabels }]}>
+					{buttonText}
+				</Text>
 			</View>
 		</Touch>
 	);

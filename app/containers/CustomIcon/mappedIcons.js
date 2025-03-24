@@ -1,5 +1,5 @@
 export const mappedIcons = {
-	'accessibility': 59869,
+	'accessibility': 59874,
 	'add': 59872,
 	'administration': 59662,
 	'adobe-reader-monochromatic': 59663,
@@ -85,6 +85,7 @@ export const mappedIcons = {
 	'encrypted': 59730,
 	'engagement-dashboard': 59731,
 	'enterprise-feature': 59732,
+	'error-circle': 59873,
 	'facebook-monochromatic': 59733,
 	'federation': 59652,
 	'federation-disabled': 59651,
@@ -195,6 +196,7 @@ export const mappedIcons = {
 	'status-offline': 59744,
 	'status-online': 59745,
 	'strike': 59846,
+	'success-circle': 59869,
 	'sun': 59847,
 	'support': 59848,
 	'team': 59849,

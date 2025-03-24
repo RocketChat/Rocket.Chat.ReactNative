@@ -35,7 +35,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 	const [userId, setUser] = useState();
 	const [room, setRoom] = useState({} as IServerRoom);
 	const dispatch = useDispatch();
-	const { theme, colors } = useTheme();
+	const { colors } = useTheme();
 
 	const getDepartments = async (text = '', offset = 0) => {
 		try {
@@ -147,7 +147,7 @@ const ForwardLivechatView = (): React.ReactElement => {
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceHover }]}>
 			<Input onPress={onPressDepartment} placeholder={I18n.t('Select_a_Department')} />
-			<OrSeparator theme={theme} />
+			<OrSeparator />
 			<Input onPress={onPressUser} placeholder={I18n.t('Select_a_User')} />
 		</View>
 	);
