@@ -10,13 +10,22 @@ import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
-import { useMentionsPreferences } from '../../lib/hooks/useMentionsPreferences';
+import { useUserPreferences } from '../../lib/methods';
+import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY } from '../../lib/constants';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
-	const { roomsWithHashTagSymbol, mentionsWithAtSymbol, toggleMentionsWithAtSymbol, toggleRoomsWithHashTag } =
-		useMentionsPreferences();
+	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
+	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
+
+	const toggleMentionsWithAtSymbol = () => {
+		setMentionsWithAtSymbol(!mentionsWithAtSymbol);
+	};
+
+	const toggleRoomsWithHashTag = () => {
+		setRoomsWithHashTagSymbol(!roomsWithHashTagSymbol);
+	};
 
 	const renderMentionsWithAtSymbolSwitch = () => (
 		<Switch value={mentionsWithAtSymbol} onValueChange={toggleMentionsWithAtSymbol} />

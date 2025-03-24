@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { useTheme } from '../../../../theme';
-import { themes } from '../../../../lib/constants';
+import { themes, USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { IUserMention } from '../../interfaces';
-import { useMentionsPreferences } from '../../../../lib/hooks/useMentionsPreferences';
+import { useUserPreferences } from '../../../../lib/methods';
 
 interface IAtMention {
 	mention: string;
@@ -19,7 +19,7 @@ interface IAtMention {
 
 const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
 	const { theme } = useTheme();
-	const { mentionsWithAtSymbol } = useMentionsPreferences();
+	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
 	const preffix = mentionsWithAtSymbol ? '@' : '';
 	if (mention === 'all' || mention === 'here') {
 		return (

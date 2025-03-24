@@ -35,9 +35,6 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-import { MentionsPreferencesProvider } from './lib/hooks/useMentionsPreferences';
-import { initialMentionsPreferences } from './lib/methods/helpers/mentionsPreferences';
-import { IMentionsPreferences } from './definitions/IMentionsPreferences';
 import { RowHeightProvider } from './lib/hooks/useRowHeight';
 
 enableScreens();
@@ -57,7 +54,6 @@ interface IState {
 	height: number;
 	scale: number;
 	fontScale: number;
-	mentionsPreferences: IMentionsPreferences;
 }
 
 const parseDeepLinking = (url: string) => {
@@ -99,8 +95,7 @@ export default class Root extends React.Component<{}, IState> {
 			width,
 			height,
 			scale,
-			fontScale,
-			mentionsPreferences: initialMentionsPreferences()
+			fontScale
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -205,7 +200,7 @@ export default class Root extends React.Component<{}, IState> {
 	};
 
 	render() {
-		const { themePreferences, theme, width, height, scale, fontScale, mentionsPreferences } = this.state;
+		const { themePreferences, theme, width, height, scale, fontScale } = this.state;
 		return (
 			<SafeAreaProvider initialMetrics={initialWindowMetrics} style={{ backgroundColor: themes[this.state.theme].surfaceRoom }}>
 				<Provider store={store}>
@@ -216,30 +211,28 @@ export default class Root extends React.Component<{}, IState> {
 							setTheme: this.setTheme,
 							colors: colors[theme]
 						}}>
-						<MentionsPreferencesProvider mentionsPreferences={mentionsPreferences}>
-							<RowHeightProvider>
-								<DimensionsContext.Provider
-									value={{
-										width,
-										height,
-										scale,
-										fontScale,
-										setDimensions: this.setDimensions
-									}}>
-									<GestureHandlerRootView>
-										<ActionSheetProvider>
-											<AppContainer />
-											<TwoFactor />
-											<ScreenLockedView />
-											<ChangePasscodeView />
-											<InAppNotification />
-											<Toast />
-											<Loading />
-										</ActionSheetProvider>
-									</GestureHandlerRootView>
-								</DimensionsContext.Provider>
-							</RowHeightProvider>
-						</MentionsPreferencesProvider>
+						<RowHeightProvider>
+							<DimensionsContext.Provider
+								value={{
+									width,
+									height,
+									scale,
+									fontScale,
+									setDimensions: this.setDimensions
+								}}>
+								<GestureHandlerRootView>
+									<ActionSheetProvider>
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+										<Toast />
+										<Loading />
+									</ActionSheetProvider>
+								</GestureHandlerRootView>
+							</DimensionsContext.Provider>
+						</RowHeightProvider>
 					</ThemeContext.Provider>
 				</Provider>
 			</SafeAreaProvider>
