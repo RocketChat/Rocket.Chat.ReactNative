@@ -2,9 +2,10 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import i18n from '../../../../i18n';
-import { themes } from '../../../../lib/constants';
+import { ROOM_MENTIONS_PREFERENCES_KEY, themes } from '../../../../lib/constants';
 import { getSubscriptionByRoomId } from '../../../../lib/database/services/Subscription';
 import { useAppSelector } from '../../../../lib/hooks';
+import { useUserPreferences } from '../../../../lib/methods';
 import { showErrorAlert } from '../../../../lib/methods/helpers';
 import { goRoom } from '../../../../lib/methods/helpers/goRoom';
 import { Services } from '../../../../lib/services';
@@ -22,8 +23,9 @@ interface IHashtag {
 
 const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IHashtag) => {
 	const { theme } = useTheme();
+	const [roomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
-
+	const preffix = roomsWithHashTagSymbol ? '#' : '';
 	const handlePress = async () => {
 		const index = channels?.findIndex(channel => channel.name === hashtag);
 		if (typeof index !== 'undefined' && navToRoomInfo) {
@@ -59,11 +61,11 @@ const Hashtag = React.memo(({ hashtag, channels, navToRoomInfo, style = [] }: IH
 					...style
 				]}
 				onPress={handlePress}>
-				{`#${hashtag}`}
+				{`${preffix}${hashtag}`}
 			</Text>
 		);
 	}
-	return <Text style={[styles.text, { color: themes[theme].fontInfo }, ...style]}>{`#${hashtag}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`#${hashtag}`}</Text>;
 });
 
 export default Hashtag;

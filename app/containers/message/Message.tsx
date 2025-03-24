@@ -84,6 +84,25 @@ const MessageInner = React.memo((props: IMessageInner) => {
 MessageInner.displayName = 'MessageInner';
 
 const Message = React.memo((props: IMessageTouchable & IMessage) => {
+	const handleMentionsOnAccessibilityLabel = (label: string) => {
+		const { mentions = [], channels = [] } = props;
+
+		mentions.forEach(item => {
+			if (item?.username) {
+				label = label.replaceAll(`@${item.username}`, item.username);
+			}
+		});
+
+		channels.forEach(item => {
+			if (item?.name) {
+				label = label.replaceAll(`#${item.name}`, item.name);
+			}
+		});
+
+		return label;
+	};
+
+	// temp accessibilityLabel
 	const accessibilityLabel = useMemo(() => {
 		let label = '';
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
@@ -100,6 +119,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 			// @ts-ignore
 			label = getInfoMessage({ ...props });
 		}
+		label = handleMentionsOnAccessibilityLabel(label);
+
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		const readOrUnreadLabel =
@@ -107,7 +128,20 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
-	}, [props.unread]);
+	}, [
+		props.msg,
+		props.tmid,
+		props.isThreadReply,
+		props.isThreadSequential,
+		props.isEncrypted,
+		props.isInfo,
+		props.ts,
+		props.useRealName,
+		props.author,
+		props.mentions,
+		props.channels,
+		props.unread
+	]);
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
@@ -130,7 +164,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
+		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
