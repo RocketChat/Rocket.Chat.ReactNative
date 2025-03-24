@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Dimensions, Image as RNImage } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Dimensions, Image as RNImage, View } from 'react-native';
 import { Image as ImageProps } from '@rocket.chat/message-parser';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
@@ -8,6 +8,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import styles from '../styles';
+import { WidthAwareContext } from '.././../message/Components/WidthAwareView';
 
 interface IImageProps {
 	value: ImageProps['value'];
@@ -24,26 +25,31 @@ const { width: screenWidth } = Dimensions.get('window');
 
 const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 	const [imageSize, setImageSize] = useState({ width: 100, height: 100 });
+	const maxSize = useContext(WidthAwareContext);
 
 	useEffect(() => {
 		RNImage.getSize(img, (width, height) => {
-			// Scale the image to fit within the screen width
-			const maxWidth = screenWidth * 0.9; // Max width is 90% of screen
-			const scaleFactor = maxWidth / width;
-			const newHeight = height * scaleFactor;
-
-			setImageSize({ width: maxWidth, height: newHeight });
+			const widthVal = Math.min(width, maxSize) || 0;
+			const heightVal = Math.min((height * ((width * 100) / width)) / 100, maxSize) || 0;
+			setImageSize({ width: widthVal, height: heightVal });
 		});
 	}, [img]);
 
 	return (
-		<ImageProgress
-			style={[styles.inlineImage, { width: imageSize.width, height: imageSize.height, borderColor: themes[theme].strokeLight }]}
-			source={{ uri: encodeURI(img) }}
-			indicator={Progress.Pie}
-			indicatorProps={{ color: themes[theme].fontHint }}
-			contentFit='contain'
-		/>
+		<View
+			style={{
+				width: imageSize.width,
+				height: imageSize.height,
+				flex: 1
+			}}>
+			<ImageProgress
+				style={[styles.inlineImage, { width: '100%', height: '100%', borderColor: themes[theme].strokeLight }]}
+				source={{ uri: encodeURI(img) }}
+				indicator={Progress.Pie}
+				indicatorProps={{ color: themes[theme].fontHint }}
+				contentFit='contain'
+			/>
+		</View>
 	);
 };
 
