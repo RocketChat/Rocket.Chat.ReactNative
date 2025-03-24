@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Image as RNImage, Text as RNText } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 
 import Markdown, { MarkdownPreview } from '.';
@@ -132,27 +131,12 @@ export const Links = () => (
 	</View>
 );
 
-// export const Image = () => (
-// 	<View style={styles.container}>
-// 		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
-// 	</View>
-// );
-
-const mdText = `${lineBreakText} ![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)`;
-
 export const Image = () => (
 	<View style={styles.container}>
-		<Markdown msg={mdText} />
-		<View style={{ height: 1, backgroundColor: 'red' }} />
-		<RNText>
-			{lineBreakText}{' '}
-			<RNImage
-				source={{ uri: 'https://play.google.com/intl/en_us/badges/images/badge_new.png' }}
-				style={{ width: 100, height: 100 }}
-			/>
-		</RNText>
+		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
 	</View>
 );
+
 export const Headers = () => (
 	<View style={styles.container}>
 		<Markdown msg='# Header 1' />

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Dimensions, Image as RNImage, View } from 'react-native';
+import { Image as RNImage, View } from 'react-native';
 import { Image as ImageProps } from '@rocket.chat/message-parser';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
@@ -8,7 +8,7 @@ import { Image as ExpoImage } from 'expo-image';
 import { TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import styles from '../styles';
-import { WidthAwareContext } from '.././../message/Components/WidthAwareView';
+import { WidthAwareContext } from '../../message/Components/WidthAwareView';
 
 interface IImageProps {
 	value: ImageProps['value'];
@@ -20,8 +20,6 @@ type TMarkdownImage = {
 };
 
 const ImageProgress = createImageProgress(ExpoImage);
-
-const { width: screenWidth } = Dimensions.get('window');
 
 const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 	const [imageSize, setImageSize] = useState({ width: 100, height: 100 });
@@ -39,8 +37,7 @@ const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 		<View
 			style={{
 				width: imageSize.width,
-				height: imageSize.height,
-				flex: 1
+				height: imageSize.height
 			}}>
 			<ImageProgress
 				style={[styles.inlineImage, { width: '100%', height: '100%', borderColor: themes[theme].strokeLight }]}
