@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1 人回覆了",
+  "Accessibility": "無障礙設施",
+  "Accessibility_and_Appearance": "無障礙功能與外觀",
   "Accessibility_statement": "无障碍声明",
   "Actions": "操作",
   "Activity": "以活動時間排序",
@@ -264,6 +266,7 @@
   "Members": "成員",
   "members": "成員",
   "Mentions": "被提及",
+  "Mentions_With_@_Symbol": "提及使用 @ 符號",
   "Message": "訊息",
   "message": "訊息",
   "Message_actions": "訊息操作",
@@ -401,6 +404,7 @@
   "Room_Info": "聊天室資訊",
   "Room_Info_Edit": "修改聊天室資訊",
   "Room_Password": "房間密碼",
+  "Rooms_With_#_Symbol": "帶有 # 符號的房間",
   "SAVE": "儲存",
   "Save": "儲存",
   "Save_Changes": "儲存更改",
