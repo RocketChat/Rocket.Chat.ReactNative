@@ -4,9 +4,7 @@ import sharedStyles from '../../../../views/Styles';
 
 export const styles = StyleSheet.create({
 	headerTitleContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center'
+		flex: 1
 	},
 	title: {
 		...sharedStyles.textBold,
