@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { StyleProp, Text, TextStyle, View, ViewStyle } from 'react-native';
+import { Text, TextStyle, View } from 'react-native';
 
 import { isAndroid } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
