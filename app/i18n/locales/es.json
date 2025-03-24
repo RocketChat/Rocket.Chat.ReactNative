@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1 persona reaccionó",
+  "Accessibility": "Accesibilidad",
+  "Accessibility_and_Appearance": "Accesibilidad y apariencia",
   "Accessibility_statement": "Declaración de accesibilidad",
   "Actions": "Acciones",
   "Activity": "Actividad",
@@ -163,6 +165,7 @@
   "Members": "Miembros",
   "members": "miembros",
   "Mentions": "Menciones",
+  "Mentions_With_@_Symbol": "Menciones con el símbolo @",
   "message": "mensaje",
   "Message_actions": "Acciones de mensaje",
   "Message_removed": "Mensaje eliminado",
@@ -239,6 +242,7 @@
   "Room_Info": "Información de la sala",
   "Room_Info_Edit": "Editar información de la sala",
   "Room_Password": "Contraseña de habitación",
+  "Rooms_With_#_Symbol": "Habitaciones con símbolo #",
   "SAVE": "GUARDAR",
   "Save": "Guardar",
   "Save_Changes": "Guardar cambios",
