@@ -77,12 +77,9 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceTint }}
-			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}>
-			<SafeAreaView style={[styles.containerView]} testID='report-user-view'>
-				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceTint }]}>
+		<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={128}>
+			<SafeAreaView style={styles.containerView} testID='report-user-view'>
+				<ScrollView contentContainerStyle={styles.scroll}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
