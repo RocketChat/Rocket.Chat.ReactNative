@@ -8,9 +8,8 @@ import sharedStyles from '../../../../views/Styles';
 
 interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
-	style?: StyleProp<TextStyle | ViewStyle>;
 }
-const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
+const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 	const { colors } = useTheme();
 	if (!headerTitle) {
 		return null;
@@ -19,14 +18,14 @@ const HeaderTitle = ({ headerTitle, style }: IHeaderTitle) => {
 	if (typeof headerTitle === 'string') {
 		if (isAndroid) {
 			return (
-				<Text numberOfLines={1} style={[{ ...sharedStyles.textBold, color: colors.fontTitlesLabels }, style]}>
+				<Text numberOfLines={1} style={{ ...sharedStyles.textBold, color: colors.fontTitlesLabels }}>
 					{headerTitle}
 				</Text>
 			);
 		}
 		return (
 			<View style={styles.headerTitleContainer}>
-				<Text numberOfLines={1} style={[{ ...sharedStyles.textBold, color: colors.fontTitlesLabels }, style]}>
+				<Text numberOfLines={1} style={{ ...sharedStyles.textBold, color: colors.fontTitlesLabels }}>
 					{headerTitle}
 				</Text>
 			</View>
