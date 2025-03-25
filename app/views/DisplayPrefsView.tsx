@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Switch } from 'react-native';
@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
 import { DisplayMode, SortBy } from '../lib/constants';
-import * as HeaderButton from '../containers/HeaderButton';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -27,19 +26,13 @@ const DisplayPrefsView = (): React.ReactElement => {
 	const { sortBy, groupByType, showFavorites, showUnread, showAvatar, displayMode } = useAppSelector(
 		state => state.sortPreferences
 	);
-	const { isMasterDetail } = useAppSelector(state => state.app);
 	const dispatch = useDispatch();
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: I18n.t('Display')
 		});
-		if (!isMasterDetail) {
-			navigation.setOptions({
-				headerLeft: () => <HeaderButton.Drawer navigation={navigation} testID='display-view-drawer' />
-			});
-		}
-	}, [isMasterDetail, navigation]);
+	}, []);
 
 	const setSortPreference = (param: Partial<IPreferences>) => {
 		dispatch(setPreference(param));

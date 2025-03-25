@@ -177,10 +177,10 @@ const SettingsView = (): React.ReactElement => {
 						<List.Section>
 							<List.Separator />
 							<List.Item
-								title='Display'
-								onPress={() => navigateToScreen('DisplayPrefsView')}
+								title='Accessibility_and_Appearance'
+								onPress={() => navigateToScreen('AccessibilityAndAppearanceView')}
 								showActionIndicator
-								left={() => <List.Icon name='sort' />}
+								left={() => <List.Icon name='accessibility' />}
 							/>
 							<List.Separator />
 							<List.Item
@@ -211,14 +211,6 @@ const SettingsView = (): React.ReactElement => {
 						onPress={() => navigateToScreen('DefaultBrowserView')}
 						testID='settings-view-default-browser'
 						left={() => <List.Icon name='federation' />}
-					/>
-					<List.Separator />
-					<List.Item
-						title='Theme'
-						showActionIndicator
-						onPress={() => navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						left={() => <List.Icon name='moon' />}
 					/>
 					<List.Separator />
 					<List.Item

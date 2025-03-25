@@ -2,10 +2,11 @@ import React from 'react';
 import { StyleProp, Text, TextStyle } from 'react-native';
 
 import { useTheme } from '../../../../theme';
-import { themes } from '../../../../lib/constants';
+import { themes, USER_MENTIONS_PREFERENCES_KEY } from '../../../../lib/constants';
 import styles from '../../styles';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { IUserMention } from '../../interfaces';
+import { useUserPreferences } from '../../../../lib/methods';
 
 interface IAtMention {
 	mention: string;
@@ -18,6 +19,8 @@ interface IAtMention {
 
 const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, style = [], useRealName }: IAtMention) => {
 	const { theme } = useTheme();
+	const [mentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
+	const preffix = mentionsWithAtSymbol ? '@' : '';
 	if (mention === 'all' || mention === 'here') {
 		return (
 			<Text
@@ -28,6 +31,7 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 					},
 					...style
 				]}>
+				{preffix}
 				{mention}
 			</Text>
 		);
@@ -62,12 +66,13 @@ const AtMention = React.memo(({ mention, mentions, username, navToRoomInfo, styl
 	if (user) {
 		return (
 			<Text style={[styles.mention, mentionStyle, ...style]} onPress={handlePress}>
+				{preffix}
 				{useRealName && user.name ? user.name : user.username}
 			</Text>
 		);
 	}
 
-	return <Text style={[styles.text, { color: themes[theme].statusFontWarning }, ...style]}>{`@${mention}`}</Text>;
+	return <Text style={[styles.text, { color: themes[theme].fontDefault }, ...style]}>{`@${mention}`}</Text>;
 });
 
 export default AtMention;

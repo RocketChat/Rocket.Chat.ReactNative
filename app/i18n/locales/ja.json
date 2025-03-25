@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1人がリアクション",
+  "Accessibility": "アクセシビリティ",
+  "Accessibility_and_Appearance": "アクセシビリティと外観",
   "Accessibility_statement": "アクセシビリティ声明",
   "Actions": "アクション",
   "Activity": "アクティビティ順",
@@ -231,6 +233,7 @@
   "Members": "メンバー",
   "members": "メンバー",
   "Mentions": "メンション",
+  "Mentions_With_@_Symbol": "@ 記号を使ったメンション",
   "Message": "メッセージ",
   "message": "メッセージ",
   "Message_actions": "メッセージアクション",
@@ -334,6 +337,7 @@
   "Room_Info": "ルーム情報",
   "Room_Info_Edit": "ルーム情報を編集",
   "Room_Password": "部屋のパスワード",
+  "Rooms_With_#_Symbol": "「#」記号が付いている部屋",
   "SAVE": "保存",
   "Save": "保存",
   "Save_Changes": "変更を保存",

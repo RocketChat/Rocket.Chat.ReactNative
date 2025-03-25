@@ -77,17 +77,18 @@ import LegalView from '../views/LegalView';
 import {
 	AdminPanelStackParamList,
 	ChatsStackParamList,
-	DisplayPrefStackParamList,
 	DrawerParamList,
 	E2EEnterYourPasswordStackParamList,
 	E2ESaveYourPasswordStackParamList,
 	InsideStackParamList,
 	NewMessageStackParamList,
 	ProfileStackParamList,
-	SettingsStackParamList
+	SettingsStackParamList,
+	AccessibilityStackParamList
 } from './types';
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
+import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();
@@ -182,7 +183,6 @@ const SettingsStackNavigator = () => {
 			<SettingsStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 			<SettingsStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 			<SettingsStack.Screen name='LanguageView' component={LanguageView} />
-			<SettingsStack.Screen name='ThemeView' component={ThemeView} />
 			<SettingsStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
 			<SettingsStack.Screen name='MediaAutoDownloadView' component={MediaAutoDownloadView} />
 			<SettingsStack.Screen name='GetHelpView' component={GetHelpView} />
@@ -210,15 +210,16 @@ const AdminPanelStackNavigator = () => {
 	);
 };
 
-// DisplayPreferenceNavigator
-const DisplayPrefStack = createNativeStackNavigator<DisplayPrefStackParamList>();
-const DisplayPrefStackNavigator = () => {
+// AccessibilityStackNavigator
+const AccessibilityStack = createNativeStackNavigator<AccessibilityStackParamList>();
+const AccessibilityStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
-
 	return (
-		<DisplayPrefStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<DisplayPrefStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
-		</DisplayPrefStack.Navigator>
+		<AccessibilityStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
+			<AccessibilityStack.Screen name='AccessibilityAndAppearanceView' component={AccessibilityAndAppearanceView} />
+			<AccessibilityStack.Screen name='DisplayPrefsView' component={DisplayPrefsView} />
+			<AccessibilityStack.Screen name='ThemeView' component={ThemeView} />
+		</AccessibilityStack.Navigator>
 	);
 };
 
@@ -243,7 +244,7 @@ const DrawerNavigator = () => {
 			<Drawer.Screen name='ProfileStackNavigator' component={ProfileStackNavigator} />
 			<Drawer.Screen name='SettingsStackNavigator' component={SettingsStackNavigator} />
 			<Drawer.Screen name='AdminPanelStackNavigator' component={AdminPanelStackNavigator} />
-			<Drawer.Screen name='DisplayPrefStackNavigator' component={DisplayPrefStackNavigator} />
+			<Drawer.Screen name='AccessibilityStackNavigator' component={AccessibilityStackNavigator} />
 		</Drawer.Navigator>
 	);
 };

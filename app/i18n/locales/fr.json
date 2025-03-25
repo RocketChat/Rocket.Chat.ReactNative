@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1 personne a réagi",
+  "Accessibility": "Accessibilité",
+  "Accessibility_and_Appearance": "Accessibilité et apparence",
   "Accessibility_statement": "Déclaration d'accessibilité",
   "Actions": "Actions",
   "Activity": "Activité",
@@ -316,6 +318,7 @@
   "Members": "Membres",
   "members": "membres",
   "Mentions": "Mentions",
+  "Mentions_With_@_Symbol": "Mentions avec le symbole @",
   "Message": "Message",
   "message": "message",
   "Message_actions": "Actions de message",
@@ -490,6 +493,7 @@
   "Room_Info_Edit": "Modifier les informations du salon",
   "Room_Password": "Mot de passe de la salle",
   "room-name-already-exists": "Le nom du salon existe déjà",
+  "Rooms_With_#_Symbol": "Chambres avec le symbole #",
   "SAVE": "SAUVEGARDER",
   "Save": "Sauvegarder",
   "Save_Changes": "Sauvegarder les modifications",

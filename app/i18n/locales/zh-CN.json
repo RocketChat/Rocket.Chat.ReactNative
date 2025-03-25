@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1 人回复了",
+  "Accessibility": "无障碍性",
+  "Accessibility_and_Appearance": "辅助功能和外观",
   "Accessibility_statement": "无障碍声明",
   "Actions": "操作",
   "Activity": "按活动时间排列",
@@ -248,6 +250,7 @@
   "Members": "成员",
   "members": "成员",
   "Mentions": "被提及",
+  "Mentions_With_@_Symbol": "带有@符号的提及",
   "Message": "信息",
   "message": "信息",
   "Message_actions": "信息操作",
@@ -383,6 +386,7 @@
   "Room_Info": "聊天室信息",
   "Room_Info_Edit": "聊天室信息编辑",
   "Room_Password": "房间密码",
+  "Rooms_With_#_Symbol": "带有#符号的房间",
   "SAVE": "保存",
   "Save": "保存",
   "Save_Changes": "保存更改",
