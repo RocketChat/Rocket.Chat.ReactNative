@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux';
 
 import { setPreference } from '../actions/sortPreferences';
 import { DisplayMode, SortBy } from '../lib/constants';
-import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
