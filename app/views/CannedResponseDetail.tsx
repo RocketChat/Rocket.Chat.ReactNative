@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import I18n from '../i18n';
@@ -86,12 +86,10 @@ const Item = ({ label, content, theme, testID }: IItem) =>
 		</View>
 	) : null;
 
-interface ICannedResponseDetailProps {
-	navigation: NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>;
-	route: RouteProp<ChatsStackParamList, 'CannedResponseDetail'>;
-}
+const CannedResponseDetail = (): JSX.Element => {
+	const navigation = useNavigation<NativeStackNavigationProp<ChatsStackParamList, 'CannedResponseDetail'>>();
+	const route = useRoute<RouteProp<ChatsStackParamList, 'CannedResponseDetail'>>();
 
-const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps): JSX.Element => {
 	const { cannedResponse } = route?.params;
 	const { theme } = useTheme();
 	const { isMasterDetail } = useAppSelector(state => state.app);
@@ -100,7 +98,7 @@ const CannedResponseDetail = ({ navigation, route }: ICannedResponseDetailProps)
 		navigation.setOptions({
 			title: `!${cannedResponse?.shortcut}`
 		});
-	}, []);
+	}, [navigation, cannedResponse?.shortcut]);
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		const { room } = route.params;

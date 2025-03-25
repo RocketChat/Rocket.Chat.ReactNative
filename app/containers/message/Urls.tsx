@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import FastImage from 'react-native-fast-image';
+import { Image as ExpoImage } from 'expo-image';
 import { dequal } from 'dequal';
 
 import { useAppSelector } from '../../lib/hooks';
@@ -10,7 +10,6 @@ import openLink from '../../lib/methods/helpers/openLink';
 import sharedStyles from '../../views/Styles';
 import { useTheme } from '../../theme';
 import { LISTENER } from '../Toast';
-import { isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import MessageContext from './Context';
@@ -51,7 +50,7 @@ const UrlContent = ({ title, description }: { title: string; description: string
 	return (
 		<View style={styles.textContainer}>
 			{title ? (
-				<Text style={[styles.title, { color: colors.badgeBackgroundLevel2 }]} numberOfLines={2}>
+				<Text style={[styles.title, { color: colors.fontInfo }]} numberOfLines={2}>
 					{title}
 				</Text>
 			) : null}
@@ -97,8 +96,8 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 			overflow: 'hidden',
 			alignItems: 'center',
 			justifyContent: 'center',
-			...imageDimensions.width <= 64 && { width: 64 },
-			...imageDimensions.height <= 64 && { height: 64 }
+			...(imageDimensions.width <= 64 && { width: 64 }),
+			...(imageDimensions.height <= 64 && { height: 64 })
 		};
 		if (!hasContent) {
 			containerStyle = {
@@ -112,11 +111,10 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	return (
 		<View style={containerStyle}>
-			<FastImage
-				fallback={isAndroid}
+			<ExpoImage
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
-				resizeMode={FastImage.resizeMode.contain}
+				contentFit='contain'
 				onError={() => setImageLoadedState('error')}
 				onLoad={() => setImageLoadedState('done')}
 			/>
@@ -130,14 +128,33 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
-	const getImageUrl = () => {
-		const imageUrl = url.image || url.url;
+	const [imageUrl, setImageUrl] = useState('');
 
-		if (!imageUrl) return null;
-		if (imageUrl.includes('http')) return imageUrl;
-		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
+	useEffect(() => {
+		const verifyUrlIsImage = async () => {
+			try {
+				const imageUrl = getImageUrl();
+				if (!imageUrl) return;
+
+				const response = await fetch(imageUrl, { method: 'HEAD' });
+				const contentType = response.headers.get('content-type');
+				if (contentType?.startsWith?.('image/')) {
+					setImageUrl(imageUrl);
+				}
+			} catch {
+				// do nothing
+			}
+		};
+		verifyUrlIsImage();
+	}, [url.image, url.url]);
+
+	const getImageUrl = () => {
+		const _imageUrl = url.image || url.url;
+
+		if (!_imageUrl) return null;
+		if (_imageUrl.includes('http')) return _imageUrl;
+		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	};
-	const image = getImageUrl();
 
 	const onPress = () => openLink(url.url, theme);
 
@@ -168,9 +185,9 @@ const Url = ({ url }: { url: IUrl }) => {
 			]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			<>
-				{image ? (
+				{imageUrl ? (
 					<WidthAwareView>
-						<UrlImage image={image} hasContent={hasContent} />
+						<UrlImage image={imageUrl} hasContent={hasContent} />
 					</WidthAwareView>
 				) : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}

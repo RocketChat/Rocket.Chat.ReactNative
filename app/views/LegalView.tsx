@@ -1,5 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
 import StatusBar from '../containers/StatusBar';
@@ -7,14 +9,12 @@ import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
 import * as List from '../containers/List';
+import NewWindowIcon from '../containers/NewWindowIcon';
 import { OutsideParamList } from '../stacks/types';
-import { IBaseScreen, IApplicationState } from '../definitions';
+import { IApplicationState } from '../definitions';
 
-interface ILegalViewProps extends IBaseScreen<OutsideParamList, 'LegalView'> {
-	server: string;
-}
-
-const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
+const LegalView = () => {
+	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LegalView'>>();
 	const server = useSelector((state: IApplicationState) => state.server.server);
 	const { theme } = useTheme();
 
@@ -41,14 +41,16 @@ const LegalView = ({ navigation }: ILegalViewProps): React.ReactElement => {
 						title='Terms_of_Service'
 						onPress={() => onPressItem({ route: 'terms-of-service' })}
 						testID='legal-terms-button'
-						showActionIndicator
+						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 					<List.Item
 						title='Privacy_Policy'
 						onPress={() => onPressItem({ route: 'privacy-policy' })}
 						testID='legal-privacy-button'
-						showActionIndicator
+						right={() => <NewWindowIcon />}
+						accessibilityRole='link'
 					/>
 					<List.Separator />
 				</List.Section>
