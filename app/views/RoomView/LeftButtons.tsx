@@ -5,7 +5,6 @@ import { Platform, StyleSheet } from 'react-native';
 import Avatar from '../../containers/Avatar';
 import { themes } from '../../lib/constants';
 import { useAppNavigation } from '../../lib/hooks/navigation';
-import { isIOS } from '../../lib/methods/helpers';
 import { TSupportedThemes } from '../../theme';
 
 const styles = StyleSheet.create({
@@ -70,7 +69,6 @@ const LeftButtons = ({
 		return (
 			<HeaderBackButton
 				label={label}
-				labelVisible={isIOS}
 				onPress={goBack}
 				tintColor={themes[theme].fontDefault}
 				labelStyle={{ fontSize, marginLeft }}

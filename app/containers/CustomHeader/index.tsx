@@ -64,7 +64,6 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 			) : (
 				<View style={{ width: rightButtonsWidth }}>
 					<HeaderBackButton
-						labelVisible={false}
 						onPress={() => navigation.goBack()}
 						tintColor={colors.fontDefault}
 						testID='custom-header-back'
