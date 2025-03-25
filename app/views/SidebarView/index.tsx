@@ -253,11 +253,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<List.Separator />
 				<List.Item
-					title={'Display'}
-					left={() => <List.Icon name='sort' />}
-					onPress={() => this.sidebarNavigate('DisplayPrefStackNavigator')}
-					backgroundColor={this.currentItemKey === 'DisplayPrefStackNavigator' ? themes[theme!].strokeLight : undefined}
-					testID='sidebar-display'
+					title={'Accessibility'}
+					left={() => <List.Icon name='accessibility' />}
+					onPress={() => this.sidebarNavigate('AccessibilityStackNavigator')}
+					backgroundColor={this.currentItemKey === 'AccessibilityStackNavigator' ? themes[theme!].strokeLight : undefined}
+					testID='sidebar-accessibility'
 				/>
 				<List.Separator />
 				<List.Item
