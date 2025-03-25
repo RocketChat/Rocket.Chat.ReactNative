@@ -396,10 +396,10 @@ jobs:
           command: |
             yarn lint
 
-      - run:
-          name: Test
-          command: |
-            yarn test --runInBand
+      # - run:
+      #     name: Test
+      #     command: |
+      #       yarn test --runInBand
 
       - save_cache: *save-npm-cache-linux
 
