@@ -18,6 +18,6 @@ export const styles = StyleSheet.create({
 		fontSize: 18,
 		flex: 1,
 		lineHeight: 24,
-		paddingVertical: 10
+		paddingVertical: 8
 	}
 });

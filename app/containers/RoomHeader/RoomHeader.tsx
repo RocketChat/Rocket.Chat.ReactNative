@@ -116,9 +116,8 @@ const RoomHeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomH
 	const { colors } = useTheme();
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
-		return <HeaderTitle style={{ ...sharedStyles.textSemibold }} headerTitle={title} />;
+		return <HeaderTitle style={{ fontSize: 16, lineHeight: 8 }} headerTitle={title} />;
 	}
-
 	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
