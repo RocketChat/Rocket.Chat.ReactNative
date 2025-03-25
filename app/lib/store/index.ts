@@ -11,9 +11,9 @@ let enhancers;
 
 if (__DEV__) {
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	const Reactotron = require('reactotron-react-native').default;
+	// const Reactotron = require('reactotron-react-native').default;
 	sagaMiddleware = createSagaMiddleware({
-		sagaMonitor: Reactotron.createSagaMonitor()
+		// sagaMonitor: Reactotron.createSagaMonitor()
 	});
 
 	enhancers = compose(
@@ -21,7 +21,7 @@ if (__DEV__) {
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
-		Reactotron.createEnhancer()
+		// Reactotron.createEnhancer()
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();
