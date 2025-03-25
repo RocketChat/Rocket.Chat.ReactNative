@@ -1,9 +1,11 @@
 import React from 'react';
-import { Text, ToastAndroid, View } from 'react-native';
+import { Text } from 'react-native';
+import moment from 'moment';
 
 import styles from '../styles';
-import moment from 'moment';
 import { useTheme } from '../../../theme';
+import { LISTENER } from '../../../containers/Toast';
+import EventEmitter from '../../../lib/methods/helpers/events';
 
 interface ITimestampProps {
 	value: { timestamp: string; format: "t" | "T" | "d" | "D" | "f" | "F" | "R"; }
@@ -46,10 +48,13 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
         return "Invalid Date";
     }, [value]);
 
+    const handlePress = () => {
+        const message = moment(parseInt(value.timestamp) * 1000).format('dddd, MMM DD, YYYY hh:mm A');
+        EventEmitter.emit(LISTENER, { message });
+    }
+
     return (
-            <Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: styles.text.fontSize + 7}} onPress={()=>{
-                ToastAndroid.show(formatDate, ToastAndroid.SHORT);
-            }}>
+            <Text style={{ backgroundColor: colors.surfaceSelected, color: colors.fontDefault, lineHeight: styles.text.fontSize + 7 }} onPress={handlePress}>
                 {` ${formatDate} `}
             </Text>
     )
