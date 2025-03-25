@@ -28,22 +28,22 @@ export type ChatsStackParamList = {
 	NewMessageStack: undefined;
 	RoomsListView: undefined;
 	RoomView:
-	| {
-		rid: string;
-		t: SubscriptionType;
-		tmid?: string;
-		messageId?: string;
-		name?: string;
-		fname?: string;
-		prid?: string;
-		room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
-		jumpToMessageId?: string;
-		jumpToThreadId?: string;
-		roomUserId?: string | null;
-		usedCannedResponse?: string;
-		status?: string;
+		| {
+				rid: string;
+				t: SubscriptionType;
+				tmid?: string;
+				messageId?: string;
+				name?: string;
+				fname?: string;
+				prid?: string;
+				room?: TSubscriptionModel | { rid: string; t: string; name?: string; fname?: string; prid?: string };
+				jumpToMessageId?: string;
+				jumpToThreadId?: string;
+				roomUserId?: string | null;
+				usedCannedResponse?: string;
+				status?: string;
 		  }
-	| undefined; // Navigates back to RoomView already on stack
+		| undefined; // Navigates back to RoomView already on stack
 	RoomActionsView: {
 		room: TSubscriptionModel;
 		member?: any;
@@ -157,10 +157,6 @@ export type ChatsStackParamList = {
 	AddExistingChannelView: {
 		teamId: string;
 	};
-	MarkdownTableView: {
-		renderRows: (drawExtraBorders?: boolean) => JSX.Element;
-		tableWidth: number;
-	};
 	ReadReceiptsView: {
 		messageId: string;
 	};
@@ -210,7 +206,6 @@ export type SettingsStackParamList = {
 	SecurityPrivacyView: undefined;
 	E2EEncryptionSecurityView: undefined;
 	LanguageView: undefined;
-	ThemeView: undefined;
 	DefaultBrowserView: undefined;
 	ScreenLockConfigView: undefined;
 	ProfileView: undefined;
@@ -218,10 +213,17 @@ export type SettingsStackParamList = {
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
+	AccessibilityAndAppearanceView: undefined
 };
 
 export type AdminPanelStackParamList = {
 	AdminPanelView: undefined;
+};
+
+export type AccessibilityStackParamList = {
+	AccessibilityAndAppearanceView: undefined;
+	DisplayPrefsView: undefined;
+	ThemeView: undefined;
 };
 
 export type DisplayPrefStackParamList = {
@@ -233,7 +235,7 @@ export type DrawerParamList = {
 	ProfileStackNavigator: NavigatorScreenParams<ProfileStackParamList>;
 	SettingsStackNavigator: NavigatorScreenParams<SettingsStackParamList>;
 	AdminPanelStackNavigator: NavigatorScreenParams<AdminPanelStackParamList>;
-	DisplayPrefStackNavigator: NavigatorScreenParams<DisplayPrefStackParamList>;
+	AccessibilityStackNavigator: NavigatorScreenParams<AccessibilityStackParamList>;
 };
 
 export type NewMessageStackParamList = {

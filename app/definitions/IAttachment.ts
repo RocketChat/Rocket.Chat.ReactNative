@@ -81,12 +81,12 @@ export interface IShareAttachment {
 	size: number;
 	mime?: string;
 	path: string;
-	canUpload: boolean;
+	canUpload?: boolean;
 	error?: any;
-	uri: string;
 	width?: number;
 	height?: number;
 	exif?: {
 		Orientation: string;
 	};
+	base64?: string | null;
 }

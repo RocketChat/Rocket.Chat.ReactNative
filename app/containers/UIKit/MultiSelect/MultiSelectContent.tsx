@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
+import { textInputDebounceTime } from '../../../lib/constants';
 import { FormTextInput } from '../../TextInput/FormTextInput';
 import { textParser } from '../utils';
 import I18n from '../../../i18n';
@@ -61,7 +62,7 @@ export const MultiSelectContent = React.memo(
 					setItems(options?.filter((option: any) => textParser([option.text]).toLowerCase().includes(text.toLowerCase())));
 				}
 			},
-			onSearch ? 300 : 0
+			onSearch ? textInputDebounceTime : 0
 		);
 
 		return (

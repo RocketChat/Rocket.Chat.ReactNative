@@ -10,7 +10,6 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	tabsContainer: {
-		height: EMOJI_BUTTON_SIZE,
 		flexDirection: 'row'
 	},
 	tab: {
