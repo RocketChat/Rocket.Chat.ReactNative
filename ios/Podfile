@@ -6,12 +6,17 @@ install! 'cocoapods', :deterministic_uuids => false
 
 prepare_react_native_project!
 
+# use_modular_headers!
+
 def all_pods
   pod 'simdjson', path: '../node_modules/@nozbe/simdjson', modular_headers: true
   $RNFirebaseAnalyticsWithoutAdIdSupport = true
 
   use_expo_modules!
   config = use_native_modules!
+
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -33,6 +38,9 @@ end
 $static_framework = [ 
   'WatermelonDB',
   'simdjson',
+  'react-native-mmkv-storage',
+  'react-native-simple-crypto',
+  'react-native-notifications'
 ]
 pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
