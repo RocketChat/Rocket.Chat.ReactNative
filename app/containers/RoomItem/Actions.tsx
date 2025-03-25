@@ -141,6 +141,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					styles.actionRightButtonContainer,
 					{
 						width: width * 2,
+						height: '100%',
 						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
