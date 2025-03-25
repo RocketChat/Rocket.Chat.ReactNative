@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { useTheme } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import I18n from '../../i18n';
@@ -39,7 +38,6 @@ const schema = yup.object().shape({
 
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
-	const { colors } = useTheme();
 	const navigation = useNavigation<TReportUserViewNavigationProp>();
 	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
 
