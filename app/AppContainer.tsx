@@ -54,14 +54,13 @@ const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: bool
 					ios: 'symbol:heart',
 					android: 'asset:shortcut_compose'
 				}),
-				params: { href: '/settings' }
+				params: { href: '' }
 			}
 		]);
 	}, []);
 
 	useEffect(() => {
 		if (action) {
-			console.log('Quick Action Triggered:', action);
 			handleQuickAction(action);
 		}
 	}, [action]);
