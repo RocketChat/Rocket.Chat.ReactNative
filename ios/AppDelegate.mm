@@ -3,7 +3,7 @@
 #import <React/RCTLinkingManager.h>
 #import "RNNotifications.h"
 #import "RNBootSplash.h"
-//#import <Firebase.h>
+#import <Firebase.h>
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
 
@@ -11,9 +11,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//  if(![FIRApp defaultApp]){
-//    [FIRApp configure];
-//  }
+  if(![FIRApp defaultApp]){
+    [FIRApp configure];
+  }
   [Bugsnag start];
   
   // AppGroup MMKV
