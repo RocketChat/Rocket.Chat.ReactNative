@@ -53,7 +53,7 @@ import {
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import CustomHeader from '../../containers/Header';
+import Header from '../../containers/Header';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -915,7 +915,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		const options = this.getHeader();
-		return <CustomHeader options={options} navigation={this.props.navigation} route={this.props.route} />;
+		return <Header options={options} navigation={this.props.navigation} route={this.props.route} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
