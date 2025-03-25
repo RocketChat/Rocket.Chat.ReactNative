@@ -113,7 +113,7 @@ commands:
       - run:
           name: Install pods libs
           command: |
-            bundle exec pod install --deployment
+            RCT_NEW_ARCH_ENABLED=0 bundle exec pod install --deployment
           working_directory: ios
       - save_cache:
           name: Save pods specs and pods cache
