@@ -14,7 +14,6 @@ const Timestamp = ({ value }: ITimestampProps): React.ReactElement => {
     
     const formatDate = React.useMemo(()=>{
         const timestamp = parseInt(value.timestamp) * 1000;
-        console.log(timestamp, value.timestamp)
 
         if(value.format === "t"){
             return moment(timestamp).format('hh:mm A');
