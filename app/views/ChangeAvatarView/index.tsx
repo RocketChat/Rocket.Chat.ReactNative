@@ -89,7 +89,6 @@ const ChangeAvatarView = () => {
 			title: titleHeader || I18n.t('Avatar'),
 			headerLeft: () => (
 				<HeaderBackButton
-					labelVisible={false}
 					onPress={() => navigation.goBack()}
 					tintColor={colors.fontDefault}
 					testID='header-back'

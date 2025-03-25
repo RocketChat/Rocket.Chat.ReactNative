@@ -12,7 +12,7 @@ export interface IHeaderButtonItem {
 	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
-	badge?(): void;
+	badge?(): React.ReactElement | null;
 	color?: string;
 	disabled?: boolean;
 	accessibilityLabel?: string;
@@ -65,8 +65,7 @@ const Item = ({
 				{
 					opacity: disabled ? 0.5 : 1
 				}
-			]}
-		>
+			]}>
 			<View accessibilityLabel={accessibilityLabel}>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color} {...props} />

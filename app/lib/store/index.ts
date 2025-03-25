@@ -20,8 +20,7 @@ if (__DEV__) {
 		applyAppStateMiddleware(),
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
-		applyMiddleware(sagaMiddleware),
-		// Reactotron.createEnhancer()
+		applyMiddleware(sagaMiddleware)
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();
