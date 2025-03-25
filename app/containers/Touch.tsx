@@ -33,7 +33,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 		// The margin should be applied to the parent component.
 		// If set on the View, it will create an internal margin inside the RectButton.
 		const marginStyles = {
-			margin: margin,
+			margin,
 			marginBottom,
 			marginLeft,
 			marginVertical,
