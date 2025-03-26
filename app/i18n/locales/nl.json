@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1 persoon heeft gereageerd",
+  "Accessibility": "Toegankelijkheid",
+  "Accessibility_and_Appearance": "Toegankelijkheid & uiterlijk",
   "Accessibility_statement": "Toegankelijkheidsverklaring",
   "Actions": "Acties",
   "Activity": "Activiteit",
@@ -318,6 +320,7 @@
   "Members": "Leden",
   "members": "leden",
   "Mentions": "Vermeldingen",
+  "Mentions_With_@_Symbol": "Vermeldingen met @ symbool",
   "Message": "Bericht",
   "message": "bericht",
   "Message_actions": "Berichtacties",
@@ -493,6 +496,7 @@
   "Room_Info_Edit": "Kamer info bewerken",
   "Room_Password": "Kamerwachtwoord",
   "room-name-already-exists": "Kamernaam bestaat al",
+  "Rooms_With_#_Symbol": "Kamers met het # symbool",
   "SAVE": "OPSLAAN",
   "Save": "Opslaan",
   "Save_Changes": "Wijzigingen opslaan",
