@@ -231,7 +231,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 					setTwoFactorCode(code as any);
 					return submit();
 				} catch {
-					// Two-factor modal canceled
+					// cancelled twoFactor modal
 				}
 			}
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
