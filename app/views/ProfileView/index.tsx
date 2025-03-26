@@ -107,7 +107,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	const newPassword = watch('newPassword') ?? '';
 	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
-	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
+	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
 
