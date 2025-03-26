@@ -72,7 +72,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	private unsubscribeBlur: (() => void) | undefined;
 
-	backHandler: NativeEventSubscription;
+	private backHandler: NativeEventSubscription | undefined;
 
 	constructor(props: IShareListViewProps) {
 		super(props);
@@ -93,7 +93,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				'focus',
 				() => (this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress))
 			);
-			this.unsubscribeBlur = props.navigation.addListener('blur', () => this.backHandler.remove());
+			this.unsubscribeBlur = props.navigation.addListener('blur', () => this.backHandler?.remove());
 		}
 	}
 
