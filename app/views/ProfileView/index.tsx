@@ -257,6 +257,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 					this.setState({ ...this.state, ...params });
 				}
 				EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+				this.props.navigation.goBack();
 			}
 			this.setState({ saving: false, currentPassword: null, twoFactorCode: null });
 		} catch (e: any) {
@@ -401,6 +402,7 @@ class ProfileView extends React.Component<IProfileViewProps, IProfileViewState> 
 				try {
 					await Services.logoutOtherLocations();
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logged_out_of_other_clients_successfully') });
+					this.props.navigation.goBack();
 				} catch {
 					logEvent(events.PL_OTHER_LOCATIONS_F);
 					EventEmitter.emit(LISTENER, { message: I18n.t('Logout_failed') });
