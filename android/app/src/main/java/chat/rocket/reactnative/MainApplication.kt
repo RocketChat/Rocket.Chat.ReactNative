@@ -23,10 +23,10 @@ import com.wix.reactnativenotifications.core.notification.IPushNotification
 import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningPackage;
-// import chat.rocket.reactnative.notification.CustomPushNotification;
+import chat.rocket.reactnative.notification.CustomPushNotification;
 import com.reactnativecommunity.viewpager.RNCViewPagerPackage;
 
-open class MainApplication : Application(), ReactApplication {
+open class MainApplication : Application(), ReactApplication, INotificationsApplication {
 
   override val reactNativeHost: ReactNativeHost =
       object : DefaultReactNativeHost(this) {
@@ -66,18 +66,18 @@ open class MainApplication : Application(), ReactApplication {
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig)
   }
 
-  // override fun getPushNotification(
-  //   context: Context,
-  //   bundle: Bundle,
-  //   defaultFacade: AppLifecycleFacade,
-  //   defaultAppLaunchHelper: AppLaunchHelper
-  // ): IPushNotification {
-  //   return CustomPushNotification(
-  //     context,
-  //     bundle,
-  //     defaultFacade,
-  //     defaultAppLaunchHelper,
-  //     JsIOHelper()
-  //   )
-  // }
+  override fun getPushNotification(
+    context: Context,
+    bundle: Bundle,
+    defaultFacade: AppLifecycleFacade,
+    defaultAppLaunchHelper: AppLaunchHelper
+  ): IPushNotification {
+    return CustomPushNotification(
+      context,
+      bundle,
+      defaultFacade,
+      defaultAppLaunchHelper,
+      JsIOHelper()
+    )
+  }
 }
