@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, Text, View } from 'react-native';
+import { BackHandler, FlatList, Keyboard, NativeEventSubscription, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
@@ -72,6 +72,8 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	private unsubscribeBlur: (() => void) | undefined;
 
+	backHandler: NativeEventSubscription;
+
 	constructor(props: IShareListViewProps) {
 		super(props);
 		this.state = {
@@ -87,12 +89,11 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		};
 		this.setHeader();
 		if (isAndroid) {
-			this.unsubscribeFocus = props.navigation.addListener('focus', () =>
-				BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+			this.unsubscribeFocus = props.navigation.addListener(
+				'focus',
+				() => (this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress))
 			);
-			// this.unsubscribeBlur = props.navigation.addListener('blur', () =>
-			// 	BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
-			// );
+			this.unsubscribeBlur = props.navigation.addListener('blur', () => this.backHandler.remove());
 		}
 	}
 
@@ -476,7 +477,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 							styles.readOnlyContainer,
 							{
 								backgroundColor: themes[theme].surfaceRoom,
-								...serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 }
+								...(serversCount > 1 ? { justifyContent: 'center' } : { paddingTop: 250 })
 							}
 						]}>
 						<Text style={[styles.readOnlyTitle, { color: themes[theme].fontDefault }]}>
