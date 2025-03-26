@@ -22,7 +22,7 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
-import PasswordPolicies from './PasswordPolicies';
+import PasswordPolicies from '../../containers/PasswordPolicies';
 import getCustomFields from '../../lib/methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';

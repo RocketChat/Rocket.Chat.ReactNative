@@ -38,6 +38,7 @@ import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import getCustomFields from '../../lib/methods/getCustomFields';
 import CustomFields from './components/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
+import PasswordPolicies from '../../containers/PasswordPolicies';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
@@ -104,7 +105,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		resolver: yupResolver(validationSchema)
 	});
 	const newPassword = watch('newPassword') ?? '';
-	const { isPasswordValid } = useVerifyPassword(newPassword, newPassword);
+	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -348,12 +349,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							containerStyle={styles.inputContainer}
 							testID='profile-view-new-password'
 						/>
-
 						<CustomFields
 							Accounts_CustomFields={Accounts_CustomFields}
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
 						/>
+						{passwordPolicies && newPassword?.length > 0 ? (
+							<PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} />
+						) : null}
 					</View>
 
 					<Button
