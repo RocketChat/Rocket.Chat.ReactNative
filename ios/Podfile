@@ -78,19 +78,19 @@ post_install do |installer|
     end
   end
 
-  # bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
-  # def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-  #   framework_path = File.join(Dir.pwd, framework_relative_path)
-  #   command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
-  #   puts "Stripping bitcode: #{command}"
-  #   system(command)
-  # end
+  bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
+  def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
+    framework_path = File.join(Dir.pwd, framework_relative_path)
+    command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
+    puts "Stripping bitcode: #{command}"
+    system(command)
+  end
 
-  # framework_paths = [
-  #   "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework/ios-arm64_armv7/OpenSSL.framework/OpenSSL"
-  # ]
+  framework_paths = [
+    "Pods/OpenSSL-Universal/Frameworks/OpenSSL.xcframework/ios-arm64_armv7/OpenSSL.framework/OpenSSL"
+  ]
 
-  # framework_paths.each do |framework_relative_path|
-  #   strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-  # end
+  framework_paths.each do |framework_relative_path|
+    strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
+  end
 end
