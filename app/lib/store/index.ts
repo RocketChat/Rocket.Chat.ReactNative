@@ -11,10 +11,7 @@ let enhancers;
 
 if (__DEV__) {
 	const reduxImmutableStateInvariant = require('redux-immutable-state-invariant').default();
-	// const Reactotron = require('reactotron-react-native').default;
-	sagaMiddleware = createSagaMiddleware({
-		// sagaMonitor: Reactotron.createSagaMonitor()
-	});
+	sagaMiddleware = createSagaMiddleware();
 
 	enhancers = compose(
 		applyAppStateMiddleware(),
