@@ -1,7 +1,7 @@
 import { Q } from '@nozbe/watermelondb';
 import { Base64 } from 'js-base64';
 import React from 'react';
-import { BackHandler, Keyboard, StyleSheet, Text } from 'react-native';
+import { BackHandler, Keyboard, NativeEventSubscription, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import { Image } from 'expo-image';
@@ -62,6 +62,8 @@ interface ISubmitParams {
 }
 
 class NewServerView extends React.Component<INewServerViewProps, INewServerViewState> {
+	backHandler: NativeEventSubscription;
+
 	constructor(props: INewServerViewProps) {
 		super(props);
 		this.setHeader();
@@ -73,7 +75,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 			showBottomInfo: true
 		};
 		EventEmitter.addEventListener('NewServer', this.handleNewServerEvent);
-		BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+		this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 		if (isAndroid) {
 			Keyboard.addListener('keyboardDidShow', () => this.handleShowKeyboard());
 			Keyboard.addListener('keyboardDidHide', () => this.handleHideKeyboard());
@@ -86,7 +88,7 @@ class NewServerView extends React.Component<INewServerViewProps, INewServerViewS
 
 	componentWillUnmount() {
 		EventEmitter.removeListener('NewServer', this.handleNewServerEvent);
-		// BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+		this.backHandler.remove();
 		if (isAndroid) {
 			Keyboard.removeAllListeners('keyboardDidShow');
 			Keyboard.removeAllListeners('keyboardDidHide');
