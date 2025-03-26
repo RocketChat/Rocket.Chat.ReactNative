@@ -196,11 +196,11 @@ commands:
           name: Upload sourcemaps/NDK symbols to Bugsnag
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              yarn bugsnag:upload-android --variant officialRelease
+              yarn bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
               yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              yarn bugsnag:upload-android --variant experimentalRelease
+              yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
               yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
             fi
 
