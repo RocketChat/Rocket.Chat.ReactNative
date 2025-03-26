@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import React, { useLayoutEffect, useState } from 'react';
-import { Keyboard, ScrollView, View } from 'react-native';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { Keyboard, ScrollView, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -36,7 +36,7 @@ import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import getCustomFields from '../../lib/methods/getCustomFields';
-import CustomFields from './components/CustomFields';
+import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import PasswordPolicies from '../../containers/PasswordPolicies';
 import handleError from './methods/handleError';
@@ -109,6 +109,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
+	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
+
+	const focusOnCustomFields = () => {
+		if (!parsedCustomFields) return;
+		const [firstCustomFieldKey] = Object.keys(parsedCustomFields);
+
+		customFieldsRef.current[firstCustomFieldKey]?.focus();
+	};
 
 	const validateFormInfo = () => {
 		const isValid = validationSchema.isValidSync(getValues());
@@ -339,17 +347,13 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							label={I18n.t('New_Password')}
-							onSubmitEditing={() => {
-								if (Accounts_CustomFields && Object.keys(customFields).length) {
-									// @ts-ignore
-									return this[Object.keys(customFields)[0]].focus();
-								}
-							}}
+							onSubmitEditing={focusOnCustomFields}
 							secureTextEntry
 							containerStyle={styles.inputContainer}
 							testID='profile-view-new-password'
 						/>
 						<CustomFields
+							customFieldsRef={customFieldsRef}
 							Accounts_CustomFields={Accounts_CustomFields}
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
