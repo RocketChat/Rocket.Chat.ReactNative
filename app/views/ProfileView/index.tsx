@@ -35,7 +35,6 @@ import { DeleteAccountActionSheetContent } from './components/DeleteAccountActio
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
-import getCustomFields from '../../lib/methods/getCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import PasswordPolicies from '../../containers/PasswordPolicies';
@@ -110,6 +109,12 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
+
+	const isCustomFieldsDirty = () => {
+		if (!parsedCustomFields) return false;
+		const customFieldsKeys = Object.keys(parsedCustomFields);
+		return customFieldsKeys.some(key => user?.customFields?.[key] !== customFields[key]);
+	};
 
 	const focusOnCustomFields = () => {
 		if (!parsedCustomFields) return;
@@ -367,7 +372,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 						title={I18n.t('Save_Changes')}
 						type='primary'
 						onPress={handleSubmit(submit)}
-						disabled={!enableSaveChangesButton()}
+						disabled={!enableSaveChangesButton() && !isCustomFieldsDirty()}
 						testID='profile-view-submit'
 						loading={getValues().saving}
 						style={{ marginBottom: 0 }}
