@@ -137,7 +137,7 @@
   "Help": "Ayuda",
   "Hide_Password": "Ocultar contraseña",
   "Hide_room": "Ocultar",
-  "Hide-Password": "Ocultar contraseña",
+  "Hide_Password": "Ocultar contraseña",
   "In_App_And_Desktop": "En la aplicación y en el escritorio",
   "In_App_and_Desktop_Alert_info": "Muestra un banner en la parte superior de la pantalla cuando la aplicación esté abierta y muestra una notificación en el escritorio",
   "Invalid_server_version": "El servidor que intentas conectar está usando una versión que ya no está soportada por la aplicación : {{currentVersion}}. Se requiere una versión {{minVersion}}.",
