@@ -35,7 +35,7 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 		height: 30 * fontScale
 	};
 	if (emoji) {
-		return <CustomEmoji style={[isBigEmoji ? customEmojiSize : customEmojiBigSize, style]} emoji={emoji} />;
+		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
 	}
 	return (
 		<Text
