@@ -10,8 +10,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: 56,
 		borderWidth: 1,
-		borderRadius: 4,
-		marginBottom: 8
+		borderRadius: 4
 	},
 	playPauseButton: {
 		alignItems: 'center',
