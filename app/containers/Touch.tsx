@@ -18,6 +18,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 		// If set on the View, the touch opacity animation won't work properly.
 		const flattenedStyle = StyleSheet.flatten(style) || {};
 		const {
+			borderRadius,
 			backgroundColor,
 			marginBottom,
 			margin,
@@ -50,7 +51,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
-				style={{ ...marginStyles, backgroundColor }}
+				style={{ ...marginStyles, backgroundColor, borderRadius }}
 				{...props}>
 				<View accessible={accessible} accessibilityLabel={accessibilityLabel} style={viewStyle}>
 					{children}
