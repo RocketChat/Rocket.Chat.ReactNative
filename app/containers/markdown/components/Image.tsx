@@ -16,10 +16,14 @@ type TMarkdownImage = {
 
 const MarkdownImage = ({ img, theme }: TMarkdownImage) => (
 	<ExpoImage
-		style={[{ borderColor: themes[theme].strokeLight }]}
+		style={[{ flex: 1, overflow: "visible", borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
-		contentFit='contain'
-		contentPosition='bottom left'
+		contentFit='cover'
+		contentPosition={{
+			bottom: 0,
+			left: 0
+		}}
+		transition={100}
 	/>
 );
 
