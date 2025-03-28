@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Image as ImageProps } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
 
 import { type TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
+import styles from '../styles';
 
 interface IImageProps {
 	value: ImageProps['value'];
@@ -14,18 +15,22 @@ type TMarkdownImage = {
 	theme: TSupportedThemes;
 };
 
-const MarkdownImage = ({ img, theme }: TMarkdownImage) => (
-	<ExpoImage
-		style={[{ flex: 1, overflow: "visible", borderColor: themes[theme].strokeLight }]}
+const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
+	const [size, setSize] = useState(styles.inlineImage);
+
+	return <ExpoImage
+		style={[size, { borderColor: themes[theme].strokeLight }]}
+		resizeMode='contain'
 		source={{ uri: encodeURI(img) }}
-		contentFit='cover'
-		contentPosition={{
-			bottom: 0,
-			left: 0
+		contentPosition='left'
+		onLoad={({ source }) => {
+			const { width, height } = source;
+			if (width && height) {
+				setSize({ width, height });
+			}
 		}}
-		transition={100}
 	/>
-);
+};
 
 const Image = ({ value }: IImageProps) => {
 	const { theme } = useTheme();
