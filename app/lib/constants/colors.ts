@@ -157,7 +157,7 @@ const dark = {
 	buttonBackgroundPrimaryPress: '#245399',
 	buttonBackgroundPrimaryDisabled: '#1D3963',
 
-	buttonBackgroundSecondaryDefault: '#2F343D',
+	buttonBackgroundSecondaryDefault: '#353B45',
 	buttonBackgroundSecondaryPress: '#454C59',
 	buttonBackgroundSecondaryDisabled: '#2F343D',
 
