@@ -23,8 +23,6 @@ const styles = StyleSheet.create({
 		paddingRight: PADDING_HORIZONTAL
 	},
 	rightContainer: {
-		flex: 1,
-		justifyContent: 'flex-end',
 		paddingLeft: PADDING_HORIZONTAL
 	},
 	disabled: {
@@ -129,7 +127,7 @@ const Content = React.memo(
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
-						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]} numberOfLines={1}>
+						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]}>
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
