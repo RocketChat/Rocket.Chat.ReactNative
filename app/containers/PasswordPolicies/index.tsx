@@ -1,23 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import { IPasswordPolicy } from '../../lib/hooks/useVerifyPassword';
-import Tip from './Tip';
+import Tip from './components/Tip';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
-import sharedStyles from '../Styles';
-
-const styles = StyleSheet.create({
-	passwordPoliciesTitle: {
-		...sharedStyles.textMedium,
-		fontSize: 14,
-		lineHeight: 20
-	},
-	policies: {
-		gap: 8,
-		paddingTop: 8
-	}
-});
+import { styles } from './styles';
 
 interface IPasswordTips {
 	isDirty: boolean;
