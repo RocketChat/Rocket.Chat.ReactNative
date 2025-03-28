@@ -19,10 +19,13 @@ const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 	const [size, setSize] = useState(styles.inlineImage);
 
 	return <ExpoImage
-		style={[size, { borderColor: themes[theme].strokeLight }]}
-		resizeMode='contain'
+		style={[size, { overflow: "visible", borderColor: themes[theme].strokeLight }]}
+		contentFit='contain'
+		contentPosition={{
+			left: 0,
+			bottom: size.height/2
+		}}
 		source={{ uri: encodeURI(img) }}
-		contentPosition='left'
 		onLoad={({ source }) => {
 			const { width, height } = source;
 			if (width && height) {
