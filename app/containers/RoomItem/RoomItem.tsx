@@ -14,7 +14,6 @@ import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
-import { capitalize } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
 import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 
@@ -56,7 +55,8 @@ const RoomItem = ({
 	showAvatar,
 	displayMode,
 	sourceType,
-	hideMentionStatus
+	hideMentionStatus,
+	accessibilityDate
 }: IRoomItemProps) => {
 	const statusState = useAppSelector(state => {
 		if (state.settings.Presence_broadcast_disabled) {
@@ -75,17 +75,16 @@ const RoomItem = ({
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
 	);
-
 	const accessibilityLabel = useMemo(
 		() =>
-			`${getRoomAccessibilityLabel({
+			`${name}. ${getRoomAccessibilityLabel({
 				isGroupChat,
 				status: status ?? statusState,
 				teamMain,
 				type: prid ? 'discussion' : type,
 				userId
-			})} ${name} ${capitalize(date)} ${memoizedMessage}`,
-		[name, date, isGroupChat, status, statusState, teamMain, userId, prid, type, memoizedMessage]
+			})}. ${accessibilityDate}. ${memoizedMessage}`,
+		[name, accessibilityDate, isGroupChat, status, statusState, teamMain, userId, prid, type, memoizedMessage]
 	);
 	return (
 		<Touchable

@@ -328,6 +328,8 @@
   "Language": "Sprache",
   "last_message": "letzte Nachricht",
   "Last_owner_team_room": "Sie sind der letzte Eigner dieses Channels. Wenn Sie das Team verlassen haben, bleibt der Channel im Team, aber Sie werden ihn von außen verwalten.",
+  "Last_updated": "Zuletzt aktualisiert",
+  "Last_updated_at": "Zuletzt aktualisiert am",
   "Last_updated_on": "Zuletzt aktualisiert am",
   "last-owner-can-not-be-removed": "Letzter Besitzer kann nicht entfernt werden",
   "Leader": "Leiter",

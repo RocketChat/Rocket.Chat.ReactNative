@@ -309,6 +309,8 @@
   "Language": "Språk",
   "last_message": "senaste meddelandet",
   "Last_owner_team_room": "Du är den sista ägaren av kanalen. När du har lämnat teamet behålls kanalen i teamet, men du får hantera den utifrån.",
+  "Last_updated": "Senast uppdaterad",
+  "Last_updated_at": "Senast uppdaterad kl.",
   "Last_updated_on": "Senast uppdaterad den",
   "last-owner-can-not-be-removed": "Den sista ägaren kan inte tas bort",
   "Leader": "Ledare",
