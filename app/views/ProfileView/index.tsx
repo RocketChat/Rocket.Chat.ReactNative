@@ -23,7 +23,7 @@ import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
 import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
-import { events, logEvent } from '../../lib/methods/helpers/log';
+import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import { Services } from '../../lib/services';
 import { twoFactor } from '../../lib/services/twoFactor';
@@ -41,6 +41,7 @@ import PasswordPolicies from '../../containers/PasswordPolicies';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
+import { showToast } from '../../lib/methods/helpers/showToast';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -173,27 +174,44 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		if (newPassword) params.newPassword = newPassword;
 		if (currentPassword) params.currentPassword = sha256(currentPassword);
 
-		const requirePassword = !!params.email || newPassword;
+		// const requirePassword = !!params.email || newPassword;
 
-		if (requirePassword && !params.currentPassword) {
+		// if (requirePassword && !params.currentPassword) {
+		// 	setValue('saving', false);
+		// 	showActionSheet({
+		// 		children: (
+		// 			<ActionSheetContentWithInputAndSubmit
+		// 				title={I18n.t('Please_enter_your_password')}
+		// 				description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
+		// 				testID='profile-view-enter-password-sheet'
+		// 				placeholder={I18n.t('Password')}
+		// 				onSubmit={p => {
+		// 					hideActionSheet();
+		// 					setValue('currentPassword', p as any);
+		// 					submit();
+		// 				}}
+		// 				onCancel={hideActionSheet}
+		// 			/>
+		// 		)
+		// 	});
+		// 	return;
+		// }
+		try {
+			if (user?.emails) {
+				const response = await Services.sendEmailCode(user.emails[0].address);
+				if (response.success) {
+					showToast(I18n.t('Two_Factor_Success_message'));
+				}
+			}
+		} catch (e) {
+			log(e);
+		}
+
+		let code;
+		try {
+			code = await twoFactor({ method: TwoFactorMethods.EMAIL, invalid: false });
+		} catch (error) {
 			setValue('saving', false);
-			showActionSheet({
-				children: (
-					<ActionSheetContentWithInputAndSubmit
-						title={I18n.t('Please_enter_your_password')}
-						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-						testID='profile-view-enter-password-sheet'
-						placeholder={I18n.t('Password')}
-						onSubmit={p => {
-							hideActionSheet();
-							setValue('currentPassword', p as any);
-							submit();
-						}}
-						onCancel={hideActionSheet}
-					/>
-				)
-			});
-			return;
 		}
 
 		try {
@@ -201,7 +219,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
 				: null;
 
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+			const result = await Services.saveUserProfileMethod(params, customFields, code || twoFactorOptions);
 
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
