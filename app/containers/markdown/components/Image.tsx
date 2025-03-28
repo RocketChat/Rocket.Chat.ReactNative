@@ -19,7 +19,7 @@ const MarkdownImage = ({ img, theme }: TMarkdownImage) => (
 		style={[{ borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
 		contentFit='contain'
-        contentPosition='bottom left'
+		contentPosition='bottom left'
 	/>
 );
 
