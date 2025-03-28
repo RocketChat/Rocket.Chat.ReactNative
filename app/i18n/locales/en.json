@@ -386,6 +386,7 @@
   "Language": "Language",
   "last_message": "last message",
   "Last_owner_team_room": "You are the last owner of this channel. Once you leave the team, the channel will be kept inside the team but you will be managing it from outside.",
+  "Last_updated_on": "Last updated on",
   "last-owner-can-not-be-removed": "Last owner cannot be removed",
   "Leader": "Leader",
   "Learn_more": "Learn more",

@@ -274,6 +274,7 @@
   "Language": "Langue",
   "last_message": "dernier message",
   "Last_owner_team_room": "Vous êtes le dernier propriétaire de ce canal. Une fois que vous quittez l'équipe, le canal sera conservé au sein de l'équipe mais vous le gérerez de l'extérieur.",
+  "Last_updated_on": "Dernière mise à jour le",
   "last-owner-can-not-be-removed": "Le dernier propriétaire ne peut pas être supprimé",
   "Leader": "Leader",
   "Leave": "Quitter",
