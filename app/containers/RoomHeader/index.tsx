@@ -1,100 +1,223 @@
-import React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import React, { useCallback, useMemo } from 'react';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
-import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
-import { useDimensions } from '../../dimensions';
 import I18n from '../../i18n';
-import RoomHeader from './RoomHeader';
+import sharedStyles from '../../views/Styles';
+import { MarkdownPreview } from '../markdown';
+import RoomTypeIcon from '../RoomTypeIcon';
+import { TUserStatus, IOmnichannelSource } from '../../definitions';
+import { useTheme } from '../../theme';
+import { useAppSelector } from '../../lib/hooks';
+import { isIOS } from '../../lib/methods/helpers';
 
-interface IRoomHeaderContainerProps {
+const HIT_SLOP = {
+	top: 5,
+	right: 5,
+	bottom: 5,
+	left: 5
+};
+const TITLE_SIZE = 16;
+const SUBTITLE_SIZE = 12;
+
+const getSubTitleSize = (scale: number) => SUBTITLE_SIZE * scale;
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center'
+	},
+	titleContainer: {
+		alignItems: 'center',
+		flexDirection: 'row'
+	},
+	title: {
+		flexShrink: 1,
+		...sharedStyles.textSemibold
+	},
+	subtitle: {
+		flexShrink: 1,
+		...sharedStyles.textRegular
+	},
+	typingUsers: {
+		...sharedStyles.textSemibold
+	}
+});
+
+type TRoomHeaderSubTitle = {
+	usersTyping: [];
+	subtitle?: string;
+	renderFunc?: () => React.ReactElement;
+	scale: number;
+};
+
+type TRoomHeaderHeaderTitle = {
+	title?: string;
+	tmid?: string;
+	prid?: string;
+	scale: number;
+	testID?: string;
+};
+
+interface IRoomHeader {
 	title?: string;
 	subtitle?: string;
 	type: string;
+	width: number;
+	height: number;
+	roomUserId?: string | null;
 	prid?: string;
 	tmid?: string;
 	teamMain?: boolean;
-	roomUserId?: string | null;
-	onPress: Function;
-	parentTitle?: string;
+	status?: TUserStatus;
+	usersTyping: [];
 	isGroupChat?: boolean;
+	parentTitle?: string;
+	onPress: Function;
 	testID?: string;
 	sourceType?: IOmnichannelSource;
-	visitor?: IVisitor;
 	disabled?: boolean;
 	rightButtonsWidth?: number;
 }
 
-const RoomHeaderContainer = React.memo(
+const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoomHeaderSubTitle) => {
+	const { colors } = useTheme();
+	const fontSize = getSubTitleSize(scale);
+	// typing
+	if (usersTyping.length) {
+		let usersText;
+		if (usersTyping.length === 2) {
+			usersText = usersTyping.join(` ${I18n.t('and')} `);
+		} else {
+			usersText = usersTyping.join(', ');
+		}
+		return (
+			<Text style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+				<Text style={styles.typingUsers}>{usersText} </Text>
+				{usersTyping.length > 1 ? I18n.t('are_typing') : I18n.t('is_typing')}...
+			</Text>
+		);
+	}
+
+	// renderFunc
+	if (renderFunc) {
+		return renderFunc();
+	}
+
+	// subtitle
+	if (subtitle) {
+		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
+	}
+
+	return null;
+});
+
+const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
+	const { colors } = useTheme();
+	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
+	if (!tmid && !prid) {
+		return (
+			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
+				{title}
+			</Text>
+		);
+	}
+
+	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
+});
+
+const Header = React.memo(
 	({
-		isGroupChat,
-		onPress,
+		title,
+		subtitle,
 		parentTitle,
-		prid,
+		type,
+		status,
+		width,
+		height,
 		roomUserId,
-		subtitle: subtitleProp,
+		prid,
+		tmid,
+		onPress,
+		isGroupChat,
 		teamMain,
 		testID,
-		title,
-		tmid,
-		type,
+		usersTyping = [],
 		sourceType,
-		visitor,
 		disabled,
-		rightButtonsWidth
-	}: IRoomHeaderContainerProps) => {
-		let subtitle: string | undefined;
-		let statusVisitor: TUserStatus | undefined;
-		let statusText: string | undefined;
-		const { width, height } = useDimensions();
+		rightButtonsWidth = 0
+	}: IRoomHeader) => {
+		const { colors } = useTheme();
+		const { fontScale } = useWindowDimensions();
+		const portrait = height > width;
+		let scale = 1;
+		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
-		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
-		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
-		const connected = useSelector((state: IApplicationState) => state.meteor.connected);
-		const activeUser = useSelector(
-			(state: IApplicationState) => (roomUserId ? state.activeUsers?.[roomUserId] : undefined),
-			shallowEqual
-		);
-
-		if (connecting) {
-			subtitle = I18n.t('Connecting');
-		} else if (!connected) {
-			subtitle = I18n.t('Waiting_for_network');
-		} else {
-			subtitle = subtitleProp;
-		}
-
-		if (connected) {
-			if ((type === 'd' || (tmid && roomUserId)) && activeUser) {
-				const { statusText: statusTextActiveUser } = activeUser;
-				statusText = statusTextActiveUser;
-			} else if (type === 'l' && visitor?.status) {
-				({ status: statusVisitor } = visitor);
+		if (!portrait && !tmid && !isMasterDetail) {
+			if (usersTyping.length > 0 || subtitle) {
+				scale = 0.8;
 			}
 		}
 
+		let renderFunc;
+		if (tmid) {
+			renderFunc = () => (
+				<View style={styles.titleContainer}>
+					<RoomTypeIcon
+						userId={roomUserId}
+						type={prid ? 'discussion' : type}
+						isGroupChat={isGroupChat}
+						status={status}
+						teamMain={teamMain}
+					/>
+					<Text style={[styles.subtitle, { color: colors.fontSecondaryInfo }]} numberOfLines={1}>
+						{parentTitle}
+					</Text>
+				</View>
+			);
+		}
+
+		const handleOnPress = useCallback(() => onPress(), []);
+
+		const accessibilityLabel = useMemo(() => {
+			if (tmid) {
+				return `${title} ${parentTitle}`;
+			}
+			return title;
+		}, [title, parentTitle, tmid]);
+
 		return (
-			<RoomHeader
-				roomUserId={roomUserId}
-				prid={prid}
-				tmid={tmid}
-				title={title}
-				subtitle={type === 'd' ? statusText : subtitle}
-				type={type}
-				teamMain={teamMain}
-				status={statusVisitor}
-				width={width}
-				height={height}
-				usersTyping={usersTyping}
-				parentTitle={parentTitle}
-				isGroupChat={isGroupChat}
-				testID={testID}
-				onPress={onPress}
-				sourceType={sourceType}
+			<TouchableOpacity
+				testID='room-header'
+				accessibilityLabel={accessibilityLabel}
+				onPress={handleOnPress}
+				style={[
+					styles.container,
+					{
+						opacity: disabled ? 0.5 : 1,
+						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0),
+						height: 36.9 * fontScale
+					}
+				]}
 				disabled={disabled}
-				rightButtonsWidth={rightButtonsWidth}
-			/>
+				hitSlop={HIT_SLOP}
+				accessibilityRole='header'>
+				<View style={styles.titleContainer}>
+					{tmid ? null : (
+						<RoomTypeIcon
+							userId={roomUserId}
+							type={prid ? 'discussion' : type}
+							isGroupChat={isGroupChat}
+							status={status}
+							teamMain={teamMain}
+							sourceType={sourceType}
+						/>
+					)}
+					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+				</View>
+				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+			</TouchableOpacity>
 		);
 	}
 );
 
-export default RoomHeaderContainer;
+export default Header;
