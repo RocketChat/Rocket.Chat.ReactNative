@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
-import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
+// import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -56,7 +56,7 @@ interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
-	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const {
