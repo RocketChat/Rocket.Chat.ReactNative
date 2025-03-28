@@ -1,12 +1,8 @@
 import React from 'react';
-import { Image as ImageProps } from '@rocket.chat/message-parser';
-import { createImageProgress } from 'react-native-image-progress';
-import * as Progress from 'react-native-progress';
+import type { Image as ImageProps } from '@rocket.chat/message-parser';
 import { Image as ExpoImage } from 'expo-image';
-
-import { TSupportedThemes, useTheme } from '../../../theme';
+import { type TSupportedThemes, useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
-import styles from '../styles';
 
 interface IImageProps {
 	value: ImageProps['value'];
@@ -17,17 +13,12 @@ type TMarkdownImage = {
 	theme: TSupportedThemes;
 };
 
-const ImageProgress = createImageProgress(ExpoImage);
-
 const MarkdownImage = ({ img, theme }: TMarkdownImage) => (
-	<ImageProgress
-		style={[styles.inlineImage, { borderColor: themes[theme].strokeLight }]}
+	<ExpoImage
+		style={[{ borderColor: themes[theme].strokeLight }]}
 		source={{ uri: encodeURI(img) }}
-		indicator={Progress.Pie}
-		indicatorProps={{
-			color: themes[theme].fontHint
-		}}
 		contentFit='contain'
+        contentPosition='bottom left'
 	/>
 );
 

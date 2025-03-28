@@ -133,7 +133,7 @@ export const Links = () => (
 
 export const Image = () => (
 	<View style={styles.container}>
-		<Markdown msg='![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)' />
+		<Markdown msg={`${lineBreakText} ![alt text](https://play.google.com/intl/en_us/badges/images/badge_new.png)`} />
 	</View>
 );
 
