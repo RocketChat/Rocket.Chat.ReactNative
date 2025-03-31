@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { Text, View } from 'react-native';
-import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import { Inlines, Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import MarkdownContext from '../contexts/MarkdownContext';
+import { IUserMention, IUserChannel } from '../interfaces';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
@@ -16,7 +17,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 	let forceTrim = false;
 	const { theme } = useTheme();
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
-	const [lineHeight, setLineHeight] = useState(styles.text.lineHeight)
+	
 
 	if (
 		value?.[0]?.type === 'LINK' &&
@@ -36,7 +37,7 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 	return (
-		<Text style={{ color: themes[theme].fontDefault, height: lineHeight }}>
+		<Text style={{ color: themes[theme].fontDefault }}>
 			{value.map((block, index) => {
 				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
 				// to clean the empty spaces
@@ -54,12 +55,18 @@ const Paragraph = ({ value }: IParagraphProps) => {
 					}
 				}
 
-				return <View>
-					<Inline block={block} useRealName={useRealName} username={username} navToRoomInfo={navToRoomInfo} mentions={mentions} channels={channels} onHeightChange={setLineHeight} />
-				</View>;
+				return <Line index={index} block={block} useRealName={useRealName} username={username} navToRoomInfo={navToRoomInfo} mentions={mentions} channels={channels} />;
 			})}
 		</Text>
 	);
 };
 
 export default Paragraph;
+
+function Line(props: {index: number, block: Inlines, useRealName: boolean | undefined, username: string | undefined, navToRoomInfo: Function | undefined, mentions: IUserMention[] | undefined, channels: IUserChannel[] | undefined }): React.JSX.Element {
+	const [lineHeight, setLineHeight] = useState(styles.text.lineHeight)
+	return <View style={{ flexDirection: 'row', flexWrap: 'wrap',minHeight: lineHeight }} key={props.index}>
+		<Inline block={props.block} useRealName={props.useRealName} username={props.username} navToRoomInfo={props.navToRoomInfo} mentions={props.mentions} channels={props.channels} onHeightChange={setLineHeight} />
+	</View>;
+}
+
