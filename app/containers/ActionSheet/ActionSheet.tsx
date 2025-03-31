@@ -131,6 +131,7 @@ const ActionSheet = React.memo(
 			(props: BottomSheetBackdropProps) => (
 				<BottomSheetBackdrop
 					{...props}
+					style={[props.style, { bottom }]}
 					appearsOnIndex={0}
 					// Backdrop should be visible all the time bottom sheet is open
 					disappearsOnIndex={-1}

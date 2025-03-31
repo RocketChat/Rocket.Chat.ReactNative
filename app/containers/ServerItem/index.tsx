@@ -1,6 +1,7 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable as RNPressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
@@ -24,10 +25,14 @@ export interface IServerItem {
 
 const defaultLogo = require('../../static/images/logo.png');
 
+const Pressable = withKeyboardFocus(RNPressable);
+
 const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
 	const { theme } = useTheme();
 	return (
 		<Pressable
+			focusable
+			autoFocus
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
