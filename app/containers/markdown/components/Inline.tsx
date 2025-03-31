@@ -41,7 +41,8 @@ const Inline = (props: InlineProps) => {
 					useRealName={props.useRealName}
 					username={props.username}
 					navToRoomInfo={props.navToRoomInfo}
-					mentions={props.mentions} />
+					mentions={props.mentions}
+				/>
 			);
 		case 'EMOJI':
 			return <Emoji block={props.block} />;
@@ -54,6 +55,6 @@ const Inline = (props: InlineProps) => {
 		default:
 			return null;
 	}
-}
+};
 
 export default Inline;

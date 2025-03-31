@@ -17,7 +17,6 @@ const Paragraph = ({ value }: IParagraphProps) => {
 	let forceTrim = false;
 	const { theme } = useTheme();
 	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
-	
 
 	if (
 		value?.[0]?.type === 'LINK' &&
@@ -55,7 +54,17 @@ const Paragraph = ({ value }: IParagraphProps) => {
 					}
 				}
 
-				return <Line index={index} block={block} useRealName={useRealName} username={username} navToRoomInfo={navToRoomInfo} mentions={mentions} channels={channels} />;
+				return (
+					<Line
+						index={index}
+						block={block}
+						useRealName={useRealName}
+						username={username}
+						navToRoomInfo={navToRoomInfo}
+						mentions={mentions}
+						channels={channels}
+					/>
+				);
 			})}
 		</Text>
 	);
@@ -63,10 +72,27 @@ const Paragraph = ({ value }: IParagraphProps) => {
 
 export default Paragraph;
 
-function Line(props: {index: number, block: Inlines, useRealName: boolean | undefined, username: string | undefined, navToRoomInfo: Function | undefined, mentions: IUserMention[] | undefined, channels: IUserChannel[] | undefined }): React.JSX.Element {
-	const [lineHeight, setLineHeight] = useState(styles.text.lineHeight)
-	return <View style={{ flexDirection: 'row', flexWrap: 'wrap',minHeight: lineHeight }} key={props.index}>
-		<Inline block={props.block} useRealName={props.useRealName} username={props.username} navToRoomInfo={props.navToRoomInfo} mentions={props.mentions} channels={props.channels} onHeightChange={setLineHeight} />
-	</View>;
+function Line(props: {
+	index: number;
+	block: Inlines;
+	useRealName: boolean | undefined;
+	username: string | undefined;
+	navToRoomInfo: Function | undefined;
+	mentions: IUserMention[] | undefined;
+	channels: IUserChannel[] | undefined;
+}): React.JSX.Element {
+	const [lineHeight, setLineHeight] = useState(styles.text.lineHeight);
+	return (
+		<View style={{ flexDirection: 'row', flexWrap: 'wrap', minHeight: lineHeight }} key={props.index}>
+			<Inline
+				block={props.block}
+				useRealName={props.useRealName}
+				username={props.username}
+				navToRoomInfo={props.navToRoomInfo}
+				mentions={props.mentions}
+				channels={props.channels}
+				onHeightChange={setLineHeight}
+			/>
+		</View>
+	);
 }
-
