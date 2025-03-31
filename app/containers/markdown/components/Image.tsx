@@ -1,45 +1,36 @@
 import React, { useState } from 'react';
 import type { Image as ImageProps } from '@rocket.chat/message-parser';
-import { Image as ExpoImage } from 'expo-image';
+import { Image } from 'expo-image';
 
-import { type TSupportedThemes, useTheme } from '../../../theme';
+import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
 import styles from '../styles';
 
 interface IImageProps {
 	value: ImageProps['value'];
+	onHeightChange?: (height: number) => void;
+	
 }
 
-type TMarkdownImage = {
-	img: string;
-	theme: TSupportedThemes;
-};
 
-const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
-	const [size, setSize] = useState(styles.inlineImage);
+const MarkdownImage = ({ value, onHeightChange }: IImageProps) => {
+	const { theme } = useTheme();
+	const [size, setSize] = useState({ width: styles.inlineImage.width, height: styles.inlineImage.height });
 
-	return <ExpoImage
-		style={[size, { overflow: "visible", borderColor: themes[theme].strokeLight }]}
+	return <Image
+		style={[size, { borderColor: themes[theme].strokeLight }]}
 		contentFit='contain'
-		contentPosition={{
-			left: 0,
-			bottom: size.height/2
-		}}
-		source={{ uri: encodeURI(img) }}
+		source={encodeURI(value.src.value)}
 		onLoad={({ source }) => {
-			const { width, height } = source;
-			if (width && height) {
-				setSize({ width, height });
+			setSize({
+				width: source.width,
+				height: source.height
+			});
+			if (onHeightChange) {
+				onHeightChange(source.height);
 			}
 		}}
 	/>
 };
 
-const Image = ({ value }: IImageProps) => {
-	const { theme } = useTheme();
-	const { src } = value;
-
-	return <MarkdownImage img={src.value} theme={theme} />;
-};
-
-export default Image;
+export default MarkdownImage;

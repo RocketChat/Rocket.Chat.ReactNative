@@ -1,81 +1,59 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Text } from 'react-native';
-import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
+import type { Inlines } from '@rocket.chat/message-parser';
 
-import styles from '../styles';
 import { AtMention, Hashtag } from './mentions';
 import { Emoji } from './emoji';
 import { Bold, Italic, Link, Strike } from './inline/index';
 import Plain from './Plain';
 import InlineCode from './InlineCode';
 import Image from './Image';
-import MarkdownContext from '../contexts/MarkdownContext';
-// import { InlineKaTeX, KaTeX } from './Katex';
+import type { IUserMention, IUserChannel } from '../interfaces';
 
-interface IParagraphProps {
-	value: ParagraphProps['value'];
-	forceTrim?: boolean;
-}
-
-const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | null => {
-	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
-	return (
-		<Text style={styles.inline}>
-			{value.map((block, index) => {
-				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
-				// to clean the empty spaces
-				if (forceTrim) {
-					if (index === 0 && block.type === 'LINK') {
-						if (!Array.isArray(block.value.label)) {
-							block.value.label.value = block.value?.label?.value?.toString().trimLeft();
-						} else {
-							// @ts-ignore - we are forcing the value to be a string
-							block.value.label.value = block?.value?.label?.[0]?.value?.toString().trimLeft();
-						}
-					}
-					if (index === 1 && block.type !== 'LINK') {
-						block.value = block.value?.toString().trimLeft();
-					}
-				}
-
-				switch (block.type) {
-					case 'IMAGE':
-						return <Image value={block.value} />;
-					case 'PLAIN_TEXT':
-						return <Plain value={block.value} />;
-					case 'BOLD':
-						return <Bold value={block.value} />;
-					case 'STRIKE':
-						return <Strike value={block.value} />;
-					case 'ITALIC':
-						return <Italic value={block.value} />;
-					case 'LINK':
-						return <Link value={block.value} />;
-					case 'MENTION_USER':
-						return (
-							<AtMention
-								mention={block.value.value}
-								useRealName={useRealName}
-								username={username}
-								navToRoomInfo={navToRoomInfo}
-								mentions={mentions}
-							/>
-						);
-					case 'EMOJI':
-						return <Emoji block={block} />;
-					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
-					case 'INLINE_CODE':
-						return <InlineCode value={block.value} />;
-					case 'INLINE_KATEX':
-						// return <InlineKaTeX value={block.value} />;
-						return <Text>{block.value}</Text>;
-					default:
-						return null;
-				}
-			})}
-		</Text>
-	);
+type InlineProps = {
+	block: Inlines;
+	useRealName: boolean | undefined;
+	username: string | undefined;
+	navToRoomInfo: Function | undefined;
+	mentions: IUserMention[] | undefined;
+	channels: IUserChannel[] | undefined;
+	onHeightChange?: (height: number) => void;
 };
+
+const Inline = (props: InlineProps) => {
+	switch (props.block.type) {
+		case 'IMAGE':
+			return <Image value={props.block.value} onHeightChange={props.onHeightChange} />;
+		case 'PLAIN_TEXT':
+			return <Plain value={props.block.value} />;
+		case 'BOLD':
+			return <Bold value={props.block.value} />;
+		case 'STRIKE':
+			return <Strike value={props.block.value} />;
+		case 'ITALIC':
+			return <Italic value={props.block.value} />;
+		case 'LINK':
+			return <Link value={props.block.value} />;
+		case 'MENTION_USER':
+			return (
+				<AtMention
+					mention={props.block.value.value}
+					useRealName={props.useRealName}
+					username={props.username}
+					navToRoomInfo={props.navToRoomInfo}
+					mentions={props.mentions} />
+			);
+		case 'EMOJI':
+			return <Emoji block={props.block} />;
+		case 'MENTION_CHANNEL':
+			return <Hashtag hashtag={props.block.value.value} navToRoomInfo={props.navToRoomInfo} channels={props.channels} />;
+		case 'INLINE_CODE':
+			return <InlineCode value={props.block.value} />;
+		case 'INLINE_KATEX':
+			return <Text>{props.block.value}</Text>;
+		default:
+			return null;
+	}
+}
 
 export default Inline;

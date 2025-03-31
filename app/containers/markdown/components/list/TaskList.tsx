@@ -2,10 +2,10 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Tasks as TasksProps } from '@rocket.chat/message-parser';
 
-import Inline from '../Inline';
 import styles from '../../styles';
 import { useTheme } from '../../../../theme';
 import { CustomIcon } from '../../../CustomIcon';
+import Paragraph from '../Paragraph';
 
 interface ITasksProps {
 	value: TasksProps['value'];
@@ -24,9 +24,7 @@ const TaskList = ({ value = [] }: ITasksProps) => {
 							size={24}
 						/>
 					</Text>
-					<Text style={[styles.inline, { color: colors.fontDefault }]}>
-						<Inline value={item.value} />
-					</Text>
+					<Paragraph value={item.value} />
 				</View>
 			))}
 		</View>

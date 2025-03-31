@@ -1,11 +1,12 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Text, View } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
 import styles from '../styles';
 import { useTheme } from '../../../theme';
 import { themes } from '../../../lib/constants';
+import MarkdownContext from '../contexts/MarkdownContext';
 
 interface IParagraphProps {
 	value: ParagraphProps['value'];
@@ -14,6 +15,9 @@ interface IParagraphProps {
 const Paragraph = ({ value }: IParagraphProps) => {
 	let forceTrim = false;
 	const { theme } = useTheme();
+	const { useRealName, username, navToRoomInfo, mentions, channels } = useContext(MarkdownContext);
+	const [lineHeight, setLineHeight] = useState(styles.text.lineHeight)
+
 	if (
 		value?.[0]?.type === 'LINK' &&
 		// Need to update the @rocket.chat/message-parser to understand that the label can be a Markup | Markup[]
@@ -32,8 +36,28 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 	return (
-		<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
-			<Inline value={value} forceTrim={forceTrim} />
+		<Text style={{ color: themes[theme].fontDefault, height: lineHeight }}>
+			{value.map((block, index) => {
+				// We are forcing trim when is a `[ ](https://https://open.rocket.chat/) plain_text`
+				// to clean the empty spaces
+				if (forceTrim) {
+					if (index === 0 && block.type === 'LINK') {
+						if (!Array.isArray(block.value.label)) {
+							block.value.label.value = block.value?.label?.value?.toString().trimLeft();
+						} else {
+							// @ts-ignore - we are forcing the value to be a string
+							block.value.label.value = block?.value?.label?.[0]?.value?.toString().trimLeft();
+						}
+					}
+					if (index === 1 && block.type !== 'LINK') {
+						block.value = block.value?.toString().trimLeft();
+					}
+				}
+
+				return <View>
+					<Inline block={block} useRealName={useRealName} username={username} navToRoomInfo={navToRoomInfo} mentions={mentions} channels={channels} onHeightChange={setLineHeight} />
+				</View>;
+			})}
 		</Text>
 	);
 };
