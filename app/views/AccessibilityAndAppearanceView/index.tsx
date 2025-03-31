@@ -11,13 +11,14 @@ import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';
-import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY } from '../../lib/constants';
+import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY, AUTOPLAY_GIF_PREFERENCES_KEY } from '../../lib/constants';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
 	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
 	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
+	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIF_PREFERENCES_KEY);
 
 	const toggleMentionsWithAtSymbol = () => {
 		setMentionsWithAtSymbol(!mentionsWithAtSymbol);
@@ -26,6 +27,12 @@ const AccessibilityAndAppearanceView = () => {
 	const toggleRoomsWithHashTag = () => {
 		setRoomsWithHashTagSymbol(!roomsWithHashTagSymbol);
 	};
+
+	const toggleAutoplayGifs = () => {
+		setAutoplayGifs(!autoplayGifs);
+	};
+
+	const renderAutoplayGifsSwitch = () => <Switch value={autoplayGifs} onValueChange={toggleAutoplayGifs} />;
 
 	const renderMentionsWithAtSymbolSwitch = () => (
 		<Switch value={mentionsWithAtSymbol} onValueChange={toggleMentionsWithAtSymbol} />
@@ -65,6 +72,13 @@ const AccessibilityAndAppearanceView = () => {
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
+					<List.Item
+						testID='accessibility-autoplay-gifs-switch'
+						title='Autoplay_gifs'
+						right={renderAutoplayGifsSwitch}
+						onPress={toggleAutoplayGifs}
+					/>
 					<List.Separator />
 					<List.Item
 						testID='accessibility-mentions-with-at-symbol-switch'
