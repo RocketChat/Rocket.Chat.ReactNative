@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Linking } from 'react-native';
+import { View, Text, TouchableOpacity as RNTouchableOpacity, FlatList, Linking } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { withKeyboardFocus } from 'react-native-external-keyboard';
 
 import * as List from '../../containers/List';
 import Button from '../../containers/Button';
@@ -27,6 +28,8 @@ import { useAppSelector } from '../../lib/hooks';
 
 const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
+
+const TouchableOpacity = withKeyboardFocus(RNTouchableOpacity);
 
 const ServersList = () => {
 	const subscription = useRef<Subscription>();
@@ -135,7 +138,7 @@ const ServersList = () => {
 			testID='rooms-list-header-servers-list'>
 			<View style={[styles.serversListContainerHeader, styles.serverHeader, { borderColor: colors.strokeLight }]}>
 				<Text style={[styles.serverHeaderText, { color: colors.fontSecondaryInfo }]}>{I18n.t('Server')}</Text>
-				<TouchableOpacity onPress={addServer} testID='rooms-list-header-server-add'>
+				<TouchableOpacity focusable autoFocus onPress={addServer} testID='rooms-list-header-server-add'>
 					<Text style={[styles.serverHeaderAdd, { color: colors.fontInfo }]}>{I18n.t('Add_Server')}</Text>
 				</TouchableOpacity>
 			</View>
