@@ -144,7 +144,7 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 						backgroundColor: colors.buttonBackgroundSecondaryPress,
 						left: '100%'
 					},
-					isCondensed && { height: rowHeightCondensed },
+					viewHeight,
 					animatedHideStyles
 				]}>
 				<RectButton

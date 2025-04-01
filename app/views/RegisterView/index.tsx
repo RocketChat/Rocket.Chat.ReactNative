@@ -22,8 +22,8 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
-import PasswordPolicies from './PasswordPolicies';
-import getCustomFields from './methods/getCustomFields';
+import PasswordPolicies from '../../containers/PasswordPolicies';
+import getCustomFields from '../../lib/methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
@@ -85,8 +85,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		if (!parsedCustomFields) return true;
 		const isValid = validationSchema.isValidSync(getValues());
+		if (!parsedCustomFields) {
+			return isValid;
+		}
 		let requiredCheck = true;
 		let minLengthCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
