@@ -26,7 +26,7 @@ import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import SSLPinning from '../../lib/methods/helpers/sslPinning';
 import sharedStyles from '../Styles';
-import ServerInput from './ServerInput';
+import ServerInput from './components/ServerInput';
 import { serializeAsciiUrl } from '../../lib/methods';
 import { getServerById } from '../../lib/database/services/Server';
 

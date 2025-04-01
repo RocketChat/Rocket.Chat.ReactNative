@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { FormTextInput } from '../../../containers/TextInput';
-import { TServerHistoryModel } from '../../../definitions';
-import I18n from '../../../i18n';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import Touch from '../../../containers/Touch';
-import { showActionSheetRef, hideActionSheetRef } from '../../../containers/ActionSheet';
-import * as List from '../../../containers/List';
+import { useTheme } from '../../../../theme';
+import { FormTextInput } from '../../../../containers/TextInput';
+import { TServerHistoryModel } from '../../../../definitions';
+import I18n from '../../../../i18n';
+import { CustomIcon } from '../../../../containers/CustomIcon';
+import { showActionSheetRef, hideActionSheetRef } from '../../../../containers/ActionSheet';
+import Touch from '../../../../containers/Touch';
+import { ServersHistoryActionSheetContent } from '../ServersHistoryActionSheetContent';
 
 const styles = StyleSheet.create({
 	container: {
@@ -17,14 +17,21 @@ const styles = StyleSheet.create({
 		gap: 4
 	},
 	inputContainer: {
+		flex: 1
+	},
+	input: {
 		marginTop: 0,
 		marginBottom: 0
+	},
+	serversHistoryButton: {
+		width: 32,
+		paddingVertical: 9
 	}
 });
 
 interface IServerInput extends TextInputProps {
 	text: string;
-	serversHistory: any[];
+	serversHistory: TServerHistoryModel[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
 	onPressServerHistory(serverHistory: TServerHistoryModel): void;
@@ -45,43 +52,29 @@ const ServerInput = ({
 		hideActionSheetRef();
 	};
 
+	const handleSelectServer = (item: TServerHistoryModel) => {
+		onPressServerHistory(item);
+		hideActionSheetRef();
+	};
+
 	const openServersHistory = () => {
 		showActionSheetRef({
 			children: (
-				<View style={{ paddingBottom: 20 }}>
-					<List.Container>
-						<List.Separator />
-						<>
-							{serversHistory.map(item => (
-								<>
-									<List.Item
-										onPress={() => onPressServerHistory(item)}
-										right={() => (
-											<Touch onPress={() => handleDeleteServerHistory(item)}>
-												<CustomIcon name='delete' size={24} color={colors.fontDefault} />
-											</Touch>
-										)}
-										styleTitle={{ fontSize: 18 }}
-										translateTitle={false}
-										translateSubtitle={false}
-										title={item.url}
-										subtitle={item.username}
-									/>
-									<List.Separator />
-								</>
-							))}
-						</>
-					</List.Container>
-				</View>
+				<ServersHistoryActionSheetContent
+					serversHistory={serversHistory}
+					onDelete={handleDeleteServerHistory}
+					onPressServerHistory={handleSelectServer}
+				/>
 			)
 		});
 	};
+
 	return (
 		<View style={styles.container}>
-			<View style={{ flex: 1 }}>
+			<View style={styles.inputContainer}>
 				<FormTextInput
 					label={I18n.t('Workspace_URL')}
-					containerStyle={styles.inputContainer}
+					containerStyle={styles.input}
 					value={text}
 					returnKeyType='send'
 					onChangeText={onChangeText}
@@ -95,7 +88,7 @@ const ServerInput = ({
 			</View>
 
 			{serversHistory?.length > 0 ? (
-				<View style={{ width: 32, paddingVertical: 9 }}>
+				<View style={styles.serversHistoryButton}>
 					<Touch onPress={openServersHistory}>
 						<CustomIcon name='clock' size={32} color={colors.fontInfo} />
 					</Touch>
