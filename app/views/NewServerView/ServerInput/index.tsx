@@ -7,6 +7,8 @@ import { TServerHistoryModel } from '../../../definitions';
 import I18n from '../../../i18n';
 import { CustomIcon } from '../../../containers/CustomIcon';
 import Touch from '../../../containers/Touch';
+import { showActionSheetRef, hideActionSheetRef } from '../../../containers/ActionSheet';
+import * as List from '../../../containers/List';
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,6 +39,43 @@ const ServerInput = ({
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
 	const { colors } = useTheme();
+
+	const handleDeleteServerHistory = (item: TServerHistoryModel) => {
+		onDelete(item);
+		hideActionSheetRef();
+	};
+
+	const openServersHistory = () => {
+		showActionSheetRef({
+			children: (
+				<View style={{ paddingBottom: 20 }}>
+					<List.Container>
+						<List.Separator />
+						<>
+							{serversHistory.map(item => (
+								<>
+									<List.Item
+										onPress={() => onPressServerHistory(item)}
+										right={() => (
+											<Touch onPress={() => handleDeleteServerHistory(item)}>
+												<CustomIcon name='delete' size={24} color={colors.fontDefault} />
+											</Touch>
+										)}
+										styleTitle={{ fontSize: 18 }}
+										translateTitle={false}
+										translateSubtitle={false}
+										title={item.url}
+										subtitle={item.username}
+									/>
+									<List.Separator />
+								</>
+							))}
+						</>
+					</List.Container>
+				</View>
+			)
+		});
+	};
 	return (
 		<View style={styles.container}>
 			<View style={{ flex: 1 }}>
@@ -55,11 +94,13 @@ const ServerInput = ({
 				/>
 			</View>
 
-			<View style={{ width: 32, paddingVertical: 9 }}>
-				<Touch>
-					<CustomIcon name='clock' size={32} color={colors.fontInfo} />
-				</Touch>
-			</View>
+			{serversHistory?.length > 0 ? (
+				<View style={{ width: 32, paddingVertical: 9 }}>
+					<Touch onPress={openServersHistory}>
+						<CustomIcon name='clock' size={32} color={colors.fontInfo} />
+					</Touch>
+				</View>
+			) : null}
 		</View>
 	);
 };
