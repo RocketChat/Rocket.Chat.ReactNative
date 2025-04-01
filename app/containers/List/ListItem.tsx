@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 		paddingLeft: 4
 	},
 	title: {
+		flex: 1,
 		flexShrink: 1,
 		fontSize: 16,
 		...sharedStyles.textMedium
@@ -126,7 +127,7 @@ const Content = React.memo(
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
 				<View style={styles.textContainer}>
 					<View style={styles.textAlertContainer}>
-						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]} numberOfLines={1}>
+						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]}>
 							{translateTitle && title ? I18n.t(title) : title}
 						</Text>
 						{alert ? (
