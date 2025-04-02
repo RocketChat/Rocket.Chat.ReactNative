@@ -3,7 +3,6 @@ import EJSON from 'ejson';
 import { appInit } from '../../actions/app';
 import { deepLinkingClickCallPush, deepLinkingOpen } from '../../actions/deepLinking';
 import { INotification, SubscriptionType } from '../../definitions';
-import { isFDroidBuild } from '../constants';
 import { store } from '../store/auxStore';
 import { deviceToken, pushNotificationConfigure, removeAllNotifications, setNotificationsBadgeCount } from './push';
 
@@ -64,9 +63,7 @@ export const removeNotificationsAndBadge = () => {
 	removeAllNotifications();
 	setBadgeCount();
 };
-export const initializePushNotifications = (): Promise<INotification> | undefined => {
-	if (!isFDroidBuild) {
-		setBadgeCount();
-		return pushNotificationConfigure(onNotification);
-	}
+export const initializePushNotifications = (): Promise<INotification | { configured: boolean }> | undefined => {
+	setBadgeCount();
+	return pushNotificationConfigure(onNotification);
 };

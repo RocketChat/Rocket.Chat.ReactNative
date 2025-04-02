@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image as ExpoImage } from 'expo-image';
 import { dequal } from 'dequal';
+import axios from 'axios';
 
 import { useAppSelector } from '../../lib/hooks';
 import Touchable from './Touchable';
@@ -39,7 +40,8 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	loading: {
-		height: 0,
+		height: 1,
+		width: 1,
 		borderWidth: 0,
 		marginTop: 0
 	}
@@ -128,14 +130,33 @@ const Url = ({ url }: { url: IUrl }) => {
 	const { colors, theme } = useTheme();
 	const { baseUrl, user } = useContext(MessageContext);
 	const API_Embed = useAppSelector(state => state.settings.API_Embed);
-	const getImageUrl = () => {
-		const imageUrl = url.image || url.url;
+	const [imageUrl, setImageUrl] = useState('');
 
-		if (!imageUrl) return null;
-		if (imageUrl.includes('http')) return imageUrl;
-		return `${baseUrl}/${imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
+	useEffect(() => {
+		const verifyUrlIsImage = async () => {
+			try {
+				const imageUrl = getImageUrl();
+				if (!imageUrl) return;
+
+				const response = await axios.head(imageUrl);
+				const contentType = response.headers['content-type'];
+				if (contentType?.startsWith?.('image/')) {
+					setImageUrl(imageUrl);
+				}
+			} catch {
+				// do nothing
+			}
+		};
+		verifyUrlIsImage();
+	}, [url.image, url.url]);
+
+	const getImageUrl = () => {
+		const _imageUrl = url.image || url.url;
+
+		if (!_imageUrl) return null;
+		if (_imageUrl.includes('http')) return _imageUrl;
+		return `${baseUrl}/${_imageUrl}?rc_uid=${user.id}&rc_token=${user.token}`;
 	};
-	const image = getImageUrl();
 
 	const onPress = () => openLink(url.url, theme);
 
@@ -166,9 +187,9 @@ const Url = ({ url }: { url: IUrl }) => {
 			]}
 			background={Touchable.Ripple(colors.surfaceNeutral)}>
 			<>
-				{image ? (
+				{imageUrl ? (
 					<WidthAwareView>
-						<UrlImage image={image} hasContent={hasContent} />
+						<UrlImage image={imageUrl} hasContent={hasContent} />
 					</WidthAwareView>
 				) : null}
 				{hasContent ? <UrlContent title={url.title} description={url.description} /> : null}

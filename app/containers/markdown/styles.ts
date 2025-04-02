@@ -50,14 +50,6 @@ export default StyleSheet.create({
 		fontSize: 30,
 		...sharedStyles.textRegular
 	},
-	customEmoji: {
-		width: 15,
-		height: 15
-	},
-	customEmojiBig: {
-		width: 30,
-		height: 30
-	},
 	temp: { opacity: 0.3 },
 	mention: {
 		fontSize: 16,

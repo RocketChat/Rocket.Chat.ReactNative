@@ -156,10 +156,6 @@ export type ModalStackParamList = {
 		teamId: string;
 		joined: boolean;
 	};
-	MarkdownTableView: {
-		renderRows: Function;
-		tableWidth: number;
-	};
 	ReadReceiptsView: {
 		messageId: string;
 	};
@@ -209,6 +205,7 @@ export type ModalStackParamList = {
 		userId: string;
 		name: string;
 	};
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type MasterDetailInsideStackParamList = {
