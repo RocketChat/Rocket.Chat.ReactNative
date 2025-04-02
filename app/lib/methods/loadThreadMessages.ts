@@ -38,7 +38,7 @@ export function loadThreadMessages({ tmid, rid }: { tmid: string; rid: string })
 						(i1: TThreadMessageModel) => !allThreadMessagesRecords.find(i2 => i1._id === i2.id)
 					);
 					const filterThreadMessagesToUpdate = allThreadMessagesRecords.filter(i1 =>
-						data.find((i2: TThreadMessageModel) => i1.id === i2._id)
+						data.find((i2: TThreadMessageModel) => i1.id === i2._id && i1._updatedAt < i2?._updatedAt)
 					);
 
 					const threadMessagesToCreate = filterThreadMessagesToCreate.map((threadMessage: TThreadMessageModel) =>
