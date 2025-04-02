@@ -49,7 +49,7 @@ export const onPressGoogle = ({ service, server }: IServiceLogin) => {
 	const { clientId } = service;
 	const endpoint = 'https://accounts.google.com/o/oauth2/auth';
 	const redirect_uri = `${server}/_oauth/google?close`;
-	const scope = 'email';
+	const scope = encodeURIComponent('profile email');
 	const state = getOAuthState('redirect');
 	const params = `?client_id=${clientId}&redirect_uri=${redirect_uri}&scope=${scope}&state=${state}&response_type=code`;
 	Linking.openURL(`${endpoint}${params}`);
@@ -99,7 +99,10 @@ export const onPressCustomOAuth = ({ loginService, server }: { loginService: IIt
 	const { serverURL, authorizePath, clientId, scope, service } = loginService;
 	const redirectUri = `${server}/_oauth/${service}`;
 	const state = getOAuthState();
-	const params = `?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}&scope=${scope}`;
+	const separator = authorizePath.indexOf('?') !== -1 ? '&' : '?';
+	const params = `${separator}client_id=${clientId}&redirect_uri=${encodeURIComponent(
+		redirectUri
+	)}&response_type=code&state=${state}&scope=${encodeURIComponent(scope)}`;
 	const domain = `${serverURL}`;
 	const absolutePath = `${authorizePath}${params}`;
 	const url = absolutePath.includes(domain) ? absolutePath : domain + absolutePath;

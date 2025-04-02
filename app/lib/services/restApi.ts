@@ -626,7 +626,7 @@ export const saveRoomSettings = (
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
 export const saveUserProfile = (
-	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	data: IProfileParams | Pick<IProfileParams, 'username' | 'name'>,
 	customFields?: { [key: string | number]: string }
 ) =>
 	// RC 0.62.2
@@ -745,6 +745,13 @@ export const getMessages = ({
 	// RC 0.59.0
 	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
+ 
+export const getPinnedMessages = ({ roomId, offset, count }: { roomId: string; offset: number; count: number }) =>
+	sdk.get('chat.getPinnedMessages', {
+		roomId,
+		offset,
+		count
+	});
 
 export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0

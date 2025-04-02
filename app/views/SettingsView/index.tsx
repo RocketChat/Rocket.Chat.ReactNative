@@ -3,7 +3,7 @@ import CookieManager from '@react-native-cookies/cookies';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { Linking, Share } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -18,7 +18,7 @@ import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
-import { APP_STORE_LINK, FDROID_MARKET_LINK, isFDroidBuild, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
+import { APP_STORE_LINK, LICENSE_LINK, PLAY_MARKET_LINK } from '../../lib/constants';
 import database from '../../lib/database';
 import { useAppSelector } from '../../lib/hooks';
 import { clearCache } from '../../lib/methods';
@@ -102,8 +102,8 @@ const SettingsView = (): React.ReactElement => {
 				dispatch(appStart({ root: RootEnum.ROOT_LOADING, text: I18n.t('Clear_cache_loading') }));
 				await deleteMediaFiles(server);
 				await clearCache({ server });
-				await FastImage.clearMemoryCache();
-				await FastImage.clearDiskCache();
+				await Image.clearMemoryCache();
+				await Image.clearDiskCache();
 				Services.disconnect();
 				dispatch(selectServerRequest(server, version, true));
 			}
@@ -136,9 +136,6 @@ const SettingsView = (): React.ReactElement => {
 		let message;
 		if (isAndroid) {
 			message = PLAY_MARKET_LINK;
-			if (isFDroidBuild) {
-				message = FDROID_MARKET_LINK;
-			}
 		} else {
 			message = APP_STORE_LINK;
 		}
@@ -180,10 +177,10 @@ const SettingsView = (): React.ReactElement => {
 						<List.Section>
 							<List.Separator />
 							<List.Item
-								title='Display'
-								onPress={() => navigateToScreen('DisplayPrefsView')}
+								title='Accessibility_and_Appearance'
+								onPress={() => navigateToScreen('AccessibilityAndAppearanceView')}
 								showActionIndicator
-								left={() => <List.Icon name='sort' />}
+								left={() => <List.Icon name='accessibility' />}
 							/>
 							<List.Separator />
 							<List.Item
@@ -214,14 +211,6 @@ const SettingsView = (): React.ReactElement => {
 						onPress={() => navigateToScreen('DefaultBrowserView')}
 						testID='settings-view-default-browser'
 						left={() => <List.Icon name='federation' />}
-					/>
-					<List.Separator />
-					<List.Item
-						title='Theme'
-						showActionIndicator
-						onPress={() => navigateToScreen('ThemeView')}
-						testID='settings-view-theme'
-						left={() => <List.Icon name='moon' />}
 					/>
 					<List.Separator />
 					<List.Item
@@ -269,26 +258,25 @@ const SettingsView = (): React.ReactElement => {
 					<List.Separator />
 					<List.Item
 						title='Contact_us'
+						accessibilityRole='link'
 						onPress={sendEmail}
 						testID='settings-view-contact'
 						left={() => <List.Icon name='mail' />}
 						right={() => <NewWindowIcon />}
 					/>
 					<List.Separator />
-					{!isFDroidBuild ? (
-						<>
-							<List.Item
-								title='Review_this_app'
-								onPress={onReviewPress}
-								testID='settings-view-review-app'
-								left={() => <List.Icon name='star' />}
-								right={() => <NewWindowIcon />}
-							/>
-						</>
-					) : null}
+					<List.Item
+						title='Review_this_app'
+						accessibilityRole='link'
+						onPress={onReviewPress}
+						testID='settings-view-review-app'
+						left={() => <List.Icon name='star' />}
+						right={() => <NewWindowIcon />}
+					/>
 					<List.Separator />
 					<List.Item
 						title='License'
+						accessibilityRole='link'
 						onPress={onPressLicense}
 						testID='settings-view-license'
 						left={() => <List.Icon name='file-document' />}

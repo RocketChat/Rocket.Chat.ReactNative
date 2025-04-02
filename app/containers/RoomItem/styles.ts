@@ -1,9 +1,7 @@
-import { PixelRatio, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import sharedStyles from '../../views/Styles';
 
-export const ROW_HEIGHT = 75 * PixelRatio.getFontScale();
-export const ROW_HEIGHT_CONDENSED = 60 * PixelRatio.getFontScale();
 export const ACTION_WIDTH = 80;
 export const SMALL_SWIPE = ACTION_WIDTH / 2;
 export const LONG_SWIPE = ACTION_WIDTH * 2.5;
@@ -15,11 +13,7 @@ export default StyleSheet.create({
 	container: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingLeft: 14,
-		height: ROW_HEIGHT
-	},
-	containerCondensed: {
-		height: ROW_HEIGHT_CONDENSED
+		paddingLeft: 14
 	},
 	centerContainer: {
 		flex: 1,
@@ -74,26 +68,22 @@ export default StyleSheet.create({
 	actionsContainer: {
 		position: 'absolute',
 		left: 0,
-		right: 0,
-		height: ROW_HEIGHT
+		right: 0
 	},
 	actionsLeftContainer: {
 		flexDirection: 'row',
 		position: 'absolute',
 		left: 0,
-		right: 0,
-		height: ROW_HEIGHT
+		right: 0
 	},
 	actionLeftButtonContainer: {
 		position: 'absolute',
-		height: ROW_HEIGHT,
 		justifyContent: 'center',
 		top: 0,
 		right: 0
 	},
 	actionRightButtonContainer: {
 		position: 'absolute',
-		height: ROW_HEIGHT,
 		justifyContent: 'center',
 		top: 0
 	},
@@ -115,7 +105,6 @@ export default StyleSheet.create({
 		...sharedStyles.textSemibold
 	},
 	typeIcon: {
-		height: ROW_HEIGHT,
 		justifyContent: 'center'
 	}
 });

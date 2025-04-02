@@ -11,7 +11,7 @@ import { isIOS, isTablet } from '../../lib/methods/helpers';
 import { Handle } from './Handle';
 import { TActionSheetOptions } from './Provider';
 import BottomSheetContent from './BottomSheetContent';
-import styles, { ITEM_HEIGHT } from './styles';
+import styles from './styles';
 
 export const ACTION_SHEET_ANIMATION_DURATION = 250;
 const HANDLE_HEIGHT = 28;
@@ -28,6 +28,8 @@ const ActionSheet = React.memo(
 		const { colors } = useTheme();
 		const { height: windowHeight } = useWindowDimensions();
 		const { bottom } = useSafeAreaInsets();
+		const { fontScale } = useWindowDimensions();
+		const itemHeight = 48 * fontScale;
 		const bottomSheetRef = useRef<BottomSheet>(null);
 		const [data, setData] = useState<TActionSheetOptions>({} as TActionSheetOptions);
 		const [isVisible, setVisible] = useState(false);
@@ -62,7 +64,7 @@ const ActionSheet = React.memo(
 		);
 
 		const maxSnap = Math.min(
-			(ITEM_HEIGHT + 0.5) * (data?.options?.length || 0) +
+			(itemHeight + 0.5) * (data?.options?.length || 0) +
 				HANDLE_HEIGHT +
 				// Custom header height
 				(data?.headerHeight || 0) +

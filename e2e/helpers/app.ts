@@ -48,9 +48,30 @@ async function navigateToLogin(server?: string) {
 async function navigateToRegister(server?: string) {
 	await navigateToWorkspace(server);
 	await element(by.id('workspace-view-register')).tap();
-	await waitFor(element(by.id('register-view')))
+	await waitFor(element(by.id('register-view-name')))
 		.toExist()
 		.withTimeout(2000);
+}
+
+async function signup(): Promise<string> {
+	const randomUser = data.randomUser();
+	await element(by.id('register-view-name')).replaceText(randomUser.name);
+	await element(by.id('register-view-name')).tapReturnKey();
+	await element(by.id('register-view-username')).replaceText(randomUser.username);
+	await element(by.id('register-view-username')).tapReturnKey();
+	await element(by.id('register-view-email')).replaceText(randomUser.email);
+	await element(by.id('register-view-email')).tapReturnKey();
+	await element(by.id('register-view-password')).replaceText(randomUser.password);
+	await element(by.id('register-view-password')).tapReturnKey();
+	await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
+	await sleep(300);
+	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view')).swipe('up', 'fast');
+	await sleep(300);
+	await element(by.id('register-view-submit')).tap();
+
+	await expectValidRegisterOrRetry(device.getPlatform());
+	return randomUser.username;
 }
 
 async function login(username: string, password: string) {
@@ -111,18 +132,26 @@ async function mockMessage(message: string, isThread = false) {
 	return message;
 }
 
+async function tapCustomBackButton() {
+	try {
+		await element(by.id('custom-header-back')).atIndex(0).tap();
+	} catch (error) {
+		await element(by.id('header-back')).atIndex(0).tap();
+	}
+}
+
 async function tapBack() {
 	if (device.getPlatform() === 'ios') {
 		try {
 			await element(by.type('UIAccessibilityBackButtonElement')).tap();
 		} catch (error) {
-			await element(by.id('header-back')).atIndex(0).tap();
+			await tapCustomBackButton();
 		}
 	} else {
 		try {
 			await element(by.label('Navigate up')).tap();
 		} catch (error) {
-			await element(by.id('header-back')).atIndex(0).tap();
+			await tapCustomBackButton();
 		}
 	}
 }
@@ -299,5 +328,6 @@ export {
 	platformTypes,
 	expectValidRegisterOrRetry,
 	jumpToQuotedMessage,
-	navigateToRecentRoom
+	navigateToRecentRoom,
+	signup
 };
