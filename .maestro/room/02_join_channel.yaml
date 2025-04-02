@@ -1,0 +1,20 @@
+appId: chat.rocket.reactnative
+name: "Join Channel"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../setup.js"
+---
+- launchApp
+- tapOn:
+    id: rooms-list-view-directory
+- tapOn:
+    id: directory-view-search
+- inputText: detox-public
+- pressKey: Enter
+- tapOn:
+    text: detox-public
+    index: 1
+- assertVisible: you are in preview mode
+- tapOn:
+    id: room-view-join-button
+- assertVisible: joined the channel

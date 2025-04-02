@@ -219,6 +219,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 
 		return (
 			<View
+				testID='upload-progress-item'
 				key={item.path}
 				style={[
 					styles.item,
