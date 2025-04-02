@@ -7,7 +7,7 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants';

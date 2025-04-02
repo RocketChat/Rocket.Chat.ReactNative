@@ -12,7 +12,7 @@ import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
 import { isIOS, useDebounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
