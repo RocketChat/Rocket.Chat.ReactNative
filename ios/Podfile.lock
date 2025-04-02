@@ -15,6 +15,8 @@ PODS:
     - ExpoModulesCore
   - ExpoAppleAuthentication (7.0.1):
     - ExpoModulesCore
+  - ExpoAsset (11.0.4):
+    - ExpoModulesCore
   - ExpoCamera (16.0.18):
     - ExpoModulesCore
     - ZXingObjC/OneD
@@ -2003,6 +2005,7 @@ DEPENDENCIES:
   - EXImageLoader (from `../node_modules/expo-image-loader/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoAppleAuthentication (from `../node_modules/expo-apple-authentication/ios`)
+  - ExpoAsset (from `../node_modules/expo-asset/ios`)
   - ExpoCamera (from `../node_modules/expo-camera/ios`)
   - ExpoDocumentPicker (from `../node_modules/expo-document-picker/ios`)
   - ExpoFileSystem (from `../node_modules/expo-file-system/ios`)
@@ -2161,6 +2164,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo"
   ExpoAppleAuthentication:
     :path: "../node_modules/expo-apple-authentication/ios"
+  ExpoAsset:
+    :path: "../node_modules/expo-asset/ios"
   ExpoCamera:
     :path: "../node_modules/expo-camera/ios"
   ExpoDocumentPicker:
@@ -2392,6 +2397,7 @@ SPEC CHECKSUMS:
   EXImageLoader: 759063a65ab016b836f73972d3bb25404888713d
   Expo: d01030025d6965c98bd968ea9b71ae5bb9727cb8
   ExpoAppleAuthentication: 59b0f5cf600284dd03b0d595c112acd067e0eb69
+  ExpoAsset: a4cbc27a7cd24a6e87eb719603790b2cfa8dd326
   ExpoCamera: 173e000631122854b87c20310513981e89030bc6
   ExpoDocumentPicker: 4a89fd8a0cb90010214a416c858d7dece1c1eb10
   ExpoFileSystem: 60313d0b54cb8242004525f37c9b85988194ae33
