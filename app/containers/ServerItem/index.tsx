@@ -33,6 +33,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 		<Pressable
 			focusable
 			autoFocus
+			groupIdentifier='servers-list'
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
