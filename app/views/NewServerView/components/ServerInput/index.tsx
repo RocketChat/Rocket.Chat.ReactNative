@@ -89,7 +89,7 @@ const ServerInput = ({
 
 			{serversHistory?.length > 0 ? (
 				<View style={styles.serversHistoryButton}>
-					<Touch onPress={openServersHistory}>
+					<Touch testID='servers-history-button' onPress={openServersHistory}>
 						<CustomIcon name='clock' size={32} color={colors.fontInfo} />
 					</Touch>
 				</View>

@@ -30,9 +30,10 @@ export const ServersHistoryActionSheetContent = ({
 					{serversHistory.map(item => (
 						<>
 							<List.Item
+								testID={`servers-history-${item.url}`}
 								onPress={() => onPressServerHistory(item)}
 								right={() => (
-									<Touch onPress={() => onDelete(item)}>
+									<Touch testID={`servers-history-delete-${item.url}`} onPress={() => onDelete(item)}>
 										<CustomIcon name='delete' size={24} color={colors.fontDefault} />
 									</Touch>
 								)}
