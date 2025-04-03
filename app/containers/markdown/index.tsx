@@ -76,32 +76,32 @@ const Markdown: React.FC<IMarkdownProps> = ({
 				getCustomEmoji,
 				onLinkPress
 			}}>
-			{tokens?.map((block, index) => {
+			{tokens?.map(block => {
 				switch (block.type) {
 					case 'BIG_EMOJI':
-						return <BigEmoji value={block.value} key={index} />;
+						return <BigEmoji value={block.value} />;
 					case 'UNORDERED_LIST':
-						return <UnorderedList value={block.value} key={index} />;
+						return <UnorderedList value={block.value} />;
 					case 'ORDERED_LIST':
-						return <OrderedList value={block.value} key={index} />;
+						return <OrderedList value={block.value} />;
 					case 'TASKS':
-						return <TaskList value={block.value} key={index} />;
+						return <TaskList value={block.value} />;
 					case 'QUOTE':
-						return <Quote value={block.value} key={index} />;
+						return <Quote value={block.value} />;
 					case 'PARAGRAPH':
-						return <Paragraph value={block.value} key={index} />;
+						return <Paragraph value={block.value} />;
 					case 'CODE':
-						return <Code value={block.value} key={index} />;
+						return <Code value={block.value} />;
 					case 'HEADING':
-						return <Heading value={block.value} level={block.level} key={index} />;
+						return <Heading value={block.value} level={block.level} />;
 					case 'LINE_BREAK':
-						return <LineBreak key={index} />;
+						return <LineBreak />;
 					// This prop exists, but not even on the web it is treated, so...
 					// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
 					// case 'LIST_ITEM':
 					// 	return <View />;
 					case 'KATEX':
-						return <KaTeX value={block.value} key={index} />;
+						return <KaTeX value={block.value} />;
 					default:
 						return null;
 				}

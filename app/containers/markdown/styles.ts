@@ -33,10 +33,10 @@ export default StyleSheet.create({
 	plainText: {
 		fontSize: 16,
 		flexShrink: 1,
-		lineHeight: 22
+		lineHeight: Platform.OS === 'android' ? 22 : undefined
 	},
 	text: {
-		lineHeight: 22,
+		lineHeight: Platform.OS === 'android' ? 22 : undefined,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},

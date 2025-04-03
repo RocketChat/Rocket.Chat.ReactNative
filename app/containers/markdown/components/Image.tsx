@@ -29,14 +29,14 @@ const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 	useEffect(() => {
 		if (isAndroid) {
 			// For Android, use fixed approximation
-			setImageSize({ width: 24, height: 24 });
+			setImageSize({ width: 100, height: 100 });
 			return;
 		}
 
 		// For iOS, use dynamic sizing
 		RNImage.getSize(img, (width, height) => {
-			const widthVal = Math.min(width, maxSize) || 0;
-			const heightVal = Math.min((height * ((width * 100) / width)) / 100, maxSize) || 0;
+			const widthVal = Math.max(Math.min(width, maxSize) || 0, 100);
+			const heightVal = Math.max(Math.min((height * ((width * 100) / width)) / 100, maxSize) || 0, 100);
 			setImageSize({ width: widthVal, height: heightVal });
 		});
 	}, [img]);
