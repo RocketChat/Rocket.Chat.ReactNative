@@ -24,7 +24,7 @@ const message = {
 
 // mock sdk
 jest.mock('../services/sdk', () => ({
-	get: jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: true, message }), 1000)))
+	get: jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: true, message }), 100)))
 }));
 
 function Render() {
@@ -45,10 +45,10 @@ function Render() {
 
 describe('useFetch', () => {
 	it('should return data after fetch', async () => {
-		const { result, waitForNextUpdate } = renderHook(() => useEndpointData(url, { msgId: message._id }));
+		const { result } = renderHook(() => useEndpointData(url, { msgId: message._id }));
 		expect(result.current.loading).toEqual(true);
 		expect(result.current.result).toEqual(undefined);
-		await waitForNextUpdate();
+		await waitFor(() => expect(result.current.loading).toEqual(false));
 		expect(result.current.loading).toEqual(false);
 		expect(result.current.result).toEqual({ success: true, message });
 	});
@@ -68,15 +68,13 @@ describe('useFetch', () => {
 	it('should return error after fetch', async () => {
 		const spy = jest
 			.spyOn(sdk, 'get')
-			.mockImplementation(
-				jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: false, error: null }), 1000)))
-			);
+			.mockImplementation(jest.fn(() => new Promise(resolve => setTimeout(() => resolve({ success: false, error: null }), 100))));
 
-		const { result, waitForNextUpdate } = renderHook(() => useEndpointData(url, { msgId: message._id }));
+		const { result } = renderHook(() => useEndpointData(url, { msgId: message._id }));
 		expect(result.current.loading).toEqual(true);
 		expect(result.current.result).toEqual(undefined);
 		expect(result.current.error).toEqual(undefined);
-		await waitForNextUpdate();
+		await waitFor(() => expect(result.current.loading).toEqual(false));
 		expect(result.current.loading).toEqual(false);
 		expect(result.current.result).toEqual(undefined);
 		expect(result.current.error).toEqual({ success: false, error: null });
