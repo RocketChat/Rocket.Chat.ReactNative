@@ -471,6 +471,8 @@
   "Message_roomname": "Message {{roomName}}",
   "Message_starred": "Message starred",
   "Message_unstarred": "Message unstarred",
+  "Message_was_not_read": "Message was not read",
+  "Message_was_read": "Message was read",
   "messages": "messages",
   "Microphone_access_needed_to_record_audio": "Microphone access needed to record audio",
   "Missed_call": "Missed call",

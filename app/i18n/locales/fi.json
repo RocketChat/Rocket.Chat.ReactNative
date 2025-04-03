@@ -389,6 +389,8 @@
   "Message_Reported": "Viestistä ilmoitettu",
   "Message_starred": "Viesti merkitty tähdellä",
   "Message_unstarred": "Viestin tähtimerkintä poistettu",
+  "Message_was_not_read": "Viestiä ei luettu",
+  "Message_was_read": "Viesti luettiin",
   "messages": "viestiä",
   "missing_room_e2ee_description": "Huoneen salausavaimet on päivitettävä, toisen huoneen jäsenen on oltava verkossa, jotta tämä voi tapahtua.",
   "missing_room_e2ee_title": "Tarkista uudelleen muutaman hetken kuluttua",

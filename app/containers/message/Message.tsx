@@ -123,7 +123,11 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
-		return `${user} ${hour} ${label}`;
+		const readOrUnreadLabel =
+			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
+		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
+		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
+		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	}, [
 		props.msg,
 		props.tmid,
@@ -135,7 +139,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		props.useRealName,
 		props.author,
 		props.mentions,
-		props.channels
+		props.channels,
+		props.unread
 	]);
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
@@ -195,7 +200,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 		backgroundColor = themes[theme].surfaceNeutral;
 	}
 
-	if (props.hasError) {
+	if (props.hasError || props.isInfo) {
 		return (
 			<View>
 				<Message {...props} />

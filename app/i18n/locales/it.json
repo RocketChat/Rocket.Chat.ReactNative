@@ -304,6 +304,8 @@
   "Message_Reported": "Messaggio segnalato",
   "Message_starred": "Messaggio importante",
   "Message_unstarred": "Messaggio non importante",
+  "Message_was_not_read": "Il messaggio non è stato letto.",
+  "Message_was_read": "Messaggio letto",
   "messages": "messaggi",
   "missing_room_e2ee_description": "Le chiavi di crittografia per la stanza devono essere aggiornate, un altro membro della stanza deve essere online affinché ciò avvenga.",
   "missing_room_e2ee_title": "Ricontrolla tra qualche istante",

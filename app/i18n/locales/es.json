@@ -171,6 +171,8 @@
   "Message_actions": "Acciones de mensaje",
   "Message_removed": "Mensaje eliminado",
   "Message_Reported": "Mensaje notificado",
+  "Message_was_not_read": "Mensaje no fue leído.",
+  "Message_was_read": "Mensaje fue leído",
   "messages": "mensajes",
   "Mute": "Mutear",
   "Mute_someone_in_room": "Silenciar a alguien en la sala",

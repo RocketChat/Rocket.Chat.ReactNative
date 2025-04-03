@@ -50,6 +50,7 @@ export const mappedIcons = {
 	'chat-close': 59701,
 	'chat-forward': 59702,
 	'check': 59703,
+	'check-double': 59875,
 	'checkbox-checked': 59654,
 	'checkbox-unchecked': 59653,
 	'chevron-down': 59704,
