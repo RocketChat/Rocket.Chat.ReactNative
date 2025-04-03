@@ -285,6 +285,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
 							autoComplete='name'
+							importantForAutofill={'yes'}
+							textContentType='name'
 							onSubmitEditing={() => {
 								setFocus('username');
 							}}
@@ -299,7 +301,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
-							autoComplete='email'
+							autoComplete='username'
+							textContentType='username'
+							importantForAutofill={'yes'}
 							onSubmitEditing={() => {
 								setFocus('email');
 							}}
@@ -319,6 +323,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-email'
+							autoComplete='email'
+							textContentType='emailAddress'
+							importantForAutofill={'yes'}
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<ControlledFormTextInput
@@ -356,6 +363,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							autoComplete='password-new'
+							textContentType='newPassword'
+							importantForAutofill={'yes'}
 							onSubmitEditing={focusOnCustomFields}
 							secureTextEntry
 							containerStyle={styles.inputContainer}

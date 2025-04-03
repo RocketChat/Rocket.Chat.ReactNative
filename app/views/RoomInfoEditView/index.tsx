@@ -553,6 +553,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								error={nameError}
 								testID='room-info-edit-view-name'
 								required
+								autoComplete='name'
+								textContentType='name'
+								importantForAutofill='yes'
 							/>
 							<FormTextInput
 								inputRef={e => {
@@ -565,6 +568,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									this.announcement?.focus();
 								}}
 								testID='room-info-edit-view-topic'
+								textContentType='none'
+								autoComplete='off'
+								importantForAutofill='no'
 							/>
 							<FormTextInput
 								inputRef={e => {
@@ -577,6 +583,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									this.description?.focus();
 								}}
 								testID='room-info-edit-view-announcement'
+								textContentType='none'
+								autoComplete='off'
+								importantForAutofill='no'
 							/>
 							<FormTextInput
 								inputRef={e => {
@@ -589,6 +598,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									this.joinCode?.focus();
 								}}
 								testID='room-info-edit-view-description'
+								textContentType='none'
+								autoComplete='off'
+								importantForAutofill='no'
 							/>
 						</View>
 
@@ -602,6 +614,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							secureTextEntry
 							testID='room-info-edit-view-password'
 							autoComplete='password'
+							textContentType='password'
+							importantForAutofill='yes'
 						/>
 						<View style={styles.switches}>
 							<SwitchContainer
