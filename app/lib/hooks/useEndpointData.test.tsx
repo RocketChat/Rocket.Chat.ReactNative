@@ -1,5 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
-import { render, waitFor } from '@testing-library/react-native';
+import { render, renderHook, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { View, Text } from 'react-native';
 
