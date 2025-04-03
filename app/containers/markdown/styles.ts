@@ -32,11 +32,11 @@ export default StyleSheet.create({
 	},
 	plainText: {
 		fontSize: 16,
-		flexShrink: 1
-		// lineHeight: 22
+		flexShrink: 1,
+		lineHeight: 24
 	},
 	text: {
-		// lineHeight: 22,
+		lineHeight: 24,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
@@ -64,10 +64,11 @@ export default StyleSheet.create({
 		justifyContent: 'flex-start'
 	},
 	inlineImage: {
-		width: 300,
-		height: 300,
+		width: '100%',
+		height: '100%',
 		resizeMode: 'contain',
-		borderRadius: 4
+		borderRadius: 4,
+		marginBottom: 2
 	},
 	codeInline: {
 		fontSize: 16,

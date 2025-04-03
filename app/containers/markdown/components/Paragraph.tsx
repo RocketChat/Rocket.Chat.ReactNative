@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Paragraph as ParagraphProps } from '@rocket.chat/message-parser';
 
 import Inline from './Inline';
@@ -32,19 +32,9 @@ const Paragraph = ({ value }: IParagraphProps) => {
 		forceTrim = true;
 	}
 
-	if (Platform.OS === 'android') {
-		return (
-			<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
-				<Inline value={value} forceTrim={forceTrim} />
-			</Text>
-		);
-	}
-
 	return (
-		<View style={styles.text}>
-			<Text style={[styles.text, { color: themes[theme].fontDefault }]}>
-				<Inline value={value} forceTrim={forceTrim} />
-			</Text>
+		<View style={[styles.text, { flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center' }]}>
+			<Inline value={value} forceTrim={forceTrim} />
 		</View>
 	);
 };
