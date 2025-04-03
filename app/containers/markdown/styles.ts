@@ -32,11 +32,11 @@ export default StyleSheet.create({
 	},
 	plainText: {
 		fontSize: 16,
-		flexShrink: 1,
-		lineHeight: 22
+		flexShrink: 1
+		// lineHeight: 0
 	},
 	text: {
-		lineHeight: 22,
+		// lineHeight: 0,
 		fontSize: 16,
 		...sharedStyles.textRegular
 	},
