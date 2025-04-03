@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={213}
+        handlerTag={192}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -94,19 +94,22 @@ exports[`MessageComposer Audio tap record 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-delete-audio"
       >
@@ -172,7 +175,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={214}
+        handlerTag={193}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -184,21 +187,24 @@ exports[`MessageComposer Audio tap record 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "backgroundColor": "#156FF5",
-            "borderRadius": 16,
-            "height": 32,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 32,
-          }
+          [
+            {
+              "alignItems": "center",
+              "backgroundColor": "#156FF5",
+              "borderRadius": 16,
+              "height": 32,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 32,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
       >
         <View
@@ -278,7 +284,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={200}
+          handlerTag={179}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -290,19 +296,22 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           }
           innerRef={null}
           onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
           onPress={[Function]}
           style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
+            [
+              {
+                "alignItems": "center",
+                "height": 48,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 48,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
           }
           testID="message-composer-actions"
         >
@@ -390,7 +399,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={201}
+          handlerTag={180}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -402,19 +411,22 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           }
           innerRef={null}
           onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
           onPress={[Function]}
           style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
+            [
+              {
+                "alignItems": "center",
+                "height": 48,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 48,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
           }
           testID="message-composer-send-audio"
         >
@@ -559,7 +571,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={202}
+                handlerTag={181}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -571,19 +583,22 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                 }
                 innerRef={null}
                 onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
                 onGestureHandlerEvent={[Function]}
                 onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
                 onPress={[Function]}
                 style={
-                  {
-                    "alignItems": "center",
-                    "height": 48,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 48,
-                  }
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 48,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 48,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
                 }
                 testID="composer-quote-remove-abc"
               >
@@ -700,7 +715,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={203}
+          handlerTag={182}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -712,19 +727,22 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           }
           innerRef={null}
           onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
           onPress={[Function]}
           style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
+            [
+              {
+                "alignItems": "center",
+                "height": 48,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 48,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
           }
           testID="message-composer-actions"
         >
@@ -812,7 +830,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={204}
+          handlerTag={183}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -824,19 +842,22 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           }
           innerRef={null}
           onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
           onPress={[Function]}
           style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
+            [
+              {
+                "alignItems": "center",
+                "height": 48,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 48,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
           }
           testID="message-composer-send-audio"
         >
@@ -982,7 +1003,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={205}
+                handlerTag={184}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -994,19 +1015,22 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 }
                 innerRef={null}
                 onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
                 onGestureHandlerEvent={[Function]}
                 onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
                 onPress={[Function]}
                 style={
-                  {
-                    "alignItems": "center",
-                    "height": 48,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 48,
-                  }
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 48,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 48,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
                 }
                 testID="composer-quote-remove-abc"
               >
@@ -1160,7 +1184,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={206}
+                handlerTag={185}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1172,19 +1196,22 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                 }
                 innerRef={null}
                 onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
                 onGestureHandlerEvent={[Function]}
                 onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
                 onPress={[Function]}
                 style={
-                  {
-                    "alignItems": "center",
-                    "height": 48,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 48,
-                  }
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 48,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 48,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
                 }
                 testID="composer-quote-remove-def"
               >
@@ -1301,7 +1328,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={207}
+          handlerTag={186}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1313,19 +1340,22 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           }
           innerRef={null}
           onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
           onPress={[Function]}
           style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
+            [
+              {
+                "alignItems": "center",
+                "height": 48,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 48,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
           }
           testID="message-composer-actions"
         >
@@ -1413,7 +1443,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={208}
+          handlerTag={187}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -1425,19 +1455,22 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           }
           innerRef={null}
           onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
           onGestureHandlerEvent={[Function]}
           onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
           onPress={[Function]}
           style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
+            [
+              {
+                "alignItems": "center",
+                "height": 48,
+                "justifyContent": "center",
+                "opacity": 1,
+                "width": 48,
+              },
+              {
+                "cursor": undefined,
+              },
+            ]
           }
           testID="message-composer-send-audio"
         >
@@ -1583,7 +1616,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={209}
+                handlerTag={188}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1595,19 +1628,22 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 }
                 innerRef={null}
                 onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
                 onGestureHandlerEvent={[Function]}
                 onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
                 onPress={[Function]}
                 style={
-                  {
-                    "alignItems": "center",
-                    "height": 48,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 48,
-                  }
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 48,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 48,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
                 }
                 testID="composer-quote-remove-abc"
               >
@@ -1761,7 +1797,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 borderless={true}
                 collapsable={false}
                 delayLongPress={600}
-                handlerTag={210}
+                handlerTag={189}
                 handlerType="NativeViewGestureHandler"
                 hitSlop={
                   {
@@ -1773,19 +1809,22 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                 }
                 innerRef={null}
                 onActiveStateChange={[Function]}
-                onGestureEvent={[Function]}
                 onGestureHandlerEvent={[Function]}
                 onGestureHandlerStateChange={[Function]}
-                onHandlerStateChange={[Function]}
                 onPress={[Function]}
                 style={
-                  {
-                    "alignItems": "center",
-                    "height": 48,
-                    "justifyContent": "center",
-                    "opacity": 1,
-                    "width": 48,
-                  }
+                  [
+                    {
+                      "alignItems": "center",
+                      "height": 48,
+                      "justifyContent": "center",
+                      "opacity": 1,
+                      "width": 48,
+                    },
+                    {
+                      "cursor": undefined,
+                    },
+                  ]
                 }
                 testID="composer-quote-remove-def"
               >
@@ -1937,7 +1976,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={59}
+        handlerTag={38}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -1949,19 +1988,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -2010,7 +2052,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={60}
+        handlerTag={39}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2022,19 +2064,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -2083,7 +2128,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={61}
+        handlerTag={40}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2095,19 +2140,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -2156,7 +2204,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={62}
+        handlerTag={41}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2168,19 +2216,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -2229,7 +2280,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={63}
+        handlerTag={42}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2241,19 +2292,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -2302,7 +2356,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={64}
+        handlerTag={43}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2314,19 +2368,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -2375,7 +2432,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={58}
+        handlerTag={37}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2387,19 +2444,22 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -2515,7 +2575,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={137}
+        handlerTag={116}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2527,19 +2587,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -2588,7 +2651,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={138}
+        handlerTag={117}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2600,19 +2663,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -2661,7 +2727,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={139}
+        handlerTag={118}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2673,19 +2739,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -2734,7 +2803,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={140}
+        handlerTag={119}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2746,19 +2815,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -2807,7 +2879,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={141}
+        handlerTag={120}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2819,19 +2891,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -2880,7 +2955,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={142}
+        handlerTag={121}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2892,19 +2967,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -2953,7 +3031,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={136}
+        handlerTag={115}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -2965,19 +3043,22 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -3093,7 +3174,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={163}
+        handlerTag={142}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3105,19 +3186,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -3166,7 +3250,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={164}
+        handlerTag={143}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3178,19 +3262,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -3239,7 +3326,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={165}
+        handlerTag={144}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3251,19 +3338,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -3312,7 +3402,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={166}
+        handlerTag={145}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3324,19 +3414,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -3385,7 +3478,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={167}
+        handlerTag={146}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3397,19 +3490,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -3458,7 +3554,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={168}
+        handlerTag={147}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3470,19 +3566,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -3531,7 +3630,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={162}
+        handlerTag={141}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3543,19 +3642,22 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -3671,7 +3773,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={85}
+        handlerTag={64}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3683,19 +3785,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -3744,7 +3849,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={86}
+        handlerTag={65}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3756,19 +3861,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -3817,7 +3925,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={87}
+        handlerTag={66}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3829,19 +3937,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -3890,7 +4001,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={88}
+        handlerTag={67}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3902,19 +4013,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -3963,7 +4077,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={89}
+        handlerTag={68}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -3975,19 +4089,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -4036,7 +4153,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={90}
+        handlerTag={69}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4048,19 +4165,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -4109,7 +4229,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={84}
+        handlerTag={63}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4121,19 +4241,22 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -4249,7 +4372,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={46}
+        handlerTag={25}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4261,19 +4384,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -4322,7 +4448,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={47}
+        handlerTag={26}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4334,19 +4460,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -4395,7 +4524,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={48}
+        handlerTag={27}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4407,19 +4536,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -4468,7 +4600,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={49}
+        handlerTag={28}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4480,19 +4612,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -4541,7 +4676,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={50}
+        handlerTag={29}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4553,19 +4688,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -4614,7 +4752,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={51}
+        handlerTag={30}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4626,19 +4764,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -4687,7 +4828,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={45}
+        handlerTag={24}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4699,19 +4840,22 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -4827,7 +4971,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={111}
+        handlerTag={90}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4839,19 +4983,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -4900,7 +5047,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={112}
+        handlerTag={91}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4912,19 +5059,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -4973,7 +5123,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={113}
+        handlerTag={92}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -4985,19 +5135,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -5046,7 +5199,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={114}
+        handlerTag={93}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5058,19 +5211,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -5119,7 +5275,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={115}
+        handlerTag={94}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5131,19 +5287,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -5192,7 +5351,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={116}
+        handlerTag={95}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5204,19 +5363,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -5265,7 +5427,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={110}
+        handlerTag={89}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5277,19 +5439,22 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -5405,7 +5570,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={72}
+        handlerTag={51}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5417,19 +5582,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -5478,7 +5646,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={73}
+        handlerTag={52}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5490,19 +5658,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -5551,7 +5722,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={74}
+        handlerTag={53}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5563,19 +5734,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -5624,7 +5798,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={75}
+        handlerTag={54}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5636,19 +5810,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -5697,7 +5874,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={76}
+        handlerTag={55}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5709,19 +5886,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -5770,7 +5950,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={77}
+        handlerTag={56}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5782,19 +5962,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -5843,7 +6026,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={71}
+        handlerTag={50}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5855,19 +6038,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -5983,7 +6169,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={150}
+        handlerTag={129}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -5995,19 +6181,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -6056,7 +6245,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={151}
+        handlerTag={130}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6068,19 +6257,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -6129,7 +6321,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={152}
+        handlerTag={131}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6141,19 +6333,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -6202,7 +6397,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={153}
+        handlerTag={132}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6214,19 +6409,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -6275,7 +6473,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={154}
+        handlerTag={133}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6287,19 +6485,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -6348,7 +6549,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={155}
+        handlerTag={134}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6360,19 +6561,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -6421,7 +6625,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={149}
+        handlerTag={128}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6433,19 +6637,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -6561,7 +6768,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={176}
+        handlerTag={155}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6573,19 +6780,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -6634,7 +6844,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={177}
+        handlerTag={156}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6646,19 +6856,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -6707,7 +6920,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={178}
+        handlerTag={157}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6719,19 +6932,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -6780,7 +6996,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={179}
+        handlerTag={158}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6792,19 +7008,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -6853,7 +7072,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={180}
+        handlerTag={159}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6865,19 +7084,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -6926,7 +7148,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={181}
+        handlerTag={160}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -6938,19 +7160,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -6999,7 +7224,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={175}
+        handlerTag={154}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7011,19 +7236,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -7139,7 +7367,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={98}
+        handlerTag={77}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7151,19 +7379,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -7212,7 +7443,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={99}
+        handlerTag={78}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7224,19 +7455,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -7285,7 +7519,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={100}
+        handlerTag={79}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7297,19 +7531,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -7358,7 +7595,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={101}
+        handlerTag={80}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7370,19 +7607,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -7431,7 +7671,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={102}
+        handlerTag={81}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7443,19 +7683,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -7504,7 +7747,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={103}
+        handlerTag={82}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7516,19 +7759,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -7577,7 +7823,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={97}
+        handlerTag={76}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7589,19 +7835,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -7717,7 +7966,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={124}
+        handlerTag={103}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7729,19 +7978,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-markdown"
       >
@@ -7790,7 +8042,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={125}
+        handlerTag={104}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7802,19 +8054,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-bold"
       >
@@ -7863,7 +8118,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={126}
+        handlerTag={105}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7875,19 +8130,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-italic"
       >
@@ -7936,7 +8194,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={127}
+        handlerTag={106}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -7948,19 +8206,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-strike"
       >
@@ -8009,7 +8270,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={128}
+        handlerTag={107}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8021,19 +8282,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code"
       >
@@ -8082,7 +8346,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={129}
+        handlerTag={108}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8094,19 +8358,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-code-block"
       >
@@ -8155,7 +8422,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={123}
+        handlerTag={102}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8167,19 +8434,22 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -8295,7 +8565,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={24}
+        handlerTag={3}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8307,19 +8577,22 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-actions"
       >
@@ -8368,7 +8641,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={25}
+        handlerTag={4}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8380,19 +8653,22 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-open-emoji"
       >
@@ -8441,7 +8717,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={26}
+        handlerTag={5}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8453,19 +8729,22 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-open-markdown"
       >
@@ -8514,7 +8793,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={27}
+        handlerTag={6}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8526,19 +8805,22 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-mention"
       >
@@ -8587,7 +8869,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={28}
+        handlerTag={7}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8599,19 +8881,22 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -8727,7 +9012,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={36}
+        handlerTag={15}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8739,19 +9024,22 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-actions"
       >
@@ -8800,7 +9088,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={37}
+        handlerTag={16}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8812,19 +9100,22 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-close-emoji"
       >
@@ -8873,7 +9164,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={38}
+        handlerTag={17}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -8885,19 +9176,22 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -9013,7 +9307,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={184}
+        handlerTag={163}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9025,19 +9319,22 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-actions"
       >
@@ -9086,7 +9383,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={185}
+        handlerTag={164}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9098,19 +9395,22 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-open-emoji"
       >
@@ -9159,7 +9459,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={186}
+        handlerTag={165}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9171,19 +9471,22 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-open-markdown"
       >
@@ -9232,7 +9535,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={187}
+        handlerTag={166}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9244,19 +9547,22 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-mention"
       >
@@ -9305,7 +9611,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={188}
+        handlerTag={167}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -9317,19 +9623,22 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         }
         innerRef={null}
         onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
         onGestureHandlerEvent={[Function]}
         onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
         onPress={[Function]}
         style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
+          [
+            {
+              "alignItems": "center",
+              "height": 48,
+              "justifyContent": "center",
+              "opacity": 1,
+              "width": 48,
+            },
+            {
+              "cursor": undefined,
+            },
+          ]
         }
         testID="message-composer-send-audio"
       >
@@ -9366,1277 +9675,6 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           </Text>
         </View>
       </RNGestureHandlerButton>
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer renders correctly 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={1}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text />
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={2}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-send-audio"
-        >
-          <View
-            accessibilityLabel="Send audio message"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text />
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer renders correctly with audio recorder disabled 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={3}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 48,
-                  },
-                  [
-                    {
-                      "lineHeight": 48,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      />
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer renders correctly with audio recorder disabled and without audio upload permissions 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={5}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 48,
-                  },
-                  [
-                    {
-                      "lineHeight": 48,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      />
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer renders correctly without audio upload permissions 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={4}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 48,
-                  },
-                  [
-                    {
-                      "lineHeight": 48,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      />
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer renders toolbar when focused 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-    </View>
-    <View
-      style={
-        {
-          "flexDirection": "row",
-          "paddingVertical": 12,
-        }
-      }
-    >
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={8}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          {
-            "bottom": 16,
-            "left": 16,
-            "right": 16,
-            "top": 16,
-          }
-        }
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
-        }
-        testID="message-composer-actions"
-      >
-        <View
-          accessibilityLabel="Message actions"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 48,
-                },
-                [
-                  {
-                    "lineHeight": 48,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          {
-            "width": 12,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={9}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          {
-            "bottom": 16,
-            "left": 16,
-            "right": 16,
-            "top": 16,
-          }
-        }
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
-        }
-        testID="message-composer-open-emoji"
-      >
-        <View
-          accessibilityLabel="Open emoji selector"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 48,
-                },
-                [
-                  {
-                    "lineHeight": 48,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          {
-            "width": 12,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={10}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          {
-            "bottom": 16,
-            "left": 16,
-            "right": 16,
-            "top": 16,
-          }
-        }
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
-        }
-        testID="message-composer-open-markdown"
-      >
-        <View
-          accessibilityLabel="Open markdown tools"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 48,
-                },
-                [
-                  {
-                    "lineHeight": 48,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          {
-            "width": 12,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={11}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          {
-            "bottom": 16,
-            "left": 16,
-            "right": 16,
-            "top": 16,
-          }
-        }
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
-        }
-        testID="message-composer-mention"
-      >
-        <View
-          accessibilityLabel="Open mention autocomplete"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 48,
-                },
-                [
-                  {
-                    "lineHeight": 48,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-      <View
-        style={
-          {
-            "flex": 1,
-          }
-        }
-      />
-      <RNGestureHandlerButton
-        activeOpacity={0.3}
-        borderless={true}
-        collapsable={false}
-        delayLongPress={600}
-        handlerTag={12}
-        handlerType="NativeViewGestureHandler"
-        hitSlop={
-          {
-            "bottom": 16,
-            "left": 16,
-            "right": 16,
-            "top": 16,
-          }
-        }
-        innerRef={null}
-        onActiveStateChange={[Function]}
-        onGestureEvent={[Function]}
-        onGestureHandlerEvent={[Function]}
-        onGestureHandlerStateChange={[Function]}
-        onHandlerStateChange={[Function]}
-        onPress={[Function]}
-        style={
-          {
-            "alignItems": "center",
-            "height": 48,
-            "justifyContent": "center",
-            "opacity": 1,
-            "width": 48,
-          }
-        }
-        testID="message-composer-send-audio"
-      >
-        <View
-          accessibilityLabel="Send audio message"
-          accessibilityRole="button"
-          accessible={true}
-        >
-          <Text
-            allowFontScaling={false}
-            selectable={false}
-            style={
-              [
-                {
-                  "color": "#2F343D",
-                  "fontSize": 48,
-                },
-                [
-                  {
-                    "lineHeight": 48,
-                  },
-                  undefined,
-                ],
-                {
-                  "fontFamily": "custom",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                {},
-              ]
-            }
-          >
-            
-          </Text>
-        </View>
-      </RNGestureHandlerButton>
-    </View>
-  </View>
-</keyboard-accessory-view-mock>
-`;
-
-exports[`MessageComposer send message 1`] = `
-<keyboard-accessory-view-mock>
-  <View
-    style={
-      [
-        {
-          "borderTopWidth": 1,
-          "minHeight": 48,
-          "paddingHorizontal": 16,
-        },
-        {
-          "backgroundColor": "#FFFFFF",
-          "borderTopColor": "#CBCED1",
-        },
-      ]
-    }
-    testID="message-composer"
-  >
-    <View
-      style={
-        {
-          "flexDirection": "row",
-        }
-      }
-    >
-      <View
-        style={
-          {
-            "height": 48,
-            "justifyContent": "center",
-            "paddingRight": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={20}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-actions"
-        >
-          <View
-            accessibilityLabel="Message actions"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 48,
-                  },
-                  [
-                    {
-                      "lineHeight": 48,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
-      <TextInput
-        blurOnSubmit={false}
-        defaultValue=""
-        keyboardAppearance="light"
-        multiline={true}
-        onBlur={[Function]}
-        onChangeText={[Function]}
-        onFocus={[Function]}
-        onSelectionChange={[Function]}
-        placeholder=""
-        placeholderTextColor="#9EA2A8"
-        style={
-          [
-            {
-              "backgroundColor": "transparent",
-              "flex": 1,
-              "fontFamily": "Inter",
-              "fontSize": 16,
-              "fontWeight": "400",
-              "lineHeight": 22,
-              "maxHeight": 200,
-              "minHeight": 48,
-              "paddingBottom": 12,
-              "paddingTop": 12,
-              "textAlign": "left",
-              "textAlignVertical": "center",
-            },
-            {
-              "color": "#2F343D",
-            },
-          ]
-        }
-        testID="message-composer-input"
-        underlineColorAndroid="transparent"
-      />
-      <View
-        style={
-          {
-            "alignItems": "center",
-            "flexDirection": "row",
-            "height": 48,
-            "paddingLeft": 12,
-          }
-        }
-      >
-        <RNGestureHandlerButton
-          activeOpacity={0.3}
-          borderless={true}
-          collapsable={false}
-          delayLongPress={600}
-          handlerTag={21}
-          handlerType="NativeViewGestureHandler"
-          hitSlop={
-            {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
-            }
-          }
-          innerRef={null}
-          onActiveStateChange={[Function]}
-          onGestureEvent={[Function]}
-          onGestureHandlerEvent={[Function]}
-          onGestureHandlerStateChange={[Function]}
-          onHandlerStateChange={[Function]}
-          onPress={[Function]}
-          style={
-            {
-              "alignItems": "center",
-              "height": 48,
-              "justifyContent": "center",
-              "opacity": 1,
-              "width": 48,
-            }
-          }
-          testID="message-composer-send-audio"
-        >
-          <View
-            accessibilityLabel="Send audio message"
-            accessibilityRole="button"
-            accessible={true}
-          >
-            <Text
-              allowFontScaling={false}
-              selectable={false}
-              style={
-                [
-                  {
-                    "color": "#2F343D",
-                    "fontSize": 48,
-                  },
-                  [
-                    {
-                      "lineHeight": 48,
-                    },
-                    undefined,
-                  ],
-                  {
-                    "fontFamily": "custom",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  {},
-                ]
-              }
-            >
-              
-            </Text>
-          </View>
-        </RNGestureHandlerButton>
-      </View>
     </View>
   </View>
 </keyboard-accessory-view-mock>
