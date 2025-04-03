@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Image as RNImage, View } from 'react-native';
+import { Platform, Image as RNImage, View } from 'react-native';
 import { Image as ImageProps } from '@rocket.chat/message-parser';
 import { createImageProgress } from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
@@ -24,8 +24,16 @@ const ImageProgress = createImageProgress(ExpoImage);
 const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 	const [imageSize, setImageSize] = useState({ width: 100, height: 100 });
 	const maxSize = useContext(WidthAwareContext);
+	const isAndroid = Platform.OS === 'android';
 
 	useEffect(() => {
+		if (isAndroid) {
+			// For Android, use fixed approximation
+			setImageSize({ width: 24, height: 24 });
+			return;
+		}
+
+		// For iOS, use dynamic sizing
 		RNImage.getSize(img, (width, height) => {
 			const widthVal = Math.min(width, maxSize) || 0;
 			const heightVal = Math.min((height * ((width * 100) / width)) / 100, maxSize) || 0;
@@ -37,10 +45,21 @@ const MarkdownImage = ({ img, theme }: TMarkdownImage) => {
 		<View
 			style={{
 				width: imageSize.width,
-				height: imageSize.height
+				height: imageSize.height,
+				alignSelf: 'flex-start',
+				marginBottom: isAndroid ? 0 : 2,
+				backgroundColor: 'transparent'
 			}}>
 			<ImageProgress
-				style={[styles.inlineImage, { width: '100%', height: '100%', borderColor: themes[theme].strokeLight }]}
+				style={[
+					styles.inlineImage,
+					{
+						width: '100%',
+						height: '100%',
+						borderColor: themes[theme].strokeLight,
+						resizeMode: 'contain'
+					}
+				]}
 				source={{ uri: encodeURI(img) }}
 				indicator={Progress.Pie}
 				indicatorProps={{ color: themes[theme].fontHint }}
