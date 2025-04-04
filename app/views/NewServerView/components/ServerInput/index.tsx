@@ -46,7 +46,6 @@ const ServerInput = ({
 }: IServerInput): JSX.Element => {
 	const { colors } = useTheme();
 	const [focused, setFocused] = useState(false);
-
 	return (
 		<View style={styles.container}>
 			<FormTextInput
