@@ -10,15 +10,15 @@ describe('completeUrl', () => {
 	});
 
 	it('should append .rocket.chat if the input is a short identifier', () => {
-		expect(completeUrl('myworkspace')).toBe('https://myworkspace.rocket.chat');
+		expect(completeUrl('mobile')).toBe('https://mobile.rocket.chat');
 	});
 
 	it('should not modify a valid URL', () => {
-		expect(completeUrl('https://example.com')).toBe('https://example.com');
+		expect(completeUrl('https://mobile.rocket.chat')).toBe('https://mobile.rocket.chat');
 	});
 
 	it('should add https:// if missing', () => {
-		expect(completeUrl('example.com')).toBe('https://example.com');
+		expect(completeUrl('mobile.rocket.chat')).toBe('https://mobile.rocket.chat');
 	});
 
 	it('should handle localhost correctly', () => {
@@ -27,10 +27,10 @@ describe('completeUrl', () => {
 	});
 
 	it('should replace backslashes with forward slashes', () => {
-		expect(completeUrl('https:\\example.com\\path')).toBe('https://example.com/path');
+		expect(completeUrl('https://example.com\\path')).toBe('https://example.com/path');
 	});
 
 	it('should remove trailing slashes', () => {
-		expect(completeUrl('https://example.com/')).toBe('https://example.com');
+		expect(completeUrl('https://mobile.rocket.chat/')).toBe('https://mobile.rocket.chat');
 	});
 });
