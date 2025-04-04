@@ -1057,4 +1057,5 @@ const mapStateToProps = (state: IApplicationState) => ({
 	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications
 });
 
+// @ts-ignore
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));

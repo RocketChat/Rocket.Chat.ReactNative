@@ -12,9 +12,9 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
+import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
 import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
-import com.facebook.react.bridge.JSIModulePackage;
 import com.wix.reactnativenotifications.core.AppLaunchHelper
 import com.wix.reactnativenotifications.core.AppLifecycleFacade
 import com.wix.reactnativenotifications.core.JsIOHelper
@@ -35,11 +35,8 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
               // Packages that cannot be autolinked yet can be added manually here, for example:
               add(RNCViewPagerPackage())
               add(SSLPinningPackage())
+              add(WatermelonDBJSIPackage())
             }
-
-        override fun getJSIModulePackage(): JSIModulePackage {
-            return WatermelonDBJSIPackage()
-        }
 
         override fun getJSMainModuleName(): String = "index"
 
@@ -50,11 +47,11 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
       }
 
   override val reactHost: ReactHost
-    get() = getDefaultReactHost(this.applicationContext, reactNativeHost)
+    get() = getDefaultReactHost(applicationContext, reactNativeHost)
 
   override fun onCreate() {
     super.onCreate()
-    SoLoader.init(this, false)
+    SoLoader.init(this, OpenSourceMergedSoMapping)
     Bugsnag.start(this)
 
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {

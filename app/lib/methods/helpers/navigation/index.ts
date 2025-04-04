@@ -7,7 +7,6 @@ import sharedStyles from '../../../../views/Styles';
 import CustomHeader from '../../../../containers/CustomHeader';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	headerBackTitleVisible: false,
 	header: CustomHeader
 };
 

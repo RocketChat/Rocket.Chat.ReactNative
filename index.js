@@ -6,13 +6,9 @@ import { name as appName, share as shareName } from './app.json';
 import { isAndroid } from './app/lib/methods/helpers';
 
 if (process.env.USE_STORYBOOK) {
-	require('./app/ReactotronConfig');
-
 	AppRegistry.registerComponent(appName, () => require('./.storybook/index').default);
 } else {
-	if (__DEV__) {
-		require('./app/ReactotronConfig');
-	} else {
+	if (!__DEV__) {
 		console.log = () => {};
 		console.time = () => {};
 		console.timeLog = () => {};

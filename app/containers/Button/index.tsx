@@ -6,6 +6,7 @@ import { useTheme } from '../../theme';
 import sharedStyles from '../../views/Styles';
 import ActivityIndicator from '../ActivityIndicator';
 
+// @ts-ignore
 interface IButtonProps extends PlatformTouchableProps {
 	title: string;
 	onPress: () => void;
@@ -90,6 +91,7 @@ const Button: React.FC<IButtonProps> = ({
 		<Touchable
 			onPress={onPress}
 			disabled={isDisabled}
+			// @ts-ignore
 			style={containerStyle}
 			accessibilityLabel={title}
 			accessibilityRole='button'
