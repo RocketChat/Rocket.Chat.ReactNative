@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
+import { render, screen, fireEvent, waitFor, userEvent } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 
 import { MessageComposerContainer } from './MessageComposerContainer';
