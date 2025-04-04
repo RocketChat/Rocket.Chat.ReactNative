@@ -6,7 +6,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import * as List from '../../containers/List';
 import Button from '../../containers/Button';
-import { hideActionSheetRef } from '../../containers/ActionSheet';
 import { selectServerRequest, serverInitAdd } from '../../actions/server';
 import { appStart } from '../../actions/app';
 import I18n from '../../i18n';
@@ -28,7 +27,7 @@ import { useAppSelector } from '../../lib/hooks';
 const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
 
-const ServersList = () => {
+const ServersList = ({ close }: { close: () => void }) => {
 	const subscription = useRef<Subscription>();
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
@@ -54,10 +53,6 @@ const ServersList = () => {
 			}
 		};
 	}, []);
-
-	const close = () => {
-		hideActionSheetRef();
-	};
 
 	const createWorkspace = async () => {
 		logEvent(events.RL_CREATE_NEW_WORKSPACE);

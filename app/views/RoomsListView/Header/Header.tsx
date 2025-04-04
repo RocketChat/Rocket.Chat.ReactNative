@@ -8,6 +8,7 @@ import {
 	View,
 	useWindowDimensions
 } from 'react-native';
+import { KeyboardExtendedBaseView } from 'react-native-external-keyboard';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
@@ -83,7 +84,7 @@ const Header = React.memo(
 		}
 		// improve copy
 		return (
-			<View
+			<KeyboardExtendedBaseView
 				style={[styles.container, { width: width || (isTablet ? undefined : windowWidth) }]}
 				accessibilityLabel={`${serverName} ${subtitle}`}
 				accessibilityRole='header'
@@ -103,7 +104,7 @@ const Header = React.memo(
 						</Text>
 					) : null}
 				</TouchableOpacity>
-			</View>
+			</KeyboardExtendedBaseView>
 		);
 	}
 );

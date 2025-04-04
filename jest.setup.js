@@ -106,7 +106,7 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
+jest.mock('@gorhom/bottom-sheet', () => {
 	const react = require('react-native');
 	return {
 		__esModule: true,
