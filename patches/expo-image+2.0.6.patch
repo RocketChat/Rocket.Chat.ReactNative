@@ -1,0 +1,29 @@
+diff --git a/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt b/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt
+index 071907c..0b79364 100644
+--- a/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt
++++ b/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt
+@@ -24,6 +24,15 @@ class GlideUrlWithCustomCacheKey(
+   headers: Headers?,
+   private val cacheKey: String
+ ) : GlideUrl(uri, headers) {
++
++  companion object {
++    private var customClient: OkHttpClient? = null
++
++    fun setOkHttpClient(client: OkHttpClient) {
++      customClient = client
++    }
++  }
++
+   /**
+    * Cached hash code value
+    */
+@@ -71,7 +80,7 @@ data class GlideUrlWrapper(val glideUrl: GlideUrl) {
+ @GlideModule
+ class ExpoImageOkHttpClientGlideModule : LibraryGlideModule() {
+   override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+-    val client = OkHttpClient()
++    val client = customClient ?: OkHttpClient()
+     // We don't use the `GlideUrl` directly but we want to replace the default okhttp loader anyway
+     // to make sure that the app will use only one client.
+     registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(client))
