@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Base64 } from 'js-base64';
@@ -19,7 +18,6 @@ type TUseNewServerProps = {
 
 const useConnectServer = ({ text, certificate }: TUseNewServerProps) => {
 	const dispatch = useDispatch();
-	const [connectingOpen, setConnectingOpen] = useState(false);
 
 	const basicAuth = (server: string, text: string) => {
 		try {
@@ -34,16 +32,9 @@ const useConnectServer = ({ text, certificate }: TUseNewServerProps) => {
 		}
 	};
 
-	const connectOpen = () => {
-		logEvent(events.NS_JOIN_OPEN_WORKSPACE);
-		setConnectingOpen(true);
-		dispatch(serverRequest('https://open.rocket.chat'));
-	};
-
 	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 
-		setConnectingOpen(false);
 		if (text || serverUrl) {
 			Keyboard.dismiss();
 			const server = completeUrl(serverUrl ?? text);
@@ -65,8 +56,6 @@ const useConnectServer = ({ text, certificate }: TUseNewServerProps) => {
 	};
 
 	return {
-		connectingOpen,
-		connectOpen,
 		submit
 	};
 };

@@ -12,6 +12,11 @@ const styles = StyleSheet.create({
 	},
 	chooseCertificate: {
 		...sharedStyles.textSemibold
+	},
+	buttonPrompt: {
+		...sharedStyles.textRegular,
+		textAlign: 'center',
+		lineHeight: 20
 	}
 });
 

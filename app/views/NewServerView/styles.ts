@@ -5,23 +5,23 @@ import sharedStyles from '../Styles';
 const styles = StyleSheet.create({
 	onboardingImage: {
 		alignSelf: 'center',
-		resizeMode: 'contain'
+		width: 250,
+		height: 50,
+		marginBottom: 32
 	},
 	title: {
 		...sharedStyles.textBold,
-		letterSpacing: 0,
-		alignSelf: 'center'
+		fontSize: 24,
+		lineHeight: 36,
+		marginBottom: 24
 	},
-	subtitle: {
+	buttonPrompt: {
 		...sharedStyles.textRegular,
-		alignSelf: 'center'
-	},
-	description: {
-		...sharedStyles.textRegular,
-		textAlign: 'center'
+		textAlign: 'center',
+		lineHeight: 20
 	},
 	connectButton: {
-		marginBottom: 0
+		marginTop: 36
 	}
 });
 

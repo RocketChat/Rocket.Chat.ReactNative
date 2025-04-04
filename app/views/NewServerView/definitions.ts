@@ -1,4 +1,3 @@
-import { TSupportedThemes } from '../../theme';
 import { IBaseScreen } from '../../definitions';
 import { OutsideParamList } from '../../stacks/types';
 
@@ -14,9 +13,10 @@ export interface ISubmitParams {
 }
 
 export interface TCertificatePicker {
+	connecting: boolean;
+	showBottomInfo: boolean;
 	previousServer: string | null;
 	certificate: string | null;
-	theme: TSupportedThemes;
 	handleRemove: () => void;
 	chooseCertificate: () => Promise<void>;
 }
