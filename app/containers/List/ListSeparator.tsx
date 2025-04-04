@@ -17,7 +17,7 @@ interface IListSeparator {
 const ListSeparator = React.memo(({ style }: IListSeparator) => {
 	const { theme } = useTheme();
 
-	return <View style={[styles.separator, style, { backgroundColor: themes[theme].strokeLight }]} />;
+	return <View focusable={false} style={[styles.separator, style, { backgroundColor: themes[theme].strokeLight }]} />;
 });
 
 ListSeparator.displayName = 'List.Separator';
