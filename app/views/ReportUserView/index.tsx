@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { useTheme } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import I18n from '../../i18n';
@@ -39,7 +38,6 @@ const schema = yup.object().shape({
 
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
-	const { colors } = useTheme();
 	const navigation = useNavigation<TReportUserViewNavigationProp>();
 	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
 
@@ -77,12 +75,9 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}>
-			<SafeAreaView style={[styles.containerView, { backgroundColor: colors.strokeExtraDark }]} testID='report-user-view'>
-				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceHover }]}>
+		<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={128}>
+			<SafeAreaView style={styles.containerView} testID='report-user-view'>
+				<ScrollView contentContainerStyle={styles.scroll}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
@@ -97,7 +92,6 @@ const ReportUserView = () => {
 					<Button
 						title={I18n.t('Report')}
 						type='primary'
-						backgroundColor={colors.buttonBackgroundDangerDefault}
 						disabled={!isValid}
 						onPress={handleSubmit(submit)}
 						testID='report-user-view-submit'

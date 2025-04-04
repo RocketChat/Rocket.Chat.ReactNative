@@ -1,5 +1,3 @@
-import WatermelonDB
-
 @objc(SSLPinning)
 final class SSLPinning: NSObject {
 	private struct Constants {
@@ -7,7 +5,7 @@ final class SSLPinning: NSObject {
 		static let passwordKey = "ssl_pinning_password"
 	}
 	
-	private let database = WatermelonDB.Database(name: "default")
+	private let database = Database(name: "default")
 	private let mmkv = MMKV.build()
 	
 	@objc func setCertificate(_ server: String, _ path: String, _ password: String) {
@@ -23,21 +21,26 @@ final class SSLPinning: NSObject {
 		mmkv.set(password, forKey: Constants.passwordKey.appending(server))
 	}
 	
-	@objc func migrate() {
-		let serversQuery = database.query(raw: "select * from servers") as [DBServer]
-		
-		serversQuery.forEach { server in
-			guard let clientSSL = mmkv.clientSSL(for: server.url) else {
-				return
-			}
-			
-			setCertificate(
-				server.url.absoluteString.removeTrailingSlash(),
-				clientSSL.path,
-				clientSSL.password
-			)
-		}
-	}
+    @objc func migrate() {
+        guard let serversQuery = database.query("SELECT * FROM servers") else {
+            print("No servers found")
+            return
+        }
+
+        serversQuery.forEach { server in
+            guard let serverUrlString = server["id"] as? String,
+                  let serverUrl = URL(string: serverUrlString),
+                  let clientSSL = mmkv.clientSSL(for: serverUrl) else {
+                return
+            }
+
+            setCertificate(
+                serverUrl.absoluteString.removeTrailingSlash(),
+                clientSSL.path,
+                clientSSL.password
+            )
+        }
+    }
 	
 	func getCertificate(server: String) -> (certificate: Data, password: String)? {
 		guard let certificate = mmkv.data(forKey: Constants.certificateKey.appending(server)) else {

@@ -4,7 +4,7 @@ import Model from '@nozbe/watermelondb/Model';
 import * as Keychain from 'react-native-keychain';
 
 import { getDeviceToken } from '../notifications';
-import { extractHostname, isSsl } from './helpers';
+import { extractHostname, isIOS, isSsl } from './helpers';
 import { BASIC_AUTH_KEY } from './helpers/fetch';
 import database, { getDatabase } from '../database';
 import log from './helpers/log';
@@ -25,7 +25,9 @@ async function removeServerKeys({ server, userId }: { server: string; userId?: s
 	UserPreferences.removeItem(`${server}-${E2E_PUBLIC_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_PRIVATE_KEY}`);
 	UserPreferences.removeItem(`${server}-${E2E_RANDOM_PASSWORD_KEY}`);
-	await Keychain.resetInternetCredentials(server);
+	if (isIOS) {
+		await Keychain.resetInternetCredentials(server);
+	}
 }
 
 async function removeSharedCredentials({ server }: { server: string }) {
@@ -56,7 +58,7 @@ export async function removeServerData({ server }: { server: string }): Promise<
 		const serverRecord = await serverCollection.find(server);
 		batch.push(serverRecord.prepareDestroyPermanently());
 
-		await serversDB.write(() => serversDB.batch(...batch));
+		await serversDB.write(() => serversDB.batch(batch));
 		await removeSharedCredentials({ server });
 		await removeServerKeys({ server, userId });
 	} catch (e) {

@@ -46,16 +46,9 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	textBig: {
+		lineHeight: 43,
 		fontSize: 30,
 		...sharedStyles.textRegular
-	},
-	customEmoji: {
-		width: 15,
-		height: 15
-	},
-	customEmojiBig: {
-		width: 30,
-		height: 30
 	},
 	temp: { opacity: 0.3 },
 	mention: {
@@ -72,8 +65,7 @@ export default StyleSheet.create({
 	},
 	inlineImage: {
 		width: 300,
-		height: 300,
-		resizeMode: 'contain'
+		height: 300
 	},
 	codeInline: {
 		fontSize: 16,

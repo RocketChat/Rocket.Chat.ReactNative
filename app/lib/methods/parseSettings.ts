@@ -15,9 +15,15 @@ export function parseSettings(settings: any) {
 }
 
 export function _prepareSettings(settings: any) {
-	return settings.map((setting: any) => {
-		// @ts-ignore
-		setting[defaultSettings[setting._id].type] = setting.value;
-		return setting;
-	});
+	return settings
+		.map((setting: any) => {
+			// @ts-ignore
+			if (!defaultSettings[setting._id]) {
+				return undefined;
+			}
+			// @ts-ignore
+			setting[defaultSettings[setting._id].type] = setting.value;
+			return setting;
+		})
+		.filter(Boolean);
 }

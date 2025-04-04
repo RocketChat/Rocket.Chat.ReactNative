@@ -220,7 +220,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Mentions'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { 'mentions._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, mentionIds: [user.id] });
 				},
 				noDataMsg: I18n.t('No_mentioned_messages'),
 				testID: 'mentioned-messages-view',
@@ -231,7 +231,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Starred'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { 'starred._id': { $in: [user.id] } }, messages.length);
+					return Services.getMessages({ roomId: this.rid, type: this.t, offset: messages.length, starredIds: [user.id] });
 				},
 				noDataMsg: I18n.t('No_starred_messages'),
 				testID: 'starred-messages-view',
@@ -250,7 +250,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: I18n.t('Pinned'),
 				fetchFunc: () => {
 					const { messages } = this.state;
-					return Services.getMessages(this.rid, this.t, { pinned: true }, messages.length);
+					return Services.getPinnedMessages({ roomId: this.rid, offset: messages.length, count: 50 });
 				},
 				noDataMsg: I18n.t('No_pinned_messages'),
 				testID: 'pinned-messages-view',

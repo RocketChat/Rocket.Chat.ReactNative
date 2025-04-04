@@ -9,8 +9,9 @@ import { selectServerRequest, serverInitAdd } from '../actions/server';
 import { RootEnum } from '../definitions';
 import { CURRENT_SERVER, TOKEN_KEY } from '../lib/constants';
 import database from '../lib/database';
+import { getServerById } from '../lib/database/services/Server';
 import { canOpenRoom, getServerInfo } from '../lib/methods';
-import { getUidDirectMessage } from '../lib/methods/helpers';
+import { emitter, getUidDirectMessage } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { goRoom, navigateToRoom } from '../lib/methods/helpers/goRoom';
 import { localAuthenticate } from '../lib/methods/helpers/localAuthentication';
@@ -19,6 +20,7 @@ import UserPreferences from '../lib/methods/userPreferences';
 import { videoConfJoin } from '../lib/methods/videoConf';
 import { Services } from '../lib/services';
 import sdk from '../lib/services/sdk';
+import Navigation from '../lib/navigation/appNavigation';
 
 const roomTypes = {
 	channel: 'c',
@@ -38,8 +40,21 @@ const handleInviteLink = function* handleInviteLink({ params, requireLogin = fal
 	}
 };
 
+const waitForNavigation = () => {
+	if (Navigation.navigationRef.current) {
+		return Promise.resolve();
+	}
+	return new Promise(resolve => {
+		const listener = () => {
+			emitter.off('navigationReady', listener);
+			resolve();
+		};
+
+		emitter.on('navigationReady', listener);
+	});
+};
+
 const navigate = function* navigate({ params }) {
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 	if (params.path || params.rid) {
 		let type;
 		let name;
@@ -61,12 +76,14 @@ const navigate = function* navigate({ params }) {
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const jumpToMessageId = params.messageId;
 
+				yield waitForNavigation();
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
 			}
 		} else {
 			yield handleInviteLink({ params });
 		}
 	}
+	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
 };
 
 const fallbackNavigation = function* fallbackNavigation() {
@@ -97,7 +114,11 @@ const handleShareExtension = function* handleOpen({ params }) {
 
 	yield put(appStart({ root: RootEnum.ROOT_LOADING_SHARE_EXTENSION }));
 	yield localAuthenticate(server);
-	yield put(selectServerRequest(server));
+	const serverRecord = yield getServerById(server);
+	if (!serverRecord) {
+		return;
+	}
+	yield put(selectServerRequest(server, serverRecord.version));
 	if (sdk.current?.client?.host !== server) {
 		yield take(types.LOGIN.SUCCESS);
 	}
@@ -110,18 +131,13 @@ const handleOpen = function* handleOpen({ params }) {
 		yield handleShareExtension({ params });
 		return;
 	}
-
-	const serversDB = database.servers;
-	const serversCollection = serversDB.get('servers');
-
-	let { host } = params;
-
 	if (params.type === 'oauth') {
 		yield handleOAuth({ params });
 		return;
 	}
 
 	// If there's no host on the deep link params and the app is opened, just call appInit()
+	let { host } = params;
 	if (!host) {
 		yield fallbackNavigation();
 		return;
@@ -148,23 +164,24 @@ const handleOpen = function* handleOpen({ params }) {
 		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
 	]);
 
+	const serverRecord = yield getServerById(host);
+
 	// TODO: needs better test
 	// if deep link is from same server
-	if (server === host && user) {
+	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
 			yield localAuthenticate(host);
-			yield put(selectServerRequest(host));
+			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
 		yield navigate({ params });
 	} else {
 		// search if deep link's server already exists
 		try {
-			const hostServerRecord = yield serversCollection.find(host);
-			if (hostServerRecord && user) {
+			if (user && serverRecord) {
 				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, hostServerRecord.version, true, true));
+				yield put(selectServerRequest(host, serverRecord.version, true, true));
 				yield take(types.LOGIN.SUCCESS);
 				yield navigate({ params });
 				return;
@@ -196,34 +213,35 @@ const handleOpen = function* handleOpen({ params }) {
 };
 
 const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
-	yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
-	const db = database.active;
-	const subsCollection = db.get('subscriptions');
-	const room = yield subsCollection.find(params.rid);
-	if (room) {
-		const isMasterDetail = yield select(state => state.app.isMasterDetail);
-		yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
-		const uid = params.caller._id;
-		const { rid, callId, event } = params;
-		if (event === 'accept') {
-			yield call(Services.notifyUser, `${uid}/video-conference`, {
-				action: 'accepted',
-				params: { uid, rid, callId }
-			});
-			yield videoConfJoin(callId, true, false, true);
-		} else if (event === 'decline') {
-			yield call(Services.notifyUser, `${uid}/video-conference`, {
-				action: 'rejected',
-				params: { uid, rid, callId }
-			});
+	try {
+		yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+		const db = database.active;
+		const subsCollection = db.get('subscriptions');
+		const room = yield subsCollection.find(params.rid);
+		if (room) {
+			const isMasterDetail = yield select(state => state.app.isMasterDetail);
+			yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
+			const uid = params.caller._id;
+			const { rid, callId, event } = params;
+			if (event === 'accept') {
+				yield call(Services.notifyUser, `${uid}/video-conference`, {
+					action: 'accepted',
+					params: { uid, rid, callId }
+				});
+				yield videoConfJoin(callId, true, false, true);
+			} else if (event === 'decline') {
+				yield call(Services.notifyUser, `${uid}/video-conference`, {
+					action: 'rejected',
+					params: { uid, rid, callId }
+				});
+			}
 		}
+	} catch (e) {
+		log(e);
 	}
 };
 
-const handleClickCallPush = function* handleOpen({ params }) {
-	const serversDB = database.servers;
-	const serversCollection = serversDB.get('servers');
-
+const handleClickCallPush = function* handleClickCallPush({ params }) {
 	let { host } = params;
 
 	if (host.slice(-1) === '/') {
@@ -235,27 +253,23 @@ const handleClickCallPush = function* handleOpen({ params }) {
 		UserPreferences.getString(`${TOKEN_KEY}-${host}`)
 	]);
 
-	if (server === host && user) {
+	const serverRecord = yield getServerById(host);
+
+	if (server === host && user && serverRecord) {
 		const connected = yield select(state => state.server.connected);
 		if (!connected) {
 			yield localAuthenticate(host);
-			yield put(selectServerRequest(host));
+			yield put(selectServerRequest(host, serverRecord.version, true));
 			yield take(types.LOGIN.SUCCESS);
 		}
 		yield handleNavigateCallRoom({ params });
 	} else {
-		// search if deep link's server already exists
-		try {
-			const hostServerRecord = yield serversCollection.find(host);
-			if (hostServerRecord && user) {
-				yield localAuthenticate(host);
-				yield put(selectServerRequest(host, hostServerRecord.version, true, true));
-				yield take(types.LOGIN.SUCCESS);
-				yield handleNavigateCallRoom({ params });
-				return;
-			}
-		} catch (e) {
-			// do nothing?
+		if (user && serverRecord) {
+			yield localAuthenticate(host);
+			yield put(selectServerRequest(host, serverRecord.version, true, true));
+			yield take(types.LOGIN.SUCCESS);
+			yield handleNavigateCallRoom({ params });
+			return;
 		}
 		// if deep link is from a different server
 		const result = yield Services.getServerInfo(host);

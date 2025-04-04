@@ -7,7 +7,6 @@ import {
 	IRoom,
 	IRoomNotifications,
 	IServerRoom,
-	IUser,
 	RoomType,
 	SubscriptionType
 } from '../../definitions';
@@ -85,6 +84,11 @@ export const e2eAcceptSuggestedGroupKey = (rid: string): Promise<{ success: bool
 export const e2eRejectSuggestedGroupKey = (rid: string): Promise<{ success: boolean }> =>
 	// RC 5.5
 	sdk.post('e2e.rejectSuggestedGroupKey', { rid });
+
+export const fetchUsersWaitingForGroupKey = (roomIds: string[]) => sdk.get('e2e.fetchUsersWaitingForGroupKey', { roomIds });
+
+export const provideUsersSuggestedGroupKeys = (usersSuggestedGroupKeys: any) =>
+	sdk.post('e2e.provideUsersSuggestedGroupKeys', { usersSuggestedGroupKeys });
 
 export const updateJitsiTimeout = (roomId: string) =>
 	// RC 0.74.0
@@ -412,9 +416,15 @@ export const closeLivechat = (rid: string, comment?: string, tags?: string[]) =>
 	return sdk.methodCallWrapper('livechat:closeRoom', rid, comment, { clientAction: true, ...params });
 };
 
-export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> =>
-	// RC 0.55.0
-	sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+export const editLivechat = (userData: TParams, roomData: TParams): Promise<{ error?: string }> => {
+	const serverVersion = reduxStore.getState().server.version;
+	if (compareServerVersion(serverVersion, 'lowerThan', '5.3.0')) {
+		// RC 0.55.0
+		return sdk.methodCallWrapper('livechat:saveInfo', userData, roomData);
+	}
+	// RC 5.3.0
+	return sdk.post('livechat/room.saveInfo', { guestData: userData, roomData }) as any;
+};
 
 export const returnLivechat = (rid: string): Promise<boolean> =>
 	// RC 0.72.0
@@ -616,7 +626,7 @@ export const saveRoomSettings = (
 	sdk.methodCallWrapper('saveRoomSettings', rid, params);
 
 export const saveUserProfile = (
-	data: IProfileParams | Pick<IProfileParams, 'username'>,
+	data: IProfileParams | Pick<IProfileParams, 'username' | 'name'>,
 	customFields?: { [key: string | number]: string }
 ) =>
 	// RC 0.62.2
@@ -675,21 +685,73 @@ export const getFiles = (roomId: string, type: SubscriptionType, offset: number)
 	});
 };
 
-export const getMessages = (
-	roomId: string,
-	type: SubscriptionType,
-	query: { 'mentions._id': { $in: string[] } } | { 'starred._id': { $in: string[] } } | { pinned: boolean },
-	offset: number
-) => {
+export const getMessages = ({
+	roomId,
+	type,
+	offset,
+	starredIds,
+	mentionIds,
+	pinned
+}: {
+	roomId: string;
+	type: SubscriptionType;
+	offset: number;
+	mentionIds?: string[];
+	starredIds?: string[];
+	pinned?: boolean;
+}) => {
 	const t = type as SubscriptionType.DIRECT | SubscriptionType.CHANNEL | SubscriptionType.GROUP;
-	// RC 0.59.0
-	return sdk.get(`${roomTypeToApiType(t)}.messages`, {
+	const serverVersion = reduxStore.getState().server.version;
+
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+		const params: any = {
+			roomId,
+			offset,
+			sort: { ts: -1 }
+		};
+
+		if (mentionIds && mentionIds.length > 0) {
+			params.mentionIds = mentionIds.join(',');
+		}
+
+		if (starredIds && starredIds.length > 0) {
+			params.starredIds = starredIds.join(',');
+		}
+
+		if (pinned) {
+			params.pinned = pinned;
+		}
+
+		return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
+	}
+	const params: any = {
 		roomId,
-		query,
 		offset,
 		sort: { ts: -1 }
-	});
+	};
+
+	if (mentionIds && mentionIds.length > 0) {
+		params.query = { ...params.query, 'mentions._id': { $in: mentionIds } };
+	}
+
+	if (starredIds && starredIds.length > 0) {
+		params.query = { ...params.query, 'starred._id': { $in: starredIds } };
+	}
+
+	if (pinned) {
+		params.query = { ...params.query, pinned: true };
+	}
+
+	// RC 0.59.0
+	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
+ 
+export const getPinnedMessages = ({ roomId, offset, count }: { roomId: string; offset: number; count: number }) =>
+	sdk.get('chat.getPinnedMessages', {
+		roomId,
+		offset,
+		count
+	});
 
 export const getReadReceipts = (messageId: string) =>
 	// RC 0.63.0
@@ -772,23 +834,35 @@ export const executeCommandPreview = (
 	});
 
 export const getDirectory = ({
-	query,
+	text,
+	type,
+	workspace,
 	count,
 	offset,
 	sort
 }: {
-	query: { [key: string]: string };
+	text: string;
+	type: string;
+	workspace: string;
 	count: number;
 	offset: number;
 	sort: { [key: string]: number };
-}) =>
-	// RC 1.0
-	sdk.get('directory', {
-		query,
+}) => {
+	const serverVersion = reduxStore.getState().server.version;
+	const params: any = {
 		count,
 		offset,
 		sort
-	});
+	};
+	if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+		params.text = text;
+		params.type = type;
+		params.workspace = workspace;
+	} else {
+		params.query = { text, type, workspace };
+	}
+	return sdk.get('directory', params);
+};
 
 export const saveAutoTranslate = ({
 	rid,
@@ -870,6 +944,11 @@ export function e2eResetOwnKey(): Promise<boolean | {}> {
 	return sdk.methodCallWrapper('e2e.resetOwnE2EKey');
 }
 
+export function e2eResetRoomKey(rid: string, e2eKey: string, e2eKeyId: string): Promise<boolean | {}> {
+	// RC ?
+	return sdk.post('e2e.resetRoomKey', { rid, e2eKey, e2eKeyId });
+}
+
 export const editMessage = async (message: Pick<IMessage, 'id' | 'msg' | 'rid'>) => {
 	const { rid, msg } = await Encryption.encryptMessage(message as IMessage);
 	// RC 0.49.0
@@ -911,11 +990,8 @@ export const pushTest = () => sdk.post('push.test');
 // RC 6.5.0
 export const pushInfo = () => sdk.get('push.info');
 
-export const sendEmailCode = () => {
-	const { username } = reduxStore.getState().login.user as IUser;
-	// RC 3.1.0
-	return sdk.post('users.2fa.sendEmailCode', { emailOrUsername: username });
-};
+// RC 3.1.0
+export const sendEmailCode = (emailOrUsername: string) => sdk.post('users.2fa.sendEmailCode', { emailOrUsername });
 
 export const getRoomMembers = async ({
 	rid,

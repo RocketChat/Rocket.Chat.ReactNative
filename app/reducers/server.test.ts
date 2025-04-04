@@ -33,7 +33,7 @@ describe('test server reducer', () => {
 
 	it('should return modified store after selectServer', () => {
 		const server = 'https://open.rocket.chat/';
-		mockedStore.dispatch(selectServerRequest(server));
+		mockedStore.dispatch(selectServerRequest(server, '4.1.0'));
 		const state = mockedStore.getState().server.server;
 		expect(state).toEqual(server);
 	});

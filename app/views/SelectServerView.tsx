@@ -42,9 +42,9 @@ const SelectServerView = () => {
 		init();
 	}, []);
 
-	const select = (serverSelected: string) => {
+	const select = (serverSelected: string, version: string) => {
 		if (serverSelected !== server) {
-			dispatch(selectServerRequest(serverSelected));
+			dispatch(selectServerRequest(serverSelected, version));
 		}
 		navigation.pop();
 	};
@@ -55,7 +55,7 @@ const SelectServerView = () => {
 			<FlatList
 				data={servers}
 				renderItem={({ item }: { item: TServerModel }) => (
-					<ServerItem onPress={() => select(item.id)} item={item} hasCheck={item.id === server} />
+					<ServerItem onPress={() => select(item.id, item.version)} item={item} hasCheck={item.id === server} />
 				)}
 				keyExtractor={keyExtractor}
 				getItemLayout={getItemLayout} // Refactor row_height

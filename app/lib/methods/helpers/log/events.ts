@@ -1,7 +1,6 @@
 export default {
 	// NEW SERVER VIEW
 	NS_CONNECT_TO_WORKSPACE: 'ns_connect_to_workspace',
-	NS_JOIN_OPEN_WORKSPACE: 'ns_join_open_workspace',
 
 	// LOGIN VIEW
 	LOGIN_DEFAULT_LOGIN: 'login_default_login',

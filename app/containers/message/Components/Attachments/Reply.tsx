@@ -2,7 +2,7 @@ import { dequal } from 'dequal';
 import moment from 'moment';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Image } from 'expo-image';
 
 import { IAttachment, TGetCustomEmoji } from '../../../../definitions';
 import { themes } from '../../../../lib/constants';
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 	attachmentContainer: {
 		flex: 1,
 		borderRadius: 4,
-		flexDirection: 'column',
+		flexDirection: 'row',
 		paddingVertical: 4,
 		paddingLeft: 8
 	},
@@ -42,6 +42,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginBottom: 8
+	},
+	titleAndDescriptionContainer: {
+		flexDirection: 'column',
+		flex: 1,
+		width: 200
 	},
 	author: {
 		fontSize: 16,
@@ -72,11 +77,12 @@ const styles = StyleSheet.create({
 		marginBottom: 4
 	},
 	image: {
-		height: 200,
-		flex: 1,
+		height: 80,
+		width: 80,
 		borderTopLeftRadius: 4,
 		borderTopRightRadius: 4,
-		marginBottom: 1
+		marginBottom: 1,
+		marginLeft: 20
 	},
 	title: {
 		flex: 1,
@@ -135,7 +141,6 @@ const Description = React.memo(
 				style={[{ color: themes[theme].fontHint, fontSize: 14 }]}
 				username={user.username}
 				getCustomEmoji={getCustomEmoji}
-				theme={theme}
 			/>
 		);
 	},
@@ -162,7 +167,7 @@ const UrlImage = React.memo(
 		}
 
 		image = image.includes('http') ? image : `${baseUrl}/${image}?rc_uid=${user.id}&rc_token=${user.token}`;
-		return <FastImage source={{ uri: image }} style={styles.image} resizeMode={FastImage.resizeMode.cover} />;
+		return <Image source={{ uri: image }} style={styles.image} contentFit='cover' />;
 	},
 	(prevProps, nextProps) => prevProps.image === nextProps.image
 );
@@ -188,7 +193,7 @@ const Fields = React.memo(
 				{attachment.fields.map(field => (
 					<View key={field.title} style={[styles.fieldContainer, { width: field.short ? '50%' : '100%' }]}>
 						<Text style={[styles.fieldTitle, { color: themes[theme].fontDefault }]}>{field.title}</Text>
-						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<Markdown msg={field?.value || ''} username={user.username} getCustomEmoji={getCustomEmoji} />
 					</View>
 				))}
 			</View>
@@ -245,31 +250,33 @@ const Reply = React.memo(
 					background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 					disabled={!!(loading || attachment.message_link)}>
 					<View style={styles.attachmentContainer}>
-						<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
-						<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+						<View style={styles.titleAndDescriptionContainer}>
+							<Title attachment={attachment} timeFormat={timeFormat} theme={theme} />
+							<Description attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							<Attachments
+								attachments={attachment.attachments}
+								getCustomEmoji={getCustomEmoji}
+								timeFormat={timeFormat}
+								style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
+								isReply
+								showAttachment={showAttachment}
+							/>
+							<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
+							{loading ? (
+								<View style={[styles.backdrop]}>
+									<View
+										style={[
+											styles.backdrop,
+											{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
+										]}></View>
+									<RCActivityIndicator />
+								</View>
+							) : null}
+						</View>
 						<UrlImage image={attachment.thumb_url} />
-						<Attachments
-							attachments={attachment.attachments}
-							getCustomEmoji={getCustomEmoji}
-							timeFormat={timeFormat}
-							style={[{ color: themes[theme].fontHint, fontSize: 14, marginBottom: 8 }]}
-							isReply
-							showAttachment={showAttachment}
-						/>
-						<Fields attachment={attachment} getCustomEmoji={getCustomEmoji} theme={theme} />
-						{loading ? (
-							<View style={[styles.backdrop]}>
-								<View
-									style={[
-										styles.backdrop,
-										{ backgroundColor: themes[theme].surfaceNeutral, opacity: themes[theme].attachmentLoadingOpacity }
-									]}></View>
-								<RCActivityIndicator />
-							</View>
-						) : null}
 					</View>
 				</Touchable>
-				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} theme={theme} />
+				<Markdown msg={msg} username={user.username} getCustomEmoji={getCustomEmoji} />
 			</>
 		);
 	},

@@ -43,7 +43,6 @@ describe('i18n', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(20000);
-			await expect(element(by.id('new-server-view-open'))).toBeVisible();
 		});
 
 		it("OS set to unavailable language and fallback to 'en'", async () => {
@@ -60,7 +59,6 @@ describe('i18n', () => {
 			await waitFor(element(by.id('new-server-view')))
 				.toBeVisible()
 				.withTimeout(20000);
-			await expect(element(by.id('new-server-view-open'))).toBeVisible();
 		});
 
 		/**

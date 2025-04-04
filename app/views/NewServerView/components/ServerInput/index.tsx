@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
 import Item from './Item';
 import { FormTextInput } from '../../../../containers/TextInput';
 import * as List from '../../../../containers/List';
-import { themes } from '../../../../lib/constants';
 import I18n from '../../../../i18n';
 import { TServerHistoryModel } from '../../../../definitions';
 import { useTheme } from '../../../../theme';
@@ -45,16 +44,13 @@ const ServerInput = ({
 	onDelete,
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const [focused, setFocused] = useState(false);
-	const ref = useRef<any>();
 
-	console.log(ref.current, 'hereee');
 	return (
 		<View style={styles.container}>
 			<FormTextInput
-				label={I18n.t('Enter_workspace_URL')}
-				placeholder={I18n.t('Workspace_URL_Example')}
+				label={I18n.t('Workspace_URL')}
 				containerStyle={styles.inputContainer}
 				value={text}
 				returnKeyType='send'
@@ -64,17 +60,15 @@ const ServerInput = ({
 				clearButtonMode='while-editing'
 				keyboardType='url'
 				textContentType='URL'
+				required
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>
 			{focused && serversHistory?.length ? (
-				<View
-					style={[styles.serverHistory, { backgroundColor: themes[theme].surfaceRoom, borderColor: themes[theme].strokeLight }]}>
+				<View style={[styles.serverHistory, { backgroundColor: colors.surfaceRoom, borderColor: colors.strokeLight }]}>
 					<FlatList
 						data={serversHistory}
-						renderItem={({ item }) => (
-							<Item item={item} theme={theme} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />
-						)}
+						renderItem={({ item }) => <Item item={item} onPress={() => onPressServerHistory(item)} onDelete={onDelete} />}
 						ItemSeparatorComponent={List.Separator}
 						keyExtractor={item => item.id}
 					/>

@@ -20,4 +20,5 @@ struct Payload: Codable {
   let msg: String?
   let senderName: String?
   let tmid: String?
+  let content: EncryptedContent?
 }

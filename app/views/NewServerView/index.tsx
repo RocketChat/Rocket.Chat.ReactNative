@@ -23,6 +23,7 @@ import useConnectServer from './hooks/useConnectServer';
 import completeUrl from './utils/completeUrl';
 import { INewServerViewProps } from './definitions';
 import styles from './styles';
+import { getServerById } from '../../lib/database/services/Server';
 
 const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const setHeader = () => {
 		if (previousServer) {
 			return navigation.setOptions({
-				headerTitle: I18n.t('Workspaces'),
+				headerTitle: I18n.t('Add_server'),
 				headerLeft: () =>
 					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
 			});
@@ -70,10 +71,13 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
 	};
 
-	const close = () => {
+	const close = async () => {
 		dispatch(inviteLinksClear());
 		if (previousServer) {
-			dispatch(selectServerRequest(previousServer));
+			const serverRecord = await getServerById(previousServer);
+			if (serverRecord) {
+				dispatch(selectServerRequest(previousServer, serverRecord.version));
+			}
 		}
 	};
 

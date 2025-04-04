@@ -4,9 +4,10 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch } from 'react-redux';
 import { RouteProp, useFocusEffect, useRoute } from '@react-navigation/native';
 
+import { textInputDebounceTime } from '../../../lib/constants';
 import I18n from '../../../i18n';
 import { IAutocompleteItemProps, IComposerInput, IComposerInputProps, IInputSelection, TSetInput } from '../interfaces';
-import { useAutocompleteParams, useFocused, useMessageComposerApi } from '../context';
+import { useAutocompleteParams, useFocused, useMessageComposerApi, useMicOrSend } from '../context';
 import { fetchIsAllOrHere, getMentionRegexp } from '../helpers';
 import { useSubscription, useAutoSaveDraft } from '../hooks';
 import sharedStyles from '../../../views/Styles';
@@ -58,6 +59,8 @@ export const ComposerInput = memo(
 		const usedCannedResponse = route.params?.usedCannedResponse;
 		const prevAction = usePrevious(action);
 
+		// subscribe to changes on mic state to update draft after a message is sent
+		useMicOrSend();
 		const { saveMessageDraft } = useAutoSaveDraft(textRef.current);
 
 		// Draft/Canned Responses
@@ -335,7 +338,7 @@ export const ComposerInput = memo(
 			}
 
 			stopAutocomplete();
-		}, 300);
+		}, textInputDebounceTime);
 
 		const handleTyping = (isTyping: boolean) => {
 			if (sharing || !rid) return;

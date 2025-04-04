@@ -6,7 +6,7 @@ export interface IServer {
 	connected: boolean;
 	failure: boolean;
 	server: string;
-	version: string | null;
+	version: string;
 	name: string | null;
 	loading: boolean;
 	previousServer: string | null;
@@ -18,7 +18,7 @@ export const initialState: IServer = {
 	connected: false,
 	failure: false,
 	server: '',
-	version: null,
+	version: '',
 	name: null,
 	loading: true,
 	previousServer: null,

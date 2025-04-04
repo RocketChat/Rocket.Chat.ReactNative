@@ -19,33 +19,32 @@ module.exports = {
 			type: 'ios.app',
 			binaryPath: 'ios/build/Build/Products/Debug-iphonesimulator/Rocket.Chat Experimental.app',
 			build:
-				'xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -destination \'generic/platform=iphonesimulator\' -derivedDataPath ios/build'
+				"xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Debug -destination 'generic/platform=iphonesimulator' -derivedDataPath ios/build"
 		},
 		'ios.release': {
 			type: 'ios.app',
 			binaryPath: 'ios/build/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app',
 			build:
-				'xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -destination \'generic/platform=iphonesimulator\' -derivedDataPath ios/build'
+				"xcodebuild -workspace ios/RocketChatRN.xcworkspace -scheme RocketChatRN -configuration Release -destination 'generic/platform=iphonesimulator' -derivedDataPath ios/build"
 		},
 		'android.debug': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/debug/app-experimental-play-debug.apk',
-			build:
-				'cd android ; ./gradlew assembleExperimentalPlayDebug assembleExperimentalPlayDebugAndroidTest -DtestBuildType=debug ; cd -',
+			binaryPath: 'android/app/build/outputs/apk/experimental/debug/app-experimental-debug.apk',
+			build: 'cd android ; ./gradlew assembleExperimentalDebug assembleExperimentalDebugAndroidTest -DtestBuildType=debug ; cd -',
 			reversePorts: [8081]
 		},
 		'android.release': {
 			type: 'android.apk',
-			binaryPath: 'android/app/build/outputs/apk/experimentalPlay/release/app-experimental-play-release.apk',
+			binaryPath: 'android/app/build/outputs/apk/experimental/release/app-experimental-release.apk',
 			build:
-				'cd android ; ./gradlew assembleExperimentalPlayRelease assembleExperimentalPlayReleaseAndroidTest -DtestBuildType=release ; cd -'
+				'cd android ; ./gradlew assembleExperimentalRelease assembleExperimentalReleaseAndroidTest -DtestBuildType=release ; cd -'
 		}
 	},
 	devices: {
 		simulator: {
 			type: 'ios.simulator',
 			device: {
-				type: 'iPhone 14'
+				type: 'iPhone 16'
 			}
 		},
 		attached: {

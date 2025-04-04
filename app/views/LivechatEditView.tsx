@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { BlockContext } from '@rocket.chat/ui-kit';
 
+import log from '../lib/methods/helpers/log';
 import { TSupportedThemes, withTheme } from '../theme';
 import { themes } from '../lib/constants';
 import { FormTextInput } from '../containers/TextInput';
@@ -111,61 +112,69 @@ const LivechatEditView = ({ user, navigation, route, theme }: ILivechatEditViewP
 	};
 
 	const handleGetAgentDepartments = async () => {
-		const result = await Services.getAgentDepartments(visitor?._id);
-		if (result.success) {
-			const agentDepartments = result.departments.map(dept => dept.departmentId);
-			handleGetTagsList(agentDepartments);
+		try {
+			const result = await Services.getAgentDepartments(visitor?._id);
+			if (result.success) {
+				const agentDepartments = result.departments.map(dept => dept.departmentId);
+				handleGetTagsList(agentDepartments);
+			}
+		} catch {
+			// do nothing
 		}
 	};
 
 	const submit = async () => {
-		const userData = { _id: visitor?._id } as TParams;
+		try {
+			const userData = { _id: visitor?._id } as TParams;
 
-		const { rid } = livechat;
-		const sms = livechat?.sms;
+			const { rid } = livechat;
+			const sms = livechat?.sms;
 
-		const roomData = { _id: rid } as TParams;
+			const roomData = { _id: rid } as TParams;
 
-		if (params.name) {
-			userData.name = params.name;
-		}
-		if (params.email) {
-			userData.email = params.email;
-		}
-		if (params.phone) {
-			userData.phone = params.phone;
-		}
-
-		userData.livechatData = {};
-		Object.entries(customFields?.visitor || {}).forEach(([key]) => {
-			if (params[key] || params[key] === '') {
-				userData.livechatData[key] = params[key];
+			if (params.name) {
+				userData.name = params.name;
 			}
-		});
-
-		if (params.topic) {
-			roomData.topic = params.topic;
-		}
-
-		roomData.tags = tagParamSelected;
-
-		roomData.livechatData = {};
-		Object.entries(customFields?.livechat || {}).forEach(([key]) => {
-			if (params[key] || params[key] === '') {
-				roomData.livechatData[key] = params[key];
+			if (params.email) {
+				userData.email = params.email;
 			}
-		});
+			if (params.phone) {
+				userData.phone = params.phone;
+			}
 
-		if (sms) {
-			delete userData.phone;
-		}
+			userData.livechatData = {};
+			Object.entries(customFields?.visitor || {}).forEach(([key]) => {
+				if (params[key] || params[key] === '') {
+					userData.livechatData[key] = params[key];
+				}
+			});
 
-		const { error } = await Services.editLivechat(userData, roomData);
-		if (error) {
-			EventEmitter.emit(LISTENER, { message: error });
-		} else {
-			EventEmitter.emit(LISTENER, { message: I18n.t('Saved') });
-			navigation.goBack();
+			if (params.topic) {
+				roomData.topic = params.topic;
+			}
+
+			roomData.tags = tagParamSelected;
+
+			roomData.livechatData = {};
+			Object.entries(customFields?.livechat || {}).forEach(([key]) => {
+				if (params[key] || params[key] === '') {
+					roomData.livechatData[key] = params[key];
+				}
+			});
+
+			if (sms) {
+				delete userData.phone;
+			}
+
+			const { error } = await Services.editLivechat(userData, roomData);
+			if (error) {
+				EventEmitter.emit(LISTENER, { message: error });
+			} else {
+				EventEmitter.emit(LISTENER, { message: I18n.t('Saved') });
+				navigation.goBack();
+			}
+		} catch (e) {
+			log(e);
 		}
 	};
 

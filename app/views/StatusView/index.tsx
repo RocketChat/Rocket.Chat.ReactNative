@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setUser } from '../../actions/login';
@@ -18,6 +18,8 @@ import { getUserSelector } from '../../selectors/login';
 import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
+import Button from '../../containers/Button';
+import Check from '../../containers/Check';
 
 interface IStatus {
 	id: TUserStatus;
@@ -39,24 +41,24 @@ const STATUS: IStatus[] = [
 	},
 	{
 		id: 'offline',
-		name: 'Invisible'
+		name: 'Offline'
 	}
 ];
 
 const styles = StyleSheet.create({
 	inputContainer: {
-		marginTop: 16,
-		marginBottom: 16
-	},
-	inputLeft: {
-		position: 'absolute',
-		left: 12
+		paddingHorizontal: 16,
+		marginTop: 24,
+		marginBottom: 12
 	},
 	inputStyle: {
-		paddingLeft: 48,
 		borderRadius: 0,
 		borderTopWidth: 1,
 		borderBottomWidth: 1
+	},
+	footerComponent: {
+		marginTop: 36,
+		paddingHorizontal: 16
 	}
 });
 
@@ -71,18 +73,23 @@ const Status = ({
 }) => {
 	const { id, name } = statusType;
 	return (
-		<List.Item
-			title={name}
-			onPress={() => {
-				const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
-				logEvent(events[key]);
-				if (status !== statusType.id) {
-					setStatus(statusType.id);
-				}
-			}}
-			testID={`status-view-${id}`}
-			left={() => <StatusIcon size={24} status={statusType.id} />}
-		/>
+		<>
+			<List.Item
+				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
+				title={name}
+				onPress={() => {
+					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
+					logEvent(events[key]);
+					if (status !== statusType.id) {
+						setStatus(statusType.id);
+					}
+				}}
+				testID={`status-view-${id}`}
+				left={() => <StatusIcon size={24} status={statusType.id} />}
+				right={() => (status === id ? <Check /> : null)}
+			/>
+			<List.Separator />
+		</>
 	);
 };
 
@@ -98,31 +105,21 @@ const StatusView = (): React.ReactElement => {
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
-
 	const { colors } = useTheme();
 
+	const submit = async () => {
+		logEvent(events.STATUS_DONE);
+		if (statusText !== user.statusText || status !== user.status) {
+			await setCustomStatus(status, statusText);
+		}
+		goBack();
+	};
+
 	useEffect(() => {
-		const submit = async () => {
-			logEvent(events.STATUS_DONE);
-			if (statusText !== user.statusText || status !== user.status) {
-				await setCustomStatus(status, statusText);
-			}
-			goBack();
-		};
 		const setHeader = () => {
 			setOptions({
 				title: I18n.t('Edit_Status'),
-				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CancelModal onPress={goBack} />,
-				headerRight: () => (
-					<HeaderButton.Container>
-						<HeaderButton.Item
-							title={I18n.t('Save')}
-							onPress={submit}
-							disabled={status === user.status && statusText === user.statusText}
-							testID='status-view-submit'
-						/>
-					</HeaderButton.Container>
-				)
+				headerLeft: isMasterDetail ? undefined : () => <HeaderButton.CloseModal onPress={goBack} />
 			});
 		};
 		setHeader();
@@ -149,6 +146,19 @@ const StatusView = (): React.ReactElement => {
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
+	const isStatusMatching = () => {
+		const isStatusEqual = status === user.status;
+		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText);
+
+		return isStatusEqual && isStatusTextEqual;
+	};
+
+	const FooterComponent = () => (
+		<View style={styles.footerComponent}>
+			<Button testID='status-view-submit' disabled={isStatusMatching()} onPress={submit} title={I18n.t('Save')} />
+		</View>
+	);
+
 	return (
 		<SafeAreaView testID='status-view'>
 			<FlatList
@@ -158,19 +168,17 @@ const StatusView = (): React.ReactElement => {
 				ListHeaderComponent={
 					<>
 						<FormTextInput
+							label={I18n.t('Message')}
 							value={statusText}
 							containerStyle={styles.inputContainer}
 							onChangeText={text => setStatusText(text)}
-							left={<StatusIcon accessible={false} testID={`status-view-current-${status}`} style={styles.inputLeft} status={status} size={24} />}
 							inputStyle={styles.inputStyle}
-							placeholder={I18n.t('What_are_you_doing_right_now')}
 							testID='status-view-input'
 						/>
 						<List.Separator />
 					</>
 				}
-				ListFooterComponent={List.Separator}
-				ItemSeparatorComponent={List.Separator}
+				ListFooterComponent={FooterComponent}
 				style={{ backgroundColor: colors.surfaceTint }}
 			/>
 		</SafeAreaView>

@@ -6,8 +6,6 @@ import {
 	tapBack,
 	checkServer,
 	navigateToRegister,
-	platformTypes,
-	TTextMatcher,
 	expectValidRegisterOrRetry,
 	navigateToRoom,
 	checkMessage,
@@ -37,7 +35,6 @@ describe('Deep linking', () => {
 	let userId: string;
 	let authToken: string;
 	let threadId: string;
-	let textMatcher: TTextMatcher;
 	let rid: string;
 	let room: string;
 	const threadMessage = `to-thread-${random()}`;
@@ -49,8 +46,6 @@ describe('Deep linking', () => {
 		({ _id: rid, name: room } = await createRandomRoom(user, 'p'));
 		const loginResult = await login(user.username, user.password);
 		({ userId, authToken } = loginResult);
-		const deviceType = device.getPlatform();
-		({ textMatcher } = platformTypes[deviceType]);
 		// create a thread with api
 		const result = await sendMessage(user, room, threadMessage);
 		threadId = result.message._id;
@@ -87,9 +82,12 @@ describe('Deep linking', () => {
 				delete: true,
 				url: getDeepLink(DEEPLINK_METHODS.AUTH, data.server, `userId=123${amp}token=abc`)
 			});
-			await waitFor(element(by[textMatcher]("You've been logged out by the workspace. Please log in again.")))
-				.toExist()
-				.withTimeout(30000); // TODO: we need to improve this message
+			await waitFor(element(by.id('workspace-view')))
+				.toBeVisible()
+				.withTimeout(30000);
+			// await waitFor(element(by[textMatcher]("You've been logged out by the workspace. Please log in again.")))
+			// 	.toExist()
+			// 	.withTimeout(30000); // TODO: we need to improve this message
 		});
 
 		it('should authenticate and navigate', async () => {
@@ -108,6 +106,8 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-email')).tapReturnKey();
 			await element(by.id('register-view-password')).replaceText(randomUser.password);
 			await element(by.id('register-view-password')).tapReturnKey();
+			await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
+			await element(by.id('register-view-confirm-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
 			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
 

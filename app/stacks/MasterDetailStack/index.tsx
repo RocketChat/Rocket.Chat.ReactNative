@@ -21,6 +21,7 @@ import MessagesView from '../../views/MessagesView';
 import AutoTranslateView from '../../views/AutoTranslateView';
 import DirectoryView from '../../views/DirectoryView';
 import NotificationPrefView from '../../views/NotificationPreferencesView';
+import E2EEToggleRoomView from '../../views/E2EEToggleRoomView';
 import PushTroubleshootView from '../../views/PushTroubleshootView';
 import ForwardLivechatView from '../../views/ForwardLivechatView';
 import ForwardMessageView from '../../views/ForwardMessageView';
@@ -31,7 +32,6 @@ import LivechatEditView from '../../views/LivechatEditView';
 import PickerView from '../../views/PickerView';
 import ThreadMessagesView from '../../views/ThreadMessagesView';
 import TeamChannelsView from '../../views/TeamChannelsView';
-import MarkdownTableView from '../../views/MarkdownTableView';
 import ReadReceiptsView from '../../views/ReadReceiptView';
 import ProfileView from '../../views/ProfileView';
 import DisplayPrefsView from '../../views/DisplayPrefsView';
@@ -45,6 +45,7 @@ import NewMessageView from '../../views/NewMessageView';
 import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
+import LegalView from '../../views/LegalView';
 import SecurityPrivacyView from '../../views/SecurityPrivacyView';
 import MediaAutoDownloadView from '../../views/MediaAutoDownloadView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
@@ -63,6 +64,7 @@ import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
 import DiscussionsView from '../../views/DiscussionsView';
+import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
 import {
 	MasterDetailChatsStackParamList,
@@ -91,7 +93,9 @@ const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
 		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
-		drawerContent={({ navigation, state }) => <RoomsListView navigation={navigation} state={state} />}>
+		drawerContent={({ navigation, state }) => (
+			<RoomsListView navigation={navigation} route={{ name: 'RoomsListView' }} state={state} />
+		)}>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 	</Drawer.Navigator>
 ));
@@ -111,7 +115,6 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					component={RoomActionsView}
 					options={props => RoomActionsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='RoomInfoView' component={RoomInfoView} />
 				<ModalStack.Screen name='ReportUserView' component={ReportUserView} />
 				{/* @ts-ignore */}
@@ -138,28 +141,22 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					name='DirectoryView'
 					// @ts-ignore
 					component={DirectoryView}
-					options={props => DirectoryView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='QueueListView' component={QueueListView} />
 				<ModalStack.Screen name='NotificationPrefView' component={NotificationPrefView} />
+				<ModalStack.Screen name='E2EEToggleRoomView' component={E2EEToggleRoomView} />
 				<ModalStack.Screen name='ForwardMessageView' component={ForwardMessageView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='ForwardLivechatView' component={ForwardLivechatView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='CloseLivechatView' component={CloseLivechatView} />
 				<ModalStack.Screen name='CannedResponsesListView' component={CannedResponsesListView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='CannedResponseDetail' component={CannedResponseDetail} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='LivechatEditView' component={LivechatEditView} options={LivechatEditView.navigationOptions} />
 				<ModalStack.Screen name='PickerView' component={PickerView} />
 				{/* @ts-ignore */}
 				<ModalStack.Screen name='ThreadMessagesView' component={ThreadMessagesView} />
-				{/* @ts-ignore */}
 				<ModalStack.Screen name='DiscussionsView' component={DiscussionsView} />
 				<ModalStack.Screen name='TeamChannelsView' component={TeamChannelsView} options={TeamChannelsView.navigationOptions} />
-				{/* @ts-ignore */}
-				<ModalStack.Screen name='MarkdownTableView' component={MarkdownTableView} />
 				<ModalStack.Screen
 					name='ReadReceiptsView'
 					// @ts-ignore
@@ -167,6 +164,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 					options={props => ReadReceiptsView.navigationOptions!({ ...props, isMasterDetail: true })}
 				/>
 				<ModalStack.Screen name='SettingsView' component={SettingsView} />
+				<ModalStack.Screen name='LegalView' component={LegalView} />
 				<ModalStack.Screen name='LanguageView' component={LanguageView} />
 				<ModalStack.Screen name='ThemeView' component={ThemeView} />
 				<ModalStack.Screen name='DefaultBrowserView' component={DefaultBrowserView} />
@@ -195,6 +193,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 				<ModalStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 				<ModalStack.Screen name='SupportedVersionsWarning' component={SupportedVersionsWarning} />
+				<ModalStack.Screen name='AccessibilityAndAppearanceView' component={AccessibilityAndAppearanceView} />
 			</ModalStack.Navigator>
 		</ModalContainer>
 	);

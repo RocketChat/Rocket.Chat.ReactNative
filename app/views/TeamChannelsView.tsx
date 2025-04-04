@@ -1,11 +1,11 @@
 import { Q } from '@nozbe/watermelondb';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import React from 'react';
-import { Alert, FlatList, Keyboard } from 'react-native';
+import { Alert, FlatList, Keyboard, PixelRatio } from 'react-native';
 import { connect } from 'react-redux';
 
 import { deleteRoom } from '../actions/room';
-import { DisplayMode, themes } from '../lib/constants';
+import { DisplayMode, textInputDebounceTime, themes } from '../lib/constants';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
@@ -20,23 +20,25 @@ import { withDimensions } from '../dimensions';
 import I18n from '../i18n';
 import database from '../lib/database';
 import { CustomIcon } from '../containers/CustomIcon';
-import RoomItem, { ROW_HEIGHT } from '../containers/RoomItem';
-import { getUserSelector } from '../selectors/login';
+import RoomItem from '../containers/RoomItem';
 import { ChatsStackParamList } from '../stacks/types';
 import { withTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
 import { showErrorAlert } from '../lib/methods/helpers/info';
 import log, { events, logEvent } from '../lib/methods/helpers/log';
-import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS } from '../lib/methods/helpers';
+import { getRoomAvatar, getRoomTitle, hasPermission, debounce, isIOS, compareServerVersion } from '../lib/methods/helpers';
 import { Services } from '../lib/services';
 
 const API_FETCH_COUNT = 25;
 
-const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => ({
-	length: data?.length || 0,
-	offset: ROW_HEIGHT * index,
-	index
-});
+const getItemLayout = (data: ArrayLike<IItem> | null | undefined, index: number) => {
+	const rowHeight = 75 * PixelRatio.getFontScale();
+	return {
+		length: data?.length || 0,
+		offset: rowHeight * index,
+		index
+	};
+};
 const keyExtractor = (item: IItem) => item._id;
 
 export interface IItem {
@@ -71,14 +73,22 @@ interface ITeamChannelsViewState {
 }
 
 interface ITeamChannelsViewProps extends IBaseScreen<ChatsStackParamList, 'TeamChannelsView'> {
+	serverVersion: string;
 	useRealName: boolean;
 	width: number;
 	StoreLastMessage: boolean;
 	addTeamChannelPermission: string[];
+	moveRoomToTeamPermission: string[];
 	editTeamChannelPermission: string[];
 	removeTeamChannelPermission: string[];
+	createCPermission: string[];
+	createTeamChannelPermission: string[];
+	createPPermission: string[];
+	createTeamGroupPermission: string[];
 	deleteCPermission: string[];
 	deletePPermission: string[];
+	deleteTeamChannelPermission: string[];
+	deleteTeamGroupPermission: string[];
 	showActionSheet: (options: TActionSheetOptions) => void;
 	showAvatar: boolean;
 	displayMode: DisplayMode;
@@ -113,8 +123,28 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		this.load();
 	}
 
+	hasCreatePermission = async () => {
+		const {
+			addTeamChannelPermission,
+			moveRoomToTeamPermission,
+			serverVersion,
+			createCPermission,
+			createPPermission,
+			createTeamChannelPermission,
+			createTeamGroupPermission
+		} = this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const createPermissions =
+				this.team.t === 'c' ? [createCPermission, createTeamChannelPermission] : [createPPermission, createTeamGroupPermission];
+			const result = await hasPermission([moveRoomToTeamPermission, ...createPermissions], this.team.rid);
+			return result.some(Boolean);
+		}
+		const createPermissions = this.team.t === 'c' ? [createCPermission] : [createPPermission];
+		const result = await hasPermission([addTeamChannelPermission, ...createPermissions], this.team.rid);
+		return result.some(Boolean);
+	};
+
 	loadTeam = async () => {
-		const { addTeamChannelPermission } = this.props;
 		const { loading, data } = this.state;
 
 		const db = database.active;
@@ -128,8 +158,8 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				throw new Error();
 			}
 
-			const permissions = await hasPermission([addTeamChannelPermission], this.team.rid);
-			if (permissions[0]) {
+			const hasCreatePermission = await this.hasCreatePermission();
+			if (hasCreatePermission) {
 				this.setState({ showCreate: true }, () => this.setHeader());
 			}
 
@@ -203,13 +233,13 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				headerTitle: () => (
 					<SearchHeader onSearchChangeText={this.onSearchChangeText} testID='team-channels-view-search-header' />
 				),
-				headerRight: () => null
+				headerRight: undefined
 			};
 			return navigation.setOptions(options);
 		}
 
 		const options: NativeStackNavigationOptions = {
-			headerLeft: () => null,
+			headerLeft: undefined,
 			headerTitle: () => (
 				<RoomHeader title={getRoomTitle(team)} subtitle={team.topic} type={team.t} onPress={this.goRoomActionsView} teamMain />
 			),
@@ -219,7 +249,9 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 						<HeaderButton.Item
 							iconName='create'
 							testID='team-channels-view-create'
-							onPress={() => navigation.navigate('AddChannelTeamView', { teamId: this.teamId })}
+							onPress={() =>
+								navigation.navigate('AddChannelTeamView', { teamId: this.teamId, rid: this.team.rid, t: this.team.t as any })
+							}
 						/>
 					) : null}
 					<HeaderButton.Item iconName='search' testID='team-channels-view-search' onPress={this.onSearchPress} />
@@ -250,7 +282,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 				}
 			}
 		);
-	}, 300);
+	}, textInputDebounceTime);
 
 	onCancelSearchPress = () => {
 		logEvent(events.TC_CANCEL_SEARCH);
@@ -405,6 +437,20 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 		);
 	};
 
+	hasDeletePermission = async (rid: string, t: 'c' | 'p') => {
+		const { serverVersion, deleteCPermission, deletePPermission, deleteTeamChannelPermission, deleteTeamGroupPermission } =
+			this.props;
+		if (compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '7.0.0')) {
+			const permissions =
+				t === 'c' ? [deleteTeamChannelPermission, deleteTeamGroupPermission] : [deletePPermission, deletePPermission];
+			const result = await hasPermission(permissions, rid);
+			return result[0] && result[1];
+		}
+
+		const result = await hasPermission([t === 'c' ? deleteCPermission : deletePPermission], rid);
+		return result[0];
+	};
+
 	showChannelActions = async (item: IItem) => {
 		logEvent(events.ROOM_SHOW_BOX_ACTIONS);
 		const {
@@ -535,16 +581,22 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 }
 
 const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
+	serverVersion: state.server.version,
 	useRealName: state.settings.UI_Use_Real_Name,
 	isMasterDetail: state.app.isMasterDetail,
 	StoreLastMessage: state.settings.Store_Last_Message,
 	addTeamChannelPermission: state.permissions['add-team-channel'],
+	moveRoomToTeamPermission: state.permissions['move-room-to-team'],
 	editTeamChannelPermission: state.permissions['edit-team-channel'],
 	removeTeamChannelPermission: state.permissions['remove-team-channel'],
 	deleteCPermission: state.permissions['delete-c'],
+	createCPermission: state.permissions['create-c'],
+	createTeamChannelPermission: state.permissions['create-team-channel'],
+	createPPermission: state.permissions['create-p'],
+	createTeamGroupPermission: state.permissions['create-team-group'],
+	deleteTeamChannelPermission: state.permissions['delete-team-channel'],
 	deletePPermission: state.permissions['delete-p'],
+	deleteTeamGroupPermission: state.permissions['delete-team-group'],
 	showAvatar: state.sortPreferences.showAvatar,
 	displayMode: state.sortPreferences.displayMode
 });

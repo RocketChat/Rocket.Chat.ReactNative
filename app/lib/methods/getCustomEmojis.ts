@@ -62,7 +62,7 @@ const updateEmojis = async ({ update = [], remove = [], allRecords }: IUpdateEmo
 
 	try {
 		await db.write(async () => {
-			await db.batch(...emojisToCreate, ...emojisToUpdate, ...emojisToDelete);
+			await db.batch([...emojisToCreate, ...emojisToUpdate, ...emojisToDelete]);
 		});
 		return true;
 	} catch (e) {

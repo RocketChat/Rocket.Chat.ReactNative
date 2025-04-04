@@ -76,12 +76,16 @@ function* onDirectCallCanceled(payload: ICallInfo) {
 }
 
 function* onDirectCallAccepted({ callId, rid, uid, action }: ICallInfo) {
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	const userId = yield* appSelector(state => state.login.user.id);
-	const currentCall = calls.find(c => c.callId === callId);
-	if (currentCall && currentCall.action === 'calling') {
-		yield call(notifyUser, `${uid}/video-conference`, { action: 'confirmed', params: { uid: userId, rid, callId } });
-		yield put(setVideoConfCall({ callId, rid, uid, action }));
+	try {
+		const calls = yield* appSelector(state => state.videoConf.calls);
+		const userId = yield* appSelector(state => state.login.user.id);
+		const currentCall = calls.find(c => c.callId === callId);
+		if (currentCall && currentCall.action === 'calling') {
+			yield call(notifyUser, `${uid}/video-conference`, { action: 'confirmed', params: { uid: userId, rid, callId } });
+			yield put(setVideoConfCall({ callId, rid, uid, action }));
+		}
+	} catch {
+		// do nothing
 	}
 }
 
@@ -196,51 +200,63 @@ function* giveUp({ rid, uid, callId, rejected }: { rid: string; uid: string; cal
 }
 
 function* cancelCall({ payload }: { payload?: { callId?: string } }) {
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	if (payload?.callId) {
-		const currentCall = calls.find(c => c.callId === payload.callId);
-		if (currentCall) {
-			yield call(giveUp, { ...currentCall, rejected: true });
+	try {
+		const calls = yield* appSelector(state => state.videoConf.calls);
+		if (payload?.callId) {
+			const currentCall = calls.find(c => c.callId === payload.callId);
+			if (currentCall) {
+				yield call(giveUp, { ...currentCall, rejected: true });
+			}
+		} else {
+			const currentCall = calls.find(c => c.action === 'calling');
+			if (currentCall && currentCall.callId) {
+				yield call(giveUp, currentCall);
+			}
 		}
-	} else {
-		const currentCall = calls.find(c => c.action === 'calling');
-		if (currentCall && currentCall.callId) {
-			yield call(giveUp, currentCall);
-		}
+	} catch {
+		// do nothing
 	}
 }
 
 function* callUser({ rid, uid, callId }: { rid: string; uid: string; callId: string }) {
-	const userId = yield* appSelector(state => state.login.user.id);
-	yield put(setVideoConfCall({ rid, uid, callId, action: 'calling' }));
-	for (let attempt = 1; attempt <= CALL_ATTEMPT_LIMIT; attempt++) {
-		if (attempt < CALL_ATTEMPT_LIMIT) {
-			const calls = yield* appSelector(state => state.videoConf.calls);
-			const currentCall = calls.find(c => c.callId === callId);
-			if (!currentCall || currentCall.action !== 'calling') {
+	try {
+		const userId = yield* appSelector(state => state.login.user.id);
+		yield put(setVideoConfCall({ rid, uid, callId, action: 'calling' }));
+		for (let attempt = 1; attempt <= CALL_ATTEMPT_LIMIT; attempt++) {
+			if (attempt < CALL_ATTEMPT_LIMIT) {
+				const calls = yield* appSelector(state => state.videoConf.calls);
+				const currentCall = calls.find(c => c.callId === callId);
+				if (!currentCall || currentCall.action !== 'calling') {
+					break;
+				}
+				yield call(notifyUser, `${uid}/video-conference`, { action: 'call', params: { uid: userId, rid, callId } });
+				yield delay(CALL_INTERVAL);
+			} else {
+				hideActionSheetRef();
+				yield call(giveUp, { uid, rid, callId });
 				break;
 			}
-			yield call(notifyUser, `${uid}/video-conference`, { action: 'call', params: { uid: userId, rid, callId } });
-			yield delay(CALL_INTERVAL);
-		} else {
-			hideActionSheetRef();
-			yield call(giveUp, { uid, rid, callId });
-			break;
 		}
+	} catch {
+		// do nothing
 	}
 }
 
 function* acceptCall({ payload: { callId } }: { payload: { callId: string } }) {
-	const calls = yield* appSelector(state => state.videoConf.calls);
-	const currentCall = calls.find(c => c.callId === callId);
-	if (currentCall && currentCall.action === 'call') {
-		const userId = yield* appSelector(state => state.login.user.id);
-		yield call(notifyUser, `${currentCall.uid}/video-conference`, {
-			action: 'accepted',
-			params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
-		});
-		yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
-		hideNotification();
+	try {
+		const calls = yield* appSelector(state => state.videoConf.calls);
+		const currentCall = calls.find(c => c.callId === callId);
+		if (currentCall && currentCall.action === 'call') {
+			const userId = yield* appSelector(state => state.login.user.id);
+			yield call(notifyUser, `${currentCall.uid}/video-conference`, {
+				action: 'accepted',
+				params: { uid: userId, rid: currentCall.rid, callId: currentCall.callId }
+			});
+			yield put(setVideoConfCall({ ...currentCall, action: 'accepted' }));
+			hideNotification();
+		}
+	} catch {
+		// do nothing
 	}
 }
 

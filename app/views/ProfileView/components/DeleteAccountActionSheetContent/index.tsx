@@ -1,6 +1,6 @@
 import { sha256 } from 'js-sha256';
 import React from 'react';
-import { Keyboard, Text } from 'react-native';
+import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { deleteAccount } from '../../../../actions/login';
@@ -12,7 +12,7 @@ import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { useTheme } from '../../../../theme';
 import { getTranslations } from './getTranslations';
-import sharedStyles from '../../../Styles';
+import AlertText from './AlertText';
 
 export function DeleteAccountActionSheetContent(): React.ReactElement {
 	const { hideActionSheet, showActionSheet } = useActionSheet();
@@ -68,11 +68,6 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 	);
 }
 
-const AlertText = ({ text = '' }) => {
-	const { colors } = useTheme();
-	return <Text style={{ fontSize: 14, ...sharedStyles.textRegular, marginBottom: 10, color: colors.fontDanger }}>{text}</Text>;
-};
-
 function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removedRooms = '', password = '' }) {
 	const { hideActionSheet } = useActionSheet();
 	const dispatch = useDispatch();
@@ -90,15 +85,14 @@ function ConfirmDeleteAccountActionSheetContent({ changeOwnerRooms = '', removed
 			description={i18n.t('Deleting_a_user_will_delete_all_messages')}
 			onCancel={hideActionSheet}
 			onSubmit={handleDeleteAccount}
-			placeholder={i18n.t('Password')}
 			testID='room-info-edit-view-name'
 			confirmTitle={i18n.t('Delete_Account_confirm')}
 			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
 			showInput={false}
 			customText={
 				<>
-					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} />}
-					{!!removedRooms && <AlertText text={removedRooms} />}
+					{!!changeOwnerRooms && <AlertText text={changeOwnerRooms} style={{ marginTop: 24 }} />}
+					{!!removedRooms && <AlertText text={removedRooms} style={{ marginBottom: 36 }} />}
 				</>
 			}
 		/>

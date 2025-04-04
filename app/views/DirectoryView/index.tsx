@@ -108,9 +108,10 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 		try {
 			const { data, type, globalUsers } = this.state;
-			const query = { text, type, workspace: globalUsers ? 'all' : 'local' };
 			const directories = await Services.getDirectory({
-				query,
+				text,
+				type,
+				workspace: globalUsers ? 'all' : 'local',
 				offset: data.length,
 				count: 50,
 				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
@@ -176,39 +177,43 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 	};
 
 	onPressItem = async (item: IServerRoom) => {
-		const { type } = this.state;
-		if (type === 'users') {
-			const result = await Services.createDirectMessage(item.username as string);
-			if (result.success) {
-				this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+		try {
+			const { type } = this.state;
+			if (type === 'users') {
+				const result = await Services.createDirectMessage(item.username as string);
+				if (result.success) {
+					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+				}
+				return;
 			}
-			return;
-		}
-		const subscription = await getSubscriptionByRoomId(item._id);
-		if (subscription) {
-			this.goRoom(subscription);
-			return;
-		}
-		if (['p', 'c'].includes(item.t) && !item.teamMain) {
-			const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
-			if (result) {
+			const subscription = await getSubscriptionByRoomId(item._id);
+			if (subscription) {
+				this.goRoom(subscription);
+				return;
+			}
+			if (['p', 'c'].includes(item.t) && !item.teamMain) {
+				const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+				if (result) {
+					this.goRoom({
+						rid: item._id,
+						name: item.name,
+						joinCodeRequired: result.joinCodeRequired,
+						t: item.t as SubscriptionType,
+						search: true
+					});
+				}
+			} else {
 				this.goRoom({
 					rid: item._id,
 					name: item.name,
-					joinCodeRequired: result.joinCodeRequired,
 					t: item.t as SubscriptionType,
-					search: true
+					search: true,
+					teamMain: item.teamMain,
+					teamId: item.teamId
 				});
 			}
-		} else {
-			this.goRoom({
-				rid: item._id,
-				name: item.name,
-				t: item.t as SubscriptionType,
-				search: true,
-				teamMain: item.teamMain,
-				teamId: item.teamId
-			});
+		} catch {
+			// do nothing
 		}
 	};
 

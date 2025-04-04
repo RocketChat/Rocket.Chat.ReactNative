@@ -238,7 +238,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 		}
 
 		await db.write(async () => {
-			await db.batch(...batch);
+			await db.batch(batch);
 		});
 	} catch (e) {
 		log(e);
@@ -286,6 +286,33 @@ const debouncedUpdate = (subscription: ISubscription) => {
 	queue[subscription.rid ? getSubQueueId(subscription.rid) : getRoomQueueId(subscription._id)] = subscription;
 };
 
+const handleUserData = ({ diff, unset }: { diff: any; unset: any }) => {
+	if (diff?.emails?.length > 0) {
+		store.dispatch(setUser({ emails: diff.emails }));
+	}
+	if (diff?.statusLivechat) {
+		store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
+	}
+	if (diff?.['settings.preferences.showMessageInMainThread'] !== undefined) {
+		store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
+	}
+	if (diff?.['settings.preferences.alsoSendThreadToChannel'] !== undefined) {
+		store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
+	}
+	if (diff?.avatarETag) {
+		store.dispatch(setUser({ avatarETag: diff.avatarETag }));
+	}
+	if (unset?.avatarETag) {
+		store.dispatch(setUser({ avatarETag: '' }));
+	}
+	if (diff?.bio) {
+		store.dispatch(setUser({ bio: diff.bio }));
+	}
+	if (diff?.nickname) {
+		store.dispatch(setUser({ nickname: diff.nickname }));
+	}
+};
+
 export default function subscribeRooms() {
 	const handleStreamMessageReceived = protectedFunction(async (ddpMessage: IDDPMessage) => {
 		const db = database.active;
@@ -301,30 +328,7 @@ export default function subscribeRooms() {
 		const [, ev] = ddpMessage.fields.eventName.split('/');
 		if (/userData/.test(ev)) {
 			const [{ diff, unset }] = ddpMessage.fields.args;
-			if (diff.emails?.length > 0) {
-				store.dispatch(setUser({ emails: diff.emails }));
-			}
-			if (diff?.statusLivechat) {
-				store.dispatch(setUser({ statusLivechat: diff.statusLivechat }));
-			}
-			if ((['settings.preferences.showMessageInMainThread'] as any) in diff) {
-				store.dispatch(setUser({ showMessageInMainThread: diff['settings.preferences.showMessageInMainThread'] }));
-			}
-			if ((['settings.preferences.alsoSendThreadToChannel'] as any) in diff) {
-				store.dispatch(setUser({ alsoSendThreadToChannel: diff['settings.preferences.alsoSendThreadToChannel'] }));
-			}
-			if (diff?.avatarETag) {
-				store.dispatch(setUser({ avatarETag: diff.avatarETag }));
-			}
-			if (unset?.avatarETag) {
-				store.dispatch(setUser({ avatarETag: '' }));
-			}
-			if (diff?.bio) {
-				store.dispatch(setUser({ bio: diff.bio }));
-			}
-			if (diff?.nickname) {
-				store.dispatch(setUser({ nickname: diff.nickname }));
-			}
+			handleUserData({ diff, unset });
 		}
 		if (/subscriptions/.test(ev)) {
 			if (type === 'removed') {
