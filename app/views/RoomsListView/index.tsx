@@ -54,6 +54,7 @@ import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 import CustomHeader from '../../containers/CustomHeader';
+import { ServersSheet } from './ServersSheet';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -111,6 +112,7 @@ interface IRoomsListViewState {
 	item?: ISubscription;
 	canCreateRoom?: boolean;
 	headerTitleWidth?: number;
+	showServersSheet?: boolean;
 }
 
 interface IRoomItem extends ISubscription {
@@ -191,6 +193,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.mounted = false;
 		this.count = 0;
 		this.state = {
+			showServersSheet: false,
 			searching: false,
 			search: [],
 			loading: true,
@@ -250,7 +253,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
-		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
+		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate, showServersSheet } = this.state;
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
@@ -280,6 +283,10 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		if (omnichannelsNotEqual) {
 			this.shouldUpdate = true;
+		}
+
+		if (nextState.showServersSheet !== showServersSheet) {
+			return true;
 		}
 
 		if (nextState.searching !== searching) {
@@ -479,7 +486,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					disabled={disabled}
 				/>
 			),
-			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
+			headerTitle: () => (
+				<RoomsListHeaderView width={headerTitleWidth} onPress={() => this.setState({ showServersSheet: true })} />
+			),
 			headerRight: () => (
 				<HeaderButton.Container
 					onLayout={
@@ -1012,6 +1021,14 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		);
 	};
 
+	renderServersSheet = () => {
+		if (this.state.showServersSheet) {
+			return <ServersSheet onClose={() => this.setState({ showServersSheet: false })} />;
+		}
+
+		return null;
+	};
+
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
 		const { theme } = this.props;
@@ -1021,6 +1038,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
+				{this.renderServersSheet()}
 			</SafeAreaView>
 		);
 	};

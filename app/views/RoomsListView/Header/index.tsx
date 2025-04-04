@@ -5,8 +5,6 @@ import { Dispatch } from 'redux';
 import { setSearch } from '../../../actions/rooms';
 import Header from './Header';
 import { IApplicationState } from '../../../definitions';
-import { showActionSheetRef } from '../../../containers/ActionSheet';
-import ServersList from '../ServersList';
 
 interface IRoomsListHeaderViewProps {
 	showSearchHeader: boolean;
@@ -17,6 +15,7 @@ interface IRoomsListHeaderViewProps {
 	server: string;
 	dispatch: Dispatch;
 	width?: number;
+	onPress?: () => void;
 }
 
 class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {
@@ -25,12 +24,8 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 		dispatch(setSearch(text.trim()));
 	};
 
-	onPress = () => {
-		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
-	};
-
 	render() {
-		const { serverName, showSearchHeader, connecting, connected, isFetching, server, width } = this.props;
+		const { serverName, showSearchHeader, connecting, connected, isFetching, server, width, onPress } = this.props;
 
 		return (
 			<Header
@@ -40,7 +35,7 @@ class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> 
 				connecting={connecting}
 				connected={connected}
 				isFetching={isFetching}
-				onPress={this.onPress}
+				onPress={onPress}
 				onSearchChangeText={this.onSearchChangeText}
 				width={width}
 			/>
