@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
@@ -59,18 +59,15 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		return false;
 	};
 
-	const handleNewServerEvent = useCallback(
-		(event: { server: string }) => {
-			let { server } = event;
-			if (!server) {
-				return;
-			}
-			setText(server);
-			server = completeUrl(server);
-			dispatch(serverRequest(server));
-		},
-		[dispatch]
-	);
+	const handleNewServerEvent = (event: { server: string }) => {
+		let { server } = event;
+		if (!server) {
+			return;
+		}
+		setText(server);
+		server = completeUrl(server);
+		dispatch(serverRequest(server));
+	};
 
 	const close = async () => {
 		dispatch(inviteLinksClear());
@@ -97,22 +94,30 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 
 	useEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
-		BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+		const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+		let keyboardShowListener: ReturnType<typeof Keyboard.addListener> | null = null;
+		let keyboardHideListener: ReturnType<typeof Keyboard.addListener> | null = null;
+
 		if (isAndroid) {
-			Keyboard.addListener('keyboardDidShow', () => setShowBottomInfo(false));
-			Keyboard.addListener('keyboardDidHide', () => setShowBottomInfo(true));
+			keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => setShowBottomInfo(false));
+			keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => setShowBottomInfo(true));
 		}
 
 		return () => {
 			EventEmitter.removeListener('NewServer', handleNewServerEvent);
-			BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
-			Keyboard.removeAllListeners('keyboardDidHide');
-			Keyboard.removeAllListeners('keyboardDidShow');
+			backHandler.remove();
+
+			if (isAndroid) {
+				keyboardShowListener?.remove();
+				keyboardHideListener?.remove();
+			}
+
 			if (previousServer) {
 				dispatch(serverFinishAdd());
 			}
 		};
-	}, []);
+	}, [handleNewServerEvent, handleBackPress, previousServer, dispatch]);
 
 	useEffect(() => {
 		setHeader();
