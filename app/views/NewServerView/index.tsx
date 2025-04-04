@@ -77,7 +77,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		if (previousServer) {
 			const serverRecord = await getServerById(previousServer);
 			if (serverRecord) {
-				dispatch(selectServerRequest(previousServer, serverRecord));
+				dispatch(selectServerRequest(previousServer, serverRecord.version));
 			}
 		}
 	};
