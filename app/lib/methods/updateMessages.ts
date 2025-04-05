@@ -79,9 +79,7 @@ export default async function updateMessages({
 
 		// filter messages
 		const filteredMsgsToCreate = update.filter(i1 => !allMessagesRecords.find(i2 => i1._id === i2.id));
-		const filteredMsgsToUpdate = allMessagesRecords.filter(i1 =>
-			update.find(i2 => i1.id === i2._id && i1._updatedAt < i2._updatedAt)
-		);
+		const filteredMsgsToUpdate = allMessagesRecords.filter(i1 => update.find(i2 => i1.id === i2._id));
 
 		// filter threads
 		const allThreads = update.filter(m => m.tlm);

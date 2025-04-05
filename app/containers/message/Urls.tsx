@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
 import { Image as ExpoImage } from 'expo-image';
 import { dequal } from 'dequal';
+import axios from 'axios';
 
 import { useAppSelector } from '../../lib/hooks';
 import Touchable from './Touchable';
@@ -39,7 +40,8 @@ const styles = StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	loading: {
-		height: 0,
+		height: 1,
+		width: 1,
 		borderWidth: 0,
 		marginTop: 0
 	}
@@ -136,8 +138,8 @@ const Url = ({ url }: { url: IUrl }) => {
 				const imageUrl = getImageUrl();
 				if (!imageUrl) return;
 
-				const response = await fetch(imageUrl, { method: 'HEAD' });
-				const contentType = response.headers.get('content-type');
+				const response = await axios.head(imageUrl);
+				const contentType = response.headers['content-type'];
 				if (contentType?.startsWith?.('image/')) {
 					setImageUrl(imageUrl);
 				}
