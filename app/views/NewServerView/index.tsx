@@ -117,7 +117,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 				dispatch(serverFinishAdd());
 			}
 		};
-	}, [handleNewServerEvent, handleBackPress, previousServer, dispatch]);
+	}, []);
 
 	useEffect(() => {
 		setHeader();
