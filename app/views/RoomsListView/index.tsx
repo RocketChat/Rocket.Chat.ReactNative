@@ -54,7 +54,6 @@ import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 import CustomHeader from '../../containers/CustomHeader';
-import { ServersSheet } from './ServersSheet';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -112,7 +111,6 @@ interface IRoomsListViewState {
 	item?: ISubscription;
 	canCreateRoom?: boolean;
 	headerTitleWidth?: number;
-	showServersSheet?: boolean;
 }
 
 interface IRoomItem extends ISubscription {
@@ -171,13 +169,6 @@ const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index:
 // isSearching is needed to trigger RoomItem's useEffect properly after searching
 const keyExtractor = (item: ISubscription, isSearching = false) => `${item.rid}-${isSearching}`;
 
-type InternalState =
-	| ((
-			prevState: Readonly<IRoomsListViewState>,
-			props: Readonly<IRoomsListViewProps>
-	  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
-	| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null);
-
 class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewState> {
 	private animated: boolean;
 	private mounted: boolean;
@@ -200,7 +191,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.mounted = false;
 		this.count = 0;
 		this.state = {
-			showServersSheet: false,
 			searching: false,
 			search: [],
 			loading: true,
@@ -260,7 +250,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
-		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate, showServersSheet } = this.state;
+		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
 			return true;
@@ -290,10 +280,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 		if (omnichannelsNotEqual) {
 			this.shouldUpdate = true;
-		}
-
-		if (nextState.showServersSheet !== showServersSheet) {
-			return true;
 		}
 
 		if (nextState.searching !== searching) {
@@ -493,15 +479,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					disabled={disabled}
 				/>
 			),
-			headerTitle: () => (
-				<RoomsListHeaderView width={headerTitleWidth} onPress={() => this.setState({ showServersSheet: true })} />
-			),
+			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
 			headerRight: () => (
 				<HeaderButton.Container
 					onLayout={
 						isTablet
 							? undefined
-							: event => this.setState({ headerTitleWidth: width - event.nativeEvent.layout.width - (isIOS ? 60 : 50) })
+							: ({ nativeEvent }: { nativeEvent: any }) => {
+									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
+							  }
 					}>
 					{issuesWithNotifications ? (
 						<HeaderButton.Item
@@ -537,7 +523,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		navigation.setOptions(options);
 	};
 
-	internalSetState = (state: InternalState, callback?: () => void) => {
+	internalSetState = (
+		state:
+			| ((
+					prevState: Readonly<IRoomsListViewState>,
+					props: Readonly<IRoomsListViewProps>
+			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
+			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
+		callback?: () => void
+	) => {
 		if (this.animated) {
 			animateNextTransition();
 		}
@@ -895,10 +889,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => {
-		this.scroll = ref;
-		return ref;
-	};
+	getScrollRef = (ref: FlatList) => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -1030,7 +1021,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				<StatusBar />
 				{this.renderHeader()}
 				{this.renderScroll()}
-				<ServersSheet visible={!!this.state.showServersSheet} onClose={() => this.setState({ showServersSheet: false })} />
 			</SafeAreaView>
 		);
 	};

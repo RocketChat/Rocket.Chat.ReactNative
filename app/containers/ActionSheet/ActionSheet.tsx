@@ -131,14 +131,14 @@ const ActionSheet = React.memo(
 			(props: BottomSheetBackdropProps) => (
 				<BottomSheetBackdrop
 					{...props}
-					style={[props.style, { bottom }]}
+					style={{ bottom: 1 }}
 					appearsOnIndex={0}
 					// Backdrop should be visible all the time bottom sheet is open
 					disappearsOnIndex={-1}
 					opacity={colors.backdropOpacity}
 				/>
 			),
-			[bottom, colors.backdropOpacity]
+			[]
 		);
 
 		const bottomSheet = isTablet ? styles.bottomSheet : {};

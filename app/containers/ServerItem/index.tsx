@@ -1,7 +1,7 @@
 import React from 'react';
-import { Pressable as RNPressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { Image } from 'expo-image';
-import { withKeyboardFocus } from 'react-native-external-keyboard';
+import { KeyboardExtendedPressable } from 'react-native-external-keyboard';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
@@ -25,17 +25,19 @@ export interface IServerItem {
 
 const defaultLogo = require('../../static/images/logo.png');
 
-const Pressable = withKeyboardFocus(RNPressable);
-
 const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
 	const { theme } = useTheme();
 	return (
-		<Pressable
-			focusable
-			autoFocus
-			// groupIdentifier='servers-list'
+		<KeyboardExtendedPressable
+			focusable={true}
+			accessible={true}
+			accessibilityRole='button'
+			accessibilityLabel={`Server: ${item.name}`}
+			accessibilityHint='Press to select server'
+			accessibilityActions={[{ name: 'longpress', label: 'Long press to select server' }]}
+			aria-checked={hasCheck}
 			onPress={onPress}
-			onLongPress={() => onLongPress?.()}
+			onLongPress={onLongPress}
 			testID={`server-item-${item.id}`}
 			android_ripple={{ color: themes[theme].surfaceNeutral }}
 			style={({ pressed }: { pressed: boolean }) => ({
@@ -65,7 +67,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 				</View>
 				{hasCheck ? <Check /> : null}
 			</View>
-		</Pressable>
+		</KeyboardExtendedPressable>
 	);
 });
 
