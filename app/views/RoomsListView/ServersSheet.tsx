@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 
 import ServersList from './ServersList';
 
@@ -10,9 +10,15 @@ type ServersSheetProps = {
 
 export function ServersSheet({ visible, onClose }: ServersSheetProps) {
 	const ref = useRef<BottomSheet>(null);
+
 	const close = useCallback(() => {
 		ref.current?.close();
 	}, [ref]);
+
+	const renderBackdrop = useCallback(
+		(props: BottomSheetBackdropProps) => <BottomSheetBackdrop {...props} opacity={0.5} disappearsOnIndex={-1} />,
+		[]
+	);
 
 	if (!visible) {
 		return null;
@@ -22,9 +28,8 @@ export function ServersSheet({ visible, onClose }: ServersSheetProps) {
 		<BottomSheet
 			ref={ref}
 			animateOnMount={true}
-			backdropComponent={props => <BottomSheetBackdrop {...props} opacity={0.5} disappearsOnIndex={-1} />}
+			backdropComponent={renderBackdrop}
 			enableDynamicSizing={true}
-			// snapPoints={snapPoints}
 			onClose={onClose}
 			enablePanDownToClose={true}>
 			<ServersList close={close} />
