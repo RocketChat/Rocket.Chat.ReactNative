@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { batch, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetFlatList, BottomSheetView } from '@gorhom/bottom-sheet';
 
 import * as List from '../../containers/List';
 import Button from '../../containers/Button';
@@ -111,7 +112,7 @@ const ServersList = ({ close }: { close: () => void }) => {
 			}
 		});
 
-	const renderItem = ({ item }: { item: { id: string; iconURL: string; name: string; version: string } }) => (
+	const renderItem = ({ item }: { item: TServerModel }) => (
 		<ServerItem
 			item={item}
 			onPress={() => select(item.id, item.version)}
@@ -121,7 +122,7 @@ const ServersList = ({ close }: { close: () => void }) => {
 	);
 
 	return (
-		<View
+		<BottomSheetView
 			style={{
 				backgroundColor: colors.surfaceRoom,
 				borderColor: colors.strokeLight,
@@ -134,26 +135,27 @@ const ServersList = ({ close }: { close: () => void }) => {
 					<Text style={[styles.serverHeaderAdd, { color: colors.fontInfo }]}>{I18n.t('Add_Server')}</Text>
 				</TouchableOpacity>
 			</View>
-			<FlatList
+			<BottomSheetFlatList
 				style={{ maxHeight: MAX_ROWS * ROW_HEIGHT }}
 				data={servers}
 				keyExtractor={item => item.id}
 				renderItem={renderItem}
 				ItemSeparatorComponent={List.Separator}
 				keyboardShouldPersistTaps='always'
+				ListFooterComponent={
+					<Button
+						title={I18n.t('Create_a_new_workspace')}
+						type='secondary'
+						onPress={createWorkspace}
+						testID='rooms-list-header-create-workspace-button'
+						style={styles.buttonCreateWorkspace}
+						color={colors.badgeBackgroundLevel2}
+						backgroundColor={colors.surfaceRoom}
+						styleText={[styles.serverHeaderAdd, { textAlign: 'center', color: colors.fontInfo }]}
+					/>
+				}
 			/>
-			<List.Separator />
-			<Button
-				title={I18n.t('Create_a_new_workspace')}
-				type='secondary'
-				onPress={createWorkspace}
-				testID='rooms-list-header-create-workspace-button'
-				style={styles.buttonCreateWorkspace}
-				color={colors.badgeBackgroundLevel2}
-				backgroundColor={colors.surfaceRoom}
-				styleText={[styles.serverHeaderAdd, { textAlign: 'center', color: colors.fontInfo }]}
-			/>
-		</View>
+		</BottomSheetView>
 	);
 };
 

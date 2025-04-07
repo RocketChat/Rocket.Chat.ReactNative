@@ -196,13 +196,7 @@ module.exports = {
 				'react/jsx-no-undef': 'error',
 				'react/jsx-fragments': ['error', 'syntax'],
 				'@typescript-eslint/ban-ts-comment': 'off',
-				'@typescript-eslint/indent': [
-					'warn',
-					'tab',
-					{
-						SwitchCase: 1
-					}
-				],
+				'@typescript-eslint/indent': 'off',
 				'@typescript-eslint/no-extra-parens': [
 					'warn',
 					'all',
