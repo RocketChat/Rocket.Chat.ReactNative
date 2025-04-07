@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInputProps, View } from 'react-native';
+import { Control } from 'react-hook-form';
 
 import Item from './Item';
-import { FormTextInput } from '../../../../containers/TextInput';
+import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import * as List from '../../../../containers/List';
 import I18n from '../../../../i18n';
 import { TServerHistoryModel } from '../../../../definitions';
 import { useTheme } from '../../../../theme';
+import { CustomIcon } from '../../../../containers/CustomIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,6 +31,13 @@ const styles = StyleSheet.create({
 });
 
 interface IServerInput extends TextInputProps {
+	showError: boolean;
+	control: Control<
+		{
+			workspaceUrl: string;
+		},
+		any
+	>;
 	text: string;
 	serversHistory: any[];
 	onSubmit(): void;
@@ -37,6 +46,8 @@ interface IServerInput extends TextInputProps {
 }
 
 const ServerInput = ({
+	showError,
+	control,
 	text,
 	serversHistory,
 	onChangeText,
@@ -46,11 +57,15 @@ const ServerInput = ({
 }: IServerInput): JSX.Element => {
 	const { colors } = useTheme();
 	const [focused, setFocused] = useState(false);
+
 	return (
 		<View style={styles.container}>
-			<FormTextInput
+			<ControlledFormTextInput
+				name='workspaceUrl'
+				control={control}
 				label={I18n.t('Workspace_URL')}
 				containerStyle={styles.inputContainer}
+				inputStyle={showError ? { borderColor: colors.fontDanger } : {}}
 				value={text}
 				returnKeyType='send'
 				onChangeText={onChangeText}
@@ -63,6 +78,7 @@ const ServerInput = ({
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>
+
 			{focused && serversHistory?.length ? (
 				<View style={[styles.serverHistory, { backgroundColor: colors.surfaceRoom, borderColor: colors.strokeLight }]}>
 					<FlatList
@@ -73,6 +89,13 @@ const ServerInput = ({
 					/>
 				</View>
 			) : null}
+
+			{showError && (
+				<View style={{ flexDirection: 'row', gap: 4, paddingVertical: 4 }}>
+					<CustomIcon name='warning' size={16} color={colors.fontDanger} />
+					<Text style={{ fontSize: 14, color: colors.fontDanger }}>Invalid URL</Text>
+				</View>
+			)}
 		</View>
 	);
 };

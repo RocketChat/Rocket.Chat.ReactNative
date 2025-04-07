@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Keyboard, Text } from 'react-native';
+import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
+import { useForm } from 'react-hook-form';
 
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
@@ -27,10 +28,13 @@ import styles from './styles';
 const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
-	const { previousServer, connecting } = useAppSelector(state => ({
+	const { previousServer, connecting, failure } = useAppSelector(state => ({
 		previousServer: state.server.previousServer,
-		connecting: state.server.connecting
+		connecting: state.server.connecting,
+		failure: state.server.failure
 	}));
+
+	const { control } = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
 	const [text, setText] = useState<string>('');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
@@ -117,7 +121,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 				dispatch(serverFinishAdd());
 			}
 		};
-	}, [handleNewServerEvent, handleBackPress, previousServer, dispatch]);
+	}, []);
 
 	useEffect(() => {
 		setHeader();
@@ -146,6 +150,8 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 					{I18n.t('Add_server')}
 				</Text>
 				<ServerInput
+					control={control}
+					showError={failure}
 					text={text}
 					serversHistory={serversHistory}
 					onChangeText={onChangeText}
@@ -156,7 +162,10 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 				<Button
 					title={I18n.t('Connect')}
 					type='primary'
-					onPress={submit}
+					onPress={() => {
+						submit();
+						AccessibilityInfo.announceForAccessibility('Invalid URL');
+					}}
 					disabled={!text || connecting}
 					loading={connecting}
 					style={styles.connectButton}
