@@ -7637,7 +7637,7 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@^20.36.4:
+detox@20.36.4:
   version "20.36.4"
   resolved "https://registry.yarnpkg.com/detox/-/detox-20.36.4.tgz#7ac3da7717bd688c46a7c9c61d2e1cb69f8bc909"
   integrity sha512-2BZdxCXOJu0TzrxGKHZFRmPy7vNBQCOF9hhr0C+8BmaBBfRwWqpj5hvZD3AM1yTx89gR8iEj6j90MTDgT6EehQ==
