@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, Text, TextInput, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -51,9 +51,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		control,
 		handleSubmit,
 		setFocus,
+		setError,
 		getValues,
 		watch,
-		formState: { isValid, dirtyFields }
+		formState: { isValid, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -135,9 +136,18 @@ const RegisterView = ({ navigation, route }: IProps) => {
 				}
 			}
 		} catch (error: any) {
+			console.log('aqui?', error);
+
 			if (error.data?.errorType === 'username-invalid') {
 				return dispatch(loginRequest({ user: email, password }));
 			}
+
+			if (error.data.error === 'Username is already in use') {
+				setError('username', { message: 'Username is already in use', type: '' });
+				AccessibilityInfo.announceForAccessibility('Username is alredy in use');
+				return;
+			}
+
 			if (error.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(error.data.error, I18n.t('Oops'));
@@ -146,7 +156,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			setSaving(false);
 		}
 	};
-
+	console.log(errors);
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: route?.params?.title,
@@ -170,6 +180,9 @@ const RegisterView = ({ navigation, route }: IProps) => {
 					<Controller
 						name='name'
 						control={control}
+						rules={{
+							required: true
+						}}
 						render={({ field: { onChange, value, ref } }) => (
 							<FormTextInput
 								inputRef={ref}
@@ -183,6 +196,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 								onChangeText={onChange}
 								onSubmitEditing={() => setFocus('username')}
 								containerStyle={styles.inputContainer}
+								error={errors.name}
 							/>
 						)}
 					/>
@@ -204,6 +218,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 									setFocus('email');
 								}}
 								containerStyle={styles.inputContainer}
+								error={errors.username}
 							/>
 						)}
 					/>

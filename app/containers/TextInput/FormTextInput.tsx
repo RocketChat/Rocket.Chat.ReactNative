@@ -122,16 +122,17 @@ export const FormTextInput = ({
 							style={[
 								styles.input,
 								iconLeft && styles.inputIconLeft,
-								(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
+								secureTextEntry || iconRight || showClearInput ? styles.inputIconRight : {},
 								{
 									backgroundColor: colors.surfaceRoom,
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
-								error?.error && {
-									color: colors.buttonBackgroundDangerDefault,
-									borderColor: colors.buttonBackgroundDangerDefault
-								},
+								error?.message
+									? {
+											borderColor: colors.fontDanger
+									  }
+									: undefined,
 								inputStyle
 							]}
 							// @ts-ignore ref error
@@ -199,7 +200,12 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{error && error.reason ? <Text style={[styles.error, { color: colors.fontDanger }]}>{error.reason}</Text> : null}
+					{error && error?.message ? (
+						<View style={{ flexDirection: 'row', gap: 4, paddingVertical: 4 }}>
+							<CustomIcon color={colors.fontDanger} name='warning' size={16} />
+							<Text style={[{ color: colors.fontDanger }]}>{error.message}</Text>
+						</View>
+					) : null}
 				</View>
 			</A11yElement>
 		</A11yContainer>
