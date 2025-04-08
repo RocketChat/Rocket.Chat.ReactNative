@@ -13,10 +13,6 @@ import { isIOS } from '../../lib/methods/helpers';
 import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
-	error: {
-		...sharedStyles.textAlignCenter,
-		paddingTop: 5
-	},
 	inputContainer: {
 		marginBottom: 10,
 		gap: 4
