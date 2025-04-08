@@ -30,9 +30,13 @@ import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
 const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(),
-	email: yup.string().email().required(),
-	username: yup.string().min(1).required()
+	name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
+	email: yup
+		.string()
+		.email(I18n.t('Email_must_be_valid'))
+		.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
+	username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
+	password: yup.string().min(1).required()
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
@@ -136,14 +140,12 @@ const RegisterView = ({ navigation, route }: IProps) => {
 				}
 			}
 		} catch (error: any) {
-			console.log('aqui?', error);
-
 			if (error.data?.errorType === 'username-invalid') {
 				return dispatch(loginRequest({ user: email, password }));
 			}
 
 			if (error.data.error === 'Username is already in use') {
-				setError('username', { message: 'Username is already in use', type: '' });
+				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
 				AccessibilityInfo.announceForAccessibility('Username is alredy in use');
 				return;
 			}
@@ -156,7 +158,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			setSaving(false);
 		}
 	};
-	console.log(errors);
+
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: route?.params?.title,
@@ -241,6 +243,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 									setFocus('password');
 								}}
 								containerStyle={styles.inputContainer}
+								error={errors.email}
 							/>
 						)}
 					/>
