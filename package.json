@@ -10,6 +10,7 @@
 		"lint": "eslint . && tsc",
 		"prettier-lint": "prettier --write . && yarn lint",
 		"ios": "npx react-native run-ios",
+		"pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=0 bundle exec pod install",
 		"android": "npx react-native run-android --mode=experimentalDebug --main-activity chat.rocket.reactnative.MainActivity",
 		"android-whitelabel": "npx react-native run-android --main-activity chat.rocket.reactnative.MainActivity --mode=experimentalDebug --appId",
 		"log-android": "react-native log-android",
