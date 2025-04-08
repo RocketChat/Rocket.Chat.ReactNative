@@ -101,12 +101,15 @@ export const FormTextInput = ({
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
+	const errorAccessibilityLabel = error && error.message ? error.message : '';
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
 				<View
 					accessible
-					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
+					accessibilityLabel={`${
+						accessibilityLabel ?? label
+					}${accessibilityLabelRequired}${accessibilityInputValue}. ${errorAccessibilityLabel}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
 						<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
