@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
+		fontSize: 14,
 		textAlign: 'center',
 		lineHeight: 20
 	}
