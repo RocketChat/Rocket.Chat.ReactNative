@@ -1,6 +1,5 @@
 import React from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
-// import { PlatformPressable } from '@react-navigation/elements';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon, TIconsName } from '../CustomIcon';

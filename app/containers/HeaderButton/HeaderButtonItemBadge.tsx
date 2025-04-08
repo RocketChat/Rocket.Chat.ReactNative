@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
 	badgeContainer: {
 		padding: 2,
 		position: 'absolute',
-		right: 2,
-		top: 2,
+		right: -4,
+		top: -4,
 		borderRadius: 10,
 		alignItems: 'center',
 		justifyContent: 'center'
