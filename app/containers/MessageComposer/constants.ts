@@ -8,7 +8,8 @@ export const IMAGE_PICKER_CONFIG: ImagePickerOptions = {
 
 export const LIBRARY_PICKER_CONFIG: ImagePickerOptions = {
 	allowsMultipleSelection: true,
-	exif: true
+	exif: true,
+	mediaTypes: MediaTypeOptions.All
 };
 
 export const VIDEO_PICKER_CONFIG: ImagePickerOptions = {
