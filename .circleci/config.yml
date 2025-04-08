@@ -113,8 +113,7 @@ commands:
       - run:
           name: Install pods libs
           command: |
-            RCT_NEW_ARCH_ENABLED=0 bundle exec pod install --deployment
-          working_directory: ios
+            yarn pod-install --deployment
       - save_cache:
           name: Save pods specs and pods cache
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
