@@ -95,9 +95,10 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 
+	const errorMessage = error ? error.message ?? error.reason : null;
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
-	const errorAccessibilityLabel = error && error.message ? error.message : '';
+	const errorAccessibilityLabel = error ? errorMessage : '';
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
@@ -199,10 +200,10 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{error && error?.message ? (
+					{errorMessage ? (
 						<View style={{ flexDirection: 'row', gap: 4, paddingVertical: 4 }}>
 							<CustomIcon color={colors.fontDanger} name='warning' size={16} />
-							<Text style={[{ color: colors.fontDanger }]}>{error.message}</Text>
+							<Text style={[{ color: colors.fontDanger }]}>{errorMessage}</Text>
 						</View>
 					) : null}
 				</View>
