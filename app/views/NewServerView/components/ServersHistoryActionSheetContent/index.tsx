@@ -7,6 +7,7 @@ import Touch from '../../../../containers/Touch';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import { TServerHistoryModel } from '../../../../definitions';
+import i18n from '../../../../i18n';
 
 interface IServersHistoryActionSheetContent {
 	serversHistory: TServerHistoryModel[];
@@ -33,7 +34,10 @@ export const ServersHistoryActionSheetContent = ({
 								testID={`servers-history-${item.url}`}
 								onPress={() => onPressServerHistory(item)}
 								right={() => (
-									<Touch testID={`servers-history-delete-${item.url}`} onPress={() => onDelete(item)}>
+									<Touch
+										accessibilityLabel={i18n.t('Remove_from_servers_history')}
+										testID={`servers-history-delete-${item.url}`}
+										onPress={() => onDelete(item)}>
 										<CustomIcon name='delete' size={24} color={colors.fontDefault} />
 									</Touch>
 								)}
