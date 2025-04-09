@@ -24,7 +24,6 @@ const styles = StyleSheet.create({
 		marginBottom: 0
 	},
 	serversHistoryButton: {
-		width: 32,
 		paddingVertical: 9
 	}
 });
@@ -89,7 +88,7 @@ const ServerInput = ({
 
 			{serversHistory?.length > 0 ? (
 				<View style={styles.serversHistoryButton}>
-					<Touch testID='servers-history-button' onPress={openServersHistory}>
+					<Touch accessibilityLabel={I18n.t('Open_servers_history')} testID='servers-history-button' onPress={openServersHistory}>
 						<CustomIcon name='clock' size={32} color={colors.fontInfo} />
 					</Touch>
 				</View>
