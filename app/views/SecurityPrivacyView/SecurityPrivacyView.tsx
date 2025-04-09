@@ -88,7 +88,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		}
 	};
 
-	const togglemailMfa = async (val: boolean) => {
+	const togglemailMfa = async () => {
 		// https://open.rocket.chat/api/v1/users.2fa.disableEmail
 		setState(prevState => ({ ...prevState, emmailMfaStatus: !state.emmailMfaStatus }));
 		try {
@@ -216,8 +216,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 			setState(prevState => ({ ...prevState, loading: false }));
 		}
 	};
-
-	const toogleEmailMfa = async (value: boolean) => {};
 
 	const onDisableTotp = async () => {
 		setState(prevState => ({ ...prevState, showQrModel: false }));
