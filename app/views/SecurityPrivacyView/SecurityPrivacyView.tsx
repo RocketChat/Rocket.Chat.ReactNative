@@ -177,7 +177,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 				setState(prevState => ({ ...prevState, loading: false }));
 			}
 		} catch (error) {
-			// do nothing
 			setState(prevState => ({ ...prevState, loading: false }));
 		}
 	};
