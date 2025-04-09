@@ -135,6 +135,7 @@
   "Confirm_Password": "পাসওয়ার্ড নিশ্চিত করুন",
   "Confirmation": "নিশ্চিতকরণ",
   "Connect": "সংযোগ করুন",
+  "Connect_to_server_as_user": "{{user}} হিসেবে {{serverUrl}} এ সংযোগ করুন",
   "Connecting": "সংযোগ হচ্ছে...",
   "Contact_us": "আমাদের সাথে যোগাযোগ করুন",
   "Contact_your_server_admin": "আপনার কাজকর্ম অ্যাডমিনের সাথে যোগাযোগ করুন।",

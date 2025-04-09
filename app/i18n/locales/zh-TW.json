@@ -83,6 +83,7 @@
   "Confirm_Password": "確認密碼",
   "Confirmation": "確認",
   "Connect": "連接",
+  "Connect_to_server_as_user": "連接至 {{serverUrl}} 作為 {{user}}",
   "Connecting": "連接中",
   "Contact_us": "聯絡我們",
   "Contact_your_server_admin": "請聯絡系統管理員",

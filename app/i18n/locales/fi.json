@@ -119,6 +119,7 @@
   "Confirm_Password": "Vahvista salasana",
   "Confirmation": "Vahvistus",
   "Connect": "Yhdistä",
+  "Connect_to_server_as_user": "Yhdistä osoitteeseen {{serverUrl}} käyttäjänä {{user}}",
   "Connecting": "Yhdistetään...",
   "Contact_us": "Ota yhteyttä",
   "Contact_your_server_admin": "Ota yhteys palvelimen järjestelmänvalvojaan.",

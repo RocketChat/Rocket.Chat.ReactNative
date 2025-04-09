@@ -147,6 +147,7 @@
   "Confirm_your_password": "Confirm your password",
   "Confirmation": "Confirmation",
   "Connect": "Connect",
+  "Connect_to_server_as_user": "Connect to {{serverUrl}} as {{user}}",
   "Connecting": "Connecting...",
   "Contact_us": "Contact us",
   "Contact_your_server_admin": "Contact your workspace admin.",

@@ -97,6 +97,7 @@
   "Confirm_Password": "Bevestig het wachtwoord",
   "Confirmation": "Bevestiging",
   "Connect": "Verbinden",
+  "Connect_to_server_as_user": "Verbind met {{serverUrl}} als {{user}}",
   "Connecting": "Aan het verbinden...",
   "Contact_us": "Neem contact op",
   "Contact_your_server_admin": "Neem contact op met je serverbeheerder.",

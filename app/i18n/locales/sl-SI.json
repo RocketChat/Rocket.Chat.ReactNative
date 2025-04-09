@@ -102,6 +102,7 @@
   "Confirm_Password": "Potrdite geslo",
   "Confirmation": "Potrditev",
   "Connect": "Povežite",
+  "Connect_to_server_as_user": "Povežite se na {{serverUrl}} kot {{user}}",
   "Connecting": "Povezovanje ...",
   "Contact_us": "Kontaktiraj nas",
   "Contact_your_server_admin": "Se obrnite na skrbnika strežnika.",

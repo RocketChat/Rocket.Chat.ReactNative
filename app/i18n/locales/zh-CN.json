@@ -82,6 +82,7 @@
   "Confirm": "确认",
   "Confirm_Password": "确认密码",
   "Connect": "连接",
+  "Connect_to_server_as_user": "以{{user}}身份连接到{{serverUrl}}",
   "Connecting": "连接中",
   "Contact_us": "联系我们",
   "Contact_your_server_admin": "请联络系统管理员",

@@ -135,6 +135,7 @@
   "Confirm_Password": "Erősítse meg a jelszót",
   "Confirmation": "Megerősítés",
   "Connect": "Kapcsolódás",
+  "Connect_to_server_as_user": "Csatlakozzon a következőhöz: {{serverUrl}} mint {{user}}",
   "Connecting": "Kapcsolódás…",
   "Contact_us": "Kapcsolatfelvétel",
   "Contact_your_server_admin": "Vegye fel a kapcsolatot a munkaterület adminisztrátorával.",

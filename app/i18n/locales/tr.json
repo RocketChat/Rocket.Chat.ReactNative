@@ -82,6 +82,7 @@
   "Confirm": "Onayla",
   "Confirm_Password": "Şifreyi onaylayın",
   "Connect": "Bağlan",
+  "Connect_to_server_as_user": "{{serverUrl}} bağlanın, kullanıcı: {{user}}",
   "Connecting": "Bağlanıyor...",
   "Contact_us": "Bize ulaşın",
   "Contact_your_server_admin": "Sunucu yöneticisiyle iletişime geçin.",

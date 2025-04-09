@@ -83,6 +83,7 @@
   "Confirm": "تأكيد",
   "Confirm_Password": "تأكيد كلمة المرور",
   "Connect": "اتصال",
+  "Connect_to_server_as_user": "اتصل بـ {{serverUrl}} كـ {{user}}",
   "Connecting": "جار الاتصال...",
   "Contact_us": "تواصل معنا",
   "Contact_your_server_admin": "اتصل بمسؤول الخادم",

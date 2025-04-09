@@ -31,6 +31,7 @@ export const ServersHistoryActionSheetContent = ({
 					{serversHistory.map(item => (
 						<>
 							<List.Item
+								accessibilityLabel={i18n.t('Connect_to_server_as_user', { serverUrl: item.url, user: item.username })}
 								testID={`servers-history-${item.url}`}
 								onPress={() => onPressServerHistory(item)}
 								right={() => (

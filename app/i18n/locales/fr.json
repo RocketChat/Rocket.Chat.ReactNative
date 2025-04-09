@@ -97,6 +97,7 @@
   "Confirm_Password": "Confirmez le mot de passe",
   "Confirmation": "Confirmation",
   "Connect": "Connecter",
+  "Connect_to_server_as_user": "Connectez-vous à {{serverUrl}} en tant que {{user}}",
   "Connecting": "Connexion...",
   "Contact_us": "Contactez-nous",
   "Contact_your_server_admin": "Contactez votre administrateur de serveur.",

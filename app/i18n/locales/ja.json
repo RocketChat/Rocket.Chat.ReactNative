@@ -82,6 +82,7 @@
   "Confirm": "承認",
   "Confirm_Password": "パスワードを認証する",
   "Connect": "接続",
+  "Connect_to_server_as_user": "{{user}}として{{serverUrl}}に接続する",
   "Connecting": "接続中...",
   "Contact_us": "お問い合わせ",
   "Contact_your_server_admin": "サーバー管理者にお問い合わせください。",

@@ -135,6 +135,7 @@
   "Confirm_Password": "கடவுச்சொல்லை உறுதிப்படுத்தவும்",
   "Confirmation": "உறுதிப்படுத்தல்",
   "Connect": "இணைக்க",
+  "Connect_to_server_as_user": "{{user}} ஆக {{serverUrl}} க்கு இணைக்கவும்",
   "Connecting": "இணைகின்றது...",
   "Contact_us": "எங்களை தொடர்க",
   "Contact_your_server_admin": "உங்கள் பணியாளர் நிர்வாகியை தொடர்க.",

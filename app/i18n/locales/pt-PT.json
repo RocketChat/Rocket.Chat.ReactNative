@@ -79,6 +79,7 @@
   "Confirm": "Confirmar",
   "Confirm_Password": "Confirme sua senha",
   "Connect": "Ligar",
+  "Connect_to_server_as_user": "Ligar a {{serverUrl}} como {{user}}",
   "Connecting": "A ligar...",
   "Contact_us": "Contacte-nos",
   "Contact_your_server_admin": "Contacte o administrador do seu servidor.",

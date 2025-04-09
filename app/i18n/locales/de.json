@@ -129,6 +129,7 @@
   "Confirm_Password": "Passwort bestätigen",
   "Confirmation": "Bestätigung",
   "Connect": "Verbinden",
+  "Connect_to_server_as_user": "Verbinden Sie sich mit {{serverUrl}} als {{user}}",
   "Connecting": "Verbinden ...",
   "Contact_us": "Kontaktieren Sie uns",
   "Contact_your_server_admin": "Kontaktieren Sie Ihren Server-Administrator.",

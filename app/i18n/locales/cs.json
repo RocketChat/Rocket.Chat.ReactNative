@@ -144,6 +144,7 @@
   "Confirm_Password": "Potvrďte heslo",
   "Confirmation": "Potvrzení",
   "Connect": "Připojit",
+  "Connect_to_server_as_user": "Připojte se k {{serverUrl}} jako {{user}}",
   "Connecting": "Spojovací...",
   "Contact_us": "Kontaktujte nás",
   "Contact_your_server_admin": "Kontaktujte svého správce pracovního prostoru.",

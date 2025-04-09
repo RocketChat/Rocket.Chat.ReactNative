@@ -134,6 +134,7 @@
   "Confirm_Password": "పాస్వర్డ్ను నిర్ధారించండి",
   "Confirmation": "అనుమతి",
   "Connect": "కనెక్ట్ చేయండి",
+  "Connect_to_server_as_user": "{{user}} के रूप में {{serverUrl}} से कनेक्ट करें।",
   "Connecting": "కనెక్ట్ అవుతోంది...",
   "Contact_us": "మాకు సంప్రదించండి",
   "Contact_your_server_admin": "మీ పనిచేసే అడ్మిన్‌ని సంప్రదించండి.",

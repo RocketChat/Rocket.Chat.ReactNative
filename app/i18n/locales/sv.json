@@ -119,6 +119,7 @@
   "Confirm_Password": "Bekräfta lösenord",
   "Confirmation": "Bekräftelse",
   "Connect": "Anslut",
+  "Connect_to_server_as_user": "Anslut till {{serverUrl}} som {{user}}",
   "Connecting": "Ansluter...",
   "Contact_us": "Kontakta oss",
   "Contact_your_server_admin": "Kontakta serveradministratören.",

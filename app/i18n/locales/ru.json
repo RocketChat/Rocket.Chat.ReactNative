@@ -115,6 +115,7 @@
   "Confirm_Password": "Подтвердите пароль",
   "Confirmation": "Подтверждение",
   "Connect": "Соединение",
+  "Connect_to_server_as_user": "Подключитесь к {{serverUrl}} как {{user}}",
   "Connecting": "Соединение...",
   "Contact_us": "Связаться с нами",
   "Contact_your_server_admin": "Свяжитесь с администратором сервера.",
