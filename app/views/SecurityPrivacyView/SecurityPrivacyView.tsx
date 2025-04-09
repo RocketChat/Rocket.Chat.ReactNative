@@ -26,6 +26,7 @@ import { getUserSelector } from '../../selectors/login';
 import TOTPEnableModal from './TotpModel/TotpEnableModel';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { twoFactor } from '../../lib/services/twoFactor';
+import { sendEmailCode } from '../../lib/services/restApi';
 
 interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -39,6 +40,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const [state, setState] = useState({
 		crashReportState: getReportCrashErrorsValue(),
 		analyticsEventsState: getReportAnalyticsEventsValue(),
+		emmailMfaStatus: user.services?.email2fa?.enabled,
 		totaState: false,
 		showQrModel: false,
 		qrUrls: '',
@@ -85,6 +87,40 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 			log(error);
 		}
 	};
+
+	const togglemailMfa = async (val: boolean) => {
+		// https://open.rocket.chat/api/v1/users.2fa.disableEmail
+		setState(prevState => ({ ...prevState, emmailMfaStatus: !state.emmailMfaStatus }));
+		try {
+			// @ts-ignore
+			if (!state?.emmailMfaStatus) {
+				const result = await sdk.current.post('users.2fa.enableEmail', { message: '' });
+				console.log('result', result);
+			} else {
+				// @ts-ignore
+				await sendEmailCode(user.emails[0].address);
+				enableEmailauthWithOtp();
+			}
+		} catch (error) {
+			console.log('error', error);
+			const totpInvalid = 'totp-invalid';
+			const totpRequired = 'totp-required';
+			// @ts-ignore
+			if ([totpInvalid, totpRequired].includes(error?.data?.errorType)) {
+				enableEmailauthWithOtp();
+			}
+		}
+	};
+
+	const enableEmailauthWithOtp = async () => {
+		const code = await twoFactor({ method: 'totp', invalid: false });
+		if (code) {
+			const payload = { msg: 'method', id: user.id, method: '2fa:enable', params: [code.twoFactorCode] };
+			const result = await sdk.current.post('users.2fa.enableEmail', { message: payload });
+			console.log('result', result);
+		}
+	};
+
 	// @ts-ignore
 	const toggleTOTP = async () => {
 		// if (user?.services?.totp?.enabled) {
@@ -181,6 +217,8 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		}
 	};
 
+	const toogleEmailMfa = async (value: boolean) => {};
+
 	const onDisableTotp = async () => {
 		setState(prevState => ({ ...prevState, showQrModel: false }));
 		try {
@@ -259,6 +297,18 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						testID='security-privacy-view-enable-two-factor-authentication'
 						onPress={toggleTOTP}
 						additionalAcessibilityLabel={state.totaState}
+					/>
+					<List.Item
+						title='Enable_Two_factor_authentication_via_Email'
+						testID='security-Enable_Two_factor_authentication_via_Email'
+						right={() => <Switch value={state.emmailMfaStatus} onValueChange={togglemailMfa} />}
+						additionalAcessibilityLabel={state.analyticsEventsState}
+					/>
+					<List.Item
+						title='Log_analytics_events'
+						testID='security-privacy-view-analytics-events'
+						right={() => <Switch value={state.analyticsEventsState} onValueChange={toggleAnalyticsEvents} />}
+						additionalAcessibilityLabel={state.analyticsEventsState}
 					/>
 					<List.Item
 						title='Log_analytics_events'
