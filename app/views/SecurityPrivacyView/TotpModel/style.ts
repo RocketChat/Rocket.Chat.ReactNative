@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 20,
-		width: '80%'
+		width: '80%',
+		rowGap: 10
 	},
 	title: {
 		fontSize: 18,

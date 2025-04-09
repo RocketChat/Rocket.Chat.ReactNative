@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { Modal, View, StyleSheet, TouchableWithoutFeedback, Animated, Dimensions, Platform, Keyboard } from 'react-native';
+import { Modal, View, TouchableWithoutFeedback, Animated, Keyboard } from 'react-native';
+
 import styles from './style';
 
 interface ICustomModalProps {

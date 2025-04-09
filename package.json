@@ -115,7 +115,7 @@
 		"react-native-popover-view": "5.1.7",
 		"react-native-progress": "5.0.0",
 		"react-native-prompt-android": "1.1.0",
-		"react-native-qrcode-svg": "^6.3.15",
+		"react-native-qrcode-svg": "^6.3.12",
 		"react-native-reanimated": "3.8.1",
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "3.2.0",

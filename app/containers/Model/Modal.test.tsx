@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
-
 import { Text, TouchableOpacity } from 'react-native';
+
 import CustomModal from './CustomModel';
 
 describe('CustomModal Tests', () => {
