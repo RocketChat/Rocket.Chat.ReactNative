@@ -417,6 +417,7 @@
   "Local_authentication_unlock_option": "Unlock with passcode",
   "Local_authentication_unlock_with_label": "Unlock with {{label}}",
   "Log_analytics_events": "Log analytics events",
+  "Enable_Two_factor_authentication_via_TOTP":"Enable TOTP",
   "Logged_out_by_server": "You've been logged out by the workspace. Please log in again.",
   "Logged_out_of_other_clients_successfully": "Logged out of other clients successfully",
   "Logging_out": "Logging out.",
