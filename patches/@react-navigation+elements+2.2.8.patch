@@ -1,0 +1,38 @@
+diff --git a/node_modules/@react-navigation/elements/package.json b/node_modules/@react-navigation/elements/package.json
+index bed0995..f650085 100644
+--- a/node_modules/@react-navigation/elements/package.json
++++ b/node_modules/@react-navigation/elements/package.json
+@@ -20,6 +20,7 @@
+   "homepage": "https://reactnavigation.org",
+   "source": "./src/index.tsx",
+   "main": "./lib/commonjs/index.js",
++  "react-native": "./src/index.tsx",
+   "module": "./lib/module/index.js",
+   "types": "./lib/typescript/commonjs/src/index.d.ts",
+   "exports": {
+diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
+index bd30826..c3c8aae 100644
+--- a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
++++ b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
+@@ -1,9 +1,11 @@
+ import { useLocale, useTheme } from '@react-navigation/native';
+-import { Image, type ImageProps, Platform, StyleSheet } from 'react-native';
++import { Image, type ImageProps, Platform, StyleSheet, useWindowDimensions } from 'react-native';
+ 
+ export function HeaderIcon({ source, style, ...rest }: ImageProps) {
+   const { colors } = useTheme();
+   const { direction } = useLocale();
++  const { fontScale } = useWindowDimensions();
++  const size = 24 * fontScale;
+ 
+   return (
+     <Image
+@@ -11,7 +13,7 @@ export function HeaderIcon({ source, style, ...rest }: ImageProps) {
+       resizeMode="contain"
+       fadeDuration={0}
+       tintColor={colors.text}
+-      style={[styles.icon, direction === 'rtl' && styles.flip, style]}
++      style={[styles.icon, direction === 'rtl' && styles.flip, style, { width: size, height: size }]}
+       {...rest}
+     />
+   );

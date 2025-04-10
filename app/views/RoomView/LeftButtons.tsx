@@ -1,6 +1,6 @@
 import { HeaderBackButton } from '@react-navigation/elements';
 import React, { useCallback } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, useWindowDimensions } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
 import { themes } from '../../lib/constants';
@@ -54,6 +54,7 @@ const LeftButtons = ({
 }: ILeftButtonsProps): React.ReactElement | null => {
 	const { goBack } = useAppNavigation();
 	const onPress = useCallback(() => goRoomActionsView(), []);
+	const { fontScale } = useWindowDimensions();
 
 	if (!isMasterDetail || tmid) {
 		let label = ' ';
@@ -71,7 +72,7 @@ const LeftButtons = ({
 				label={label}
 				onPress={goBack}
 				tintColor={themes[theme].fontDefault}
-				labelStyle={{ fontSize, marginLeft }}
+				labelStyle={{ fontSize: fontSize * fontScale, marginLeft }}
 				style={styles.container}
 				testID='header-back'
 			/>
