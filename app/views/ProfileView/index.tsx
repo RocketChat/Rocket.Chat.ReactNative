@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
-import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
+// import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -21,7 +21,7 @@ import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion, showErrorAlert } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -41,6 +41,8 @@ import PasswordPolicies from '../../containers/PasswordPolicies';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
+import { showToast } from '../../lib/methods/helpers/showToast';
+import sdk from '../../lib/services/sdk';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -55,7 +57,7 @@ interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
-	const { showActionSheet, hideActionSheet } = useActionSheet();
+	const { showActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const {
@@ -104,6 +106,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		resolver: yupResolver(validationSchema)
 	});
 	const newPassword = watch('newPassword') ?? '';
+
 	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
@@ -173,36 +176,88 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		if (newPassword) params.newPassword = newPassword;
 		if (currentPassword) params.currentPassword = sha256(currentPassword);
 
-		const requirePassword = !!params.email || newPassword;
+		// const requirePassword = !!params.email || newPassword;
+		console.log('before sheet');
+		let code: { twoFactorCode: string; twoFactorMethod: string };
 
-		if (requirePassword && !params.currentPassword) {
-			setValue('saving', false);
-			showActionSheet({
-				children: (
-					<ActionSheetContentWithInputAndSubmit
-						title={I18n.t('Please_enter_your_password')}
-						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-						testID='profile-view-enter-password-sheet'
-						placeholder={I18n.t('Password')}
-						onSubmit={p => {
-							hideActionSheet();
-							setValue('currentPassword', p as any);
-							submit();
-						}}
-						onCancel={hideActionSheet}
-					/>
-				)
-			});
-			return;
-		}
+		console.log('user.services?.totp?.enabled', user.services?.totp?.enabled);
+		console.log('user.services?.email2fa?.enabled', user.services?.email2fa?.enabled);
+		const requirePassword = !user.services?.totp?.enabled && !user.services?.email2fa?.enabled;
+
+		console.log('requirePassword', requirePassword);
 
 		try {
-			const twoFactorOptions = params.currentPassword
-				? { twoFactorCode: params.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
-				: null;
+			// @ts-ignore
+			if (requirePassword || !user.emails[0].verified) {
+				setValue('saving', false);
 
-			const result = await Services.saveUserProfileMethod(params, customFields, twoFactorCode || twoFactorOptions);
+				code = await twoFactor({
+					method: TwoFactorMethods.PASSWORD,
+					invalid: false
+				});
 
+				saveProfile(params, code);
+
+				// showActionSheet({
+				// 	children: (
+				// 		<ActionSheetContentWithInputAndSubmit
+				// 			title={I18n.t('Please_enter_your_password')}
+				// 			description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
+				// 			testID='profile-view-enter-password-sheet'
+				// 			placeholder={I18n.t('Password')}
+				// 			onSubmit={p => {
+				// 				hideActionSheet();
+				// 				setValue('currentPassword', p as any);
+				// 				submit();
+				// 			}}
+				// 			onCancel={hideActionSheet}
+				// 		/>
+				// 	)
+				// });
+				// return;
+			} else {
+				if (!requirePassword && !user.services?.totp?.enabled && user?.emails) {
+					const response = await Services.sendEmailCode(user.emails[0].address);
+					if (response.success) {
+						showToast(I18n.t('Two_Factor_Success_message'));
+					}
+				}
+
+				code = await twoFactor({
+					method: user.services?.totp?.enabled ? TwoFactorMethods.TOTP : TwoFactorMethods.EMAIL,
+					invalid: false
+				});
+
+				saveProfile(params, code);
+			}
+		} catch (error) {
+			console.log('error', error);
+			setValue('saving', false);
+			logEvent(events.PROFILE_SAVE_CHANGES_F);
+		}
+	};
+
+	const saveProfile = async (params: IProfileParams, code: { twoFactorCode: string; twoFactorMethod: string }) => {
+		try {
+			console.log('params', params);
+			// @ts-ignore
+			console.log('twoFactorOptions', code);
+			console.log('customFields', customFields);
+			// "{\"msg\":\"method\",\"id\":\"14\",\"method\":\"saveUserProfile\",\"params\":[{\"realname\":\"Sk\",\"email\":\"skjasimuddin9153@gmail.com\",\"username\":\"sk0021\",\"statusText\":\"\",\"statusType\":\"online\",\"nickname\":\"\",\"bio\":\"\"},{},{\"twoFactorCode\":\"682781\",\"twoFactorMethod\":\"email\"}]}"
+			const payload = {
+				msg: 'method',
+				id: user.id,
+				method: 'saveUserProfile',
+				params: [params, {}, code]
+			};
+			const result = await sdk.current.post('method.call/saveUserProfile', { message: JSON.stringify(payload) });
+			const parseRespose = JSON.parse(result.message);
+			console.log('result', parseRespose?.error);
+
+			if (parseRespose?.error) {
+				showErrorAlert(parseRespose?.error?.reason, 'Error');
+				return;
+			}
 			if (result) {
 				logEvent(events.PROFILE_SAVE_CHANGES);
 				if ('realname' in params) {
@@ -225,6 +280,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
 		} catch (e: any) {
+			console.log('error', e);
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
