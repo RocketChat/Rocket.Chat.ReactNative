@@ -1060,7 +1060,7 @@ PODS:
     - React-Core
   - react-native-cookies (6.2.1):
     - React-Core
-  - react-native-external-keyboard (0.5.3):
+  - react-native-external-keyboard (0.5.4-rc):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1751,7 +1751,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-cameraroll: 4593ffad9e619781aed27dda64739387d55ed402
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
-  react-native-external-keyboard: cffdc9e7cc0c7e6d7b6341ef67d11704b78c6ba9
+  react-native-external-keyboard: 8b5aeea3c1e693be384354e89eede4c0123204c8
   react-native-mmkv-storage: 7953fb2d2128987153afabd0deb3fadbba009395
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
   react-native-notifications: 4601a5a8db4ced6ae7cfc43b44d35fe437ac50c4
