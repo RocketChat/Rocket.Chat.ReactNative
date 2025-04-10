@@ -113,7 +113,7 @@ commands:
       - run:
           name: Install pods libs
           command: |
-            yarn pod-install --deployment
+            yarn pod-install
       - save_cache:
           name: Save pods specs and pods cache
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
