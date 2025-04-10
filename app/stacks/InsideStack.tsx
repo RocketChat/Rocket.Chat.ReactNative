@@ -311,7 +311,7 @@ const InsideStackNavigator = () => {
 				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
-			<InsideStack.Screen name='StatusView' component={StatusView} options={{ presentation: 'transparentModal' }} />
+			<InsideStack.Screen name='StatusView' component={StatusView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}
