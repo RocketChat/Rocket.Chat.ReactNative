@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
 			},
 			android: {
 				marginHorizontal: 0,
-				marginLeft: -12
+				marginLeft: -2
 			}
 		})
 	},

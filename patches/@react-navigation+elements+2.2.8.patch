@@ -36,3 +36,20 @@ index bd30826..c3c8aae 100644
        {...rest}
      />
    );
+diff --git a/node_modules/@react-navigation/elements/src/PlatformPressable.tsx b/node_modules/@react-navigation/elements/src/PlatformPressable.tsx
+index e95e14f..1fd09a5 100644
+--- a/node_modules/@react-navigation/elements/src/PlatformPressable.tsx
++++ b/node_modules/@react-navigation/elements/src/PlatformPressable.tsx
+@@ -5,11 +5,11 @@ import {
+   Easing,
+   type GestureResponderEvent,
+   Platform,
+-  Pressable,
+   type PressableProps,
+   type StyleProp,
+   type ViewStyle,
+ } from 'react-native';
++import { Pressable } from 'react-native-gesture-handler';
+ 
+ type HoverEffectProps = {
+   color?: string;
