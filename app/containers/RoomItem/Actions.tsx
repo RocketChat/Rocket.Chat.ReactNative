@@ -8,21 +8,24 @@ import Animated, {
 	useAnimatedReaction,
 	useSharedValue
 } from 'react-native-reanimated';
-import { RectButton } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
-import { CustomIcon } from '../CustomIcon';
 import { DisplayMode } from '../../lib/constants';
 import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
 import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import ActionButton from './ActionButton';
 
-const CONDENSED_ICON_SIZE = 24;
-const EXPANDED_ICON_SIZE = 28;
-
-export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
+export const LeftActions = React.memo(function LeftActions({
+	transX,
+	enabled,
+	isRead,
+	width,
+	onToggleReadPress,
+	displayMode
+}: ILeftActionsProps) {
 	const { colors } = useTheme();
 
 	const { rowHeight, rowHeightCondensed } = useRowHeight();
@@ -44,20 +47,29 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 					animatedStyles
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
-					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
-						<CustomIcon
-							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-							name={isRead ? 'flag' : 'check'}
-							color={colors.fontWhite}
-						/>
-					</RectButton>
+					<ActionButton
+						enabled={enabled}
+						onPress={onToggleReadPress}
+						iconName={isRead ? 'flag' : 'check'}
+						backgroundColor={colors.badgeBackgroundLevel2}
+						isCondensed={isCondensed}
+						iconColor={colors.fontWhite}
+					/>
 				</View>
 			</Animated.View>
 		</View>
 	);
 });
 
-export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
+export const RightActions = React.memo(function RightActionsContainer({
+	transX,
+	favorite,
+	width,
+	toggleFav,
+	onHidePress,
+	displayMode,
+	enabled
+}: IRightActionsProps) {
 	const { colors } = useTheme();
 
 	const { rowHeight, rowHeightCondensed } = useRowHeight();
@@ -128,13 +140,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					viewHeight,
 					animatedFavStyles
 				]}>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]} onPress={toggleFav}>
-					<CustomIcon
-						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-						name={favorite ? 'star-filled' : 'star'}
-						color={colors.fontWhite}
-					/>
-				</RectButton>
+				<ActionButton
+					enabled={enabled}
+					onPress={toggleFav}
+					iconName={favorite ? 'star-filled' : 'star'}
+					iconColor={colors.fontWhite}
+					backgroundColor={colors.statusFontWarning}
+					isCondensed={isCondensed}
+				/>
 			</Animated.View>
 			<Animated.View
 				style={[
@@ -147,15 +160,14 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					viewHeight,
 					animatedHideStyles
 				]}>
-				<RectButton
-					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
-					onPress={onHidePress}>
-					<CustomIcon
-						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
-						name='unread-on-top-disabled'
-						color={colors.fontWhite}
-					/>
-				</RectButton>
+				<ActionButton
+					enabled={enabled}
+					onPress={onHidePress}
+					iconName='unread-on-top-disabled'
+					iconColor={colors.fontWhite}
+					backgroundColor={colors.buttonBackgroundSecondaryPress}
+					isCondensed={isCondensed}
+				/>
 			</Animated.View>
 		</View>
 	);
