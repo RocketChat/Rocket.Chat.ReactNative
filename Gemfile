@@ -9,5 +9,5 @@ gem 'xcodeproj', '< 1.26.0'
 gem 'concurrent-ruby', '< 1.3.4'
 
 gem 'fastlane'
-plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
+plugins_path = File.join(File.dirname(__FILE__), 'ios', 'fastlane', 'Pluginfile')
 eval_gemfile(plugins_path) if File.exist?(plugins_path)
