@@ -6,13 +6,13 @@ import { useTheme } from '../../../../theme';
 
 const ReadReceipt = React.memo(({ isReadReceiptEnabled, unread }: { isReadReceiptEnabled?: boolean; unread?: boolean }) => {
 	const { colors } = useTheme();
-	const iconName = unread ? 'check' : 'check-double';
-	const iconColor = unread ? colors.fontAnnotation : colors.fontInfo;
-	const size = unread ? 20 : 25;
-	const marginTop = unread ? { marginTop: -3 } : { marginTop: -5 };
+	const isUnread = unread || unread === null;
+	const iconName = isUnread ? 'check-single' : 'check-double';
+	const iconColor = isUnread ? colors.fontAnnotation : colors.fontInfo;
+	const marginTop = -5;
 
 	if (isReadReceiptEnabled) {
-		return <CustomIcon name={iconName} color={iconColor} size={size} style={[styles.rightIcons, marginTop]} />;
+		return <CustomIcon name={iconName} color={iconColor} size={25} style={{ ...styles.rightIcons, marginTop }} />;
 	}
 	return null;
 });
