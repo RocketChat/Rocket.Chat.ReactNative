@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
 import { defaultHeader, getActiveRouteName, navigationTheme } from './lib/methods/helpers/navigation';
-import { IApplicationState, RootEnum } from './definitions';
+import { RootEnum } from './definitions';
 // Stacks
 import AuthLoadingView from './views/AuthLoadingView';
 // SetUsername Stack
@@ -32,10 +32,7 @@ const SetUsernameStack = () => (
 
 // App
 const Stack = createStackNavigator<StackParamList>();
-
-type AppProps = Pick<IApplicationState['app'], 'root' | 'isMasterDetail'>;
-
-const App = memo(({ root, isMasterDetail }: AppProps) => {
+const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
 	useEffect(() => {
 		if (root) {
@@ -84,7 +81,7 @@ const App = memo(({ root, isMasterDetail }: AppProps) => {
 		</NavigationContainer>
 	);
 });
-const mapStateToProps = (state: IApplicationState) => ({
+const mapStateToProps = (state: any) => ({
 	root: state.app.root,
 	isMasterDetail: state.app.isMasterDetail
 });
