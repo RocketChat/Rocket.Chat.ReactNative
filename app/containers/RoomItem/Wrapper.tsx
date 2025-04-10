@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { KeyboardExtendedView } from 'react-native-external-keyboard';
 
 import { DisplayMode } from '../../lib/constants';
 import { useTheme } from '../../theme';
@@ -12,13 +12,15 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 	const { colors } = useTheme();
 	const { rowHeight, rowHeightCondensed } = useRowHeight();
 	return (
-		<View
+		<KeyboardExtendedView
+			focusable={false}
 			style={[styles.container, { height: displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight }]}
 			accessibilityLabel={accessibilityLabel}
 			accessible
 			accessibilityRole='button'>
 			<IconOrAvatar displayMode={displayMode} {...props} />
-			<View
+			<KeyboardExtendedView
+				focusable={false}
 				style={[
 					styles.centerContainer,
 					{
@@ -26,8 +28,8 @@ const Wrapper = ({ accessibilityLabel, children, displayMode, ...props }: IWrapp
 					}
 				]}>
 				{children}
-			</View>
-		</View>
+			</KeyboardExtendedView>
+		</KeyboardExtendedView>
 	);
 };
 
