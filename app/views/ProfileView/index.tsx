@@ -177,14 +177,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		if (currentPassword) params.currentPassword = sha256(currentPassword);
 
 		// const requirePassword = !!params.email || newPassword;
-		console.log('before sheet');
 		let code: { twoFactorCode: string; twoFactorMethod: string };
 
-		console.log('user.services?.totp?.enabled', user.services?.totp?.enabled);
-		console.log('user.services?.email2fa?.enabled', user.services?.email2fa?.enabled);
 		const requirePassword = !user.services?.totp?.enabled && !user.services?.email2fa?.enabled;
-
-		console.log('requirePassword', requirePassword);
 
 		try {
 			// @ts-ignore
@@ -231,7 +226,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				saveProfile(params, code);
 			}
 		} catch (error) {
-			console.log('error', error);
 			setValue('saving', false);
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 		}
@@ -239,10 +233,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const saveProfile = async (params: IProfileParams, code: { twoFactorCode: string; twoFactorMethod: string }) => {
 		try {
-			console.log('params', params);
 			// @ts-ignore
-			console.log('twoFactorOptions', code);
-			console.log('customFields', customFields);
 			// "{\"msg\":\"method\",\"id\":\"14\",\"method\":\"saveUserProfile\",\"params\":[{\"realname\":\"Sk\",\"email\":\"skjasimuddin9153@gmail.com\",\"username\":\"sk0021\",\"statusText\":\"\",\"statusType\":\"online\",\"nickname\":\"\",\"bio\":\"\"},{},{\"twoFactorCode\":\"682781\",\"twoFactorMethod\":\"email\"}]}"
 			const payload = {
 				msg: 'method',
@@ -252,7 +243,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			};
 			const result = await sdk.current.post('method.call/saveUserProfile', { message: JSON.stringify(payload) });
 			const parseRespose = JSON.parse(result.message);
-			console.log('result', parseRespose?.error);
 
 			if (parseRespose?.error) {
 				showErrorAlert(parseRespose?.error?.reason, 'Error');
@@ -280,7 +270,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
 		} catch (e: any) {
-			console.log('error', e);
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
