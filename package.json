@@ -71,7 +71,7 @@
 		"expo-haptics": "^14.0.0",
 		"expo-image": "2.0.6",
 		"expo-image-picker": "16.0.1",
-		"expo-keep-awake": "^14.0.1",
+		"expo-keep-awake": "14.0.3",
 		"expo-local-authentication": "^15.0.1",
 		"expo-video-thumbnails": "^9.0.0",
 		"expo-web-browser": "14.0.2",
