@@ -51,11 +51,11 @@ save-npm-cache-mac: &save-npm-cache-mac
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
-  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  key: bundle-v1-{{ checksum "Gemfile.lock" }}
 
 save-gems-cache: &save-gems-cache
   name: Save gems cache
-  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  key: bundle-v1-{{ checksum "Gemfile.lock" }}
   paths:
     - vendor/bundle
 
