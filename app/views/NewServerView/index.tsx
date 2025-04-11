@@ -82,7 +82,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const setHeader = () => {
 		if (previousServer) {
 			return navigation.setOptions({
-				headerTitle: I18n.t('Workspaces'),
+				headerTitle: I18n.t('Add_Server'),
 				headerLeft: () =>
 					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
 			});
@@ -121,7 +121,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 
 	useEffect(() => {
 		setHeader();
-	}, [connecting]);
+	}, [connecting, previousServer]);
 
 	return (
 		<FormContainer
