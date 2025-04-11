@@ -42,9 +42,9 @@ export default StyleSheet.create({
 		...sharedStyles.textRegular
 	},
 	buttonCreateWorkspace: {
-		justifyContent: 'center'
-		// marginBottom: 0,
-		// paddingVertical: 14,
-		// paddingHorizontal: 16
+		justifyContent: 'center',
+		marginBottom: 0,
+		paddingVertical: 14,
+		paddingHorizontal: 16
 	}
 });

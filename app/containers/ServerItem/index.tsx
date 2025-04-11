@@ -1,7 +1,6 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
-import { KeyboardExtendedPressable } from 'react-native-external-keyboard';
 
 import Check from '../Check';
 import styles, { ROW_HEIGHT } from './styles';
@@ -28,16 +27,9 @@ const defaultLogo = require('../../static/images/logo.png');
 const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
 	const { theme } = useTheme();
 	return (
-		<KeyboardExtendedPressable
-			focusable={true}
-			accessible={true}
-			accessibilityRole='button'
-			accessibilityLabel={`Server: ${item.name}`}
-			accessibilityHint='Press to select server'
-			accessibilityActions={[{ name: 'longpress', label: 'Long press to select server' }]}
-			aria-checked={hasCheck}
+		<Pressable
 			onPress={onPress}
-			onLongPress={onLongPress}
+			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
 			android_ripple={{ color: themes[theme].surfaceNeutral }}
 			style={({ pressed }: { pressed: boolean }) => ({
@@ -67,7 +59,7 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 				</View>
 				{hasCheck ? <Check /> : null}
 			</View>
-		</KeyboardExtendedPressable>
+		</Pressable>
 	);
 });
 
