@@ -81,6 +81,7 @@ const Avatar = React.memo(
 			image = (
 				<Image
 					style={avatarStyle}
+					focusable={!onPress}
 					source={{
 						uri,
 						headers: RocketChatSettings.customHeaders
@@ -101,7 +102,7 @@ const Avatar = React.memo(
 		return (
 			<KeyboardExtendedView
 				focusable={!!onPress}
-				accessible
+				accessible={!onPress}
 				accessibilityLabel={!onPress ? avatarAccessibilityLabel : undefined}
 				style={[avatarStyle, style]}
 				testID='avatar'>

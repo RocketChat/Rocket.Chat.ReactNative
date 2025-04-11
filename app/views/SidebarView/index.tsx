@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { DrawerNavigationProp, getDrawerStatusFromState } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
 import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
@@ -82,6 +82,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (state?.index !== nextProps.state?.index) {
 			return true;
 		}
+
+		if (!dequal(state?.history, nextProps.state?.history)) {
+			return true;
+		}
+
 		if (nextState.showStatus !== showStatus) {
 			return true;
 		}
@@ -169,6 +174,11 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		return state?.routeNames[state?.index];
 	}
 
+	get getDrawerStatus() {
+		const { state } = this.props;
+		return state && getDrawerStatusFromState(state);
+	}
+
 	onPressUser = () => {
 		const { navigation, isMasterDetail } = this.props;
 		if (isMasterDetail) {
@@ -213,7 +223,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		}
 	};
 
-	renderAdmin = () => {
+	renderAdmin = (disabled: boolean) => {
 		const { theme, isMasterDetail } = this.props;
 		if (!this.getIsAdmin()) {
 			return null;
@@ -223,6 +233,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 			<>
 				<List.Separator />
 				<List.Item
+					disabled={disabled}
 					title={'Admin_Panel'}
 					left={() => <List.Icon name='settings' />}
 					onPress={() => this.sidebarNavigate(routeName)}
@@ -232,12 +243,13 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
-	renderNavigation = () => {
+	renderNavigation = (disabled: boolean) => {
 		const { theme } = this.props;
 		return (
 			<>
 				<List.Item
 					title={'Chats'}
+					disabled={disabled}
 					left={() => <List.Icon name='message' />}
 					onPress={() => this.sidebarNavigate('ChatsStackNavigator')}
 					backgroundColor={this.currentItemKey === 'ChatsStackNavigator' ? themes[theme!].strokeLight : undefined}
@@ -245,6 +257,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<List.Separator />
 				<List.Item
+					disabled={disabled}
 					title={'Profile'}
 					left={() => <List.Icon name='user' />}
 					onPress={() => this.sidebarNavigate('ProfileStackNavigator')}
@@ -253,6 +266,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<List.Separator />
 				<List.Item
+					disabled={disabled}
 					title={'Accessibility'}
 					left={() => <List.Icon name='accessibility' />}
 					onPress={() => this.sidebarNavigate('AccessibilityStackNavigator')}
@@ -261,18 +275,19 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 				/>
 				<List.Separator />
 				<List.Item
+					disabled={disabled}
 					title={'Settings'}
 					left={() => <List.Icon name='administration' />}
 					onPress={() => this.sidebarNavigate('SettingsStackNavigator')}
 					backgroundColor={this.currentItemKey === 'SettingsStackNavigator' ? themes[theme!].strokeLight : undefined}
 					testID='sidebar-settings'
 				/>
-				{this.renderAdmin()}
+				{this.renderAdmin(disabled)}
 			</>
 		);
 	};
 
-	renderCustomStatus = () => {
+	renderCustomStatus = (disabled: boolean) => {
 		const { user, theme, Presence_broadcast_disabled, notificationPresenceCap } = this.props;
 
 		let status = user?.status;
@@ -291,6 +306,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 
 		return (
 			<List.Item
+				disabled={disabled}
 				title={user.statusText || 'Edit_Status'}
 				left={() => <Status size={24} status={status} />}
 				right={right}
@@ -301,13 +317,14 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		);
 	};
 
-	renderSupportedVersionsWarn = () => {
+	renderSupportedVersionsWarn = (disabled: boolean) => {
 		const { theme, supportedVersionsStatus } = this.props;
 		if (supportedVersionsStatus === 'warn') {
 			return (
 				<>
 					<List.Separator />
 					<List.Item
+						disabled={disabled}
 						title={'Supported_versions_warning_update_required'}
 						color={themes[theme!].fontDanger}
 						left={() => <CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />}
@@ -326,6 +343,9 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 		if (!user) {
 			return null;
 		}
+
+		const disabled = this.getDrawerStatus === 'closed';
+
 		return (
 			<SafeAreaView testID='sidebar-view' vertical={isMasterDetail}>
 				<ScrollView style={styles.container} {...scrollPersistTaps}>
@@ -349,18 +369,18 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 						</View>
 					</TouchableWithoutFeedback>
 
-					{this.renderSupportedVersionsWarn()}
+					{this.renderSupportedVersionsWarn(disabled)}
 
 					<List.Separator />
 
-					{allowStatusMessage !== false ? this.renderCustomStatus() : null}
+					{allowStatusMessage !== false ? this.renderCustomStatus(disabled) : null}
 					{!isMasterDetail ? (
 						<>
 							<List.Separator />
-							{this.renderNavigation()}
+							{this.renderNavigation(disabled)}
 						</>
 					) : (
-						<>{this.renderAdmin()}</>
+						<>{this.renderAdmin(disabled)}</>
 					)}
 
 					<List.Separator />
