@@ -416,6 +416,8 @@
   "Message_Reported": "বার্তা প্রতিবেদন করা হয়েছে",
   "Message_starred": "বার্তা তারকা",
   "Message_unstarred": "বার্তা তারকা নয়",
+  "Message_was_not_read": "বার্তাটি পড়া হয়নি।",
+  "Message_was_read": "বার্তাটি পড়া হয়েছে।",
   "messages": "বার্তা",
   "Missed_call": "মিস কল",
   "missing_room_e2ee_description": "ঘরের জন্য এনক্রিপশন কীগুলি আপডেট করা প্রয়োজন, এর জন্য আরেকজন ঘরের সদস্যকে অনলাইনে থাকতে হবে।",
