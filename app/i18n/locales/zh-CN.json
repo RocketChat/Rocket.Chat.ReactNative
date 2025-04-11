@@ -274,6 +274,8 @@
   "Message_Reported": "信息已举报",
   "Message_starred": "信息被标注",
   "Message_unstarred": "信息被取消标注",
+  "Message_was_not_read": "消息未读",
+  "Message_was_read": "消息已读",
   "messages": "信息",
   "missing_room_e2ee_description": "房间的加密密钥需要更新，另一位房间成员需要在线才能进行此操作。",
   "missing_room_e2ee_title": "过几分钟再回来检查",

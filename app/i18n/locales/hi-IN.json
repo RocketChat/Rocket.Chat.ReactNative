@@ -417,6 +417,8 @@
   "Message_Reported": "संदेश की सूचना दी गई",
   "Message_starred": "संदेश स्टार किया गया",
   "Message_unstarred": "संदेश का स्टार हटाया गया",
+  "Message_was_not_read": "संदेश नहीं पढ़ा गया",
+  "Message_was_read": "संदेश पढ़ा गया था।",
   "messages": "संदेश",
   "Missed_call": "कॉल छूट गई है",
   "missing_room_e2ee_description": "कमरे के लिए एन्क्रिप्शन कुंजियों को अपडेट किया जाना चाहिए, इसके लिए एक और कमरे के सदस्य को ऑनलाइन होना चाहिए।",

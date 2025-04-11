@@ -254,6 +254,8 @@
   "Message_HideType_wm": "ようこそ",
   "Message_removed": "メッセージを除く",
   "Message_Reported": "メッセージを報告しました",
+  "Message_was_not_read": "メッセージは未読です。",
+  "Message_was_read": "メッセージが読まれました。",
   "messages": "メッセージ",
   "missing_room_e2ee_description": "部屋の暗号化キーを更新する必要があります。これが行われるためには、別の部屋のメンバーがオンラインである必要があります。",
   "missing_room_e2ee_title": "数分後にもう一度確認してください",

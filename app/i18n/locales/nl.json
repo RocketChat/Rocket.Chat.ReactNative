@@ -352,6 +352,8 @@
   "Message_Reported": "Bericht gerapporteerd",
   "Message_starred": "Bericht met ster",
   "Message_unstarred": "Bericht zonder ster",
+  "Message_was_not_read": "Bericht werd niet gelezen.",
+  "Message_was_read": "Bericht was gelezen",
   "messages": "berichten",
   "missing_room_e2ee_description": "De versleutelingssleutels voor de kamer moeten worden bijgewerkt, een ander kamerlid moet online zijn om dit te laten gebeuren.",
   "missing_room_e2ee_title": "Kom over een paar momenten terug",

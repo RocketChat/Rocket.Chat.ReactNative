@@ -290,6 +290,8 @@
   "Message_Reported": "訊息已檢舉",
   "Message_starred": "訊息被標註",
   "Message_unstarred": "訊息被取消標註",
+  "Message_was_not_read": "消息未讀取",
+  "Message_was_read": "訊息已讀",
   "messages": "訊息",
   "missing_room_e2ee_description": "房間的加密密鑰需要更新，另一位房間成員需要在線才能進行此操作。",
   "missing_room_e2ee_title": "過幾分鐘再回來檢查",

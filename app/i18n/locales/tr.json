@@ -290,6 +290,8 @@
   "Message_Reported": "İleti bildirildi",
   "Message_starred": "İletia yıldız eklendi",
   "Message_unstarred": "İletiın yıldızı kaldırıldı",
+  "Message_was_not_read": "Mesaj okunmadı.",
+  "Message_was_read": "Mesaj okundu",
   "messages": "iletiler",
   "missing_room_e2ee_description": "Odanın şifreleme anahtarları güncellenmelidir, bunun gerçekleşmesi için başka bir oda üyesinin çevrimiçi olması gerekmektedir.",
   "missing_room_e2ee_title": "Birkaç an içinde tekrar kontrol edin",
