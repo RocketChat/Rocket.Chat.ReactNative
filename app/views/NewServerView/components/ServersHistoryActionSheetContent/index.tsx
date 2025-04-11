@@ -8,6 +8,7 @@ import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import { TServerHistoryModel } from '../../../../definitions';
 import i18n from '../../../../i18n';
+import { A11yContainer, A11yElement } from '../../../../containers/A11yFlow';
 
 interface IServersHistoryActionSheetContent {
 	serversHistory: TServerHistoryModel[];
@@ -30,24 +31,32 @@ export const ServersHistoryActionSheetContent = ({
 				<>
 					{serversHistory.map(item => (
 						<>
-							<List.Item
-								accessibilityLabel={i18n.t('Connect_to_server_as_user', { serverUrl: item.url, user: item.username })}
-								testID={`servers-history-${item.url}`}
-								onPress={() => onPressServerHistory(item)}
-								right={() => (
-									<Touch
-										accessibilityLabel={i18n.t('Remove_from_servers_history')}
-										testID={`servers-history-delete-${item.url}`}
-										onPress={() => onDelete(item)}>
-										<CustomIcon name='delete' size={24} color={colors.fontDefault} />
-									</Touch>
-								)}
-								styleTitle={{ fontSize: 18 }}
-								translateTitle={false}
-								translateSubtitle={false}
-								title={item.url}
-								subtitle={item.username}
-							/>
+							<A11yContainer>
+								<A11yElement order={1}>
+									<List.Item
+										accessibilityLabel={i18n.t('Connect_to_server_as_user', { serverUrl: item.url, user: item.username })}
+										testID={`servers-history-${item.url}`}
+										onPress={() => onPressServerHistory(item)}
+										right={() => (
+											<A11yElement order={2}>
+												<Touch
+													accessible
+													accessibilityLabel={i18n.t('Remove_from_servers_history')}
+													testID={`servers-history-delete-${item.url}`}
+													onPress={() => onDelete(item)}>
+													<CustomIcon name='delete' size={24} color={colors.fontDefault} />
+												</Touch>
+											</A11yElement>
+										)}
+										styleTitle={{ fontSize: 18 }}
+										translateTitle={false}
+										translateSubtitle={false}
+										title={item.url}
+										subtitle={item.username}
+									/>
+								</A11yElement>
+							</A11yContainer>
+
 							<List.Separator />
 						</>
 					))}
