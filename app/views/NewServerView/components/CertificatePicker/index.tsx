@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { TCertificatePicker } from '../../definitions';
@@ -8,15 +8,17 @@ import sharedStyles from '../../../Styles';
 import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
-	certificatePicker: {
-		alignItems: 'center',
-		justifyContent: 'flex-end'
+	container: {
+		paddingTop: 12,
+		paddingBottom: 24,
+		rowGap: 12
+	},
+	button: {
+		marginTop: 0,
+		marginBottom: 0
 	},
 	chooseCertificateTitle: {
 		...sharedStyles.textRegular
-	},
-	chooseCertificate: {
-		...sharedStyles.textSemibold
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
@@ -33,7 +35,7 @@ const CertificatePicker = ({ connecting, certificate, chooseCertificate, handleR
 	}
 
 	return (
-		<>
+		<View style={styles.container}>
 			<Text style={[styles.buttonPrompt, { color: colors.fontSecondaryInfo }]}>
 				{certificate ? I18n.t('Your_certificate') : I18n.t('Do_you_have_a_certificate')}
 			</Text>
@@ -43,12 +45,12 @@ const CertificatePicker = ({ connecting, certificate, chooseCertificate, handleR
 				title={certificate ?? I18n.t('Apply_Certificate')}
 				type='secondary'
 				disabled={connecting}
-				style={{ marginTop: 12, marginBottom: 24 }}
+				style={styles.button}
 				fontSize={12}
 				styleText={styles.chooseCertificateTitle}
 				small
 			/>
-		</>
+		</View>
 	);
 };
 
