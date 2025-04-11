@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { DrawerNavigationProp, getDrawerStatusFromState } from '@react-navigation/drawer';
 import { DrawerNavigationState } from '@react-navigation/native';
-import { Alert, ScrollView, Text, TouchableWithoutFeedback, View, Linking } from 'react-native';
+import { Alert, ScrollView, View, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Dispatch } from 'redux';
 
-import Avatar from '../../containers/Avatar';
 import Status from '../../containers/Status/Status';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
@@ -25,6 +24,7 @@ import * as List from '../../containers/List';
 import { IActionSheetProvider, showActionSheetRef, withActionSheet } from '../../containers/ActionSheet';
 import { setNotificationPresenceCap } from '../../actions/app';
 import { SupportedVersionsWarning } from '../../containers/SupportedVersions';
+import SidebarHeader from './SidebarHeader';
 
 interface ISidebarState {
 	showStatus: boolean;
@@ -338,7 +338,7 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 	};
 
 	render() {
-		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail, theme } = this.props;
+		const { user, Site_Name, baseUrl, useRealName, allowStatusMessage, isMasterDetail } = this.props;
 
 		if (!user) {
 			return null;
@@ -348,26 +348,17 @@ class Sidebar extends Component<ISidebarProps, ISidebarState> {
 
 		return (
 			<SafeAreaView testID='sidebar-view' vertical={isMasterDetail}>
-				<ScrollView style={styles.container} {...scrollPersistTaps}>
+				<ScrollView style={styles.container} {...scrollPersistTaps} testID='sidebar-scrollview'>
 					<List.Separator />
-					<TouchableWithoutFeedback onPress={this.onPressUser} testID='sidebar-close-drawer'>
-						<View style={[styles.header, { backgroundColor: themes[theme!].surfaceRoom }]}>
-							<Avatar text={user.username} style={styles.avatar} size={30} />
-							<View style={styles.headerTextContainer}>
-								<View style={styles.headerUsername}>
-									<Text numberOfLines={1} style={[styles.username, { color: themes[theme!].fontTitlesLabels }]}>
-										{useRealName ? user.name : user.username}
-									</Text>
-								</View>
-								<Text
-									style={[styles.currentServerText, { color: themes[theme!].fontTitlesLabels }]}
-									numberOfLines={1}
-									accessibilityLabel={`Connected to ${baseUrl}`}>
-									{Site_Name}
-								</Text>
-							</View>
-						</View>
-					</TouchableWithoutFeedback>
+					<SidebarHeader
+						disabled={disabled}
+						baseUrl={baseUrl}
+						siteName={Site_Name}
+						username={user.username}
+						name={user.name}
+						useRealName={useRealName}
+						onPress={this.onPressUser}
+					/>
 
 					{this.renderSupportedVersionsWarn(disabled)}
 
