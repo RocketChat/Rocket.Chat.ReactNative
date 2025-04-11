@@ -10,7 +10,7 @@ import { useTheme } from '../../../../theme';
 const CertificatePicker = ({ connecting, certificate, chooseCertificate, handleRemove, showBottomInfo }: TCertificatePicker) => {
 	const { colors } = useTheme();
 	if (!showBottomInfo) {
-		return <></>;
+		return null;
 	}
 
 	return (
