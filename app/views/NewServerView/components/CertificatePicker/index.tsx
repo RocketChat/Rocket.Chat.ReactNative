@@ -1,11 +1,30 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
 import I18n from '../../../../i18n';
 import { TCertificatePicker } from '../../definitions';
-import styles from './styles';
 import Button from '../../../../containers/Button';
+import sharedStyles from '../../../Styles';
 import { useTheme } from '../../../../theme';
+
+const styles = StyleSheet.create({
+	certificatePicker: {
+		alignItems: 'center',
+		justifyContent: 'flex-end'
+	},
+	chooseCertificateTitle: {
+		...sharedStyles.textRegular
+	},
+	chooseCertificate: {
+		...sharedStyles.textSemibold
+	},
+	buttonPrompt: {
+		...sharedStyles.textRegular,
+		fontSize: 14,
+		textAlign: 'center',
+		lineHeight: 20
+	}
+});
 
 const CertificatePicker = ({ connecting, certificate, chooseCertificate, handleRemove, showBottomInfo }: TCertificatePicker) => {
 	const { colors } = useTheme();
