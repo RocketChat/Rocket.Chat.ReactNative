@@ -11,7 +11,7 @@ import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actio
 import { CERTIFICATE_KEY, themes } from '../../lib/constants';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { IApplicationState, IBaseScreen, TServerHistoryModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
