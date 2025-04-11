@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Q } from '@nozbe/watermelondb';
 
+import { textInputDebounceTime } from '../../../lib/constants';
+import { useDebounce } from '../../../lib/methods/helpers';
 import { sanitizeLikeString } from '../../../lib/database/utils';
 import { TServerHistoryModel } from '../../../definitions';
 import database from '../../../lib/database';
@@ -8,7 +10,7 @@ import database from '../../../lib/database';
 const useServersHistory = () => {
 	const [serversHistory, setServersHistory] = useState<TServerHistoryModel[]>([]);
 
-	const queryServerHistory = async (text?: string) => {
+	const queryServerHistory = useDebounce(async (text?: string) => {
 		const db = database.servers;
 		try {
 			const serversHistoryCollection = db.get('servers_history');
@@ -23,7 +25,7 @@ const useServersHistory = () => {
 		} catch {
 			// Do nothing
 		}
-	};
+	}, textInputDebounceTime);
 
 	const deleteServerHistory = async (item: TServerHistoryModel) => {
 		const db = database.servers;
