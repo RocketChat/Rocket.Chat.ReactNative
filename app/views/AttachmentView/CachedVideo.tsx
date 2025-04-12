@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ActivityIndicator, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { Video, ResizeMode, AVPlaybackStatus } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 
 interface CachedVideoProps {
