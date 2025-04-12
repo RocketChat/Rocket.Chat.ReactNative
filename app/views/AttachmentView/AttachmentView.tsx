@@ -7,28 +7,31 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { shallowEqual } from 'react-redux';
 import * as FileSystem from 'expo-file-system';
 
-import { isImageBase64 } from '../lib/methods';
-import RCActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
-import { ImageViewer } from '../containers/ImageViewer';
-import StatusBar from '../containers/StatusBar';
-import { LISTENER } from '../containers/Toast';
-import { IAttachment } from '../definitions';
-import I18n from '../i18n';
-import { useAppSelector } from '../lib/hooks';
-import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
-import EventEmitter from '../lib/methods/helpers/events';
-import { getUserSelector } from '../selectors/login';
-import { TNavigation } from '../stacks/stackType';
-import { useTheme } from '../theme';
-import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../lib/methods/handleMediaDownload';
+import { isImageBase64 } from '../../lib/methods';
+import RCActivityIndicator from '../../containers/ActivityIndicator';
+import * as HeaderButton from '../../containers/HeaderButton';
+import { ImageViewer } from '../../containers/ImageViewer';
+import StatusBar from '../../containers/StatusBar';
+import { LISTENER } from '../../containers/Toast';
+import { IAttachment } from '../../definitions';
+import I18n from '../../i18n';
+import { useAppSelector } from '../../lib/hooks';
+import { useAppNavigation, useAppRoute } from '../../lib/hooks/navigation';
+import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../../lib/methods/helpers';
+import EventEmitter from '../../lib/methods/helpers/events';
+import { getUserSelector } from '../../selectors/login';
+import { TNavigation } from '../../stacks/stackType';
+import { useTheme } from '../../theme';
+import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../../lib/methods/handleMediaDownload';
+import CachedVideo from './CachedVideo';
 
 const RenderContent = ({
 	setLoading,
+	loading,
 	attachment
 }: {
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+	loading: boolean;
 	attachment: IAttachment;
 }) => {
 	const videoRef = React.useRef<Video>(null);
@@ -67,26 +70,21 @@ const RenderContent = ({
 			/>
 		);
 	}
+
 	if (attachment.video_url) {
 		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
+
 		return (
-			<Video
-				source={{ uri }}
-				rate={1.0}
-				volume={1.0}
-				isMuted={false}
-				resizeMode={ResizeMode.CONTAIN}
-				shouldPlay
-				isLooping={false}
+			<CachedVideo
+				videoUrl={uri}
 				style={{ flex: 1 }}
-				useNativeControls
-				onLoad={() => setLoading(false)}
-				onError={() => {
+				fallbackOnError={() => {
 					navigation.pop();
 					showErrorAlert(I18n.t('Error_play_video'));
 				}}
-				ref={videoRef}
+				setLoading={setLoading}
+				loading={loading}
 			/>
 		);
 	}
@@ -189,7 +187,7 @@ const AttachmentView = (): React.ReactElement => {
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
 			<StatusBar />
-			<RenderContent attachment={attachment} setLoading={setLoading} />
+			<RenderContent attachment={attachment} setLoading={setLoading} loading={loading} />
 			{loading ? <RCActivityIndicator absolute size='large' /> : null}
 		</View>
 	);
