@@ -177,8 +177,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
-			isOnHold: false,
-			rightButtonsWidth: 0
+			isOnHold: false
 		};
 
 		this.setHeader();
@@ -283,7 +282,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	componentDidUpdate(prevProps: IRoomViewProps, prevState: IRoomViewState) {
-		const { roomUpdate, joined, rightButtonsWidth } = this.state;
+		const { roomUpdate, joined } = this.state;
 		const { insets, route } = this.props;
 
 		if (route?.params?.jumpToMessageId && route?.params?.jumpToMessageId !== prevProps.route?.params?.jumpToMessageId) {
@@ -306,11 +305,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 		}
 		if (roomAttrsUpdate.some(key => !dequal(prevState.roomUpdate[key], roomUpdate[key]))) this.setHeader();
-		if (
-			insets.left !== prevProps.insets.left ||
-			insets.right !== prevProps.insets.right ||
-			rightButtonsWidth !== prevState.rightButtonsWidth
-		) {
+		if (insets.left !== prevProps.insets.left || insets.right !== prevProps.insets.right) {
 			this.setHeader();
 		}
 		this.setReadOnly();
@@ -427,8 +422,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	}
 
 	setHeader = () => {
-		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold, rightButtonsWidth } =
-			this.state;
+		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
 		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
 		const { rid, tmid } = this;
 
@@ -477,10 +471,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			visitor = room.visitor;
 		}
 
-		const onLayout = ({ nativeEvent }: { nativeEvent: any }) => {
-			this.setState({ rightButtonsWidth: nativeEvent.layout.width });
-		};
-
 		const t = room?.t;
 		const teamMain = 'teamMain' in room ? room?.teamMain : false;
 		const omnichannelPermissions = { canForwardGuest, canReturnQueue, canPlaceLivechatOnHold };
@@ -519,7 +509,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					onPress={this.goRoomActionsView}
 					testID={`room-view-title-${title}`}
 					sourceType={sourceType}
-					rightButtonsWidth={rightButtonsWidth}
 				/>
 			),
 			headerRight: () => (
@@ -537,7 +526,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					showActionSheet={this.showActionSheet}
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
-					onLayout={onLayout}
 					hasE2EEWarning={e2eeWarning}
 				/>
 			)

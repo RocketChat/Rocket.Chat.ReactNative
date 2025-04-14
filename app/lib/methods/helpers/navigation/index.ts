@@ -4,10 +4,10 @@ import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { themes } from '../../../constants';
 import { TSupportedThemes } from '../../../../theme';
 import sharedStyles from '../../../../views/Styles';
-import CustomHeader from '../../../../containers/CustomHeader';
 
 export const defaultHeader: NativeStackNavigationOptions = {
-	header: CustomHeader
+	headerTitleAlign: 'left',
+	headerBackButtonDisplayMode: 'minimal'
 };
 
 export const drawerStyle = {

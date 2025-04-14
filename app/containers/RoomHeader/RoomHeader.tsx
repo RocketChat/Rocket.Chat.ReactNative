@@ -9,7 +9,6 @@ import RoomTypeIcon from '../RoomTypeIcon';
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
-import { isIOS } from '../../lib/methods/helpers';
 
 const HIT_SLOP = {
 	top: 5,
@@ -144,8 +143,7 @@ const Header = React.memo(
 		testID,
 		usersTyping = [],
 		sourceType,
-		disabled,
-		rightButtonsWidth = 0
+		disabled
 	}: IRoomHeader) => {
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
@@ -187,36 +185,37 @@ const Header = React.memo(
 		}, [title, parentTitle, tmid]);
 
 		return (
-			<TouchableOpacity
-				testID='room-header'
-				accessibilityLabel={accessibilityLabel}
-				onPress={handleOnPress}
-				style={[
-					styles.container,
-					{
-						opacity: disabled ? 0.5 : 1,
-						width: width - rightButtonsWidth - (isIOS ? 60 : 80) - (isMasterDetail ? 350 : 0),
-						height: 36.9 * fontScale
-					}
-				]}
-				disabled={disabled}
-				hitSlop={HIT_SLOP}
-				accessibilityRole='header'>
-				<View style={styles.titleContainer}>
-					{tmid ? null : (
-						<RoomTypeIcon
-							userId={roomUserId}
-							type={prid ? 'discussion' : type}
-							isGroupChat={isGroupChat}
-							status={status}
-							teamMain={teamMain}
-							sourceType={sourceType}
-						/>
-					)}
-					<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
-				</View>
-				<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-			</TouchableOpacity>
+			<View style={styles.container}>
+				<TouchableOpacity
+					testID='room-header'
+					accessibilityLabel={accessibilityLabel}
+					onPress={handleOnPress}
+					style={[
+						styles.container,
+						{
+							opacity: disabled ? 0.5 : 1,
+							height: 36.9 * fontScale
+						}
+					]}
+					disabled={disabled}
+					hitSlop={HIT_SLOP}
+					accessibilityRole='header'>
+					<View style={styles.titleContainer}>
+						{tmid ? null : (
+							<RoomTypeIcon
+								userId={roomUserId}
+								type={prid ? 'discussion' : type}
+								isGroupChat={isGroupChat}
+								status={status}
+								teamMain={teamMain}
+								sourceType={sourceType}
+							/>
+						)}
+						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+					</View>
+					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
+				</TouchableOpacity>
+			</View>
 		);
 	}
 );

@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
 		...Platform.select({
 			ios: {
 				minWidth: 34,
-				marginLeft: -12
+				marginLeft: -19
 			},
 			android: {
 				marginHorizontal: 0,
@@ -64,7 +64,7 @@ const LeftButtons = ({
 		if (unreadsCount) {
 			label = unreadsCount > 99 ? '+99' : unreadsCount.toString() || ' ';
 			labelLength = label.length ? label.length : 1;
-			marginLeft = -2 * labelLength;
+			marginLeft = -4 * labelLength;
 			fontSize = labelLength > 1 ? 14 : 17;
 		}
 		return (
