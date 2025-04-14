@@ -11,7 +11,7 @@ index bed0995..f650085 100644
    "types": "./lib/typescript/commonjs/src/index.d.ts",
    "exports": {
 diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
-index bd30826..c3c8aae 100644
+index bd30826..76f2720 100644
 --- a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
 +++ b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
 @@ -1,9 +1,11 @@
@@ -23,7 +23,7 @@ index bd30826..c3c8aae 100644
    const { colors } = useTheme();
    const { direction } = useLocale();
 +  const { fontScale } = useWindowDimensions();
-+  const size = 24 * fontScale;
++  const size = 19 * fontScale;
  
    return (
      <Image
@@ -36,11 +36,19 @@ index bd30826..c3c8aae 100644
        {...rest}
      />
    );
+@@ -25,6 +27,7 @@ const styles = StyleSheet.create({
+     width: ICON_SIZE,
+     height: ICON_SIZE,
+     margin: ICON_MARGIN,
++    // marginLeft: 1
+   },
+   flip: {
+     transform: 'scaleX(-1)',
 diff --git a/node_modules/@react-navigation/elements/src/PlatformPressable.tsx b/node_modules/@react-navigation/elements/src/PlatformPressable.tsx
-index e95e14f..1fd09a5 100644
+index e95e14f..ac3f5a8 100644
 --- a/node_modules/@react-navigation/elements/src/PlatformPressable.tsx
 +++ b/node_modules/@react-navigation/elements/src/PlatformPressable.tsx
-@@ -5,11 +5,11 @@ import {
+@@ -5,12 +5,18 @@ import {
    Easing,
    type GestureResponderEvent,
    Platform,
@@ -49,7 +57,14 @@ index e95e14f..1fd09a5 100644
    type StyleProp,
    type ViewStyle,
  } from 'react-native';
-+import { Pressable } from 'react-native-gesture-handler';
  
++let Pressable
++if (Platform.OS === 'android') {
++  Pressable = require('react-native-gesture-handler').BorderlessButton
++} else {
++  Pressable = require('react-native').Pressable
++}
++
  type HoverEffectProps = {
    color?: string;
+   hoverOpacity?: number;
