@@ -22,6 +22,7 @@ export const useFile = (file: IAttachment, messageId: string) => {
 
 	const manageForwardedFile = (f: Partial<IAttachment>) => {
 		if (isMessagePersisted) {
+            file = { ...file, ...f };
 			return;
 		}
 		setLocalFile(prev => ({ ...prev, ...f }));
