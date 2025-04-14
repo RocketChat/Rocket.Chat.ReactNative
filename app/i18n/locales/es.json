@@ -233,7 +233,7 @@
   "Receive_Notification": "Recibir notificación",
   "Receive_notifications_from": "Recibir notificación de {{name}}",
   "Register": "Registrar",
-  "Remove_from_servers_history": "Eliminar del historial de servidores",
+  "Remove_from_workspace_history": "Eliminar del historial del espacio de trabajo",
   "Remove_someone_from_room": "Eliminar a alguien de la sala",
   "replies": "respuestas",
   "Reply": "Respuesta",

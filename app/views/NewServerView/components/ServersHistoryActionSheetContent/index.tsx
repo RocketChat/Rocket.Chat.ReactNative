@@ -41,7 +41,7 @@ export const ServersHistoryActionSheetContent = ({
 											<A11yElement order={2}>
 												<Touch
 													accessible
-													accessibilityLabel={i18n.t('Remove_from_servers_history')}
+													accessibilityLabel={i18n.t('Remove_from_workspace_history')}
 													testID={`servers-history-delete-${item.url}`}
 													onPress={() => onDelete(item)}>
 													<CustomIcon name='delete' size={24} color={colors.fontDefault} />

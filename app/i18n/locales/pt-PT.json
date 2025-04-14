@@ -334,7 +334,7 @@
   "Read_only_hint": "Somente os proprietários do canal podem enviar novas mensagens",
   "Read_Receipt": "Recibos de leitura",
   "Register": "Registar",
-  "Remove_from_servers_history": "Remover do Histórico de Servidores",
+  "Remove_from_workspace_history": "Remover do histórico do espaço de trabalho",
   "Remove_someone_from_room": "Remover alguém da sala",
   "Reply": "Responder",
   "Required": "Obrigatório",

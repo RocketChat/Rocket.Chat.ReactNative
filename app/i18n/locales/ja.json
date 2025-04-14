@@ -321,7 +321,7 @@
   "Receive_notifications_from": "{{name}}からの通知を受け取る",
   "Register": "登録",
   "Registration_Succeeded": "登録が成功しました",
-  "Remove_from_servers_history": "サーバー履歴から削除",
+  "Remove_from_workspace_history": "ワークスペースの履歴から削除する",
   "Remove_someone_from_room": "ルームからいずれかのユーザーを削除",
   "replies": "返信",
   "Reply": "返信",
