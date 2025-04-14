@@ -694,7 +694,7 @@
   "sending_email_confirmation": "enviando email de confirmação",
   "Sending_to": "Envio para",
   "Server": "Workspace",
-  "Server_version": "Versão da workspace: {{version}}",
+  "Server_version": "Espaço de Trabalho: {{version}}",
   "Set_username_subtitle": "O usuário é utilizado para permitir que você seja mencionado em mensagens",
   "Settings": "Configurações",
   "Settings_succesfully_changed": "Configurações salvas com sucesso!",

@@ -461,7 +461,7 @@
   "Send_to": "Invia a...",
   "Sending_to": "Invio a",
   "Server": "Server",
-  "Server_version": "Versione server: {{version}}",
+  "Server_version": "Area di lavoro: {{versione}}",
   "Set_username_subtitle": "Il nome utente viene utilizzato per permettere ad altri di menzionarti nei messaggi",
   "Settings": "Impostazioni",
   "Settings_succesfully_changed": "Impostazioni modificate correttamente!",

@@ -597,7 +597,7 @@
   "sending_email_confirmation": "lähettää sähköpostivahvistusta",
   "Sending_to": "Lähetetään kohteeseen",
   "Server": "Palvelin",
-  "Server_version": "Palvelimen versio: {{version}}",
+  "Server_version": "Työtila: {{version}}",
   "Set_username_subtitle": "Käyttäjätunnuksen avulla muut voivat mainita sinut viesteissä",
   "Settings": "Asetukset",
   "Settings_succesfully_changed": "Asetukset on muutettu!",

@@ -622,7 +622,7 @@
   "sending_email_confirmation": "Bestätigungsmail versenden",
   "Sending_to": "Sende an",
   "Server": "Server",
-  "Server_version": "Server version: {{version}}",
+  "Server_version": "Arbeitsbereich: {{version}}",
   "Set_username_subtitle": "Der Benutzername wird verwendet, damit andere Personen Sie in Nachrichten erwähnen können",
   "Settings": "Einstellungen",
   "Settings_succesfully_changed": "Einstellungen erfolgreich geändert!",

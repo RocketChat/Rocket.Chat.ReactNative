@@ -636,7 +636,7 @@
   "sending_email_confirmation": "ইমেল নিশ্চিতকরণ প্রেরণ করা হচ্ছে",
   "Sending_to": "পাঠাচ্ছি",
   "Server": "ওয়ার্কস্পেস",
-  "Server_version": "ওয়ার্কস্পেস সংস্করণ: {{version}}",
+  "Server_version": "ওয়ার্কস্পেস: {{version}}",
   "Set_username_subtitle": "ব্যবহারকারীর নামটি আপনাকে বার্তাগুলিতে উল্লেখ করতে অনুমতি দেওয়ার জন্য ব্যবহৃত হয়",
   "Settings": "সেটিংস",
   "Settings_succesfully_changed": "সেটিংস সফলভাবে পরিবর্তন হয়েছে!",

@@ -425,7 +425,7 @@
   "Send_to": "发送到",
   "Sending_to": "正发送到",
   "Server": "服务器",
-  "Server_version": "服务器版本: {{version}}",
+  "Server_version": "工作区：{{version}}",
   "Set_username_subtitle": "用户名是用來让其他人在信息中提到您",
   "Settings": "设置",
   "Settings_succesfully_changed": "设置更改成功！",
