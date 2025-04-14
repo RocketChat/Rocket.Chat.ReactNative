@@ -273,6 +273,8 @@
   "Message_Reported": "تم التبليغ على الرسالة",
   "Message_starred": "الرسالة مميزة",
   "Message_unstarred": "الرسالة غير مميزة",
+  "Message_was_not_read": "الرسالة لم تُقرأ",
+  "Message_was_read": "تمت قراءة الرسالة",
   "messages": "رسائل",
   "missing_room_e2ee_description": "يجب تحديث مفاتيح التشفير للغرفة، ويجب أن يكون عضو آخر في الغرفة متصلاً بالإنترنت حتى يحدث ذلك.",
   "missing_room_e2ee_title": "تحقق مرة أخرى بعد بضع لحظات",
