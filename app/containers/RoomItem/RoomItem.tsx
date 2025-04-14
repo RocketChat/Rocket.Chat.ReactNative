@@ -63,7 +63,7 @@ const RoomItem = ({
 	);
 	const accessibilityLabel = useMemo(() => `${name} ${capitalize(date)} ${memoizedMessage}`, [name, date, memoizedMessage]);
 	const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
-	console.log(fontScale, 'here');
+
 	return (
 		<Touchable
 			onPress={onPress}

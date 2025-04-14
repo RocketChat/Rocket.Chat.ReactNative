@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -22,8 +22,13 @@ import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
+import MessageTime from './Time';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	const { fontScale } = useWindowDimensions();
+
+	const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
+
 	if (props.isPreview) {
 		return (
 			<>
@@ -33,6 +38,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 					<Attachments {...props} />
 				</>
 				<Urls {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -42,6 +48,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			<>
 				<User {...props} />
 				<Discussion {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -52,6 +59,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -63,6 +71,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -78,6 +87,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
+			{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 		</>
 	);
 });
