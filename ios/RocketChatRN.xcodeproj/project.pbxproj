@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		07A6B0F624EFD44AB9E385A4 /* Pods_defaults_NotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F27766D571F8CA1DCD5EE /* Pods_defaults_NotificationService.framework */; };
 		0C6E2DE448364EA896869ADF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B37C79D9BD0742CE936B6982 /* libc++.tbd */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1E01C81C2511208400FEF824 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E01C81B2511208400FEF824 /* URL+Extensions.swift */; };
@@ -282,8 +281,6 @@
 		65AD383C2BFBDF4A00271B39 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */; };
 		65B9A71A2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
 		65B9A71B2AFC24190088956F /* ringtone.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 65B9A7192AFC24190088956F /* ringtone.mp3 */; };
-		735CAAB02D03DA6009BFC95C /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FD546613A4A21AF7AF7B16F /* Pods_defaults_Rocket_Chat.framework */; };
-		763E9E0C25BE25AEF4E74EDE /* Pods_defaults_RocketChatRN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6472EFCEC031B854FBB55118 /* Pods_defaults_RocketChatRN.framework */; };
 		7A006F14229C83B600803143 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A006F13229C83B600803143 /* GoogleService-Info.plist */; };
 		7A0129D42C6E8EC800F84A97 /* ShareRocketChatRN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */; };
 		7A0129D62C6E8F0700F84A97 /* ShareRocketChatRN.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 1EC6AD6022CBA20C00A41C61 /* ShareRocketChatRN.entitlements */; };
@@ -357,7 +354,10 @@
 		A48B46D92D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		BC404914E86821389EEB543D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */; };
+		DB799BCDC194817E41FB816E /* Pods_defaults_RocketChatRN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5275608D2B7EF23934D96C4F /* Pods_defaults_RocketChatRN.framework */; };
 		DD2BA30A89E64F189C2C24AC /* libWatermelonDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7E862283664608B3894E34 /* libWatermelonDB.a */; };
+		DF11221059B44AFE09CC0CA9 /* Pods_defaults_Rocket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 095E5AA81A2A5040A7C160CF /* Pods_defaults_Rocket_Chat.framework */; };
+		E867D41D90E617AADC089498 /* Pods_defaults_NotificationService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08EFDAA1F4418479279B3962 /* Pods_defaults_NotificationService.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -456,13 +456,13 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		00E2837CB5E332B6F2A3F44F /* Pods-defaults-RocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.debug.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
 		06BB44DD4855498082A744AD /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		08EFDAA1F4418479279B3962 /* Pods_defaults_NotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_NotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		095E5AA81A2A5040A7C160CF /* Pods_defaults_Rocket_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_Rocket_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* Rocket.Chat Experimental.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rocket.Chat Experimental.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RocketChatRN/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RocketChatRN/Info.plist; sourceTree = "<group>"; };
 		194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-NotificationService/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		1B5BDB2ACFEE9B7701CC0F69 /* Pods-defaults-RocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.release.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
 		1E01C81B2511208400FEF824 /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
 		1E01C8202511301400FEF824 /* PushResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushResponse.swift; sourceTree = "<group>"; };
 		1E01C8242511303100FEF824 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
@@ -605,15 +605,13 @@
 		1EFEB5972493B6640072EDC0 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		1EFEB5992493B6640072EDC0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1EFEB5A12493B67D0072EDC0 /* NotificationService.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotificationService.entitlements; sourceTree = "<group>"; };
-		25853AA80BB8362D4E910E35 /* Pods-defaults-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.release.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
-		286F27766D571F8CA1DCD5EE /* Pods_defaults_NotificationService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_NotificationService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		391C4F7AA7023CD41EEBD106 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-Rocket.Chat/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		45D5C142B655F8EFD006792C /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-defaults-RocketChatRN/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		5C51ADACDBA143B7DAD68C59 /* Pods-defaults-Rocket.Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.debug.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.debug.xcconfig"; sourceTree = "<group>"; };
+		5275608D2B7EF23934D96C4F /* Pods_defaults_RocketChatRN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_RocketChatRN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		60B2A6A31FC4588700BD58E5 /* RocketChatRN.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RocketChatRN.entitlements; path = RocketChatRN/RocketChatRN.entitlements; sourceTree = "<group>"; };
-		6472EFCEC031B854FBB55118 /* Pods_defaults_RocketChatRN.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_RocketChatRN.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		65AD38362BFBDF4A00271B39 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		65B9A7192AFC24190088956F /* ringtone.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ringtone.mp3; sourceTree = "<group>"; };
+		701E0C9A9A1C30A9BEE84DD2 /* Pods-defaults-Rocket.Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.release.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.release.xcconfig"; sourceTree = "<group>"; };
 		7A006F13229C83B600803143 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7A0129D22C6E8B5900F84A97 /* ShareRocketChatRN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareRocketChatRN.swift; sourceTree = "<group>"; };
 		7A0D62D1242AB187006D5C06 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -631,13 +629,15 @@
 		7AE864962D88AD4800912BA1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7AE864972D88AD4800912BA1 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		7AE8649A2D88ADCF00912BA1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		8542E7011E44AEA5E0F26406 /* Pods-defaults-NotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.debug.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.debug.xcconfig"; sourceTree = "<group>"; };
-		8740724762DF56AB195CB985 /* Pods-defaults-Rocket.Chat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.release.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.release.xcconfig"; sourceTree = "<group>"; };
-		9FD546613A4A21AF7AF7B16F /* Pods_defaults_Rocket_Chat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_defaults_Rocket_Chat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		906D331E14364AB55692A640 /* Pods-defaults-Rocket.Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.debug.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.debug.xcconfig"; sourceTree = "<group>"; };
 		A48B46D72D3FFBD200945489 /* A11yFlowModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A11yFlowModule.h; sourceTree = "<group>"; };
 		A48B46D82D3FFBD200945489 /* A11yFlowModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A11yFlowModule.m; sourceTree = "<group>"; };
 		B37C79D9BD0742CE936B6982 /* libc++.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		B67779670D37DD1E9F7045D4 /* Pods-defaults-NotificationService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.release.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.release.xcconfig"; sourceTree = "<group>"; };
 		BA7E862283664608B3894E34 /* libWatermelonDB.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libWatermelonDB.a; sourceTree = "<group>"; };
+		E0A0882BA1339A78B81657F6 /* Pods-defaults-NotificationService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-NotificationService.debug.xcconfig"; path = "Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService.debug.xcconfig"; sourceTree = "<group>"; };
+		F95253BF9949EFB036681BEB /* Pods-defaults-RocketChatRN.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.release.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.release.xcconfig"; sourceTree = "<group>"; };
+		FFE12F39BA893D86F1F776A8 /* Pods-defaults-RocketChatRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-RocketChatRN.debug.xcconfig"; path = "Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -658,7 +658,7 @@
 				7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */,
 				24A2AEF2383D44B586D31C01 /* libz.tbd in Frameworks */,
 				DD2BA30A89E64F189C2C24AC /* libWatermelonDB.a in Frameworks */,
-				763E9E0C25BE25AEF4E74EDE /* Pods_defaults_RocketChatRN.framework in Frameworks */,
+				DB799BCDC194817E41FB816E /* Pods_defaults_RocketChatRN.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,7 +680,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07A6B0F624EFD44AB9E385A4 /* Pods_defaults_NotificationService.framework in Frameworks */,
+				E867D41D90E617AADC089498 /* Pods_defaults_NotificationService.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -701,7 +701,7 @@
 				7AAB3E3D257E6A6E00707CF6 /* JavaScriptCore.framework in Frameworks */,
 				7AAB3E3E257E6A6E00707CF6 /* libz.tbd in Frameworks */,
 				7AAB3E3F257E6A6E00707CF6 /* libWatermelonDB.a in Frameworks */,
-				735CAAB02D03DA6009BFC95C /* Pods_defaults_Rocket_Chat.framework in Frameworks */,
+				DF11221059B44AFE09CC0CA9 /* Pods_defaults_Rocket_Chat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1127,12 +1127,12 @@
 		7AC2B09613AA7C3FEBAC9F57 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				8542E7011E44AEA5E0F26406 /* Pods-defaults-NotificationService.debug.xcconfig */,
-				25853AA80BB8362D4E910E35 /* Pods-defaults-NotificationService.release.xcconfig */,
-				5C51ADACDBA143B7DAD68C59 /* Pods-defaults-Rocket.Chat.debug.xcconfig */,
-				8740724762DF56AB195CB985 /* Pods-defaults-Rocket.Chat.release.xcconfig */,
-				00E2837CB5E332B6F2A3F44F /* Pods-defaults-RocketChatRN.debug.xcconfig */,
-				1B5BDB2ACFEE9B7701CC0F69 /* Pods-defaults-RocketChatRN.release.xcconfig */,
+				E0A0882BA1339A78B81657F6 /* Pods-defaults-NotificationService.debug.xcconfig */,
+				B67779670D37DD1E9F7045D4 /* Pods-defaults-NotificationService.release.xcconfig */,
+				906D331E14364AB55692A640 /* Pods-defaults-Rocket.Chat.debug.xcconfig */,
+				701E0C9A9A1C30A9BEE84DD2 /* Pods-defaults-Rocket.Chat.release.xcconfig */,
+				FFE12F39BA893D86F1F776A8 /* Pods-defaults-RocketChatRN.debug.xcconfig */,
+				F95253BF9949EFB036681BEB /* Pods-defaults-RocketChatRN.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1228,9 +1228,9 @@
 				7ACD4853222860DE00442C55 /* JavaScriptCore.framework */,
 				B37C79D9BD0742CE936B6982 /* libc++.tbd */,
 				06BB44DD4855498082A744AD /* libz.tbd */,
-				286F27766D571F8CA1DCD5EE /* Pods_defaults_NotificationService.framework */,
-				9FD546613A4A21AF7AF7B16F /* Pods_defaults_Rocket_Chat.framework */,
-				6472EFCEC031B854FBB55118 /* Pods_defaults_RocketChatRN.framework */,
+				08EFDAA1F4418479279B3962 /* Pods_defaults_NotificationService.framework */,
+				095E5AA81A2A5040A7C160CF /* Pods_defaults_Rocket_Chat.framework */,
+				5275608D2B7EF23934D96C4F /* Pods_defaults_RocketChatRN.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1250,7 +1250,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RocketChatRN" */;
 			buildPhases = (
-				60EA6176DF20DF1EF5745D66 /* [CP] Check Pods Manifest.lock */,
+				465A09F348D5EC2F1BD32A3F /* [CP] Check Pods Manifest.lock */,
 				7AA5C63E23E30D110005C4A7 /* Start Packager */,
 				589729E8381BA997CD19EF19 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
@@ -1263,8 +1263,8 @@
 				7AAE9EB32891A0D20024F559 /* Upload source maps to Bugsnag */,
 				407D3EDE3DABEE15D27BD87D /* ShellScript */,
 				9C104B12BEE385F7555E641F /* [Expo] Configure project */,
-				A7E917FAFDBC23B63C6B84B3 /* [CP] Embed Pods Frameworks */,
-				57E8A397F697208C8BBEB2E4 /* [CP] Copy Pods Resources */,
+				09B475334002413C0D0915D7 /* [CP] Embed Pods Frameworks */,
+				92092EE3BA82B26C5B13E142 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1332,12 +1332,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1EFEB5A02493B6640072EDC0 /* Build configuration list for PBXNativeTarget "NotificationService" */;
 			buildPhases = (
-				2BC60DA6FDC33AE51BC761B2 /* [CP] Check Pods Manifest.lock */,
+				CC58D251F6928810DCBCF610 /* [CP] Check Pods Manifest.lock */,
 				86A998705576AFA7CE938617 /* [Expo] Configure project */,
 				1EFEB5912493B6640072EDC0 /* Sources */,
 				1EFEB5922493B6640072EDC0 /* Frameworks */,
 				1EFEB5932493B6640072EDC0 /* Resources */,
-				9C65DD4C5B1B84DC5021F05D /* [CP] Copy Pods Resources */,
+				B439E0CE852AA4D38FD56A79 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1352,7 +1352,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7AAB3E4F257E6A6E00707CF6 /* Build configuration list for PBXNativeTarget "Rocket.Chat" */;
 			buildPhases = (
-				115A90603D8A86CED16A683E /* [CP] Check Pods Manifest.lock */,
+				58914C83580215F2721BB114 /* [CP] Check Pods Manifest.lock */,
 				7AAB3E13257E6A6E00707CF6 /* Start Packager */,
 				6723DBD924B66933E14E7EF7 /* [Expo] Configure project */,
 				7AAB3E14257E6A6E00707CF6 /* Sources */,
@@ -1363,8 +1363,8 @@
 				7AAB3E4B257E6A6E00707CF6 /* ShellScript */,
 				1ED1ECE32B8699DD00F6620C /* Embed Watch Content */,
 				7A10288726B1D15200E47EF8 /* Upload source maps to Bugsnag */,
-				6B67CC50F1D94709A0BC131B /* [CP] Embed Pods Frameworks */,
-				DBED25854BECD0D42CC7CCAD /* [CP] Copy Pods Resources */,
+				0F6D4226ADC49B29994C1700 /* [CP] Embed Pods Frameworks */,
+				ADBFE8B3E9E335C6A7CCD66C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1554,26 +1554,44 @@
 			shellPath = /bin/sh;
 			shellScript = ". ~/.nvm/nvm.sh\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $TMPDIR/$(md5 -qs \"$CONFIGURATION_BUILD_DIR\")-main.jsbundle.map\"\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		115A90603D8A86CED16A683E /* [CP] Check Pods Manifest.lock */ = {
+		09B475334002413C0D0915D7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-defaults-Rocket.Chat-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		0F6D4226ADC49B29994C1700 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		1E1EA8082326CCE300E22452 /* ShellScript */ = {
@@ -1593,28 +1611,6 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"Target architectures: $ARCHS\"\n\nAPP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\n# remove simulator's archs if location is not simulator's directory\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\necho \"No need to remove archs\"\n;;\n*)\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"i386 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\nif $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\nlipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\necho \"x86_64 architecture removed\"\nrm \"$FRAMEWORK_EXECUTABLE_PATH\"\nmv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\nfi\n;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $\n\ndone\n";
 		};
-		2BC60DA6FDC33AE51BC761B2 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-defaults-NotificationService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		407D3EDE3DABEE15D27BD87D /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1633,118 +1629,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		57E8A397F697208C8BBEB2E4 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/BugsnagReactNative/Bugsnag.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension/FirebaseCoreExtension_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics/FirebaseCrashlytics_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift/Promises_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfoPrivacyInfo.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVGFilters.bundle",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Bugsnag.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCore_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreExtension_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreInternal_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCrashlytics_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseInstallations_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleDataTransport_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleUtilities_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FBLPromises_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Promises_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNDeviceInfoPrivacyInfo.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNSVGFilters.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nanopb_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		589729E8381BA997CD19EF19 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-defaults-RocketChatRN/expo-configure-project.sh\"\n";
-		};
-		60EA6176DF20DF1EF5745D66 /* [CP] Check Pods Manifest.lock */ = {
+		465A09F348D5EC2F1BD32A3F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1766,6 +1651,47 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		58914C83580215F2721BB114 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-defaults-Rocket.Chat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		589729E8381BA997CD19EF19 /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-defaults-RocketChatRN/expo-configure-project.sh\"\n";
+		};
 		6723DBD924B66933E14E7EF7 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1784,26 +1710,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-defaults-Rocket.Chat/expo-configure-project.sh\"\n";
-		};
-		6B67CC50F1D94709A0BC131B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		7A10288726B1D15200E47EF8 /* Upload source maps to Bugsnag */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1929,6 +1835,98 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-defaults-NotificationService/expo-configure-project.sh\"\n";
 		};
+		92092EE3BA82B26C5B13E142 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/BugsnagReactNative/Bugsnag.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension/FirebaseCoreExtension_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics/FirebaseCrashlytics_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift/Promises_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfoPrivacyInfo.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVGFilters.bundle",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb_Privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Bugsnag.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCore_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreExtension_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreInternal_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCrashlytics_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseInstallations_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleDataTransport_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleUtilities_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FBLPromises_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Promises_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNDeviceInfoPrivacyInfo.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNSVGFilters.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nanopb_Privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9C104B12BEE385F7555E641F /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1948,7 +1946,99 @@
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-defaults-NotificationService/expo-configure-project.sh\"\n";
 		};
-		9C65DD4C5B1B84DC5021F05D /* [CP] Copy Pods Resources */ = {
+		ADBFE8B3E9E335C6A7CCD66C /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/BugsnagReactNative/Bugsnag.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension/FirebaseCoreExtension_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics/FirebaseCrashlytics_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift/Promises_Privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfoPrivacyInfo.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVGFilters.bundle",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb_Privacy.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Bugsnag.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCore_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreExtension_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreInternal_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCrashlytics_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseInstallations_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleDataTransport_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleUtilities_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FBLPromises_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Promises_Privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNDeviceInfoPrivacyInfo.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNSVGFilters.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nanopb_Privacy.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B439E0CE852AA4D38FD56A79 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2040,116 +2130,26 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-NotificationService/Pods-defaults-NotificationService-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A7E917FAFDBC23B63C6B84B3 /* [CP] Embed Pods Frameworks */ = {
+		CC58D251F6928810DCBCF610 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			inputFileListPaths = (
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+				"$(DERIVED_FILE_DIR)/Pods-defaults-NotificationService-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-RocketChatRN/Pods-defaults-RocketChatRN-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DBED25854BECD0D42CC7CCAD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/BugsnagReactNative/Bugsnag.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCore/FirebaseCore_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreExtension/FirebaseCoreExtension_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCoreInternal/FirebaseCoreInternal_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseCrashlytics/FirebaseCrashlytics_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FirebaseInstallations/FirebaseInstallations_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleDataTransport/GoogleDataTransport_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/GoogleUtilities/GoogleUtilities_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesObjC/FBLPromises_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/PromisesSwift/Promises_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNDeviceInfo/RNDeviceInfoPrivacyInfo.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNSVG/RNSVGFilters.bundle",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Feather.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/nanopb/nanopb_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Bugsnag.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCore_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreExtension_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCoreInternal_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseCrashlytics_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FirebaseInstallations_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleDataTransport_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleUtilities_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FBLPromises_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Promises_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNDeviceInfoPrivacyInfo.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNSVGFilters.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AntDesign.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Entypo.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EvilIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Feather.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Brands.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Regular.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FontAwesome5_Solid.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Fontisto.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Foundation.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Ionicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialCommunityIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MaterialIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Octicons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SimpleLineIcons.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Zocial.ttf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/nanopb_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2532,7 +2532,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00E2837CB5E332B6F2A3F44F /* Pods-defaults-RocketChatRN.debug.xcconfig */;
+			baseConfigurationReference = FFE12F39BA893D86F1F776A8 /* Pods-defaults-RocketChatRN.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -2593,7 +2593,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B5BDB2ACFEE9B7701CC0F69 /* Pods-defaults-RocketChatRN.release.xcconfig */;
+			baseConfigurationReference = F95253BF9949EFB036681BEB /* Pods-defaults-RocketChatRN.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -3014,7 +3014,7 @@
 		};
 		1EFEB59D2493B6640072EDC0 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8542E7011E44AEA5E0F26406 /* Pods-defaults-NotificationService.debug.xcconfig */;
+			baseConfigurationReference = E0A0882BA1339A78B81657F6 /* Pods-defaults-NotificationService.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -3056,7 +3056,7 @@
 		};
 		1EFEB59E2493B6640072EDC0 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 25853AA80BB8362D4E910E35 /* Pods-defaults-NotificationService.release.xcconfig */;
+			baseConfigurationReference = B67779670D37DD1E9F7045D4 /* Pods-defaults-NotificationService.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(EMBEDDED_CONTENT_CONTAINS_SWIFT)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -3099,7 +3099,7 @@
 		};
 		7AAB3E50257E6A6E00707CF6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5C51ADACDBA143B7DAD68C59 /* Pods-defaults-Rocket.Chat.debug.xcconfig */;
+			baseConfigurationReference = 906D331E14364AB55692A640 /* Pods-defaults-Rocket.Chat.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -3159,7 +3159,7 @@
 		};
 		7AAB3E51257E6A6E00707CF6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8740724762DF56AB195CB985 /* Pods-defaults-Rocket.Chat.release.xcconfig */;
+			baseConfigurationReference = 701E0C9A9A1C30A9BEE84DD2 /* Pods-defaults-Rocket.Chat.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				APPLICATION_EXTENSION_API_ONLY = NO;
