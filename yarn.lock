@@ -4678,7 +4678,7 @@
   dependencies:
     color "^4.2.3"
 
-"@react-navigation/native-stack@^7.3.1":
+"@react-navigation/native-stack@7.3.1":
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-7.3.1.tgz#9bb4f84a99db7b3410c27db3569593f68ad76d38"
   integrity sha512-8linY6xYQ6cD02VCmOpkOIAN3MKw90drU+uWGbf6hiOEVXKceDRX0z71/+nXUN5CwzrCu9YAFaVFDZzHX/kkSQ==
