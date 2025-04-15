@@ -209,7 +209,6 @@ const Header = React.memo(
 			<TouchableOpacity
 				testID='room-header'
 				accessibilityLabel={accessibilityLabel}
-				accessibilityHint={I18n.t('Actions')}
 				onPress={handleOnPress}
 				style={[
 					styles.container,
