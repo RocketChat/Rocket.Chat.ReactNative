@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import chat.rocket.reactnative.NatieModule.PipPackage
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -35,6 +36,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
               // Packages that cannot be autolinked yet can be added manually here, for example:
               add(RNCViewPagerPackage())
               add(SSLPinningPackage())
+              add(PipPackage())
             }
 
         override fun getJSIModulePackage(): JSIModulePackage {
