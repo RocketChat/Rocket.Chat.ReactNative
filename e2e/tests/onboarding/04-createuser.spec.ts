@@ -19,6 +19,10 @@ describe('Create user screen', () => {
 			await element(by.id('register-view-email')).tapReturnKey();
 			await element(by.id('register-view-password')).replaceText(user.password);
 			await element(by.id('register-view-password')).tapReturnKey();
+			await element(by.id('register-view-confirm-password')).replaceText(user.password);
+			await element(by.id('register-view')).swipe('down', 'fast');
+			await element(by.id('register-view')).swipe('up', 'fast');
+			await element(by.id('register-view-submit')).tap();
 
 			await expectValidRegisterOrRetry(device.getPlatform());
 		});

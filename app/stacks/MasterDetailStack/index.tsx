@@ -64,6 +64,7 @@ import AddChannelTeamView from '../../views/AddChannelTeamView';
 import AddExistingChannelView from '../../views/AddExistingChannelView';
 import SelectListView from '../../views/SelectListView';
 import DiscussionsView from '../../views/DiscussionsView';
+import AccessibilityAndAppearanceView from '../../views/AccessibilityAndAppearanceView';
 import { ModalContainer } from './ModalContainer';
 import {
 	MasterDetailChatsStackParamList,
@@ -192,6 +193,7 @@ const ModalStackNavigator = React.memo(({ navigation }: INavigation) => {
 				<ModalStack.Screen name='E2EEncryptionSecurityView' component={E2EEncryptionSecurityView} />
 				<ModalStack.Screen name='PushTroubleshootView' component={PushTroubleshootView} />
 				<ModalStack.Screen name='SupportedVersionsWarning' component={SupportedVersionsWarning} />
+				<ModalStack.Screen name='AccessibilityAndAppearanceView' component={AccessibilityAndAppearanceView} />
 			</ModalStack.Navigator>
 		</ModalContainer>
 	);
