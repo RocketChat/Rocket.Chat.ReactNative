@@ -15,7 +15,7 @@ const MessageTime = ({ timeFormat, ts }: IMessageTime) => {
 
 	const time = moment(ts).format(timeFormat);
 
-	return <Text style={[messageStyles.time, { color: colors.fontDefault }]}>{time}</Text>;
+	return <Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>;
 };
 
 export default MessageTime;

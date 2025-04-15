@@ -33,12 +33,12 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
 				</>
 				<Urls {...props} />
-				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -47,8 +47,8 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
-				<Discussion {...props} />
 				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
+				<Discussion {...props} />
 			</>
 		);
 	}
@@ -79,6 +79,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
+			{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			<>
 				<Content {...props} />
 				<Attachments {...props} />
@@ -87,7 +88,6 @@ const MessageInner = React.memo((props: IMessageInner) => {
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
-			{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 		</>
 	);
 });
