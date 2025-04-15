@@ -95,7 +95,9 @@ describe('Display prefs', () => {
 
 			it('should hide the avatar', async () => {
 				await goToDisplayPref();
-				await expect(element(by.id('display-pref-view-avatar-switch'))).toBeVisible();
+				await waitFor(element(by.id('display-pref-view-avatar-switch')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('display-pref-view-avatar-switch')).tap();
 				await goToRoomList();
 				await waitFor(element(by.id('avatar').withAncestor(by.id('rooms-list-view-item-general'))))
