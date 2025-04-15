@@ -199,6 +199,7 @@ describe('Discussion', () => {
 
 		it('should navigate to RoomActionView', async () => {
 			await element(by.id('room-actions-scrollview')).swipe('down');
+			await sleep(300);
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
 			await waitFor(element(by.id('room-info-view')))

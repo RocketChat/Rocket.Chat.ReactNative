@@ -32,7 +32,9 @@ describe('Change avatar', () => {
 
 	describe('Usage', () => {
 		it('should click on the reset avatar button', async () => {
-			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
+			await waitFor(element(by.id('avatar-edit-button')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('avatar-edit-button')).tap();
 			await waitFor(element(by.id('change-avatar-view-avatar')))
 				.toBeVisible()
@@ -66,7 +68,9 @@ describe('Change avatar', () => {
 		});
 
 		it('should change the avatar through a base64 image mocked', async () => {
-			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
+			await waitFor(element(by.id('avatar-edit-button')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('avatar-edit-button')).tap();
 			const previousUserInfo = await getProfileInfo({ userId });
 			const previousAvatarEtag = previousUserInfo.avatarETag;
@@ -92,7 +96,9 @@ describe('Change avatar', () => {
 		});
 
 		it('should change the avatar taking a photo using a base64 image mocked', async () => {
-			await element(by.type(scrollViewType)).atIndex(1).swipe('down');
+			await waitFor(element(by.id('avatar-edit-button')))
+				.toBeVisible()
+				.withTimeout(2000);
 			await element(by.id('avatar-edit-button')).tap();
 			const previousUserInfo = await getProfileInfo({ userId });
 			const previousAvatarEtag = previousUserInfo.avatarETag;

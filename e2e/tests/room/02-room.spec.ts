@@ -150,6 +150,7 @@ describe('Room screen', () => {
 				.toExist()
 				.withTimeout(2000);
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by.id('add-reaction')).tap();
 			await sleep(300); // wait for animation
 			await waitFor(element(by.id('emoji-picker-tab-emoji')))
