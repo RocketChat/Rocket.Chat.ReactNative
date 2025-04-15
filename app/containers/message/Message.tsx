@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { useWindowDimensions, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -155,10 +155,12 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
+		// Prevent misalignment of info when the font size is increased.
+		const infoStyle: ViewStyle = !!props.isInfo ? { alignItems: 'center' } : {};
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabel} style={styles.flex}>
+				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />
