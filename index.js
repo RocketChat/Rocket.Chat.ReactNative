@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
 import { AppRegistry, LogBox } from 'react-native';
 
-import { name as appName, share as shareName } from './app.json';
+import { name as appName } from './app.json';
 import { isAndroid } from './app/lib/methods/helpers';
 
 if (process.env.USE_STORYBOOK) {
