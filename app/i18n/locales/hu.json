@@ -420,6 +420,8 @@
   "Message_Reported": "Üzenet jelentve",
   "Message_starred": "Üzenet csillagozva",
   "Message_unstarred": "Üzenet csillagozásának megszüntetése",
+  "Message_was_not_read": "Az üzenet nem lett elolvasva.",
+  "Message_was_read": "Az üzenet elolvasva.",
   "messages": "üzenetek",
   "Missed_call": "Nem fogadott hívás",
   "missing_room_e2ee_description": "A szoba titkosítási kulcsait frissíteni kell, ehhez egy másik szobatagnak online kell lennie.",

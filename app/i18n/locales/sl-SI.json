@@ -366,6 +366,8 @@
   "Message_Reported": "Sporočilo prijavljeno",
   "Message_starred": "Sporočilo v zvezdi",
   "Message_unstarred": "Sporočilo neokuženo",
+  "Message_was_not_read": "Sporočilo ni bilo prebrano",
+  "Message_was_read": "Sporočilo je bilo prebrano",
   "messages": "Sporočila",
   "missing_room_e2ee_description": "Ključi za šifriranje sobe morajo biti posodobljeni, drugi član sobe mora biti na spletu, da se to zgodi.",
   "missing_room_e2ee_title": "Ponovno preverite čez nekaj trenutkov",

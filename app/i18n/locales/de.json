@@ -411,6 +411,8 @@
   "Message_Reported": "Nachricht gemeldet",
   "Message_starred": "Nachricht favorisiert",
   "Message_unstarred": "Nachricht nicht mehr favorisiert",
+  "Message_was_not_read": "Nachricht wurde nicht gelesen.",
+  "Message_was_read": "Nachricht wurde gelesen.",
   "messages": "Nachrichten",
   "missing_room_e2ee_description": "Die Verschlüsselungsschlüssel für den Raum müssen aktualisiert werden, ein anderer Raummitglied muss online sein, damit dies geschehen kann.",
   "missing_room_e2ee_title": "Überprüfen Sie in ein paar Momenten zurück",

@@ -354,6 +354,8 @@
   "Message_Reported": "Message signalé",
   "Message_starred": "Message suivi",
   "Message_unstarred": "Message non suivi",
+  "Message_was_not_read": "Le message n'a pas été lu.",
+  "Message_was_read": "Message lu",
   "messages": "messages",
   "missing_room_e2ee_description": "Les clés de chiffrement de la pièce doivent être mises à jour, un autre membre de la pièce doit être en ligne pour que cela se produise.",
   "missing_room_e2ee_title": "Revenez dans quelques instants",

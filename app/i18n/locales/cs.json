@@ -453,6 +453,8 @@
   "Message_roomname": "Zpráva {{roomName}}",
   "Message_starred": "Zpráva označena hvězdičkou",
   "Message_unstarred": "Zpráva nebyla označena hvězdičkou",
+  "Message_was_not_read": "Zpráva nebyla přečtena.",
+  "Message_was_read": "Zpráva byla přečtena.",
   "messages": "zprávy",
   "Microphone_access_needed_to_record_audio": "Pro záznam zvuku je nutný přístup k mikrofonu",
   "Missed_call": "Zmeškaný hovor",
