@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
+import { BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
@@ -28,13 +28,10 @@ import styles from './styles';
 const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
-	const { previousServer, connecting, failure } = useAppSelector(state => ({
+	const { previousServer, connecting } = useAppSelector(state => ({
 		previousServer: state.server.previousServer,
-		connecting: state.server.connecting,
-		failure: state.server.failure
+		connecting: state.server.connecting
 	}));
-
-	const { control } = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
 	const [text, setText] = useState<string>('');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
@@ -86,7 +83,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const setHeader = () => {
 		if (previousServer) {
 			return navigation.setOptions({
-				headerTitle: I18n.t('Workspaces'),
+				headerTitle: I18n.t('Add_Server'),
 				headerLeft: () =>
 					!connecting ? <HeaderButton.CloseModal navigation={navigation} onPress={close} testID='new-server-view-close' /> : null
 			});
@@ -125,7 +122,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 
 	useEffect(() => {
 		setHeader();
-	}, [connecting]);
+	}, [connecting, previousServer]);
 
 	return (
 		<FormContainer
@@ -150,8 +147,6 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 					{I18n.t('Add_server')}
 				</Text>
 				<ServerInput
-					control={control}
-					showError={failure}
 					text={text}
 					serversHistory={serversHistory}
 					onChangeText={onChangeText}
@@ -162,10 +157,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 				<Button
 					title={I18n.t('Connect')}
 					type='primary'
-					onPress={() => {
-						submit();
-						AccessibilityInfo.announceForAccessibility('Invalid URL');
-					}}
+					onPress={submit}
 					disabled={!text || connecting}
 					loading={connecting}
 					style={styles.connectButton}

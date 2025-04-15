@@ -1,15 +1,13 @@
 import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { Base64 } from 'js-base64';
-import parse from 'url-parse';
 
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import UserPreferences from '../../../lib/methods/userPreferences';
 import { serverRequest } from '../../../actions/server';
-import { BASIC_AUTH_KEY, setBasicAuth } from '../../../lib/methods/helpers/fetch';
 import { CERTIFICATE_KEY } from '../../../lib/constants';
 import completeUrl from '../utils/completeUrl';
 import { ISubmitParams } from '../definitions';
+import basicAuth from '../methods/basicAuth';
 
 type TUseNewServerProps = {
 	text: string;
@@ -18,19 +16,6 @@ type TUseNewServerProps = {
 
 const useConnectServer = ({ text, certificate }: TUseNewServerProps) => {
 	const dispatch = useDispatch();
-
-	const basicAuth = (server: string, text: string) => {
-		try {
-			const parsedUrl = parse(text, true);
-			if (parsedUrl.auth.length) {
-				const credentials = Base64.encode(parsedUrl.auth);
-				UserPreferences.setString(`${BASIC_AUTH_KEY}-${server}`, credentials);
-				setBasicAuth(credentials);
-			}
-		} catch {
-			// do nothing
-		}
-	};
 
 	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
