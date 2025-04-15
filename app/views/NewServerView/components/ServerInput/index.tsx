@@ -31,14 +31,13 @@ const styles = StyleSheet.create({
 });
 
 interface IServerInput extends TextInputProps {
-	showError: boolean;
+	error?: string;
 	control: Control<
 		{
 			workspaceUrl: string;
 		},
 		any
 	>;
-	text: string;
 	serversHistory: any[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
@@ -46,9 +45,8 @@ interface IServerInput extends TextInputProps {
 }
 
 const ServerInput = ({
-	showError,
+	error,
 	control,
-	text,
 	serversHistory,
 	onChangeText,
 	onSubmit,
@@ -64,16 +62,15 @@ const ServerInput = ({
 				control={control}
 				label={I18n.t('Workspace_URL')}
 				containerStyle={styles.inputContainer}
-				inputStyle={showError ? { borderColor: colors.fontDanger } : {}}
-				value={text}
+				inputStyle={error && !focused ? { borderColor: colors.fontDanger } : {}}
 				returnKeyType='send'
-				onChangeText={onChangeText}
 				testID='new-server-view-input'
 				onSubmitEditing={onSubmit}
 				clearButtonMode='while-editing'
 				keyboardType='url'
 				textContentType='URL'
 				required
+				onChangeText={onChangeText}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
 			/>
@@ -89,12 +86,12 @@ const ServerInput = ({
 				</View>
 			) : null}
 
-			{showError && (
+			{!!error && !focused ? (
 				<View style={{ flexDirection: 'row', gap: 4, paddingVertical: 4 }}>
 					<CustomIcon name='warning' size={16} color={colors.fontDanger} />
 					<Text style={{ fontSize: 14, color: colors.fontDanger }}>Invalid URL</Text>
 				</View>
-			)}
+			) : null}
 		</View>
 	);
 };

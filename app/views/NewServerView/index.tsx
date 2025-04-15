@@ -28,12 +28,15 @@ import styles from './styles';
 const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
-	const { previousServer, connecting } = useAppSelector(state => ({
+	const { previousServer, connecting, failureMessage } = useAppSelector(state => ({
 		previousServer: state.server.previousServer,
-		connecting: state.server.connecting
+		connecting: state.server.connecting,
+		failureMessage: state.server.failureMessage
 	}));
 
-	const [text, setText] = useState<string>('');
+	const { control, watch, setValue } = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
+
+	const text = watch('workspaceUrl');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate } = useCertificate();
@@ -43,12 +46,12 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
 
 	const onChangeText = (text: string) => {
-		setText(text);
+		setValue('workspaceUrl', text);
 		queryServerHistory(text);
 	};
 
 	const onPressServerHistory = (serverHistory: TServerHistoryModel) => {
-		setText(serverHistory.url);
+		setValue('workspaceUrl', serverHistory.url);
 		submit({ fromServerHistory: true, username: serverHistory?.username, serverUrl: serverHistory?.url });
 	};
 
@@ -65,7 +68,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		if (!server) {
 			return;
 		}
-		setText(server);
+		setValue('workspaceUrl', server);
 		server = completeUrl(server);
 		dispatch(serverRequest(server));
 	};
@@ -147,7 +150,8 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 					{I18n.t('Add_server')}
 				</Text>
 				<ServerInput
-					text={text}
+					error={failureMessage}
+					control={control}
 					serversHistory={serversHistory}
 					onChangeText={onChangeText}
 					onSubmit={submit}

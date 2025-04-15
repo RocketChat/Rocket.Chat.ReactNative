@@ -5,6 +5,7 @@ export interface IServer {
 	connecting: boolean;
 	connected: boolean;
 	failure: boolean;
+	failureMessage?: string;
 	server: string;
 	version: string;
 	name: string | null;
@@ -31,14 +32,16 @@ export default function server(state = initialState, action: TActionServer): ISe
 			return {
 				...state,
 				connecting: true,
-				failure: false
+				failure: false,
+				failureMessage: undefined
 			};
 		case SERVER.FAILURE:
 			return {
 				...state,
 				connecting: false,
 				connected: false,
-				failure: true
+				failure: true,
+				failureMessage: action.failureMessage
 			};
 		case SERVER.SELECT_REQUEST:
 			return {
@@ -59,7 +62,8 @@ export default function server(state = initialState, action: TActionServer): ISe
 				connecting: false,
 				connected: true,
 				loading: false,
-				changingServer: false
+				changingServer: false,
+				failureMessage: undefined
 			};
 		case SERVER.SELECT_FAILURE:
 			return {

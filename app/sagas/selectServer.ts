@@ -102,13 +102,12 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				//	Alert.alert(I18n.t('Invalid_workspace_URL'), serverInfoResult.message);
-				yield put(serverFailure());
+				yield put(serverFailure(I18n.t('Invalid_workspace_URL')));
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				//	Alert.alert(I18n.t('Invalid_workspace_URL'), websocketInfo.message);
+				Alert.alert(I18n.t('Invalid_workspace_URL'));
 				yield put(serverFailure());
 				return;
 			}
