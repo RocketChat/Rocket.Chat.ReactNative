@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, EmitterSubscription, Linking } from 'react-native';
+import { AppState, AppStateStatus, Dimensions, EmitterSubscription, Linking, NativeModules, Platform } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
@@ -54,6 +54,7 @@ interface IState {
 	height: number;
 	scale: number;
 	fontScale: number;
+	backgroundDetected: boolean;
 }
 
 const parseDeepLinking = (url: string) => {
@@ -78,11 +79,11 @@ const parseDeepLinking = (url: string) => {
 	// Return null if the URL doesn't match or is not valid
 	return null;
 };
-
+const { PipModule } = NativeModules;
 export default class Root extends React.Component<{}, IState> {
 	private listenerTimeout!: any;
 	private dimensionsListener?: EmitterSubscription;
-
+	private appStateListener: any;
 	constructor(props: any) {
 		super(props);
 		this.init();
@@ -95,7 +96,8 @@ export default class Root extends React.Component<{}, IState> {
 			width,
 			height,
 			scale,
-			fontScale
+			fontScale,
+			backgroundDetected: false
 		};
 		if (isTablet) {
 			this.initTablet();
@@ -103,7 +105,21 @@ export default class Root extends React.Component<{}, IState> {
 		setNativeTheme(theme);
 	}
 
+	handleAppStateChange = (nextAppState: AppStateStatus) => {
+		console.log('nextAppState', nextAppState);
+		if (nextAppState === 'inactive' || nextAppState === 'background') {
+			this.setState({ backgroundDetected: true });
+			if (Platform.OS === 'android') {
+				PipModule.EnterPipMode();
+			}
+		} else {
+			this.setState({ backgroundDetected: false });
+		}
+	};
+
 	componentDidMount() {
+		this.appStateListener = AppState.addEventListener('change', this.handleAppStateChange);
+
 		this.listenerTimeout = setTimeout(() => {
 			Linking.addEventListener('url', ({ url }) => {
 				const parsedDeepLinkingURL = parseDeepLinking(url);
@@ -120,6 +136,7 @@ export default class Root extends React.Component<{}, IState> {
 		this.dimensionsListener?.remove?.();
 
 		unsubscribeTheme();
+		this.appStateListener?.remove?.();
 	}
 
 	init = async () => {
