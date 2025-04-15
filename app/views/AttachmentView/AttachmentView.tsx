@@ -27,7 +27,6 @@ import CachedVideo from './CachedVideo';
 
 const RenderContent = ({
 	setLoading,
-	loading,
 	attachment
 }: {
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -72,9 +71,8 @@ const RenderContent = ({
 	}
 
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.title_link || attachment.video_url, user.id, user.token, baseUrl);
+		const url = formatAttachmentUrl(attachment.video_url || attachment.video_url, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
-
 		return (
 			<CachedVideo
 				videoUrl={uri}
@@ -84,7 +82,6 @@ const RenderContent = ({
 					showErrorAlert(I18n.t('Error_play_video'));
 				}}
 				setLoading={setLoading}
-				loading={loading}
 			/>
 		);
 	}

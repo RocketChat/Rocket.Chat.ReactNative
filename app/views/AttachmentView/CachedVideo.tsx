@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ActivityIndicator, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { Video, ResizeMode } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+
+import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 
 interface CachedVideoProps {
 	videoUrl: string;
@@ -12,7 +13,6 @@ interface CachedVideoProps {
 	isLooping?: boolean;
 	setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
 	useNativeControls?: boolean;
-	loading?: boolean;
 }
 
 const CachedVideo: React.FC<CachedVideoProps> = ({
@@ -24,7 +24,6 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 	isLooping = false,
 	useNativeControls = true,
 	setLoading = () => {},
-	loading = false,
 	...props
 }) => {
 	const [localUri, setLocalUri] = useState<string | null>(null);
@@ -32,18 +31,25 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 
 	useEffect(() => {
 		const cacheVideo = async () => {
+			setLoading(true);
+
 			try {
-				const fileName = videoUrl.split('/').pop() || `cached-video-${Date.now()}.mp4`;
-				const localPath = FileSystem.documentDirectory + fileName;
-				const fileInfo = await FileSystem.getInfoAsync(localPath);
-
-				if (!fileInfo.exists) {
-					await FileSystem.downloadAsync(videoUrl, localPath);
+				const iscatche = await getMediaCache({ type: 'video' as const, mimeType: 'video/mp4', urlToCache: videoUrl });
+				console.log('iscatche', iscatche);
+				const option = {
+					messageId: videoUrl,
+					type: 'video' as const,
+					mimeType: 'video/mp4',
+					downloadUrl: videoUrl
+				};
+				if (iscatche?.exists) {
+					setLocalUri(iscatche.uri);
+					return;
 				}
+				const uri = await downloadMediaFile(option);
 
-				setLocalUri(localPath);
+				setLocalUri(uri);
 			} catch (error) {
-				console.error('Video caching error:', error);
 				fallbackOnError();
 			} finally {
 				setLoading(false);
@@ -52,14 +58,6 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 
 		cacheVideo();
 	}, [videoUrl]);
-
-	if (loading) {
-		return (
-			<View style={[styles.loadingContainer, style]}>
-				<ActivityIndicator size='large' />
-			</View>
-		);
-	}
 
 	return (
 		<Video
@@ -79,14 +77,5 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	loadingContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#000',
-		flex: 1
-	}
-});
 
 export default CachedVideo;
