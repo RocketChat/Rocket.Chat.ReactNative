@@ -4,7 +4,6 @@ import { navigateToLogin, login, sleep, platformTypes, TTextMatcher, tapBack } f
 import { createRandomUser, getProfileInfo, ITestUser, login as loginSetup } from '../../helpers/data_setup';
 
 describe('Change avatar', () => {
-	let scrollViewType: string;
 	let textMatcher: TTextMatcher;
 	let user: ITestUser;
 	let userId: string;
@@ -14,7 +13,7 @@ describe('Change avatar', () => {
 		const result = await loginSetup(user.username, user.password);
 		userId = result.userId;
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
-		({ scrollViewType, textMatcher } = platformTypes[device.getPlatform()]);
+		({ textMatcher } = platformTypes[device.getPlatform()]);
 		await navigateToLogin();
 		await login(user.username, user.password);
 		await element(by.id('rooms-list-view-sidebar')).tap();
