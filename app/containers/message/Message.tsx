@@ -156,7 +156,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
-		const infoStyle: ViewStyle = !!props.isInfo ? { alignItems: 'center' } : {};
+		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
