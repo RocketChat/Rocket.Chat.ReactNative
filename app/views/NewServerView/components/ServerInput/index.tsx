@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInputProps, View } from 'react-native';
+import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 import { Control } from 'react-hook-form';
 
 import Item from './Item';
@@ -8,7 +8,6 @@ import * as List from '../../../../containers/List';
 import I18n from '../../../../i18n';
 import { TServerHistoryModel } from '../../../../definitions';
 import { useTheme } from '../../../../theme';
-import { CustomIcon } from '../../../../containers/CustomIcon';
 
 const styles = StyleSheet.create({
 	container: {
@@ -83,13 +82,6 @@ const ServerInput = ({
 						ItemSeparatorComponent={List.Separator}
 						keyExtractor={item => item.id}
 					/>
-				</View>
-			) : null}
-
-			{!!error && !focused ? (
-				<View style={{ flexDirection: 'row', gap: 4, paddingVertical: 4 }}>
-					<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-					<Text style={{ fontSize: 14, color: colors.fontDanger }}>Invalid URL</Text>
 				</View>
 			) : null}
 		</View>
