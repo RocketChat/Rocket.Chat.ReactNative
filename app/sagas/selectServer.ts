@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { AccessibilityInfo, Alert } from 'react-native';
+import { AccessibilityInfo } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
