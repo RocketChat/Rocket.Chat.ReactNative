@@ -115,7 +115,7 @@ export const FormTextInput = ({
 					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text style={[styles.label, { color: colors.fontTitlesLabels }, !!error && { color: colors.fontDanger }]}>
+						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
 							{required && (
 								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>

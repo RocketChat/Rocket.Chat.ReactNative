@@ -256,6 +256,7 @@
   "Insert_Join_Code": "Insérer le code d'adhésion",
   "Invalid_or_expired_invite_token": "Jeton d'invitation non valide ou expiré",
   "Invalid_server_version": "Le serveur auquel vous essayez de vous connecter utilise une version qui n'est plus prise en charge par l'application : {{currentVersion}}.\n\nNous exigeons la version {{minVersion}}",
+  "Invalid_URL": "URL invalide",
   "Invalid_workspace_URL": "URL d’espace de travail invalide",
   "Invite_Link": "Lien d'invitation",
   "Invite_user_to_join_channel": "Inviter un utilisateur à rejoindre le canal",

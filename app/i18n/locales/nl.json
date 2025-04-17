@@ -256,6 +256,7 @@
   "Insert_Join_Code": "Deelnamecode invoegen",
   "Invalid_or_expired_invite_token": "Ongeldige of verlopen uitnodigingstoken",
   "Invalid_server_version": "De server waarmee je probeert te verbinden, gebruikt een versie die niet meer door de app wordt ondersteund: {{currentVersion}}.\n\nWe hebben versie {{minVersion}} nodig",
+  "Invalid_URL": "Ongeldige URL",
   "Invalid_workspace_URL": "Ongeldige werkruimte-URL",
   "Invite_Link": "Uitnodigingslink",
   "Invite_user_to_join_channel": "Nodig een gebruiker uit om lid te worden van dit kanaal",

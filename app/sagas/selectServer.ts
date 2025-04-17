@@ -102,14 +102,14 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_workspace_URL'));
-				yield put(serverFailure(I18n.t('Invalid_workspace_URL')));
+				AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_workspace_URL'));
-				yield put(serverFailure(I18n.t('Invalid_workspace_URL')));
+				AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 		}

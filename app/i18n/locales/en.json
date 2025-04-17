@@ -361,6 +361,7 @@
   "Invalid_Email": "Invalid email",
   "Invalid_or_expired_invite_token": "Invalid or expired invite token",
   "Invalid_server_version": "The workspace you're trying to connect is using a version that's not supported by the app anymore: {{currentVersion}}.\n\nWe require version {{minVersion}}",
+  "Invalid_URL": "Invalid URL",
   "Invalid_workspace_URL": "Invalid workspace URL",
   "Invite_Link": "Invite link",
   "Invite_user_to_join_channel": "Invite one user to join this channel",

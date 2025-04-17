@@ -316,6 +316,7 @@
   "Insert_Join_Code": "যোগদান কোড প্রবেশ করুন",
   "Invalid_or_expired_invite_token": "অকার্যকর বা মেয়াদ উত্তীর্ণ ইনভাইট টোকেন",
   "Invalid_server_version": "আপনি যাচাই করতে চেষ্টা করছেন তার একটি সংস্করণ ব্যবহার করছেন যা এখনও অ্যাপ দ্বারা সাপোর্ট করা হয়নি: {{currentVersion}}।\n\nআমরা সংস্করণ {{minVersion}} প্রয়োজন প্রয়োজন",
+  "Invalid_URL": "অবৈধ ইউআরএল",
   "Invalid_workspace_URL": "অবৈধ ওয়ার্কস্পেস URL",
   "Invite_Link": "আমন্ত্রণ লিঙ্ক",
   "Invite_users": "ব্যবহারকারীদের আমন্ত্রণ করুন",

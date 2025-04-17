@@ -216,6 +216,7 @@
   "In_App_and_Desktop_Alert_info": "若 app 開啟時，會在螢幕上方顯示橫幅；顯示桌面通知",
   "Invalid_or_expired_invite_token": "無效或到期的邀請 token",
   "Invalid_server_version": "此 App 版本已不支援您正在連線之伺服器版本。當前版本: {{currentVersion}}.\\n\\n最低版本要求: {{minVersion}}",
+  "Invalid_URL": "無效的網址",
   "Invalid_workspace_URL": "無效的工作區 URL",
   "Invite_Link": "邀請連結",
   "Invite_user_to_join_channel": "邀請使用者加入此頻道",
