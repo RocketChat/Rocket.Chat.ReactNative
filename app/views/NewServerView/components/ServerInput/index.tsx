@@ -72,6 +72,7 @@ const ServerInput = ({
 				onChangeText={onChangeText}
 				onFocus={() => setFocused(true)}
 				onBlur={() => setFocused(false)}
+				error={error}
 			/>
 
 			{focused && serversHistory?.length ? (
