@@ -25,6 +25,19 @@ function dispatch(params: any) {
 	navigationRef.current?.dispatch(params);
 }
 
+function resetToRoomView() {
+	navigationRef.current?.dispatch(state => {
+		const index = state.routes.findIndex(r => r.name === 'RoomView');
+		const routes = state.routes.slice(0, index + 1);
+
+		return CommonActions.reset({
+			...state,
+			routes,
+			index: routes.length - 1
+		});
+	});
+}
+
 export default {
 	navigationRef,
 	routeNameRef,
@@ -32,5 +45,6 @@ export default {
 	back,
 	replace,
 	popToTop,
-	dispatch
+	dispatch,
+	resetToRoomView
 };

@@ -167,6 +167,7 @@ describe('Room actions screen', () => {
 				// Go to starred messages
 				await element(by.id('room-actions-view')).swipe('up');
 				await waitFor(element(by.id('room-actions-starred'))).toExist();
+				await sleep(500);
 				await element(by.id('room-actions-starred')).tap();
 				await waitFor(element(by.id('starred-messages-view')))
 					.toExist()
