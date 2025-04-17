@@ -1,4 +1,3 @@
-import { TIconsName } from '../CustomIcon';
 import { IEmoji } from '../../definitions';
 
 export enum EventTypes {
@@ -17,10 +16,4 @@ export interface IEmojiPickerProps {
 export interface IFooterProps {
 	onBackspacePressed: () => void;
 	onSearchPressed: () => void;
-}
-
-export interface ITabBarProps {
-	goToPage?: (page: number) => void;
-	activeTab?: number;
-	tabs?: TIconsName[];
 }
