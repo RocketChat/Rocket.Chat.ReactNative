@@ -11970,6 +11970,11 @@ react-native-notifier@1.6.1:
   resolved "https://registry.yarnpkg.com/react-native-notifier/-/react-native-notifier-1.6.1.tgz#eec07bdebed6c22cd22f5167555b7762e4119552"
   integrity sha512-uq58vefWCmgk9B/GU0Z9P6M8Su5IuRBtKmroSX7luISEdh3r8QvJo/G6jgK2sO0QhM5QvJOGWBDm1JGEkYL4IQ==
 
+react-native-pager-view@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.7.0.tgz#88f2520e85f07ce55f3f56c57d6637249a215160"
+  integrity sha512-sutxKiMqBuQrEyt4mLaLNzy8taIC7IuYpxfcwQBXfSYBSSpAa0qE9G1FXlP/iXqTSlFgBXyK7BESsl9umOjECQ==
+
 react-native-picker-select@9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-9.0.1.tgz#af454433061a18b7307a725fc045c05ad494e300"
@@ -12083,6 +12088,13 @@ react-native-swipe-gestures@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz#a172cb0f3e7478ccd681fd36b8bfbcdd098bde7c"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
+
+react-native-tab-view@^4.0.10:
+  version "4.0.10"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-4.0.10.tgz#5e11e4dd1a343cc17b17bc4d74c92d97367746cb"
+  integrity sha512-KU1ovavUURfKffqNn7F2jwgQ0tUSa2WosnHSztVYArCr22HP2nR7xHrd8DddFL4uenaT9KGXlNgx1IUPGUdZSw==
+  dependencies:
+    use-latest-callback "^0.2.1"
 
 react-native-text-size@4.0.0-rc.1:
   version "4.0.0-rc.1"
@@ -14205,6 +14217,11 @@ use-latest-callback@^0.1.9:
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/use-latest-callback/-/use-latest-callback-0.1.9.tgz#10191dc54257e65a8e52322127643a8940271e2a"
   integrity sha512-CL/29uS74AwreI/f2oz2hLTW7ZqVeV5+gxFeGudzQrgkCytrHw33G4KbnQOrRlAEzzAFXi7dDLMC9zhWcVpzmw==
+
+use-latest-callback@^0.2.1:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/use-latest-callback/-/use-latest-callback-0.2.3.tgz#2d644d3063040b9bc2d4c55bb525a13ae3de9e16"
+  integrity sha512-7vI3fBuyRcP91pazVboc4qu+6ZqM8izPWX9k7cRnT8hbD5svslcknsh3S9BUhaK11OmgTV4oWZZVSeQAiV53SQ==
 
 use-memo-one@^1.1.1:
   version "1.1.3"

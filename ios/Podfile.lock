@@ -1067,6 +1067,27 @@ PODS:
     - React-Core
   - react-native-notifications (5.1.0):
     - React-Core
+  - react-native-pager-view (6.7.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-restart (0.0.22):
     - React-Core
   - react-native-safe-area-context (3.2.0):
@@ -1385,6 +1406,7 @@ DEPENDENCIES:
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-crypto (from `../node_modules/react-native-simple-crypto`)
@@ -1571,6 +1593,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-restart:
     :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
