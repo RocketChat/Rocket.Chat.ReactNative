@@ -40,6 +40,14 @@ export default function server(state = initialState, action: TActionServer): ISe
 				connected: false,
 				failure: true
 			};
+		case SERVER.SELECT_CANCEL:
+			return {
+				...state,
+				connecting: false,
+				connected: true,
+				loading: false,
+				changingServer: false
+			};
 		case SERVER.SELECT_REQUEST:
 			return {
 				...state,

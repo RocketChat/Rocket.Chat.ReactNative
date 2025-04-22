@@ -56,6 +56,7 @@ export const SERVER = createRequestTypes('SERVER', [
 	'SELECT_SUCCESS',
 	'SELECT_REQUEST',
 	'SELECT_FAILURE',
+	'SELECT_CANCEL',
 	'INIT_ADD',
 	'FINISH_ADD'
 ]);

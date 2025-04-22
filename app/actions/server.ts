@@ -65,6 +65,12 @@ export function selectServerFailure(): Action {
 	};
 }
 
+export function selectServerCancel(): Action {
+	return {
+		type: SERVER.SELECT_CANCEL
+	};
+}
+
 export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServerRequestAction {
 	return {
 		type: SERVER.REQUEST,
