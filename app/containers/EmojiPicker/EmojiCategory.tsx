@@ -8,15 +8,9 @@ import { EMOJI_BUTTON_SIZE } from './styles';
 import { emojisByCategory } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
+import { IEmojiCategoryProps, TEmojiCategory } from './interfaces';
 
-interface IEmojiCategoryProps {
-	onEmojiSelected: (emoji: IEmoji) => void;
-	parentWidth: number;
-	category?: keyof typeof emojisByCategory | 'frequentlyUsed' | 'custom';
-	emojis?: IEmoji[];
-}
-
-const useEmojis = (category: IEmojiCategoryProps['category']) => {
+const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
 	const allCustomEmojis: ICustomEmojis = useAppSelector(
 		state => state.customEmojis,
