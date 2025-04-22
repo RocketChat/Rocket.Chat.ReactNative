@@ -388,6 +388,8 @@
   "Message_Reported": "Meddelandet har anmälts",
   "Message_starred": "Meddelandet har stjärnmarkerats",
   "Message_unstarred": "Stjärnmarkering borttagen för meddelande",
+  "Message_was_not_read": "Meddelandet lästes inte",
+  "Message_was_read": "Meddelande lästes",
   "messages": "meddelanden",
   "missing_room_e2ee_description": "Krypteringsnycklarna för rummet behöver uppdateras, en annan rummedlem måste vara online för att detta ska hända.",
   "missing_room_e2ee_title": "Kontrollera igen om några ögonblick",
