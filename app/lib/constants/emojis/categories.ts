@@ -1,43 +1,43 @@
-const list = ['frequentlyUsed', 'custom', 'people', 'nature', 'food', 'activity', 'travel', 'objects', 'symbols', 'flags'];
+const list = ['frequentlyUsed', 'people', 'nature', 'food', 'activity', 'travel', 'objects', 'symbols', 'flags', 'custom'];
 const tabs = [
 	{
 		tabLabel: 'clock',
 		category: list[0]
 	},
 	{
-		tabLabel: 'rocket',
+		tabLabel: 'emoji',
 		category: list[1]
 	},
 	{
-		tabLabel: 'emoji',
+		tabLabel: 'leaf',
 		category: list[2]
 	},
 	{
-		tabLabel: 'leaf',
+		tabLabel: 'burger',
 		category: list[3]
 	},
 	{
-		tabLabel: 'burger',
+		tabLabel: 'basketball',
 		category: list[4]
 	},
 	{
-		tabLabel: 'basketball',
+		tabLabel: 'airplane',
 		category: list[5]
 	},
 	{
-		tabLabel: 'airplane',
+		tabLabel: 'lamp-bulb',
 		category: list[6]
 	},
 	{
-		tabLabel: 'lamp-bulb',
+		tabLabel: 'percentage',
 		category: list[7]
 	},
 	{
-		tabLabel: 'percentage',
+		tabLabel: 'flag',
 		category: list[8]
 	},
 	{
-		tabLabel: 'flag',
+		tabLabel: 'rocket',
 		category: list[9]
 	}
 ];
