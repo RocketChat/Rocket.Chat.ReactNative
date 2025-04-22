@@ -40,5 +40,5 @@ const tabs = [
 		tabLabel: 'rocket',
 		category: list[9]
 	}
-];
+] as const;
 export const categories = { list, tabs };

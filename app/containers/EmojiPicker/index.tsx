@@ -6,17 +6,22 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
 import styles from './styles';
-import { categories, colors, emojis, emojisByCategory } from '../../lib/constants';
+import { categories } from '../../lib/constants';
 import { useTheme } from '../../theme';
 import { IEmoji } from '../../definitions';
 import { addFrequentlyUsed } from '../../lib/methods';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
-import { CustomIcon } from '../CustomIcon';
+import { CustomIcon, TIconsName } from '../CustomIcon';
 
-const routes = categories.tabs.map((tab: any, index: number) => ({
+const routes: Tab[] = categories.tabs.map(tab => ({
 	key: tab.category,
-	title: tab.tabLabel
+	emoji: tab.tabLabel
 }));
+
+type Tab = {
+	key: string;
+	emoji: TIconsName;
+};
 
 const EmojiPicker = ({
 	onItemClicked,
@@ -27,10 +32,13 @@ const EmojiPicker = ({
 	const { colors } = useTheme();
 	const [parentWidth, setParentWidth] = useState(0);
 
-	const handleEmojiSelect = useCallback((emoji: IEmoji) => {
-		onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
-		addFrequentlyUsed(emoji);
-	}, []);
+	const handleEmojiSelect = useCallback(
+		(emoji: IEmoji) => {
+			onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
+			addFrequentlyUsed(emoji);
+		},
+		[onItemClicked]
+	);
 
 	const renderScene = ({ route }: { route: any }) => (
 		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key} />
@@ -45,36 +53,31 @@ const EmojiPicker = ({
 		setNavigationState(state => ({ ...state, index }));
 	}, []);
 
-	const renderTabBar = ({ jumpTo, routeIndex }: { jumpTo: (key: string) => void; routeIndex: number }) => {
-		return (
-			<View
-				style={{
-					flexDirection: 'row',
-					width: '100%'
-				}}>
-				{routes.map((tab: any, i) => (
-					<View key={i} style={{ flexDirection: 'column', flex: 1, alignItems: 'center' }}>
-						<TouchableOpacity key={i} onPress={() => jumpTo(tab.key)} hitSlop={10}>
+	const renderTabBar = useCallback(
+		({ jumpTo, routeIndex }: { jumpTo: (key: string) => void; routeIndex: number }) => (
+			<View style={styles.tabsContainer}>
+				{routes.map((tab: Tab, index: number) => (
+					<View key={tab.key} style={styles.tab}>
+						<TouchableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10}>
 							<CustomIcon
-								key={i}
 								size={24}
-								name={tab.title}
-								color={routeIndex === i ? colors.strokeHighlight : colors.fontSecondaryInfo}
-								style={{ paddingVertical: 4 }}
+								name={tab.emoji}
+								color={routeIndex === index ? colors.strokeHighlight : colors.fontSecondaryInfo}
+								style={styles.tabEmoji}
 							/>
 						</TouchableOpacity>
 						<View
-							style={{
-								width: '100%',
-								height: 2,
-								backgroundColor: routeIndex === i ? colors.strokeHighlight : colors.strokeExtraLight
-							}}
+							style={[
+								styles.tabLine,
+								{ backgroundColor: routeIndex === index ? colors.strokeHighlight : colors.strokeExtraLight }
+							]}
 						/>
 					</View>
 				))}
 			</View>
-		);
-	};
+		),
+		[colors]
+	);
 
 	return (
 		<View style={styles.emojiPickerContainer} onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>

@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { FlatList } from 'react-native';
 
 import { ICustomEmojis, IEmoji } from '../../definitions/IEmoji';
@@ -45,10 +45,7 @@ const useEmojis = (category: IEmojiCategoryProps['category']) => {
 };
 
 const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps): React.ReactElement | null => {
-	console.count(`EmojiCategory ${category}`);
 	const items = useEmojis(category);
-
-	useEffect(() => () => console.countReset(`EmojiCategory ${category}`), [category]);
 
 	if (!parentWidth) {
 		return null;
