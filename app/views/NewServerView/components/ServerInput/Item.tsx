@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { CustomIcon } from '../../../containers/CustomIcon';
-import { TServerHistoryModel } from '../../../definitions/IServerHistory';
-import sharedStyles from '../../Styles';
-import Touch from '../../../containers/Touch';
+import { CustomIcon } from '../../../../containers/CustomIcon';
+import sharedStyles from '../../../Styles';
+import Touch from '../../../../containers/Touch';
+import { TServerHistoryModel } from '../../../../definitions/IServerHistory';
+import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	container: {

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TextInputProps, View } from 'react-native';
 
-import { useTheme } from '../../../theme';
-import { FormTextInput } from '../../../containers/TextInput';
-import { TServerHistoryModel } from '../../../definitions';
-import * as List from '../../../containers/List';
-import I18n from '../../../i18n';
 import Item from './Item';
+import { FormTextInput } from '../../../../containers/TextInput';
+import * as List from '../../../../containers/List';
+import I18n from '../../../../i18n';
+import { TServerHistoryModel } from '../../../../definitions';
+import { useTheme } from '../../../../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -44,8 +44,8 @@ const ServerInput = ({
 	onDelete,
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
-	const [focused, setFocused] = useState(false);
 	const { colors } = useTheme();
+	const [focused, setFocused] = useState(false);
 	return (
 		<View style={styles.container}>
 			<FormTextInput
