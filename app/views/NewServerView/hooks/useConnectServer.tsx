@@ -1,10 +1,11 @@
 import { Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import sdk from '../../../lib/services/sdk';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import UserPreferences from '../../../lib/methods/userPreferences';
-import { serverRequest } from '../../../actions/server';
 import { CERTIFICATE_KEY } from '../../../lib/constants';
+import { selectServerClear, serverRequest } from '../../../actions/server';
 import completeUrl from '../utils/completeUrl';
 import { ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
@@ -12,14 +13,20 @@ import basicAuth from '../methods/basicAuth';
 type TUseNewServerProps = {
 	text: string;
 	certificate: string | null;
+	previousServer: string | null;
 };
 
-const useConnectServer = ({ text, certificate }: TUseNewServerProps) => {
+const useConnectServer = ({ text, certificate, previousServer }: TUseNewServerProps) => {
 	const dispatch = useDispatch();
 
 	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
 		logEvent(events.NS_CONNECT_TO_WORKSPACE);
 
+		// Clear the previous workspace to prevent being stuck on the previous server
+		if (!previousServer) {
+			sdk.disconnect();
+			dispatch(selectServerClear());
+		}
 		if (text || serverUrl) {
 			Keyboard.dismiss();
 			const server = completeUrl(serverUrl ?? text);
