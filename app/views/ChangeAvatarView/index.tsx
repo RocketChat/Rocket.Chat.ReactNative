@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
+import { useForm } from 'react-hook-form';
 import { HeaderBackButton } from '@react-navigation/elements';
 import type { ImagePickerOptions } from 'expo-image-picker';
 
@@ -31,7 +32,7 @@ import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
-import { FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -68,8 +69,11 @@ function reducer(state: IState, action: IReducerAction) {
 }
 
 const ChangeAvatarView = () => {
+	const { control, getValues, setValue } = useForm({
+		mode: 'onChange',
+		defaultValues: { rawImageUrl: '' }
+	});
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const [rawImageUrl, setRawImageUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
 	const { userId, username, server } = useAppSelector(
@@ -124,6 +128,7 @@ const ChangeAvatarView = () => {
 	};
 
 	const onChangeText = useDebounce(async (value: string) => {
+		const { rawImageUrl } = getValues();
 		const result = await isImageURL(rawImageUrl);
 
 		if (!result || !value) {
@@ -133,10 +138,11 @@ const ChangeAvatarView = () => {
 			});
 		}
 
-		setRawImageUrl(value);
+		setValue('rawImageUrl', value);
 	}, textInputDebounceTime);
 
 	const fetchImageFromURL = async () => {
+		const { rawImageUrl } = getValues();
 		const result = await isImageURL(rawImageUrl);
 		if (result) {
 			dispatchAvatar({
@@ -225,7 +231,9 @@ const ChangeAvatarView = () => {
 					</View>
 					{context === 'profile' ? (
 						<>
-							<FormTextInput
+							<ControlledFormTextInput
+								control={control}
+								name='rawImageUrl'
 								label={I18n.t('Avatar_Url')}
 								onChangeText={onChangeText}
 								testID='change-avatar-view-avatar-url'
