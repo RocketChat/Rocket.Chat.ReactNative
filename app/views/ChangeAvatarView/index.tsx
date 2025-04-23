@@ -69,7 +69,13 @@ function reducer(state: IState, action: IReducerAction) {
 }
 
 const ChangeAvatarView = () => {
-	const { control, getValues, setValue } = useForm({
+	const {
+		control,
+		getValues,
+		setValue,
+		setError,
+		formState: { errors }
+	} = useForm({
 		mode: 'onChange',
 		defaultValues: { rawImageUrl: '' }
 	});
@@ -149,7 +155,10 @@ const ChangeAvatarView = () => {
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: rawImageUrl, data: rawImageUrl, service: 'url' }
 			});
+			return;
 		}
+
+		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
 	const submit = async () => {
@@ -237,6 +246,7 @@ const ChangeAvatarView = () => {
 								label={I18n.t('Avatar_Url')}
 								onChangeText={onChangeText}
 								testID='change-avatar-view-avatar-url'
+								error={errors.rawImageUrl?.message}
 								containerStyle={{ marginBottom: 0 }}
 							/>
 							<Button

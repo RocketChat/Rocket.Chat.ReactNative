@@ -318,6 +318,7 @@
   "Insert_Join_Code": "சேர்ந்த குறியீடை உள்ளிடவும்",
   "Invalid_or_expired_invite_token": "தவறான அல்லது காலாவதி அழைப்பு டோக்கன்",
   "Invalid_server_version": "நீங்கள் இணைக்க முயற்சிக்கின்றீர்கள் பயன்பாட்டை ஆதரிக்காத பதிப்புக்கு உள்ள வெளிப்புற படைப்புக்கு உபயோகிக்கிற பேனல்: {{currentVersion}}.\n\nஎங்களுக்கு பதிப்பு தேவைப்படுகின்றது {{minVersion}}",
+  "Invalid_URL": "தவறான URL",
   "Invalid_workspace_URL": "தவறான வேலைத்தள URL",
   "Invite_Link": "அழைப்பு இணைப்பு",
   "Invite_users": "பயனர்களை அழை",

@@ -318,6 +318,7 @@
   "Insert_Join_Code": "सामिल होने का कोड डालें",
   "Invalid_or_expired_invite_token": "अमान्य या समाप्त होने वाला निमंत्रण टोकन",
   "Invalid_server_version": "यह कार्यस्थान जिससे आप कनेक्ट करने का प्रयास कर रहे हैं, वह ऐप द्वारा अब समर्थित नहीं है: {{currentVersion}}।\n\nहमें {{minVersion}} संस्करण की आवश्यकता है",
+  "Invalid_URL": "अमान्य URL",
   "Invalid_workspace_URL": "अमान्य कार्यक्षेत्र URL",
   "Invite_Link": "निमंत्रण लिंक",
   "Invite_users": "उपयोगकर्ताओं को निमंत्रित करें",

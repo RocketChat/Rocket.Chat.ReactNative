@@ -208,6 +208,7 @@
   "In_App_and_Desktop_Alert_info": "打开 app 时，會在屏幕上方显示横幅；显示桌面通知",
   "Invalid_or_expired_invite_token": "无效或到期的邀请 token",
   "Invalid_server_version": "此 App 版本已不支援您正在连线之服务器版本。当前版本: {{currentVersion}}.\\n\\n最低版本要求: {{minVersion}}",
+  "Invalid_URL": "无效的URL",
   "Invalid_workspace_URL": "无效的工作区 URL",
   "Invite_Link": "邀请链接",
   "Invite_users": "邀请用戶",

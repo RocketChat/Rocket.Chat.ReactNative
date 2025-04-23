@@ -293,6 +293,7 @@
   "Insert_Join_Code": "Lisää liittymiskoodi",
   "Invalid_or_expired_invite_token": "Virheellinen tai vanhentunut kutsutunnus",
   "Invalid_server_version": "Palvelin, johon yrität muodostaa yhteyttä, käyttää versiota, jota sovellus ei enää tue: {{currentVersion}}.\n\nEdellytämme versiota {{minVersion}}",
+  "Invalid_URL": "Virheellinen URL-osoite.",
   "Invalid_workspace_URL": "Virheellinen työtilan URL-osoite",
   "Invite_Link": "Kutsulinkki",
   "Invite_user_to_join_channel": "Kutsu käyttäjä liittymään tälle kanavalle",

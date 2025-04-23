@@ -202,6 +202,7 @@
   "Insert_Join_Code": "参加コードを挿入する",
   "Invalid_or_expired_invite_token": "招待トークンが無効か、期限が切れています",
   "Invalid_server_version": "接続しようとしているサーバーのバージョン（{{currentVersion}}）はサポートされていません。\n\nサポートする最低バージョンは {{minVersion}} です",
+  "Invalid_URL": "無効なURL",
   "Invalid_workspace_URL": "無効なワークスペースのURL",
   "Invite_Link": "招待リンク",
   "Invite_user_to_join_channel": "1ユーザーをこのチャネルに招待",

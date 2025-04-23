@@ -216,6 +216,7 @@
   "Insert_Join_Code": "Katılım Kodu Girin",
   "Invalid_or_expired_invite_token": "Geçersiz veya süresi dolmuş davet belirteci (token)",
   "Invalid_server_version": "Bağlanmaya çalıştığınız sunucu artık uygulama tarafından desteklenmeyen bir sürüm kullanıyor: {{currentVersion}}.\n\n{{minVersion}} sürümüne ihtiyacımız var",
+  "Invalid_URL": "Geçersiz URL",
   "Invalid_workspace_URL": "Geçersiz çalışma alanı URL'si",
   "Invite_Link": "Davet Bağlantısı",
   "Invite_user_to_join_channel": "Bu kanala katılması için bir kullanıcı davet",

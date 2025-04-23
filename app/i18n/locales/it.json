@@ -230,6 +230,7 @@
   "Insert_Join_Code": "Inserisci il codice d'accesso",
   "Invalid_or_expired_invite_token": "Token di invito non valido o scaduto",
   "Invalid_server_version": "Il server a cui stai cercando di connetterti sta utilizzando una versione non più supportata dall'app: {{currentVersion}}.\n\nVersione minima richiesta: {{minVersion}}",
+  "Invalid_URL": "URL non valida",
   "Invalid_workspace_URL": "URL dello spazio di lavoro non valido",
   "Invite_Link": "Link di invito",
   "Invite_user_to_join_channel": "Invita un utente ad entrare in questo canale",
