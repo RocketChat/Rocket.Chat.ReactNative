@@ -10,7 +10,7 @@ import { SubscriptionType } from '../../definitions';
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
 	const { fontScale } = useWindowDimensions();
-
+	const fontScaleLimited = fontScale > 1.3 ? 1.3 : fontScale;
 	if (isHeader && author) {
 		const onPress = () =>
 			navToRoomInfo({
@@ -18,8 +18,9 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 				rid: author._id,
 				itsMe: author._id === user.id
 			});
-		const smallSize = 20 * fontScale;
-		const normalSize = 36 * fontScale;
+
+		const smallSize = 20 * fontScaleLimited;
+		const normalSize = 36 * fontScaleLimited;
 		const size = small ? smallSize : normalSize;
 		return (
 			<Avatar
