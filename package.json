@@ -119,7 +119,6 @@
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "3.2.0",
 		"react-native-screens": "3.31.1",
-		"react-native-scrollable-tab-view": "ptomasroos/react-native-scrollable-tab-view",
 		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#fix.6.1.0",
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-slowlog": "1.0.2",
