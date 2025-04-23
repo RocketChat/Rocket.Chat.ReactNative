@@ -1,5 +1,15 @@
 import React, { useMemo } from 'react';
-import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole, useWindowDimensions } from 'react-native';
+import {
+	I18nManager,
+	StyleProp,
+	StyleSheet,
+	Text,
+	TextStyle,
+	View,
+	AccessibilityRole,
+	useWindowDimensions,
+	ViewStyle
+} from 'react-native';
 
 import Touch from '../Touch';
 import { themes } from '../../lib/constants';
@@ -67,6 +77,7 @@ interface IListItemContent {
 	showActionIndicator?: boolean;
 	alert?: boolean;
 	heightContainer?: number;
+	rightContainerStyle?: StyleProp<ViewStyle>;
 	styleTitle?: StyleProp<TextStyle>;
 	additionalAcessibilityLabel?: string | boolean;
 	accessibilityRole?: AccessibilityRole;
@@ -88,6 +99,7 @@ const Content = React.memo(
 		showActionIndicator = false,
 		theme,
 		heightContainer,
+		rightContainerStyle = {},
 		styleTitle,
 		additionalAcessibilityLabel,
 		additionalAcessibilityLabelCheck,
@@ -124,28 +136,30 @@ const Content = React.memo(
 				accessibilityLabel={handleAcessibilityLabel}
 				accessibilityRole={accessibilityRole ?? 'button'}>
 				{left ? <View style={styles.leftContainer}>{left()}</View> : null}
-				<View style={styles.textContainer}>
-					<View style={styles.textAlertContainer}>
-						<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]}>
-							{translateTitle && title ? I18n.t(title) : title}
-						</Text>
-						{alert ? (
-							<CustomIcon
-								name='info'
-								size={ICON_SIZE}
-								color={themes[theme].buttonBackgroundDangerDefault}
-								style={styles.alertIcon}
-							/>
+				{title || subtitle ? (
+					<View style={styles.textContainer}>
+						<View style={styles.textAlertContainer}>
+							<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]}>
+								{translateTitle && title ? I18n.t(title) : title}
+							</Text>
+							{alert ? (
+								<CustomIcon
+									name='info'
+									size={ICON_SIZE}
+									color={themes[theme].buttonBackgroundDangerDefault}
+									style={styles.alertIcon}
+								/>
+							) : null}
+						</View>
+						{subtitle ? (
+							<Text style={[styles.subtitle, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
+								{translateSubtitle ? I18n.t(subtitle) : subtitle}
+							</Text>
 						) : null}
 					</View>
-					{subtitle ? (
-						<Text style={[styles.subtitle, { color: themes[theme].fontSecondaryInfo }]} numberOfLines={1}>
-							{translateSubtitle ? I18n.t(subtitle) : subtitle}
-						</Text>
-					) : null}
-				</View>
+				) : null}
 				{right || showActionIndicator ? (
-					<View style={styles.rightContainer}>
+					<View style={[styles.rightContainer, rightContainerStyle]}>
 						{right ? right() : null}
 						{showActionIndicator ? <Icon name='chevron-right' style={styles.actionIndicator} /> : null}
 					</View>
