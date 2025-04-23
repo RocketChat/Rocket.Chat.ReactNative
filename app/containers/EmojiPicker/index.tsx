@@ -38,7 +38,13 @@ const EmojiPicker = ({
 	);
 
 	const renderTabItem = (tab: Route, color: string) => (
-		<CustomIcon size={24} name={tab.title as TIconsName} color={color} style={styles.tabEmoji} />
+		<CustomIcon
+			size={24}
+			name={tab.title as TIconsName}
+			color={color}
+			style={styles.tabEmoji}
+			testID={`emoji-picker-tab-${tab.title}`}
+		/>
 	);
 
 	return (
