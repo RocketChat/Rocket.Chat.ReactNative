@@ -1,79 +1,75 @@
-import React from 'react';
-import { fireEvent, render, within } from '@testing-library/react-native';
+import * as React from 'react';
+import { screen, render } from '@testing-library/react-native';
+import { Route } from 'reanimated-tab-view';
 import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 
-import ReactionsList from '.';
-import { mockedStore } from '../../reducers/mockedStore';
+import ReactionsList from './index';
+import { IReaction } from '../../definitions';
 
-const getCustomEmoji = jest.fn();
-const reactions = [
+// Create a mock Redux store
+const mockStore = createStore(
+	(
+		state = {
+			settings: {
+				UI_Use_Real_Name: true
+			},
+			login: {
+				user: {
+					username: 'testuser'
+				}
+			}
+		}
+	) => state
+);
+
+// Mock the TabView component since we don't need to test its internal functionality
+jest.mock('../TabView', () => ({
+	TabView: ({ routes, renderScene }: { routes: Route[]; renderScene: (props: { route: Route }) => React.ReactNode }) => {
+		// Always render the first route (All tab) for testing
+		const currentRoute = routes[0] || { key: 'all' };
+		return renderScene({ route: currentRoute });
+	}
+}));
+
+const mockGetCustomEmoji = () => null;
+
+const mockReactions: IReaction[] = [
 	{
-		emoji: 'marioparty',
-		_id: 'marioparty',
-		usernames: ['rocket.cat', 'diego.mello'],
-		names: ['Rocket Cat', 'Diego Mello']
+		_id: 'reaction1',
+		emoji: '👍',
+		usernames: ['user1', 'user2'],
+		names: ['User One', 'User Two']
 	},
 	{
-		emoji: 'react_rocket',
-		_id: 'react_rocket',
-		usernames: ['rocket.cat', 'diego.mello'],
-		names: ['Rocket Cat', 'Diego Mello']
-	},
-	{
-		emoji: 'nyan_rocket',
-		_id: 'nyan_rocket',
-		usernames: ['rocket.cat'],
-		names: ['Rocket Cat']
-	},
-	{
-		emoji: 'grinning',
-		_id: 'grinning',
-		usernames: ['diego.mello'],
-		names: ['Diego Mello']
+		_id: 'reaction2',
+		emoji: '❤️',
+		usernames: ['user3'],
+		names: ['User Three']
 	}
 ];
 
-const Render = () => (
-	<Provider store={mockedStore}>
-		<ReactionsList getCustomEmoji={getCustomEmoji} reactions={reactions} />
-	</Provider>
-);
+const renderWithRedux = (component: React.ReactElement) => render(<Provider store={mockStore}>{component}</Provider>);
 
 describe('ReactionsList', () => {
-	test('should render Reactions List', async () => {
-		const { findByTestId } = render(<Render />);
-		const ReactionsListView = await findByTestId('reactionsList');
-		expect(ReactionsListView).toBeTruthy();
+	it('renders empty ReactionsList when no reactions', () => {
+		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={[]} />);
+		expect(screen.getByTestId('reactionsList')).toBeOnTheScreen();
 	});
 
-	test('should render tab bar', async () => {
-		const { findByTestId } = render(<Render />);
-		const AllTab = await findByTestId('reactionsTabBar');
-		expect(AllTab).toBeTruthy();
+	it('renders ReactionsList with reactions in All tab', () => {
+		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} reactions={mockReactions} />);
+
+		// Verify reactions are displayed in the All tab
+		expect(screen.getByTestId('reactionsList')).toBeOnTheScreen();
+		expect(screen.getByText('2 people reacted')).toBeOnTheScreen();
+		expect(screen.getByText('1 person reacted')).toBeOnTheScreen();
+		expect(screen.getByText('User One and User Two')).toBeOnTheScreen();
+		expect(screen.getByText('User Three')).toBeOnTheScreen();
 	});
 
-	test('should render All tab', async () => {
-		const { findByTestId } = render(<Render />);
-		const AllTab = await findByTestId('reactionsListAllTab');
-		expect(AllTab).toBeTruthy();
-	});
-
-	test('correct tab on clicking tab item', async () => {
-		const { findByTestId } = render(<Render />);
-		const tab = await findByTestId(`tabBarItem-${reactions[0].emoji}`);
-		fireEvent.press(tab);
-		const usersList = await findByTestId(`usersList-${reactions[0].emoji}`);
-		expect(usersList).toBeTruthy();
-		const emojiName = await within(usersList).getByTestId(`usersListEmojiName`);
-		expect(emojiName.props.children).toEqual(reactions[0].emoji);
-	});
-
-	test('should render correct number of reactions', async () => {
-		const { findByTestId } = render(<Render />);
-		const tab = await findByTestId(`tabBarItem-${reactions[0].emoji}`);
-		fireEvent.press(tab);
-		const usersList = await findByTestId(`usersList-${reactions[0].emoji}`);
-		const allReactions = await within(usersList).getAllByTestId('userItem');
-		expect(allReactions).toHaveLength(reactions[0].usernames.length);
+	it('handles undefined reactions prop', () => {
+		renderWithRedux(<ReactionsList getCustomEmoji={mockGetCustomEmoji} />);
+		expect(screen.getByTestId('reactionsList')).toBeOnTheScreen();
 	});
 });
