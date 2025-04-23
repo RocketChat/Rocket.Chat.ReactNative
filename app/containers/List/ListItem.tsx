@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
 });
 
 interface IListItemContent {
+	accessibilityLabel?: string;
 	title?: string;
 	subtitle?: string;
 	left?: () => JSX.Element | null;
@@ -103,12 +104,16 @@ const Content = React.memo(
 		styleTitle,
 		additionalAcessibilityLabel,
 		additionalAcessibilityLabelCheck,
-		accessibilityRole
+		accessibilityRole,
+		accessibilityLabel
 	}: IListItemContent) => {
 		const { fontScale } = useWindowDimensions();
 
 		const handleAcessibilityLabel = useMemo(() => {
 			let label = '';
+			if (accessibilityLabel) {
+				return accessibilityLabel;
+			}
 			if (title) {
 				label = translateTitle ? I18n.t(title) : title;
 			}
