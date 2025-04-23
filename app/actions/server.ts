@@ -71,6 +71,12 @@ export function selectServerCancel(): Action {
 	};
 }
 
+export function selectServerClear(): Action {
+	return {
+		type: SERVER.CLEAR
+	};
+}
+
 export function serverRequest(server: string, username: string | null = null, fromServerHistory = false): IServerRequestAction {
 	return {
 		type: SERVER.REQUEST,
