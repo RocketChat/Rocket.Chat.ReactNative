@@ -252,7 +252,7 @@ describe('Room info screen', () => {
 			});
 
 			it('should delete room', async () => {
-				await element(by.id('room-info-edit-view-list')).swipe('up');
+				await swipe('up');
 				await element(by.id('room-info-edit-view-delete')).tap();
 				await waitFor(element(by[textMatcher]('Yes, delete it!')))
 					.toExist()
