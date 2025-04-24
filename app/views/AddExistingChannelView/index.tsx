@@ -142,7 +142,7 @@ const AddExistingChannelView = () => {
 			const result = await Services.addRoomsToTeam({ rooms: selected, teamId });
 			if (result.success) {
 				sendLoadingEvent({ visible: false });
-				Navigation.resetToRoomView();
+				Navigation.resetTo();
 			}
 		} catch (e: any) {
 			logEvent(events.CT_ADD_ROOM_TO_TEAM_F);

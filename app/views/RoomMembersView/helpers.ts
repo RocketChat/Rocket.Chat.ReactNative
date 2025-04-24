@@ -117,7 +117,7 @@ const removeFromTeam = async (
 			updateState({
 				members: newMembers
 			});
-			Navigation.resetToRoomView()
+			Navigation.resetTo('RoomMembersView');
 		}
 	} catch (e: any) {
 		log(e);

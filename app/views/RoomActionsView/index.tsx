@@ -538,7 +538,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const result = await Services.convertTeamToChannel({ teamId: room.teamId, selected });
 
 			if (result.success) {
-				Navigation.resetToRoomView();
+				Navigation.resetTo();
 			}
 		} catch (e) {
 			logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL_F);
@@ -606,7 +606,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const result = await Services.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
 
 			if (result.success) {
-				Navigation.resetToRoomView();
+				Navigation.resetTo();
 			}
 		} catch (e) {
 			logEvent(events.RA_CONVERT_TO_TEAM_F);
@@ -629,7 +629,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const { room } = this.state;
 			const result = await Services.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
-				Navigation.resetToRoomView();
+				Navigation.resetTo();
 			}
 		} catch (e) {
 			logEvent(events.RA_MOVE_TO_TEAM_F);

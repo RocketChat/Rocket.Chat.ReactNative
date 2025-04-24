@@ -68,7 +68,7 @@ const ReportUserView = () => {
 				navigation.navigate('DrawerNavigator');
 				return;
 			}
-			Navigation.resetToRoomView();
+			Navigation.resetTo();
 		} catch (e) {
 			log(e);
 			setLoading(false);

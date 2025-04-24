@@ -25,9 +25,9 @@ function dispatch(params: any) {
 	navigationRef.current?.dispatch(params);
 }
 
-function resetToRoomView() {
+function resetTo(screen = 'RoomView') {
 	navigationRef.current?.dispatch(state => {
-		const index = state.routes.findIndex(r => r.name === 'RoomView');
+		const index = state.routes.findIndex(r => r.name === screen);
 		const routes = state.routes.slice(0, index + 1);
 
 		return CommonActions.reset({
@@ -46,5 +46,5 @@ export default {
 	replace,
 	popToTop,
 	dispatch,
-	resetToRoomView
+	resetTo
 };
