@@ -17,6 +17,7 @@ async function navigateToRoomInfo(room: string) {
 
 async function swipe(direction: Detox.Direction) {
 	await element(by.id('room-info-edit-view-list')).swipe(direction, 'fast', 1);
+	await sleep(500);
 }
 
 async function waitForToast() {
@@ -150,12 +151,17 @@ describe('Room info screen', () => {
 				await element(by.id('room-info-edit-view-ro')).tap();
 				await element(by.id('room-info-edit-view-react-when-ro')).tap();
 				await swipe('up');
+				await waitFor(element(by.id('room-info-edit-view-reset')))
+					.toBeVisible()
+					.withTimeout(2000);
 				await element(by.id('room-info-edit-view-reset')).tap();
 				// after reset
+				await swipe('down');
 				await expect(element(by.id('room-info-edit-view-name'))).toHaveText(room);
 				await expect(element(by.id('room-info-edit-view-topic'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-announcement'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
+				await swipe('up');
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
 				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(true);
 				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(false);

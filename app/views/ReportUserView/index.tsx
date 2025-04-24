@@ -20,6 +20,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { Services } from '../../lib/services';
 import KeyboardView from '../../containers/KeyboardView';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
@@ -67,7 +68,7 @@ const ReportUserView = () => {
 				navigation.navigate('DrawerNavigator');
 				return;
 			}
-			navigation.navigate('RoomView');
+			Navigation.resetToRoomView();
 		} catch (e) {
 			log(e);
 			setLoading(false);
