@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { Text, View } from 'react-native';
 
 import styles from './styles';
-import { themes } from '../../lib/constants';
 import MessageContext from './Context';
 import ThreadDetails from '../ThreadDetails';
 import I18n from '../../i18n';
@@ -15,7 +14,7 @@ const Thread = React.memo(
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
 		const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
-		const textColor = threadBadgeColor ? colors.fontWhite : theme === 'light' ? colors.fontPureBlack : colors.fontWhite;
+		const textColor = threadBadgeColor || theme !== 'light' ? colors.fontWhite : colors.fontPureBlack;
 
 		if (!tlm || isThreadRoom || tcount === null) {
 			return null;
