@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 		marginBottom: 0
 	},
 	chooseCertificateTitle: {
-		...sharedStyles.textRegular
+		...sharedStyles.textBold
 	},
 	buttonPrompt: {
 		...sharedStyles.textRegular,
