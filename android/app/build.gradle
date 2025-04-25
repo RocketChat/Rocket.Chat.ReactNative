@@ -145,7 +145,6 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':@react-native-community_viewpager')
     implementation project(':react-native-notifications')
     implementation "com.google.firebase:firebase-messaging:23.3.1"
     implementation project(':watermelondb-jsi')
