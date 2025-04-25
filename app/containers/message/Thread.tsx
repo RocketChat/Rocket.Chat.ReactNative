@@ -14,12 +14,8 @@ const Thread = React.memo(
 		const { theme, colors } = useTheme();
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
-        const [backgroundColor, textColor] = React.useMemo(() => {
-			const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
-			const textColor = threadBadgeColor ? colors.fontWhite : theme === 'light' ? colors.fontPureBlack : colors.fontWhite;
-			
-            return [backgroundColor, textColor];
-		}, [threadBadgeColor, theme, colors]);
+		const backgroundColor = threadBadgeColor ? colors.badgeBackgroundLevel2 : colors.buttonBackgroundSecondaryDefault;
+		const textColor = threadBadgeColor ? colors.fontWhite : theme === 'light' ? colors.fontPureBlack : colors.fontWhite;
 
 		if (!tlm || isThreadRoom || tcount === null) {
 			return null;
