@@ -4,11 +4,7 @@ import { Text } from 'react-native';
 import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import styles from './styles';
 import CustomEmoji from './CustomEmoji';
-import { IEmoji } from '../../definitions/IEmoji';
-
-interface IEmojiProps {
-	emoji: IEmoji;
-}
+import { IEmojiProps } from './interfaces';
 
 export const Emoji = ({ emoji }: IEmojiProps): React.ReactElement => {
 	if (typeof emoji === 'string') {

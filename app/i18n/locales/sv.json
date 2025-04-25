@@ -722,6 +722,7 @@
   "Verify_email_desc": "Vi har skickat ett e-postmeddelande för att bekräfta din registrering. Om du inte får e-postmeddelandet försöker du igen.",
   "Version_no": "Appversion: {{version}}",
   "View_Original": "Visa original",
+  "View_Thread": "Visa tråd",
   "Wait_activation_warning": "Innan du kan logga in måste ditt konto aktiveras manuellt av en administratör.",
   "Waiting_for_answer": "Väntar på svar",
   "Waiting_for_network": "Väntar på nätverket...",

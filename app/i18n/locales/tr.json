@@ -536,6 +536,7 @@
   "Verify_email_desc": "Kaydınızı onaylamak için size bir e-posta gönderdik. Kısa süre içinde bir e-posta almazsanız, lütfen geri gelin ve tekrar deneyin.",
   "Version_no": "Uygulama sürümü: {{version}}",
   "View_Original": "Orijinali Görüntüle",
+  "View_Thread": "İpliği görüntüleyin",
   "Wait_activation_warning": "Giriş yapmadan önce, hesabınız bir yönetici tarafından manuel olarak etkinleştirilmelidir.",
   "Waiting_for_network": "Ağ bağlantısı bekleniyor ...",
   "Websocket_disabled": "Bu sunucu için Websocket devre dışı bırakıldı.\n{{contact}}",

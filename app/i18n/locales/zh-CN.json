@@ -497,6 +497,7 @@
   "Verify_email_desc": "我们已经送出一封电子邮件，以确认您的注册。如果您没有很快收到，请再试一次。",
   "Version_no": "应用版本: {{version}}",
   "View_Original": "检视原文",
+  "View_Thread": "查看线程",
   "Wait_activation_warning": "您的帐号必须由管理员手动启用后才能登入。",
   "Waiting_for_network": "等待网路连接",
   "Websocket_disabled": "Websocket 已于此伺服器上禁用。 \\n{{contact}}",

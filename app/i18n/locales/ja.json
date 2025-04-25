@@ -435,6 +435,7 @@
   "Uses_server_configuration": "サーバー構成を使用する",
   "Version_no": "アプリバージョン: {{version}}",
   "View_Original": "オリジナルを見る",
+  "View_Thread": "スレッドを表示します",
   "Websocket_disabled": "Websocketはこのサーバーでは無効化されています。\n{{contact}}",
   "Whats_the_password_for_your_certificate": "証明書のパスワードはなんですか？",
   "Without_Servers": "サーバーを除く",
