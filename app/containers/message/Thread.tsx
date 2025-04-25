@@ -14,16 +14,31 @@ const Thread = React.memo(
 		const { theme } = useTheme();
 		const { threadBadgeColor, toggleFollowThread, user, replies } = useContext(MessageContext);
 
+		const backgroundColor = React.useMemo(() => {
+			if (threadBadgeColor) {
+				return themes[theme].badgeBackgroundLevel2;
+			}
+			return themes[theme].buttonBackgroundSecondaryDefault;
+		}, [threadBadgeColor, theme]);
+
+		const textColor = React.useMemo(() => {
+			if (threadBadgeColor) {
+				return themes[theme].fontWhite;
+			}
+			if (theme === 'light') {
+				return themes[theme].fontPureBlack;
+			}
+			return themes[theme].fontWhite;
+		}, [threadBadgeColor, theme]);
+
 		if (!tlm || isThreadRoom || tcount === null) {
 			return null;
 		}
 
 		return (
 			<View style={styles.buttonContainer}>
-				<View
-					style={[styles.button, { backgroundColor: threadBadgeColor ? themes[theme].badgeBackgroundLevel2 : themes[theme].buttonBackgroundSecondaryDefault }]}
-					testID={`message-thread-button-${msg}`}>
-					<Text style={[styles.buttonText, { color: !threadBadgeColor ? (theme === 'light' ? themes[theme].fontPureBlack : themes[theme].fontWhite) : themes[theme].fontWhite }]}>{I18n.t('View_Thread')}</Text>
+				<View style={[styles.button, { backgroundColor }]} testID={`message-thread-button-${msg}`}>
+					<Text style={[styles.buttonText, { color: textColor }]}>{I18n.t('View_Thread')}</Text>
 				</View>
 				<ThreadDetails
 					item={{
