@@ -522,7 +522,6 @@ jobs:
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
-      - run: mkdir ~/junit
       - create-e2e-account-file
       - android/create-avd:
           avd-name: Pixel_API_34_AOSP
@@ -537,17 +536,10 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
-            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
             yarn e2e:android-test $TEST
       - store_artifacts:
           path: artifacts
-      - run:
-          command: cp junit.xml ~/junit/
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
 
   # iOS builds
   ios-build-experimental:
@@ -612,7 +604,6 @@ jobs:
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-mac
-      - run: mkdir ~/junit
       - run:
           name: Configure Detox
           command: |
@@ -623,17 +614,10 @@ jobs:
       - run:
           name: Run tests
           command: |
-            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
             yarn e2e:ios-test $TEST
       - store_artifacts:
           path: artifacts
-      - run:
-          command: cp junit.xml ~/junit/
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
 
 workflows:
   build-and-test:

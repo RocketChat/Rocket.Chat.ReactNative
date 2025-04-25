@@ -208,7 +208,6 @@
 		"jest": "^29.7.0",
 		"jest-cli": "^29.7.0",
 		"jest-expo": "^52.0.6",
-		"jest-junit": "^16.0.0",
 		"otp.js": "1.2.0",
 		"patch-package": "8.0.0",
 		"prettier": "2.8.8",
@@ -216,9 +215,6 @@
 		"react-native-dotenv": "3.4.8",
 		"react-test-renderer": "18.3.1",
 		"typescript": "5.4.3"
-	},
-	"jest-junit": {
-		"addFileAttribute": "true"
 	},
 	"snyk": true,
 	"engines": {
