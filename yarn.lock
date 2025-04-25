@@ -7603,6 +7603,13 @@ expo-image-loader@~4.6.0:
   resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-4.6.0.tgz#ca7d4fdf53125bff2091d3a2c34a3155f10df147"
   integrity sha512-RHQTDak7/KyhWUxikn2yNzXL7i2cs16cMp6gEAgkHOjVhoCJQoOJ0Ljrt4cKQ3IowxgCuOrAgSUzGkqs7omj8Q==
 
+expo-image-manipulator@~11.8.0:
+  version "11.8.0"
+  resolved "https://registry.yarnpkg.com/expo-image-manipulator/-/expo-image-manipulator-11.8.0.tgz#e52351728619e534c949ae4b394af2c7c5d16702"
+  integrity sha512-ZWVrHnYmwJq6h7auk+ropsxcNi+LyZcPFKQc8oy+JA0SaJosfShvkCm7RADWAunHmfPCmjHrhwPGEu/rs7WG/A==
+  dependencies:
+    expo-image-loader "~4.6.0"
+
 expo-image-picker@14:
   version "14.7.1"
   resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-14.7.1.tgz#c51faff3a3fbffc6ae93d7155370beb1a2d2baea"

@@ -5,6 +5,7 @@ import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { Dispatch } from 'redux';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -42,6 +43,7 @@ interface IShareViewState {
 	loading: boolean;
 	readOnly: boolean;
 	attachments: IShareAttachment[];
+	compressionQuality: number;
 	text: string;
 	room: TSubscriptionModel;
 	thread: TThreadModel | string;
@@ -88,6 +90,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			loading: false,
 			readOnly: false,
 			attachments: [],
+			compressionQuality: 0.5,
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
@@ -100,6 +103,15 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		};
 		this.getServerInfo();
 	}
+
+	componentDidUpdate = async (_: Readonly<IShareViewProps>, prevState: Readonly<IShareViewState>, __?: any): Promise<void> => {
+		if (prevState.compressionQuality !== this.state.compressionQuality) {
+			const readOnly = await this.getReadOnly();
+			const { attachments, selected } = await this.getAttachments();
+			this.setState({ readOnly, attachments, selected }, () => this.setHeader());
+			this.startShareView();
+		}
+	};
 
 	componentDidMount = async () => {
 		const readOnly = await this.getReadOnly();
@@ -142,13 +154,30 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 
-		if (!attachments.length && !readOnly) {
-			options.headerRight = () => (
-				<HeaderButton.Container>
-					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
-				</HeaderButton.Container>
-			);
-		}
+		options.headerRight = () => (
+			<HeaderButton.Container>
+				{!attachments.length && !readOnly ? (
+					<>
+						<HeaderButton.Item
+							title={this.state.compressionQuality === 0.5 ? 'SD' : 'HD'}
+							onPress={() => {
+								this.setState({ compressionQuality: this.state.compressionQuality === 0.5 ? 1 : 0.5 });
+								console.log('this.state.compressionQuality', this.state.compressionQuality);
+							}}
+						/>
+						<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
+					</>
+				) : (
+					<HeaderButton.Item
+						title={this.state.compressionQuality === 0.5 ? 'SD' : 'HD'}
+						onPress={() => {
+							this.setState({ compressionQuality: this.state.compressionQuality === 0.5 ? 1 : 0.5 });
+							console.log('this.state.compressionQuality', this.state.compressionQuality);
+						}}
+					/>
+				)}
+			</HeaderButton.Container>
+		);
 
 		navigation.setOptions(options);
 	};
@@ -237,11 +266,42 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments, room, text, thread, action, selected, selectedMessages } = this.state;
+		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages } = this.state;
+		console.log(
+			'Original attachments:',
+			originalAttachments.map(att => ({
+				filename: att.filename,
+				size: att.size,
+				mime: att.mime
+			}))
+		);
+		const processedAttachments = await Promise.all(
+			originalAttachments.map(async attachment => {
+				if (attachment.mime?.startsWith('image/')) {
+					try {
+						// Use a minimum quality of 0.5 to prevent file size inflation
+						const effectiveQuality = Math.max(0.5, this.state.compressionQuality);
+						const compressedImage = await this.compressImage(attachment.path, effectiveQuality);
+
+						return {
+							...attachment,
+							path: compressedImage.uri
+						};
+					} catch (error) {
+						console.error('Compression failed:', error);
+						return attachment; // Fallback to original if compression fails
+					}
+				}
+				return attachment;
+			})
+		);
+
+		// console.log('processedAttachments', processedAttachments);
+		const attachments = processedAttachments;
 		const { navigation, server, user, dispatch } = this.props;
 		// update state
 		await this.selectFile(selected);
-
+		// return;
 		// if it's share extension this should show loading
 		if (this.isShareExtension) {
 			this.setState({ loading: true });
@@ -327,6 +387,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			this.messageComposerRef.current?.setInput(item.description || '');
 		}
 	};
+	compressImage = (uri: string, quality: number) => manipulateAsync(uri, [], { compress: quality, format: SaveFormat.JPEG });
 
 	removeFile = (item: IShareAttachment) => {
 		const { selected, attachments } = this.state;

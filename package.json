@@ -69,6 +69,7 @@
 		"expo-file-system": "16.0.8",
 		"expo-haptics": "^12.8.1",
 		"expo-image": "1.10.6",
+		"expo-image-manipulator": "~11.8.0",
 		"expo-image-picker": "14",
 		"expo-keep-awake": "^12.8.2",
 		"expo-local-authentication": "^13.8.0",
