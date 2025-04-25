@@ -20,7 +20,7 @@ async function openActionSheet(username: string) {
 		.withTimeout(5000);
 	await tapAndWaitFor(element(by.id(`room-members-view-item-${username}`)), element(by.id('action-sheet')), 2000);
 	await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-	await element(by.id('action-sheet-handle')).swipe('up');
+	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 	await sleep(500);
 }
 

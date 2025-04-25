@@ -68,9 +68,9 @@ async function signup(): Promise<string> {
 	await element(by.id('register-view-password')).tapReturnKey();
 	await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
 	await sleep(300);
-	await element(by.id('register-view')).swipe('down', 'fast');
+	await element(by.id('register-view')).swipe('down', 'fast', 0.5);
 	await sleep(300);
-	await element(by.id('register-view')).swipe('up', 'fast');
+	await element(by.id('register-view')).swipe('up', 'fast', 0.5);
 	await sleep(1000);
 	await waitFor(element(by.id('register-view-submit')))
 		.toBeVisible()
@@ -105,7 +105,7 @@ async function logout() {
 		.toBeVisible()
 		.withTimeout(2000);
 	await element(by.id('sidebar-settings')).tap();
-	await element(by.id('settings-view')).swipe('up');
+	await element(by.id('settings-view')).swipe('up', 'fast', 0.5);
 	await sleep(300);
 	await waitFor(element(by.id('settings-logout')))
 		.toBeVisible()

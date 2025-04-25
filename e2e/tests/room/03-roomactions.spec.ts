@@ -167,7 +167,7 @@ describe('Room actions screen', () => {
 					.withTimeout(5000);
 
 				// Go to starred messages
-				await element(by.id('room-actions-view')).swipe('up');
+				await element(by.id('room-actions-view')).swipe('up', 'fast', 0.5);
 				await sleep(300);
 				await waitFor(element(by.id('room-actions-starred'))).toExist();
 				await sleep(500);
@@ -378,7 +378,7 @@ describe('Room actions screen', () => {
 								.toExist()
 								.withTimeout(5000);
 							await expect(element(by.id('action-sheet-handle'))).toBeVisible();
-							await element(by.id('action-sheet-handle')).swipe('up');
+							await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
 							await sleep(300);
 							return;
 						} catch (e) {

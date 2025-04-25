@@ -182,7 +182,7 @@ describe('Discussion', () => {
 		});
 
 		it('should have share', async () => {
-			await element(by.id('room-actions-scrollview')).swipe('up');
+			await element(by.id('room-actions-scrollview')).swipe('up', 'fast', 0.5);
 			await sleep(300);
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
@@ -200,7 +200,7 @@ describe('Discussion', () => {
 		});
 
 		it('should navigate to RoomActionView', async () => {
-			await element(by.id('room-actions-scrollview')).swipe('down');
+			await element(by.id('room-actions-scrollview')).swipe('down', 'fast', 0.5);
 			await sleep(300);
 			await expect(element(by.id('room-actions-info'))).toBeVisible();
 			await element(by.id('room-actions-info')).tap();
