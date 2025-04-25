@@ -74,6 +74,7 @@ const ChangeAvatarView = () => {
 		getValues,
 		setValue,
 		setError,
+		clearErrors,
 		formState: { errors }
 	} = useForm({
 		mode: 'onChange',
@@ -133,9 +134,8 @@ const ChangeAvatarView = () => {
 		dispatch(action);
 	};
 
-	const onChangeText = useDebounce(async (value: string) => {
-		const { rawImageUrl } = getValues();
-		const result = await isImageURL(rawImageUrl);
+	const validateImage = useDebounce(async (value: string) => {
+		const result = await isImageURL(value);
 
 		if (!result || !value) {
 			dispatchAvatar({
@@ -143,9 +143,12 @@ const ChangeAvatarView = () => {
 				payload: { resetUserAvatar: `@${username}` }
 			});
 		}
-
-		setValue('rawImageUrl', value);
 	}, textInputDebounceTime);
+
+	const onChangeText = (value: string) => {
+		setValue('rawImageUrl', value);
+		validateImage(value);
+	};
 
 	const fetchImageFromURL = async () => {
 		const { rawImageUrl } = getValues();
@@ -155,6 +158,7 @@ const ChangeAvatarView = () => {
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: rawImageUrl, data: rawImageUrl, service: 'url' }
 			});
+			clearErrors();
 			return;
 		}
 
@@ -244,10 +248,10 @@ const ChangeAvatarView = () => {
 								control={control}
 								name='rawImageUrl'
 								label={I18n.t('Avatar_Url')}
-								onChangeText={onChangeText}
 								testID='change-avatar-view-avatar-url'
 								error={errors.rawImageUrl?.message}
 								containerStyle={{ marginBottom: 0 }}
+								onChangeText={onChangeText}
 							/>
 							<Button
 								title={I18n.t('Fetch_image_from_URL')}

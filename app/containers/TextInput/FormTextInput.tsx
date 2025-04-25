@@ -100,7 +100,6 @@ export const FormTextInput = ({
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
-	const [focused, setFocused] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
@@ -152,8 +151,6 @@ export const FormTextInput = ({
 							placeholder={placeholder}
 							value={value}
 							placeholderTextColor={colors.fontAnnotation}
-							onFocus={() => setFocused(true)}
-							onBlur={() => setFocused(false)}
 							{...inputProps}
 						/>
 
@@ -209,10 +206,10 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{!!error && !focused ? (
+					{error ? (
 						<View style={styles.errorContainer}>
 							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error.reason ?? error}</Text>
+							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error?.reason ?? error}</Text>
 						</View>
 					) : null}
 				</View>
