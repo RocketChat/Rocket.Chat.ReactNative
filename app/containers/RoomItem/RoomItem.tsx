@@ -16,6 +16,7 @@ import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import { useAppSelector } from '../../lib/hooks';
 import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
+import useStatusAccessibilityLabel from 'lib/hooks/useStatusAccessibilityLabel';
 
 const RoomItem = ({
 	rid,
@@ -58,34 +59,21 @@ const RoomItem = ({
 	hideMentionStatus,
 	accessibilityDate
 }: IRoomItemProps) => {
-	const statusState = useAppSelector(state => {
-		if (state.settings.Presence_broadcast_disabled) {
-			return 'disabled';
-		}
-		if (state.meteor.connected && state.activeUsers[userId]) {
-			return state.activeUsers[userId].status;
-		}
-		if (!state.meteor.connected) {
-			return 'offline';
-		}
-		return 'loading';
-	});
-
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
 	);
-	const accessibilityLabel = useMemo(
-		() =>
-			`${name}. ${getRoomAccessibilityLabel({
-				isGroupChat,
-				status: status ?? statusState,
-				teamMain,
-				type: prid ? 'discussion' : type,
-				userId
-			})}. ${accessibilityDate}. ${memoizedMessage}`,
-		[name, accessibilityDate, isGroupChat, status, statusState, teamMain, userId, prid, type, memoizedMessage]
-	);
+	const statusAccessibilityLabel = useStatusAccessibilityLabel({
+		isGroupChat,
+		status,
+		prid,
+		teamMain,
+		type,
+		userId,
+		roomUserId: userId
+	});
+	const accessibilityLabel = `${name}. ${statusAccessibilityLabel}. ${accessibilityDate}. ${memoizedMessage}`;
+
 	return (
 		<Touchable
 			onPress={onPress}

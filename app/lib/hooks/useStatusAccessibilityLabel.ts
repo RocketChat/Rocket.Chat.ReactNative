@@ -3,26 +3,11 @@ import { useAppSelector } from './useAppSelector';
 
 interface IUseStatusAccessibiltyLabel extends IGetAccessibilityRoomLabel {
 	roomUserId?: string | null;
-	title?: string;
-	subtitle?: string;
-	parentTitle?: string;
 	isGroupChat?: boolean;
 	prid?: string;
-	tmid?: string;
 }
 
-const useStatusAccessibilityLabel = ({
-	roomUserId,
-	isGroupChat,
-	status,
-	teamMain,
-	type,
-	prid,
-	tmid,
-	title,
-	subtitle,
-	parentTitle
-}: IUseStatusAccessibiltyLabel) => {
+const useStatusAccessibilityLabel = ({ roomUserId, isGroupChat, status, teamMain, type, prid }: IUseStatusAccessibiltyLabel) => {
 	const statusState = useAppSelector(state => {
 		if (state.settings.Presence_broadcast_disabled) {
 			return 'disabled';
@@ -42,10 +27,8 @@ const useStatusAccessibilityLabel = ({
 		type: prid ? 'discussion' : type,
 		userId: roomUserId
 	});
-	if (tmid) {
-		return `${iconOrStatusLabel} ${title} ${parentTitle ?? ''}.`;
-	}
-	return `${iconOrStatusLabel} ${title} ${subtitle ?? ''}.`;
+
+	return iconOrStatusLabel;
 };
 
 export default useStatusAccessibilityLabel;
