@@ -147,24 +147,21 @@ const Header = React.memo(
 		disabled,
 		rightButtonsWidth = 0
 	}: IRoomHeader) => {
-		const accessibilityLabel = useStatusAccessibilityLabel({
-			roomUserId,
+		const statusAccessibilityLabel = useStatusAccessibilityLabel({
 			isGroupChat,
-			title,
-			parentTitle,
 			prid,
+			roomUserId,
 			status,
-			subtitle,
 			teamMain,
-			tmid,
-			type,
-			userId: roomUserId
+			type
 		});
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
+		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel}.`;
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {

@@ -14,9 +14,7 @@ import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
-import { useAppSelector } from '../../lib/hooks';
-import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
-import useStatusAccessibilityLabel from 'lib/hooks/useStatusAccessibilityLabel';
+import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 
 const RoomItem = ({
 	rid,
