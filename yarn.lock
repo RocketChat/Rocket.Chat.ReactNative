@@ -3240,10 +3240,10 @@
   resolved "https://registry.yarnpkg.com/@flatten-js/interval-tree/-/interval-tree-1.1.2.tgz#fcc891da48bc230392884be01c26fe8c625702e8"
   integrity sha512-OwLoV9E/XM6b7bes2rSFnGNjyRy7vcoIHFTnmBR2WAaZTf0Fe4EX4GdA65vU1KgFAasti7iRSg2dZfYd1Zt00Q==
 
-"@gorhom/bottom-sheet@^5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-5.1.2.tgz#509992983ce2905d5899d1c7cab1cd3950c8c238"
-  integrity sha512-5np8oL2krqAsVKLRE4YmtkZkyZeFiitoki72bEpVhZb8SRTNuAEeSbP3noq5srKpcRsboCr7uI+xmMyrWUd9kw==
+"@gorhom/bottom-sheet@4.6.4":
+  version "4.6.4"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-4.6.4.tgz#387d0f0f21e3470eb8575498cb81ce96f5108e79"
+  integrity sha512-0itLMblLBvepE065w3a60S030c2rNUsGshPC7wbWDm31VyqoaU2xjzh/ojH62YIJOcobBr5QoC30IxBBKDGovQ==
   dependencies:
     "@gorhom/portal" "1.0.14"
     invariant "^2.2.4"

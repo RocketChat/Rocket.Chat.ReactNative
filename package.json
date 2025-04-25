@@ -33,7 +33,7 @@
 	"dependencies": {
 		"@bugsnag/react-native": "^8.3.0",
 		"@codler/react-native-keyboard-aware-scroll-view": "2.0.1",
-		"@gorhom/bottom-sheet": "^5.1.2",
+		"@gorhom/bottom-sheet": "4.6.4",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
 		"@nozbe/watermelondb": "^0.28.0-2",
