@@ -1,7 +1,7 @@
 import I18n from '../../i18n';
 import { TUserStatus } from '../../definitions';
 
-interface IGetAccessibilityRoomLabel {
+export interface IGetAccessibilityRoomLabel {
 	userId?: string | null;
 	type?: string;
 	isGroupChat?: boolean;
