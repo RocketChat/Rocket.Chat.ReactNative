@@ -15,7 +15,9 @@ const getRoomAccessibilityLabel = ({ type, userId, isGroupChat, status, teamMain
 		return I18n.t(statusCamelCase);
 	}
 
-	if (type === 'l') return I18n.t('Omnichannel');
+	if (type === 'l') {
+		return I18n.t('Omnichannel');
+	}
 
 	if (teamMain) {
 		if (type === 'p') {
@@ -24,11 +26,17 @@ const getRoomAccessibilityLabel = ({ type, userId, isGroupChat, status, teamMain
 		return I18n.t('Team');
 	}
 
-	if (type === 'discussion') return I18n.t('Discussion');
+	if (type === 'discussion') {
+		return I18n.t('Discussion');
+	}
 
-	if (type === 'c') return I18n.t('Public_channel');
+	if (type === 'c') {
+		return I18n.t('Public_channel');
+	}
 
-	if (type === 'd' && isGroupChat) return I18n.t('Message');
+	if (type === 'd' && isGroupChat) {
+		return I18n.t('Message');
+	}
 
 	return I18n.t('Private_channel');
 };
