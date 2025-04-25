@@ -23,7 +23,7 @@ const Thread = React.memo(
 				<View
 					style={[styles.button, { backgroundColor: threadBadgeColor ? themes[theme].badgeBackgroundLevel2 : themes[theme].buttonBackgroundSecondaryDefault }]}
 					testID={`message-thread-button-${msg}`}>
-					<Text style={[styles.buttonText, { color: !threadBadgeColor ? (theme === 'light' ? themes[theme].fontPureBlack : themes[theme].fontWhite) : themes[theme].fontWhite }]}>{I18n.t('Reply')}</Text>
+					<Text style={[styles.buttonText, { color: !threadBadgeColor ? (theme === 'light' ? themes[theme].fontPureBlack : themes[theme].fontWhite) : themes[theme].fontWhite }]}>{I18n.t('View_Thread')}</Text>
 				</View>
 				<ThreadDetails
 					item={{
