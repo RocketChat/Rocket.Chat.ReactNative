@@ -839,6 +839,7 @@
   "video-conf-provider-not-configured-body": "Um administrador do workspace precisa ativar o recurso de chamadas de conferência primeiro.",
   "video-conf-provider-not-configured-header": "Video conferência não ativada",
   "View_Original": "Visualizar original",
+  "View_Thread": "Exibir thread",
   "Wait_activation_warning": "Antes que você possa fazer o login, sua conta deve ser manualmente ativada por um administrador.",
   "Waiting_for_answer": "Esperando por resposta",
   "Waiting_for_network": "Aguardando rede...",
