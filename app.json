@@ -1,3 +1,6 @@
 {
-	"name": "RocketChatRN"
+  "name": "RocketChatRN",
+  "plugins": [
+    "react-native-compressor"
+  ]
 }

@@ -1061,6 +1061,10 @@ PODS:
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
+  - react-native-compressor (1.11.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
   - react-native-cookies (6.2.1):
     - React-Core
   - react-native-mmkv-storage (0.9.1):
@@ -1385,6 +1389,7 @@ DEPENDENCIES:
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
+  - react-native-compressor (from `../node_modules/react-native-compressor`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
@@ -1569,6 +1574,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-background-timer"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
+  react-native-compressor:
+    :path: "../node_modules/react-native-compressor"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-mmkv-storage:
@@ -1750,6 +1757,7 @@ SPEC CHECKSUMS:
   React-Mapbuffer: 84ea43c6c6232049135b1550b8c60b2faac19fab
   react-native-background-timer: 17ea5e06803401a379ebf1f20505b793ac44d0fe
   react-native-cameraroll: 4593ffad9e619781aed27dda64739387d55ed402
+  react-native-compressor: 9881bf62bb57a3c637bfaddfae9a91007996a2e3
   react-native-cookies: f54fcded06bb0cda05c11d86788020b43528a26c
   react-native-mmkv-storage: 7953fb2d2128987153afabd0deb3fadbba009395
   react-native-netinfo: bdb108d340cdb41875c9ced535977cac6d2ff321
