@@ -660,6 +660,7 @@
   "Verify_email_desc": "Poslali smo vam e -poštno sporočilo za potrditev vaše registracije. Če v kratkem ne prejmete e -pošte, se vrnite in poskusite znova.",
   "Version_no": "Različica aplikacije: {{version}}",
   "View_Original": "Pogled original",
+  "View_Thread": "Pogled nit",
   "Wait_activation_warning": "Preden se lahko prijavite, mora skrbnik ročno aktivirati vaš račun.",
   "Waiting_for_network": "Čakanje na omrežje ...",
   "Websocket_disabled": "WebSocket je onemogočen za ta strežnik.\n{{contact}}",
