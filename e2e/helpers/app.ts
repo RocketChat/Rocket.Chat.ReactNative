@@ -69,6 +69,7 @@ async function signup(): Promise<string> {
 	await element(by.id('register-view-confirm-password')).replaceText(randomUser.password);
 	await sleep(300);
 	await element(by.id('register-view')).swipe('down', 'fast');
+	await sleep(300);
 	await element(by.id('register-view')).swipe('up', 'fast');
 	await sleep(1000);
 	await waitFor(element(by.id('register-view-submit')))

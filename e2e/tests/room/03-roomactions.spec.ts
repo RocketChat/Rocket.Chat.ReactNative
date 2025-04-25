@@ -26,6 +26,7 @@ async function starMessage(message: string) {
 		.toExist()
 		.withTimeout(2000);
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await sleep(300);
 	await element(by[textMatcher]('Star')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
@@ -41,6 +42,7 @@ async function pinMessage(message: string) {
 		.toExist()
 		.withTimeout(2000);
 	await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+	await sleep(300);
 	await element(by[textMatcher]('Pin')).atIndex(0).tap();
 	await waitFor(element(by.id('action-sheet')))
 		.not.toExist()
@@ -166,6 +168,7 @@ describe('Room actions screen', () => {
 
 				// Go to starred messages
 				await element(by.id('room-actions-view')).swipe('up');
+				await sleep(300);
 				await waitFor(element(by.id('room-actions-starred'))).toExist();
 				await sleep(500);
 				await element(by.id('room-actions-starred')).tap();
@@ -376,6 +379,7 @@ describe('Room actions screen', () => {
 								.withTimeout(5000);
 							await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 							await element(by.id('action-sheet-handle')).swipe('up');
+							await sleep(300);
 							return;
 						} catch (e) {
 							n += 1;
@@ -385,6 +389,7 @@ describe('Room actions screen', () => {
 
 				const closeActionSheet = async () => {
 					await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+					await sleep(300);
 					await waitFor(element(by.id('action-sheet')))
 						.toBeNotVisible()
 						.withTimeout(1000);

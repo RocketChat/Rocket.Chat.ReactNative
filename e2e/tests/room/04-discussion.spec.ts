@@ -177,11 +177,13 @@ describe('Discussion', () => {
 
 		it('should have starred', async () => {
 			await element(by.id('room-actions-scrollview')).swipe('up', 'slow', 0.5);
+			await sleep(300);
 			await expect(element(by.id('room-actions-starred'))).toBeVisible();
 		});
 
 		it('should have share', async () => {
 			await element(by.id('room-actions-scrollview')).swipe('up');
+			await sleep(300);
 			await expect(element(by.id('room-actions-share'))).toBeVisible();
 		});
 

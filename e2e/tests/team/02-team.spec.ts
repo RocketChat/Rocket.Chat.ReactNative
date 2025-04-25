@@ -42,6 +42,7 @@ async function backToActions() {
 }
 async function closeActionSheet() {
 	await element(by.id('action-sheet-handle')).swipe('down', 'fast', 0.6);
+	await sleep(300);
 	await waitFor(element(by.id('action-sheet-handle')))
 		.toBeNotVisible()
 		.withTimeout(3000);
