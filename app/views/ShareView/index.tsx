@@ -5,7 +5,6 @@ import { Keyboard, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { Dispatch } from 'redux';
-import { Image as ImageCompressor, Video as CompressVideo } from 'react-native-compressor';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
@@ -37,14 +36,14 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
-import { QUALITY_HD, QUALITY_SD } from '../../lib/constants/utils';
+import { compressImage, compressVideo } from './utils';
 
 interface IShareViewState {
 	selected: IShareAttachment;
 	loading: boolean;
 	readOnly: boolean;
 	attachments: IShareAttachment[];
-	quality: 'sd' | 'hd';
+	quality: 'SD' | 'HD';
 	text: string;
 	room: TSubscriptionModel;
 	thread: TThreadModel | string;
@@ -91,7 +90,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			loading: false,
 			readOnly: false,
 			attachments: [],
-			quality: 'sd',
+			quality: 'SD',
 			text: props.route.params?.text ?? '',
 			room: props.route.params?.room ?? {},
 			thread: props.route.params?.thread ?? {},
@@ -131,7 +130,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	};
 
 	setHeader = () => {
-		const { room, thread, readOnly, attachments } = this.state;
+		const { room, thread, readOnly, attachments, quality } = this.state;
 		const { navigation, theme } = this.props;
 
 		const options: NativeStackNavigationOptions = {
@@ -151,10 +150,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 				{!attachments.length && !readOnly ? (
 					<>
 						<HeaderButton.Item
-							title={this.state.quality.toUpperCase()}
+							title={quality}
 							onPress={() => {
-								this.setState({ quality: this.state.quality === 'sd' ? 'hd' : 'sd' }, () => {
-									this.setHeader(); // Force header update after state change
+								this.setState({ quality: quality === 'SD' ? 'HD' : 'SD' }, () => {
+									this.setHeader();
 								});
 							}}
 						/>
@@ -162,10 +161,10 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					</>
 				) : (
 					<HeaderButton.Item
-						title={this.state.quality.toUpperCase()}
+						title={quality}
 						onPress={() => {
-							this.setState({ quality: this.state.quality === 'sd' ? 'hd' : 'sd' }, () => {
-								this.setHeader(); // Force header update after state change
+							this.setState({ quality: quality === 'SD' ? 'HD' : 'SD' }, () => {
+								this.setHeader();
 							});
 						}}
 					/>
@@ -358,7 +357,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	/**
 	 * Processes attachments by compressing images while preserving other file types
 	 */
-	private processAttachments = async (originalAttachments: IShareAttachment[]): Promise<IShareAttachment[]> => {
+	processAttachments = async (originalAttachments: IShareAttachment[]): Promise<IShareAttachment[]> => {
 		try {
 			// Process all attachments in parallel
 			const processingPromises = originalAttachments.map(async attachment => {
@@ -368,9 +367,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					let compressedPath = '';
 
 					if (attachment.mime?.startsWith('image/')) {
-						compressedPath = await this.compressImage(attachment.path);
+						compressedPath = await compressImage(attachment.path, this.state.quality);
 					} else if (attachment.mime?.startsWith('video/')) {
-						compressedPath = await this.compressVideo(attachment.path);
+						compressedPath = await compressVideo(attachment.path, this.state.quality);
 					}
 
 					const text = this.messageComposerRef.current?.getText();
@@ -392,42 +391,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			// Fallback to original attachments if something catastrophic happens
 			return originalAttachments;
 		}
-	};
-
-	compressImage = async (uri: string) => {
-		const result = await ImageCompressor.compress(uri, {
-			compressionMethod: 'manual',
-			maxWidth: 1000,
-			quality: this.state.quality === 'sd' ? QUALITY_SD : QUALITY_HD
-		});
-		return result;
-	};
-
-	compressVideo = async (uri: string) => {
-		let outputOptions = {};
-
-		if (this.state.quality === 'sd') {
-			// SD compression options (lower resolution, bitrate, etc.) // please suggest for change
-			outputOptions = {
-				compressionMethod: 'manual', // or 'auto' depending on your requirement
-				bitrate: 1000000, // 1 Mbps for SD quality
-				maxSize: 5000000, // Max file size 5MB for SD (optional)
-				progressDivider: 10 // Adjust for how often you get progress updates
-			};
-		} else if (this.state.quality === 'hd') {
-			return uri;
-			// please suggest for any kind of change
-			// outputOptions = {
-			// 	compressionMethod: 'auto'
-			// 	// bitrate: 4000000, // 4 Mbps for HD quality
-			// 	// maxSize: 15000000,
-			// 	// progressDivider: 10 // Max file size 15MB for HD (optional)
-			// };
-		}
-		// HD compression options (higher resolution, higher bitrate)
-		const result = await CompressVideo.compress(uri, outputOptions);
-
-		return result;
 	};
 
 	// manipulateAsync(uri, [], { compress: quality, format: SaveFormat.JPEG });
