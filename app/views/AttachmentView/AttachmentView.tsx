@@ -1,6 +1,6 @@
 import { CameraRoll } from '@react-native-camera-roll/camera-roll';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { Video } from 'expo-av';
+import { Video as ExpoVideo } from 'expo-av';
 import React from 'react';
 import { PermissionsAndroid, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -23,7 +23,7 @@ import { getUserSelector } from '../../selectors/login';
 import { TNavigation } from '../../stacks/stackType';
 import { useTheme } from '../../theme';
 import { LOCAL_DOCUMENT_DIRECTORY, getFilename } from '../../lib/methods/handleMediaDownload';
-import CachedVideo from './CachedVideo';
+import Video from './Video';
 
 const RenderContent = ({
 	setLoading,
@@ -33,7 +33,7 @@ const RenderContent = ({
 	loading: boolean;
 	attachment: IAttachment;
 }) => {
-	const videoRef = React.useRef<Video>(null);
+	const videoRef = React.useRef<ExpoVideo>(null);
 	const insets = useSafeAreaInsets();
 	const { width, height } = useWindowDimensions();
 	const headerHeight = useHeaderHeight();
@@ -71,10 +71,10 @@ const RenderContent = ({
 	}
 
 	if (attachment.video_url) {
-		const url = formatAttachmentUrl(attachment.video_url || attachment.video_url, user.id, user.token, baseUrl);
+		const url = formatAttachmentUrl(attachment.video_url || attachment.title, user.id, user.token, baseUrl);
 		const uri = encodeURI(url);
 		return (
-			<CachedVideo
+			<Video
 				videoUrl={uri}
 				style={{ flex: 1 }}
 				fallbackOnError={() => {

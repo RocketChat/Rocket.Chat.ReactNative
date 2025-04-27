@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { Video, ResizeMode } from 'expo-av';
+import { Video as ExpoVideo, ResizeMode } from 'expo-av';
 
 import { downloadMediaFile, getMediaCache } from '../../lib/methods/handleMediaDownload';
 
-interface CachedVideoProps {
+interface VideoProps {
 	videoUrl: string;
 	fallbackOnError?: () => void;
 	style?: StyleProp<ViewStyle>;
@@ -15,7 +15,7 @@ interface CachedVideoProps {
 	useNativeControls?: boolean;
 }
 
-const CachedVideo: React.FC<CachedVideoProps> = ({
+const Video: React.FC<VideoProps> = ({
 	videoUrl,
 	fallbackOnError = () => {},
 	style,
@@ -27,23 +27,22 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 	...props
 }) => {
 	const [localUri, setLocalUri] = useState<string | null>(null);
-	const videoRef = useRef<Video>(null);
+	const videoRef = useRef<ExpoVideo>(null);
 
 	useEffect(() => {
-		const cacheVideo = async () => {
+		const handleCache = async () => {
 			setLoading(true);
 
 			try {
-				const iscatche = await getMediaCache({ type: 'video' as const, mimeType: 'video/mp4', urlToCache: videoUrl });
-				console.log('iscatche', iscatche);
+				const cache = await getMediaCache({ type: 'video' as const, mimeType: 'video/mp4', urlToCache: videoUrl });
 				const option = {
 					messageId: videoUrl,
 					type: 'video' as const,
 					mimeType: 'video/mp4',
 					downloadUrl: videoUrl
 				};
-				if (iscatche?.exists) {
-					setLocalUri(iscatche.uri);
+				if (cache?.exists) {
+					setLocalUri(cache.uri);
 					return;
 				}
 				const uri = await downloadMediaFile(option);
@@ -56,11 +55,11 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 			}
 		};
 
-		cacheVideo();
+		handleCache();
 	}, [videoUrl]);
 
 	return (
-		<Video
+		<ExpoVideo
 			ref={videoRef}
 			source={{ uri: localUri! }}
 			rate={1.0}
@@ -78,4 +77,4 @@ const CachedVideo: React.FC<CachedVideoProps> = ({
 	);
 };
 
-export default CachedVideo;
+export default Video;
