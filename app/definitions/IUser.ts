@@ -114,10 +114,13 @@ export interface INotificationPreferences {
 	language?: string;
 }
 
+export interface IMessagePreferences {
+	convertAsciiEmoji: boolean;
+}
 export interface IUserPreferences {
 	user: Pick<IUser, '_id'>;
 	settings: {
-		preferences: INotificationPreferences;
+		preferences: INotificationPreferences & IMessagePreferences;
 	};
 }
 
