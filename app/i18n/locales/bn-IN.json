@@ -758,6 +758,7 @@
   "video-conf-provider-not-configured-body": "একটি কার্যক্ষম প্রশাসককে প্রথমে কনফারেন্স কল বৈশিষ্ট্যটি চালু করতে হবে।",
   "video-conf-provider-not-configured-header": "কনফারেন্স কল সক্ষম হয়নি",
   "View_Original": "মৌলিক দেখুন",
+  "View_Thread": "থ্রেড দেখুন",
   "Wait_activation_warning": "আপনি লগ ইন করতে প্রারম্ভ করতে, আপনার অ্যাকাউন্টটি প্রশাসক দ্বারা ম্যানুয়ালি অ্যাক্টিভেট হতে হবে।",
   "Waiting_for_answer": "উত্তরের জন্য অপেক্ষা করছি",
   "Waiting_for_network": "নেটওয়ার্কের জন্য অপেক্ষা করছে...",

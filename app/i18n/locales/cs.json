@@ -830,6 +830,7 @@
   "video-conf-provider-not-configured-body": "Správce pracovního prostoru musí nejprve povolit funkci konferenčních hovorů.",
   "video-conf-provider-not-configured-header": "Konferenční hovor není povolen",
   "View_Original": "Zobrazit originál",
+  "View_Thread": "Zobrazit vlákno",
   "Wait_activation_warning": "Než se budete moci přihlásit, váš účet musí být ručně aktivován administrátorem.",
   "Waiting_for_answer": "Čekání na odpověď",
   "Waiting_for_network": "Čekání na síť...",
