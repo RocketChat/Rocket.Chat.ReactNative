@@ -38,7 +38,7 @@ import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
 import expo.modules.filesystem.FileSystemModule;
-import expo.modules.image.okhttp.ExpoImageOkHttpClientGlideModule;
+import expo.modules.image.okhttp.GlideUrlWithCustomCacheKey;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
@@ -100,23 +100,23 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         OkHttpClient client = getOkHttpClient();
 
         // HTTP Fetch react-native layer
-        // NetworkingModule.setCustomClientBuilder(new CustomClient());
-        // // Websocket react-native layer
-        // WebSocketModule.setCustomClientBuilder(new CustomClient());
-        // // Image networking react-native layer
-        // ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-        //     .newBuilder(this.reactContext, client)
-        //     .build();
-        // Fresco.initialize(this.reactContext, config);
-        // // RNCWebView onReceivedClientCertRequest
-        // RNCWebViewManager.setCertificateAlias(data);
+        NetworkingModule.setCustomClientBuilder(new CustomClient());
+        // Websocket react-native layer
+        WebSocketModule.setCustomClientBuilder(new CustomClient());
+        // Image networking react-native layer
+        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
+            .newBuilder(this.reactContext, client)
+            .build();
+        Fresco.initialize(this.reactContext, config);
+        // RNCWebView onReceivedClientCertRequest
+        RNCWebViewManager.setCertificateAlias(data);
 
-        // // Expo AV network layer
-        // SharedCookiesDataSourceFactory.setOkHttpClient(client);
-        // // Expo File System network layer
-        // FileSystemModule.setOkHttpClient(client);
-        // // Expo Image network layer
-        // ExpoImageOkHttpClientGlideModule.Companion.setOkHttpClient(client);
+        // Expo AV network layer
+        SharedCookiesDataSourceFactory.setOkHttpClient(client);
+        // Expo File System network layer
+        FileSystemModule.setOkHttpClient(client);
+        // Expo Image network layer
+        GlideUrlWithCustomCacheKey.setOkHttpClient(client);
 
         promise.resolve(null);
     }
