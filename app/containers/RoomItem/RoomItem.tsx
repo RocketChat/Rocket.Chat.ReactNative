@@ -14,7 +14,7 @@ import I18n from '../../i18n';
 import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
-import { capitalize } from '../../lib/methods/helpers';
+import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 
 const RoomItem = ({
 	rid,
@@ -54,13 +54,24 @@ const RoomItem = ({
 	showAvatar,
 	displayMode,
 	sourceType,
-	hideMentionStatus
+	hideMentionStatus,
+	accessibilityDate
 }: IRoomItemProps) => {
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
 	);
-	const accessibilityLabel = useMemo(() => `${name} ${capitalize(date)} ${memoizedMessage}`, [name, date, memoizedMessage]);
+	const statusAccessibilityLabel = useStatusAccessibilityLabel({
+		isGroupChat,
+		status,
+		prid,
+		teamMain,
+		type,
+		userId,
+		roomUserId: userId
+	});
+	const accessibilityLabel = `${name}. ${statusAccessibilityLabel}. ${accessibilityDate}. ${memoizedMessage}`;
+
 	return (
 		<Touchable
 			onPress={onPress}

@@ -172,7 +172,8 @@ const ChangeAvatarView = () => {
 		try {
 			const options: ImagePickerOptions = {
 				exif: true,
-				base64: true
+				base64: true,
+				quality: 0.8
 			};
 			await getPermissions(isCam ? 'camera' : 'library');
 			const response = isCam ? await ImagePicker.launchCameraAsync(options) : await ImagePicker.launchImageLibraryAsync(options);
