@@ -50,10 +50,6 @@ let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
-		if (sdk.current?.client?.host === server) {
-			return resolve();
-		}
-
 		// Check for running requests and abort them before connecting to the server
 		abort();
 

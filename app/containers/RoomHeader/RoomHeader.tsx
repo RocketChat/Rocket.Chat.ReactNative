@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 import I18n from '../../i18n';
@@ -9,6 +9,7 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import { isIOS } from '../../lib/methods/helpers';
+import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
 
 const HIT_SLOP = {
 	top: 5,
@@ -146,11 +147,21 @@ const Header = React.memo(
 		disabled,
 		rightButtonsWidth = 0
 	}: IRoomHeader) => {
+		const statusAccessibilityLabel = useStatusAccessibilityLabel({
+			isGroupChat,
+			prid,
+			roomUserId,
+			status,
+			teamMain,
+			type
+		});
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
 		const portrait = height > width;
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
+		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel}.`;
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
@@ -177,13 +188,6 @@ const Header = React.memo(
 		}
 
 		const handleOnPress = useCallback(() => onPress(), []);
-
-		const accessibilityLabel = useMemo(() => {
-			if (tmid) {
-				return `${title} ${parentTitle}`;
-			}
-			return title;
-		}, [title, parentTitle, tmid]);
 
 		return (
 			<TouchableOpacity
