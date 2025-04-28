@@ -6,8 +6,9 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import 'text-encoding';
 
 import styles from './style';
-import CustomModal from '../../../containers/Model/CustomModel';
+import Modal from '../../../containers/Model/Modal';
 import { showToast } from '../../../lib/methods/helpers/showToast';
+import { useTheme } from '../../../theme';
 
 interface TOTPEnableModalProps {
 	open: boolean;
@@ -45,10 +46,11 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 		// You might want to add a toast notification here
 	};
 
+	const color = useTheme();
 	return (
-		<CustomModal open={open} onClose={onClose}>
+		<Modal open={open} onClose={onClose}>
 			<TouchableOpacity style={{ position: 'absolute', right: 10, top: 10 }} onPress={onClose}>
-				<Icon name='close' size={24} color='#333' />
+				<Icon name='close' size={24} color={color.colors.backdropColor} />
 			</TouchableOpacity>
 
 			<View style={styles.container}>
@@ -130,7 +132,7 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 					</>
 				)}
 			</View>
-		</CustomModal>
+		</Modal>
 	);
 };
 

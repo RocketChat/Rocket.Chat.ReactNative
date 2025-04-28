@@ -4,9 +4,13 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const styles = StyleSheet.create({
 	backdrop: {
 		flex: 1,
-		backgroundColor: 'rgba(0,0,0,0.5)',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	overlay: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	modalContainer: {
 		backgroundColor: '#fff',
