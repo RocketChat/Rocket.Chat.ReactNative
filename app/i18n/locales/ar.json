@@ -505,6 +505,7 @@
   "Verify_email_desc": "لقد أرسلنا إليك بريداً إلكترونياً لتأكيد تسجيلك. إذا لم تتلق البريد الإلكتروني قريباً، فيرجى العودة والمحاولة مرة أخرى",
   "Version_no": "إصدار التطبيق: {{version}}",
   "View_Original": "عرض المحتوى الأصلي",
+  "View_Thread": "عرض الموضوع",
   "Wait_activation_warning": "يحب تفعيل حسابك من المشرف قبل تسجيل الدخول",
   "Waiting_for_network": "بانتظار توفر شبكة...",
   "Websocket_disabled": "تم تعطيل Websocket لهذا الخادم.\n{{contact}}",
