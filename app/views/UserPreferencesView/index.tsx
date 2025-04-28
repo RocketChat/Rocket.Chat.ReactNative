@@ -27,7 +27,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
-	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
+	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -114,6 +114,7 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						title='Convert_ASCII_to_emoji'
 						testID='preferences-view-convert-ascii-to-emoji'
 						right={() => <Switch value={convertAsciiEmoji} onValueChange={toggleConvertAsciiToEmoji} />}
+						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
 					/>
 					<List.Separator />
 				</List.Section>

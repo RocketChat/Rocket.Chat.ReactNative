@@ -1,6 +1,6 @@
 import emojis from './emojis';
 import ascii, { asciiRegexp } from './ascii';
-import { useAppSelector } from '../../../../lib/hooks';
+import { useAppSelector } from '../../../hooks';
 import { getUserSelector } from '../../../../selectors/login';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
@@ -31,7 +31,7 @@ const unescapeHTML = (string: string) => {
 
 const shortnameToUnicode = (str: string): string => {
 	const { settings } = useAppSelector(state => getUserSelector(state));
-	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
+	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 
 	str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
 	str = str.replace(regAscii, (entire, m1, m2, m3) => {

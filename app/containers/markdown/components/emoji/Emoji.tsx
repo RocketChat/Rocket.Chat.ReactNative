@@ -22,7 +22,7 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
 	const { settings } = useAppSelector(state => getUserSelector(state));
-	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
+	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
