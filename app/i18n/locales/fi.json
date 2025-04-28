@@ -129,6 +129,7 @@
   "Conversation": "Keskustelu",
   "Conversation_closed": "Keskustelu suljettu",
   "Convert": "Muunna",
+  "Convert_ASCII_to_emoji": "Muunna ASCII emojiksi",
   "Convert_to_Channel": "Muunna kanavaksi",
   "Convert_to_Team": "Muunna tiimiksi",
   "Convert_to_Team_Warning": "Muunnat tätä kanavaa tiimiksi. Kaikki jäsenet säilytetään.",

@@ -158,6 +158,7 @@
   "Conversation": "Conversation",
   "Conversation_closed": "Conversation closed",
   "Convert": "Convert",
+  "Convert_ASCII_to_emoji": "Convert ASCII to Emoji",
   "Convert_to_Channel": "Convert to channel",
   "Convert_to_Team": "Convert to team",
   "Convert_to_Team_Warning": "You are converting this channel to a team. All members will be kept.",

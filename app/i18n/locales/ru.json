@@ -125,6 +125,7 @@
   "Conversation": "Диалог",
   "Conversation_closed": "Чат закрыт",
   "Convert": "Конвертировать",
+  "Convert_ASCII_to_emoji": "Преобразовать ASCII в эмодзи.",
   "Convert_to_Channel": "Преобразовать в канал",
   "Convert_to_Team": "Конвертировать в команду",
   "Convert_to_Team_Warning": "Это нельзя отменить. После преобразования канала в Команду, вы не сможете преобразовать его обратно в канал.",
