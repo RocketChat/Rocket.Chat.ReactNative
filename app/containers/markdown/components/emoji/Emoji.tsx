@@ -23,12 +23,9 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { fontScale } = useWindowDimensions();
 	const { settings } = useAppSelector(state => getUserSelector(state));
 	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
+
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
-	}
-
-	if (!convertAsciiEmoji) {
-		return <Plain value={block.value.value} />;
 	}
 
 	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
@@ -43,6 +40,18 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 		width: 30 * fontScale,
 		height: 30 * fontScale
 	};
+
+	const isAsciiEmoji = () => {
+		if (block.value?.value === block?.shortCode) {
+			return false;
+		}
+		return true;
+	};
+
+	if (!convertAsciiEmoji && isAsciiEmoji()) {
+		return <Plain value={block.value.value} />;
+	}
+
 	if (emoji) {
 		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
 	}
