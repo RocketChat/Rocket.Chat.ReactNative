@@ -525,6 +525,7 @@
   "Verify_email_desc": "我們已經送出一封電子郵件，以確認您的註冊。如果您沒有很快收到，請再試一次。",
   "Version_no": "應用程式版本: {{version}}",
   "View_Original": "檢視原文",
+  "View_Thread": "查看線程",
   "Wait_activation_warning": "您的帳號必須由管理員手動啟用後才能登入。",
   "Waiting_for_network": "等待網路連線",
   "Websocket_disabled": "Websocket 已於此伺服器上禁用。\\n{{contact}}",
