@@ -36,14 +36,14 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
-import { compressImage, compressVideo } from './utils';
+import { compressImage, compressVideo, TQuality } from './utils';
 
 interface IShareViewState {
 	selected: IShareAttachment;
 	loading: boolean;
 	readOnly: boolean;
 	attachments: IShareAttachment[];
-	quality: 'SD' | 'HD';
+	quality: TQuality;
 	text: string;
 	room: TSubscriptionModel;
 	thread: TThreadModel | string;
@@ -259,9 +259,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		Keyboard.dismiss();
 
-		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages } = this.state;
+		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages, quality } = this.state;
 		sendLoadingEvent({ visible: true });
-		const compressAttachment = await this.processAttachments(originalAttachments);
+		const compressAttachment = await this.processAttachments(originalAttachments, quality);
 		sendLoadingEvent({ visible: false });
 		const attachments = compressAttachment;
 
@@ -357,21 +357,20 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	/**
 	 * Processes attachments by compressing images while preserving other file types
 	 */
-	processAttachments = async (originalAttachments: IShareAttachment[]): Promise<IShareAttachment[]> => {
+	processAttachments = async (originalAttachments: IShareAttachment[], quality: TQuality): Promise<IShareAttachment[]> => {
 		try {
-			// Process all attachments in parallel
+			if (quality === 'HD') {
+				return originalAttachments;
+			}
 			const processingPromises = originalAttachments.map(async attachment => {
-				// Skip non-image files
-
 				try {
 					let compressedPath = '';
 
 					if (attachment.mime?.startsWith('image/')) {
-						compressedPath = await compressImage(attachment.path, this.state.quality);
+						compressedPath = await compressImage(attachment.path, quality);
 					} else if (attachment.mime?.startsWith('video/')) {
-						compressedPath = await compressVideo(attachment.path, this.state.quality);
+						compressedPath = await compressVideo(attachment.path, quality);
 					}
-
 					const text = this.messageComposerRef.current?.getText();
 
 					return {
@@ -380,30 +379,23 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 						path: compressedPath
 					};
 				} catch (compressionError) {
-					// Return original if compression fails
 					return attachment;
 				}
 			});
 
-			// Wait for all processing to complete
 			return await Promise.all(processingPromises);
 		} catch (error) {
-			// Fallback to original attachments if something catastrophic happens
 			return originalAttachments;
 		}
 	};
-
-	// manipulateAsync(uri, [], { compress: quality, format: SaveFormat.JPEG });
 
 	removeFile = (item: IShareAttachment) => {
 		const { selected, attachments } = this.state;
 		let newSelected = selected;
 		if (item.path === selected.path) {
 			const selectedIndex = attachments.findIndex(att => att.path === selected.path);
-			// Selects the next one, if available
 			if (attachments[selectedIndex + 1]?.path) {
 				newSelected = attachments[selectedIndex + 1];
-				// If it's the last thumb, selects the previous one
 			} else {
 				newSelected = attachments[selectedIndex - 1] || {};
 			}
