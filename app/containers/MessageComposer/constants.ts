@@ -2,22 +2,25 @@ import { ImagePickerOptions, MediaTypeOptions, UIImagePickerControllerQualityTyp
 
 import { TMarkdownStyle } from './interfaces';
 
+const imageQuality = 0.8;
+const videoQuality = UIImagePickerControllerQualityType.High;
+
 export const IMAGE_PICKER_CONFIG: ImagePickerOptions = {
 	exif: true,
-	quality: 0.8
+	quality: imageQuality
 };
 
 export const LIBRARY_PICKER_CONFIG: ImagePickerOptions = {
 	allowsMultipleSelection: true,
 	exif: true,
 	mediaTypes: MediaTypeOptions.All,
-	quality: 0.8,
-	videoQuality: UIImagePickerControllerQualityType.Medium
+	quality: imageQuality,
+	videoQuality
 };
 
 export const VIDEO_PICKER_CONFIG: ImagePickerOptions = {
 	mediaTypes: MediaTypeOptions.Videos,
-	videoQuality: UIImagePickerControllerQualityType.Medium
+	videoQuality
 };
 
 export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;
