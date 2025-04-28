@@ -111,16 +111,6 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
-// jest.mock('@discord/bottom-sheet', () => {
-// 	const react = require('react-native');
-// 	return {
-// 		__esModule: true,
-// 		default: react.View,
-// 		BottomSheetScrollView: react.ScrollView
-// 	};
-// });
-
-// If you need to manually mock a lib use this mock pattern and set exports.
 jest.mock('react-native-math-view', () => {
 	const react = require('react-native');
 	return {
