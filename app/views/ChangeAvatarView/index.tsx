@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
@@ -163,6 +163,7 @@ const ChangeAvatarView = () => {
 		}
 
 		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
+		AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
 	};
 
 	const submit = async () => {
