@@ -3,7 +3,7 @@ import { setUser } from '../../../actions/login';
 import usePreviewFormatText from './index';
 
 jest.mock('../useAppSelector', () => ({
-	useAppSelector: () => mockedStore.getState()
+	useAppSelector: () => mockedStore.getState().login.user.settings?.preferences?.convertAsciiEmoji
 }));
 
 const initialMockedStoreState = () => {

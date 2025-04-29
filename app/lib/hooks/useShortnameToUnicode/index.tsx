@@ -31,6 +31,7 @@ const unescapeHTML = (string: string) => {
 const useShortnameToUnicode = (str: string, isEmojiPicker?: boolean): string => {
 	const convertAsciiEmoji = useAppSelector(state => state.login.user.settings?.preferences?.convertAsciiEmoji);
 
+	console.log(convertAsciiEmoji, 'here');
 	str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
 	str = str.replace(regAscii, (entire, m1, m2, m3) => {
 		if (!m3 || !(unescapeHTML(m3) in ascii)) {

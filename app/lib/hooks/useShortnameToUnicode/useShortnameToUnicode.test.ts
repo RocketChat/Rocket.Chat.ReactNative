@@ -3,18 +3,22 @@ import { setUser } from '../../../actions/login';
 import { mockedStore } from '../../../reducers/mockedStore';
 
 jest.mock('../useAppSelector', () => ({
-	useAppSelector: () => ({
-		login: {
-			user: {
-				settings: {
-					preferences: {
-						convertAsciiEmoji: true
-					}
+	useAppSelector: () => mockedStore.getState().login.user.settings?.preferences?.convertAsciiEmoji
+}));
+
+const initialMockedStoreState = () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
 				}
 			}
-		}
-	})
-}));
+		})
+	);
+};
+
+initialMockedStoreState();
 
 test('render joy', () => {
 	const shortnameToUnicode = useShortnameToUnicode(':joy:');
@@ -66,9 +70,17 @@ test('convert ascii when convertAsciiEmoji = true', () => {
 	expect(shortnameToUnicode).toBe('😞');
 });
 
-jest.resetAllMocks();
-
 test('do NOT convert ascii when convertAsciiEmoji = false', () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: false
+				}
+			}
+		})
+	);
+
 	const shortnameToUnicode = useShortnameToUnicode(':(');
 	expect(shortnameToUnicode).toBe(':(');
 });
