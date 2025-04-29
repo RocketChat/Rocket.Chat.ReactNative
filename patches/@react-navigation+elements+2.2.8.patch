@@ -11,7 +11,7 @@ index bed0995..f650085 100644
    "types": "./lib/typescript/commonjs/src/index.d.ts",
    "exports": {
 diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
-index bd30826..76f2720 100644
+index bd30826..e53237d 100644
 --- a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
 +++ b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
 @@ -1,9 +1,11 @@
@@ -23,11 +23,11 @@ index bd30826..76f2720 100644
    const { colors } = useTheme();
    const { direction } = useLocale();
 +  const { fontScale } = useWindowDimensions();
-+  const size = 19 * fontScale;
++  const size = ICON_SIZE * fontScale;
  
    return (
      <Image
-@@ -11,7 +13,7 @@ export function HeaderIcon({ source, style, ...rest }: ImageProps) {
+@@ -11,13 +13,13 @@ export function HeaderIcon({ source, style, ...rest }: ImageProps) {
        resizeMode="contain"
        fadeDuration={0}
        tintColor={colors.text}
@@ -36,6 +36,13 @@ index bd30826..76f2720 100644
        {...rest}
      />
    );
+ }
+ 
+-export const ICON_SIZE = Platform.OS === 'ios' ? 21 : 24;
++export const ICON_SIZE = Platform.OS === 'ios' ? 19 : 24;
+ export const ICON_MARGIN = Platform.OS === 'ios' ? 8 : 3;
+ 
+ const styles = StyleSheet.create({
 @@ -25,6 +27,7 @@ const styles = StyleSheet.create({
      width: ICON_SIZE,
      height: ICON_SIZE,

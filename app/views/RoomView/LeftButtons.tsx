@@ -1,25 +1,11 @@
-import { HeaderBackButton } from '@react-navigation/elements';
 import React, { useCallback } from 'react';
-import { Platform, StyleSheet, useWindowDimensions } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
-import { themes } from '../../lib/constants';
 import { useAppNavigation } from '../../lib/hooks/navigation';
-import { TSupportedThemes } from '../../theme';
+import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
 
 const styles = StyleSheet.create({
-	container: {
-		...Platform.select({
-			ios: {
-				minWidth: 34,
-				marginLeft: -19
-			},
-			android: {
-				marginHorizontal: 0,
-				marginLeft: -2
-			}
-		})
-	},
 	avatar: {
 		borderRadius: 10
 	}
@@ -34,7 +20,6 @@ interface ILeftButtonsProps {
 	token?: string;
 	title?: string;
 	t: string;
-	theme: TSupportedThemes;
 	goRoomActionsView: Function;
 	isMasterDetail: boolean;
 }
@@ -48,7 +33,6 @@ const LeftButtons = ({
 	token,
 	title,
 	t,
-	theme,
 	goRoomActionsView,
 	isMasterDetail
 }: ILeftButtonsProps): React.ReactElement | null => {
@@ -67,16 +51,7 @@ const LeftButtons = ({
 			marginLeft = -4 * labelLength;
 			fontSize = labelLength > 1 ? 14 : 17;
 		}
-		return (
-			<HeaderBackButton
-				label={label}
-				onPress={goBack}
-				tintColor={themes[theme].fontDefault}
-				labelStyle={{ fontSize: fontSize * fontScale, marginLeft }}
-				style={styles.container}
-				testID='header-back'
-			/>
-		);
+		return <HeaderBackButton label={label} onPress={goBack} labelStyle={{ fontSize: fontSize * fontScale, marginLeft }} />;
 	}
 
 	if (baseUrl && userId && token) {

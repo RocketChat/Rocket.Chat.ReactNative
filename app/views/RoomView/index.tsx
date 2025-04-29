@@ -423,7 +423,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	setHeader = () => {
 		const { room, unreadsCount, roomUserId, joined, canForwardGuest, canReturnQueue, canPlaceLivechatOnHold } = this.state;
-		const { navigation, isMasterDetail, theme, baseUrl, user, route, encryptionEnabled } = this.props;
+		const { navigation, isMasterDetail, baseUrl, user, route, encryptionEnabled } = this.props;
 		const { rid, tmid } = this;
 
 		if (!rid) {
@@ -488,7 +488,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					userId={userId}
 					token={token}
 					title={avatar}
-					theme={theme}
 					t={t}
 					goRoomActionsView={this.goRoomActionsView}
 					isMasterDetail={isMasterDetail}

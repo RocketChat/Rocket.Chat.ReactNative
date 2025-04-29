@@ -3,7 +3,6 @@ import { ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
-import { HeaderBackButton } from '@react-navigation/elements';
 import type { ImagePickerOptions } from 'expo-image-picker';
 
 import { textInputDebounceTime } from '../../lib/constants';
@@ -30,7 +29,7 @@ import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitSe
 import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
-import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
+import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
 
 enum AvatarStateActions {
@@ -86,15 +85,7 @@ const ChangeAvatarView = () => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: titleHeader || I18n.t('Avatar'),
-			headerLeft: () => (
-				<HeaderBackButton
-					onPress={() => navigation.goBack()}
-					tintColor={colors.fontDefault}
-					testID='header-back'
-					style={{ margin: 0, marginRight: isTablet ? 5 : -5, marginLeft: -12 }}
-				/>
-			)
+			title: titleHeader || I18n.t('Avatar')
 		});
 	}, [titleHeader, navigation]);
 
