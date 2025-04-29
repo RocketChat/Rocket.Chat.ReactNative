@@ -82,7 +82,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={211}
+        handlerTag={213}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
@@ -172,7 +172,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         borderless={true}
         collapsable={false}
         delayLongPress={600}
-        handlerTag={212}
+        handlerTag={214}
         handlerType="NativeViewGestureHandler"
         hitSlop={
           {
