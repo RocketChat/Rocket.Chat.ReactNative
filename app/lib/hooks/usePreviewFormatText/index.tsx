@@ -1,13 +1,14 @@
 import removeMarkdown from 'remove-markdown';
 
-import shortnameToUnicode from '../methods/helpers/shortnameToUnicode';
-import { formatText } from './formatText';
-import { formatHyperlink } from './formatHyperlink';
+import useShortnameToUnicode from '../useShortnameToUnicode';
+import { formatText } from '../../helpers/formatText';
+import { formatHyperlink } from '../../helpers/formatHyperlink';
 
-export const previewFormatText = (msg: string) => {
+const usePreviewFormatText = (msg: string) => {
 	let m = formatText(msg);
 	m = formatHyperlink(m);
-	m = shortnameToUnicode(m);
+	const shortnameToUnicode = useShortnameToUnicode(m);
+	m = shortnameToUnicode;
 	// Removes sequential empty spaces before to use removeMarkdown,
 	// because with some edge cases the library takes a long time to finish the process
 	m = m.replace(/\s+/g, ' ');
@@ -17,3 +18,5 @@ export const previewFormatText = (msg: string) => {
 	m = m.replace(/\n+/g, ' ');
 	return m;
 };
+
+export default usePreviewFormatText;
