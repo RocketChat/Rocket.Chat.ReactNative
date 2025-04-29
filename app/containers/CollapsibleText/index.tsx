@@ -29,13 +29,13 @@ const CollapsibleText = ({ msg, style = [], linesToTruncate = 1 }: ICollapsibleT
 	const [showTruncated, setShowTruncated] = useState(true);
 
 	const { colors } = useTheme();
-	const formattedtext = usePreviewFormatText(msg ?? '');
+	const formattedText = usePreviewFormatText(msg ?? '');
 
 	if (!msg) {
 		return null;
 	}
 
-	const m = formattedtext;
+	const m = formattedText;
 
 	if (truncatedText && showTruncated) {
 		return (
