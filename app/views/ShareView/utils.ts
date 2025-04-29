@@ -5,7 +5,7 @@ export const QUALITY_SD = 0.5;
 
 export const compressImage = async (uri: string, quality: TQuality) => {
 	const result = await ImageCompressor.compress(uri, {
-		compressionMethod: 'manual',
+		compressionMethod: 'auto',
 		maxWidth: 1000,
 		quality: quality === 'SD' ? QUALITY_SD : 1
 	});
@@ -18,7 +18,7 @@ export const compressVideo = async (uri: string, quality: TQuality) => {
 	}
 
 	const result = await CompressVideo.compress(uri, {
-		compressionMethod: 'manual',
+		compressionMethod: 'auto',
 		bitrate: 1000000,
 		maxSize: 5000000,
 		progressDivider: 10
