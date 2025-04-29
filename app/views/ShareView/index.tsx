@@ -110,7 +110,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const { attachments, selected } = await this.getAttachments();
 		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
 		const quality = userPreferences.getString(MEDIA_QUALITY);
-		console.log('quality', quality);
 		if (quality) {
 			this.setState({ quality: quality as TQuality });
 			this.setHeader();

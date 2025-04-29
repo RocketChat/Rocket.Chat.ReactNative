@@ -1,6 +1,8 @@
+import { TQuality } from '../../views/ShareView/utils';
+
 export type MediaDownloadOption = 'never' | 'wifi_mobile_data' | 'wifi';
 
-export type MediaQualityOption = 'SD' | 'HD';
+export type MediaQualityOption = TQuality;
 
 export const MEDIA_QUALITY = 'media_quality';
 export const IMAGE_PREFERENCE_DOWNLOAD = 'imagePreferenceDownload';
