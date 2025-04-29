@@ -1,7 +1,6 @@
 import emojis from './emojis';
 import ascii, { asciiRegexp } from './ascii';
-import { useAppSelector } from '../../../hooks';
-import { getUserSelector } from '../../../../selectors/login';
+import { store as reduxStore } from '../../../store/auxStore';
 
 const shortnamePattern = new RegExp(/:[-+_a-z0-9]+:/, 'gi');
 const replaceShortNameWithUnicode = (shortname: string) => emojis[shortname] || shortname;
@@ -30,8 +29,8 @@ const unescapeHTML = (string: string) => {
 };
 
 const shortnameToUnicode = (str: string): string => {
-	const { settings } = useAppSelector(state => getUserSelector(state));
-	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
+	const { user } = reduxStore.getState().login;
+	const convertAsciiEmoji = user?.settings?.preferences?.convertAsciiEmoji;
 
 	str = str.replace(shortnamePattern, replaceShortNameWithUnicode);
 	str = str.replace(regAscii, (entire, m1, m2, m3) => {
