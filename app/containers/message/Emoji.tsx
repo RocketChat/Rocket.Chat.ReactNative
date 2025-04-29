@@ -9,11 +9,11 @@ const Emoji = React.memo(
 	({ content, standardEmojiStyle, customEmojiStyle, getCustomEmoji }: IMessageEmoji) => {
 		const parsedContent = content.replace(/^:|:$/g, '');
 		const emoji = getCustomEmoji(parsedContent);
-		const shortnameToUnicode = useShortnameToUnicode(content);
+		const { formatShortnameToUnicode } = useShortnameToUnicode();
 		if (emoji) {
 			return <CustomEmoji key={content} style={customEmojiStyle} emoji={emoji} />;
 		}
-		return <Text style={standardEmojiStyle}>{shortnameToUnicode}</Text>;
+		return <Text style={standardEmojiStyle}>{formatShortnameToUnicode(parsedContent)}</Text>;
 	},
 	() => true
 );

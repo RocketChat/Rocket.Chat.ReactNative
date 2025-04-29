@@ -18,9 +18,10 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
 
 	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
-	const emojiUnicode = useShortnameToUnicode(emojiToken);
+	const unicodeEmoji = formatShortnameToUnicode(emojiToken);
 	const emoji = getCustomEmoji?.(block.value?.value);
 
 	if ('unicode' in block) {
@@ -42,8 +43,8 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	}
 	return (
 		<Text
-			style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text, style]}>
-			{emojiUnicode}
+			style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== unicodeEmoji ? styles.textBig : styles.text, style]}>
+			{unicodeEmoji}
 		</Text>
 	);
 };

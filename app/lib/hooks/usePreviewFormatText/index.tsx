@@ -5,10 +5,11 @@ import { formatText } from '../../helpers/formatText';
 import { formatHyperlink } from '../../helpers/formatHyperlink';
 
 const usePreviewFormatText = (msg: string) => {
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+
 	let m = formatText(msg);
 	m = formatHyperlink(m);
-	const shortnameToUnicode = useShortnameToUnicode(m);
-	m = shortnameToUnicode;
+	m = formatShortnameToUnicode(m);
 	// Removes sequential empty spaces before to use removeMarkdown,
 	// because with some edge cases the library takes a long time to finish the process
 	m = m.replace(/\s+/g, ' ');

@@ -21,53 +21,63 @@ const initialMockedStoreState = () => {
 initialMockedStoreState();
 
 test('render joy', () => {
-	const shortnameToUnicode = useShortnameToUnicode(':joy:');
-	expect(shortnameToUnicode).toBe('😂');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':joy:');
+	expect(unicodeEmoji).toBe('😂');
 });
 
 test('render several emojis', () => {
-	const shortnameToUnicode = useShortnameToUnicode(':dog::cat::hamburger::icecream::rocket:');
-	expect(shortnameToUnicode).toBe('🐶🐱🍔🍦🚀');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':dog::cat::hamburger::icecream::rocket:');
+	expect(unicodeEmoji).toBe('🐶🐱🍔🍦🚀');
 });
 
 test('render unknown emoji', () => {
-	const shortnameToUnicode = useShortnameToUnicode(':unknown:');
-	expect(shortnameToUnicode).toBe(':unknown:');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':unknown:');
+	expect(unicodeEmoji).toBe(':unknown:');
 });
 
 test('render empty', () => {
-	const shortnameToUnicode = useShortnameToUnicode('');
-	expect(shortnameToUnicode).toBe('');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode('');
+	expect(unicodeEmoji).toBe('');
 });
 
 test('render text with emoji', () => {
-	const shortnameToUnicode = useShortnameToUnicode('Hello there! :hugging:');
-	expect(shortnameToUnicode).toBe('Hello there! 🤗');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode('Hello there! :hugging:');
+	expect(unicodeEmoji).toBe('Hello there! 🤗');
 });
 
 test('render ascii smile', () => {
-	const shortnameToUnicode = useShortnameToUnicode(':)');
-	expect(shortnameToUnicode).toBe('🙂');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':)');
+	expect(unicodeEmoji).toBe('🙂');
 });
 
 test('render several ascii emojis', () => {
-	const shortnameToUnicode = useShortnameToUnicode(":) :( -_- ':-D");
-	expect(shortnameToUnicode).toBe('🙂😞😑😅');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(":) :( -_- ':-D");
+	expect(unicodeEmoji).toBe('🙂😞😑😅');
 });
 
 test('render text with ascii emoji', () => {
-	const shortnameToUnicode = useShortnameToUnicode('Hello there! :)');
-	expect(shortnameToUnicode).toBe('Hello there!🙂');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode('Hello there! :)');
+	expect(unicodeEmoji).toBe('Hello there!🙂');
 });
 
 test('render emoji and ascii emoji', () => {
-	const shortnameToUnicode = useShortnameToUnicode("':-D :joy:");
-	expect(shortnameToUnicode).toBe('😅 😂');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode("':-D :joy:");
+	expect(unicodeEmoji).toBe('😅 😂');
 });
 
 test('convert ascii when convertAsciiEmoji = true', () => {
-	const shortnameToUnicode = useShortnameToUnicode(':(');
-	expect(shortnameToUnicode).toBe('😞');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':(');
+	expect(unicodeEmoji).toBe('😞');
 });
 
 test('do NOT convert ascii when convertAsciiEmoji = false', () => {
@@ -80,7 +90,7 @@ test('do NOT convert ascii when convertAsciiEmoji = false', () => {
 			}
 		})
 	);
-
-	const shortnameToUnicode = useShortnameToUnicode(':(');
-	expect(shortnameToUnicode).toBe(':(');
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(':(');
+	expect(unicodeEmoji).toBe(':(');
 });

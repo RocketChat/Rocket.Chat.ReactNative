@@ -75,8 +75,8 @@ export const MessageComposer = ({
 		setAutocompleteParams
 	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	useKeyboardListener(trackingViewRef);
-
 	useFocusEffect(
 		useCallback(() => {
 			trackingViewRef.current?.resetTracking();
@@ -179,8 +179,7 @@ export const MessageComposer = ({
 			case EventTypes.EMOJI_PRESSED:
 				let emojiText = '';
 				if (typeof emoji === 'string') {
-					const shortnameToUnicode = useShortnameToUnicode(`:${emoji}:`);
-					emojiText = shortnameToUnicode;
+					emojiText = formatShortnameToUnicode(`:${emoji}:`);
 				} else {
 					emojiText = `:${emoji.name}:`;
 				}
