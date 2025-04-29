@@ -11,12 +11,11 @@ import {
 	AUDIO_PREFERENCE_DOWNLOAD,
 	IMAGE_PREFERENCE_DOWNLOAD,
 	MEDIA_QUALITY,
-	MediaDownloadOption,
-	MediaQualityOption,
 	VIDEO_PREFERENCE_DOWNLOAD
 } from '../../lib/constants';
 import i18n from '../../i18n';
 import { SettingsStackParamList } from '../../stacks/types';
+import { MediaDownloadOption, MediaQualityOption } from '../../definitions/IMedia';
 
 const MediaAutoDownload = () => {
 	const [imagesPreference, setImagesPreference] = useUserPreferences<MediaDownloadOption>(

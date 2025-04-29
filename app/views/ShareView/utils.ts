@@ -1,27 +1,13 @@
 import { Image as ImageCompressor, Video as CompressVideo } from 'react-native-compressor';
 
-export type TQuality = 'SD' | 'HD';
 export const QUALITY_SD = 0.5;
 
-export const compressImage = async (uri: string, quality: TQuality) => {
-	const result = await ImageCompressor.compress(uri, {
-		compressionMethod: 'auto',
-		maxWidth: 1000,
-		quality: quality === 'SD' ? QUALITY_SD : 1
-	});
+export const compressImage = async (uri: string) => {
+	const result = await ImageCompressor.compress(uri);
 	return result;
 };
 
-export const compressVideo = async (uri: string, quality: TQuality) => {
-	if (quality === 'HD') {
-		return uri;
-	}
-
-	const result = await CompressVideo.compress(uri, {
-		compressionMethod: 'auto',
-		bitrate: 1000000,
-		maxSize: 5000000,
-		progressDivider: 10
-	});
+export const compressVideo = async (uri: string) => {
+	const result = await CompressVideo.compress(uri);
 	return result;
 };

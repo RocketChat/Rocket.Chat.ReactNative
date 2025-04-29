@@ -36,8 +36,9 @@ import { sendFileMessage, sendMessage } from '../../lib/methods';
 import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '../../lib/methods/helpers';
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
-import { compressImage, compressVideo, TQuality } from './utils';
+import { compressImage, compressVideo } from './utils';
 import userPreferences from '../../lib/methods/userPreferences';
+import { TQuality } from '../../definitions/IMedia';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -153,28 +154,17 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		options.headerRight = () => (
 			<HeaderButton.Container>
+				<HeaderButton.Item
+					title={quality}
+					onPress={() => {
+						this.setState({ quality: quality === 'SD' ? 'HD' : 'SD' }, () => {
+							this.setHeader();
+						});
+					}}
+				/>
 				{!attachments.length && !readOnly ? (
-					<>
-						<HeaderButton.Item
-							title={quality}
-							onPress={() => {
-								this.setState({ quality: quality === 'SD' ? 'HD' : 'SD' }, () => {
-									this.setHeader();
-								});
-							}}
-						/>
-						<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
-					</>
-				) : (
-					<HeaderButton.Item
-						title={quality}
-						onPress={() => {
-							this.setState({ quality: quality === 'SD' ? 'HD' : 'SD' }, () => {
-								this.setHeader();
-							});
-						}}
-					/>
-				)}
+					<HeaderButton.Item title={I18n.t('Send')} onPress={this.send} color={themes[theme].fontDefault} />
+				) : null}
 			</HeaderButton.Container>
 		);
 
@@ -267,11 +257,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages, quality } = this.state;
 		sendLoadingEvent({ visible: true });
-		const compressAttachment = await this.processAttachments(originalAttachments, quality);
+		const processAttachments = await this.processAttachments(originalAttachments, quality);
 		sendLoadingEvent({ visible: false });
-		const attachments = compressAttachment;
-
-		// return;
+		const attachments = processAttachments;
 		const { navigation, server, user, dispatch } = this.props;
 		// update state
 		await this.selectFile(selected);
@@ -360,9 +348,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			this.messageComposerRef.current?.setInput(item.description || '');
 		}
 	};
-	/**
-	 * Processes attachments by compressing images while preserving other file types
-	 */
+
 	processAttachments = async (originalAttachments: IShareAttachment[], quality: TQuality): Promise<IShareAttachment[]> => {
 		try {
 			if (quality === 'HD') {
@@ -373,9 +359,9 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 					let compressedPath = '';
 
 					if (attachment.mime?.startsWith('image/')) {
-						compressedPath = await compressImage(attachment.path, quality);
+						compressedPath = await compressImage(attachment.path);
 					} else if (attachment.mime?.startsWith('video/')) {
-						compressedPath = await compressVideo(attachment.path, quality);
+						compressedPath = await compressVideo(attachment.path);
 					}
 					const text = this.messageComposerRef.current?.getText();
 
