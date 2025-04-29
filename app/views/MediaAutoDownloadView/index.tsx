@@ -46,7 +46,7 @@ const MediaAutoDownload = () => {
 		<SafeAreaView>
 			<StatusBar />
 			<List.Container>
-				<List.Section>
+				<List.Section title='Media_quality'>
 					<List.Info info='Media_quality_info' />
 					<List.Item
 						title='Media_quality_standard_title'
@@ -62,7 +62,7 @@ const MediaAutoDownload = () => {
 						right={() => (mediaQuilityPreference === 'HD' ? <List.Icon name='check' /> : <></>)}
 					/>
 				</List.Section>
-				<List.Section>
+				<List.Section title='Media_auto_download'>
 					<List.Separator />
 					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference} title='Image' />
 					<List.Separator />
