@@ -2,11 +2,14 @@ import React, { useContext } from 'react';
 import { Text, useWindowDimensions } from 'react-native';
 import { Emoji as EmojiProps } from '@rocket.chat/message-parser';
 
+import Plain from '../Plain';
+import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
 import { useTheme } from '../../../../theme';
 import styles from '../../styles';
 import CustomEmoji from '../../../EmojiPicker/CustomEmoji';
 import MarkdownContext from '../../contexts/MarkdownContext';
-import useShortnameToUnicode from '../../../../lib/hooks/useShortnameToUnicode';
+import { useAppSelector } from '../../../../lib/hooks';
+import { getUserSelector } from '../../../../selectors/login';
 
 interface IEmojiProps {
 	block: EmojiProps;
@@ -19,15 +22,17 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
-
-	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
-	const unicodeEmoji = formatShortnameToUnicode(emojiToken);
-	const emoji = getCustomEmoji?.(block.value?.value);
+	const { settings } = useAppSelector(state => getUserSelector(state));
+	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
+	const isAsciiEmoji = block.value?.value !== block?.shortCode;
 
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
 
+	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
+	const emojiUnicode = formatShortnameToUnicode(emojiToken);
+	const emoji = getCustomEmoji?.(block.value?.value);
 	const customEmojiSize = {
 		width: 15 * fontScale,
 		height: 15 * fontScale
@@ -38,13 +43,17 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 		height: 30 * fontScale
 	};
 
+	if (!convertAsciiEmoji && isAsciiEmoji && block.value) {
+		return <Plain value={block.value.value} />;
+	}
+
 	if (emoji) {
 		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
 	}
 	return (
 		<Text
-			style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== unicodeEmoji ? styles.textBig : styles.text, style]}>
-			{unicodeEmoji}
+			style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text, style]}>
+			{emojiUnicode}
 		</Text>
 	);
 };
