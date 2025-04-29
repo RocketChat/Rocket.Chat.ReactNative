@@ -24,8 +24,7 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { settings } = useAppSelector(state => getUserSelector(state));
 	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
-	const isAsciiEmoji = block.value?.value !== block?.shortCode;
-
+	const isAsciiEmoji = block?.shortCode && block.value?.value !== block?.shortCode;
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
