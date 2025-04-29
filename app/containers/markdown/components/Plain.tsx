@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { Plain as PlainProps } from '@rocket.chat/message-parser';
 
+import { previewFormatText } from '../../../lib/helpers/previewFormatText';
 import styles from '../styles';
 
 interface IPlainProps {
@@ -10,7 +11,7 @@ interface IPlainProps {
 
 const Plain = ({ value }: IPlainProps): React.ReactElement => (
 	<Text accessibilityLabel={value} style={styles.plainText}>
-		{value}
+		{previewFormatText(value)}
 	</Text>
 );
 

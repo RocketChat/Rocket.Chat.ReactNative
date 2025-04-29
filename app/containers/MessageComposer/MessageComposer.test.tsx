@@ -13,6 +13,12 @@ import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 
+jest.mock('../../lib/store/auxStore', () => ({
+	store: {
+		getState: () => mockedStore.getState()
+	}
+}));
+
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
 	mockedStore.dispatch(selectServerRequest(baseUrl, '6.4.0'));
