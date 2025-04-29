@@ -2,7 +2,8 @@ import { ImagePickerOptions, MediaTypeOptions, UIImagePickerControllerQualityTyp
 
 import { TMarkdownStyle } from './interfaces';
 
-const imageQuality = 1;
+const imageQuality = 0.8;
+
 const videoQuality = UIImagePickerControllerQualityType.High;
 
 export const IMAGE_PICKER_CONFIG: ImagePickerOptions = {
