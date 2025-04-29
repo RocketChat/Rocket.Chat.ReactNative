@@ -1,4 +1,26 @@
+import { mockedStore } from '../../reducers/mockedStore';
+import { setUser } from '../../actions/login';
 import { previewFormatText } from './previewFormatText';
+
+jest.mock('../store/auxStore', () => ({
+	store: {
+		getState: () => mockedStore.getState()
+	}
+}));
+
+const initialMockedStoreState = () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
+				}
+			}
+		})
+	);
+};
+
+initialMockedStoreState();
 
 describe('Format preview message', () => {
 	test('empty to be empty', () => {

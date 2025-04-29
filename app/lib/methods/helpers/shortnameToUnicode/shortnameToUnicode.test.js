@@ -1,5 +1,27 @@
 /* eslint-disable no-undef */
+import { setUser } from '../../../../actions/login';
+import { mockedStore } from '../../../../reducers/mockedStore';
 import shortnameToUnicode from './index';
+
+jest.mock('../../../store/auxStore', () => ({
+	store: {
+		getState: () => mockedStore.getState()
+	}
+}));
+
+const initialMockedStoreState = () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
+				}
+			}
+		})
+	);
+};
+
+initialMockedStoreState();
 
 test('render joy', () => {
 	expect(shortnameToUnicode(':joy:')).toBe('😂');
@@ -35,4 +57,22 @@ test('render text with ascii emoji', () => {
 
 test('render emoji and ascii emoji', () => {
 	expect(shortnameToUnicode("':-D :joy:")).toBe('😅 😂');
+});
+
+test('convert ascii when convertAsciiEmoji = true', () => {
+	expect(shortnameToUnicode(':(')).toBe('😞');
+});
+
+test('do NOT convert ascii when convertAsciiEmoji = false', () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: false
+				}
+			}
+		})
+	);
+
+	expect(shortnameToUnicode(':(')).toBe(':(');
 });
