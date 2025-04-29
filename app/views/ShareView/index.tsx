@@ -8,7 +8,7 @@ import { Dispatch } from 'redux';
 
 import { IMessageComposerRef, MessageComposerContainer } from '../../containers/MessageComposer';
 import { InsideStackParamList } from '../../stacks/types';
-import { themes } from '../../lib/constants';
+import { MEDIA_QUALITY, themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -37,6 +37,7 @@ import { hasPermission, isAndroid, canUploadFile, isReadOnly, isBlocked } from '
 import { RoomContext } from '../RoomView/context';
 import { appStart } from '../../actions/app';
 import { compressImage, compressVideo, TQuality } from './utils';
+import userPreferences from '../../lib/methods/userPreferences';
 
 interface IShareViewState {
 	selected: IShareAttachment;
@@ -108,6 +109,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		const readOnly = await this.getReadOnly();
 		const { attachments, selected } = await this.getAttachments();
 		this.setState({ readOnly, attachments, selected }, () => this.setHeader());
+		const quality = userPreferences.getString(MEDIA_QUALITY);
+		console.log('quality', quality);
+		if (quality) {
+			this.setState({ quality: quality as TQuality });
+			this.setHeader();
+		}
 		this.startShareView();
 	};
 

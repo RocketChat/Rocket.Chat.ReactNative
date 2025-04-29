@@ -10,7 +10,9 @@ import { useUserPreferences } from '../../lib/methods/userPreferences';
 import {
 	AUDIO_PREFERENCE_DOWNLOAD,
 	IMAGE_PREFERENCE_DOWNLOAD,
+	MEDIA_QUALITY,
 	MediaDownloadOption,
+	MediaQualityOption,
 	VIDEO_PREFERENCE_DOWNLOAD
 } from '../../lib/constants';
 import i18n from '../../i18n';
@@ -21,20 +23,45 @@ const MediaAutoDownload = () => {
 		IMAGE_PREFERENCE_DOWNLOAD,
 		'wifi_mobile_data'
 	);
+	const [mediaQuilityPreference, setMediaQuilityPreference] = useUserPreferences<MediaQualityOption>(MEDIA_QUALITY, 'SD');
 	const [videoPreference, setVideoPreference] = useUserPreferences<MediaDownloadOption>(VIDEO_PREFERENCE_DOWNLOAD, 'wifi');
 	const [audioPreference, setAudioPreference] = useUserPreferences<MediaDownloadOption>(AUDIO_PREFERENCE_DOWNLOAD, 'wifi');
 	const navigation = useNavigation<NativeStackNavigationProp<SettingsStackParamList, 'MediaAutoDownloadView'>>();
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			title: i18n.t('Media_auto_download')
+			title: i18n.t('Media')
 		});
 	}, [navigation]);
+
+	const setMediaPref = (type: String) => {
+		if (type === 'Media_quality_high_definition_title') {
+			setMediaQuilityPreference('HD');
+		} else {
+			setMediaQuilityPreference('SD');
+		}
+	};
 
 	return (
 		<SafeAreaView>
 			<StatusBar />
 			<List.Container>
+				<List.Section>
+					<List.Info info='Media_quality_info' />
+					<List.Item
+						title='Media_quality_standard_title'
+						subtitle='Media_quality_standard_subtitle'
+						onPress={setMediaPref}
+						right={() => (mediaQuilityPreference === 'SD' ? <List.Icon name='check' /> : <></>)}
+					/>
+					<List.Separator />
+					<List.Item
+						title='Media_quality_high_definition_title'
+						subtitle='Media_quality_high_definition_subtitle'
+						onPress={setMediaPref}
+						right={() => (mediaQuilityPreference === 'HD' ? <List.Icon name='check' /> : <></>)}
+					/>
+				</List.Section>
 				<List.Section>
 					<List.Separator />
 					<ListPicker onChangeValue={setImagesPreference} value={imagesPreference} title='Image' />
