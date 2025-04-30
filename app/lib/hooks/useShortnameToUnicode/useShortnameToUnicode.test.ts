@@ -59,13 +59,13 @@ test('render ascii smile', () => {
 test('render several ascii emojis', () => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const unicodeEmoji = formatShortnameToUnicode(":) :( -_- ':-D");
-	expect(unicodeEmoji).toBe('🙂😞😑😅');
+	expect(unicodeEmoji).toBe('🙂 😞 😑 😅');
 });
 
 test('render text with ascii emoji', () => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const unicodeEmoji = formatShortnameToUnicode('Hello there! :)');
-	expect(unicodeEmoji).toBe('Hello there!🙂');
+	expect(unicodeEmoji).toBe('Hello there! 🙂');
 });
 
 test('render emoji and ascii emoji', () => {
