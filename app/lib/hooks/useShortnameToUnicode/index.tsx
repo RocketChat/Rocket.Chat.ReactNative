@@ -42,9 +42,9 @@ const useShortnameToUnicode = (isEmojiPicker?: boolean) => {
 			m3 = unescapeHTML(m3);
 
 			if (!convertAsciiEmoji && !isEmojiPicker) {
-				return m3;
+				return m2 + m3;
 			}
-			return ascii[m3];
+			return m2 + ascii[m3];
 		});
 		return str;
 	};
