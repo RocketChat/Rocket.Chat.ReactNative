@@ -24,11 +24,12 @@ const navigateFromRoomsListViewToUserPreferencesView = async () => {
 describe('User Preferences screen', () => {
 	let room: string;
 	let user: ITestUser;
+	let otherUser: ITestUser;
 
 	beforeAll(async () => {
 		user = await createRandomUser();
 		({ name: room } = await createRandomRoom(user));
-		const otherUser = await createRandomUser();
+		otherUser = await createRandomUser();
 		await sendMessage(otherUser, room, ':(');
 		await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 		await navigateToLogin();
@@ -67,6 +68,9 @@ describe('User Preferences screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('sidebar-chats'))).toBeVisible();
 				await element(by.id('sidebar-chats')).tap();
+				await waitFor(element(by.text(`${otherUser.username}::(`)))
+					.toBeVisible()
+					.withTimeout(2000);
 				await navigateToRoom(room);
 				await expect(element(by.text(':('))).toBeVisible();
 				await expect(element(by.text('😞'))).not.toBeVisible();
@@ -89,6 +93,9 @@ describe('User Preferences screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('sidebar-chats'))).toBeVisible();
 				await element(by.id('sidebar-chats')).tap();
+				await waitFor(element(by.text(`${otherUser.name}:😞`)))
+					.toBeVisible()
+					.withTimeout(2000);
 				await navigateToRoom(room);
 				await expect(element(by.text('😞'))).toBeVisible();
 				await expect(element(by.text(':('))).not.toBeVisible();
