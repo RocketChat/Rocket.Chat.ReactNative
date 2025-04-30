@@ -77,6 +77,7 @@ export const MessageComposer = ({
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	useKeyboardListener(trackingViewRef);
+
 	useFocusEffect(
 		useCallback(() => {
 			trackingViewRef.current?.resetTracking();
