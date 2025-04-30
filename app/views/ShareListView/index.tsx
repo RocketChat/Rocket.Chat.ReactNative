@@ -1,12 +1,13 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, Text, View } from 'react-native';
+import { BackHandler, Keyboard, NativeEventSubscription, Text, View } from 'react-native';
 import * as FileSystem from 'expo-file-system';
 import { connect } from 'react-redux';
 import * as mime from 'react-native-mime-types';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import database from '../../lib/database';
 import I18n from '../../i18n';
@@ -17,12 +18,11 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as List from '../../containers/List';
 import SearchHeader from '../../containers/SearchHeader';
 import { themes } from '../../lib/constants';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sanitizeLikeString } from '../../lib/database/utils';
 import styles from './styles';
-import { IApplicationState, RootEnum, TServerModel, TSubscriptionModel } from '../../definitions';
+import { IApplicationState, RootEnum, TServerModel, TSubscriptionModel, SubscriptionType } from '../../definitions';
 import { ShareInsideStackParamList } from '../../definitions/navigationTypes';
 import { getRoomAvatar, isAndroid, isIOS } from '../../lib/methods/helpers';
 import { shareSetParams } from '../../actions/share';
@@ -36,11 +36,25 @@ interface IFileToShare {
 	path: string;
 }
 
+type TSubscriptionQueryResult = {
+	rid: string;
+	t: SubscriptionType;
+	name: string;
+	fname?: string;
+	blocked?: boolean;
+	blocker?: boolean;
+	prid?: string;
+	uids?: string[];
+	usernames?: string[];
+	topic?: string;
+	teamMain?: boolean;
+};
+
 interface IState {
 	searching: boolean;
 	searchText: string;
-	searchResults: TSubscriptionModel[];
-	chats: TSubscriptionModel[];
+	searchResults: TSubscriptionQueryResult[];
+	chats: TSubscriptionQueryResult[];
 	serversCount: number;
 	attachments: IFileToShare[];
 	text: string;
@@ -65,7 +79,7 @@ interface IShareListViewProps extends INavigationOption {
 }
 
 const getItemLayout = (data: any, index: number) => ({ length: data.length, offset: ROW_HEIGHT * index, index });
-const keyExtractor = (item: TSubscriptionModel) => item.rid;
+const keyExtractor = (item: TSubscriptionQueryResult) => item.rid;
 
 class ShareListView extends React.Component<IShareListViewProps, IState> {
 	private unsubscribeFocus: (() => void) | undefined;
@@ -218,16 +232,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		});
 	};
 
-	internalSetState = (...args: object[]) => {
-		const { navigation } = this.props;
-		if (navigation.isFocused()) {
-			animateNextTransition();
-		}
-		// @ts-ignore
-		this.setState(...args);
-	};
-
-	query = async (text?: string) => {
+	query = async (text?: string): Promise<TSubscriptionQueryResult[]> => {
 		const db = database.active;
 		const defaultWhereClause = [
 			Q.where('archived', false),
@@ -240,10 +245,10 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			const likeString = sanitizeLikeString(text);
 			defaultWhereClause.push(Q.or(Q.where('name', Q.like(`%${likeString}%`)), Q.where('fname', Q.like(`%${likeString}%`))));
 		}
-		const data = (await db
+		const data = await db
 			.get('subscriptions')
 			.query(...defaultWhereClause)
-			.fetch()) as TSubscriptionModel[];
+			.fetch();
 
 		return data
 			.map(item => {
@@ -265,7 +270,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					teamMain: item.teamMain
 				};
 			})
-			.filter(item => !!item);
+			.filter(item => !!item) as TSubscriptionQueryResult[];
 	};
 
 	getSubscriptions = async () => {
@@ -279,15 +284,19 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 			const serversDB = database.servers;
 			const serversCollection = serversDB.get('servers');
 			const serversCount = await serversCollection.query(Q.where('rooms_updated_at', Q.notEq(null))).fetchCount();
-			let serverInfo = {};
+			let serverInfo;
 			try {
 				serverInfo = await serversCollection.find(server);
 			} catch (error) {
 				// Do nothing
 			}
 
+			if (!serverInfo) {
+				return;
+			}
+
 			if (this.airGappedReadOnly) {
-				this.internalSetState({
+				this.setState({
 					chats: [],
 					serversCount,
 					loading: false,
@@ -297,7 +306,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 				return;
 			}
 
-			this.internalSetState({
+			this.setState({
 				chats: chats ?? [],
 				serversCount,
 				loading: false,
@@ -309,17 +318,17 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	uriToPath = (uri: string) => decodeURIComponent(isIOS ? uri.replace(/^file:\/\//, '') : uri);
 
-	getRoomTitle = (item: TSubscriptionModel) => {
+	getRoomTitle = (item: TSubscriptionQueryResult) => {
 		const { serverInfo } = this.state;
 		return ((item.prid || serverInfo?.useRealName) && item.fname) || item.name;
 	};
 
-	shareMessage = (room: TSubscriptionModel) => {
+	shareMessage = (room: TSubscriptionQueryResult) => {
 		const { attachments, text, serverInfo } = this.state;
 		const { navigation } = this.props;
 
 		navigation.navigate('ShareView', {
-			room,
+			room: room as TSubscriptionModel,
 			text,
 			attachments,
 			serverInfo,
@@ -329,7 +338,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 	search = async (text: string) => {
 		const result = await this.query(text);
-		this.internalSetState({
+		this.setState({
 			searchResults: result,
 			searchText: text
 		});
@@ -341,7 +350,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 	};
 
 	cancelSearch = () => {
-		this.internalSetState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
+		this.setState({ searching: false, searchResults: [], searchText: '' }, () => this.setHeader());
 		Keyboard.dismiss();
 	};
 
@@ -381,15 +390,15 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 		);
 	};
 
-	renderItem = ({ item }: { item: TSubscriptionModel }) => {
+	renderItem = ({ item }: { item: TSubscriptionQueryResult }) => {
 		const { serverInfo } = this.state;
 		let description;
 		switch (item.t) {
 			case 'c':
-				description = item.topic || item.description;
+				description = item.topic;
 				break;
 			case 'p':
-				description = item.topic || item.description;
+				description = item.topic;
 				break;
 			case 'd':
 				description = serverInfo?.useRealName ? item.name : item.fname;
@@ -493,7 +502,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 
 		return (
 			<SafeAreaView testID='share-list-view'>
-				<FlatList
+				<Animated.FlatList
 					data={searching ? searchResults : chats}
 					keyExtractor={keyExtractor}
 					style={[styles.flatlist, { backgroundColor: themes[theme].surfaceHover }]}
@@ -505,6 +514,7 @@ class ShareListView extends React.Component<IShareListViewProps, IState> {
 					ListEmptyComponent={this.renderEmptyComponent}
 					removeClippedSubviews
 					keyboardShouldPersistTaps='always'
+					itemLayoutAnimation={LinearTransition}
 				/>
 			</SafeAreaView>
 		);

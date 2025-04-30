@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import database from '../../lib/database';
 import RoomItem from '../../containers/RoomItem';
@@ -17,7 +18,6 @@ import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions
 import * as HeaderButton from '../../containers/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
@@ -502,21 +502,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		navigation.setOptions(options);
 	};
 
-	internalSetState = (
-		state:
-			| ((
-					prevState: Readonly<IRoomsListViewState>,
-					props: Readonly<IRoomsListViewProps>
-			  ) => Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null)
-			| (Pick<IRoomsListViewState, keyof IRoomsListViewState> | IRoomsListViewState | null),
-		callback?: () => void
-	) => {
-		if (this.animated) {
-			animateNextTransition();
-		}
-		this.setState(state, callback);
-	};
-
 	addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
 		if (data.length > 0) {
 			if (header) {
@@ -606,7 +591,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 			const chatsUpdate = tempChats.map(item => item.rid);
 
-			this.internalSetState({
+			this.setState({
 				chats: tempChats,
 				chatsUpdate,
 				omnichannelsUpdate,
@@ -624,7 +609,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	initSearching = () => {
 		logEvent(events.RL_SEARCH);
 		const { dispatch } = this.props;
-		this.internalSetState({ searching: true }, () => {
+		this.setState({ searching: true }, () => {
 			dispatch(openSearchHeader());
 			this.handleSearch('');
 			this.setHeader();
@@ -670,7 +655,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return;
 		}
 		this.setState({ loading: false });
-		this.internalSetState({
+		this.setState({
 			search: result as IRoomItem[],
 			searching: true
 		});
@@ -868,7 +853,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: FlatList | null) => {
+		if (ref) {
+			this.scroll = ref;
+		}
+	};
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -968,15 +957,15 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		return (
-			<FlatList
+			<Animated.FlatList
 				ref={this.getScrollRef}
 				data={searching ? search : chats}
 				extraData={searching ? search : chats}
-				keyExtractor={item => keyExtractor(item, searching)}
+				keyExtractor={(item: ISubscription) => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={(data, index) => getItemLayout(data, index, height)}
+				getItemLayout={(data: ArrayLike<ISubscription> | null | undefined, index: number) => getItemLayout(data, index, height)}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
@@ -987,6 +976,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+				itemLayoutAnimation={LinearTransition}
 			/>
 		);
 	};

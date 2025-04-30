@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
-import { View, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { FadeInDown, FadeInUp, FadeOut, FadeOutDown } from 'react-native-reanimated';
 
 import { useAutocompleteParams, useKeyboardHeight, useTrackingViewHeight } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -31,7 +32,9 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 
 	if (type !== '/preview') {
 		return (
-			<View
+			<Animated.View
+				entering={FadeInDown}
+				exiting={FadeOutDown}
 				style={[
 					styles.root,
 					{
@@ -45,13 +48,16 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 
 	if (type === '/preview') {
 		return (
-			<View style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
+			<Animated.View
+				entering={FadeInUp}
+				exiting={FadeOut}
+				style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
@@ -61,7 +67,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 

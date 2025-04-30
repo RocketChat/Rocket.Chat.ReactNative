@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 
 import { useFocused, useShowEmojiKeyboard, useShowEmojiSearchbar, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
@@ -28,11 +29,13 @@ export const Toolbar = (): ReactElement | null => {
 	}
 
 	return (
-		<Container>
-			{showMarkdownToolbar ? <Markdown /> : <Default />}
-			<EmptySpace />
-			<CancelEdit />
-			<MicOrSendButton />
-		</Container>
+		<Animated.View entering={FadeInDown} exiting={FadeOutDown}>
+			<Container>
+				{showMarkdownToolbar ? <Markdown /> : <Default />}
+				<EmptySpace />
+				<CancelEdit />
+				<MicOrSendButton />
+			</Container>
+		</Animated.View>
 	);
 };

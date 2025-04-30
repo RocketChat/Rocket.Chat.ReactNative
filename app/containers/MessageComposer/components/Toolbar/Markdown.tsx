@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 
 import { BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
@@ -12,7 +13,7 @@ export const Markdown = (): ReactElement => {
 	const onPress = (style: TMarkdownStyle) => emitter.emit('addMarkdown', { style });
 
 	return (
-		<>
+		<Animated.View entering={FadeInDown} exiting={FadeOutDown} style={{ flexDirection: 'row' }}>
 			<BaseButton
 				onPress={() => setMarkdownToolbar(false)}
 				testID='message-composer-close-markdown'
@@ -39,6 +40,6 @@ export const Markdown = (): ReactElement => {
 				accessibilityLabel='Code_block'
 				icon='code-block'
 			/>
-		</>
+		</Animated.View>
 	);
 };

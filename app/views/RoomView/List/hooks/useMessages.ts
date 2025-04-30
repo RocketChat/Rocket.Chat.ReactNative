@@ -6,7 +6,7 @@ import { TAnyMessageModel } from '../../../../definitions';
 import database from '../../../../lib/database';
 import { getMessageById } from '../../../../lib/database/services/Message';
 import { getThreadById } from '../../../../lib/database/services/Thread';
-import { animateNextTransition, compareServerVersion, isIOS, useDebounce } from '../../../../lib/methods/helpers';
+import { compareServerVersion, useDebounce } from '../../../../lib/methods/helpers';
 import { Services } from '../../../../lib/services';
 import { QUERY_SIZE } from '../constants';
 
@@ -81,9 +81,6 @@ export const useMessages = ({
 			}
 
 			readThread();
-			if (isIOS) {
-				animateNextTransition();
-			}
 			setMessages(newMessages);
 			messagesIds.current = newMessages.map(m => m.id);
 		});

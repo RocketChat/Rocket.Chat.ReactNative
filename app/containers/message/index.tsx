@@ -1,5 +1,6 @@
 import React from 'react';
 import { Keyboard, ViewStyle } from 'react-native';
+import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -428,88 +429,90 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const canTranslateMessage = autoTranslateRoom && autoTranslateLanguage && autoTranslateMessage !== false && otherUserMessage;
 
 		return (
-			<MessageContext.Provider
-				value={{
-					id,
-					rid,
-					user,
-					baseUrl,
-					onPress: this.onPressAction,
-					onLongPress: this.onLongPress,
-					reactionInit: this.reactionInit,
-					onErrorPress: this.onErrorPress,
-					replyBroadcast: this.replyBroadcast,
-					onReactionPress: this.onReactionPress,
-					onEncryptedPress: this.onEncryptedPress,
-					onDiscussionPress: this.onDiscussionPress,
-					onReactionLongPress: this.onReactionLongPress,
-					onLinkPress: this.onLinkPress,
-					onAnswerButtonPress: this.onAnswerButtonPress,
-					jumpToMessage,
-					threadBadgeColor,
-					toggleFollowThread,
-					replies,
-					translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
-					isEncrypted: this.isEncrypted
-				}}>
-				<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
-				{/* @ts-ignore*/}
-				<Message
-					id={id}
-					msg={message}
-					md={md}
-					rid={rid}
-					author={u}
-					ts={ts}
-					type={t}
-					attachments={attachments}
-					blocks={blocks}
-					urls={urls}
-					reactions={reactions}
-					alias={alias}
-					avatar={avatar}
-					emoji={emoji}
-					timeFormat={timeFormat}
-					style={style}
-					archived={archived}
-					broadcast={broadcast}
-					useRealName={useRealName}
-					isReadReceiptEnabled={isReadReceiptEnabled}
-					unread={unread}
-					role={role}
-					drid={drid}
-					dcount={dcount}
-					dlm={dlm}
-					tmid={tmid}
-					tcount={tcount}
-					tlm={tlm}
-					tmsg={tmsg}
-					fetchThreadName={fetchThreadName}
-					mentions={mentions}
-					channels={channels}
-					isIgnored={this.isIgnored}
-					isEdited={(editedBy && !!editedBy.username) ?? false}
-					isHeader={this.isHeader}
-					isThreadReply={this.isThreadReply}
-					isThreadSequential={this.isThreadSequential}
-					isThreadRoom={!!isThreadRoom}
-					isInfo={this.isInfo}
-					isTemp={this.isTemp}
-					isEncrypted={this.isEncrypted}
-					hasError={this.hasError}
-					showAttachment={showAttachment}
-					getCustomEmoji={getCustomEmoji}
-					navToRoomInfo={navToRoomInfo}
-					handleEnterCall={handleEnterCall}
-					blockAction={blockAction}
-					highlighted={highlighted}
-					comment={comment}
-					isTranslated={isTranslated}
-					isBeingEdited={isBeingEdited}
-					isPreview={isPreview}
-					pinned={pinned}
-				/>
-			</MessageContext.Provider>
+			<Animated.View layout={LinearTransition}>
+				<MessageContext.Provider
+					value={{
+						id,
+						rid,
+						user,
+						baseUrl,
+						onPress: this.onPressAction,
+						onLongPress: this.onLongPress,
+						reactionInit: this.reactionInit,
+						onErrorPress: this.onErrorPress,
+						replyBroadcast: this.replyBroadcast,
+						onReactionPress: this.onReactionPress,
+						onEncryptedPress: this.onEncryptedPress,
+						onDiscussionPress: this.onDiscussionPress,
+						onReactionLongPress: this.onReactionLongPress,
+						onLinkPress: this.onLinkPress,
+						onAnswerButtonPress: this.onAnswerButtonPress,
+						jumpToMessage,
+						threadBadgeColor,
+						toggleFollowThread,
+						replies,
+						translateLanguage: canTranslateMessage ? autoTranslateLanguage : undefined,
+						isEncrypted: this.isEncrypted
+					}}>
+					<MessageSeparator ts={dateSeparator} unread={showUnreadSeparator} />
+					{/* @ts-ignore*/}
+					<Message
+						id={id}
+						msg={message}
+						md={md}
+						rid={rid}
+						author={u}
+						ts={ts}
+						type={t}
+						attachments={attachments}
+						blocks={blocks}
+						urls={urls}
+						reactions={reactions}
+						alias={alias}
+						avatar={avatar}
+						emoji={emoji}
+						timeFormat={timeFormat}
+						style={style}
+						archived={archived}
+						broadcast={broadcast}
+						useRealName={useRealName}
+						isReadReceiptEnabled={isReadReceiptEnabled}
+						unread={unread}
+						role={role}
+						drid={drid}
+						dcount={dcount}
+						dlm={dlm}
+						tmid={tmid}
+						tcount={tcount}
+						tlm={tlm}
+						tmsg={tmsg}
+						fetchThreadName={fetchThreadName}
+						mentions={mentions}
+						channels={channels}
+						isIgnored={this.isIgnored}
+						isEdited={(editedBy && !!editedBy.username) ?? false}
+						isHeader={this.isHeader}
+						isThreadReply={this.isThreadReply}
+						isThreadSequential={this.isThreadSequential}
+						isThreadRoom={!!isThreadRoom}
+						isInfo={this.isInfo}
+						isTemp={this.isTemp}
+						isEncrypted={this.isEncrypted}
+						hasError={this.hasError}
+						showAttachment={showAttachment}
+						getCustomEmoji={getCustomEmoji}
+						navToRoomInfo={navToRoomInfo}
+						handleEnterCall={handleEnterCall}
+						blockAction={blockAction}
+						highlighted={highlighted}
+						comment={comment}
+						isTranslated={isTranslated}
+						isBeingEdited={isBeingEdited}
+						isPreview={isPreview}
+						pinned={pinned}
+					/>
+				</MessageContext.Provider>
+			</Animated.View>
 		);
 	}
 }
