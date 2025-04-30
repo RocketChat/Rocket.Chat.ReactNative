@@ -15,13 +15,15 @@ interface IEmojiProps {
 	block: EmojiProps;
 	isBigEmoji?: boolean;
 	style?: object;
+	index?: number;
 }
 
-const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
+const Emoji = ({ block, isBigEmoji, style = {}, index }: IEmojiProps) => {
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const spaceLeft = index && index > 0 ? ' ' : '';
 	const convertAsciiEmoji = useAppSelector(state => getUserSelector(state)?.settings?.preferences?.convertAsciiEmoji);
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
@@ -30,7 +32,8 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
 	const emojiUnicode = formatShortnameToUnicode(emojiToken);
 	const emoji = getCustomEmoji?.(block.value?.value);
-	const isAsciiEmoji = block?.shortCode && block.value?.value !== block?.shortCode;
+	const isAsciiEmoji = !!block?.shortCode && block.value?.value !== block?.shortCode;
+	const displayAsciiEmoji = !convertAsciiEmoji && isAsciiEmoji && !!block.value;
 	const customEmojiSize = {
 		width: 15 * fontScale,
 		height: 15 * fontScale
@@ -41,17 +44,14 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 		height: 30 * fontScale
 	};
 
-	if (!convertAsciiEmoji && isAsciiEmoji && block.value) {
-		return <Plain value={block.value.value} />;
-	}
-
 	if (emoji) {
 		return <CustomEmoji style={[isBigEmoji ? customEmojiBigSize : customEmojiSize, style]} emoji={emoji} />;
 	}
 	return (
 		<Text
 			style={[{ color: colors.fontDefault }, isBigEmoji && emojiToken !== emojiUnicode ? styles.textBig : styles.text, style]}>
-			{emojiUnicode}
+			{spaceLeft}
+			{displayAsciiEmoji ? <Plain value={block.value!.value} /> : emojiUnicode}
 		</Text>
 	);
 };
