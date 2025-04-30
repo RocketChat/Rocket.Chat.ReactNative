@@ -72,7 +72,7 @@
 		"expo-image-picker": "14",
 		"expo-keep-awake": "^12.8.2",
 		"expo-local-authentication": "^13.8.0",
-		"expo-video-thumbnails": "^7.9.0",
+		"expo-video-thumbnails": "7.9.0",
 		"expo-web-browser": "^12.8.2",
 		"hoist-non-react-statics": "3.3.2",
 		"i18n-js": "3.9.2",
