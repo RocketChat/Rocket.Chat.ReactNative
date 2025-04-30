@@ -24,7 +24,6 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	const { settings } = useAppSelector(state => getUserSelector(state));
 	const convertAsciiEmoji = settings?.preferences.convertAsciiEmoji;
-	const isAsciiEmoji = block?.shortCode && block.value?.value !== block?.shortCode;
 	if ('unicode' in block) {
 		return <Text style={[{ color: colors.fontDefault }, isBigEmoji ? styles.textBig : styles.text]}>{block.unicode}</Text>;
 	}
@@ -32,6 +31,7 @@ const Emoji = ({ block, isBigEmoji, style = {} }: IEmojiProps) => {
 	const emojiToken = block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
 	const emojiUnicode = formatShortnameToUnicode(emojiToken);
 	const emoji = getCustomEmoji?.(block.value?.value);
+	const isAsciiEmoji = block?.shortCode && block.value?.value !== block?.shortCode;
 	const customEmojiSize = {
 		width: 15 * fontScale,
 		height: 15 * fontScale
