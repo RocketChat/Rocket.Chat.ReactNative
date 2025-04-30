@@ -64,8 +64,11 @@ export default StyleSheet.create({
 		justifyContent: 'flex-start'
 	},
 	inlineImage: {
-		width: 300,
-		height: 300
+		width: '100%',
+		height: '100%',
+		resizeMode: 'contain',
+		borderRadius: 4,
+		marginBottom: 2
 	},
 	codeInline: {
 		fontSize: 16,

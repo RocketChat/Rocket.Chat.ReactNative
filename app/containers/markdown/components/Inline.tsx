@@ -40,17 +40,17 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 
 				switch (block.type) {
 					case 'IMAGE':
-						return <Image value={block.value} />;
+						return <Image value={block.value} key={index} />;
 					case 'PLAIN_TEXT':
-						return <Plain value={block.value} />;
+						return <Plain value={block.value} key={index} />;
 					case 'BOLD':
-						return <Bold value={block.value} />;
+						return <Bold value={block.value} key={index} />;
 					case 'STRIKE':
-						return <Strike value={block.value} />;
+						return <Strike value={block.value} key={index} />;
 					case 'ITALIC':
-						return <Italic value={block.value} />;
+						return <Italic value={block.value} key={index} />;
 					case 'LINK':
-						return <Link value={block.value} />;
+						return <Link value={block.value} key={index} />;
 					case 'MENTION_USER':
 						return (
 							<AtMention
@@ -59,17 +59,18 @@ const Inline = ({ value, forceTrim }: IParagraphProps): React.ReactElement | nul
 								username={username}
 								navToRoomInfo={navToRoomInfo}
 								mentions={mentions}
+								key={index}
 							/>
 						);
 					case 'EMOJI':
-						return <Emoji block={block} />;
+						return <Emoji block={block} key={index} />;
 					case 'MENTION_CHANNEL':
-						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} />;
+						return <Hashtag hashtag={block.value.value} navToRoomInfo={navToRoomInfo} channels={channels} key={index} />;
 					case 'INLINE_CODE':
-						return <InlineCode value={block.value} />;
+						return <InlineCode value={block.value} key={index} />;
 					case 'INLINE_KATEX':
 						// return <InlineKaTeX value={block.value} />;
-						return <Text>{block.value}</Text>;
+						return <Text key={index}>{block.value}</Text>;
 					default:
 						return null;
 				}
