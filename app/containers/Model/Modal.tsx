@@ -1,18 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import Animated from 'react-native-reanimated';
 import { View, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import Modal from 'react-native-modal';
+import RCTModal from 'react-native-modal';
 import styles from './style';
 import { useTheme } from '../../theme';
 
-interface ICustomModalProps {
+interface IModalProps {
 	open: boolean;
 	onClose: () => void;
 	children: React.ReactNode;
 }
 
-const CustomModal: React.FC<ICustomModalProps> = ({ open, onClose, children }) => {
+const Modal: React.FC<IModalProps> = ({ open, onClose, children }) => {
 	const { colors } = useTheme();
 	const opacity = useSharedValue(0);
 	useEffect(() => {
@@ -34,7 +34,7 @@ const CustomModal: React.FC<ICustomModalProps> = ({ open, onClose, children }) =
 		onClose?.();
 	};
 	return (
-		<Modal
+		<RCTModal
 			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: colors.overlayBackground }]} />}
 			avoidKeyboard
 			useNativeDriver
@@ -45,8 +45,8 @@ const CustomModal: React.FC<ICustomModalProps> = ({ open, onClose, children }) =
 					<Animated.View style={[styles.modalContainer, animatedStyle]}>{children}</Animated.View>
 				</View>
 			</TouchableWithoutFeedback>
-		</Modal>
+		</RCTModal>
 	);
 };
 
-export default CustomModal;
+export default Modal;

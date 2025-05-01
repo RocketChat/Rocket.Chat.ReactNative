@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
-import 'text-encoding';
 
 import styles from './style';
 import Modal from '../../../containers/Model/Modal';
@@ -43,7 +41,11 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 	const copyToClipboard = () => {
 		Clipboard.setString(backupKeys);
 		showToast('Backup keys copied to clipboard!');
-		// You might want to add a toast notification here
+	};
+
+	const copyManualCode = () => {
+		Clipboard.setString(manualCode);
+		showToast('Manual code copied to clipboard!');
 	};
 
 	const color = useTheme();
@@ -60,15 +62,14 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 					<>
 						<Text style={styles.instructions}>Make sure you have a copy of your codes:</Text>
 
-						<View style={[styles.secretCode, { marginVertical: 15 }]}>
-							<Text selectable style={{ textAlign: 'center' }}>
+						<View style={[styles.secretCode, styles.copyCodeContainer]}>
+							<Text selectable style={{ textAlign: 'center', fontWeight: 'bold' }}>
 								{backupKeys}
 							</Text>
+							<TouchableOpacity style={[styles.verifyButton, { marginBottom: 10 }]} onPress={copyToClipboard}>
+								<Icon name='content-copy' size={24} color={color.colors.fontTitlesLabels} />
+							</TouchableOpacity>
 						</View>
-
-						<TouchableOpacity style={[styles.verifyButton, { marginBottom: 10 }]} onPress={copyToClipboard}>
-							<Text style={styles.verifyButtonText}>Copy</Text>
-						</TouchableOpacity>
 
 						<Text style={styles.manualCode}>
 							If you lose access to your authenticator app, you can use one of these codes to log in.
@@ -83,15 +84,18 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 							which you need to enter below.
 						</Text>
 
-						<View style={styles.qrContainer}>
-							<QRCode value={qrCodeValue} size={200} />
-						</View>
-
 						<Text style={styles.manualCodeTitle}>Can't scan the QR code?</Text>
 						<Text style={styles.manualCode}>Enter this code manually:</Text>
-						<Text selectable style={styles.secretCode}>
-							{manualCode}
-						</Text>
+
+						<View style={styles.copyCodeContainer}>
+							<Text selectable style={{ ...styles.secretCode, color: color.colors.fontTitlesLabels }}>
+								{manualCode}
+							</Text>
+
+							<TouchableOpacity style={[{ marginBottom: 10 }]} onPress={copyManualCode}>
+								<Icon name='content-copy' size={24} color={color.colors.fontTitlesLabels} />
+							</TouchableOpacity>
+						</View>
 
 						<View style={{ rowGap: 10 }}>
 							<Text style={styles.codeInputLabel}>Enter authentication code</Text>
@@ -106,7 +110,12 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 							/>
 
 							<TouchableOpacity
-								style={[styles.verifyButton, isLoading && styles.verifyButtonDisabled]}
+								style={{
+									...styles.verifyButton,
+									backgroundColor: isLoading
+										? color.colors.buttonBackgroundPrimaryDisabled
+										: color.colors.buttonBackgroundPrimaryDefault
+								}}
 								onPress={() => onVerify(code)}
 								disabled={isLoading}>
 								<Text style={styles.verifyButtonText}>{isLoading ? 'Verifying...' : 'Verify'}</Text>

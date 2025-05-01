@@ -27,6 +27,7 @@ import TOTPEnableModal from './TotpModel/TotpEnableModel';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { sendEmailCode } from '../../lib/services/restApi';
+import { showToast } from '../../lib/methods/helpers/showToast';
 
 interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -65,6 +66,43 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		toggleCrashErrorsReport(value);
 	};
 
+	const togglEmail = async (value: boolean) => {
+		if (!value) {
+			try {
+				setState(prevState => ({ ...prevState, loading: true }));
+				//@ts-ignore
+				await sendEmailCode(user?.emails[0].address);
+				const code = await twoFactor({ method: 'email', invalid: false });
+				if (code) {
+					const payload = { msg: 'method', id: user.id, method: '2fa:disableEmail', params: [code.twoFactorCode] };
+					const result = await sdk.current.post('users.2fa.disableEmail', { message: payload });
+
+					if (result) {
+						showErrorAlert(I18n.t('Update_Success'), 'Success');
+						setState(prevState => ({ ...prevState, emmailMfaStatus: value }));
+					}
+				}
+			} catch (e: any) {
+				showErrorAlert(I18n.t('totp-invalid'), 'Error');
+			} finally {
+				setState(prevState => ({ ...prevState, loading: false }));
+			}
+		} else {
+			try {
+				const payload = { msg: 'method', id: user.id, method: '2fa:enableEmail', params: [] };
+				const result = await sdk.current.post('users.2fa.enableEmail', { message: payload });
+				if (result) {
+					showErrorAlert(I18n.t('Update_Success'), 'Success');
+					setState(prevState => ({ ...prevState, emmailMfaStatus: value }));
+				}
+			} catch (error) {
+				showErrorAlert(I18n.t('totp-invalid'), 'Error');
+			} finally {
+				setState(prevState => ({ ...prevState, loading: false }));
+			}
+		}
+	};
+
 	const toggleAnalyticsEvents = (value: boolean) => {
 		logEvent(events.SP_TOGGLE_ANALYTICS_EVENTS);
 		AsyncStorage.setItem(ANALYTICS_EVENTS_KEY, JSON.stringify(value));
@@ -73,14 +111,11 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	};
 
 	const checkRemening = async () => {
-		// {message: "{"msg":"method","id":"11","method":"2fa:checkCodesRemaining","params":[]}"}
 		try {
 			const payload = { msg: 'method', id: user.id, method: '2fa:checkCodesRemaining', params: [] };
 			// @ts-ignore
-			const result = await sdk.post('method.call/2fa:checkCodesRemaining', { message: JSON.stringify(payload) });
-			console.log('result', result);
+			const result: any = await sdk.post('method.call/2fa:checkCodesRemaining', { message: JSON.stringify(payload) });
 			if (result) {
-				// @ts-ignore
 				setState(prevState => ({ ...prevState, backupCodesRemaining: result?.remaining }));
 			}
 		} catch (error) {
@@ -88,82 +123,40 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		}
 	};
 
-	const togglemailMfa = async () => {
-		// https://open.rocket.chat/api/v1/users.2fa.disableEmail
-		setState(prevState => ({ ...prevState, emmailMfaStatus: !state.emmailMfaStatus }));
-		try {
-			// @ts-ignore
-			if (!state?.emmailMfaStatus) {
-				const result = await sdk.current.post('users.2fa.enableEmail', { message: '' });
-				console.log('result', result);
-			} else {
-				// @ts-ignore
-				await sendEmailCode(user.emails[0].address);
-				enableEmailauthWithOtp();
-			}
-		} catch (error) {
-			console.log('error', error);
-			const totpInvalid = 'totp-invalid';
-			const totpRequired = 'totp-required';
-			// @ts-ignore
-			if ([totpInvalid, totpRequired].includes(error?.data?.errorType)) {
-				enableEmailauthWithOtp();
-			}
-		}
-	};
-
-	const enableEmailauthWithOtp = async () => {
-		const code = await twoFactor({ method: 'totp', invalid: false });
-		if (code) {
-			const payload = { msg: 'method', id: user.id, method: '2fa:enable', params: [code.twoFactorCode] };
-			const result = await sdk.current.post('users.2fa.enableEmail', { message: payload });
-			console.log('result', result);
-		}
-	};
-
-	// @ts-ignore
 	const toggleTOTP = async () => {
-		// if (user?.services?.totp?.enabled) {
-		// 	setState(prevState => ({ ...prevState, showQrModel: true }));
-		// 	return;
-		// }
+		await activeTOTP();
+		setState(prevState => ({
+			...prevState,
+			showQrModel: true
+		}));
+	};
 
+	const activeTOTP = async () => {
 		try {
 			setState(prevState => ({ ...prevState, loading: true }));
 			const payload = { msg: 'method', id: user.id, method: '2fa:enable', params: [] };
 			// @ts-ignore
-			const result = await sdk.post('method.call/2fa:enable', { message: JSON.stringify(payload) });
-			// @ts-ignore
+			const result: any = await sdk.post('method.call/2fa:enable', { message: JSON.stringify(payload) });
 			if (result?.secret === null) {
-				// @ts-ignore
 				const messageError = result?.message?.message;
 				showErrorAlert(messageError, 'Error');
 			} else {
-				// @ts-ignore
-				console.log('result?.url', result?.url);
-				// @ts-ignore
 				if (result?.url) {
-					// @ts-ignore
 					setState(prevState => ({
 						...prevState,
 						isEnabled: false,
 						showQrModel: true,
-						// @ts-ignore
 						qrUrls: result?.url,
-						// @ts-ignore
 						secret: result?.secret
 					}));
 				} else {
 					setState(prevState => ({ ...prevState, isEnabled: true, backupCode: [] }));
 				}
-				// @ts-ignore
 				setState(prevState => ({ ...prevState, showQrModel: true }));
 			}
 			setState(prevState => ({ ...prevState, loading: false }));
 		} catch (error) {
 			setState(prevState => ({ ...prevState, loading: false, showQrModel: true, backupCode: [], isEnabled: true }));
-			// @ts-ignore
-			// showErrorAlert(error?.error as string, 'Error');
 			log(error);
 		}
 	};
@@ -171,76 +164,70 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const onTotaverify = async (code: string) => {
 		try {
 			const payload = { msg: 'method', id: user.id, method: '2fa:validateTempToken', params: [code] };
-
 			// @ts-ignore
-			const result = await sdk.post('method.call/2fa:validateTempToken', { message: JSON.stringify(payload) });
-			console.log('result', result);
-			// @ts-ignore
+			const result: any = await sdk.post('method.call/2fa:validateTempToken', { message: JSON.stringify(payload) });
 			if (!result?.codes?.length) {
-				// @ts-ignore
 				const messageError = result?.message?.error;
 				showErrorAlert(messageError);
 			} else {
-				// @ts-ignore
 				setState(prevState => ({ ...prevState, backupCode: result?.codes, showQrModel: true }));
 			}
-		} catch (error) {
+		} catch (error: any) {
 			setState(prevState => ({ ...prevState, showQrModel: false }));
 			log(error);
-			console.log('error', error);
-			// @ts-ignore
 			showErrorAlert(error?.error, 'Error');
 		}
 	};
 
 	const totpregenerate = async () => {
-		setState(prevState => ({ ...prevState, showQrModel: false }));
-		try {
-			const code = await twoFactor({ method: 'totp', invalid: false });
-			if (code) {
-				const payload = { msg: 'method', id: user.id, method: '2fa:regenerateCodes', params: [code.twoFactorCode] };
-
-				setState(prevState => ({ ...prevState, loading: true }));
-				// @ts-ignore
-				const result = await sdk.post('method.call/2fa:regenerateCodes', { message: JSON.stringify(payload) });
-				// @ts-ignore
-				if (result?.codes) {
+		setState(prevState => ({ ...prevState, showQrModel: false, loading: true }));
+		setTimeout(async () => {
+			setState(prevState => ({ ...prevState, loading: false }));
+			try {
+				const code = await twoFactor({ method: 'totp', invalid: false });
+				if (code) {
+					const payload = { msg: 'method', id: user.id, method: '2fa:regenerateCodes', params: [code.twoFactorCode] };
+					setState(prevState => ({ ...prevState, loading: true }));
 					// @ts-ignore
-					setState(prevState => ({ ...prevState, backupCode: result?.codes, showQrModel: true }));
-				} else {
-					showErrorAlert('An error occurred. Please try again.', 'Error');
+					const result: any = await sdk.post('method.call/2fa:regenerateCodes', { message: JSON.stringify(payload) });
+					if (result?.codes) {
+						setState(prevState => ({ ...prevState, backupCode: result?.codes, showQrModel: true }));
+					} else {
+						showErrorAlert('An error occurred. Please try again.', 'Error');
+					}
+					setState(prevState => ({ ...prevState, loading: false }));
 				}
+			} catch (error) {
 				setState(prevState => ({ ...prevState, loading: false }));
 			}
-		} catch (error) {
-			setState(prevState => ({ ...prevState, loading: false }));
-		}
+		}, 2000);
 	};
 
 	const onDisableTotp = async () => {
-		setState(prevState => ({ ...prevState, showQrModel: false }));
-		try {
-			const code = await twoFactor({ method: 'totp', invalid: false });
-			if (code) {
-				const payload = { msg: 'method', id: user.id, method: '2fa:disable', params: [code.twoFactorCode] };
+		setState(prevState => ({ ...prevState, showQrModel: false, loading: true }));
 
-				setState(prevState => ({ ...prevState, loading: true }));
-				// @ts-ignore
-				const result = await sdk.post('method.call/2fa:disable', { message: JSON.stringify(payload) });
-				console.log('result', result);
-				// @ts-ignore
-				if (!result) {
-					showErrorAlert('An error occurred. Please try again.', 'Error');
-				} else {
-					showErrorAlert('Successfully disabled TOTP.', 'Success');
+		setTimeout(async () => {
+			setState(prevState => ({ ...prevState, loading: false }));
+			try {
+				const code = await twoFactor({ method: 'totp', invalid: false });
+				if (code) {
+					const payload = { msg: 'method', id: user.id, method: '2fa:disable', params: [code.twoFactorCode] };
+
+					setState(prevState => ({ ...prevState, loading: true }));
+					// @ts-ignore
+					const result = await sdk.post('method.call/2fa:disable', { message: JSON.stringify(payload) });
+					if (!result) {
+						showErrorAlert('An error occurred. Please try again.', 'Error');
+					} else {
+						showErrorAlert('Successfully disabled TOTP.', 'Success');
+					}
 				}
-			}
 
-			setState(prevState => ({ ...prevState, loading: false }));
-		} catch (error) {
-			console.log('error', error);
-			setState(prevState => ({ ...prevState, loading: false }));
-		}
+				setState(prevState => ({ ...prevState, loading: false }));
+			} catch (error) {
+				setState(prevState => ({ ...prevState, loading: false }));
+			}
+		}, 2000);
 	};
 
 	const navigateToScreen = (screen: 'E2EEncryptionSecurityView' | 'ScreenLockConfigView') => {
@@ -288,7 +275,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 				</List.Section>
 
 				<List.Section>
-					<List.Separator />
+					<List.Info info='Two_Factor_Authentication' />
 					<List.Item
 						showActionIndicator
 						title='Enable_Two_factor_authentication_via_TOTP'
@@ -296,12 +283,19 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						onPress={toggleTOTP}
 						additionalAcessibilityLabel={state.totaState}
 					/>
+
+					<List.Separator />
 					<List.Item
 						title='Enable_Two_factor_authentication_via_Email'
-						testID='security-Enable_Two_factor_authentication_via_Email'
-						right={() => <Switch value={state.emmailMfaStatus} onValueChange={togglemailMfa} />}
-						additionalAcessibilityLabel={state.analyticsEventsState}
+						testID='security-privacy-view-email-auth-events'
+						right={() => <Switch value={state.emmailMfaStatus} onValueChange={togglEmail} />}
+						additionalAcessibilityLabel={state.emmailMfaStatus}
 					/>
+				</List.Section>
+
+				<List.Section>
+					<List.Separator />
+
 					<List.Item
 						title='Log_analytics_events'
 						testID='security-privacy-view-analytics-events'
