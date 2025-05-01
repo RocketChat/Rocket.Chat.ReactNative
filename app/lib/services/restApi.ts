@@ -745,7 +745,7 @@ export const getMessages = ({
 	// RC 0.59.0
 	return sdk.get(`${roomTypeToApiType(t)}.messages`, params);
 };
- 
+
 export const getPinnedMessages = ({ roomId, offset, count }: { roomId: string; offset: number; count: number }) =>
 	sdk.get('chat.getPinnedMessages', {
 		roomId,

@@ -27,7 +27,6 @@ import TOTPEnableModal from './TotpModel/TotpEnableModel';
 import { sendLoadingEvent } from '../../containers/Loading';
 import { twoFactor } from '../../lib/services/twoFactor';
 import { sendEmailCode } from '../../lib/services/restApi';
-import { showToast } from '../../lib/methods/helpers/showToast';
 
 interface ISecurityPrivacyViewProps {
 	navigation: NativeStackNavigationProp<SettingsStackParamList, 'SecurityPrivacyView'>;
@@ -44,7 +43,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		emmailMfaStatus: user.services?.email2fa?.enabled,
 		totaState: false,
 		showQrModel: false,
-		qrUrls: '',
 		secret: '',
 		loading: false,
 		backupCode: [],
@@ -70,8 +68,8 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 		if (!value) {
 			try {
 				setState(prevState => ({ ...prevState, loading: true }));
-				//@ts-ignore
-				await sendEmailCode(user?.emails[0].address);
+				// @ts-ignore
+				sendEmailCode(user?.emails[0].address);
 				const code = await twoFactor({ method: 'email', invalid: false });
 				if (code) {
 					const payload = { msg: 'method', id: user.id, method: '2fa:disableEmail', params: [code.twoFactorCode] };
@@ -146,7 +144,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 						...prevState,
 						isEnabled: false,
 						showQrModel: true,
-						qrUrls: result?.url,
 						secret: result?.secret
 					}));
 				} else {
@@ -181,7 +178,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 
 	const totpregenerate = async () => {
 		setState(prevState => ({ ...prevState, showQrModel: false, loading: true }));
-		setTimeout(async () => {
+		await setTimeout(async () => {
 			setState(prevState => ({ ...prevState, loading: false }));
 			try {
 				const code = await twoFactor({ method: 'totp', invalid: false });
@@ -206,7 +203,7 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 	const onDisableTotp = async () => {
 		setState(prevState => ({ ...prevState, showQrModel: false, loading: true }));
 
-		setTimeout(async () => {
+		await setTimeout(async () => {
 			setState(prevState => ({ ...prevState, loading: false }));
 			try {
 				const code = await twoFactor({ method: 'totp', invalid: false });
@@ -328,7 +325,6 @@ const SecurityPrivacyView = ({ navigation }: ISecurityPrivacyViewProps): JSX.Ele
 				open={state.showQrModel}
 				onClose={() => setState(prevState => ({ ...prevState, showQrModel: false }))}
 				manualCode={state.secret}
-				qrCodeValue={state.qrUrls}
 				onVerify={code => onTotaverify(code)}
 				showBackupKeys={state.backupCode?.length >= 1}
 				backupKeys={state.backupCode?.join(' ')}

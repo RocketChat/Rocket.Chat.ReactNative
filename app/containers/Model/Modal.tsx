@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
-import Animated from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import RCTModal from 'react-native-modal';
+
 import styles from './style';
 import { useTheme } from '../../theme';
 
@@ -23,11 +23,7 @@ const Modal: React.FC<IModalProps> = ({ open, onClose, children }) => {
 		}
 	}, [open]);
 
-	const animatedStyle = useAnimatedStyle(() => {
-		return {
-			opacity: opacity.value
-		};
-	});
+	const animatedStyle = useAnimatedStyle(() => ({ opacity: opacity.value }));
 
 	const handleOutsidePress = () => {
 		Keyboard.dismiss();

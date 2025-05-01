@@ -11,7 +11,6 @@ import { useTheme } from '../../../theme';
 interface TOTPEnableModalProps {
 	open: boolean;
 	onClose: () => void;
-	qrCodeValue: string;
 	manualCode: string;
 	onVerify: (code: string) => void;
 	onDisable: () => void;
@@ -26,7 +25,6 @@ interface TOTPEnableModalProps {
 const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 	open,
 	onClose,
-	qrCodeValue,
 	manualCode,
 	onVerify,
 	onDisable,
