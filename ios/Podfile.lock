@@ -1304,7 +1304,7 @@ PODS:
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
     - React-RCTImage
-  - RNSVG (15.11.2):
+  - RNSVG (13.8.0):
     - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
@@ -1792,7 +1792,7 @@ SPEC CHECKSUMS:
   RNReanimated: 8a4d86eb951a4a99d8e86266dc71d7735c0c30a9
   RNRootView: 895a4813dedeaca82db2fa868ca1c333d790e494
   RNScreens: 134a7511b12b8eb440b87aac21e36a71295d6024
-  RNSVG: d3dcdd1472cc7e82b0654c48bf6abf893485b074
+  RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SDWebImage: 750adf017a315a280c60fde706ab1e552a3ae4e9
   SDWebImageAVIFCoder: 8348fef6d0ec69e129c66c9fe4d74fbfbf366112
