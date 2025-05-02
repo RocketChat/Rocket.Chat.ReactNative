@@ -100,3 +100,18 @@ test('convert ascii when convertAsciiEmoji = false and isEmojiPicker = true', ()
 	const unicodeEmoji = formatShortnameToUnicode(':(');
 	expect(unicodeEmoji).toBe('😞');
 });
+
+test('convert ascii when convertAsciiEmoji = true and isEmojiPicker = true', () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
+				}
+			}
+		})
+	);
+	const { formatShortnameToUnicode } = useShortnameToUnicode(true);
+	const unicodeEmoji = formatShortnameToUnicode(':(');
+	expect(unicodeEmoji).toBe('😞');
+});
