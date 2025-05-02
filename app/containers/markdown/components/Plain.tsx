@@ -11,11 +11,10 @@ interface IPlainProps {
 }
 
 const Plain = ({ value }: IPlainProps): React.ReactElement => {
-	const formattedText = usePreviewFormatText(value);
 	const { colors } = useTheme();
 	return (
 		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }]}>
-			{formattedText}
+			{value}
 		</Text>
 	);
 };
