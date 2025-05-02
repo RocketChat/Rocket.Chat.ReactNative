@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-nat
 import { TSupportedThemes, useTheme } from '../../theme';
 import { themes } from '../../lib/constants';
 import { CustomIcon } from '../CustomIcon';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
+import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { addFrequentlyUsed } from '../../lib/methods';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks';
 import CustomEmoji from '../EmojiPicker/CustomEmoji';
@@ -61,19 +61,22 @@ const styles = StyleSheet.create({
 	}
 });
 
-const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => (
-	<Touch
-		testID={`message-actions-emoji-${item}`}
-		onPress={() => onReaction({ emoji: item })}
-		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
-		{typeof item === 'string' ? (
-			<Text style={styles.headerIcon}>{shortnameToUnicode(`:${item}:`)}</Text>
-		) : (
-			<CustomEmoji style={styles.customEmoji} emoji={item} />
-		)}
-	</Touch>
-);
-
+const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const unicodeEmoji = formatShortnameToUnicode(`:${item}:`);
+	return (
+		<Touch
+			testID={`message-actions-emoji-${item}`}
+			onPress={() => onReaction({ emoji: item })}
+			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
+			{typeof item === 'string' ? (
+				<Text style={styles.headerIcon}>{unicodeEmoji}</Text>
+			) : (
+				<CustomEmoji style={styles.customEmoji} emoji={item} />
+			)}
+		</Touch>
+	);
+};
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Touch
 		testID='add-reaction'

@@ -18,7 +18,6 @@ import {
 } from './context';
 import { IComposerInput, ITrackingView } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
-import shortnameToUnicode from '../../lib/methods/helpers/shortnameToUnicode';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
@@ -31,6 +30,7 @@ import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import { useKeyboardListener } from './hooks';
 import { emitter } from '../../lib/methods/helpers/emitter';
+import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 
 const styles = StyleSheet.create({
 	container: {
@@ -75,6 +75,7 @@ export const MessageComposer = ({
 		setAutocompleteParams
 	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
+	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	useKeyboardListener(trackingViewRef);
 
 	useFocusEffect(
@@ -179,7 +180,7 @@ export const MessageComposer = ({
 			case EventTypes.EMOJI_PRESSED:
 				let emojiText = '';
 				if (typeof emoji === 'string') {
-					emojiText = shortnameToUnicode(`:${emoji}:`);
+					emojiText = formatShortnameToUnicode(`:${emoji}:`);
 				} else {
 					emojiText = `:${emoji.name}:`;
 				}
