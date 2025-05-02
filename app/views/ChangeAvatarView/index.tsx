@@ -162,8 +162,8 @@ const ChangeAvatarView = () => {
 			return;
 		}
 
-		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 		AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
 	const submit = async () => {
