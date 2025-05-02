@@ -94,3 +94,9 @@ test('do NOT convert ascii when convertAsciiEmoji = false', () => {
 	const unicodeEmoji = formatShortnameToUnicode(':(');
 	expect(unicodeEmoji).toBe(':(');
 });
+
+test('convert ascii when convertAsciiEmoji = false and isEmojiPicker = true', () => {
+	const { formatShortnameToUnicode } = useShortnameToUnicode(true);
+	const unicodeEmoji = formatShortnameToUnicode(':(');
+	expect(unicodeEmoji).toBe('😞');
+});
