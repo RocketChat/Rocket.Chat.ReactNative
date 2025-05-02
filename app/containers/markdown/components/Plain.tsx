@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { Plain as PlainProps } from '@rocket.chat/message-parser';
 
 import { useTheme } from '../../../theme';
-import usePreviewFormatText from '../../../lib/hooks/usePreviewFormatText';
 import styles from '../styles';
 
 interface IPlainProps {
