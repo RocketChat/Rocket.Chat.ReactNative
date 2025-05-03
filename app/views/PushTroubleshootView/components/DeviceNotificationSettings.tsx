@@ -1,6 +1,5 @@
-import notifee from '@notifee/react-native';
 import React from 'react';
-import { Linking } from 'react-native';
+import notifee from '@notifee/react-native';
 
 import * as List from '../../../containers/List';
 import i18n from '../../../i18n';
@@ -8,6 +7,7 @@ import { useAppSelector } from '../../../lib/hooks';
 import { isIOS, showErrorAlert } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import CustomListSection from './CustomListSection';
+import { openAppSettings } from '../../../lib/methods/helpers/openAppSettings';
 
 export default function DeviceNotificationSettings(): React.ReactElement {
 	const { colors } = useTheme();
@@ -15,11 +15,11 @@ export default function DeviceNotificationSettings(): React.ReactElement {
 		deviceNotificationEnabled: state.troubleshootingNotification.deviceNotificationEnabled
 	}));
 
-	const goToNotificationSettings = () => {
+	const goToNotificationSettings = async () => {
 		if (isIOS) {
-			Linking.openURL('app-settings:');
+			await openAppSettings();
 		} else {
-			notifee.openNotificationSettings();
+			await notifee.openNotificationSettings();
 		}
 	};
 
