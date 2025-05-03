@@ -68,7 +68,7 @@ describe('User Preferences screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('sidebar-chats'))).toBeVisible();
 				await element(by.id('sidebar-chats')).tap();
-				await waitFor(element(by.text(`${otherUser.username}::(`)))
+				await waitFor(element(by.text(`${otherUser.username}: :(`)))
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(room);
@@ -93,7 +93,7 @@ describe('User Preferences screen', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('sidebar-chats'))).toBeVisible();
 				await element(by.id('sidebar-chats')).tap();
-				await waitFor(element(by.text(`${otherUser.name}:😞`)))
+				await waitFor(element(by.text(`${otherUser.name}: 😞`)))
 					.toBeVisible()
 					.withTimeout(2000);
 				await navigateToRoom(room);

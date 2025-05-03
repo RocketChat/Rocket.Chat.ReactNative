@@ -13,7 +13,7 @@ const Emoji = React.memo(
 		if (emoji) {
 			return <CustomEmoji key={content} style={customEmojiStyle} emoji={emoji} />;
 		}
-		return <Text style={standardEmojiStyle}>{formatShortnameToUnicode(parsedContent)}</Text>;
+		return <Text style={standardEmojiStyle}>{formatShortnameToUnicode(content)}</Text>;
 	},
 	() => true
 );
