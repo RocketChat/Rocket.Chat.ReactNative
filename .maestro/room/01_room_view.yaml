@@ -1,0 +1,25 @@
+appId: chat.rocket.reactnative
+name: "Roomlist"
+jsEngine: graaljs
+onFlowStart:
+    - runScript: "../setup.js"
+---
+- launchApp
+- assertVisible:
+    id: "rooms-list-view-sidebar"
+    label: "Should have sidebar button"
+- assertVisible:
+    text: ${output.config.workspaceName}
+    label: "Should have workspace name"
+- assertVisible:
+    text: ${output.config.workspaceUrl.replace("https://", "")}
+    label: "Should have workspace url"
+- assertVisible:
+    id: "rooms-list-view-create-channel"
+    label: "Should have create channel button"
+- assertVisible:
+    id: "rooms-list-view-directory"
+    label: "Should have directory button"
+- assertVisible:
+    id: "rooms-list-view"
+    label: "should have rooms list screen"
