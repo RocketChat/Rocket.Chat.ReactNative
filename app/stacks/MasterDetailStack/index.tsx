@@ -46,7 +46,7 @@ import CreateChannelView from '../../views/CreateChannelView';
 import UserPreferencesView from '../../views/UserPreferencesView';
 import UserNotificationPrefView from '../../views/UserNotificationPreferencesView';
 import LegalView from '../../views/LegalView';
-import SecurityPrivacyView from '../../views/SecurityPrivacyView';
+import SecurityPrivacyView from '../../views/SecurityPrivacyView/SecurityPrivacyView';
 import MediaAutoDownloadView from '../../views/MediaAutoDownloadView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 // InsideStackNavigator
