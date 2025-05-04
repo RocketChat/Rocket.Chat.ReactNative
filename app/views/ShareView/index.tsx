@@ -186,9 +186,18 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 	getAttachments = async () => {
 		const { mediaAllowList, maxFileSize } = this.state;
 		const permissionToUploadFile = await this.getPermissionMobileUpload();
+		if (!this.files || this.files.length < 1) {
+			return {
+				attachments: [],
+				selected: {} as IShareAttachment
+			};
+		}
 
 		const items = await Promise.all(
 			this.files.map(async item => {
+				if (!item) {
+					return {} as IShareAttachment;
+				}
 				// Check server settings
 				const { success: canUpload, error } = canUploadFile({
 					file: item,
