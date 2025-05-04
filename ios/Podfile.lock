@@ -44,6 +44,8 @@ PODS:
     - React-NativeModulesApple
     - React-RCTAppDelegate
     - ReactCommon/turbomodule/core
+  - ExpoQuickActions (1.0.1):
+    - ExpoModulesCore
   - ExpoVideoThumbnails (7.9.0):
     - ExpoModulesCore
   - ExpoWebBrowser (12.8.2):
@@ -1349,6 +1351,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoQuickActions (from `../node_modules/expo-quick-actions/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -1504,6 +1507,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoQuickActions:
+    :path: "../node_modules/expo-quick-actions/ios"
   ExpoVideoThumbnails:
     :path: "../node_modules/expo-video-thumbnails/ios"
   ExpoWebBrowser:
@@ -1690,6 +1695,7 @@ SPEC CHECKSUMS:
   ExpoKeepAwake: 0f5cad99603a3268e50af9a6eb8b76d0d9ac956c
   ExpoLocalAuthentication: c55ffb179683efed04cb144fc80ccf26891f0cb4
   ExpoModulesCore: 61dc57c6e2a35f2f84baf488146db624e03af4cd
+  ExpoQuickActions: 0518a7201c8943398cb5659c0170e8ab66bbcef2
   ExpoVideoThumbnails: 9b6c0dada0b3240dd3527e0dc688711e17842c88
   ExpoWebBrowser: e31c97230ea93b51a2a74c6c2381b0d4fca5698c
   FBLazyVector: f64d1e2ea739b4d8f7e4740cde18089cd97fe864

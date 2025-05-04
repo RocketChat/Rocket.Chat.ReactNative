@@ -2695,6 +2695,22 @@
     semver "7.3.2"
     tempy "0.3.0"
 
+"@expo/image-utils@^0.4.1":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@expo/image-utils/-/image-utils-0.4.2.tgz#84beabbe50d7e1c2ad78f1b44be6ec49a9dbc0da"
+  integrity sha512-CxP+1QXgRXsNnmv2FAUA2RWwK6kNBFg4QEmVXn2K9iLoEAI+i+1IQXcUgc+J7nTJl9pO7FIu2gIiEYGYffjLWQ==
+  dependencies:
+    "@expo/spawn-async" "1.5.0"
+    chalk "^4.0.0"
+    fs-extra "9.0.0"
+    getenv "^1.0.0"
+    jimp-compact "0.16.1"
+    node-fetch "^2.6.0"
+    parse-png "^2.1.0"
+    resolve-from "^5.0.0"
+    semver "7.3.2"
+    tempy "0.3.0"
+
 "@expo/json-file@^8.2.37", "@expo/json-file@~8.3.0":
   version "8.3.0"
   resolved "https://registry.yarnpkg.com/@expo/json-file/-/json-file-8.3.0.tgz#fc84af77b532a4e9bfb5beafd0e3b7f692b6bd7e"
@@ -7647,6 +7663,15 @@ expo-modules-core@1.11.12:
   integrity sha512-/e8g4kis0pFLer7C0PLyx98AfmztIM6gU9jLkYnB1pU9JAfQf904XEi3bmszO7uoteBQwSL6FLp1m3TePKhDaA==
   dependencies:
     invariant "^2.2.4"
+
+expo-quick-actions@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/expo-quick-actions/-/expo-quick-actions-1.0.1.tgz#cdc865dd4a3c7e9d22a7b59d84d33b04d9bc476b"
+  integrity sha512-rL8c5+6PJxNAmnp9o2adfkYdYlEPC/4/2C43heP8OZmju4nKBUNK7xAOkNmyduE0q1DzkDpUTLojHlXy1Mm/Og==
+  dependencies:
+    "@expo/image-utils" "^0.4.1"
+    schema-utils "^4.2.0"
+    sf-symbols-typescript "^1.0.0"
 
 expo-video-thumbnails@^7.9.0:
   version "7.9.0"
@@ -12631,6 +12656,16 @@ schema-utils@^4.0.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.2.0.tgz#70d7c93e153a273a805801882ebd3bff20d89c8b"
   integrity sha512-L0jRsrPpjdckP3oPug3/VxNKt2trR8TcabrM6FOAAlvC/9Phcmm+cuAgTlxBqdBR1WJx7Naj9WHw+aOmheSVbw==
+  dependencies:
+    "@types/json-schema" "^7.0.9"
+    ajv "^8.9.0"
+    ajv-formats "^2.1.1"
+    ajv-keywords "^5.1.0"
+
+schema-utils@^4.2.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.3.0.tgz#3b669f04f71ff2dfb5aba7ce2d5a9d79b35622c0"
+  integrity sha512-Gf9qqc58SpCA/xdziiHz35F4GNIWYWZrEshUc/G/r5BnLph6xpKuLeoJoQuj5WfBIx/eQLf+hmVPYHaxJu7V2g==
   dependencies:
     "@types/json-schema" "^7.0.9"
     ajv "^8.9.0"
