@@ -80,3 +80,10 @@ export const Legal = React.memo(
 		<More onPress={onPress} testID={testID} {...props} />
 	)
 );
+
+export const Share = React.memo(({ onPress, testID, ...props }: IHeaderButtonCommon) => (
+	<Container>
+		<Item iconName='share' onPress={onPress} testID={testID} {...props} />
+	</Container>
+));
+	

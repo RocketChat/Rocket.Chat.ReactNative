@@ -17,7 +17,7 @@ import { IAttachment } from '../definitions';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
 import { useAppNavigation, useAppRoute } from '../lib/hooks/navigation';
-import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert } from '../lib/methods/helpers';
+import { formatAttachmentUrl, isAndroid, fileDownload, showErrorAlert, shareMedia } from '../lib/methods/helpers';
 import EventEmitter from '../lib/methods/helpers/events';
 import { getUserSelector } from '../selectors/login';
 import { TNavigation } from '../stacks/stackType';
@@ -132,7 +132,10 @@ const AttachmentView = (): React.ReactElement => {
 			),
 			headerRight:
 				Allow_Save_Media_to_Gallery && !isImageBase64(attachment.image_url)
-					? () => <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
+					? () => <View style={{ flexDirection: 'row' }}>
+                        <HeaderButton.Share testID='share-image' onPress={handleShare} color={colors.fontDefault} style={{ marginRight: 8 }}/>
+                        <HeaderButton.Download testID='save-image' onPress={handleSave} color={colors.fontDefault} />
+                    </View>
 					: undefined
 		};
 		navigation.setOptions(options);
@@ -185,6 +188,20 @@ const AttachmentView = (): React.ReactElement => {
 		}
 		setLoading(false);
 	};
+
+    const handleShare = async() => {
+        const { title_link } = attachment;
+        if (!title_link) {
+            return;
+        }
+
+        try {
+            await shareMedia({ url: title_link });
+            EventEmitter.emit(LISTENER, { message: I18n.t('File-shared') });
+        } catch (e) {
+            EventEmitter.emit(LISTENER, { message: I18n.t('Error-sharing-file') });
+        }
+    };
 
 	return (
 		<View style={{ backgroundColor: colors.surfaceRoom, flex: 1 }}>
