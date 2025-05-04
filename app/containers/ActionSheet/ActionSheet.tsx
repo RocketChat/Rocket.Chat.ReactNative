@@ -3,7 +3,7 @@ import * as Haptics from 'expo-haptics';
 import React, { forwardRef, isValidElement, useEffect, useImperativeHandle, useRef, useState, useCallback } from 'react';
 import { Keyboard, LayoutChangeEvent, useWindowDimensions } from 'react-native';
 import { Easing, useDerivedValue, useSharedValue } from 'react-native-reanimated';
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@discord/bottom-sheet';
+import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useTheme } from '../../theme';
@@ -131,6 +131,7 @@ const ActionSheet = React.memo(
 			(props: BottomSheetBackdropProps) => (
 				<BottomSheetBackdrop
 					{...props}
+					style={{ bottom: 1 }}
 					appearsOnIndex={0}
 					// Backdrop should be visible all the time bottom sheet is open
 					disappearsOnIndex={-1}

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Animated, {
 	useAnimatedGestureHandler,
 	useSharedValue,
 	useAnimatedStyle,
 	withSpring,
-	runOnJS
+	runOnJS,
+	useAnimatedReaction
 } from 'react-native-reanimated';
 import {
 	LongPressGestureHandler,
@@ -43,6 +44,17 @@ const Touchable = ({
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
+	const [direction, setDirection] = useState(0);
+
+	useAnimatedReaction(
+		() => Math.round(rowState.value),
+		(rowState, previousRowState) => {
+			if (rowState !== previousRowState) {
+				runOnJS(setDirection)(rowState);
+			}
+		}
+	);
+
 	let _value = 0;
 
 	const close = () => {
@@ -204,6 +216,7 @@ const Touchable = ({
 				<PanGestureHandler activeOffsetX={[-20, 20]} onGestureEvent={onGestureEvent} enabled={swipeEnabled}>
 					<Animated.View>
 						<LeftActions
+							enabled={direction === -1}
 							transX={transX}
 							isRead={isRead}
 							width={width}
@@ -211,6 +224,7 @@ const Touchable = ({
 							displayMode={displayMode}
 						/>
 						<RightActions
+							enabled={direction === 1}
 							transX={transX}
 							favorite={favorite}
 							width={width}

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole } from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View as RNView, AccessibilityRole, Platform } from 'react-native';
+import { KeyboardExtendedView } from 'react-native-external-keyboard';
 
 import Touch from '../Touch';
 import { themes } from '../../lib/constants';
@@ -74,6 +75,8 @@ interface IListItemContent {
 	additionalAcessibilityLabelCheck?: boolean;
 }
 
+const View = Platform.OS === 'android' ? KeyboardExtendedView : RNView;
+
 const Content = React.memo(
 	({
 		title,
@@ -123,6 +126,7 @@ const Content = React.memo(
 
 		return (
 			<View
+				focusable={false}
 				style={[styles.container, disabled && styles.disabled, { height: (heightContainer || BASE_HEIGHT) * fontScale }]}
 				testID={testID}
 				accessible

@@ -32,7 +32,7 @@
 	"dependencies": {
 		"@bugsnag/react-native": "^7.10.5",
 		"@codler/react-native-keyboard-aware-scroll-view": "2.0.1",
-		"@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
+		"@gorhom/bottom-sheet": "5.1.2",
 		"@hookform/resolvers": "^2.9.10",
 		"@notifee/react-native": "7.8.2",
 		"@nozbe/watermelondb": "^0.27.1",
@@ -96,6 +96,7 @@
 		"react-native-device-info": "^11.1.0",
 		"react-native-easy-grid": "0.2.2",
 		"react-native-easy-toast": "2.3.0",
+		"react-native-external-keyboard": "0.5.4-rc",
 		"react-native-file-viewer": "2.1.4",
 		"react-native-gesture-handler": "2.18.1",
 		"react-native-image-progress": "1.1.1",

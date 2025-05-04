@@ -2330,13 +2330,6 @@
   dependencies:
     react-native-iphone-x-helper "^1.0.3"
 
-"@discord/bottom-sheet@bluesky-social/react-native-bottom-sheet":
-  version "4.6.1"
-  resolved "https://codeload.github.com/bluesky-social/react-native-bottom-sheet/tar.gz/28a87d1bb55e10fc355fa1455545a30734995908"
-  dependencies:
-    "@gorhom/portal" "1.0.14"
-    invariant "^2.2.4"
-
 "@egjs/hammerjs@^2.0.17":
   version "2.0.17"
   resolved "https://registry.yarnpkg.com/@egjs/hammerjs/-/hammerjs-2.0.17.tgz#5dc02af75a6a06e4c2db0202cae38c9263895124"
@@ -2837,6 +2830,14 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
+
+"@gorhom/bottom-sheet@5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-5.1.2.tgz#509992983ce2905d5899d1c7cab1cd3950c8c238"
+  integrity sha512-5np8oL2krqAsVKLRE4YmtkZkyZeFiitoki72bEpVhZb8SRTNuAEeSbP3noq5srKpcRsboCr7uI+xmMyrWUd9kw==
+  dependencies:
+    "@gorhom/portal" "1.0.14"
+    invariant "^2.2.4"
 
 "@gorhom/portal@1.0.14":
   version "1.0.14"
@@ -11815,6 +11816,11 @@ react-native-easy-toast@2.3.0:
   dependencies:
     deprecated-react-native-prop-types "^2.3.0"
     prop-types "^15.6.0"
+
+react-native-external-keyboard@0.5.4-rc:
+  version "0.5.4-rc"
+  resolved "https://registry.yarnpkg.com/react-native-external-keyboard/-/react-native-external-keyboard-0.5.4-rc.tgz#1b3b060669b34770964923c8cea9c86adf848a9d"
+  integrity sha512-drSLyQsuwoomzrjp9ICyHhQcc/MC1R4G+wRlRWXZEtGZuDxnMFkDs//t4HsLyFUxN0rrChgn50jUeixG7kb/bw==
 
 react-native-file-viewer@2.1.4:
   version "2.1.4"
