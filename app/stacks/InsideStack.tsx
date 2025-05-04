@@ -60,7 +60,7 @@ import E2EHowItWorksView from '../views/E2EHowItWorksView';
 // E2EEnterYourPassword Stack
 import E2EEnterYourPasswordView from '../views/E2EEnterYourPasswordView';
 // InsideStackNavigator
-import AttachmentView from '../views/AttachmentView';
+import AttachmentView from '../views/AttachmentView/AttachmentView';
 import ModalBlockView from '../views/ModalBlockView';
 import JitsiMeetView from '../views/JitsiMeetView';
 import StatusView from '../views/StatusView';

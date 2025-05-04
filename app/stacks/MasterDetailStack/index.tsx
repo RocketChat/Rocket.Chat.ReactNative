@@ -50,7 +50,7 @@ import SecurityPrivacyView from '../../views/SecurityPrivacyView';
 import MediaAutoDownloadView from '../../views/MediaAutoDownloadView';
 import E2EEncryptionSecurityView from '../../views/E2EEncryptionSecurityView';
 // InsideStackNavigator
-import AttachmentView from '../../views/AttachmentView';
+import AttachmentView from '../../views/AttachmentView/AttachmentView';
 import ModalBlockView from '../../views/ModalBlockView';
 import JitsiMeetView from '../../views/JitsiMeetView';
 import StatusView from '../../views/StatusView';
