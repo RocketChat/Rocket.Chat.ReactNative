@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import chat.rocket.reactnative.NativeModule.PdfViewerPackage
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactHost
@@ -32,6 +33,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
         override fun getPackages(): List<ReactPackage> =
             PackageList(this).packages.apply {
               add(SSLPinningPackage())
+              add(PdfViewerPackage())
             }
 
         override fun getJSIModulePackage(): JSIModulePackage {

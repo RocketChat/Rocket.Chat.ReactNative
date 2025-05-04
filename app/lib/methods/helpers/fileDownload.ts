@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import FileViewer from 'react-native-file-viewer';
+import { Platform } from 'react-native';
 
 import { LISTENER } from '../../../containers/Toast';
 import { IAttachment } from '../../../definitions';
@@ -7,6 +8,7 @@ import i18n from '../../../i18n';
 import EventEmitter from './events';
 import { Encryption } from '../../encryption';
 import { sanitizeFileName } from '../handleMediaDownload';
+import { PdfViewer } from '../../nativeModule/PdfViewer';
 
 export const getLocalFilePathFromFile = (localPath: string, attachment: IAttachment): string => `${localPath}${attachment.title}`;
 
@@ -34,6 +36,19 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 					throw new Error('Missing checksum');
 				}
 				await Encryption.addFileToDecryptFileQueue(messageId, file, attachment.encryption, attachment.hashes?.sha256);
+			}
+		}
+
+		console.log('attachment.format', attachment.format);
+		if (attachment.format === 'PDF') {
+			if (Platform.OS === 'ios') {
+				await FileViewer.open(file, {
+					showOpenWithDialog: true,
+					showAppsSuggestions: true
+				});
+			} else if (Platform.OS === 'android') {
+				await PdfViewer.openPdf(file);
+				return;
 			}
 		}
 
