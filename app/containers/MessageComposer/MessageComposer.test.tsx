@@ -17,10 +17,28 @@ jest.useFakeTimers();
 
 const user = userEvent.setup();
 
+jest.mock('../../lib/store/auxStore', () => ({
+	store: {
+		getState: () => mockedStore.getState()
+	}
+}));
+
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
 	mockedStore.dispatch(selectServerRequest(baseUrl, '6.4.0'));
-	mockedStore.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat', roles: ['user'] }));
+	mockedStore.dispatch(
+		setUser({
+			id: 'abc',
+			username: 'rocket.cat',
+			name: 'Rocket Cat',
+			roles: ['user'],
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
+				}
+			}
+		})
+	);
 
 	const permissions: IPermissionsState = { 'mobile-upload-file': ['user'] };
 	mockedStore.dispatch(setPermissions(permissions));
