@@ -53,6 +53,7 @@ import { ILivechatTag } from '../../definitions/ILivechatTag';
 import CallSection from './components/CallSection';
 import { TNavigation } from '../../stacks/stackType';
 import * as EncryptionUtils from '../../lib/encryption/utils';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type StackType = ChatsStackParamList & TNavigation;
 
@@ -530,7 +531,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL);
 		try {
 			const { room } = this.state;
-			const { navigation } = this.props;
 
 			if (!room.teamId) {
 				return;
@@ -538,7 +538,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 			const result = await Services.convertTeamToChannel({ teamId: room.teamId, selected });
 
 			if (result.success) {
-				navigation.navigate('RoomView');
+				Navigation.resetTo();
 			}
 		} catch (e) {
 			logEvent(events.RA_CONVERT_TEAM_TO_CHANNEL_F);
@@ -603,11 +603,10 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		logEvent(events.RA_CONVERT_TO_TEAM);
 		try {
 			const { room } = this.state;
-			const { navigation } = this.props;
 			const result = await Services.convertChannelToTeam({ rid: room.rid, name: room.name, type: room.t as any });
 
 			if (result.success) {
-				navigation.navigate('RoomView');
+				Navigation.resetTo();
 			}
 		} catch (e) {
 			logEvent(events.RA_CONVERT_TO_TEAM_F);
@@ -628,10 +627,9 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		logEvent(events.RA_MOVE_TO_TEAM);
 		try {
 			const { room } = this.state;
-			const { navigation } = this.props;
 			const result = await Services.addRoomsToTeam({ teamId: selected?.[0], rooms: [room.rid] });
 			if (result.success) {
-				navigation.navigate('RoomView');
+				Navigation.resetTo();
 			}
 		} catch (e) {
 			logEvent(events.RA_MOVE_TO_TEAM_F);
