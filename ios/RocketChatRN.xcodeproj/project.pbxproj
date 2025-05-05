@@ -348,10 +348,8 @@
 		7ACD4897222860DE00442C55 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ACD4853222860DE00442C55 /* JavaScriptCore.framework */; };
 		7AE10C0628A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
 		7AE10C0828A59530003593CB /* Inter.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7AE10C0528A59530003593CB /* Inter.ttf */; };
-		7AE864982D88AD4800912BA1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AE864972D88AD4800912BA1 /* AppDelegate.mm */; };
-		7AE864992D88AD4800912BA1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7AE864972D88AD4800912BA1 /* AppDelegate.mm */; };
-		7AE8649B2D88ADCF00912BA1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8649A2D88ADCF00912BA1 /* main.m */; };
-		7AE8649C2D88ADCF00912BA1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AE8649A2D88ADCF00912BA1 /* main.m */; };
+		7AEF39402DC94B5600046BF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEF393F2DC94B5600046BF3 /* AppDelegate.swift */; };
+		7AEF39412DC94B5600046BF3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AEF393F2DC94B5600046BF3 /* AppDelegate.swift */; };
 		85160EB6C143E0493FE5F014 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194D9A8897F4A486C2C6F89A /* ExpoModulesProvider.swift */; };
 		A48B46D92D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
 		A48B46DA2D3FFBD200945489 /* A11yFlowModule.m in Sources */ = {isa = PBXBuildFile; fileRef = A48B46D82D3FFBD200945489 /* A11yFlowModule.m */; };
@@ -627,9 +625,7 @@
 		7AACF8AB2C94B28B0082844E /* DecryptedContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecryptedContent.swift; sourceTree = "<group>"; };
 		7ACD4853222860DE00442C55 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		7AE10C0528A59530003593CB /* Inter.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inter.ttf; sourceTree = "<group>"; };
-		7AE864962D88AD4800912BA1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		7AE864972D88AD4800912BA1 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		7AE8649A2D88ADCF00912BA1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7AEF393F2DC94B5600046BF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A48B46D72D3FFBD200945489 /* A11yFlowModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A11yFlowModule.h; sourceTree = "<group>"; };
 		A48B46D82D3FFBD200945489 /* A11yFlowModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A11yFlowModule.m; sourceTree = "<group>"; };
 		B14611052F10FD1E1BC46ECD /* Pods-defaults-Rocket.Chat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-defaults-Rocket.Chat.debug.xcconfig"; path = "Target Support Files/Pods-defaults-Rocket.Chat/Pods-defaults-Rocket.Chat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -711,9 +707,7 @@
 		13B07FAE1A68108700A75B9A /* RocketChatRN */ = {
 			isa = PBXGroup;
 			children = (
-				7AE8649A2D88ADCF00912BA1 /* main.m */,
-				7AE864962D88AD4800912BA1 /* AppDelegate.h */,
-				7AE864972D88AD4800912BA1 /* AppDelegate.mm */,
+				7AEF393F2DC94B5600046BF3 /* AppDelegate.swift */,
 				A48B46D72D3FFBD200945489 /* A11yFlowModule.h */,
 				A48B46D82D3FFBD200945489 /* A11yFlowModule.m */,
 				7A8B30742BCD9D3F00146A40 /* SSLPinning.h */,
@@ -1677,7 +1671,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -1763,7 +1757,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$TARGET_BUILD_DIR/$INFOPLIST_PATH",
+				$TARGET_BUILD_DIR/$INFOPLIST_PATH,
 			);
 			name = "Upload source maps to Bugsnag";
 			outputFileListPaths = (
@@ -2169,7 +2163,6 @@
 				1E76CBD925152C8C0067298C /* Push.swift in Sources */,
 				1E0426E6251A5467008F022C /* RoomType.swift in Sources */,
 				1E76CBCD25152C2C0067298C /* MessageType.swift in Sources */,
-				7AE864992D88AD4800912BA1 /* AppDelegate.mm in Sources */,
 				1E76CBC925152C1F0067298C /* PushResponse.swift in Sources */,
 				1E76CBD325152C770067298C /* Encryption.swift in Sources */,
 				1E76CBC825152C070067298C /* RocketChat.swift in Sources */,
@@ -2185,12 +2178,12 @@
 				1E76CBC325152A460067298C /* String+Extensions.swift in Sources */,
 				1ED038BA2B50A1B800C007D4 /* WatchConnection.swift in Sources */,
 				7AACF8A82C94AB8B0082844E /* EncryptedContent.swift in Sources */,
-				7AE8649B2D88ADCF00912BA1 /* main.m in Sources */,
 				1ED038A12B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				1E76CBCA25152C220067298C /* Notification.swift in Sources */,
 				1ED038C12B50A1E400C007D4 /* DBUser.swift in Sources */,
 				1E76CBD525152C7F0067298C /* API.swift in Sources */,
 				1E76CBD625152C820067298C /* Response.swift in Sources */,
+				7AEF39402DC94B5600046BF3 /* AppDelegate.swift in Sources */,
 				1ED038BE2B50A1D400C007D4 /* DBServer.swift in Sources */,
 				1E068D0124FD2E0500A0FFC1 /* AppGroup.m in Sources */,
 				1ED038C42B50A1F500C007D4 /* WatchMessage.swift in Sources */,
@@ -2438,7 +2431,6 @@
 				7AAB3E19257E6A6E00707CF6 /* Push.swift in Sources */,
 				7AAB3E1A257E6A6E00707CF6 /* RoomType.swift in Sources */,
 				7AAB3E1B257E6A6E00707CF6 /* MessageType.swift in Sources */,
-				7AE864982D88AD4800912BA1 /* AppDelegate.mm in Sources */,
 				7AAB3E1C257E6A6E00707CF6 /* PushResponse.swift in Sources */,
 				7AAB3E1E257E6A6E00707CF6 /* Encryption.swift in Sources */,
 				7AAB3E1F257E6A6E00707CF6 /* RocketChat.swift in Sources */,
@@ -2454,12 +2446,12 @@
 				7AAB3E26257E6A6E00707CF6 /* String+Extensions.swift in Sources */,
 				1ED038BB2B50A1B800C007D4 /* WatchConnection.swift in Sources */,
 				7AACF8AA2C94AB8B0082844E /* EncryptedContent.swift in Sources */,
-				7AE8649C2D88ADCF00912BA1 /* main.m in Sources */,
 				1ED038A32B508FE700C007D4 /* FileManager+Extensions.swift in Sources */,
 				7AAB3E27257E6A6E00707CF6 /* Notification.swift in Sources */,
 				1ED038C22B50A1E400C007D4 /* DBUser.swift in Sources */,
 				7AAB3E28257E6A6E00707CF6 /* API.swift in Sources */,
 				7AAB3E29257E6A6E00707CF6 /* Response.swift in Sources */,
+				7AEF39412DC94B5600046BF3 /* AppDelegate.swift in Sources */,
 				1ED038BF2B50A1D400C007D4 /* DBServer.swift in Sources */,
 				7AAB3E2A257E6A6E00707CF6 /* AppGroup.m in Sources */,
 				1ED038C52B50A1F500C007D4 /* WatchMessage.swift in Sources */,
@@ -2697,7 +2689,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
@@ -2773,7 +2765,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/rn-extensions-share/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
-					"$PODS_CONFIGURATION_BUILD_DIR/Firebase",
+					$PODS_CONFIGURATION_BUILD_DIR/Firebase,
 					"$(SRCROOT)/../node_modules/react-native-mmkv-storage/ios/**",
 				);
 				INFOPLIST_FILE = ShareRocketChatRN/Info.plist;
@@ -3280,10 +3272,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -3347,10 +3336,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = "$(inherited)";
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
