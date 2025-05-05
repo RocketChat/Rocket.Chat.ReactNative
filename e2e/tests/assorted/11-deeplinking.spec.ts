@@ -94,7 +94,7 @@ describe('Deep linking', () => {
 			await authAndNavigate();
 		});
 
-		it('should authenticate while logged in another server', async () => {
+		it('should create a new account on another server', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, delete: true });
 			await navigateToRegister(data.alternateServer);
 			const randomUser = data.randomUser();
@@ -110,7 +110,9 @@ describe('Deep linking', () => {
 			await element(by.id('register-view-confirm-password')).tapReturnKey();
 			await expectValidRegisterOrRetry(device.getPlatform());
 			deleteUsersAfterAll.push({ server: data.alternateServer, username: randomUser.username });
+		});
 
+		it('should authenticate and navigate back to the previous server', async () => {
 			await authAndNavigate();
 		});
 	});

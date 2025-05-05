@@ -45,8 +45,11 @@ public class CustomPushNotification extends PushNotification {
 
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
-        reactApplicationContext = new ReactApplicationContext(context);
         notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    public static void setReactContext(ReactApplicationContext context) {
+        reactApplicationContext = context;
     }
 
     private static Map<String, List<Bundle>> notificationMessages = new HashMap<String, List<Bundle>>();

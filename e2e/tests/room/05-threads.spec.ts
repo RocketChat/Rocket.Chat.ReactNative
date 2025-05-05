@@ -58,6 +58,7 @@ describe('Threads', () => {
 				await expect(element(by.id('action-sheet'))).toExist();
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()
@@ -207,6 +208,7 @@ describe('Threads', () => {
 				await element(by[textMatcher](thread)).atIndex(0).tap();
 				await element(by[textMatcher](thread)).atIndex(0).longPress();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Reply in thread')).atIndex(0).tap();
 				await waitFor(element(by.id(`room-view-title-thread-message-count`)))
 					.toExist()
