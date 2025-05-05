@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml b/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
-index 2f6741b..231a4e3 100644
+index 2f6741b..d4f4abb 100644
 --- a/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
 +++ b/node_modules/@react-native-firebase/messaging/android/src/main/AndroidManifest.xml
 @@ -9,12 +9,12 @@
@@ -7,17 +7,13 @@ index 2f6741b..231a4e3 100644
      <service android:name=".ReactNativeFirebaseMessagingHeadlessService"
                android:exported="false" />
 -    <service android:name=".ReactNativeFirebaseMessagingService"
--             android:exported="false">
--      <intent-filter>
--        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
--      </intent-filter>
++    <!-- <service android:name=".ReactNativeFirebaseMessagingService"
+              android:exported="false">
+       <intent-filter>
+         <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+       </intent-filter>
 -    </service>
-+<!--    <service android:name=".ReactNativeFirebaseMessagingService"-->
-+<!--             android:exported="false">-->
-+<!--      <intent-filter>-->
-+<!--        <action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
-+<!--      </intent-filter>-->
-+<!--    </service>-->
++    </service> -->
      <receiver
        android:name=".ReactNativeFirebaseMessagingReceiver"
        android:exported="true"
