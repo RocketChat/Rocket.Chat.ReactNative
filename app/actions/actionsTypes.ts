@@ -53,9 +53,11 @@ export const CREATE_DISCUSSION = createRequestTypes('CREATE_DISCUSSION', [...def
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
+	'CLEAR',
 	'SELECT_SUCCESS',
 	'SELECT_REQUEST',
 	'SELECT_FAILURE',
+	'SELECT_CANCEL',
 	'INIT_ADD',
 	'FINISH_ADD'
 ]);
