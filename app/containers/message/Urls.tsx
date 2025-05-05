@@ -136,7 +136,7 @@ const Url = ({ url }: { url: IUrl }) => {
 		const verifyUrlIsImage = async () => {
 			try {
 				const imageUrl = getImageUrl();
-				if (!imageUrl) return;
+				if (!imageUrl || !API_Embed) return;
 
 				const response = await axios.head(imageUrl);
 				const contentType = response.headers['content-type'];
@@ -148,7 +148,7 @@ const Url = ({ url }: { url: IUrl }) => {
 			}
 		};
 		verifyUrlIsImage();
-	}, [url.image, url.url]);
+	}, [url.image, url.url, API_Embed]);
 
 	const getImageUrl = () => {
 		const _imageUrl = url.image || url.url;

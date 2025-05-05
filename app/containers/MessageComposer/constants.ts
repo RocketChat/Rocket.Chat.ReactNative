@@ -1,18 +1,26 @@
-import { ImagePickerOptions, MediaTypeOptions } from 'expo-image-picker';
+import { ImagePickerOptions, MediaTypeOptions, UIImagePickerControllerQualityType } from 'expo-image-picker';
 
 import { TMarkdownStyle } from './interfaces';
 
+const imageQuality = 0.8;
+const videoQuality = UIImagePickerControllerQualityType.High;
+
 export const IMAGE_PICKER_CONFIG: ImagePickerOptions = {
-	exif: true
+	exif: true,
+	quality: imageQuality
 };
 
 export const LIBRARY_PICKER_CONFIG: ImagePickerOptions = {
 	allowsMultipleSelection: true,
-	exif: true
+	exif: true,
+	mediaTypes: MediaTypeOptions.All,
+	quality: imageQuality,
+	videoQuality
 };
 
 export const VIDEO_PICKER_CONFIG: ImagePickerOptions = {
-	mediaTypes: MediaTypeOptions.Videos
+	mediaTypes: MediaTypeOptions.Videos,
+	videoQuality
 };
 
 export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;
