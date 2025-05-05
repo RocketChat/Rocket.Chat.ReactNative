@@ -96,27 +96,27 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
 
     @ReactMethod
     public void setCertificate(String data, Promise promise) {
-        this.alias = data;
-        OkHttpClient client = getOkHttpClient();
+        // this.alias = data;
+        // OkHttpClient client = getOkHttpClient();
 
-        // HTTP Fetch react-native layer
-        NetworkingModule.setCustomClientBuilder(new CustomClient());
-        // Websocket react-native layer
-        WebSocketModule.setCustomClientBuilder(new CustomClient());
-        // Image networking react-native layer
-        ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
-            .newBuilder(this.reactContext, client)
-            .build();
-        Fresco.initialize(this.reactContext, config);
-        // RNCWebView onReceivedClientCertRequest
-        RNCWebViewManager.setCertificateAlias(data);
+        // // HTTP Fetch react-native layer
+        // NetworkingModule.setCustomClientBuilder(new CustomClient());
+        // // Websocket react-native layer
+        // WebSocketModule.setCustomClientBuilder(new CustomClient());
+        // // Image networking react-native layer
+        // ImagePipelineConfig config = OkHttpImagePipelineConfigFactory
+        //     .newBuilder(this.reactContext, client)
+        //     .build();
+        // Fresco.initialize(this.reactContext, config);
+        // // RNCWebView onReceivedClientCertRequest
+        // RNCWebViewManager.setCertificateAlias(data);
 
-        // Expo AV network layer
-        SharedCookiesDataSourceFactory.setOkHttpClient(client);
-        // Expo File System network layer
-        FileSystemModule.setOkHttpClient(client);
-        // Expo Image network layer
-        GlideUrlWithCustomCacheKey.setOkHttpClient(client);
+        // // Expo AV network layer
+        // SharedCookiesDataSourceFactory.setOkHttpClient(client);
+        // // Expo File System network layer
+        // FileSystemModule.setOkHttpClient(client);
+        // // Expo Image network layer
+        // GlideUrlWithCustomCacheKey.setOkHttpClient(client);
 
         promise.resolve(null);
     }
