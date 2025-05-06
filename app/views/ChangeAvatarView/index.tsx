@@ -30,7 +30,7 @@ import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitSe
 import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
-import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
+import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
 
