@@ -14,14 +14,11 @@ import { ServersHistoryActionSheetContent } from '../ServersHistoryActionSheetCo
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'flex-end',
+		alignItems: 'center',
 		gap: 4
 	},
 	inputContainer: {
 		flex: 1
-	},
-	serversHistoryButton: {
-		paddingVertical: 18
 	}
 });
 
@@ -50,6 +47,8 @@ const ServerInput = ({
 }: IServerInput): JSX.Element => {
 	const [focused, setFocused] = useState(false);
 	const { colors } = useTheme();
+
+	const historyButtonMarginBottom = error ? 15 : -15;
 
 	const handleDeleteServerHistory = (item: TServerHistoryModel) => {
 		onDelete(item);
@@ -96,7 +95,7 @@ const ServerInput = ({
 				/>
 			</View>
 			{serversHistory?.length > 0 ? (
-				<View style={styles.serversHistoryButton}>
+				<View style={{ marginBottom: historyButtonMarginBottom }}>
 					<Touch
 						accessible
 						accessibilityLabel={I18n.t('Open_servers_history')}
