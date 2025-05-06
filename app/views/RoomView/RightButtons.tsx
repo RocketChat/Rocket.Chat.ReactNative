@@ -50,7 +50,6 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	notificationsDisabled?: boolean;
 	hasE2EEWarning: boolean;
 	toggleRoomE2EEncryptionPermission?: string[];
-	onLayout: Function;
 }
 
 interface IRigthButtonsState {
@@ -429,11 +428,6 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return status === 'queued';
 	};
 
-	onLayout = (l: any) => {
-		const { onLayout } = this.props;
-		onLayout(l);
-	};
-
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
 		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
@@ -445,7 +439,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (t === 'l') {
 			if (!this.isOmnichannelPreview()) {
 				return (
-					<HeaderButton.Container onLayout={this.onLayout}>
+					<HeaderButton.Container>
 						<HeaderButton.Item iconName='kebab' onPress={this.showMoreActions} testID='room-view-header-omnichannel-kebab' />
 					</HeaderButton.Container>
 				);
@@ -454,7 +448,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		}
 		if (tmid) {
 			return (
-				<HeaderButton.Container onLayout={this.onLayout}>
+				<HeaderButton.Container>
 					<HeaderButton.Item
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
@@ -464,7 +458,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			);
 		}
 		return (
-			<HeaderButton.Container onLayout={this.onLayout}>
+			<HeaderButton.Container>
 				{hasE2EEWarning ? (
 					<HeaderButton.Item
 						iconName='encrypted'

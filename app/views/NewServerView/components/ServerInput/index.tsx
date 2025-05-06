@@ -7,25 +7,27 @@ import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import * as List from '../../../../containers/List';
 import I18n from '../../../../i18n';
 import { TServerHistoryModel } from '../../../../definitions';
-import { useTheme } from '../../../../theme';
+import I18n from '../../../../i18n';
+import { CustomIcon } from '../../../../containers/CustomIcon';
+import { showActionSheetRef, hideActionSheetRef } from '../../../../containers/ActionSheet';
+import Touch from '../../../../containers/Touch';
+import { ServersHistoryActionSheetContent } from '../ServersHistoryActionSheetContent';
 
 const styles = StyleSheet.create({
 	container: {
-		zIndex: 1
+		flexDirection: 'row',
+		alignItems: 'flex-end',
+		gap: 4
 	},
 	inputContainer: {
+		flex: 1
+	},
+	input: {
 		marginTop: 0,
 		marginBottom: 0
 	},
-	serverHistory: {
-		maxHeight: 180,
-		width: '100%',
-		top: '100%',
-		zIndex: 1,
-		position: 'absolute',
-		borderWidth: StyleSheet.hairlineWidth,
-		borderRadius: 4,
-		borderTopWidth: 0
+	serversHistoryButton: {
+		paddingVertical: 9
 	}
 });
 
@@ -37,7 +39,8 @@ interface IServerInput extends TextInputProps {
 		},
 		any
 	>;
-	serversHistory: any[];
+	text: string;
+	serversHistory: TServerHistoryModel[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
 	onPressServerHistory(serverHistory: TServerHistoryModel): void;
@@ -53,7 +56,29 @@ const ServerInput = ({
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
 	const { colors } = useTheme();
-	const [focused, setFocused] = useState(false);
+
+	const handleDeleteServerHistory = (item: TServerHistoryModel) => {
+		onDelete(item);
+		hideActionSheetRef();
+	};
+
+	const handleSelectServer = (item: TServerHistoryModel) => {
+		onPressServerHistory(item);
+		hideActionSheetRef();
+	};
+
+	const openServersHistory = () => {
+		showActionSheetRef({
+			children: (
+				<ServersHistoryActionSheetContent
+					serversHistory={serversHistory}
+					onDelete={handleDeleteServerHistory}
+					onPressServerHistory={handleSelectServer}
+				/>
+			)
+		});
+	};
+
 	return (
 		<View style={styles.container}>
 			<ControlledFormTextInput

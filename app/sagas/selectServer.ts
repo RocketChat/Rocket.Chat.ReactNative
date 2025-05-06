@@ -11,6 +11,7 @@ import { SERVER } from '../actions/actionsTypes';
 import {
 	ISelectServerAction,
 	IServerRequestAction,
+	selectServerCancel,
 	selectServerFailure,
 	selectServerRequest,
 	selectServerSuccess,
@@ -43,6 +44,7 @@ import {
 } from '../lib/methods';
 import { Services } from '../lib/services';
 import { connect, disconnect } from '../lib/services/connect';
+import sdk from '../lib/services/sdk';
 import { appSelector } from '../lib/hooks';
 import { getServerById } from '../lib/database/services/Server';
 import { getLoggedUserById } from '../lib/database/services/LoggedUser';
@@ -142,6 +144,11 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 
 const handleSelectServer = function* handleSelectServer({ server, version, fetchVersion }: ISelectServerAction) {
 	try {
+		if (sdk.current?.client?.host === server) {
+			yield put(appStart({ root: RootEnum.ROOT_INSIDE }));
+			yield put(selectServerCancel());
+			return;
+		}
 		// SSL Pinning - Read certificate alias and set it to be used by network requests
 		const certificate = UserPreferences.getString(`${CERTIFICATE_KEY}-${server}`);
 		if (certificate) {
