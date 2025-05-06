@@ -1,13 +1,15 @@
 diff --git a/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java b/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
-index 729ba7f..06f6c44 100644
+index 729ba7f..b430131 100644
 --- a/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
 +++ b/node_modules/expo-av/android/src/main/java/expo/modules/av/player/datasource/SharedCookiesDataSourceFactory.java
-@@ -15,10 +15,21 @@ import okhttp3.OkHttpClient;
+@@ -15,11 +15,25 @@ import okhttp3.OkHttpClient;
  public class SharedCookiesDataSourceFactory implements DataSource.Factory {
    private final DataSource.Factory mDataSourceFactory;
- 
-+   public static OkHttpClient client;
-+
+   
++  // Add static client field to be used across instances
++  private static OkHttpClient client;
++  
++  // Add method to set custom OkHttpClient from outside
 +  public static void setOkHttpClient(OkHttpClient okHttpClient) {
 +    client = okHttpClient;
 +  }
@@ -16,14 +18,17 @@ index 729ba7f..06f6c44 100644
 -    OkHttpClient.Builder builder = new OkHttpClient.Builder();
 -    builder.cookieJar(new JavaNetCookieJar(new ForwardingCookieHandler()));
 -    OkHttpClient client = builder.build();
-+    // OkHttpClient.Builder builder = new OkHttpClient.Builder();
-+    // builder.cookieJar(new JavaNetCookieJar(new ForwardingCookieHandler()));
-+    // OkHttpClient client = builder.build();
-+    if (this.client == null) {
+-    mDataSourceFactory = new DefaultDataSourceFactory(reactApplicationContext, transferListener, new CustomHeadersOkHttpDataSourceFactory(client, userAgent, requestHeaders));
++    // Use the static client if available, otherwise create a new one
++    OkHttpClient localClient;
++    if (client != null) {
++      localClient = client;
++    } else {
 +      OkHttpClient.Builder builder = new OkHttpClient.Builder();
 +      builder.cookieJar(new JavaNetCookieJar(new ForwardingCookieHandler()));
-+      this.client = builder.build();
++      localClient = builder.build();
 +    }
-     mDataSourceFactory = new DefaultDataSourceFactory(reactApplicationContext, transferListener, new CustomHeadersOkHttpDataSourceFactory(client, userAgent, requestHeaders));
++    mDataSourceFactory = new DefaultDataSourceFactory(reactApplicationContext, transferListener, new CustomHeadersOkHttpDataSourceFactory(localClient, userAgent, requestHeaders));
    }
  
+   @Override
