@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { Alert } from 'react-native';
+import { AccessibilityInfo } from 'react-native';
 import { sanitizedRaw } from '@nozbe/watermelondb/RawRecord';
 import { Q } from '@nozbe/watermelondb';
 import valid from 'semver/functions/valid';
@@ -104,14 +104,14 @@ const getServerInfoSaga = function* getServerInfoSaga({ server, raiseError = tru
 		const serverInfoResult = yield* call(getServerInfo, server);
 		if (raiseError) {
 			if (!serverInfoResult.success) {
-				Alert.alert(I18n.t('Invalid_workspace_URL'), serverInfoResult.message);
-				yield put(serverFailure());
+				AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 			const websocketInfo = yield* call(Services.getWebsocketInfo, { server });
 			if (!websocketInfo.success) {
-				Alert.alert(I18n.t('Invalid_workspace_URL'), websocketInfo.message);
-				yield put(serverFailure());
+				AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+				yield put(serverFailure(I18n.t('Invalid_URL')));
 				return;
 			}
 		}
