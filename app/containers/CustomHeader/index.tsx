@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
 import { LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { HeaderBackButton } from '@react-navigation/elements';
 
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
 import { isAndroid } from '../../lib/methods/helpers';
 import { useAppSelector } from '../../lib/hooks';
-import { useTheme } from '../../theme';
 import { styles } from './styles';
+import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
 const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
-	const { colors } = useTheme();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { fontScale } = useWindowDimensions();
 
@@ -63,13 +61,7 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 				headerLeft({ canGoBack: false })
 			) : (
 				<View style={{ width: rightButtonsWidth }}>
-					<HeaderBackButton
-						labelVisible={false}
-						onPress={() => navigation.goBack()}
-						tintColor={colors.fontDefault}
-						testID='custom-header-back'
-						style={styles.headerBackButton}
-					/>
+					<HeaderBackButton onPress={() => navigation.goBack()} testID='custom-header-back' style={styles.headerBackButton} />
 				</View>
 			)}
 			<HeaderTitle headerTitle={headerTitle ?? title} />

@@ -36,6 +36,13 @@ describe('test videoConf reducer', () => {
 		expect(call).toEqual(call2);
 	});
 
+	it('should update call1 action', () => {
+		mockedStore.dispatch(setVideoConfCall({ ...call1, action: 'confirmed' }));
+		const state = mockedStore.getState().videoConf;
+		const call = state.calls.find(c => c.callId === call1.callId);
+		expect(call?.action).toEqual('confirmed');
+	});
+
 	it('should remove call1 after call removeVideoConfCall action with call1 as parameter', () => {
 		mockedStore.dispatch(removeVideoConfCall(call1));
 		const state = mockedStore.getState().videoConf;
