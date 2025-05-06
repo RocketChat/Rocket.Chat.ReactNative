@@ -35,6 +35,7 @@ export const OmnichannelRoomIcon = ({ size, style, sourceType, status }: IOmnich
 	const connected = useAppSelector(state => state.meteor?.connected);
 	const userStatusColor = useUserStatusColor(status || 'offline');
 
+	// @ts-ignore
 	const customIcon = <CustomIcon name={iconMap[sourceType?.type || 'other']} size={size} style={style} color={userStatusColor} />;
 
 	if (!svgError && sourceType?.type === OmnichannelSourceType.APP && sourceType.id && sourceType.sidebarIcon && connected) {

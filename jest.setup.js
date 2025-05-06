@@ -1,5 +1,4 @@
 import React from 'react';
-import '@testing-library/react-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
@@ -31,6 +30,12 @@ jest.mock('react-native-file-viewer', () => ({
 }));
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
+
+jest.mock('expo-font', () => ({
+	isLoaded: jest.fn(() => true),
+	loadAsync: jest.fn(() => Promise.resolve()),
+	__esModule: true
+}));
 
 jest.mock('expo-av', () => ({
 	...jest.requireActual('expo-av'),
@@ -106,16 +111,6 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
-jest.mock('@discord/bottom-sheet', () => {
-	const react = require('react-native');
-	return {
-		__esModule: true,
-		default: react.View,
-		BottomSheetScrollView: react.ScrollView
-	};
-});
-
-// If you need to manually mock a lib use this mock pattern and set exports.
 jest.mock('react-native-math-view', () => {
 	const react = require('react-native');
 	return {

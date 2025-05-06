@@ -4,7 +4,6 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { HeaderBackButton } from '@react-navigation/elements';
 import type { ImagePickerOptions } from 'expo-image-picker';
 
 import { textInputDebounceTime } from '../../lib/constants';
@@ -33,6 +32,7 @@ import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermiss
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, isTablet, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
+import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
@@ -98,15 +98,7 @@ const ChangeAvatarView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: titleHeader || I18n.t('Avatar'),
-			headerLeft: () => (
-				<HeaderBackButton
-					labelVisible={false}
-					onPress={() => navigation.goBack()}
-					tintColor={colors.fontDefault}
-					testID='header-back'
-					style={{ margin: 0, marginRight: isTablet ? 5 : -5, marginLeft: -12 }}
-				/>
-			)
+			headerLeft: () => <HeaderBackButton onPress={() => navigation.goBack()} />
 		});
 	}, [titleHeader, navigation]);
 

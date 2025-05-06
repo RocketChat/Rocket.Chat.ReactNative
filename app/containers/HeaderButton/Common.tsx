@@ -23,7 +23,7 @@ export const Drawer = ({
 }: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
 	return (
-		<Container style={style}>
+		<Container style={style} left>
 			<Item iconName='hamburguer' onPress={onPress} testID={testID} color={colors.fontDefault} {...props} />
 		</Container>
 	);
