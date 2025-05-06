@@ -38,10 +38,10 @@ import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
 import expo.modules.filesystem.FileSystemModule;
-import expo.modules.image.okhttp.GlideUrlWithCustomCacheKey;
 
 // Import our bridge class
 import chat.rocket.reactnative.networking.FileSystemBridge;
+import chat.rocket.reactnative.networking.ExpoImageClient;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
@@ -118,8 +118,9 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         SharedCookiesDataSourceFactory.setOkHttpClient(client);
         // Expo File System network layer
         FileSystemBridge.setOkHttpClient(client);
-        // // Expo Image network layer
-        // GlideUrlWithCustomCacheKey.setOkHttpClient(client);
+        // Expo Image network layer
+        ExpoImageClient.setOkHttpClient(client);
+        ExpoImageClient.applyToGlide(this.reactContext);
 
         promise.resolve(null);
     }
