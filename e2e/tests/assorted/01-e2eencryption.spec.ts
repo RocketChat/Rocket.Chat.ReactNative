@@ -172,6 +172,7 @@ describe('E2E Encryption', () => {
 				.withTimeout(2000);
 			await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 			await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+			await sleep(300);
 			await element(by[textMatcher]('Quote')).atIndex(0).tap();
 			await element(by.id('message-composer-input')).replaceText(quotedMessage);
 			await waitFor(element(by.id('message-composer-send')))

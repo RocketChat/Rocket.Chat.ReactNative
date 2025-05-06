@@ -32,6 +32,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 
 	return (
 		<>
+			{/* @ts-ignore */}
 			<Animated.FlatList
 				testID='room-view-messages'
 				ref={listRef}
