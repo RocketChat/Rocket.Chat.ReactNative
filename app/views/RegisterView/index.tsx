@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { Keyboard, Text, TextInput, View } from 'react-native';
+import { AccessibilityInfo, Keyboard, Text, TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -30,9 +30,13 @@ import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
 const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(),
-	email: yup.string().email().required(),
-	username: yup.string().min(1).required()
+	name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
+	email: yup
+		.string()
+		.email(I18n.t('Email_must_be_valid'))
+		.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
+	username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
+	password: yup.string().min(1).required()
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
@@ -51,9 +55,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		control,
 		handleSubmit,
 		setFocus,
+		setError,
 		getValues,
 		watch,
-		formState: { isValid, dirtyFields }
+		formState: { isValid, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -138,6 +143,13 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			if (error.data?.errorType === 'username-invalid') {
 				return dispatch(loginRequest({ user: email, password }));
 			}
+
+			if (error.data.error === 'Username is already in use') {
+				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
+				AccessibilityInfo.announceForAccessibility('Username is alredy in use');
+				return;
+			}
+
 			if (error.data?.error) {
 				logEvent(events.REGISTER_DEFAULT_SIGN_UP_F);
 				showErrorAlert(error.data.error, I18n.t('Oops'));
@@ -170,6 +182,9 @@ const RegisterView = ({ navigation, route }: IProps) => {
 					<Controller
 						name='name'
 						control={control}
+						rules={{
+							required: true
+						}}
 						render={({ field: { onChange, value, ref } }) => (
 							<FormTextInput
 								inputRef={ref}
@@ -183,6 +198,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 								onChangeText={onChange}
 								onSubmitEditing={() => setFocus('username')}
 								containerStyle={styles.inputContainer}
+								error={errors.name}
 							/>
 						)}
 					/>
@@ -204,6 +220,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 									setFocus('email');
 								}}
 								containerStyle={styles.inputContainer}
+								error={errors.username}
 							/>
 						)}
 					/>
@@ -226,6 +243,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 									setFocus('password');
 								}}
 								containerStyle={styles.inputContainer}
+								error={errors.email}
 							/>
 						)}
 					/>
