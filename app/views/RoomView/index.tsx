@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, InteractionManager, PixelRatio, Text, View } from 'react-native';
+import { InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
