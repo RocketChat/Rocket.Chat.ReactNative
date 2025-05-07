@@ -671,6 +671,7 @@
   "Started_call": "{{userBy}} இயக்கிய அழைப்பு",
   "Started_discussion": "ஒரு பேச்சை ஆரம்பித்தார்:",
   "Status_saved_successfully": "நிலை வெற்றியாக சேமிக்கப்பட்டது!",
+  "Status_text_limit_exceeded": "{{limit}} எழுத்துச் வரம்பை மீறிவிட்டது",
   "Supported_versions_expired_description": "ஒரு நிர்வாகி, கையேந்தி அழுக்கப்பட்ட பதிப்பை ஒரு ஆதரிக்கப்படுத்த மொழியை அப்டேட் செய்ய வேண்டும்.",
   "Supported_versions_expired_title": "{{workspace_name}} ஒரு ஆதரிக்கப்படாத Rocket.Chat பதிப்புயிராக இயங்குகிறது",
   "Supported_versions_warning_update_required": "புதுப்பிக்கல் தேவை",

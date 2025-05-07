@@ -580,6 +580,7 @@
   "Started_call": "Oproep gestart door {{userBy}}",
   "Started_discussion": "Begin van een discussie:",
   "Status_saved_successfully": "Status succesvol opgeslagen!",
+  "Status_text_limit_exceeded": "{{limiet}} tekenlimiet overschreden",
   "Table": "Tabel",
   "Tags": "Tags",
   "Take_a_photo": "Neem een foto",

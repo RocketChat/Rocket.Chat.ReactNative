@@ -302,6 +302,7 @@
   "Starred": "Destacado",
   "Started_call": "Llamada iniciada por {{userBy}}",
   "Started_discussion": "Comenzar una conversación:",
+  "Status_text_limit_exceeded": "{{límite}} límite de caracteres excedido",
   "Table": "Tabla",
   "Take_a_photo": "Enviar una foto",
   "Take_a_video": "Enviar un vídeo",
