@@ -671,6 +671,7 @@
   "Started_call": "{{userBy}} এর দ্বারা কল শুরু হয়েছে",
   "Started_discussion": "একটি আলোচনা শুরু হয়েছে:",
   "Status_saved_successfully": "স্থিতি সফলভাবে সংরক্ষণ করা হয়েছে!",
+  "Status_text_limit_exceeded": "{{সীমানা}} অক্ষরের সীমা অতিক্রান্ত হয়েছে।",
   "Supported_versions_expired_description": "একটি প্রশাসককে ওয়ার্কস্পেসটি মোবাইল এবং ডেস্কটপ অ্যাপ থেকে পুনরায় প্রবেশ সক্ষম করার জন্য ওয়ার্কস্পেসটি আপডেট করতে হবে।",
   "Supported_versions_expired_title": "{{workspace_name}} একটি অসমর্থিত সংস্করণে Rocket.Chat চালাচ্ছে",
   "Supported_versions_warning_update_required": "আপডেট প্রয়োজন",

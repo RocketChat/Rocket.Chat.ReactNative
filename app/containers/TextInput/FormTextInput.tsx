@@ -14,12 +14,18 @@ import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
 	error: {
-		...sharedStyles.textAlignCenter,
-		paddingTop: 5
+		...sharedStyles.textRegular,
+		fontSize: 14
 	},
 	inputContainer: {
 		marginBottom: 10,
 		gap: 4
+	},
+	errorContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4,
+		paddingVertical: 4
 	},
 	label: {
 		fontSize: 16,
@@ -101,15 +107,16 @@ export const FormTextInput = ({
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
+	const accessibilityInputError = error ? error.reason ?? error : '';
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
 				<View
 					accessible
-					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
+					accessibilityLabel={`${label} ${accessibilityLabelRequired} ${accessibilityInputValue} ${accessibilityInputError}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
+						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
 							{required && (
 								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
@@ -122,16 +129,18 @@ export const FormTextInput = ({
 							style={[
 								styles.input,
 								iconLeft && styles.inputIconLeft,
-								(secureTextEntry || iconRight || showClearInput) && styles.inputIconRight,
+								secureTextEntry || iconRight || showClearInput ? styles.inputIconRight : {},
 								{
 									backgroundColor: colors.surfaceRoom,
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
-								error?.error && {
-									color: colors.buttonBackgroundDangerDefault,
-									borderColor: colors.buttonBackgroundDangerDefault
-								},
+								error
+									? {
+											color: colors.buttonBackgroundDangerDefault,
+											borderColor: colors.buttonBackgroundDangerDefault
+									  }
+									: {},
 								inputStyle
 							]}
 							// @ts-ignore ref error
@@ -199,7 +208,12 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{error && error.reason ? <Text style={[styles.error, { color: colors.fontDanger }]}>{error.reason}</Text> : null}
+					{error ? (
+						<View style={styles.errorContainer}>
+							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
+							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error?.reason ?? error}</Text>
+						</View>
+					) : null}
 				</View>
 			</A11yElement>
 		</A11yContainer>

@@ -2,6 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { setUser } from '../../actions/login';
 import * as HeaderButton from '../../containers/HeaderButton';
@@ -9,7 +12,7 @@ import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusIcon from '../../containers/Status/Status';
-import { FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 import { IApplicationState, TUserStatus } from '../../definitions';
 import I18n from '../../i18n';
 import { showToast } from '../../lib/methods/helpers/showToast';
@@ -20,6 +23,7 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
 import Check from '../../containers/Check';
+import { USER_STATUS_TEXT_MAX_LENGTH } from '../../lib/constants/maxLength';
 
 interface IStatus {
 	id: TUserStatus;
@@ -62,6 +66,12 @@ const styles = StyleSheet.create({
 	}
 });
 
+const validationSchema = yup.object().shape({
+	statusText: yup
+		.string()
+		.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))
+});
+
 const Status = ({
 	statusType,
 	status,
@@ -100,7 +110,17 @@ const StatusView = (): React.ReactElement => {
 		(state: IApplicationState) => state.settings.Accounts_AllowInvisibleStatusOption
 	);
 
-	const [statusText, setStatusText] = useState(user.statusText || '');
+	const {
+		control,
+		watch,
+		formState: { errors, isValid }
+	} = useForm({
+		mode: 'onChange',
+		defaultValues: { statusText: user.statusText || '' },
+
+		resolver: yupResolver(validationSchema)
+	});
+	const statusText = watch('statusText');
 	const [status, setStatus] = useState(user.status);
 
 	const dispatch = useDispatch();
@@ -146,16 +166,18 @@ const StatusView = (): React.ReactElement => {
 
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
-	const isStatusMatching = () => {
+	const isStatusChanged = () => {
+		if (!isValid) {
+			return true;
+		}
 		const isStatusEqual = status === user.status;
-		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) || (!user.statusText && !statusText);
-
-		return isStatusEqual && isStatusTextEqual;
+		const isStatusTextEqual = (!!user.statusText && user.statusText === statusText) ?? (!user.statusText && !statusText);
+		return !isValid && isStatusEqual && isStatusTextEqual;
 	};
 
 	const FooterComponent = () => (
 		<View style={styles.footerComponent}>
-			<Button testID='status-view-submit' disabled={isStatusMatching()} onPress={submit} title={I18n.t('Save')} />
+			<Button testID='status-view-submit' disabled={isStatusChanged()} onPress={submit} title={I18n.t('Save')} />
 		</View>
 	);
 
@@ -167,13 +189,15 @@ const StatusView = (): React.ReactElement => {
 				renderItem={({ item }) => <Status statusType={item} status={status} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
-						<FormTextInput
+						<ControlledFormTextInput
+							name='statusText'
+							control={control}
 							label={I18n.t('Message')}
 							value={statusText}
 							containerStyle={styles.inputContainer}
-							onChangeText={text => setStatusText(text)}
 							inputStyle={styles.inputStyle}
 							testID='status-view-input'
+							error={errors.statusText?.message}
 						/>
 						<List.Separator />
 					</>
