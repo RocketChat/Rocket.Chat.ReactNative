@@ -35,12 +35,7 @@ import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import com.reactnativecommunity.webview.RNCWebViewManager;
-
-import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
 import expo.modules.filesystem.FileSystemModule;
-
-// Import our bridge class
-import chat.rocket.reactnative.networking.FileSystemBridge;
 import chat.rocket.reactnative.networking.ExpoImageClient;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
@@ -114,10 +109,8 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         // RNCWebView onReceivedClientCertRequest
         RNCWebViewManager.setCertificateAlias(data);
 
-        // Expo AV network layer
-        SharedCookiesDataSourceFactory.setOkHttpClient(client);
         // Expo File System network layer
-        FileSystemBridge.setOkHttpClient(client);
+        FileSystemModule.setOkHttpClient(client);
         // Expo Image network layer
         ExpoImageClient.setOkHttpClient(client);
         ExpoImageClient.applyToGlide(this.reactContext);

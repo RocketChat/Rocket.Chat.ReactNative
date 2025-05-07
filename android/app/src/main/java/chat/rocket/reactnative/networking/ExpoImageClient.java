@@ -22,9 +22,6 @@ public class ExpoImageClient {
         customClient = client;
     }
 
-    /**
-     * Call this after setting the custom client to apply it to Glide
-     */
     public static void applyToGlide(Context context) {
         if (customClient != null) {
             Registry registry = Glide.get(context).getRegistry();
