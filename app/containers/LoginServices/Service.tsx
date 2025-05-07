@@ -25,9 +25,9 @@ const Service = React.memo(
 		storiesTestOnPress?: () => void;
 	}) => {
 		const { colors } = useTheme();
-		const onPress = useRef<any>();
-		const buttonText = useRef<React.ReactElement>();
-		const modifiedName = useRef<string>();
+		const onPress = useRef<any>(null);
+		const buttonText = useRef<React.ReactElement | null>(null);
+		const modifiedName = useRef<string | null>(null);
 
 		const { name } = service;
 		modifiedName.current = name === 'meteor-developer' ? 'meteor' : name;

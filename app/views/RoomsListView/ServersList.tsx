@@ -29,7 +29,7 @@ const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
 
 const ServersList = () => {
-	const subscription = useRef<Subscription>();
+	const subscription = useRef<Subscription | null>(null);
 	const [servers, setServers] = useState<TServerModel[]>([]);
 	const dispatch = useDispatch();
 	const server = useAppSelector(state => state.server.server);

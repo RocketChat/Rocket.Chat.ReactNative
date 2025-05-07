@@ -92,7 +92,7 @@ const ThumbContent = React.memo(({ item, theme }: IThumbContent) => {
 	);
 });
 
-const ThumbButton: typeof React.Component = isIOS ? TouchableOpacity : TouchableNativeFeedback;
+const ThumbButton = isIOS ? TouchableOpacity : TouchableNativeFeedback;
 
 const Thumb = ({ item, theme, isShareExtension, onPress, onRemove }: IThumb) => (
 	<ThumbButton style={styles.item} onPress={() => onPress(item)} activeOpacity={0.7}>

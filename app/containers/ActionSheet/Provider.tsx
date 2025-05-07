@@ -45,7 +45,7 @@ export const withActionSheet = (Component: React.ComponentType<any>): typeof Com
 		<Consumer>{(contexts: IActionSheetProvider) => <Component {...props} {...contexts} ref={ref} />}</Consumer>
 	));
 
-	hoistNonReactStatics(WithActionSheetComponent, Component);
+	hoistNonReactStatics(WithActionSheetComponent as any, Component as any);
 	return WithActionSheetComponent;
 };
 

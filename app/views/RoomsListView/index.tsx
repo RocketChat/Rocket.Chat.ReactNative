@@ -868,7 +868,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: FlatList<IRoomItem> | null) => {
+		if (ref) {
+			this.scroll = ref;
+		}
+	};
 
 	renderListHeader = () => {
 		const { searching } = this.state;
