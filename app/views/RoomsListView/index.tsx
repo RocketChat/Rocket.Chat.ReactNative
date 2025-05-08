@@ -193,7 +193,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	componentDidMount() {
 		const { navigation } = this.props;
-		this.handleHasPermission();
 		this.mounted = true;
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			this.animated = true;
@@ -377,17 +376,12 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	componentWillUnmount() {
-		this.unsubscribeQuery();
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
-		if (this.backHandler && this.backHandler.remove) {
-			this.backHandler.remove();
-		}
-		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
 	handleHasPermission = async () => {
@@ -938,7 +932,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, supportedVersionsStatus, user } = this.props;
+		const { theme, refreshing, supportedVersionsStatus, user, displayMode, showAvatar } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -951,15 +945,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (user.requirePasswordChange) {
 			return <ChangePasswordRequired />;
 		}
-
+		console.log(showAvatar);
 		return (
 			<LegendList
 				ref={this.getScrollRef}
-				alignItemsAtEnd
-				waitForInitialLayout
 				data={(searching ? search : chats) as IRoomItem[]}
-				extraData={searching ? search : chats}
-				keyExtractor={item => keyExtractor(item, searching)}
+				extraData={showAvatar}
+				keyExtractor={(item: ISubscription) => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
