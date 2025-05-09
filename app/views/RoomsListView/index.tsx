@@ -39,7 +39,6 @@ import {
 	isRead,
 	debounce,
 	isIOS,
-	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
 import { E2E_BANNER_TYPE, SortBy, MAX_SIDEBAR_WIDTH, themes, colors, textInputDebounceTime } from '../../lib/constants';
@@ -110,7 +109,6 @@ interface IRoomItem extends ISubscription {
 	outside?: boolean;
 }
 
-const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
