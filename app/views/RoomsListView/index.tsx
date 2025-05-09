@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
+import { LegendList, LegendListRef } from '@legendapp/list';
 
 import database from '../../lib/database';
 import RoomItem from '../../containers/RoomItem';
@@ -178,7 +179,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	private shouldUpdate?: boolean;
 	private backHandler?: NativeEventSubscription;
 	private querySubscription?: Subscription;
-	private scroll?: FlatList;
+	private scroll?: LegendListRef;
 	private useRealName?: boolean;
 
 	constructor(props: IRoomsListViewProps) {
@@ -204,6 +205,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	componentDidMount() {
+		console.log('componentDidMount');
 		const { navigation } = this.props;
 		this.handleHasPermission();
 		this.mounted = true;
@@ -232,6 +234,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps: IRoomsListViewProps) {
+		console.log('UNSAFE_componentWillReceiveProps');
 		const { loadingServer, searchText, server, changingServer } = this.props;
 
 		// when the server is changed
@@ -248,6 +251,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	shouldComponentUpdate(nextProps: IRoomsListViewProps, nextState: IRoomsListViewState) {
+		console.log('shouldComponentUpdate');
 		const { chatsUpdate, searching, item, canCreateRoom, omnichannelsUpdate } = this.state;
 		const propsUpdated = shouldUpdateProps.some(key => nextProps[key] !== this.props[key]);
 		if (propsUpdated) {
@@ -389,6 +393,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	componentWillUnmount() {
+		console.log('componentWillUnmount');
+
 		this.unsubscribeQuery();
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
@@ -868,7 +874,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: LegendListRef) => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -968,22 +974,18 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		return (
-			<FlatList
+			<LegendList
 				ref={this.getScrollRef}
-				data={searching ? search : chats}
-				extraData={searching ? search : chats}
+				data={(searching ? search : chats) as IRoomItem[]}
+				extraData={{ list: searching ? search : chats, displayMode }}
 				keyExtractor={item => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={(data, index) => getItemLayout(data, index, height)}
-				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				}
-				windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
