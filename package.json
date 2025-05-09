@@ -74,7 +74,7 @@
 		"expo-keep-awake": "14.0.3",
 		"expo-local-authentication": "^15.0.1",
 		"expo-video-thumbnails": "^9.0.0",
-		"expo-web-browser": "14.0.2",
+		"expo-web-browser": "14.1.6",
 		"hoist-non-react-statics": "3.3.2",
 		"i18n-js": "3.9.2",
 		"js-base64": "3.6.1",
