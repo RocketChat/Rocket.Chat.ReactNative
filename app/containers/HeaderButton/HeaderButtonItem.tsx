@@ -65,7 +65,7 @@ const Item = ({
 					opacity: disabled ? 0.5 : 1
 				}
 			]}>
-			<View accessibilityLabel={accessibilityLabel}>
+			<View accessible accessibilityLabel={accessibilityLabel}>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color} {...props} />
 				) : (
