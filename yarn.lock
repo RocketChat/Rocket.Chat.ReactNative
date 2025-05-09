@@ -3624,10 +3624,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@legendapp/list@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-1.0.9.tgz#874a60343f3cbf692e7e018af678ed1bb6124ca7"
-  integrity sha512-SkXMQuAzjUqpavQeA7UFW+tESHkl1L0a95z3DbKaa7zqaxPFJUEH8fbSn9VbQpxeMlgRaLWKAFieYti1Bm9BGw==
+"@legendapp/list@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-1.0.10.tgz#5e4c132389c8ce912cf04183652b23e7d6f140ea"
+  integrity sha512-WZFrW99BG8py0oolbNd9rbv1H3xQPTRtEuaoaQR7oI5dTV/I417ek2aDi/eBgfO0ZpV/EdrPrwN1UQbAd5WqZA==
   dependencies:
     use-sync-external-store "^1.5.0"
 
@@ -15572,6 +15572,11 @@ use-sync-external-store@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
+use-sync-external-store@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.5.0.tgz#55122e2a3edd2a6c106174c27485e0fd59bcfca0"
+  integrity sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==
 
 use-sync-external-store@^1.5.0:
   version "1.5.0"

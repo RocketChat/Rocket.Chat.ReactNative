@@ -376,6 +376,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	}
 
 	componentWillUnmount() {
+		this.unsubscribeQuery();
 		if (this.unsubscribeFocus) {
 			this.unsubscribeFocus();
 		}
@@ -844,7 +845,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	};
 
 	onEndReached = () => {
-		console.log('aqui');
 		// Run only when we're not grouping by anything
 		if (!this.isGrouping) {
 			this.getSubscriptions();
@@ -945,12 +945,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (user.requirePasswordChange) {
 			return <ChangePasswordRequired />;
 		}
-		console.log(showAvatar);
 		return (
 			<LegendList
 				ref={this.getScrollRef}
 				data={(searching ? search : chats) as IRoomItem[]}
-				extraData={showAvatar}
+				extraData={{ showAvatar, displayMode }}
 				keyExtractor={(item: ISubscription) => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
@@ -959,7 +958,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				}
-				estimatedItemSize={INITIAL_NUM_TO_RENDER}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
