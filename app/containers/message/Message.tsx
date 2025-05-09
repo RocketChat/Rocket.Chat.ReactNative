@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -22,12 +22,18 @@ import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
+import MessageTime from './Time';
 
 const MessageInner = React.memo((props: IMessageInner) => {
+	const { fontScale } = useWindowDimensions();
+
+	const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
+
 	if (props.isPreview) {
 		return (
 			<>
 				<User {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
@@ -41,6 +47,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
@@ -52,6 +59,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -63,6 +71,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
+				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -70,6 +79,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
+			{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
 			<>
 				<Content {...props} />
 				<Attachments {...props} />
@@ -145,10 +155,12 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
+		// Prevent misalignment of info when the font size is increased.
+		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
 			<View style={[styles.container, props.style]}>
 				{thread}
-				<View accessible accessibilityLabel={accessibilityLabel} style={styles.flex}>
+				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
 					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
 						<Content {...props} />

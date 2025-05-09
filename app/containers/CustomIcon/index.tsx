@@ -21,13 +21,15 @@ export interface ICustomIcon extends IconProps {
 const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
+	const fontScaleLimit = 1.4;
+	const iconSize = size * (fontScale > fontScaleLimit ? fontScaleLimit : fontScale);
 
 	return (
 		<IconSet
 			name={name}
-			size={size * fontScale}
+			size={iconSize}
 			color={color || colors.fontDefault}
-			style={[{ lineHeight: size * fontScale }, style]}
+			style={[{ lineHeight: iconSize }, style]}
 			{...props}
 		/>
 	);

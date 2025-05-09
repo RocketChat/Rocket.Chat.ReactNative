@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useWindowDimensions } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
@@ -8,6 +9,8 @@ import { SubscriptionType } from '../../definitions';
 
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
+	const { fontScale } = useWindowDimensions();
+	const fontScaleLimited = fontScale > 1.3 ? 1.3 : fontScale;
 	if (isHeader && author) {
 		const onPress = () =>
 			navToRoomInfo({
@@ -15,11 +18,15 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 				rid: author._id,
 				itsMe: author._id === user.id
 			});
+
+		const smallSize = 20 * fontScaleLimited;
+		const normalSize = 36 * fontScaleLimited;
+		const size = small ? smallSize : normalSize;
 		return (
 			<Avatar
 				style={small ? styles.avatarSmall : styles.avatar}
 				text={avatar ? '' : author.username}
-				size={small ? 20 : 36}
+				size={size}
 				borderRadius={4}
 				onPress={onPress}
 				getCustomEmoji={getCustomEmoji}
