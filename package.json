@@ -158,7 +158,7 @@
 		"@babel/plugin-proposal-decorators": "^7.24.1",
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.22.5",
 		"@babel/preset-env": "^7.25.3",
-		"@babel/runtime": "^7.25.0",
+		"@babel/runtime": "^7.27.1",
 		"@bugsnag/cli": "^2.9.2",
 		"@bugsnag/source-maps": "^2.3.3",
 		"@react-native-community/cli": "15.0.1",
