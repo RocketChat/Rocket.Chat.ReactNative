@@ -64,7 +64,7 @@
 		"ejson": "2.2.3",
 		"expo": "52",
 		"expo-apple-authentication": "7.0.1",
-		"expo-av": "^15.0.1",
+		"expo-av": "^15.1.4",
 		"expo-camera": "^16.0.3",
 		"expo-document-picker": "13.0.1",
 		"expo-file-system": "18.0.1",

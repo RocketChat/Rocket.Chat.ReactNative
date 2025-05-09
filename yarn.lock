@@ -8530,10 +8530,10 @@ expo-asset@~11.0.4:
     invariant "^2.2.4"
     md5-file "^3.2.3"
 
-expo-av@^15.0.1:
-  version "15.0.2"
-  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-15.0.2.tgz#65bb08658a7fe3a67aa47da614abbfae9adb684e"
-  integrity sha512-AHIHXdqLgK1dfHZF0JzX3YSVySGMrWn9QtPzaVjw54FAzvXfMt4sIoq4qRL/9XWCP9+ICcCs/u3EcvmxQjrfcA==
+expo-av@^15.1.4:
+  version "15.1.4"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-15.1.4.tgz#412b69a17aed2ef903bf6193c58d0f3615a40a9c"
+  integrity sha512-p+U5Hl89i8QQN7uATcUX2Fc9wT5FQcQkvuv43Qwbpi6hUSSjLgVWkXxThDMolqOFDOOsKWM/UM6pmex4XP+uSw==
 
 expo-camera@^16.0.3:
   version "16.0.18"
