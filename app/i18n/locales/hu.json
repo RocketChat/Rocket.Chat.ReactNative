@@ -146,6 +146,7 @@
   "Conversation": "Beszélgetés",
   "Conversation_closed": "Beszélgetés lezárva",
   "Convert": "Átalakítás",
+  "Convert_ASCII_to_emoji": "Konvertálja az ASCII-t emojivá",
   "Convert_to_Channel": "Átalakítás csatornára",
   "Convert_to_Team": "Átalakítás csapattá",
   "Convert_to_Team_Warning": "Ezt a csatornát csapatra alakítja át. Minden tag meg lesz tartva.",

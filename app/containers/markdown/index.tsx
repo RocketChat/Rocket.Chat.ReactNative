@@ -64,7 +64,6 @@ const Markdown: React.FC<IMarkdownProps> = ({
 	}
 
 	if (isEmpty(tokens)) return null;
-
 	return (
 		<MarkdownContext.Provider
 			value={{
