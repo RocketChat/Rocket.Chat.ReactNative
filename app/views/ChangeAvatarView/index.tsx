@@ -1,8 +1,9 @@
 import React, { useEffect, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, View } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
+import { useForm } from 'react-hook-form';
 import type { ImagePickerOptions } from 'expo-image-picker';
 
 import { textInputDebounceTime } from '../../lib/constants';
@@ -30,7 +31,7 @@ import ImagePicker from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
-import { FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
 
 enum AvatarStateActions {
@@ -68,8 +69,18 @@ function reducer(state: IState, action: IReducerAction) {
 }
 
 const ChangeAvatarView = () => {
+	const {
+		control,
+		getValues,
+		setValue,
+		setError,
+		clearErrors,
+		formState: { errors }
+	} = useForm({
+		mode: 'onChange',
+		defaultValues: { rawImageUrl: '' }
+	});
 	const [state, dispatch] = useReducer(reducer, initialState);
-	const [rawImageUrl, setRawImageUrl] = useState('');
 	const [saving, setSaving] = useState(false);
 	const { colors } = useTheme();
 	const { userId, username, server } = useAppSelector(
@@ -115,8 +126,8 @@ const ChangeAvatarView = () => {
 		dispatch(action);
 	};
 
-	const onChangeText = useDebounce(async (value: string) => {
-		const result = await isImageURL(rawImageUrl);
+	const validateImage = useDebounce(async (value: string) => {
+		const result = await isImageURL(value);
 
 		if (!result || !value) {
 			dispatchAvatar({
@@ -124,18 +135,27 @@ const ChangeAvatarView = () => {
 				payload: { resetUserAvatar: `@${username}` }
 			});
 		}
-
-		setRawImageUrl(value);
 	}, textInputDebounceTime);
 
+	const onChangeText = (value: string) => {
+		setValue('rawImageUrl', value);
+		validateImage(value);
+	};
+
 	const fetchImageFromURL = async () => {
+		const { rawImageUrl } = getValues();
 		const result = await isImageURL(rawImageUrl);
 		if (result) {
 			dispatchAvatar({
 				type: AvatarStateActions.CHANGE_AVATAR,
 				payload: { url: rawImageUrl, data: rawImageUrl, service: 'url' }
 			});
+			clearErrors();
+			return;
 		}
+
+		AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+		setError('rawImageUrl', { message: I18n.t('Invalid_URL'), type: 'validate' });
 	};
 
 	const submit = async () => {
@@ -218,11 +238,14 @@ const ChangeAvatarView = () => {
 					</View>
 					{context === 'profile' ? (
 						<>
-							<FormTextInput
+							<ControlledFormTextInput
+								control={control}
+								name='rawImageUrl'
 								label={I18n.t('Avatar_Url')}
-								onChangeText={onChangeText}
 								testID='change-avatar-view-avatar-url'
+								error={errors.rawImageUrl?.message}
 								containerStyle={{ marginBottom: 0 }}
+								onChangeText={onChangeText}
 							/>
 							<Button
 								title={I18n.t('Fetch_image_from_URL')}
