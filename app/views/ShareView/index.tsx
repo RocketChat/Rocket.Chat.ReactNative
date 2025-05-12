@@ -257,7 +257,11 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		const { attachments: originalAttachments, room, text, thread, action, selected, selectedMessages, quality } = this.state;
 		sendLoadingEvent({ visible: true });
-		const processAttachments = await this.processAttachments(originalAttachments, quality);
+		let processAttachments = originalAttachments;
+		if (quality === 'SD') {
+			processAttachments = await this.processAttachments(originalAttachments);
+		}
+
 		sendLoadingEvent({ visible: false });
 		const attachments = processAttachments;
 		const { navigation, server, user, dispatch } = this.props;
@@ -349,11 +353,8 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		}
 	};
 
-	processAttachments = async (originalAttachments: IShareAttachment[], quality: TQuality): Promise<IShareAttachment[]> => {
+	processAttachments = async (originalAttachments: IShareAttachment[]): Promise<IShareAttachment[]> => {
 		try {
-			if (quality === 'HD') {
-				return originalAttachments;
-			}
 			const processingPromises = originalAttachments.map(async attachment => {
 				try {
 					let compressedPath = '';
