@@ -34,6 +34,7 @@ export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButt
 	return (
 		<Container left>
 			<Item
+				accessibilityLabel={I18n.t('Close')}
 				iconName='close'
 				onPress={arg => {
 					if (onPress) return onPress(arg);
