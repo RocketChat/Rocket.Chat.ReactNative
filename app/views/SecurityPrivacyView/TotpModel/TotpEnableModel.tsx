@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Modal from 'react-native-modal';
 import I18n from 'i18n-js';
@@ -8,6 +7,7 @@ import I18n from 'i18n-js';
 import styles from './style';
 import { showToast } from '../../../lib/methods/helpers/showToast';
 import { useTheme } from '../../../theme';
+import { CustomIcon } from '../../../containers/CustomIcon';
 
 interface TOTPEnableModalProps {
 	open: boolean;
@@ -57,7 +57,7 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 			hideModalContentWhileAnimating>
 			<View style={{ ...styles.container, backgroundColor: color.colors.strokeLight }}>
 				<TouchableOpacity style={{ position: 'absolute', right: 10, top: 10 }} onPress={onClose}>
-					<Icon name='close' size={24} color={color.colors.fontHint} />
+					<CustomIcon name={'close'} size={24} color={color.colors.fontHint} />
 				</TouchableOpacity>
 				<Text style={{ ...styles.title, color: color.colors.fontDefault }}>
 					{I18n.t('Enable_Two_factor_authentication_via_TOTP')}
@@ -74,8 +74,9 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 								{backupKeys}
 							</Text>
 							<TouchableOpacity style={[styles.verifyButton, { marginBottom: 10 }]} onPress={copyToClipboard}>
-								<Icon name='content-copy' size={24} color={color.colors.fontTitlesLabels} />
+								<CustomIcon name={'copy'} size={24} color={color.colors.fontTitlesLabels} />
 							</TouchableOpacity>
+							fontTitlesLabels
 						</View>
 
 						<Text style={{ ...styles.manualCode, color: color.colors.fontDefault }}>{I18n.t('Backup_codes_description')}</Text>
@@ -101,7 +102,7 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 							</Text>
 
 							<TouchableOpacity onPress={copyManualCode}>
-								<Icon name='content-copy' size={24} color={color.colors.fontTitlesLabels} />
+								<CustomIcon name={'copy'} size={24} color={color.colors.fontTitlesLabels} />
 							</TouchableOpacity>
 						</View>
 
