@@ -39,7 +39,6 @@ export const fileDownloadAndPreview = async (url: string, attachment: IAttachmen
 			}
 		}
 
-		console.log('attachment.format', attachment.format);
 		if (attachment.format === 'PDF') {
 			if (Platform.OS === 'ios') {
 				await FileViewer.open(file, {
