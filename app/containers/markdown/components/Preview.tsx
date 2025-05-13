@@ -3,7 +3,7 @@ import { Text, TextStyle } from 'react-native';
 
 import { themes } from '../../../lib/constants';
 import { useTheme } from '../../../theme';
-import { previewFormatText } from '../../../lib/helpers/previewFormatText';
+import usePreviewFormatText from '../../../lib/hooks/usePreviewFormatText';
 import styles from '../styles';
 
 interface IMarkdownPreview {
@@ -15,12 +15,12 @@ interface IMarkdownPreview {
 
 const MarkdownPreview = ({ msg, numberOfLines = 1, style = [], testID }: IMarkdownPreview) => {
 	const { theme } = useTheme();
+	const formattedText = usePreviewFormatText(msg ?? '');
 
 	if (!msg) {
 		return null;
 	}
-
-	const m = previewFormatText(msg);
+	const m = formattedText;
 	return (
 		<Text
 			accessibilityLabel={m}
