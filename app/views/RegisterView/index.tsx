@@ -179,7 +179,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onSubmitEditing={() => setFocus('username')}
 						containerStyle={styles.inputContainer}
 					/>
-
 					<ControlledFormTextInput
 						name='username'
 						control={control}
@@ -192,7 +191,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onSubmitEditing={() => setFocus('email')}
 						containerStyle={styles.inputContainer}
 					/>
-
 					<ControlledFormTextInput
 						name='email'
 						control={control}
@@ -206,7 +204,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onSubmitEditing={() => setFocus('password')}
 						containerStyle={styles.inputContainer}
 					/>
-
 					<ControlledFormTextInput
 						name='password'
 						control={control}
@@ -220,7 +217,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						onSubmitEditing={() => setFocus('confirmPassword')}
 						containerStyle={styles.inputContainer}
 					/>
-
 					<ControlledFormTextInput
 						name='confirmPassword'
 						control={control}
@@ -240,7 +236,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						}}
 						containerStyle={styles.inputContainer}
 					/>
-
 					<CustomFields
 						customFieldsRef={customFieldsRef}
 						Accounts_CustomFields={Accounts_CustomFields}
