@@ -192,24 +192,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 				});
 
 				saveProfile(params, code);
-
-				// showActionSheet({
-				// 	children: (
-				// 		<ActionSheetContentWithInputAndSubmit
-				// 			title={I18n.t('Please_enter_your_password')}
-				// 			description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
-				// 			testID='profile-view-enter-password-sheet'
-				// 			placeholder={I18n.t('Password')}
-				// 			onSubmit={p => {
-				// 				hideActionSheet();
-				// 				setValue('currentPassword', p as any);
-				// 				submit();
-				// 			}}
-				// 			onCancel={hideActionSheet}
-				// 		/>
-				// 	)
-				// });
-				// return;
 			} else {
 				if (!requirePassword && !user.services?.totp?.enabled && user?.emails) {
 					const response = await Services.sendEmailCode(user.emails[0].address);
@@ -233,8 +215,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const saveProfile = async (params: IProfileParams, code: { twoFactorCode: string; twoFactorMethod: string }) => {
 		try {
-			// @ts-ignore
-			// "{\"msg\":\"method\",\"id\":\"14\",\"method\":\"saveUserProfile\",\"params\":[{\"realname\":\"Sk\",\"email\":\"skjasimuddin9153@gmail.com\",\"username\":\"sk0021\",\"statusText\":\"\",\"statusType\":\"online\",\"nickname\":\"\",\"bio\":\"\"},{},{\"twoFactorCode\":\"682781\",\"twoFactorMethod\":\"email\"}]}"
 			const payload = {
 				msg: 'method',
 				id: user.id,
