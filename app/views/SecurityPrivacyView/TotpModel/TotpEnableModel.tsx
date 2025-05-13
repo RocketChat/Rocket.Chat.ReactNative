@@ -107,9 +107,7 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 						</View>
 
 						<View style={{ rowGap: 10 }}>
-							<Text style={{ ...styles.codeInputLabel, color: color.colors.fontDefault }}>
-								{I18n.t('Enter_this_code_manually')}
-							</Text>
+							
 							<TextInput
 								style={{ ...styles.codeInput, color: color.colors.fontDefault, borderColor: color.colors.fontHint }}
 								value={code}
