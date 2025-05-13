@@ -37,6 +37,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
             PackageList(this).packages.apply {
               add(SSLPinningPackage())
               add(WatermelonDBJSIPackage())
+              add(PdfViewerPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
