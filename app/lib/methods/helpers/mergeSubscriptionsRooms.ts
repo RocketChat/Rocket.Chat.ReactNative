@@ -134,7 +134,7 @@ export default async (
 	// Find missing rooms/subscriptions on local database
 	const findData = await findSubscriptionsRooms(subscriptions, rooms);
 	// Merge each subscription into a room
-	const mergedSubscriptions = findData.subscriptions.map(subscription => {
+	const mergedSubscriptions = findData.map(subscription => {
 		const index = rooms.findIndex(({ _id }) => _id === subscription.rid);
 		// Room not found
 		if (index < 0) {
