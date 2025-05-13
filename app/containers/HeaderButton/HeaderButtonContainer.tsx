@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	},
 	left: {
 		marginLeft: isTablet ? 5 : -5,
-		marginRight: isAndroid ? 25 : 0
+		marginRight: isAndroid ? 5 : 0
 	},
 	right: {
 		marginRight: isTablet ? 5 : -5

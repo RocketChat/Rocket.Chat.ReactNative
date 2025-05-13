@@ -1,6 +1,6 @@
 import React from 'react';
-import { Platform, StyleSheet, Text } from 'react-native';
-import { PlatformPressable } from '@react-navigation/elements';
+import { Platform, StyleSheet, Text, View } from 'react-native';
+import { BorderlessButton } from 'react-native-gesture-handler';
 
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { useTheme } from '../../theme';
@@ -11,7 +11,7 @@ export interface IHeaderButtonItem {
 	iconName?: TIconsName;
 	onPress?: <T>(arg: T) => void;
 	testID?: string;
-	badge?(): void;
+	badge?(): React.ReactElement | null;
 	color?: string;
 	disabled?: boolean;
 	accessibilityLabel?: string;
@@ -54,19 +54,18 @@ const Item = ({
 }: IHeaderButtonItem): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<PlatformPressable
+		<BorderlessButton
 			onPress={onPress}
 			testID={testID}
 			hitSlop={BUTTON_HIT_SLOP}
-			disabled={disabled}
+			enabled={!disabled}
 			style={[
 				styles.container,
 				{
 					opacity: disabled ? 0.5 : 1
 				}
-			]}
-			accessibilityLabel={accessibilityLabel}>
-			<>
+			]}>
+			<View accessible accessibilityLabel={accessibilityLabel}>
 				{iconName ? (
 					<CustomIcon name={iconName} size={24} color={color} {...props} />
 				) : (
@@ -75,8 +74,8 @@ const Item = ({
 					</Text>
 				)}
 				{badge ? badge() : null}
-			</>
-		</PlatformPressable>
+			</View>
+		</BorderlessButton>
 	);
 };
 

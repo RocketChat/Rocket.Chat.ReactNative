@@ -11,9 +11,10 @@ async function waitForToast() {
 }
 
 async function dismissKeyboardAndScrollUp() {
-	await element(by.id('profile-view-list')).swipe('down');
+	await element(by.id('profile-view-list')).swipe('down', 'fast', 0.5);
 	await sleep(300);
-	await element(by.id('profile-view-list')).swipe('up');
+	await element(by.id('profile-view-list')).swipe('up', 'fast', 0.5);
+	await sleep(300);
 }
 
 describe('Profile screen', () => {
@@ -94,7 +95,8 @@ describe('Profile screen', () => {
 		});
 
 		it('should change email and password', async () => {
-			await element(by.id('profile-view-list')).swipe('down');
+			await element(by.id('profile-view-list')).swipe('down', 'fast', 0.5);
+			await sleep(300);
 			await waitFor(element(by.id('profile-view-email')))
 				.toBeVisible()
 				.withTimeout(10000);

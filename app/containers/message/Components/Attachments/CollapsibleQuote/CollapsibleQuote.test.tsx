@@ -1,6 +1,9 @@
 import { fireEvent, render, within } from '@testing-library/react-native';
 import React from 'react';
+import { Provider } from 'react-redux';
 
+import { setUser } from '../../../../../actions/login';
+import { mockedStore } from '../../../../../reducers/mockedStore';
 import MessageContext from '../../../Context';
 import CollapsibleQuote from '.';
 
@@ -21,14 +24,30 @@ const testAttachment = {
 
 const mockFn = jest.fn();
 
+const initialMockedStoreState = () => {
+	mockedStore.dispatch(
+		setUser({
+			settings: {
+				preferences: {
+					convertAsciiEmoji: true
+				}
+			}
+		})
+	);
+};
+
+initialMockedStoreState();
+
 const Render = () => (
-	<MessageContext.Provider
-		value={{
-			onLongPress: () => {},
-			user: { username: 'Marcos' }
-		}}>
-		<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
-	</MessageContext.Provider>
+	<Provider store={mockedStore}>
+		<MessageContext.Provider
+			value={{
+				onLongPress: () => {},
+				user: { username: 'Marcos' }
+			}}>
+			<CollapsibleQuote key={0} index={0} attachment={testAttachment} getCustomEmoji={mockFn} timeFormat='LT' />
+		</MessageContext.Provider>
+	</Provider>
 );
 
 const touchableTestID = `collapsibleQuoteTouchable-${testAttachment.title}`;
