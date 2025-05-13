@@ -211,3 +211,14 @@ index 7570d8d..eaa0e5d 100644
      return;
    }
    if ([[challenge protectionSpace] serverTrust] != nil && customCertificatesForHost != nil && host != nil) {
+diff --git a/node_modules/react-native-webview/react-native-webview.podspec b/node_modules/react-native-webview/react-native-webview.podspec
+index 7ed0835..28886ce 100644
+--- a/node_modules/react-native-webview/react-native-webview.podspec
++++ b/node_modules/react-native-webview/react-native-webview.podspec
+@@ -16,4 +16,6 @@ Pod::Spec.new do |s|
+   s.source_files  = "apple/**/*.{h,m}"
+ 
+   s.dependency 'React-Core'
++
++  s.dependency 'MMKV', '~> 1.3.9'
+ end

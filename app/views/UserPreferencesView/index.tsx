@@ -15,15 +15,19 @@ import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
 import ListPicker from './ListPicker';
 import Switch from '../../containers/Switch';
+import { IUser } from '../../definitions';
 
 interface IUserPreferencesViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'UserPreferencesView'>;
 }
 
 const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Element => {
-	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel } = useAppSelector(state => getUserSelector(state));
+	const { enableMessageParserEarlyAdoption, id, alsoSendThreadToChannel, settings } = useAppSelector(state =>
+		getUserSelector(state)
+	);
 	const serverVersion = useAppSelector(state => state.server.version);
 	const dispatch = useDispatch();
+	const convertAsciiEmoji = settings?.preferences?.convertAsciiEmoji;
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -41,6 +45,15 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 		try {
 			dispatch(setUser({ enableMessageParserEarlyAdoption: value }));
 			await Services.saveUserPreferences({ id, enableMessageParserEarlyAdoption: value });
+		} catch (e) {
+			log(e);
+		}
+	};
+
+	const toggleConvertAsciiToEmoji = async (value: boolean) => {
+		try {
+			dispatch(setUser({ settings: { ...settings, preferences: { convertAsciiEmoji: value } } } as Partial<IUser>));
+			await Services.saveUserPreferences({ convertAsciiEmoji: value });
 		} catch (e) {
 			log(e);
 		}
@@ -95,6 +108,16 @@ const UserPreferencesView = ({ navigation }: IUserPreferencesViewProps): JSX.Ele
 						<List.Info info='Accounts_Default_User_Preferences_alsoSendThreadToChannel_Description' />
 					</List.Section>
 				) : null}
+				<List.Section>
+					<List.Separator />
+					<List.Item
+						title='Convert_ASCII_to_emoji'
+						testID='preferences-view-convert-ascii-to-emoji'
+						right={() => <Switch value={convertAsciiEmoji} onValueChange={toggleConvertAsciiToEmoji} />}
+						onPress={() => toggleConvertAsciiToEmoji(!convertAsciiEmoji)}
+					/>
+					<List.Separator />
+				</List.Section>
 			</List.Container>
 		</SafeAreaView>
 	);

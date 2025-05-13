@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Text, View, FlatList } from 'react-native';
 
 import Emoji from '../message/Emoji';
@@ -16,7 +16,6 @@ interface IAllReactionsListItemProps {
 
 interface IAllTabProps {
 	getCustomEmoji: TGetCustomEmoji;
-	tabLabel: IReaction;
 	reactions?: IReaction[];
 }
 
@@ -72,4 +71,4 @@ const AllTab = ({ reactions, getCustomEmoji }: IAllTabProps): React.ReactElement
 	</View>
 );
 
-export default AllTab;
+export default memo(AllTab);

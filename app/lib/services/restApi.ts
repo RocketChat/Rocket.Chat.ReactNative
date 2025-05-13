@@ -1,6 +1,7 @@
 import {
 	IAvatarSuggestion,
 	IMessage,
+	IMessagePreferences,
 	INotificationPreferences,
 	IPreviewItem,
 	IProfileParams,
@@ -632,7 +633,7 @@ export const saveUserProfile = (
 	// RC 0.62.2
 	sdk.post('users.updateOwnBasicInfo', { data, customFields });
 
-export const saveUserPreferences = (data: Partial<INotificationPreferences>) =>
+export const saveUserPreferences = (data: Partial<INotificationPreferences & IMessagePreferences>) =>
 	// RC 0.62.0
 	sdk.post('users.setPreferences', { data });
 

@@ -57,6 +57,7 @@ describe('Forward a message with another user', () => {
 					.withTimeout(2000);
 				await expect(element(by.id('action-sheet-handle'))).toBeVisible();
 				await element(by.id('action-sheet-handle')).swipe('up', 'fast', 0.5);
+				await sleep(300);
 				await element(by[textMatcher]('Forward')).atIndex(0).tap();
 				await sleep(300);
 			});
