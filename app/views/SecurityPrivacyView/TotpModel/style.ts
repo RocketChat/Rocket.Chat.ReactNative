@@ -2,12 +2,20 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 	container: {
-		width: '90%',
-		padding: 10,
-		rowGap: 10
+		width: '100%',
+		padding: 26,
+		rowGap: 10,
+    borderWidth:0.5,
+    borderRadius:10
+	},
+	overlay: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	title: {
 		fontSize: 18,
+    marginTop:10,
 		fontWeight: 'bold',
 		textAlign: 'center'
 	},
@@ -29,7 +37,10 @@ const styles = StyleSheet.create({
 	},
 	copyCodeContainer: {
 		flexDirection: 'row',
-		alignItems: 'center'
+    columnGap:20,
+    paddingHorizontal:16,
+		alignItems: 'center',
+    justifyContent:'center'
 	},
 	manualCode: {
 		fontSize: 13,
@@ -37,10 +48,8 @@ const styles = StyleSheet.create({
 		marginTop: 4
 	},
 	secretCode: {
-		fontSize: 16,
+		fontSize: 12,
 		fontWeight: 'bold',
-		textAlign: 'center',
-		backgroundColor: '#f8f9fa',
 		borderRadius: 6
 	},
 	codeInputLabel: {
@@ -60,7 +69,6 @@ const styles = StyleSheet.create({
 	},
 
 	verifyButtonText: {
-		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 16
 	}

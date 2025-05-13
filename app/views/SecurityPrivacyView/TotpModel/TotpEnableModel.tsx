@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Modal from 'react-native-modal';
+import I18n from 'i18n-js';
 
 import styles from './style';
-import Modal from '../../../containers/Model/Modal';
 import { showToast } from '../../../lib/methods/helpers/showToast';
 import { useTheme } from '../../../theme';
 
@@ -38,30 +39,38 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 	const [code, setCode] = useState<string>('');
 	const copyToClipboard = () => {
 		Clipboard.setString(backupKeys);
-		showToast('Backup keys copied to clipboard!');
+		showToast(I18n.t('Backup_keys_copied_to_clipboard'));
 	};
 
 	const copyManualCode = () => {
 		Clipboard.setString(manualCode);
-		showToast('Manual code copied to clipboard!');
+		showToast(I18n.t("Manual_code_copied_to_clipboard"))
 	};
 
 	const color = useTheme();
 	return (
-		<Modal open={open} onClose={onClose}>
-			<TouchableOpacity style={{ position: 'absolute', right: 10, top: 10 }} onPress={onClose}>
-				<Icon name='close' size={24} color={color.colors.backdropColor} />
-			</TouchableOpacity>
-
-			<View style={styles.container}>
-				<Text style={styles.title}>Two-factor authentication via TOTP</Text>
+		<Modal
+			customBackdrop={<View aria-hidden style={[styles.overlay, { backgroundColor: color.colors.overlayBackground }]} />}
+			avoidKeyboard
+			useNativeDriver
+			isVisible={open}
+			hideModalContentWhileAnimating>
+			<View style={{ ...styles.container, backgroundColor: color.colors.strokeLight }}>
+				<TouchableOpacity style={{ position: 'absolute', right: 10, top: 10 }} onPress={onClose}>
+					<Icon name='close' size={24} color={color.colors.fontHint} />
+				</TouchableOpacity>
+				<Text style={{ ...styles.title, color: color.colors.fontDefault }}>
+					{I18n.t('Enable_Two_factor_authentication_via_TOTP')}
+				</Text>
 
 				{showBackupKeys && (
 					<>
-						<Text style={styles.instructions}>Make sure you have a copy of your codes:</Text>
+						<Text style={{ ...styles.instructions, color: color.colors.fontDefault }}>
+							{I18n.t('Make_sure_you_have_a_copy_of_your_codes')}
+						</Text>
 
 						<View style={[styles.secretCode, styles.copyCodeContainer]}>
-							<Text selectable style={{ textAlign: 'center', fontWeight: 'bold' }}>
+							<Text selectable style={{ textAlign: 'center', fontWeight: 'bold', color: color.colors.fontDefault }}>
 								{backupKeys}
 							</Text>
 							<TouchableOpacity style={[styles.verifyButton, { marginBottom: 10 }]} onPress={copyToClipboard}>
@@ -69,36 +78,39 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 							</TouchableOpacity>
 						</View>
 
-						<Text style={styles.manualCode}>
-							If you lose access to your authenticator app, you can use one of these codes to log in.
-						</Text>
+						<Text style={{ ...styles.manualCode, color: color.colors.fontDefault }}>{I18n.t('Backup_codes_description')}</Text>
 					</>
 				)}
 
 				{!showBackupKeys && !isEnabled && (
 					<>
-						<Text style={styles.instructions}>
-							Using an authenticator app like Google Authenticator, Authy or Duo, scan the QR code. It will display a 6 digit code
-							which you need to enter below.
+						<Text style={{ ...styles.instructions, color: color.colors.fontDefault }}>
+							{I18n.t('TOTP_authenticator_instructions')}
 						</Text>
 
-						<Text style={styles.manualCodeTitle}>Can't scan the QR code?</Text>
-						<Text style={styles.manualCode}>Enter this code manually:</Text>
+						<Text style={{ ...styles.manualCode, color: color.colors.fontDefault }}>{I18n.t('Enter_this_code_manually')}</Text>
 
-						<View style={styles.copyCodeContainer}>
-							<Text selectable style={{ ...styles.secretCode, color: color.colors.fontTitlesLabels }}>
+						<View style={{ ...styles.copyCodeContainer }}>
+							<Text
+								selectable
+								style={{
+									...styles.secretCode,
+									color: color.colors.strokeHighlight
+								}}>
 								{manualCode}
 							</Text>
 
-							<TouchableOpacity style={[{ marginBottom: 10 }]} onPress={copyManualCode}>
+							<TouchableOpacity onPress={copyManualCode}>
 								<Icon name='content-copy' size={24} color={color.colors.fontTitlesLabels} />
 							</TouchableOpacity>
 						</View>
 
 						<View style={{ rowGap: 10 }}>
-							<Text style={styles.codeInputLabel}>Enter authentication code</Text>
+							<Text style={{ ...styles.codeInputLabel, color: color.colors.fontDefault }}>
+								{I18n.t('Enter_this_code_manually')}
+							</Text>
 							<TextInput
-								style={styles.codeInput}
+								style={{ ...styles.codeInput, color: color.colors.fontDefault, borderColor: color.colors.fontHint }}
 								value={code}
 								onChangeText={setCode}
 								placeholder='6-digit code'
@@ -116,7 +128,9 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 								}}
 								onPress={() => onVerify(code)}
 								disabled={isLoading}>
-								<Text style={styles.verifyButtonText}>{isLoading ? 'Verifying...' : 'Verify'}</Text>
+								<Text style={{ ...styles.verifyButtonText, color: color.colors.fontWhite }}>
+									{isLoading ? 'Verifying...' : 'Verify'}
+								</Text>
 							</TouchableOpacity>
 						</View>
 					</>
@@ -124,16 +138,18 @@ const TOTPEnableModal: React.FC<TOTPEnableModalProps> = ({
 
 				{!showBackupKeys && isEnabled && (
 					<>
-						<TouchableOpacity style={[styles.verifyButton, { backgroundColor: '#ff3b30' }]} onPress={onDisable}>
-							<Text style={styles.verifyButtonText}>Disable two-factor authentication via TOTP</Text>
+						<TouchableOpacity style={[styles.verifyButton, { backgroundColor: color.colors.strokeError }]} onPress={onDisable}>
+							<Text style={styles.verifyButtonText}>{I18n.t('Disable_two_factor_authentication_via_TOTP')}</Text>
 						</TouchableOpacity>
 
 						<View style={{ rowGap: 10, marginTop: 20 }}>
-							<Text style={styles.instructions}>Backup codes</Text>
-							<Text style={styles.manualCode}>You have {backupCodesRemaining} codes remaining.</Text>
+							<Text style={styles.instructions}> {I18n.t('Backup_codes')}</Text>
+							<Text style={styles.manualCode}>{I18n.t('You_have_codes_remaining', { count: backupCodesRemaining })}</Text>
 
-							<TouchableOpacity style={[styles.verifyButton, { backgroundColor: '#34C759' }]} onPress={onRegenerateCodes}>
-								<Text style={styles.verifyButtonText}>Regenerate codes</Text>
+							<TouchableOpacity
+								style={[styles.verifyButton, { backgroundColor: color.colors.statusFontSuccess }]}
+								onPress={onRegenerateCodes}>
+								<Text style={styles.verifyButtonText}>{I18n.t('Regenerate_codes')}</Text>
 							</TouchableOpacity>
 						</View>
 					</>
