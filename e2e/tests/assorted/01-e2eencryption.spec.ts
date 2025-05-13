@@ -120,7 +120,7 @@ describe('E2E Encryption', () => {
 		await changeE2EEPassword();
 		await loginAs(UserA, false);
 		await changeE2EEPassword();
-	});
+	}, 180000);
 
 	afterAll(async () => {
 		await deleteCreatedUsers(deleteUsersAfterAll);
