@@ -205,7 +205,7 @@ export default class Subscription extends Model {
 			livechatData: this.livechatData,
 			tags: this.tags,
 			E2EKey: this.E2EKey,
-			oldKeys: this.oldKeys,
+			oldRoomKeys: this.oldRoomKeys,
 			E2ESuggestedKey: this.E2ESuggestedKey,
 			encrypted: this.encrypted,
 			e2eKeyId: this.e2eKeyId,
