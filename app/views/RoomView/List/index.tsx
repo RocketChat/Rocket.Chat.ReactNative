@@ -54,30 +54,26 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			return null;
 		};
 
-		const renderItem: IListProps['renderItem'] = ({ item, index }) => (
-			<View style={styles.inverted}>{renderRow(item, messages[index + 1], highlightedMessageId)}</View>
-		);
+		const renderItem: IListProps['renderItem'] = ({ item, index }) => renderRow(item, messages[index + 1], highlightedMessageId);
 
 		return (
 			<>
 				<EmptyRoom rid={rid} length={messages.length} />
-				<Container>
-					<List
-						listRef={listRef}
-						data={messages}
-						renderItem={renderItem}
-						onEndReached={onEndReached}
-						ListFooterComponent={renderFooter}
-						onScrollToIndexFailed={handleScrollToIndexFailed}
-						viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-						jumpToBottom={jumpToBottom}
-						isThread={!!tmid}
-						maintainVisibleContentPosition={{
-							minIndexForVisible: 0,
-							autoscrollToTopThreshold: 0
-						}}
-					/>
-				</Container>
+				<List
+					listRef={listRef}
+					data={messages}
+					renderItem={renderItem}
+					onEndReached={onEndReached}
+					ListFooterComponent={renderFooter}
+					onScrollToIndexFailed={handleScrollToIndexFailed}
+					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+					jumpToBottom={jumpToBottom}
+					isThread={!!tmid}
+					maintainVisibleContentPosition={{
+						minIndexForVisible: 0,
+						autoscrollToTopThreshold: 0
+					}}
+				/>
 			</>
 		);
 	}

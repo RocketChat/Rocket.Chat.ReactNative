@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
+import { Platform, StyleSheet } from 'react-native';
+import Animated, {
+	runOnJS,
+	useAnimatedScrollHandler,
+	useAnimatedStyle,
+	useDerivedValue,
+	useSharedValue
+} from 'react-native-reanimated';
+import { KeyboardController, useKeyboardHandler, useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
 
 import { isIOS } from '../../../../lib/methods/helpers';
 import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps';
 import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
+import { useEmojiKeyboard, useEmojiKeyboardHeight } from '../../../../lib/hooks/useEmojiKeyboard';
 
 const styles = StyleSheet.create({
 	list: {
@@ -14,11 +22,20 @@ const styles = StyleSheet.create({
 	},
 	contentContainer: {
 		paddingTop: 10
-	}
+	},
+	verticallyInverted: Platform.OS === 'android' ? { transform: [{ scale: -1 }] } : { transform: [{ scaleY: -1 }] }
 });
 
 export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
+	const keyboardHeight = useEmojiKeyboardHeight();
+
+	const scrollViewStyle = useAnimatedStyle(
+		() => ({
+			transform: [{ translateY: keyboardHeight.value }, ...styles.verticallyInverted.transform]
+		}),
+		[]
+	);
 
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
@@ -38,7 +55,8 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				ref={listRef}
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
-				style={styles.list}
+				// style={styles.list}
+				style={scrollViewStyle}
 				inverted
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
@@ -50,7 +68,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				{...props}
 				{...scrollPersistTaps}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
+			{/* <NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} /> */}
 		</>
 	);
 };

@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { ActionsButton, BaseButton } from '..';
 import { useMessageComposerApi } from '../../context';
@@ -10,6 +11,11 @@ export const Default = (): ReactElement | null => {
 	const { sharing } = useRoomContext();
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
 
+	const openEmoji = async () => {
+		openEmojiKeyboard();
+		// await KeyboardController.dismiss({ keepFocus: true });
+	};
+
 	return (
 		<>
 			{sharing ? null : (
@@ -19,7 +25,7 @@ export const Default = (): ReactElement | null => {
 				</>
 			)}
 			<BaseButton
-				onPress={openEmojiKeyboard}
+				onPress={openEmoji}
 				testID='message-composer-open-emoji'
 				accessibilityLabel='Open_emoji_selector'
 				icon='emoji'

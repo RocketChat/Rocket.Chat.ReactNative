@@ -101,6 +101,7 @@
 		"react-native-gesture-handler": "^2.24.0",
 		"react-native-image-progress": "1.1.1",
 		"react-native-katex": "0.5.1",
+		"react-native-keyboard-controller": "^1.17.1",
 		"react-native-keychain": "^8.2.0",
 		"react-native-linear-gradient": "2.6.2",
 		"react-native-localize": "2.1.1",
