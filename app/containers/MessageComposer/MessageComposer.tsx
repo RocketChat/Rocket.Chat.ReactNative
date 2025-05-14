@@ -46,6 +46,7 @@ import { useKeyboardListener } from './hooks';
 import { emitter } from '../../lib/methods/helpers/emitter';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { useEmojiKeyboard, useEmojiKeyboardHeight } from '../../lib/hooks/useEmojiKeyboard';
+import EmojiPicker from '../../containers/EmojiPicker';
 
 const styles = StyleSheet.create({
 	container: {
@@ -232,105 +233,15 @@ export const MessageComposer = ({
 	// };
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
-	const keyboardHeight = useEmojiKeyboardHeight();
-
-	// const kHandler = useSharedValue(0);
-	// // const showEmojiKeyboardShared = useSharedValue(false);
-
-	// useKeyboardHandler(
-	// 	{
-	// 		onStart: e => {
-	// 			'worklet';
-	// 			console.log('onStart height showEmojiKeyboard', e.height, showEmojiPickerSharedValue.value);
-	// 			// if ((e.height === 0 && showEmojiPickerSharedValue.value) || (e.height > 0 && !showEmojiPickerSharedValue.value)) {
-	// 			// 	console.log('onStart parado');
-	// 			// 	return;
-	// 			// }
-	// 			// if (e.height === 0 && showEmojiPickerSharedValue.value) {
-	// 			// 	kHandler.value = 0;
-	// 			// 	return;
-	// 			// }
-	// 			kHandler.value = -e.height;
-	// 		},
-	// 		onMove: e => {
-	// 			'worklet';
-	// 			// kHandler.value = -e.height;
-	// 			console.log('onMove', e.height);
-	// 		},
-	// 		onInteractive: e => {
-	// 			'worklet';
-	// 			console.log('onInteractive', e.height);
-	// 		},
-	// 		onEnd: e => {
-	// 			'worklet';
-	// 			// if ((e.height === 0 && showEmojiPickerSharedValue.value) || (e.height > 0 && !showEmojiPickerSharedValue.value)) {
-	// 			// 	kHandler.value = -e.height;
-	// 			// 	console.log('onEnd setando');
-	// 			// 	return;
-	// 			// }
-	// 			// kHandler.value = -e.height;
-	// 			console.log('onEnd', e.height);
-	// 		}
-	// 	},
-	// 	[]
-	// );
-
-	// const composerHeight = useDerivedValue(() => {
-	// 	if (showEmojiKeyboard) {
-	// 		return 0;
-	// 	}
-	// 	if (height.value === 0 && !showEmojiKeyboard) {
-	// 		return -290;
-	// 	}
-	// 	return height.value;
-	// });
+	const { keyboardHeight, emojiPickerHeight } = useEmojiKeyboardHeight();
 
 	const composerStyle = useAnimatedStyle(() => ({
 		transform: [{ translateY: keyboardHeight.value }]
-		// transform: [{ translateY: height.value === 0 ? 0 : -290 }]
 	}));
 
-	// bottom needs to be a derived value
-	// const bottomStyle = useAnimatedStyle(() => ({
-	// 	height: Math.abs(height.value) ? 0 : bottom,
-	// 	backgroundColor: 'red'
-	// }));
-	// const bottomStyle = useAnimatedStyle(() => ({
-	// 	// eslint-disable-next-line no-nested-ternary
-	// 	height: withTiming(showEmojiKeyboard ? 290 : focused ? 0 : bottom, { duration: 400 }),
-	// 	backgroundColor: 'red'
-	// }));
-
-	// const emojiKeyboardHeight = useDerivedValue(() => (showEmojiKeyboard ? 290 : 0));
-
-	// const emojiKeyboardStyle = useAnimatedStyle(() => ({
-	// 	height: emojiKeyboardHeight.value,
-	// 	backgroundColor: 'green'
-	// }));
-
-	// const emojiKeyboardStyle = useAnimatedStyle(() => ({
-	// 	height: showEmojiPickerSharedValue.value === true && kHandler.value <= 0 ? 290 : 0,
-	// 	backgroundColor: 'green'
-	// }));
-
-	const notchStyle = useAnimatedStyle(() => ({
-		height: focused ? 0 : bottom,
-		backgroundColor: 'blue'
+	const emojiKeyboardStyle = useAnimatedStyle(() => ({
+		height: emojiPickerHeight.value
 	}));
-
-	// const emojiKeyboardStyle = useAnimatedStyle(() => {
-	// 	const layout = input.get()?.layout;
-
-	// 	return {
-	// 		height: layout?.height
-	// 	};
-	// }, []);
-	// console.log bottomStyle
-	// console.log(bottomStyle.height.value
-	//
-	// useDerivedValue(() => {
-	// 	console.log('composerHeight, emojiKeyboardHeight, kHandler', composerHeight.value, emojiKeyboardHeight.value, kHandler.value);
-	// });
 
 	const renderContent = () => {
 		if (recordingAudio) {
@@ -392,11 +303,10 @@ export const MessageComposer = ({
 				onHeightChanged={onHeightChanged}
 			/> */}
 			<Animated.View style={composerStyle}>{renderContent()}</Animated.View>
-			{/* <Animated.View style={emojiKeyboardStyle} /> */}
-			<Animated.View style={notchStyle} />
-			{/* <Animated.View style={bottomStyle} /> */}
+			<Animated.View style={emojiKeyboardStyle}>
+				{/* <EmojiPicker /> if this is commented, the animation works well */}
+			</Animated.View>
 			{/* 
-			<Animated.View style={notchStyle} />
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} /> */}
 		</MessageInnerContext.Provider>
 	);

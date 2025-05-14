@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 
 export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
-	const keyboardHeight = useEmojiKeyboardHeight();
+	const { keyboardHeight } = useEmojiKeyboardHeight();
 
 	const scrollViewStyle = useAnimatedStyle(
 		() => ({

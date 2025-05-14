@@ -1,6 +1,7 @@
 import React, { createContext, ReactElement, useContext } from 'react';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
@@ -26,45 +27,54 @@ export const useEmojiKeyboard = () => {
 
 export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
-	const keyboardHeight = useSharedValue(0);
+	const { bottom } = useSafeAreaInsets();
+	const keyboardHeight = useSharedValue(-bottom);
+	const emojiPickerHeight = useSharedValue(0);
 
 	useKeyboardHandler(
 		{
+			// onStart: e => {
+			// 	'worklet';
+			// 	console.log('onStart height showEmojiKeyboard', e.height, showEmojiPickerSharedValue.value);
+			// 	// if ((e.height === 0 && showEmojiPickerSharedValue.value) || (e.height > 0 && !showEmojiPickerSharedValue.value)) {
+			// 	// 	console.log('onStart parado');
+			// 	// 	return;
+			// 	// }
+			// 	// if (e.height === 0 && showEmojiPickerSharedValue.value) {
+			// 	// 	keyboardHeight.value = 0;
+			// 	// 	emojiPickerHeight.value = 290;
+			// 	// 	return;
+			// 	// }
+			// 	// emojiPickerHeight.value = 0;
+			// 	// const notch = e.height > 0 ? 0 : bottom;
+			// 	// keyboardHeight.value = -e.height - notch;
+			// },
 			onStart: e => {
 				'worklet';
-				console.log('onStart height showEmojiKeyboard', e.height, showEmojiPickerSharedValue.value);
-				// if ((e.height === 0 && showEmojiPickerSharedValue.value) || (e.height > 0 && !showEmojiPickerSharedValue.value)) {
-				// 	console.log('onStart parado');
-				// 	return;
-				// }
-				// if (e.height === 0 && showEmojiPickerSharedValue.value) {
-				// 	keyboardHeight.value = 0;
-				// 	return;
-				// }
-				keyboardHeight.value = -e.height;
-			},
-			onMove: e => {
-				'worklet';
 				// keyboardHeight.value = -e.height;
-				console.log('onMove', e.height);
-			},
-			onInteractive: e => {
-				'worklet';
-				console.log('onInteractive', e.height);
-			},
-			onEnd: e => {
-				'worklet';
-				// if ((e.height === 0 && showEmojiPickerSharedValue.value) || (e.height > 0 && !showEmojiPickerSharedValue.value)) {
-				// 	keyboardHeight.value = -e.height;
-				// 	console.log('onEnd setando');
-				// 	return;
-				// }
-				// keyboardHeight.value = -e.height;
-				console.log('onEnd', e.height);
+				// keyboardHeight.value = e.height > 0 ? Math.max(e.height + OFFSET, totalOffset) : totalOffset;
+				const notch = e.height > 0 || showEmojiPickerSharedValue.value ? 0 : bottom;
+				keyboardHeight.value = e.height > 0 ? -Math.max(e.height, notch) : -notch;
+				emojiPickerHeight.value = showEmojiPickerSharedValue.value ? 291 - e.height : 0;
+				console.log('onMove', e.height, keyboardHeight.value);
 			}
+			// onInteractive: e => {
+			// 	'worklet';
+			// 	console.log('onInteractive', e.height);
+			// },
+			// onEnd: e => {
+			// 	'worklet';
+			// 	// if ((e.height === 0 && showEmojiPickerSharedValue.value) || (e.height > 0 && !showEmojiPickerSharedValue.value)) {
+			// 	// 	keyboardHeight.value = -e.height;
+			// 	// 	console.log('onEnd setando');
+			// 	// 	return;
+			// 	// }
+			// 	// keyboardHeight.value = -e.height;
+			// 	console.log('onEnd', e.height);
+			// }
 		},
 		[]
 	);
 
-	return keyboardHeight;
+	return { keyboardHeight, emojiPickerHeight };
 };
