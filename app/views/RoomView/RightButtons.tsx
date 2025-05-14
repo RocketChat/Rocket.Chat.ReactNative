@@ -28,6 +28,7 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	threadsEnabled: boolean;
 	tmid?: string;
 	teamId?: string;
+	roomName?: string;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
@@ -430,7 +431,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning } = this.props;
+		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning, roomName } = this.props;
 
 		if (!rid) {
 			return null;
@@ -476,9 +477,10 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton rid={rid} disabled={hasE2EEWarning} /> : null}
+				{rid ? <HeaderCallButton accessibilityLabel={i18n.t('Call_room_name', {roomName})} rid={rid} disabled={hasE2EEWarning} /> : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
+						accessibilityLabel={tunread?.length > 0 ? '': i18n.t('Threads')}
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
@@ -486,7 +488,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				<HeaderButton.Item iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={hasE2EEWarning} />
+				<HeaderButton.Item accessibilityLabel={i18n.t('Search_Messages')}  iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={hasE2EEWarning} />
 			</HeaderButton.Container>
 		);
 	}
