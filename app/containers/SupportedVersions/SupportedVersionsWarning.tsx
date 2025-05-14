@@ -32,7 +32,7 @@ export const SupportedVersionsWarning = ({ navigation, route }: { navigation?: a
 
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceLight }]}>
-			<View style={styles.iconContainer}>
+			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			{message.title ? (

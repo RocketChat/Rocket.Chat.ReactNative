@@ -47,7 +47,7 @@ export const SupportedVersionsExpired = () => {
 
 	return (
 		<View style={[styles.container, { paddingTop: 120, backgroundColor: colors.surfaceLight }]}>
-			<View style={styles.iconContainer}>
+			<View accessible accessibilityLabel={I18n.t('Attention')} style={styles.iconContainer}>
 				<CustomIcon name='warning' size={36} color={colors.buttonBackgroundDangerDefault} />
 			</View>
 			<Text style={[styles.title, { color: colors.fontTitlesLabels }]}>

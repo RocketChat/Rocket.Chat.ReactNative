@@ -11,6 +11,7 @@ import CustomEmoji from '../EmojiPicker/CustomEmoji';
 import sharedStyles from '../../views/Styles';
 import { IEmoji, TAnyMessageModel } from '../../definitions';
 import Touch from '../Touch';
+import I18n from '../../i18n';
 
 export interface IHeader {
 	handleReaction: (emoji: IEmoji | null, message: TAnyMessageModel) => void;
@@ -67,6 +68,8 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 	return (
 		<Touch
 			testID={`message-actions-emoji-${item}`}
+			accessible
+			accessibilityLabel={I18n.t('React_with_emojjname', {emojiName: item})}
 			onPress={() => onReaction({ emoji: item })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
 			{typeof item === 'string' ? (
@@ -80,6 +83,8 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 const HeaderFooter = ({ onReaction, theme }: THeaderFooter) => (
 	<Touch
 		testID='add-reaction'
+		accessible
+		accessibilityLabel={I18n.t('Select_emoji_reaction')}
 		onPress={(param: any) => onReaction(param)}
 		style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
 		<CustomIcon name='reaction-add' size={24} />
