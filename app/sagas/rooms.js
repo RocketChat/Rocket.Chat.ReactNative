@@ -82,6 +82,9 @@ const handleRoomsRequest = function* handleRoomsRequest({ params }) {
 				...subsToUpdate.map(subscription => {
 					try {
 						const newSub = subscriptions.find(s => s._id === subscription._id);
+						if (!newSub || !subscription) {
+							return null;
+						}
 						return subscription.prepareUpdate(() => {
 							if (newSub.announcement) {
 								if (newSub.announcement !== subscription.announcement) {
