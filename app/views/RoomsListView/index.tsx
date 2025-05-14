@@ -479,14 +479,21 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					{canCreateRoom ? (
 						<HeaderButton.Item
 							iconName='create'
+							accessibilityLabel={I18n.t('Create_new_channel_team_dm_discussion')}		
 							onPress={this.goToNewMessage}
 							testID='rooms-list-view-create-channel'
-							disabled={disabled}
-						/>
+							disabled={disabled}/>		
 					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
+					<HeaderButton.Item 
+						iconName='search' 					
+						accessibilityLabel={I18n.t('Search')}
+						onPress={this.initSearching} 
+						testID='rooms-list-view-search' 
+						disabled={disabled} 
+					/>
 					<HeaderButton.Item
 						iconName='directory'
+						accessibilityLabel={I18n.t('Directory')}
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
 						disabled={disabled}
