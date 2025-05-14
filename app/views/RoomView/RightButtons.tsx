@@ -451,6 +451,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 			return (
 				<HeaderButton.Container>
 					<HeaderButton.Item
+						accessibilityLabel={i18n.t(isFollowingThread ? 'Unfollow_thread' : 'Follow_thread')}
 						iconName={isFollowingThread ? 'notification' : 'notification-disabled'}
 						onPress={this.toggleFollowThread}
 						testID={isFollowingThread ? 'room-view-header-unfollow' : 'room-view-header-follow'}
