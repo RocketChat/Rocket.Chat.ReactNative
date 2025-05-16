@@ -1,25 +1,43 @@
 import React, {  useState } from "react";
-import { Button, Image, View, Text, LayoutRectangle, useWindowDimensions} from "react-native";
+import { Button, Image, View, Text, useWindowDimensions} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ImagePickerOptions } from "expo-image-picker";
-import {  useImageManipulator } from 'expo-image-manipulator';
+import {  SaveFormat, useImageManipulator } from 'expo-image-manipulator';
 import { useNavigation } from "@react-navigation/native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, { clamp, useAnimatedStyle, useSharedValue, withClamp } from "react-native-reanimated";
+import Animated, { clamp, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 import ImagePicker from "../../lib/methods/helpers/ImagePicker/ImagePicker";
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import Touch from "../../containers/Touch";
 
+// To Do:
+// - Portrait and Landscape;
+// - Add Pinch detector;
+// - Organize code;
+// - Adjust the layout;
+// - reescale the image decresing for the screen value range;
+
+// Components:
+// - Cell;
+// - Row;
+// - Grid;
+
+// Hooks:
+// - useImageManipulator;
+
+
 
 const EditImageView = () => {
     const [crop, setCrop] = useState(false);
     const [imageSize, setImageSize] = useState<any>({width: 0, height: 0});
+    const [originalImageSize, setOriginalImageSize] = useState<any>({width: 0, height: 0});
     const [editableImage, setEditableImage] = useState('');
     const [rotate, setRotate] = useState(0);    
     const navigation = useNavigation();
     const context = useImageManipulator(editableImage);
+    const isPortrait = originalImageSize?.height > originalImageSize?.width;
 
 	const pickImage = async () => {
 		try {
@@ -35,33 +53,72 @@ const EditImageView = () => {
 			}
 			const [media] = mapMediaResult(response.assets);
             setEditableImage(media.path)
+            setOriginalImageSize(media);
 		} catch (error: any) {
             console.log(error)
 		}
 	};
 
-    const onSaveImgage = async  () => {
-        context.rotate(rotate);
-        context.crop()
-       const  imageRendered =  await context.renderAsync();
-       const result = await imageRendered.saveAsync({
-            format: SaveFormat.PNG
-       });
-
-       
-    }
-
     const rotateLeft =  () => {
-        setRotate(rotate + 90)
+        const newRotate = rotate + 90;
+        
+        if(newRotate === 90 || newRotate === 270){
+            const widthUpdated = !isPortrait ? height : width;
+            const heightUpdated = !isPortrait ? width : height;
+            sharedValueHeight.value = heightUpdated;
+            sharedValueWidth.value = widthUpdated
+            setOriginalImageSize({
+                width: widthUpdated,
+                height: heightUpdated
+            })
+        }else{
+            const widthUpdated = isPortrait ? height : width;
+            const heightUpdated = isPortrait ? width : height;
+            sharedValueHeight.value = heightUpdated;
+            sharedValueWidth.value = widthUpdated;
+            setOriginalImageSize({
+                width: isPortrait ? originalImageSize.height : originalImageSize.width, 
+                height: isPortrait ? originalImageSize.width : originalImageSize.height 
+            })
+        }        
+        setRotate(newRotate > 270 ? 0 : newRotate);
+
     };
 
     const rotateRight =  () => {
         setRotate(rotate - 90)
     };
 
+    const getValueBasedOnOriginal = (cuttedValue: number, originalSize: number, screenScale: number) => {
+        const escala = originalSize / screenScale;
+        return cuttedValue * escala;
+    }
+
+    const onCrop = async () => {
+        context.rotate(rotate);
+        const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, width);
+        const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, height);
+        const originX = getValueBasedOnOriginal(left.value, originalImageSize.width, width);
+        const originY = getValueBasedOnOriginal(top.value, originalImageSize.height, height);
+        context.crop({
+            height: finalHeight,
+            width: finalWidth ,
+            originX,
+            originY
+        }) 
+        const image = await context.renderAsync();
+            const result = await image.saveAsync({
+            format: SaveFormat.PNG
+            });
+
+        setEditableImage(result.uri);
+        setCrop(false)
+       
+    }
+
     const borderColor = 'white'
-    const {width} = useWindowDimensions();
-    const height = 300;
+    const {width, height: screenHeight} = useWindowDimensions();
+    const height = isPortrait ? screenHeight * .46 : 300;
     const sharedValueWidth = useSharedValue(width);
     const sharedValueHeight = useSharedValue(height);
     const top = useSharedValue(0);
@@ -81,7 +138,6 @@ const EditImageView = () => {
         justifyContent: 'center'
     }))
 
-    
     const topLeft = Gesture.Pan().onChange(e => {
         const verticalOffset = e.translationY - prevTranslationYValue.value;
         const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationYValue.value), 30, height);
@@ -162,25 +218,30 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0; 
       
     })
-     const moveGrid = Gesture.Pan().onChange(e => {
+
+    const moveGrid = Gesture.Pan().onChange(e => {
         const offset = e.translationX - prevTranslationXValue.value;
         const verticalOffset = e.translationY - prevTranslationYValue.value;
-
-        const newLeft =  clamp((left.value + offset)/2, 0, width - sharedValueWidth.value);
-        const newTop =  clamp((top.value + verticalOffset)/2, 0, height - sharedValueHeight.value);
+      
+        const newLeft = clamp(left.value + offset, 0, width - sharedValueWidth.value);
+        const newTop =  clamp(top.value + verticalOffset, 0, height - sharedValueHeight.value);
 
         if(sharedValueWidth.value < width) {
             left.value = newLeft
-        }
+        } 
 
         if(sharedValueHeight.value < height) {
             top.value = newTop
         }
 
+        prevTranslationXValue.value = e.translationX
+        prevTranslationYValue.value = e.translationY
+
     }).onFinalize(() => {
         prevTranslationXValue.value = 0; 
         prevTranslationYValue.value = 0;
     })
+
     const rightCenter = Gesture.Pan().onChange(e => {
         const offset = (e.translationX * -1) + prevTranslationXValue.value;
         const newWidth = clamp( sharedValueWidth.value - offset, 100, width)
@@ -242,19 +303,18 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0
     });
 
-   
-
     const renderSquare = () => (<View style={{ borderColor, borderWidth: 1, backgroundColor: 'transparent', flex: 1 / 3, height: '100%'}}/>)
     return(  
         <SafeAreaView>
             
-            <View style={{width, height: 300}}> 
-                <Image  
+            <View style={{ backgroundColor: '#000'}}> 
+                <Image 
                     source={{uri: editableImage}} 
                     style={{
-                        flex: 1, 
+                        width, height,
                         transform: [{rotate: `${rotate}deg`}]
                     }}  
+                    resizeMode='contain'
                 />
 
                 {
@@ -315,14 +375,13 @@ const EditImageView = () => {
 
 
             <Button title='Open Gallery' onPress={pickImage} />
+            <Button title='crop' onPress={onCrop} />
+
             <View style={{flexDirection: 'column', gap: 20}}>
                 <Touch>
                     <Text>Cancelar</Text>
                 </Touch>
                  <Touch onPress={rotateLeft}>
-                    <Text>RotLeft</Text>
-                </Touch>
-                <Touch onPress={()  => {}}>
                     <Text>RotLeft</Text>
                 </Touch>
 
