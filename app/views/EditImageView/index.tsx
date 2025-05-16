@@ -3,8 +3,7 @@ import { Button, Image, View, Text, useWindowDimensions} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ImagePickerOptions } from "expo-image-picker";
 import {  SaveFormat, useImageManipulator } from 'expo-image-manipulator';
-import { useNavigation } from "@react-navigation/native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { Gesture } from "react-native-gesture-handler";
 import Animated, { clamp, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 
 import ImagePicker from "../../lib/methods/helpers/ImagePicker/ImagePicker";
