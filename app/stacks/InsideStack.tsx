@@ -40,7 +40,7 @@ import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
 import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
 import SettingsView from '../views/SettingsView';
-import SecurityPrivacyView from '../views/SecurityPrivacyView';
+import SecurityPrivacyView from '../views/SecurityPrivacyView/SecurityPrivacyView';
 import GetHelpView from '../views/GetHelpView';
 import PushTroubleshootView from '../views/PushTroubleshootView';
 import E2EEncryptionSecurityView from '../views/E2EEncryptionSecurityView';
