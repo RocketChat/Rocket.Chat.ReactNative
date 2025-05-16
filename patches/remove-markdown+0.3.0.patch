@@ -6,8 +6,8 @@ index 7f53a9c..579d0e0 100644
  
    var output = md || '';
  
-+  // Remove spaces around asterisks (*) in the string
-+  output = output.replace(/\*\s+|\s+\*/g, '*');
++  // Remove surrounding asterisks (*) and any spaces around the inner content
++  output = output.replace(/\*\s*(.*?)\s*\*/g, '$1');
 +
    // Remove horizontal rules (stripListHeaders conflict with this rule, which is why it has been moved to the top)
    output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, '');
