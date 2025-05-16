@@ -66,9 +66,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
-			headerLeft: () => (
-				<HeaderButton.CloseModal accessibilityLabel={I18n.t('Close')} testID='e2e-enter-your-password-view-close' />
-			),
+			headerLeft: () => <HeaderButton.CloseModal testID='e2e-enter-your-password-view-close' />,
 			title: I18n.t('Enter_E2EE_Password')
 		});
 	}, [navigation]);
