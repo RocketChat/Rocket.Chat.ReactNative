@@ -11,13 +11,15 @@ import ImagePicker from "../../lib/methods/helpers/ImagePicker/ImagePicker";
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import Touch from "../../containers/Touch";
+import Cell from "./components/Cell";
+
 
 // To Do:
+// - reescale the image decreasing for the screen value range;
 // - Portrait and Landscape;
 // - Add Pinch detector;
 // - Organize code;
 // - Adjust the layout;
-// - reescale the image decresing for the screen value range;
 
 // Components:
 // - Cell;
@@ -35,7 +37,6 @@ const EditImageView = () => {
     const [originalImageSize, setOriginalImageSize] = useState<any>({width: 0, height: 0});
     const [editableImage, setEditableImage] = useState('');
     const [rotate, setRotate] = useState(0);    
-    const navigation = useNavigation();
     const context = useImageManipulator(editableImage);
     const isPortrait = originalImageSize?.height > originalImageSize?.width;
 
@@ -132,15 +133,18 @@ const EditImageView = () => {
         transform: [{translateX: left.value}, {translateY: top.value}],
         backgroundColor: 'rgba(0, 0, 0, .4)', 
         position: 'absolute', 
-        borderWidth: 2, 
-        borderColor: 'blue',
+        borderWidth: 4, 
+        borderColor: 'white',
         alignItems: 'center',
         justifyContent: 'center'
     }))
 
     const topLeft = Gesture.Pan().onChange(e => {
+        // discover the value that moved;
         const verticalOffset = e.translationY - prevTranslationYValue.value;
+        // discover the new height based on translation;
         const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationYValue.value), 30, height);
+        // add the value on topValue and add a clamp to limit it;
         const newTop =  clamp(top.value + verticalOffset, 0, height - newHeight);
         
         const horizontalOffset = e.translationX - prevTranslationXValue.value;
@@ -202,7 +206,7 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0
     });
 
-
+    
     const leftCenter = Gesture.Pan().onChange(e => {
         const offset = e.translationX - prevTranslationXValue.value;
         const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationXValue.value), 100, width) 
@@ -215,10 +219,8 @@ const EditImageView = () => {
     
         prevTranslationXValue.value = e.translationX;
     }).onFinalize(() => {
-        prevTranslationXValue.value = 0; 
-      
+        prevTranslationXValue.value = 0;   
     })
-
     const moveGrid = Gesture.Pan().onChange(e => {
         const offset = e.translationX - prevTranslationXValue.value;
         const verticalOffset = e.translationY - prevTranslationYValue.value;
@@ -241,7 +243,6 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0; 
         prevTranslationYValue.value = 0;
     })
-
     const rightCenter = Gesture.Pan().onChange(e => {
         const offset = (e.translationX * -1) + prevTranslationXValue.value;
         const newWidth = clamp( sharedValueWidth.value - offset, 100, width)
@@ -303,7 +304,7 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0
     });
 
-    const renderSquare = () => (<View style={{ borderColor, borderWidth: 1, backgroundColor: 'transparent', flex: 1 / 3, height: '100%'}}/>)
+    const renderSquare = () => (<View style={{}}/>)
     return(  
         <SafeAreaView>
             
@@ -325,45 +326,24 @@ const EditImageView = () => {
                         flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'
                     }}
                     >
-                        <GestureDetector gesture={topLeft}>
-                            {renderSquare()}
-                        </GestureDetector>
-                       
-                        <GestureDetector gesture={topCenter}>
-                            {renderSquare()}
-                        </GestureDetector>
-
-                       <GestureDetector gesture={topRight}>
-                            {renderSquare()}
-                       </GestureDetector>
+                        <Cell gesture={topLeft} />
+                        <Cell gesture={topCenter} />
+                        <Cell gesture={topRight} />
                     </View>
 
                     <View style={{flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'}}>
-                       <GestureDetector gesture={leftCenter}>
-                            {renderSquare()}
-                       </GestureDetector>
-                      
-                        <GestureDetector gesture={moveGrid}>
-                            {renderSquare()}
-                        </GestureDetector>
-                        <GestureDetector gesture={rightCenter}>  
-                            {renderSquare()}
-                        </GestureDetector>
+                        <Cell gesture={leftCenter} />
+                        <Cell gesture={moveGrid} />
+                        <Cell gesture={rightCenter} />
                     </View>
 
                     <View style={{
                         flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'
                     }}
                     >
-                       <GestureDetector gesture={bottomLeft}>
-                            {renderSquare()}
-                       </GestureDetector>
-                        <GestureDetector gesture={bottomCenter}>
-                            {renderSquare()}
-                        </GestureDetector>
-                        <GestureDetector gesture={bottomRight}>
-                            {renderSquare()}
-                        </GestureDetector>
+                       <Cell gesture={bottomLeft} />
+                        <Cell gesture={bottomCenter} />
+                        <Cell gesture={bottomRight} />
                     </View>
 
                 </Animated.View>
