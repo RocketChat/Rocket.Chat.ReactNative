@@ -60,6 +60,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			onCancel={hideActionSheet}
 			onSubmit={password => handleDeleteAccount(password as string)}
 			placeholder={i18n.t('Password')}
+			autoComplete='password'
 			testID='profile-view-delete-account-sheet'
 			iconName='warning'
 			confirmTitle={i18n.t('Delete_Account')}
