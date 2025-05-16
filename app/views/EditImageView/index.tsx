@@ -12,6 +12,7 @@ import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermiss
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import Touch from "../../containers/Touch";
 import Cell from "./components/Cell";
+import Grid from "./components/Grid";
 
 
 // To Do:
@@ -22,8 +23,6 @@ import Cell from "./components/Cell";
 // - Adjust the layout;
 
 // Components:
-// - Cell;
-// - Row;
 // - Grid;
 
 // Hooks:
@@ -206,7 +205,7 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0
     });
 
-    
+
     const leftCenter = Gesture.Pan().onChange(e => {
         const offset = e.translationX - prevTranslationXValue.value;
         const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationXValue.value), 100, width) 
@@ -304,7 +303,6 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0
     });
 
-    const renderSquare = () => (<View style={{}}/>)
     return(  
         <SafeAreaView>
             
@@ -322,30 +320,23 @@ const EditImageView = () => {
                     editableImage && crop
                     ?
                 <Animated.View style={animatedStyle}>               
-                    <View style={{
-                        flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'
-                    }}
-                    >
+                    <Grid>
                         <Cell gesture={topLeft} />
                         <Cell gesture={topCenter} />
                         <Cell gesture={topRight} />
-                    </View>
-
-                    <View style={{flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'}}>
+                    </Grid>
+                       
+                    <Grid>
                         <Cell gesture={leftCenter} />
                         <Cell gesture={moveGrid} />
-                        <Cell gesture={rightCenter} />
-                    </View>
-
-                    <View style={{
-                        flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'
-                    }}
-                    >
+                        <Cell gesture={rightCenter} />  
+                    </Grid>
+                        
+                    <Grid>
                        <Cell gesture={bottomLeft} />
                         <Cell gesture={bottomCenter} />
                         <Cell gesture={bottomRight} />
-                    </View>
-
+                    </Grid>
                 </Animated.View>
                     : null
                 }
