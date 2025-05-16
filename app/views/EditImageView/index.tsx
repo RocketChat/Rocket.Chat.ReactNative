@@ -5,7 +5,7 @@ import { ImagePickerOptions } from "expo-image-picker";
 import {  useImageManipulator } from 'expo-image-manipulator';
 import { useNavigation } from "@react-navigation/native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import Animated, { clamp, useAnimatedStyle, useSharedValue, withClamp } from "react-native-reanimated";
 
 import ImagePicker from "../../lib/methods/helpers/ImagePicker/ImagePicker";
 import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermissions';
@@ -14,8 +14,7 @@ import Touch from "../../containers/Touch";
 
 
 const EditImageView = () => {
-    const {width} = useWindowDimensions();
-    const [cropLimit, setCropLimit] = useState<LayoutRectangle>();
+    const [crop, setCrop] = useState(false);
     const [imageSize, setImageSize] = useState<any>({width: 0, height: 0});
     const [editableImage, setEditableImage] = useState('');
     const [rotate, setRotate] = useState(0);    
@@ -61,18 +60,19 @@ const EditImageView = () => {
     };
 
     const borderColor = 'white'
+    const {width} = useWindowDimensions();
+    const height = 300;
     const sharedValueWidth = useSharedValue(width);
-    const sharedValueHeight = useSharedValue(300);
+    const sharedValueHeight = useSharedValue(height);
     const top = useSharedValue(0);
-    const bottom = useSharedValue(0);
     const left = useSharedValue(0);
-    const right = useSharedValue(0);
     const prevTranslationXValue = useSharedValue(0);
+    const prevTranslationYValue = useSharedValue(0);
 
     const animatedStyle = useAnimatedStyle(() => ({
         width: sharedValueWidth.value,
         height: sharedValueHeight.value,
-        transform: [{translateX: left.value}],
+        transform: [{translateX: left.value}, {translateY: top.value}],
         backgroundColor: 'rgba(0, 0, 0, .4)', 
         position: 'absolute', 
         borderWidth: 2, 
@@ -82,46 +82,62 @@ const EditImageView = () => {
     }))
 
     const leftCenter = Gesture.Pan().onChange(e => {
-        const newWidth = sharedValueWidth.value - (e.translationX - prevTranslationXValue.value)
-        if(newWidth < 100) {
-            return;
+        const offset = e.translationX - prevTranslationXValue.value;
+        const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationXValue.value), 100, width) 
+        const newLeft =  clamp(left.value + offset, 0, width - newWidth) ;
+
+        if(newWidth > 100) {
+            left.value = newLeft;
+            if(newLeft > 0) {
+                sharedValueWidth.value = newWidth > width * 0.99 ? width: newWidth;
+            }
         }
-
-        if(newWidth  > width) {
-            sharedValueWidth.value = width;
-            left.value = 0;
-            return;
-        } 
-
-
-        sharedValueWidth.value = newWidth;
         prevTranslationXValue.value = e.translationX;
-        left.value = e.translationX
-    }).onFinalize(() => {prevTranslationXValue.value = 0})
-
+    }).onFinalize(() => {
+        prevTranslationXValue.value = 0; 
+      
+    })
 
     const rightCenter = Gesture.Pan().onChange(e => {
-        const offset = e.translationX * -1 + prevTranslationXValue.value
-        const newWidth = sharedValueWidth.value - offset
-
-        if(newWidth < 100) {
-            return;
+        const offset = (e.translationX * -1) + prevTranslationXValue.value;
+        const newWidth = clamp( sharedValueWidth.value - offset, 100, width)
+        if(newWidth + left.value < width) {
+             sharedValueWidth.value = newWidth > width * 0.99 ? width: newWidth;
         }
-
-        if(newWidth  > width) {
-            sharedValueWidth.value = width;
-            return;
-        } 
-        sharedValueWidth.value = newWidth;
         prevTranslationXValue.value = e.translationX;
     }).onFinalize(() => {prevTranslationXValue.value = 0})
+
+    const topCenter = Gesture.Pan().onChange(e => {
+        const offset = e.translationY - prevTranslationYValue.value;
+        const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationYValue.value), 30, height);
+        const newTop =  clamp(top.value + offset, 0, height - newHeight);
+
+        if(newHeight > 30) {
+            top.value = newTop;
+            if(newTop > 0) {
+                sharedValueHeight.value = newHeight > height * 0.99 ? height: newHeight;
+            }
+        }
+
+        prevTranslationYValue.value = e.translationY;
+
+    }).onFinalize(() => { prevTranslationYValue.value = 0})
+
+   
+    const bottomCenter = Gesture.Pan().onChange(e => {
+        const offset = (e.translationY * -1) + prevTranslationYValue.value;
+        const newHeight = clamp( sharedValueHeight.value - offset, 30, height)
+        if(newHeight + top.value < height) {
+             sharedValueHeight.value = newHeight > height * 0.99 ? height: newHeight;
+        }
+        prevTranslationYValue.value = e.translationY;
+    }).onFinalize(() => {prevTranslationYValue.value = 0})
 
     return(  
         <SafeAreaView>
             
             <View style={{width, height: 300}}> 
                 <Image  
-                    onLayout={(e) => console.log(e.nativeEvent, e.target)}
                     source={{uri: editableImage}} 
                     style={{
                         flex: 1, 
@@ -129,8 +145,10 @@ const EditImageView = () => {
                     }}  
                 />
 
-                <Animated.View style={animatedStyle}>
-                    
+                {
+                    editableImage && crop
+                    ?
+                <Animated.View style={animatedStyle}>               
                     <View style={{
                         flexDirection: 'row', width: '100%', flex: 1 / 3, backgroundColor: 'transparent'
                     }}
@@ -139,10 +157,12 @@ const EditImageView = () => {
                             borderColor, borderWidth: 1, backgroundColor: 'transparent', flex: 1 / 3, height: '100%'
                         }}
                         />
+                        <GestureDetector gesture={topCenter}>
                         <View style={{
                             borderColor, borderWidth: 1, backgroundColor:'transparent', flex: 1 / 3, height: '100%'
                         }}
                         />
+                        </GestureDetector>
                         <View style={{
                             borderColor, borderWidth: 1, backgroundColor: 'transparent', flex: 1 / 3, height: '100%'
                         }}
@@ -176,22 +196,27 @@ const EditImageView = () => {
                             borderColor, borderWidth: 1, backgroundColor: 'transparent', flex: 1 / 3, height: '100%'
                         }}
                         />
-                        <View style={{
-                            borderColor, borderWidth: 1, backgroundColor:'transparent', flex: 1 / 3, height: '100%'
-                        }}
-                        />
+                        <GestureDetector gesture={bottomCenter}>
+                            <View style={{
+                                borderColor, borderWidth: 1, backgroundColor:'transparent', flex: 1 / 3, height: '100%'
+                            }}
+                            />
+                        </GestureDetector>
                         <View style={{
                             borderColor, borderWidth: 1, backgroundColor: 'transparent', flex: 1 / 3, height: '100%'
                         }}
                         />
                     </View>
                 </Animated.View>
+                    : null
+                }
+
             
             </View>
 
 
             <Button title='Open Gallery' onPress={pickImage} />
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'column', gap: 20}}>
                 <Touch>
                     <Text>Cancelar</Text>
                 </Touch>
@@ -205,6 +230,11 @@ const EditImageView = () => {
                  <Touch onPress={rotateRight}>
                     <Text>RotRight</Text>
                 </Touch>
+
+                 <Touch onPress={() => setCrop(true)}>
+                    <Text>crop</Text>
+                </Touch>
+
 
                 <Touch>
                     <Text>Editar</Text>
