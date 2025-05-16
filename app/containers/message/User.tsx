@@ -1,6 +1,5 @@
-import moment from 'moment';
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 
 import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
@@ -8,8 +7,8 @@ import { IRoomInfoParam } from '../../views/SearchMessagesView';
 import sharedStyles from '../../views/Styles';
 import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
-import messageStyles from './styles';
 import { messageHaveAuthorName } from './utils';
+import MessageTime from './Time';
 
 const styles = StyleSheet.create({
 	container: {
@@ -79,13 +78,15 @@ const User = React.memo(
 		isTranslated,
 		...props
 	}: IMessageUser) => {
+		const { fontScale } = useWindowDimensions();
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
+
+		const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
 			const aliasUsername = alias ? <Text style={[styles.alias, { color: colors.fontSecondaryInfo }]}> @{username}</Text> : null;
-			const time = moment(ts).format(timeFormat);
 			const itsMe = author?._id === user.id;
 
 			const onUserPress = () => {
@@ -117,7 +118,7 @@ const User = React.memo(
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						<Text style={[messageStyles.time, { color: colors.fontSecondaryInfo }]}>{time}</Text>
+						{shouldAdjustLayoutForLargeFont ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
 					</TouchableOpacity>
 					<RightIcons
 						type={type}
