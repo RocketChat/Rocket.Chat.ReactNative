@@ -1,5 +1,5 @@
 import React from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, PixelRatio, RefreshControl, Text, View } from 'react-native';
+import { BackHandler, Keyboard, NativeEventSubscription, RefreshControl, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { dequal } from 'dequal';
 import { Q } from '@nozbe/watermelondb';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
 import { Dispatch } from 'redux';
+import { LegendList, LegendListRef } from '@legendapp/list';
 
 import database from '../../lib/database';
 import RoomItem from '../../containers/RoomItem';
@@ -38,18 +39,9 @@ import {
 	isRead,
 	debounce,
 	isIOS,
-	isTablet,
 	compareServerVersion
 } from '../../lib/methods/helpers';
-import {
-	E2E_BANNER_TYPE,
-	DisplayMode,
-	SortBy,
-	MAX_SIDEBAR_WIDTH,
-	themes,
-	colors,
-	textInputDebounceTime
-} from '../../lib/constants';
+import { E2E_BANNER_TYPE, SortBy, MAX_SIDEBAR_WIDTH, themes, colors, textInputDebounceTime } from '../../lib/constants';
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
@@ -117,7 +109,6 @@ interface IRoomItem extends ISubscription {
 	outside?: boolean;
 }
 
-const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const CHATS_HEADER = 'Chats';
 const UNREAD_HEADER = 'Unread';
 const FAVORITES_HEADER = 'Favorites';
@@ -160,11 +151,6 @@ const sortPreferencesShouldUpdate = ['sortBy', 'groupByType', 'showFavorites', '
 
 const displayPropsShouldUpdate = ['showAvatar', 'displayMode'];
 
-const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
-	length: height,
-	offset: height * index,
-	index
-});
 // isSearching is needed to trigger RoomItem's useEffect properly after searching
 const keyExtractor = (item: ISubscription, isSearching = false) => `${item.rid}-${isSearching}`;
 
@@ -178,7 +164,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 	private shouldUpdate?: boolean;
 	private backHandler?: NativeEventSubscription;
 	private querySubscription?: Subscription;
-	private scroll?: FlatList;
+	private scroll?: LegendListRef;
 	private useRealName?: boolean;
 
 	constructor(props: IRoomsListViewProps) {
@@ -205,7 +191,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	componentDidMount() {
 		const { navigation } = this.props;
-		this.handleHasPermission();
 		this.mounted = true;
 		this.unsubscribeFocus = navigation.addListener('focus', () => {
 			this.animated = true;
@@ -396,10 +381,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (this.unsubscribeBlur) {
 			this.unsubscribeBlur();
 		}
-		if (this.backHandler && this.backHandler.remove) {
-			this.backHandler.remove();
-		}
-		console.countReset(`${this.constructor.name}.render calls`);
 	}
 
 	handleHasPermission = async () => {
@@ -868,7 +849,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: LegendListRef) => (this.scroll = ref);
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -949,11 +930,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
-		const fontScale = PixelRatio.getFontScale();
-		const rowHeight = 75 * fontScale;
-		const rowHeightCondensed = 60 * fontScale;
-		const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
+		const { theme, refreshing, supportedVersionsStatus, user, displayMode, showAvatar } = this.props;
 
 		if (loading) {
 			return <ActivityIndicator />;
@@ -966,24 +943,19 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (user.requirePasswordChange) {
 			return <ChangePasswordRequired />;
 		}
-
 		return (
-			<FlatList
+			<LegendList
 				ref={this.getScrollRef}
-				data={searching ? search : chats}
-				extraData={searching ? search : chats}
-				keyExtractor={item => keyExtractor(item, searching)}
+				data={(searching ? search : chats) as IRoomItem[]}
+				extraData={{ showAvatar, displayMode }}
+				keyExtractor={(item: ISubscription) => keyExtractor(item, searching)}
 				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
 				renderItem={this.renderItem}
 				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={(data, index) => getItemLayout(data, index, height)}
-				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				refreshControl={
 					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				}
-				windowSize={9}
 				onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
