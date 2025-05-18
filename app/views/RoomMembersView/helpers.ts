@@ -8,7 +8,7 @@ import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../lib/m
 import EventEmitter from '../../lib/methods/helpers/events';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import log from '../../lib/methods/helpers/log';
-import appNavigation from '../../lib/navigation/appNavigation';
+import Navigation from '../../lib/navigation/appNavigation';
 import { Services } from '../../lib/services';
 import database from '../../lib/database';
 import { RoomTypes } from '../../lib/methods';
@@ -117,7 +117,7 @@ const removeFromTeam = async (
 			updateState({
 				members: newMembers
 			});
-			appNavigation.navigate('RoomMembersView', { room });
+			Navigation.resetTo('RoomMembersView');
 		}
 	} catch (e: any) {
 		log(e);
@@ -145,7 +145,7 @@ export const handleRemoveFromTeam = async (
 					teamId: r.teamId,
 					alert: r.isLastOwner
 				}));
-				appNavigation.navigate('SelectListView', {
+				Navigation.navigate('SelectListView', {
 					title: 'Remove_Member',
 					infoText: 'Remove_User_Team_Channels',
 					data: teamChannels,
