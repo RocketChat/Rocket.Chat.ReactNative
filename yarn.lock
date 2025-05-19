@@ -3628,10 +3628,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@legendapp/list@^1.0.10":
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-1.0.10.tgz#5e4c132389c8ce912cf04183652b23e7d6f140ea"
-  integrity sha512-WZFrW99BG8py0oolbNd9rbv1H3xQPTRtEuaoaQR7oI5dTV/I417ek2aDi/eBgfO0ZpV/EdrPrwN1UQbAd5WqZA==
+"@legendapp/list@1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@legendapp/list/-/list-1.0.12.tgz#875eae3433361859b819356b79235088828770c2"
+  integrity sha512-uvqMSnAB4v4KT2qOCuZ4kz1FIv+PFM4hrEqvpTKFzjxhX5+XgsSqbPAofBXf21YO+yZuG6SDOkUPNxShauSIbw==
   dependencies:
     use-sync-external-store "^1.5.0"
 
