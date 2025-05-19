@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, Text, useWindowDimensions, View, TouchableOpacity } from 'react-native';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';

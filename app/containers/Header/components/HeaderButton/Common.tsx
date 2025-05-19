@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StackActions, useNavigation } from '@react-navigation/native';
 import { StyleProp, ViewStyle } from 'react-native';
 
@@ -9,25 +9,26 @@ import Item, { IHeaderButtonItem } from './HeaderButtonItem';
 import { useTheme } from '../../../../theme';
 
 interface IHeaderButtonCommon extends IHeaderButtonItem {
-	navigation?: any; // TODO: Evaluate proper type
 	style?: StyleProp<ViewStyle>;
 }
 
 // Left
-export const Drawer = ({
-	navigation,
-	testID,
-	style = {},
-	onPress = () => navigation?.toggleDrawer(),
-	...props
-}: IHeaderButtonCommon) => {
+export const Drawer = memo(({ testID, style = {}, onPress, ...props }: IHeaderButtonCommon) => {
 	const { colors } = useTheme();
+	const navigation = useNavigation();
 	return (
 		<Container style={style} left>
-			<Item iconName='hamburguer' onPress={onPress} testID={testID} color={colors.fontDefault} {...props} />
+			<Item
+				iconName='hamburguer'
+				// @ts-ignore
+				onPress={onPress || (() => navigation?.toggleDrawer())}
+				testID={testID}
+				color={colors.fontDefault}
+				{...props}
+			/>
 		</Container>
 	);
-};
+});
 
 export const CloseModal = React.memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
 	const { dispatch } = useNavigation();
@@ -76,8 +77,10 @@ export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderBut
 	</Container>
 ));
 
-export const Legal = React.memo(
-	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
-		<More onPress={onPress} testID={testID} {...props} />
-	)
-);
+export const Legal = React.memo(({ testID, onPress, ...props }: IHeaderButtonCommon) => {
+	const navigation = useNavigation();
+	return (
+		// @ts-ignore
+		<More onPress={onPress || (() => navigation?.navigate('LegalView'))} testID={testID} {...props} />
+	);
+});

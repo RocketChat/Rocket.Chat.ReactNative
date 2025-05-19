@@ -422,10 +422,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
+	getBadge = () => {
+		const { notificationPresenceCap, supportedVersionsStatus, theme } = this.props;
+		if (supportedVersionsStatus === 'warn') {
+			return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
+		}
+		if (notificationPresenceCap) {
+			return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
+		}
+		return null;
+	};
+
 	getHeader = (): any => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme, user } =
-			this.props;
+		const { navigation, isMasterDetail, issuesWithNotifications, supportedVersionsStatus, theme, user } = this.props;
 		if (searching) {
 			return {
 				headerLeft: () => (
@@ -438,22 +448,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			};
 		}
 
-		const getBadge = () => {
-			if (supportedVersionsStatus === 'warn') {
-				return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
-			}
-			if (notificationPresenceCap) {
-				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
-			}
-			return null;
-		};
-
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
 		return {
 			headerLeft: () => (
 				<HeaderButton.Drawer
-					navigation={navigation}
 					testID='rooms-list-view-sidebar'
 					onPress={
 						isMasterDetail
@@ -461,7 +460,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
-					badge={() => getBadge()}
+					badge={() => this.getBadge()}
 					disabled={disabled}
 				/>
 			),
