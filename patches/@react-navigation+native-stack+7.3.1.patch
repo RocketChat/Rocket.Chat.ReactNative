@@ -1,0 +1,25 @@
+diff --git a/node_modules/@react-navigation/native-stack/package.json b/node_modules/@react-navigation/native-stack/package.json
+index a16a75a..7793d93 100644
+--- a/node_modules/@react-navigation/native-stack/package.json
++++ b/node_modules/@react-navigation/native-stack/package.json
+@@ -24,6 +24,7 @@
+   "homepage": "https://github.com/software-mansion/react-native-screens#readme",
+   "source": "./src/index.tsx",
+   "main": "./lib/commonjs/index.js",
++  "react-native": "./src/index.tsx",
+   "module": "./lib/module/index.js",
+   "types": "./lib/typescript/commonjs/src/index.d.ts",
+   "exports": {
+diff --git a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
+index dc80d36..974739a 100644
+--- a/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
++++ b/node_modules/@react-navigation/native-stack/src/views/useHeaderConfigProps.tsx
+@@ -195,7 +195,7 @@ export function useHeaderConfigProps({
+ 
+   const isCenterViewRenderedAndroid = headerTitleAlign === 'center';
+ 
+-  const children = (
++  const children = !headerShown ? null : (
+     <>
+       {Platform.OS === 'ios' ? (
+         <>
