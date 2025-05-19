@@ -11,7 +11,7 @@ import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
-const CustomHeader = ({ options, navigation, route }: IHeader) => {
+const Header = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -70,4 +70,4 @@ const CustomHeader = ({ options, navigation, route }: IHeader) => {
 	);
 };
 
-export default CustomHeader;
+export default Header;
