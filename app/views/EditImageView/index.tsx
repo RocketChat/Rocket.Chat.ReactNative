@@ -15,14 +15,15 @@ import Grid from "./components/Grid";
 
 
 // To Do:
-// - reescale the image decreasing for the screen value range;
-// - Portrait and Landscape;
 // - Add Pinch detector;
+// - Test horizontal device;
 // - Organize code;
 // - Adjust the layout;
 
 // Components:
 // - Grid;
+// - EditOptionsBar;
+// - EditTable;
 
 // Hooks:
 // - useImageManipulator;
@@ -37,6 +38,8 @@ const EditImageView = () => {
     const [rotate, setRotate] = useState(0);    
     const context = useImageManipulator(editableImage);
     const isPortrait = originalImageSize?.height > originalImageSize?.width;
+    const {width, height: screenHeight} = useWindowDimensions();
+    const height = imageSize?.height;
 
 	const pickImage = async () => {
 		try {
@@ -53,6 +56,8 @@ const EditImageView = () => {
 			const [media] = mapMediaResult(response.assets);
             setEditableImage(media.path)
             setOriginalImageSize(media);
+            defineImageSize(media?.width, media.height)
+
 		} catch (error: any) {
             console.log(error)
 		}
@@ -94,11 +99,23 @@ const EditImageView = () => {
     }
 
     const onCrop = async () => {
-        context.rotate(rotate);
-        const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, width);
-        const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, height);
-        const originX = getValueBasedOnOriginal(left.value, originalImageSize.width, width);
-        const originY = getValueBasedOnOriginal(top.value, originalImageSize.height, height);
+        const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, imageSize.width);
+        const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height,  imageSize?.height);
+        const originX = getValueBasedOnOriginal((left.value - getHorizontalPadding()), originalImageSize.width, imageSize.width);
+        const originY = getValueBasedOnOriginal(top.value, originalImageSize.height,  imageSize?.height);
+
+        console.log({
+            height: finalHeight,
+            width: finalWidth ,
+            originX,
+            originY,
+            left: left.value
+            
+        }, {
+            originalWidth: originalImageSize.width,
+            originalHeigth: originalImageSize.height
+
+        })
         context.crop({
             height: finalHeight,
             width: finalWidth ,
@@ -110,14 +127,43 @@ const EditImageView = () => {
             format: SaveFormat.PNG
             });
 
+        setImageSize({width: finalWidth, height: finalHeight});
+        setOriginalImageSize({width: finalWidth, height: finalHeight})
+        defineImageSize(finalWidth, finalHeight);
         setEditableImage(result.uri);
         setCrop(false)
        
     }
 
-    const borderColor = 'white'
-    const {width, height: screenHeight} = useWindowDimensions();
-    const height = isPortrait ? screenHeight * .46 : 300;
+    const defineImageSize = (originalWidth?: number, originalHeight?: number) => {
+        if (!originalWidth || !originalHeight) return;
+
+        const limitHeight = screenHeight * .5;
+
+        const widthScale = width / originalWidth;
+        let newWidth = width;
+        let newHeight = originalHeight * widthScale;
+
+        if (newHeight > limitHeight) {
+            const heightScale = limitHeight / originalHeight;
+            newHeight = limitHeight;
+            newWidth = originalWidth * heightScale;
+        }
+
+        sharedValueWidth.value = newWidth;
+        sharedValueHeight.value = newHeight;
+        setImageSize({ width: newWidth, height: newHeight });
+
+        left.value = (width - newWidth) / 2;
+        top.value = 0;
+       // prevTranslationXValue.value =  (width - newWidth) / 2;
+    };
+
+    const getHorizontalPadding = () => {
+        const spaceToAlign = width - imageSize.width;
+        return spaceToAlign / 2;
+    }
+
     const sharedValueWidth = useSharedValue(width);
     const sharedValueHeight = useSharedValue(height);
     const top = useSharedValue(0);
@@ -131,11 +177,12 @@ const EditImageView = () => {
         transform: [{translateX: left.value}, {translateY: top.value}],
         backgroundColor: 'rgba(0, 0, 0, .4)', 
         position: 'absolute', 
-        borderWidth: 4, 
+        borderWidth: 1, 
         borderColor: 'white',
         alignItems: 'center',
         justifyContent: 'center'
-    }))
+
+    }));
 
     const topLeft = Gesture.Pan().onChange(e => {
         // discover the value that moved;
@@ -145,9 +192,10 @@ const EditImageView = () => {
         // add the value on topValue and add a clamp to limit it;
         const newTop =  clamp(top.value + verticalOffset, 0, height - newHeight);
         
+        const paddingHorizontal = (width - imageSize.width) / 2;
         const horizontalOffset = e.translationX - prevTranslationXValue.value;
-        const newWidth = clamp(sharedValueWidth.value - horizontalOffset, 100, width);
-        const newLeft =  clamp(left.value + horizontalOffset, 0, width - newWidth);
+        const newWidth = clamp(sharedValueWidth.value  - (e.translationX - prevTranslationXValue.value), 100, imageSize.width);
+        const newLeft = clamp(paddingHorizontal + left.value + horizontalOffset, paddingHorizontal, width - newWidth - paddingHorizontal);
        
         if(newTop > 0) {
             sharedValueHeight.value = newHeight > height * 0.999 ? height: newHeight;
@@ -157,7 +205,7 @@ const EditImageView = () => {
 
         if(newLeft > 0) {
             sharedValueWidth.value = newWidth > width * 0.999 ? width: newWidth;
-            left.value =  newWidth > width * 0.999 ? 0 : newLeft;
+            left.value =  newWidth > width * 0.999 ? paddingHorizontal : newLeft;
         }
     
         prevTranslationYValue.value = e.translationY;
@@ -186,7 +234,7 @@ const EditImageView = () => {
         const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationYValue.value), 30, height);
         const newTop =  clamp(top.value + verticalOffset, 0, height - newHeight);
         const horizontalOffset = (e.translationX * -1) + prevTranslationXValue.value;
-        const newWidth = clamp( sharedValueWidth.value - horizontalOffset, 100, width);
+        const newWidth = clamp( sharedValueWidth.value - horizontalOffset, 100, imageSize.width);
 
         if(newTop > 0) {
             sharedValueHeight.value = newHeight > height * 0.999 ? height: newHeight;
@@ -194,7 +242,7 @@ const EditImageView = () => {
         }
     
         if(newWidth + left.value < width) {
-            sharedValueWidth.value = newWidth > width * 0.999 ? width: newWidth;
+            sharedValueWidth.value = newWidth > imageSize.width * 0.999 ? imageSize.width : newWidth;
         }
 
         prevTranslationYValue.value = e.translationY;
@@ -206,13 +254,13 @@ const EditImageView = () => {
 
 
     const leftCenter = Gesture.Pan().onChange(e => {
+        const paddingHorizontal = (width - imageSize.width) / 2;
         const offset = e.translationX - prevTranslationXValue.value;
-        const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationXValue.value), 100, width) 
-        const newLeft =  clamp(left.value + offset, 0, width - newWidth) ;
-
+        const newWidth = clamp(sharedValueWidth.value  - (e.translationX - prevTranslationXValue.value), 100, imageSize.width);
+        const newLeft = clamp(paddingHorizontal + left.value + offset, paddingHorizontal, width - newWidth - paddingHorizontal);
         if(newLeft > 0) {
-            sharedValueWidth.value = newWidth > width * 0.999 ? width: newWidth;
-            left.value =  newWidth > width * 0.999 ? 0 : newLeft;
+            sharedValueWidth.value = newWidth > imageSize.width * 0.999 ? imageSize.width : newWidth;
+            left.value =  newWidth > imageSize.width * 0.999 ? paddingHorizontal : newLeft;
         }
     
         prevTranslationXValue.value = e.translationX;
@@ -220,13 +268,13 @@ const EditImageView = () => {
         prevTranslationXValue.value = 0;   
     })
     const moveGrid = Gesture.Pan().onChange(e => {
+        const paddingHorizontal = (width - imageSize.width) /2;
         const offset = e.translationX - prevTranslationXValue.value;
         const verticalOffset = e.translationY - prevTranslationYValue.value;
-      
-        const newLeft = clamp(left.value + offset, 0, width - sharedValueWidth.value);
+        const newLeft = clamp(left.value + offset, paddingHorizontal, (imageSize.width + paddingHorizontal)  - sharedValueWidth.value);
         const newTop =  clamp(top.value + verticalOffset, 0, height - sharedValueHeight.value);
-
-        if(sharedValueWidth.value < width) {
+        console.log('newLeft', newLeft, imageSize.w)
+        if(sharedValueWidth.value < imageSize.width) {
             left.value = newLeft
         } 
 
@@ -243,19 +291,20 @@ const EditImageView = () => {
     })
     const rightCenter = Gesture.Pan().onChange(e => {
         const offset = (e.translationX * -1) + prevTranslationXValue.value;
-        const newWidth = clamp( sharedValueWidth.value - offset, 100, width)
+        const newWidth = clamp( sharedValueWidth.value - offset, 100, imageSize.width)
         if(newWidth + left.value < width) {
-             sharedValueWidth.value = newWidth > width * 0.999 ? width: newWidth;
+             sharedValueWidth.value = newWidth > imageSize.width * 0.999 ? imageSize.width : newWidth;
         }
         prevTranslationXValue.value = e.translationX;
     }).onFinalize(() => {prevTranslationXValue.value = 0})
    
 
     const bottomLeft = Gesture.Pan().onChange(e => {
+        const paddingHorizontal = (width - imageSize.width) / 2;
         const horizontalOffset = e.translationX - prevTranslationXValue.value;
-        const newWidth = clamp(sharedValueWidth.value - horizontalOffset, 100, width);
-        const newLeft =  clamp(left.value + horizontalOffset, 0, width - newWidth);
-       
+        const newWidth = clamp(sharedValueWidth.value  - (e.translationX - prevTranslationXValue.value), 100, imageSize.width);
+        const newLeft = clamp(paddingHorizontal + left.value + horizontalOffset, paddingHorizontal, width - newWidth - paddingHorizontal);
+
         const offset = (e.translationY * -1) + prevTranslationYValue.value;
         const newHeight = clamp( sharedValueHeight.value - offset, 30, height)
        
@@ -264,8 +313,8 @@ const EditImageView = () => {
         }
         
         if(newLeft > 0) {
-            sharedValueWidth.value = newWidth > width * 0.999 ? width: newWidth;
-            left.value =  newWidth > width * 0.999 ? 0 : newLeft;
+            sharedValueWidth.value = newWidth > imageSize.width * 0.999 ? imageSize.width : newWidth;
+            left.value =  newWidth > imageSize.width * 0.999 ? paddingHorizontal : newLeft;
         }
     
         prevTranslationYValue.value = e.translationY;
@@ -285,14 +334,14 @@ const EditImageView = () => {
     }).onFinalize(() => {prevTranslationYValue.value = 0})
     const bottomRight = Gesture.Pan().onChange(e => {
         const horizontalOffset = (e.translationX * -1) + prevTranslationXValue.value;
-        const newWidth = clamp( sharedValueWidth.value - horizontalOffset, 100, width);
+        const newWidth = clamp( sharedValueWidth.value - horizontalOffset, 100, imageSize.width);
         const offset = (e.translationY * -1) + prevTranslationYValue.value;
         const newHeight = clamp( sharedValueHeight.value - offset, 30, height)
         if(newHeight + top.value < height) {
             sharedValueHeight.value = newHeight > height * 0.999 ? height: newHeight;
         }
         if(newWidth + left.value < width) {
-            sharedValueWidth.value = newWidth > width * 0.999 ? width: newWidth;
+            sharedValueWidth.value = newWidth > imageSize.width * 0.999 ? imageSize.width : newWidth;
         }
 
         prevTranslationYValue.value = e.translationY;
@@ -305,14 +354,14 @@ const EditImageView = () => {
     return(  
         <SafeAreaView>
             
-            <View style={{ backgroundColor: '#000'}}> 
+            <View style={{paddingHorizontal: getHorizontalPadding()}}> 
                 <Image 
                     source={{uri: editableImage}} 
                     style={{
-                        width, height,
-                        transform: [{rotate: `${rotate}deg`}]
+                        transform: [{rotate: `${rotate}deg`}],
+                        width: imageSize.width, 
+                        height: imageSize.height
                     }}  
-                    resizeMode='contain'
                 />
 
                 {
@@ -339,9 +388,8 @@ const EditImageView = () => {
                 </Animated.View>
                     : null
                 }
-
-            
             </View>
+            
 
 
             <Button title='Open Gallery' onPress={pickImage} />
