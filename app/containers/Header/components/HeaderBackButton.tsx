@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
+// TODO: is this component used?
 export const HeaderBackButton = ({ ...props }: HeaderBackButtonProps) => {
 	const { colors } = useTheme();
 

@@ -14,7 +14,7 @@ import RoomItem from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';

@@ -12,7 +12,7 @@ import { useActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
