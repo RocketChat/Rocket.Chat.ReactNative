@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { LayoutChangeEvent, useWindowDimensions, View } from 'react-native';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
 import HeaderTitle from './components/HeaderTitle';
 import HeaderContainer from './components/HeaderContainer';
@@ -12,13 +11,11 @@ import { HeaderBackButton } from './components/HeaderBackButton';
 
 interface IHeader extends NativeStackHeaderProps {}
 
-const Header = ({ options }: IHeader) => {
+const Header = ({ options, navigation, route }: IHeader) => {
 	const { headerLeft, headerTitle, headerRight, title } = options;
 	const [rightButtonsWidth, setRightButtonsWidth] = useState<number | null>(null);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const { fontScale } = useWindowDimensions();
-	const navigation = useNavigation();
-	const route = useRoute();
 	// It helps create an empty view to properly align the header when there is no component on the right.
 	// 32.5 is the value I found that makes it work correctly on both platforms.
 	const size = 32.5 * fontScale;
