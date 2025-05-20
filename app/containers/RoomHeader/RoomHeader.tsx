@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
-import { StyleSheet, Text, useWindowDimensions, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
@@ -188,21 +189,11 @@ const Header = React.memo(
 		const handleOnPress = useCallback(() => onPress(), []);
 
 		return (
-			<View style={styles.container}>
-				<TouchableOpacity
-					testID='room-header'
-					accessibilityLabel={accessibilityLabel}
-					onPress={handleOnPress}
-					style={[
-						styles.container,
-						{
-							opacity: disabled ? 0.5 : 1,
-							height: 36.9 * fontScale
-						}
-					]}
-					disabled={disabled}
-					hitSlop={HIT_SLOP}
-					accessibilityRole='header'>
+			<View
+				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityRole='header'>
+				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
 					<View style={styles.titleContainer}>
 						{tmid ? null : (
 							<RoomTypeIcon
