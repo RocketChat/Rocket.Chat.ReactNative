@@ -613,8 +613,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onChangeText={value => this.setState({ joinCode: value })}
 							secureTextEntry
 							testID='room-info-edit-view-password'
-							autoComplete='password'
-							textContentType='password'
+							autoComplete='new-password'
+							textContentType='newPassword'
 							importantForAutofill='yes'
 						/>
 						<View style={styles.switches}>
