@@ -4680,7 +4680,7 @@
     "@react-navigation/elements" "^2.2.8"
     warn-once "^0.1.1"
 
-"@react-navigation/native@7.0.17":
+"@react-navigation/native@^7.0.17":
   version "7.0.17"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.0.17.tgz#8aff8b33f7463c2af07e7e70b99bad57bb05c6df"
   integrity sha512-N9pMqd6YBijg9l9382G81BO0O2FTFEgeR/2KNZwZQVVIlWqiqWYY7XxgzEnKeRGq1r3XmLcryQZk/XAHts1i9Q==
