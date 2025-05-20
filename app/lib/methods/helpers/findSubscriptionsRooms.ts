@@ -3,7 +3,7 @@ import { Q } from '@nozbe/watermelondb';
 import { IServerSubscription, IServerRoom } from '../../../definitions';
 import database from '../../database';
 
-export default async (subscriptions: IServerSubscription[], rooms: IServerRoom[]) => {
+export default async function findSubscriptionsRooms(subscriptions: IServerSubscription[], rooms: IServerRoom[]) {
 	let sub = subscriptions;
 	try {
 		const db = database.active;
@@ -19,4 +19,4 @@ export default async (subscriptions: IServerSubscription[], rooms: IServerRoom[]
 	}
 
 	return sub;
-};
+}
