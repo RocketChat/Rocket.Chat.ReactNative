@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { FormTextInput } from '../../containers/TextInput';
 import { IBaseScreen } from '../../definitions';

@@ -12,7 +12,7 @@ import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';

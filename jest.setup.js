@@ -107,6 +107,15 @@ jest.mock('react-native-notifications', () => ({
 	}
 }));
 
+jest.mock('@discord/bottom-sheet', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View,
+		BottomSheetScrollView: react.ScrollView
+	};
+});
+
 jest.mock('react-native-math-view', () => {
 	const react = require('react-native');
 	return {
