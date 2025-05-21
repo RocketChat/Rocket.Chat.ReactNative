@@ -29,6 +29,9 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
+        /* Makes list of messages build with earlier messages at the top rather than the bottom */
+        messages.reverse();
+
 		const {
 			jumpToBottom,
 			jumpToMessage,

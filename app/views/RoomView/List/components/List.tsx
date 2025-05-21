@@ -39,7 +39,6 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
-				inverted
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
@@ -49,6 +48,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				onScroll={scrollHandler}
 				{...props}
 				{...scrollPersistTaps}
+				importantForAccessibility={'yes'}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
 		</>
