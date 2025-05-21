@@ -20,7 +20,7 @@ export const SendThreadToChannel = (): React.ReactElement | null => {
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const { tmid } = useRoomContext();
 	const { colors } = useTheme();
-	const subscription = useRef<Subscription>();
+	const subscription = useRef<Subscription | null>(null);
 	const alsoSendThreadToChannelUserPref = useAppSelector(state => state.login.user.alsoSendThreadToChannel);
 	const serverVersion = useAppSelector(state => state.server.version);
 

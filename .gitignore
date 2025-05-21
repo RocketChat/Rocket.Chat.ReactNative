@@ -52,6 +52,7 @@ local.properties
 *.keystore
 *.jks
 !debug.keystore
+.kotlin/
 
 # node.js
 #

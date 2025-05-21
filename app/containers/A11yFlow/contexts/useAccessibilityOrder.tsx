@@ -13,7 +13,7 @@ interface IAccessibilityContextData {
 
 interface IAccessibilityOrderProviderProps {
 	children: React.ReactNode;
-	containerRef: React.RefObject<View>;
+	containerRef: React.RefObject<View | null>;
 }
 
 export const AccessibilityOrderContext = createContext({} as IAccessibilityContextData);

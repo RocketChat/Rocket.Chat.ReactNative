@@ -33,7 +33,9 @@ const Toast = (): React.ReactElement => {
 		};
 	}, []);
 
-	const getToastRef = (newToast: EasyToast | null) => (toast = newToast);
+	const getToastRef = (newToast: EasyToast | null) => {
+		toast = newToast;
+	};
 
 	const showToast = ({ message }: { message: string }) => {
 		if (toast && toast.show) {
