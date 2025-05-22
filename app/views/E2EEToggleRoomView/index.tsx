@@ -35,7 +35,7 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 		navigation?.setOptions({
 			title: I18n.t('E2E_Encryption')
 		});
-	}, []);
+	}, [navigation]);
 
 	if (!room) {
 		return null;

@@ -4,7 +4,7 @@ import { FlatList } from 'react-native-gesture-handler';
 
 import { TAnyMessageModel } from '../../../definitions';
 
-export type TListRef = RefObject<FlatList<TAnyMessageModel>>;
+export type TListRef = RefObject<FlatList<TAnyMessageModel> | null>;
 
 export type TMessagesIdsRef = RefObject<string[]>;
 

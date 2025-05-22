@@ -15,10 +15,6 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager', () => ({
-	runAfterInteractions: callback => callback()
-}));
-
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));

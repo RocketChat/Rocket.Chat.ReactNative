@@ -111,10 +111,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private tmid?: string;
 	private jumpToMessageId?: string;
 	private jumpToThreadId?: string;
-	private messageComposerRef: React.RefObject<IMessageComposerRef>;
-	private joinCode: React.RefObject<IJoinCode>;
+	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
+	private joinCode: React.RefObject<IJoinCode | null>;
 	// ListContainer component
-	private list: React.RefObject<IListContainerRef>;
+	private list: React.RefObject<IListContainerRef | null>;
 	// FlatList inside ListContainer
 	private flatList: TListRef;
 	private mounted: boolean;
@@ -1451,7 +1451,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		return (
 			<>
 				<MessageActions
-					ref={ref => (this.messageActions = ref)}
+					ref={(ref: IMessageActions | null) => {
+						this.messageActions = ref;
+					}}
 					tmid={this.tmid}
 					room={room}
 					user={user}
@@ -1463,7 +1465,12 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					jumpToMessage={this.jumpToMessageByUrl}
 					isReadOnly={readOnly}
 				/>
-				<MessageErrorActions ref={ref => (this.messageErrorActions = ref)} tmid={this.tmid} />
+				<MessageErrorActions
+					ref={(ref: IMessageErrorActions | null) => {
+						this.messageErrorActions = ref;
+					}}
+					tmid={this.tmid}
+				/>
 			</>
 		);
 	};
