@@ -116,7 +116,7 @@ export const merge = (
 	return mergedSubscription;
 };
 
-export default async (
+export default async function mergeSubscriptionsRooms(
 	serverSubscriptions: {
 		update: IServerSubscription[];
 		remove: IServerSubscription[];
@@ -127,7 +127,7 @@ export default async (
 		remove: IServerRoom[];
 		success: boolean;
 	}
-): Promise<ISubscription[]> => {
+): Promise<ISubscription[]> {
 	const subscriptions = serverSubscriptions.update;
 	const rooms = serverRooms.update;
 
@@ -147,4 +147,4 @@ export default async (
 	const decryptedSubscriptions = (await Encryption.decryptSubscriptions(mergedSubscriptions)) as ISubscription[];
 
 	return decryptedSubscriptions;
-};
+}
