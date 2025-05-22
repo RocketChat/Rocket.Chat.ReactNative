@@ -1,14 +1,28 @@
 diff --git a/node_modules/remove-markdown/index.js b/node_modules/remove-markdown/index.js
-index 7f53a9c..579d0e0 100644
+index 7f53a9c..fdadcdc 100644
 --- a/node_modules/remove-markdown/index.js
 +++ b/node_modules/remove-markdown/index.js
 @@ -7,6 +7,9 @@ module.exports = function(md, options) {
  
    var output = md || '';
  
-+  // Remove spaces around asterisks (*) in the string
-+  output = output.replace(/\*\s+|\s+\*/g, '*');
++  // Remove surrounding asterisks (*) and any spaces around the inner content
++  output = output.replace(/\*\s*(.*?)\s*\*/g, '*$1*');
 +
    // Remove horizontal rules (stripListHeaders conflict with this rule, which is why it has been moved to the top)
    output = output.replace(/^(-\s*?|\*\s*?|_\s*?){3,}\s*$/gm, '');
  
+@@ -24,9 +27,11 @@ module.exports = function(md, options) {
+         // Fenced codeblocks
+         .replace(/~{3}.*\n/g, '')
+         // Strikethrough
+-        .replace(/~~/g, '')
++        .replace(/~/g, '')
+         // Fenced codeblocks
+-        .replace(/`{3}.*\n/g, '');
++        .replace(/`{3}.*\n/g, '')
++        // Remove quotes
++        .replace(/>\s?/g, ' ')
+     }
+     output = output
+       // Remove HTML tags
