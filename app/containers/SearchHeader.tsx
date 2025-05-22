@@ -37,6 +37,9 @@ const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps)
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
 				testID={testID}
+				autoComplete='off'
+				autoCorrect={false}
+				autoCapitalize='none'
 			/>
 		</View>
 	);
