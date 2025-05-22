@@ -3,7 +3,6 @@ import { Text } from 'react-native';
 import { Plain as PlainProps } from '@rocket.chat/message-parser';
 
 import { useTheme } from '../../../theme';
-import styles from '../styles';
 
 interface IPlainProps {
 	value: PlainProps['value'];
@@ -12,7 +11,7 @@ interface IPlainProps {
 const Plain = ({ value }: IPlainProps): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
-		<Text accessibilityLabel={value} style={[styles.plainText, { color: colors.fontDefault }]}>
+		<Text accessibilityLabel={value} style={{ color: colors.fontDefault }}>
 			{value}
 		</Text>
 	);
