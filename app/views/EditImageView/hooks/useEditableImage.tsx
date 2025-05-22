@@ -1,3 +1,4 @@
+import { ImageResult } from 'expo-image-manipulator';
 import { useState } from 'react';
 
 interface IUseEditableImageProps {
@@ -6,17 +7,22 @@ interface IUseEditableImageProps {
 
 const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 	const firstImage = attachments[0];
-
 	const [images, setImages] = useState(attachments);
-	const [editableImage, setEditableImage] = useState(firstImage?.image_url ?? '');
+	const [editableImage, setEditableImage] = useState(firstImage?.path ?? '');
 	const [originalImageSize, setOriginalImageSize] = useState<any>({ width: firstImage?.width, height: firstImage?.height });
 
 	const selectImageToEdit = (image: any) => {
 		setEditableImage(image);
 	};
 
-	const updateImage = (image: any) => {};
-	const updateOriginaImageSize = (image: any) => {};
+	const updateImage = (image: ImageResult) => {
+		setEditableImage(image.uri);
+		// TODO: update on images;
+	};
+	const updateOriginaImageSize = (updatedOriginalImageSize: { width: number; height: number }) => {
+		setOriginalImageSize(updatedOriginalImageSize);
+	};
+
 	return {
 		images,
 		selectImageToEdit,

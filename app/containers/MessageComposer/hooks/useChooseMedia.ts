@@ -137,7 +137,7 @@ export const useChooseMedia = ({
 		}
 		if (room) {
 			// FIXME: use useNavigation
-			Navigation.navigate('ShareView', {
+			Navigation.navigate('EditImageView', {
 				room,
 				thread: thread || tmid,
 				attachments,

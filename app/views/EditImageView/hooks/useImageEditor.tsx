@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImageResult, SaveFormat, useImageManipulator } from 'expo-image-manipulator';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 
@@ -117,6 +117,10 @@ const useImageEditor = ({
 	const cancelCropEditor = () => {
 		setCrop(false);
 	};
+
+	useEffect(() => {
+		defineImageSize(originalImageSize.width, originalImageSize.height);
+	}, []);
 
 	return {
 		rotateLeft,
