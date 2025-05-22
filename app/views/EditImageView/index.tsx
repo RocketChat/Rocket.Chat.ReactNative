@@ -14,6 +14,7 @@ import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
 
 // To Do:
+// - multiple image editor support;
 // - action sheet of resize;
 // - Add Pinch detector;
 // - Test horizontal device;
