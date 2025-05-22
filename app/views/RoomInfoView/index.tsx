@@ -7,7 +7,7 @@ import { ScrollView, View } from 'react-native';
 import { Subscription } from 'rxjs';
 import UAParser from 'ua-parser-js';
 
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
 import { ISubscription, IUser, SubscriptionType } from '../../definitions';

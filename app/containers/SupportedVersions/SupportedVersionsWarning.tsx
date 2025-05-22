@@ -6,7 +6,7 @@ import { CustomIcon } from '../CustomIcon';
 import Button from '../Button';
 import { styles } from './styles';
 import { useSupportedVersionMessage } from './useSupportedVersionMessage';
-import * as HeaderButton from '../HeaderButton';
+import * as HeaderButton from '../Header/components/HeaderButton';
 import I18n from '../../i18n';
 import { LEARN_MORE_URL } from './constants';
 

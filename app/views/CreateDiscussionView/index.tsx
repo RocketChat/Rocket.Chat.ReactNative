@@ -6,7 +6,7 @@ import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';

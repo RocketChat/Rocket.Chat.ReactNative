@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import type { IconProps } from 'react-native-vector-icons/Icon';
@@ -18,7 +18,7 @@ export interface ICustomIcon extends IconProps {
 	color?: string;
 }
 
-const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
+const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
 	const { fontScale } = useWindowDimensions();
 
@@ -31,6 +31,6 @@ const CustomIcon = ({ name, size, color, style, ...props }: ICustomIcon): React.
 			{...props}
 		/>
 	);
-};
+});
 
 export { CustomIcon };

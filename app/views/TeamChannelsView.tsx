@@ -9,7 +9,7 @@ import { DisplayMode, textInputDebounceTime, themes } from '../lib/constants';
 import { TActionSheetOptions, TActionSheetOptionsItem, withActionSheet } from '../containers/ActionSheet';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import BackgroundContainer from '../containers/BackgroundContainer';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';

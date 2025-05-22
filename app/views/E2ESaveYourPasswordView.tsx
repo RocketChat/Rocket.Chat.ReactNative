@@ -7,7 +7,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';

@@ -7,7 +7,7 @@ import { TActionSheetOptionsItem, useActionSheet } from '../../containers/Action
 import { sendLoadingEvent } from '../../containers/Loading';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
