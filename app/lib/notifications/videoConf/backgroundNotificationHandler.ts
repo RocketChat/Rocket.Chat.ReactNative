@@ -1,5 +1,5 @@
 import notifee, { AndroidCategory, AndroidFlags, AndroidImportance, AndroidVisibility, Event } from '@notifee/react-native';
-import messaging from '@react-native-firebase/messaging';
+import { getMessaging as messaging } from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ejson from 'ejson';
 
