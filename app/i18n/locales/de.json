@@ -667,6 +667,7 @@
   "Started_call": "Anruf gestartet von {{userBy}}",
   "Started_discussion": "Hat eine Diskussion gestartet:",
   "Status_saved_successfully": "Status erfolgreich gesetzt!",
+  "Status_text_limit_exceeded": "Zeichenanzahl überschritten",
   "Table": "Tabelle",
   "Tags": "Tags",
   "Take_a_photo": "Foto aufnehmen",

@@ -399,6 +399,7 @@
   "Starred": "お気に入りされています",
   "Started_call": "{{userBy}}と通話する",
   "Started_discussion": "ディスカッションを開始する:",
+  "Status_text_limit_exceeded": "{{限界}} 文字数制限を超えました。",
   "Table": "表",
   "Take_a_photo": "写真を撮影",
   "Take_a_video": "動画を撮影",

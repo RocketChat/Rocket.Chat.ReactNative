@@ -386,6 +386,7 @@
   "Slash_Topic_Params": "Mensagem do tópico",
   "Star": "Dar estrela",
   "Starred": "Deu uma estrela",
+  "Status_text_limit_exceeded": "limite de caracteres {{limit}} ultrapassado",
   "Take_a_photo": "Tirar uma foto",
   "Terms_of_Service": " Termos do Serviço ",
   "There_was_an_error_while_action": "Houve um erro enquanto {{action}}!",

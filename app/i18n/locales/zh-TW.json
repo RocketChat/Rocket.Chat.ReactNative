@@ -481,6 +481,7 @@
   "Started_call": "{{userBy}} 開始的通話",
   "Started_discussion": "已開始的討論",
   "Status_saved_successfully": "狀態儲存成功",
+  "Status_text_limit_exceeded": "{{limit}} 字元限制已超出",
   "Table": "表格",
   "Tags": "標籤",
   "Take_a_photo": "拍照",
