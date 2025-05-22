@@ -54,9 +54,14 @@ export const useEmojiKeyboardHeight = () => {
 				// keyboardHeight.value = -e.height;
 				// keyboardHeight.value = e.height > 0 ? Math.max(e.height + OFFSET, totalOffset) : totalOffset;
 				const notch = e.height > 0 || showEmojiPickerSharedValue.value ? 0 : bottom;
-				keyboardHeight.value = e.height > 0 ? -Math.max(e.height, notch) : -notch;
-				emojiPickerHeight.value = showEmojiPickerSharedValue.value ? 291 - e.height : 0;
-				console.log('onMove', e.height, keyboardHeight.value);
+				keyboardHeight.value = e.height > 0 ? -Math.max(e.height, Math.abs(notch)) : -notch;
+				emojiPickerHeight.value = showEmojiPickerSharedValue.value ? 302 + bottom - e.height : 0;
+				console.log(
+					'onMove e.height keyboardHeight.value emojiPickerHeight.value',
+					e.height,
+					keyboardHeight.value,
+					emojiPickerHeight.value
+				);
 			}
 			// onInteractive: e => {
 			// 	'worklet';

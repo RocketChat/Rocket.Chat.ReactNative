@@ -6,14 +6,17 @@ import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../../views/RoomView/context';
+import { useEmojiKeyboard } from '../../../../lib/hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
 	const { sharing } = useRoomContext();
 	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
+	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
 
 	const openEmoji = async () => {
+		showEmojiPickerSharedValue.value = true;
 		openEmojiKeyboard();
-		// await KeyboardController.dismiss({ keepFocus: true });
+		await KeyboardController.dismiss({ keepFocus: true });
 	};
 
 	return (

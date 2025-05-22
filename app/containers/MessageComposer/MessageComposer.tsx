@@ -122,6 +122,7 @@ export const MessageComposer = ({
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
 		if (showEmojiKeyboard) {
+			showEmojiPickerSharedValue.value = false;
 			closeEmojiKeyboard();
 		}
 		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
@@ -253,7 +254,7 @@ export const MessageComposer = ({
 					<Left />
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 					<Right />
-					<BaseButton
+					{/* <BaseButton
 						onPress={() => {
 							showEmojiPickerSharedValue.value = !showEmojiPickerSharedValue.value;
 							if (showEmojiPickerSharedValue.value) {
@@ -265,7 +266,7 @@ export const MessageComposer = ({
 						testID='message-composer-open-emoji'
 						accessibilityLabel='Open_emoji_selector'
 						icon='emoji'
-					/>
+					/> */}
 				</View>
 				<Quotes />
 				<Toolbar />
@@ -303,9 +304,7 @@ export const MessageComposer = ({
 				onHeightChanged={onHeightChanged}
 			/> */}
 			<Animated.View style={composerStyle}>{renderContent()}</Animated.View>
-			<Animated.View style={emojiKeyboardStyle}>
-				{/* <EmojiPicker /> if this is commented, the animation works well */}
-			</Animated.View>
+			<Animated.View style={emojiKeyboardStyle}>{showEmojiKeyboard && <EmojiPicker />}</Animated.View>
 			{/* 
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} /> */}
 		</MessageInnerContext.Provider>
