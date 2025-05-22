@@ -1,21 +1,49 @@
-import React from "react";
-import { StyleSheet, View, ViewProps } from "react-native";
+import React, { useEffect, useState } from 'react';
+import { Image, View, useWindowDimensions } from 'react-native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ImagePickerOptions } from 'expo-image-picker';
+import { SaveFormat, useImageManipulator } from 'expo-image-manipulator';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Animated, { clamp, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import { RouteProp } from '@react-navigation/native';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1 / 3, 
-        flexDirection: 'row',
-        width: '100%', 
-        backgroundColor: 'transparent'
+import Cell from '../Cell';
+import Row from '../Row';
 
-    }
-})
+// To Do:
+// - Add Pinch detector;
+// - Test horizontal device;
+// - Organize code;
+// - Adjust the layout;
 
-interface IRowProps extends ViewProps  {
-};
+// Components:
+// - Grid;
+// - EditTable;
 
-const Grid = ({...rest}: IRowProps) => (
-    <View {...rest} style={styles.container} />
-)
+// Hooks:
+// - useImageManipulator;
 
-export default Grid;
+const Grid = () => (
+	<Animated.View style={animatedStyle}>
+		<Row>
+			<Cell gesture={topLeft} />
+			<Cell gesture={topCenter} />
+			<Cell gesture={topRight} />
+		</Row>
+
+		<Row>
+			<Cell gesture={leftCenter} />
+			<Cell gesture={moveGrid} />
+			<Cell gesture={rightCenter} />
+		</Row>
+
+		<Row>
+			<Cell gesture={bottomLeft} />
+			<Cell gesture={bottomCenter} />
+			<Cell gesture={bottomRight} />
+		</Row>
+	</Animated.View>
+);
+
+export default EditImageView;
