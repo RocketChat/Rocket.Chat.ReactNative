@@ -1,36 +1,22 @@
-import React, { ReactElement, useRef, useImperativeHandle, useCallback, useEffect } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
+import React, { ReactElement, useRef, useImperativeHandle, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 // import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
-import { useFocusEffect } from '@react-navigation/native';
-import { useKeyboardHandler, useReanimatedFocusedInput, useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
-import Animated, { interpolate, useAnimatedStyle, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import {
-	Autocomplete,
-	Toolbar,
-	EmojiSearchbar,
-	ComposerInput,
-	Left,
-	Right,
-	Quotes,
-	SendThreadToChannel,
-	BaseButton
-} from './components';
+import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {
 	MessageInnerContext,
 	useAlsoSendThreadToChannel,
-	useFocused,
 	useMessageComposerApi,
 	useRecordingAudio,
 	useShowEmojiKeyboard,
 	useShowEmojiSearchbar
 } from './context';
-import { IComposerInput, ITrackingView } from './interfaces';
+import { IComposerInput } from './interfaces';
 import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
@@ -42,11 +28,9 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
-import { useKeyboardListener } from './hooks';
-import { emitter } from '../../lib/methods/helpers/emitter';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { useEmojiKeyboard, useEmojiKeyboardHeight } from '../../lib/hooks/useEmojiKeyboard';
-import EmojiPicker from '../../containers/EmojiPicker';
+import EmojiPicker from '../EmojiPicker';
 
 const styles = StyleSheet.create({
 	container: {
@@ -76,8 +60,7 @@ export const MessageComposer = ({
 		setInput: () => {},
 		onAutocompleteItemSelected: () => {}
 	});
-	const trackingViewRef = useRef<ITrackingView>({ resetTracking: () => {}, getNativeProps: () => ({ trackingViewHeight: 0 }) });
-	const { colors, theme } = useTheme();
+	const { colors } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
@@ -87,24 +70,14 @@ export const MessageComposer = ({
 		openSearchEmojiKeyboard,
 		closeEmojiKeyboard,
 		closeSearchEmojiKeyboard,
-		setTrackingViewHeight,
 		setAlsoSendThreadToChannel,
-		setAutocompleteParams,
-		openEmojiKeyboard
+		setAutocompleteParams
 	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 	// useKeyboardListener(trackingViewRef);
 	// const { height } = useReanimatedKeyboardAnimation();
 	// const { input } = useReanimatedFocusedInput();
-	const { bottom } = useSafeAreaInsets();
-	const focused = useFocused();
-
-	useFocusEffect(
-		useCallback(() => {
-			trackingViewRef.current?.resetTracking();
-		}, [recordingAudio])
-	);
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
@@ -304,9 +277,10 @@ export const MessageComposer = ({
 				onHeightChanged={onHeightChanged}
 			/> */}
 			<Animated.View style={composerStyle}>{renderContent()}</Animated.View>
+			{/* @ts-ignore */}
 			<Animated.View style={emojiKeyboardStyle}>{showEmojiKeyboard && <EmojiPicker />}</Animated.View>
-			{/* 
-			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} /> */}
+
+			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>
 	);
 };

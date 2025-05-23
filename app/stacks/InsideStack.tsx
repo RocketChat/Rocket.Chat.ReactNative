@@ -89,7 +89,6 @@ import {
 import { isIOS } from '../lib/methods/helpers';
 import { TNavigation } from './stackType';
 import AccessibilityAndAppearanceView from '../views/AccessibilityAndAppearanceView';
-import KeyboardView from '../views/Keyboard';
 
 // ChatsStackNavigator
 const ChatsStack = createNativeStackNavigator<ChatsStackParamList & TNavigation>();

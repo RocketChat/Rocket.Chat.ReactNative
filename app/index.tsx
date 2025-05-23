@@ -37,7 +37,6 @@ import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
 import { RowHeightProvider } from './lib/hooks/useRowHeight';
-import { EmojiKeyboardProvider } from './lib/hooks/useEmojiKeyboard';
 
 enableScreens();
 initStore(store);
@@ -227,15 +226,15 @@ export default class Root extends React.Component<{}, IState> {
 								}}>
 								<GestureHandlerRootView>
 									<KeyboardProvider>
-										{/* <ActionSheetProvider> */}
-										<AppContainer />
-										{/* <TwoFactor />
+										<ActionSheetProvider>
+											<AppContainer />
+											<TwoFactor />
 											<ScreenLockedView />
 											<ChangePasscodeView />
 											<InAppNotification />
 											<Toast />
-											<Loading /> */}
-										{/* </ActionSheetProvider> */}
+											<Loading />
+										</ActionSheetProvider>
 									</KeyboardProvider>
 								</GestureHandlerRootView>
 							</DimensionsContext.Provider>
