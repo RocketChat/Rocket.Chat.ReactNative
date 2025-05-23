@@ -17,7 +17,13 @@ jest.mock('react-native-safe-area-context', () => {
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock('react-native-reanimated', () => {
+	const actual = jest.requireActual('react-native-reanimated/mock');
+	return {
+		...actual,
+		useSharedValue: init => ({ value: init })
+	};
+});
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -135,3 +141,5 @@ jest.mock('react-native-ui-lib/keyboard', () => {
 		})
 	};
 });
+
+jest.mock('react-native-keyboard-controller');

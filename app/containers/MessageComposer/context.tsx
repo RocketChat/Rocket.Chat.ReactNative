@@ -1,4 +1,5 @@
 import React, { createContext, ReactElement, useContext, useMemo, useReducer } from 'react';
+import { KeyboardController } from 'react-native-keyboard-controller';
 
 import { IEmoji } from '../../definitions';
 import { IAutocompleteBase, TMicOrSend } from './interfaces';
@@ -138,9 +139,15 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 		const setTrackingViewHeight = (trackingViewHeight: number) =>
 			dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight });
 
-		const openEmojiKeyboard = () => dispatch({ type: 'openEmojiKeyboard' });
+		const openEmojiKeyboard = async () => {
+			await KeyboardController.dismiss({ keepFocus: true });
+			dispatch({ type: 'openEmojiKeyboard' });
+		};
 
-		const closeEmojiKeyboard = () => dispatch({ type: 'closeEmojiKeyboard' });
+		const closeEmojiKeyboard = async () => {
+			await KeyboardController.setFocusTo('current');
+			dispatch({ type: 'closeEmojiKeyboard' });
+		};
 
 		const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });
 
