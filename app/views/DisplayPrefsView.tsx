@@ -89,10 +89,10 @@ const DisplayPrefsView = (): React.ReactElement => {
 			onValueChange={() => toggleAvatar()}
 			testID='display-pref-view-avatar-switch'
 			trackColor={{
-				false: colors.userPresenceOffline,
-				true: colors.userPresenceOffline
+				true: colors.buttonBackgroundPrimaryDefault,
+				false: colors.fontDisabled
 			}}
-			ios_backgroundColor={colors.userPresenceOffline}
+			ios_backgroundColor={colors.strokeDark}
 		/>
 	);
 
