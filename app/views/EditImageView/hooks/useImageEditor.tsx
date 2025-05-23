@@ -85,7 +85,7 @@ const useImageEditor = ({
 		const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, imageWidth.value);
 		const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, imageHeight.value);
 		const originX = getValueBasedOnOriginal(
-			left.value - getHorizontalPadding(screenWidth, finalWidth),
+			left.value - getHorizontalPadding(screenWidth, imageWidth.value),
 			originalImageSize.width,
 			imageWidth.value
 		);
@@ -97,6 +97,7 @@ const useImageEditor = ({
 			originX,
 			originY
 		});
+
 		const image = await context.renderAsync();
 		const result = await image.saveAsync({
 			format: SaveFormat.PNG
@@ -106,8 +107,6 @@ const useImageEditor = ({
 		defineImageSize(finalWidth, finalHeight);
 		updateImage(result);
 		setCrop(false);
-		imageWidth.value = withTiming(finalWidth);
-		imageHeight.value = withTiming(finalHeight);
 	};
 
 	const openCropEditor = () => {
@@ -118,9 +117,11 @@ const useImageEditor = ({
 		setCrop(false);
 	};
 
+	const onSelectCropOption = (option: string) => {};
+
 	useEffect(() => {
 		defineImageSize(originalImageSize.width, originalImageSize.height);
-	}, []);
+	}, [originalImageSize]);
 
 	return {
 		rotateLeft,

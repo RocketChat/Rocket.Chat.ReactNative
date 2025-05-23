@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, useWindowDimensions } from 'react-native';
+import { FlatList, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
@@ -12,9 +12,11 @@ import useEditableImage from './hooks/useEditableImage';
 import getHorizontalPadding from './utils/getHorizontalPadding';
 import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
+import Touch from '../../containers/Touch';
+import { useActionSheet } from '../../containers/ActionSheet';
 
 // To Do:
-// - multiple image editor support;
+// - undo;
 // - action sheet of resize;
 // - Test horizontal device;
 // - Organize code;
@@ -38,6 +40,7 @@ interface IEditImageViewProps {
 
 const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+	const { showActionSheet } = useActionSheet();
 	const { images, editableImage, originalImageSize, selectImageToEdit, updateImage, updateOriginaImageSize } = useEditableImage({
 		attachments: route?.params?.attachments
 	});
@@ -52,7 +55,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		imageHeight,
 		gridPosition: { prevTranslationXValue, prevTranslationYValue, top, left, gridHeight, gridWidth }
 	} = useImageEditor({
-		editableImage,
+		editableImage: editableImage.path,
 		originalImageSize,
 		screenWidth,
 		screenHeight,
@@ -62,6 +65,12 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 
 	const onCancel = () => {
 		navigation.goBack();
+	};
+
+	const openCropOptions = () => {
+		showActionSheet({
+			options: [{ title: 'testing', onPress: () => {} }]
+		});
 	};
 
 	const imageAnimatedStyle = useAnimatedStyle(() => ({
@@ -76,11 +85,11 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 			<View style={styles.editContent}>
 				<GestureDetector gesture={composedGesture}>
 					<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
-						<Animated.Image source={{ uri: editableImage }} style={imageAnimatedStyle} />
+						<Animated.Image source={{ uri: editableImage.path }} style={imageAnimatedStyle} />
 
 						{editableImage && cropSelectorEnabled ? (
 							<Grid
-								height={screenHeight}
+								height={imageHeight.value}
 								imageSizeWidth={imageWidth}
 								left={left}
 								prevTranslationX={prevTranslationXValue}
@@ -95,13 +104,38 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 				</GestureDetector>
 			</View>
 
+			{images.length > 1 ? (
+				<View style={{ marginBottom: 20 }}>
+					<FlatList
+						horizontal
+						data={images}
+						centerContent
+						contentContainerStyle={{ paddingHorizontal: 12, gap: 8, alignItems: 'center' }}
+						renderItem={({ item }) => (
+							<Touch onPress={() => selectImageToEdit(item)} style={{ borderRadius: 4 }}>
+								<Image
+									resizeMode='cover'
+									source={{ uri: item.path }}
+									style={{
+										width: editableImage.filename === item.filename ? 60 : 45,
+										height: editableImage.filename === item.filename ? 80 : 70,
+										borderRadius: 4
+									}}
+								/>
+							</Touch>
+						)}
+						keyExtractor={item => item.filename}
+					/>
+				</View>
+			) : null}
+
 			<EditOptionsBar
 				crop={onCrop}
 				isCropping={cropSelectorEnabled}
 				onCancel={onCancel}
 				onCancelCrop={cancelCropEditor}
 				onContinue={async () => {}}
-				openResizeOptions={() => {}}
+				openResizeOptions={openCropOptions}
 				rotateLeft={rotateLeft}
 				rotateRight={rotateRight}
 				startCrop={openCropEditor}

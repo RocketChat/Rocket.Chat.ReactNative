@@ -8,16 +8,23 @@ interface IUseEditableImageProps {
 const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 	const firstImage = attachments[0];
 	const [images, setImages] = useState(attachments);
-	const [editableImage, setEditableImage] = useState(firstImage?.path ?? '');
+	const [editableImage, setEditableImage] = useState(firstImage);
 	const [originalImageSize, setOriginalImageSize] = useState<any>({ width: firstImage?.width, height: firstImage?.height });
 
 	const selectImageToEdit = (image: any) => {
 		setEditableImage(image);
+		setOriginalImageSize({ width: image.width, height: image.height });
 	};
 
 	const updateImage = (image: ImageResult) => {
-		setEditableImage(image.uri);
-		// TODO: update on images;
+		setEditableImage({ ...editableImage, width: image.width, height: image.height, path: image.uri });
+		setImages(
+			images.map(item =>
+				item.filename === editableImage.filename
+					? { ...editableImage, width: image.width, height: image.height, path: image.uri }
+					: item
+			)
+		);
 	};
 	const updateOriginaImageSize = (updatedOriginalImageSize: { width: number; height: number }) => {
 		setOriginalImageSize(updatedOriginalImageSize);
