@@ -12,6 +12,7 @@ import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
+import * as EmojiKeyboardHook from '../../lib/hooks/useEmojiKeyboard';
 
 jest.useFakeTimers();
 
@@ -59,6 +60,24 @@ const Render = ({ context }: { context?: Partial<IRoomContext> }) => (
 		</RoomContext.Provider>
 	</Provider>
 );
+
+const sharedValue = {
+	value: false,
+	get: () => sharedValue.value,
+	set: (v: boolean) => {
+		sharedValue.value = v;
+	},
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+	modify: jest.fn()
+};
+beforeEach(() => {
+	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
+		showEmojiPickerSharedValue: sharedValue
+		// add any other properties if needed
+	});
+	sharedValue.value = false; // reset before each test
+});
 
 describe('MessageComposer', () => {
 	describe('Toolbar', () => {
