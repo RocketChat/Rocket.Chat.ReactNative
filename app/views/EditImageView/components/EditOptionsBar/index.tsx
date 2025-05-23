@@ -1,0 +1,85 @@
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+import { CustomIcon } from '../../../../containers/CustomIcon';
+import Touch from '../../../../containers/Touch';
+import { useTheme } from '../../../../theme';
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		paddingHorizontal: 16,
+		alignItems: 'center',
+		justifyContent: 'space-between'
+	}
+});
+
+interface IEditOptionsBarProps {
+	isCropping: boolean;
+	onCancel: () => void;
+	onCancelCrop: () => void;
+	onContinue: () => Promise<void>;
+	crop: () => void;
+	rotateLeft: () => void;
+	rotateRight: () => void;
+	startCrop: () => void;
+	openResizeOptions: () => void;
+}
+
+const EditOptionsBar = ({
+	isCropping,
+	onCancel,
+	rotateLeft,
+	rotateRight,
+	startCrop,
+	openResizeOptions,
+	onContinue,
+	crop,
+	onCancelCrop
+}: IEditOptionsBarProps) => {
+	const { colors } = useTheme();
+
+	return (
+		<View style={styles.container}>
+			{isCropping ? (
+				<>
+					<Touch onPress={onCancelCrop}>
+						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
+					</Touch>
+
+					<Touch onPress={crop}>
+						<Text style={{ color: colors.fontDefault }}>Crop</Text>
+					</Touch>
+				</>
+			) : (
+				<>
+					<Touch onPress={onCancel}>
+						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
+					</Touch>
+
+					<Touch onPress={rotateLeft}>
+						<CustomIcon name='undo' size={24} />
+					</Touch>
+
+					<Touch onPress={rotateRight}>
+						<CustomIcon name='redo' size={24} />
+					</Touch>
+
+					<Touch onPress={startCrop}>
+						<CustomIcon name='crop' size={24} />
+					</Touch>
+
+					<Touch onPress={openResizeOptions}>
+						<CustomIcon name='arrow-expand' size={24} />
+					</Touch>
+
+					<Touch onPress={onContinue}>
+						<Text style={{ color: colors.fontDefault }}>Continue</Text>
+					</Touch>
+				</>
+			)}
+		</View>
+	);
+};
+
+export default EditOptionsBar;

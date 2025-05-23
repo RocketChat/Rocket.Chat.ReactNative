@@ -185,6 +185,7 @@ export type ChatsStackParamList = {
 		userId: string;
 		name: string;
 	};
+	EditImageView: undefined;
 };
 
 export type ProfileStackParamList = {
@@ -213,7 +214,7 @@ export type SettingsStackParamList = {
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
-	AccessibilityAndAppearanceView: undefined
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type AdminPanelStackParamList = {
@@ -292,6 +293,18 @@ export type InsideStackParamList = {
 	};
 	ModalBlockView: {
 		data: any; // TODO: Change;
+	};
+	EditImageView: {
+		attachments: IAttachment[];
+		isShareView?: boolean;
+		isShareExtension: boolean;
+		serverInfo: IServer;
+		text: string;
+		room: TSubscriptionModel;
+		thread: TThreadModel | string;
+		action: TMessageAction;
+		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
+		startShareView: () => { text: string; selectedMessages: string[] };
 	};
 };
 
