@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { connect } from 'react-redux';
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
@@ -17,9 +16,10 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/HeaderButton';
 import { debounce } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
-import { TSupportedThemes, withTheme } from '../../theme';
-import { themes } from '../../lib/constants';
+import { TSupportedThemes, useTheme } from '../../theme'; // Removed withTheme, added useTheme
+// import { themes } from '../../lib/constants'; // This comment is still relevant as it explains why 'themes' is not imported.
 import { getUserSelector } from '../../selectors/login';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { goRoom, TGoRoomItem } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, IServerRoom, IUser, SubscriptionType } from '../../definitions';
@@ -33,48 +33,142 @@ interface IDirectoryViewProps {
 		NativeStackNavigationProp<ChatsStackParamList, 'DirectoryView'>,
 		NativeStackNavigationProp<MasterDetailInsideStackParamList>
 	>;
-	baseUrl: string;
-	isFederationEnabled: boolean;
-	user: IUser;
-	theme: TSupportedThemes;
-	directoryDefaultView: string;
-	isMasterDetail: boolean;
 }
 
-interface IDirectoryViewState {
-	data: IServerRoom[];
-	loading: boolean;
-	text: string;
-	total: number;
-	globalUsers: boolean;
-	type: string;
-}
+const DirectoryView: React.FC<IDirectoryViewProps> = props => {
+	// Redux state selectors
+	const baseUrl = useAppSelector(state => state.server.server);
+	const user = useAppSelector(getUserSelector);
+	const isFederationEnabled = useAppSelector(state => state.settings.FEDERATION_Enabled as boolean);
+	const directoryDefaultView = useAppSelector(state => state.settings.Accounts_Directory_DefaultView as string);
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
-class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewState> {
-	constructor(props: IDirectoryViewProps) {
-		super(props);
-		this.state = {
-			data: [],
-			loading: false,
-			text: '',
-			total: -1,
-			globalUsers: true,
-			type: props.directoryDefaultView
-		};
-		this.setHeader();
-	}
+	const [data, setData] = useState<IServerRoom[]>([]);
+	const [loading, setLoading] = useState(false);
+	const [text, setText] = useState('');
+	const [total, setTotal] = useState(-1);
+	const [globalUsers, setGlobalUsers] = useState(true);
+	const [type, setType] = useState(directoryDefaultView);
 
-	componentDidMount() {
-		this.load({});
-	}
+	const { theme: themeName, colors } = useTheme();
 
-	setHeader = () => {
-		const { navigation, isMasterDetail } = this.props;
+	// Refs for state values to be used inside debounced load function
+	const loadingRef = React.useRef(loading);
+	const dataRef = React.useRef(data);
+	const totalRef = React.useRef(total);
+	const textRef = React.useRef(text);
+	const typeRef = React.useRef(type);
+	const globalUsersRef = React.useRef(globalUsers);
+
+	useEffect(() => {
+		loadingRef.current = loading;
+		dataRef.current = data;
+		totalRef.current = total;
+		textRef.current = text;
+		typeRef.current = type;
+		globalUsersRef.current = globalUsers;
+	}, [loading, data, total, text, type, globalUsers]);
+
+	const load = useCallback(
+		debounce(async ({ newSearch = false }: { newSearch?: boolean }) => {
+			if (newSearch) {
+				setData([]);
+				setTotal(-1);
+			}
+
+			// Use refs for condition checks to ensure fresh values are used by debounce
+			if (loadingRef.current || (dataRef.current.length === totalRef.current && totalRef.current !== -1)) {
+				return;
+			}
+
+			setLoading(true);
+
+			try {
+				const directories = await Services.getDirectory({
+					text: textRef.current,
+					type: typeRef.current,
+					workspace: globalUsersRef.current ? 'all' : 'local',
+					offset: dataRef.current.length,
+					count: 50,
+					sort: typeRef.current === 'users' ? { username: 1 } : { usersCount: -1 }
+				});
+				if (directories.success) {
+					setData(prevData => [...prevData, ...(directories.result as IServerRoom[])]);
+					setTotal(directories.total);
+				}
+				setLoading(false);
+			} catch (e) {
+				log(e);
+				setLoading(false);
+			}
+		}, 200),
+		[setData, setLoading, setTotal] // Dependencies are stable setters & imports. Services and log are stable.
+	);
+
+	const search = useCallback(() => {
+		load({ newSearch: true });
+	}, [load]);
+
+	const onSearchChangeText = useCallback(
+		(newText: string) => {
+			setText(newText);
+			search();
+		},
+		[setText, search]
+	);
+
+	useEffect(() => {
+		load({});
+	}, [load]);
+
+	const changeType = useCallback(
+		(newType: string) => {
+			setType(newType);
+			setData([]);
+			search();
+
+			if (newType === 'users') {
+				logEvent(events.DIRECTORY_SEARCH_USERS);
+			} else if (newType === 'channels') {
+				logEvent(events.DIRECTORY_SEARCH_CHANNELS);
+			} else if (newType === 'teams') {
+				logEvent(events.DIRECTORY_SEARCH_TEAMS);
+			}
+			hideActionSheetRef();
+		},
+		[setType, setData, search] // logEvent, events, hideActionSheetRef are stable imports
+	);
+
+	const toggleWorkspace = useCallback(() => {
+		setGlobalUsers(prevGlobalUsers => {
+			const newGlobalUsers = !prevGlobalUsers;
+			setData([]);
+			return newGlobalUsers;
+		});
+		search();
+	}, [setGlobalUsers, setData, search]);
+
+	const showFilters = useCallback(() => {
+		showActionSheetRef({
+			children: (
+				<Options
+					type={type}
+					globalUsers={globalUsers}
+					changeType={changeType}
+					toggleWorkspace={toggleWorkspace}
+					isFederationEnabled={isFederationEnabled}
+				/>
+			)
+		});
+	}, [type, globalUsers, isFederationEnabled, changeType, toggleWorkspace]); // showActionSheetRef is stable
+
+	useEffect(() => {
+		const { navigation } = props;
 		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Directory'),
 			headerRight: () => (
 				<HeaderButton.Container>
-					<HeaderButton.Item iconName='filter' onPress={this.showFilters} testID='directory-view-filter' />
+					<HeaderButton.Item iconName='filter' onPress={showFilters} testID='directory-view-filter' />
 				</HeaderButton.Container>
 			)
 		};
@@ -83,235 +177,141 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		}
 
 		navigation.setOptions(options);
-	};
+	}, [props.navigation, isMasterDetail, showFilters]);
 
-	onSearchChangeText = (text: string) => {
-		this.setState({ text }, this.search);
-	};
+	const goRoomMethod = useCallback(
+		(item: TGoRoomItem) => {
+			goRoom({ item, isMasterDetail: isMasterDetail, popToRoot: true });
+		},
+		[isMasterDetail] // goRoom is a stable import
+	);
 
-	load = debounce(async ({ newSearch = false }) => {
-		if (newSearch) {
-			this.setState({ data: [], total: -1, loading: false });
-		}
-
-		const {
-			loading,
-			text,
-			total,
-			data: { length }
-		} = this.state;
-		if (loading || length === total) {
-			return;
-		}
-
-		this.setState({ loading: true });
-
-		try {
-			const { data, type, globalUsers } = this.state;
-			const directories = await Services.getDirectory({
-				text,
-				type,
-				workspace: globalUsers ? 'all' : 'local',
-				offset: data.length,
-				count: 50,
-				sort: type === 'users' ? { username: 1 } : { usersCount: -1 }
-			});
-			if (directories.success) {
-				this.setState({
-					data: [...data, ...(directories.result as IServerRoom[])],
-					loading: false,
-					total: directories.total
-				});
-			} else {
-				this.setState({ loading: false });
-			}
-		} catch (e) {
-			log(e);
-			this.setState({ loading: false });
-		}
-	}, 200);
-
-	search = () => {
-		this.load({ newSearch: true });
-	};
-
-	changeType = (type: string) => {
-		this.setState({ type, data: [] }, () => this.search());
-
-		if (type === 'users') {
-			logEvent(events.DIRECTORY_SEARCH_USERS);
-		} else if (type === 'channels') {
-			logEvent(events.DIRECTORY_SEARCH_CHANNELS);
-		} else if (type === 'teams') {
-			logEvent(events.DIRECTORY_SEARCH_TEAMS);
-		}
-		hideActionSheetRef();
-	};
-
-	toggleWorkspace = () => {
-		this.setState(
-			({ globalUsers }) => ({ globalUsers: !globalUsers, data: [] }),
-			() => this.search()
-		);
-	};
-
-	showFilters = () => {
-		const { type, globalUsers } = this.state;
-		const { isFederationEnabled } = this.props;
-		showActionSheetRef({
-			children: (
-				<Options
-					type={type}
-					globalUsers={globalUsers}
-					changeType={this.changeType}
-					toggleWorkspace={this.toggleWorkspace}
-					isFederationEnabled={isFederationEnabled}
-				/>
-			)
-		});
-	};
-
-	goRoom = (item: TGoRoomItem) => {
-		const { isMasterDetail } = this.props;
-		goRoom({ item, isMasterDetail, popToRoot: true });
-	};
-
-	onPressItem = async (item: IServerRoom) => {
-		try {
-			const { type } = this.state;
-			if (type === 'users') {
-				const result = await Services.createDirectMessage(item.username as string);
-				if (result.success) {
-					this.goRoom({ rid: result.room._id, name: item.username, t: SubscriptionType.DIRECT });
+	const onPressItem = useCallback(
+		async (item: IServerRoom) => {
+			try {
+				if (type === 'users') {
+					const result = await Services.createDirectMessage(item.username as string);
+					if (result.success) {
+						goRoomMethod({ rid: result.room._id, name: item.username as string, t: SubscriptionType.DIRECT });
+					}
+					return;
 				}
-				return;
-			}
-			const subscription = await getSubscriptionByRoomId(item._id);
-			if (subscription) {
-				this.goRoom(subscription);
-				return;
-			}
-			if (['p', 'c'].includes(item.t) && !item.teamMain) {
-				const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
-				if (result) {
-					this.goRoom({
+				const subscription = await getSubscriptionByRoomId(item._id);
+				if (subscription) {
+					goRoomMethod(subscription);
+					return;
+				}
+				if (['p', 'c'].includes(item.t) && !item.teamMain) {
+					const result = await Services.getRoomByTypeAndName(item.t, item.name || item.fname);
+					if (result) {
+						goRoomMethod({
+							rid: item._id,
+							name: item.name || item.fname,
+							joinCodeRequired: result.joinCodeRequired,
+							t: item.t as SubscriptionType,
+							search: true
+						});
+					}
+				} else {
+					goRoomMethod({
 						rid: item._id,
-						name: item.name,
-						joinCodeRequired: result.joinCodeRequired,
+						name: item.name || item.fname,
 						t: item.t as SubscriptionType,
-						search: true
+						search: true,
+						teamMain: item.teamMain,
+						teamId: item.teamId
 					});
 				}
-			} else {
-				this.goRoom({
-					rid: item._id,
-					name: item.name,
-					t: item.t as SubscriptionType,
-					search: true,
-					teamMain: item.teamMain,
-					teamId: item.teamId
-				});
+			} catch (e) {
+				log(e);
 			}
-		} catch {
-			// do nothing
-		}
-	};
+		},
+		[type, goRoomMethod] // Services, log, getSubscriptionByRoomId, SubscriptionType are stable
+	);
 
-	renderHeader = () => (
+	const renderHeader = () => (
 		<>
-			<SearchBox onChangeText={this.onSearchChangeText} onSubmitEditing={this.search} testID='directory-view-search' />
+			<SearchBox onChangeText={onSearchChangeText} onSubmitEditing={search} testID='directory-view-search' />
 			<List.Separator />
 		</>
 	);
 
-	renderItem: ListRenderItem<IServerRoom> = ({ item, index }) => {
-		const { data, type } = this.state;
-		const { baseUrl, user, theme } = this.props;
+	const renderItem: ListRenderItem<IServerRoom> = useCallback(
+		({ item, index }) => {
+			let style;
+			if (index === data.length - 1) {
+				style = {
+					...sharedStyles.separatorBottom,
+					borderColor: colors.strokeLight
+				};
+			}
 
-		let style;
-		if (index === data.length - 1) {
-			style = {
-				...sharedStyles.separatorBottom,
-				borderColor: themes[theme].strokeLight
+			const commonProps = {
+				title: item.name as string,
+				onPress: () => onPressItem(item),
+				baseUrl: baseUrl,
+				testID: `directory-view-item-${item.name}`,
+				style,
+				user: user,
+				theme: themeName,
+				rid: item._id
 			};
-		}
 
-		const commonProps = {
-			title: item.name as string,
-			onPress: () => this.onPressItem(item),
-			baseUrl,
-			testID: `directory-view-item-${item.name}`,
-			style,
-			user,
-			theme,
-			rid: item._id
-		};
+			if (type === 'users') {
+				return (
+					<DirectoryItem
+						avatar={item.username}
+						description={item.username}
+						rightLabel={item.federation && item.federation.peer}
+						type='d'
+						{...commonProps}
+					/>
+				);
+			}
 
-		if (type === 'users') {
-			return (
-				<DirectoryItem
-					avatar={item.username}
-					description={item.username}
-					rightLabel={item.federation && item.federation.peer}
-					type='d'
-					{...commonProps}
-				/>
-			);
-		}
-
-		if (type === 'teams') {
+			if (type === 'teams') {
+				return (
+					<DirectoryItem
+						avatar={item.name}
+						description={item.name}
+						rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
+						type={item.t}
+						teamMain={item.teamMain}
+						{...commonProps}
+					/>
+				);
+			}
 			return (
 				<DirectoryItem
 					avatar={item.name}
-					description={item.name}
-					rightLabel={I18n.t('N_channels', { n: item.roomsCount })}
+					description={item.topic}
+					rightLabel={I18n.t('N_users', { n: item.usersCount })}
 					type={item.t}
-					teamMain={item.teamMain}
 					{...commonProps}
 				/>
 			);
-		}
-		return (
-			<DirectoryItem
-				avatar={item.name}
-				description={item.topic}
-				rightLabel={I18n.t('N_users', { n: item.usersCount })}
-				type={item.t}
-				{...commonProps}
+		},
+		[data, type, baseUrl, user, themeName, colors, onPressItem]
+	);
+
+	return (
+		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='directory-view'>
+			<StatusBar />
+			<FlatList
+				data={data}
+				style={styles.list}
+				contentContainerStyle={styles.listContainer}
+				extraData={{ data, loading, text, total, globalUsers, type, themeName }}
+				keyExtractor={item => item._id}
+				ListHeaderComponent={renderHeader}
+				renderItem={renderItem}
+				ItemSeparatorComponent={List.Separator}
+				keyboardShouldPersistTaps='always'
+				ListFooterComponent={loading ? <ActivityIndicator /> : null}
+				onEndReached={() => load({})}
 			/>
-		);
-	};
+		</SafeAreaView>
+	);
+};
 
-	render = () => {
-		const { data, loading } = this.state;
-		const { theme } = this.props;
-		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
-				<StatusBar />
-				<FlatList
-					data={data}
-					style={styles.list}
-					contentContainerStyle={styles.listContainer}
-					extraData={this.state}
-					keyExtractor={item => item._id}
-					ListHeaderComponent={this.renderHeader}
-					renderItem={this.renderItem}
-					ItemSeparatorComponent={List.Separator}
-					keyboardShouldPersistTaps='always'
-					ListFooterComponent={loading ? <ActivityIndicator /> : null}
-					onEndReached={() => this.load({})}
-				/>
-			</SafeAreaView>
-		);
-	};
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	baseUrl: state.server.server,
-	user: getUserSelector(state),
-	isFederationEnabled: state.settings.FEDERATION_Enabled as boolean,
-	directoryDefaultView: state.settings.Accounts_Directory_DefaultView as string,
-	isMasterDetail: state.app.isMasterDetail
-});
-
-export default connect(mapStateToProps)(withTheme(DirectoryView));
+export default DirectoryView;
