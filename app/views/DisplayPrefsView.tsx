@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
 import { DisplayMode, SortBy } from '../lib/constants';
 import * as List from '../containers/List';
@@ -84,16 +84,7 @@ const DisplayPrefsView = (): React.ReactElement => {
 	);
 
 	const renderAvatarSwitch = (value: boolean) => (
-		<Switch
-			value={value}
-			onValueChange={() => toggleAvatar()}
-			testID='display-pref-view-avatar-switch'
-			trackColor={{
-				true: colors.buttonBackgroundPrimaryDefault,
-				false: colors.fontDisabled
-			}}
-			ios_backgroundColor={colors.strokeDark}
-		/>
+		<Switch value={value} onValueChange={() => toggleAvatar()} testID='display-pref-view-avatar-switch' />
 	);
 
 	const renderRadio = (value: boolean) => <Radio check={value} size={ICON_SIZE} />;
