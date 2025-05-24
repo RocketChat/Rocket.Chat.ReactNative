@@ -1,9 +1,9 @@
 import React, { useLayoutEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Switch } from 'react-native';
 import { useDispatch } from 'react-redux';
 
+import Switch from '../containers/Switch';
 import { setPreference } from '../actions/sortPreferences';
 import { DisplayMode, SortBy } from '../lib/constants';
 import * as List from '../containers/List';
