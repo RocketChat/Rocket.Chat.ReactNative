@@ -16,8 +16,8 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 		setOriginalImageSize({ width: image.width, height: image.height });
 	};
 
-	const updateImage = (image: ImageResult) => {
-		setEditableImage({ ...editableImage, width: image.width, height: image.height, path: image.uri });
+	const updateImage = (image: ImageResult | any) => {
+		setEditableImage({ ...editableImage, width: image.width, height: image.height, path: image.uri ?? image?.path });
 
 		setOriginalImageSize({
 			width: image.width,
@@ -27,7 +27,7 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 		setImages(
 			images.map(item =>
 				item.filename === editableImage.filename
-					? { ...editableImage, width: image.width, height: image.height, path: image.uri }
+					? { ...editableImage, width: image.width, height: image.height, path: image.uri ?? image?.path }
 					: item
 			)
 		);

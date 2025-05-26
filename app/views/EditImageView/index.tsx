@@ -5,19 +5,18 @@ import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { RouteProp } from '@react-navigation/native';
 
-import SafeAreaView from '../../containers/SafeAreaView';
+import { useActionSheet } from '../../containers/ActionSheet';
+import { CustomIcon } from '../../containers/CustomIcon';
 import { InsideStackParamList } from '../../stacks/types';
+import SafeAreaView from '../../containers/SafeAreaView';
 import EditOptionsBar from './components/EditOptionsBar';
 import useEditableImage from './hooks/useEditableImage';
 import getHorizontalPadding from './utils/getHorizontalPadding';
 import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
 import Touch from '../../containers/Touch';
-import { useActionSheet } from '../../containers/ActionSheet';
-import { CustomIcon } from '../../containers/CustomIcon';
 
 // To Do:
-// - action sheet of resize;
 // - Test horizontal device;
 // - Add Pinch detector;
 // - Organize code;
@@ -100,7 +99,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	return (
 		<SafeAreaView style={styles.container}>
 			{showUndo ? (
-				<Touch style={{ position: 'absolute', top: 70, left: 20 }} onPress={undoEdit}>
+				<Touch style={{ top: 70, left: 20 }} onPress={undoEdit}>
 					<CustomIcon name='arrow-back' size={20} />
 				</Touch>
 			) : null}

@@ -142,20 +142,48 @@ const useImageEditor = ({
 	};
 
 	const onSelectCropOption = async (option: string) => {
+		if (option === 'Original') {
+			const originalImage = attachments.find(item => item.filename === editableImage.filename);
+			defineImageSize(originalImage.width, originalImage.height);
+			updateImageHistory(originalImage);
+			updateImage(originalImage);
+			return;
+		}
 		const [ratioWidth, radioHeight] = option.split(':');
 		const ratio = Number(ratioWidth) / Number(radioHeight);
-		const newWidth = originalImageSize.width / ratio;
-		const newHeight = originalImageSize.height / ratio;
-		const originX = (originalImageSize.width - newWidth) / 2;
-		const originY = (originalImageSize.height - newHeight) / 2;
-		/* context.crop({ width: newWidth, height: newHeight, originX, originY });
-		const image = await context.renderAsync();
+
+		const imageRatio = originalImageSize.width / originalImageSize.height;
+
+		let cropWidth = 0;
+		let cropHeight = 0;
+		let originX = 0;
+		let originY = 0;
+
+		if (imageRatio > ratio) {
+			cropHeight = originalImageSize.height;
+			cropWidth = cropHeight * ratio;
+			originX = (originalImageSize.width - cropWidth) / 2;
+			originY = 0;
+		} else {
+			cropWidth = originalImageSize.width;
+			cropHeight = cropWidth / ratio;
+			originX = 0;
+			originY = (originalImageSize.height - cropHeight) / 2;
+		}
+
+		const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
+			height: cropHeight,
+			width: cropWidth,
+			originX,
+			originY
+		});
+		const image = await cropImage.renderAsync();
 		const result = await image.saveAsync({
 			format: SaveFormat.PNG
 		});
-		console.log(result);
+		defineImageSize(result.width, result.height);
+		updateImageHistory(result);
 		updateImage(result);
-		defineImageSize(result.width, result.height); */
 	};
 
 	const undoEdit = () => {
