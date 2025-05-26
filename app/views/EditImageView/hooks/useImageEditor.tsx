@@ -1,30 +1,38 @@
 import { useEffect, useState } from 'react';
-import { ImageResult, SaveFormat, useImageManipulator } from 'expo-image-manipulator';
+import { ImageResult, SaveFormat, ImageManipulator } from 'expo-image-manipulator';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 
 import getValueBasedOnOriginal from '../utils/getValueBasedOnOriginal';
 import getHorizontalPadding from '../utils/getHorizontalPadding';
 
 interface IUseImageManipulatorProps {
+	attachments: any[];
 	updateImage: (image: ImageResult) => void;
-	updateOriginaImageSize: ({ width, height }: { width: number; height: number }) => void;
 	screenWidth: number;
 	screenHeight: number;
-	editableImage: string;
+	editableImage: any;
+	editableImageIsPortrait: boolean;
 	originalImageSize: {
 		width: number;
 		height: number;
 	};
+	updateEditableImage: (updatedEditableImage: any) => void;
 }
 
 const useImageEditor = ({
+	attachments,
 	editableImage,
+	editableImageIsPortrait,
 	originalImageSize,
 	screenWidth,
 	screenHeight,
 	updateImage,
-	updateOriginaImageSize
+	updateEditableImage
 }: IUseImageManipulatorProps) => {
+	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
+	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
+	const PORTRAIT_CROP_OPTIONS = ['Original', '1:1', '3:2', '3:4', '16:9'];
+	const LANDSCAPE_CROP_OPTIONS = ['Original', '1:1', '3:2', '4:3', '16:9'];
 	const [crop, setCrop] = useState(false);
 	const imageWidth = useSharedValue(originalImageSize.width);
 	const imageHeight = useSharedValue(originalImageSize.height);
@@ -35,7 +43,6 @@ const useImageEditor = ({
 	const left = useSharedValue(0);
 	const prevTranslationXValue = useSharedValue(0);
 	const prevTranslationYValue = useSharedValue(0);
-	const context = useImageManipulator(editableImage);
 
 	const defineImageSize = (originalWidth?: number, originalHeight?: number) => {
 		if (!originalWidth || !originalHeight) return;
@@ -59,25 +66,42 @@ const useImageEditor = ({
 		imageHeight.value = withTiming(newHeight);
 	};
 
+	const updateImageHistory = (image: ImageResult) => {
+		setEditableHistory(
+			editableHistory.map(item => {
+				if (item.filename === editableImage.filename) {
+					return {
+						...item,
+						history: [...item.history, image]
+					};
+				}
+
+				return item;
+			})
+		);
+	};
+
 	const rotateLeft = async () => {
-		context.rotate(-90);
-		const image = await context.renderAsync();
+		const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(-90);
+		const image = await rotateImage.renderAsync();
 		const result = await image.saveAsync({
 			format: SaveFormat.PNG
 		});
 
 		updateImage(result);
+		updateImageHistory(result);
 		defineImageSize(result.width, result.height);
 	};
 
 	const rotateRight = async () => {
-		context.rotate(90);
-		const image = await context.renderAsync();
+		const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(90);
+		const image = await rotateImage.renderAsync();
 		const result = await image.saveAsync({
 			format: SaveFormat.PNG
 		});
 
 		updateImage(result);
+		updateImageHistory(result);
 		defineImageSize(result.width, result.height);
 	};
 
@@ -91,20 +115,20 @@ const useImageEditor = ({
 		);
 		const originY = getValueBasedOnOriginal(top.value, originalImageSize.height, imageHeight.value);
 
-		context.crop({
+		const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
 			height: finalHeight,
 			width: finalWidth,
 			originX,
 			originY
 		});
 
-		const image = await context.renderAsync();
+		const image = await cropImage.renderAsync();
 		const result = await image.saveAsync({
 			format: SaveFormat.PNG
 		});
 
-		updateOriginaImageSize({ width: finalWidth, height: finalHeight });
 		defineImageSize(finalWidth, finalHeight);
+		updateImageHistory(result);
 		updateImage(result);
 		setCrop(false);
 	};
@@ -117,7 +141,44 @@ const useImageEditor = ({
 		setCrop(false);
 	};
 
-	const onSelectCropOption = (option: string) => {};
+	const onSelectCropOption = async (option: string) => {
+		const [ratioWidth, radioHeight] = option.split(':');
+		const ratio = Number(ratioWidth) / Number(radioHeight);
+		const newWidth = originalImageSize.width / ratio;
+		const newHeight = originalImageSize.height / ratio;
+		const originX = (originalImageSize.width - newWidth) / 2;
+		const originY = (originalImageSize.height - newHeight) / 2;
+		/* context.crop({ width: newWidth, height: newHeight, originX, originY });
+		const image = await context.renderAsync();
+		const result = await image.saveAsync({
+			format: SaveFormat.PNG
+		});
+		console.log(result);
+		updateImage(result);
+		defineImageSize(result.width, result.height); */
+	};
+
+	const undoEdit = () => {
+		const updatedEditableHistory = editableHistory.map(item => {
+			if (item.filename === editableImage.filename) {
+				return { ...item, history: item.history.slice(0, -1) };
+			}
+
+			return item;
+		});
+
+		const editableImageHistory = updatedEditableHistory.find(item => item.filename === editableImage.filename)!.history;
+		const lastEditableHistory = editableImageHistory[editableImageHistory?.length - 1];
+		setEditableHistory(updatedEditableHistory);
+		updateEditableImage({
+			...editableImage,
+			width: lastEditableHistory.width,
+			height: lastEditableHistory.height,
+			path: lastEditableHistory.path ?? lastEditableHistory.uri
+		});
+		// updateImage(lastEditableHistory);
+		defineImageSize(lastEditableHistory.width, lastEditableHistory.height);
+	};
 
 	useEffect(() => {
 		defineImageSize(originalImageSize.width, originalImageSize.height);
@@ -129,6 +190,7 @@ const useImageEditor = ({
 		onCrop,
 		cropSelectorEnabled: crop,
 		openCropEditor,
+		onSelectCropOption,
 		cancelCropEditor,
 		imageWidth,
 		imageHeight,
@@ -139,7 +201,10 @@ const useImageEditor = ({
 			prevTranslationYValue,
 			gridWidth: sharedValueWidth,
 			gridHeight: sharedValueHeight
-		}
+		},
+		availableCropOptions: editableImageIsPortrait ? PORTRAIT_CROP_OPTIONS : LANDSCAPE_CROP_OPTIONS,
+		showUndo,
+		undoEdit
 	};
 };
 

@@ -1,5 +1,5 @@
-import { ImageResult } from 'expo-image-manipulator';
 import { useState } from 'react';
+import { ImageResult } from 'expo-image-manipulator';
 
 interface IUseEditableImageProps {
 	attachments: any[];
@@ -18,6 +18,12 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 
 	const updateImage = (image: ImageResult) => {
 		setEditableImage({ ...editableImage, width: image.width, height: image.height, path: image.uri });
+
+		setOriginalImageSize({
+			width: image.width,
+			height: image.height
+		});
+
 		setImages(
 			images.map(item =>
 				item.filename === editableImage.filename
@@ -26,8 +32,20 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 			)
 		);
 	};
-	const updateOriginaImageSize = (updatedOriginalImageSize: { width: number; height: number }) => {
-		setOriginalImageSize(updatedOriginalImageSize);
+
+	const updateEditableImage = (updatedEditableImage: any) => {
+		setEditableImage(updatedEditableImage);
+		const imagesUpdated = images.map(item =>
+			item.filename === updatedEditableImage.filename
+				? {
+						...updatedEditableImage,
+						width: updatedEditableImage.width,
+						height: updatedEditableImage.height,
+						path: updatedEditableImage.uri ?? updatedEditableImage.path
+				  }
+				: item
+		);
+		setImages(imagesUpdated);
 	};
 
 	return {
@@ -37,7 +55,8 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 		originalImageSize,
 		updateOriginalImageSize: setOriginalImageSize,
 		updateImage,
-		updateOriginaImageSize
+		editableImageIsPortrait: editableImage.height > editableImage.width,
+		updateEditableImage
 	};
 };
 

@@ -14,13 +14,13 @@ import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
 import Touch from '../../containers/Touch';
 import { useActionSheet } from '../../containers/ActionSheet';
+import { CustomIcon } from '../../containers/CustomIcon';
 
 // To Do:
-// - undo;
 // - action sheet of resize;
 // - Test horizontal device;
-// - Organize code;
 // - Add Pinch detector;
+// - Organize code;
 
 const styles = StyleSheet.create({
 	container: {
@@ -41,11 +41,20 @@ interface IEditImageViewProps {
 const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 	const { showActionSheet } = useActionSheet();
-	const { images, editableImage, originalImageSize, selectImageToEdit, updateImage, updateOriginaImageSize } = useEditableImage({
+	const {
+		images,
+		editableImage,
+		originalImageSize,
+		selectImageToEdit,
+		updateImage,
+		editableImageIsPortrait,
+		updateEditableImage
+	} = useEditableImage({
 		attachments: route?.params?.attachments
 	});
 	const {
 		cropSelectorEnabled,
+		onSelectCropOption,
 		onCrop,
 		rotateLeft,
 		rotateRight,
@@ -53,14 +62,19 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		cancelCropEditor,
 		imageWidth,
 		imageHeight,
+		availableCropOptions,
+		showUndo,
+		undoEdit,
 		gridPosition: { prevTranslationXValue, prevTranslationYValue, top, left, gridHeight, gridWidth }
 	} = useImageEditor({
-		editableImage: editableImage.path,
+		editableImageIsPortrait,
+		editableImage,
 		originalImageSize,
 		screenWidth,
 		screenHeight,
 		updateImage,
-		updateOriginaImageSize
+		attachments: route?.params?.attachments,
+		updateEditableImage
 	});
 
 	const onCancel = () => {
@@ -69,7 +83,10 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 
 	const openCropOptions = () => {
 		showActionSheet({
-			options: [{ title: 'testing', onPress: () => {} }]
+			options: availableCropOptions.map(item => ({
+				title: item,
+				onPress: () => onSelectCropOption(item)
+			}))
 		});
 	};
 
@@ -82,6 +99,11 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 
 	return (
 		<SafeAreaView style={styles.container}>
+			{showUndo ? (
+				<Touch style={{ position: 'absolute', top: 70, left: 20 }} onPress={undoEdit}>
+					<CustomIcon name='arrow-back' size={20} />
+				</Touch>
+			) : null}
 			<View style={styles.editContent}>
 				<GestureDetector gesture={composedGesture}>
 					<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
