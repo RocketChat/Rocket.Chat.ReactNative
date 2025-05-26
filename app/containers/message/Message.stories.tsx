@@ -1006,3 +1006,13 @@ export const LongNameUser = () => (
 		/>
 	</>
 );
+
+export const Avatar = () => (
+	<>
+		<Message msg={'This message has no avatar.'} author={{ username: 'no.avatar', name: 'No Avatar' }} />
+		<Message msg={'This message uses the user\'s profile picture as the avatar.'} author={author} />
+		<Message msg={'This message uses a Unicode emoji as the avatar.'} author={author} emoji={':smile:'} />
+		<Message msg={'This message uses a custom animated emoji as the avatar.'} author={author} emoji={':marioparty:'} />
+		<Message msg={'This message uses a custom static emoji as the avatar.'} author={author} emoji={':react_rocket:'} />
+	</>
+);
