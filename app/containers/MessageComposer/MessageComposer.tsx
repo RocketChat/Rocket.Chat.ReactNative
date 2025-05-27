@@ -147,8 +147,7 @@ export const MessageComposer = ({
 		onSendMessage?.(textFromInput, alsoSendThreadToChannel);
 	};
 
-	const onKeyboardItemSelected = (_keyboardId: string, params: { eventType: EventTypes; emoji: IEmoji }) => {
-		const { eventType, emoji } = params;
+	const onKeyboardItemSelected = (eventType: EventTypes, emoji?: IEmoji) => {
 		const text = composerInputComponentRef.current.getText();
 		let newText = '';
 		// if input has an active cursor
@@ -172,7 +171,7 @@ export const MessageComposer = ({
 				let emojiText = '';
 				if (typeof emoji === 'string') {
 					emojiText = formatShortnameToUnicode(`:${emoji}:`);
-				} else {
+				} else if (emoji?.name) {
 					emojiText = `:${emoji.name}:`;
 				}
 				const { updatedCursor, updatedText } = insertEmojiAtCursor(text, emojiText, cursor);
@@ -187,7 +186,8 @@ export const MessageComposer = ({
 	};
 
 	const onEmojiSelected = (emoji: IEmoji) => {
-		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
+		console.log('onEmojiSelected', emoji);
+		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
 	// const onHeightChanged = (height: number) => {
@@ -238,8 +238,9 @@ export const MessageComposer = ({
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<Animated.View>{renderContent()}</Animated.View>
-			{/* @ts-ignore */}
-			<Animated.View style={emojiKeyboardStyle}>{showEmojiKeyboard && <EmojiPicker />}</Animated.View>
+			<Animated.View style={emojiKeyboardStyle}>
+				{showEmojiKeyboard ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
+			</Animated.View>
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>
 	);

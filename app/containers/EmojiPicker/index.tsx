@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { View } from 'react-native';
 import { Route } from 'reanimated-tab-view';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import EmojiCategory from './EmojiCategory';
 import Footer from './Footer';
@@ -24,9 +25,11 @@ const EmojiPicker = ({
 	searchedEmojis = []
 }: IEmojiPickerProps): React.ReactElement | null => {
 	const [parentWidth, setParentWidth] = useState(0);
+	const { bottom } = useSafeAreaInsets();
 
 	const handleEmojiSelect = useCallback(
 		(emoji: IEmoji) => {
+			console.log('handleEmojiSelect', emoji);
 			onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
 			addFrequentlyUsed(emoji);
 		},
@@ -48,7 +51,9 @@ const EmojiPicker = ({
 	);
 
 	return (
-		<View style={styles.emojiPickerContainer} onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
+		<View
+			style={[styles.emojiPickerContainer, { marginBottom: bottom }]}
+			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory
 					emojis={searchedEmojis}
