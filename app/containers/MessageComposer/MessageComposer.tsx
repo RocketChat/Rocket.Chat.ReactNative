@@ -3,10 +3,20 @@ import { View, StyleSheet } from 'react-native';
 // import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
+import {
+	Toolbar,
+	EmojiSearchbar,
+	ComposerInput,
+	Left,
+	Right,
+	Quotes,
+	SendThreadToChannel,
+	Autocomplete,
+	BaseButton
+} from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {
 	MessageInnerContext,
@@ -68,6 +78,7 @@ export const MessageComposer = ({
 	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
 	const {
 		openSearchEmojiKeyboard,
+		openEmojiKeyboard,
 		closeEmojiKeyboard,
 		closeSearchEmojiKeyboard,
 		setAlsoSendThreadToChannel,
@@ -207,14 +218,24 @@ export const MessageComposer = ({
 	// };
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
-	const { keyboardHeight, emojiPickerHeight } = useEmojiKeyboardHeight();
+	const { keyboardHeight } = useEmojiKeyboardHeight();
 
-	const composerStyle = useAnimatedStyle(() => ({
-		transform: [{ translateY: keyboardHeight.value }]
-	}));
+	// const composerStyle = useAnimatedStyle(() => ({
+	// 	transform: [{ translateY: keyboardHeight.value }]
+	// }));
+
+	useAnimatedReaction(
+		() => showEmojiPickerSharedValue.value,
+		() => {
+			if (showEmojiPickerSharedValue.value === true) {
+				runOnJS(openEmojiKeyboard)();
+			}
+		},
+		[showEmojiPickerSharedValue]
+	);
 
 	const emojiKeyboardStyle = useAnimatedStyle(() => ({
-		height: emojiPickerHeight.value
+		height: keyboardHeight.value
 	}));
 
 	const renderContent = () => {
@@ -227,7 +248,7 @@ export const MessageComposer = ({
 					<Left />
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 					<Right />
-					{/* <BaseButton
+					<BaseButton
 						onPress={() => {
 							showEmojiPickerSharedValue.value = !showEmojiPickerSharedValue.value;
 							if (showEmojiPickerSharedValue.value) {
@@ -239,7 +260,7 @@ export const MessageComposer = ({
 						testID='message-composer-open-emoji'
 						accessibilityLabel='Open_emoji_selector'
 						icon='emoji'
-					/> */}
+					/>
 				</View>
 				<Quotes />
 				<Toolbar />
@@ -251,13 +272,13 @@ export const MessageComposer = ({
 		);
 	};
 
-	useEffect(() => {
-		console.count(`MessageComposer render`);
+	// console.count(`MessageComposer render`);
+	// useEffect(() => {
 
-		return () => {
-			console.countReset(`MessageComposer render`);
-		};
-	}, []);
+	// 	return () => {
+	// 		console.countReset(`MessageComposer render`);
+	// 	};
+	// }, []);
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
@@ -276,7 +297,7 @@ export const MessageComposer = ({
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				onHeightChanged={onHeightChanged}
 			/> */}
-			<Animated.View style={composerStyle}>{renderContent()}</Animated.View>
+			<Animated.View>{renderContent()}</Animated.View>
 			{/* @ts-ignore */}
 			<Animated.View style={emojiKeyboardStyle}>{showEmojiKeyboard && <EmojiPicker />}</Animated.View>
 

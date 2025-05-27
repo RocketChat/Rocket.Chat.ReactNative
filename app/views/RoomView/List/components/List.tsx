@@ -17,14 +17,14 @@ const styles = StyleSheet.create({
 
 export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	// const [visible, setVisible] = useState(false);
-	const { keyboardHeight } = useEmojiKeyboardHeight();
+	// const { keyboardHeight } = useEmojiKeyboardHeight();
 
-	const scrollViewStyle = useAnimatedStyle(
-		() => ({
-			transform: [{ translateY: keyboardHeight.value }, ...styles.verticallyInverted.transform]
-		}),
-		[]
-	);
+	// const scrollViewStyle = useAnimatedStyle(
+	// 	() => ({
+	// 		transform: [{ translateY: keyboardHeight.value }, ...styles.verticallyInverted.transform]
+	// 	}),
+	// 	[]
+	// );
 
 	// const scrollHandler = useAnimatedScrollHandler({
 	// 	onScroll: event => {
@@ -45,7 +45,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				// style={styles.list}
-				style={scrollViewStyle}
+				// style={scrollViewStyle}
 				inverted
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}

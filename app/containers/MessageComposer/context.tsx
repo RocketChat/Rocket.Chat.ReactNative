@@ -4,6 +4,7 @@ import { KeyboardController } from 'react-native-keyboard-controller';
 import { IEmoji } from '../../definitions';
 import { IAutocompleteBase, TMicOrSend } from './interfaces';
 import { animateNextTransition } from '../../lib/methods/helpers';
+import { useEmojiKeyboard } from '../../lib/hooks/useEmojiKeyboard';
 
 type TMessageComposerContextApi = {
 	setKeyboardHeight: (height: number) => void;
@@ -130,6 +131,7 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 		trackingViewHeight: 0,
 		autocompleteParams: { text: '', type: null }
 	} as State);
+	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
 
 	const api = useMemo(() => {
 		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
@@ -140,13 +142,15 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 			dispatch({ type: 'updateTrackingViewHeight', trackingViewHeight });
 
 		const openEmojiKeyboard = async () => {
-			await KeyboardController.dismiss({ keepFocus: true });
 			dispatch({ type: 'openEmojiKeyboard' });
+			showEmojiPickerSharedValue.value = true;
+			await KeyboardController.dismiss({ keepFocus: true });
 		};
 
 		const closeEmojiKeyboard = async () => {
-			await KeyboardController.setFocusTo('current');
 			dispatch({ type: 'closeEmojiKeyboard' });
+			showEmojiPickerSharedValue.value = false;
+			await KeyboardController.setFocusTo('current');
 		};
 
 		const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });

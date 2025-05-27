@@ -15,8 +15,8 @@ export const Default = (): ReactElement | null => {
 
 	const openEmoji = async () => {
 		showEmojiPickerSharedValue.value = true;
-		openEmojiKeyboard();
 		await KeyboardController.dismiss({ keepFocus: true });
+		openEmojiKeyboard();
 	};
 
 	return (
