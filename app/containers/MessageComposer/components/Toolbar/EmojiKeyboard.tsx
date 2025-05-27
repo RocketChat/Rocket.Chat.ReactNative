@@ -6,7 +6,7 @@ import { useMessageComposerApi } from '../../context';
 import { Container } from './Container';
 import { EmptySpace } from './EmptySpace';
 import { Gap } from '../Gap';
-import { useEmojiKeyboard } from '../../../../lib/hooks/useEmojiKeyboard';
+import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const EmojiKeyboard = (): ReactElement => {
 	const { closeEmojiKeyboard } = useMessageComposerApi();

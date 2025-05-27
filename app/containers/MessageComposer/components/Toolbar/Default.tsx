@@ -6,7 +6,7 @@ import { useMessageComposerApi } from '../../context';
 import { Gap } from '../Gap';
 import { emitter } from '../../../../lib/methods/helpers/emitter';
 import { useRoomContext } from '../../../../views/RoomView/context';
-import { useEmojiKeyboard } from '../../../../lib/hooks/useEmojiKeyboard';
+import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
 	const { sharing } = useRoomContext();

@@ -12,7 +12,7 @@ import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
-import * as EmojiKeyboardHook from '../../lib/hooks/useEmojiKeyboard';
+import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
 
 jest.useFakeTimers();
 

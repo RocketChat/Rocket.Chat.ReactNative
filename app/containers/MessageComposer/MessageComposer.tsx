@@ -28,7 +28,7 @@ import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import { RecordAudio } from './components/RecordAudio';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
-import { useEmojiKeyboard, useEmojiKeyboardHeight } from '../../lib/hooks/useEmojiKeyboard';
+import { useEmojiKeyboard, useEmojiKeyboardHeight } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 
 const styles = StyleSheet.create({

@@ -103,7 +103,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
-import { EmojiKeyboardProvider } from '../../lib/hooks/useEmojiKeyboard';
+import { EmojiKeyboardProvider } from '../../containers/MessageComposer/hooks/useEmojiKeyboard';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
