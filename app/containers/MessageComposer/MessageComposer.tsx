@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-require('./components/EmojiKeyboard');
-
 export const MessageComposer = ({
 	forwardedRef,
 	children

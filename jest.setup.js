@@ -63,8 +63,6 @@ jest.mock('./app/lib/database', () => ({
 	}
 }));
 
-jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
-
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	useFrequentlyUsedEmoji: () => ({
 		frequentlyUsed: [],
@@ -128,17 +126,6 @@ jest.mock('react-native-math-view', () => {
 		__esModule: true,
 		default: react.View, // Default export
 		MathText: react.View // {...} Named export
-	};
-});
-
-jest.mock('react-native-ui-lib/keyboard', () => {
-	const react = jest.requireActual('react');
-	return {
-		__esModule: true,
-		KeyboardAccessoryView: react.forwardRef((props, ref) => {
-			const MockName = 'keyboard-accessory-view-mock';
-			return <MockName>{props.renderContent()}</MockName>;
-		})
 	};
 });
 
