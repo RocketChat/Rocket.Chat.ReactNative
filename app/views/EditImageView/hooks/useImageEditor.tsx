@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ImageResult, SaveFormat, ImageManipulator } from 'expo-image-manipulator';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
+import { deleteAsync } from 'expo-file-system';
 
 import getValueBasedOnOriginal from '../utils/getValueBasedOnOriginal';
 import getHorizontalPadding from '../utils/getHorizontalPadding';
@@ -189,7 +190,7 @@ const useImageEditor = ({
 		updateImage(result);
 	};
 
-	const undoEdit = () => {
+	const undoEdit = async () => {
 		const updatedEditableHistory = editableHistory.map(item => {
 			if (item.filename === editableImage.filename) {
 				return { ...item, history: item.history.slice(0, -1) };
@@ -197,7 +198,7 @@ const useImageEditor = ({
 
 			return item;
 		});
-
+		await deleteAsync(editableImage.uri ?? editableImage.path);
 		const editableImageHistory = updatedEditableHistory.find(item => item.filename === editableImage.filename)!.history;
 		const lastEditableHistory = editableImageHistory[editableImageHistory?.length - 1];
 		setEditableHistory(updatedEditableHistory);
