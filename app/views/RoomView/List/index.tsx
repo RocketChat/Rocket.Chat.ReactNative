@@ -6,19 +6,6 @@ import { EmptyRoom, List } from './components';
 import { IListContainerProps, IListContainerRef, IListProps } from './definitions';
 import { useMessages, useScroll } from './hooks';
 
-// const styles = StyleSheet.create({
-// 	inverted: {
-// 		...Platform.select({
-// 			android: {
-// 				scaleY: -1
-// 			}
-// 		})
-// 	}
-// });
-
-// const Container = ({ children }: { children: React.ReactElement }) =>
-// 	isAndroid ? <View style={{ flex: 1, scaleY: -1 }}>{children}</View> : <>{children}</>;
-
 const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 	({ rid, tmid, renderRow, showMessageInMainThread, serverVersion, hideSystemMessages, listRef, loading }, ref) => {
 		const [messages, messagesIds, fetchMessages] = useMessages({
