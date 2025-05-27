@@ -90,7 +90,7 @@ export const MessageComposer = ({
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
 		if (showEmojiKeyboard) {
-			showEmojiPickerSharedValue.value = false;
+			// showEmojiPickerSharedValue.value = false;
 			closeEmojiKeyboard();
 		}
 		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
@@ -190,20 +190,16 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	// const onHeightChanged = (height: number) => {
-	// 	setTrackingViewHeight(height);
-	// 	emitter.emit(`setComposerHeight${tmid ? 'Thread' : ''}`, height);
-	// };
-
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	const { keyboardHeight } = useEmojiKeyboardHeight();
 
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
 		() => {
-			if (showEmojiPickerSharedValue.value === true) {
+			console.log('useAnimatedReaction showEmojiPickerSharedValue', showEmojiPickerSharedValue.value);
+			if (showEmojiPickerSharedValue.value === true && !showEmojiKeyboard) {
 				runOnJS(openEmojiKeyboard)();
-			} else {
+			} else if (showEmojiPickerSharedValue.value === false && showEmojiKeyboard) {
 				runOnJS(closeEmojiKeyboard)();
 			}
 		},
