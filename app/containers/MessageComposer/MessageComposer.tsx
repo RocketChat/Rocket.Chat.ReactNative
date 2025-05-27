@@ -6,17 +6,7 @@ import { Q } from '@nozbe/watermelondb';
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import {
-	Toolbar,
-	EmojiSearchbar,
-	ComposerInput,
-	Left,
-	Right,
-	Quotes,
-	SendThreadToChannel,
-	Autocomplete,
-	BaseButton
-} from './components';
+import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
 import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
 import {
 	MessageInnerContext,
@@ -248,19 +238,6 @@ export const MessageComposer = ({
 					<Left />
 					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
 					<Right />
-					<BaseButton
-						onPress={() => {
-							showEmojiPickerSharedValue.value = !showEmojiPickerSharedValue.value;
-							if (showEmojiPickerSharedValue.value) {
-								closeEmojiKeyboard();
-							} else {
-								openEmojiKeyboard();
-							}
-						}}
-						testID='message-composer-open-emoji'
-						accessibilityLabel='Open_emoji_selector'
-						icon='emoji'
-					/>
 				</View>
 				<Quotes />
 				<Toolbar />

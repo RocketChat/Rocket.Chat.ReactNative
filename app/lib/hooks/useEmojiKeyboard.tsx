@@ -28,7 +28,7 @@ export const useEmojiKeyboard = () => {
 export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
-	const keyboardHeight = useSharedValue(-bottom);
+	const keyboardHeight = useSharedValue(bottom);
 	// const emojiPickerHeight = useSharedValue(0);
 
 	useKeyboardHandler(
@@ -55,10 +55,10 @@ export const useEmojiKeyboardHeight = () => {
 				// keyboardHeight.value = -e.height;
 				// keyboardHeight.value = e.height > 0 ? Math.max(e.height + OFFSET, totalOffset) : totalOffset;
 				// iPad shows a tooltip sometimes and the height seems to be less than 70
-				// const height = e.height < 70 ? 0 : e.height;
-				// const notch = height > 0 || showEmojiPickerSharedValue.value ? 0 : bottom;
 				if (showEmojiPickerSharedValue.value === false) {
-					keyboardHeight.value = e.height;
+					const height = e.height < 70 ? 0 : e.height;
+					const notch = height > 0 ? 0 : bottom;
+					keyboardHeight.value = e.height + notch;
 				}
 				// emojiPickerHeight.value = showEmojiPickerSharedValue.value ? 302 + bottom - height : 0;
 				// console.log(
