@@ -6,6 +6,7 @@ import getValueBasedOnOriginal from '../utils/getValueBasedOnOriginal';
 import getHorizontalPadding from '../utils/getHorizontalPadding';
 
 interface IUseImageManipulatorProps {
+	isPortrait: boolean;
 	attachments: any[];
 	updateImage: (image: ImageResult) => void;
 	screenWidth: number;
@@ -20,6 +21,7 @@ interface IUseImageManipulatorProps {
 }
 
 const useImageEditor = ({
+	isPortrait,
 	attachments,
 	editableImage,
 	editableImageIsPortrait,
@@ -46,7 +48,7 @@ const useImageEditor = ({
 
 	const defineImageSize = (originalWidth?: number, originalHeight?: number) => {
 		if (!originalWidth || !originalHeight) return;
-		const limitHeight = screenHeight * 0.5;
+		const limitHeight = screenHeight * 0.7;
 
 		const widthScale = screenWidth / originalWidth;
 		let newWidth = screenWidth;
@@ -127,9 +129,10 @@ const useImageEditor = ({
 			format: SaveFormat.PNG
 		});
 
-		defineImageSize(finalWidth, finalHeight);
-		updateImageHistory(result);
 		updateImage(result);
+		updateImageHistory(result);
+		defineImageSize(finalWidth, finalHeight);
+
 		setCrop(false);
 	};
 
@@ -204,13 +207,13 @@ const useImageEditor = ({
 			height: lastEditableHistory.height,
 			path: lastEditableHistory.path ?? lastEditableHistory.uri
 		});
-		// updateImage(lastEditableHistory);
+		updateImage(lastEditableHistory);
 		defineImageSize(lastEditableHistory.width, lastEditableHistory.height);
 	};
 
 	useEffect(() => {
 		defineImageSize(originalImageSize.width, originalImageSize.height);
-	}, [originalImageSize]);
+	}, [originalImageSize, isPortrait]);
 
 	return {
 		rotateLeft,

@@ -1,9 +1,10 @@
-import React from 'react';
-import { FlatList, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Dimensions, FlatList, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { RouteProp } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useActionSheet } from '../../containers/ActionSheet';
 import { CustomIcon } from '../../containers/CustomIcon';
@@ -17,18 +18,22 @@ import Grid from './components/Grid';
 import Touch from '../../containers/Touch';
 
 // To Do:
-// - Test horizontal device;
 // - Add Pinch detector;
 // - Organize code;
+// - Clean the file;
+// - Test edge cases of minimize app and voip;
 
 const styles = StyleSheet.create({
-	container: {
-		paddingBottom: 30
-	},
 	editContent: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	multipleImageListLandscape: {
+		position: 'absolute',
+		flex: 1,
+		top: 16,
+		left: 16
 	}
 });
 
@@ -38,7 +43,10 @@ interface IEditImageViewProps {
 }
 
 const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
+	const flatlistRef = useRef<FlatList>(null);
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+	const isPortrait = screenHeight > screenWidth;
+	const insets = useSafeAreaInsets();
 	const { showActionSheet } = useActionSheet();
 	const {
 		images,
@@ -66,6 +74,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		undoEdit,
 		gridPosition: { prevTranslationXValue, prevTranslationYValue, top, left, gridHeight, gridWidth }
 	} = useImageEditor({
+		isPortrait,
 		editableImageIsPortrait,
 		editableImage,
 		originalImageSize,
@@ -96,13 +105,31 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 
 	const composedGesture = Gesture.Exclusive();
 
+	const onOrientationChange = () => {
+		const currentListIndex = images.findIndex(item => item.filename === editableImage.filename);
+		const screenRotateAnimationMs = 500;
+		setTimeout(() => {
+			flatlistRef.current?.scrollToIndex({ animated: true, index: currentListIndex, viewOffset: 0 });
+		}, screenRotateAnimationMs);
+	};
+
+	useEffect(() => {
+		const subscription = Dimensions.addEventListener('change', onOrientationChange);
+		return () => {
+			subscription.remove();
+		};
+	}, []);
+
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}>
 			{showUndo ? (
-				<Touch style={{ top: 70, left: 20 }} onPress={undoEdit}>
-					<CustomIcon name='arrow-back' size={20} />
-				</Touch>
+				<View style={{ paddingHorizontal: 16, alignItems: isPortrait ? 'flex-start' : 'flex-end' }}>
+					<Touch onPress={undoEdit}>
+						<CustomIcon name='arrow-back' size={24} />
+					</Touch>
+				</View>
 			) : null}
+
 			<View style={styles.editContent}>
 				<GestureDetector gesture={composedGesture}>
 					<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
@@ -126,12 +153,21 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 			</View>
 
 			{images.length > 1 ? (
-				<View style={{ marginBottom: 20 }}>
+				<View style={isPortrait ? { marginBottom: 20 } : { ...styles.multipleImageListLandscape, maxHeight: screenHeight - 60 }}>
 					<FlatList
-						horizontal
+						ref={flatlistRef}
+						scrollEnabled={true}
+						pointerEvents='auto'
+						showsHorizontalScrollIndicator={false}
+						showsVerticalScrollIndicator={false}
+						horizontal={!!isPortrait}
 						data={images}
 						centerContent
-						contentContainerStyle={{ paddingHorizontal: 12, gap: 8, alignItems: 'center' }}
+						contentContainerStyle={{
+							paddingHorizontal: 12,
+							gap: 8,
+							alignItems: 'center'
+						}}
 						renderItem={({ item }) => (
 							<Touch onPress={() => selectImageToEdit(item)} style={{ borderRadius: 4 }}>
 								<Image
