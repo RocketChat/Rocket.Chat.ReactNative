@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TKeyEmitterEvent, emitter } from '../../../../../lib/methods/helpers';
 import { EDGE_DISTANCE } from '../../constants';
 
+// FIXME: remove this hook?
 export const useNavBottomStyle = (isThread: boolean): ViewStyle => {
 	const [keyboardHeight, setKeyboardHeight] = useState(0);
 	const [composerHeight, setComposerHeight] = useState(0);
