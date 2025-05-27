@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Dimensions, FlatList, Image, StyleSheet, View, useWindowDimensions } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
@@ -16,6 +16,7 @@ import getHorizontalPadding from './utils/getHorizontalPadding';
 import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
 import Touch from '../../containers/Touch';
+import ImageSelector from './components/ImageSelector';
 
 // To Do:
 // - Add Pinch detector;
@@ -28,12 +29,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
-	},
-	multipleImageListLandscape: {
-		position: 'absolute',
-		flex: 1,
-		top: 16,
-		left: 16
 	}
 });
 
@@ -43,7 +38,6 @@ interface IEditImageViewProps {
 }
 
 const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
-	const flatlistRef = useRef<FlatList>(null);
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 	const isPortrait = screenHeight > screenWidth;
 	const insets = useSafeAreaInsets();
@@ -105,21 +99,6 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 
 	const composedGesture = Gesture.Exclusive();
 
-	const onOrientationChange = () => {
-		const currentListIndex = images.findIndex(item => item.filename === editableImage.filename);
-		const screenRotateAnimationMs = 500;
-		setTimeout(() => {
-			flatlistRef.current?.scrollToIndex({ animated: true, index: currentListIndex, viewOffset: 0 });
-		}, screenRotateAnimationMs);
-	};
-
-	useEffect(() => {
-		const subscription = Dimensions.addEventListener('change', onOrientationChange);
-		return () => {
-			subscription.remove();
-		};
-	}, []);
-
 	return (
 		<SafeAreaView style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}>
 			{showUndo ? (
@@ -153,37 +132,13 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 			</View>
 
 			{images.length > 1 ? (
-				<View style={isPortrait ? { marginBottom: 20 } : { ...styles.multipleImageListLandscape, maxHeight: screenHeight - 60 }}>
-					<FlatList
-						ref={flatlistRef}
-						scrollEnabled={true}
-						pointerEvents='auto'
-						showsHorizontalScrollIndicator={false}
-						showsVerticalScrollIndicator={false}
-						horizontal={!!isPortrait}
-						data={images}
-						centerContent
-						contentContainerStyle={{
-							paddingHorizontal: 12,
-							gap: 8,
-							alignItems: 'center'
-						}}
-						renderItem={({ item }) => (
-							<Touch onPress={() => selectImageToEdit(item)} style={{ borderRadius: 4 }}>
-								<Image
-									resizeMode='cover'
-									source={{ uri: item.path }}
-									style={{
-										width: editableImage.filename === item.filename ? 60 : 45,
-										height: editableImage.filename === item.filename ? 80 : 70,
-										borderRadius: 4
-									}}
-								/>
-							</Touch>
-						)}
-						keyExtractor={item => item.filename}
-					/>
-				</View>
+				<ImageSelector
+					selectImageToEdit={selectImageToEdit}
+					editableImage={editableImage}
+					images={images}
+					isPortrait={isPortrait}
+					screenHeight={screenHeight}
+				/>
 			) : null}
 
 			<EditOptionsBar
