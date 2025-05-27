@@ -219,6 +219,8 @@ export const MessageComposer = ({
 		() => {
 			if (showEmojiPickerSharedValue.value === true) {
 				runOnJS(openEmojiKeyboard)();
+			} else {
+				runOnJS(closeEmojiKeyboard)();
 			}
 		},
 		[showEmojiPickerSharedValue]
