@@ -1,6 +1,5 @@
-import React, { ReactElement, useRef, useImperativeHandle, useEffect } from 'react';
+import React, { ReactElement, useRef, useImperativeHandle } from 'react';
 import { View, StyleSheet } from 'react-native';
-// import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle } from 'react-native-reanimated';
@@ -76,9 +75,6 @@ export const MessageComposer = ({
 	} = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
-	// useKeyboardListener(trackingViewRef);
-	// const { height } = useReanimatedKeyboardAnimation();
-	// const { input } = useReanimatedFocusedInput();
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
@@ -196,12 +192,6 @@ export const MessageComposer = ({
 		onKeyboardItemSelected('EmojiKeyboard', { eventType: EventTypes.EMOJI_PRESSED, emoji });
 	};
 
-	// const onKeyboardResigned = () => {
-	// 	if (!showEmojiSearchbar) {
-	// 		closeEmojiKeyboard();
-	// 	}
-	// };
-
 	// const onHeightChanged = (height: number) => {
 	// 	setTrackingViewHeight(height);
 	// 	emitter.emit(`setComposerHeight${tmid ? 'Thread' : ''}`, height);
@@ -209,10 +199,6 @@ export const MessageComposer = ({
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	const { keyboardHeight } = useEmojiKeyboardHeight();
-
-	// const composerStyle = useAnimatedStyle(() => ({
-	// 	transform: [{ translateY: keyboardHeight.value }]
-	// }));
 
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
@@ -251,35 +237,11 @@ export const MessageComposer = ({
 		);
 	};
 
-	// console.count(`MessageComposer render`);
-	// useEffect(() => {
-
-	// 	return () => {
-	// 		console.countReset(`MessageComposer render`);
-	// 	};
-	// }, []);
-
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			{/* <KeyboardAccessoryView
-				ref={(ref: ITrackingView) => (trackingViewRef.current = ref)}
-				renderContent={renderContent}
-				kbInputRef={composerInputRef}
-				kbComponent={showEmojiKeyboard ? 'EmojiKeyboard' : null}
-				kbInitialProps={{ theme }}
-				onKeyboardResigned={onKeyboardResigned}
-				onItemSelected={onKeyboardItemSelected}
-				trackInteractive
-				requiresSameParentToManageScrollView
-				addBottomView
-				bottomViewColor={backgroundColor}
-				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
-				onHeightChanged={onHeightChanged}
-			/> */}
 			<Animated.View>{renderContent()}</Animated.View>
 			{/* @ts-ignore */}
 			<Animated.View style={emojiKeyboardStyle}>{showEmojiKeyboard && <EmojiPicker />}</Animated.View>
-
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>
 	);
