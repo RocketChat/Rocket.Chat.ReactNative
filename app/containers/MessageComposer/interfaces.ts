@@ -35,11 +35,6 @@ export interface IComposerInputProps {
 
 export type TMarkdownStyle = 'bold' | 'italic' | 'strike' | 'code' | 'code-block';
 
-export interface ITrackingView {
-	resetTracking: () => void;
-	getNativeProps: () => any;
-}
-
 export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
 
 export interface IAutocompleteBase {
