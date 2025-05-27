@@ -90,7 +90,7 @@ export const MessageComposer = ({
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
 		if (showEmojiKeyboard) {
-			// showEmojiPickerSharedValue.value = false;
+			showEmojiPickerSharedValue.set(false);
 			closeEmojiKeyboard();
 		}
 		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
@@ -193,18 +193,18 @@ export const MessageComposer = ({
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 	const { keyboardHeight } = useEmojiKeyboardHeight();
 
-	useAnimatedReaction(
-		() => showEmojiPickerSharedValue.value,
-		() => {
-			console.log('useAnimatedReaction showEmojiPickerSharedValue', showEmojiPickerSharedValue.value);
-			if (showEmojiPickerSharedValue.value === true && !showEmojiKeyboard) {
-				runOnJS(openEmojiKeyboard)();
-			} else if (showEmojiPickerSharedValue.value === false && showEmojiKeyboard) {
-				runOnJS(closeEmojiKeyboard)();
-			}
-		},
-		[showEmojiPickerSharedValue]
-	);
+	// useAnimatedReaction(
+	// 	() => showEmojiPickerSharedValue.value,
+	// 	() => {
+	// 		console.log('useAnimatedReaction showEmojiPickerSharedValue', showEmojiPickerSharedValue.value);
+	// 		if (showEmojiPickerSharedValue.value === true && !showEmojiKeyboard) {
+	// 			runOnJS(openEmojiKeyboard)();
+	// 		} else if (showEmojiPickerSharedValue.value === false && showEmojiKeyboard) {
+	// 			runOnJS(closeEmojiKeyboard)();
+	// 		}
+	// 	},
+	// 	[showEmojiPickerSharedValue]
+	// );
 
 	const emojiKeyboardStyle = useAnimatedStyle(() => ({
 		height: keyboardHeight.value

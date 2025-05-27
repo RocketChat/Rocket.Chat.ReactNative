@@ -1,7 +1,9 @@
 import React, { createContext, ReactElement, useContext } from 'react';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { useMessageComposerApi, useShowEmojiKeyboard } from '../context';
 
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
@@ -32,6 +34,8 @@ export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
 	const keyboardHeight = useSharedValue(bottom);
+	const showEmojiKeyboard = useShowEmojiKeyboard();
+	const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 
 	const updateKeyboardHeight = (height: number) => {
 		'worklet';
@@ -44,6 +48,11 @@ export const useEmojiKeyboardHeight = () => {
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
 		() => {
+			console.log(
+				'useEmojiKeyboard useAnimatedReaction BEFORE showEmojiPickerSharedValue showEmojiKeyboard',
+				showEmojiPickerSharedValue.value,
+				showEmojiKeyboard
+			);
 			// iPad shows a tooltip sometimes and the height seems to be less than 70.
 			// This logic also fixes emoji keyboard height when using a hardware keyboard.
 			if (showEmojiPickerSharedValue.value === true && keyboardHeight.value < IPAD_TOOLTIP_HEIGHT) {
@@ -51,6 +60,17 @@ export const useEmojiKeyboardHeight = () => {
 			} else if (showEmojiPickerSharedValue.value === false) {
 				updateKeyboardHeight(0);
 			}
+
+			if (showEmojiPickerSharedValue.value === true && !showEmojiKeyboard) {
+				runOnJS(openEmojiKeyboard)();
+			} else if (showEmojiPickerSharedValue.value === false && showEmojiKeyboard) {
+				runOnJS(closeEmojiKeyboard)();
+			}
+			console.log(
+				'useEmojiKeyboard useAnimatedReaction AFTER showEmojiPickerSharedValue showEmojiKeyboard',
+				showEmojiPickerSharedValue.value,
+				showEmojiKeyboard
+			);
 		},
 		[showEmojiPickerSharedValue]
 	);
