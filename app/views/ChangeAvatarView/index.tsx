@@ -31,7 +31,7 @@ import { getPermissions } from '../../lib/methods/helpers/ImagePicker/getPermiss
 import { mapMediaResult } from '../../lib/methods/helpers/ImagePicker/mapMediaResult';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { FormTextInput } from '../../containers/TextInput';
-import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
+import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
