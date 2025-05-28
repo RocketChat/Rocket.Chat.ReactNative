@@ -15,7 +15,7 @@ export const EmojiKeyboard = (): ReactElement => {
 	const close = async () => {
 		showEmojiPickerSharedValue.value = false;
 		await KeyboardController.setFocusTo('current');
-		closeEmojiKeyboard();
+		// closeEmojiKeyboard();
 	};
 
 	return (

@@ -14,9 +14,10 @@ export const Default = (): ReactElement | null => {
 	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
 
 	const openEmoji = async () => {
+		console.log('openEmoji');
 		showEmojiPickerSharedValue.value = true;
 		await KeyboardController.dismiss({ keepFocus: true });
-		openEmojiKeyboard();
+		// openEmojiKeyboard();
 	};
 
 	return (
@@ -28,7 +29,7 @@ export const Default = (): ReactElement | null => {
 				</>
 			)}
 			<BaseButton
-				onPress={openEmoji}
+				onPress={() => openEmoji()}
 				testID='message-composer-open-emoji'
 				accessibilityLabel='Open_emoji_selector'
 				icon='emoji'

@@ -63,6 +63,7 @@ export const MessageComposer = ({
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
+	const { keyboardHeight } = useEmojiKeyboardHeight();
 	const {
 		openSearchEmojiKeyboard,
 		openEmojiKeyboard,
@@ -90,8 +91,9 @@ export const MessageComposer = ({
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
 		if (showEmojiKeyboard) {
-			showEmojiPickerSharedValue.set(false);
 			closeEmojiKeyboard();
+			keyboardHeight.set(0);
+			showEmojiPickerSharedValue.set(false);
 		}
 		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
 	};
@@ -191,7 +193,6 @@ export const MessageComposer = ({
 	};
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
-	const { keyboardHeight } = useEmojiKeyboardHeight();
 
 	// useAnimatedReaction(
 	// 	() => showEmojiPickerSharedValue.value,
