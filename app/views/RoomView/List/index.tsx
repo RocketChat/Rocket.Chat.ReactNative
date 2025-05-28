@@ -54,7 +54,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 					onScrollToIndexFailed={handleScrollToIndexFailed}
 					viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
 					jumpToBottom={jumpToBottom}
-					isThread={!!tmid}
 					maintainVisibleContentPosition={{
 						minIndexForVisible: 0,
 						autoscrollToTopThreshold: 0
