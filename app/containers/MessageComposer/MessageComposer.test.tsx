@@ -71,10 +71,14 @@ const sharedValue = {
 	removeListener: jest.fn(),
 	modify: jest.fn()
 };
+
+let showEmojiKeyboard = false;
+
 beforeEach(() => {
+	showEmojiKeyboard = false;
 	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
-		showEmojiPickerSharedValue: sharedValue
-		// add any other properties if needed
+		showEmojiPickerSharedValue: sharedValue,
+		showEmojiKeyboard
 	});
 	sharedValue.value = false; // reset before each test
 });
@@ -90,10 +94,21 @@ describe('MessageComposer', () => {
 		});
 
 		test('tap emoji', async () => {
-			render(<Render />);
+			const { rerender } = render(<Render />);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
 			await user.press(screen.getByTestId('message-composer-open-emoji'));
+
+			// Simulate the state change that would happen when emoji button is pressed
+			sharedValue.value = true;
+			showEmojiKeyboard = true;
+			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
+				showEmojiPickerSharedValue: sharedValue,
+				showEmojiKeyboard
+			});
+
+			rerender(<Render />);
+
 			expect(screen.getByTestId('message-composer-close-emoji')).toBeOnTheScreen();
 			expect(screen.toJSON()).toMatchSnapshot();
 		});

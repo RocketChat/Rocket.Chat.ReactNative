@@ -10,14 +10,12 @@ import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Default = (): ReactElement | null => {
 	const { sharing } = useRoomContext();
-	const { openEmojiKeyboard, setMarkdownToolbar } = useMessageComposerApi();
+	const { setMarkdownToolbar } = useMessageComposerApi();
 	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
 
 	const openEmoji = async () => {
-		console.log('openEmoji');
 		showEmojiPickerSharedValue.value = true;
 		await KeyboardController.dismiss({ keepFocus: true });
-		// openEmojiKeyboard();
 	};
 
 	return (

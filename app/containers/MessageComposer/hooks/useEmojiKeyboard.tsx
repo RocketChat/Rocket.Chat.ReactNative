@@ -1,9 +1,9 @@
-import React, { createContext, ReactElement, useContext } from 'react';
+import React, { createContext, ReactElement, useContext, useState } from 'react';
 import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { runOnJS, SharedValue, useAnimatedReaction, useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useMessageComposerApi, useShowEmojiKeyboard } from '../context';
+import { useMessageComposerApi } from '../context';
 
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
@@ -23,8 +23,22 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 
 export const useEmojiKeyboard = () => {
 	const context = useContext(EmojiKeyboardContext);
+	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 
-	return context;
+	// Sync shared value with React state for proper re-renders
+	// This maintains single source of truth while enabling React updates
+	useAnimatedReaction(
+		() => context.showEmojiPickerSharedValue.value,
+		currentValue => {
+			runOnJS(setShowEmojiKeyboard)(currentValue);
+		},
+		[context.showEmojiPickerSharedValue]
+	);
+
+	return {
+		showEmojiPickerSharedValue: context.showEmojiPickerSharedValue,
+		showEmojiKeyboard
+	};
 };
 
 const IPAD_TOOLTIP_HEIGHT = 70;
@@ -34,72 +48,36 @@ export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
 	const keyboardHeight = useSharedValue(bottom);
-	// const showEmojiKeyboard = useShowEmojiKeyboard();
 	const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 
 	const updateKeyboardHeight = (height: number) => {
 		'worklet';
 
-		// don't add the notch height if the keyboard is already open
-		console.log('updateKeyboardHeight height BEFORE', keyboardHeight.value);
+		// Don't add the notch height if the keyboard is already open
 		const notch = height > 0 ? 0 : bottom;
-		// if (keyboardHeight.value < IPAD_TOOLTIP_HEIGHT && height + notch < IPAD_TOOLTIP_HEIGHT) {
-		// 	console.log('updateKeyboardHeight EARLY RETURN');
-		// 	return;
-		// }
-		keyboardHeight.value = height + notch;
-		console.log('updateKeyboardHeight height AFTER', keyboardHeight.value);
+		keyboardHeight.value = withTiming(height + notch, { duration: 250 });
 	};
-
-	useDerivedValue(() => {
-		console.log(
-			'useDerivedValue keyboardHeight showEmojiPickerSharedValue',
-			keyboardHeight.value,
-			showEmojiPickerSharedValue.value
-		);
-	}, [keyboardHeight, showEmojiPickerSharedValue]);
 
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
 		(currentValue, previousValue) => {
-			console.log('useEmojiKeyboard useAnimatedReaction currentValue previousValue', currentValue, previousValue);
-			console.log(
-				'useEmojiKeyboard useAnimatedReaction BEFORE showEmojiPickerSharedValue keyboardHeight',
-				showEmojiPickerSharedValue.value,
-				keyboardHeight.value
-			);
-
-			// if (currentValue === previousValue) {
-			// 	console.log('useEmojiKeyboard useAnimatedReaction EARLY RETURN');
-			// 	return;
-			// }
-
-			// iPad shows a tooltip sometimes and the height seems to be less than 70.
-			// This logic also fixes emoji keyboard height when using a hardware keyboard.
-			if (showEmojiPickerSharedValue.value === true && keyboardHeight.value < IPAD_TOOLTIP_HEIGHT) {
-				console.log('useEmojiKeyboard useAnimatedReaction 1');
-				keyboardHeight.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
+			// Only react to actual changes
+			if (currentValue === previousValue) {
+				return;
 			}
-			// else if (showEmojiPickerSharedValue.value === false) {
-			// 	console.log('useEmojiKeyboard useAnimatedReaction 2');
-			// 	updateKeyboardHeight(0);
-			// }
 
-			if (showEmojiPickerSharedValue.value === true) {
-				console.log('useEmojiKeyboard useAnimatedReaction 3');
-				runOnJS(openEmojiKeyboard)();
-			} else if (showEmojiPickerSharedValue.value === false) {
-				console.log('useEmojiKeyboard useAnimatedReaction 4');
-				if (keyboardHeight.value > 0) {
-					updateKeyboardHeight(0);
-					runOnJS(closeEmojiKeyboard)();
+			if (currentValue === true) {
+				// iPad shows a tooltip sometimes and the height seems to be less than 70.
+				// This logic also fixes emoji keyboard height when using a hardware keyboard.
+				if (keyboardHeight.value < IPAD_TOOLTIP_HEIGHT) {
+					keyboardHeight.value = withTiming(EMOJI_KEYBOARD_FIXED_HEIGHT, { duration: 250 });
 				}
+				runOnJS(openEmojiKeyboard)();
+			} else {
+				// Close emoji keyboard
+				updateKeyboardHeight(0);
+				runOnJS(closeEmojiKeyboard)();
 			}
-			console.log(
-				'useEmojiKeyboard useAnimatedReaction AFTER showEmojiPickerSharedValue showEmojiKeyboard keyboardHeight',
-				showEmojiPickerSharedValue.value,
-				keyboardHeight.value
-			);
 		},
 		[showEmojiPickerSharedValue, keyboardHeight]
 	);
@@ -109,15 +87,8 @@ export const useEmojiKeyboardHeight = () => {
 			onStart: e => {
 				'worklet';
 
-				console.log('useKeyboardHandler onStart keyboardHeight e', keyboardHeight.value, e.height);
-
-				// if (keyboardHeight.value < IPAD_TOOLTIP_HEIGHT && e.height < IPAD_TOOLTIP_HEIGHT) {
-				// 	console.log('useKeyboardHandler early return');
-				// 	return;
-				// }
-
-				// we want to preserve the previously open keyboard height when emoji keyboard is opened,
-				// so we just ignore the keyboard event when emoji keyboard is closed
+				// We want to preserve the previously open keyboard height when emoji keyboard is opened,
+				// so we just ignore the keyboard event when emoji keyboard is open
 				if (showEmojiPickerSharedValue.value === false) {
 					updateKeyboardHeight(e.height);
 				}

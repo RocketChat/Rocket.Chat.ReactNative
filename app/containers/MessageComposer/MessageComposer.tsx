@@ -2,21 +2,19 @@ import React, { ReactElement, useRef, useImperativeHandle } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
-import Animated, { runOnJS, useAnimatedReaction, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
 import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
-import { MIN_HEIGHT, TIMEOUT_CLOSE_EMOJI_KEYBOARD } from './constants';
+import { MIN_HEIGHT } from './constants';
 import {
 	MessageInnerContext,
 	useAlsoSendThreadToChannel,
 	useMessageComposerApi,
 	useRecordingAudio,
-	useShowEmojiKeyboard,
 	useShowEmojiSearchbar
 } from './context';
 import { IComposerInput } from './interfaces';
-import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
@@ -59,19 +57,12 @@ export const MessageComposer = ({
 	});
 	const { colors } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
-	const showEmojiKeyboard = useShowEmojiKeyboard();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
+	const { showEmojiPickerSharedValue, showEmojiKeyboard } = useEmojiKeyboard();
 	const { keyboardHeight } = useEmojiKeyboardHeight();
-	const {
-		openSearchEmojiKeyboard,
-		openEmojiKeyboard,
-		closeEmojiKeyboard,
-		closeSearchEmojiKeyboard,
-		setAlsoSendThreadToChannel,
-		setAutocompleteParams
-	} = useMessageComposerApi();
+	const { openSearchEmojiKeyboard, closeSearchEmojiKeyboard, setAlsoSendThreadToChannel, setAutocompleteParams } =
+		useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 
@@ -90,11 +81,7 @@ export const MessageComposer = ({
 	});
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
-		if (showEmojiKeyboard) {
-			closeEmojiKeyboard();
-			keyboardHeight.set(0);
-			showEmojiPickerSharedValue.set(false);
-		}
+		showEmojiPickerSharedValue.value = false;
 		action && action(params);
 	};
 
@@ -188,24 +175,10 @@ export const MessageComposer = ({
 	};
 
 	const onEmojiSelected = (emoji: IEmoji) => {
-		console.log('onEmojiSelected', emoji);
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
-
-	// useAnimatedReaction(
-	// 	() => showEmojiPickerSharedValue.value,
-	// 	() => {
-	// 		console.log('useAnimatedReaction showEmojiPickerSharedValue', showEmojiPickerSharedValue.value);
-	// 		if (showEmojiPickerSharedValue.value === true && !showEmojiKeyboard) {
-	// 			runOnJS(openEmojiKeyboard)();
-	// 		} else if (showEmojiPickerSharedValue.value === false && showEmojiKeyboard) {
-	// 			runOnJS(closeEmojiKeyboard)();
-	// 		}
-	// 	},
-	// 	[showEmojiPickerSharedValue]
-	// );
 
 	const emojiKeyboardStyle = useAnimatedStyle(() => ({
 		height: keyboardHeight.value
