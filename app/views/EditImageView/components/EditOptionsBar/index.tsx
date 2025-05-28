@@ -45,37 +45,37 @@ const EditOptionsBar = ({
 		<View style={[styles.container, { backgroundColor: colors.surfaceHover, paddingBottom: insets.bottom, paddingTop: 12 }]}>
 			{isCropping ? (
 				<>
-					<Touch onPress={onCancelCrop}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={onCancelCrop}>
 						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
 					</Touch>
 
-					<Touch onPress={crop}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={crop}>
 						<Text style={{ color: colors.fontDefault }}>Crop</Text>
 					</Touch>
 				</>
 			) : (
 				<>
-					<Touch onPress={onCancel}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={onCancel}>
 						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
 					</Touch>
 
-					<Touch onPress={rotateLeft}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={rotateLeft}>
 						<CustomIcon name='undo' size={24} />
 					</Touch>
 
-					<Touch onPress={rotateRight}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={rotateRight}>
 						<CustomIcon name='redo' size={24} />
 					</Touch>
 
-					<Touch onPress={startCrop}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={startCrop}>
 						<CustomIcon name='crop' size={24} />
 					</Touch>
 
-					<Touch onPress={openResizeOptions}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={openResizeOptions}>
 						<CustomIcon name='arrow-expand' size={24} />
 					</Touch>
 
-					<Touch onPress={onContinue}>
+					<Touch hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={onContinue}>
 						<Text style={{ color: colors.fontDefault }}>Continue</Text>
 					</Touch>
 				</>
