@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, useWindowDimensions } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { RouteProp } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,9 +18,8 @@ import Touch from '../../containers/Touch';
 import ImageSelector from './components/ImageSelector';
 
 // To Do:
-// - Add Pinch detector;
 // - Organize code;
-// - Clean the file;
+// - Clean the file on cancel and send;
 // - Test edge cases of minimize app and voip;
 
 const styles = StyleSheet.create({
@@ -29,6 +27,9 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	backContainer: {
+		paddingHorizontal: 16
 	}
 });
 
@@ -92,17 +93,19 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		});
 	};
 
+	const onContinue = () => {
+		navigation.replace('ShareView', { ...route.params, attachments: images });
+	};
+
 	const imageAnimatedStyle = useAnimatedStyle(() => ({
 		width: imageWidth.value,
 		height: imageHeight.value
 	}));
 
-	const composedGesture = Gesture.Exclusive();
-
 	return (
-		<SafeAreaView style={{ paddingBottom: insets.bottom, paddingTop: insets.top }}>
+		<SafeAreaView style={{ paddingTop: insets.top }}>
 			{showUndo ? (
-				<View style={{ paddingHorizontal: 16, alignItems: isPortrait ? 'flex-start' : 'flex-end' }}>
+				<View style={{ ...styles.backContainer, alignItems: isPortrait ? 'flex-start' : 'flex-end' }}>
 					<Touch onPress={undoEdit}>
 						<CustomIcon name='arrow-back' size={24} />
 					</Touch>
@@ -110,25 +113,24 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 			) : null}
 
 			<View style={styles.editContent}>
-				<GestureDetector gesture={composedGesture}>
-					<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
-						<Animated.Image source={{ uri: editableImage.path }} style={imageAnimatedStyle} />
+				<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
+					<Animated.Image source={{ uri: editableImage.path }} style={imageAnimatedStyle} />
 
-						{editableImage && cropSelectorEnabled ? (
-							<Grid
-								height={imageHeight.value}
-								imageSizeWidth={imageWidth}
-								left={left}
-								prevTranslationX={prevTranslationXValue}
-								prevTranslationY={prevTranslationYValue}
-								sharedValueHeight={gridHeight}
-								sharedValueWidth={gridWidth}
-								top={top}
-								width={screenWidth}
-							/>
-						) : null}
-					</View>
-				</GestureDetector>
+					{editableImage && cropSelectorEnabled ? (
+						<Grid
+							height={imageHeight.value}
+							imageSizeWidth={imageWidth}
+							left={left}
+							prevTranslationX={prevTranslationXValue}
+							prevTranslationY={prevTranslationYValue}
+							sharedValueHeight={gridHeight}
+							sharedValueWidth={gridWidth}
+							top={top}
+							width={screenWidth}
+							imageSizeHeight={imageHeight}
+						/>
+					) : null}
+				</View>
 			</View>
 
 			{images.length > 1 ? (
@@ -146,7 +148,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 				isCropping={cropSelectorEnabled}
 				onCancel={onCancel}
 				onCancelCrop={cancelCropEditor}
-				onContinue={async () => {}}
+				onContinue={onContinue}
 				openResizeOptions={openCropOptions}
 				rotateLeft={rotateLeft}
 				rotateRight={rotateRight}

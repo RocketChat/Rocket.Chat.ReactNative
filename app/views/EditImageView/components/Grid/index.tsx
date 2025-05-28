@@ -1,6 +1,6 @@
 import React from 'react';
 import Animated, { clamp, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
-import { Gesture } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 import Cell from '../Cell';
 import Row from '../Row';
@@ -15,6 +15,7 @@ interface IGridProps {
 	prevTranslationX: SharedValue<number>;
 	prevTranslationY: SharedValue<number>;
 	imageSizeWidth: SharedValue<number>;
+	imageSizeHeight: SharedValue<number>;
 }
 
 const Grid = ({
@@ -26,7 +27,8 @@ const Grid = ({
 	left,
 	prevTranslationX,
 	prevTranslationY,
-	imageSizeWidth
+	imageSizeWidth,
+	imageSizeHeight
 }: IGridProps) => {
 	const animatedStyle = useAnimatedStyle(() => ({
 		width: sharedValueWidth.value,
@@ -39,6 +41,26 @@ const Grid = ({
 		alignItems: 'center',
 		justifyContent: 'center'
 	}));
+
+	const pinchGesture = Gesture.Pinch()
+		.onChange(e => {
+			const { scale } = e;
+			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
+			const minHeight = 100;
+			const minWidth = 100;
+
+			const newWidth = clamp(imageSizeWidth.value * scale, minWidth, imageSizeWidth.value);
+			const newHeight = clamp(imageSizeHeight.value * scale, minHeight, imageSizeHeight.value);
+
+			left.value = paddingHorizontal + clamp(e.focalX - newWidth / 2, paddingHorizontal, (imageSizeWidth.value - newWidth) / 2);
+			top.value = clamp(e.focalY - newHeight / 2, 0, (imageSizeHeight.value - newHeight) / 2);
+
+			sharedValueWidth.value = newWidth;
+			sharedValueHeight.value = newHeight;
+			prevTranslationX.value = left.value;
+			prevTranslationY.value = top.value;
+		})
+		.onEnd(() => {});
 
 	const topLeft = Gesture.Pan()
 		.onChange(e => {
@@ -235,25 +257,27 @@ const Grid = ({
 		});
 
 	return (
-		<Animated.View style={animatedStyle}>
-			<Row>
-				<Cell gesture={topLeft} />
-				<Cell gesture={topCenter} />
-				<Cell gesture={topRight} />
-			</Row>
+		<GestureDetector gesture={pinchGesture}>
+			<Animated.View style={animatedStyle}>
+				<Row>
+					<Cell gesture={Gesture.Race(pinchGesture, topLeft)} />
+					<Cell gesture={Gesture.Race(pinchGesture, topCenter)} />
+					<Cell gesture={Gesture.Race(pinchGesture, topRight)} />
+				</Row>
 
-			<Row>
-				<Cell gesture={leftCenter} />
-				<Cell gesture={moveGrid} />
-				<Cell gesture={rightCenter} />
-			</Row>
+				<Row>
+					<Cell gesture={Gesture.Race(pinchGesture, leftCenter)} />
+					<Cell gesture={Gesture.Race(pinchGesture, moveGrid)} />
+					<Cell gesture={Gesture.Race(pinchGesture, rightCenter)} />
+				</Row>
 
-			<Row>
-				<Cell gesture={bottomLeft} />
-				<Cell gesture={bottomCenter} />
-				<Cell gesture={bottomRight} />
-			</Row>
-		</Animated.View>
+				<Row>
+					<Cell gesture={Gesture.Race(pinchGesture, bottomLeft)} />
+					<Cell gesture={Gesture.Race(pinchGesture, bottomCenter)} />
+					<Cell gesture={Gesture.Race(pinchGesture, bottomRight)} />
+				</Row>
+			</Animated.View>
+		</GestureDetector>
 	);
 };
 

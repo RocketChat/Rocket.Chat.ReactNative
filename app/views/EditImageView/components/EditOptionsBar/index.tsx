@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import Touch from '../../../../containers/Touch';
@@ -18,7 +19,7 @@ interface IEditOptionsBarProps {
 	isCropping: boolean;
 	onCancel: () => void;
 	onCancelCrop: () => void;
-	onContinue: () => Promise<void>;
+	onContinue: () => void;
 	crop: () => void;
 	rotateLeft: () => void;
 	rotateRight: () => void;
@@ -38,9 +39,10 @@ const EditOptionsBar = ({
 	onCancelCrop
 }: IEditOptionsBarProps) => {
 	const { colors } = useTheme();
+	const insets = useSafeAreaInsets();
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { backgroundColor: colors.surfaceHover, paddingBottom: insets.bottom, paddingTop: 12 }]}>
 			{isCropping ? (
 				<>
 					<Touch onPress={onCancelCrop}>

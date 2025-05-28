@@ -6,6 +6,9 @@ import { deleteAsync } from 'expo-file-system';
 import getValueBasedOnOriginal from '../utils/getValueBasedOnOriginal';
 import getHorizontalPadding from '../utils/getHorizontalPadding';
 
+const PORTRAIT_CROP_OPTIONS = ['Original', '1:1', '3:2', '3:4', '16:9'];
+const LANDSCAPE_CROP_OPTIONS = ['Original', '1:1', '3:2', '4:3', '16:9'];
+
 interface IUseImageManipulatorProps {
 	isPortrait: boolean;
 	attachments: any[];
@@ -34,8 +37,6 @@ const useImageEditor = ({
 }: IUseImageManipulatorProps) => {
 	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
 	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
-	const PORTRAIT_CROP_OPTIONS = ['Original', '1:1', '3:2', '3:4', '16:9'];
-	const LANDSCAPE_CROP_OPTIONS = ['Original', '1:1', '3:2', '4:3', '16:9'];
 	const [crop, setCrop] = useState(false);
 	const imageWidth = useSharedValue(originalImageSize.width);
 	const imageHeight = useSharedValue(originalImageSize.height);
