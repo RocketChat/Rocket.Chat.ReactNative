@@ -1,5 +1,5 @@
 import React from 'react';
-import Animated, { clamp, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { clamp, SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 import Cell from '../Cell';
@@ -17,6 +17,8 @@ interface IGridProps {
 	imageSizeWidth: SharedValue<number>;
 	imageSizeHeight: SharedValue<number>;
 }
+
+const SMOOTHING_FACTOR = 0.2;
 
 const Grid = ({
 	width,
@@ -41,26 +43,28 @@ const Grid = ({
 		alignItems: 'center',
 		justifyContent: 'center'
 	}));
+	const focalX = useSharedValue(0);
+	const focalY = useSharedValue(0);
+	const pinchGesture = Gesture.Pinch().onChange(e => {
+		const { scale } = e;
+		const paddingHorizontal = (width - imageSizeWidth.value) / 2;
+		const minHeight = 100;
+		const minWidth = 100;
 
-	const pinchGesture = Gesture.Pinch()
-		.onChange(e => {
-			const { scale } = e;
-			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
-			const minHeight = 100;
-			const minWidth = 100;
+		const newWidth = clamp(imageSizeWidth.value * scale, minWidth, imageSizeWidth.value);
+		const newHeight = clamp(imageSizeHeight.value * scale, minHeight, imageSizeHeight.value);
+		const newFocalX = focalX.value + SMOOTHING_FACTOR * (e.focalX - focalX.value);
+		const newFocalY = focalY.value + SMOOTHING_FACTOR * (e.focalY - focalY.value);
 
-			const newWidth = clamp(imageSizeWidth.value * scale, minWidth, imageSizeWidth.value);
-			const newHeight = clamp(imageSizeHeight.value * scale, minHeight, imageSizeHeight.value);
-
-			left.value = paddingHorizontal + clamp(e.focalX - newWidth / 2, paddingHorizontal, (imageSizeWidth.value - newWidth) / 2);
-			top.value = clamp(e.focalY - newHeight / 2, 0, (imageSizeHeight.value - newHeight) / 2);
-
-			sharedValueWidth.value = newWidth;
-			sharedValueHeight.value = newHeight;
-			prevTranslationX.value = left.value;
-			prevTranslationY.value = top.value;
-		})
-		.onEnd(() => {});
+		sharedValueWidth.value = newWidth;
+		sharedValueHeight.value = newHeight;
+		left.value = paddingHorizontal + clamp(newFocalX - newWidth / 2, paddingHorizontal, (imageSizeWidth.value - newWidth) / 2);
+		top.value = clamp(newFocalY - newHeight / 2, 0, (imageSizeHeight.value - newHeight) / 2);
+		prevTranslationX.value = left.value;
+		prevTranslationY.value = top.value;
+		focalX.value = e.focalX;
+		focalY.value = e.focalY;
+	});
 
 	const topLeft = Gesture.Pan()
 		.onChange(e => {
