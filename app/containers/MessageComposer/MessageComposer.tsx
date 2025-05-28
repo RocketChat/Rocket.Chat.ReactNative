@@ -95,7 +95,7 @@ export const MessageComposer = ({
 			keyboardHeight.set(0);
 			showEmojiPickerSharedValue.set(false);
 		}
-		setTimeout(() => action && action(params), showEmojiKeyboard && isIOS ? TIMEOUT_CLOSE_EMOJI_KEYBOARD : undefined);
+		action && action(params);
 	};
 
 	const handleSendMessage = async () => {
