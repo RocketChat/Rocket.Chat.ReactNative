@@ -19,6 +19,11 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	return <EmojiKeyboardContext.Provider value={{ showEmojiPickerSharedValue }}>{children}</EmojiKeyboardContext.Provider>;
 };
 
+/**
+ * Hook for managing emoji keyboard state and providing React state synchronization.
+ * This hook handles the emoji picker open/close state and syncs it with React state
+ * for components that need to re-render based on emoji picker visibility.
+ */
 export const useEmojiKeyboard = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
@@ -52,6 +57,12 @@ export const useEmojiKeyboard = () => {
 const IPAD_TOOLTIP_HEIGHT = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 300;
 
+/**
+ * Hook for managing emoji keyboard height animations and keyboard event handling.
+ * This hook handles the animated height transitions when the emoji picker opens/closes
+ * and manages keyboard height synchronization. It's separate from useEmojiKeyboard
+ * to maintain single responsibility and allow components to use only what they need.
+ */
 export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
