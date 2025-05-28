@@ -18,6 +18,10 @@ import Touch from '../../containers/Touch';
 import ImageSelector from './components/ImageSelector';
 
 // To Do:
+// Loading;
+// Resize looking for original size;
+// remove word and add icons;
+// paddings and borderRadius on buttons;
 // - Organize code;
 // - Clean the file on cancel and send;
 // - Test edge cases of minimize app and voip;
@@ -55,6 +59,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		attachments: route?.params?.attachments
 	});
 	const {
+		loading,
 		cropSelectorEnabled,
 		onSelectCropOption,
 		onCrop,
@@ -144,6 +149,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 			) : null}
 
 			<EditOptionsBar
+				loading={loading}
 				crop={onCrop}
 				isCropping={cropSelectorEnabled}
 				onCancel={onCancel}

@@ -35,6 +35,7 @@ const useImageEditor = ({
 	updateImage,
 	updateEditableImage
 }: IUseImageManipulatorProps) => {
+	const [loading, setLoading] = useState({ icon: '', loading: false });
 	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
 	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
 	const [crop, setCrop] = useState(false);
@@ -86,56 +87,77 @@ const useImageEditor = ({
 	};
 
 	const rotateLeft = async () => {
-		const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(-90);
-		const image = await rotateImage.renderAsync();
-		const result = await image.saveAsync({
-			format: SaveFormat.PNG
-		});
+		setLoading({ icon: 'rotateLeft', loading: true });
+		try {
+			const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(-90);
+			const image = await rotateImage.renderAsync();
+			const result = await image.saveAsync({
+				format: SaveFormat.PNG
+			});
 
-		updateImage(result);
-		updateImageHistory(result);
-		defineImageSize(result.width, result.height);
+			updateImage(result);
+			updateImageHistory(result);
+			defineImageSize(result.width, result.height);
+		} catch (error) {
+			// do nothing
+		} finally {
+			setLoading({ icon: '', loading: false });
+		}
 	};
 
 	const rotateRight = async () => {
-		const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(90);
-		const image = await rotateImage.renderAsync();
-		const result = await image.saveAsync({
-			format: SaveFormat.PNG
-		});
+		setLoading({ icon: 'rotateRight', loading: true });
+		try {
+			const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(90);
+			const image = await rotateImage.renderAsync();
+			const result = await image.saveAsync({
+				format: SaveFormat.PNG
+			});
 
-		updateImage(result);
-		updateImageHistory(result);
-		defineImageSize(result.width, result.height);
+			updateImage(result);
+			updateImageHistory(result);
+			defineImageSize(result.width, result.height);
+		} catch (error) {
+			// do nothing
+		} finally {
+			setLoading({ icon: '', loading: false });
+		}
 	};
 
 	const onCrop = async () => {
-		const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, imageWidth.value);
-		const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, imageHeight.value);
-		const originX = getValueBasedOnOriginal(
-			left.value - getHorizontalPadding(screenWidth, imageWidth.value),
-			originalImageSize.width,
-			imageWidth.value
-		);
-		const originY = getValueBasedOnOriginal(top.value, originalImageSize.height, imageHeight.value);
+		setLoading({ icon: 'crop', loading: true });
+		try {
+			const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, imageWidth.value);
+			const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, imageHeight.value);
+			const originX = getValueBasedOnOriginal(
+				left.value - getHorizontalPadding(screenWidth, imageWidth.value),
+				originalImageSize.width,
+				imageWidth.value
+			);
+			const originY = getValueBasedOnOriginal(top.value, originalImageSize.height, imageHeight.value);
 
-		const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
-			height: finalHeight,
-			width: finalWidth,
-			originX,
-			originY
-		});
+			const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
+				height: finalHeight,
+				width: finalWidth,
+				originX,
+				originY
+			});
 
-		const image = await cropImage.renderAsync();
-		const result = await image.saveAsync({
-			format: SaveFormat.PNG
-		});
+			const image = await cropImage.renderAsync();
+			const result = await image.saveAsync({
+				format: SaveFormat.PNG
+			});
 
-		updateImage(result);
-		updateImageHistory(result);
-		defineImageSize(finalWidth, finalHeight);
+			updateImage(result);
+			updateImageHistory(result);
+			defineImageSize(finalWidth, finalHeight);
 
-		setCrop(false);
+			setCrop(false);
+		} catch (error) {
+			// do nothing
+		} finally {
+			setLoading({ icon: '', loading: false });
+		}
 	};
 
 	const openCropEditor = () => {
@@ -218,6 +240,7 @@ const useImageEditor = ({
 	}, [originalImageSize, isPortrait]);
 
 	return {
+		loading,
 		rotateLeft,
 		rotateRight,
 		onCrop,
