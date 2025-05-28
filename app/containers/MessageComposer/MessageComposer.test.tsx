@@ -72,17 +72,50 @@ const sharedValue = {
 	modify: jest.fn()
 };
 
+const sharedValueSearchbar = {
+	value: false,
+	get: () => sharedValueSearchbar.value,
+	set: (v: boolean) => {
+		sharedValueSearchbar.value = v;
+	},
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+	modify: jest.fn()
+};
+
+const keyboardHeightSharedValue = {
+	value: 0,
+	get: () => keyboardHeightSharedValue.value,
+	set: (v: number) => {
+		keyboardHeightSharedValue.value = v;
+	},
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+	modify: jest.fn()
+};
+
 let showEmojiKeyboard = false;
+let showEmojiSearchbar = false;
 
 beforeEach(() => {
 	showEmojiKeyboard = false;
+	showEmojiSearchbar = false;
 	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
 		showEmojiPickerSharedValue: sharedValue,
 		showEmojiKeyboard,
 		openEmojiKeyboard: jest.fn(),
-		closeEmojiKeyboard: jest.fn()
+		closeEmojiKeyboard: jest.fn(),
+		showEmojiSearchbarSharedValue: sharedValueSearchbar,
+		showEmojiSearchbar,
+		openEmojiSearchbar: jest.fn(),
+		closeEmojiSearchbar: jest.fn()
+	});
+	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboardHeight').mockReturnValue({
+		keyboardHeight: keyboardHeightSharedValue
 	});
 	sharedValue.value = false; // reset before each test
+	sharedValueSearchbar.value = false;
+	keyboardHeightSharedValue.value = 0;
 });
 
 describe('MessageComposer', () => {
@@ -108,7 +141,11 @@ describe('MessageComposer', () => {
 				showEmojiPickerSharedValue: sharedValue,
 				showEmojiKeyboard,
 				openEmojiKeyboard: jest.fn(),
-				closeEmojiKeyboard: jest.fn()
+				closeEmojiKeyboard: jest.fn(),
+				showEmojiSearchbarSharedValue: sharedValueSearchbar,
+				showEmojiSearchbar,
+				openEmojiSearchbar: jest.fn(),
+				closeEmojiSearchbar: jest.fn()
 			});
 
 			rerender(<Render />);

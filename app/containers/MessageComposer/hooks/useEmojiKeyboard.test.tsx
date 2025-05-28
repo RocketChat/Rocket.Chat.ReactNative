@@ -8,13 +8,29 @@ import { EmojiKeyboardProvider, useEmojiKeyboard, useEmojiKeyboardHeight } from 
 jest.mock('react-native-reanimated', () => ({
 	useSharedValue: jest.fn(),
 	useAnimatedReaction: jest.fn(),
+	useDerivedValue: jest.fn(_fn => ({
+		// Return a mock shared value for the derived value
+		value: 0,
+		get: jest.fn(() => 0),
+		set: jest.fn(),
+		addListener: jest.fn(),
+		removeListener: jest.fn(),
+		modify: jest.fn()
+	})),
 	runOnJS: jest.fn(fn => fn),
 	withTiming: jest.fn(value => value)
 }));
 
 // Mock react-native-keyboard-controller
 jest.mock('react-native-keyboard-controller', () => ({
-	useKeyboardHandler: jest.fn()
+	KeyboardController: {
+		setFocusTo: jest.fn(async () => {})
+	},
+	useKeyboardHandler: jest.fn(),
+	useReanimatedKeyboardAnimation: jest.fn(() => ({
+		height: { value: 0 },
+		progress: { value: 0 }
+	}))
 }));
 
 // Mock react-native-safe-area-context
@@ -24,6 +40,8 @@ jest.mock('react-native-safe-area-context', () => ({
 
 describe('useEmojiKeyboard', () => {
 	let mockSharedValue: any;
+	let mockSearchbarSharedValue: any;
+	let mockKeyboardHeightSharedValue: any;
 
 	beforeEach(() => {
 		mockSharedValue = {
@@ -37,7 +55,32 @@ describe('useEmojiKeyboard', () => {
 			modify: jest.fn()
 		};
 
-		(useSharedValue as jest.Mock).mockReturnValue(mockSharedValue);
+		mockSearchbarSharedValue = {
+			value: false,
+			get: jest.fn(() => mockSearchbarSharedValue.value),
+			set: jest.fn((v: boolean) => {
+				mockSearchbarSharedValue.value = v;
+			}),
+			addListener: jest.fn(),
+			removeListener: jest.fn(),
+			modify: jest.fn()
+		};
+
+		mockKeyboardHeightSharedValue = {
+			value: 0,
+			get: jest.fn(() => mockKeyboardHeightSharedValue.value),
+			set: jest.fn((v: number) => {
+				mockKeyboardHeightSharedValue.value = v;
+			}),
+			addListener: jest.fn(),
+			removeListener: jest.fn(),
+			modify: jest.fn()
+		};
+
+		(useSharedValue as jest.Mock)
+			.mockReturnValueOnce(mockSharedValue) // showEmojiPickerSharedValue
+			.mockReturnValueOnce(mockSearchbarSharedValue) // showEmojiSearchbarSharedValue
+			.mockReturnValue(mockKeyboardHeightSharedValue); // previousKeyboardHeight
 	});
 
 	afterEach(() => {
@@ -93,18 +136,18 @@ describe('useEmojiKeyboard', () => {
 				result.current.openEmojiSearchbar();
 			});
 
-			expect(mockSharedValue.value).toBe(true);
+			expect(mockSearchbarSharedValue.value).toBe(true);
 		});
 
-		test('should close emoji searchbar', () => {
-			mockSharedValue.value = true;
+		test('should close emoji searchbar', async () => {
+			mockSearchbarSharedValue.value = true;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
-			act(() => {
-				result.current.closeEmojiSearchbar();
+			await act(async () => {
+				await result.current.closeEmojiSearchbar();
 			});
 
-			expect(mockSharedValue.value).toBe(false);
+			expect(mockSearchbarSharedValue.value).toBe(false);
 		});
 
 		test('should handle multiple open/close operations', () => {
@@ -140,8 +183,9 @@ describe('useEmojiKeyboard', () => {
 		test('should handle keyboard height changes', () => {
 			const { result } = renderHook(() => useEmojiKeyboardHeight(), { wrapper });
 
-			// The hook should be properly initialized
-			expect(result.current.keyboardHeight).toBe(mockSharedValue);
+			// The hook should be properly initialized with the derived value
+			expect(result.current.keyboardHeight).toBeDefined();
+			expect(result.current.keyboardHeight.value).toBe(0);
 		});
 	});
 
