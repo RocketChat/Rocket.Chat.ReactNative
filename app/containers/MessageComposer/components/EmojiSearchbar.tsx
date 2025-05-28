@@ -21,10 +21,10 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 	const { colors } = useTheme();
 	const [searchText, setSearchText] = useState<string>('');
 	const showEmojiSearchbar = useShowEmojiSearchbar();
-	const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 	const { onEmojiSelected } = useContext(MessageInnerContext);
 	const { frequentlyUsed } = useFrequentlyUsedEmoji(true);
 	const [emojis, setEmojis] = useState<IEmoji[]>([]);
+	const { closeSearchEmojiKeyboard } = useMessageComposerApi();
 
 	const handleTextChange = useDebounce(async (text: string) => {
 		setSearchText(text);
@@ -43,7 +43,6 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 		return null;
 	}
 
-	// TODO: Use RNGH
 	return (
 		<View style={{ backgroundColor: colors.surfaceLight }}>
 			<FlatList
@@ -63,13 +62,13 @@ export const EmojiSearchbar = (): React.ReactElement | null => {
 			<View style={styles.searchContainer}>
 				<Pressable
 					style={({ pressed }: { pressed: boolean }) => [styles.backButton, { opacity: pressed ? 0.7 : 1 }]}
-					onPress={openEmojiKeyboard}
+					onPress={closeSearchEmojiKeyboard}
 					hitSlop={BUTTON_HIT_SLOP}
 					testID='openback-emoji-keyboard'>
 					<CustomIcon name='chevron-left' size={24} />
 				</Pressable>
 				<View style={styles.inputContainer}>
-					<EmojiSearch onBlur={closeEmojiKeyboard} onChangeText={handleTextChange} />
+					<EmojiSearch onChangeText={handleTextChange} />
 				</View>
 			</View>
 		</View>

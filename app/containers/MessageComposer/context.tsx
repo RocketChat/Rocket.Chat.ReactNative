@@ -5,8 +5,6 @@ import { IAutocompleteBase, TMicOrSend } from './interfaces';
 import { animateNextTransition } from '../../lib/methods/helpers';
 
 type TMessageComposerContextApi = {
-	openEmojiKeyboard(): void;
-	closeEmojiKeyboard(): void;
 	openSearchEmojiKeyboard(): void;
 	closeSearchEmojiKeyboard(): void;
 	setFocused(focused: boolean): void;
@@ -63,8 +61,6 @@ type State = {
 type Actions =
 	| { type: 'updateEmojiSearchbar'; showEmojiSearchbar: boolean }
 	| { type: 'updateFocused'; focused: boolean }
-	| { type: 'openEmojiKeyboard' }
-	| { type: 'closeEmojiKeyboard' }
 	| { type: 'openSearchEmojiKeyboard' }
 	| { type: 'closeSearchEmojiKeyboard' }
 	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
@@ -80,10 +76,6 @@ const reducer = (state: State, action: Actions): State => {
 		case 'updateFocused':
 			animateNextTransition();
 			return { ...state, focused: action.focused };
-		case 'openEmojiKeyboard':
-		case 'closeEmojiKeyboard':
-			// These actions are now handled by the shared value, but we keep them for compatibility
-			return state;
 		case 'openSearchEmojiKeyboard':
 			return { ...state, showEmojiSearchbar: true };
 		case 'closeSearchEmojiKeyboard':
@@ -111,14 +103,6 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 	const api = useMemo(() => {
 		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
 
-		const openEmojiKeyboard = () => {
-			dispatch({ type: 'openEmojiKeyboard' });
-		};
-
-		const closeEmojiKeyboard = () => {
-			dispatch({ type: 'closeEmojiKeyboard' });
-		};
-
 		const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });
 
 		const closeSearchEmojiKeyboard = () => dispatch({ type: 'closeSearchEmojiKeyboard' });
@@ -136,8 +120,6 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		return {
 			setFocused,
-			openEmojiKeyboard,
-			closeEmojiKeyboard,
 			openSearchEmojiKeyboard,
 			closeSearchEmojiKeyboard,
 			setMicOrSend,

@@ -3,8 +3,6 @@ import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { useMessageComposerApi } from '../context';
-
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
 }
@@ -22,22 +20,32 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 };
 
 export const useEmojiKeyboard = () => {
-	const context = useContext(EmojiKeyboardContext);
+	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
+
+	const openEmojiKeyboard = () => {
+		showEmojiPickerSharedValue.value = true;
+	};
+
+	const closeEmojiKeyboard = () => {
+		showEmojiPickerSharedValue.value = false;
+	};
 
 	// Sync shared value with React state for proper re-renders
 	// This maintains single source of truth while enabling React updates
 	useAnimatedReaction(
-		() => context.showEmojiPickerSharedValue.value,
+		() => showEmojiPickerSharedValue.value,
 		currentValue => {
 			runOnJS(setShowEmojiKeyboard)(currentValue);
 		},
-		[context.showEmojiPickerSharedValue]
+		[showEmojiPickerSharedValue]
 	);
 
 	return {
-		showEmojiPickerSharedValue: context.showEmojiPickerSharedValue,
-		showEmojiKeyboard
+		showEmojiPickerSharedValue,
+		showEmojiKeyboard,
+		openEmojiKeyboard,
+		closeEmojiKeyboard
 	};
 };
 
@@ -48,7 +56,7 @@ export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
 	const keyboardHeight = useSharedValue(bottom);
-	const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
+	// const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 
 	const updateKeyboardHeight = (height: number) => {
 		'worklet';
@@ -72,11 +80,9 @@ export const useEmojiKeyboardHeight = () => {
 				if (keyboardHeight.value < IPAD_TOOLTIP_HEIGHT) {
 					keyboardHeight.value = withTiming(EMOJI_KEYBOARD_FIXED_HEIGHT, { duration: 250 });
 				}
-				runOnJS(openEmojiKeyboard)();
 			} else {
 				// Close emoji keyboard
 				updateKeyboardHeight(0);
-				runOnJS(closeEmojiKeyboard)();
 			}
 		},
 		[showEmojiPickerSharedValue, keyboardHeight]

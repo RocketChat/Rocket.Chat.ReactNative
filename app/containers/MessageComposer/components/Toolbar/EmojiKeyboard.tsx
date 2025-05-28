@@ -8,10 +8,10 @@ import { Gap } from '../Gap';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const EmojiKeyboard = (): ReactElement => {
-	const { showEmojiPickerSharedValue } = useEmojiKeyboard();
+	const { closeEmojiKeyboard } = useEmojiKeyboard();
 
 	const close = async () => {
-		showEmojiPickerSharedValue.value = false;
+		closeEmojiKeyboard();
 		await KeyboardController.setFocusTo('current');
 	};
 

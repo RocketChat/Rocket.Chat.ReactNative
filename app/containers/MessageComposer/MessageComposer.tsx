@@ -59,7 +59,7 @@ export const MessageComposer = ({
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { showEmojiPickerSharedValue, showEmojiKeyboard } = useEmojiKeyboard();
+	const { showEmojiKeyboard, closeEmojiKeyboard } = useEmojiKeyboard();
 	const { keyboardHeight } = useEmojiKeyboardHeight();
 	const { openSearchEmojiKeyboard, closeSearchEmojiKeyboard, setAlsoSendThreadToChannel, setAutocompleteParams } =
 		useMessageComposerApi();
@@ -81,7 +81,7 @@ export const MessageComposer = ({
 	});
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
-		showEmojiPickerSharedValue.value = false;
+		closeEmojiKeyboard();
 		action && action(params);
 	};
 
@@ -209,7 +209,7 @@ export const MessageComposer = ({
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<Animated.View>{renderContent()}</Animated.View>
 			<Animated.View style={emojiKeyboardStyle}>
-				{showEmojiKeyboard ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
+				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
 			</Animated.View>
 			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
 		</MessageInnerContext.Provider>
