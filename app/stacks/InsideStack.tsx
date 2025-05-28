@@ -315,7 +315,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='StatusView' component={StatusView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
-			<InsideStack.Screen name='EditImageView' component={EditImageView} options={{headerShown: false}}/>
+			<InsideStack.Screen name='EditImageView' component={EditImageView} options={{ headerShown: false }} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
 		</InsideStack.Navigator>

@@ -185,7 +185,6 @@ export type ChatsStackParamList = {
 		userId: string;
 		name: string;
 	};
-	EditImageView: undefined;
 };
 
 export type ProfileStackParamList = {
@@ -291,9 +290,6 @@ export type InsideStackParamList = {
 		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
 		startShareView: () => { text: string; selectedMessages: string[] };
 	};
-	ModalBlockView: {
-		data: any; // TODO: Change;
-	};
 	EditImageView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
@@ -305,6 +301,9 @@ export type InsideStackParamList = {
 		action: TMessageAction;
 		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
 		startShareView: () => { text: string; selectedMessages: string[] };
+	};
+	ModalBlockView: {
+		data: any; // TODO: Change;
 	};
 };
 

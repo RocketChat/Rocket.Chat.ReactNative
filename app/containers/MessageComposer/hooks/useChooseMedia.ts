@@ -136,8 +136,9 @@ export const useChooseMedia = ({
 			thread = await getThreadById(tmid);
 		}
 		if (room) {
+			const imageOnly = !attachments.some(item => item.mime?.startsWith('image/') === false);
 			// FIXME: use useNavigation
-			Navigation.navigate('EditImageView', {
+			Navigation.navigate(imageOnly ? 'EditImageView' : 'ShareView', {
 				room,
 				thread: thread || tmid,
 				attachments,
