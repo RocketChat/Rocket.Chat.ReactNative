@@ -1,15 +1,14 @@
 import React, { ReactElement, useRef, useImperativeHandle } from 'react';
-import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
+import { LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
-import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
+import { Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
 import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
 import { IComposerInput } from './interfaces';
-import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
 import { IEmoji } from '../../definitions';
 import database from '../../lib/database';
@@ -18,21 +17,10 @@ import { generateTriggerId } from '../../lib/methods';
 import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
-import { RecordAudio } from './components/RecordAudio';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
 import { useEmojiKeyboard, useEmojiKeyboardHeight } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
-
-const styles = StyleSheet.create({
-	container: {
-		borderTopWidth: 1,
-		paddingHorizontal: 16,
-		minHeight: MIN_HEIGHT
-	},
-	input: {
-		flexDirection: 'row'
-	}
-});
+import { MessageComposerContent } from './components/MessageComposerContent';
 
 export const MessageComposer = ({
 	forwardedRef,
@@ -51,7 +39,6 @@ export const MessageComposer = ({
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 
-	const { colors } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, closeEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, closeEmojiSearchbar } =
@@ -179,36 +166,20 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
-	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
-
 	const emojiKeyboardStyle = useAnimatedStyle(() => ({
 		height: keyboardHeight.value
 	}));
 
-	const renderContent = () => {
-		if (recordingAudio) {
-			return <RecordAudio />;
-		}
-		return (
-			<View style={[styles.container, { backgroundColor, borderTopColor: colors.strokeLight }]} testID='message-composer'>
-				<View style={styles.input}>
-					<Left />
-					<ComposerInput ref={composerInputComponentRef} inputRef={composerInputRef} />
-					<Right />
-				</View>
-				<Quotes />
-				<Toolbar />
-				<EmojiSearchbar />
-				<SendThreadToChannel />
-
-				{children}
-			</View>
-		);
-	};
-
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<Animated.View onLayout={handleLayout}>{renderContent()}</Animated.View>
+			<MessageComposerContent
+				recordingAudio={recordingAudio}
+				action={action}
+				composerInputComponentRef={composerInputComponentRef}
+				composerInputRef={composerInputRef}
+				onLayout={handleLayout}>
+				{children}
+			</MessageComposerContent>
 			<Animated.View style={emojiKeyboardStyle}>
 				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
 			</Animated.View>
