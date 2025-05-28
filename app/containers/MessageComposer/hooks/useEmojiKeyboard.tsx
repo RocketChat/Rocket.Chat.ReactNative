@@ -67,7 +67,6 @@ export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
 	const keyboardHeight = useSharedValue(bottom);
-	// const { openEmojiKeyboard, closeEmojiKeyboard } = useMessageComposerApi();
 
 	const updateKeyboardHeight = (height: number) => {
 		'worklet';
