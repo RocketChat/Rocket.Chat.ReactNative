@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { View, FlatList } from 'react-native';
-// import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { FlatList } from 'react-native';
+import Animated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
 import { useAutocompleteParams } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -9,11 +9,17 @@ import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useStyle } from './styles';
+import { useEmojiKeyboardHeight } from '../../hooks/useEmojiKeyboard';
 
-export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
+export const Autocomplete = ({
+	onPress,
+	contentHeight
+}: {
+	onPress: IAutocompleteItemProps['onPress'];
+	contentHeight: SharedValue<number>;
+}): ReactElement | null => {
 	const { rid } = useRoomContext();
-	// const keyboardHeight = useKeyboardHeight();
-	// const { bottom } = useSafeAreaInsets();
+	const { keyboardHeight } = useEmojiKeyboardHeight();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
@@ -22,8 +28,9 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
-	// FIXME
-	const viewBottom = 0; // keyboardHeight + (keyboardHeight > 0 ? 0 : bottom) - 4;
+	const bottomStyle = useAnimatedStyle(() => ({
+		bottom: keyboardHeight.value + contentHeight.value - 4
+	}));
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -31,13 +38,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 
 	if (type !== '/preview') {
 		return (
-			<View
-				style={[
-					styles.root,
-					{
-						bottom: viewBottom
-					}
-				]}>
+			<Animated.View style={[styles.root, bottomStyle]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					data={items}
@@ -45,13 +46,13 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 
 	if (type === '/preview') {
 		return (
-			<View style={[styles.root, { backgroundColor: colors.surfaceLight, bottom: viewBottom }]}>
+			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight }, bottomStyle]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
@@ -61,7 +62,7 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 					keyboardShouldPersistTaps='always'
 					testID='autocomplete'
 				/>
-			</View>
+			</Animated.View>
 		);
 	}
 

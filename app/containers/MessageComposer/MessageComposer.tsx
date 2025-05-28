@@ -1,8 +1,8 @@
 import React, { ReactElement, useRef, useImperativeHandle } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { useRoomContext } from '../../views/RoomView/context';
 import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
@@ -49,6 +49,8 @@ export const MessageComposer = ({
 		setInput: () => {},
 		onAutocompleteItemSelected: () => {}
 	});
+	const contentHeight = useSharedValue(MIN_HEIGHT);
+
 	const { colors } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -77,6 +79,11 @@ export const MessageComposer = ({
 		closeEmojiKeyboard();
 		closeEmojiSearchbar();
 		action && action(params);
+	};
+
+	const handleLayout = (event: LayoutChangeEvent) => {
+		const { height } = event.nativeEvent.layout;
+		contentHeight.value = height;
 	};
 
 	const handleSendMessage = async () => {
@@ -201,11 +208,14 @@ export const MessageComposer = ({
 
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
-			<Animated.View>{renderContent()}</Animated.View>
+			<Animated.View onLayout={handleLayout}>{renderContent()}</Animated.View>
 			<Animated.View style={emojiKeyboardStyle}>
 				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
 			</Animated.View>
-			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
+			<Autocomplete
+				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
+				contentHeight={contentHeight}
+			/>
 		</MessageInnerContext.Provider>
 	);
 };
