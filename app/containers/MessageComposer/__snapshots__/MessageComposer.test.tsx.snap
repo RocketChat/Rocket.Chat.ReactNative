@@ -83,7 +83,7 @@ exports[`MessageComposer Audio tap record 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={189}
+          handlerTag={203}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -176,7 +176,7 @@ exports[`MessageComposer Audio tap record 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={190}
+          handlerTag={204}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -294,7 +294,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             borderless={true}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={176}
+            handlerTag={190}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -409,7 +409,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             borderless={true}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={177}
+            handlerTag={191}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -581,7 +581,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                   borderless={true}
                   collapsable={false}
                   delayLongPress={600}
-                  handlerTag={178}
+                  handlerTag={192}
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
@@ -734,7 +734,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             borderless={true}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={179}
+            handlerTag={193}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -849,7 +849,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             borderless={true}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={180}
+            handlerTag={194}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1022,7 +1022,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   borderless={true}
                   collapsable={false}
                   delayLongPress={600}
-                  handlerTag={181}
+                  handlerTag={195}
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
@@ -1203,7 +1203,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   borderless={true}
                   collapsable={false}
                   delayLongPress={600}
-                  handlerTag={182}
+                  handlerTag={196}
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
@@ -1356,7 +1356,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             borderless={true}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={183}
+            handlerTag={197}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1471,7 +1471,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             borderless={true}
             collapsable={false}
             delayLongPress={600}
-            handlerTag={184}
+            handlerTag={198}
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
@@ -1644,7 +1644,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   borderless={true}
                   collapsable={false}
                   delayLongPress={600}
-                  handlerTag={185}
+                  handlerTag={199}
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
@@ -1825,7 +1825,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   borderless={true}
                   collapsable={false}
                   delayLongPress={600}
-                  handlerTag={186}
+                  handlerTag={200}
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
@@ -2013,7 +2013,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={35}
+          handlerTag={49}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2089,7 +2089,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={36}
+          handlerTag={50}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2165,7 +2165,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={37}
+          handlerTag={51}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2241,7 +2241,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={38}
+          handlerTag={52}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2317,7 +2317,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={39}
+          handlerTag={53}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2393,7 +2393,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={40}
+          handlerTag={54}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2469,7 +2469,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={34}
+          handlerTag={48}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2621,7 +2621,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={113}
+          handlerTag={127}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2697,7 +2697,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={114}
+          handlerTag={128}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2773,7 +2773,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={115}
+          handlerTag={129}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2849,7 +2849,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={116}
+          handlerTag={130}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -2925,7 +2925,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={117}
+          handlerTag={131}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3001,7 +3001,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={118}
+          handlerTag={132}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3077,7 +3077,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={112}
+          handlerTag={126}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3229,7 +3229,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={139}
+          handlerTag={153}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3305,7 +3305,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={140}
+          handlerTag={154}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3381,7 +3381,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={141}
+          handlerTag={155}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3457,7 +3457,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={142}
+          handlerTag={156}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3533,7 +3533,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={143}
+          handlerTag={157}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3609,7 +3609,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={144}
+          handlerTag={158}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3685,7 +3685,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={138}
+          handlerTag={152}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3837,7 +3837,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={61}
+          handlerTag={75}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3913,7 +3913,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={62}
+          handlerTag={76}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -3989,7 +3989,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={63}
+          handlerTag={77}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4065,7 +4065,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={64}
+          handlerTag={78}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4141,7 +4141,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={65}
+          handlerTag={79}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4217,7 +4217,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={66}
+          handlerTag={80}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4293,7 +4293,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={60}
+          handlerTag={74}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4445,7 +4445,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={22}
+          handlerTag={36}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4521,7 +4521,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={23}
+          handlerTag={37}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4597,7 +4597,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={24}
+          handlerTag={38}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4673,7 +4673,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={25}
+          handlerTag={39}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4749,7 +4749,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={26}
+          handlerTag={40}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4825,7 +4825,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={27}
+          handlerTag={41}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -4901,7 +4901,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={21}
+          handlerTag={35}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5053,7 +5053,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={87}
+          handlerTag={101}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5129,7 +5129,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={88}
+          handlerTag={102}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5205,7 +5205,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={89}
+          handlerTag={103}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5281,7 +5281,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={90}
+          handlerTag={104}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5357,7 +5357,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={91}
+          handlerTag={105}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5433,7 +5433,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={92}
+          handlerTag={106}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5509,7 +5509,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={86}
+          handlerTag={100}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5661,7 +5661,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={48}
+          handlerTag={62}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5737,7 +5737,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={49}
+          handlerTag={63}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5813,7 +5813,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={50}
+          handlerTag={64}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5889,7 +5889,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={51}
+          handlerTag={65}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -5965,7 +5965,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={52}
+          handlerTag={66}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6041,7 +6041,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={53}
+          handlerTag={67}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6117,7 +6117,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={47}
+          handlerTag={61}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6269,7 +6269,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={126}
+          handlerTag={140}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6345,7 +6345,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={127}
+          handlerTag={141}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6421,7 +6421,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={128}
+          handlerTag={142}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6497,7 +6497,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={129}
+          handlerTag={143}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6573,7 +6573,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={130}
+          handlerTag={144}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6649,7 +6649,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={131}
+          handlerTag={145}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6725,7 +6725,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={125}
+          handlerTag={139}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6877,7 +6877,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={152}
+          handlerTag={166}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -6953,7 +6953,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={153}
+          handlerTag={167}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7029,7 +7029,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={154}
+          handlerTag={168}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7105,7 +7105,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={155}
+          handlerTag={169}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7181,7 +7181,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={156}
+          handlerTag={170}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7257,7 +7257,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={157}
+          handlerTag={171}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7333,7 +7333,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={151}
+          handlerTag={165}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7485,7 +7485,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={74}
+          handlerTag={88}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7561,7 +7561,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={75}
+          handlerTag={89}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7637,7 +7637,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={76}
+          handlerTag={90}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7713,7 +7713,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={77}
+          handlerTag={91}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7789,7 +7789,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={78}
+          handlerTag={92}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7865,7 +7865,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={79}
+          handlerTag={93}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -7941,7 +7941,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={73}
+          handlerTag={87}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8093,7 +8093,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={100}
+          handlerTag={114}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8169,7 +8169,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={101}
+          handlerTag={115}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8245,7 +8245,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={102}
+          handlerTag={116}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8321,7 +8321,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={103}
+          handlerTag={117}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8397,7 +8397,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={104}
+          handlerTag={118}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8473,7 +8473,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={105}
+          handlerTag={119}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -8549,7 +8549,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={99}
+          handlerTag={113}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -9157,7 +9157,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={8}
+          handlerTag={15}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -9233,7 +9233,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={9}
+          handlerTag={16}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -9309,7 +9309,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={10}
+          handlerTag={17}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -9431,7 +9431,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={11}
+              handlerTag={18}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9523,7 +9523,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={12}
+              handlerTag={19}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9615,7 +9615,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={13}
+              handlerTag={20}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9707,7 +9707,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={14}
+              handlerTag={21}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9799,7 +9799,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={15}
+              handlerTag={22}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9891,7 +9891,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={16}
+              handlerTag={23}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -9983,7 +9983,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={17}
+              handlerTag={24}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10075,7 +10075,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={18}
+              handlerTag={25}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10167,7 +10167,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={19}
+              handlerTag={26}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -10259,7 +10259,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               delayLongPress={600}
               enabled={true}
               exclusive={true}
-              handlerTag={20}
+              handlerTag={27}
               handlerType="NativeViewGestureHandler"
               hitSlop={
                 {
@@ -11015,7 +11015,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={160}
+          handlerTag={174}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -11091,7 +11091,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={161}
+          handlerTag={175}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -11167,7 +11167,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={162}
+          handlerTag={176}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -11243,7 +11243,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={163}
+          handlerTag={177}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
@@ -11319,7 +11319,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           borderless={true}
           collapsable={false}
           delayLongPress={600}
-          handlerTag={164}
+          handlerTag={178}
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {

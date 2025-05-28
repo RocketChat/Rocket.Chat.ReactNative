@@ -78,7 +78,9 @@ beforeEach(() => {
 	showEmojiKeyboard = false;
 	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
 		showEmojiPickerSharedValue: sharedValue,
-		showEmojiKeyboard
+		showEmojiKeyboard,
+		openEmojiKeyboard: jest.fn(),
+		closeEmojiKeyboard: jest.fn()
 	});
 	sharedValue.value = false; // reset before each test
 });
@@ -104,7 +106,9 @@ describe('MessageComposer', () => {
 			showEmojiKeyboard = true;
 			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
 				showEmojiPickerSharedValue: sharedValue,
-				showEmojiKeyboard
+				showEmojiKeyboard,
+				openEmojiKeyboard: jest.fn(),
+				closeEmojiKeyboard: jest.fn()
 			});
 
 			rerender(<Render />);

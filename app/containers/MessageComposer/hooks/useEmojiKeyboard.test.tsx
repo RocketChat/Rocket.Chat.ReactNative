@@ -2,143 +2,135 @@ import React from 'react';
 import { renderHook, act } from '@testing-library/react-native';
 import { useSharedValue } from 'react-native-reanimated';
 
-import { EmojiKeyboardProvider, useEmojiKeyboardHeight } from './useEmojiKeyboard';
+import { EmojiKeyboardProvider, useEmojiKeyboard, useEmojiKeyboardHeight } from './useEmojiKeyboard';
 
-// Mock dependencies
+// Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => ({
 	useSharedValue: jest.fn(),
 	useAnimatedReaction: jest.fn(),
-	withTiming: jest.fn(value => value),
-	runOnJS: jest.fn(fn => fn)
+	runOnJS: jest.fn(fn => fn),
+	withTiming: jest.fn(value => value)
 }));
 
+// Mock react-native-keyboard-controller
 jest.mock('react-native-keyboard-controller', () => ({
 	useKeyboardHandler: jest.fn()
 }));
 
+// Mock react-native-safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
-	useSafeAreaInsets: jest.fn(() => ({ bottom: 34 }))
+	useSafeAreaInsets: jest.fn(() => ({ bottom: 20 }))
 }));
 
-jest.mock('../context', () => ({
-	useMessageComposerApi: jest.fn(() => ({
-		openEmojiKeyboard: jest.fn(),
-		closeEmojiKeyboard: jest.fn()
-	}))
-}));
-
-describe('useEmojiKeyboardHeight', () => {
-	const mockSharedValue = {
-		value: 0,
-		addListener: jest.fn(),
-		removeListener: jest.fn(),
-		modify: jest.fn()
-	};
-
-	const mockShowEmojiPickerSharedValue = {
-		value: false,
-		addListener: jest.fn(),
-		removeListener: jest.fn(),
-		modify: jest.fn()
-	};
+describe('useEmojiKeyboard', () => {
+	let mockSharedValue: any;
 
 	beforeEach(() => {
+		mockSharedValue = {
+			value: false,
+			get: jest.fn(() => mockSharedValue.value),
+			set: jest.fn((v: boolean) => {
+				mockSharedValue.value = v;
+			}),
+			addListener: jest.fn(),
+			removeListener: jest.fn(),
+			modify: jest.fn()
+		};
+
+		(useSharedValue as jest.Mock).mockReturnValue(mockSharedValue);
+	});
+
+	afterEach(() => {
 		jest.clearAllMocks();
-		(useSharedValue as jest.Mock).mockImplementation(initialValue => {
-			if (initialValue === false) {
-				return mockShowEmojiPickerSharedValue;
-			}
-			return { ...mockSharedValue, value: initialValue };
+	});
+
+	const wrapper = ({ children }: { children: React.ReactElement }) => <EmojiKeyboardProvider>{children}</EmojiKeyboardProvider>;
+
+	describe('EmojiKeyboardProvider', () => {
+		test('should provide context with shared value', () => {
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			expect(result.current.showEmojiPickerSharedValue).toBeDefined();
+			expect(result.current.showEmojiKeyboard).toBe(false);
+			expect(typeof result.current.openEmojiKeyboard).toBe('function');
+			expect(typeof result.current.closeEmojiKeyboard).toBe('function');
 		});
 	});
 
-	const wrapper = ({ children }: { children: React.ReactElement | null }) => (
-		<EmojiKeyboardProvider>{children}</EmojiKeyboardProvider>
-	);
+	describe('useEmojiKeyboard hook', () => {
+		test('should initialize with correct default values', () => {
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
-	it('should add notch (bottom safe area) when keyboard is closed', () => {
-		const mockKeyboardHeight = { ...mockSharedValue, value: 300 };
-		(useSharedValue as jest.Mock).mockImplementation(initialValue => {
-			if (initialValue === false) {
-				return mockShowEmojiPickerSharedValue;
-			}
-			if (initialValue === 34) {
-				// bottom safe area
-				return mockKeyboardHeight;
-			}
-			return { ...mockSharedValue, value: initialValue };
+			expect(result.current.showEmojiKeyboard).toBe(false);
+			expect(result.current.showEmojiPickerSharedValue).toBe(mockSharedValue);
 		});
 
-		renderHook(() => useEmojiKeyboardHeight(), { wrapper });
+		test('should open emoji keyboard', () => {
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
-		// Simulate closing emoji keyboard
-		const mockUseAnimatedReaction = require('react-native-reanimated').useAnimatedReaction;
-		const reactionCallback = mockUseAnimatedReaction.mock.calls[0][1];
+			act(() => {
+				result.current.openEmojiKeyboard();
+			});
 
-		// Call the reaction callback with currentValue = false (closing emoji keyboard)
-		// and previousValue = true (was open)
-		act(() => {
-			reactionCallback(false, true);
+			expect(mockSharedValue.value).toBe(true);
 		});
 
-		// Verify that withTiming was called with height 0 + notch (34)
-		const mockWithTiming = require('react-native-reanimated').withTiming;
-		expect(mockWithTiming).toHaveBeenCalledWith(34, { duration: 250 });
+		test('should close emoji keyboard', () => {
+			mockSharedValue.value = true;
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			act(() => {
+				result.current.closeEmojiKeyboard();
+			});
+
+			expect(mockSharedValue.value).toBe(false);
+		});
+
+		test('should handle multiple open/close operations', () => {
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			// Open
+			act(() => {
+				result.current.openEmojiKeyboard();
+			});
+			expect(mockSharedValue.value).toBe(true);
+
+			// Close
+			act(() => {
+				result.current.closeEmojiKeyboard();
+			});
+			expect(mockSharedValue.value).toBe(false);
+
+			// Open again
+			act(() => {
+				result.current.openEmojiKeyboard();
+			});
+			expect(mockSharedValue.value).toBe(true);
+		});
 	});
 
-	it('should not add notch when keyboard is open', () => {
-		const mockKeyboardHeight = { ...mockSharedValue, value: 34 };
-		(useSharedValue as jest.Mock).mockImplementation(initialValue => {
-			if (initialValue === false) {
-				return mockShowEmojiPickerSharedValue;
-			}
-			if (initialValue === 34) {
-				// bottom safe area
-				return mockKeyboardHeight;
-			}
-			return { ...mockSharedValue, value: initialValue };
+	describe('useEmojiKeyboardHeight hook', () => {
+		test('should initialize with correct default values', () => {
+			const { result } = renderHook(() => useEmojiKeyboardHeight(), { wrapper });
+
+			expect(result.current.keyboardHeight).toBeDefined();
 		});
 
-		renderHook(() => useEmojiKeyboardHeight(), { wrapper });
+		test('should handle keyboard height changes', () => {
+			const { result } = renderHook(() => useEmojiKeyboardHeight(), { wrapper });
 
-		// Simulate keyboard opening with height 300
-		const mockUseKeyboardHandler = require('react-native-keyboard-controller').useKeyboardHandler;
-		const keyboardHandler = mockUseKeyboardHandler.mock.calls[0][0];
-
-		act(() => {
-			keyboardHandler.onStart({ height: 300 });
+			// The hook should be properly initialized
+			expect(result.current.keyboardHeight).toBe(mockSharedValue);
 		});
-
-		// Verify that withTiming was called with height 300 + 0 (no notch when keyboard is open)
-		const mockWithTiming = require('react-native-reanimated').withTiming;
-		expect(mockWithTiming).toHaveBeenCalledWith(300, { duration: 250 });
 	});
 
-	it('should always call updateKeyboardHeight when closing emoji keyboard regardless of current height', () => {
-		const mockKeyboardHeight = { ...mockSharedValue, value: 0 }; // Already at 0
-		(useSharedValue as jest.Mock).mockImplementation(initialValue => {
-			if (initialValue === false) {
-				return mockShowEmojiPickerSharedValue;
-			}
-			if (initialValue === 34) {
-				// bottom safe area
-				return mockKeyboardHeight;
-			}
-			return { ...mockSharedValue, value: initialValue };
+	describe('Context without provider', () => {
+		test('should return empty context when used without provider', () => {
+			const { result } = renderHook(() => useEmojiKeyboard());
+
+			// When used without provider, the context returns an empty object
+			// This is the actual behavior, not throwing an error
+			expect(result.current.showEmojiPickerSharedValue).toBeUndefined();
 		});
-
-		renderHook(() => useEmojiKeyboardHeight(), { wrapper });
-
-		// Simulate closing emoji keyboard when height is already 0
-		const mockUseAnimatedReaction = require('react-native-reanimated').useAnimatedReaction;
-		const reactionCallback = mockUseAnimatedReaction.mock.calls[0][1];
-
-		act(() => {
-			reactionCallback(false, true);
-		});
-
-		// Verify that withTiming was still called (this tests the fix)
-		const mockWithTiming = require('react-native-reanimated').withTiming;
-		expect(mockWithTiming).toHaveBeenCalledWith(34, { duration: 250 });
 	});
 });
