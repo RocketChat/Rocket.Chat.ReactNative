@@ -87,10 +87,10 @@ exports[`MessageComposer Audio tap record 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -180,10 +180,10 @@ exports[`MessageComposer Audio tap record 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -298,10 +298,10 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
-                "bottom": 16,
-                "left": 16,
-                "right": 16,
-                "top": 16,
+                "bottom": 10,
+                "left": 10,
+                "right": 10,
+                "top": 10,
               }
             }
             innerRef={null}
@@ -413,10 +413,10 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
-                "bottom": 16,
-                "left": 16,
-                "right": 16,
-                "top": 16,
+                "bottom": 10,
+                "left": 10,
+                "right": 10,
+                "top": 10,
               }
             }
             innerRef={null}
@@ -585,10 +585,10 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
-                      "bottom": 16,
-                      "left": 16,
-                      "right": 16,
-                      "top": 16,
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
                     }
                   }
                   innerRef={null}
@@ -738,10 +738,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
-                "bottom": 16,
-                "left": 16,
-                "right": 16,
-                "top": 16,
+                "bottom": 10,
+                "left": 10,
+                "right": 10,
+                "top": 10,
               }
             }
             innerRef={null}
@@ -853,10 +853,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
-                "bottom": 16,
-                "left": 16,
-                "right": 16,
-                "top": 16,
+                "bottom": 10,
+                "left": 10,
+                "right": 10,
+                "top": 10,
               }
             }
             innerRef={null}
@@ -1026,10 +1026,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
-                      "bottom": 16,
-                      "left": 16,
-                      "right": 16,
-                      "top": 16,
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
                     }
                   }
                   innerRef={null}
@@ -1207,10 +1207,10 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
-                      "bottom": 16,
-                      "left": 16,
-                      "right": 16,
-                      "top": 16,
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
                     }
                   }
                   innerRef={null}
@@ -1360,10 +1360,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
-                "bottom": 16,
-                "left": 16,
-                "right": 16,
-                "top": 16,
+                "bottom": 10,
+                "left": 10,
+                "right": 10,
+                "top": 10,
               }
             }
             innerRef={null}
@@ -1475,10 +1475,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
             handlerType="NativeViewGestureHandler"
             hitSlop={
               {
-                "bottom": 16,
-                "left": 16,
-                "right": 16,
-                "top": 16,
+                "bottom": 10,
+                "left": 10,
+                "right": 10,
+                "top": 10,
               }
             }
             innerRef={null}
@@ -1648,10 +1648,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
-                      "bottom": 16,
-                      "left": 16,
-                      "right": 16,
-                      "top": 16,
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
                     }
                   }
                   innerRef={null}
@@ -1829,10 +1829,10 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
                   handlerType="NativeViewGestureHandler"
                   hitSlop={
                     {
-                      "bottom": 16,
-                      "left": 16,
-                      "right": 16,
-                      "top": 16,
+                      "bottom": 10,
+                      "left": 10,
+                      "right": 10,
+                      "top": 10,
                     }
                   }
                   innerRef={null}
@@ -2017,10 +2017,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2093,10 +2093,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2169,10 +2169,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2245,10 +2245,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2321,10 +2321,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2397,10 +2397,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2473,10 +2473,10 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2625,10 +2625,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2701,10 +2701,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2777,10 +2777,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2853,10 +2853,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -2929,10 +2929,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3005,10 +3005,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3081,10 +3081,10 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3233,10 +3233,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3309,10 +3309,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3385,10 +3385,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3461,10 +3461,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3537,10 +3537,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3613,10 +3613,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3689,10 +3689,10 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3841,10 +3841,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3917,10 +3917,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -3993,10 +3993,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4069,10 +4069,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4145,10 +4145,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4221,10 +4221,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4297,10 +4297,10 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4449,10 +4449,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4525,10 +4525,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4601,10 +4601,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4677,10 +4677,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4753,10 +4753,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4829,10 +4829,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -4905,10 +4905,10 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5057,10 +5057,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5133,10 +5133,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5209,10 +5209,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5285,10 +5285,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5361,10 +5361,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5437,10 +5437,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5513,10 +5513,10 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5665,10 +5665,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5741,10 +5741,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5817,10 +5817,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5893,10 +5893,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -5969,10 +5969,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6045,10 +6045,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6121,10 +6121,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6273,10 +6273,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6349,10 +6349,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6425,10 +6425,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6501,10 +6501,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6577,10 +6577,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6653,10 +6653,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6729,10 +6729,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6881,10 +6881,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -6957,10 +6957,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7033,10 +7033,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7109,10 +7109,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7185,10 +7185,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7261,10 +7261,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7337,10 +7337,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7489,10 +7489,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7565,10 +7565,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7641,10 +7641,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7717,10 +7717,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7793,10 +7793,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7869,10 +7869,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -7945,10 +7945,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8097,10 +8097,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8173,10 +8173,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8249,10 +8249,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8325,10 +8325,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8401,10 +8401,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8477,10 +8477,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8553,10 +8553,10 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8705,10 +8705,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8781,10 +8781,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8857,10 +8857,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -8933,10 +8933,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -9009,10 +9009,10 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -9161,10 +9161,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -9237,10 +9237,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -9313,10 +9313,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -11019,10 +11019,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -11095,10 +11095,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -11171,10 +11171,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -11247,10 +11247,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}
@@ -11323,10 +11323,10 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
           handlerType="NativeViewGestureHandler"
           hitSlop={
             {
-              "bottom": 16,
-              "left": 16,
-              "right": 16,
-              "top": 16,
+              "bottom": 10,
+              "left": 10,
+              "right": 10,
+              "top": 10,
             }
           }
           innerRef={null}

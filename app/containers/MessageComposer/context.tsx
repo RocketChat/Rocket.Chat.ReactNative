@@ -5,8 +5,6 @@ import { IAutocompleteBase, TMicOrSend } from './interfaces';
 import { animateNextTransition } from '../../lib/methods/helpers';
 
 type TMessageComposerContextApi = {
-	openSearchEmojiKeyboard(): void;
-	closeSearchEmojiKeyboard(): void;
 	setFocused(focused: boolean): void;
 	setMicOrSend(micOrSend: TMicOrSend): void;
 	setMarkdownToolbar(showMarkdownToolbar: boolean): void;
@@ -18,7 +16,6 @@ type TMessageComposerContextApi = {
 const FocusedContext = createContext<State['focused']>({} as State['focused']);
 const MicOrSendContext = createContext<State['micOrSend']>({} as State['micOrSend']);
 const ShowMarkdownToolbarContext = createContext<State['showMarkdownToolbar']>({} as State['showMarkdownToolbar']);
-const ShowEmojiSearchbarContext = createContext<State['showEmojiSearchbar']>({} as State['showEmojiSearchbar']);
 const AlsoSendThreadToChannelContext = createContext<State['alsoSendThreadToChannel']>({} as State['alsoSendThreadToChannel']);
 const RecordingAudioContext = createContext<State['recordingAudio']>({} as State['recordingAudio']);
 const AutocompleteParamsContext = createContext<State['autocompleteParams']>({} as State['autocompleteParams']);
@@ -28,7 +25,6 @@ export const useMessageComposerApi = (): TMessageComposerContextApi => useContex
 export const useFocused = (): State['focused'] => useContext(FocusedContext);
 export const useMicOrSend = (): State['micOrSend'] => useContext(MicOrSendContext);
 export const useShowMarkdownToolbar = (): State['showMarkdownToolbar'] => useContext(ShowMarkdownToolbarContext);
-export const useShowEmojiSearchbar = (): State['showEmojiSearchbar'] => useContext(ShowEmojiSearchbarContext);
 export const useAlsoSendThreadToChannel = (): State['alsoSendThreadToChannel'] => useContext(AlsoSendThreadToChannelContext);
 export const useRecordingAudio = (): State['recordingAudio'] => useContext(RecordingAudioContext);
 export const useAutocompleteParams = (): State['autocompleteParams'] => useContext(AutocompleteParamsContext);
@@ -49,7 +45,6 @@ export const MessageInnerContext = createContext<TMessageInnerContext>({
 });
 
 type State = {
-	showEmojiSearchbar: boolean;
 	focused: boolean;
 	micOrSend: TMicOrSend;
 	showMarkdownToolbar: boolean;
@@ -59,10 +54,7 @@ type State = {
 };
 
 type Actions =
-	| { type: 'updateEmojiSearchbar'; showEmojiSearchbar: boolean }
 	| { type: 'updateFocused'; focused: boolean }
-	| { type: 'openSearchEmojiKeyboard' }
-	| { type: 'closeSearchEmojiKeyboard' }
 	| { type: 'setMicOrSend'; micOrSend: TMicOrSend }
 	| { type: 'setMarkdownToolbar'; showMarkdownToolbar: boolean }
 	| { type: 'setAlsoSendThreadToChannel'; alsoSendThreadToChannel: boolean }
@@ -71,15 +63,9 @@ type Actions =
 
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
-		case 'updateEmojiSearchbar':
-			return { ...state, showEmojiSearchbar: action.showEmojiSearchbar };
 		case 'updateFocused':
 			animateNextTransition();
 			return { ...state, focused: action.focused };
-		case 'openSearchEmojiKeyboard':
-			return { ...state, showEmojiSearchbar: true };
-		case 'closeSearchEmojiKeyboard':
-			return { ...state, showEmojiSearchbar: false };
 		case 'setMicOrSend':
 			return { ...state, micOrSend: action.micOrSend };
 		case 'setMarkdownToolbar':
@@ -103,10 +89,6 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 	const api = useMemo(() => {
 		const setFocused = (focused: boolean) => dispatch({ type: 'updateFocused', focused });
 
-		const openSearchEmojiKeyboard = () => dispatch({ type: 'openSearchEmojiKeyboard' });
-
-		const closeSearchEmojiKeyboard = () => dispatch({ type: 'closeSearchEmojiKeyboard' });
-
 		const setMicOrSend = (micOrSend: TMicOrSend) => dispatch({ type: 'setMicOrSend', micOrSend });
 
 		const setMarkdownToolbar = (showMarkdownToolbar: boolean) => dispatch({ type: 'setMarkdownToolbar', showMarkdownToolbar });
@@ -120,8 +102,6 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 		return {
 			setFocused,
-			openSearchEmojiKeyboard,
-			closeSearchEmojiKeyboard,
 			setMicOrSend,
 			setMarkdownToolbar,
 			setAlsoSendThreadToChannel,
@@ -132,19 +112,17 @@ export const MessageComposerProvider = ({ children }: { children: ReactElement }
 
 	return (
 		<MessageComposerContextApi.Provider value={api}>
-			<ShowEmojiSearchbarContext.Provider value={state.showEmojiSearchbar}>
-				<FocusedContext.Provider value={state.focused}>
-					<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
-						<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
-							<RecordingAudioContext.Provider value={state.recordingAudio}>
-								<AutocompleteParamsContext.Provider value={state.autocompleteParams}>
-									<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
-								</AutocompleteParamsContext.Provider>
-							</RecordingAudioContext.Provider>
-						</AlsoSendThreadToChannelContext.Provider>
-					</ShowMarkdownToolbarContext.Provider>
-				</FocusedContext.Provider>
-			</ShowEmojiSearchbarContext.Provider>
+			<FocusedContext.Provider value={state.focused}>
+				<ShowMarkdownToolbarContext.Provider value={state.showMarkdownToolbar}>
+					<AlsoSendThreadToChannelContext.Provider value={state.alsoSendThreadToChannel}>
+						<RecordingAudioContext.Provider value={state.recordingAudio}>
+							<AutocompleteParamsContext.Provider value={state.autocompleteParams}>
+								<MicOrSendContext.Provider value={state.micOrSend}>{children}</MicOrSendContext.Provider>
+							</AutocompleteParamsContext.Provider>
+						</RecordingAudioContext.Provider>
+					</AlsoSendThreadToChannelContext.Provider>
+				</ShowMarkdownToolbarContext.Provider>
+			</FocusedContext.Provider>
 		</MessageComposerContextApi.Provider>
 	);
 };

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 
-import { useFocused, useShowEmojiSearchbar, useShowMarkdownToolbar } from '../../context';
+import { useFocused, useShowMarkdownToolbar } from '../../context';
 import { Markdown } from './Markdown';
 import { Default } from './Default';
 import { EmojiKeyboard } from './EmojiKeyboard';
@@ -12,8 +12,7 @@ import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 
 export const Toolbar = (): ReactElement | null => {
 	const focused = useFocused();
-	const { showEmojiKeyboard } = useEmojiKeyboard();
-	const showEmojiSearchbar = useShowEmojiSearchbar();
+	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
 	const showMarkdownToolbar = useShowMarkdownToolbar();
 
 	if (showEmojiSearchbar) {

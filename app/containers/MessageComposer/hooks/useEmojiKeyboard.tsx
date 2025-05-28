@@ -1,6 +1,6 @@
 import React, { createContext, ReactElement, useContext, useState } from 'react';
-import { useKeyboardHandler } from 'react-native-keyboard-controller';
-import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated';
+import { KeyboardController, useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
+import { runOnJS, SharedValue, useAnimatedReaction, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IEmojiKeyboardProvider {
@@ -9,14 +9,20 @@ interface IEmojiKeyboardProvider {
 
 interface IEmojiKeyboardContextProps {
 	showEmojiPickerSharedValue: SharedValue<boolean>;
+	showEmojiSearchbarSharedValue: SharedValue<boolean>;
 }
 
 const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({} as IEmojiKeyboardContextProps);
 
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
+	const showEmojiSearchbarSharedValue = useSharedValue(false);
 
-	return <EmojiKeyboardContext.Provider value={{ showEmojiPickerSharedValue }}>{children}</EmojiKeyboardContext.Provider>;
+	return (
+		<EmojiKeyboardContext.Provider value={{ showEmojiPickerSharedValue, showEmojiSearchbarSharedValue }}>
+			{children}
+		</EmojiKeyboardContext.Provider>
+	);
 };
 
 /**
@@ -25,8 +31,9 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
  * for components that need to re-render based on emoji picker visibility.
  */
 export const useEmojiKeyboard = () => {
-	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
+	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
+	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 
 	const openEmojiKeyboard = () => {
 		showEmojiPickerSharedValue.value = true;
@@ -34,6 +41,15 @@ export const useEmojiKeyboard = () => {
 
 	const closeEmojiKeyboard = () => {
 		showEmojiPickerSharedValue.value = false;
+	};
+
+	const openEmojiSearchbar = () => {
+		showEmojiSearchbarSharedValue.value = true;
+	};
+
+	const closeEmojiSearchbar = async () => {
+		showEmojiSearchbarSharedValue.value = false;
+		await KeyboardController.setFocusTo('current');
 	};
 
 	// Sync shared value with React state for proper re-renders
@@ -46,72 +62,60 @@ export const useEmojiKeyboard = () => {
 		[showEmojiPickerSharedValue]
 	);
 
+	// Sync emoji searchbar shared value with React state
+	useAnimatedReaction(
+		() => showEmojiSearchbarSharedValue.value,
+		currentValue => {
+			runOnJS(setShowEmojiSearchbar)(currentValue);
+		},
+		[showEmojiSearchbarSharedValue]
+	);
+
 	return {
 		showEmojiPickerSharedValue,
 		showEmojiKeyboard,
 		openEmojiKeyboard,
-		closeEmojiKeyboard
+		closeEmojiKeyboard,
+		showEmojiSearchbarSharedValue,
+		showEmojiSearchbar,
+		openEmojiSearchbar,
+		closeEmojiSearchbar
 	};
 };
 
-const IPAD_TOOLTIP_HEIGHT = 70;
+const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 300;
 
 /**
  * Hook for managing emoji keyboard height animations and keyboard event handling.
- * This hook handles the animated height transitions when the emoji picker opens/closes
- * and manages keyboard height synchronization. It's separate from useEmojiKeyboard
- * to maintain single responsibility and allow components to use only what they need.
+ * This hook uses a derived value to calculate the final keyboard height based on
+ * keyboard events, emoji picker state, emoji searchbar state, and device notch.
+ * It consolidates all height logic into a single reactive computation.
  */
 export const useEmojiKeyboardHeight = () => {
-	const { showEmojiPickerSharedValue } = useContext(EmojiKeyboardContext);
+	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
-	const keyboardHeight = useSharedValue(bottom);
+	const { height: currentKeyboardHeight } = useReanimatedKeyboardAnimation();
+	const previousKeyboardHeight = useSharedValue(bottom);
 
-	const updateKeyboardHeight = (height: number) => {
-		'worklet';
+	const keyboardHeight = useDerivedValue(() => {
+		const isEmojiPickerOpen = showEmojiPickerSharedValue.value;
+		const isEmojiSearchbarOpen = showEmojiSearchbarSharedValue.value;
+		const currentRawHeight = -currentKeyboardHeight.value;
+		const previousHeight = previousKeyboardHeight.value;
 
-		// Don't add the notch height if the keyboard is already open
-		const notch = height > 0 ? 0 : bottom;
-		keyboardHeight.value = withTiming(height + notch, { duration: 250 });
-	};
-
-	useAnimatedReaction(
-		() => showEmojiPickerSharedValue.value,
-		(currentValue, previousValue) => {
-			// Only react to actual changes
-			if (currentValue === previousValue) {
-				return;
+		if (isEmojiPickerOpen || isEmojiSearchbarOpen) {
+			if (previousHeight < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+				return EMOJI_KEYBOARD_FIXED_HEIGHT;
 			}
+			return previousHeight;
+		}
 
-			if (currentValue === true) {
-				// iPad shows a tooltip sometimes and the height seems to be less than 70.
-				// This logic also fixes emoji keyboard height when using a hardware keyboard.
-				if (keyboardHeight.value < IPAD_TOOLTIP_HEIGHT) {
-					keyboardHeight.value = withTiming(EMOJI_KEYBOARD_FIXED_HEIGHT, { duration: 250 });
-				}
-			} else {
-				// Close emoji keyboard
-				updateKeyboardHeight(0);
-			}
-		},
-		[showEmojiPickerSharedValue, keyboardHeight]
-	);
-
-	useKeyboardHandler(
-		{
-			onStart: e => {
-				'worklet';
-
-				// We want to preserve the previously open keyboard height when emoji keyboard is opened,
-				// so we just ignore the keyboard event when emoji keyboard is open
-				if (showEmojiPickerSharedValue.value === false) {
-					updateKeyboardHeight(e.height);
-				}
-			}
-		},
-		[showEmojiPickerSharedValue]
-	);
+		const notch = currentRawHeight > 0 ? 0 : bottom;
+		const newKeyboardHeight = currentRawHeight + notch;
+		previousKeyboardHeight.value = newKeyboardHeight;
+		return newKeyboardHeight;
+	}, [showEmojiPickerSharedValue, showEmojiSearchbarSharedValue, currentKeyboardHeight, bottom, previousKeyboardHeight]);
 
 	return { keyboardHeight };
 };

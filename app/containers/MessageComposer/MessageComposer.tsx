@@ -7,13 +7,7 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { useRoomContext } from '../../views/RoomView/context';
 import { Toolbar, EmojiSearchbar, ComposerInput, Left, Right, Quotes, SendThreadToChannel, Autocomplete } from './components';
 import { MIN_HEIGHT } from './constants';
-import {
-	MessageInnerContext,
-	useAlsoSendThreadToChannel,
-	useMessageComposerApi,
-	useRecordingAudio,
-	useShowEmojiSearchbar
-} from './context';
+import { MessageInnerContext, useAlsoSendThreadToChannel, useMessageComposerApi, useRecordingAudio } from './context';
 import { IComposerInput } from './interfaces';
 import { useTheme } from '../../theme';
 import { EventTypes } from '../EmojiPicker/interfaces';
@@ -57,12 +51,11 @@ export const MessageComposer = ({
 	});
 	const { colors } = useTheme();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
-	const showEmojiSearchbar = useShowEmojiSearchbar();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { showEmojiKeyboard, closeEmojiKeyboard } = useEmojiKeyboard();
+	const { showEmojiKeyboard, closeEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, closeEmojiSearchbar } =
+		useEmojiKeyboard();
 	const { keyboardHeight } = useEmojiKeyboardHeight();
-	const { openSearchEmojiKeyboard, closeSearchEmojiKeyboard, setAlsoSendThreadToChannel, setAutocompleteParams } =
-		useMessageComposerApi();
+	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
 
@@ -74,7 +67,7 @@ export const MessageComposer = ({
 
 	useBackHandler(() => {
 		if (showEmojiSearchbar) {
-			closeSearchEmojiKeyboard();
+			closeEmojiSearchbar();
 			return true;
 		}
 		return false;
@@ -82,6 +75,7 @@ export const MessageComposer = ({
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
 		closeEmojiKeyboard();
+		closeEmojiSearchbar();
 		action && action(params);
 	};
 
@@ -167,7 +161,7 @@ export const MessageComposer = ({
 				composerInputComponentRef.current.setInput(updatedText, { start: updatedCursor, end: updatedCursor });
 				break;
 			case EventTypes.SEARCH_PRESSED:
-				openSearchEmojiKeyboard();
+				openEmojiSearchbar();
 				break;
 			default:
 			// Do nothing

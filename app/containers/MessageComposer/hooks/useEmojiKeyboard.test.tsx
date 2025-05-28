@@ -86,6 +86,27 @@ describe('useEmojiKeyboard', () => {
 			expect(mockSharedValue.value).toBe(false);
 		});
 
+		test('should open emoji searchbar', () => {
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			act(() => {
+				result.current.openEmojiSearchbar();
+			});
+
+			expect(mockSharedValue.value).toBe(true);
+		});
+
+		test('should close emoji searchbar', () => {
+			mockSharedValue.value = true;
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			act(() => {
+				result.current.closeEmojiSearchbar();
+			});
+
+			expect(mockSharedValue.value).toBe(false);
+		});
+
 		test('should handle multiple open/close operations', () => {
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 

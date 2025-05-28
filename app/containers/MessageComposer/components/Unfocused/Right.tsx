@@ -1,16 +1,16 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
-import { useFocused, useShowEmojiSearchbar } from '../../context';
+import { useFocused } from '../../context';
 import { useEmojiKeyboard } from '../../hooks/useEmojiKeyboard';
 import { MicOrSendButton } from '../Buttons';
 import { MIN_HEIGHT } from '../../constants';
 import { CancelEdit } from '../CancelEdit';
 
-export const Right = (): ReactElement | null => {
+export const Right = (): React.ReactElement | null => {
 	const focused = useFocused();
-	const { showEmojiKeyboard } = useEmojiKeyboard();
-	const showEmojiSearchbar = useShowEmojiSearchbar();
+	const { showEmojiKeyboard, showEmojiSearchbar } = useEmojiKeyboard();
+
 	if (focused || showEmojiKeyboard || showEmojiSearchbar) {
 		return null;
 	}
