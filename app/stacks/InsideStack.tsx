@@ -3,6 +3,7 @@ import { I18nManager } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import EditImageView from '../views/EditImageView';
 import { ThemeContext } from '../theme';
 import { defaultHeader, themedHeader } from '../lib/methods/helpers/navigation';
 import Sidebar from '../views/SidebarView';
@@ -314,6 +315,7 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen name='StatusView' component={StatusView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
+			<InsideStack.Screen name='EditImageView' component={EditImageView} options={{ headerShown: false }} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ModalBlockView' component={ModalBlockView} options={ModalBlockView.navigationOptions} />
 		</InsideStack.Navigator>

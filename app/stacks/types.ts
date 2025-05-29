@@ -213,7 +213,7 @@ export type SettingsStackParamList = {
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
-	AccessibilityAndAppearanceView: undefined
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type AdminPanelStackParamList = {
@@ -279,6 +279,18 @@ export type InsideStackParamList = {
 	E2EEnterYourPasswordStackNavigator: NavigatorScreenParams<E2EEnterYourPasswordStackParamList>;
 	StatusView: undefined;
 	ShareView: {
+		attachments: IAttachment[];
+		isShareView?: boolean;
+		isShareExtension: boolean;
+		serverInfo: IServer;
+		text: string;
+		room: TSubscriptionModel;
+		thread: TThreadModel | string;
+		action: TMessageAction;
+		finishShareView: (text?: string, selectedMessages?: string[]) => void | undefined;
+		startShareView: () => { text: string; selectedMessages: string[] };
+	};
+	EditImageView: {
 		attachments: IAttachment[];
 		isShareView?: boolean;
 		isShareExtension: boolean;
