@@ -3,11 +3,9 @@ import { ImageResult, SaveFormat, ImageManipulator } from 'expo-image-manipulato
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { deleteAsync } from 'expo-file-system';
 
-import getValueBasedOnOriginal from '../utils/getValueBasedOnOriginal';
-import getHorizontalPadding from '../utils/getHorizontalPadding';
-
-const PORTRAIT_CROP_OPTIONS = ['Original', '1:1', '3:2', '3:4', '16:9'];
-const LANDSCAPE_CROP_OPTIONS = ['Original', '1:1', '3:2', '4:3', '16:9'];
+import getValueBasedOnOriginal from '../methods/getValueBasedOnOriginal';
+import getHorizontalPadding from '../methods/getHorizontalPadding';
+import { LANDSCAPE_CROP_OPTIONS, PORTRAIT_CROP_OPTIONS } from '../constants/cropOptions';
 
 interface IUseImageManipulatorProps {
 	isPortrait: boolean;
@@ -35,7 +33,7 @@ const useImageEditor = ({
 	updateImage,
 	updateEditableImage
 }: IUseImageManipulatorProps) => {
-	const [loading, setLoading] = useState({ icon: '', loading: false });
+	const [loading, setLoading] = useState<boolean>(false);
 	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
 	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
 	const [crop, setCrop] = useState(false);
@@ -87,7 +85,7 @@ const useImageEditor = ({
 	};
 
 	const rotateLeft = async () => {
-		setLoading({ icon: 'rotateLeft', loading: true });
+		setLoading(true);
 		try {
 			const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(-90);
 			const image = await rotateImage.renderAsync();
@@ -101,12 +99,12 @@ const useImageEditor = ({
 		} catch (error) {
 			// do nothing
 		} finally {
-			setLoading({ icon: '', loading: false });
+			setLoading(false);
 		}
 	};
 
 	const rotateRight = async () => {
-		setLoading({ icon: 'rotateRight', loading: true });
+		setLoading(true);
 		try {
 			const rotateImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).rotate(90);
 			const image = await rotateImage.renderAsync();
@@ -120,12 +118,12 @@ const useImageEditor = ({
 		} catch (error) {
 			// do nothing
 		} finally {
-			setLoading({ icon: '', loading: false });
+			setLoading(false);
 		}
 	};
 
 	const onCrop = async () => {
-		setLoading({ icon: 'crop', loading: true });
+		setLoading(true);
 		try {
 			const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, imageWidth.value);
 			const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, imageHeight.value);
@@ -156,7 +154,7 @@ const useImageEditor = ({
 		} catch (error) {
 			// do nothing
 		} finally {
-			setLoading({ icon: '', loading: false });
+			setLoading(false);
 		}
 	};
 
@@ -178,8 +176,8 @@ const useImageEditor = ({
 		}
 		const [ratioWidth, radioHeight] = option.split(':');
 		const ratio = Number(ratioWidth) / Number(radioHeight);
-
-		const imageRatio = originalImageSize.width / originalImageSize.height;
+		const originalImage = attachments.find(item => item.filename === editableImage.filename);
+		const imageRatio = originalImage.width / originalImage.height;
 
 		let cropWidth = 0;
 		let cropHeight = 0;
@@ -187,18 +185,18 @@ const useImageEditor = ({
 		let originY = 0;
 
 		if (imageRatio > ratio) {
-			cropHeight = originalImageSize.height;
+			cropHeight = originalImage.height;
 			cropWidth = cropHeight * ratio;
-			originX = (originalImageSize.width - cropWidth) / 2;
+			originX = (originalImage.width - cropWidth) / 2;
 			originY = 0;
 		} else {
-			cropWidth = originalImageSize.width;
+			cropWidth = originalImage.width;
 			cropHeight = cropWidth / ratio;
 			originX = 0;
-			originY = (originalImageSize.height - cropHeight) / 2;
+			originY = (originalImage.height - cropHeight) / 2;
 		}
 
-		const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
+		const cropImage = ImageManipulator.manipulate(originalImage.uri ?? originalImage.path).crop({
 			height: cropHeight,
 			width: cropWidth,
 			originX,

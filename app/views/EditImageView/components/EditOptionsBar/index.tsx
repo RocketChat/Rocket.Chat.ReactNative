@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CustomIcon } from '../../../../containers/CustomIcon';
-import Touch from '../../../../containers/Touch';
 import { useTheme } from '../../../../theme';
-import RCActivityIndicator from '../../../../containers/ActivityIndicator';
+import Touch from '../../../../containers/Touch';
 
 const styles = StyleSheet.create({
 	container: {
@@ -13,11 +12,15 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 16,
 		alignItems: 'center',
 		justifyContent: 'space-between'
+	},
+	touch: {
+		padding: 4,
+		borderRadius: 4
 	}
 });
 
 interface IEditOptionsBarProps {
-	loading: { icon: string; loading: boolean };
+	loading: boolean;
 	isCropping: boolean;
 	onCancel: () => void;
 	onCancelCrop: () => void;
@@ -44,46 +47,45 @@ const EditOptionsBar = ({
 	const { colors } = useTheme();
 	const insets = useSafeAreaInsets();
 
+	const disabledStyle: StyleProp<ViewStyle> = { opacity: loading ? 0.4 : 1 };
+	const hitSlop = { top: 15, bottom: 15, left: 15, right: 15 };
+
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceHover, paddingBottom: insets.bottom, paddingTop: 12 }]}>
 			{isCropping ? (
 				<>
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={onCancelCrop}>
+					<Touch style={disabledStyle} enabled={!loading} hitSlop={hitSlop} onPress={onCancelCrop}>
 						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
 					</Touch>
 
-					<Touch style={{ opacity: loading ? 0.4 : 1 }} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={crop}>
+					<Touch style={disabledStyle} hitSlop={hitSlop} onPress={crop}>
 						<Text style={{ color: colors.fontDefault }}>Crop</Text>
 					</Touch>
 				</>
 			) : (
 				<>
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={onCancel}>
-						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
+					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={onCancel}>
+						<CustomIcon name='close' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={rotateLeft}>
-						{loading.icon === 'rotateLeft' && loading.loading ? (
-							<RCActivityIndicator size={24} />
-						) : (
-							<CustomIcon name='undo' size={24} />
-						)}
+					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={rotateLeft}>
+						<CustomIcon name='undo' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={rotateRight}>
-						<CustomIcon name='redo' size={24} />
+					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={rotateRight}>
+						<CustomIcon name='redo' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={startCrop}>
-						<CustomIcon name='crop' size={24} />
+					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={startCrop}>
+						<CustomIcon name='crop' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={openResizeOptions}>
-						<CustomIcon name='arrow-expand' size={24} />
+					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={openResizeOptions}>
+						<CustomIcon name='arrow-expand' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch enabled={!loading.loading} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }} onPress={onContinue}>
-						<Text style={{ color: colors.fontDefault }}>Continue</Text>
+					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={onContinue}>
+						<CustomIcon name='create' color={colors.fontDefault} size={24} />
 					</Touch>
 				</>
 			)}

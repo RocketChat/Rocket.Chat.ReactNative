@@ -6,22 +6,19 @@ import { RouteProp } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useActionSheet } from '../../containers/ActionSheet';
-import { CustomIcon } from '../../containers/CustomIcon';
 import { InsideStackParamList } from '../../stacks/types';
 import SafeAreaView from '../../containers/SafeAreaView';
 import EditOptionsBar from './components/EditOptionsBar';
 import useEditableImage from './hooks/useEditableImage';
-import getHorizontalPadding from './utils/getHorizontalPadding';
+import getHorizontalPadding from './methods/getHorizontalPadding';
 import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
-import Touch from '../../containers/Touch';
 import ImageSelector from './components/ImageSelector';
+import UndoEdit from './components/UndoEdit';
 
 // To Do:
 // Loading;
-// Resize looking for original size;
 // remove word and add icons;
-// paddings and borderRadius on buttons;
 // - Organize code;
 // - Clean the file on cancel and send;
 // - Test edge cases of minimize app and voip;
@@ -31,9 +28,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center'
-	},
-	backContainer: {
-		paddingHorizontal: 16
 	}
 });
 
@@ -44,8 +38,8 @@ interface IEditImageViewProps {
 
 const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
-	const isPortrait = screenHeight > screenWidth;
 	const insets = useSafeAreaInsets();
+	const isPortrait = screenHeight > screenWidth;
 	const { showActionSheet } = useActionSheet();
 	const {
 		images,
@@ -109,13 +103,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 
 	return (
 		<SafeAreaView style={{ paddingTop: insets.top }}>
-			{showUndo ? (
-				<View style={{ ...styles.backContainer, alignItems: isPortrait ? 'flex-start' : 'flex-end' }}>
-					<Touch onPress={undoEdit}>
-						<CustomIcon name='arrow-back' size={24} />
-					</Touch>
-				</View>
-			) : null}
+			{showUndo ? <UndoEdit isPortrait={isPortrait} onUndoPress={undoEdit} /> : null}
 
 			<View style={styles.editContent}>
 				<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
