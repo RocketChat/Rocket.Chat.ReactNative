@@ -55,7 +55,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	const {
 		loading,
 		cropSelectorEnabled,
-		onSelectCropOption,
+		onSelectAspectRatioOption,
 		onCrop,
 		rotateLeft,
 		rotateRight,
@@ -63,7 +63,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		cancelCropEditor,
 		imageWidth,
 		imageHeight,
-		availableCropOptions,
+		availableAspectRatioOptions,
 		showUndo,
 		undoEdit,
 		gridPosition: { prevTranslationXValue, prevTranslationYValue, top, left, gridHeight, gridWidth }
@@ -83,11 +83,11 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		navigation.goBack();
 	};
 
-	const openCropOptions = () => {
+	const openAspectRatioOptions = () => {
 		showActionSheet({
-			options: availableCropOptions.map(item => ({
+			options: availableAspectRatioOptions.map(item => ({
 				title: item,
-				onPress: () => onSelectCropOption(item)
+				onPress: () => onSelectAspectRatioOption(item)
 			}))
 		});
 	};
@@ -143,7 +143,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 				onCancel={onCancel}
 				onCancelCrop={cancelCropEditor}
 				onContinue={onContinue}
-				openResizeOptions={openCropOptions}
+				openAspectRatioOptions={openAspectRatioOptions}
 				rotateLeft={rotateLeft}
 				rotateRight={rotateRight}
 				startCrop={openCropEditor}

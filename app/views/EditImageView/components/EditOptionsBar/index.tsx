@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CustomIcon } from '../../../../containers/CustomIcon';
 import { useTheme } from '../../../../theme';
 import Touch from '../../../../containers/Touch';
+import i18n from '../../../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -29,7 +30,7 @@ interface IEditOptionsBarProps {
 	rotateLeft: () => void;
 	rotateRight: () => void;
 	startCrop: () => void;
-	openResizeOptions: () => void;
+	openAspectRatioOptions: () => void;
 }
 
 const EditOptionsBar = ({
@@ -39,7 +40,7 @@ const EditOptionsBar = ({
 	rotateLeft,
 	rotateRight,
 	startCrop,
-	openResizeOptions,
+	openAspectRatioOptions,
 	onContinue,
 	crop,
 	onCancelCrop
@@ -54,12 +55,24 @@ const EditOptionsBar = ({
 		<View style={[styles.container, { backgroundColor: colors.surfaceHover, paddingBottom: insets.bottom, paddingTop: 12 }]}>
 			{isCropping ? (
 				<>
-					<Touch style={disabledStyle} enabled={!loading} hitSlop={hitSlop} onPress={onCancelCrop}>
-						<Text style={{ color: colors.fontDefault }}>Cancel</Text>
+					<Touch
+						accessible
+						accessibilityLabel={i18n.t('Cancel')}
+						style={disabledStyle}
+						enabled={!loading}
+						hitSlop={hitSlop}
+						onPress={onCancelCrop}>
+						<Text style={{ color: colors.fontDefault }}>{i18n.t('Cancel')}</Text>
 					</Touch>
 
-					<Touch style={disabledStyle} hitSlop={hitSlop} onPress={crop}>
-						<Text style={{ color: colors.fontDefault }}>Crop</Text>
+					<Touch
+						accessible
+						accessibilityLabel={i18n.t('Crop')}
+						style={disabledStyle}
+						enabled={!loading}
+						hitSlop={hitSlop}
+						onPress={crop}>
+						<Text style={{ color: colors.fontDefault }}>{i18n.t('Crop')}</Text>
 					</Touch>
 				</>
 			) : (
@@ -68,19 +81,43 @@ const EditOptionsBar = ({
 						<CustomIcon name='close' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={rotateLeft}>
+					<Touch
+						accessible
+						accessibilityLabel={i18n.t('Rotate_left')}
+						style={[styles.touch, disabledStyle]}
+						enabled={!loading}
+						hitSlop={hitSlop}
+						onPress={rotateLeft}>
 						<CustomIcon name='undo' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={rotateRight}>
+					<Touch
+						accessible
+						accessibilityLabel={i18n.t('Rotate_right')}
+						style={[styles.touch, disabledStyle]}
+						enabled={!loading}
+						hitSlop={hitSlop}
+						onPress={rotateRight}>
 						<CustomIcon name='redo' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={startCrop}>
+					<Touch
+						accessible
+						accessibilityLabel={i18n.t('crop')}
+						style={[styles.touch, disabledStyle]}
+						enabled={!loading}
+						hitSlop={hitSlop}
+						onPress={startCrop}>
 						<CustomIcon name='crop' color={colors.fontDefault} size={24} />
 					</Touch>
 
-					<Touch style={[styles.touch, disabledStyle]} enabled={!loading} hitSlop={hitSlop} onPress={openResizeOptions}>
+					<Touch
+						accessible
+						accessibilityLabel={i18n.t('Change_aspect_ratio')}
+						style={[styles.touch, disabledStyle]}
+						enabled={!loading}
+						hitSlop={hitSlop}
+						onPress={openAspectRatioOptions}>
 						<CustomIcon name='arrow-expand' color={colors.fontDefault} size={24} />
 					</Touch>
 

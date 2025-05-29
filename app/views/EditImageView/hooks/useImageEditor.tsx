@@ -166,7 +166,7 @@ const useImageEditor = ({
 		setCrop(false);
 	};
 
-	const onSelectCropOption = async (option: string) => {
+	const onSelectAspectRatioOption = async (option: string) => {
 		if (option === 'Original') {
 			const originalImage = attachments.find(item => item.filename === editableImage.filename);
 			defineImageSize(originalImage.width, originalImage.height);
@@ -244,7 +244,7 @@ const useImageEditor = ({
 		onCrop,
 		cropSelectorEnabled: crop,
 		openCropEditor,
-		onSelectCropOption,
+		onSelectAspectRatioOption,
 		cancelCropEditor,
 		imageWidth,
 		imageHeight,
@@ -256,7 +256,7 @@ const useImageEditor = ({
 			gridWidth: sharedValueWidth,
 			gridHeight: sharedValueHeight
 		},
-		availableCropOptions: editableImageIsPortrait ? PORTRAIT_CROP_OPTIONS : LANDSCAPE_CROP_OPTIONS,
+		availableAspectRatioOptions: editableImageIsPortrait ? PORTRAIT_CROP_OPTIONS : LANDSCAPE_CROP_OPTIONS,
 		showUndo,
 		undoEdit
 	};
