@@ -1,6 +1,6 @@
 import React, { createContext, ReactElement, useContext, useState } from 'react';
 import { KeyboardController, useKeyboardHandler } from 'react-native-keyboard-controller';
-import { runOnJS, SharedValue, useAnimatedReaction, useDerivedValue, useSharedValue } from 'react-native-reanimated';
+import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IEmojiKeyboardProvider {
@@ -120,35 +120,42 @@ export const useKeyboardAnimation = () => {
 export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
-	const { height: currentKeyboardHeight } = useKeyboardAnimation();
-	const previousKeyboardHeight = useSharedValue(bottom);
+	const { height } = useKeyboardAnimation();
+	const newValue = useSharedValue(bottom);
 
-	const keyboardHeight = useDerivedValue(() => {
-		const isEmojiPickerOpen = showEmojiPickerSharedValue.value;
-		const isEmojiSearchbarOpen = showEmojiSearchbarSharedValue.value;
-		const currentRawHeight = currentKeyboardHeight.value;
-		const previousHeight = previousKeyboardHeight.value;
+	const updateHeight = () => {
+		'worklet';
 
-		if (currentRawHeight === previousHeight) {
-			return previousHeight;
+		if (showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) {
+			return;
 		}
+		const notch = height.value > 0 ? 0 : bottom;
+		newValue.value = height.value + notch;
+	};
 
-		if (isEmojiPickerOpen || isEmojiSearchbarOpen) {
-			if (previousHeight < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
-				return EMOJI_KEYBOARD_FIXED_HEIGHT;
+	useAnimatedReaction(
+		() => height.value,
+		(currentValue, previousValue) => {
+			if (currentValue !== previousValue) {
+				updateHeight();
 			}
-			return previousHeight;
-		}
+		},
+		[height]
+	);
 
-		const notch = currentRawHeight > 0 ? 0 : bottom;
-		const newKeyboardHeight = currentRawHeight + notch;
-		previousKeyboardHeight.value = newKeyboardHeight;
-		return newKeyboardHeight;
-	}, [showEmojiPickerSharedValue, showEmojiSearchbarSharedValue, currentKeyboardHeight, bottom, previousKeyboardHeight]);
+	useAnimatedReaction(
+		() => showEmojiPickerSharedValue.value,
+		currentValue => {
+			if (currentValue === true) {
+				if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+					newValue.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
+				}
+			} else if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+				updateHeight();
+			}
+		},
+		[showEmojiPickerSharedValue]
+	);
 
-	useDerivedValue(() => {
-		console.log('keyboardHeight', keyboardHeight.value);
-	});
-
-	return { keyboardHeight };
+	return { keyboardHeight: newValue };
 };
