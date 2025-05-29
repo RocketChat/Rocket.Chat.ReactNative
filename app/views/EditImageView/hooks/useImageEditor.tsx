@@ -231,6 +231,43 @@ const useImageEditor = ({
 		defineImageSize(lastEditableHistory.width, lastEditableHistory.height);
 	};
 
+	const cleanHistoryOnCancel = async () => {
+		const deletePromises: Promise<void>[] = [];
+
+		for (const item of editableHistory) {
+			if (item.history.length > 1) {
+				const historiesToDelete = item.history.slice(1);
+
+				for (const history of historiesToDelete) {
+					const path = history.path ?? history.uri;
+					if (path) {
+						deletePromises.push(deleteAsync(path));
+					}
+				}
+			}
+		}
+
+		await Promise.all(deletePromises);
+	};
+
+	const cleanHistoryOnContinue = async () => {
+		const deletePromises: Promise<void>[] = [];
+
+		for (const item of editableHistory) {
+			if (item.history.length > 1) {
+				const historiesToDelete = item.history.slice(1, -1);
+				for (const history of historiesToDelete) {
+					const path = history.path ?? history.uri;
+					if (path) {
+						deletePromises.push(deleteAsync(path));
+					}
+				}
+			}
+		}
+
+		await Promise.all(deletePromises);
+	};
+
 	useEffect(() => {
 		defineImageSize(defaultImageSize.width, defaultImageSize.height);
 	}, [defaultImageSize, isPortrait]);
@@ -256,7 +293,9 @@ const useImageEditor = ({
 		},
 		availableAspectRatioOptions: editableImageIsPortrait ? PORTRAIT_CROP_OPTIONS : LANDSCAPE_CROP_OPTIONS,
 		showUndo,
-		undoEdit
+		undoEdit,
+		cleanHistoryOnCancel,
+		cleanHistoryOnContinue
 	};
 };
 

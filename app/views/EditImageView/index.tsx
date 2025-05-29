@@ -19,8 +19,7 @@ import UndoEdit from './components/UndoEdit';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 
 // To Do:
-// - Clean the file on cancel and send;
-// - Test edge cases of minimize app and voip;
+// - Test voip behavior;
 
 const styles = StyleSheet.create({
 	editContent: {
@@ -66,6 +65,8 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		availableAspectRatioOptions,
 		showUndo,
 		undoEdit,
+		cleanHistoryOnCancel,
+		cleanHistoryOnContinue,
 		gridPosition: { prevTranslationX, prevTranslationY, translationX, translationY, gridHeight, gridWidth }
 	} = useImageEditor({
 		isPortrait,
@@ -79,7 +80,8 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		updateEditableImage
 	});
 
-	const onCancel = () => {
+	const onCancel = async () => {
+		await cleanHistoryOnCancel();
 		navigation.goBack();
 	};
 
@@ -92,7 +94,8 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		});
 	};
 
-	const onContinue = () => {
+	const onContinue = async () => {
+		await cleanHistoryOnContinue();
 		navigation.replace('ShareView', { ...route.params, attachments: images });
 	};
 
