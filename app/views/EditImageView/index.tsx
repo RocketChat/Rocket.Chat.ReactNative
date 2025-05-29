@@ -19,8 +19,6 @@ import UndoEdit from './components/UndoEdit';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 
 // To Do:
-// finish change name width and height of grid;
-// - Organize code;
 // - Clean the file on cancel and send;
 // - Test edge cases of minimize app and voip;
 
