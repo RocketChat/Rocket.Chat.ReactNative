@@ -67,7 +67,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		availableAspectRatioOptions,
 		showUndo,
 		undoEdit,
-		gridPosition: { prevTranslationXValue, prevTranslationYValue, top, left, gridHeight, gridWidth }
+		gridPosition: { prevTranslationXValue, prevTranslationYValue, translationX, translationY, gridHeight, gridWidth }
 	} = useImageEditor({
 		isPortrait,
 		editableImageIsPortrait,
@@ -111,15 +111,15 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 					<Animated.Image source={{ uri: editableImage.path }} style={imageAnimatedStyle} />
 					{editableImage && cropSelectorEnabled ? (
 						<Grid
-							height={imageHeight.value}
-							imageSizeWidth={imageWidth}
-							left={left}
+							gridHeight={gridHeight}
+							gridWidth={gridWidth}
+							translationX={translationX}
+							translationY={translationY}
 							prevTranslationX={prevTranslationXValue}
 							prevTranslationY={prevTranslationYValue}
-							sharedValueHeight={gridHeight}
-							sharedValueWidth={gridWidth}
-							top={top}
+							height={imageHeight.value}
 							width={screenWidth}
+							imageSizeWidth={imageWidth}
 							imageSizeHeight={imageHeight}
 						/>
 					) : null}

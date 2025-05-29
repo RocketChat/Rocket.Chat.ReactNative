@@ -9,10 +9,10 @@ import Row from '../Row';
 interface IGridProps {
 	width: number;
 	height: number;
-	sharedValueWidth: SharedValue<number>;
-	sharedValueHeight: SharedValue<number>;
-	top: SharedValue<number>;
-	left: SharedValue<number>;
+	gridWidth: SharedValue<number>;
+	gridHeight: SharedValue<number>;
+	translationX: SharedValue<number>;
+	translationY: SharedValue<number>;
 	prevTranslationX: SharedValue<number>;
 	prevTranslationY: SharedValue<number>;
 	imageSizeWidth: SharedValue<number>;
@@ -24,10 +24,10 @@ const SMOOTHING_FACTOR = 0.2;
 const Grid = ({
 	width,
 	height,
-	sharedValueWidth,
-	sharedValueHeight,
-	top,
-	left,
+	gridWidth,
+	gridHeight,
+	translationY,
+	translationX,
 	prevTranslationX,
 	prevTranslationY,
 	imageSizeWidth,
@@ -35,9 +35,9 @@ const Grid = ({
 }: IGridProps) => {
 	const { colors } = useTheme();
 	const animatedStyle = useAnimatedStyle(() => ({
-		width: sharedValueWidth.value,
-		height: sharedValueHeight.value,
-		transform: [{ translateX: left.value }, { translateY: top.value }],
+		width: gridWidth.value,
+		height: gridHeight.value,
+		transform: [{ translateX: translationX.value }, { translateY: translationY.value }],
 		backgroundColor: colors.overlayBackground,
 		position: 'absolute',
 		borderWidth: 1,
@@ -58,12 +58,13 @@ const Grid = ({
 		const newFocalX = focalX.value + SMOOTHING_FACTOR * (e.focalX - focalX.value);
 		const newFocalY = focalY.value + SMOOTHING_FACTOR * (e.focalY - focalY.value);
 
-		sharedValueWidth.value = newWidth;
-		sharedValueHeight.value = newHeight;
-		left.value = paddingHorizontal + clamp(newFocalX - newWidth / 2, paddingHorizontal, (imageSizeWidth.value - newWidth) / 2);
-		top.value = clamp(newFocalY - newHeight / 2, 0, (imageSizeHeight.value - newHeight) / 2);
-		prevTranslationX.value = left.value;
-		prevTranslationY.value = top.value;
+		gridWidth.value = newWidth;
+		gridHeight.value = newHeight;
+		translationX.value =
+			paddingHorizontal + clamp(newFocalX - newWidth / 2, paddingHorizontal, (imageSizeWidth.value - newWidth) / 2);
+		translationY.value = clamp(newFocalY - newHeight / 2, 0, (imageSizeHeight.value - newHeight) / 2);
+		prevTranslationX.value = translationX.value;
+		prevTranslationY.value = translationY.value;
 		focalX.value = e.focalX;
 		focalY.value = e.focalY;
 	});
@@ -73,27 +74,27 @@ const Grid = ({
 			// discover the value that moved;
 			const verticalOffset = e.translationY - prevTranslationY.value;
 			// discover the new height based on translation;
-			const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationY.value), 30, height);
+			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
 			// add the value on topValue and add a clamp to limit it;
-			const newTop = clamp(top.value + verticalOffset, 0, height - newHeight);
+			const newTop = clamp(translationY.value + verticalOffset, 0, height - newHeight);
 
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
 			const horizontalOffset = e.translationX - prevTranslationX.value;
-			const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
 			const newLeft = clamp(
-				paddingHorizontal + left.value + horizontalOffset,
+				paddingHorizontal + translationX.value + horizontalOffset,
 				paddingHorizontal,
 				width - newWidth - paddingHorizontal
 			);
 
 			if (newTop > 0) {
-				sharedValueHeight.value = newHeight > height * 0.999 ? height : newHeight;
-				top.value = newHeight > height * 0.999 ? 0 : newTop;
+				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
+				translationY.value = newHeight > height * 0.999 ? 0 : newTop;
 			}
 
 			if (newLeft > 0) {
-				sharedValueWidth.value = newWidth > width * 0.999 ? width : newWidth;
-				left.value = newWidth > width * 0.999 ? paddingHorizontal : newLeft;
+				gridWidth.value = newWidth > width * 0.999 ? width : newWidth;
+				translationX.value = newWidth > width * 0.999 ? paddingHorizontal : newLeft;
 			}
 
 			prevTranslationY.value = e.translationY;
@@ -106,12 +107,12 @@ const Grid = ({
 	const topCenter = Gesture.Pan()
 		.onChange(e => {
 			const offset = e.translationY - prevTranslationY.value;
-			const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationY.value), 30, height);
-			const newTop = clamp(top.value + offset, 0, height - newHeight);
+			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
+			const newTop = clamp(translationY.value + offset, 0, height - newHeight);
 
 			if (newTop > 0) {
-				sharedValueHeight.value = newHeight;
-				top.value = newTop;
+				gridHeight.value = newHeight;
+				translationY.value = newTop;
 			}
 
 			prevTranslationY.value = e.translationY;
@@ -122,18 +123,18 @@ const Grid = ({
 	const topRight = Gesture.Pan()
 		.onChange(e => {
 			const verticalOffset = e.translationY - prevTranslationY.value;
-			const newHeight = clamp(sharedValueHeight.value - (e.translationY - prevTranslationY.value), 30, height);
-			const newTop = clamp(top.value + verticalOffset, 0, height - newHeight);
+			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
+			const newTop = clamp(translationY.value + verticalOffset, 0, height - newHeight);
 			const horizontalOffset = e.translationX * -1 + prevTranslationX.value;
-			const newWidth = clamp(sharedValueWidth.value - horizontalOffset, 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - horizontalOffset, 100, imageSizeWidth.value);
 
 			if (newTop > 0) {
-				sharedValueHeight.value = newHeight > height * 0.999 ? height : newHeight;
-				top.value = newHeight > height * 0.999 ? 0 : newTop;
+				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
+				translationY.value = newHeight > height * 0.999 ? 0 : newTop;
 			}
 
-			if (newWidth + left.value < width) {
-				sharedValueWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
+			if (newWidth + translationX.value < width) {
+				gridWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
 			}
 
 			prevTranslationY.value = e.translationY;
@@ -148,11 +149,15 @@ const Grid = ({
 		.onChange(e => {
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
 			const offset = e.translationX - prevTranslationX.value;
-			const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
-			const newLeft = clamp(paddingHorizontal + left.value + offset, paddingHorizontal, width - newWidth - paddingHorizontal);
+			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
+			const newLeft = clamp(
+				paddingHorizontal + translationX.value + offset,
+				paddingHorizontal,
+				width - newWidth - paddingHorizontal
+			);
 			if (newLeft > 0) {
-				sharedValueWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
-				left.value = newWidth > imageSizeWidth.value * 0.999 ? paddingHorizontal : newLeft;
+				gridWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
+				translationX.value = newWidth > imageSizeWidth.value * 0.999 ? paddingHorizontal : newLeft;
 			}
 
 			prevTranslationX.value = e.translationX;
@@ -166,17 +171,17 @@ const Grid = ({
 			const offset = e.translationX - prevTranslationX.value;
 			const verticalOffset = e.translationY - prevTranslationY.value;
 			const newLeft = clamp(
-				left.value + offset,
+				translationX.value + offset,
 				paddingHorizontal,
-				imageSizeWidth.value + paddingHorizontal - sharedValueWidth.value
+				imageSizeWidth.value + paddingHorizontal - gridWidth.value
 			);
-			const newTop = clamp(top.value + verticalOffset, 0, height - sharedValueHeight.value);
-			if (sharedValueWidth.value < imageSizeWidth.value) {
-				left.value = newLeft;
+			const newTop = clamp(translationY.value + verticalOffset, 0, height - gridHeight.value);
+			if (gridWidth.value < imageSizeWidth.value) {
+				translationX.value = newLeft;
 			}
 
-			if (sharedValueHeight.value < height) {
-				top.value = newTop;
+			if (gridHeight.value < height) {
+				translationY.value = newTop;
 			}
 
 			prevTranslationX.value = e.translationX;
@@ -189,9 +194,9 @@ const Grid = ({
 	const rightCenter = Gesture.Pan()
 		.onChange(e => {
 			const offset = e.translationX * -1 + prevTranslationX.value;
-			const newWidth = clamp(sharedValueWidth.value - offset, 100, imageSizeWidth.value);
-			if (newWidth + left.value < width) {
-				sharedValueWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
+			const newWidth = clamp(gridWidth.value - offset, 100, imageSizeWidth.value);
+			if (newWidth + translationX.value < width) {
+				gridWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
 			}
 			prevTranslationX.value = e.translationX;
 		})
@@ -203,23 +208,23 @@ const Grid = ({
 		.onChange(e => {
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
 			const horizontalOffset = e.translationX - prevTranslationX.value;
-			const newWidth = clamp(sharedValueWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
 			const newLeft = clamp(
-				paddingHorizontal + left.value + horizontalOffset,
+				paddingHorizontal + translationX.value + horizontalOffset,
 				paddingHorizontal,
 				width - newWidth - paddingHorizontal
 			);
 
 			const offset = e.translationY * -1 + prevTranslationY.value;
-			const newHeight = clamp(sharedValueHeight.value - offset, 30, height);
+			const newHeight = clamp(gridHeight.value - offset, 30, height);
 
-			if (newHeight + top.value < height) {
-				sharedValueHeight.value = newHeight > height * 0.999 ? height : newHeight;
+			if (newHeight + translationY.value < height) {
+				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
 			}
 
 			if (newLeft > 0) {
-				sharedValueWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
-				left.value = newWidth > imageSizeWidth.value * 0.999 ? paddingHorizontal : newLeft;
+				gridWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
+				translationX.value = newWidth > imageSizeWidth.value * 0.999 ? paddingHorizontal : newLeft;
 			}
 
 			prevTranslationY.value = e.translationY;
@@ -232,9 +237,9 @@ const Grid = ({
 	const bottomCenter = Gesture.Pan()
 		.onChange(e => {
 			const offset = e.translationY * -1 + prevTranslationY.value;
-			const newHeight = clamp(sharedValueHeight.value - offset, 30, height);
-			if (newHeight + top.value < height) {
-				sharedValueHeight.value = newHeight > height * 0.999 ? height : newHeight;
+			const newHeight = clamp(gridHeight.value - offset, 30, height);
+			if (newHeight + translationY.value < height) {
+				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
 			}
 			prevTranslationY.value = e.translationY;
 		})
@@ -244,14 +249,14 @@ const Grid = ({
 	const bottomRight = Gesture.Pan()
 		.onChange(e => {
 			const horizontalOffset = e.translationX * -1 + prevTranslationX.value;
-			const newWidth = clamp(sharedValueWidth.value - horizontalOffset, 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - horizontalOffset, 100, imageSizeWidth.value);
 			const offset = e.translationY * -1 + prevTranslationY.value;
-			const newHeight = clamp(sharedValueHeight.value - offset, 30, height);
-			if (newHeight + top.value < height) {
-				sharedValueHeight.value = newHeight > height * 0.999 ? height : newHeight;
+			const newHeight = clamp(gridHeight.value - offset, 30, height);
+			if (newHeight + translationY.value < height) {
+				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
 			}
-			if (newWidth + left.value < width) {
-				sharedValueWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
+			if (newWidth + translationX.value < width) {
+				gridWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
 			}
 
 			prevTranslationY.value = e.translationY;

@@ -40,10 +40,10 @@ const useImageEditor = ({
 	const imageWidth = useSharedValue(originalImageSize.width);
 	const imageHeight = useSharedValue(originalImageSize.height);
 	const height = imageHeight.value;
-	const sharedValueWidth = useSharedValue(screenWidth);
-	const sharedValueHeight = useSharedValue(height);
-	const top = useSharedValue(0);
-	const left = useSharedValue(0);
+	const gridWidth = useSharedValue(screenWidth);
+	const gridHeight = useSharedValue(height);
+	const translationY = useSharedValue(0);
+	const translationX = useSharedValue(0);
 	const prevTranslationXValue = useSharedValue(0);
 	const prevTranslationYValue = useSharedValue(0);
 
@@ -61,10 +61,10 @@ const useImageEditor = ({
 			newWidth = originalWidth * heightScale;
 		}
 
-		sharedValueWidth.value = newWidth;
-		sharedValueHeight.value = newHeight;
-		left.value = (screenWidth - newWidth) / 2;
-		top.value = 0;
+		gridWidth.value = newWidth;
+		gridHeight.value = newHeight;
+		translationX.value = (screenWidth - newWidth) / 2;
+		translationY.value = 0;
 		imageWidth.value = withTiming(newWidth);
 		imageHeight.value = withTiming(newHeight);
 	};
@@ -125,14 +125,14 @@ const useImageEditor = ({
 	const onCrop = async () => {
 		setLoading(true);
 		try {
-			const finalWidth = getValueBasedOnOriginal(sharedValueWidth.value, originalImageSize.width, imageWidth.value);
-			const finalHeight = getValueBasedOnOriginal(sharedValueHeight.value, originalImageSize.height, imageHeight.value);
+			const finalWidth = getValueBasedOnOriginal(gridWidth.value, originalImageSize.width, imageWidth.value);
+			const finalHeight = getValueBasedOnOriginal(gridHeight.value, originalImageSize.height, imageHeight.value);
 			const originX = getValueBasedOnOriginal(
-				left.value - getHorizontalPadding(screenWidth, imageWidth.value),
+				translationX.value - getHorizontalPadding(screenWidth, imageWidth.value),
 				originalImageSize.width,
 				imageWidth.value
 			);
-			const originY = getValueBasedOnOriginal(top.value, originalImageSize.height, imageHeight.value);
+			const originY = getValueBasedOnOriginal(translationY.value, originalImageSize.height, imageHeight.value);
 
 			const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
 				height: finalHeight,
@@ -249,12 +249,12 @@ const useImageEditor = ({
 		imageWidth,
 		imageHeight,
 		gridPosition: {
-			top,
-			left,
+			translationY,
+			translationX,
 			prevTranslationXValue,
 			prevTranslationYValue,
-			gridWidth: sharedValueWidth,
-			gridHeight: sharedValueHeight
+			gridWidth,
+			gridHeight
 		},
 		availableAspectRatioOptions: editableImageIsPortrait ? PORTRAIT_CROP_OPTIONS : LANDSCAPE_CROP_OPTIONS,
 		showUndo,
