@@ -5,6 +5,7 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import { RouteProp } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useTheme } from '../../theme';
 import { useActionSheet } from '../../containers/ActionSheet';
 import { InsideStackParamList } from '../../stacks/types';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -15,10 +16,9 @@ import useImageEditor from './hooks/useImageEditor';
 import Grid from './components/Grid';
 import ImageSelector from './components/ImageSelector';
 import UndoEdit from './components/UndoEdit';
+import RCActivityIndicator from '../../containers/ActivityIndicator';
 
 // To Do:
-// Loading;
-// remove word and add icons;
 // - Organize code;
 // - Clean the file on cancel and send;
 // - Test edge cases of minimize app and voip;
@@ -37,6 +37,7 @@ interface IEditImageViewProps {
 }
 
 const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
+	const { colors } = useTheme();
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
 	const isPortrait = screenHeight > screenWidth;
@@ -108,7 +109,6 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 			<View style={styles.editContent}>
 				<View style={{ paddingHorizontal: getHorizontalPadding(screenWidth, gridWidth.value) }}>
 					<Animated.Image source={{ uri: editableImage.path }} style={imageAnimatedStyle} />
-
 					{editableImage && cropSelectorEnabled ? (
 						<Grid
 							height={imageHeight.value}
@@ -122,6 +122,12 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 							width={screenWidth}
 							imageSizeHeight={imageHeight}
 						/>
+					) : null}
+
+					{loading ? (
+						<Animated.View style={[imageAnimatedStyle, { position: 'absolute', backgroundColor: colors.overlayBackground }]}>
+							<RCActivityIndicator />
+						</Animated.View>
 					) : null}
 				</View>
 			</View>

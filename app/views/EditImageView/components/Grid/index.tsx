@@ -2,6 +2,7 @@ import React from 'react';
 import Animated, { clamp, SharedValue, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 
+import { useTheme } from '../../../../theme';
 import Cell from '../Cell';
 import Row from '../Row';
 
@@ -32,11 +33,12 @@ const Grid = ({
 	imageSizeWidth,
 	imageSizeHeight
 }: IGridProps) => {
+	const { colors } = useTheme();
 	const animatedStyle = useAnimatedStyle(() => ({
 		width: sharedValueWidth.value,
 		height: sharedValueHeight.value,
 		transform: [{ translateX: left.value }, { translateY: top.value }],
-		backgroundColor: 'rgba(0, 0, 0, .4)',
+		backgroundColor: colors.overlayBackground,
 		position: 'absolute',
 		borderWidth: 1,
 		borderColor: 'white',
