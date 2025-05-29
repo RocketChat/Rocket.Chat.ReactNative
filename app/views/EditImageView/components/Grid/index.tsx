@@ -47,11 +47,12 @@ const Grid = ({
 	}));
 	const focalX = useSharedValue(0);
 	const focalY = useSharedValue(0);
+	const minHeight = 100;
+	const minWidth = 100;
+
 	const pinchGesture = Gesture.Pinch().onChange(e => {
 		const { scale } = e;
 		const paddingHorizontal = (width - imageSizeWidth.value) / 2;
-		const minHeight = 100;
-		const minWidth = 100;
 
 		const newWidth = clamp(imageSizeWidth.value * scale, minWidth, imageSizeWidth.value);
 		const newHeight = clamp(imageSizeHeight.value * scale, minHeight, imageSizeHeight.value);
@@ -72,12 +73,12 @@ const Grid = ({
 	const topLeft = Gesture.Pan()
 		.onChange(e => {
 			const verticalOffset = e.translationY - prevTranslationY.value;
-			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
+			const newHeight = clamp(gridHeight.value - verticalOffset, minHeight, height);
 			const newTop = clamp(translationY.value + verticalOffset, 0, height - newHeight);
 
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
 			const horizontalOffset = e.translationX - prevTranslationX.value;
-			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), minWidth, imageSizeWidth.value);
 			const newLeft = clamp(
 				paddingHorizontal + translationX.value + horizontalOffset,
 				paddingHorizontal,
@@ -104,7 +105,7 @@ const Grid = ({
 	const topCenter = Gesture.Pan()
 		.onChange(e => {
 			const offset = e.translationY - prevTranslationY.value;
-			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
+			const newHeight = clamp(gridHeight.value - offset, 30, height);
 			const newTop = clamp(translationY.value + offset, 0, height - newHeight);
 
 			if (newTop > 0) {
@@ -120,10 +121,10 @@ const Grid = ({
 	const topRight = Gesture.Pan()
 		.onChange(e => {
 			const verticalOffset = e.translationY - prevTranslationY.value;
-			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
+			const newHeight = clamp(gridHeight.value - verticalOffset, minHeight, height);
 			const newTop = clamp(translationY.value + verticalOffset, 0, height - newHeight);
 			const horizontalOffset = e.translationX * -1 + prevTranslationX.value;
-			const newWidth = clamp(gridWidth.value - horizontalOffset, 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - horizontalOffset, minWidth, imageSizeWidth.value);
 
 			if (newTop > 0) {
 				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
@@ -146,7 +147,7 @@ const Grid = ({
 		.onChange(e => {
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
 			const offset = e.translationX - prevTranslationX.value;
-			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), minWidth, imageSizeWidth.value);
 			const newLeft = clamp(
 				paddingHorizontal + translationX.value + offset,
 				paddingHorizontal,
@@ -191,7 +192,7 @@ const Grid = ({
 	const rightCenter = Gesture.Pan()
 		.onChange(e => {
 			const offset = e.translationX * -1 + prevTranslationX.value;
-			const newWidth = clamp(gridWidth.value - offset, 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - offset, minWidth, imageSizeWidth.value);
 			if (newWidth + translationX.value < width) {
 				gridWidth.value = newWidth > imageSizeWidth.value * 0.999 ? imageSizeWidth.value : newWidth;
 			}
@@ -205,7 +206,7 @@ const Grid = ({
 		.onChange(e => {
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;
 			const horizontalOffset = e.translationX - prevTranslationX.value;
-			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - (e.translationX - prevTranslationX.value), minWidth, imageSizeWidth.value);
 			const newLeft = clamp(
 				paddingHorizontal + translationX.value + horizontalOffset,
 				paddingHorizontal,
@@ -213,7 +214,7 @@ const Grid = ({
 			);
 
 			const offset = e.translationY * -1 + prevTranslationY.value;
-			const newHeight = clamp(gridHeight.value - offset, 30, height);
+			const newHeight = clamp(gridHeight.value - offset, minHeight, height);
 
 			if (newHeight + translationY.value < height) {
 				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
@@ -234,7 +235,7 @@ const Grid = ({
 	const bottomCenter = Gesture.Pan()
 		.onChange(e => {
 			const offset = e.translationY * -1 + prevTranslationY.value;
-			const newHeight = clamp(gridHeight.value - offset, 30, height);
+			const newHeight = clamp(gridHeight.value - offset, minHeight, height);
 			if (newHeight + translationY.value < height) {
 				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
 			}
@@ -246,9 +247,9 @@ const Grid = ({
 	const bottomRight = Gesture.Pan()
 		.onChange(e => {
 			const horizontalOffset = e.translationX * -1 + prevTranslationX.value;
-			const newWidth = clamp(gridWidth.value - horizontalOffset, 100, imageSizeWidth.value);
+			const newWidth = clamp(gridWidth.value - horizontalOffset, minWidth, imageSizeWidth.value);
 			const offset = e.translationY * -1 + prevTranslationY.value;
-			const newHeight = clamp(gridHeight.value - offset, 30, height);
+			const newHeight = clamp(gridHeight.value - offset, minHeight, height);
 			if (newHeight + translationY.value < height) {
 				gridHeight.value = newHeight > height * 0.999 ? height : newHeight;
 			}
