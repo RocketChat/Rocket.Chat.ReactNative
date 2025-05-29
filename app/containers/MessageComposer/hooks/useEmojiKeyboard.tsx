@@ -1,5 +1,5 @@
 import React, { createContext, ReactElement, useContext, useState } from 'react';
-import { KeyboardController, useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller';
+import { KeyboardController, useKeyboardHandler } from 'react-native-keyboard-controller';
 import { runOnJS, SharedValue, useAnimatedReaction, useDerivedValue, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -86,6 +86,31 @@ export const useEmojiKeyboard = () => {
 const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
 const EMOJI_KEYBOARD_FIXED_HEIGHT = 300;
 
+export const useKeyboardAnimation = () => {
+	const height = useSharedValue(0);
+
+	useKeyboardHandler(
+		{
+			onStart: e => {
+				'worklet';
+
+				if (e.duration === 0) {
+					return;
+				}
+				height.value = e.height;
+			},
+			onInteractive: e => {
+				'worklet';
+
+				height.value = e.height;
+			}
+		},
+		[]
+	);
+
+	return { height };
+};
+
 /**
  * Hook for managing emoji keyboard height animations and keyboard event handling.
  * This hook uses a derived value to calculate the final keyboard height based on
@@ -95,14 +120,18 @@ const EMOJI_KEYBOARD_FIXED_HEIGHT = 300;
 export const useEmojiKeyboardHeight = () => {
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
 	const { bottom } = useSafeAreaInsets();
-	const { height: currentKeyboardHeight } = useReanimatedKeyboardAnimation();
+	const { height: currentKeyboardHeight } = useKeyboardAnimation();
 	const previousKeyboardHeight = useSharedValue(bottom);
 
 	const keyboardHeight = useDerivedValue(() => {
 		const isEmojiPickerOpen = showEmojiPickerSharedValue.value;
 		const isEmojiSearchbarOpen = showEmojiSearchbarSharedValue.value;
-		const currentRawHeight = -currentKeyboardHeight.value;
+		const currentRawHeight = currentKeyboardHeight.value;
 		const previousHeight = previousKeyboardHeight.value;
+
+		if (currentRawHeight === previousHeight) {
+			return previousHeight;
+		}
 
 		if (isEmojiPickerOpen || isEmojiSearchbarOpen) {
 			if (previousHeight < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
@@ -116,6 +145,10 @@ export const useEmojiKeyboardHeight = () => {
 		previousKeyboardHeight.value = newKeyboardHeight;
 		return newKeyboardHeight;
 	}, [showEmojiPickerSharedValue, showEmojiSearchbarSharedValue, currentKeyboardHeight, bottom, previousKeyboardHeight]);
+
+	useDerivedValue(() => {
+		console.log('keyboardHeight', keyboardHeight.value);
+	});
 
 	return { keyboardHeight };
 };

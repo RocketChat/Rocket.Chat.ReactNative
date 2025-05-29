@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
-import { FlatList } from 'react-native';
-import Animated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import { FlatList, ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { useAutocompleteParams } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -9,17 +9,15 @@ import { IAutocompleteItemProps } from '../../interfaces';
 import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useStyle } from './styles';
-import { useEmojiKeyboardHeight } from '../../hooks/useEmojiKeyboard';
 
 export const Autocomplete = ({
 	onPress,
-	contentHeight
+	style
 }: {
 	onPress: IAutocompleteItemProps['onPress'];
-	contentHeight: SharedValue<number>;
+	style: ViewStyle;
 }): ReactElement | null => {
 	const { rid } = useRoomContext();
-	const { keyboardHeight } = useEmojiKeyboardHeight();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
@@ -28,9 +26,6 @@ export const Autocomplete = ({
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
-	const bottomStyle = useAnimatedStyle(() => ({
-		bottom: keyboardHeight.value + contentHeight.value - 4
-	}));
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -38,7 +33,7 @@ export const Autocomplete = ({
 
 	if (type !== '/preview') {
 		return (
-			<Animated.View style={[styles.root, bottomStyle]}>
+			<Animated.View style={[styles.root, style]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					data={items}
@@ -52,7 +47,7 @@ export const Autocomplete = ({
 
 	if (type === '/preview') {
 		return (
-			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight }, bottomStyle]}>
+			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight }, style]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}

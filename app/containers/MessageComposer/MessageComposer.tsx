@@ -170,6 +170,10 @@ export const MessageComposer = ({
 		height: keyboardHeight.value
 	}));
 
+	const autocompleteStyle = useAnimatedStyle(() => ({
+		bottom: keyboardHeight.value + contentHeight.value - 4
+	}));
+
 	return (
 		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
 			<MessageComposerContent
@@ -185,7 +189,7 @@ export const MessageComposer = ({
 			</Animated.View>
 			<Autocomplete
 				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
-				contentHeight={contentHeight}
+				style={autocompleteStyle}
 			/>
 		</MessageInnerContext.Provider>
 	);
