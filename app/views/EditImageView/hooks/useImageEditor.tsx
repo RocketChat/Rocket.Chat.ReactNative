@@ -3,9 +3,9 @@ import { ImageResult, SaveFormat, ImageManipulator } from 'expo-image-manipulato
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { deleteAsync } from 'expo-file-system';
 
+import { LANDSCAPE_CROP_OPTIONS, PORTRAIT_CROP_OPTIONS } from '../constants/cropOptions';
 import getValueBasedOnOriginal from '../methods/getValueBasedOnOriginal';
 import getHorizontalPadding from '../methods/getHorizontalPadding';
-import { LANDSCAPE_CROP_OPTIONS, PORTRAIT_CROP_OPTIONS } from '../constants/cropOptions';
 
 interface IUseImageManipulatorProps {
 	isPortrait: boolean;
@@ -36,15 +36,14 @@ const useImageEditor = ({
 	const [loading, setLoading] = useState<boolean>(false);
 	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
 	const [crop, setCrop] = useState(false);
-	const imageWidth = useSharedValue(defaultImageSize.width);
-	const imageHeight = useSharedValue(defaultImageSize.height);
-	const height = imageHeight.value;
+	const imageSizeWidth = useSharedValue(defaultImageSize.width);
+	const imageSizeHeight = useSharedValue(defaultImageSize.height);
 	const gridWidth = useSharedValue(screenWidth);
-	const gridHeight = useSharedValue(height);
+	const gridHeight = useSharedValue(imageSizeHeight.value);
 	const translationY = useSharedValue(0);
 	const translationX = useSharedValue(0);
-	const prevTranslationXValue = useSharedValue(0);
-	const prevTranslationYValue = useSharedValue(0);
+	const prevTranslationX = useSharedValue(0);
+	const prevTranslationY = useSharedValue(0);
 	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
 
 	const defineImageSize = (originalWidth?: number, originalHeight?: number) => {
@@ -65,8 +64,8 @@ const useImageEditor = ({
 		gridHeight.value = newHeight;
 		translationX.value = (screenWidth - newWidth) / 2;
 		translationY.value = 0;
-		imageWidth.value = withTiming(newWidth);
-		imageHeight.value = withTiming(newHeight);
+		imageSizeWidth.value = withTiming(newWidth);
+		imageSizeHeight.value = withTiming(newHeight);
 	};
 
 	const updateImageHistory = (image: ImageResult) => {
@@ -125,14 +124,14 @@ const useImageEditor = ({
 	const onCrop = async () => {
 		setLoading(true);
 		try {
-			const finalWidth = getValueBasedOnOriginal(gridWidth.value, defaultImageSize.width, imageWidth.value);
-			const finalHeight = getValueBasedOnOriginal(gridHeight.value, defaultImageSize.height, imageHeight.value);
+			const finalWidth = getValueBasedOnOriginal(gridWidth.value, defaultImageSize.width, imageSizeWidth.value);
+			const finalHeight = getValueBasedOnOriginal(gridHeight.value, defaultImageSize.height, imageSizeHeight.value);
 			const originX = getValueBasedOnOriginal(
-				translationX.value - getHorizontalPadding(screenWidth, imageWidth.value),
+				translationX.value - getHorizontalPadding(screenWidth, imageSizeWidth.value),
 				defaultImageSize.width,
-				imageWidth.value
+				imageSizeWidth.value
 			);
-			const originY = getValueBasedOnOriginal(translationY.value, defaultImageSize.height, imageHeight.value);
+			const originY = getValueBasedOnOriginal(translationY.value, defaultImageSize.height, imageSizeHeight.value);
 
 			const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
 				height: finalHeight,
@@ -245,13 +244,13 @@ const useImageEditor = ({
 		openCropEditor,
 		onSelectAspectRatioOption,
 		cancelCropEditor,
-		imageWidth,
-		imageHeight,
+		imageSizeWidth,
+		imageSizeHeight,
 		gridPosition: {
 			translationY,
 			translationX,
-			prevTranslationXValue,
-			prevTranslationYValue,
+			prevTranslationX,
+			prevTranslationY,
 			gridWidth,
 			gridHeight
 		},

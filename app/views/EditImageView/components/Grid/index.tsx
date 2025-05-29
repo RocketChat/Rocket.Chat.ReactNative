@@ -71,11 +71,8 @@ const Grid = ({
 
 	const topLeft = Gesture.Pan()
 		.onChange(e => {
-			// discover the value that moved;
 			const verticalOffset = e.translationY - prevTranslationY.value;
-			// discover the new height based on translation;
 			const newHeight = clamp(gridHeight.value - (e.translationY - prevTranslationY.value), 30, height);
-			// add the value on topValue and add a clamp to limit it;
 			const newTop = clamp(translationY.value + verticalOffset, 0, height - newHeight);
 
 			const paddingHorizontal = (width - imageSizeWidth.value) / 2;

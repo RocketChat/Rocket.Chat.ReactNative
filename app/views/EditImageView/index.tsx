@@ -19,6 +19,7 @@ import UndoEdit from './components/UndoEdit';
 import RCActivityIndicator from '../../containers/ActivityIndicator';
 
 // To Do:
+// finish change name width and height of grid;
 // - Organize code;
 // - Clean the file on cancel and send;
 // - Test edge cases of minimize app and voip;
@@ -40,8 +41,8 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	const { colors } = useTheme();
 	const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 	const insets = useSafeAreaInsets();
-	const isPortrait = screenHeight > screenWidth;
 	const { showActionSheet } = useActionSheet();
+	const isPortrait = screenHeight > screenWidth;
 	const {
 		images,
 		editableImage,
@@ -62,12 +63,12 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		rotateRight,
 		openCropEditor,
 		cancelCropEditor,
-		imageWidth,
-		imageHeight,
+		imageSizeWidth,
+		imageSizeHeight,
 		availableAspectRatioOptions,
 		showUndo,
 		undoEdit,
-		gridPosition: { prevTranslationXValue, prevTranslationYValue, translationX, translationY, gridHeight, gridWidth }
+		gridPosition: { prevTranslationX, prevTranslationY, translationX, translationY, gridHeight, gridWidth }
 	} = useImageEditor({
 		isPortrait,
 		editableImageIsPortrait,
@@ -98,15 +99,15 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	};
 
 	const imageAnimatedStyle = useAnimatedStyle(() => ({
-		width: imageWidth.value,
-		height: imageHeight.value
+		width: imageSizeWidth.value,
+		height: imageSizeHeight.value
 	}));
 
 	const loadingContainerAnimatedStyle = useAnimatedStyle(() => ({
 		position: 'absolute',
 		backgroundColor: colors.overlayBackground,
-		width: imageWidth.value,
-		height: imageHeight.value
+		width: imageSizeWidth.value,
+		height: imageSizeHeight.value
 	}));
 
 	return (
@@ -122,12 +123,12 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 							gridWidth={gridWidth}
 							translationX={translationX}
 							translationY={translationY}
-							prevTranslationX={prevTranslationXValue}
-							prevTranslationY={prevTranslationYValue}
-							height={imageHeight.value}
+							prevTranslationX={prevTranslationX}
+							prevTranslationY={prevTranslationY}
+							imageSizeWidth={imageSizeWidth}
+							imageSizeHeight={imageSizeHeight}
+							height={imageSizeHeight.value}
 							width={screenWidth}
-							imageSizeWidth={imageWidth}
-							imageSizeHeight={imageHeight}
 						/>
 					) : null}
 
