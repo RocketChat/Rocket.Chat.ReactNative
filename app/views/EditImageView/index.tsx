@@ -45,7 +45,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 	const {
 		images,
 		editableImage,
-		originalImageSize,
+		defaultImageSize,
 		selectImageToEdit,
 		updateImage,
 		editableImageIsPortrait,
@@ -72,7 +72,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		isPortrait,
 		editableImageIsPortrait,
 		editableImage,
-		originalImageSize,
+		defaultImageSize,
 		screenWidth,
 		screenHeight,
 		updateImage,

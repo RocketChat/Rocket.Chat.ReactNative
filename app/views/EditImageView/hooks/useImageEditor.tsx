@@ -14,7 +14,7 @@ interface IUseImageManipulatorProps {
 	screenHeight: number;
 	editableImage: any;
 	editableImageIsPortrait: boolean;
-	originalImageSize: {
+	defaultImageSize: {
 		width: number;
 		height: number;
 	};
@@ -27,7 +27,7 @@ const useImageEditor = ({
 	attachments,
 	editableImage,
 	editableImageIsPortrait,
-	originalImageSize,
+	defaultImageSize,
 	screenWidth,
 	screenHeight,
 	updateImage,
@@ -36,8 +36,8 @@ const useImageEditor = ({
 	const [loading, setLoading] = useState<boolean>(false);
 	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
 	const [crop, setCrop] = useState(false);
-	const imageWidth = useSharedValue(originalImageSize.width);
-	const imageHeight = useSharedValue(originalImageSize.height);
+	const imageWidth = useSharedValue(defaultImageSize.width);
+	const imageHeight = useSharedValue(defaultImageSize.height);
 	const height = imageHeight.value;
 	const gridWidth = useSharedValue(screenWidth);
 	const gridHeight = useSharedValue(height);
@@ -125,14 +125,14 @@ const useImageEditor = ({
 	const onCrop = async () => {
 		setLoading(true);
 		try {
-			const finalWidth = getValueBasedOnOriginal(gridWidth.value, originalImageSize.width, imageWidth.value);
-			const finalHeight = getValueBasedOnOriginal(gridHeight.value, originalImageSize.height, imageHeight.value);
+			const finalWidth = getValueBasedOnOriginal(gridWidth.value, defaultImageSize.width, imageWidth.value);
+			const finalHeight = getValueBasedOnOriginal(gridHeight.value, defaultImageSize.height, imageHeight.value);
 			const originX = getValueBasedOnOriginal(
 				translationX.value - getHorizontalPadding(screenWidth, imageWidth.value),
-				originalImageSize.width,
+				defaultImageSize.width,
 				imageWidth.value
 			);
-			const originY = getValueBasedOnOriginal(translationY.value, originalImageSize.height, imageHeight.value);
+			const originY = getValueBasedOnOriginal(translationY.value, defaultImageSize.height, imageHeight.value);
 
 			const cropImage = ImageManipulator.manipulate(editableImage.uri ?? editableImage.path).crop({
 				height: finalHeight,
@@ -167,8 +167,8 @@ const useImageEditor = ({
 	};
 
 	const onSelectAspectRatioOption = async (option: string) => {
+		const originalImage = attachments.find(item => item.filename === editableImage.filename);
 		if (option === 'Original') {
-			const originalImage = attachments.find(item => item.filename === editableImage.filename);
 			defineImageSize(originalImage.width, originalImage.height);
 			updateImageHistory(originalImage);
 			updateImage(originalImage);
@@ -176,7 +176,6 @@ const useImageEditor = ({
 		}
 		const [ratioWidth, radioHeight] = option.split(':');
 		const ratio = Number(ratioWidth) / Number(radioHeight);
-		const originalImage = attachments.find(item => item.filename === editableImage.filename);
 		const imageRatio = originalImage.width / originalImage.height;
 
 		let cropWidth = 0;
@@ -234,8 +233,8 @@ const useImageEditor = ({
 	};
 
 	useEffect(() => {
-		defineImageSize(originalImageSize.width, originalImageSize.height);
-	}, [originalImageSize, isPortrait]);
+		defineImageSize(defaultImageSize.width, defaultImageSize.height);
+	}, [defaultImageSize, isPortrait]);
 
 	return {
 		loading,

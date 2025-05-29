@@ -41,7 +41,7 @@ const Grid = ({
 		backgroundColor: colors.overlayBackground,
 		position: 'absolute',
 		borderWidth: 1,
-		borderColor: 'white',
+		borderColor: colors.fontWhite,
 		alignItems: 'center',
 		justifyContent: 'center'
 	}));
@@ -271,21 +271,21 @@ const Grid = ({
 		<GestureDetector gesture={pinchGesture}>
 			<Animated.View style={animatedStyle}>
 				<Row>
-					<Cell gesture={Gesture.Race(pinchGesture, topLeft)} />
-					<Cell gesture={Gesture.Race(pinchGesture, topCenter)} />
-					<Cell gesture={Gesture.Race(pinchGesture, topRight)} />
+					<Cell gesture={topLeft} />
+					<Cell gesture={topCenter} />
+					<Cell gesture={topRight} />
 				</Row>
 
 				<Row>
-					<Cell gesture={Gesture.Race(pinchGesture, leftCenter)} />
-					<Cell gesture={Gesture.Race(pinchGesture, moveGrid)} />
-					<Cell gesture={Gesture.Race(pinchGesture, rightCenter)} />
+					<Cell gesture={leftCenter} />
+					<Cell gesture={moveGrid} />
+					<Cell gesture={rightCenter} />
 				</Row>
 
 				<Row>
-					<Cell gesture={Gesture.Race(pinchGesture, bottomLeft)} />
-					<Cell gesture={Gesture.Race(pinchGesture, bottomCenter)} />
-					<Cell gesture={Gesture.Race(pinchGesture, bottomRight)} />
+					<Cell gesture={bottomLeft} />
+					<Cell gesture={bottomCenter} />
+					<Cell gesture={bottomRight} />
 				</Row>
 			</Animated.View>
 		</GestureDetector>

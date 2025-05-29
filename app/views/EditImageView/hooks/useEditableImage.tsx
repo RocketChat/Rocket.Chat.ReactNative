@@ -9,17 +9,17 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 	const firstImage = attachments[0];
 	const [images, setImages] = useState(attachments);
 	const [editableImage, setEditableImage] = useState(firstImage);
-	const [originalImageSize, setOriginalImageSize] = useState<any>({ width: firstImage?.width, height: firstImage?.height });
+	const [defaultImageSize, setDefaultImageSize] = useState<any>({ width: firstImage?.width, height: firstImage?.height });
 
 	const selectImageToEdit = (image: any) => {
 		setEditableImage(image);
-		setOriginalImageSize({ width: image.width, height: image.height });
+		setDefaultImageSize({ width: image.width, height: image.height });
 	};
 
 	const updateImage = (image: ImageResult | any) => {
 		setEditableImage({ ...editableImage, width: image.width, height: image.height, path: image.uri ?? image?.path });
 
-		setOriginalImageSize({
+		setDefaultImageSize({
 			width: image.width,
 			height: image.height
 		});
@@ -52,8 +52,7 @@ const useEditableImage = ({ attachments }: IUseEditableImageProps) => {
 		images,
 		selectImageToEdit,
 		editableImage,
-		originalImageSize,
-		updateOriginalImageSize: setOriginalImageSize,
+		defaultImageSize,
 		updateImage,
 		editableImageIsPortrait: editableImage.height > editableImage.width,
 		updateEditableImage
