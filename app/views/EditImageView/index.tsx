@@ -102,6 +102,13 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 		height: imageHeight.value
 	}));
 
+	const loadingContainerAnimatedStyle = useAnimatedStyle(() => ({
+		position: 'absolute',
+		backgroundColor: colors.overlayBackground,
+		width: imageWidth.value,
+		height: imageHeight.value
+	}));
+
 	return (
 		<SafeAreaView style={{ paddingTop: insets.top }}>
 			{showUndo ? <UndoEdit isPortrait={isPortrait} onUndoPress={undoEdit} /> : null}
@@ -125,7 +132,7 @@ const EditImageView = ({ navigation, route }: IEditImageViewProps) => {
 					) : null}
 
 					{loading ? (
-						<Animated.View style={[imageAnimatedStyle, { position: 'absolute', backgroundColor: colors.overlayBackground }]}>
+						<Animated.View style={loadingContainerAnimatedStyle}>
 							<RCActivityIndicator />
 						</Animated.View>
 					) : null}

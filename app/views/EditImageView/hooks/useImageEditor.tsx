@@ -10,7 +10,6 @@ import { LANDSCAPE_CROP_OPTIONS, PORTRAIT_CROP_OPTIONS } from '../constants/crop
 interface IUseImageManipulatorProps {
 	isPortrait: boolean;
 	attachments: any[];
-	updateImage: (image: ImageResult) => void;
 	screenWidth: number;
 	screenHeight: number;
 	editableImage: any;
@@ -19,6 +18,7 @@ interface IUseImageManipulatorProps {
 		width: number;
 		height: number;
 	};
+	updateImage: (image: ImageResult) => void;
 	updateEditableImage: (updatedEditableImage: any) => void;
 }
 
@@ -35,7 +35,6 @@ const useImageEditor = ({
 }: IUseImageManipulatorProps) => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [editableHistory, setEditableHistory] = useState(attachments.map(item => ({ filename: item.filename, history: [item] })));
-	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
 	const [crop, setCrop] = useState(false);
 	const imageWidth = useSharedValue(originalImageSize.width);
 	const imageHeight = useSharedValue(originalImageSize.height);
@@ -46,6 +45,7 @@ const useImageEditor = ({
 	const translationX = useSharedValue(0);
 	const prevTranslationXValue = useSharedValue(0);
 	const prevTranslationYValue = useSharedValue(0);
+	const showUndo = (editableHistory?.find(item => item.filename === editableImage.filename)?.history.length ?? 0) > 1;
 
 	const defineImageSize = (originalWidth?: number, originalHeight?: number) => {
 		if (!originalWidth || !originalHeight) return;
