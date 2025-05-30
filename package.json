@@ -73,6 +73,7 @@
 		"expo-image-picker": "16.1.3",
 		"expo-keep-awake": "14.1.3",
 		"expo-local-authentication": "16.0.3",
+		"expo-status-bar": "^2.2.3",
 		"expo-video-thumbnails": "9.1.2",
 		"expo-web-browser": "14.1.5",
 		"hoist-non-react-statics": "3.3.2",
