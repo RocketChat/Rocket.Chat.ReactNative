@@ -1,6 +1,6 @@
 import { Appearance } from 'react-native';
-import setRootViewColor from 'rn-root-view';
 import * as NavigationBar from 'expo-navigation-bar';
+import * as SystemUI from 'expo-system-ui';
 
 import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
 import { themes, THEME_PREFERENCES_KEY } from '../../constants';
@@ -57,7 +57,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 			// Do nothing
 		}
 	}
-	setRootViewColor(themes[theme].surfaceRoom);
+	SystemUI.setBackgroundColorAsync(themes[theme].surfaceLight);
 };
 
 export const unsubscribeTheme = () => {

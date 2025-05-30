@@ -8346,6 +8346,14 @@ expo-status-bar@^2.2.3:
     react-native-edge-to-edge "1.6.0"
     react-native-is-edge-to-edge "^1.1.6"
 
+expo-system-ui@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/expo-system-ui/-/expo-system-ui-5.0.7.tgz#ccf047a689ab488d9bcda375afd063419578f494"
+  integrity sha512-ijSnSFA4VfuQc84N6WyCUNsKKTIyQb6QuC8q2zGvYC/sBXTMrOtZg0zrisQGzCRW+WhritQTiVqHlp3Ix9xDmQ==
+  dependencies:
+    "@react-native/normalize-colors" "0.79.2"
+    debug "^4.3.2"
+
 expo-video-thumbnails@9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-9.1.2.tgz#43b2b5f972da68be958f961544186e7593e713fc"
@@ -13417,10 +13425,6 @@ rimraf@~2.6.2:
   integrity sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==
   dependencies:
     glob "^7.1.3"
-
-rn-root-view@RocketChat/rn-root-view:
-  version "1.0.3"
-  resolved "https://codeload.github.com/RocketChat/rn-root-view/tar.gz/d910449d3c65889853da4f937e72b2d756895fb5"
 
 run-parallel@^1.1.9:
   version "1.2.0"
