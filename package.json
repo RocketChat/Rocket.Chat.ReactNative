@@ -99,6 +99,7 @@
 		"react-native-easy-toast": "2.3.0",
 		"react-native-file-viewer": "2.1.4",
 		"react-native-gesture-handler": "^2.24.0",
+		"react-native-image-crop-picker": "^0.50.1",
 		"react-native-image-progress": "1.1.1",
 		"react-native-katex": "0.5.1",
 		"react-native-keychain": "^8.2.0",
