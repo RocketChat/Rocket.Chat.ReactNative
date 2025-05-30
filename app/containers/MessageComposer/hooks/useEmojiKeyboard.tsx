@@ -84,7 +84,6 @@ export const useEmojiKeyboard = () => {
 		previousHeight.value = keyboardHeight.value;
 	};
 
-	// Keyboard state management functions
 	const openEmojiKeyboard = () => {
 		showEmojiPickerSharedValue.value = true;
 	};
@@ -108,7 +107,6 @@ export const useEmojiKeyboard = () => {
 		closeEmojiSearchbar();
 	};
 
-	// Height animation reactions
 	useAnimatedReaction(
 		() => height.value,
 		(currentValue, previousValue) => {
