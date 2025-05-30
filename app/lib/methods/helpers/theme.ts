@@ -1,6 +1,6 @@
-import { Appearance, StatusBar } from 'react-native';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import { Appearance } from 'react-native';
 import setRootViewColor from 'rn-root-view';
+import * as NavigationBar from 'expo-navigation-bar';
 
 import { IThemePreference, TThemeMode } from '../../../definitions/ITheme';
 import { themes, THEME_PREFERENCES_KEY } from '../../constants';
@@ -47,14 +47,12 @@ export const newThemeState = (prevState: { themePreferences: IThemePreference },
 	return { themePreferences, theme: getTheme(themePreferences) };
 };
 
-export const setNativeTheme = async (themePreferences: IThemePreference) => {
+export const setNativeTheme = (themePreferences: IThemePreference) => {
 	const theme = getTheme(themePreferences);
 	const isLightTheme = theme === 'light';
 	if (isAndroid) {
 		try {
-			StatusBar.setBackgroundColor(themes[theme].surfaceNeutral);
-			StatusBar.setBarStyle(isLightTheme ? 'dark-content' : 'light-content', true);
-			await changeNavigationBarColor(themes[theme].surfaceLight, isLightTheme, true);
+			NavigationBar.setStyle(isLightTheme ? 'dark' : 'light');
 		} catch (error) {
 			// Do nothing
 		}
