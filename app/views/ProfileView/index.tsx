@@ -21,7 +21,7 @@ import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion, isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';

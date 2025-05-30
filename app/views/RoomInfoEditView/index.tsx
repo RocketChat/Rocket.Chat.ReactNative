@@ -44,7 +44,8 @@ import {
 	compareServerVersion,
 	showConfirmationAlert,
 	showErrorAlert,
-	random
+	random,
+	isAndroid
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import Button from '../../containers/Button';

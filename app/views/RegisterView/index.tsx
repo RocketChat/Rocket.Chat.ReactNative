@@ -17,7 +17,7 @@ import I18n from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
 import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
-import { showErrorAlert, isValidEmail } from '../../lib/methods/helpers';
+import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
