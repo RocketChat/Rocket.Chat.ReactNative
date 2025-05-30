@@ -177,7 +177,7 @@ const SettingsView = (): React.ReactElement => {
 						<List.Section>
 							<List.Separator />
 							<List.Item
-								title='Accessibility_and_Appearance'
+								title='Accessibility'
 								onPress={() => navigateToScreen('AccessibilityAndAppearanceView')}
 								showActionIndicator
 								left={() => <List.Icon name='accessibility' />}
