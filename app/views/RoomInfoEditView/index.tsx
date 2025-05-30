@@ -553,9 +553,6 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 								error={nameError}
 								testID='room-info-edit-view-name'
 								required
-								autoComplete='name'
-								textContentType='name'
-								importantForAutofill='yes'
 							/>
 							<FormTextInput
 								inputRef={e => {

@@ -368,9 +368,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
-							autoComplete='password-new'
-							textContentType='newPassword'
-							importantForAutofill={'yes'}
 							onSubmitEditing={focusOnCustomFields}
 							secureTextEntry
 							containerStyle={styles.inputContainer}

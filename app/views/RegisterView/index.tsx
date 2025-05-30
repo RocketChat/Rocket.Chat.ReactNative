@@ -208,8 +208,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						name='password'
 						control={control}
 						testID='register-view-password'
-						textContentType='newPassword'
-						autoComplete='password-new'
 						returnKeyType='next'
 						required
 						label={I18n.t('Password')}
@@ -221,8 +219,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						name='confirmPassword'
 						control={control}
 						testID='register-view-confirm-password'
-						textContentType='newPassword'
-						autoComplete='password-new'
 						returnKeyType='done'
 						required
 						label={I18n.t('Confirm_Password')}
