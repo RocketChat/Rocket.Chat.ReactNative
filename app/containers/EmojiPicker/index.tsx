@@ -12,6 +12,7 @@ import { addFrequentlyUsed } from '../../lib/methods';
 import { IEmojiPickerProps, EventTypes } from './interfaces';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TabView } from '../TabView';
+import { useTheme } from '../../theme';
 
 const routes = categories.tabs.map(tab => ({
 	key: tab.category,
@@ -26,6 +27,7 @@ const EmojiPicker = ({
 }: IEmojiPickerProps): React.ReactElement | null => {
 	const [parentWidth, setParentWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
+	const { colors } = useTheme();
 
 	const handleEmojiSelect = useCallback(
 		(emoji: IEmoji) => {
@@ -52,7 +54,7 @@ const EmojiPicker = ({
 
 	return (
 		<View
-			style={[styles.emojiPickerContainer, { marginBottom: bottom }]}
+			style={[styles.emojiPickerContainer, { marginBottom: bottom, backgroundColor: colors.surfaceLight }]}
 			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
 			{searching ? (
 				<EmojiCategory
