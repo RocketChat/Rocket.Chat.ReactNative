@@ -35,7 +35,8 @@ export const MessageComposer = ({
 		getText: () => '',
 		getSelection: () => ({ start: 0, end: 0 }),
 		setInput: () => {},
-		onAutocompleteItemSelected: () => {}
+		onAutocompleteItemSelected: () => {},
+		focus: () => {}
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
 
@@ -175,7 +176,13 @@ export const MessageComposer = ({
 	}));
 
 	return (
-		<MessageInnerContext.Provider value={{ sendMessage: handleSendMessage, onEmojiSelected, closeEmojiKeyboardAndAction }}>
+		<MessageInnerContext.Provider
+			value={{
+				sendMessage: handleSendMessage,
+				onEmojiSelected,
+				closeEmojiKeyboardAndAction,
+				focus: composerInputComponentRef.current.focus
+			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
 				action={action}

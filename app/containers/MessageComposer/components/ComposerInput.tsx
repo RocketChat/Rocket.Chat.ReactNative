@@ -151,7 +151,8 @@ export const ComposerInput = memo(
 			getText: () => textRef.current,
 			getSelection: () => selectionRef.current,
 			setInput,
-			onAutocompleteItemSelected
+			onAutocompleteItemSelected,
+			focus
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {

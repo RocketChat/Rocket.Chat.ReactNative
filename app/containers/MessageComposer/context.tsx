@@ -35,13 +35,15 @@ type TMessageInnerContext = {
 	onEmojiSelected(emoji: IEmoji): void;
 	// TODO: action should be required
 	closeEmojiKeyboardAndAction(action?: Function, params?: any): void;
+	focus(): void;
 };
 
 // TODO: rename
 export const MessageInnerContext = createContext<TMessageInnerContext>({
 	sendMessage: () => {},
 	onEmojiSelected: () => {},
-	closeEmojiKeyboardAndAction: () => {}
+	closeEmojiKeyboardAndAction: () => {},
+	focus: () => {}
 });
 
 type State = {

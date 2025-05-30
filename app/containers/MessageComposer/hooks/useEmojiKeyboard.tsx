@@ -1,7 +1,9 @@
 import React, { createContext, ReactElement, useContext, useState } from 'react';
-import { KeyboardController, useKeyboardHandler } from 'react-native-keyboard-controller';
+import { useKeyboardHandler } from 'react-native-keyboard-controller';
 import { runOnJS, SharedValue, useAnimatedReaction, useSharedValue } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { MessageInnerContext } from '../context';
 
 interface IEmojiKeyboardProvider {
 	children: ReactElement | null;
@@ -12,7 +14,14 @@ interface IEmojiKeyboardContextProps {
 	showEmojiSearchbarSharedValue: SharedValue<boolean>;
 }
 
-const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({} as IEmojiKeyboardContextProps);
+// Create default shared values outside of React component lifecycle
+const defaultShowEmojiPickerSharedValue = { value: false } as SharedValue<boolean>;
+const defaultShowEmojiSearchbarSharedValue = { value: false } as SharedValue<boolean>;
+
+const EmojiKeyboardContext = createContext<IEmojiKeyboardContextProps>({
+	showEmojiPickerSharedValue: defaultShowEmojiPickerSharedValue,
+	showEmojiSearchbarSharedValue: defaultShowEmojiSearchbarSharedValue
+});
 
 export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 	const showEmojiPickerSharedValue = useSharedValue(false);
@@ -32,6 +41,7 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
  */
 export const useEmojiKeyboard = () => {
 	const { showEmojiPickerSharedValue, showEmojiSearchbarSharedValue } = useContext(EmojiKeyboardContext);
+	const { focus } = useContext(MessageInnerContext);
 	const [showEmojiKeyboard, setShowEmojiKeyboard] = useState(false);
 	const [showEmojiSearchbar, setShowEmojiSearchbar] = useState(false);
 
@@ -47,16 +57,19 @@ export const useEmojiKeyboard = () => {
 		showEmojiSearchbarSharedValue.value = true;
 	};
 
-	const closeEmojiSearchbar = async () => {
+	const closeEmojiSearchbar = () => {
 		showEmojiSearchbarSharedValue.value = false;
-		await KeyboardController.setFocusTo('current');
+		focus && focus();
 	};
 
 	// Sync shared value with React state for proper re-renders
 	// This maintains single source of truth while enabling React updates
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
-		currentValue => {
+		(currentValue, previousValue) => {
+			if (previousValue === null || currentValue === previousValue) {
+				return;
+			}
 			runOnJS(setShowEmojiKeyboard)(currentValue);
 		},
 		[showEmojiPickerSharedValue]
@@ -65,7 +78,10 @@ export const useEmojiKeyboard = () => {
 	// Sync emoji searchbar shared value with React state
 	useAnimatedReaction(
 		() => showEmojiSearchbarSharedValue.value,
-		currentValue => {
+		(currentValue, previousValue) => {
+			if (previousValue === null || currentValue === previousValue) {
+				return;
+			}
 			runOnJS(setShowEmojiSearchbar)(currentValue);
 		},
 		[showEmojiSearchbarSharedValue]
@@ -127,7 +143,10 @@ export const useEmojiKeyboardHeight = () => {
 	const updateHeight = () => {
 		'worklet';
 
-		if (showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) {
+		if (
+			(showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) &&
+			previousHeight.value !== EMOJI_KEYBOARD_FIXED_HEIGHT
+		) {
 			return;
 		}
 		const notch = height.value > 0 ? 0 : bottom;
@@ -138,6 +157,9 @@ export const useEmojiKeyboardHeight = () => {
 	useAnimatedReaction(
 		() => height.value,
 		(currentValue, previousValue) => {
+			if (previousValue === null) {
+				return;
+			}
 			if (currentValue !== previousValue) {
 				updateHeight();
 			}
@@ -145,19 +167,43 @@ export const useEmojiKeyboardHeight = () => {
 		[height]
 	);
 
+	const openEmojiPicker = () => {
+		'worklet';
+
+		if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+			newValue.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
+			previousHeight.value = newValue.value;
+		}
+	};
+
 	useAnimatedReaction(
 		() => showEmojiPickerSharedValue.value,
-		currentValue => {
+		(currentValue, previousValue) => {
+			if (previousValue === null) {
+				return;
+			}
 			if (currentValue === true) {
-				if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
-					newValue.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
-					previousHeight.value = newValue.value;
-				}
+				openEmojiPicker();
 			} else if (previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			}
 		},
 		[showEmojiPickerSharedValue]
+	);
+
+	useAnimatedReaction(
+		() => showEmojiSearchbarSharedValue.value,
+		(currentValue, previousValue) => {
+			if (previousValue === null) {
+				return;
+			}
+			if (currentValue === true && previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
+				updateHeight();
+			} else if (currentValue === false) {
+				openEmojiPicker();
+			}
+		},
+		[showEmojiSearchbarSharedValue]
 	);
 
 	return { keyboardHeight: newValue };
