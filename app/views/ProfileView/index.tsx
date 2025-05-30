@@ -369,6 +369,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							label={I18n.t('New_Password')}
 							placeholder={I18n.t('New_Password')}
 							onSubmitEditing={focusOnCustomFields}
+							textContentType={isAndroid ? 'newPassword' : undefined}
+							autoComplete={isAndroid ? 'password-new' : undefined}
 							secureTextEntry
 							containerStyle={styles.inputContainer}
 							testID='profile-view-new-password'
