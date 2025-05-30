@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
-import { isAndroid, isTablet } from '../../lib/methods/helpers';
+import { isAndroid, isTablet } from '../../../../lib/methods/helpers';
 
 interface IHeaderButtonContainer {
 	children?: React.ReactElement | (React.ReactElement | null)[] | null;
