@@ -9373,6 +9373,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
             "flex": 1,
           },
           {
+            "backgroundColor": "#FFFFFF",
             "marginBottom": 0,
           },
         ]
