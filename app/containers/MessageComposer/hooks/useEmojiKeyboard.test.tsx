@@ -80,7 +80,7 @@ describe('useEmojiKeyboard', () => {
 		(useSharedValue as jest.Mock)
 			.mockReturnValueOnce(mockSharedValue) // showEmojiPickerSharedValue
 			.mockReturnValueOnce(mockSearchbarSharedValue) // showEmojiSearchbarSharedValue
-			.mockReturnValue(mockKeyboardHeightSharedValue); // previousKeyboardHeight
+			.mockReturnValue(mockKeyboardHeightSharedValue); // keyboardHeight and previousHeight
 	});
 
 	afterEach(() => {
@@ -95,17 +95,21 @@ describe('useEmojiKeyboard', () => {
 
 			expect(result.current.showEmojiPickerSharedValue).toBeDefined();
 			expect(result.current.showEmojiKeyboard).toBe(false);
+			expect(result.current.keyboardHeight).toBeDefined();
 			expect(typeof result.current.openEmojiKeyboard).toBe('function');
 			expect(typeof result.current.closeEmojiKeyboard).toBe('function');
+			expect(typeof result.current.resetKeyboard).toBe('function');
 		});
 	});
 
-	describe('useEmojiKeyboard hook', () => {
+	describe('useEmojiKeyboard unified hook', () => {
 		test('should initialize with correct default values', () => {
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
 			expect(result.current.showEmojiKeyboard).toBe(false);
+			expect(result.current.showEmojiSearchbar).toBe(false);
 			expect(result.current.showEmojiPickerSharedValue).toBe(mockSharedValue);
+			expect(result.current.keyboardHeight).toBe(mockKeyboardHeightSharedValue);
 		});
 
 		test('should open emoji keyboard', () => {
@@ -139,14 +143,27 @@ describe('useEmojiKeyboard', () => {
 			expect(mockSearchbarSharedValue.value).toBe(true);
 		});
 
-		test('should close emoji searchbar', async () => {
+		test('should close emoji searchbar', () => {
 			mockSearchbarSharedValue.value = true;
 			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
 
-			await act(async () => {
-				await result.current.closeEmojiSearchbar();
+			act(() => {
+				result.current.closeEmojiSearchbar();
 			});
 
+			expect(mockSearchbarSharedValue.value).toBe(false);
+		});
+
+		test('should reset keyboard (close emoji keyboard and searchbar)', () => {
+			mockSharedValue.value = true;
+			mockSearchbarSharedValue.value = true;
+			const { result } = renderHook(() => useEmojiKeyboard(), { wrapper });
+
+			act(() => {
+				result.current.resetKeyboard();
+			});
+
+			expect(mockSharedValue.value).toBe(false);
 			expect(mockSearchbarSharedValue.value).toBe(false);
 		});
 
@@ -173,7 +190,7 @@ describe('useEmojiKeyboard', () => {
 		});
 	});
 
-	describe('useEmojiKeyboardHeight hook', () => {
+	describe('useEmojiKeyboardHeight hook (deprecated)', () => {
 		test('should initialize with correct default values', () => {
 			const { result } = renderHook(() => useEmojiKeyboardHeight(), { wrapper });
 
@@ -190,12 +207,15 @@ describe('useEmojiKeyboard', () => {
 	});
 
 	describe('Context without provider', () => {
-		test('should return empty context when used without provider', () => {
+		test('should provide default values when used without provider', () => {
 			const { result } = renderHook(() => useEmojiKeyboard());
 
-			// When used without provider, the context returns an empty object
-			// This is the actual behavior, not throwing an error
-			expect(result.current.showEmojiPickerSharedValue).toBeUndefined();
+			// The unified hook now provides default values even without provider
+			expect(result.current.showEmojiPickerSharedValue).toBeDefined();
+			expect(result.current.showEmojiPickerSharedValue.value).toBe(false);
+			expect(result.current.showEmojiKeyboard).toBe(false);
+			expect(result.current.keyboardHeight).toBeDefined();
+			expect(typeof result.current.resetKeyboard).toBe('function');
 		});
 	});
 });

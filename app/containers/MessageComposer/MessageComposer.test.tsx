@@ -94,6 +94,15 @@ const keyboardHeightSharedValue = {
 	modify: jest.fn()
 };
 
+const mockForceUpdateHeight = jest.fn();
+
+// Mock KeyboardController
+jest.mock('react-native-keyboard-controller', () => ({
+	KeyboardController: {
+		dismiss: jest.fn(() => Promise.resolve())
+	}
+}));
+
 let showEmojiKeyboard = false;
 let showEmojiSearchbar = false;
 
@@ -108,10 +117,13 @@ beforeEach(() => {
 		showEmojiSearchbarSharedValue: sharedValueSearchbar,
 		showEmojiSearchbar,
 		openEmojiSearchbar: jest.fn(),
-		closeEmojiSearchbar: jest.fn()
+		closeEmojiSearchbar: jest.fn(),
+		resetKeyboard: jest.fn(),
+		keyboardHeight: keyboardHeightSharedValue
 	});
 	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboardHeight').mockReturnValue({
-		keyboardHeight: keyboardHeightSharedValue
+		keyboardHeight: keyboardHeightSharedValue,
+		forceUpdateHeight: mockForceUpdateHeight
 	});
 	sharedValue.value = false; // reset before each test
 	sharedValueSearchbar.value = false;
@@ -145,7 +157,9 @@ describe('MessageComposer', () => {
 				showEmojiSearchbarSharedValue: sharedValueSearchbar,
 				showEmojiSearchbar,
 				openEmojiSearchbar: jest.fn(),
-				closeEmojiSearchbar: jest.fn()
+				closeEmojiSearchbar: jest.fn(),
+				resetKeyboard: jest.fn(),
+				keyboardHeight: keyboardHeightSharedValue
 			});
 
 			rerender(<Render />);

@@ -18,7 +18,7 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
-import { useEmojiKeyboard, useEmojiKeyboardHeight } from './hooks/useEmojiKeyboard';
+import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
 
@@ -42,9 +42,7 @@ export const MessageComposer = ({
 
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
-	const { showEmojiKeyboard, closeEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, closeEmojiSearchbar } =
-		useEmojiKeyboard();
-	const { keyboardHeight } = useEmojiKeyboardHeight();
+	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
 	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
@@ -57,15 +55,14 @@ export const MessageComposer = ({
 
 	useBackHandler(() => {
 		if (showEmojiSearchbar) {
-			closeEmojiSearchbar();
+			resetKeyboard();
 			return true;
 		}
 		return false;
 	});
 
 	const closeEmojiKeyboardAndAction = (action?: Function, params?: any) => {
-		closeEmojiKeyboard();
-		closeEmojiSearchbar();
+		resetKeyboard();
 		action && action(params);
 	};
 
