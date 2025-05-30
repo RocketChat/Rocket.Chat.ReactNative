@@ -94,8 +94,6 @@ const keyboardHeightSharedValue = {
 	modify: jest.fn()
 };
 
-const mockForceUpdateHeight = jest.fn();
-
 // Mock KeyboardController
 jest.mock('react-native-keyboard-controller', () => ({
 	KeyboardController: {
@@ -120,10 +118,6 @@ beforeEach(() => {
 		closeEmojiSearchbar: jest.fn(),
 		resetKeyboard: jest.fn(),
 		keyboardHeight: keyboardHeightSharedValue
-	});
-	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboardHeight').mockReturnValue({
-		keyboardHeight: keyboardHeightSharedValue,
-		forceUpdateHeight: mockForceUpdateHeight
 	});
 	sharedValue.value = false; // reset before each test
 	sharedValueSearchbar.value = false;
