@@ -122,6 +122,7 @@ export const useEmojiKeyboardHeight = () => {
 	const { bottom } = useSafeAreaInsets();
 	const { height } = useKeyboardAnimation();
 	const newValue = useSharedValue(bottom);
+	const previousHeight = useSharedValue(bottom);
 
 	const updateHeight = () => {
 		'worklet';
@@ -131,6 +132,7 @@ export const useEmojiKeyboardHeight = () => {
 		}
 		const notch = height.value > 0 ? 0 : bottom;
 		newValue.value = height.value + notch;
+		previousHeight.value = newValue.value;
 	};
 
 	useAnimatedReaction(
@@ -149,8 +151,9 @@ export const useEmojiKeyboardHeight = () => {
 			if (currentValue === true) {
 				if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
 					newValue.value = EMOJI_KEYBOARD_FIXED_HEIGHT;
+					previousHeight.value = newValue.value;
 				}
-			} else if (height.value < IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD) {
+			} else if (previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
 			}
 		},
