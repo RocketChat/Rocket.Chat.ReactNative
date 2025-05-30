@@ -73,8 +73,8 @@ export const useEmojiKeyboard = () => {
 		'worklet';
 
 		if (
-			(showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) &&
 			!force &&
+			(showEmojiPickerSharedValue.value === true || showEmojiSearchbarSharedValue.value === true) &&
 			previousHeight.value !== EMOJI_KEYBOARD_FIXED_HEIGHT
 		) {
 			return;
@@ -103,9 +103,9 @@ export const useEmojiKeyboard = () => {
 	};
 
 	const resetKeyboard = () => {
+		updateHeight(true);
 		closeEmojiKeyboard();
 		closeEmojiSearchbar();
-		updateHeight(true);
 	};
 
 	// Height animation reactions
@@ -155,7 +155,7 @@ export const useEmojiKeyboard = () => {
 			}
 			if (currentValue === true && previousHeight.value === EMOJI_KEYBOARD_FIXED_HEIGHT) {
 				updateHeight();
-			} else if (currentValue === false) {
+			} else if (currentValue === false && showEmojiPickerSharedValue.value === true) {
 				openEmojiPicker();
 			}
 			runOnJS(setShowEmojiSearchbar)(currentValue);
