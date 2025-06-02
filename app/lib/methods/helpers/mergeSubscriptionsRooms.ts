@@ -57,6 +57,7 @@ export const merge = (
 		mergedSubscription.avatarETag = room?.avatarETag;
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
+		mergedSubscription.federated = room?.federated;
 		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
 			mergedSubscription.roles = [];
 		}
