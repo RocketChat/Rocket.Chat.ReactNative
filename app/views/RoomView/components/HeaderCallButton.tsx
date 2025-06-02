@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as HeaderButton from '../../../containers/HeaderButton';
+import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { useVideoConf } from '../../../lib/hooks/useVideoConf';
 
 export const HeaderCallButton = ({ rid, disabled }: { rid: string; disabled: boolean }): React.ReactElement | null => {
