@@ -20,7 +20,7 @@ export const ActionsButton = () => {
 		tmid,
 		permissionToUpload
 	});
-	const { showActionSheet } = useActionSheet();
+	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 
 	const createDiscussion = async () => {
@@ -48,7 +48,13 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Take_a_photo'),
 					icon: 'camera-photo',
-					onPress: () => takePhoto()
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							takePhoto();
+						}, 250);
+					}
 				},
 				{
 					title: I18n.t('Take_a_video'),
