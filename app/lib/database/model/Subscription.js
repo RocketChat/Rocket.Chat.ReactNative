@@ -151,6 +151,8 @@ export default class Subscription extends Model {
 
 	@field('disable_notifications') disableNotifications;
 
+	@field('federated') federated;
+
 	asPlain() {
 		return {
 			_id: this._id,
@@ -216,7 +218,8 @@ export default class Subscription extends Model {
 			onHold: this.onHold,
 			usersCount: this.usersCount,
 			source: this.source,
-			disableNotifications: this.disableNotifications
+			disableNotifications: this.disableNotifications,
+			federated: this.federated
 		};
 	}
 }
