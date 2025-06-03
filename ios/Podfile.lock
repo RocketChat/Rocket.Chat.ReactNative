@@ -1457,6 +1457,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - Yoga
   - react-native-webview (11.26.1):
+    - MMKV (~> 1.3.9)
     - React-Core
   - React-nativeconfig (0.77.2)
   - React-NativeModulesApple (0.77.2):
@@ -2505,7 +2506,7 @@ SPEC CHECKSUMS:
   react-native-safe-area-context: fdb0a66feac038cb6eb1edafcf2ccee2b5cf0284
   react-native-simple-crypto: 0a850b4cecdad714b9f06bf582b78fbcc05710e3
   react-native-slider: 590ab5a42f77d2016096a7db03d290dad5a1d27e
-  react-native-webview: ec195db71ebf55705d7b46a7da5f1b1746bb7efd
+  react-native-webview: e12647c3892d4ee161aee5b86458fa49ba1e1133
   React-nativeconfig: 75658bde8f977492f668e94ae8eb9c0dfef7ed94
   React-NativeModulesApple: 2e3b55255a2d3e35645f61a648c37cb80cf12ab0
   React-perflogger: 1111b5feb064c4cc83df88fb403efda54b387951
