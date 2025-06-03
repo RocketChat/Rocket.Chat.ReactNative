@@ -204,20 +204,26 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 			];
 		}
 		return (
-			<View style={styles.row}>
-				<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
-				<View style={styles.descriptionContainer}>
-					<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
-						{I18n.t('Error_uploading')} {item.name}
-					</Text>
-					<TouchableOpacity onPress={() => this.tryAgain(item)}>
-						<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
-							{I18n.t('Try_again')}
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
-			</View>
+			<A11yContainer>
+				<A11yElement order={1}>
+					<View accessible accessibilityLabel={`${I18n.t('Error_uploading')} ${item.name}`} style={styles.row}>
+						<CustomIcon name='warning' size={20} color={themes[theme!].buttonBackgroundDangerDefault} />
+						<View style={styles.descriptionContainer}>
+							<Text style={[styles.descriptionText, { color: themes[theme!].fontSecondaryInfo }]} numberOfLines={1}>
+								{I18n.t('Error_uploading')} {item.name}
+							</Text>
+							<A11yElement order={2}>
+								<TouchableOpacity onPress={() => this.tryAgain(item)}>
+									<Text style={[styles.tryAgainButtonText, { color: themes[theme!].badgeBackgroundLevel2 }]}>
+										{I18n.t('Try_again')}
+									</Text>
+								</TouchableOpacity>
+							</A11yElement>
+						</View>
+						<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
+					</View>
+				</A11yElement>
+			</A11yContainer>
 		);
 	};
 
