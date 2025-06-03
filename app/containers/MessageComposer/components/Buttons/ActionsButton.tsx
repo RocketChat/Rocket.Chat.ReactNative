@@ -77,5 +77,5 @@ export const ActionsButton = () => {
 		closeEmojiKeyboardAndAction(showActionSheet, { options });
 	};
 
-	return <BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Message_actions' icon='add' />;
+	return <BaseButton onPress={onPress} testID='message-composer-actions' accessibilityLabel='Actions' icon='add' />;
 };
