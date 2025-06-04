@@ -8,9 +8,12 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
+import { useUserPreferences } from '../../../../../lib/methods';
+import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants';
 
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	const { colors } = useTheme();
+	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY);
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
 	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
@@ -57,13 +60,18 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<ExpoImage style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<ExpoImage autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<>
 					{imagePreview && imageType && !encrypted ? (
-						<ExpoImage style={styles.image} source={{ uri: `data:${imageType};base64,${imagePreview}` }} contentFit='cover' />
+						<ExpoImage
+							autoplay={autoplayGifs}
+							style={styles.image}
+							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
+							contentFit='cover'
+						/>
 					) : (
 						<View style={[styles.image, borderStyle]} />
 					)}
