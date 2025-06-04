@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useWindowDimensions, View } from 'react-native';
+import { View } from 'react-native';
 
 import styles from './styles';
 import Wrapper from './Wrapper';
@@ -15,6 +15,7 @@ import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
+import useResponsiveFontScale from '../../lib/hooks/useResponsiveFontScale';
 
 const RoomItem = ({
 	rid,
@@ -57,12 +58,11 @@ const RoomItem = ({
 	hideMentionStatus,
 	accessibilityDate
 }: IRoomItemProps) => {
-	const { fontScale } = useWindowDimensions();
+	const { isLargeFontScale } = useResponsiveFontScale();
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
 	);
-	const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
 
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
@@ -121,9 +121,7 @@ const RoomItem = ({
 							) : null}
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							{shouldAdjustLayoutForLargeFont ? null : (
-								<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							)}
+							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
 							<LastMessage
@@ -145,7 +143,7 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 							/>
 						</View>
-						{shouldAdjustLayoutForLargeFont ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
 					</>
 				) : (
 					<>
@@ -165,9 +163,7 @@ const RoomItem = ({
 							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
 
 							<View style={styles.wrapUpdatedAndBadge}>
-								{shouldAdjustLayoutForLargeFont ? null : (
-									<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-								)}
+								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
 								<UnreadBadge
 									unread={unread}
 									userMentions={userMentions}
@@ -180,7 +176,7 @@ const RoomItem = ({
 								/>
 							</View>
 						</View>
-						{shouldAdjustLayoutForLargeFont ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
 					</>
 				)}
 			</Wrapper>

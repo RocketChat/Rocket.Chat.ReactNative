@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { useWindowDimensions, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 
 import MessageContext from './Context';
@@ -23,17 +23,16 @@ import RightIcons from './Components/RightIcons';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
+import useResponsiveFontScale from '../../lib/hooks/useResponsiveFontScale';
 
 const MessageInner = React.memo((props: IMessageInner) => {
-	const { fontScale } = useWindowDimensions();
-
-	const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
+	const { isLargeFontScale } = useResponsiveFontScale();
 
 	if (props.isPreview) {
 		return (
 			<>
 				<User {...props} />
-				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
+				{isLargeFontScale ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
@@ -47,7 +46,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
-				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
+				{isLargeFontScale ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
@@ -59,7 +58,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
-				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
+				{isLargeFontScale ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -71,7 +70,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
-				{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
+				{isLargeFontScale ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -79,7 +78,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	return (
 		<>
 			<User {...props} />
-			{shouldAdjustLayoutForLargeFont ? <MessageTime {...props} /> : null}
+			{isLargeFontScale ? <MessageTime {...props} /> : null}
 			<>
 				<Content {...props} />
 				<Attachments {...props} />

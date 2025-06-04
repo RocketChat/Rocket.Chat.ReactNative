@@ -82,7 +82,7 @@ const ListPicker = ({
 	return (
 		<List.Item
 			onPress={() => showActionSheet({ options: getOptions() })}
-			left={() => (
+			title={() => (
 				<View style={styles.leftTitleContainer}>
 					<Text style={[styles.leftTitle, { color: colors.fontDefault }]}>{title}</Text>
 				</View>

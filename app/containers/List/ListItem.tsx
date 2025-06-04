@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
 
 interface IListItemContent {
 	accessibilityLabel?: string;
-	title?: string;
+	title: string | (() => JSX.Element | null);
 	subtitle?: string;
 	left?: () => JSX.Element | null;
 	right?: () => JSX.Element | null;
@@ -114,7 +114,7 @@ const Content = React.memo(
 			if (accessibilityLabel) {
 				return accessibilityLabel;
 			}
-			if (title) {
+			if (typeof title === 'string') {
 				label = translateTitle ? I18n.t(title) : title;
 			}
 			if (subtitle) {
@@ -144,9 +144,14 @@ const Content = React.memo(
 				{title || subtitle ? (
 					<View style={styles.textContainer}>
 						<View style={styles.textAlertContainer}>
-							<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]}>
-								{translateTitle && title ? I18n.t(title) : title}
-							</Text>
+							{typeof title === 'string' ? (
+								<Text style={[styles.title, styleTitle, { color: color || themes[theme].fontDefault }]}>
+									{translateTitle && title ? I18n.t(title) : title}
+								</Text>
+							) : (
+								title()
+							)}
+
 							{alert ? (
 								<CustomIcon
 									name='info'
@@ -179,7 +184,7 @@ interface IListButtonPress extends IListItemButton {
 }
 
 interface IListItemButton {
-	title?: string;
+	title: string | (() => JSX.Element | null);
 	disabled?: boolean;
 	theme: TSupportedThemes;
 	backgroundColor?: string;

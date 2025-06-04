@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { MessageType, MessageTypesValues, SubscriptionType } from '../../definitions';
 import { useTheme } from '../../theme';
@@ -9,6 +9,7 @@ import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
+import useResponsiveFontScale from '../../lib/hooks/useResponsiveFontScale';
 
 const styles = StyleSheet.create({
 	container: {
@@ -78,11 +79,9 @@ const User = React.memo(
 		isTranslated,
 		...props
 	}: IMessageUser) => {
-		const { fontScale } = useWindowDimensions();
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
-
-		const shouldAdjustLayoutForLargeFont = fontScale > 1.3;
+		const { isLargeFontScale } = useResponsiveFontScale();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
@@ -118,7 +117,7 @@ const User = React.memo(
 						<Text style={[styles.username, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 							{textContent}
 						</Text>
-						{shouldAdjustLayoutForLargeFont ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
+						{isLargeFontScale ? null : <MessageTime timeFormat={timeFormat} ts={ts} />}
 					</TouchableOpacity>
 					<RightIcons
 						type={type}
