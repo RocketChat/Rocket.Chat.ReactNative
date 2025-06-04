@@ -5,6 +5,7 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
+import ResponsiveFontScaleProvider from './lib/hooks/useResponsiveFontScale';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -214,28 +215,30 @@ export default class Root extends React.Component<{}, IState> {
 							setTheme: this.setTheme,
 							colors: colors[theme]
 						}}>
-						<RowHeightProvider>
-							<DimensionsContext.Provider
-								value={{
-									width,
-									height,
-									scale,
-									fontScale,
-									setDimensions: this.setDimensions
-								}}>
-								<GestureHandlerRootView>
-									<ActionSheetProvider>
-										<AppContainer />
-										<TwoFactor />
-										<ScreenLockedView />
-										<ChangePasscodeView />
-										<InAppNotification />
-										<Toast />
-										<Loading />
-									</ActionSheetProvider>
-								</GestureHandlerRootView>
-							</DimensionsContext.Provider>
-						</RowHeightProvider>
+						<ResponsiveFontScaleProvider>
+							<RowHeightProvider>
+								<DimensionsContext.Provider
+									value={{
+										width,
+										height,
+										scale,
+										fontScale,
+										setDimensions: this.setDimensions
+									}}>
+									<GestureHandlerRootView>
+										<ActionSheetProvider>
+											<AppContainer />
+											<TwoFactor />
+											<ScreenLockedView />
+											<ChangePasscodeView />
+											<InAppNotification />
+											<Toast />
+											<Loading />
+										</ActionSheetProvider>
+									</GestureHandlerRootView>
+								</DimensionsContext.Provider>
+							</RowHeightProvider>
+						</ResponsiveFontScaleProvider>
 					</ThemeContext.Provider>
 				</Provider>
 			</SafeAreaProvider>

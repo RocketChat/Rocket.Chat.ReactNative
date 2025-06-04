@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import useResponsiveFontScale from '../../lib/hooks/useResponsiveFontScale';
+import { useResponsiveFontScale } from '../../lib/hooks/useResponsiveFontScale';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
