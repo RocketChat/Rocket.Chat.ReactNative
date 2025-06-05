@@ -13052,6 +13052,11 @@ react-native-bootsplash@4.6.0:
     picocolors "^1.0.0"
     sharp "^0.32.0"
 
+react-native-callkeep@^4.3.16:
+  version "4.3.16"
+  resolved "https://registry.yarnpkg.com/react-native-callkeep/-/react-native-callkeep-4.3.16.tgz#56291796984b896113ef00f8b67ae3fe177baf70"
+  integrity sha512-aIxn02T5zW4jNPyzRdFGTWv6xD3Vy/1AkBMB6iYvWZEHWnfmgNGF0hELqg03Vbc2BNUhfqpu17aIydos+5Hurg==
+
 react-native-config-reader@4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/react-native-config-reader/-/react-native-config-reader-4.1.1.tgz#478b69e32adcc2e9a14f6ef5fa2cbbe012b9a27e"
@@ -13342,6 +13347,11 @@ react-native-vector-icons@9.2.0:
   dependencies:
     prop-types "^15.7.2"
     yargs "^16.1.1"
+
+react-native-voip-push-notification@^3.3.3:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-voip-push-notification/-/react-native-voip-push-notification-3.3.3.tgz#60169cc4083fc619383ab081f330e42a995c0dfa"
+  integrity sha512-cyWuI9//T1IQIq4RPq0QQe0NuEwIpnE0L98H2sUH4MjFsNMD/yNE4EJzEZN4cIwfPMZaASa0gQw6B1a7VwnkMA==
 
 react-native-webview@11.26.1, react-native-webview@^11.18.2:
   version "11.26.1"
