@@ -25,7 +25,14 @@ RNCallKeep.setup(options).then(accepted => {
 // CallKeep event listeners
 RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
 	console.log('Call answered:', callUUID);
-	// Handle call answer - you can dispatch to your Redux store or handle app navigation
+	setTimeout(() => {
+		RNCallKeep.endCall(callUUID);
+		RNCallKeep.backToForeground();
+
+		alert('Call answered');
+
+		// Handle call answer - you can dispatch to your Redux store or handle app navigation
+	}, 1000);
 });
 
 RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
@@ -59,8 +66,7 @@ VoipPushNotification.addEventListener('register', token => {
 });
 
 function onVoipPushNotificationiReceived(data) {
-	console.log('VoIP Notification Received:', data);
-	RNCallKeep.displayIncomingCall('E26B14F7-2CDF-48D0-9925-532199AE7C45', 'handle', 'callerName');
+	// RNCallKeep.displayIncomingCall('E26B14F7-2CDF-48D0-9925-532199AE7C45', 'handle', 'callerName');
 }
 
 VoipPushNotification.addEventListener('notification', notification => {
@@ -80,12 +86,17 @@ VoipPushNotification.addEventListener('didLoadWithEvents', events => {
 	}
 	for (const voipPushEvent of events) {
 		const { name, data } = voipPushEvent;
+		console.log('didLoadWithEvents', voipPushEvent);
 		if (name === VoipPushNotification.RNVoipPushRemoteNotificationsRegisteredEvent) {
 			console.log('didLoadWithEvents VoIP Token: ', data);
 		} else if (name === VoipPushNotification.RNVoipPushRemoteNotificationReceivedEvent) {
 			onVoipPushNotificationiReceived(data);
 		}
 	}
+});
+
+RNCallKeep.addEventListener('didDisplayIncomingCall', args => {
+	console.log('didDisplayIncomingCall', args);
 });
 
 VoipPushNotification.registerVoipToken();
