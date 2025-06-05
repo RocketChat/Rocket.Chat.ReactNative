@@ -120,7 +120,7 @@ describe('E2E Encryption', () => {
 		await changeE2EEPassword();
 		await loginAs(UserA, false);
 		await changeE2EEPassword();
-	});
+	}, 180000);
 
 	afterAll(async () => {
 		await deleteCreatedUsers(deleteUsersAfterAll);
@@ -193,18 +193,41 @@ describe('E2E Encryption', () => {
 		});
 	});
 
-	describe('Login as UserB, get keys and send a message', () => {
-		beforeAll(async () => {
-			await loginAs(UserB);
-		});
-
-		it('should be able to read other messages', async () => {
+	describe('If session is not encrypted, it shouldnt trigger read messages', () => {
+		it('should login as UserB, dont set e2ee password and dont read messages', async () => {
+			await loginAs(UserB, false);
 			await navigateToRoom(room);
-			await readMessages(3);
+			await waitFor(element(by.id('room-view-encrypted-room')))
+				.toBeVisible()
+				.withTimeout(2000);
 		});
 
-		it('should send message and be able to read it', async () => {
+		it('should login as UserA and check message is not read', async () => {
+			await loginAs(UserA);
+			await navigateToRoom(room);
+			await waitFor(element(by.id('read-receipt-unread')).atIndex(0))
+				.toExist()
+				.withTimeout(2000);
+		});
+
+		it('should login as UserB, set e2ee password and read messages', async () => {
+			await loginAs(UserB);
+			await navigateToRoom(room);
+
+			// Since we're already in the right place with the right user, check we can read and send messages
+			await readMessages(3);
 			await mockMessage(getMessage(3));
+		});
+
+		it('should login as UserA and check message is read', async () => {
+			await loginAs(UserA);
+			await navigateToRoom(room);
+			await waitFor(element(by.id('read-receipt-read')).atIndex(0))
+				.toExist()
+				.withTimeout(2000);
+
+			// Since we're already in the right place with the right user, check we can read messages
+			await readMessages(4);
 		});
 	});
 
@@ -222,6 +245,7 @@ describe('E2E Encryption', () => {
 		it('should reset room E2EE key', async () => {
 			await device.launchApp({ permissions: { notifications: 'YES' }, newInstance: true });
 			await navigateToRoom(room);
+			await sleep(500);
 			await waitFor(element(by.id('room-view-header-encryption')))
 				.toBeVisible()
 				.withTimeout(2000);

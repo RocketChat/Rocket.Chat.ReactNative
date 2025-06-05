@@ -12,7 +12,7 @@ import { useDimensions } from '../../../dimensions';
 import SafeAreaView from '../../../containers/SafeAreaView';
 import StatusBar from '../../../containers/StatusBar';
 import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import * as HeaderButton from '../../../containers/HeaderButton';
+import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../selectors/inquiry';
 import { IOmnichannelRoom, IApplicationState } from '../../../definitions';

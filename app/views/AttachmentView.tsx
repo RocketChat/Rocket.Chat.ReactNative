@@ -9,7 +9,7 @@ import * as FileSystem from 'expo-file-system';
 
 import { isImageBase64 } from '../lib/methods';
 import RCActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ImageViewer } from '../containers/ImageViewer';
 import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
