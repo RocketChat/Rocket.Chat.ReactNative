@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, ViewStyle, Image } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { View, ViewStyle, Image, Text, TouchableOpacity } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
@@ -14,6 +14,19 @@ import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants';
 export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
 	const { colors } = useTheme();
 	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY);
+	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
+	const expoImageRef = useRef<ExpoImage>(null);
+
+	const playGif = async () => {
+		setIsPlaying(true);
+		await expoImageRef.current?.startAnimating();
+	};
+
+	const pauseGif = async () => {
+		setIsPlaying(false);
+		await expoImageRef.current?.stopAnimating();
+	};
+
 	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 	const maxSize = useContext(WidthAwareContext);
 	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
@@ -55,18 +68,25 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 			</>
 		);
 	}
-
+	console.log(imageType);
 	return (
 		<>
 			{showImage ? (
 				<View style={[containerStyle, borderStyle]}>
-					<ExpoImage autoplay={autoplayGifs} style={imageStyle} source={{ uri: encodeURI(uri) }} contentFit='cover' />
+					<ExpoImage
+						ref={expoImageRef}
+						autoplay={autoplayGifs}
+						style={imageStyle}
+						source={{ uri: encodeURI(uri) }}
+						contentFit='cover'
+					/>
 				</View>
 			) : null}
 			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
 				<>
 					{imagePreview && imageType && !encrypted ? (
 						<ExpoImage
+							ref={expoImageRef}
 							autoplay={autoplayGifs}
 							style={styles.image}
 							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
@@ -82,6 +102,11 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 						showBackground={!imagePreview || !imageType}
 					/>
 				</>
+			) : null}
+			{imageType && imageType === 'image/gif' ? (
+				<TouchableOpacity onPress={isPlaying ? pauseGif : playGif} style={{ position: 'absolute' }}>
+					<Text>{isPlaying ? 'pause' : 'play'}</Text>
+				</TouchableOpacity>
 			) : null}
 		</>
 	);
