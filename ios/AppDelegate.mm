@@ -67,7 +67,7 @@
   [RNCallKeep reportNewIncomingCall:uuid
                              handle:handle
                          handleType:@"generic"
-                           hasVideo:NO
+                           hasVideo:YES
                 localizedCallerName:callerName
                     supportsHolding:YES
                        supportsDTMF:YES

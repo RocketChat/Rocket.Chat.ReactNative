@@ -26,8 +26,8 @@ RNCallKeep.setup(options).then(accepted => {
 RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
 	console.log('Call answered:', callUUID);
 	setTimeout(() => {
-		RNCallKeep.endCall(callUUID);
 		RNCallKeep.backToForeground();
+		RNCallKeep.endCall(callUUID);
 
 		alert('Call answered');
 
