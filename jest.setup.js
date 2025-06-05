@@ -2,6 +2,9 @@ import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
+// Define __DEV__ global for React Native
+global.__DEV__ = true;
+
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock('react-native-safe-area-context', () => {

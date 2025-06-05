@@ -38,7 +38,6 @@
     "@bugsnag/react-native": "^8.3.0",
     "@codler/react-native-keyboard-aware-scroll-view": "2.0.1",
     "@discord/bottom-sheet": "bluesky-social/react-native-bottom-sheet",
-    "@gorhom/bottom-sheet": "^5.0.1",
     "@hookform/resolvers": "^2.9.10",
     "@notifee/react-native": "7.8.2",
     "@nozbe/watermelondb": "^0.28.0-2",
