@@ -70,7 +70,13 @@ export const ActionsButton = () => {
 				{
 					title: I18n.t('Choose_from_library'),
 					icon: 'image',
-					onPress: () => chooseFromLibrary()
+					onPress: () => {
+						hideActionSheet();
+						// This is necessary because the action sheet does not close properly on Android
+						setTimeout(() => {
+							chooseFromLibrary();
+						}, 250);
+					}
 				},
 				{
 					title: I18n.t('Choose_file'),
