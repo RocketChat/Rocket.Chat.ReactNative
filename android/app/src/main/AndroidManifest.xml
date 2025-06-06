@@ -19,6 +19,15 @@
     <!-- android 13 media permission -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
+    <uses-permission android:name="android.permission.BIND_TELECOM_CONNECTION_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
+    <!-- Use this to target android >= 14 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+
     <application
         android:name="chat.rocket.reactnative.MainApplication"
         android:allowBackup="false"
@@ -87,6 +96,17 @@
         <meta-data
             android:name="com.bugsnag.android.API_KEY"
             android:value="${BugsnagAPIKey}" />
+        
+        <!-- CallKeep ConnectionService -->
+        <service
+            android:name="io.wazo.callkeep.RNCallKeepConnectionService"
+            android:label="Rocket.Chat"
+            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.telecom.ConnectionService" />
+            </intent-filter>
+        </service>
     </application>
 
     <queries>
