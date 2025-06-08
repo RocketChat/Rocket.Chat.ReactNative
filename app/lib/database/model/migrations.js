@@ -322,6 +322,15 @@ export default schemaMigrations({
 					]
 				})
 			]
+		},
+		{
+			toVersion: 27,
+			steps: [
+				addColumns({
+					table: 'subscriptions',
+					columns: [{ name: 'federated', type: 'boolean', isOptional: true }]
+				})
+			]
 		}
 	]
 });
