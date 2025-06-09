@@ -179,6 +179,6 @@ export default StyleSheet.create({
 		bottom: 8,
 		right: 8,
 		flexDirection: 'row',
-		gap: 4
+		gap: 8
 	}
 });

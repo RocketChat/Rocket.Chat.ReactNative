@@ -89,11 +89,7 @@ export const MessageImage = React.memo(
 						/>
 					</>
 				) : null}
-				{isGif ? (
-					<View style={styles.badgeContainer}>
-						<ImageBadge title='GIF' />
-					</View>
-				) : null}
+				<View style={styles.badgeContainer}>{isGif ? <ImageBadge title='GIF' /> : null}</View>
 			</>
 		);
 	}
