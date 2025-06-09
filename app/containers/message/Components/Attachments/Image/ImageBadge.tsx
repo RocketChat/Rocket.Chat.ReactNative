@@ -14,11 +14,11 @@ const styles = StyleSheet.create({
 	}
 });
 
-interface ITag {
+interface IImageBadge {
 	title: string;
 }
 
-const ImageBadge = ({ title }: ITag) => {
+const ImageBadge = ({ title }: IImageBadge) => {
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.container, { backgroundColor: colors.surfaceNeutral }]}>
