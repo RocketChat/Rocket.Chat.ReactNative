@@ -21,17 +21,6 @@ const ImageContainer = ({
 	imageType
 }: IImageContainer): React.ReactElement | null => {
 	const { user } = useContext(MessageContext);
-	/* const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
-
-	const handleGifPlayback = async () => {
-		if (isPlaying) {
-			setIsPlaying(false);
-			await expoImageRef.current?.stopAnimating();
-			return;
-		}
-		setIsPlaying(true);
-		await expoImageRef.current?.startAnimating();
-	}; */
 	const { status, onPress, url, isEncrypted } = useMediaAutoDownload({ file, author, showAttachment });
 
 	const image = (
