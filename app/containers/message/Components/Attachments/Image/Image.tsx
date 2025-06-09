@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { View, ViewStyle, Image, Text, TouchableOpacity } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, ViewStyle, Image } from 'react-native';
 import { Image as ExpoImage } from 'expo-image';
 
 import { isValidUrl } from '../../../../../lib/methods/helpers/isValidUrl';
@@ -8,108 +8,95 @@ import styles from '../../../styles';
 import OverlayComponent from '../../OverlayComponent';
 import { IMessageImage } from './definitions';
 import { WidthAwareContext } from '../../WidthAwareView';
-import { useUserPreferences } from '../../../../../lib/methods';
-import { AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../../../../lib/constants';
+import ImageBadge from './ImageBadge';
 
-export const MessageImage = React.memo(({ uri, status, encrypted = false, imagePreview, imageType }: IMessageImage) => {
-	const { colors } = useTheme();
-	const [autoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY);
-	const [isPlaying, setIsPlaying] = useState<boolean>(!!autoplayGifs);
-	const expoImageRef = useRef<ExpoImage>(null);
+export const MessageImage = React.memo(
+	({ uri, status, encrypted = false, imagePreview, imageType, isGif, expoImageRef, autoplayGifs }: IMessageImage) => {
+		const { colors } = useTheme();
 
-	const playGif = async () => {
-		setIsPlaying(true);
-		await expoImageRef.current?.startAnimating();
-	};
+		const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
+		const maxSize = useContext(WidthAwareContext);
+		const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
 
-	const pauseGif = async () => {
-		setIsPlaying(false);
-		await expoImageRef.current?.stopAnimating();
-	};
+		useEffect(() => {
+			if (status === 'downloaded') {
+				Image.getSize(uri, (width, height) => {
+					setImageDimensions({ width, height });
+				});
+			}
+		}, [uri, status]);
 
-	const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
-	const maxSize = useContext(WidthAwareContext);
-	const showImage = isValidUrl(uri) && imageDimensions.width && status === 'downloaded';
+		const width = Math.min(imageDimensions.width, maxSize) || 0;
+		const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
+		const imageStyle = {
+			width,
+			height
+		};
 
-	useEffect(() => {
-		if (status === 'downloaded') {
-			Image.getSize(uri, (width, height) => {
-				setImageDimensions({ width, height });
-			});
+		const containerStyle: ViewStyle = {
+			alignItems: 'center',
+			justifyContent: 'center',
+			...(imageDimensions.width <= 64 && { width: 64 }),
+			...(imageDimensions.height <= 64 && { height: 64 })
+		};
+
+		const borderStyle: ViewStyle = {
+			borderColor: colors.strokeLight,
+			borderWidth: 1,
+			borderRadius: 4,
+			overflow: 'hidden'
+		};
+
+		if (encrypted && status === 'downloaded') {
+			return (
+				<>
+					<View style={styles.image} />
+					<OverlayComponent loading={false} style={styles.image} iconName='encrypted' showBackground={true} />
+				</>
+			);
 		}
-	}, [uri, status]);
-
-	const width = Math.min(imageDimensions.width, maxSize) || 0;
-	const height = Math.min((imageDimensions.height * ((width * 100) / imageDimensions.width)) / 100, maxSize) || 0;
-	const imageStyle = {
-		width,
-		height
-	};
-
-	const containerStyle: ViewStyle = {
-		alignItems: 'center',
-		justifyContent: 'center',
-		...(imageDimensions.width <= 64 && { width: 64 }),
-		...(imageDimensions.height <= 64 && { height: 64 })
-	};
-
-	const borderStyle: ViewStyle = {
-		borderColor: colors.strokeLight,
-		borderWidth: 1,
-		borderRadius: 4,
-		overflow: 'hidden'
-	};
-
-	if (encrypted && status === 'downloaded') {
 		return (
 			<>
-				<View style={styles.image} />
-				<OverlayComponent loading={false} style={styles.image} iconName='encrypted' showBackground={true} />
-			</>
-		);
-	}
-	console.log(imageType);
-	return (
-		<>
-			{showImage ? (
-				<View style={[containerStyle, borderStyle]}>
-					<ExpoImage
-						ref={expoImageRef}
-						autoplay={autoplayGifs}
-						style={imageStyle}
-						source={{ uri: encodeURI(uri) }}
-						contentFit='cover'
-					/>
-				</View>
-			) : null}
-			{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
-				<>
-					{imagePreview && imageType && !encrypted ? (
+				{showImage ? (
+					<View style={[containerStyle, borderStyle]}>
 						<ExpoImage
 							ref={expoImageRef}
 							autoplay={autoplayGifs}
-							style={styles.image}
-							source={{ uri: `data:${imageType};base64,${imagePreview}` }}
+							style={imageStyle}
+							source={{ uri: encodeURI(uri) }}
 							contentFit='cover'
 						/>
-					) : (
-						<View style={[styles.image, borderStyle]} />
-					)}
-					<OverlayComponent
-						loading={['loading', 'downloaded'].includes(status)}
-						style={[styles.image, borderStyle]}
-						iconName={status === 'to-download' ? 'arrow-down-circle' : 'loading'}
-						showBackground={!imagePreview || !imageType}
-					/>
-				</>
-			) : null}
-			{imageType && imageType === 'image/gif' ? (
-				<TouchableOpacity onPress={isPlaying ? pauseGif : playGif} style={{ position: 'absolute' }}>
-					<Text>{isPlaying ? 'pause' : 'play'}</Text>
-				</TouchableOpacity>
-			) : null}
-		</>
-	);
-});
+					</View>
+				) : null}
+				{['loading', 'to-download'].includes(status) || (status === 'downloaded' && !showImage) ? (
+					<>
+						{imagePreview && imageType && !encrypted ? (
+							<ExpoImage
+								ref={expoImageRef}
+								autoplay={autoplayGifs}
+								style={styles.image}
+								source={{ uri: `data:${imageType};base64,${imagePreview}` }}
+								contentFit='cover'
+							/>
+						) : (
+							<View style={[styles.image, borderStyle]} />
+						)}
+						<OverlayComponent
+							loading={['loading', 'downloaded'].includes(status)}
+							style={[styles.image, borderStyle]}
+							iconName={status === 'to-download' ? 'arrow-down-circle' : 'loading'}
+							showBackground={!imagePreview || !imageType}
+						/>
+					</>
+				) : null}
+				{isGif ? (
+					<View style={styles.badgeContainer}>
+						<ImageBadge title='GIF' />
+					</View>
+				) : null}
+			</>
+		);
+	}
+);
 
 MessageImage.displayName = 'MessageImage';

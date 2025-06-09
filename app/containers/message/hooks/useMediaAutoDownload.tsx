@@ -37,12 +37,16 @@ const getFileProperty = (file: IAttachment, fileType: MediaTypes, property: 'url
 
 export const useMediaAutoDownload = ({
 	file,
+	isGif,
 	author,
-	showAttachment
+	showAttachment,
+	handleGifPlayback
 }: {
 	file: IAttachment;
+	isGif?: boolean;
 	author?: IUserMessage;
 	showAttachment?: Function;
+	handleGifPlayback?: Function;
 }) => {
 	const fileType = getFileType(file) ?? 'image';
 	const { id, baseUrl, user } = useContext(MessageContext);
@@ -150,9 +154,15 @@ export const useMediaAutoDownload = ({
 			download();
 			return;
 		}
-		if (!showAttachment || !currentFile.title_link || isEncrypted) {
+		if (!showAttachment || !currentFile.title_link || isEncrypted || !handleGifPlayback) {
 			return;
 		}
+
+		if (isGif) {
+			handleGifPlayback();
+			return;
+		}
+
 		showAttachment(currentFile);
 	};
 

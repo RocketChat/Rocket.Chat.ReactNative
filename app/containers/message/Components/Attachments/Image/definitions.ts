@@ -1,4 +1,6 @@
+import React from 'react';
 import { StyleProp, TextStyle } from 'react-native';
+import { Image } from 'expo-image';
 
 import { IAttachment, IUserMessage } from '../../../../../definitions';
 import { TGetCustomEmoji } from '../../../../../definitions/IEmoji';
@@ -20,6 +22,9 @@ export interface IMessageImage {
 	uri: string;
 	status: TDownloadState;
 	encrypted: boolean;
+	isGif: boolean;
 	imagePreview?: string;
 	imageType?: string;
+	autoplayGifs?: boolean;
+	expoImageRef?: React.RefObject<Image>;
 }

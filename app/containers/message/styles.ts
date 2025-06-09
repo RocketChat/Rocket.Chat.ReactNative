@@ -173,5 +173,12 @@ export default StyleSheet.create({
 		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	badgeContainer: {
+		position: 'absolute',
+		bottom: 8,
+		right: 8,
+		flexDirection: 'row',
+		gap: 4
 	}
 });
