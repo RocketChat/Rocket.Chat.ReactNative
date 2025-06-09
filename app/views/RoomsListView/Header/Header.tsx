@@ -1,20 +1,13 @@
 import React from 'react';
-import {
-	StyleSheet,
-	Text,
-	TextInputProps,
-	TouchableOpacity,
-	TouchableOpacityProps,
-	View,
-	useWindowDimensions
-} from 'react-native';
+import { StyleSheet, Text, TextInputProps, View, useWindowDimensions } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { type TouchableOpacityProps } from 'react-native-gesture-handler';
 
 import I18n from '../../../i18n';
 import sharedStyles from '../../Styles';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
 import { useAppSelector } from '../../../lib/hooks';
-import { isTablet } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +36,6 @@ interface IRoomHeader {
 	serverName: string;
 	server: string;
 	showSearchHeader: boolean;
-	width?: number;
 	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
 }
@@ -56,13 +48,12 @@ const Header = React.memo(
 		serverName = 'Rocket.Chat',
 		server,
 		showSearchHeader,
-		width,
 		onSearchChangeText,
 		onPress
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
-		const { width: windowWidth, fontScale } = useWindowDimensions();
+		const { fontScale } = useWindowDimensions();
 
 		if (showSearchHeader) {
 			// This value is necessary to keep the alignment in MasterDetail.
@@ -81,13 +72,8 @@ const Header = React.memo(
 		} else {
 			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 		}
-		// improve copy
 		return (
-			<View
-				style={[styles.container, { width: width || (isTablet ? undefined : windowWidth) }]}
-				accessibilityLabel={`${serverName} ${subtitle}`}
-				accessibilityRole='header'
-				accessible>
+			<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
 				<TouchableOpacity onPress={onPress} testID='rooms-list-header-servers-list-button'>
 					<View style={styles.button}>
 						<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>

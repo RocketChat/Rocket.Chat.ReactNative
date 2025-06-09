@@ -11,6 +11,7 @@ import { isAndroid } from '../../lib/methods/helpers';
 
 const MODAL_MARGIN = 32;
 
+// @ts-ignore
 interface IModalContainer extends NavigationContainerProps {
 	navigation: NativeStackNavigationProp<any>;
 	children: React.ReactNode;

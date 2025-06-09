@@ -1,3 +1,25 @@
+diff --git a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
+index cfe1d35..3348cc4 100644
+--- a/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
++++ b/node_modules/react-native-ui-lib/lib/components/Keyboard/KeyboardInput/KeyboardAccessoryView.js
+@@ -155,7 +155,7 @@ class KeyboardAccessoryView extends Component {
+       this.customInputControllerEventsSubscriber.remove();
+     }
+     if (IsAndroid) {
+-      BackHandler.removeEventListener('hardwareBackPress', this.onAndroidBackPressed);
++      this.backHandler.remove();
+     }
+   }
+ 
+@@ -216,7 +216,7 @@ class KeyboardAccessoryView extends Component {
+ 
+   registerAndroidBackHandler() {
+     if (IsAndroid) {
+-      BackHandler.addEventListener('hardwareBackPress', this.onAndroidBackPressed);
++      this.backHandler = BackHandler.addEventListener('hardwareBackPress', this.onAndroidBackPressed);
+     }
+   }
+ 
 diff --git a/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js b/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
 index 513d6ed..f39a72b 100644
 --- a/node_modules/react-native-ui-lib/lib/components/WheelPicker/index.js
@@ -22,7 +44,7 @@ index b3864d0..e78322f 100644
 -#import "RCTEventEmitter.h"
 +#import <React/RCTEventEmitter.h>
  #endif
-
+ 
  @interface RCTCustomInputControllerTemp : RCTEventEmitter
 diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardinput/rctcustomInputcontroller/RCTCustomKeyboardViewControllerTemp.h
 index 4344724..2786051 100644
@@ -35,8 +57,96 @@ index 4344724..2786051 100644
 -#import "RCTRootView.h"
 +#import <React/RCTRootView.h>
  #endif
-
+ 
  @interface RCTCustomKeyboardViewControllerTemp : UIInputViewController
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+index 97255d2..4e0fe05 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
+@@ -364,6 +364,7 @@ typedef NS_ENUM(NSUInteger, KeyboardTrackingScrollBehavior) {
+ - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
+ {
+     _bottomViewHeight = kBottomViewHeightTemp;
++    _ObservingInputAccessoryViewTemp.height = 0;
+     [self updateBottomViewFrame];
+ }
+ 
+diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
+index 1ca52e8..69ac77a 100644
+--- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
++++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
+@@ -111,44 +111,57 @@
+     _height = height;
+     
+     [self invalidateIntrinsicContentSize];
++    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
+ }
+ 
+ - (void)_keyboardWillShowNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateWillShow;
++    if (_keyboardState == KeyboardStateHidden) {
++        _keyboardState = KeyboardStateWillShow;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
+     
+-    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
+-    {
+-        [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
++        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
++        {
++            [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
++        }
+     }
+ }
+ 
+ - (void)_keyboardDidShowNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateShown;
++    if (_keyboardState == KeyboardStateWillShow) {
++        _keyboardState = KeyboardStateShown;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
++    }
+ }
+ 
+ - (void)_keyboardWillHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateWillHide;
++    if (_keyboardState == KeyboardStateShown) {
++        _keyboardState = KeyboardStateWillHide;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
+     
+-    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
+-    {
+-        [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++        
++        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
++        {
++            [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
++        }
+     }
+ }
+ 
+ - (void)_keyboardDidHideNotification:(NSNotification*)notification
+ {
+-    _keyboardState = KeyboardStateHidden;
++    if (_keyboardState == KeyboardStateWillHide) {
++        _keyboardState = KeyboardStateHidden;
+     
+-    [self invalidateIntrinsicContentSize];
++        [self invalidateIntrinsicContentSize];
++        
++        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
++    }
+ }
+ 
+ - (void)_keyboardWillChangeFrameNotification:(NSNotification*)notification
 diff --git a/node_modules/react-native-ui-lib/src/commons/Constants.ts b/node_modules/react-native-ui-lib/src/commons/Constants.ts
 index c029d61..77f60f7 100644
 --- a/node_modules/react-native-ui-lib/src/commons/Constants.ts
@@ -67,7 +177,7 @@ index c1da169..8d3c3f5 100644
 +export {default as withScrollReached, type WithScrollReachedProps} from './withScrollReached';
  export {default as Constants} from './Constants';
  export {default as Config} from './Config';
-
+ 
  export {
 -  ContainerModifiers,
 -  AlignmentModifiers,
@@ -96,7 +206,7 @@ index 48884c9..76b4b43 100644
  import {ConnectionStatusBarProps, ConnectionStatusBarState, DEFAULT_PROPS} from './Types';
 -export {ConnectionStatusBarProps};
 +export {type ConnectionStatusBarProps};
-
+ 
  /**
   * @description: Top bar to show a "no internet" connection status. Note: Run on real device for best results
 diff --git a/node_modules/react-native-ui-lib/src/components/dialog/index.tsx b/node_modules/react-native-ui-lib/src/components/dialog/index.tsx
@@ -109,7 +219,7 @@ index 4b51b27..7939884 100644
  import PanningProvider, {PanningDirections, PanningDirectionsEnum} from '../panningViews/panningProvider';
 -export {PanningDirections as DialogDirections, PanningDirectionsEnum as DialogDirectionsEnum};
 +export {type PanningDirections as DialogDirections, PanningDirectionsEnum as DialogDirectionsEnum};
-
+ 
  // TODO: KNOWN ISSUES
  // 1. iOS pressing on the background while enter animation is happening will not call onDismiss
 @@ -278,6 +278,7 @@ function createStyles(props: DialogProps) {
@@ -127,11 +237,11 @@ index e4f5ba7..4640a05 100644
 @@ -409,7 +409,7 @@ class Drawer extends PureComponent<DrawerProps> {
    }
  }
-
+ 
 -export {DrawerProps, DrawerItemProps};
 +export { type DrawerProps, type DrawerItemProps};
  export default asBaseComponent<DrawerProps, typeof Drawer>(Drawer);
-
+ 
  const styles = StyleSheet.create({
 diff --git a/node_modules/react-native-ui-lib/src/components/listItem/ListItemPart.tsx b/node_modules/react-native-ui-lib/src/components/listItem/ListItemPart.tsx
 index 5ca3490..18df0af 100644
@@ -140,11 +250,11 @@ index 5ca3490..18df0af 100644
 @@ -23,7 +23,7 @@ class ListItemPart extends Component<ListItemPartProps> {
    }
  }
-
+ 
 -export {ListItemPartProps};
 +export {type ListItemPartProps};
  export default asBaseComponent<ListItemPartProps>(ListItemPart);
-
+ 
  function createStyles({left, right, middle, column}: ListItemPartProps) {
 diff --git a/node_modules/react-native-ui-lib/src/components/loaderScreen/index.tsx b/node_modules/react-native-ui-lib/src/components/loaderScreen/index.tsx
 index bcd8c18..d391ab5 100644
@@ -153,11 +263,11 @@ index bcd8c18..d391ab5 100644
 @@ -39,7 +39,7 @@ class LoaderScreen extends Component<LoaderScreenProps> {
    }
  }
-
+ 
 -export {LoaderScreenProps};
 +export {type LoaderScreenProps};
  export default asBaseComponent<LoaderScreenProps>(LoaderScreen);
-
+ 
  const styles = StyleSheet.create({
 diff --git a/node_modules/react-native-ui-lib/src/components/marquee/index.tsx b/node_modules/react-native-ui-lib/src/components/marquee/index.tsx
 index 9c9a7d8..a512576 100644
@@ -166,12 +276,12 @@ index 9c9a7d8..a512576 100644
 @@ -101,7 +101,7 @@ function Marquee(props: MarqueeProps) {
    );
  }
-
+ 
 -export {MarqueeProps, MarqueeDirections};
 +export {type MarqueeProps, MarqueeDirections};
-
+ 
  export default Marquee;
-
+ 
 diff --git a/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx b/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx
 index f00f2ab..c4b1737 100644
 --- a/node_modules/react-native-ui-lib/src/components/maskedInput/index.tsx
@@ -179,7 +289,7 @@ index f00f2ab..c4b1737 100644
 @@ -13,5 +13,5 @@ function MaskedInputMigrator(props: any, refToForward: any) {
    }
  }
-
+ 
 -export {MaskedInputProps};
 +export {type MaskedInputProps};
  export default forwardRef(MaskedInputMigrator);
@@ -188,9 +298,9 @@ index 7847d78..79063d5 100644
 --- a/node_modules/react-native-ui-lib/src/components/modal/index.tsx
 +++ b/node_modules/react-native-ui-lib/src/components/modal/index.tsx
 @@ -17,7 +17,7 @@ import View from '../../components/view';
-
+ 
  const BlurView = BlurViewPackage?.BlurView;
-
+ 
 -export {ModalTopBarProps};
 +export {type ModalTopBarProps};
  export interface ModalProps extends RNModalProps {
@@ -210,7 +320,7 @@ index 542a16a..b23336e 100644
  import {Colors, BorderRadiuses, Spacings} from '../../style';
 @@ -16,7 +15,7 @@ import View from '../view';
  import Segment, {SegmentedControlItemProps as SegmentProps} from './segment';
-
+ 
  const BORDER_WIDTH = 1;
 -const TIMING_CONFIG: WithTimingConfig = {
 +const TIMING_CONFIG = {
@@ -224,11 +334,11 @@ index 29bf95a..347a78e 100644
 @@ -47,7 +47,7 @@ class StateScreen extends Component<StateScreenProps> {
    }
  }
-
+ 
 -export {StateScreenProps};
 +export {type StateScreenProps};
  export default asBaseComponent<StateScreenProps>(StateScreen);
-
+ 
  function createStyles(isRemoteImage: boolean) {
 diff --git a/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx b/node_modules/react-native-ui-lib/src/components/tabController/TabBarItem.tsx
 index 7bb9245..16440be 100644
@@ -263,7 +373,7 @@ index 158406a..456f56c 100644
 +  type PointTypes as TimelinePointTypes,
 +  type LineTypes as TimelineLineTypes
  };
-
+ 
  const CONTENT_CONTAINER_PADDINGS = Spacings.s2;
 diff --git a/node_modules/react-native-ui-lib/src/components/wizard/index.tsx b/node_modules/react-native-ui-lib/src/components/wizard/index.tsx
 index 8afc8a8..c086fcb 100644
@@ -275,7 +385,7 @@ index 8afc8a8..c086fcb 100644
  import {WizardProps, WizardStepProps, WizardStepStates, WizardStepConfig, WizardStepsConfig} from './types';
 -export {WizardProps, WizardStepProps, WizardStepStates, WizardStepConfig, WizardStepsConfig};
 +export {type WizardProps, type WizardStepProps, WizardStepStates, type WizardStepConfig, type WizardStepsConfig};
-
+ 
  interface State {
    maxWidth: number;
 diff --git a/node_modules/react-native-ui-lib/src/incubator/Dialog/index.tsx b/node_modules/react-native-ui-lib/src/incubator/Dialog/index.tsx
@@ -288,11 +398,11 @@ index e624b8f..12c9fe9 100644
  import {DialogProps, DialogDirections, DialogDirectionsEnum, DialogHeaderProps} from './types';
 -export {DialogProps, DialogDirections, DialogDirectionsEnum, DialogHeaderProps};
 +export {type DialogProps, type DialogDirections, DialogDirectionsEnum, type DialogHeaderProps};
-
+ 
  const DEFAULT_OVERLAY_BACKGROUND_COLOR = Colors.rgba(Colors.grey20, 0.65);
  const THRESHOLD_VELOCITY = 750;
 @@ -199,6 +199,7 @@ const Dialog = (props: DialogProps, ref: ForwardedRef<DialogImperativeMethods>)
-
+ 
    const renderDialog = () => (
      <GestureDetector gesture={panGesture}>
 +      {/* @ts-ignore */}
@@ -309,7 +419,7 @@ index a556bde..73c2369 100644
  const DialogDirectionsEnum = PanningDirectionsEnum;
 -export {DialogDirections, DialogDirectionsEnum};
 +export {type DialogDirections, DialogDirectionsEnum};
-
+ 
  export interface DialogHeaderProps extends ViewProps {
    /**
 diff --git a/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx b/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx
@@ -318,7 +428,7 @@ index 0ba2020..0965094 100644
 +++ b/node_modules/react-native-ui-lib/src/incubator/TextField/index.tsx
 @@ -214,10 +214,10 @@ TextField.displayName = 'Incubator.TextField';
  TextField.validationMessagePositions = ValidationMessagePosition;
-
+ 
  export {
 -  TextFieldProps,
 -  FieldContextType,
@@ -336,7 +446,7 @@ index cb3d69d..790929c 100644
 --- a/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
 +++ b/node_modules/react-native-ui-lib/src/incubator/TouchableOpacity.tsx
 @@ -148,13 +148,13 @@ function TouchableOpacity(props: Props) {
-
+ 
    return (
      <TapGestureHandler
 -      // @ts-expect-error
@@ -399,14 +509,14 @@ index 0fc7cad..2d2f6d3 100644
 @@ -55,6 +55,7 @@ const DEFAULT_ANIMATION_VELOCITY = 300;
  export const DEFAULT_ANIMATION_CONFIG = {velocity: DEFAULT_ANIMATION_VELOCITY, damping: 18, stiffness: 100, mass: 0.4};
  const SPRING_BACK_ANIMATION_CONFIG = {velocity: DEFAULT_ANIMATION_VELOCITY, damping: 20, stiffness: 300, mass: 0.8};
-
+ 
 +// @ts-ignore
  const usePanGesture = (props: PanGestureProps) => {
    const {
      directions = DEFAULT_DIRECTIONS,
 @@ -113,12 +114,15 @@ const usePanGesture = (props: PanGestureProps) => {
    }, [animateToOrigin]);
-
+ 
    const onGestureEvent = useAnimatedGestureHandler({
 +    // @ts-ignore
      onStart: (_event: PanGestureHandlerEventPayload, context: {initialTranslation: Frame}) => {
@@ -433,91 +543,3 @@ index da8cb97..995207b 100644
  export {default as Typography} from './typography';
  export {default as BorderRadiuses} from './borderRadiuses';
  export {default as Shadows} from './shadows';
-diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-index 97255d2..4e0fe05 100644
---- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-+++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/KeyboardTrackingViewTempManager.m
-@@ -364,6 +364,7 @@ - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(N
- - (void)ObservingInputAccessoryViewTempKeyboardWillDisappear:(ObservingInputAccessoryViewTemp *)ObservingInputAccessoryViewTemp
- {
-     _bottomViewHeight = kBottomViewHeightTemp;
-+    _ObservingInputAccessoryViewTemp.height = 0;
-     [self updateBottomViewFrame];
- }
- 
-diff --git a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-index 1ca52e8..69ac77a 100644
---- a/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-+++ b/node_modules/react-native-ui-lib/lib/ios/reactnativeuilib/keyboardtrackingview/ObservingInputAccessoryViewTemp.m
-@@ -111,44 +111,57 @@ - (void)setHeight:(CGFloat)height
-     _height = height;
-     
-     [self invalidateIntrinsicContentSize];
-+    [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
- }
- 
- - (void)_keyboardWillShowNotification:(NSNotification*)notification
- {
--    _keyboardState = KeyboardStateWillShow;
-+    if (_keyboardState == KeyboardStateHidden) {
-+        _keyboardState = KeyboardStateWillShow;
-     
--    [self invalidateIntrinsicContentSize];
-+        [self invalidateIntrinsicContentSize];
-     
--    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
--    {
--        [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
-+        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillAppear:keyboardDelta:)])
-+        {
-+            [_delegate ObservingInputAccessoryViewTempKeyboardWillAppear:self keyboardDelta:_keyboardHeight - _previousKeyboardHeight];
-+        }
-     }
- }
- 
- - (void)_keyboardDidShowNotification:(NSNotification*)notification
- {
--    _keyboardState = KeyboardStateShown;
-+    if (_keyboardState == KeyboardStateWillShow) {
-+        _keyboardState = KeyboardStateShown;
-     
--    [self invalidateIntrinsicContentSize];
-+        [self invalidateIntrinsicContentSize];
-+    }
- }
- 
- - (void)_keyboardWillHideNotification:(NSNotification*)notification
- {
--    _keyboardState = KeyboardStateWillHide;
-+    if (_keyboardState == KeyboardStateShown) {
-+        _keyboardState = KeyboardStateWillHide;
-         
--    [self invalidateIntrinsicContentSize];
-+        [self invalidateIntrinsicContentSize];
-         
--    if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
--    {
--        [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
-+        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
-+        
-+        if([_delegate respondsToSelector:@selector(ObservingInputAccessoryViewTempKeyboardWillDisappear:)])
-+        {
-+            [_delegate ObservingInputAccessoryViewTempKeyboardWillDisappear:self];
-+        }
-     }
- }
- 
- - (void)_keyboardDidHideNotification:(NSNotification*)notification
- {
--    _keyboardState = KeyboardStateHidden;
-+    if (_keyboardState == KeyboardStateWillHide) {
-+        _keyboardState = KeyboardStateHidden;
-         
--    [self invalidateIntrinsicContentSize];
-+        [self invalidateIntrinsicContentSize];
-+        
-+        [_delegate ObservingInputAccessoryViewTempDidChangeFrame:self];
-+    }
- }
- 
- - (void)_keyboardWillChangeFrameNotification:(NSNotification*)notification

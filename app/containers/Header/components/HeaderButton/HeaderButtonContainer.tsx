@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
 
-import { isAndroid, isTablet } from '../../lib/methods/helpers';
+import { isAndroid, isTablet } from '../../../../lib/methods/helpers';
 
 interface IHeaderButtonContainer {
 	children?: React.ReactElement | (React.ReactElement | null)[] | null;
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	},
 	left: {
 		marginLeft: isTablet ? 5 : -5,
-		marginRight: isAndroid ? 25 : 0
+		marginRight: isAndroid ? 5 : 0
 	},
 	right: {
 		marginRight: isTablet ? 5 : -5
