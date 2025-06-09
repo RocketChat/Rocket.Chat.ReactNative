@@ -61,7 +61,8 @@ const navigate = ({
 	}
 
 	if (popToRoot) {
-		Navigation.navigate('RoomsListView');
+		Navigation.popToTop();
+		Navigation.back()
 	}
 	return Navigation.dispatch((state: any) => {
 		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');

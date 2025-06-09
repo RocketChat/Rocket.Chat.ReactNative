@@ -127,6 +127,7 @@ const UserForm = () => {
 					testID='login-view-password'
 					textContentType='password'
 					autoComplete='password'
+					importantForAutofill='yes'
 				/>
 				<Button
 					title={I18n.t('Login')}

@@ -6,7 +6,6 @@ import sharedStyles from '../../Styles';
 import { useTheme } from '../../../theme';
 import SearchHeader from '../../../containers/SearchHeader';
 import { useAppSelector } from '../../../lib/hooks';
-import { isTablet } from '../../../lib/methods/helpers';
 
 const styles = StyleSheet.create({
 	container: {
@@ -35,7 +34,6 @@ interface IRoomHeader {
 	serverName: string;
 	server: string;
 	showSearchHeader: boolean;
-	width?: number;
 	onSearchChangeText: TextInputProps['onChangeText'];
 }
 
@@ -47,12 +45,11 @@ const Header = React.memo(
 		serverName = 'Rocket.Chat',
 		server,
 		showSearchHeader,
-		width,
 		onSearchChangeText
 	}: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
-		const { width: windowWidth, fontScale } = useWindowDimensions();
+		const { fontScale } = useWindowDimensions();
 
 		if (showSearchHeader) {
 			// This value is necessary to keep the alignment in MasterDetail.
@@ -72,11 +69,7 @@ const Header = React.memo(
 			subtitle = server?.replace(/(^\w+:|^)\/\//, '');
 		}
 		return (
-			<View
-				style={[styles.container, { width: width || (isTablet ? undefined : windowWidth) }]}
-				accessibilityLabel={`${serverName} ${subtitle}`}
-				accessibilityRole='header'
-				accessible>
+			<View style={styles.container} accessibilityLabel={`${serverName} ${subtitle}`} accessibilityRole='header' accessible>
 				<View style={styles.button}>
 					<Text style={[styles.title, { color: colors.fontTitlesLabels }]} numberOfLines={1}>
 						{serverName}

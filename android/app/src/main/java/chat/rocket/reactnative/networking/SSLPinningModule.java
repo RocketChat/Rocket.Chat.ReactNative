@@ -38,7 +38,7 @@ import com.reactnativecommunity.webview.RNCWebViewManager;
 
 import expo.modules.av.player.datasource.SharedCookiesDataSourceFactory;
 import expo.modules.filesystem.FileSystemModule;
-import expo.modules.image.okhttp.ExpoImageOkHttpClientGlideModule;
+import expo.modules.image.okhttp.GlideUrlWithCustomCacheKey;
 
 public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyChainAliasCallback {
 
@@ -116,7 +116,7 @@ public class SSLPinningModule extends ReactContextBaseJavaModule implements KeyC
         // Expo File System network layer
         FileSystemModule.setOkHttpClient(client);
         // Expo Image network layer
-        ExpoImageOkHttpClientGlideModule.Companion.setOkHttpClient(client);
+        GlideUrlWithCustomCacheKey.setOkHttpClient(client);
 
         promise.resolve(null);
     }

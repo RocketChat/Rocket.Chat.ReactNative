@@ -45,8 +45,11 @@ public class CustomPushNotification extends PushNotification {
 
     public CustomPushNotification(Context context, Bundle bundle, AppLifecycleFacade appLifecycleFacade, AppLaunchHelper appLaunchHelper, JsIOHelper jsIoHelper) {
         super(context, bundle, appLifecycleFacade, appLaunchHelper, jsIoHelper);
-        reactApplicationContext = new ReactApplicationContext(context);
         notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+    }
+
+    public static void setReactContext(ReactApplicationContext context) {
+        reactApplicationContext = context;
     }
 
     private static Map<String, List<Bundle>> notificationMessages = new HashMap<String, List<Bundle>>();
@@ -171,7 +174,10 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private void notifyReceivedToJS() {
-        mJsIOHelper.sendEventToJS(NOTIFICATION_RECEIVED_EVENT_NAME, mNotificationProps.asBundle(), mAppLifecycleFacade.getRunningReactContext());
+        boolean isReactInitialized = mAppLifecycleFacade.isReactInitialized();
+        if (isReactInitialized) {
+            mJsIOHelper.sendEventToJS(NOTIFICATION_RECEIVED_EVENT_NAME, mNotificationProps.asBundle(), mAppLifecycleFacade.getRunningReactContext());
+        }
     }
 
     private Bitmap getAvatar(String uri) {

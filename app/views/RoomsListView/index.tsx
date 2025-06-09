@@ -14,7 +14,7 @@ import RoomItem from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
@@ -53,7 +53,7 @@ import {
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import CustomHeader from '../../containers/CustomHeader';
+import Header from '../../containers/Header';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -110,7 +110,6 @@ interface IRoomsListViewState {
 	chats?: IRoomItem[];
 	item?: ISubscription;
 	canCreateRoom?: boolean;
-	headerTitleWidth?: number;
 }
 
 interface IRoomItem extends ISubscription {
@@ -198,8 +197,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			omnichannelsUpdate: [],
 			chats: [],
 			item: {} as ISubscription,
-			canCreateRoom: false,
-			headerTitleWidth: 0
+			canCreateRoom: false
 		};
 		this.setHeader();
 		this.getSubscriptions();
@@ -299,12 +297,9 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			return false;
 		}
 
-		const { loading, search, headerTitleWidth } = this.state;
+		const { loading, search } = this.state;
 		const { width, insets, subscribedRoom } = this.props;
 		if (nextState.loading !== loading) {
-			return true;
-		}
-		if (nextState.headerTitleWidth !== headerTitleWidth) {
 			return true;
 		}
 		if (nextProps.width !== width) {
@@ -330,7 +325,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		return false;
 	}
 
-	componentDidUpdate(prevProps: IRoomsListViewProps, prevState: IRoomsListViewState) {
+	componentDidUpdate(prevProps: IRoomsListViewProps) {
 		const {
 			sortBy,
 			groupByType,
@@ -350,7 +345,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 			issuesWithNotifications,
 			supportedVersionsStatus
 		} = this.props;
-		const { item, headerTitleWidth } = this.state;
+		const { item } = this.state;
 
 		if (
 			!(
@@ -371,7 +366,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		if (
 			insets.left !== prevProps.insets.left ||
 			insets.right !== prevProps.insets.right ||
-			headerTitleWidth !== prevState.headerTitleWidth ||
 			notificationPresenceCap !== prevProps.notificationPresenceCap ||
 			issuesWithNotifications !== prevProps.issuesWithNotifications ||
 			supportedVersionsStatus !== prevProps.supportedVersionsStatus
@@ -428,18 +422,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
+	getBadge = () => {
+		const { notificationPresenceCap, supportedVersionsStatus, theme } = this.props;
+		if (supportedVersionsStatus === 'warn') {
+			return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
+		}
+		if (notificationPresenceCap) {
+			return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
+		}
+		return null;
+	};
+
 	getHeader = (): any => {
-		const { searching, canCreateRoom, headerTitleWidth } = this.state;
-		const {
-			navigation,
-			isMasterDetail,
-			notificationPresenceCap,
-			issuesWithNotifications,
-			supportedVersionsStatus,
-			theme,
-			user,
-			width
-		} = this.props;
+		const { searching, canCreateRoom } = this.state;
+		const { navigation, isMasterDetail, issuesWithNotifications, supportedVersionsStatus, theme, user } = this.props;
 		if (searching) {
 			return {
 				headerLeft: () => (
@@ -451,16 +447,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				headerRight: () => null
 			};
 		}
-
-		const getBadge = () => {
-			if (supportedVersionsStatus === 'warn') {
-				return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
-			}
-			if (notificationPresenceCap) {
-				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
-			}
-			return null;
-		};
 
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
@@ -475,20 +461,13 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
-					badge={() => getBadge()}
+					badge={() => this.getBadge()}
 					disabled={disabled}
 				/>
 			),
-			headerTitle: () => <RoomsListHeaderView width={headerTitleWidth} />,
+			headerTitle: () => <RoomsListHeaderView />,
 			headerRight: () => (
-				<HeaderButton.Container
-					onLayout={
-						isTablet
-							? undefined
-							: ({ nativeEvent }: { nativeEvent: any }) => {
-									this.setState({ headerTitleWidth: width - nativeEvent.layout.width - (isIOS ? 60 : 50) });
-							  }
-					}>
+				<HeaderButton.Container>
 					{issuesWithNotifications ? (
 						<HeaderButton.Item
 							iconName='notification-disabled'
@@ -915,7 +894,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		const options = this.getHeader();
-		return <CustomHeader options={options} navigation={this.props.navigation} route={this.props.route} />;
+		return <Header options={options} navigation={this.props.navigation} route={this.props.route} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {
@@ -1057,4 +1036,5 @@ const mapStateToProps = (state: IApplicationState) => ({
 	issuesWithNotifications: state.troubleshootingNotification.issuesWithNotifications
 });
 
+// @ts-ignore
 export default connect(mapStateToProps)(withDimensions(withTheme(withSafeAreaInsets(RoomsListView))));
