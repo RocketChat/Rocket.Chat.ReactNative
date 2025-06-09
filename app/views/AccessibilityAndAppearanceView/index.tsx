@@ -73,7 +73,12 @@ const AccessibilityAndAppearanceView = () => {
 
 				<List.Section>
 					<List.Separator />
-					<List.Item testID='accessibility' title='Autoplay_gifs' right={renderAutoplayGifs} onPress={toggleAutoplayGifs} />
+					<List.Item
+						testID='accessibility-autoplay-gifs-switch'
+						title='Autoplay_gifs'
+						right={renderAutoplayGifs}
+						onPress={toggleAutoplayGifs}
+					/>
 					<List.Separator />
 					<List.Item
 						testID='accessibility-mentions-with-at-symbol-switch'
