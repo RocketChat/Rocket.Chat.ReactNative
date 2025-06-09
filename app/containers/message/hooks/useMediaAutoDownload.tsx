@@ -153,7 +153,6 @@ export const useMediaAutoDownload = ({
 		if (!showAttachment || !currentFile.title_link || isEncrypted) {
 			return;
 		}
-
 		showAttachment(currentFile);
 	};
 

@@ -57,6 +57,7 @@ export const MessageImage = React.memo(({ uri, status, encrypted = false, imageP
 			</>
 		);
 	}
+
 	return (
 		<>
 			{showImage ? (
