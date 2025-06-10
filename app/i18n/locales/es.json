@@ -244,6 +244,7 @@
   "Pin": "Fijar",
   "Pinned": "Fijado",
   "Play": "Jugar",
+  "Playback_speed": "Velocidad de reproducción {{ playbackSpeed }}",
   "Please_enter_your_password": "Por favor introduce la contraseña",
   "Preferences": "Preferencias",
   "Privacy_Policy": "Política de privacidad",

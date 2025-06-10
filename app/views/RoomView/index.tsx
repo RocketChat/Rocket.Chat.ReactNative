@@ -527,6 +527,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
 					hasE2EEWarning={e2eeWarning}
+					teamMain={teamMain}
+					isGroupChat={isGroupChatConst}
 				/>
 			)
 		});

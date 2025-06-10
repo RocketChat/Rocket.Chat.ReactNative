@@ -11,6 +11,7 @@ export const PressableEmoji = ({ emoji, onPress }: { emoji: IEmoji; onPress: (em
 	const { colors } = useTheme();
 	return (
 		<Pressable
+			accessible
 			key={typeof emoji === 'string' ? emoji : emoji.name}
 			onPress={() => onPress(emoji)}
 			testID={`emoji-${typeof emoji === 'string' ? emoji : emoji.name}`}

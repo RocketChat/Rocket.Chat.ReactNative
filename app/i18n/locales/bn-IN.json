@@ -545,6 +545,7 @@
   "Pinned_a_message": "একটি বার্তা পিন করা হয়েছে:",
   "Place_chat_on_hold": "চ্যাট হোল্ড করুন",
   "Play": "খেলা",
+  "Playback_speed": "{{ playbackSpeed }} প্লেব্যাক গতি",
   "Please_add_a_comment": "অনুগ্রহ করে একটি মন্তব্য যোগ করুন",
   "Please_enter_your_password": "অনুগ্রহ করে আপনার পাসওয়ার্ড লিখুন",
   "Please_wait": "অনুগ্রহ করে অপেক্ষা করুন।",

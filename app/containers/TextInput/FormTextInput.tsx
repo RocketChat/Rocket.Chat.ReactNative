@@ -106,7 +106,7 @@ export const FormTextInput = ({
 			<A11yElement order={1}>
 				<View
 					accessible
-					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
+					accessibilityLabel={`${accessibilityLabel ?? label}${accessibilityLabelRequired}${accessibilityInputValue}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
 						<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>

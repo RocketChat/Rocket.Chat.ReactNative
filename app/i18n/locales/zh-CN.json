@@ -373,6 +373,7 @@
   "Pin": "钉选",
   "Pinned": "被钉选",
   "Play": "玩",
+  "Playback_speed": "{{ playbackSpeed }} 播放速度",
   "Please_add_a_comment": "请新增评论",
   "Please_enter_your_password": "请输入密码",
   "Please_wait": "请稍候",

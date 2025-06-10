@@ -331,6 +331,7 @@
   "Pin": "ピン留め",
   "Pinned": "ピン留めされました",
   "Play": "遊ぶ",
+  "Playback_speed": "{{ playbackSpeed }}倍速再生",
   "Please_enter_your_password": "パスワードを入力してください",
   "Preferences": "設定",
   "Privacy_Policy": " プライバシーポリシー",

@@ -407,6 +407,7 @@
   "Pin": "Appunta",
   "Pinned": "Appuntati",
   "Play": "Giocare",
+  "Playback_speed": "{{ playbackSpeed }} velocità di riproduzione",
   "Please_add_a_comment": "Per favore, aggiungi un commento",
   "Please_enter_your_password": "Per favore, inserisci la tua password",
   "Please_wait": "Si prega di attendere.",

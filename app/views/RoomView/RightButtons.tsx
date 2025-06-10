@@ -7,7 +7,14 @@ import { Observable, Subscription } from 'rxjs';
 
 import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
 import * as HeaderButton from '../../containers/HeaderButton';
-import { IApplicationState, ISubscription, SubscriptionType, TMessageModel, TSubscriptionModel } from '../../definitions';
+import {
+	IApplicationState,
+	ISubscription,
+	SubscriptionType,
+	TMessageModel,
+	TSubscriptionModel,
+	TUserStatus
+} from '../../definitions';
 import { ILivechatDepartment } from '../../definitions/ILivechatDepartment';
 import { ILivechatTag } from '../../definitions/ILivechatTag';
 import i18n from '../../i18n';
@@ -22,6 +29,7 @@ import { TNavigation } from '../../stacks/stackType';
 import { ChatsStackParamList } from '../../stacks/types';
 import { HeaderCallButton } from './components';
 import { TColors, TSupportedThemes, withTheme } from '../../theme';
+import getRoomAccessibilityLabel from '../../lib/helpers/getRoomAccessibilityLabel';
 
 interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	userId?: string;
@@ -29,6 +37,8 @@ interface IRightButtonsProps extends Pick<ISubscription, 't'> {
 	tmid?: string;
 	teamId?: string;
 	roomName?: string;
+	teamMain?: boolean;
+	isGroupChat?: boolean;
 	isMasterDetail: boolean;
 	toggleFollowThread: Function;
 	joined: boolean;
@@ -431,8 +441,26 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
-		const { t, tmid, threadsEnabled, rid, colors, issuesWithNotifications, notificationsDisabled, hasE2EEWarning, roomName } = this.props;
+		const {
+			t,
+			tmid,
+			threadsEnabled,
+			rid,
+			colors,
+			issuesWithNotifications,
+			notificationsDisabled,
+			hasE2EEWarning,
+			roomName,
+			userId,
+			isGroupChat,
+			status,
+			teamMain
+		} = this.props;
 
+		const accessibilityRoomName =
+			!isGroupChat && status
+				? roomName
+				: getRoomAccessibilityLabel({ type: t, userId, isGroupChat, status: status as TUserStatus, teamMain });
 		if (!rid) {
 			return null;
 		}
@@ -478,10 +506,16 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				{rid ? <HeaderCallButton accessibilityLabel={i18n.t('Call_room_name', {roomName})} rid={rid} disabled={hasE2EEWarning} /> : null}
+				{rid ? (
+					<HeaderCallButton
+						accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+						rid={rid}
+						disabled={hasE2EEWarning}
+					/>
+				) : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
-						accessibilityLabel={tunread?.length > 0 ? '': i18n.t('Threads')}
+						accessibilityLabel={tunread?.length > 0 ? '' : i18n.t('Threads')}
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'
@@ -489,7 +523,13 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				<HeaderButton.Item accessibilityLabel={i18n.t('Search_Messages')}  iconName='search' onPress={this.goSearchView} testID='room-view-search' disabled={hasE2EEWarning} />
+				<HeaderButton.Item
+					accessibilityLabel={i18n.t('Search_Messages')}
+					iconName='search'
+					onPress={this.goSearchView}
+					testID='room-view-search'
+					disabled={hasE2EEWarning}
+				/>
 			</HeaderButton.Container>
 		);
 	}
