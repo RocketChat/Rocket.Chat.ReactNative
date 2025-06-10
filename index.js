@@ -57,9 +57,16 @@ function setupCallKeepAnswerEvent() {
 		console.log('Call answered:', callUUID);
 
 		// Use your existing CallkeepHelperModule logic
-		const { CallkeepHelperModule } = NativeModules;
-		CallkeepHelperModule.startActivity();
-		RNCallKeep.endCall(callUUID);
+		if (isAndroid) {
+			const { CallkeepHelperModule } = NativeModules;
+			CallkeepHelperModule.startActivity();
+			RNCallKeep.endCall(callUUID);
+		} else {
+			setTimeout(() => {
+				RNCallKeep.backToForeground();
+				RNCallKeep.endCall(callUUID);
+			}, 1000);
+		}
 	};
 
 	// Add the listener
@@ -102,9 +109,6 @@ const setupCallKeep = async () => {
 
 		// Set up the answer call event listener after setup
 		setupCallKeepAnswerEvent();
-
-		const initialEvents = await RNCallKeep.getInitialEvents();
-		console.log('Initial events:', initialEvents);
 	} catch (error) {
 		console.error('CallKeep setup failed:', error);
 	}
@@ -131,9 +135,6 @@ if (isIOS) {
 	});
 
 	VoipPushNotification.addEventListener('didLoadWithEvents', events => {
-		// --- this will fire when there are events occured before js bridge initialized
-		// --- use this event to execute your event handler manually by event type
-
 		if (!events || !Array.isArray(events) || events.length < 1) {
 			return;
 		}
@@ -157,14 +158,9 @@ if (isIOS) {
 			console.log('Token:', token);
 		});
 
-	getMessaging().onNotificationOpenedApp(remoteMessage => {
-		console.log('Notification caused app to open from background state:', remoteMessage);
-	});
-
 	getMessaging().onMessage(remoteMessage => {
 		console.log('Message received:', remoteMessage);
 		RNCallKeep.displayIncomingCall(generateUUID(), 'handle', 'callerName');
-		console.log('on message after incoming call');
 	});
 
 	getMessaging().setBackgroundMessageHandler(async message => {
@@ -178,25 +174,18 @@ if (isIOS) {
 
 			// Set up the event listener again for background context
 			setupCallKeepAnswerEvent();
-
-			console.log('CallKeep re-registered for background');
 		} catch (error) {
 			console.error('Failed to setup CallKeep in background:', error);
 		}
 
 		// Now display the incoming call
 		RNCallKeep.displayIncomingCall(generateUUID(), 'handle', 'callerName');
-		console.log('background after incoming call');
 	});
 }
 
-// Handle events that occurred before JS bridge was ready
 RNCallKeep.addEventListener('didLoadWithEvents', events => {
-	console.log('CallKeep didLoadWithEvents:', events);
-	// Handle any events that occurred before JS bridge was ready
 	events.forEach(event => {
 		if (event.name === 'RNCallKeepPerformAnswerCallAction' && callAnswerHandler) {
-			console.log('Processing early answerCall event:', event.data);
 			callAnswerHandler(event.data);
 		}
 	});
