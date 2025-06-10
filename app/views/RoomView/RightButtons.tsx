@@ -6,7 +6,7 @@ import { Dispatch } from 'redux';
 import { Observable, Subscription } from 'rxjs';
 
 import { TActionSheetOptionsItem } from '../../containers/ActionSheet';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import {
 	IApplicationState,
 	ISubscription,

@@ -3,7 +3,7 @@ import { StyleSheet, useWindowDimensions } from 'react-native';
 
 import Avatar from '../../containers/Avatar';
 import { useAppNavigation } from '../../lib/hooks/navigation';
-import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
+import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
 const styles = StyleSheet.create({
 	avatar: {

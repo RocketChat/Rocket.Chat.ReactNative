@@ -189,21 +189,11 @@ const Header = React.memo(
 		const handleOnPress = useCallback(() => onPress(), []);
 
 		return (
-			<View style={styles.container}>
-				<TouchableOpacity
-					testID='room-header'
-					accessibilityLabel={accessibilityLabel}
-					onPress={handleOnPress}
-					style={[
-						styles.container,
-						{
-							opacity: disabled ? 0.5 : 1,
-							height: 36.9 * fontScale
-						}
-					]}
-					disabled={disabled}
-					hitSlop={HIT_SLOP}
-					accessibilityRole='header'>
+			<View
+				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+				accessibilityLabel={accessibilityLabel}
+				accessibilityRole='header'>
+				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
 					<View style={styles.titleContainer}>
 						{tmid ? null : (
 							<RoomTypeIcon

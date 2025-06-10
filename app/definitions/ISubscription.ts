@@ -115,6 +115,7 @@ export interface ISubscription {
 	threadMessages: RelationModified<TThreadMessageModel>;
 	uploads: RelationModified<TUploadModel>;
 	disableNotifications?: boolean;
+	federated?: boolean;
 }
 
 export type TSubscriptionModel = ISubscription &

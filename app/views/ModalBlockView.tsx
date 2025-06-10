@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scr
 import { TSupportedThemes, withTheme } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
 import { themes } from '../lib/constants';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
 import { textParser } from '../containers/UIKit/utils';
