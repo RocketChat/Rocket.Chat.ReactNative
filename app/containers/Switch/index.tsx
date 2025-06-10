@@ -7,11 +7,13 @@ const Switch = (props: SwitchProps): React.ReactElement => {
 	const { colors } = useTheme();
 
 	const trackColor = {
-		false: colors.fontDisabled,
-		true: colors.buttonBackgroundSuccessPress
+		false: colors.strokeDark,
+		true: colors.buttonBackgroundPrimaryDefault
 	};
 
-	return <RNSwitch trackColor={trackColor} ios_backgroundColor={colors.strokeDark} {...props} />;
+	return (
+		<RNSwitch trackColor={trackColor} thumbColor={colors.fontPureWhite} ios_backgroundColor={colors.strokeDark} {...props} />
+	);
 };
 
 export default Switch;
