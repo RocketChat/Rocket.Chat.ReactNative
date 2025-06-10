@@ -52,7 +52,10 @@ class UserPreferences {
 	}
 
 	removeItem(key: string): boolean | undefined {
-		return this.mmkv.removeItem(key) ?? undefined;
+		if (this.getString(key) !== null) {
+			return this.mmkv.removeItem(key) ?? undefined;
+		}
+		return false; // Key did not exist, so removal was not performed
 	}
 }
 
