@@ -96,7 +96,13 @@ class Sdk {
 						return resolve({} as any);
 					}
 				} else {
-					reject(e);
+					if (e instanceof Error) {
+						reject(e);
+					} else {
+						// Try to get a meaningful message, default to stringifying e
+						const message = e?.message || e?.data?.message || e?.error || (typeof e === 'string' ? e : JSON.stringify(e));
+						reject(new Error(message));
+					}
 				}
 			}
 		});
@@ -118,7 +124,13 @@ class Sdk {
 						return resolve({});
 					}
 				} else {
-					reject(e);
+					if (e instanceof Error) {
+						reject(e);
+					} else {
+						// Try to get a meaningful message, default to stringifying e
+						const message = e?.message || e?.error || (typeof e === 'string' ? e : JSON.stringify(e));
+						reject(new Error(message));
+					}
 				}
 			}
 		});
