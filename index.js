@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
-import { AppRegistry, LogBox, PermissionsAndroid, Platform } from 'react-native';
+import { AppRegistry, LogBox, PermissionsAndroid, View } from 'react-native';
 
 import RNCallKeep from 'react-native-callkeep';
 import VoipPushNotification from 'react-native-voip-push-notification';
@@ -23,98 +23,102 @@ const options = {
 		cancelButton: 'Cancel',
 		okButton: 'ok',
 		imageName: 'phone_account_icon',
-		additionalPermissions: [
-			PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-			'android.permission.BIND_TELECOM_CONNECTION_SERVICE',
-			PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
-			PermissionsAndroid.PERMISSIONS.CALL_PHONE
-		],
+		additionalPermissions: [],
 		// Required to get audio in background when using Android 11
 		foregroundService: {
 			channelId: 'Rocket.Chat Voip',
-			channelName: 'Foreground service for my app',
-			notificationTitle: 'My app is running on background',
-			notificationIcon: 'Path to the resource icon of the notification'
+			channelName: 'Rocket.Chat Voip',
+			notificationTitle: 'Rocket.Chat Voip',
+			notificationIcon: 'ic_notification'
 		}
 	}
 };
+
+function generateUUID() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+		const r = (Math.random() * 16) | 0;
+		const v = c === 'x' ? r : (r & 0x3) | 0x8;
+		return v.toString(16);
+	});
+}
+
+let isCallAccepted = false;
 
 // Setup CallKeep with proper error handling
 const setupCallKeep = async () => {
 	try {
 		if (isAndroid) {
 			// Request permissions before setting up CallKeep on Android
-			const permissions = [
-				PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-				'android.permission.BIND_TELECOM_CONNECTION_SERVICE',
-				PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE,
-				PermissionsAndroid.PERMISSIONS.CALL_PHONE
-			];
+			// const permissions = [
+			// 	// PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
+			// 	// 'android.permission.BIND_TELECOM_CONNECTION_SERVICE',
+			// 	PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE
+			// 	// PermissionsAndroid.PERMISSIONS.CALL_PHONE
+			// ];
 
-			const results = await PermissionsAndroid.requestMultiple(permissions);
-			const allGranted = Object.values(results).every(result => result === 'granted');
+			// const results = await PermissionsAndroid.requestMultiple(permissions);
+			const permissionResult = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_PHONE_STATE, {
+				title: 'Phone Permission Required',
+				message:
+					'Rocket.Chat needs access to your phone state to handle incoming calls properly. This helps manage call notifications and call handling.',
+				buttonNeutral: 'Ask Me Later',
+				buttonNegative: 'Cancel',
+				buttonPositive: 'OK'
+			});
+			console.log('Permission request result:', permissionResult);
 
-			if (!allGranted) {
-				console.log('CallKeep permissions not granted:', results);
-				return;
+			if (permissionResult !== 'granted') {
+				console.log('READ_PHONE_STATE permission not granted, CallKeep will have limited functionality');
+				// Continue without the permission - CallKeep can still work with reduced functionality
 			}
+			// const allGranted = Object.values(results).every(result => result === 'granted');
+
+			// if (!allGranted) {
+			// 	console.log('CallKeep permissions not granted:', results);
+			// 	return;
+			// }
 		}
 
 		const accepted = await RNCallKeep.setup(options);
 		console.log('CallKeep setup completed:', accepted);
+
+		RNCallKeep.setAvailable(true);
+		console.log('CallKeep setAvailable');
 
 		// Register phone account for Android
 		if (isAndroid) {
 			await RNCallKeep.registerPhoneAccount(options);
 			console.log('Phone account registered');
 		}
+
+		const initialEvents = await RNCallKeep.getInitialEvents();
+		console.log('Initial events:', initialEvents);
 	} catch (error) {
 		console.error('CallKeep setup failed:', error);
 	}
 };
 
-setupCallKeep();
+setTimeout(() => {
+	setupCallKeep();
+}, 1000);
 
 // CallKeep event listeners
 RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
 	console.log('Call answered:', callUUID);
+	isCallAccepted = true;
+	RNCallKeep.endAllCalls();
+	RNCallKeep.backToForeground();
 	setTimeout(() => {
-		RNCallKeep.backToForeground();
-		RNCallKeep.endCall(callUUID);
+		// RNCallKeep.endCall(callUUID);
 
 		alert('Call answered');
 
-		// Handle call answer - you can dispatch to your Redux store or handle app navigation
+		console.log('Call answered after end call');
 	}, 1000);
 });
 
-RNCallKeep.addEventListener('endCall', ({ callUUID }) => {
-	console.log('Call ended:', callUUID);
-	// Handle call end
-});
-
-RNCallKeep.addEventListener('didPerformSetMutedCallAction', ({ muted, callUUID }) => {
-	console.log('Call muted:', { muted, callUUID });
-	// Handle mute action
-});
-
-RNCallKeep.addEventListener('didPerformDTMFAction', ({ dtmf, callUUID }) => {
-	console.log('DTMF:', { dtmf, callUUID });
-	// Handle DTMF if needed
-});
-
-RNCallKeep.addEventListener('didActivateAudioSession', () => {
-	console.log('Audio session activated');
-	// Handle audio session activation
-});
-
-RNCallKeep.addEventListener('didDeactivateAudioSession', () => {
-	console.log('Audio session deactivated');
-	// Handle audio session deactivation
-});
-
-RNCallKeep.addEventListener('didDisplayIncomingCall', args => {
-	console.log('didDisplayIncomingCall', args);
+RNCallKeep.addEventListener('didReceiveStartCallAction', ({ handle, callUUID, name }) => {
+	console.log('Call didReceiveStartCallAction:', callUUID);
 });
 
 if (isIOS) {
@@ -167,36 +171,21 @@ if (isIOS) {
 	});
 	getMessaging().onMessage(remoteMessage => {
 		console.log('Message received:', remoteMessage);
-		RNCallKeep.displayIncomingCall('E26B14F7-2CDF-48D0-9925-532199AE7C45', 'handle', 'callerName');
+		RNCallKeep.displayIncomingCall(generateUUID(), 'handle', 'callerName');
 		console.log('on message after incoming call');
 	});
 
-	getMessaging().setBackgroundMessageHandler(message => {
+	getMessaging().setBackgroundMessageHandler(async message => {
 		console.log('Message received:', message);
-		RNCallKeep.displayIncomingCall('E26B14F7-2CDF-48D0-9925-532199AE7C45', 'handle', 'callerName');
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		RNCallKeep.backToForeground();
+		RNCallKeep.displayIncomingCall(generateUUID(), 'handle', 'callerName');
 		console.log('background after incoming call');
 	});
+}
 
-	// const setBackgroundNotificationHandler = () => {
-	// 	createChannel();
-	// 	messaging().setBackgroundMessageHandler(async message => {
-	// 		if (message?.data?.ejson) {
-	// 			const notification: any = ejson.parse(message?.data?.ejson as string);
-	// 			if (notification?.notificationType === VIDEO_CONF_TYPE) {
-	// 				if (notification.status === 0) {
-	// 					await displayVideoConferenceNotification(notification);
-	// 				} else if (notification.status === 4) {
-	// 					const id = `${notification.rid}${notification.caller?._id}`.replace(/[^A-Za-z0-9]/g, '');
-	// 					await notifee.cancelNotification(id);
-	// 				}
-	// 			}
-	// 		}
-
-	// 		return null;
-	// 	});
-	// };
-
-	// setBackgroundNotificationHandler();
+function HeadlessCheck({ isHeadless }) {
+	return <View style={{ flex: 1, backgroundColor: 'red' }} />;
 }
 
 if (process.env.USE_STORYBOOK) {
@@ -220,5 +209,15 @@ if (process.env.USE_STORYBOOK) {
 	// 	require('./app/lib/notifications/videoConf/backgroundNotificationHandler');
 	// }
 
-	AppRegistry.registerComponent(appName, () => require('./app/index').default);
+	if (isCallAccepted) {
+		AppRegistry.registerComponent(appName, () => null);
+	} else {
+		AppRegistry.registerComponent(appName, () => require('./app/index').default);
+	}
+
+	// AppRegistry.registerHeadlessTask('RNCallKeepBackgroundMessage', () => ({ name, callUUID, handle }) => {
+	// 	console.log('RNCallKeepBackgroundMessage', { name, callUUID, handle });
+
+	// 	return Promise.resolve();
+	// });
 }

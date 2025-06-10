@@ -23,7 +23,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <!-- <uses-permission android:name="android.permission.RECORD_AUDIO" /> -->
     <!-- Use this to target android >= 14 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
@@ -37,8 +36,7 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/BootTheme"
-        android:hardwareAccelerated="true"
-        tools:replace="android:allowBackup">
+        android:hardwareAccelerated="true">
         <activity
             android:name="chat.rocket.reactnative.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
@@ -98,15 +96,17 @@
             android:value="${BugsnagAPIKey}" />
         
         <!-- CallKeep ConnectionService -->
-        <service
-            android:name="io.wazo.callkeep.RNCallKeepConnectionService"
+        <service android:name="io.wazo.callkeep.VoiceConnectionService"
             android:label="Rocket.Chat"
             android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
-            android:exported="true">
+            android:foregroundServiceType="camera|microphone"
+            android:exported="true"
+        >
             <intent-filter>
                 <action android:name="android.telecom.ConnectionService" />
             </intent-filter>
         </service>
+        <service android:name="io.wazo.callkeep.RNCallKeepBackgroundMessagingService" android:exported="true" />
     </application>
 
     <queries>
