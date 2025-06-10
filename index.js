@@ -1,12 +1,13 @@
 import 'react-native-gesture-handler';
 import 'react-native-console-time-polyfill';
-import { AppRegistry, LogBox, PermissionsAndroid, View } from 'react-native';
+import { AppRegistry, Linking, LogBox, NativeModules, PermissionsAndroid, View } from 'react-native';
 
 import RNCallKeep from 'react-native-callkeep';
 import VoipPushNotification from 'react-native-voip-push-notification';
 import { getMessaging } from '@react-native-firebase/messaging';
 
 import { name as appName } from './app.json';
+import App from './app/index';
 import { isAndroid, isIOS } from './app/lib/methods/helpers';
 
 const options = {
@@ -42,7 +43,7 @@ function generateUUID() {
 	});
 }
 
-let isCallAccepted = false;
+// let isCallAccepted = false;
 
 // Setup CallKeep with proper error handling
 const setupCallKeep = async () => {
@@ -102,24 +103,30 @@ setTimeout(() => {
 	setupCallKeep();
 }, 1000);
 
-// CallKeep event listeners
-RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
-	console.log('Call answered:', callUUID);
-	isCallAccepted = true;
-	RNCallKeep.endAllCalls();
-	RNCallKeep.backToForeground();
-	setTimeout(() => {
-		// RNCallKeep.endCall(callUUID);
+function setupCallKeepAnswerEvent() {
+	// CallKeep event listeners
+	RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+		console.log('Call answered:', callUUID);
+		RNCallKeep.removeEventListener('answerCall');
+		// isCallAccepted = true;
+		// RNCallKeep.backToForeground();
+		const { CallkeepHelperModule } = NativeModules;
+		CallkeepHelperModule.startActivity();
+		RNCallKeep.endCall(callUUID);
+		// setTimeout(() => {
+		// 	// RNCallKeep.endCall(callUUID);
 
-		alert('Call answered');
+		// 	alert('Call answered');
 
-		console.log('Call answered after end call');
-	}, 1000);
-});
+		// 	console.log('Call answered after end call');
+		// }, 1000);
+	});
+}
+setupCallKeepAnswerEvent();
 
-RNCallKeep.addEventListener('didReceiveStartCallAction', ({ handle, callUUID, name }) => {
-	console.log('Call didReceiveStartCallAction:', callUUID);
-});
+// RNCallKeep.addEventListener('didReceiveStartCallAction', ({ handle, callUUID, name }) => {
+// 	console.log('Call didReceiveStartCallAction:', callUUID);
+// });
 
 if (isIOS) {
 	VoipPushNotification.addEventListener('register', token => {
@@ -177,16 +184,45 @@ if (isIOS) {
 
 	getMessaging().setBackgroundMessageHandler(async message => {
 		console.log('Message received:', message);
-		await new Promise(resolve => setTimeout(resolve, 1000));
-		RNCallKeep.backToForeground();
+		// await new Promise(resolve => setTimeout(resolve, 1000));
 		RNCallKeep.displayIncomingCall(generateUUID(), 'handle', 'callerName');
+		// RNCallKeep.backToForeground();
+		// setupCallKeepAnswerEvent();
+
+		// RNCallKeep.addEventListener('answerCall', ({ callUUID }) => {
+		// 	console.log('Call answered:', callUUID);
+		// 	RNCallKeep.removeEventListener('answerCall');
+		// 	// isCallAccepted = true;
+		// 	// RNCallKeep.backToForeground();
+		// 	const { CallkeepHelperModule } = NativeModules;
+		// 	CallkeepHelperModule.startActivity();
+		// 	RNCallKeep.endCall(callUUID);
+
+		// 	// Linking.openURL(`rocketchat://`).catch(err => {
+		// 	// 	console.error(err);
+		// 	// });
+		// 	// setTimeout(() => {
+		// 	// 	// RNCallKeep.endCall(callUUID);
+
+		// 	// 	alert('Call answered');
+
+		// 	// 	console.log('Call answered after end call');
+		// 	// }, 1000);
+		// });
 		console.log('background after incoming call');
 	});
 }
 
-function HeadlessCheck({ isHeadless }) {
-	return <View style={{ flex: 1, backgroundColor: 'red' }} />;
-}
+// Add this after setupCallKeep
+RNCallKeep.addEventListener('didLoadWithEvents', events => {
+	console.log('CallKeep didLoadWithEvents:', events);
+	// Handle any events that occurred before JS bridge was ready
+	// events.forEach(event => {
+	// 	if (event.name === 'RNCallKeepPerformAnswerCallAction' && callAnswerHandler) {
+	// 		callAnswerHandler(event.data);
+	// 	}
+	// });
+});
 
 if (process.env.USE_STORYBOOK) {
 	AppRegistry.registerComponent(appName, () => require('./.storybook/index').default);
@@ -208,12 +244,7 @@ if (process.env.USE_STORYBOOK) {
 	// if (isAndroid) {
 	// 	require('./app/lib/notifications/videoConf/backgroundNotificationHandler');
 	// }
-
-	if (isCallAccepted) {
-		AppRegistry.registerComponent(appName, () => null);
-	} else {
-		AppRegistry.registerComponent(appName, () => require('./app/index').default);
-	}
+	AppRegistry.registerComponent(appName, () => App);
 
 	// AppRegistry.registerHeadlessTask('RNCallKeepBackgroundMessage', () => ({ name, callUUID, handle }) => {
 	// 	console.log('RNCallKeepBackgroundMessage', { name, callUUID, handle });

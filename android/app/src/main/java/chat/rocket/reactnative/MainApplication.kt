@@ -27,6 +27,7 @@ import com.bugsnag.android.Bugsnag
 import expo.modules.ApplicationLifecycleDispatcher
 import chat.rocket.reactnative.networking.SSLPinningPackage;
 import chat.rocket.reactnative.notification.CustomPushNotification;
+import chat.rocket.reactnative.CallkeepHelperPackage;
 
 open class MainApplication : Application(), ReactApplication, INotificationsApplication {
 
@@ -36,6 +37,7 @@ open class MainApplication : Application(), ReactApplication, INotificationsAppl
             PackageList(this).packages.apply {
               add(SSLPinningPackage())
               add(WatermelonDBJSIPackage())
+              add(CallkeepHelperPackage())
             }
 
         override fun getJSMainModuleName(): String = "index"
