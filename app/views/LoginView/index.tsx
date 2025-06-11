@@ -24,7 +24,9 @@ const LoginView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: title ?? 'Rocket.Chat',
-			headerRight: () => <HeaderButton.Legal accessibilityLabel={i18n.t('More')} testID='login-view-more' navigation={navigation} />
+			headerRight: () => (
+				<HeaderButton.Legal accessibilityLabel={i18n.t('More')} testID='login-view-more' navigation={navigation} />
+			)
 		});
 	}, [navigation, title]);
 

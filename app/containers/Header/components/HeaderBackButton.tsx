@@ -21,5 +21,13 @@ const styles = StyleSheet.create({
 
 export const HeaderBackButton = ({ ...props }: HeaderBackButtonProps) => {
 	const { colors } = useTheme();
-	return <RNHeaderBackButton accessibilityLabel={I18n.t('Back')} tintColor={colors.fontDefault} style={styles.container} testID='header-back' {...props} />;
+	return (
+		<RNHeaderBackButton
+			accessibilityLabel={I18n.t('Back')}
+			tintColor={colors.fontDefault}
+			style={styles.container}
+			testID='header-back'
+			{...props}
+		/>
+	);
 };

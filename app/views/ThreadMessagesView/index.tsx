@@ -136,7 +136,12 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
 						}
 					/>
-					<HeaderButton.Item 	accessibilityLabel={I18n.t('Search')} iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
+					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Search')}
+						iconName='search'
+						onPress={this.onSearchPress}
+						testID='thread-messages-view-search-icon'
+					/>
 				</HeaderButton.Container>
 			)
 		};

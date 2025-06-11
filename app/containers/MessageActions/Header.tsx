@@ -69,7 +69,7 @@ const HeaderItem = ({ item, onReaction, theme }: THeaderItem) => {
 		<Touch
 			testID={`message-actions-emoji-${item}`}
 			accessible
-			accessibilityLabel={I18n.t('React_with_emojjname', {emojiName: item})}
+			accessibilityLabel={I18n.t('React_with_emojjname', { emojiName: item })}
 			onPress={() => onReaction({ emoji: item })}
 			style={[styles.headerItem, { backgroundColor: themes[theme].surfaceHover }]}>
 			{typeof item === 'string' ? (
