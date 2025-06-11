@@ -213,7 +213,7 @@ export type SettingsStackParamList = {
 	MediaAutoDownloadView: undefined;
 	PushTroubleshootView: undefined;
 	GetHelpView: undefined;
-	AccessibilityAndAppearanceView: undefined
+	AccessibilityAndAppearanceView: undefined;
 };
 
 export type AdminPanelStackParamList = {
