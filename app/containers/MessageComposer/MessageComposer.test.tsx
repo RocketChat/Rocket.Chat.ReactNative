@@ -17,12 +17,6 @@ jest.useFakeTimers();
 
 const user = userEvent.setup();
 
-jest.mock('../../lib/store/auxStore', () => ({
-	store: {
-		getState: () => mockedStore.getState()
-	}
-}));
-
 const initialStoreState = () => {
 	const baseUrl = 'https://open.rocket.chat';
 	mockedStore.dispatch(selectServerRequest(baseUrl, '6.4.0'));

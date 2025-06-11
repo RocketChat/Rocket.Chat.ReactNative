@@ -80,49 +80,49 @@ describe('Format preview message', () => {
 });
 
 describe('convertAsciiEmoji = true', () => {
-    beforeAll(() => {
-        mockedStore.dispatch(
-            setUser({
-                settings: {
-                    preferences: {
-                        convertAsciiEmoji: true
-                    }
-                }
-            })
-        );
-    });
+	beforeAll(() => {
+		mockedStore.dispatch(
+			setUser({
+				settings: {
+					preferences: {
+						convertAsciiEmoji: true
+					}
+				}
+			})
+		);
+	});
 
-    test('Format unicode :)', () => {
-        const formattedText = usePreviewFormatText(':)');
-        expect(formattedText).toBe('🙂');
-    });
+	test('Format unicode :)', () => {
+		const formattedText = usePreviewFormatText(':)');
+		expect(formattedText).toBe('🙂');
+	});
 
-    test('Format unicode :) with text', () => {
-        const formattedText = usePreviewFormatText('Hello World :)');
-        expect(formattedText).toBe('Hello World 🙂');
-    });
+	test('Format unicode :) with text', () => {
+		const formattedText = usePreviewFormatText('Hello World :)');
+		expect(formattedText).toBe('Hello World 🙂');
+	});
 });
 
 describe('convertAsciiEmoji = false', () => {
-    beforeAll(() => {
-        mockedStore.dispatch(
-            setUser({
-                settings: {
-                    preferences: {
-                        convertAsciiEmoji: false
-                    }
-                }
-            })
-        );
-    });
+	beforeAll(() => {
+		mockedStore.dispatch(
+			setUser({
+				settings: {
+					preferences: {
+						convertAsciiEmoji: false
+					}
+				}
+			})
+		);
+	});
 
-    test('Keep unicode :)', () => {
-        const formattedText = usePreviewFormatText(':)');
-        expect(formattedText).toBe(':)');
-    });
+	test('Keep unicode :)', () => {
+		const formattedText = usePreviewFormatText(':)');
+		expect(formattedText).toBe(':)');
+	});
 
-    test('Keep unicode :) with text', () => {
-        const formattedText = usePreviewFormatText('Hello World :)');
-        expect(formattedText).toBe('Hello World :)');
-    });
+	test('Keep unicode :) with text', () => {
+		const formattedText = usePreviewFormatText('Hello World :)');
+		expect(formattedText).toBe('Hello World :)');
+	});
 });
