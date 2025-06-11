@@ -692,7 +692,7 @@
   "team-name-already-exists": "उस नाम से पहले से ही एक टीम मौजूद है",
   "Teams": "टीमें",
   "Terms_of_Service": " सेवा की शर्तें ",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "इनपुट कंपोजर के ऊपर स्वत: पूर्ण विकल्प उपलब्ध हैं।",
+  "The_autocomplete_options_are_available_above_the_input_composer": "इनपुट कंपोजर के ऊपर स्वत: पूर्ण विकल्प उपलब्ध हैं।",
   "The_room_does_not_exist": "कमरा मौजूद नहीं है या आपको पहुँचने की अनुमति नहीं हो सकती है",
   "The_user_will_be_able_to_type_in_roomName": "उपयोगकर्ता को {{roomName}} में टाइप करने की अनुमति होगी",
   "The_user_will_be_removed_from_s": "उपयोगकर्ता {{s}} से हटा दिया जाएगा",

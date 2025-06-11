@@ -685,7 +685,7 @@
   "team-name-already-exists": "Ein Team mit diesem Namen existiert bereits",
   "Teams": "Teams",
   "Terms_of_Service": " Nutzungsbedingungen",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "Die Autovervollständigungsmöglichkeiten sind über dem Eingabefeld verfügbar.",
+  "The_autocomplete_options_are_available_above_the_input_composer": "Die Autovervollständigungsmöglichkeiten sind über dem Eingabefeld verfügbar.",
   "The_user_will_be_able_to_type_in_roomName": "Der Nutzer wird in {{roomName}} schreiben können",
   "The_user_will_be_removed_from_s": "Der Benutzer wird aus {{s}} entfernt",
   "The_user_wont_be_able_to_type_in_roomName": "Dem Nutzer wird es nicht möglich sein in {{roomName}} zu schreiben",

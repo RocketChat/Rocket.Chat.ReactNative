@@ -756,7 +756,7 @@
   "Teams": "Týmy",
   "Terms_of_Service": "Podmínky služby",
   "Test_push_notification": "Testovat oznámení push",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "Možnosti automatického doplňování jsou dostupné nad vstupním polem.",
+  "The_autocomplete_options_are_available_above_the_input_composer": "Možnosti automatického doplňování jsou dostupné nad vstupním polem.",
   "The_maximum_number_of_users_has_been_reached": "Bylo dosaženo maximálního počtu uživatelů.",
   "The_room_does_not_exist": "Místnost neexistuje nebo možná nemáte oprávnění k přístupu",
   "The_user_will_be_able_to_type_in_roomName": "Uživatel bude moci psát v {{roomName}}",

@@ -488,7 +488,7 @@
   "Take_a_video": "Video çek",
   "Take_it": "Al!",
   "Terms_of_Service": " Kullanım Şartları ",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "Otomatik tamamlama seçenekleri, giriş düzenleyicisinin üzerinde mevcuttur.",
+  "The_autocomplete_options_are_available_above_the_input_composer": "Otomatik tamamlama seçenekleri, giriş düzenleyicisinin üzerinde mevcuttur.",
   "The_user_will_be_able_to_type_in_roomName": "Kullanıcı {{roomName}} içinde yazabilecek",
   "The_user_will_be_removed_from_s": "Kullanıcı, {{s}} alanından kaldırılacak!",
   "The_user_wont_be_able_to_type_in_roomName": "Kullanıcı {{roomName}} içinde yazamayacak",

@@ -489,7 +489,7 @@
   "Take_a_video": "錄影",
   "Take_it": "拿去！",
   "Terms_of_Service": "服務條款",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "自動完成選項位於輸入編輯器上方。",
+  "The_autocomplete_options_are_available_above_the_input_composer": "自動完成選項位於輸入編輯器上方。",
   "The_user_will_be_able_to_type_in_roomName": "此使用者將可以在 {{roomName}} 中輸入",
   "The_user_wont_be_able_to_type_in_roomName": "此使用者將無法在 {{roomName}} 中輸入",
   "Theme": "佈景主題",

@@ -637,7 +637,7 @@
   "team-name-already-exists": "Команда с таким названием уже существует",
   "Teams": "Команды",
   "Terms_of_Service": " Условия использования ",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "Варианты автозаполнения доступны над полем ввода.",
+  "The_autocomplete_options_are_available_above_the_input_composer": "Варианты автозаполнения доступны над полем ввода.",
   "The_user_will_be_able_to_type_in_roomName": "Пользователь сможет писать сообщения в {{roomName}}",
   "The_user_will_be_removed_from_s": "Пользователь будет удален из {{s}}",
   "The_user_wont_be_able_to_type_in_roomName": "Пользователь не сможет писать сообщения в {{roomName}}",

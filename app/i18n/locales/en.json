@@ -786,7 +786,7 @@
   "Teams": "Teams",
   "Terms_of_Service": " Terms of service ",
   "Test_push_notification": "Test push notification",
-  "The_autocomplete_options_are_available_above_the_input_composer.": "The autocomplete options are available above the input composer.",
+  "The_autocomplete_options_are_available_above_the_input_composer": "The autocomplete options are available above the input composer.",
   "The_maximum_number_of_users_has_been_reached": "The maximum number of users has been reached.",
   "The_room_does_not_exist": "The room does not exist or you may not have access permission",
   "The_user_will_be_able_to_type_in_roomName": "The user will be able to type in {{roomName}}",
