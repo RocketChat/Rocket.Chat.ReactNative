@@ -684,6 +684,8 @@
   "Threads_displaying_all": "Показать все",
   "Threads_displaying_following": "Показать отслеживаемые",
   "Threads_displaying_unread": "Показать непрочитанные",
+  "Threads_dm_unread": "Темы, {{unread}} непрочитанных, прямое/групповое упоминание.",
+  "Threads_unread": "Темы, {{unread}} непрочитанных",
   "Timezone": "Часовой пояс",
   "To_download": "Скачать",
   "Token_expired": "Срок действия вашей сессии истек. Пожалуйста войдите снова.",

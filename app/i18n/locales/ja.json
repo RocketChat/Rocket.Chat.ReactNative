@@ -446,6 +446,8 @@
   "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
   "Thread": "スレッド",
   "Threads": "スレッド",
+  "Threads_dm_unread": "スレッド、{{unread}}件の未読、直接/グループのメンション",
+  "Threads_unread": "スレッド、{{unread}} 未読",
   "Timezone": "タイムゾーン",
   "To_download": "ダウンロードする",
   "Topic": "トピック",

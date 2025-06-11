@@ -653,6 +653,8 @@
   "Threads_displaying_all": "Prikazovanje vseh",
   "Threads_displaying_following": "Prikazovanje sledenja",
   "Threads_displaying_unread": "Prikaz neprebranega",
+  "Threads_dm_unread": "Nitke, {{unread}} neprebrane, neposredno/skuinsko omembo",
+  "Threads_unread": "Nit, {{unread}} neprebranih",
   "Timezone": "Časovni pas",
   "To_download": "Prenesi",
   "Token_expired": "Vaša seja je potekla. Prosimo, prijavite se še enkrat.",

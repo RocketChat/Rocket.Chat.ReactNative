@@ -732,6 +732,8 @@
   "Threads_displaying_all": "zeige alle",
   "Threads_displaying_following": "zeige gefolgte",
   "Threads_displaying_unread": "Zeige ungelesene",
+  "Threads_dm_unread": "Threads, {{unread}} ungelesen, Direkt-/Gruppen-Erwähnung",
+  "Threads_unread": "Threads, {{unread}} ungelesen",
   "Timezone": "Zeitzone",
   "To_download": "Herunterladen",
   "Token_expired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",

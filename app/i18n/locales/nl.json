@@ -639,6 +639,8 @@
   "Threads_displaying_all": "Alles weergeven",
   "Threads_displaying_following": "Volgend weergeven",
   "Threads_displaying_unread": "Ongelezen weergeven",
+  "Threads_dm_unread": "Threads, {{unread}} ongelezen, directe/groepsvermelding",
+  "Threads_unread": "Threads, {{unread}} ongelezen",
   "Timezone": "Tijdzone",
   "To_download": "Downloaden",
   "Token_expired": "Uw sessie is verlopen. Gelieve opnieuw in te loggen.",

@@ -803,6 +803,8 @@
   "Threads_displaying_all": "Zobrazení všech",
   "Threads_displaying_following": "Zobrazení sledování",
   "Threads_displaying_unread": "Zobrazuji nepřečtené",
+  "Threads_dm_unread": "Vlákna, {{unread}} nepřečtené, přímá/skupinová zmínka",
+  "Threads_unread": "Vlákna, {{unread}} nepřečtené",
   "Timezone": "Časové pásmo",
   "To_download": "Stáhnout",
   "Token_expired": "Vaše relace vypršela. Přihlaste se prosím znovu.",

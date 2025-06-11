@@ -439,6 +439,18 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		return status === 'queued';
 	};
 
+	threadsAccessibilityLabel = () => {
+		const { tunreadGroup, tunreadUser, tunread } = this.state;
+
+		if (!tunread.length) {
+			return i18n.t('Threads');
+		}
+		if (tunreadUser?.length || tunreadGroup?.length) {
+			return i18n.t('Threads_dm_unread', { unread: tunreadUser?.length ?? tunreadGroup?.length });
+		}
+		return i18n.t('Threads_unread', { unread: tunread?.length });
+	};
+
 	render() {
 		const { isFollowingThread, tunread, tunreadUser, tunreadGroup, canToggleEncryption } = this.state;
 		const {
@@ -515,7 +527,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 				) : null}
 				{threadsEnabled ? (
 					<HeaderButton.Item
-						accessibilityLabel={tunread?.length > 0 ? '' : i18n.t('Threads')}
+						accessibilityLabel={this.threadsAccessibilityLabel()}
 						iconName='threads'
 						onPress={this.goThreadsView}
 						testID='room-view-header-threads'

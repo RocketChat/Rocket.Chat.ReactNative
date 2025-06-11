@@ -552,6 +552,8 @@
   "Threads_displaying_all": "Visualizza Tutti",
   "Threads_displaying_following": "Visualizza Seguiti",
   "Threads_displaying_unread": "Visualizza Non letti",
+  "Threads_dm_unread": "Discussioni, {{unread}} non lette, menzione diretta/di gruppo",
+  "Threads_unread": "Discussioni, {{unread}} non lette",
   "Timezone": "Fuso orario",
   "To_download": "Scaricare",
   "Topic": "Argomento",

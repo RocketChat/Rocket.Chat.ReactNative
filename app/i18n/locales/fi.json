@@ -707,6 +707,8 @@
   "Threads_displaying_all": "Näytetään kaikki",
   "Threads_displaying_following": "Näytetään seuratut",
   "Threads_displaying_unread": "Näytetään lukemattomat",
+  "Threads_dm_unread": "Keskustelut, {{unread}} lukematonta, suora/ryhmän maininta",
+  "Threads_unread": "Ketjut, {{unread}} lukematonta",
   "Timezone": "Aikavyöhyke",
   "To_download": "Ladataaksesi",
   "Token_expired": "Istuntosi on vanhentunut. Kirjaudu uudelleen.",

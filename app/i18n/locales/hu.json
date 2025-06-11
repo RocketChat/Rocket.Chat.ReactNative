@@ -741,6 +741,8 @@
   "Threads_displaying_all": "Az összes megjelenítés",
   "Threads_displaying_following": "A következők megjelenítése",
   "Threads_displaying_unread": "Olvasatlanok megjelenítése",
+  "Threads_dm_unread": "Szegmensek, {{unread}} olvasatlan, közvetlen/csoportos említés",
+  "Threads_unread": "Fonalak, {{unread}} olvasatlan",
   "Timezone": "Időzóna",
   "To_download": "Letöltéshez",
   "Token_expired": "Az Ön munkamenete lejárt. Kérjük, jelentkezzen be újra.",

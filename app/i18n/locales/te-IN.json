@@ -738,6 +738,8 @@
   "Threads_displaying_all": "అన్నింటిని ప్రదర్శిస్తుంది",
   "Threads_displaying_following": "అనుసరిస్తుంది",
   "Threads_displaying_unread": "చదవనిచ్చినది ప్రదర్శిస్తుంది",
+  "Threads_dm_unread": "थ्रेड्स, {{unread}} नहीं पढ़े गए, डायरेक्ट/ग्रुप मेंशन",
+  "Threads_unread": "थ्रेड्स, {{unread}} अपठित",
   "Timezone": "సమయ మండలం",
   "To_download": "डाउनलोड करने के लिए",
   "Token_expired": "మీ సెషన్ అవుతోంది. దయచేసి మళ్ళీ లాగిన్ అవ్వండి.",

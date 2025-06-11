@@ -812,6 +812,8 @@
   "Threads_displaying_all": "Mostrando tudo",
   "Threads_displaying_following": "Mostrando seguindo",
   "Threads_displaying_unread": "Mostrando não lidos",
+  "Threads_dm_unread": "Threads, {{unread}} não lidas, menção direta/em grupo",
+  "Threads_unread": "Tópicos, {{unread}} não lidos",
   "Timezone": "Fuso horário",
   "To_continue_using_RocketChat": "Para continuar usando o aplicativo móvel, você precisa alterar sua senha.",
   "To_download": "Para baixar",

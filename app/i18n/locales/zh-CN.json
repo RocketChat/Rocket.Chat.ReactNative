@@ -507,6 +507,8 @@
   "Threads_displaying_all": "显示全部",
   "Threads_displaying_following": "显示追踪中",
   "Threads_displaying_unread": "显示未读",
+  "Threads_dm_unread": "主题，{{unread}} 未读，直接/群组提及",
+  "Threads_unread": "主题，{{unread}} 未读",
   "Timezone": "时区",
   "To_download": "下载",
   "Topic": "主题",

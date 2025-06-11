@@ -706,6 +706,8 @@
   "Threads_displaying_all": "Visar alla",
   "Threads_displaying_following": "Visar de du följer",
   "Threads_displaying_unread": "Visar olästa",
+  "Threads_dm_unread": "Trådar, {{unread}} olästa, direkt/gruppomnämnande",
+  "Threads_unread": "Trådar, {{unread}} olästa",
   "Timezone": "Tidszon",
   "To_download": "Ladda ner",
   "Token_expired": "Din session har upphört. Logga in igen.",

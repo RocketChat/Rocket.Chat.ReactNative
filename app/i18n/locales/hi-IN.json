@@ -739,6 +739,8 @@
   "Threads_displaying_all": "सभी दिखा रहा है",
   "Threads_displaying_following": "फॉलो करने वाले को दिखा रहा है",
   "Threads_displaying_unread": "अपठित दिखा रहा है",
+  "Threads_dm_unread": "थ्रेड्स, {{unread}} अप्रयुक्त, डायरेक्ट/ग्रुप उल्लेख",
+  "Threads_unread": "थ्रेड्स, {{unread}} अपठित",
   "Timezone": "समय क्षेत्र",
   "To_download": "डाउनलोड करने के लिए",
   "Token_expired": "आपका सत्र समाप्त हो गया है। कृपया पुनः लॉग इन करें।",
