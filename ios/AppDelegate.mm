@@ -7,6 +7,8 @@
 #import <Firebase.h>
 #import <Bugsnag/Bugsnag.h>
 #import <MMKV/MMKV.h>
+#import <RNCallKeep/RNCallKeep.h>
+#import <RNVoipPushNotification/RNVoipPushNotificationManager.h>
 
 @implementation AppDelegate
 
@@ -16,6 +18,8 @@
     [FIRApp configure];
   }
   [Bugsnag start];
+    
+    [RNVoipPushNotificationManager voipRegistration];
   
   // AppGroup MMKV
   NSString *groupDir = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppGroup"]].path;
@@ -31,11 +35,49 @@
   self.initialProps = @{};
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:self.window.rootViewController.view];
-  [[[SSLPinning alloc] init] migrate];
+//  [[[SSLPinning alloc] init] migrate];
+    
+    [RNCallKeep setup:@{@"appName": @"Rocket.Chat"}];
+//      [RNVoipPushNotificationManager voipRegistration];
+    
   
   self.watchConnection = [[WatchConnection alloc] initWithSession:[WCSession defaultSession]];
 
   return YES;
+}
+
+// --- Handle updated push credentials
+- (void)pushRegistry:(PKPushRegistry *)registry didUpdatePushCredentials:(PKPushCredentials *)credentials forType:(PKPushType)type {
+  // Register VoIP push token (a property of PKPushCredentials) with server
+  [RNVoipPushNotificationManager didUpdatePushCredentials:credentials forType:(NSString *)type];
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didInvalidatePushTokenForType:(PKPushType)type
+{
+  // --- The system calls this method when a previously provided push token is no longer valid for use. No action is necessary on your part to reregister the push type. Instead, use this method to notify your server not to send push notifications using the matching push token.
+}
+
+- (void)pushRegistry:(PKPushRegistry *)registry didReceiveIncomingPushWithPayload:(PKPushPayload *)payload forType:(PKPushType)type withCompletionHandler:(void (^)(void))completion {
+  NSString *uuid = [[[NSUUID UUID] UUIDString] lowercaseString];
+  NSString *callerName = payload.dictionaryPayload[@"caller"];
+  NSString *handle = payload.dictionaryPayload[@"caller"];
+  
+  [RNVoipPushNotificationManager didReceiveIncomingPushWithPayload:payload forType:(NSString *)type];
+  
+  [RNCallKeep reportNewIncomingCall:uuid
+                             handle:handle
+                         handleType:@"generic"
+                           hasVideo:YES
+                localizedCallerName:callerName
+                    supportsHolding:YES
+                       supportsDTMF:YES
+                   supportsGrouping:YES
+                 supportsUngrouping:YES
+                        fromPushKit:YES
+                            payload:payload.dictionaryPayload
+              withCompletionHandler:nil];
+  
+  completion();
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
