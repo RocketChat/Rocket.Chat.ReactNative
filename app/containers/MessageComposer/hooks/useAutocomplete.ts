@@ -35,18 +35,22 @@ export const useAutocomplete = ({
 	text,
 	type,
 	rid,
-	commandParams
+	commandParams,
+	updateAutocompleteVisible = () => null
 }: {
 	rid?: string;
 	type: TAutocompleteType;
 	text: string;
 	commandParams?: string;
+	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
 	useEffect(() => {
 		const getAutocomplete = async () => {
 			try {
 				if (!rid || !type) {
+					updateAutocompleteVisible(false);
+
 					setItems([]);
 					return;
 				}
@@ -96,6 +100,7 @@ export const useAutocomplete = ({
 						}
 					}
 					setItems(parsedRes);
+					updateAutocompleteVisible(parsedRes.length > 0);
 				}
 				if (type === ':') {
 					const customEmojis = await getCustomEmojis(text);
@@ -113,6 +118,7 @@ export const useAutocomplete = ({
 						}))
 					);
 					setItems(mergedEmojis);
+					updateAutocompleteVisible(mergedEmojis.length > 0);
 				}
 				if (type === '/') {
 					const db = database.active;
@@ -127,10 +133,12 @@ export const useAutocomplete = ({
 						type
 					}));
 					setItems(commands);
+					updateAutocompleteVisible(commands.length > 0);
 				}
 				if (type === '/preview') {
 					if (!commandParams) {
 						setItems([]);
+						updateAutocompleteVisible(false);
 						return;
 					}
 					const response = await Services.getCommandPreview(text, rid, commandParams);
@@ -143,6 +151,7 @@ export const useAutocomplete = ({
 							params: commandParams
 						}));
 						setItems(previewItems);
+						updateAutocompleteVisible(previewItems.length > 0);
 					}
 				}
 				if (type === '!') {
@@ -156,6 +165,7 @@ export const useAutocomplete = ({
 									type
 								}
 							]);
+							updateAutocompleteVisible(false);
 							return;
 						}
 
@@ -166,11 +176,13 @@ export const useAutocomplete = ({
 							type
 						}));
 						setItems(cannedResponses);
+						updateAutocompleteVisible(cannedResponses.length > 0);
 					}
 				}
 			} catch (e) {
 				log(e);
 				setItems([]);
+				updateAutocompleteVisible(false);
 			}
 		};
 		getAutocomplete();

@@ -660,6 +660,7 @@
   "team-name-already-exists": "Tiimi tällä nimellä on jo olemassa",
   "Teams": "Tiimit",
   "Terms_of_Service": "Käyttöehdot",
+  "The_autocomplete_options_are_available_above_the_input_composer.": "Automaattisen täydennyksen vaihtoehdot ovat saatavilla kirjoitusalueen yläpuolella.",
   "The_user_will_be_able_to_type_in_roomName": "Käyttäjä voi kirjoittaa huoneessa {{roomName}}",
   "The_user_will_be_removed_from_s": "Käyttäjä poistetaan kohteesta {{s}}",
   "The_user_wont_be_able_to_type_in_roomName": "Käyttäjä ei voi kirjoittaa huoneessa {{roomName}}",
