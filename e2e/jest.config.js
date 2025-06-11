@@ -4,7 +4,7 @@ module.exports = {
 	testSequencer: '<rootDir>/e2e/testSequencer.js',
 	testMatch: ['<rootDir>/e2e/tests/**/*.spec.ts'],
 	testTimeout: 120000,
-	maxWorkers: process.env.CI ? 1 : 3, // ci already uses parallelism
+	maxWorkers: process.env.CI ? 1 : 1, // ci already uses parallelism
 	globalSetup: 'detox/runners/jest/globalSetup',
 	globalTeardown: 'detox/runners/jest/globalTeardown',
 	reporters: ['detox/runners/jest/reporter'],

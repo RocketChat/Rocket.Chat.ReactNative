@@ -44,7 +44,8 @@ import {
 	compareServerVersion,
 	showConfirmationAlert,
 	showErrorAlert,
-	random
+	random,
+	isAndroid
 } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import Button from '../../containers/Button';
@@ -565,6 +566,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									this.announcement?.focus();
 								}}
 								testID='room-info-edit-view-topic'
+								textContentType='none'
+								autoComplete='off'
+								importantForAutofill='no'
 							/>
 							<FormTextInput
 								inputRef={e => {
@@ -577,6 +581,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									this.description?.focus();
 								}}
 								testID='room-info-edit-view-announcement'
+								textContentType='none'
+								autoComplete='off'
+								importantForAutofill='no'
 							/>
 							<FormTextInput
 								inputRef={e => {
@@ -589,6 +596,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 									this.joinCode?.focus();
 								}}
 								testID='room-info-edit-view-description'
+								textContentType='none'
+								autoComplete='off'
+								importantForAutofill='no'
 							/>
 						</View>
 
@@ -601,6 +611,9 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 							onChangeText={value => this.setState({ joinCode: value })}
 							secureTextEntry
 							testID='room-info-edit-view-password'
+							autoComplete={isAndroid ? 'new-password' : undefined}
+							textContentType={isAndroid ? 'newPassword' : undefined}
+							importantForAutofill={isAndroid ? 'yes' : undefined}
 						/>
 						<View style={styles.switches}>
 							<SwitchContainer
