@@ -133,10 +133,7 @@ class CreateDiscussionView extends React.Component<ICreateChannelViewProps, ICre
 		const { name, users, encrypted } = this.state;
 		const { server, user, blockUnauthenticatedAccess, theme, serverVersion } = this.props;
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].surfaceHover }}
-				contentContainerStyle={styles.container}
-				keyboardVerticalOffset={128}>
+			<KeyboardView backgroundColor={themes[theme].surfaceHover}>
 				<StatusBar />
 				<SafeAreaView testID='create-discussion-view'>
 					<ScrollView {...scrollPersistTaps}>
