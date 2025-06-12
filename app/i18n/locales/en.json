@@ -296,6 +296,7 @@
   "Enter_the_code": "Enter the code we just emailed you.",
   "Error_Download_file": "Error while downloading file",
   "Error_play_video": "There was an error while playing this video",
+  "Error_prefix": "Error: {{message}}",
   "Error_uploading": "Error uploading",
   "error-action-not-allowed": "{{action}} is not allowed",
   "error-avatar-invalid-url": "Invalid avatar URL: {{url}}",

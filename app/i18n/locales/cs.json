@@ -275,6 +275,7 @@
   "Enter_Your_Encryption_Password_desc1": "To vám umožní přístup k vašim zašifrovaným soukromým skupinám a přímým zprávám.",
   "Enter_Your_Encryption_Password_desc2": "Ke kódování/dekódování zpráv musíte zadat heslo na každém místě, kde používáte chat.",
   "Error_Download_file": "Chyba při stahování souboru",
+  "Error_prefix": "Chyba: {{message}}",
   "Error_uploading": "Chyba při nahrávání",
   "error-action-not-allowed": "{{action}} není povolena",
   "error-avatar-invalid-url": "Neplatná adresa URL avatara: {{url}}",

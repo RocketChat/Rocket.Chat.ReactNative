@@ -257,6 +257,7 @@
   "Enter_E2EE_Password": "Adja meg az E2EE jelszót",
   "Enter_E2EE_Password_description": "Az titkosított csatornákhoz és közvetlen üzenetekhez való hozzáféréshez írja be a titkosítási jelszavát. Ez nincs tárolva a szerveren, így minden eszközön használnia kell.",
   "Error_Download_file": "Hiba a fájl letöltése közben",
+  "Error_prefix": "Hiba: {{üzenet}}",
   "Error_uploading": "Hiba feltöltése",
   "error-action-not-allowed": "A(z) {{action}} tevékenység nem engedélyezett",
   "error-avatar-invalid-url": "Érvénytelen avatar URL: {{url}}",

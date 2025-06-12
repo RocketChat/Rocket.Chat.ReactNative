@@ -236,6 +236,7 @@
   "Enter_E2EE_Password": "Anna E2EE-salasana",
   "Enter_E2EE_Password_description": "Päästäksesi käsiksi salattuihin kanaviisi ja suoriin viesteihisi, syötä salaus salasanasi. Tätä ei tallenneta palvelimelle, joten sinun on käytettävä sitä jokaisella laitteella.",
   "Error_Download_file": "Virhe ladattaessa tiedostoa",
+  "Error_prefix": "Virhe: {{message}}",
   "Error_uploading": "Virhe ladattaessa",
   "error-action-not-allowed": "{{action}} ei ole sallittu",
   "error-avatar-invalid-url": "Virheellinen avatarin URL-osoite: {{url}}",

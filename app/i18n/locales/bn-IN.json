@@ -257,6 +257,7 @@
   "Enter_E2EE_Password": "E2EE পাসওয়ার্ড দিন",
   "Enter_E2EE_Password_description": "আপনার এনক্রিপ্টেড চ্যানেলগুলি এবং সরাসরি বার্তাগুলি অ্যাক্সেস করতে, আপনার এনক্রিপশন পাসওয়ার্ড লিখুন। এটি সার্ভারে সংরক্ষিত হয় না, তাই আপনাকে প্রতিটি ডিভাইসে এটি ব্যবহার করতে হবে।",
   "Error_Download_file": "ফাইল ডাউনলোড করতে ত্রুটি",
+  "Error_prefix": "ত্রুটি: {{message}}",
   "Error_uploading": "আপলোড করার সময় ত্রুটি",
   "error-action-not-allowed": "{{action}} অনুমোদিত নয়",
   "error-avatar-invalid-url": "অবৈধ অবতার URL: {{url}}",

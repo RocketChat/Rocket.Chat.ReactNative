@@ -286,6 +286,7 @@
   "Enter_the_code": "Insira o código que acabamos de enviar por e-mail.",
   "Error_Download_file": "Erro ao baixar o arquivo",
   "Error_play_video": "Houve um erro ao reproduzir esse vídeo",
+  "Error_prefix": "Erro: {{message}}",
   "Error_uploading": "Erro subindo",
   "error-action-not-allowed": "{{action}} não é permitido",
   "error-avatar-invalid-url": "URL inválida de avatar: {{url}}",

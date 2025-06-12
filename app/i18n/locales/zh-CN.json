@@ -163,6 +163,7 @@
   "End_to_end_encrypted_room": "E2E 加密聊天室",
   "Enter_E2EE_Password": "输入 E2EE 密码",
   "Enter_E2EE_Password_description": "要访问您的加密频道和直接消息，请输入您的加密密码。这不会存储在服务器上，因此您需要在每个设备上使用它。",
+  "Error_prefix": "错误：{{message}}",
   "Error_uploading": "错误上传",
   "error-action-not-allowed": "{{action}} 不允許",
   "error-avatar-invalid-url": "无效的头像网址：{{url}}",

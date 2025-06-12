@@ -178,6 +178,7 @@
   "End_to_end_encrypted_room": "Stanza crittografata end to end",
   "Enter_E2EE_Password": "Inserisci la password E2EE",
   "Enter_E2EE_Password_description": "Per accedere ai tuoi canali criptati e ai messaggi diretti, inserisci la tua password di crittografia. Questa non viene memorizzata sul server, quindi dovrai usarla su ogni dispositivo.",
+  "Error_prefix": "Errore: {{message}}",
   "Error_uploading": "Errore nel caricamento di",
   "error-action-not-allowed": "{{action}} non autorizzata",
   "error-avatar-invalid-url": "URL avatar non valido: {{url}}",

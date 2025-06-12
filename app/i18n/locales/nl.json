@@ -203,6 +203,7 @@
   "Enter_E2EE_Password": "Voer E2EE-wachtwoord in",
   "Enter_E2EE_Password_description": "Om toegang te krijgen tot uw versleutelde kanalen en directe berichten, voert u uw versleutelingswachtwoord in. Dit wordt niet op de server opgeslagen, dus u moet het op elk apparaat gebruiken.",
   "Error_Download_file": "Fout tijdens het downloaden van bestand",
+  "Error_prefix": "Fout: {{message}}",
   "Error_uploading": "Fout bij uploaden",
   "error-action-not-allowed": "{{action}} is niet toegestaan",
   "error-avatar-invalid-url": "Ongeldige avatar-URL: {{url}}",

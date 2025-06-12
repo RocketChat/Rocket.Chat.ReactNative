@@ -169,6 +169,7 @@
   "End_to_end_encrypted_room": "E2E 加密聊天室",
   "Enter_E2EE_Password": "輸入 E2EE 密碼",
   "Enter_E2EE_Password_description": "要存取您的加密頻道和直接訊息，請輸入您的加密密碼。這不會儲存在伺服器上，因此您需要在每個裝置上使用它。",
+  "Error_prefix": "錯誤：{{message}}",
   "Error_uploading": "錯誤上傳",
   "error-action-not-allowed": "{{action}} 不允許",
   "error-avatar-invalid-url": "無效的大頭貼網址：{{url}}",

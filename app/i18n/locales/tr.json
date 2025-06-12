@@ -167,6 +167,7 @@
   "End_to_end_encrypted_room": "Uçtan uca şifreli oda",
   "Enter_E2EE_Password": "E2EE Şifresini Girin",
   "Enter_E2EE_Password_description": "Şifreli kanallarınıza ve doğrudan mesajlarınıza erişmek için şifreleme şifrenizi girin. Bu, sunucuda saklanmaz, bu nedenle her cihazda kullanmanız gerekir.",
+  "Error_prefix": "Hata: {{message}}",
   "Error_uploading": "Yükleme hatası",
   "error-action-not-allowed": "{{action}}'a izin verilmiyor!",
   "error-avatar-invalid-url": "Geçersiz avatar URL'si: {{url}}",

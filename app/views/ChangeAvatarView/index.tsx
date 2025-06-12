@@ -56,15 +56,20 @@ const initialState = {
 
 function reducer(state: IState, action: IReducerAction) {
 	const { type, payload } = action;
-	if (type in AvatarStateActions) {
-		return {
-			...initialState,
-			...payload
-		};
-	}
-	return state;
-}
+	console.log(state, payload);
 
+	switch (type) {
+		case AvatarStateActions.CHANGE_AVATAR:
+		case AvatarStateActions.RESET_USER_AVATAR:
+		case AvatarStateActions.RESET_ROOM_AVATAR:
+			return {
+				...state,
+				...payload
+			};
+		default:
+			return state;
+	}
+}
 const ChangeAvatarView = () => {
 	const {
 		control,
@@ -119,6 +124,7 @@ const ChangeAvatarView = () => {
 	}, [navigation]);
 
 	const dispatchAvatar = (action: IReducerAction) => {
+		console.log('dispatching', action);
 		isDirty.current = true;
 		dispatch(action);
 	};
@@ -127,10 +133,10 @@ const ChangeAvatarView = () => {
 		const result = await isImageURL(value);
 
 		if (!result || !value) {
-			dispatchAvatar({
+			/* dispatchAvatar({
 				type: AvatarStateActions.RESET_USER_AVATAR,
 				payload: { resetUserAvatar: `@${username}` }
-			});
+			}); */
 		}
 	}, textInputDebounceTime);
 
@@ -204,8 +210,10 @@ const ChangeAvatarView = () => {
 		}
 	};
 
-	const deletingRoomAvatar = context === 'room' && state.data === null;
+	// https://i.pinimg.com/1200x/38/6b/fa/386bfa6a35062dc57936e2480e1df212.jpg
 
+	const deletingRoomAvatar = context === 'room' && state.data === null;
+	console.log(state);
 	return (
 		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
 			<StatusBar />
@@ -228,7 +236,7 @@ const ChangeAvatarView = () => {
 							<Avatar
 								text={room?.name || state.resetUserAvatar || username}
 								avatar={state?.url}
-								isStatic={state?.url}
+								isStatic={Boolean(state?.url)}
 								size={120}
 								type={t}
 								rid={room?.rid}

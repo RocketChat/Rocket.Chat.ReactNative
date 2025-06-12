@@ -236,6 +236,7 @@
   "Enter_E2EE_Password": "Ange E2EE-lösenord",
   "Enter_E2EE_Password_description": "För att komma åt dina krypterade kanaler och direkta meddelanden, ange ditt krypteringslösenord. Detta lagras inte på servern, så du måste använda det på varje enhet.",
   "Error_Download_file": "Fel vid nedladdning av fil",
+  "Error_prefix": "Fel: {{message}}",
   "Error_uploading": "Fel vid uppladdning",
   "error-action-not-allowed": "{{action}} tillåts inte",
   "error-avatar-invalid-url": "Ogiltig avatar-URL: {{url}}",

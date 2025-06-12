@@ -251,6 +251,7 @@
   "Enter_E2EE_Password": "E2EE-Passwort eingeben",
   "Enter_E2EE_Password_description": "Um auf Ihre verschlüsselten Kanäle und Direktnachrichten zuzugreifen, geben Sie Ihr Verschlüsselungspasswort ein. Dies wird nicht auf dem Server gespeichert, daher müssen Sie es auf jedem Gerät verwenden.",
   "Error_Download_file": "Fehler beim Herunterladen der Datei",
+  "Error_prefix": "Fehler: {{message}}",
   "Error_uploading": "Fehler beim Hochladen",
   "error-action-not-allowed": "{{action}} ist nicht erlaubt",
   "error-avatar-invalid-url": "Ungültige Avatar-URL: {{url}}",
