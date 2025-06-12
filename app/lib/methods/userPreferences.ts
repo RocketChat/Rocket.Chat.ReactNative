@@ -55,7 +55,7 @@ class UserPreferences {
 		if (this.getString(key) !== null) {
 			return this.mmkv.removeItem(key) ?? undefined;
 		}
-		return false; // Key did not exist, so removal was not performed
+		return false;
 	}
 }
 
