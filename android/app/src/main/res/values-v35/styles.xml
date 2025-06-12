@@ -1,7 +1,6 @@
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:colorEdgeEffect">#aaaaaa</item>
-        <item name="colorPrimaryDark">@color/splashBackground</item>
         <item name="android:forceDarkAllowed">false</item>
         <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     </style>

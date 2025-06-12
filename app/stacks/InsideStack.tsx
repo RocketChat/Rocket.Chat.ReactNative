@@ -97,7 +97,6 @@ const ChatsStackNavigator = () => {
 	return (
 		<ChatsStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ChatsStack.Screen name='RoomsListView' component={RoomsListView} />
-			{/* <ChatsStack.Screen name='KeyboardView' component={KeyboardView} /> */}
 			<ChatsStack.Screen name='RoomView' component={RoomView} />
 			<ChatsStack.Screen name='RoomActionsView' component={RoomActionsView} options={RoomActionsView.navigationOptions} />
 			{/* @ts-ignore */}
