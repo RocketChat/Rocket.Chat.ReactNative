@@ -10,7 +10,7 @@ import database from '../../lib/database';
 import I18n from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import SearchBox from '../../containers/SearchBox';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';

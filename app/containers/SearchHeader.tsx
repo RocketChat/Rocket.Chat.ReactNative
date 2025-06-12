@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		...sharedStyles.textSemibold,
-		fontSize: 16
+		fontSize: 16,
+		paddingVertical: 6
 	}
 });
 
@@ -37,6 +38,9 @@ const SearchHeader = ({ onSearchChangeText, testID, style }: ISearchHeaderProps)
 				placeholder={I18n.t('Search')}
 				onChangeText={onSearchChangeText}
 				testID={testID}
+				autoComplete='off'
+				autoCorrect={false}
+				autoCapitalize='none'
 			/>
 		</View>
 	);

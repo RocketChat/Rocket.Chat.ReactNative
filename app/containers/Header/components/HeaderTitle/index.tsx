@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { memo, ReactNode } from 'react';
 import { Text, View } from 'react-native';
 
 import { isAndroid } from '../../../../lib/methods/helpers';
@@ -9,7 +9,7 @@ interface IHeaderTitle {
 	headerTitle?: string | ((props: { children: string; tintColor?: string }) => ReactNode);
 }
 
-const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
+const HeaderTitle = memo(({ headerTitle }: IHeaderTitle) => {
 	const { colors } = useTheme();
 	if (!headerTitle) {
 		return null;
@@ -43,6 +43,6 @@ const HeaderTitle = ({ headerTitle }: IHeaderTitle) => {
 	}
 
 	return headerTitle({ children: '', tintColor: colors.fontTitlesLabels });
-};
+});
 
 export default HeaderTitle;
