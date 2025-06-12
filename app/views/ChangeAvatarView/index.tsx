@@ -4,8 +4,6 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { shallowEqual } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import type { ImagePickerOptions } from 'expo-image-picker';
-
 
 import { textInputDebounceTime } from '../../lib/constants';
 import KeyboardView from '../../containers/KeyboardView';
@@ -31,8 +29,7 @@ import { changeRoomsAvatar, changeUserAvatar, resetUserAvatar } from './submitSe
 import ImagePicker, { Image } from '../../lib/methods/helpers/ImagePicker/ImagePicker';
 import { isImageURL, useDebounce } from '../../lib/methods/helpers';
 import { ControlledFormTextInput } from '../../containers/TextInput';
-import { HeaderBackButton } from '../../containers/CustomHeader/components/HeaderBackButton';
-
+import { HeaderBackButton } from '../../containers/Header/components/HeaderBackButton';
 
 enum AvatarStateActions {
 	CHANGE_AVATAR = 'CHANGE_AVATAR',
