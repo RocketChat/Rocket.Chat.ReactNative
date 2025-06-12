@@ -1,4 +1,4 @@
-import {  useCameraPermissions } from 'expo-camera';
+import { useCameraPermissions } from 'expo-camera';
 import React, { useMemo } from 'react';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
