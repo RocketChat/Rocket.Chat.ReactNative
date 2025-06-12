@@ -675,6 +675,7 @@
   "Threads_displaying_all": "Näytetään kaikki",
   "Threads_displaying_following": "Näytetään seuratut",
   "Threads_displaying_unread": "Näytetään lukemattomat",
+  "Threads_unread": "Langat, {{ unread }} lukematonta",
   "Timezone": "Aikavyöhyke",
   "Token_expired": "Istuntosi on vanhentunut. Kirjaudu uudelleen.",
   "Topic": "Aihe",

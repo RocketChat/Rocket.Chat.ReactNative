@@ -773,6 +773,7 @@
   "Threads_displaying_all": "Zobrazení všech",
   "Threads_displaying_following": "Zobrazení sledování",
   "Threads_displaying_unread": "Zobrazuji nepřečtené",
+  "Threads_unread": "Vlákna, {{ unread }} nepřečteno",
   "Timezone": "Časové pásmo",
   "Token_expired": "Vaše relace vypršela. Přihlaste se prosím znovu.",
   "Topic": "Téma",

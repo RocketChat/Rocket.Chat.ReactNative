@@ -707,6 +707,7 @@
   "Threads_displaying_all": "அனைத்தும் காட்டுகின்றன",
   "Threads_displaying_following": "பின்பாகத்தைக் காட்டுகின்றன",
   "Threads_displaying_unread": "படிக்காது காட்டுகின்றன",
+  "Threads_unread": "தொடர்கள், {{unread}} படிக்காதவை",
   "Timezone": "நேரமான முனை",
   "Token_expired": "உங்கள் அமர்விதிகள் காலாவதியாகின்றது. தயவுசெய்து மீண்டும் உள்நுழைக.",
   "Topic": "தலைப்பு",

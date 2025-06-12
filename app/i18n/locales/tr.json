@@ -503,6 +503,7 @@
   "Threads_displaying_all": "Tüm konular görüntüleniyor",
   "Threads_displaying_following": "Takip edilen konular görüntüleniyor",
   "Threads_displaying_unread": "Okunmamış konular görüntüleniyor",
+  "Threads_unread": "Konular, {{ unread }} okunmamış",
   "Timezone": "Saat dilimi",
   "Topic": "Konu",
   "topic": "konu",

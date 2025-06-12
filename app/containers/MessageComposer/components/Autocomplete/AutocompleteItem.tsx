@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 
+import i18n from '../../../../i18n';
 import { IAutocompleteItemProps, TAutocompleteItem } from '../../interfaces';
 import { AutocompleteUserRoom } from './AutocompleteUserRoom';
 import { AutocompleteEmoji } from './AutocompleteEmoji';
@@ -20,8 +21,36 @@ const getTestIDSuffix = (item: TAutocompleteItem) => {
 	return item.id;
 };
 
+const getAutocompleteAccessibilityLabel = (item: TAutocompleteItem): string => {
+	switch (item.type) {
+		case '@':
+		case '#':
+			return `${item.title}. ${item.id !== 'all' && item.id !== 'here' ? i18n.t('Username') : ''} ${item.subtitle ?? ''}`.trim();
+
+		case ':':
+			return `:${item.emoji}:`;
+
+		case '/':
+			return `/${item.title}. ${item.subtitle ? item.subtitle : ''}`;
+
+		case '!':
+			let subtitle = '';
+			if (item.subtitle) {
+				subtitle = i18n.isTranslated(item.subtitle) ? i18n.t(item.subtitle) : item.subtitle;
+			}
+			return `${item.title}. ${subtitle}`.trim();
+
+		case 'loading':
+			return i18n.t('Loading');
+
+		default:
+			return '';
+	}
+};
+
 export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 	const [styles, colors] = useStyle();
+	const autocompleteAccessibilityLabel = getAutocompleteAccessibilityLabel(item);
 	return (
 		<RectButton
 			onPress={() => onPress(item)}
@@ -29,7 +58,7 @@ export const AutocompleteItem = ({ item, onPress }: IAutocompleteItemProps) => {
 			style={{ backgroundColor: colors.surfaceLight }}
 			rippleColor={colors.buttonBackgroundPrimaryPress}
 			testID={`autocomplete-item-${getTestIDSuffix(item)}`}>
-			<View style={styles.item}>
+			<View accessible accessibilityLabel={autocompleteAccessibilityLabel} style={styles.item}>
 				{item.type === '@' || item.type === '#' ? <AutocompleteUserRoom item={item} /> : null}
 				{item.type === ':' ? <AutocompleteEmoji item={item} /> : null}
 				{item.type === '/' ? <AutocompleteSlashCommand item={item} /> : null}

@@ -652,6 +652,7 @@
   "Threads_displaying_all": "Показать все",
   "Threads_displaying_following": "Показать отслеживаемые",
   "Threads_displaying_unread": "Показать непрочитанные",
+  "Threads_unread": "Темы, {{ unread }} непрочитанные",
   "Timezone": "Часовой пояс",
   "Token_expired": "Срок действия вашей сессии истек. Пожалуйста войдите снова.",
   "Topic": "Тема",

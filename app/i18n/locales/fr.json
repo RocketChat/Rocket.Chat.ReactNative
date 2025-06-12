@@ -607,6 +607,7 @@
   "Threads_displaying_all": "Tout afficher",
   "Threads_displaying_following": "Affichage suivant",
   "Threads_displaying_unread": "Affichage non lu",
+  "Threads_unread": "Fils, {{ unread }} non lus",
   "Timezone": "Fuseau horaire",
   "Token_expired": "Votre session a expiré. Veuillez vous reconnecter.",
   "Topic": "Sujet",

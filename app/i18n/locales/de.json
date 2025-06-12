@@ -700,6 +700,7 @@
   "Threads_displaying_all": "zeige alle",
   "Threads_displaying_following": "zeige gefolgte",
   "Threads_displaying_unread": "Zeige ungelesene",
+  "Threads_unread": "Threads, {{ unread }} ungelesen",
   "Timezone": "Zeitzone",
   "Token_expired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
   "Topic": "Thema",

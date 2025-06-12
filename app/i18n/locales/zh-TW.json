@@ -503,6 +503,7 @@
   "Threads_displaying_all": "顯示全部",
   "Threads_displaying_following": "顯示追蹤中",
   "Threads_displaying_unread": "顯示未讀",
+  "Threads_unread": "線索，{{ unread }} 未讀",
   "Timezone": "時區",
   "Topic": "主題",
   "topic": "主題",

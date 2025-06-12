@@ -707,6 +707,7 @@
   "Threads_displaying_all": "সব দেখাচ্ছে",
   "Threads_displaying_following": "অনুসরণ করা হচ্ছে",
   "Threads_displaying_unread": "অপঠিত দেখাচ্ছে",
+  "Threads_unread": "থ্রেড, {{ unread }} অপঠিত",
   "Timezone": "সময় অঞ্চল",
   "Token_expired": "আপনার সেশনের মেয়াদ শেষ হয়েছে। দয়া করে আবার লগ ইন করুন।",
   "Topic": "বিষয়",

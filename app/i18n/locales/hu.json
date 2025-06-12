@@ -709,6 +709,7 @@
   "Threads_displaying_all": "Az összes megjelenítés",
   "Threads_displaying_following": "A következők megjelenítése",
   "Threads_displaying_unread": "Olvasatlanok megjelenítése",
+  "Threads_unread": "Üzenetek, {{ unread }} olvasatlan",
   "Timezone": "Időzóna",
   "Token_expired": "Az Ön munkamenete lejárt. Kérjük, jelentkezzen be újra.",
   "Topic": "Téma",

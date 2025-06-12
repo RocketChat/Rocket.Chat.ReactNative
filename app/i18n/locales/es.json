@@ -315,6 +315,7 @@
   "This_room_is_read_only": "Esta sala es de sólo lectura",
   "Thread": "Hilo",
   "Threads": "Hilos",
+  "Threads_unread": "Hilos, {{ unread }} no leídos",
   "Timezone": "Zona horaria",
   "Topic": "Asunto",
   "topic": "asunto",

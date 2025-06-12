@@ -413,6 +413,7 @@
   "This_will_clear_all_your_offline_data": "オフラインデータをすべて削除します。",
   "Thread": "スレッド",
   "Threads": "スレッド",
+  "Threads_unread": "スレッド、未読{{ unread }}件",
   "Timezone": "タイムゾーン",
   "Topic": "トピック",
   "topic": "トピック",

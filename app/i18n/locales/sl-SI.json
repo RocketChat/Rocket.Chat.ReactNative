@@ -621,6 +621,7 @@
   "Threads_displaying_all": "Prikazovanje vseh",
   "Threads_displaying_following": "Prikazovanje sledenja",
   "Threads_displaying_unread": "Prikaz neprebranega",
+  "Threads_unread": "Nit, {{ unread }} neprebranih",
   "Timezone": "Časovni pas",
   "Token_expired": "Vaša seja je potekla. Prosimo, prijavite se še enkrat.",
   "Topic": "Tema",

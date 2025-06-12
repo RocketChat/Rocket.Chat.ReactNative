@@ -607,6 +607,7 @@
   "Threads_displaying_all": "Alles weergeven",
   "Threads_displaying_following": "Volgend weergeven",
   "Threads_displaying_unread": "Ongelezen weergeven",
+  "Threads_unread": "Draden, {{ unread }} ongelezen",
   "Timezone": "Tijdzone",
   "Token_expired": "Uw sessie is verlopen. Gelieve opnieuw in te loggen.",
   "Topic": "Onderwerp",

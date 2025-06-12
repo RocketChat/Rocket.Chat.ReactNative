@@ -674,6 +674,7 @@
   "Threads_displaying_all": "Visar alla",
   "Threads_displaying_following": "Visar de du följer",
   "Threads_displaying_unread": "Visar olästa",
+  "Threads_unread": "Trådar, {{ unread }} olästa",
   "Timezone": "Tidszon",
   "Token_expired": "Din session har upphört. Logga in igen.",
   "Topic": "Ämne",
