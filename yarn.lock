@@ -5585,11 +5585,12 @@
   resolved "https://registry.yarnpkg.com/@vscode/sudo-prompt/-/sudo-prompt-9.3.1.tgz#c562334bc6647733649fd42afc96c0eea8de3b65"
   integrity sha512-9ORTwwS74VaTn38tNbQhsA5U44zkJfcb0BdTSyyG6frP4e8KMtHuTXYmwefe5dpL8XB1aGSIVTaLjD3BbWb5iA==
 
-"@wix-pilot/core@^3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.2.2.tgz#77d950ecc4704d8fec99df500a517d8b244e1140"
-  integrity sha512-E/IFiv4cyIcxmIGxiDwObPCE7JGzelbQTZ9Y8hwsHhw+yyOjVj3a7yvNN5TRvvR8wo3AuDTSj0a09wdrk2bCfA==
+"@wix-pilot/core@^3.3.0":
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.3.4.tgz#c235f3a94fe6acf64a4c1b6b83d6f2d41bb1c9d1"
+  integrity sha512-4U0rDYU94g1f7MxpU9/rLg/4q/tSn2vFcb9ya8Ati1DGruJsRd+HnoZym59ELBVDyM4y0BdPjxQSdiIT1/3jLQ==
   dependencies:
+    chalk "^4.1.0"
     pngjs "^7.0.0"
     winston "^3.17.0"
 
@@ -7340,12 +7341,12 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@20.36.4:
-  version "20.36.4"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-20.36.4.tgz#7ac3da7717bd688c46a7c9c61d2e1cb69f8bc909"
-  integrity sha512-2BZdxCXOJu0TzrxGKHZFRmPy7vNBQCOF9hhr0C+8BmaBBfRwWqpj5hvZD3AM1yTx89gR8iEj6j90MTDgT6EehQ==
+detox@^20.39.0:
+  version "20.39.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-20.39.0.tgz#4340720b0a088ef3534ef15aff1c3ecbade1bff4"
+  integrity sha512-EPqtBQ1Yw7KAdQykDur203FVRYh8rhlB4GfcjOzFx0LN8Xfo0kE5ZwmumRWnaQZGRj+XpOj66d4bQnsvFyqlTQ==
   dependencies:
-    "@wix-pilot/core" "^3.2.2"
+    "@wix-pilot/core" "^3.3.0"
     "@wix-pilot/detox" "^1.0.11"
     ajv "^8.6.3"
     bunyan "^1.8.12"
