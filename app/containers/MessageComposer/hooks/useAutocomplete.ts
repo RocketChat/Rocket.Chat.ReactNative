@@ -36,12 +36,14 @@ export const useAutocomplete = ({
 	type,
 	rid,
 	commandParams,
-	updateAutocompleteVisible = () => null
+	updateAutocompleteVisible = () => null,
+	accessibilityFocusOnInput = () => null
 }: {
 	rid?: string;
 	type: TAutocompleteType;
 	text: string;
 	commandParams?: string;
+	accessibilityFocusOnInput: () => void;
 	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
 }): TAutocompleteItem[] => {
 	const [items, setItems] = useState<TAutocompleteItem[]>([]);
@@ -100,7 +102,10 @@ export const useAutocomplete = ({
 						}
 					}
 					setItems(parsedRes);
-					updateAutocompleteVisible(parsedRes.length > 0);
+					if (parsedRes.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
+					}
 				}
 				if (type === ':') {
 					const customEmojis = await getCustomEmojis(text);
@@ -118,7 +123,10 @@ export const useAutocomplete = ({
 						}))
 					);
 					setItems(mergedEmojis);
-					updateAutocompleteVisible(mergedEmojis.length > 0);
+					if (mergedEmojis.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
+					}
 				}
 				if (type === '/') {
 					const db = database.active;
@@ -133,7 +141,11 @@ export const useAutocomplete = ({
 						type
 					}));
 					setItems(commands);
-					updateAutocompleteVisible(commands.length > 0);
+
+					if (commands.length > 0) {
+						updateAutocompleteVisible(true);
+						accessibilityFocusOnInput();
+					}
 				}
 				if (type === '/preview') {
 					if (!commandParams) {
@@ -151,7 +163,10 @@ export const useAutocomplete = ({
 							params: commandParams
 						}));
 						setItems(previewItems);
-						updateAutocompleteVisible(previewItems.length > 0);
+						if (previewItems.length > 0) {
+							updateAutocompleteVisible(true);
+							accessibilityFocusOnInput();
+						}
 					}
 				}
 				if (type === '!') {
@@ -176,7 +191,10 @@ export const useAutocomplete = ({
 							type
 						}));
 						setItems(cannedResponses);
-						updateAutocompleteVisible(cannedResponses.length > 0);
+						if (cannedResponses.length > 0) {
+							updateAutocompleteVisible(true);
+							accessibilityFocusOnInput();
+						}
 					}
 				}
 			} catch (e) {

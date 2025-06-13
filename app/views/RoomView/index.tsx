@@ -1480,7 +1480,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
 		if (!!updatedAutocompleteVisible && !this.state.isAutocompleteVisible) {
-			// timeout to prevent conflict with default android keyboard announcement.
+			// timeout to prevent conflict with default keyboard announcement.
 			setTimeout(() => {
 				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
 			}, 800);

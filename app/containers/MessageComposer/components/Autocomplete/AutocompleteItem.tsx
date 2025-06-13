@@ -24,21 +24,43 @@ const getTestIDSuffix = (item: TAutocompleteItem) => {
 const getAutocompleteAccessibilityLabel = (item: TAutocompleteItem): string => {
 	switch (item.type) {
 		case '@':
-		case '#':
-			return `${item.title}. ${item.id !== 'all' && item.id !== 'here' ? i18n.t('Username') : ''} ${item.subtitle ?? ''}`.trim();
+		case '#': {
+			const subtitleIsUsername = item.id !== 'all' && item.id !== 'here' && item.t === 'd' && !!item.id;
+
+			const usernameLabel = subtitleIsUsername ? i18n.t('Username') : '';
+			const subtitle = item.subtitle ? item.subtitle : '';
+
+			return `${item.title}. ${usernameLabel} ${subtitle}`.trim();
+		}
 
 		case ':':
 			return `:${item.emoji}:`;
 
-		case '/':
-			return `/${item.title}. ${item.subtitle ? item.subtitle : ''}`;
+		case '/': {
+			if (!item.subtitle) {
+				return `/${item.title}.`;
+			}
 
-		case '!':
+			const shouldTranslate = i18n.isTranslated(item.subtitle);
+			let { subtitle } = item;
+
+			if (shouldTranslate) {
+				subtitle = i18n.t(item.subtitle);
+			}
+
+			return `/${item.title}. ${subtitle}`;
+		}
+		case '!': {
 			let subtitle = '';
 			if (item.subtitle) {
-				subtitle = i18n.isTranslated(item.subtitle) ? i18n.t(item.subtitle) : item.subtitle;
+				if (i18n.isTranslated(item.subtitle)) {
+					subtitle = i18n.t(item.subtitle);
+				} else {
+					subtitle = item.subtitle;
+				}
 			}
 			return `${item.title}. ${subtitle}`.trim();
+		}
 
 		case 'loading':
 			return i18n.t('Loading');
