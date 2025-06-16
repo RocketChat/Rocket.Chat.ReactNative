@@ -15,10 +15,6 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager', () => ({
-	runAfterInteractions: callback => callback()
-}));
-
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
@@ -110,6 +106,15 @@ jest.mock('react-native-notifications', () => ({
 		})
 	}
 }));
+
+jest.mock('@discord/bottom-sheet', () => {
+	const react = require('react-native');
+	return {
+		__esModule: true,
+		default: react.View,
+		BottomSheetScrollView: react.ScrollView
+	};
+});
 
 jest.mock('react-native-math-view', () => {
 	const react = require('react-native');

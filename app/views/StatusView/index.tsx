@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { setUser } from '../../actions/login';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';

@@ -10,6 +10,7 @@ import { getUserSelector } from '../selectors/login';
 import log from '../lib/methods/helpers/log';
 import { E2E_BANNER_TYPE, E2E_PRIVATE_KEY, E2E_PUBLIC_KEY, E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
 import { Services } from '../lib/services';
+import { readMessages } from '../lib/methods';
 
 const getServer = state => state.server.server;
 const getE2eEnable = state => state.settings.E2E_Enable;
@@ -108,6 +109,12 @@ const handleEncryptionDecodeKey = function* handleEncryptionDecodeKey({ password
 
 		// Hide encryption banner
 		yield put(encryptionSet(true));
+
+		// If subscribed to a room, read it
+		const subscribedRoom = yield select(state => state.room.subscribedRoom);
+		if (subscribedRoom) {
+			yield readMessages(subscribedRoom, new Date());
+		}
 	} catch {
 		// Can't decrypt user private key
 		yield put(encryptionDecodeKeyFailure());

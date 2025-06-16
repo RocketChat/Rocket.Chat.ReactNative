@@ -22,7 +22,7 @@ export function withTheme<T extends object>(Component: React.ComponentType<T> & 
 		<ThemeContext.Consumer>{contexts => <Component {...props} {...contexts} />}</ThemeContext.Consumer>
 	);
 
-	hoistNonReactStatics(ThemedComponent, Component);
+	hoistNonReactStatics(ThemedComponent, Component as any);
 	return ThemedComponent;
 }
 
