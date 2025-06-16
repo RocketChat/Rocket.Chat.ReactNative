@@ -94,13 +94,6 @@ const keyboardHeightSharedValue = {
 	modify: jest.fn()
 };
 
-// Mock KeyboardController
-jest.mock('react-native-keyboard-controller', () => ({
-	KeyboardController: {
-		dismiss: jest.fn(() => Promise.resolve())
-	}
-}));
-
 let showEmojiKeyboard = false;
 let showEmojiSearchbar = false;
 
