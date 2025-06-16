@@ -81,6 +81,7 @@ export const Message = (props: any) => (
 	/>
 );
 
+// The large font components are not perfect because the text's font scale increases only with the device's font size setting.
 export const MessageLargeFont = (props: any) => (
 	<MockResponsiveFontScaleProvider fontScale={1.4}>
 		<MessageComponent
