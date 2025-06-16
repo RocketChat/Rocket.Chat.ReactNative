@@ -2,6 +2,16 @@ name: Build Android Experimental APK
 
 on:
   workflow_call:
+    secrets:
+      EXPERIMENTAL_KEYSTORE_BASE64:
+        required: true
+      EXPERIMENTAL_KEYSTORE_PASSWORD:
+        required: true
+      EXPERIMENTAL_KEY_ALIAS:
+        required: true
+      EXPERIMENTAL_KEY_PASSWORD:
+        required: true
+
 
 jobs:
   android-build:
