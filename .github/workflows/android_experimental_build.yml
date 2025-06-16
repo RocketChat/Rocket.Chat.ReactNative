@@ -13,10 +13,29 @@ jobs:
 
       - name: Log the secrets
         run: |
-          echo "EXPERIMENTAL_KEYSTORE_BASE64: ${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}"
-          echo "EXPERIMENTAL_KEYSTORE_PASSWORD: ${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}"
-          echo "EXPERIMENTAL_KEY_ALIAS: ${{ secrets.EXPERIMENTAL_KEY_ALIAS }}"
-          echo "EXPERIMENTAL_KEY_PASSWORD: ${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}"
+          if [ -z "${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}" ]; then
+            echo "❌ EXPERIMENTAL_KEYSTORE_BASE64 is NOT set"
+          else
+            echo "✅ EXPERIMENTAL_KEYSTORE_BASE64 is set"
+          fi
+
+          if [ -z "${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" ]; then
+            echo "❌ EXPERIMENTAL_KEYSTORE_PASSWORD is NOT set"
+          else
+            echo "✅ EXPERIMENTAL_KEYSTORE_PASSWORD is set"
+          fi
+
+          if [ -z "${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" ]; then
+            echo "❌ EXPERIMENTAL_KEY_ALIAS is NOT set"
+          else
+            echo "✅ EXPERIMENTAL_KEY_ALIAS is set"
+          fi
+
+          if [ -z "${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" ]; then
+            echo "❌ EXPERIMENTAL_KEY_PASSWORD is NOT set"
+          else
+            echo "✅ EXPERIMENTAL_KEY_PASSWORD is set"
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
