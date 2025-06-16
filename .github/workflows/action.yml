@@ -8,6 +8,11 @@ on:
 jobs:
   build:
     uses: ./.github/workflows/android_experimental_build.yml
+    secrets:
+      EXPERIMENTAL_KEYSTORE_BASE64: ${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}
+      EXPERIMENTAL_KEYSTORE_PASSWORD: ${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}
+      EXPERIMENTAL_KEY_ALIAS: ${{ secrets.EXPERIMENTAL_KEY_ALIAS }}
+      EXPERIMENTAL_KEY_PASSWORD: ${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}
 
   test:
     uses: ./.github/workflows/maestro_android.yml
