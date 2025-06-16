@@ -445,8 +445,11 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		if (!tunread.length) {
 			return i18n.t('Threads');
 		}
-		if (tunreadUser?.length || tunreadGroup?.length) {
-			return i18n.t('Threads_dm_unread', { unread: tunreadUser?.length ?? tunreadGroup?.length });
+		if (tunreadUser?.length) {
+			return i18n.t('Threads_dm_unread', { unread: tunreadUser?.length });
+		}
+		if (tunreadGroup?.length) {
+			return i18n.t('Threads_group_unread', { unread: tunreadGroup?.length });
 		}
 		return i18n.t('Threads_unread', { unread: tunread?.length });
 	};
