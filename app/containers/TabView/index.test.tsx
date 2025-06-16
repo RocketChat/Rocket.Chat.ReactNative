@@ -4,6 +4,7 @@ import { Route } from 'reanimated-tab-view';
 import { Text, View } from 'react-native';
 
 import { TabView } from './index';
+import { EmojiPickerProvider } from '../EmojiPicker/EmojiPickerContext';
 
 // Mock the reanimated-tab-view module
 jest.mock('reanimated-tab-view', () => ({
@@ -64,10 +65,15 @@ describe('TabView', () => {
 		</View>
 	);
 
-	it('renders all tabs correctly', () => {
-		const { getByTestId, getByText } = render(
-			<TabView routes={mockRoutes} renderTabItem={mockRenderTabItem} renderScene={mockRenderScene} />
+	const renderTabView = () =>
+		render(
+			<EmojiPickerProvider>
+				<TabView routes={mockRoutes} renderTabItem={mockRenderTabItem} renderScene={mockRenderScene} />
+			</EmojiPickerProvider>
 		);
+
+	it('renders all tabs correctly', () => {
+		const { getByTestId, getByText } = renderTabView();
 
 		// Verify both tabs are rendered by their text content
 		expect(getByText('Tab 1')).toBeTruthy();
@@ -78,9 +84,7 @@ describe('TabView', () => {
 	});
 
 	it('changes active tab when clicked', () => {
-		const { getByText, getByTestId } = render(
-			<TabView routes={mockRoutes} renderTabItem={mockRenderTabItem} renderScene={mockRenderScene} />
-		);
+		const { getByText, getByTestId } = renderTabView();
 
 		// Initial state - tab1 should be active
 		const tab1Text = getByText('Tab 1');
@@ -99,9 +103,7 @@ describe('TabView', () => {
 	});
 
 	it('maintains tab state correctly through multiple transitions', () => {
-		const { getByText, getByTestId } = render(
-			<TabView routes={mockRoutes} renderTabItem={mockRenderTabItem} renderScene={mockRenderScene} />
-		);
+		const { getByText, getByTestId } = renderTabView();
 
 		const tab1Text = getByText('Tab 1');
 		const tab2Text = getByText('Tab 2');
