@@ -154,6 +154,8 @@ const Header = React.memo(
 			teamMain,
 			type
 		});
+
+		console.log(status, 'here');
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
 		const portrait = height > width;
@@ -191,6 +193,7 @@ const Header = React.memo(
 		return (
 			<View
 				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
 				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
