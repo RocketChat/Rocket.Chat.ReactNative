@@ -61,7 +61,7 @@ describe('Accessibility and Appearance', () => {
 		});
 
 		it('should have autoplay gifs switch', async () => {
-			await expect(element(by.id('accessibility-autoplay-gifs'))).toBeVisible();
+			await expect(element(by.id('accessibility-autoplay-gifs-switch'))).toBeVisible();
 		});
 	});
 
