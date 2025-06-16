@@ -1,0 +1,14 @@
+name: Android CI
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    uses: ./.github/workflows/android_experimental_build.yml
+
+  test:
+    uses: ./.github/workflows/maestro_android.yml
+    needs: build

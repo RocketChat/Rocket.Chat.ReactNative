@@ -1,18 +1,15 @@
 name: Maestro Tests on Android
 
 on:
-  workflow_run:
-    workflows: [Build Android Experimental APK]
-    types:
-      - completed
+  workflow_call:
 
 jobs:
-  android-maestro-test:
+  android-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Download APK
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: Android Experimental APK
 

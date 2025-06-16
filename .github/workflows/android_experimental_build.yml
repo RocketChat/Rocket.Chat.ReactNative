@@ -1,12 +1,10 @@
 name: Build Android Experimental APK
 
 on:
-  pull_request:
-    branches:
-      - '*'
+  workflow_call:
 
 jobs:
-  android-maestro-test:
+  android-build:
     runs-on: ubuntu-latest
 
     steps:
