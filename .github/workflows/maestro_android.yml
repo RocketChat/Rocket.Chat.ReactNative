@@ -37,7 +37,6 @@ jobs:
           target: google_apis
           profile: pixel_7_pro
           script: |
-            avdmanager list device
             mkdir recording
             adb install app-experimental-release.apk
             maestro test .maestro/login.yml --format junit --output maestro-report.xml
