@@ -1,5 +1,5 @@
-import analytics from '@react-native-firebase/analytics';
-import crashlytics from '@react-native-firebase/crashlytics';
+import { getAnalytics as analytics } from '@react-native-firebase/analytics';
+import { getCrashlytics as crashlytics } from '@react-native-firebase/crashlytics';
 import bugsnag from '@bugsnag/react-native';
 
 import events from './events';

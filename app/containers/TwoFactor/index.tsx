@@ -148,7 +148,9 @@ const TwoFactor = React.memo(() => {
 							data?.method === 'password' ? 'Label_Input_Two_Factor_Password' : 'Label_Input_Two_Factor_Code'
 						)}
 						value={code}
-						inputRef={(e: any) => InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus())}
+						inputRef={(e: any) => {
+							InteractionManager.runAfterInteractions(() => e?.getNativeRef()?.focus());
+						}}
 						onChangeText={setCode}
 						onSubmitEditing={onSubmit}
 						keyboardType={method?.keyboardType}
