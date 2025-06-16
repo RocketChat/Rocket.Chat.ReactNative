@@ -1,16 +1,16 @@
 appId: chat.rocket.reactnative
-name: "Login Test"
+name: 'Login Test'
 ---
 - startRecording:
     path: './recording/login_test'
     label: 'Begin collecting test evidence'
 - launchApp:
-    label: "Launch app"
+    label: 'Launch app'
     clearState: true
     permissions:
       all: allow
 - extendedWaitUntil:
-    visible: "Add Workspace"
+    visible: 'Add Workspace'
     timeout: 20000
 - tapOn:
     id: new-server-view-input
@@ -28,8 +28,8 @@ name: "Login Test"
 - tapOn:
     id: login-view
 - extendedWaitUntil:
-    visible: 
-      id: "Login"
+    visible:
+      id: 'Login'
       index: 1
     timeout: 10000
     optional: true
