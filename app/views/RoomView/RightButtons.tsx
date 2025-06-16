@@ -470,7 +470,7 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 		} = this.props;
 
 		const accessibilityRoomName =
-			!isGroupChat && status
+			!isGroupChat && t === 'd' && !!userId
 				? roomName
 				: getRoomAccessibilityLabel({ type: t, userId, isGroupChat, status: status as TUserStatus, teamMain });
 		if (!rid) {

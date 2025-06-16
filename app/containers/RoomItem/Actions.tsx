@@ -46,7 +46,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
 					<RectButton
 						accessible
-						accessibilityLabel={I18n.t(isRead ? 'Unread' : 'Read')}
+						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
 						style={styles.actionButton}
 						onPress={onToggleReadPress}>
 						<CustomIcon
