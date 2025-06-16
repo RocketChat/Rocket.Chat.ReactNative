@@ -594,7 +594,7 @@
   "Pinned_a_message": "Fixou uma mensagem:",
   "Place_chat_on_hold": "Colocar conversa em espera",
   "Play": "Jogar",
-  "Playback_speed": "Velocidade de reprodução {{ playbackSpeed }}",
+  "Playback_speed": "Velocidade de reprodução de {{playbackSpeed}}",
   "Please_add_a_comment": "Por favor, adicione um comentário",
   "Please_Enter_your_new_password": "Por favor, insira sua nova senha",
   "Please_enter_your_password": "Por favor, digite sua senha",

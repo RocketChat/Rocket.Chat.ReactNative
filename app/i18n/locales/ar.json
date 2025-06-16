@@ -374,7 +374,7 @@
   "Pin": "ثبت",
   "Pinned": "مثبت",
   "Play": "لعب",
-  "Playback_speed": "{{ playbackSpeed }} سرعة التشغيل",
+  "Playback_speed": "سرعة التشغيل {{playbackSpeed}}",
   "Please_add_a_comment": "الرجاء إضافة تعليق",
   "Please_enter_your_password": "الرجاء إدخال كلمة المرور",
   "Please_wait": "الرجاء الإنتظار",

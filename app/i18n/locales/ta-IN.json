@@ -546,7 +546,7 @@
   "Pinned_a_message": "ஒரு செய்தியை கொண்டுவந்தன்:",
   "Place_chat_on_hold": "உரையாடலை அழிக்க",
   "Play": "விளையாடு",
-  "Playback_speed": "{{ வடிவமைப்பு வேகம் }} காணொலி மீண்டும் நிகழ்த்தும் வேகம்",
+  "Playback_speed": "{{playbackSpeed}} பிளேபேக் வேகம்",
   "Please_add_a_comment": "ஒரு கருத்தைச் சேர்க்கவும்",
   "Please_enter_your_password": "உங்கள் கடவுச்சொல் உள்ளிடவும்",
   "Please_wait": "காத்திருக்கவும்.",

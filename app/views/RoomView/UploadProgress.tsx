@@ -184,6 +184,7 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 							</Text>
 							<A11yElement order={2}>
 								<CustomIcon
+									accessible
 									accessibilityLabel={I18n.t('Cancel_upload')}
 									name='close'
 									size={20}
@@ -220,7 +221,16 @@ class UploadProgress extends Component<IUploadProgressProps, IUploadProgressStat
 								</TouchableOpacity>
 							</A11yElement>
 						</View>
-						<CustomIcon name='close' size={20} color={themes[theme!].fontSecondaryInfo} onPress={() => this.deleteUpload(item)} />
+						<A11yElement order={3}>
+							<CustomIcon
+								accessible
+								accessibilityLabel={I18n.t('Cancel_upload')}
+								name='close'
+								size={20}
+								color={themes[theme!].fontSecondaryInfo}
+								onPress={() => this.deleteUpload(item)}
+							/>
+						</A11yElement>
 					</View>
 				</A11yElement>
 			</A11yContainer>

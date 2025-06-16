@@ -482,7 +482,7 @@
   "Pinned": "Pripet",
   "Place_chat_on_hold": "Postavite klepet na \"pridržan\"",
   "Play": "Igraj",
-  "Playback_speed": "{{ playbackSpeed }} hitrost predvajanja",
+  "Playback_speed": "hitrost predvajanja {{playbackSpeed}}",
   "Please_add_a_comment": "Prosimo, dodajte komentar",
   "Please_enter_your_password": "Prosimo, vnesite geslo",
   "Please_wait": "Prosimo, počakajte",
