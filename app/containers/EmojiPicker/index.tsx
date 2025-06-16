@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { View } from 'react-native';
 import { Route } from 'reanimated-tab-view';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,25 +13,25 @@ import { IEmojiPickerProps, EventTypes } from './interfaces';
 import { CustomIcon, TIconsName } from '../CustomIcon';
 import { TabView } from '../TabView';
 import { useTheme } from '../../theme';
+import { EmojiPickerProvider, useEmojiPicker } from './EmojiPickerContext';
 
 const routes = categories.tabs.map(tab => ({
 	key: tab.category,
 	title: tab.tabLabel
 }));
 
-const EmojiPicker = ({
+const EmojiPickerContent = ({
 	onItemClicked,
 	isEmojiKeyboard = false,
 	searching = false,
 	searchedEmojis = []
 }: IEmojiPickerProps): React.ReactElement | null => {
-	const [parentWidth, setParentWidth] = useState(0);
 	const { bottom } = useSafeAreaInsets();
 	const { colors } = useTheme();
+	const { setParentWidth } = useEmojiPicker();
 
 	const handleEmojiSelect = useCallback(
 		(emoji: IEmoji) => {
-			console.log('handleEmojiSelect', emoji);
 			onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
 			addFrequentlyUsed(emoji);
 		},
@@ -39,7 +39,7 @@ const EmojiPicker = ({
 	);
 
 	const renderScene = ({ route }: { route: Route }) => (
-		<EmojiCategory parentWidth={parentWidth} onEmojiSelected={handleEmojiSelect} category={route.key as any} />
+		<EmojiCategory onEmojiSelected={handleEmojiSelect} category={route.key as any} />
 	);
 
 	const renderTabItem = (tab: Route, color: string) => (
@@ -55,13 +55,11 @@ const EmojiPicker = ({
 	return (
 		<View
 			style={[styles.emojiPickerContainer, { marginBottom: bottom, backgroundColor: colors.surfaceLight }]}
-			onLayout={e => setParentWidth(e.nativeEvent.layout.width)}>
+			onLayout={e => {
+				setParentWidth(e.nativeEvent.layout.width);
+			}}>
 			{searching ? (
-				<EmojiCategory
-					emojis={searchedEmojis}
-					onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)}
-					parentWidth={parentWidth}
-				/>
+				<EmojiCategory emojis={searchedEmojis} onEmojiSelected={(emoji: IEmoji) => handleEmojiSelect(emoji)} />
 			) : (
 				<TabView renderScene={renderScene} renderTabItem={renderTabItem} routes={routes} />
 			)}
@@ -74,4 +72,11 @@ const EmojiPicker = ({
 		</View>
 	);
 };
+
+const EmojiPicker = (props: IEmojiPickerProps): React.ReactElement | null => (
+	<EmojiPickerProvider>
+		<EmojiPickerContent {...props} />
+	</EmojiPickerProvider>
+);
+
 export default EmojiPicker;

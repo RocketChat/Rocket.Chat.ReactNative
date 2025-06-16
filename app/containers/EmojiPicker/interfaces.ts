@@ -25,7 +25,6 @@ export type TEmojiCategory = keyof typeof emojisByCategory | 'frequentlyUsed' | 
 
 export interface IEmojiCategoryProps {
 	onEmojiSelected: (emoji: IEmoji) => void;
-	parentWidth: number;
 	category?: TEmojiCategory;
 	emojis?: IEmoji[];
 }

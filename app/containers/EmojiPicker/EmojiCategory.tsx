@@ -9,6 +9,7 @@ import { emojisByCategory } from '../../lib/constants';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useFrequentlyUsedEmoji } from '../../lib/hooks/useFrequentlyUsedEmoji';
 import { IEmojiCategoryProps, TEmojiCategory } from './interfaces';
+import { useEmojiPicker } from './EmojiPickerContext';
 
 const useEmojis = (category?: TEmojiCategory) => {
 	const { frequentlyUsed, loaded } = useFrequentlyUsedEmoji();
@@ -38,8 +39,13 @@ const useEmojis = (category?: TEmojiCategory) => {
 	return emojisByCategory[category];
 };
 
-const EmojiCategory = ({ parentWidth, category, emojis, onEmojiSelected }: IEmojiCategoryProps): React.ReactElement | null => {
+const EmojiCategory = ({
+	category,
+	emojis,
+	onEmojiSelected
+}: Omit<IEmojiCategoryProps, 'parentWidth'>): React.ReactElement | null => {
 	const items = useEmojis(category);
+	const { parentWidth } = useEmojiPicker();
 
 	if (!parentWidth) {
 		return null;

@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import styles from './styles';
 import { useTheme } from '../../theme';
+import { useEmojiPicker } from '../EmojiPicker/EmojiPickerContext';
 
 interface TabViewProps {
 	routes: Route[];
@@ -14,6 +15,7 @@ interface TabViewProps {
 
 export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) => {
 	const { colors } = useTheme();
+	const { parentWidth } = useEmojiPicker();
 	const [navigationState, setNavigationState] = useState<NavigationState>({
 		index: 0,
 		routes
@@ -25,7 +27,7 @@ export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) =>
 
 	const renderTabBar = useCallback(
 		({ jumpTo, routeIndex }: { jumpTo: (key: string) => void; routeIndex: number }) => (
-			<View style={styles.tabsContainer}>
+			<View style={[styles.tabsContainer, { width: parentWidth }]}>
 				{routes.map((tab: Route, index: number) => (
 					<View key={tab.key} style={styles.tab}>
 						<TouchableOpacity onPress={() => jumpTo(tab.key)} hitSlop={10}>
@@ -41,7 +43,7 @@ export const TabView = ({ routes, renderTabItem, renderScene }: TabViewProps) =>
 				))}
 			</View>
 		),
-		[colors, renderTabItem, routes]
+		[colors, renderTabItem, routes, parentWidth]
 	);
 
 	return (
