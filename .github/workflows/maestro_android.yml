@@ -1,0 +1,117 @@
+name: Run Maestro Tests on Android
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  android-maestro-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
+      - name: Set gradle.properties
+        run: |
+          echo " " >> android/gradle.properties
+          echo "KEYSTORE=release.keystore" >> android/gradle.properties
+          echo "KEYSTORE_PASSWORD=${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" >> android/gradle.properties
+          echo "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> android/gradle.properties
+          echo "KEY_PASSWORD=${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" >> android/gradle.properties
+      
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Cache Gradle Caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Build Android Release APK
+        run: |
+          cd android
+          ./gradlew assembleExperimentalRelease --no-daemon --build-cache --parallel --max-workers=4
+
+      - name: Free Space Before Cleanup
+        run: |
+          echo "Free space before cleanup:"
+          df -h
+
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v5
+        with:
+          remove-dotnet: 'true'
+          remove-haskell: 'true'
+          remove-swapfile: 'true'
+
+      - name: Free Space After Cleanup
+        run: |
+          echo "Free space:"
+          df -h
+
+      - name: Start Android Emulator and Run Maestro Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          ram-size: 8192M
+          disk-size: 4096M
+          target: google_apis
+          profile: pixel_7_pro
+          script: |
+            avdmanager list device
+            mkdir recording
+            adb install app-experimental-debug.apk
+            maestro test .maestro/login.yml --format junit --output maestro-report.xml
+
+      - name: Upload Recordings
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Recordings
+          path: recording/
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Test Report
+          path: maestro-report.xml
