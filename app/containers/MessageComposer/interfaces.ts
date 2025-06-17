@@ -40,7 +40,7 @@ export interface ITrackingView {
 	getNativeProps: () => any;
 }
 
-export type TAutocompleteType = 'd' | '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
+export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
 
 export interface IAutocompleteBase {
 	type: TAutocompleteType;
