@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
 	tabsContainer: {
-		flexDirection: 'row'
+		flexDirection: 'row',
+		width: '100%'
 	},
 	tab: {
 		flexDirection: 'column',
