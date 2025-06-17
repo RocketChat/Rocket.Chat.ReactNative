@@ -1998,6 +1998,11 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@babel/runtime@^7.27.6":
+  version "7.27.6"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
+  integrity sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==
+
 "@babel/template@^7.0.0":
   version "7.8.6"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.8.6.tgz#86b22af15f828dfb086474f964dcc3e39c43ce2b"
@@ -12837,10 +12842,11 @@ react-native-screens@^4.9.2:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-simple-crypto@RocketChat/react-native-simple-crypto#fix.6.1.0:
-  version "0.6.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/467905c61df8132e2257b6408a072521fc5a3d27"
+react-native-simple-crypto@RocketChat/react-native-simple-crypto#chore.support-new-arch:
+  version "0.6.0"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/093bdc59d4450504c07f0d1b0edba4b2a92fe12b"
   dependencies:
+    "@babel/runtime" "^7.27.6"
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
 
