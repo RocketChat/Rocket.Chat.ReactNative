@@ -1,0 +1,24 @@
+appId: chat.rocket.reactnative
+
+---
+- launchApp
+- waitForAnimationToEnd
+
+- tapOn:
+      text: "Workspace URL, Required"
+
+# Type the URL
+- inputText: "open.rocket.chat"
+# Tap the Connect button (visible title)
+- tapOn: "Connect"
+
+- waitForAnimationToEnd
+- tapOn: "Login"
+- tapOn:
+      text: "Username or email"
+- inputText: "example@gmail.com"
+- tapOn:
+      text: "Password"
+- inputText: "Test@1234"
+- tapOn:
+      id: "login-view-submit"
