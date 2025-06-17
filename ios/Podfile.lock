@@ -1745,7 +1745,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-simple-crypto (0.6.0):
+  - react-native-simple-crypto (0.6.2):
     - OpenSSL-Universal (= 1.1.1100)
     - React
   - react-native-slider (4.5.0):
@@ -3072,7 +3072,7 @@ SPEC CHECKSUMS:
   react-native-notifications: 3bafa1237ae8a47569a84801f17d80242fe9f6a5
   react-native-restart: f6f591aeb40194c41b9b5013901f00e6cf7d0f29
   react-native-safe-area-context: 5928d84c879db2f9eb6969ca70e68f58623dbf25
-  react-native-simple-crypto: 7ac1d74429335704bc3efcf11e0efb1d89d5ef2b
+  react-native-simple-crypto: 932ea9243f76ff3d468ecf85868daf4fb35422e4
   react-native-slider: 605e731593322c4bb2eb48d7d64e2e4dbf7cbd77
   react-native-webview: e12647c3892d4ee161aee5b86458fa49ba1e1133
   React-NativeModulesApple: df8e5bc59e78ca3040ffbf41336889f3bd0fad68

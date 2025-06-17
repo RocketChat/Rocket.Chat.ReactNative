@@ -12843,8 +12843,8 @@ react-native-screens@^4.9.2:
     warn-once "^0.1.0"
 
 react-native-simple-crypto@RocketChat/react-native-simple-crypto#chore.support-new-arch:
-  version "0.6.0"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/093bdc59d4450504c07f0d1b0edba4b2a92fe12b"
+  version "0.6.2"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/72d3f8a81af1a45ffbcf507bfc0733ca6c8ce190"
   dependencies:
     "@babel/runtime" "^7.27.6"
     base64-js "^1.3.0"
