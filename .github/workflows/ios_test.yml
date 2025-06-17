@@ -1,4 +1,4 @@
-name: iOS Test
+name: iOS Build
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - '*'
 
 jobs:
-  ios-simulator:
+  ios-build:
     runs-on: macos-latest
 
     steps:
