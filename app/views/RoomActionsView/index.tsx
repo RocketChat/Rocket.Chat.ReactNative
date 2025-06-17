@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 import { Share, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { Observable, pairwise, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { CompositeNavigationProp } from '@react-navigation/native';
 
 import { leaveRoom } from '../../actions/room';
