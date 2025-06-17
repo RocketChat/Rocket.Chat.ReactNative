@@ -9394,14 +9394,10 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
       >
         <View
           style={
-            [
-              {
-                "flexDirection": "row",
-              },
-              {
-                "width": 0,
-              },
-            ]
+            {
+              "flexDirection": "row",
+              "width": "100%",
+            }
           }
         >
           <View
