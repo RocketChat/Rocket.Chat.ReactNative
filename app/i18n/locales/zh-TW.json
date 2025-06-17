@@ -392,6 +392,7 @@
   "Read_Only": "唯讀",
   "Read_only_hint": "只有頻道所有者可以發送新消息",
   "Read_Receipt": "查看已讀人員",
+  "Reason_required": "需要原因",
   "Receive_Group_Mentions": "接收群組提及",
   "Receive_Group_Mentions_Info": "接收@all和@here提及",
   "Receive_Notification": "接收通知",

@@ -34,7 +34,7 @@ interface ISubmit {
 }
 
 const schema = yup.object().shape({
-	description: yup.string().trim().required()
+	description: yup.string().trim().required(I18n.t('Reason_required'))
 });
 
 const ReportUserView = () => {
