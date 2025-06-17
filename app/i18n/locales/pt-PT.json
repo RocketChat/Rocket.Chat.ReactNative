@@ -343,6 +343,7 @@
   "Read_Only": "Só de Leitura",
   "Read_only_hint": "Somente os proprietários do canal podem enviar novas mensagens",
   "Read_Receipt": "Recibos de leitura",
+  "Reason_required": "Motivo obrigatório",
   "Register": "Registar",
   "Remove_from_workspace_history": "Remover do histórico do espaço de trabalho",
   "Remove_someone_from_room": "Remover alguém da sala",

@@ -508,6 +508,7 @@
   "Read_Only": "Skrivskyddat",
   "Read_only_hint": "Endast kanalägare kan skicka nya meddelanden",
   "Read_Receipt": "Läskvitto",
+  "Reason_required": "Anledning krävs",
   "Receive_Group_Mentions": "Ta emot gruppomnämnanden",
   "Receive_Group_Mentions_Info": "Ta emot omnämnanden av typen @all och @here",
   "Receive_Notification": "Ta emot meddelanden",

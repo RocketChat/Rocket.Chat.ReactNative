@@ -548,6 +548,7 @@
   "Read_Only": "Csak olvasható",
   "Read_only_hint": "Csak a csatornatulajdonosok küldhetnek új üzeneteket",
   "Read_Receipt": "Olvassa el a nyugtát",
+  "Reason_required": "Indoklás szükséges",
   "Receive_Group_Mentions": "Csoportos említések fogadása",
   "Receive_Group_Mentions_Info": "Az @all és @here említések fogadása",
   "Receive_Notification": "Értesítés fogadása",
