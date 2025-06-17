@@ -23,6 +23,11 @@ jobs:
 
       - name: Install JavaScript dependencies
         run: yarn install --frozen-lockfile
+    
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.2'
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
