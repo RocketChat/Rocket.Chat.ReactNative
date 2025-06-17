@@ -13,7 +13,7 @@ export const AutocompleteUserRoom = ({ item }: { item: IAutocompleteUserRoom }) 
 	const isAllOrHere = fetchIsAllOrHere(item);
 
 	return (
-		<View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+		<View style={styles.userRoomContainer}>
 			{!isAllOrHere ? <Avatar rid={item.id} text={item.subtitle} size={36} type={item.t} /> : null}
 			<View style={[styles.userRoom, { paddingLeft: isAllOrHere ? 0 : 12 }]}>
 				<View style={styles.userRoomHeader}>
