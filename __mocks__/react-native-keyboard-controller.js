@@ -1,9 +1,8 @@
 export const KeyboardController = {
 	addListener: jest.fn(),
 	removeListener: jest.fn(),
-	dismiss: jest.fn(async () => {}),
+	dismiss: jest.fn(() => Promise.resolve()),
 	setFocusTo: jest.fn(async () => {})
-	// Add any other methods you use in your code
 };
 
 export const useKeyboardHandler = () => {};

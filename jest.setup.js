@@ -21,7 +21,10 @@ jest.mock('react-native-reanimated', () => {
 	const actual = jest.requireActual('react-native-reanimated/mock');
 	return {
 		...actual,
-		useSharedValue: init => ({ value: init })
+		useSharedValue: jest.fn(init => ({ value: init })),
+		useAnimatedReaction: jest.fn(),
+		runOnJS: jest.fn(fn => fn),
+		withTiming: jest.fn(value => value)
 	};
 });
 

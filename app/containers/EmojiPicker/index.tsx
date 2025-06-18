@@ -31,7 +31,6 @@ const EmojiPicker = ({
 
 	const handleEmojiSelect = useCallback(
 		(emoji: IEmoji) => {
-			console.log('handleEmojiSelect', emoji);
 			onItemClicked(EventTypes.EMOJI_PRESSED, emoji);
 			addFrequentlyUsed(emoji);
 		},
