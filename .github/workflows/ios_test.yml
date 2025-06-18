@@ -43,6 +43,13 @@ jobs:
         run: |
           echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
 
+      - name: Set bugsnag key
+        run: |
+          cd ios
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
+        
+
       - name: Build iOS app
         run: |
           cd ios
