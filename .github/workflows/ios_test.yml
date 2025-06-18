@@ -48,12 +48,11 @@ jobs:
           cd ios
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
-        
 
       - name: Build iOS app
         run: |
           cd ios
-          bundle exec fastlane ios build_experimental
+          bundle exec fastlane ios build_experimental_simulator
         env:
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
@@ -69,3 +68,8 @@ jobs:
           name: fastlane-gym-log
           path: /Users/runner/Library/Logs/gym/Rocket.Chat Experimental-RocketChatRN.log
   
+      - name: Upload App
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-simulator-app
+          path: ios/fastlane/build/Build/Products/Debug-iphonesimulator/RocketChatRN.app

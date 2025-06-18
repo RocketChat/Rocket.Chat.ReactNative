@@ -66,6 +66,20 @@ platform :ios do
     )
   end
 
+
+  desc "Build Experimental app for Simulator"
+  lane :build_experimental_simulator do
+    gym(
+      scheme: "RocketChatRN",
+      workspace: "RocketChatRN.xcworkspace",
+      destination: "generic/platform=iOS Simulator",
+      skip_package_ipa: true,
+      output_directory: "./fastlane/output",
+      build_path: "./fastlane/build",
+      configuration: "Release"
+    )
+  end
+
   desc "Build Official app"
   lane :build_official do
     sh "../../scripts/prepare_ios_official.sh"
