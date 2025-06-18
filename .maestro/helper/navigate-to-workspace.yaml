@@ -1,4 +1,8 @@
 appId: chat.rocket.reactnative
+jsEngine: graaljs
+env:
+  URL: open.rocket.chat
+  
 
 ---
 - runFlow: relaunch-app.yaml
