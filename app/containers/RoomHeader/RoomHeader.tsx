@@ -154,8 +154,6 @@ const Header = React.memo(
 			teamMain,
 			type
 		});
-
-		console.log(status, 'here');
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
 		const portrait = height > width;
