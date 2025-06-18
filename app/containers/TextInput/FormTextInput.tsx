@@ -14,6 +14,8 @@ import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
 	error: {
+		...sharedStyles.textRegular,
+		lineHeight: 20,
 		fontSize: 14
 	},
 	inputContainer: {
