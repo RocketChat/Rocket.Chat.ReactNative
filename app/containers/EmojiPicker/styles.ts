@@ -16,7 +16,7 @@ export default StyleSheet.create({
 	tab: {
 		flexDirection: 'column',
 		flex: 1,
-		alignItems: 'center' 
+		alignItems: 'center'
 	},
 	tabEmoji: {
 		paddingVertical: 4

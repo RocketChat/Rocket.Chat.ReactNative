@@ -8,7 +8,7 @@ import { RouteProp } from '@react-navigation/core';
 
 import * as List from '../../containers/List';
 import Avatar from '../../containers/Avatar';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import I18n from '../../i18n';
 import StatusBar from '../../containers/StatusBar';
 import { TSupportedThemes, withTheme } from '../../theme';

@@ -27,6 +27,26 @@ index 2219e0f..59f90ba 100644
          onLayout={handleContainerLayout}
        >
          <HandleComponent
+diff --git a/node_modules/@discord/bottom-sheet/src/hooks/useStableCallback.ts b/node_modules/@discord/bottom-sheet/src/hooks/useStableCallback.ts
+index 1c788ab..6328dea 100644
+--- a/node_modules/@discord/bottom-sheet/src/hooks/useStableCallback.ts
++++ b/node_modules/@discord/bottom-sheet/src/hooks/useStableCallback.ts
+@@ -6,6 +6,7 @@ type Callback = (...args: any[]) => any;
+  * https://gist.github.com/JakeCoxon/c7ebf6e6496f8468226fd36b596e1985
+  */
+ export const useStableCallback = (callback: Callback) => {
++  // @ts-ignore
+   const callbackRef = useRef<Callback>();
+   const memoCallback = useCallback(
+     (...args: any) => callbackRef.current && callbackRef.current(...args),
+@@ -13,6 +14,7 @@ export const useStableCallback = (callback: Callback) => {
+   );
+   useEffect(() => {
+     callbackRef.current = callback;
++    // @ts-ignore
+     return () => (callbackRef.current = undefined);
+   });
+   return memoCallback;
 diff --git a/node_modules/@discord/bottom-sheet/src/utilities/animate.ts b/node_modules/@discord/bottom-sheet/src/utilities/animate.ts
 index 0ce4c9a..9562675 100644
 --- a/node_modules/@discord/bottom-sheet/src/utilities/animate.ts

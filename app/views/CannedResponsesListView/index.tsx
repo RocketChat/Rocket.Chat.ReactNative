@@ -13,7 +13,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import { themes } from '../../lib/constants';
 import log from '../../lib/methods/helpers/log';
