@@ -42,11 +42,11 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		formState: { errors }
 	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
-	const text = watch('workspaceUrl');
+	const workspaceUrl = watch('workspaceUrl');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
 	const { deleteServerHistory, queryServerHistory, serversHistory } = useServersHistory();
 	const { certificate, chooseCertificate, removeCertificate } = useCertificate();
-	const { submit } = useConnectServer({ text, certificate, previousServer });
+	const { submit } = useConnectServer({ workspaceUrl, certificate, previousServer });
 	const phoneMarginTop = previousServer ? 32 : 84;
 	const marginTop = isTablet ? 0 : phoneMarginTop;
 	const formContainerStyle = previousServer ? { paddingBottom: 100 } : {};
@@ -171,7 +171,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 					title={I18n.t('Connect')}
 					type='primary'
 					onPress={submit}
-					disabled={!text || connecting}
+					disabled={!workspaceUrl || connecting}
 					loading={connecting}
 					style={styles.connectButton}
 					testID='new-server-view-button'
