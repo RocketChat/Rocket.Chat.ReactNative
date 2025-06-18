@@ -462,6 +462,8 @@
   "Push_Notifications_Alert_Info": "Ces notifications vous sont envoyées lorsque l'application n'est pas ouverte",
   "Queued_chats": "Discussions en file d'attente",
   "Quote": "Citation",
+  "QR_Login": "Connexion QR",
+  "QR_Login_Description": "Scannez le code QR ci-dessous avec votre application Rocket.Chat pour vous connecter.",
   "Reactions_are_disabled": "Les réactions sont désactivées",
   "Reactions_are_enabled": "Les réactions sont activées",
   "Read_External_Permission": "Permission de lecture des fichiers",

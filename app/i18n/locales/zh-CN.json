@@ -366,6 +366,8 @@
   "Push_Notifications_Alert_Info": "这些通知将在未开启 App 时发送给您",
   "Queued_chats": "聊天队列",
   "Quote": "引用",
+  "QR_Login": "二维码登录",
+  "QR_Login_Description": "请使用您的 Rocket.Chat 应用扫描下方二维码以登录。",
   "Reactions_are_disabled": "表情貼被禁用",
   "Reactions_are_enabled": "表情貼被启用",
   "Read_External_Permission": "读取媒体权限",

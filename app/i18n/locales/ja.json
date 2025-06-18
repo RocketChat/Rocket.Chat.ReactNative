@@ -320,6 +320,8 @@
   "Push_Notifications": "プッシュ通知",
   "Push_Notifications_Alert_Info": "通知はアプリを開いていない時に送られます。",
   "Quote": "引用",
+  "QR_Login": "QRログイン",
+  "QR_Login_Description": "以下のQRコードをRocket.Chatアプリでスキャンしてログインしてください。",
   "Reactions_are_disabled": "リアクションは無効化されています",
   "Reactions_are_enabled": "リアクションは有効化されています",
   "Read_Only": "読み取り専用",

@@ -608,6 +608,8 @@
   "Push_Troubleshooting": "Push Troubleshooting",
   "Queued_chats": "Queued chats",
   "Quote": "Quote",
+  "QR_Login": "QR Login",
+  "QR_Login_Description": "Scan the QR code below with your Rocket.Chat app to log in.",
   "Reactions_are_disabled": "Reactions are disabled",
   "Reactions_are_enabled": "Reactions are enabled",
   "Read_External_Permission": "Read media permission",

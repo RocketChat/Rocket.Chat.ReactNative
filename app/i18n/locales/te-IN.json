@@ -539,6 +539,8 @@
   "Push_Notifications_Alert_Info": "ఈ నోటిఫికేషన్లు మీకు అప్లికేషన్ ప్రారంభించలేకపోతే అందివేయబడింది",
   "Queued_chats": "క్యూ చాట్‌లు",
   "Quote": "ఉదాహరణ",
+  "QR_Login": "QR లాగిన్",
+  "QR_Login_Description": "లాగిన్ అవ్వడానికి మీ Rocket.Chat యాప్‌తో కింద ఉన్న QR కోడ్‌ను స్కాన్ చేయండి.",
   "Reactions_are_disabled": "ప్రతిక్రియలు నిషేధించబడినవి",
   "Reactions_are_enabled": "ప్రతిక్రియలు అనుమతించబడినవి",
   "Read_External_Permission": "మీడియా అనుమతి",

@@ -541,6 +541,8 @@
   "Push_Notifications_Alert_Info": "Ezeket az értesítéseket akkor is megkapja, ha az alkalmazás nincs nyitva",
   "Queued_chats": "Sorba állított csevegések",
   "Quote": "Idézet",
+  "QR_Login": "QR bejelentkezés",
+  "QR_Login_Description": "Olvassa be az alábbi QR-kódot a Rocket.Chat alkalmazással a bejelentkezéshez.",
   "Reactions_are_disabled": "A reakciók le vannak tiltva",
   "Reactions_are_enabled": "A reakciók engedélyezve vannak",
   "Read_External_Permission": "Médiaengedély olvasása",

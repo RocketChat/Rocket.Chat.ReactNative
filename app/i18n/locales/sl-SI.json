@@ -474,6 +474,8 @@
   "Push_Notifications_Alert_Info": "Ta obvestila so vam dostavljena, ko aplikacija ni odprta",
   "Queued_chats": "V čakalni vrsti",
   "Quote": "Citat",
+  "QR_Login": "QR prijava",
+  "QR_Login_Description": "Skenirajte spodnjo QR kodo z aplikacijo Rocket.Chat za prijavo.",
   "Reactions_are_disabled": "Reakcije so onemogočene",
   "Reactions_are_enabled": "Reakcije so omogočene",
   "Read_External_Permission": "Dovoljenje za branje medija",

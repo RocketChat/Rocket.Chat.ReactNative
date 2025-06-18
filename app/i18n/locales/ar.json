@@ -365,6 +365,8 @@
   "Push_Notifications_Alert_Info": "يتم إرسال هذه الإشعارات إليك عندما لا يكون التطبيق مفتوحاً",
   "Queued_chats": "محادثات في قائمى الانتظار",
   "Quote": "اقتباس",
+  "QR_Login": "تسجيل الدخول عبر QR",
+  "QR_Login_Description": "قم بمسح رمز QR أدناه باستخدام تطبيق Rocket.Chat الخاص بك لتسجيل الدخول.",
   "Reactions_are_disabled": "التفاعل معطل",
   "Reactions_are_enabled": "التفاعل مفعل",
   "Read_External_Permission": "صلاحية قراءة الوسائط",

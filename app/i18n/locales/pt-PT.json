@@ -336,6 +336,8 @@
   "Push_Notifications": "Notificações Push",
   "Push_Notifications_Alert_Info": "Estas notificações são entregues quando o aplicativo não está aberto",
   "Quote": "Citar",
+  "QR_Login": "Login com QR Code",
+  "QR_Login_Description": "Escaneie o código QR abaixo com o aplicativo Rocket.Chat para fazer login.",
   "Reactions_are_disabled": "Reacções desactivadas",
   "Reactions_are_enabled": "Reacções activadas",
   "Read_External_Permission": "Permissão de leitura da média",

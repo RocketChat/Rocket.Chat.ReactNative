@@ -501,6 +501,8 @@
   "Push_Notifications_Alert_Info": "De här meddelandena levereras till dig när appen är stängd",
   "Queued_chats": "Köplacerade chattar",
   "Quote": "Citat",
+  "QR_Login": "QR-inloggning",
+  "QR_Login_Description": "Skanna QR-koden nedan med din Rocket.Chat-app för att logga in.",
   "Reactions_are_disabled": "Reaktioner är inaktiverade",
   "Reactions_are_enabled": "Reaktioner är aktiverade",
   "Read_External_Permission": "Behörighet att läsa media",

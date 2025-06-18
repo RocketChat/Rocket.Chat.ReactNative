@@ -527,6 +527,8 @@
   "Push_Notifications_Alert_Info": "Diese Benachrichtigungen werden Ihnen zugestellt, wenn die App nicht geöffnet ist.",
   "Queued_chats": "Chats in der Warteschlange",
   "Quote": "Zitat",
+  "QR_Login": "QR-Anmeldung",
+  "QR_Login_Description": "Scannen Sie den QR-Code unten mit Ihrer Rocket.Chat-App, um sich anzumelden.",
   "Reactions_are_disabled": "Reaktionen sind deaktiviert",
   "Reactions_are_enabled": "Reaktionen sind aktiviert",
   "Read_External_Permission": "Lese-Zugriff auf Medien",

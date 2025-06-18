@@ -400,6 +400,8 @@
   "Push_Notifications_Alert_Info": "Queste notifiche ti vengono recapitate quando l'app non è aperta",
   "Queued_chats": "Chat in coda",
   "Quote": "Cita",
+  "QR_Login": "Accesso QR",
+  "QR_Login_Description": "Scansiona il codice QR qui sotto con la tua app Rocket.Chat per accedere.",
   "Reactions_are_disabled": "Le reazioni sono disabilitate",
   "Reactions_are_enabled": "Le reazioni sono abilitate",
   "Read_External_Permission": "Permesso di Lettura della Memoria",

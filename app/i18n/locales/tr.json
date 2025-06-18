@@ -383,6 +383,8 @@
   "Push_Notifications_Alert_Info": "Bu bildirimler, uygulama açık olmadığında size teslim edilir",
   "Queued_chats": "Sıralı sohbetler",
   "Quote": "Alıntı",
+  "QR_Login": "QR Girişi",
+  "QR_Login_Description": "Giriş yapmak için aşağıdaki QR kodunu Rocket.Chat uygulamanızla tarayın.",
   "Reactions_are_disabled": "Tepkiler devre dışı bırakıldı",
   "Reactions_are_enabled": "Tepkiler etkinleştirildi",
   "Read_External_Permission": "Medya Okuma İzni ",

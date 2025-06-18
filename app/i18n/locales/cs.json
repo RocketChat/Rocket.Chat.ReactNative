@@ -584,6 +584,8 @@
   "Push_Troubleshooting": "Odstraňování problémů push",
   "Queued_chats": "Chaty ve frontě",
   "Quote": "Citát",
+  "QR_Login": "QR přihlášení",
+  "QR_Login_Description": "Naskenujte níže uvedený QR kód pomocí aplikace Rocket.Chat a přihlaste se.",
   "Reactions_are_disabled": "Reakce jsou zakázány",
   "Reactions_are_enabled": "Reakce jsou povoleny",
   "Read_External_Permission": "Povolení ke čtení médií",

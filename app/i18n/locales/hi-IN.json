@@ -540,6 +540,8 @@
   "Push_Notifications_Alert_Info": "ये सूचनाएँ आपको इस समय पहुंचती हैं जब ऐप खुला नहीं है",
   "Queued_chats": "कतारबद्ध चैट",
   "Quote": "उद्धृति",
+  "QR_Login": "QR लॉगिन",
+  "QR_Login_Description": "लॉगिन करने के लिए अपने Rocket.Chat ऐप के साथ नीचे दिए गए QR कोड को स्कैन करें।",
   "Reactions_are_disabled": "प्रतिक्रियाएँ निष्क्रिय हैं",
   "Reactions_are_enabled": "प्रतिक्रियाएँ सक्षम हैं",
   "Read_External_Permission": "मीडिया अनुमति पठन",

@@ -502,6 +502,8 @@
   "Push_Notifications_Alert_Info": "Saat näitä ilmoituksia, kun sovellus ei ole auki",
   "Queued_chats": "Jonossa olevat keskustelut",
   "Quote": "Lainaus",
+  "QR_Login": "QR kirjautuminen",
+  "QR_Login_Description": "Skannaa alla oleva QR-koodi Rocket.Chat-sovelluksellasi kirjautuaksesi sisään.",
   "Reactions_are_disabled": "Reaktiot eivät ole käytössä",
   "Reactions_are_enabled": "Reaktiot ovat käytössä",
   "Read_External_Permission": "Median lukuoikeus",

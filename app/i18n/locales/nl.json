@@ -462,6 +462,8 @@
   "Push_Notifications_Alert_Info": "Deze notificaties worden aan jouw enkel geleverd als de app niet geopend is",
   "Queued_chats": "Chats in de wachtrij",
   "Quote": "Citaat",
+  "QR_Login": "QR-login",
+  "QR_Login_Description": "Scan de onderstaande QR-code met je Rocket.Chat-app om in te loggen.",
   "Reactions_are_disabled": "Reacties zijn uitgeschakeld",
   "Reactions_are_enabled": "Reacties zijn ingeschakeld",
   "Read_External_Permission": "Lees toestemming voor media",

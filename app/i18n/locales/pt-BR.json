@@ -593,6 +593,8 @@
   "Push_Troubleshooting": "Solucionar Problemas de Push",
   "Queued_chats": "Bate-papos na fila",
   "Quote": "Citar",
+  "QR_Login": "Login com QR Code",
+  "QR_Login_Description": "Escaneie o código QR abaixo com seu aplicativo Rocket.Chat para fazer login.",
   "Reactions_are_disabled": "Reagir está desabilitado",
   "Reactions_are_enabled": "Reagir está habilitado",
   "Read_External_Permission": "Permissão de acesso à arquivos",
