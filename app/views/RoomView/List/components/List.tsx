@@ -13,16 +13,22 @@ const styles = StyleSheet.create({
 		flex: 1
 	},
 	contentContainer: {
-		paddingTop: 10
+		paddingTop: 10,
+		flexDirection: 'column-reverse',
+		flexGrow: 1
 	}
 });
 
 export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
+	const [contentHeight, setContentHeight] = useState(0);
+    const [layoutHeight, setLayoutHeight] = useState(0);
+
+    const maxScrollY = contentHeight - layoutHeight;
 
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
-			if (event.contentOffset.y > SCROLL_LIMIT) {
+			if (event.contentOffset.y < (maxScrollY - SCROLL_LIMIT)) {
 				runOnJS(setVisible)(true);
 			} else {
 				runOnJS(setVisible)(false);
@@ -39,6 +45,8 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				keyExtractor={item => item.id}
 				contentContainerStyle={styles.contentContainer}
 				style={styles.list}
+				onLayout={(e) => {setLayoutHeight(e.nativeEvent.layout.height);}}
+                onContentSizeChange={(w, h) => {setContentHeight(h);}}
 				removeClippedSubviews={isIOS}
 				initialNumToRender={7}
 				onEndReachedThreshold={0.5}
@@ -48,7 +56,6 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				onScroll={scrollHandler}
 				{...props}
 				{...scrollPersistTaps}
-				importantForAccessibility={'yes'}
 			/>
 			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
 		</>

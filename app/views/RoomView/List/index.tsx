@@ -29,8 +29,6 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
-        /* Makes list of messages build with earlier messages at the top rather than the bottom */
-        messages.reverse();
 
 		const {
 			jumpToBottom,
@@ -76,8 +74,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 						jumpToBottom={jumpToBottom}
 						isThread={!!tmid}
 						maintainVisibleContentPosition={{
-							minIndexForVisible: 0,
-							autoscrollToTopThreshold: 0
+							minIndexForVisible: 0
 						}}
 					/>
 				</Container>
