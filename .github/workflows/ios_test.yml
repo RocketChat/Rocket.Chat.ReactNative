@@ -68,17 +68,9 @@ jobs:
         with:
           name: fastlane-gym-log
           path: /Users/runner/Library/Logs/gym/Rocket.Chat Experimental-RocketChatRN.log
-  
-      - name: Upload Simulator App
-        run: |
-          LATEST_ARCHIVE=$(ls -td ios/fastlane/build/*.xcarchive | head -1)
-          APP_PATH="$LATEST_ARCHIVE/Products/Applications/Rocket.Chat Experimental.app"
-          echo "Uploading $APP_PATH"
-          mkdir -p tmp-artifact
-          cp -R "$APP_PATH" tmp-artifact/
       
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ios-simulator-app
-          path: tmp-artifact/Rocket.Chat\ Experimental.app
+          path: ./ios/fastlane/derived_data/Build/Products/Release-iphonesimulator/RocketChatRN.app
