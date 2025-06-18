@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 
 import i18n from '../../i18n';
@@ -14,6 +14,8 @@ import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
 	error: {
+		...sharedStyles.textRegular,
+		lineHeight: 20,
 		fontSize: 14
 	},
 	inputContainer: {
@@ -100,19 +102,20 @@ export const FormTextInput = ({
 	...inputProps
 }: IRCTextInputProps): React.ReactElement => {
 	const { colors } = useTheme();
-	const [focused, setFocused] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
+	const inputError = error ? error.reason ?? error : '';
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
+	const accessibilityInputError = i18n.t('Error_prefix', { message: inputError });
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
 				<View
 					accessible
-					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
+					accessibilityLabel={`${label} ${accessibilityLabelRequired} ${accessibilityInputValue}. ${accessibilityInputError}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
 						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
@@ -152,8 +155,6 @@ export const FormTextInput = ({
 							placeholder={placeholder}
 							value={value}
 							placeholderTextColor={colors.fontAnnotation}
-							onFocus={() => setFocused(true)}
-							onBlur={() => setFocused(false)}
 							{...inputProps}
 						/>
 
@@ -209,10 +210,10 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{!!error && !focused ? (
+					{error ? (
 						<View style={styles.errorContainer}>
 							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error.reason ?? error}</Text>
+							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error?.reason ?? error}</Text>
 						</View>
 					) : null}
 				</View>
