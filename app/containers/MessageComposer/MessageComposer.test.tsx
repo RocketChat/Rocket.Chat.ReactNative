@@ -13,6 +13,7 @@ import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
+import { initStore } from '../../lib/store/auxStore';
 
 jest.useFakeTimers();
 
@@ -38,8 +39,21 @@ const initialStoreState = () => {
 	const permissions: IPermissionsState = { 'mobile-upload-file': ['user'] };
 	mockedStore.dispatch(setPermissions(permissions));
 	mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: true }));
+	initStore(mockedStore);
 };
 initialStoreState();
+
+jest.mock('./hooks/useSubscription', () => ({
+	useSubscription: jest.fn(() => ({
+		rid: 'rid',
+		t: 'd',
+		name: 'Room Name',
+		fname: 'Room Name',
+		usernames: ['user1', 'user2'],
+		prid: undefined,
+		federated: false
+	}))
+}));
 
 const initialContext = {
 	rid: 'rid',
