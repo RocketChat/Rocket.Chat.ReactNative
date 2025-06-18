@@ -15,6 +15,7 @@ import { A11yContainer, A11yElement } from '../A11yFlow';
 const styles = StyleSheet.create({
 	error: {
 		...sharedStyles.textRegular,
+		lineHeight: 20,
 		fontSize: 14
 	},
 	inputContainer: {
@@ -104,16 +105,17 @@ export const FormTextInput = ({
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
+	const inputError = error ? error.reason ?? error : '';
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
-	const accessibilityInputError = error ? error.reason ?? error : '';
+	const accessibilityInputError = i18n.t('Error_prefix', { message: inputError });
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
 				<View
 					accessible
-					accessibilityLabel={`${label} ${accessibilityLabelRequired} ${accessibilityInputValue} ${accessibilityInputError}`}
+					accessibilityLabel={`${label} ${accessibilityLabelRequired} ${accessibilityInputValue}. ${accessibilityInputError}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
 						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
