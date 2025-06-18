@@ -39,6 +39,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		control,
 		watch,
 		setValue,
+		clearErrors,
 		formState: { errors }
 	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
@@ -54,6 +55,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const onChangeText = (text: string) => {
 		setValue('workspaceUrl', text);
 		queryServerHistory(text);
+		clearErrors();
 	};
 
 	const onPressServerHistory = (serverHistory: TServerHistoryModel) => {
