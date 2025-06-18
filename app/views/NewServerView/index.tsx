@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
 import Button from '../../containers/Button';
@@ -34,7 +35,12 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		failureMessage: state.server.failureMessage
 	}));
 
-	const { control, watch, setValue } = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
+	const {
+		control,
+		watch,
+		setValue,
+		formState: { errors }
+	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
 	const text = watch('workspaceUrl');
 	const [showBottomInfo, setShowBottomInfo] = useState<boolean>(true);
@@ -95,6 +101,9 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 			headerShown: false
 		});
 	};
+
+	// Accessibility: announce field error to screen reader
+	useA11yErrorAnnouncement({ errorMessage: errors.workspaceUrl?.message });
 
 	useEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
