@@ -74,3 +74,9 @@ jobs:
         with:
           name: ios-simulator-app
           path: ./ios/fastlane/derived_data/Build/Products/Release-iphonesimulator/RocketChatRN.app
+
+      - name: Upload fastlane folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastlane-full-folder
+          path: ./ios/fastlane
