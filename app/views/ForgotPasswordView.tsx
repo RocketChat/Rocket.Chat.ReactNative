@@ -74,6 +74,7 @@ const ForgotPasswordView = (): React.ReactElement => {
 					{I18n.t('email')}
 				</Text>
 				<ControlledFormTextInput
+					id='forgot-password-view-email'
 					name='email'
 					control={control}
 					autoFocus
