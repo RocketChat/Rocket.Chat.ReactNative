@@ -32,6 +32,7 @@ export interface IComposerInput {
 
 export interface IComposerInputProps {
 	inputRef: any; // FIXME: how do I type this?
+	ref: any; // FIXME: how do I type this?
 }
 
 export type TMarkdownStyle = 'bold' | 'italic' | 'strike' | 'code' | 'code-block';
