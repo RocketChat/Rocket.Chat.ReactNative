@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BackHandler, Keyboard, Text } from 'react-native';
+import { AccessibilityInfo, BackHandler, Keyboard, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Image } from 'expo-image';
 import { useForm } from 'react-hook-form';
 
-import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { inviteLinksClear } from '../../actions/inviteLinks';
 import { selectServerRequest, serverFinishAdd, serverRequest } from '../../actions/server';
 import Button from '../../containers/Button';
@@ -38,9 +37,10 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 	const {
 		control,
 		watch,
+		formState: { errors },
 		setValue,
-		clearErrors,
-		formState: { errors }
+		setError,
+		clearErrors
 	} = useForm({ mode: 'onChange', defaultValues: { workspaceUrl: '' } });
 
 	const workspaceUrl = watch('workspaceUrl');
@@ -104,8 +104,12 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 		});
 	};
 
-	// Accessibility: announce field error to screen reader
-	useA11yErrorAnnouncement({ errorMessage: errors.workspaceUrl?.message });
+	useEffect(() => {
+		if (failureMessage && !errors.workspaceUrl) {
+			AccessibilityInfo.announceForAccessibility(failureMessage);
+			setError('workspaceUrl', { message: failureMessage });
+		}
+	}, [failureMessage]);
 
 	useEffect(() => {
 		EventEmitter.addEventListener('NewServer', handleNewServerEvent);
@@ -161,7 +165,7 @@ const NewServerView = ({ navigation }: INewServerViewProps) => {
 					{I18n.t('Add_server')}
 				</Text>
 				<ServerInput
-					error={failureMessage}
+					error={errors.workspaceUrl?.message}
 					control={control}
 					serversHistory={serversHistory}
 					onChangeText={onChangeText}
