@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { AccessibilityInfo, FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -122,6 +122,7 @@ const StatusView = (): React.ReactElement => {
 	});
 	const statusText = watch('statusText');
 	const [status, setStatus] = useState(user.status);
+	const [errorAnnounced, setErrorAnnounced] = useState(false);
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
@@ -134,6 +135,18 @@ const StatusView = (): React.ReactElement => {
 		}
 		goBack();
 	};
+
+	useEffect(() => {
+		if (errors.statusText && !errorAnnounced) {
+			const message = errors.statusText.message?.toString() || '';
+			if (message) {
+				AccessibilityInfo.announceForAccessibility(message);
+				setErrorAnnounced(true);
+			}
+		} else if (!errors.statusText && errorAnnounced) {
+			setErrorAnnounced(false);
+		}
+	}, [errors.statusText]);
 
 	useEffect(() => {
 		const setHeader = () => {
