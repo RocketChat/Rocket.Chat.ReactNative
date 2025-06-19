@@ -75,8 +75,14 @@ jobs:
           name: ios-simulator-app
           path: ./ios/fastlane/derived_data/Build/Products/Release-iphonesimulator/RocketChatRN.app
 
-      - name: Upload fastlane folder
+      - name: Generate fastlane folder tree txt
+        run: |
+          brew install tree || true
+          tree ./ios/fastlane > fastlane-tree.txt || ls -R ./ios/fastlane > fastlane-tree.txt
+
+      - name: Upload fastlane tree txt
         uses: actions/upload-artifact@v4
         with:
-          name: fastlane-full-folder
-          path: ./ios/fastlane
+          name: fastlane-tree-txt
+          path: fastlane-tree.txt
+        
