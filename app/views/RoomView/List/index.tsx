@@ -29,6 +29,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 			serverVersion,
 			hideSystemMessages
 		});
+
 		const {
 			jumpToBottom,
 			jumpToMessage,
@@ -73,8 +74,7 @@ const ListContainer = forwardRef<IListContainerRef, IListContainerProps>(
 						jumpToBottom={jumpToBottom}
 						isThread={!!tmid}
 						maintainVisibleContentPosition={{
-							minIndexForVisible: 0,
-							autoscrollToTopThreshold: 0
+							minIndexForVisible: 0
 						}}
 					/>
 				</Container>
