@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ios-simulator-app
-          path: ./ios/fastlane/derived_data/Build/Products/Release-iphonesimulator/RocketChatRN.app
+          path: ./ios/fastlane/derived_data/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
 
       - name: Generate fastlane folder tree txt
         run: |
