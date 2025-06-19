@@ -69,7 +69,6 @@ platform :ios do
       skip_package_ipa: true,
       output_directory: "./fastlane/output",
       build_path: "./fastlane/build",
-      skip_archive: true,
       configuration: "Release",
       derived_data_path: "./fastlane/derived_data",
       xcargs: "-parallelizeTargets -jobs 4"

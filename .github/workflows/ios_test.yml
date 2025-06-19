@@ -69,20 +69,16 @@ jobs:
           name: fastlane-gym-log
           path: /Users/runner/Library/Logs/gym/Rocket.Chat Experimental-RocketChatRN.log
       
+      - name: Find latest xcarchive path
+        id: find_xcarchive
+        run: |
+          ARCHIVE_PATH=$(ls -td ios/fastlane/build/*.xcarchive | head -n 1)
+          echo "Latest archive path is $ARCHIVE_PATH"
+          echo "archive_path=$ARCHIVE_PATH" >> $GITHUB_OUTPUT
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ios-simulator-app
-          path: ./ios/fastlane/derived_data/Build/Products/Release-iphonesimulator/Rocket.Chat Experimental.app
-
-      - name: Generate fastlane folder tree txt
-        run: |
-          brew install tree || true
-          tree ./ios/fastlane > fastlane-tree.txt || ls -R ./ios/fastlane > fastlane-tree.txt
-
-      - name: Upload fastlane tree txt
-        uses: actions/upload-artifact@v4
-        with:
-          name: fastlane-tree-txt
-          path: fastlane-tree.txt
+          path: ${{ steps.find_xcarchive.outputs.archive_path }}/Products/Applications/Rocket.Chat Experimental.app
         
