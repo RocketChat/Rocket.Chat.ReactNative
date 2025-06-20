@@ -13,18 +13,16 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - name: Download App
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-simulator-app
+
       - name: Install Maestro
         run: |
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
           mkdir recording
-
-      - name: Download .app
-        run: |
-          curl -L "https://pub-c6a557891e1a4fcdbcd530afab927625.r2.dev/ios-simulator-app.zip" -o ios-simulator-app.zip
-
-      - name: Unzip
-        run: unzip -o ios-simulator-app.zip -d extracted-app
 
       - name: List Simulators
         run: xcrun simctl list devices
@@ -43,7 +41,7 @@ jobs:
 
       - name: Install App
         run: |
-          xcrun simctl install $UDID "extracted-app"
+          xcrun simctl install $UDID "ios-simulator-app"
 
       - name: Run Tests
         run: |
