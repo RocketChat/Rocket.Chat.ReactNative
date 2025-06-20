@@ -105,14 +105,16 @@ export const FormTextInput = ({
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
-	let inputError = '';
 
-	if (typeof error?.reason === 'string') {
-		inputError = error.reason;
-	} else if (typeof error === 'string') {
-		inputError = error;
-	}
-
+	const getInputError = (error: unknown): string => {
+		if (typeof error === 'string') return error;
+		if (typeof error === 'object' && error !== null && 'reason' in error) {
+			const { reason } = error as { reason?: unknown };
+			if (typeof reason === 'string') return reason;
+		}
+		return '';
+	};
+	const inputError = getInputError(error);
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
 	const accessibilityInputError = i18n.t('Error_prefix', { message: inputError });
