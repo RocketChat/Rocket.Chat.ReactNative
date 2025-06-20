@@ -16,6 +16,9 @@ jobs:
         with:
           name: ios-simulator-app
 
+      - name: List Folder
+        run: ls -la
+
       - name: Install Maestro
         run: |
           curl -fsSL "https://get.maestro.mobile.dev" | bash
