@@ -49,8 +49,7 @@ jobs:
 
       - name: Take Screenshot
         run: |
-          xcrun simctl snapshot $UDID
-          xcrun simctl snapshot save $UDID "screenshot.png"
+          xcrun simctl io booted screenshot screenshot.png
 
       - name: Upload Screenshot
         uses: actions/upload-artifact@v4
