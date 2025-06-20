@@ -14,7 +14,9 @@ jobs:
       - name: Download App
         uses: actions/download-artifact@v4
         with:
+          run-id: 15788225681
           name: ios-simulator-app
+          path: ios-simulator-app
 
       - name: List Folder
         run: ls -la
@@ -42,7 +44,7 @@ jobs:
 
       - name: Install App
         run: |
-          xcrun simctl install $UDID "Rocket.Chat Experimental"
+          xcrun simctl install $UDID "ios-simulator-app"
 
       - name: Run Tests
         run: |
