@@ -2,6 +2,7 @@ import { HeaderBackButtonProps, HeaderBackButton as RNHeaderBackButton } from '@
 import { Platform, StyleSheet } from 'react-native';
 
 import { useTheme } from '../../../theme';
+import I18n from '../../../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -20,6 +21,13 @@ const styles = StyleSheet.create({
 
 export const HeaderBackButton = ({ ...props }: HeaderBackButtonProps) => {
 	const { colors } = useTheme();
-
-	return <RNHeaderBackButton tintColor={colors.fontDefault} style={styles.container} testID='header-back' {...props} />;
+	return (
+		<RNHeaderBackButton
+			accessibilityLabel={I18n.t('Back')}
+			tintColor={colors.fontDefault}
+			style={styles.container}
+			testID='header-back'
+			{...props}
+		/>
+	);
 };
