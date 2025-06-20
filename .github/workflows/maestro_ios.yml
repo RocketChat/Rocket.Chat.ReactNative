@@ -1,0 +1,59 @@
+name: Simulator Test
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  install-app:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download .app
+        run: |
+          curl -L "https://pub-c6a557891e1a4fcdbcd530afab927625.r2.dev/ios-simulator-app.zip" -o ios-simulator-app.zip
+
+      - name: Unzip
+        run: unzip -o ios-simulator-app.zip
+
+      - name: List Simulators
+        run: xcrun simctl list devices
+
+      - name: Boot Simulator
+        run: |
+          xcrun simctl boot "iPhone 15"
+          xcrun simctl list devices | grep Booted
+
+      - name: Get Simulator UDID
+        id: booted-sim
+        run: |
+          UDID=$(xcrun simctl list devices | grep "iPhone 15 (" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          echo "UDID=$UDID"
+          echo "UDID=$UDID" >> $GITHUB_ENV
+
+      - name: Install App
+        run: |
+          xcrun simctl install $UDID "Rocket.Chat Experimental.app"
+
+      - name: Launch App
+        run: |
+          xcrun simctl launch $UDID com.rocket.chat
+
+      - name: Wait for App to Launch
+        run: |
+          sleep 10
+
+      - name: Take Screenshot
+        run: |
+          xcrun simctl snapshot $UDID
+          xcrun simctl snapshot save $UDID "screenshot.png"
+
+      - name: Upload Screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot
+          path: screenshot.png
