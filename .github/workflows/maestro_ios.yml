@@ -13,6 +13,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          mkdir recording
+
       - name: Download .app
         run: |
           curl -L "https://pub-c6a557891e1a4fcdbcd530afab927625.r2.dev/ios-simulator-app.zip" -o ios-simulator-app.zip
@@ -50,9 +56,22 @@ jobs:
       - name: Take Screenshot
         run: |
           xcrun simctl io booted screenshot screenshot.png
+          maestro test .maestro/login.yml --format junit --output maestro-report.xml
 
       - name: Upload Screenshot
         uses: actions/upload-artifact@v4
         with:
           name: screenshot
           path: screenshot.png
+
+      - name: Upload Recordings
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Recordings
+          path: recording/
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Report
+          path: maestro-report.xml
