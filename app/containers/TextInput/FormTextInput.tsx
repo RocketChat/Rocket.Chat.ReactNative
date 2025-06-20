@@ -105,7 +105,13 @@ export const FormTextInput = ({
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
-	const inputError = error ? error.reason ?? error : '';
+	let inputError = '';
+
+	if (typeof error?.reason === 'string') {
+		inputError = error.reason;
+	} else if (typeof error === 'string') {
+		inputError = error;
+	}
 
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
@@ -137,7 +143,7 @@ export const FormTextInput = ({
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
-								error
+								inputError
 									? {
 											color: colors.buttonBackgroundDangerDefault,
 											borderColor: colors.buttonBackgroundDangerDefault
@@ -210,10 +216,10 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{error ? (
+					{inputError ? (
 						<View style={styles.errorContainer}>
 							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error?.reason ?? error}</Text>
+							<Text style={{ ...styles.error, color: colors.fontDanger }}>{inputError}</Text>
 						</View>
 					) : null}
 				</View>
