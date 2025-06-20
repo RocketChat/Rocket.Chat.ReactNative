@@ -521,13 +521,11 @@ class RightButtonsContainer extends Component<IRightButtonsProps, IRigthButtonsS
 						disabled={hasE2EEWarning}
 					/>
 				) : null}
-				{rid ? (
-					<HeaderCallButton
-						accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
-						rid={rid}
-						disabled={hasE2EEWarning}
-					/>
-				) : null}
+				<HeaderCallButton
+					accessibilityLabel={i18n.t('Call_room_name', { roomName: accessibilityRoomName })}
+					rid={rid}
+					disabled={hasE2EEWarning}
+				/>
 				{threadsEnabled ? (
 					<HeaderButton.Item
 						accessibilityLabel={this.threadsAccessibilityLabel()}
