@@ -25,13 +25,13 @@ jobs:
 
       - name: Boot Simulator
         run: |
-          xcrun simctl boot "iPhone 15"
+          xcrun simctl boot "iPhone 16 Pro Max"
           xcrun simctl list devices | grep Booted
 
       - name: Get Simulator UDID
         id: booted-sim
         run: |
-          UDID=$(xcrun simctl list devices | grep "iPhone 15 (" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep -oE '[A-F0-9-]{36}' | head -n1)
           echo "UDID=$UDID"
           echo "UDID=$UDID" >> $GITHUB_ENV
 
@@ -45,7 +45,7 @@ jobs:
 
       - name: Wait for App to Launch
         run: |
-          sleep 10
+          sleep 15
 
       - name: Take Screenshot
         run: |
