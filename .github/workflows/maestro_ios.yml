@@ -45,10 +45,6 @@ jobs:
         run: |
           xcrun simctl install $UDID "extracted-app"
 
-      - name: Wait for App to Launch
-        run: |
-          sleep 15
-
       - name: Run Tests
         run: |
           maestro test .maestro/login.yml --format junit --output maestro-report.xml
