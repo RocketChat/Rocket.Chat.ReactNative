@@ -42,7 +42,7 @@ jobs:
 
       - name: Install App
         run: |
-          xcrun simctl install $UDID "Rocket.Chat Experimental.app"
+          xcrun simctl install $UDID "Rocket.Chat Experimental"
 
       - name: Run Tests
         run: |
