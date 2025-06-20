@@ -81,6 +81,15 @@ export interface IRCTextInputProps extends TextInputProps {
 	onClearInput?: () => void;
 }
 
+const getInputError = (error: unknown): string => {
+	if (typeof error === 'string') return error;
+	if (typeof error === 'object' && error !== null && 'reason' in error) {
+		const { reason } = error as { reason?: unknown };
+		if (typeof reason === 'string') return reason;
+	}
+	return '';
+};
+
 export const FormTextInput = ({
 	label,
 	required,
@@ -105,8 +114,8 @@ export const FormTextInput = ({
 	const [showPassword, setShowPassword] = useState(false);
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
-	const inputError = error ? error.reason ?? error : '';
 
+	const inputError = getInputError(error);
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
 	const accessibilityInputError = i18n.t('Error_prefix', { message: inputError });
@@ -137,7 +146,7 @@ export const FormTextInput = ({
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
-								error
+								inputError
 									? {
 											color: colors.buttonBackgroundDangerDefault,
 											borderColor: colors.buttonBackgroundDangerDefault
@@ -210,10 +219,10 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{error ? (
+					{inputError ? (
 						<View style={styles.errorContainer}>
 							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
-							<Text style={{ ...styles.error, color: colors.fontDanger }}>{error?.reason ?? error}</Text>
+							<Text style={{ ...styles.error, color: colors.fontDanger }}>{inputError}</Text>
 						</View>
 					) : null}
 				</View>
