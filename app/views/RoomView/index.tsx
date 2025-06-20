@@ -1,5 +1,5 @@
 import React from 'react';
-import { InteractionManager, PixelRatio, Text, View } from 'react-native';
+import { AccessibilityInfo, InteractionManager, PixelRatio, Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import parse from 'url-parse';
 import moment from 'moment';
@@ -177,7 +177,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			canForwardGuest: false,
 			canReturnQueue: false,
 			canPlaceLivechatOnHold: false,
-			isOnHold: false
+			isOnHold: false,
+			isAutocompleteVisible: false
 		};
 
 		this.setHeader();
@@ -248,7 +249,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 
 	shouldComponentUpdate(nextProps: IRoomViewProps, nextState: IRoomViewState) {
 		const { state } = this;
-		const { roomUpdate, member, isOnHold } = state;
+		const { roomUpdate, member, isOnHold, isAutocompleteVisible } = state;
 		const { theme, insets, route, encryptionEnabled, airGappedRestrictionRemainingDays } = this.props;
 		if (theme !== nextProps.theme) {
 			return true;
@@ -263,6 +264,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			return true;
 		}
 		if (isOnHold !== nextState.isOnHold) {
+			return true;
+		}
+		if (isAutocompleteVisible !== nextState.isAutocompleteVisible) {
 			return true;
 		}
 		const stateUpdated = stateAttrsUpdate.some(key => nextState[key] !== state[key]);
@@ -1474,9 +1478,21 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		);
 	};
 
+	updateAutocompleteVisible = (updatedAutocompleteVisible: boolean) => {
+		if (!!updatedAutocompleteVisible && !this.state.isAutocompleteVisible) {
+			// timeout to prevent conflict with default keyboard announcement.
+			setTimeout(() => {
+				AccessibilityInfo.announceForAccessibility(I18n.t('The_autocomplete_options_are_available_above_the_input_composer'));
+			}, 800);
+		}
+		if (updatedAutocompleteVisible !== this.state.isAutocompleteVisible) {
+			this.setState({ isAutocompleteVisible: updatedAutocompleteVisible });
+		}
+	};
+
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		const { room, loading, action, selectedMessages } = this.state;
+		const { room, loading, action, selectedMessages, isAutocompleteVisible } = this.state;
 		const { user, baseUrl, theme, width, serverVersion, navigation, encryptionEnabled } = this.props;
 		const { rid, t } = room;
 		let bannerClosed;
@@ -1511,7 +1527,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					editRequest: this.onEditRequest,
 					onSendMessage: this.handleSendMessage,
 					setQuotesAndText: this.setQuotesAndText,
-					getText: this.getText
+					getText: this.getText,
+					updateAutocompleteVisible: this.updateAutocompleteVisible,
+					isAutocompleteVisible
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
 					<StatusBar />
