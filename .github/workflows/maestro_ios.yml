@@ -28,7 +28,7 @@ jobs:
           xcrun simctl boot "iPhone 16 Pro Max"
           xcrun simctl list devices | grep Booted
 
-      - name: Get Simulator UDID
+      - name: Get Simulator UDID 
         id: booted-sim
         run: |
           UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep "(Booted)" | grep -oE '[A-F0-9-]{36}' | head -n1)
