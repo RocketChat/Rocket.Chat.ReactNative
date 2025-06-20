@@ -127,7 +127,7 @@ export const RecordAudio = (): ReactElement | null => {
 					<AudioPlayer fileUri={recordingRef.current?.getURI() ?? ''} rid={rid} downloadState='downloaded' />
 				</View>
 				<View style={styles.buttons}>
-					<CancelButton onPress={cancelRecording} accessibilityLabel='Delete_recording' />
+					<CancelButton onPress={cancelRecording} />
 					<View style={{ flex: 1 }} />
 					<BaseButton
 						onPress={sendAudio}
@@ -148,7 +148,7 @@ export const RecordAudio = (): ReactElement | null => {
 				<Duration ref={durationRef} />
 			</View>
 			<View style={styles.buttons}>
-				<CancelButton onPress={cancelRecording} />
+				<CancelButton onPress={cancelRecording} cancelAndDelete />
 				<View accessible accessibilityLabel={i18n.t('Recording_audio_in_progress')} style={styles.recordingNote}>
 					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
 				</View>

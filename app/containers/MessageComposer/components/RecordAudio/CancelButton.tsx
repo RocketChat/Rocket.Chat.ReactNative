@@ -4,15 +4,15 @@ import { BaseButton, IBaseButton } from '../Buttons';
 
 export const CancelButton = ({
 	onPress,
-	accessibilityLabel
+	cancelAndDelete
 }: {
 	onPress: IBaseButton['onPress'];
-	accessibilityLabel?: string;
+	cancelAndDelete?: boolean;
 }): ReactElement => (
 	<BaseButton
 		onPress={onPress}
 		testID='message-composer-delete-audio'
-		accessibilityLabel={accessibilityLabel ?? 'Cancel_and_delete_recording'}
+		accessibilityLabel={cancelAndDelete ? 'Cancel_and_delete_recording' : 'Delete_recording'}
 		icon='delete'
 	/>
 );
