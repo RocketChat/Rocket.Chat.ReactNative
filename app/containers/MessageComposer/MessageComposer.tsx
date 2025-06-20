@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useImperativeHandle, useCallback } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
+import { View, StyleSheet, NativeModules, AccessibilityInfo, findNodeHandle } from 'react-native';
 import { KeyboardAccessoryView } from 'react-native-ui-lib/keyboard';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
@@ -210,6 +210,13 @@ export const MessageComposer = ({
 		emitter.emit(`setComposerHeight${tmid ? 'Thread' : ''}`, height);
 	};
 
+	const accessibilityFocusOnInput = () => {
+		const node = findNodeHandle(composerInputRef.current);
+		if (node) {
+			AccessibilityInfo.setAccessibilityFocus(node);
+		}
+	};
+
 	const backgroundColor = action === 'edit' ? colors.statusBackgroundWarning2 : colors.surfaceLight;
 
 	const renderContent = () => {
@@ -249,7 +256,10 @@ export const MessageComposer = ({
 				iOSScrollBehavior={NativeModules.KeyboardTrackingViewTempManager?.KeyboardTrackingScrollBehaviorFixedOffset}
 				onHeightChanged={onHeightChanged}
 			/>
-			<Autocomplete onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)} />
+			<Autocomplete
+				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
+				accessibilityFocusOnInput={accessibilityFocusOnInput}
+			/>
 		</MessageInnerContext.Provider>
 	);
 };
