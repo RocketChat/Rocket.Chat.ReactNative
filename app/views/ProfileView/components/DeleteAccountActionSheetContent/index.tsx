@@ -25,7 +25,6 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			await deleteOwnAccount(sha256(password));
 			hideActionSheet();
 		} catch (error: any) {
-			hideActionSheet();
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });
@@ -43,7 +42,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 				}, 250); // timeout for hide effect
 			} else if (error.data.errorType === 'error-invalid-password') {
 				logEvent(events.DELETE_OWN_ACCOUNT_F);
-				showErrorAlert(i18n.t('error-invalid-password'));
+				// showErrorAlert(i18n.t('error-invalid-password'));
 			} else {
 				logEvent(events.DELETE_OWN_ACCOUNT_F);
 				showErrorAlert(i18n.t(error.data.details));
@@ -65,6 +64,7 @@ export function DeleteAccountActionSheetContent(): React.ReactElement {
 			iconName='warning'
 			confirmTitle={i18n.t('Delete_Account')}
 			confirmBackgroundColor={colors.buttonBackgroundDangerDefault}
+			closeActionSheetAfterSubmit={false}
 		/>
 	);
 }
