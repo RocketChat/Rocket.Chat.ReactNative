@@ -71,6 +71,7 @@
   "changing_avatar": "avatar aan het veranderen",
   "Channel_hint_private": "Mensen kunnen alleen meedoen door uitgenodigd te worden",
   "Channel_Name": "Kanaal naam",
+  "Channel_name_required": "Kanaalnaam vereist",
   "Channel_Read_Only_Hint": "Alleen kanaaleigenaren kunnen nieuwe berichten verzenden",
   "Channels": "Kanalen",
   "Chat_closed_by_agent": "Chat gesloten door agent",

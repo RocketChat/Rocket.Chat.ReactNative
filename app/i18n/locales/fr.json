@@ -71,6 +71,7 @@
   "changing_avatar": "changer d'avatar",
   "Channel_hint_private": "Les gens ne peuvent se joindre qu'en étant invité",
   "Channel_Name": "Nom du canal",
+  "Channel_name_required": "Nom de la chaîne requis",
   "Channel_Read_Only_Hint": "Seuls les propriétaires de canaux peuvent envoyer de nouveaux messages",
   "Channels": "Canaux",
   "Chat_closed_by_agent": "Chat fermé par l'agent",

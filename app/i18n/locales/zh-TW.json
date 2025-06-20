@@ -61,6 +61,7 @@
   "changing_avatar": "更改大頭貼",
   "Channel_hint_private": "人們只能被邀請加入",
   "Channel_Name": "頻道名稱",
+  "Channel_name_required": "需要頻道名稱",
   "Channel_Read_Only_Hint": "只有頻道所有者可以發送新消息",
   "Channels": "頻道",
   "Chat_closed_by_agent": "聊天已被客服關閉",

@@ -56,6 +56,7 @@
   "changing_avatar": "cambiando avatar",
   "Channel_hint_private": "La gente solo puede unirse al ser invitado",
   "Channel_Name": "Nombre sala",
+  "Channel_name_required": "Nombre del canal requerido",
   "Channel_Read_Only_Hint": "Solo los propietarios de canales pueden enviar nuevos mensajes",
   "Channels": "Salas",
   "Chats": "Chats",

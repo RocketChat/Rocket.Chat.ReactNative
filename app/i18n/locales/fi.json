@@ -92,6 +92,7 @@
   "Channel_hint_private": "Ihmiset voivat liittyä vain kutsumalla",
   "Channel_hint_public": "Kaikilla on pääsy tälle kanavalle",
   "Channel_Name": "Kanavan nimi",
+  "Channel_name_required": "Kanavan nimi vaaditaan",
   "Channel_Read_Only_Hint": "Vain kanavanomistajat voivat lähettää uusia viestejä",
   "Channels": "Kanavat",
   "Chat_closed_by_agent": "Agentti sulki keskustelun",

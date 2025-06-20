@@ -75,6 +75,7 @@
   "changing_avatar": "spreminjanje avatarja",
   "Channel_hint_private": "Ljudje se lahko pridružijo samo z vabilom",
   "Channel_Name": "Ime kanala",
+  "Channel_name_required": "Zahtevano ime kanala",
   "Channel_Read_Only_Hint": "Samo lastniki kanala lahko pošiljajo nova sporočila",
   "Channels": "Kanali",
   "Chat_closed_by_agent": "Klepet je zaprl agent",

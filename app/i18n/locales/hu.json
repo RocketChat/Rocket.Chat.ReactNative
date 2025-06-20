@@ -107,6 +107,7 @@
   "Channel_hint_private": "Az emberek csak meghívással csatlakozhatnak",
   "Channel_hint_public": "Mindenki hozzáférhet ehhez a csatornához",
   "Channel_Name": "Csatorna neve",
+  "Channel_name_required": "Csatornanév szükséges",
   "Channel_Read_Only_Hint": "Csak a csatornatulajdonosok küldhetnek új üzeneteket",
   "Channels": "Csatornák",
   "Chat_closed_by_agent": "A csevegést az ügyintéző lezárta",

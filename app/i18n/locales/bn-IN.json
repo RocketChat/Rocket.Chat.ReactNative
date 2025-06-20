@@ -107,6 +107,7 @@
   "Channel_hint_private": "মানুষ কেবল আমন্ত্রণের মাধ্যমে যোগ দিতে পারে",
   "Channel_hint_public": "সবাই এই চ্যানেলে অ্যাক্সেস পাবে",
   "Channel_Name": "চ্যানেল নাম",
+  "Channel_name_required": "চ্যানেলের নাম প্রয়োজন",
   "Channel_Read_Only_Hint": "শুধুমাত্র চ্যানেলের মালিকরা নতুন বার্তা পাঠাতে পারেন",
   "Channels": "চ্যানেলগুলি",
   "Chat_closed_by_agent": "এজেন্ট দ্বারা চ্যাট বন্ধ করা হয়েছে",

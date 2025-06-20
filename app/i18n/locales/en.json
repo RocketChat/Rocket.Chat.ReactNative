@@ -114,6 +114,7 @@
   "Channel_hint_private": "People can only join by being invited",
   "Channel_hint_public": "Everyone can access this channel",
   "Channel_Name": "Channel name",
+  "Channel_name_required": "Channel name required",
   "Channel_Read_Only_Hint": "Only channel owners can send new messages",
   "Channels": "Channels",
   "Chat_closed_by_agent": "Chat closed by agent",
