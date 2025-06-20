@@ -14,29 +14,21 @@ name: 'Login Test'
     timeout: 20000
 - tapOn:
     id: new-server-view-input
-    timeout: 20000
 - inputText:
     text: https://mobile.rocket.chat
-    timeout: 20000
 - tapOn: Connect
 - tapOn: Login
 - tapOn:
     id: login-view-email
-    timeout: 20000
 - inputText:
     text: rohit.bansal@gmail.com
-    timeout: 20000
 - pressKey: Enter
 - inputText:
     text: rohit.bansal@gmail.com
-    timeout: 20000
 - tapOn:
     id: login-view
-    timeout: 20000
 - tapOn:
     id: login-view-submit
-    timeout: 20000
 - assertVisible:
     id: 'rooms-list-view-item-general'
-    timeout: 20000
 - stopRecording
