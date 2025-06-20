@@ -45,10 +45,6 @@ jobs:
         run: |
           xcrun simctl install $UDID "extracted-app"
 
-      - name: Launch App
-        run: |
-          xcrun simctl launch $UDID
-
       - name: Wait for App to Launch
         run: |
           sleep 15
