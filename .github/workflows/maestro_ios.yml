@@ -41,7 +41,7 @@ jobs:
 
       - name: Launch App
         run: |
-          xcrun simctl launch $UDID com.rocket.chat
+          xcrun simctl launch $UDID com.rocket.reactnative
 
       - name: Wait for App to Launch
         run: |
