@@ -116,7 +116,7 @@ export const FormTextInput = ({
 				<View
 					accessible
 					accessibilityLabel={`${
-						accessibilityLabel ?? label
+						accessibilityLabel || label
 					} ${accessibilityLabelRequired} ${accessibilityInputValue}. ${accessibilityInputError}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (

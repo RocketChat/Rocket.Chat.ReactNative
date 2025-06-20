@@ -160,7 +160,7 @@ const Header = React.memo(
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel ?? ''}.`;
+		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
