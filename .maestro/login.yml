@@ -27,13 +27,8 @@ name: 'Login Test'
     text: rohit.bansal@gmail.com
 - tapOn:
     id: login-view
-- extendedWaitUntil:
-    visible:
-      id: 'Login'
-      index: 1
-    timeout: 10000
-    optional: true
 - tapOn:
     id: login-view-submit
-- assertVisible: general
+- assertVisible:
+    id: 'rooms-list-view-item-general'
 - stopRecording
