@@ -694,6 +694,7 @@
   "team-name-already-exists": "Det finns redan ett team med det namnet",
   "Teams": "Team",
   "Terms_of_Service": "Användarvillkor",
+  "The_autocomplete_options_are_available_above_the_input_composer": "Alternativen för autokomplettering finns ovanför inmatningsfältet.",
   "The_user_will_be_able_to_type_in_roomName": "Användaren kan ange {{roomName}}",
   "The_user_will_be_removed_from_s": "Användaren tas bort från {{s}}",
   "The_user_wont_be_able_to_type_in_roomName": "Användaren kan inte ange {{roomName}}",

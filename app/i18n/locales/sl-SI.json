@@ -641,6 +641,7 @@
   "team-name-already-exists": "Ekipa s tem imenom že obstaja",
   "Teams": "Ekipe",
   "Terms_of_Service": "Pogoji storitve",
+  "The_autocomplete_options_are_available_above_the_input_composer": "Možnosti za samodejno dokončanje so na voljo nad vhodnim urejevalnikom.",
   "The_user_will_be_able_to_type_in_roomName": "Uporabnik bo lahko vtipkal {{roomName}}",
   "The_user_will_be_removed_from_s": "Uporabnik bo odstranjen iz {{s}}",
   "The_user_wont_be_able_to_type_in_roomName": "Uporabnik ne bo mogel vtipkavati v {{roomName}}",

@@ -728,6 +728,7 @@
   "team-name-already-exists": "Egy ilyen nevű csapat már létezik",
   "Teams": "Csapatok",
   "Terms_of_Service": "Használati feltételek",
+  "The_autocomplete_options_are_available_above_the_input_composer": "A kiegészítési lehetőségek elérhetők a beviteli mező felett.",
   "The_room_does_not_exist": "A szoba nem létezik vagy nincs hozzáférési jogosultsága",
   "The_user_will_be_able_to_type_in_roomName": "A felhasználó tud írni itt: {{roomName}}",
   "The_user_will_be_removed_from_s": "A felhasználó el lesz távolítva innen {{s}} ",

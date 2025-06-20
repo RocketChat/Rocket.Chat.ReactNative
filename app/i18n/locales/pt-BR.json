@@ -798,6 +798,7 @@
   "Teams": "Times",
   "Terms_of_Service": " Termos de serviço ",
   "Test_push_notification": "Testar notificação push",
+  "The_autocomplete_options_are_available_above_the_input_composer": "As opções de preenchimento automático estão disponíveis acima do compositor de entrada.",
   "The_maximum_number_of_users_has_been_reached": "O número máximo de usuários foi atingido.",
   "The_room_does_not_exist": "A sala não existe ou você pode não ter permissão de acesso",
   "The_user_will_be_able_to_type_in_roomName": "O usuário poderá digitar em {{roomName}}",
