@@ -81,6 +81,15 @@ export interface IRCTextInputProps extends TextInputProps {
 	onClearInput?: () => void;
 }
 
+const getInputError = (error: unknown): string => {
+	if (typeof error === 'string') return error;
+	if (typeof error === 'object' && error !== null && 'reason' in error) {
+		const { reason } = error as { reason?: unknown };
+		if (typeof reason === 'string') return reason;
+	}
+	return '';
+};
+
 export const FormTextInput = ({
 	label,
 	required,
@@ -106,14 +115,6 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 
-	const getInputError = (error: unknown): string => {
-		if (typeof error === 'string') return error;
-		if (typeof error === 'object' && error !== null && 'reason' in error) {
-			const { reason } = error as { reason?: unknown };
-			if (typeof reason === 'string') return reason;
-		}
-		return '';
-	};
 	const inputError = getInputError(error);
 	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
 	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
