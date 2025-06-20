@@ -105,7 +105,7 @@ export const FormTextInput = ({
 		<A11yContainer>
 			<A11yElement order={1}>
 				<View
-					accessible
+					//accessible
 					accessibilityLabel={`${label}${accessibilityLabelRequired}${accessibilityInputValue}`}
 					style={[styles.inputContainer, containerStyle]}>
 					{label ? (
@@ -117,7 +117,7 @@ export const FormTextInput = ({
 						</Text>
 					) : null}
 
-					<View accessible style={styles.wrap}>
+					<View style={styles.wrap}>
 						<Input
 							style={[
 								styles.input,
