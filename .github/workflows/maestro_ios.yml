@@ -31,7 +31,7 @@ jobs:
       - name: Get Simulator UDID
         id: booted-sim
         run: |
-          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep "(Booted)" | grep -oE '[A-F0-9-]{36}' | head -n1)
           echo "UDID=$UDID"
           echo "UDID=$UDID" >> $GITHUB_ENV
 
