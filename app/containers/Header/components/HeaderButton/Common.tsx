@@ -85,6 +85,6 @@ export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderBut
 
 export const Legal = React.memo(
 	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
-		<More onPress={onPress} testID={testID} {...props} />
+		<More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />
 	)
 );

@@ -8,7 +8,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
 import { OutsideParamList } from '../../stacks/types';
 import UserForm from './UserForm';
-import i18n from '../../i18n';
 
 const LoginView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<OutsideParamList, 'LoginView'>>();
@@ -24,9 +23,7 @@ const LoginView = () => {
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title: title ?? 'Rocket.Chat',
-			headerRight: () => (
-				<HeaderButton.Legal accessibilityLabel={i18n.t('More')} testID='login-view-more' navigation={navigation} />
-			)
+			headerRight: () => <HeaderButton.Legal testID='login-view-more' navigation={navigation} />
 		});
 	}, [navigation, title]);
 
