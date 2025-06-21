@@ -1,45 +1,35 @@
 appId: chat.rocket.reactnative
-
 ---
 - launchApp:
     label: 'Launch app'
     clearState: true
     permissions:
       all: allow
-
 - extendedWaitUntil:
-    visible: 'Add Workspace'
+    visible: "Workspace URL , Required . Error: "
     timeout: 60000
-
 - tapOn:
-    text: "Workspace URL, Required"
-
+      text: "Workspace URL , Required . Error: "
 - inputText:
     id: "new-server-view-input"
     text: "invalidtest"
-
 - tapOn: "Connect"
-
 - extendedWaitUntil:
     visible: "Invalid workspace URL"
     timeout: 20000
-
 - tapOn:
     text: "OK"
-
-
 - launchApp:
     clearState: true
     permissions:
       all: allow
-
 - extendedWaitUntil:
     visible: 'Add Workspace'
     timeout: 20000
 
   
 - tapOn:
-    text: "Workspace URL, Required"
+      text: "Workspace URL , Required . Error: "
 
 - inputText: "open.rocket.chat"
   
