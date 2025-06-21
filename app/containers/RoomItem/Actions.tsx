@@ -44,7 +44,11 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 					animatedStyles
 				]}>
 				<View style={[styles.actionLeftButtonContainer, viewHeight]}>
-					<RectButton style={styles.actionButton} onPress={onToggleReadPress}>
+					<RectButton
+						accessible
+						accessibilityLabel={I18n.t(isRead ? 'Mark_unread' : 'Mark_read')}
+						style={styles.actionButton}
+						onPress={onToggleReadPress}>
 						<CustomIcon
 							size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 							name={isRead ? 'flag' : 'check'}
@@ -128,7 +132,11 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					viewHeight,
 					animatedFavStyles
 				]}>
-				<RectButton style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]} onPress={toggleFav}>
+				<RectButton
+					accessible
+					accessibilityLabel={I18n.t(favorite ? 'Unfavorite' : 'Favorite')}
+					style={[styles.actionButton, { backgroundColor: colors.statusFontWarning }]}
+					onPress={toggleFav}>
 					<CustomIcon
 						size={isCondensed ? CONDENSED_ICON_SIZE : EXPANDED_ICON_SIZE}
 						name={favorite ? 'star-filled' : 'star'}
@@ -148,6 +156,8 @@ export const RightActions = React.memo(({ transX, favorite, width, toggleFav, on
 					animatedHideStyles
 				]}>
 				<RectButton
+					accessible
+					accessibilityLabel={I18n.t('Hide')}
 					style={[styles.actionButton, { backgroundColor: colors.buttonBackgroundSecondaryPress }]}
 					onPress={onHidePress}>
 					<CustomIcon
