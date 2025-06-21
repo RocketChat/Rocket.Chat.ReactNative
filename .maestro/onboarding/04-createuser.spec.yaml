@@ -2,9 +2,9 @@ appId: chat.rocket.reactnative
 
 ---
 
-- runFlow: ../helper/navigate-to-register.yaml
+- runFlow: ../helpers/navigate-to-register.yaml
 
-- runScript: ../script/generate-user.js
+- runScript: ../scripts/generate-user.js
 
 - tapOn:
       text: "Full name, Required"

@@ -2,7 +2,7 @@ appId: chat.rocket.reactnative
 
 ---
 - runFlow:
-    file: ../helper/navigate-to-workspace.yaml
+    file: ../helpers/navigate-to-workspace.yaml
     env:
       URL: open.rocket.chat
 

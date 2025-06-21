@@ -19,6 +19,6 @@ env:
 - tapOn: "Connect"
   
 - assertVisible: 
-   id: "workspace-view"
+   id: "workspace-view" 
 
 - tapOn: "Login"
