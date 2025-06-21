@@ -3,23 +3,23 @@ appId: chat.rocket.reactnative
 - runFlow: ../helpers/navigate-to-register.yaml
 - runScript: ../scripts/generate-user.js
 - tapOn:
-      text: "Full name, Required"
+      text: "Full name , Required . Error: "
 - inputText:
        text: ${output.user.username}
 - tapOn:
-      text: "Username, Required"
+      text: "Username , Required . Error: "
 - inputText:
        text: ${output.user.username}
 - tapOn:
-      text: "Email, Required"
+      text: "Email , Required . Error: "
 - inputText:
        text: ${output.user.email}
 - tapOn:
-      text: "Password, Required"
+      text: "Password , Required . Error: "
 - inputText:
        text: ${output.user.password}
 - tapOn:
-      text: "Confirm Password, Required"
+      text: "Confirm Password , Required . Error: "
 - inputText:
        text: ${output.user.password}
 - scrollUntilVisible:
