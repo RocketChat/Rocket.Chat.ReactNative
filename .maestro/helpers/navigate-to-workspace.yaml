@@ -12,7 +12,7 @@ env:
     timeout: 100000
 
 - tapOn:
-    text: "Workspace URL, Required"
+      text: "Workspace URL , Required . Error: "
 
 - inputText: ${URL}
 

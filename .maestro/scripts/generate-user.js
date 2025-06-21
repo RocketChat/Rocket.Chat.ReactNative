@@ -8,7 +8,6 @@ function random(length) {
 	}
 	return text;
 }
-
 // Data object with server info and random user generation logic
 var data = {
 	server: 'https://mobile.rocket.chat',
@@ -22,7 +21,6 @@ var data = {
 			joinCode: '123'
 		}
 	},
-
 	// Function to create a random user
 	randomUser: function () {
 		var randomVal = random();
@@ -34,12 +32,7 @@ var data = {
 		};
 	}
 };
-
 // Generate random user
 var user = data.randomUser();
-
 // This will output the generated user object
 output.user = user;
-
-console.log('User created and .env file updated!');
-console.log(user, 'user');

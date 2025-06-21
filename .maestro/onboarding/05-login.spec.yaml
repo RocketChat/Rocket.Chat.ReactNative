@@ -1,9 +1,0 @@
-appId: chat.rocket.reactnative
-
----
-
-# - runFlow: ../helper/navigate-to-workspace.yaml
-
-# should insert wrong password and get error
-- runScript: ../script/generate-user-room-team.js
-    
