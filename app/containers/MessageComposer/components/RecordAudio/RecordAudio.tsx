@@ -132,7 +132,7 @@ export const RecordAudio = (): ReactElement | null => {
 					<BaseButton
 						onPress={sendAudio}
 						testID='message-composer-send'
-						accessibilityLabel='Send_message'
+						accessibilityLabel='Send_audio_message'
 						icon='send-filled'
 						color={colors.buttonBackgroundPrimaryDefault}
 					/>
@@ -148,8 +148,8 @@ export const RecordAudio = (): ReactElement | null => {
 				<Duration ref={durationRef} />
 			</View>
 			<View style={styles.buttons}>
-				<CancelButton onPress={cancelRecording} />
-				<View style={styles.recordingNote}>
+				<CancelButton onPress={cancelRecording} cancelAndDelete />
+				<View accessible accessibilityLabel={i18n.t('Recording_audio_in_progress')} style={styles.recordingNote}>
 					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
 				</View>
 				<ReviewButton onPress={goReview} />
