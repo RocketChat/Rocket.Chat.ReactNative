@@ -7,6 +7,7 @@ import scrollPersistTaps from '../../../../lib/methods/helpers/scrollPersistTaps
 import NavBottomFAB from './NavBottomFAB';
 import { IListProps } from '../definitions';
 import { SCROLL_LIMIT } from '../constants';
+import { useRoomContext } from '../../context';
 
 const styles = StyleSheet.create({
 	list: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
 
 export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
-
+	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
 		onScroll: event => {
 			if (event.contentOffset.y > SCROLL_LIMIT) {
@@ -34,6 +35,8 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 		<>
 			{/* @ts-ignore */}
 			<Animated.FlatList
+				accessibilityElementsHidden={isAutocompleteVisible}
+				importantForAccessibility={isAutocompleteVisible ? 'no-hide-descendants' : 'yes'}
 				testID='room-view-messages'
 				ref={listRef}
 				keyExtractor={item => item.id}

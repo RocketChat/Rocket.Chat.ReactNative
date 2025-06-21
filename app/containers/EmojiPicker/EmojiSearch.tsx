@@ -20,6 +20,7 @@ export const EmojiSearch = ({ onBlur, onChangeText, bottomSheet }: IEmojiSearchB
 
 	return (
 		<FormTextInput
+			accessibilityLabel={I18n.t('Search_emoji')}
 			autoCapitalize='none'
 			autoCorrect={false}
 			autoComplete='off'
