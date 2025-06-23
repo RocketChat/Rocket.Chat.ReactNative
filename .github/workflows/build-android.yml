@@ -55,6 +55,12 @@ jobs:
           node-version: 22
           cache: 'yarn'
 
+      - name: Set up Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
+
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ secrets.KEYSTORE_EXPERIMENTAL }}
