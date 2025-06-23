@@ -30,6 +30,11 @@ export default StyleSheet.create({
 	del: {
 		textDecorationLine: 'line-through'
 	},
+	plainText: {
+		fontSize: 16,
+		flexShrink: 1,
+		lineHeight: 22
+	},
 	text: {
 		lineHeight: 22,
 		fontSize: 16,
@@ -152,7 +157,8 @@ export default StyleSheet.create({
 		textAlign: 'right'
 	},
 	inline: {
-		flexShrink: 1
+		flexShrink: 1,
+		...sharedStyles.textRegular
 	},
 	listPrefix: {
 		fontVariant: ['tabular-nums']
