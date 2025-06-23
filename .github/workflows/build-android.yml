@@ -111,9 +111,9 @@ jobs:
           yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
 
       - name: Store the google service account key
-          run: |
-            cd android
-            echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT}}" | base64 --decode > service_account.json
+        run: |
+          cd android
+          echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT}}" | base64 --decode > service_account.json
 
       - name: Fastlane Play Store Upload
         run: |
