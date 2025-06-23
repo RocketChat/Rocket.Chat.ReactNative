@@ -4,10 +4,9 @@ on:
   pull_request:
     branches:
       - '*'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  push:
+    branches:
+      - 'master'
 
 jobs:
   run-eslint-and-test:
@@ -42,3 +41,18 @@ jobs:
 
       - name: Run Tests
         run: yarn test --runInBand
+
+  android-build-experimental-store:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/actions/build-android.yml
+    needs: run-eslint-and-test
+    secrets:
+      KEYSTORE_EXPERIMENTAL_BASE64: ${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}
+      KEYSTORE_EXPERIMENTAL_PASSWORD: ${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}
+      KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
+      BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
+      KEYSTORE_EXPERIMENTAL: ${{ secrets.KEYSTORE_EXPERIMENTAL }}
+      GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+      FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+    with:
+      type: experimental

@@ -1,0 +1,127 @@
+name: Build Android
+
+on:
+  workflow_call:
+    inputs:
+      type:
+        type: string
+        required: true
+    secrets:
+      BUGSNAG_KEY:
+        required: true
+      KEYSTORE_EXPERIMENTAL:
+        required: true
+      KEYSTORE_EXPERIMENTAL_BASE64:
+        required: true
+      KEYSTORE_EXPERIMENTAL_PASSWORD:
+        required: true
+      KEYSTORE_EXPERIMENTAL_ALIAS:
+        required: true
+      GOOGLE_SERVICES_ANDROID:
+        required: true
+      FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+        required: true
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Log the secrets
+        run: |
+          if [ -z "${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}" ]; then
+            echo "❌ KEYSTORE_EXPERIMENTAL_BASE64 is NOT set"
+          else
+            echo "✅ KEYSTORE_EXPERIMENTAL_BASE64 is set"
+          fi
+
+          if [ -z "${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" ]; then
+            echo "❌ KEYSTORE_EXPERIMENTAL_PASSWORD is NOT set"
+          else
+            echo "✅ KEYSTORE_EXPERIMENTAL_PASSWORD is set"
+          fi
+
+          if [ -z "${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}" ]; then
+            echo "❌ KEYSTORE_EXPERIMENTAL_ALIAS is NOT set"
+          else
+            echo "✅ KEYSTORE_EXPERIMENTAL_ALIAS is set"
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ secrets.KEYSTORE_EXPERIMENTAL }}
+
+      - name: Set gradle.properties
+        run: |
+          echo " " >> android/gradle.properties
+          echo -e "android.useAndroidX=true" >> android/gradle.properties
+          echo -e "android.enableJetifier=true" >> android/gradle.properties
+          echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> android/gradle.properties
+          echo -e "newArchEnabled=false" >> android/gradle.properties
+          echo -e "hermesEnabled=true" >> android/gradle.properties
+          echo -e "VERSIONCODE=$GITHUB_RUN_NUMBER" >> ./gradle.properties
+
+          if [[ ${{ inputs.type }} == "experimental" ]]; then
+            echo -e "APPLICATION_ID=chat.rocket.reactnative" >> android/gradle.properties
+            echo -e "BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }}" >> android/gradle.properties
+            echo -e "KEYSTORE=${{ secrets.KEYSTORE_EXPERIMENTAL }}" >> android/gradle.properties
+            echo -e "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+            echo -e "KEY_ALIAS=${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> android/gradle.properties
+            echo -e "KEY_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+          fi
+
+      - name: Set Google Services
+        run: |
+          if [[ ${{ secrets.GOOGLE_SERVICES_ANDROID }} ]]; then
+            echo ${{ secrets.GOOGLE_SERVICES_ANDROID }} | base64 --decode > android/app/google-services.json
+          fi
+      
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Cache Gradle Caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-${{ runner.os }}-
+
+      - name: Build Android Release APK
+        run: |
+          cd android
+          ./gradlew bundleExperimentalRelease
+
+      - name: Upload sourcemaps/NDK symbols to Bugsnag
+        run: |
+          yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+          yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+
+      - name: Store the google service account key
+          run: |
+            cd android
+            echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT}}" | base64 --decode > service_account.json
+
+      - name: Fastlane Play Store Upload
+        run: |
+          cd android
+          bundle exec fastlane android internal_app_sharing
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Output
+          path: android/app/build/outputs
