@@ -8,7 +8,15 @@ import { store } from '../store/auxStore';
 export async function readMessages(rid: string, ls: Date, updateLastOpen = false): Promise<void> {
 	try {
 		const db = database.active;
-		const subscription = await db.get('subscriptions').find(rid);
+		let subscription;
+		try {
+			subscription = await db.get('subscriptions').find(rid);
+		} catch (e) {
+			// Log a warning if the subscription is not found
+			console.warn(`Subscription not found for rid: ${rid}. Skipping readMessages.`);
+			return; // Exit the function early
+		}
+
 		const { enabled: encryptionEnabled } = store.getState().encryption;
 
 		if ('encrypted' in subscription) {
