@@ -1,6 +1,9 @@
-name: action.yml
+name: Test Action
 
 on:
+  pull_request:
+    branches:
+      - '*'
   workflow_dispatch:
 
 concurrency:
@@ -8,122 +11,113 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test_action:
+  lint-testunit:
     runs-on: ubuntu-latest
+    name: Lint + Test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Run ESLint
+      - name: Lint + Test
         run: |
-          echo "Running ESLint..."
+          echo "Running Lint + Test..."
           sleep 5
-          echo "ESLint passed"
+          echo "Done."
 
-  android-experimental-hold:
-    needs: test_action
+  ios-hold-build-official:
+    if: github.event_name == 'workflow_dispatch'
+    needs: lint-testunit
     runs-on: ubuntu-latest
     environment:
-      name: android-experimental-approval
+      name: ios-official-build-approval
     steps:
-      - name: Hold for approval (Android Experimental)
+      - name: Hold for iOS Official Build
         run: echo "Approved manually"
 
-  android-experimental-build:
-    needs: android-experimental-hold
-    runs-on: ubuntu-latest
-    steps:
-      - name: Android Experimental Build
-        run: |
-          echo "Building Android Experimental..."
-          sleep 5
-
-  android-experimental-release-play-store:
-    needs: android-experimental-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Release Android Experimental to Play Store
-        run: |
-          echo "Releasing Android Experimental..."
-          sleep 5
-
-  android-official-hold:
-    needs: test_action
-    runs-on: ubuntu-latest
-    environment:
-      name: android-official-approval
-    steps:
-      - name: Hold for approval (Android Official)
-        run: echo "Approved manually"
-
-  android-official-build:
-    needs: android-official-hold
-    runs-on: ubuntu-latest
-    steps:
-      - name: Android Official Build
-        run: |
-          echo "Building Android Official..."
-          sleep 5
-
-  android-official-release-play-store:
-    needs: android-official-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Release Android Official to Play Store
-        run: |
-          echo "Releasing Android Official..."
-          sleep 5
-
-  ios-experimental-hold:
-    needs: test_action
-    runs-on: ubuntu-latest
-    environment:
-      name: ios-experimental-approval
-    steps:
-      - name: Hold for approval (iOS Experimental)
-        run: echo "Approved manually"
-
-  ios-experimental-build:
-    needs: ios-experimental-hold
-    runs-on: ubuntu-latest
-    steps:
-      - name: iOS Experimental Build
-        run: |
-          echo "Building iOS Experimental..."
-          sleep 5
-
-  ios-experimental-release-app-store:
-    needs: ios-experimental-build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Release iOS Experimental to App Store
-        run: |
-          echo "Releasing iOS Experimental..."
-          sleep 5
-
-  ios-official-hold:
-    needs: test_action
-    runs-on: ubuntu-latest
-    environment:
-      name: ios-official-approval
-    steps:
-      - name: Hold for approval (iOS Official)
-        run: echo "Approved manually"
-
-  ios-official-build:
-    needs: ios-official-hold
+  ios-build-official:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ios-hold-build-official
     runs-on: ubuntu-latest
     steps:
       - name: iOS Official Build
-        run: |
-          echo "Building iOS Official..."
-          sleep 5
+        run: sleep 5
 
-  ios-official-release-app-store:
-    needs: ios-official-build
+  ios-hold-testflight-official:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ios-build-official
+    runs-on: ubuntu-latest
+    environment:
+      name: ios-official-testflight-approval
+    steps:
+      - name: Hold for iOS Official TestFlight
+        run: echo "Approved manually"
+
+  ios-testflight-official:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ios-hold-testflight-official
     runs-on: ubuntu-latest
     steps:
-      - name: Release iOS Official to App Store
-        run: |
-          echo "Releasing iOS Official..."
-          sleep 5
+      - name: iOS Official TestFlight Release
+        run: sleep 5
+
+  ios-hold-build-experimental:
+    if: github.event_name == 'workflow_dispatch'
+    needs: lint-testunit
+    runs-on: ubuntu-latest
+    environment:
+      name: ios-experimental-build-approval
+    steps:
+      - name: Hold for iOS Experimental Build
+        run: echo "Approved manually"
+
+  ios-build-experimental:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ios-hold-build-experimental
+    runs-on: ubuntu-latest
+    steps:
+      - name: iOS Experimental Build
+        run: sleep 5
+
+  ios-testflight-experimental:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ios-build-experimental
+    runs-on: ubuntu-latest
+    steps:
+      - name: iOS Experimental TestFlight Release
+        run: sleep 5
+
+
+  android-hold-build-official:
+    if: github.event_name == 'workflow_dispatch'
+    needs: lint-testunit
+    runs-on: ubuntu-latest
+    environment:
+      name: android-official-build-approval
+    steps:
+      - name: Hold for Android Official Build
+        run: echo "Approved manually"
+
+  android-build-official:
+    if: github.event_name == 'workflow_dispatch'
+    needs: android-hold-build-official
+    runs-on: ubuntu-latest
+    steps:
+      - name: Android Official Build
+        run: sleep 5
+
+  android-hold-build-experimental:
+    if: github.event_name == 'workflow_dispatch'
+    needs: lint-testunit
+    runs-on: ubuntu-latest
+    environment:
+      name: android-experimental-build-approval
+    steps:
+      - name: Hold for Android Experimental Build
+        run: echo "Approved manually"
+
+  android-build-experimental:
+    if: github.event_name == 'workflow_dispatch'
+    needs: android-hold-build-experimental
+    runs-on: ubuntu-latest
+    steps:
+      - name: Android Experimental Build
+        run: sleep 5
