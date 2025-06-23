@@ -43,8 +43,7 @@ jobs:
         run: yarn test --runInBand
 
   android-build-experimental-store:
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    uses: ./.github/workflows/actions/build-android.yml
+    uses: ./.github/workflows/build-android.yml
     needs: run-eslint-and-test
     secrets:
       KEYSTORE_EXPERIMENTAL_BASE64: ${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}
