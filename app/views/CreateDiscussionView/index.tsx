@@ -135,7 +135,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			}
 			prevLoading.current = loading;
 		}
-	}, [loading, failure, error, result, isMasterDetail]);
+	}, [loading]);
 
 	useEffect(() => {
 		setHeader();
