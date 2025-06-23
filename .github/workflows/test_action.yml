@@ -1,0 +1,129 @@
+name: action.yml
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test_action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run ESLint
+        run: |
+          echo "Running ESLint..."
+          sleep 5
+          echo "ESLint passed"
+
+  android-experimental-hold:
+    needs: test_action
+    runs-on: ubuntu-latest
+    environment:
+      name: android-experimental-approval
+    steps:
+      - name: Hold for approval (Android Experimental)
+        run: echo "Approved manually"
+
+  android-experimental-build:
+    needs: android-experimental-hold
+    runs-on: ubuntu-latest
+    steps:
+      - name: Android Experimental Build
+        run: |
+          echo "Building Android Experimental..."
+          sleep 5
+
+  android-experimental-release-play-store:
+    needs: android-experimental-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release Android Experimental to Play Store
+        run: |
+          echo "Releasing Android Experimental..."
+          sleep 5
+
+  android-official-hold:
+    needs: test_action
+    runs-on: ubuntu-latest
+    environment:
+      name: android-official-approval
+    steps:
+      - name: Hold for approval (Android Official)
+        run: echo "Approved manually"
+
+  android-official-build:
+    needs: android-official-hold
+    runs-on: ubuntu-latest
+    steps:
+      - name: Android Official Build
+        run: |
+          echo "Building Android Official..."
+          sleep 5
+
+  android-official-release-play-store:
+    needs: android-official-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release Android Official to Play Store
+        run: |
+          echo "Releasing Android Official..."
+          sleep 5
+
+  ios-experimental-hold:
+    needs: test_action
+    runs-on: ubuntu-latest
+    environment:
+      name: ios-experimental-approval
+    steps:
+      - name: Hold for approval (iOS Experimental)
+        run: echo "Approved manually"
+
+  ios-experimental-build:
+    needs: ios-experimental-hold
+    runs-on: ubuntu-latest
+    steps:
+      - name: iOS Experimental Build
+        run: |
+          echo "Building iOS Experimental..."
+          sleep 5
+
+  ios-experimental-release-app-store:
+    needs: ios-experimental-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release iOS Experimental to App Store
+        run: |
+          echo "Releasing iOS Experimental..."
+          sleep 5
+
+  ios-official-hold:
+    needs: test_action
+    runs-on: ubuntu-latest
+    environment:
+      name: ios-official-approval
+    steps:
+      - name: Hold for approval (iOS Official)
+        run: echo "Approved manually"
+
+  ios-official-build:
+    needs: ios-official-hold
+    runs-on: ubuntu-latest
+    steps:
+      - name: iOS Official Build
+        run: |
+          echo "Building iOS Official..."
+          sleep 5
+
+  ios-official-release-app-store:
+    needs: ios-official-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release iOS Official to App Store
+        run: |
+          echo "Releasing iOS Official..."
+          sleep 5
