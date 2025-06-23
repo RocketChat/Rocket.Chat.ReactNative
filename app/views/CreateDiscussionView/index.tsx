@@ -150,7 +150,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			<SafeAreaView testID='create-discussion-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
-					<View style={{ gap: 12, paddingTop: 12 }}>
+					<View style={styles.form}>
 						<SelectChannel
 							server={server}
 							userId={user.id}
