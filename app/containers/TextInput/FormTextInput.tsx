@@ -148,7 +148,6 @@ export const FormTextInput = ({
 								},
 								inputError
 									? {
-											color: colors.buttonBackgroundDangerDefault,
 											borderColor: colors.buttonBackgroundDangerDefault
 									  }
 									: {},
