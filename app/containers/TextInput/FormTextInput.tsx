@@ -139,7 +139,6 @@ export const FormTextInput = ({
 								},
 								error
 									? {
-											color: colors.buttonBackgroundDangerDefault,
 											borderColor: colors.buttonBackgroundDangerDefault
 									  }
 									: {},
