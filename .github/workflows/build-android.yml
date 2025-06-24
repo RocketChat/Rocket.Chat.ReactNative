@@ -63,8 +63,8 @@ jobs:
 
       - name: Install Fastlane
         run: |
-          gem install bundler
-          bundle install
+          cd android
+          bundle install --path gems
 
       - name: Decode Keystore
         run: |
