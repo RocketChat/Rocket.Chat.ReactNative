@@ -163,7 +163,7 @@ const Header = React.memo(
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel}.`;
+		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
@@ -194,6 +194,7 @@ const Header = React.memo(
 		return (
 			<View
 				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
 				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>

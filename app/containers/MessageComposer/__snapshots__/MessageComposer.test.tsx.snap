@@ -114,7 +114,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         testID="message-composer-delete-audio"
       >
         <View
-          accessibilityLabel="Cancel"
+          accessibilityLabel="Cancel and delete recording"
           accessibilityRole="button"
           accessible={true}
         >
@@ -147,6 +147,8 @@ exports[`MessageComposer Audio tap record 1`] = `
         </View>
       </RNGestureHandlerButton>
       <View
+        accessibilityLabel="Recording audio message"
+        accessible={true}
         style={
           {
             "alignItems": "center",
@@ -208,7 +210,7 @@ exports[`MessageComposer Audio tap record 1`] = `
         }
       >
         <View
-          accessibilityLabel="Cancel_recording"
+          accessibilityLabel="Review message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -316,7 +318,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           testID="message-composer-actions"
         >
           <View
-            accessibilityLabel="Message actions"
+            accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
           >
@@ -431,7 +433,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
           testID="message-composer-send-audio"
         >
           <View
-            accessibilityLabel="Send audio message"
+            accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
           >
@@ -747,7 +749,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           testID="message-composer-actions"
         >
           <View
-            accessibilityLabel="Message actions"
+            accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
           >
@@ -862,7 +864,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
           testID="message-composer-send-audio"
         >
           <View
-            accessibilityLabel="Send audio message"
+            accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
           >
@@ -1360,7 +1362,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           testID="message-composer-actions"
         >
           <View
-            accessibilityLabel="Message actions"
+            accessibilityLabel="Actions"
             accessibilityRole="button"
             accessible={true}
           >
@@ -1475,7 +1477,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
           testID="message-composer-send-audio"
         >
           <View
-            accessibilityLabel="Send audio message"
+            accessibilityLabel="Record audio message"
             accessibilityRole="button"
             accessible={true}
           >
@@ -2464,7 +2466,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -3063,7 +3065,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -3662,7 +3664,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -4261,7 +4263,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -4860,7 +4862,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -5459,7 +5461,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -6058,7 +6060,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -6657,7 +6659,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -7256,7 +7258,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -7855,7 +7857,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8454,7 +8456,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8597,7 +8599,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         testID="message-composer-actions"
       >
         <View
-          accessibilityLabel="Message actions"
+          accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8673,7 +8675,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         testID="message-composer-open-emoji"
       >
         <View
-          accessibilityLabel="Open emoji selector"
+          accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8749,7 +8751,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         testID="message-composer-open-markdown"
       >
         <View
-          accessibilityLabel="Open markdown tools"
+          accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8825,7 +8827,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         testID="message-composer-mention"
       >
         <View
-          accessibilityLabel="Open mention autocomplete"
+          accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8901,7 +8903,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9044,7 +9046,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         testID="message-composer-actions"
       >
         <View
-          accessibilityLabel="Message actions"
+          accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9120,7 +9122,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         testID="message-composer-close-emoji"
       >
         <View
-          accessibilityLabel="Close emoji selector"
+          accessibilityLabel="Back to keyboard"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9196,7 +9198,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9339,7 +9341,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         testID="message-composer-actions"
       >
         <View
-          accessibilityLabel="Message actions"
+          accessibilityLabel="Actions"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9415,7 +9417,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         testID="message-composer-open-emoji"
       >
         <View
-          accessibilityLabel="Open emoji selector"
+          accessibilityLabel="Emoji selector"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9491,7 +9493,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         testID="message-composer-open-markdown"
       >
         <View
-          accessibilityLabel="Open markdown tools"
+          accessibilityLabel="Markdown tools"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9567,7 +9569,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         testID="message-composer-mention"
       >
         <View
-          accessibilityLabel="Open mention autocomplete"
+          accessibilityLabel="Mention user"
           accessibilityRole="button"
           accessible={true}
         >
@@ -9643,7 +9645,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
