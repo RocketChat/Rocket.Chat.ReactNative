@@ -16,30 +16,28 @@ store.dispatch(setUser({ id: 'abc', username: 'rocket.cat', name: 'Rocket Cat' }
 const preview: Preview = {
 	decorators: [
 		Story => (
-			<GestureHandlerRootView>
-				<Provider store={store}>
-					<MessageContext.Provider
-						value={{
-							user: {
-								id: 'y8bd77ptZswPj3EW8',
-								username: 'diego.mello',
-								token: 'abc'
-							},
-							baseUrl,
-							onPress: () => {},
-							onLongPress: () => {},
-							reactionInit: () => {},
-							onErrorPress: () => {},
-							replyBroadcast: () => {},
-							onReactionPress: () => {},
-							onDiscussionPress: () => {},
-							onReactionLongPress: () => {},
-							threadBadgeColor: themes.light.badgeBackgroundLevel1
-						}}>
-						<Story />
-					</MessageContext.Provider>
-				</Provider>
-			</GestureHandlerRootView>
+			<Provider store={store}>
+				<MessageContext.Provider
+					value={{
+						user: {
+							id: 'y8bd77ptZswPj3EW8',
+							username: 'diego.mello',
+							token: 'abc'
+						},
+						baseUrl,
+						onPress: () => {},
+						onLongPress: () => {},
+						reactionInit: () => {},
+						onErrorPress: () => {},
+						replyBroadcast: () => {},
+						onReactionPress: () => {},
+						onDiscussionPress: () => {},
+						onReactionLongPress: () => {},
+						threadBadgeColor: themes.light.badgeBackgroundLevel1
+					}}>
+					<Story />
+				</MessageContext.Provider>
+			</Provider>
 		)
 	]
 };

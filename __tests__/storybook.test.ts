@@ -3,6 +3,12 @@ import { render } from '@testing-library/react-native';
 import { composeStories } from '@storybook/react';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import preview from '../.rnstorybook/preview';
+import { initStore } from '../app/lib/store/auxStore';
+import { mockedStore } from '../app/reducers/mockedStore';
+
+initStore(mockedStore);
+
 type StoryFile = {
 	default: Meta;
 	[name: string]: StoryFn | Meta;
@@ -10,7 +16,9 @@ type StoryFile = {
 
 const compose = (entry: StoryFile): ReturnType<typeof composeStories<StoryFile>> => {
 	try {
-		return composeStories(entry);
+		return composeStories(entry, {
+			decorators: preview.decorators
+		});
 	} catch (e) {
 		throw new Error(`There was an issue composing stories for the module: ${JSON.stringify(entry)}, ${e}`);
 	}
@@ -82,6 +90,7 @@ describe('Story Snapshots', () => {
 
 		describe(title, () => {
 			const stories = Object.entries(compose(storyFile)).map(([name, story]) => ({ name, story }));
+			console.log(stories);
 
 			if (stories.length <= 0) {
 				throw new Error(
@@ -92,6 +101,7 @@ describe('Story Snapshots', () => {
 			stories.forEach(({ name, story }) => {
 				test(`${name} should match snapshot`, async () => {
 					// The composed story already includes decorators from preview.tsx
+					console.log(story);
 					const rendered = render(React.createElement(story as React.ComponentType));
 
 					// Wait for component to render completely
