@@ -6,7 +6,7 @@ import { DisplayMode } from '../../lib/constants';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
 import { IIconOrAvatar } from './interfaces';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
 
 const IconOrAvatar = ({
 	avatar,
@@ -22,7 +22,7 @@ const IconOrAvatar = ({
 	displayMode,
 	sourceType
 }: IIconOrAvatar): React.ReactElement | null => {
-	const { rowHeight } = useRowHeight();
+	const { rowHeight } = useResponsiveLayout();
 
 	if (showAvatar) {
 		return (
