@@ -1,0 +1,120 @@
+name: Build iOS
+
+on:
+  workflow_call:
+    inputs:
+      type:
+        type: string
+        required: true
+    secrets:
+      APP_STORE_CONNECT_API_KEY_BASE64:
+        required: true
+      BUGSNAG_KEY:
+        required: true
+      MATCH_KEYCHAIN_NAME:
+        required: true
+      MATCH_KEYCHAIN_PASSWORD:
+        required: true
+      MATCH_PASSWORD:
+        required: true
+      APP_STORE_CONNECT_API_KEY_ID:
+        required: true
+      APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+        required: true
+      FASTLANE_REPO_PAT:
+        required: true
+
+jobs:
+  ios-build:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Install JavaScript dependencies
+        run: yarn install --frozen-lockfile
+    
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16.2'
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.7
+          bundler-cache: true
+
+      - name: pod install
+        run: |
+          yarn pod-install
+
+      - name: Decode p8
+        run: |
+          echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+
+      - name: Set bugsnag key
+        run: |
+          cd ios
+
+          if [[ ${{ inputs.type }} == "official" ]]; then
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
+          else
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ secrets.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
+            /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+          fi
+
+      - name: Build iOS app
+        run: |
+          cd ios
+          if [[ ${{ inputs.type }} == "official" ]]; then
+            bundle exec fastlane ios build_official
+          else
+            bundle exec fastlane ios build_experimental
+          fi
+        env:
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
+
+      - name: Upload Fastlane gym log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fastlane-gym-log
+          path: /Users/runner/Library/Logs/gym/Rocket.Chat Experimental-RocketChatRN.log
+
+      - name: Submit to TestFlight
+        run: |
+          cd ios
+          if [[ ${{ inputs.type }} == "official" ]]; then
+            echo "Submitting to TestFlight as Official"
+            ## bundle exec fastlane ios beta official:true
+          else
+            echo "Submitting to TestFlight as Experimental"
+            bundle exec fastlane ios beta official:false
+          fi
+        env:
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
