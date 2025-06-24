@@ -1,15 +1,5 @@
 import React, { useMemo } from 'react';
-import {
-	I18nManager,
-	StyleProp,
-	StyleSheet,
-	Text,
-	TextStyle,
-	View,
-	AccessibilityRole,
-	useWindowDimensions,
-	ViewStyle
-} from 'react-native';
+import { I18nManager, StyleProp, StyleSheet, Text, TextStyle, View, AccessibilityRole, ViewStyle } from 'react-native';
 
 import Touch from '../Touch';
 import { themes } from '../../lib/constants';
@@ -19,6 +9,7 @@ import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
+import { useResponsiveFontScale } from '../../lib/hooks/useResponsiveFontScale';
 
 const styles = StyleSheet.create({
 	container: {
@@ -107,7 +98,7 @@ const Content = React.memo(
 		accessibilityRole,
 		accessibilityLabel
 	}: IListItemContent) => {
-		const { fontScale } = useWindowDimensions();
+		const { fontScale } = useResponsiveFontScale();
 
 		const handleAcessibilityLabel = useMemo(() => {
 			let label = '';
