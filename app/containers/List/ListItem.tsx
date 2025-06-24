@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
-import { useResponsiveFontScale } from '../../lib/hooks/useResponsiveFontScale';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -98,7 +98,7 @@ const Content = React.memo(
 		accessibilityRole,
 		accessibilityLabel
 	}: IListItemContent) => {
-		const { fontScale } = useResponsiveFontScale();
+		const { fontScale } = useResponsiveLayout();
 
 		const handleAcessibilityLabel = useMemo(() => {
 			let label = '';

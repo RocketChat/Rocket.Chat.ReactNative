@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ResponsiveFontScaleContext } from './useResponsiveFontScale';
+import { ResponsiveFontScaleContext } from './useResponsiveLayout';
 
 type Props = {
 	children: React.ReactNode;

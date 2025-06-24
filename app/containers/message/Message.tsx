@@ -23,10 +23,10 @@ import RightIcons from './Components/RightIcons';
 import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
-import { useResponsiveFontScale } from '../../lib/hooks/useResponsiveFontScale';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
 
 const MessageInner = React.memo((props: IMessageInner) => {
-	const { isLargeFontScale } = useResponsiveFontScale();
+	const { isLargeFontScale } = useResponsiveLayout();
 
 	if (props.isPreview) {
 		return (

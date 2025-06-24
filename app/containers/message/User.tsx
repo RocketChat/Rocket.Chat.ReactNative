@@ -9,7 +9,7 @@ import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
-import { useResponsiveFontScale } from '../../lib/hooks/useResponsiveFontScale';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {
@@ -81,7 +81,7 @@ const User = React.memo(
 	}: IMessageUser) => {
 		const { user } = useContext(MessageContext);
 		const { colors } = useTheme();
-		const { isLargeFontScale } = useResponsiveFontScale();
+		const { isLargeFontScale } = useResponsiveLayout();
 
 		if (isHeader) {
 			const username = (useRealName && author?.name) || author?.username;
