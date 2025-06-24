@@ -111,10 +111,13 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - name: Build Android Release APK
+      - name: Build Android Release AAB
         run: |
           cd android
           ./gradlew bundleExperimentalRelease
+
+      - name: Find all AAB files
+        run: find android/app/build/outputs -name "*.aab"
 
       - name: Upload sourcemaps/NDK symbols to Bugsnag
         run: |
