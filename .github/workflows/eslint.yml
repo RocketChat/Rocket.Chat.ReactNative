@@ -58,6 +58,7 @@ jobs:
 
   ios-build-experimental-store:
     uses: ./.github/workflows/build-ios.yml
+    needs: run-eslint-and-test
     secrets:
       APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
       BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
