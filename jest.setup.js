@@ -19,6 +19,57 @@ jest.mock('react-native-safe-area-context', () => {
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
 
+jest.mock('react-native-gesture-handler', () => {
+	const View = require('react-native/Libraries/Components/View/View');
+	const TouchableOpacity = require('react-native/Libraries/Components/Touchable/TouchableOpacity');
+	const ScrollView = require('react-native/Libraries/Components/ScrollView/ScrollView');
+	const FlatList = require('react-native/Libraries/Lists/FlatList');
+
+	return {
+		Swipeable: View,
+		DrawerLayout: View,
+		State: {},
+		ScrollView,
+		FlatList,
+		TextInput: require('react-native/Libraries/Components/TextInput/TextInput'),
+
+		// Touchable components
+		TouchableOpacity,
+		TouchableHighlight: TouchableOpacity,
+		TouchableWithoutFeedback: TouchableOpacity,
+		TouchableNativeFeedback: TouchableOpacity,
+
+		// Button components
+		RectButton: TouchableOpacity,
+		BorderlessButton: TouchableOpacity,
+		BaseButton: TouchableOpacity,
+
+		// Gesture components
+		PanGestureHandler: View,
+		TapGestureHandler: View,
+		PinchGestureHandler: View,
+		RotationGestureHandler: View,
+		LongPressGestureHandler: View,
+
+		// Root view
+		GestureHandlerRootView: View,
+
+		// HOCs
+		gestureHandlerRootHOC: jest.fn(component => component),
+
+		// Gesture detector
+		GestureDetector: ({ children }) => children,
+		Gesture: {
+			Pan: () => ({}),
+			Tap: () => ({}),
+			Pinch: () => ({})
+		},
+
+		// Events
+		Directions: {}
+	};
+});
+
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
 jest.mock('react-native-file-viewer', () => ({
