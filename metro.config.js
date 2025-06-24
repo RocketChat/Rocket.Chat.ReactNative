@@ -16,10 +16,16 @@ const config = {
 	}
 };
 
-module.exports = withStorybook(wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config)), {
+const finalConfig = wrapWithReanimatedMetroConfig(mergeConfig(getDefaultConfig(__dirname), config));
+
+const storybookOptions = {
 	// set to false to disable storybook specific settings
 	// you can use a env variable to toggle this
 	enabled: process.env.USE_STORYBOOK === 'true',
 	// path to your storybook config folder
-	configPath: path.resolve(__dirname, './.storybook')
-});
+	configPath: path.resolve(__dirname, './.rnstorybook'),
+	// set this to true to remove storybook from the bundle when disabled
+	onDisabledRemoveStorybook: true
+};
+
+module.exports = withStorybook(finalConfig, storybookOptions);
