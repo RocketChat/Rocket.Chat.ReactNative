@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Story snapshots: Chip ChipText snapshot 1`] = `
+exports[`Story Snapshots: ChipText should match snapshot 1`] = `
 <View
   style={
     {
@@ -64,6 +64,63 @@ exports[`Story snapshots: Chip ChipText snapshot 1`] = `
         }
       }
     >
+      <View
+        accessibilityLabel="rocket.cat's avatar"
+        accessible={true}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 28,
+              "width": 28,
+            },
+            {
+              "marginRight": 8,
+              "marginVertical": 8,
+            },
+          ]
+        }
+        testID="avatar"
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={28}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 28,
+              "width": 28,
+            }
+          }
+          transition={null}
+          width={28}
+        />
+      </View>
       <View
         style={
           {
@@ -123,7 +180,7 @@ exports[`Story snapshots: Chip ChipText snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Chip ChipWithShortText snapshot 1`] = `
+exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
 <View
   style={
     {
@@ -188,6 +245,63 @@ exports[`Story snapshots: Chip ChipWithShortText snapshot 1`] = `
       }
     >
       <View
+        accessibilityLabel="rocket.cat's avatar"
+        accessible={true}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 28,
+              "width": 28,
+            },
+            {
+              "marginRight": 8,
+              "marginVertical": 8,
+            },
+          ]
+        }
+        testID="avatar"
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={28}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 28,
+              "width": 28,
+            }
+          }
+          transition={null}
+          width={28}
+        />
+      </View>
+      <View
         style={
           {
             "marginRight": 8,
@@ -246,7 +360,7 @@ exports[`Story snapshots: Chip ChipWithShortText snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Chip ChipWithoutAvatar snapshot 1`] = `
+exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
 <View
   style={
     {
@@ -369,7 +483,7 @@ exports[`Story snapshots: Chip ChipWithoutAvatar snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Chip ChipWithoutAvatarAndIcon snapshot 1`] = `
+exports[`Story Snapshots: ChipWithoutAvatarAndIcon should match snapshot 1`] = `
 <View
   style={
     {
@@ -466,7 +580,7 @@ exports[`Story snapshots: Chip ChipWithoutAvatarAndIcon snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Chip ChipWithoutIcon snapshot 1`] = `
+exports[`Story Snapshots: ChipWithoutIcon should match snapshot 1`] = `
 <View
   style={
     {
@@ -530,6 +644,63 @@ exports[`Story snapshots: Chip ChipWithoutIcon snapshot 1`] = `
         }
       }
     >
+      <View
+        accessibilityLabel="rocket.cat's avatar"
+        accessible={true}
+        style={
+          [
+            {
+              "borderRadius": 4,
+              "height": 28,
+              "width": 28,
+            },
+            {
+              "marginRight": 8,
+              "marginVertical": 8,
+            },
+          ]
+        }
+        testID="avatar"
+      >
+        <ViewManagerAdapter_ExpoImage
+          borderRadius={4}
+          containerViewRef={"[React.ref]"}
+          contentFit="cover"
+          contentPosition={
+            {
+              "left": "50%",
+              "top": "50%",
+            }
+          }
+          height={28}
+          nativeViewRef={"[React.ref]"}
+          onError={[Function]}
+          onLoad={[Function]}
+          onLoadStart={[Function]}
+          onProgress={[Function]}
+          placeholder={[]}
+          priority="high"
+          source={
+            [
+              {
+                "headers": {
+                  "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                },
+                "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=56",
+              },
+            ]
+          }
+          style={
+            {
+              "borderRadius": 4,
+              "height": 28,
+              "width": 28,
+            }
+          }
+          transition={null}
+          width={28}
+        />
+      </View>
       <View
         style={
           {

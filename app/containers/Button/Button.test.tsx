@@ -3,8 +3,8 @@ import { View } from 'react-native';
 import { fireEvent, render } from '@testing-library/react-native';
 
 import Button from '.';
-import { testAllStories } from '../../../.rnstorybook/storyTestHelpers.utils';
 import * as stories from './Button.stories';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 
 const onPressMock = jest.fn();
 
@@ -72,4 +72,4 @@ describe('ButtonTests', () => {
 	});
 });
 
-testAllStories(stories, 'Button');
+generateSnapshots(stories);

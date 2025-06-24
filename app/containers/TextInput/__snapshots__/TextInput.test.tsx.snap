@@ -1,0 +1,1341 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Icons should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingHorizontal": 14,
+    }
+  }
+>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Right icon  , Rocket.Chat. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Right icon
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {
+                    "paddingRight": 45,
+                  },
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat"
+          />
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 40,
+                },
+                [
+                  {
+                    "lineHeight": 40,
+                  },
+                  [
+                    {
+                      "position": "absolute",
+                    },
+                    {
+                      "right": 12,
+                    },
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Left icon  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Left icon
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  {
+                    "paddingLeft": 45,
+                  },
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="https://open.rocket.chat/images/logo/android-chrome-512x512.png"
+          />
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 40,
+                },
+                [
+                  {
+                    "lineHeight": 40,
+                  },
+                  [
+                    {
+                      "position": "absolute",
+                    },
+                    {
+                      "left": 12,
+                    },
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Both icons  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Both icons
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  {
+                    "paddingLeft": 45,
+                  },
+                  {
+                    "paddingRight": 45,
+                  },
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="https://open.rocket.chat/images/logo/android-chrome-512x512.png"
+          />
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 40,
+                },
+                [
+                  {
+                    "lineHeight": 40,
+                  },
+                  [
+                    {
+                      "position": "absolute",
+                    },
+                    {
+                      "left": 12,
+                    },
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 40,
+                },
+                [
+                  {
+                    "lineHeight": 40,
+                  },
+                  [
+                    {
+                      "position": "absolute",
+                    },
+                    {
+                      "right": 12,
+                    },
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Icon and touchable clear input  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Icon and touchable clear input
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {
+                    "paddingRight": 45,
+                  },
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="https://open.rocket.chat/images/logo/android-chrome-512x512.png"
+          />
+          <View
+            accessibilityState={
+              {
+                "busy": undefined,
+                "checked": undefined,
+                "disabled": undefined,
+                "expanded": undefined,
+                "selected": undefined,
+              }
+            }
+            accessibilityValue={
+              {
+                "max": undefined,
+                "min": undefined,
+                "now": undefined,
+                "text": undefined,
+              }
+            }
+            accessible={true}
+            collapsable={false}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              {
+                "opacity": 1,
+                "position": "absolute",
+                "right": 12,
+              }
+            }
+            testID="clear-text-input"
+          >
+            <Text
+              allowFontScaling={false}
+              selectable={false}
+              style={
+                [
+                  {
+                    "color": "#2F343D",
+                    "fontSize": 40,
+                  },
+                  [
+                    {
+                      "lineHeight": 40,
+                    },
+                    undefined,
+                  ],
+                  {
+                    "fontFamily": "custom",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  {},
+                ]
+              }
+            >
+              
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Loading should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingHorizontal": 14,
+    }
+  }
+>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Loading false  , Rocket.Chat. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Loading false
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat"
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Loading true  , Rocket.Chat. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Loading true
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat"
+          />
+          <ActivityIndicator
+            color="#2F343D"
+            style={
+              [
+                {
+                  "position": "absolute",
+                },
+                {
+                  "right": 12,
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Multiline should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingHorizontal": 14,
+    }
+  }
+>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Multiline text  , Rocket.Chat
+
+https://open.rocket.chat/images/logo/android-chrome-512x512.png
+. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Multiline text
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            multiline={true}
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat
+
+https://open.rocket.chat/images/logo/android-chrome-512x512.png
+"
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingHorizontal": 14,
+    }
+  }
+>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Secure text disabled  , Rocket.Chat. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Secure text disabled
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat"
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Secure text enabled  . Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Secure text enabled
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            secureTextEntry={true}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {
+                    "paddingRight": 45,
+                  },
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat"
+          />
+          <View
+            style={
+              [
+                {
+                  "position": "absolute",
+                },
+                {
+                  "right": 12,
+                },
+              ]
+            }
+          >
+            <View
+              accessibilityLabel="Show Password"
+              accessibilityState={
+                {
+                  "busy": undefined,
+                  "checked": undefined,
+                  "disabled": undefined,
+                  "expanded": undefined,
+                  "selected": undefined,
+                }
+              }
+              accessibilityValue={
+                {
+                  "max": undefined,
+                  "min": undefined,
+                  "now": undefined,
+                  "text": undefined,
+                }
+              }
+              accessible={true}
+              collapsable={false}
+              focusable={true}
+              onClick={[Function]}
+              onResponderGrant={[Function]}
+              onResponderMove={[Function]}
+              onResponderRelease={[Function]}
+              onResponderTerminate={[Function]}
+              onResponderTerminationRequest={[Function]}
+              onStartShouldSetResponder={[Function]}
+              style={
+                {
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                allowFontScaling={false}
+                selectable={false}
+                style={
+                  [
+                    {
+                      "color": "#2F343D",
+                      "fontSize": 40,
+                    },
+                    [
+                      {
+                        "lineHeight": 40,
+                      },
+                      undefined,
+                    ],
+                    {
+                      "fontFamily": "custom",
+                      "fontStyle": "normal",
+                      "fontWeight": "normal",
+                    },
+                    {},
+                  ]
+                }
+              >
+                
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
+<View
+  style={
+    {
+      "paddingHorizontal": 14,
+    }
+  }
+>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Short Text  , Rocket.Chat. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Short Text
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="Rocket.Chat"
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+  <View>
+    <View>
+      <View
+        accessibilityLabel="Long Text  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "500",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Long Text
+           
+        </Text>
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardAppearance="light"
+            placeholder="placeholder"
+            placeholderTextColor="#9EA2A8"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {},
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value="https://open.rocket.chat/images/logo/android-chrome-512x512.png"
+          />
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;

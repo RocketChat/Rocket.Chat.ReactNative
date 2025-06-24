@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Story snapshots: Button CustomButton snapshot 1`] = `
+exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
@@ -71,7 +71,7 @@ exports[`Story snapshots: Button CustomButton snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Button DisabledButton snapshot 1`] = `
+exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
@@ -137,7 +137,7 @@ exports[`Story snapshots: Button DisabledButton snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Button DisabledLoadingButton snapshot 1`] = `
+exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
@@ -192,7 +192,7 @@ exports[`Story snapshots: Button DisabledLoadingButton snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Button LoadingButton snapshot 1`] = `
+exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
@@ -247,7 +247,7 @@ exports[`Story snapshots: Button LoadingButton snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Button PrimaryButton snapshot 1`] = `
+exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
@@ -313,7 +313,7 @@ exports[`Story snapshots: Button PrimaryButton snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Button SecondaryButton snapshot 1`] = `
+exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"
@@ -379,7 +379,7 @@ exports[`Story snapshots: Button SecondaryButton snapshot 1`] = `
 </View>
 `;
 
-exports[`Story snapshots: Button SmallButton snapshot 1`] = `
+exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
 <View
   accessibilityLabel="Press me!"
   accessibilityRole="button"

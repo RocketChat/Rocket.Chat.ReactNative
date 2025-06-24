@@ -74,12 +74,16 @@ jest.mock('./app/lib/database/services/Message', () => ({
 	})
 }));
 
-jest.mock('./app/containers/CustomIcon', () => ({
-	CustomIcon: () => null,
-	IconSet: {
-		hasIcon: () => true
-	}
-}));
+jest.mock('./app/containers/CustomIcon', () => {
+	const actualNav = jest.requireActual('./app/containers/CustomIcon');
+
+	return {
+		...actualNav,
+		IconSet: {
+			hasIcon: () => true
+		}
+	};
+});
 
 jest.mock('@react-navigation/native', () => {
 	const actualNav = jest.requireActual('@react-navigation/native');

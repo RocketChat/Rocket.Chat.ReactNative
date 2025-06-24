@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import i18n from '../../../i18n';
 import { SwitchItem, ISwitch } from './SwitchItem';
 import { mockedStore as store } from '../../../reducers/mockedStore';
+import { generateSnapshots } from '../../../../.rnstorybook/generateSnapshots';
+import * as stories from './SwitchItem.stories';
 
 const onPressMock = jest.fn((value: boolean) => value);
 
@@ -66,3 +68,5 @@ describe('SwitchItemEncrypted', () => {
 		expect(component.props.children).toBe(i18n.t(testSwitch.hint));
 	});
 });
+
+generateSnapshots(stories);

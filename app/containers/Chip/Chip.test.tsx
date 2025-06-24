@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import Chip, { IChip } from '.';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 import { mockedStore as store } from '../../reducers/mockedStore';
-import { testAllStories } from '../../../.rnstorybook/storyTestHelpers.utils';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
 import * as stories from './Chip.stories';
 
 const onPressMock = jest.fn((item: any) => item);
@@ -59,4 +59,4 @@ describe('Chips', () => {
 	});
 });
 
-testAllStories(stories, 'Chip');
+generateSnapshots(stories);
