@@ -62,7 +62,9 @@ jobs:
           bundler-cache: true
 
       - name: Install Fastlane
-        run: bundle install
+        run: |
+          gem install bundler
+          bundle install
 
       - name: Decode Keystore
         run: |
