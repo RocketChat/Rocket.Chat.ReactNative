@@ -29,8 +29,8 @@ import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
-	const dispatch = useDispatch();
 	const { colors } = useTheme();
+	const dispatch = useDispatch();
 	const {
 		server,
 		error,
@@ -49,25 +49,25 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		failure: state.createDiscussion.failure,
 		loading: state.createDiscussion.isFetching,
 		result: state.createDiscussion.result as IResult,
-		blockUnauthenticatedAccess: !!state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true,
+		blockUnauthenticatedAccess: !!(state.settings.Accounts_AvatarBlockUnauthenticatedAccess || true),
 		serverVersion: state.server.version as string,
 		isMasterDetail: state.app.isMasterDetail,
 		encryptionEnabled: state.encryption.enabled
 	}));
-	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params.channel);
+
+	const [channel, setChannel] = useState<ISubscription | ISearchLocal>(route.params?.channel);
 	const [encrypted, setEncrypted] = useState<boolean>(encryptionEnabled);
 	const [users, setUsers] = useState<string[]>([]);
+
+	const message = route.params?.message;
 	const { getValues, watch, control } = useForm({
 		defaultValues: {
-			message: route.params.message,
-			name: route.params.message?.msg || '',
-			reply: ''
+			name: message?.msg || ''
 		}
 	});
-	const prevLoading = useRef<boolean>(null);
+	const name = watch('name');
 
-	const { name, reply } = watch();
-
+	const prevLoading = useRef<boolean>(loading);
 	const isValid = channel && channel.rid && channel.rid.trim().length && name?.trim().length;
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -82,11 +82,15 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		setUsers(value);
 	};
 
+	const onEncryptedChange = (value: boolean) => {
+		logEvent(events.CD_TOGGLE_ENCRY);
+		setEncrypted(value);
+	};
+
 	const submit = () => {
-		const {
-			name: t_name,
-			message: { id: pmid }
-		} = getValues();
+		const pmid = message?.id;
+		const reply = '';
+		const { name: t_name } = getValues();
 
 		const params: ICreateDiscussionRequestData = {
 			prid: ('prid' in channel && channel.prid) || channel.rid,
@@ -102,6 +106,25 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		dispatch(createDiscussionRequest(params));
 	};
 
+	const handleLoadingChange = () => {
+		sendLoadingEvent({ visible: loading });
+		if (!loading) {
+			if (failure) {
+				const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
+				showErrorAlert(msg);
+			} else {
+				const { rid, t, prid } = result;
+				const item = {
+					rid,
+					name: getRoomTitle(result),
+					t,
+					prid
+				};
+				goRoom({ item, isMasterDetail, popToRoot: true });
+			}
+		}
+	};
+
 	const setHeader = () => {
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
@@ -110,31 +133,12 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		});
 	};
 
-	const onEncryptedChange = (value: boolean) => {
-		logEvent(events.CD_TOGGLE_ENCRY);
-		setEncrypted(value);
-	};
-
 	useEffect(() => {
-		if (loading !== prevLoading.current) {
-			sendLoadingEvent({ visible: loading });
-			if (!loading) {
-				if (failure) {
-					const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
-					showErrorAlert(msg);
-				} else {
-					const { rid, t, prid } = result;
-					const item = {
-						rid,
-						name: getRoomTitle(result),
-						t,
-						prid
-					};
-					goRoom({ item, isMasterDetail, popToRoot: true });
-				}
-			}
-			prevLoading.current = loading;
+		if (loading === prevLoading.current) {
+			return;
 		}
+		handleLoadingChange();
+		prevLoading.current = loading;
 	}, [loading]);
 
 	useEffect(() => {
@@ -167,7 +171,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 							label={I18n.t('Discussion_name')}
 							testID='multi-select-discussion-name'
 							containerStyle={styles.inputStyle}
-							defaultValue={name}
 						/>
 						<SelectUsers
 							server={server}
