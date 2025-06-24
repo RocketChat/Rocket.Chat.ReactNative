@@ -5,7 +5,7 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
-import ResponsiveFontScaleProvider from './lib/hooks/useResponsiveLayout';
+import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';
@@ -36,7 +36,6 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
-import { RowHeightProvider } from './lib/hooks/useRowHeight';
 
 enableScreens();
 initStore(store);
@@ -215,30 +214,28 @@ export default class Root extends React.Component<{}, IState> {
 							setTheme: this.setTheme,
 							colors: colors[theme]
 						}}>
-						<ResponsiveFontScaleProvider>
-							<RowHeightProvider>
-								<DimensionsContext.Provider
-									value={{
-										width,
-										height,
-										scale,
-										fontScale,
-										setDimensions: this.setDimensions
-									}}>
-									<GestureHandlerRootView>
-										<ActionSheetProvider>
-											<AppContainer />
-											<TwoFactor />
-											<ScreenLockedView />
-											<ChangePasscodeView />
-											<InAppNotification />
-											<Toast />
-											<Loading />
-										</ActionSheetProvider>
-									</GestureHandlerRootView>
-								</DimensionsContext.Provider>
-							</RowHeightProvider>
-						</ResponsiveFontScaleProvider>
+						<ResponsiveLayoutProvider>
+							<DimensionsContext.Provider
+								value={{
+									width,
+									height,
+									scale,
+									fontScale,
+									setDimensions: this.setDimensions
+								}}>
+								<GestureHandlerRootView>
+									<ActionSheetProvider>
+										<AppContainer />
+										<TwoFactor />
+										<ScreenLockedView />
+										<ChangePasscodeView />
+										<InAppNotification />
+										<Toast />
+										<Loading />
+									</ActionSheetProvider>
+								</GestureHandlerRootView>
+							</DimensionsContext.Provider>
+						</ResponsiveLayoutProvider>
 					</ThemeContext.Provider>
 				</Provider>
 			</SafeAreaProvider>

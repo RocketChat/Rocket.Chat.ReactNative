@@ -4,6 +4,8 @@ import { useWindowDimensions } from 'react-native';
 interface IResponsiveLayoutContextData {
 	fontScale: number;
 	isLargeFontScale: boolean;
+	rowHeight: number;
+	rowHeightCondensed: number;
 }
 
 interface IResponsiveFontScaleProviderProps {
@@ -15,8 +17,14 @@ export const ResponsiveLayoutContext = createContext({} as IResponsiveLayoutCont
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	const { fontScale } = useWindowDimensions();
 	const isLargeFontScale = fontScale > 1.3;
+	const rowHeight = 75 * fontScale;
+	const rowHeightCondensed = 60 * fontScale;
 
-	return <ResponsiveLayoutContext.Provider value={{ fontScale, isLargeFontScale }}>{children}</ResponsiveLayoutContext.Provider>;
+	return (
+		<ResponsiveLayoutContext.Provider value={{ fontScale, isLargeFontScale, rowHeight, rowHeightCondensed }}>
+			{children}
+		</ResponsiveLayoutContext.Provider>
+	);
 };
 
 export const useResponsiveLayout = () => {
