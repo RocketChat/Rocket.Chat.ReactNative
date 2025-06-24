@@ -37,7 +37,7 @@ platform :android do
   lane :internal_app_sharing do
     upload_to_play_store_internal_app_sharing(
       package_name: 'chat.rocket.reactnative',
-      aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      aab: 'android/app/build/outputs/bundle/experimental/release/app-experimental-release.aab'
     )
   end
 
