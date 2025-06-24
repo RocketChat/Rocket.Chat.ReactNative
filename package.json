@@ -171,8 +171,8 @@
 		"@react-native/metro-config": "0.79.4",
 		"@react-native/typescript-config": "0.79.4",
 		"@rocket.chat/eslint-config": "^0.4.0",
-		"@storybook/react": "^9",
-		"@storybook/react-native": "^9",
+		"@storybook/react": "9.0.9",
+		"@storybook/react-native": "9.0.9",
 		"@testing-library/react-native": "^13.2.0",
 		"@types/bytebuffer": "^5.0.44",
 		"@types/ejson": "^2.1.3",
@@ -216,6 +216,7 @@
 		"react-dom": "18.2.0",
 		"react-native-dotenv": "3.4.8",
 		"react-test-renderer": "19.0.0",
+		"storybook": "9.0.9",
 		"typescript": "5.4.3"
 	},
 	"snyk": true,
