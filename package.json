@@ -28,6 +28,7 @@
 		"e2e:ios-test": "yarn detox test -c ios.sim.release",
 		"e2e:start": "RUNNING_E2E_TESTS=true npx react-native start",
 		"storybook:start": "USE_STORYBOOK=true npx react-native start --reset-cache",
+		"storybook-generate": "sb-rn-get-stories",
 		"bugsnag:upload-android": "bugsnag-cli upload react-native-android"
 	},
 	"dependencies": {
@@ -161,6 +162,7 @@
 		"@babel/runtime": "^7.25.0",
 		"@bugsnag/cli": "^2.9.2",
 		"@bugsnag/source-maps": "^2.3.3",
+		"@gorhom/bottom-sheet": "^5.1.6",
 		"@react-native-community/cli": "18.0.0",
 		"@react-native-community/cli-platform-android": "18.0.0",
 		"@react-native-community/cli-platform-ios": "18.0.0",
@@ -169,8 +171,8 @@
 		"@react-native/metro-config": "0.79.4",
 		"@react-native/typescript-config": "0.79.4",
 		"@rocket.chat/eslint-config": "^0.4.0",
-		"@storybook/react": "^7.6.10",
-		"@storybook/react-native": "^7.6.17",
+		"@storybook/react": "^8.3.5",
+		"@storybook/react-native": "^8.3.5",
 		"@testing-library/react-native": "^13.2.0",
 		"@types/bytebuffer": "^5.0.44",
 		"@types/ejson": "^2.1.3",
