@@ -162,5 +162,10 @@ export const Lists = () => (
 	<View style={styles.container}>
 		<Markdown msg={'* Open Source\n* Rocket.Chat\n  - nodejs\n  - ReactNative'} />
 		<Markdown msg={'1. Open Source\n2. Rocket.Chat'} />
+		<Markdown
+			msg={
+				'- *bold* \n- _italic_ \n- ~strikethrough~ \n- _*bold italic*_ \n- *~bold strikethrough~* \n- _~italic strikethrough~_ \n- _*~bold italic strikethrough~*_'
+			}
+		/>
 	</View>
 );

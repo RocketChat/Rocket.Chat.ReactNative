@@ -7,6 +7,7 @@ import RCActivityIndicator from '../ActivityIndicator';
 import { AUDIO_BUTTON_HIT_SLOP } from './constants';
 import { TAudioState } from './types';
 import NativeButton from '../NativeButton';
+import getPlayButtonAccessibilityLabel from './getPlayButtonAccessibilityLabel';
 
 interface IButton {
 	disabled?: boolean;
@@ -45,6 +46,8 @@ const PlayButton = ({ onPress, disabled = false, audioState }: IButton): React.R
 
 	return (
 		<NativeButton
+			accessible
+			accessibilityLabel={getPlayButtonAccessibilityLabel(audioState)}
 			style={[styles.playPauseButton, { backgroundColor: colors.buttonBackgroundPrimaryDefault }]}
 			disabled={disabled}
 			onPress={onPress}
