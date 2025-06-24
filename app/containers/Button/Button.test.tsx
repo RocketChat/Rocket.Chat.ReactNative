@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { fireEvent, render } from '@testing-library/react-native';
 
 import Button from '.';
-import { testAllStories } from '../../utils/storyTestHelpers.utils';
+import { testAllStories } from '../../../.rnstorybook/storyTestHelpers.utils';
 import * as stories from './Button.stories';
 
 const onPressMock = jest.fn();
