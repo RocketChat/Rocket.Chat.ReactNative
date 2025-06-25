@@ -38,6 +38,10 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
+      - name: Log the run number
+        run: |
+          echo "Run number: ${{ github.run_number }}"
+
       - name: Install JavaScript dependencies
         run: yarn install --frozen-lockfile
     
