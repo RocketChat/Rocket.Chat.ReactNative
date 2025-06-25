@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useImperativeHandle } from 'react';
-import { LayoutChangeEvent } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -164,6 +164,13 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
+	const accessibilityFocusOnInput = () => {
+		const node = findNodeHandle(composerInputRef.current);
+		if (node) {
+			AccessibilityInfo.setAccessibilityFocus(node);
+		}
+	};
+
 	const emojiKeyboardStyle = useAnimatedStyle(() => ({
 		height: keyboardHeight.value
 	}));
@@ -194,6 +201,7 @@ export const MessageComposer = ({
 			<Autocomplete
 				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
 				style={autocompleteStyle}
+				accessibilityFocusOnInput={accessibilityFocusOnInput}
 			/>
 		</MessageInnerContext.Provider>
 	);

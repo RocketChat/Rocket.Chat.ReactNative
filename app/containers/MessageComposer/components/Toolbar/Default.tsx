@@ -29,21 +29,21 @@ export const Default = (): ReactElement | null => {
 			<BaseButton
 				onPress={() => openEmoji()}
 				testID='message-composer-open-emoji'
-				accessibilityLabel='Open_emoji_selector'
+				accessibilityLabel='Emoji_selector'
 				icon='emoji'
 			/>
 			<Gap />
 			<BaseButton
 				onPress={() => setMarkdownToolbar(true)}
 				testID='message-composer-open-markdown'
-				accessibilityLabel='Open_markdown_tools'
+				accessibilityLabel='Markdown_tools'
 				icon='text-format'
 			/>
 			<Gap />
 			<BaseButton
 				onPress={() => emitter.emit('toolbarMention')}
 				testID='message-composer-mention'
-				accessibilityLabel='Open_mention_autocomplete'
+				accessibilityLabel='Mention_user'
 				icon='mention'
 			/>
 		</>

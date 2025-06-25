@@ -346,6 +346,10 @@ export const ComposerInput = memo(
 			dispatch(userTyping(rid, isTyping));
 		};
 
+		if (!placeholder) {
+			return null;
+		}
+
 		return (
 			<TextInput
 				style={[styles.textInput, { color: colors.fontDefault }]}
