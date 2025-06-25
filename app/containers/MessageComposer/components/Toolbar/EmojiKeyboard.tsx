@@ -19,12 +19,7 @@ export const EmojiKeyboard = (): ReactElement => {
 		<Container>
 			<ActionsButton />
 			<Gap />
-			<BaseButton
-				onPress={close}
-				testID='message-composer-close-emoji'
-				accessibilityLabel='Back_to_keyboard'
-				icon='keyboard'
-			/>
+			<BaseButton onPress={close} testID='message-composer-close-emoji' accessibilityLabel='Back_to_keyboard' icon='keyboard' />
 			<EmptySpace />
 			<MicOrSendButton />
 		</Container>
