@@ -185,7 +185,7 @@ export const MessageComposer = ({
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
 				closeEmojiKeyboardAndAction,
-				focus: composerInputComponentRef.current.focus
+				focus: composerInputComponentRef.current?.focus
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}
