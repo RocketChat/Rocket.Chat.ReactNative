@@ -61,6 +61,7 @@ export interface IRoom {
 	sysMes?: string[];
 	onHold?: boolean;
 	waitingResponse?: boolean;
+	federated?: boolean;
 }
 
 export interface IRoomSettings {
@@ -231,6 +232,7 @@ export interface IServerRoom extends IRocketChatRecord {
 	tags?: string[];
 
 	isLastOwner?: boolean;
+	federated?: boolean;
 }
 
 export interface IRoomNotifications {

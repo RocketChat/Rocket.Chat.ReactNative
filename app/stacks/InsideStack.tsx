@@ -161,7 +161,7 @@ const ProfileStackNavigator = () => {
 	const { theme } = React.useContext(ThemeContext);
 	return (
 		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
-			<ProfileStack.Screen name='ProfileView' component={ProfileView} options={ProfileView.navigationOptions} />
+			<ProfileStack.Screen name='ProfileView' component={ProfileView} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
@@ -308,14 +308,10 @@ const InsideStackNavigator = () => {
 			<InsideStack.Screen
 				name='E2EEnterYourPasswordStackNavigator'
 				component={E2EEnterYourPasswordStackNavigator}
-				options={{ headerShown: false, presentation: 'modal', animation: 'slide_from_bottom' }}
+				options={{ headerShown: false }}
 			/>
 			<InsideStack.Screen name='AttachmentView' component={AttachmentView} />
-			<InsideStack.Screen
-				name='StatusView'
-				component={StatusView}
-				options={{ presentation: 'transparentModal', animation: 'slide_from_bottom' }}
-			/>
+			<InsideStack.Screen name='StatusView' component={StatusView} />
 			{/* @ts-ignore */}
 			<InsideStack.Screen name='ShareView' component={ShareView} />
 			{/* @ts-ignore */}

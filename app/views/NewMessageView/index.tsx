@@ -5,7 +5,7 @@ import { FlatList } from 'react-native';
 import { shallowEqual } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';

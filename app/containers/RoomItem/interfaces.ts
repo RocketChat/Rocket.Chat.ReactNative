@@ -117,6 +117,7 @@ export interface IRoomItemProps extends IBaseRoomItem {
 	size?: number;
 	sourceType: IOmnichannelSource;
 	hideMentionStatus?: boolean;
+	accessibilityDate: string;
 }
 
 export interface ILastMessageProps {

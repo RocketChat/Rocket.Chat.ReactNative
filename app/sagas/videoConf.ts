@@ -101,7 +101,11 @@ function* onDirectCallConfirmed(payload: ICallInfo) {
 	if (currentCall) {
 		yield put(removeVideoConfCall(currentCall));
 		yield call(hideActionSheetRef);
-		videoConfJoin(payload.callId, false, true);
+		if (currentCall.action === 'accepted') {
+			videoConfJoin(payload.callId, false, true);
+		} else {
+			hideNotification();
+		}
 	}
 }
 

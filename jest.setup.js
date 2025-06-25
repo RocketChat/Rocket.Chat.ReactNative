@@ -1,5 +1,4 @@
 import React from 'react';
-import '@testing-library/react-native/extend-expect';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 
@@ -16,10 +15,6 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-jest.mock('./node_modules/react-native/Libraries/Interaction/InteractionManager', () => ({
-	runAfterInteractions: callback => callback()
-}));
-
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
 jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
@@ -31,6 +26,12 @@ jest.mock('react-native-file-viewer', () => ({
 }));
 
 jest.mock('expo-haptics', () => jest.fn(() => null));
+
+jest.mock('expo-font', () => ({
+	isLoaded: jest.fn(() => true),
+	loadAsync: jest.fn(() => Promise.resolve()),
+	__esModule: true
+}));
 
 jest.mock('expo-av', () => ({
 	...jest.requireActual('expo-av'),
@@ -115,7 +116,6 @@ jest.mock('@discord/bottom-sheet', () => {
 	};
 });
 
-// If you need to manually mock a lib use this mock pattern and set exports.
 jest.mock('react-native-math-view', () => {
 	const react = require('react-native');
 	return {

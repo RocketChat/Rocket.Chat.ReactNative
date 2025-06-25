@@ -57,6 +57,7 @@ export const merge = (
 		mergedSubscription.avatarETag = room?.avatarETag;
 		mergedSubscription.teamId = room?.teamId;
 		mergedSubscription.teamMain = room?.teamMain;
+		mergedSubscription.federated = room?.federated;
 		if (!mergedSubscription.roles || !mergedSubscription.roles.length) {
 			mergedSubscription.roles = [];
 		}
@@ -116,7 +117,7 @@ export const merge = (
 	return mergedSubscription;
 };
 
-export default async (
+export default async function mergeSubscriptionsRooms(
 	serverSubscriptions: {
 		update: IServerSubscription[];
 		remove: IServerSubscription[];
@@ -127,14 +128,14 @@ export default async (
 		remove: IServerRoom[];
 		success: boolean;
 	}
-): Promise<ISubscription[]> => {
+): Promise<ISubscription[]> {
 	const subscriptions = serverSubscriptions.update;
 	const rooms = serverRooms.update;
 
 	// Find missing rooms/subscriptions on local database
 	const findData = await findSubscriptionsRooms(subscriptions, rooms);
 	// Merge each subscription into a room
-	const mergedSubscriptions = findData.subscriptions.map(subscription => {
+	const mergedSubscriptions = findData.map(subscription => {
 		const index = rooms.findIndex(({ _id }) => _id === subscription.rid);
 		// Room not found
 		if (index < 0) {
@@ -147,4 +148,4 @@ export default async (
 	const decryptedSubscriptions = (await Encryption.decryptSubscriptions(mergedSubscriptions)) as ISubscription[];
 
 	return decryptedSubscriptions;
-};
+}

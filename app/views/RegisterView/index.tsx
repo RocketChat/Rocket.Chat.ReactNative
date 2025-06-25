@@ -3,27 +3,27 @@ import { Keyboard, Text, TextInput, View } from 'react-native';
 import parse from 'url-parse';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
 import { loginRequest } from '../../actions/login';
 import Button from '../../containers/Button';
 import FormContainer, { FormContainerInner } from '../../containers/FormContainer';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import LoginServices from '../../containers/LoginServices';
-import { FormTextInput } from '../../containers/TextInput';
+import { ControlledFormTextInput } from '../../containers/TextInput';
 import { IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
 import { getShowLoginButton } from '../../selectors/login';
 import { OutsideParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
-import { showErrorAlert, isValidEmail } from '../../lib/methods/helpers';
+import { showErrorAlert, isValidEmail, isAndroid } from '../../lib/methods/helpers';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
 import UGCRules from '../../containers/UserGeneratedContentRules';
 import { useAppSelector } from '../../lib/hooks';
-import PasswordPolicies from './PasswordPolicies';
-import getCustomFields from './methods/getCustomFields';
+import PasswordPolicies from '../../containers/PasswordPolicies';
+import getCustomFields from '../../lib/methods/getCustomFields';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
@@ -85,8 +85,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	};
 
 	const validateDefaultFormInfo = () => {
-		if (!parsedCustomFields) return true;
 		const isValid = validationSchema.isValidSync(getValues());
+		if (!parsedCustomFields) {
+			return isValid;
+		}
 		let requiredCheck = true;
 		let minLengthCheck = true;
 		Object.keys(parsedCustomFields).forEach((key: string) => {
@@ -165,115 +167,74 @@ const RegisterView = ({ navigation, route }: IProps) => {
 				</View>
 
 				<View style={styles.inputs}>
-					<Controller
+					<ControlledFormTextInput
 						name='name'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-name'
-								textContentType='name'
-								autoComplete='name'
-								returnKeyType='next'
-								required
-								label={I18n.t('Full_name')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => setFocus('username')}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-name'
+						textContentType='name'
+						autoComplete='name'
+						returnKeyType='next'
+						required
+						label={I18n.t('Full_name')}
+						onSubmitEditing={() => setFocus('username')}
+						containerStyle={styles.inputContainer}
 					/>
-					<Controller
+					<ControlledFormTextInput
 						name='username'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-username'
-								textContentType='username'
-								autoComplete='username'
-								returnKeyType='next'
-								required
-								label={I18n.t('Username')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									setFocus('email');
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-username'
+						textContentType='username'
+						autoComplete='username'
+						returnKeyType='next'
+						required
+						label={I18n.t('Username')}
+						onSubmitEditing={() => setFocus('email')}
+						containerStyle={styles.inputContainer}
 					/>
-					<Controller
+					<ControlledFormTextInput
 						name='email'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-email'
-								keyboardType='email-address'
-								textContentType='emailAddress'
-								autoComplete='email'
-								returnKeyType='next'
-								required
-								label={I18n.t('Email')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									setFocus('password');
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-email'
+						keyboardType='email-address'
+						textContentType='emailAddress'
+						autoComplete='email'
+						returnKeyType='next'
+						required
+						label={I18n.t('Email')}
+						onSubmitEditing={() => setFocus('password')}
+						containerStyle={styles.inputContainer}
 					/>
-					<Controller
+					<ControlledFormTextInput
 						name='password'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-password'
-								textContentType='newPassword'
-								autoComplete='password-new'
-								returnKeyType='next'
-								required
-								label={I18n.t('Password')}
-								value={value}
-								onChangeText={onChange}
-								secureTextEntry
-								onSubmitEditing={() => {
-									setFocus('confirmPassword');
-								}}
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-password'
+						returnKeyType='next'
+						required
+						label={I18n.t('Password')}
+						secureTextEntry
+						textContentType={isAndroid ? 'newPassword' : undefined}
+						autoComplete={isAndroid ? 'password-new' : undefined}
+						onSubmitEditing={() => setFocus('confirmPassword')}
+						containerStyle={styles.inputContainer}
 					/>
-					<Controller
+					<ControlledFormTextInput
 						name='confirmPassword'
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								accessibilityLabel={`${I18n.t('Confirm_Password')}`}
-								inputRef={ref}
-								testID='register-view-confirm-password'
-								textContentType='newPassword'
-								autoComplete='password-new'
-								returnKeyType='next'
-								required
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									if (parsedCustomFields) {
-										focusOnCustomFields();
-										return;
-									}
-									handleSubmit(onSubmit)();
-								}}
-								secureTextEntry
-								containerStyle={styles.inputContainer}
-							/>
-						)}
+						testID='register-view-confirm-password'
+						returnKeyType='done'
+						required
+						label={I18n.t('Confirm_Password')}
+						textContentType={isAndroid ? 'newPassword' : undefined}
+						autoComplete={isAndroid ? 'password-new' : undefined}
+						secureTextEntry
+						onSubmitEditing={() => {
+							if (parsedCustomFields) {
+								focusOnCustomFields();
+								return;
+							}
+							handleSubmit(onSubmit)();
+						}}
+						containerStyle={styles.inputContainer}
 					/>
 					<CustomFields
 						customFieldsRef={customFieldsRef}

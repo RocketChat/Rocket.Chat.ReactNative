@@ -196,24 +196,8 @@ module.exports = {
 				'react/jsx-no-undef': 'error',
 				'react/jsx-fragments': ['error', 'syntax'],
 				'@typescript-eslint/ban-ts-comment': 'off',
-				'@typescript-eslint/indent': [
-					'warn',
-					'tab',
-					{
-						SwitchCase: 1
-					}
-				],
-				'@typescript-eslint/no-extra-parens': [
-					'warn',
-					'all',
-					{
-						conditionalAssign: true,
-						nestedBinaryExpressions: false,
-						returnAssign: true,
-						ignoreJSX: 'all',
-						enforceForArrowConditionals: false
-					}
-				],
+				'@typescript-eslint/indent': 'off',
+				'@typescript-eslint/no-extra-parens': 'off',
 				'@typescript-eslint/no-dupe-class-members': 'error',
 				'@typescript-eslint/no-explicit-any': 'off',
 				'@typescript-eslint/no-unused-vars': [

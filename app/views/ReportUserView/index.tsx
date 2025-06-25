@@ -8,7 +8,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { useTheme } from '../../theme';
 import { ChatsStackParamList } from '../../stacks/types';
 import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack/types';
 import I18n from '../../i18n';
@@ -21,6 +20,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { Services } from '../../lib/services';
 import KeyboardView from '../../containers/KeyboardView';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
@@ -39,7 +39,6 @@ const schema = yup.object().shape({
 
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
-	const { colors } = useTheme();
 	const navigation = useNavigation<TReportUserViewNavigationProp>();
 	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
 
@@ -69,7 +68,7 @@ const ReportUserView = () => {
 				navigation.navigate('DrawerNavigator');
 				return;
 			}
-			navigation.navigate('RoomView');
+			Navigation.resetTo();
 		} catch (e) {
 			log(e);
 			setLoading(false);
@@ -77,12 +76,9 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceTint }}
-			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}>
-			<SafeAreaView style={[styles.containerView]} testID='report-user-view'>
-				<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: colors.surfaceTint }]}>
+		<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={128}>
+			<SafeAreaView style={styles.containerView} testID='report-user-view'>
+				<ScrollView contentContainerStyle={styles.scroll}>
 					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput

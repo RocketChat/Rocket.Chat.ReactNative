@@ -76,6 +76,7 @@ describe('Move/Convert Team', () => {
 			await createChannel(publicChannelToBeConverted, true);
 			await navigateToRoomActions(publicChannelToBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+			await sleep(500);
 			await waitFor(element(by.id('room-actions-convert-to-team')))
 				.toBeVisible()
 				.withTimeout(2000);
@@ -96,6 +97,7 @@ describe('Move/Convert Team', () => {
 			await createChannel(toBeConverted);
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+			await sleep(500);
 			await waitFor(element(by.id('room-actions-convert-to-team')))
 				.toBeVisible()
 				.withTimeout(2000);
@@ -128,6 +130,7 @@ describe('Move/Convert Team', () => {
 		it('should move channel to a team', async () => {
 			await navigateToRoomActions(toBeMoved);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+			await sleep(500);
 			await waitFor(element(by.id('room-actions-move-to-team')))
 				.toBeVisible()
 				.withTimeout(2000);
@@ -172,6 +175,7 @@ describe('Move/Convert Team', () => {
 		it('should convert a team to a channel', async () => {
 			await navigateToRoomActions(toBeConverted);
 			await element(by.id('room-actions-scrollview')).scrollTo('bottom');
+			await sleep(500);
 			await waitFor(element(by[textMatcher]('Convert to channel')))
 				.toExist()
 				.withTimeout(2000);
