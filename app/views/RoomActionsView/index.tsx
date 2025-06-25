@@ -162,7 +162,7 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 		if (room && room.observe && room.rid) {
 			const { encryptionEnabled } = this.props;
 			this.roomObservable = room.observe();
-			this.subscription = this.roomObservable.subscribe(async (changes) => {
+			this.subscription = this.roomObservable.subscribe(async changes => {
 				if (this.mounted) {
 					const hasE2EEWarning = EncryptionUtils.hasE2EEWarning({
 						encryptionEnabled,
@@ -175,18 +175,17 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 					this.state.room = changes;
 				}
 
-
 				// If the previous users count changes, we will update it and the members count to the value from the room counter.
 				if (this.prevUsersCount !== changes.usersCount) {
 					const counters = await Services.getRoomCounters(room.rid, room.t as any);
 					if (counters.success) {
 						if (this.mounted) {
-							this.setState({ membersCount: counters.members })
+							this.setState({ membersCount: counters.members });
 						} else {
 							// @ts-ignore
-							this.state.membersCount = counters.members
+							this.state.membersCount = counters.members;
 						}
-						this.updateUsersCount(counters.members)
+						this.updateUsersCount(counters.members);
 						this.prevUsersCount = changes.usersCount;
 					}
 				}
