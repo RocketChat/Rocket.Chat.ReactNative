@@ -13,6 +13,7 @@ import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
 import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
+import { initStore } from '../../lib/store/auxStore';
 
 jest.useFakeTimers();
 
@@ -38,6 +39,7 @@ const initialStoreState = () => {
 	const permissions: IPermissionsState = { 'mobile-upload-file': ['user'] };
 	mockedStore.dispatch(setPermissions(permissions));
 	mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: true }));
+	initStore(mockedStore);
 };
 initialStoreState();
 
@@ -116,6 +118,16 @@ beforeEach(() => {
 	sharedValueSearchbar.value = false;
 	keyboardHeightSharedValue.value = 0;
 });
+
+jest.mock('./hooks/useSubscription', () => ({
+	useSubscription: jest.fn().mockReturnValue({
+		t: 'd',
+		rid: 'rid',
+		tmid: undefined,
+		fname: 'Rocket Chat',
+		name: 'Rocket Chat'
+	})
+}));
 
 describe('MessageComposer', () => {
 	describe('Toolbar', () => {

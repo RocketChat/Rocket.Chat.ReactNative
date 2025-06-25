@@ -368,7 +368,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -807,7 +807,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -1428,7 +1428,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -1970,7 +1970,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -2577,7 +2577,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -3184,7 +3184,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -3791,7 +3791,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -4398,7 +4398,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -5005,7 +5005,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -5533,7 +5533,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -5612,7 +5612,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -6140,7 +6140,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -6219,7 +6219,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -6747,7 +6747,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -6826,7 +6826,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -7354,7 +7354,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -7433,7 +7433,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -7961,7 +7961,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8040,7 +8040,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -8568,7 +8568,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         testID="message-composer-send-audio"
       >
         <View
-          accessibilityLabel="Send audio message"
+          accessibilityLabel="Record audio message"
           accessibilityRole="button"
           accessible={true}
         >
@@ -8647,7 +8647,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -9102,7 +9102,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -9450,6 +9450,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Recently used"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -9542,6 +9544,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Smileys and people"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -9634,6 +9638,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Animals and nature"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -9726,6 +9732,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Food and drink"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -9818,6 +9826,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Activity"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -9910,6 +9920,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Travel and places"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -10002,6 +10014,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Objects"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -10094,6 +10108,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Symbols"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -10186,6 +10202,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Flags"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -10278,6 +10296,8 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                 }
               >
                 <Text
+                  accessibilityLabel="Custom"
+                  accessible={true}
                   allowFontScaling={false}
                   selectable={false}
                   style={
@@ -10960,7 +10980,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Rocket Chat"
         placeholderTextColor="#9EA2A8"
         style={
           [
