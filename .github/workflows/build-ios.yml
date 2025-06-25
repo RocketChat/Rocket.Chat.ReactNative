@@ -64,6 +64,7 @@ jobs:
         run: |
           cd ios
 
+          agvtool new-version -all ${{ github.run_number }}
           if [[ ${{ inputs.type }} == "official" ]]; then
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
