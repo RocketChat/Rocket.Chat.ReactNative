@@ -1,6 +1,7 @@
 import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+import { Image } from 'react-native';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -14,6 +15,9 @@ jest.mock('react-native-safe-area-context', () => {
 		useSafeAreaFrame: jest.fn(() => ({ x: 0, y: 0, width: 390, height: 844 }))
 	};
 });
+
+const getSizeMock = jest.spyOn(Image, 'getSize');
+getSizeMock.mockImplementation(() => {});
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
@@ -43,7 +47,14 @@ jest.mock('expo-av', () => ({
 			startAsync: jest.fn(),
 			stopAndUnloadAsync: jest.fn(),
 			setOnRecordingStatusUpdate: jest.fn()
-		}))
+		})),
+		Sound: {
+			createAsync: jest.fn(() => ({
+				sound: {
+					setOnPlaybackStatusUpdate: jest.fn()
+				}
+			}))
+		}
 	}
 }));
 
