@@ -1,0 +1,210 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: ModalActions should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalContextsDividers should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalDatePickerWithError should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalFormInput should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalFormTextArea should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalImages should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalInputWithError should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalMultiSelect should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalMultilneWithError should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalSectionAccessories should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ModalSectionSelects should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;

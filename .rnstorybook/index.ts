@@ -3,10 +3,10 @@ import { view } from './storybook.requires';
 import RNBootSplash from 'react-native-bootsplash';
 
 const StorybookUIRoot = view.getStorybookUI({
-  storage: {
-    getItem: AsyncStorage.getItem,
-    setItem: AsyncStorage.setItem,
-  },
+	storage: {
+		getItem: AsyncStorage.getItem,
+		setItem: AsyncStorage.setItem
+	}
 });
 
 RNBootSplash.hide();
