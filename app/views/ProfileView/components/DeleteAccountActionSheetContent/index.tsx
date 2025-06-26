@@ -11,7 +11,7 @@ import ConfirmDeleteAccountContent from './ConfirmDeleteAccountContent';
 import { deleteOwnAccount } from '../../../../lib/services/restApi';
 import { deleteAccount } from '../../../../actions/login';
 import { CustomIcon } from '../../../../containers/CustomIcon';
-import { isIOS, showErrorAlert } from '../../../../lib/methods/helpers';
+import { isIOS } from '../../../../lib/methods/helpers';
 import { useTheme } from '../../../../theme';
 import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { useActionSheet } from '../../../../containers/ActionSheet/Provider';
@@ -64,10 +64,10 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 			await deleteOwnAccount(sha256(password));
 			hideActionSheet();
 		} catch (error: any) {
-			hideActionSheet();
 			if (error.data.errorType === 'user-last-owner') {
 				const { shouldChangeOwner, shouldBeRemoved } = error.data.details;
 				const { changeOwnerRooms, removedRooms } = getTranslations({ shouldChangeOwner, shouldBeRemoved });
+				hideActionSheet();
 				setTimeout(() => {
 					showActionSheet({
 						children: (
@@ -77,12 +77,10 @@ const DeleteAccountActionSheetContent = (): React.ReactElement => {
 				}, 250); // timeout for hide effect
 			} else if (error.data.errorType === 'error-invalid-password') {
 				logEvent(events.DELETE_OWN_ACCOUNT_F);
-				showErrorAlert(i18n.t('error-invalid-password'));
 				setError('password', { message: i18n.t('error-invalid-password'), type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(i18n.t('error-invalid-password'));
 			} else {
 				logEvent(events.DELETE_OWN_ACCOUNT_F);
-				showErrorAlert(i18n.t(error.data.details));
 				setError('password', { message: i18n.t(error.data.details), type: 'validate' });
 				AccessibilityInfo.announceForAccessibility(i18n.t(error.data.details));
 			}
