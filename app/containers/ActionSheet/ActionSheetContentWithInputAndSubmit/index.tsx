@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, Text, TextInputProps, View } from 'react-native';
-import { useForm } from 'react-hook-form';
 
 import { CustomIcon, TIconsName } from '../../CustomIcon';
 import i18n from '../../../i18n';
@@ -8,7 +7,7 @@ import { isIOS } from '../../../lib/methods/helpers';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../../views/Styles';
 import Button from '../../Button';
-import { ControlledFormTextInput } from '../../TextInput';
+import { FormTextInput } from '../../TextInput/FormTextInput';
 import { useActionSheet } from '../Provider';
 
 const styles = StyleSheet.create({
@@ -87,8 +86,7 @@ const ActionSheetContentWithInputAndSubmit = ({
 	showInput = true,
 	inputs = [],
 	isDisabled,
-	autoComplete = undefined,
-	closeActionSheetAfterSubmit = true
+	autoComplete = undefined
 }: {
 	onSubmit: (inputValue: string | string[]) => void;
 	onCancel?: () => void;
@@ -106,39 +104,37 @@ const ActionSheetContentWithInputAndSubmit = ({
 	inputs?: { placeholder: string; secureTextEntry?: boolean; key: string }[];
 	isDisabled?: (inputValues: string[]) => boolean;
 	autoComplete?: TextInputProps['autoComplete'];
-	closeActionSheetAfterSubmit?: boolean;
 }): React.ReactElement => {
 	const { colors } = useTheme();
-	const defaultValues = inputs.reduce((acc, input) => ({ ...acc, [input.key]: '' }), { input: '' });
-	const { control, watch, setFocus } = useForm({
-		defaultValues
-	});
+	const [inputValues, setInputValues] = useState(inputs.map(() => ''));
+	const inputRefs = useRef(inputs.map(() => React.createRef()));
 
-	const watchedValues = watch() as any;
-	const inputValues = inputs.length > 0 ? inputs.map(input => watchedValues[input?.key]) : [watchedValues?.input];
+	const handleInputChange = (value: string, index: number) => {
+		const newInputValues = [...inputValues];
+		newInputValues[index] = value;
+		setInputValues(newInputValues);
+	};
 
 	const { hideActionSheet } = useActionSheet();
 
 	const renderInputs = () => {
 		if (inputs.length > 0) {
 			return inputs.map((inputConfig, index) => (
-				<ControlledFormTextInput
+				<FormTextInput
 					key={inputConfig.key}
-					control={control}
-					name={inputConfig.key}
 					value={inputValues[index]}
+					onChangeText={value => handleInputChange(value, index)}
 					onSubmitEditing={() => {
 						if (index < inputs.length - 1) {
-							setFocus(inputs[index + 1]?.key as any);
+							(inputRefs.current[index + 1] as any).current.focus();
 						} else {
-							if (closeActionSheetAfterSubmit) {
-								setTimeout(() => {
-									hideActionSheet();
-								}, 100);
-							}
+							setTimeout(() => {
+								hideActionSheet();
+							}, 100);
 							if (inputValues.every(value => value)) onSubmit(inputValues);
 						}
 					}}
+					inputRef={inputRefs.current[index] as any}
 					testID={`${testID}-input-${inputConfig.key}`}
 					secureTextEntry={inputConfig.secureTextEntry}
 					bottomSheet={isIOS}
@@ -147,16 +143,13 @@ const ActionSheetContentWithInputAndSubmit = ({
 		}
 
 		return (
-			<ControlledFormTextInput
+			<FormTextInput
 				value={inputValues[0]}
-				control={control}
-				name={'input'}
+				onChangeText={value => handleInputChange(value, 0)}
 				onSubmitEditing={() => {
-					if (closeActionSheetAfterSubmit) {
-						setTimeout(() => {
-							hideActionSheet();
-						}, 100);
-					}
+					setTimeout(() => {
+						hideActionSheet();
+					}, 100);
 					if (inputValues[0]) onSubmit(inputValues[0]);
 				}}
 				accessibilityLabel={placeholder}
