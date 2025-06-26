@@ -693,16 +693,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Hey!"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Hey!
@@ -803,16 +814,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -920,16 +942,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Older message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Older message
@@ -1393,16 +1426,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -1503,16 +1547,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the third message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     This is the third message
@@ -1620,16 +1675,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the second message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     This is the second message
@@ -1927,16 +1993,27 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the first message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     This is the first message
@@ -2323,16 +2400,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Hey!"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Hey!
@@ -2433,16 +2521,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -2550,16 +2649,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Older message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Older message
@@ -3023,16 +3133,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -3133,16 +3254,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the third message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     This is the third message
@@ -3250,16 +3382,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the second message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     This is the second message
@@ -3557,16 +3700,27 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the first message"
                     style={
-                      {
-                        "color": "#E4E7EA",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#E4E7EA",
+                        },
+                      ]
                     }
                   >
                     This is the first message
@@ -3953,16 +4107,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Hey!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Hey!
@@ -4063,16 +4228,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -4180,16 +4356,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Older message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Older message
@@ -4653,16 +4840,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
@@ -4763,16 +4961,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the third message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is the third message
@@ -4880,16 +5089,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the second message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is the second message
@@ -5187,16 +5407,27 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the first message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is the first message
