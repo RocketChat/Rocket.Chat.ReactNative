@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
 
-import { longText } from '../../../.storybook/utils';
+import { longText } from '../../../.rnstorybook/utils';
 import { DisplayMode } from '../../lib/constants';
 import RoomItemComponent from './RoomItem';
 
