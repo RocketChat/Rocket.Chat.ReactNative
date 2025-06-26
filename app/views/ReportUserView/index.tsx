@@ -57,7 +57,7 @@ const ReportUserView = () => {
 	});
 
 	// Accessibility: announce field error to screen reader
-	useA11yErrorAnnouncement({ errorMessage: errors.description?.message });
+	useA11yErrorAnnouncement({ error: errors.description?.message });
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({

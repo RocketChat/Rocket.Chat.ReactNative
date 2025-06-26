@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
+import { usePrevious } from './usePrevious';
+
 interface IUseA11yErrorAnnouncement {
-	errorMessage: string | undefined;
+	error: string | undefined;
 }
 
-const useA11yErrorAnnouncement = ({ errorMessage }: IUseA11yErrorAnnouncement) => {
-	const [errorAnnounced, setErrorAnnounced] = useState(false);
-
-	useEffect(() => {
-		if (errorMessage && !errorAnnounced) {
-			const message = errorMessage ?? '';
-			if (message) {
-				AccessibilityInfo.announceForAccessibility(message);
-				setErrorAnnounced(true);
-			}
-		} else if (!errorMessage && errorAnnounced) {
-			setErrorAnnounced(false);
+const useA11yErrorAnnouncement = ({ error }: IUseA11yErrorAnnouncement) => {
+	const previousMessage = usePrevious(error);
+	const announced = useRef<boolean>(false);
+	const shouldAnnounce = error && error !== previousMessage && !announced.current;
+	if (shouldAnnounce) {
+		const message = error || '';
+		if (message) {
+			AccessibilityInfo.announceForAccessibility(message);
+			announced.current = true;
 		}
-	}, [errorMessage]);
+	}
+	announced.current = false;
 };
 
 export default useA11yErrorAnnouncement;
