@@ -1,0 +1,787 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Separators should match snapshot 1`] = `
+[
+  <View
+    accessibilityLabel="More options"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 0,
+        "opacity": 1,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      More options
+    </Text>
+  </View>,
+  <View
+    accessible={true}
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "marginVertical": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "height": 1,
+          },
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "marginHorizontal": 12,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      OR
+    </Text>
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "height": 1,
+          },
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+  </View>,
+  <View
+    accessibilityLabel="Less options"
+    accessibilityRole="button"
+    accessibilityState={
+      {
+        "busy": undefined,
+        "checked": undefined,
+        "disabled": undefined,
+        "expanded": undefined,
+        "selected": undefined,
+      }
+    }
+    accessibilityValue={
+      {
+        "max": undefined,
+        "min": undefined,
+        "now": undefined,
+        "text": undefined,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "borderRadius": 4,
+        "justifyContent": "center",
+        "marginBottom": 0,
+        "opacity": 1,
+        "paddingHorizontal": 16,
+        "paddingVertical": 14,
+      }
+    }
+  >
+    <Text
+      style={
+        [
+          {
+            "color": "#6C727A",
+            "fontSize": 16,
+          },
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontWeight": "500",
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      Less options
+    </Text>
+  </View>,
+  <View
+    accessible={true}
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "marginVertical": 24,
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "height": 1,
+          },
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <Text
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 16,
+            "fontWeight": "500",
+            "marginHorizontal": 12,
+            "textAlign": "left",
+          },
+          {
+            "color": "#6C727A",
+          },
+        ]
+      }
+    >
+      OR
+    </Text>
+    <View
+      style={
+        [
+          {
+            "flex": 1,
+            "height": 1,
+          },
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
+[
+  <RNGestureHandlerButton
+    activeOpacity={0.5}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={1}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "margin": undefined,
+          "marginBottom": 10,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    underlayColor="#FFFFFF"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      style={{}}
+    >
+      <View
+        accessible={false}
+        style={
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 15,
+            "paddingVertical": 14,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 48,
+              },
+              [
+                {
+                  "lineHeight": 48,
+                },
+                {
+                  "left": 15,
+                  "position": "absolute",
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          accessible={false}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Continue with
+           
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            github
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={0.5}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={2}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "margin": undefined,
+          "marginBottom": 10,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    underlayColor="#FFFFFF"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      style={{}}
+    >
+      <View
+        accessible={false}
+        style={
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 15,
+            "paddingVertical": 14,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 48,
+              },
+              [
+                {
+                  "lineHeight": 48,
+                },
+                {
+                  "left": 15,
+                  "position": "absolute",
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          accessible={false}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Continue with
+           
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            gitlab
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={0.5}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={3}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "margin": undefined,
+          "marginBottom": 10,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    underlayColor="#FFFFFF"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      style={{}}
+    >
+      <View
+        accessible={false}
+        style={
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 15,
+            "paddingVertical": 14,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 48,
+              },
+              [
+                {
+                  "lineHeight": 48,
+                },
+                {
+                  "left": 15,
+                  "position": "absolute",
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          accessible={false}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Continue with
+           
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            google
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+  <RNGestureHandlerButton
+    activeOpacity={0.5}
+    collapsable={false}
+    delayLongPress={600}
+    handlerTag={4}
+    handlerType="NativeViewGestureHandler"
+    innerRef={null}
+    onActiveStateChange={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onPress={[Function]}
+    rippleColor="#E4E7EA"
+    style={
+      [
+        {
+          "backgroundColor": "#F7F8FA",
+          "borderRadius": 4,
+          "margin": undefined,
+          "marginBottom": 10,
+          "marginEnd": undefined,
+          "marginHorizontal": undefined,
+          "marginLeft": undefined,
+          "marginRight": undefined,
+          "marginStart": undefined,
+          "marginTop": undefined,
+          "marginVertical": undefined,
+        },
+        {
+          "cursor": undefined,
+        },
+      ]
+    }
+    underlayColor="#FFFFFF"
+  >
+    <View
+      collapsable={false}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "borderBottomLeftRadius": undefined,
+          "borderBottomRightRadius": undefined,
+          "borderRadius": 4,
+          "borderTopLeftRadius": undefined,
+          "borderTopRightRadius": undefined,
+          "bottom": 0,
+          "left": 0,
+          "opacity": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      style={{}}
+    >
+      <View
+        accessible={false}
+        style={
+          {
+            "alignItems": "center",
+            "borderRadius": 4,
+            "flexDirection": "row",
+            "justifyContent": "center",
+            "paddingHorizontal": 15,
+            "paddingVertical": 14,
+            "width": "100%",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#2F343D",
+                "fontSize": 48,
+              },
+              [
+                {
+                  "lineHeight": 48,
+                },
+                {
+                  "left": 15,
+                  "position": "absolute",
+                },
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          accessible={false}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#1F2329",
+              },
+            ]
+          }
+        >
+          Continue with
+           
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            apple
+          </Text>
+        </Text>
+      </View>
+    </View>
+  </RNGestureHandlerButton>,
+]
+`;
