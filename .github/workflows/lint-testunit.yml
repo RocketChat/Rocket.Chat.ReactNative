@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  run-eslint-and-test:
+  lint-testunit:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     runs-on: ubuntu-latest
 
