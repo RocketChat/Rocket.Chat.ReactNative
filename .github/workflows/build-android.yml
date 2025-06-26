@@ -109,7 +109,7 @@ jobs:
             echo -e "KEY_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
           fi
 
-      - name: Set Google Services
+      - name: Set Google Services JSON
         run: |
           if [[ ${{ secrets.GOOGLE_SERVICES_ANDROID }} ]]; then
             echo ${{ secrets.GOOGLE_SERVICES_ANDROID }} | base64 --decode > android/app/google-services.json
