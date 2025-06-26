@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { FlatList, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAutocompleteParams } from '../../context';
 import { AutocompleteItem } from './AutocompleteItem';
@@ -30,6 +31,13 @@ export const Autocomplete = ({
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
+	let { left, right } = useSafeAreaInsets();
+	if (left === 0) {
+		left = 8;
+	}
+	if (right === 0) {
+		right = 8;
+	}
 
 	if (items.length === 0 || !type) {
 		return null;
@@ -37,7 +45,7 @@ export const Autocomplete = ({
 
 	if (type !== '/preview') {
 		return (
-			<Animated.View style={[styles.root, style]}>
+			<Animated.View style={[styles.root, { right, left }, style]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					data={items}
@@ -51,7 +59,7 @@ export const Autocomplete = ({
 
 	if (type === '/preview') {
 		return (
-			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight }, style]}>
+			<Animated.View style={[styles.root, { backgroundColor: colors.surfaceLight, right, left }, style]}>
 				<FlatList
 					contentContainerStyle={styles.listContentContainer}
 					style={styles.list}
