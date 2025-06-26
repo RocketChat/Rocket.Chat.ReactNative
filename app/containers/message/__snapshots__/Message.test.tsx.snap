@@ -288,16 +288,27 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This message is inside an archived room"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This message is inside an archived room
@@ -601,16 +612,27 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -901,16 +923,27 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -1243,16 +1276,27 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Testing block quote"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Testing block quote
@@ -1575,16 +1619,27 @@ Testing block quote.  "
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Testing block quote"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Testing block quote
@@ -1613,16 +1668,27 @@ Testing block quote.  "
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Testing block quote"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Testing block quote
@@ -1926,16 +1992,27 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Broadcasted message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Broadcasted message
@@ -2458,16 +2535,27 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 1"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 1
@@ -2526,16 +2614,27 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 2"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 2
@@ -2680,16 +2779,27 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 1"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 1
@@ -2748,16 +2858,27 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 2"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 2
@@ -2902,16 +3023,27 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 1"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 1
@@ -2970,16 +3102,27 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 2"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 2
@@ -3287,16 +3430,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -3417,16 +3571,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Custom fields"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Custom fields
@@ -3493,16 +3658,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 1"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 1
@@ -3561,16 +3737,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 2"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 2
@@ -3629,16 +3816,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 3"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 3
@@ -3697,16 +3895,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 4"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 4
@@ -3765,16 +3974,27 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 5"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 5
@@ -4086,16 +4306,27 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -4399,16 +4630,27 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Fourth message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Fourth message
@@ -4763,16 +5005,27 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Third message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Third message
@@ -4919,16 +5172,27 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Second message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Second message
@@ -5226,16 +5490,27 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Second message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Second message
@@ -5585,16 +5860,27 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="First message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     First message
@@ -7645,16 +7931,27 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message header
@@ -7755,16 +8052,27 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message without header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message without header
@@ -8111,16 +8419,27 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message being edited"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message being edited
@@ -10020,7 +10339,11 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
@@ -10046,9 +10369,16 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=":react_rocket:"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     :react_rocket:
@@ -10461,16 +10791,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -10571,16 +10912,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message Encrypted without Header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message Encrypted without Header
@@ -11020,16 +11372,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message Encrypted with Reactions"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message Encrypted with Reactions
@@ -12119,16 +12482,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Temp message encrypted"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Temp message encrypted
@@ -12490,16 +12864,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message Edited encrypted"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message Edited encrypted
@@ -12897,16 +13282,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This message has error and is encrypted"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This message has error and is encrypted
@@ -13298,16 +13694,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Read Receipt encrypted with Header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Read Receipt encrypted with Header
@@ -13408,16 +13815,27 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Read Receipt encrypted without Header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Read Receipt encrypted without Header
@@ -13866,16 +14284,27 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This message has error"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This message has error
@@ -13942,16 +14371,27 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This message has error too"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This message has error too
@@ -14333,16 +14773,27 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -14646,16 +15097,27 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="..."
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     ...
@@ -14946,16 +15408,27 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Different user"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Different user
@@ -15056,16 +15529,27 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the third message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is the third message
@@ -15173,16 +15657,27 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the second message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is the second message
@@ -15480,16 +15975,27 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is the first message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is the first message
@@ -16004,7 +16510,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     style={
                       [
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         },
                         {
                           "color": "#2F343D",
@@ -16015,16 +16525,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Dogs"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Dogs
@@ -16053,16 +16574,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="  * cats"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                       * cats
@@ -16089,16 +16621,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="  - cats"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                       - cats
@@ -16415,7 +16958,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                           "textAlign": "left",
                         },
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         },
                         {
                           "color": "#2F343D",
@@ -16426,16 +16973,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Dogs "
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Dogs 
@@ -16464,16 +17022,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel=" 2. Cats"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      2. Cats
@@ -16789,7 +17358,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                           "textAlign": "left",
                         },
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         },
                         {
                           "color": "#2F343D",
@@ -16800,16 +17373,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Dogs"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Dogs
@@ -16937,7 +17521,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                           "textAlign": "left",
                         },
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         },
                         {
                           "color": "#2F343D",
@@ -16948,16 +17536,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Cats"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Cats
@@ -17270,16 +17869,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="this is a normal message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     this is a normal message
@@ -17606,16 +18216,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Edited message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Edited message
@@ -17941,16 +18562,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Translated message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Translated message
@@ -18312,16 +18944,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Encrypted message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Encrypted message
@@ -18649,16 +19292,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Error message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Error message
@@ -18980,16 +19634,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message with read receipt"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message with read receipt
@@ -19381,16 +20046,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message with read receipt"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message with read receipt
@@ -19887,16 +20563,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Show all icons "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Show all icons 
@@ -19963,16 +20650,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -20286,16 +20984,27 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="small message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     small message
@@ -20846,7 +21555,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
@@ -20872,9 +21585,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      
@@ -20901,9 +21621,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      
@@ -20929,9 +21656,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      
@@ -20957,9 +21691,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      
@@ -21269,7 +22010,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
@@ -21295,9 +22040,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" Lorem ipsum dolor "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      Lorem ipsum dolor 
@@ -21324,9 +22076,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" sit amet, "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      sit amet, 
@@ -21352,9 +22111,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" consectetur adipiscing "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      consectetur adipiscing 
@@ -21380,9 +22146,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" elit, sed do eiusmod tempor "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      elit, sed do eiusmod tempor 
@@ -21409,9 +22182,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                   <Text
                     accessibilityLabel=" incididunt ut labore et dolore magna aliqua."
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                      incididunt ut labore et dolore magna aliqua.
@@ -22022,16 +22802,27 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     I'm fine!
@@ -22132,16 +22923,27 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     I'm fine!
@@ -22501,16 +23303,27 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     I'm fine!
@@ -22611,16 +23424,27 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     I'm fine!
@@ -22962,16 +23786,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     I'm fine!
@@ -23092,16 +23927,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="How are you?"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         How are you?
@@ -23394,16 +24240,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="I'm fine!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     I'm fine!
@@ -23524,16 +24381,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="How are you? "
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         How are you? 
@@ -23858,16 +24726,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Looks cool!"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Looks cool!
@@ -23989,16 +24868,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                       <Text
                         style={
                           {
+                            "backgroundColor": "transparent",
                             "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           }
                         }
                       >
                         <Text
                           accessibilityLabel="What you think about this one?"
                           style={
-                            {
-                              "color": "#2F343D",
-                            }
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
                           }
                         >
                           What you think about this one?
@@ -24443,16 +25333,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Yes, I am"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Yes, I am
@@ -24574,16 +25475,27 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                       <Text
                         style={
                           {
+                            "backgroundColor": "transparent",
                             "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           }
                         }
                       >
                         <Text
                           accessibilityLabel="Are you seeing this mario "
                           style={
-                            {
-                              "color": "#2F343D",
-                            }
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
                           }
                         >
                           Are you seeing this mario 
@@ -24623,9 +25535,16 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         <Text
                           accessibilityLabel=" ?"
                           style={
-                            {
-                              "color": "#2F343D",
-                            }
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
                           }
                         >
                            ?
@@ -25083,16 +26002,27 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="How are you?"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     How are you?
@@ -27485,16 +28415,27 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message header
@@ -27595,16 +28536,27 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message without header"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message without header
@@ -27945,16 +28897,27 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Reactions"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Reactions
@@ -28763,16 +29726,27 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Multiple Reactions"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Multiple Reactions
@@ -30032,16 +31006,27 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="How are you?"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     How are you?
@@ -32023,16 +33008,27 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="Test Button"
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   Test Button
@@ -32384,7 +33380,11 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
@@ -32411,9 +33411,16 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                 <Text
                   accessibilityLabel=" "
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                    
@@ -32431,9 +33438,16 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                   <Text
                     accessibilityLabel="Message with markdown"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message with markdown
@@ -32468,7 +33482,11 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
@@ -32482,9 +33500,16 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                   <Text
                     accessibilityLabel="Some text"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Some text
@@ -32519,16 +33544,27 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="This is a test"
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   This is a test
@@ -32893,16 +33929,27 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -33555,16 +34602,27 @@ exports[`Story Snapshots: SystemMessages should match snapshot 1`] = `
                       <Text
                         style={
                           {
+                            "backgroundColor": "transparent",
                             "flexShrink": 1,
+                            "fontFamily": "Inter",
+                            "fontWeight": "400",
+                            "textAlign": "left",
                           }
                         }
                       >
                         <Text
                           accessibilityLabel="First message"
                           style={
-                            {
-                              "color": "#2F343D",
-                            }
+                            [
+                              {
+                                "flexShrink": 1,
+                                "fontSize": 16,
+                                "lineHeight": 22,
+                              },
+                              {
+                                "color": "#2F343D",
+                              },
+                            ]
                           }
                         >
                           First message
@@ -37489,16 +38547,27 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Temp message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Temp message
@@ -37802,16 +38871,27 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="this is a thumbnail"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     this is a thumbnail
@@ -37932,16 +39012,27 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Image text"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Image text
@@ -38287,16 +39378,27 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Testing"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Testing
@@ -38635,16 +39737,27 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message translated"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message translated
@@ -38948,16 +40061,27 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -39078,16 +40202,27 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Custom fields"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Custom fields
@@ -39154,16 +40289,27 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 1"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 1
@@ -39222,7 +40368,11 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
@@ -39367,16 +40517,27 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="Custom fields 2"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         Custom fields 2
@@ -39443,16 +40604,27 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
                           <Text
                             accessibilityLabel="Value 1"
                             style={
-                              {
-                                "color": "#2F343D",
-                              }
+                              [
+                                {
+                                  "flexShrink": 1,
+                                  "fontSize": 16,
+                                  "lineHeight": 22,
+                                },
+                                {
+                                  "color": "#2F343D",
+                                },
+                              ]
                             }
                           >
                             Value 1
@@ -39511,7 +40683,11 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                         <Text
                           style={
                             {
+                              "backgroundColor": "transparent",
                               "flexShrink": 1,
+                              "fontFamily": "Inter",
+                              "fontWeight": "400",
+                              "textAlign": "left",
                             }
                           }
                         >
@@ -39528,9 +40704,16 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                             <Text
                               accessibilityLabel="Value 2"
                               style={
-                                {
-                                  "color": "#2F343D",
-                                }
+                                [
+                                  {
+                                    "flexShrink": 1,
+                                    "fontSize": 16,
+                                    "lineHeight": 22,
+                                  },
+                                  {
+                                    "color": "#2F343D",
+                                  },
+                                ]
                               }
                             >
                               Value 2
@@ -40102,16 +41285,27 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message 
@@ -41085,16 +42279,27 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -41404,16 +42609,27 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
@@ -41717,16 +42933,27 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="This is a description "
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   This is a description 
@@ -42103,16 +43330,27 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="First message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     First message
@@ -42220,16 +43458,27 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="This is a description"
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   This is a description
@@ -43507,16 +44756,27 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="File.pdf"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         File.pdf
@@ -43546,16 +44806,27 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="This is a description "
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   This is a description 
@@ -43760,16 +45031,27 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     <Text
                       style={
                         {
+                          "backgroundColor": "transparent",
                           "flexShrink": 1,
+                          "fontFamily": "Inter",
+                          "fontWeight": "400",
+                          "textAlign": "left",
                         }
                       }
                     >
                       <Text
                         accessibilityLabel="File.pdf"
                         style={
-                          {
-                            "color": "#2F343D",
-                          }
+                          [
+                            {
+                              "flexShrink": 1,
+                              "fontSize": 16,
+                              "lineHeight": 22,
+                            },
+                            {
+                              "color": "#2F343D",
+                            },
+                          ]
                         }
                       >
                         File.pdf
@@ -43799,16 +45081,27 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="This is a description "
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   This is a description 
@@ -44151,16 +45444,27 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is a description"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is a description
@@ -44603,16 +45907,27 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is a description "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is a description 
@@ -45087,16 +46402,27 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="This is a description for Base64 Attachment "
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     This is a description for Base64 Attachment 
@@ -45570,16 +46896,27 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
               <Text
                 style={
                   {
+                    "backgroundColor": "transparent",
                     "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontWeight": "400",
+                    "textAlign": "left",
                   }
                 }
               >
                 <Text
                   accessibilityLabel="This is a description "
                   style={
-                    {
-                      "color": "#2F343D",
-                    }
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
                   }
                 >
                   This is a description 
@@ -46229,16 +47566,27 @@ exports[`Story Snapshots: WithoutHeader should match snapshot 1`] = `
                 <Text
                   style={
                     {
+                      "backgroundColor": "transparent",
                       "flexShrink": 1,
+                      "fontFamily": "Inter",
+                      "fontWeight": "400",
+                      "textAlign": "left",
                     }
                   }
                 >
                   <Text
                     accessibilityLabel="Message"
                     style={
-                      {
-                        "color": "#2F343D",
-                      }
+                      [
+                        {
+                          "flexShrink": 1,
+                          "fontSize": 16,
+                          "lineHeight": 22,
+                        },
+                        {
+                          "color": "#2F343D",
+                        },
+                      ]
                     }
                   >
                     Message
