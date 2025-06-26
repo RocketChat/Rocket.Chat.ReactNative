@@ -56,8 +56,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 'lts/*'
           cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
 
       - name: Set up Ruby and Bundler
         uses: ruby/setup-ruby@v1
@@ -69,6 +72,19 @@ jobs:
         run: |
           cd android
           bundle install --path gems
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle
+            android/.gradle
+          key: gradle-${{ hashFiles('android/**.gradle*', 'android/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            gradle-
 
       - name: Decode Keystore
         run: |
@@ -98,22 +114,6 @@ jobs:
           if [[ ${{ secrets.GOOGLE_SERVICES_ANDROID }} ]]; then
             echo ${{ secrets.GOOGLE_SERVICES_ANDROID }} | base64 --decode > android/app/google-services.json
           fi
-      
-      - name: Install Dependencies
-        run: yarn install
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Cache Gradle Caches
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
 
       - name: Build Android Release AAB
         run: |
