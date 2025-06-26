@@ -18,13 +18,11 @@ export interface ICustomIcon extends IconProps {
 	color?: string;
 }
 
-const FONT_SCALE_LIMIT = 1.3;
-
 const CustomIcon = memo(({ name, size, color, style, ...props }: ICustomIcon): React.ReactElement => {
 	const { colors } = useTheme();
-	const { fontScale } = useResponsiveLayout();
+	const { fontScaleLimited } = useResponsiveLayout();
 
-	const iconSize = size * (fontScale > FONT_SCALE_LIMIT ? FONT_SCALE_LIMIT : fontScale);
+	const iconSize = size * fontScaleLimited;
 
 	return (
 		<IconSet

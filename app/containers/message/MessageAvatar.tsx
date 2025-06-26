@@ -1,16 +1,15 @@
 import React, { useContext } from 'react';
-import { useWindowDimensions } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
 import MessageContext from './Context';
 import { IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
 
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
-	const { fontScale } = useWindowDimensions();
-	const fontScaleLimited = fontScale > 1.3 ? 1.3 : fontScale;
+	const { fontScaleLimited } = useResponsiveLayout();
 	if (isHeader && author) {
 		const onPress = () =>
 			navToRoomInfo({

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ResponsiveLayoutContext } from './useResponsiveLayout';
+import { FONT_SCALE_LIMIT, ResponsiveLayoutContext } from './useResponsiveLayout';
 
 type Props = {
 	children: React.ReactNode;
@@ -8,10 +8,11 @@ type Props = {
 };
 
 export const MockResponsiveFontScaleProvider = ({ children, fontScale = 1.4 }: Props) => {
-	const isLargeFontScale = fontScale > 1.3;
+	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 
 	return (
-		<ResponsiveLayoutContext.Provider value={{ fontScale, isLargeFontScale, rowHeight: 0, rowHeightCondensed: 0 }}>
+		<ResponsiveLayoutContext.Provider
+			value={{ fontScale, isLargeFontScale, rowHeight: 0, rowHeightCondensed: 0, fontScaleLimited: FONT_SCALE_LIMIT }}>
 			{children}
 		</ResponsiveLayoutContext.Provider>
 	);
