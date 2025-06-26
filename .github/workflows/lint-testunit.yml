@@ -1,4 +1,4 @@
-name: Run ESLint and Test
+name: Lint and Unit Tests
 
 on:
   pull_request:
