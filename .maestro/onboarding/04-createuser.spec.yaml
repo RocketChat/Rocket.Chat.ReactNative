@@ -22,15 +22,18 @@ appId: chat.rocket.reactnative
       text: "Confirm Password , Required . Error: "
 - inputText:
        text: ${output.user.password}
-- scrollUntilVisible:
-    element:
-      id: "register-view-submit" # or any other selector
-    direction: DOWN # DOWN|UP|LEFT|RIGHT (optional, default: DOWN)
-    timeout: 50000 # (optional, default: 20000) ms
-    speed: 40
-- tapOn:
-      id: "register-view-submit"
-- tapOn: "OK"
+
+- scroll 
+
+# - scrollUntilVisible:
+#     element:
+#       id: "register-view-submit"
+#     direction: DOWN
+#     timeout: 50000
+#     speed: 40
+#     visibilityPercentage: 100
+- tapOn: "Register"
+
 #  Useful to get rid of `Too many requests` alert on register
 - runFlow:
     when:

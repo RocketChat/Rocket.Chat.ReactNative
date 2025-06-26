@@ -36,3 +36,7 @@ var data = {
 var user = data.randomUser();
 // This will output the generated user object
 output.user = user;
+
+output.server = data.server
+
+console.log( output.server)
