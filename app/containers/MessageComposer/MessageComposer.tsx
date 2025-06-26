@@ -18,6 +18,7 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
@@ -39,7 +40,7 @@ export const MessageComposer = ({
 		focus: () => {}
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
-
+	useCloseKeyboardWhenOrientationChanges();
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
 	const { showEmojiKeyboard, showEmojiSearchbar, openEmojiSearchbar, resetKeyboard, keyboardHeight } = useEmojiKeyboard();
