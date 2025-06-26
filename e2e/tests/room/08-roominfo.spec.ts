@@ -163,7 +163,7 @@ describe('Room info screen', () => {
 				await expect(element(by.id('room-info-edit-view-description'))).toHaveText('');
 				await swipe('up');
 				await expect(element(by.id('room-info-edit-view-password'))).toHaveText('');
-				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(true);
+				await expect(element(by.id('room-info-edit-view-t'))).toHaveToggleValue(false);
 				await expect(element(by.id('room-info-edit-view-ro'))).toHaveToggleValue(false);
 				await expect(element(by.id('room-info-edit-view-react-when-ro'))).not.toBeVisible();
 				await swipe('down');
