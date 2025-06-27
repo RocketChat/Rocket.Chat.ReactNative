@@ -119,7 +119,7 @@ export const FormTextInput = ({
 	const accessibilityLabelText = useMemo(() => {
 		const labelText = accessibilityLabel || label || '';
 		const requiredText = required ? `${i18n.t('Required')}.` : '';
-		const valueText = (!secureTextEntry && value && isIOS) || showPassword ? `${value ?? ''}.` : '';
+		const valueText = (!secureTextEntry && value && isIOS) || showPassword ? `${value || ''}.` : '';
 		const errorText = inputError ? `${i18n.t('Error_prefix', { message: inputError })}.` : '';
 		const a11yLabel = `${labelText ? `${labelText}.` : ''} ${requiredText} ${errorText} ${valueText}`.trim();
 
