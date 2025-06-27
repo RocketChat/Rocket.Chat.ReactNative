@@ -16,6 +16,8 @@ interface IResponsiveFontScaleProviderProps {
 export const ResponsiveLayoutContext = createContext({} as IResponsiveLayoutContextData);
 
 export const FONT_SCALE_LIMIT = 1.3;
+const BASE_ROW_HEIGHT = 75;
+const BASE_ROW_HEIGHT_CONDENSED = 60;
 
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
@@ -23,8 +25,8 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? 1.3 : fontScale;
-	const rowHeight = 75 * fontScale;
-	const rowHeightCondensed = 60 * fontScale;
+	const rowHeight = BASE_ROW_HEIGHT * fontScale;
+	const rowHeightCondensed = BASE_ROW_HEIGHT_CONDENSED * fontScale;
 
 	return (
 		<ResponsiveLayoutContext.Provider value={{ fontScale, isLargeFontScale, fontScaleLimited, rowHeight, rowHeightCondensed }}>
