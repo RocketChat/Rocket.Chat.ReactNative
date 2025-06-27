@@ -179,7 +179,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			<>
 				<List.Separator />
 				<List.Item
-					title={item.name ?? ''}
+					title={item.name || ''}
 					translateTitle={false}
 					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}
