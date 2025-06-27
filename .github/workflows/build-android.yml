@@ -126,7 +126,7 @@ jobs:
       - name: Build Android Release AAB
         run: |
           cd android
-          ./gradlew bundleExperimentalRelease
+          ./gradlew bundleExperimentalRelease --build-cache
 
       - name: Find all AAB files
         run: find android/app/build/outputs -name "*.aab"
