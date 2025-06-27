@@ -24,7 +24,14 @@ export const Drawer = ({
 	const { colors } = useTheme();
 	return (
 		<Container style={style} left>
-			<Item iconName='hamburguer' onPress={onPress} testID={testID} color={colors.fontDefault} {...props} />
+			<Item
+				accessibilityLabel={I18n.t('Menu')}
+				iconName='hamburguer'
+				onPress={onPress}
+				testID={testID}
+				color={colors.fontDefault}
+				{...props}
+			/>
 		</Container>
 	);
 };
@@ -78,6 +85,6 @@ export const Preferences = React.memo(({ onPress, testID, ...props }: IHeaderBut
 
 export const Legal = React.memo(
 	({ navigation, testID, onPress = () => navigation?.navigate('LegalView'), ...props }: IHeaderButtonCommon) => (
-		<More onPress={onPress} testID={testID} {...props} />
+		<More accessibilityLabel={I18n.t('More')} onPress={onPress} testID={testID} {...props} />
 	)
 );

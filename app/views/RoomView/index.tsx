@@ -516,6 +516,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			),
 			headerRight: () => (
 				<RightButtons
+					roomName={title}
 					rid={rid}
 					tmid={tmid}
 					teamId={teamId}
@@ -530,6 +531,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					departmentId={departmentId}
 					notificationsDisabled={iSubRoom?.disableNotifications}
 					hasE2EEWarning={e2eeWarning}
+					teamMain={teamMain}
+					isGroupChat={isGroupChatConst}
 				/>
 			)
 		});

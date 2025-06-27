@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
 import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
@@ -116,16 +116,20 @@ export const FormTextInput = ({
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 
 	const inputError = getInputError(error);
-	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
-	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
-	const accessibilityInputError = i18n.t('Error_prefix', { message: inputError });
+	const accessibilityLabelText = useMemo(() => {
+		const baseLabel = `${accessibilityLabel || label || ''}`;
+		const formattedAccessibilityLabel = baseLabel ? `${baseLabel}.` : '';
+		const requiredText = required ? ` ${i18n.t('Required')}.` : '';
+		const errorText = inputError ? ` ${i18n.t('Error_prefix', { message: inputError })}.` : '';
+		const valueText = (!secureTextEntry && value && isIOS) || showPassword ? ` ${value || ''}.` : '';
+		const a11yLabel = `${formattedAccessibilityLabel}${requiredText}${errorText}${valueText}`.trim();
+		return a11yLabel;
+	}, [accessibilityLabel, label, required, inputError, secureTextEntry, value, showPassword]);
+
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
-				<View
-					accessible
-					accessibilityLabel={`${label} ${accessibilityLabelRequired} ${accessibilityInputValue}. ${accessibilityInputError}`}
-					style={[styles.inputContainer, containerStyle]}>
+				<View accessible accessibilityLabel={accessibilityLabelText} style={[styles.inputContainer, containerStyle]}>
 					{label ? (
 						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
