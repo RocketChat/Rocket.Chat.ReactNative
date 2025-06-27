@@ -17,14 +17,16 @@ const styles = StyleSheet.create({
 	},
 	leftTitle: {
 		...sharedStyles.textMedium,
-		fontSize: 16
+		fontSize: 16,
+		lineHeight: 24
 	},
 	rightContainer: {
 		flex: 1
 	},
 	rightTitle: {
 		...sharedStyles.textRegular,
-		fontSize: 16
+		fontSize: 16,
+		lineHeight: 24
 	},
 	rightTitleContainer: {
 		flex: 1,
