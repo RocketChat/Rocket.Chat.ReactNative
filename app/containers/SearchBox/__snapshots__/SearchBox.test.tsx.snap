@@ -12,7 +12,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="undefined  . Error: "
+        accessibilityLabel="undefined. . Error: . ."
         accessible={true}
         style={
           [
