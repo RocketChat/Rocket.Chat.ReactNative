@@ -123,7 +123,7 @@ jobs:
             echo ${{ secrets.GOOGLE_SERVICES_ANDROID }} | base64 --decode > android/app/google-services.json
           fi
 
-      - name: Build Android Release AAB
+      - name: Build Android Release AAB 
         run: |
           cd android
           ./gradlew bundleExperimentalRelease --build-cache
