@@ -63,7 +63,6 @@ const RoomItem = ({
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
 	);
-
 	const statusAccessibilityLabel = useStatusAccessibilityLabel({
 		isGroupChat,
 		status,
