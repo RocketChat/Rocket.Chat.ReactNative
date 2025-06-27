@@ -1,0 +1,1291 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: All should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 32,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "fontSize": 10,
+          },
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 52,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "fontSize": 10,
+          },
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      +99
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      +999
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F5455C",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F38C39",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#095AD2",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F5455C",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F38C39",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F5455C",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#095AD2",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F5455C",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#F38C39",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      1
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Normal should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+          "marginLeft": 10,
+          "paddingHorizontal": 5,
+          "paddingVertical": 3,
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 42,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          undefined,
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      +999
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Small should match snapshot 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "flex": 1,
+      "flexDirection": "row",
+      "justifyContent": "space-evenly",
+    }
+  }
+>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 32,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "fontSize": 10,
+          },
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      9
+    </Text>
+  </View>
+  <View
+    style={
+      [
+        {
+          "alignItems": "center",
+          "justifyContent": "center",
+        },
+        {
+          "backgroundColor": "#9EA2A8",
+          "borderRadius": 21,
+          "minWidth": 52,
+        },
+        undefined,
+      ]
+    }
+  >
+    <Text
+      numberOfLines={1}
+      style={
+        [
+          {
+            "backgroundColor": "transparent",
+            "fontFamily": "Inter",
+            "fontSize": 13,
+            "fontWeight": "600",
+            "textAlign": "left",
+          },
+          {
+            "fontSize": 10,
+          },
+          {
+            "color": "#FFFFFF",
+          },
+        ]
+      }
+    >
+      +99
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Story Snapshots: Themes should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-evenly",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#9EA2A8",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#F5455C",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#F38C39",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#095AD2",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-evenly",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#9EA2A8",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#B43C4C",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#955828",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#245399",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-evenly",
+      }
+    }
+  >
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#9EA2A8",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#B43C4C",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#955828",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+            "marginLeft": 10,
+            "paddingHorizontal": 5,
+            "paddingVertical": 3,
+          },
+          {
+            "backgroundColor": "#245399",
+            "borderRadius": 21,
+            "minWidth": 42,
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        numberOfLines={1}
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "600",
+              "textAlign": "left",
+            },
+            undefined,
+            {
+              "color": "#FFFFFF",
+            },
+          ]
+        }
+      >
+        1
+      </Text>
+    </View>
+  </View>,
+]
+`;
