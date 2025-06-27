@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 
 import * as List from '.';
 import SafeAreaView from '../SafeAreaView';
-import { longText } from '../../../.storybook/utils';
+import { longText } from '../../../.rnstorybook/utils';
 import { ThemeContext, TSupportedThemes } from '../../theme';
 import { DimensionsContext } from '../../dimensions';
 import { themes } from '../../lib/constants';

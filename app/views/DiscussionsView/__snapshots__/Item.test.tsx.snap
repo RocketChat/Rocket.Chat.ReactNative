@@ -1,0 +1,2729 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Content should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Message content"
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Message content"
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  +999
+                </Text>
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Attachment title"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Attachment title"
+            >
+              Attachment title
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Message content"
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Themes should match snapshot 1`] = `
+<RCTScrollView>
+  <View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#FFFFFF",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#1F2329",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#6C727A",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#2F343D",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Message content"
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#6C727A",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#1F2329",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#F2F3F5",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#9EA2A8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Message content"
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#9EA2A8",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#9EA2A8",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "backgroundColor": "#000000",
+          "opacity": 1,
+        }
+      }
+      testID="discussions-view-Message content"
+    >
+      <View
+        style={
+          {
+            "flexDirection": "row",
+            "padding": 16,
+          }
+        }
+      >
+        <View
+          accessibilityLabel="rocket.cat's avatar"
+          accessible={true}
+          style={
+            [
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              },
+              {
+                "marginRight": 8,
+              },
+            ]
+          }
+          testID="avatar"
+        >
+          <ViewManagerAdapter_ExpoImage
+            borderRadius={4}
+            containerViewRef={"[React.ref]"}
+            contentFit="cover"
+            contentPosition={
+              {
+                "left": "50%",
+                "top": "50%",
+              }
+            }
+            height={36}
+            nativeViewRef={"[React.ref]"}
+            onError={[Function]}
+            onLoad={[Function]}
+            onLoadStart={[Function]}
+            onProgress={[Function]}
+            placeholder={[]}
+            priority="high"
+            source={
+              [
+                {
+                  "headers": {
+                    "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
+                  },
+                  "uri": "https://open.rocket.chat/avatar/rocket.cat?format=png&size=72",
+                },
+              ]
+            }
+            style={
+              {
+                "borderRadius": 4,
+                "height": 36,
+                "width": 36,
+              }
+            }
+            transition={null}
+            width={36}
+          />
+        </View>
+        <View
+          style={
+            {
+              "flex": 1,
+              "flexDirection": "column",
+            }
+          }
+        >
+          <View
+            style={
+              {
+                "flexDirection": "row",
+                "justifyContent": "space-between",
+                "marginBottom": 2,
+              }
+            }
+          >
+            <Text
+              numberOfLines={1}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "flexShrink": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 18,
+                    "fontWeight": "500",
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#F2F3F5",
+                  },
+                ]
+              }
+            >
+              rocket.cat
+            </Text>
+            <Text
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 14,
+                    "fontWeight": "400",
+                    "marginLeft": 4,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#9EA2A8",
+                  },
+                ]
+              }
+            >
+              10:00 AM
+            </Text>
+          </View>
+          <View
+            style={
+              {
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="Message content"
+              numberOfLines={2}
+              style={
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "lineHeight": 22,
+                    "textAlign": "left",
+                  },
+                  {
+                    "color": "#E4E7EA",
+                    "lineHeight": undefined,
+                  },
+                  {
+                    "flex": 1,
+                  },
+                ]
+              }
+              testID="markdown-preview-Message content"
+            >
+              Message content
+            </Text>
+          </View>
+          <View
+            style={
+              [
+                {
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "marginTop": 8,
+                },
+              ]
+            }
+          >
+            <View
+              style={
+                {
+                  "flex": 1,
+                  "flexDirection": "row",
+                }
+              }
+            >
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#9EA2A8",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
+                  }
+                />
+              </View>
+              <View
+                style={
+                  {
+                    "alignItems": "center",
+                    "flexDirection": "row",
+                    "marginRight": 8,
+                  }
+                }
+              >
+                <Text
+                  allowFontScaling={false}
+                  selectable={false}
+                  style={
+                    [
+                      {
+                        "color": "#9EA2A8",
+                        "fontSize": 48,
+                      },
+                      [
+                        {
+                          "lineHeight": 48,
+                        },
+                        undefined,
+                      ],
+                      {
+                        "fontFamily": "custom",
+                        "fontStyle": "normal",
+                        "fontWeight": "normal",
+                      },
+                      {},
+                    ]
+                  }
+                >
+                  
+                </Text>
+                <Text
+                  numberOfLines={1}
+                  style={
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 10,
+                        "fontWeight": "600",
+                        "marginLeft": 2,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
+                  }
+                >
+                  November 10, 2020
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+    <View
+      style={
+        [
+          {
+            "height": 0.5,
+          },
+          undefined,
+          {
+            "backgroundColor": "#CBCED1",
+          },
+        ]
+      }
+    />
+  </View>
+</RCTScrollView>
+`;
