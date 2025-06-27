@@ -4,9 +4,9 @@ appId: chat.rocket.reactnative
 - runFlow: ../helpers/relaunch-app.yaml
 - extendedWaitUntil:
     visible: 'Add Workspace'
-    timeout: 60000
+    timeout: 60000  
 - tapOn:
-    text: "Workspace URL, Required"
+      text: "Workspace URL , Required . Error: "
 - inputText:
     id: "new-server-view-input"
     text: "invalidtest"
