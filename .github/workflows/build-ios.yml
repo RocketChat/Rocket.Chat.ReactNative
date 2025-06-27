@@ -56,6 +56,16 @@ jobs:
           ruby-version: 2.7.7
           bundler-cache: true
 
+      - name: Pod Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pods
+            ios/Pods
+          key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+          restore-keys: |
+            pods-v1-
+
       - name: pod install
         run: |
           yarn pod-install
