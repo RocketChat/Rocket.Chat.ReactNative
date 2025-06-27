@@ -11,6 +11,8 @@ Refer to [React Native environment setup](https://reactnative.dev/docs/set-up-yo
 
 ### How to run
 
+Minimum Node version: 22.14.0
+
 Clone repository and install dependencies:
 ```sh
 git clone git@github.com:RocketChat/Rocket.Chat.ReactNative.git
