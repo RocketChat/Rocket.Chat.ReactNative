@@ -1,4 +1,5 @@
 appId: chat.rocket.reactnative
+
 ---
 - runFlow: ../helpers/relaunch-app.yaml
 - extendedWaitUntil:

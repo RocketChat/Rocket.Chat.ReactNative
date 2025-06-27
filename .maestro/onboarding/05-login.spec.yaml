@@ -19,36 +19,4 @@ appId: chat.rocket.reactnative
 - tapOn: "OK"
 
 
-- runFlow: ./04-createuser.spec.yaml
-
-- runFlow:
-    when:
-      visible: "Username is already in use"
-    commands:
-       - tapOn: "OK"
-- runFlow:
-    when:
-      visible: "OK"
-    commands:
-       - tapOn: "OK"
-         
-# if user login then logout the user 
-
-- runFlow:
-     file: ../helpers/logout.yaml
-           
-- runFlow: 
-      file: ../helpers/navigate-to-workspace.yaml
-
-# should login with success
-- tapOn:
-      text: "Username or email  . Error: "
-- inputText:
-       text: ${output.user.username}
-
-- tapOn:
-      text: "Password  . Error: "
-- inputText:
-       text: ${output.user.password}
-- tapOn:
-      id: "login-view-submit"
+- runFlow: ../helpers/login.yaml

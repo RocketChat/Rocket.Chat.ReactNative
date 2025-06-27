@@ -1,0 +1,52 @@
+appId: chat.rocket.reactnative
+env:
+  URL: https://mobile.rocket.chat
+---
+- runFlow: ../helpers/login.yaml
+- runFlow: ../helpers/logout.yaml
+
+- assertVisible:
+   id: "servers-history-button"
+  
+- tapOn:
+     id: "servers-history-button"
+- assertVisible:
+    id: "action-sheet"
+- assertVisible:
+    id: "servers-history-${output.server}"
+
+
+# should tap on a server history and navigate to login
+- tapOn: "Connect to ${output.server} as ${output.user.username}"
+
+- assertVisible:
+    id: "login-view-submit"
+
+#  now check  userTishJogSsU" is present on  login-view-email textinput fields
+- assertVisible: "Username or email  , ${output.user.username}. Error: "
+
+
+# should delete server from history
+- runFlow: ../helpers/go-back.yaml
+
+- assertVisible:
+     id : "workspace-view"
+- runFlow: ../helpers/go-back.yaml
+
+- assertVisible:
+     id: 'new-server-view'
+- tapOn:
+     id: 'servers-history-button'
+- assertVisible:
+      id: "servers-history-${output.server}"
+- assertVisible:
+    id: "servers-history-delete-${output.server}"
+- tapOn:
+    id: "servers-history-delete-${output.server}"
+
+- extendedWaitUntil:
+    notVisible:
+      id: "servers-history-button"
+    timeout: 10000  # in milliseconds
+- assertVisible:
+    id: "new-server-view"

@@ -1,0 +1,48 @@
+appId: chat.rocket.reactnative
+---
+
+- runFlow: navigate-to-register.yaml
+- runScript: ../scripts/generate-user.js
+- tapOn:
+      text: "Full name , Required . Error: "
+- inputText:
+       text: ${output.user.username}
+- tapOn:
+      text: "Username , Required . Error: "
+- inputText:
+       text: ${output.user.username}
+- tapOn:
+      text: "Email , Required . Error: "
+- inputText:
+       text: ${output.user.email}
+- tapOn:
+      text: "Password , Required . Error: "
+- inputText:
+       text: ${output.user.password}
+- tapOn:
+      text: "Confirm Password , Required . Error: "
+- inputText:
+       text: ${output.user.password}
+
+- scroll 
+
+- tapOn: "Register"
+
+#  Useful to get rid of `Too many requests` alert on register
+- runFlow:
+    when:
+      visible: 
+           id: "register-view-submit"
+    commands:
+        - tapOn:
+           id: "register-view-submit"
+- runFlow:
+    when:
+      visible: "Username is already in use"
+    commands:
+       - tapOn: "OK"
+- runFlow:
+    when:
+      visible: "OK"
+    commands:
+       - tapOn: "OK"
