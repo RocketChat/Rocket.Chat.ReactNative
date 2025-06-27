@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { FONT_SCALE_LIMIT, ResponsiveLayoutContext } from './useResponsiveLayout';
+import { FONT_SCALE_LIMIT, ResponsiveLayoutContext } from '../useResponsiveLayout';
 
 type Props = {
 	children: React.ReactNode;
-	fontScale?: number;
 };
 
-export const MockResponsiveFontScaleProvider = ({ children, fontScale = 1.4 }: Props) => {
-	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
+export const MockResponsiveLayoutProvider = ({ children }: Props) => {
+	const fontScale = 1.4;
+	const isLargeFontScale = FONT_SCALE_LIMIT < fontScale;
 
 	return (
 		<ResponsiveLayoutContext.Provider

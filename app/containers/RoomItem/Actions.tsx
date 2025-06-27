@@ -17,7 +17,7 @@ import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;

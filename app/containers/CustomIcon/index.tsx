@@ -4,7 +4,7 @@ import type { IconProps } from 'react-native-vector-icons/Icon';
 
 import { mappedIcons } from './mappedIcons';
 import { useTheme } from '../../theme';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const icoMoonConfig = require('./selection.json');
 

@@ -6,7 +6,7 @@ import { DisplayMode } from '../../lib/constants';
 import TypeIcon from './TypeIcon';
 import styles from './styles';
 import { IIconOrAvatar } from './interfaces';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const IconOrAvatar = ({
 	avatar,

@@ -9,7 +9,7 @@ import RightIcons from './Components/RightIcons';
 import MessageContext from './Context';
 import { messageHaveAuthorName } from './utils';
 import MessageTime from './Time';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {

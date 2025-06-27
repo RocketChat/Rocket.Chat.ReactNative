@@ -9,7 +9,7 @@ import I18n from '../../i18n';
 import { Icon } from '.';
 import { BASE_HEIGHT, ICON_SIZE, PADDING_HORIZONTAL } from './constants';
 import { CustomIcon } from '../CustomIcon';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const styles = StyleSheet.create({
 	container: {

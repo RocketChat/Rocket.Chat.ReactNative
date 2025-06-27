@@ -15,7 +15,7 @@ import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const RoomItem = ({
 	rid,

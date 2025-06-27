@@ -5,7 +5,7 @@ import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-c
 import { enableScreens } from 'react-native-screens';
 import { Provider } from 'react-redux';
 
-import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout';
+import ResponsiveLayoutProvider from './lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import AppContainer from './AppContainer';
 import { appInit, appInitLocalSettings, setMasterDetail as setMasterDetailAction } from './actions/app';
 import { deepLinkingOpen } from './actions/deepLinking';

@@ -12,7 +12,7 @@ import { useTheme } from '../../theme';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { IApplicationState, ISubscription, SubscriptionType } from '../../definitions';
 import { hideNotification } from '../../lib/methods/helpers/notifications';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 export interface INotifierComponent {
 	notification: {

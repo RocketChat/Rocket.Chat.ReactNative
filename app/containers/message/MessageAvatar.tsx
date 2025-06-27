@@ -5,7 +5,7 @@ import styles from './styles';
 import MessageContext from './Context';
 import { IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
