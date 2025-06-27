@@ -35,12 +35,16 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 'lts/*'
           cache: 'yarn'
 
-      - name: Log the run number
-        run: |
-          echo "Run number: ${{ github.run_number }}"
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install JavaScript dependencies
         run: yarn install --frozen-lockfile
@@ -108,13 +112,6 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-
-      - name: Upload Fastlane gym log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: fastlane-gym-log
-          path: /Users/runner/Library/Logs/gym/Rocket.Chat Experimental-RocketChatRN.log
 
       - name: Submit to TestFlight
         run: |

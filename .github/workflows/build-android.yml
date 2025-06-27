@@ -59,6 +59,14 @@ jobs:
           node-version: 'lts/*'
           cache: 'yarn'
 
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
