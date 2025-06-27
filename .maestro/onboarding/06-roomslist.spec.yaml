@@ -1,7 +1,11 @@
 appId: chat.rocket.reactnative
 ---
-
-- runFlow: 05-login.spec.yaml
+- runFlow: ../helpers/register.yaml
+- runFlow: 
+      file: ../helpers/login.yaml
+      env: 
+        USERNAME: ${output.user.username}
+        PASSWORD: ${output.user.password}
 
 # should have rooms list screen
 - assertVisible:

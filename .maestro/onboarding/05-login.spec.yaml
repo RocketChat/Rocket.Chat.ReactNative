@@ -19,4 +19,9 @@ appId: chat.rocket.reactnative
 - tapOn: "OK"
 
 
-- runFlow: ../helpers/login.yaml
+- runFlow: ../helpers/register.yaml
+- runFlow: 
+      file: ../helpers/login.yaml
+      env: 
+        USERNAME: ${output.user.username}
+        PASSWORD: ${output.user.password}

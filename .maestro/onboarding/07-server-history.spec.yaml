@@ -2,7 +2,12 @@ appId: chat.rocket.reactnative
 env:
   URL: https://mobile.rocket.chat
 ---
-- runFlow: ../helpers/login.yaml
+- runFlow: ../helpers/register.yaml
+- runFlow: 
+      file: ../helpers/login.yaml
+      env: 
+        USERNAME: ${output.user.username}
+        PASSWORD: ${output.user.password}
 - runFlow: ../helpers/logout.yaml
 
 - assertVisible:

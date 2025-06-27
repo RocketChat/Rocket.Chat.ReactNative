@@ -1,6 +1,5 @@
 appId: chat.rocket.reactnative
 ---
-- runFlow: register.yaml
 #  IF login then logout
 - runFlow:
     when: 
@@ -13,12 +12,12 @@ appId: chat.rocket.reactnative
 - tapOn:
       text: "Username or email  . Error: "
 - inputText:
-       text: ${output.user.username}
+       text: ${USERNAME}
 
 - tapOn:
       text: "Password  . Error: "
 - inputText:
-       text: ${output.user.password}
+       text: ${PASSWORD}
 - tapOn:
       id: "login-view-submit"
 
