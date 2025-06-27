@@ -1,0 +1,24 @@
+appId: chat.rocket.reactnative
+---
+
+- runFlow:
+    when: 
+       visible: "Menu"
+    commands:
+        - tapOn: "Menu"
+        - assertVisible:
+             id: "sidebar-settings"
+
+        - tapOn:
+            id: "sidebar-settings"
+  
+        - assertVisible:
+              id: "settings-logout"
+
+        - tapOn:
+             id: "settings-logout"
+
+        - assertVisible: "You will be logged out of this application."
+
+        - tapOn: "Logout"
+
