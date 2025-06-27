@@ -1,6 +1,7 @@
 appId: chat.rocket.reactnative
 ---
 
+
 - runFlow:
     when: 
        visible: 
@@ -18,10 +19,17 @@ appId: chat.rocket.reactnative
               id: "settings-logout"
 
         - tapOn:
-             id: "settings-logout"   
+             id: "settings-logout"  
+
 - runFlow:
-    when: 
-       visible: "Logout"
+    when:
+        platform: Android
     commands:
-      - tapOn:
-          point: "67%,57%"
+         - tapOn: "LOGOUT"
+           
+- runFlow:
+    when:
+        platform:  iOS
+    commands:
+        - tapOn:
+             point: "67%,57%"

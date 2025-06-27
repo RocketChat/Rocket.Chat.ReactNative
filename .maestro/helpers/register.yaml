@@ -19,11 +19,25 @@ appId: chat.rocket.reactnative
       text: "Password , Required . Error: "
 - inputText:
        text: ${output.user.password}
-- tapOn:
-      text: "Confirm Password , Required . Error: "
-- inputText:
-       text: ${output.user.password}
 
+# For Android 
+- runFlow:
+    when:  
+          platform: Android
+    commands:
+      - tapOn:
+           id: "register-view-confirm-password"
+
+# For IOS 
+- runFlow:
+    when: 
+       platform:  iOS
+    commands:
+      - tapOn: "Confirm Password , Required . Error: "
+      - inputText:
+           text: ${output.user.password}
+
+#  Normal scrolling for reducing Platform specific scroll issue 
 - scroll 
 
 - tapOn: "Register"

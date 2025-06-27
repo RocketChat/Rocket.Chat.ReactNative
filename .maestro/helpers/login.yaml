@@ -18,6 +18,12 @@ appId: chat.rocket.reactnative
       text: "Password  . Error: "
 - inputText:
        text: ${PASSWORD}
+
+
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible:
+      id: "login-view-submit"
 - tapOn:
       id: "login-view-submit"
 
