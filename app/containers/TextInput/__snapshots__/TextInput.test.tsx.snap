@@ -11,7 +11,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Right icon  , Rocket.Chat. Error: "
+        accessibilityLabel="Right icon.   Rocket.Chat."
         accessible={true}
         style={
           [
@@ -136,7 +136,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Left icon  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessibilityLabel="Left icon.   https://open.rocket.chat/images/logo/android-chrome-512x512.png."
         accessible={true}
         style={
           [
@@ -260,7 +260,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Both icons  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessibilityLabel="Both icons.   https://open.rocket.chat/images/logo/android-chrome-512x512.png."
         accessible={true}
         style={
           [
@@ -420,7 +420,7 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Icon and touchable clear input  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessibilityLabel="Icon and touchable clear input.   https://open.rocket.chat/images/logo/android-chrome-512x512.png."
         accessible={true}
         style={
           [
@@ -586,7 +586,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Loading false  , Rocket.Chat. Error: "
+        accessibilityLabel="Loading false.   Rocket.Chat."
         accessible={true}
         style={
           [
@@ -675,7 +675,7 @@ exports[`Story Snapshots: Loading should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Loading true  , Rocket.Chat. Error: "
+        accessibilityLabel="Loading true.   Rocket.Chat."
         accessible={true}
         style={
           [
@@ -788,10 +788,10 @@ exports[`Story Snapshots: Multiline should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Multiline text  , Rocket.Chat
+        accessibilityLabel="Multiline text.   Rocket.Chat
 
 https://open.rocket.chat/images/logo/android-chrome-512x512.png
-. Error: "
+."
         accessible={true}
         style={
           [
@@ -895,7 +895,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Secure text disabled  , Rocket.Chat. Error: "
+        accessibilityLabel="Secure text disabled.   Rocket.Chat."
         accessible={true}
         style={
           [
@@ -984,7 +984,7 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Secure text enabled  . Error: "
+        accessibilityLabel="Secure text enabled."
         accessible={true}
         style={
           [
@@ -1162,7 +1162,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Short Text  , Rocket.Chat. Error: "
+        accessibilityLabel="Short Text.   Rocket.Chat."
         accessible={true}
         style={
           [
@@ -1251,7 +1251,7 @@ exports[`Story Snapshots: ShortAndLong should match snapshot 1`] = `
   <View>
     <View>
       <View
-        accessibilityLabel="Long Text  , https://open.rocket.chat/images/logo/android-chrome-512x512.png. Error: "
+        accessibilityLabel="Long Text.   https://open.rocket.chat/images/logo/android-chrome-512x512.png."
         accessible={true}
         style={
           [
