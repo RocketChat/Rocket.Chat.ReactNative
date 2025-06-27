@@ -1,0 +1,448 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: CustomButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "purple",
+      "borderRadius": 4,
+      "justifyContent": "center",
+      "marginBottom": 12,
+      "opacity": 1,
+      "padding": 10,
+      "paddingHorizontal": 16,
+      "paddingVertical": 14,
+    }
+  }
+  testID="testButton"
+>
+  <Text
+    style={
+      [
+        {
+          "color": "yellow",
+          "fontSize": 18,
+        },
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        [
+          {
+            "textAlign": "left",
+          },
+        ],
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: DisabledButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#D1EBFE",
+      "borderRadius": 4,
+      "justifyContent": "center",
+      "marginBottom": 12,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 14,
+    }
+  }
+  testID="testButton"
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 16,
+        },
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: DisabledLoadingButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#D1EBFE",
+      "borderRadius": 4,
+      "justifyContent": "center",
+      "marginBottom": 12,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 14,
+    }
+  }
+  testID="testButton"
+>
+  <ActivityIndicator
+    color="#FFFFFF"
+    style={
+      {
+        "padding": 0,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: LoadingButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": true,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#D1EBFE",
+      "borderRadius": 4,
+      "justifyContent": "center",
+      "marginBottom": 12,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 14,
+    }
+  }
+  testID="testButton"
+>
+  <ActivityIndicator
+    color="#FFFFFF"
+    style={
+      {
+        "padding": 0,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`Story Snapshots: PrimaryButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#156FF5",
+      "borderRadius": 4,
+      "justifyContent": "center",
+      "marginBottom": 12,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 14,
+    }
+  }
+  testID="testButton"
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 16,
+        },
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: SecondaryButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "backgroundColor": "#E4E7EA",
+      "borderRadius": 4,
+      "justifyContent": "center",
+      "marginBottom": 12,
+      "opacity": 1,
+      "paddingHorizontal": 16,
+      "paddingVertical": 14,
+    }
+  }
+  testID="testButton"
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#2F343D",
+          "fontSize": 16,
+        },
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontWeight": "500",
+          "textAlign": "center",
+        },
+        undefined,
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
+
+exports[`Story Snapshots: SmallButton should match snapshot 1`] = `
+<View
+  accessibilityLabel="Press me!"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "alignSelf": "center",
+      "backgroundColor": "#156FF5",
+      "borderRadius": 4,
+      "marginBottom": 12,
+      "opacity": 1,
+      "paddingHorizontal": 12,
+      "paddingVertical": 8,
+    }
+  }
+  testID="testButton"
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#FFFFFF",
+          "fontSize": 16,
+        },
+        {
+          "backgroundColor": "transparent",
+          "fontFamily": "Inter",
+          "fontSize": 12,
+          "fontWeight": "700",
+          "lineHeight": 18,
+          "textAlign": "left",
+        },
+        undefined,
+      ]
+    }
+  >
+    Press me!
+  </Text>
+</View>
+`;
