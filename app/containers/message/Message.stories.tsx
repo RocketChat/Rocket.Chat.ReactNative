@@ -5,6 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import MessageComponent from './Message';
 import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
 import MessageSeparator from '../MessageSeparator';
+import {
+	BASE_ROW_HEIGHT,
+	BASE_ROW_HEIGHT_CONDENSED,
+	FONT_SCALE_LIMIT,
+	ResponsiveLayoutContext
+} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const _theme = 'light';
 
@@ -66,17 +72,26 @@ export const Message = (props: any) => (
 
 // The large font components are not perfect because the text's font scale increases only with the device's font size setting.
 export const MessageLargeFont = (props: any) => (
-	<MessageComponent
-		baseUrl={baseUrl}
-		user={user}
-		author={author}
-		ts={date}
-		timeFormat='LT'
-		isHeader
-		getCustomEmoji={getCustomEmoji}
-		theme={_theme}
-		{...props}
-	/>
+	<ResponsiveLayoutContext.Provider
+		value={{
+			fontScale: FONT_SCALE_LIMIT,
+			fontScaleLimited: FONT_SCALE_LIMIT,
+			isLargeFontScale: true,
+			rowHeight: BASE_ROW_HEIGHT * FONT_SCALE_LIMIT,
+			rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * FONT_SCALE_LIMIT
+		}}>
+		<MessageComponent
+			baseUrl={baseUrl}
+			user={user}
+			author={author}
+			ts={date}
+			timeFormat='LT'
+			isHeader
+			getCustomEmoji={getCustomEmoji}
+			theme={_theme}
+			{...props}
+		/>
+	</ResponsiveLayoutContext.Provider>
 );
 
 export const Basic = () => (
