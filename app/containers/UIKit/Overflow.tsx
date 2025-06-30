@@ -60,7 +60,9 @@ export const Overflow = ({ element, loading, action, parser }: IOverflow) => {
 	return (
 		<>
 			<Touchable
-				ref={ref => (touchable[blockId] = ref)}
+				ref={ref => {
+					touchable[blockId] = ref;
+				}}
 				background={Touchable.Ripple(themes[theme].surfaceNeutral)}
 				onPress={() => onShow(!show)}
 				hitSlop={BUTTON_HIT_SLOP}

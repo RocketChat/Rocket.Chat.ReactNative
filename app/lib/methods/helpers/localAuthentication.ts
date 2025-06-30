@@ -108,7 +108,7 @@ const hideSplashScreen = async () => {
 	} catch {
 		// Do nothing
 	}
-}
+};
 
 export const handleLocalAuthentication = async (canCloseModal = false) => {
 	// let hasBiometry = false;

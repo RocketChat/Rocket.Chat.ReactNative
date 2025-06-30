@@ -1,8 +1,8 @@
 diff --git a/node_modules/@react-navigation/elements/package.json b/node_modules/@react-navigation/elements/package.json
-index bed0995..f650085 100644
+index bed0995..5822c5c 100644
 --- a/node_modules/@react-navigation/elements/package.json
 +++ b/node_modules/@react-navigation/elements/package.json
-@@ -20,6 +20,7 @@
+@@ -20,10 +20,12 @@
    "homepage": "https://reactnavigation.org",
    "source": "./src/index.tsx",
    "main": "./lib/commonjs/index.js",
@@ -10,8 +10,13 @@ index bed0995..f650085 100644
    "module": "./lib/module/index.js",
    "types": "./lib/typescript/commonjs/src/index.d.ts",
    "exports": {
+     ".": {
++      "react-native": "./src/index.tsx",
+       "import": {
+         "types": "./lib/typescript/module/src/index.d.ts",
+         "default": "./lib/module/index.js"
 diff --git a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
-index bd30826..e53237d 100644
+index bd30826..f31a032 100644
 --- a/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
 +++ b/node_modules/@react-navigation/elements/src/Header/HeaderIcon.tsx
 @@ -1,9 +1,11 @@
