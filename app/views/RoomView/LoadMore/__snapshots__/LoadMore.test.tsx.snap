@@ -477,8 +477,8 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -532,7 +532,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -546,19 +546,19 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -1210,8 +1210,8 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -1265,7 +1265,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -1279,19 +1279,19 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -1777,8 +1777,8 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -1832,7 +1832,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -1846,19 +1846,19 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -2184,8 +2184,8 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -2239,7 +2239,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -2253,19 +2253,19 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -2917,8 +2917,8 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -2972,7 +2972,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -2986,19 +2986,19 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -3484,8 +3484,8 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -3539,7 +3539,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -3553,19 +3553,19 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -3891,8 +3891,8 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -3946,7 +3946,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -3960,19 +3960,19 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -4624,8 +4624,8 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -4679,7 +4679,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -4693,19 +4693,19 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>
@@ -5191,8 +5191,8 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": 36,
-                  "width": 36,
+                  "height": NaN,
+                  "width": NaN,
                 },
                 {
                   "marginTop": 4,
@@ -5246,7 +5246,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={36}
+                height={NaN}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -5260,19 +5260,19 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": 36,
-                    "width": 36,
+                    "height": NaN,
+                    "width": NaN,
                   }
                 }
                 transition={null}
-                width={36}
+                width={NaN}
               />
             </View>
           </View>

@@ -131,11 +131,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -251,11 +251,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -353,11 +353,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -552,11 +552,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -782,11 +782,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -902,11 +902,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -1004,11 +1004,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -1203,11 +1203,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -1473,11 +1473,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -1593,11 +1593,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -1695,11 +1695,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -1894,11 +1894,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -2164,11 +2164,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -2284,11 +2284,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -2386,11 +2386,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -2585,11 +2585,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -2855,11 +2855,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -2975,11 +2975,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -3077,11 +3077,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -3276,11 +3276,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -3546,11 +3546,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -3666,11 +3666,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -3768,11 +3768,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -3967,11 +3967,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -4237,11 +4237,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -4357,11 +4357,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -4459,11 +4459,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -4658,11 +4658,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -4928,11 +4928,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -5048,11 +5048,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -5150,11 +5150,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -5349,11 +5349,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -5619,11 +5619,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -5739,11 +5739,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -5841,11 +5841,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -6040,11 +6040,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -6310,11 +6310,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -6430,11 +6430,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -6532,11 +6532,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -6731,11 +6731,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -7001,11 +7001,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -7121,11 +7121,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -7223,11 +7223,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -7422,11 +7422,11 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -7696,11 +7696,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -7816,11 +7816,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               [
                 {
                   "color": "#FFFFFF",
-                  "fontSize": NaN,
+                  "fontSize": 28,
                 },
                 [
                   {
-                    "lineHeight": NaN,
+                    "lineHeight": 28,
                   },
                   undefined,
                 ],
@@ -7918,11 +7918,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               [
                 {
                   "color": "#FFFFFF",
-                  "fontSize": NaN,
+                  "fontSize": 28,
                 },
                 [
                   {
-                    "lineHeight": NaN,
+                    "lineHeight": 28,
                   },
                   undefined,
                 ],
@@ -8117,11 +8117,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     [
                       {
                         "color": "#1F2329",
-                        "fontSize": NaN,
+                        "fontSize": 22,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 22,
                         },
                         [
                           {
@@ -8336,11 +8336,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -8456,11 +8456,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -8558,11 +8558,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -8757,11 +8757,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -9027,11 +9027,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -9147,11 +9147,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -9249,11 +9249,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -9448,11 +9448,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -9718,11 +9718,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -9838,11 +9838,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -9940,11 +9940,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -10139,11 +10139,11 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -10395,11 +10395,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -10515,11 +10515,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -10617,11 +10617,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -10760,11 +10760,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -11030,11 +11030,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -11150,11 +11150,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -11252,11 +11252,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -11395,11 +11395,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -11610,11 +11610,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -11730,11 +11730,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -11832,11 +11832,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -11975,11 +11975,11 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -12231,11 +12231,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -12351,11 +12351,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -12453,11 +12453,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -12578,11 +12578,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     [
                       {
                         "color": "#1F2329",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         [
                           {
@@ -12912,11 +12912,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -13032,11 +13032,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -13134,11 +13134,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -13259,11 +13259,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     [
                       {
                         "color": "#1F2329",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         [
                           {
@@ -13593,11 +13593,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -13713,11 +13713,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -13815,11 +13815,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -13940,11 +13940,11 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                     [
                       {
                         "color": "#1F2329",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         [
                           {
@@ -14239,11 +14239,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -14359,11 +14359,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -14461,11 +14461,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -14655,11 +14655,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -14906,11 +14906,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -15026,11 +15026,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -15128,11 +15128,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -15322,11 +15322,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -15573,11 +15573,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -15693,11 +15693,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -15795,11 +15795,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -15989,11 +15989,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -16240,11 +16240,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -16360,11 +16360,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -16462,11 +16462,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -16656,11 +16656,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -16907,11 +16907,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -17027,11 +17027,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -17129,11 +17129,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -17323,11 +17323,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -17629,11 +17629,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -17749,11 +17749,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -17851,11 +17851,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -18045,11 +18045,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -18351,11 +18351,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -18471,11 +18471,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -18573,11 +18573,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -18767,11 +18767,11 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -19078,11 +19078,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -19198,11 +19198,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -19300,11 +19300,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -19499,11 +19499,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#158D65",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -19714,11 +19714,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -19834,11 +19834,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -19936,11 +19936,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -20135,11 +20135,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#AC892F",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -20350,11 +20350,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -20470,11 +20470,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -20572,11 +20572,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -20771,11 +20771,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -20986,11 +20986,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -21106,11 +21106,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -21208,11 +21208,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -21407,11 +21407,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -21622,11 +21622,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -21742,11 +21742,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -21844,11 +21844,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -22043,11 +22043,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#158D65",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -22258,11 +22258,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -22378,11 +22378,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -22480,11 +22480,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -22679,11 +22679,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -22894,11 +22894,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -23014,11 +23014,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -23116,11 +23116,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -23315,11 +23315,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#158D65",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -23530,11 +23530,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -23650,11 +23650,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -23752,11 +23752,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -23951,11 +23951,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -24166,11 +24166,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -24286,11 +24286,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -24388,11 +24388,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -24587,11 +24587,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#158D65",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -24802,11 +24802,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -24922,11 +24922,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -25024,11 +25024,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -25223,11 +25223,11 @@ exports[`Story Snapshots: OmnichannelIcon should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -25443,11 +25443,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -25563,11 +25563,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -25665,11 +25665,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -25864,11 +25864,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -26115,11 +26115,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -26235,11 +26235,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -26337,11 +26337,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -26531,11 +26531,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -26819,11 +26819,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -26939,11 +26939,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -27041,11 +27041,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -27240,11 +27240,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -27491,11 +27491,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -27611,11 +27611,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -27713,11 +27713,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -27907,11 +27907,11 @@ exports[`Story Snapshots: Tag should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 16,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 16,
                           },
                           [
                             {
@@ -28199,11 +28199,11 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -28319,11 +28319,11 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
               [
                 {
                   "color": "#FFFFFF",
-                  "fontSize": NaN,
+                  "fontSize": 28,
                 },
                 [
                   {
-                    "lineHeight": NaN,
+                    "lineHeight": 28,
                   },
                   undefined,
                 ],
@@ -28421,11 +28421,11 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
               [
                 {
                   "color": "#FFFFFF",
-                  "fontSize": NaN,
+                  "fontSize": 28,
                 },
                 [
                   {
-                    "lineHeight": NaN,
+                    "lineHeight": 28,
                   },
                   undefined,
                 ],
@@ -28620,11 +28620,11 @@ exports[`Story Snapshots: Touch should match snapshot 1`] = `
                     [
                       {
                         "color": "#1F2329",
-                        "fontSize": NaN,
+                        "fontSize": 22,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 22,
                         },
                         [
                           {
@@ -28839,11 +28839,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -28959,11 +28959,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -29061,11 +29061,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -29260,11 +29260,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -29482,11 +29482,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -29602,11 +29602,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -29704,11 +29704,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -29903,11 +29903,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -30118,11 +30118,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -30238,11 +30238,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -30340,11 +30340,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -30539,11 +30539,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -30754,11 +30754,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -30874,11 +30874,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -30976,11 +30976,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -31175,11 +31175,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -31390,11 +31390,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -31510,11 +31510,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -31612,11 +31612,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -31811,11 +31811,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -32026,11 +32026,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -32146,11 +32146,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -32248,11 +32248,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -32447,11 +32447,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -32662,11 +32662,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -32782,11 +32782,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -32884,11 +32884,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -33083,11 +33083,11 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                       [
                         {
                           "color": "#1F2329",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -33303,11 +33303,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -33423,11 +33423,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -33525,11 +33525,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -33724,11 +33724,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
@@ -33946,11 +33946,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                   [
                     {
                       "color": "#FFFFFF",
-                      "fontSize": NaN,
+                      "fontSize": 28,
                     },
                     [
                       {
-                        "lineHeight": NaN,
+                        "lineHeight": 28,
                       },
                       undefined,
                     ],
@@ -34066,11 +34066,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -34168,11 +34168,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                 [
                   {
                     "color": "#FFFFFF",
-                    "fontSize": NaN,
+                    "fontSize": 28,
                   },
                   [
                     {
-                      "lineHeight": NaN,
+                      "lineHeight": 28,
                     },
                     undefined,
                   ],
@@ -34367,11 +34367,11 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                       [
                         {
                           "color": "#6C727A",
-                          "fontSize": NaN,
+                          "fontSize": 22,
                         },
                         [
                           {
-                            "lineHeight": NaN,
+                            "lineHeight": 22,
                           },
                           [
                             {
