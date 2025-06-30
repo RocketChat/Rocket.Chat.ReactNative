@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 export const DatePicker = ({ element, language, action, context, loading, value, error }: IDatePicker) => {
 	const { theme } = useTheme();
 	const [show, onShow] = useState(false);
-	const initial_date = element?.initial_date;
+	const initial_date = element?.initialDate;
 	const placeholder = element?.placeholder;
 
 	const [currentDate, onChangeDate] = useState(new Date(initial_date || value));

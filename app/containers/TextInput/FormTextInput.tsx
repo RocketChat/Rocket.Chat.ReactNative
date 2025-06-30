@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput as RNTextInput, TextInputProps, TextStyle, View, ViewStyle } from 'react-native';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { BottomSheetTextInput } from '@discord/bottom-sheet';
 import Touchable from 'react-native-platform-touchable';
 
 import i18n from '../../i18n';
@@ -16,6 +16,12 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		marginBottom: 10,
 		gap: 4
+	},
+	errorContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: 4,
+		paddingVertical: 4
 	},
 	label: {
 		fontSize: 16,
@@ -70,6 +76,15 @@ export interface IRCTextInputProps extends TextInputProps {
 	onClearInput?: () => void;
 }
 
+const getInputError = (error: unknown): string => {
+	if (typeof error === 'string') return error;
+	if (typeof error === 'object' && error !== null && 'reason' in error) {
+		const { reason } = error as { reason?: unknown };
+		if (typeof reason === 'string') return reason;
+	}
+	return '';
+};
+
 export const FormTextInput = ({
 	label,
 	required,
@@ -95,21 +110,23 @@ export const FormTextInput = ({
 	const showClearInput = onClearInput && value && value.length > 0;
 	const Input = bottomSheet ? BottomSheetTextInput : TextInput;
 
-	const errorMessage = error ? error.message ?? error.reason : null;
-	const accessibilityLabelRequired = required ? `, ${i18n.t('Required')}` : '';
-	const accessibilityInputValue = (!secureTextEntry && value && isIOS) || showPassword ? `, ${value ?? ''}` : '';
-	const errorAccessibilityLabel = error ? errorMessage : '';
+	const inputError = getInputError(error);
+	const accessibilityLabelText = useMemo(() => {
+		const baseLabel = `${accessibilityLabel || label || ''}`;
+		const formattedAccessibilityLabel = baseLabel ? `${baseLabel}.` : '';
+		const requiredText = required ? ` ${i18n.t('Required')}.` : '';
+		const errorText = inputError ? ` ${i18n.t('Error_prefix', { message: inputError })}.` : '';
+		const valueText = (!secureTextEntry && value && isIOS) || showPassword ? ` ${value || ''}.` : '';
+		const a11yLabel = `${formattedAccessibilityLabel}${requiredText}${errorText}${valueText}`.trim();
+		return a11yLabel;
+	}, [accessibilityLabel, label, required, inputError, secureTextEntry, value, showPassword]);
+
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
-				<View
-					accessible
-					accessibilityLabel={`${
-						accessibilityLabel ?? label
-					}${accessibilityLabelRequired}${accessibilityInputValue}. ${errorAccessibilityLabel}`}
-					style={[styles.inputContainer, containerStyle]}>
+				<View accessible accessibilityLabel={accessibilityLabelText} style={[styles.inputContainer, containerStyle]}>
 					{label ? (
-						<Text style={[styles.label, { color: colors.fontTitlesLabels }, error?.error && { color: colors.fontDanger }]}>
+						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
 							{required && (
 								<Text style={[styles.required, { color: colors.fontSecondaryInfo }]}>{`(${i18n.t('Required')})`}</Text>
@@ -128,11 +145,6 @@ export const FormTextInput = ({
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
-								error?.message
-									? {
-											borderColor: colors.fontDanger
-									  }
-									: undefined,
 								inputStyle
 							]}
 							// @ts-ignore ref error
@@ -200,10 +212,10 @@ export const FormTextInput = ({
 						) : null}
 						{left}
 					</View>
-					{errorMessage ? (
-						<View style={{ flexDirection: 'row', gap: 4, paddingVertical: 4 }}>
-							<CustomIcon color={colors.fontDanger} name='warning' size={16} />
-							<Text style={[{ color: colors.fontDanger }]}>{errorMessage}</Text>
+					{inputError ? (
+						<View style={styles.errorContainer}>
+							<CustomIcon name='warning' size={16} color={colors.fontDanger} />
+							<Text style={{ ...styles.error, color: colors.fontDanger }}>{inputError}</Text>
 						</View>
 					) : null}
 				</View>

@@ -194,7 +194,7 @@ async function searchRoom(
 }
 
 async function navigateToRoom(room: string) {
-	await searchRoom(room);
+	await searchRoom(room, 'replaceText');
 	await element(by.id(`rooms-list-view-item-${room}`)).tap();
 	await checkRoomTitle(room);
 }

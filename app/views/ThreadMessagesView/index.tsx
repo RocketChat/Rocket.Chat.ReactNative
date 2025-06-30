@@ -20,7 +20,7 @@ import { textInputDebounceTime, themes, colors } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { getBadgeColor, makeThreadName } from '../../lib/methods/helpers/room';
@@ -129,13 +129,19 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Filter')}
 						iconName='filter'
 						onPress={this.showFilters}
 						badge={() =>
 							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
 						}
 					/>
-					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
+					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Search')}
+						iconName='search'
+						onPress={this.onSearchPress}
+						testID='thread-messages-view-search-icon'
+					/>
 				</HeaderButton.Container>
 			)
 		};

@@ -1,6 +1,6 @@
 import { Text, useWindowDimensions, ViewProps } from 'react-native';
 import React from 'react';
-import { BottomSheetView, BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { BottomSheetView, BottomSheetFlatList } from '@discord/bottom-sheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import I18n from '../../i18n';

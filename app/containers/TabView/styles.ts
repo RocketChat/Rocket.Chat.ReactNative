@@ -8,10 +8,10 @@ export default StyleSheet.create({
 	tab: {
 		flexDirection: 'column',
 		flex: 1,
-		alignItems: 'center' 
+		alignItems: 'center'
 	},
 	tabLine: {
 		width: '100%',
 		height: 2
 	}
-})
+});

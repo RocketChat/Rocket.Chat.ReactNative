@@ -10,8 +10,14 @@ import { AutocompletePreview } from './AutocompletePreview';
 import { useRoomContext } from '../../../../views/RoomView/context';
 import { useStyle } from './styles';
 
-export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onPress'] }): ReactElement | null => {
-	const { rid } = useRoomContext();
+export const Autocomplete = ({
+	onPress,
+	accessibilityFocusOnInput
+}: {
+	onPress: IAutocompleteItemProps['onPress'];
+	accessibilityFocusOnInput: () => void;
+}): ReactElement | null => {
+	const { rid, updateAutocompleteVisible } = useRoomContext();
 	const trackingViewHeight = useTrackingViewHeight();
 	const keyboardHeight = useKeyboardHeight();
 	const { bottom } = useSafeAreaInsets();
@@ -20,6 +26,8 @@ export const Autocomplete = ({ onPress }: { onPress: IAutocompleteItemProps['onP
 		rid,
 		text,
 		type,
+		updateAutocompleteVisible,
+		accessibilityFocusOnInput,
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();
