@@ -642,7 +642,7 @@
   "sending_email_confirmation": "skickar e-postbekräftelse",
   "Sending_to": "Skickar till",
   "Server": "Server",
-  "Server_version": "Arbetsyta: {{version}}",
+  "Server_version": "Serverversion: {{version}}",
   "Set_username_subtitle": "Användarnamnet används till att låta andra nämna dig i meddelanden",
   "Settings": "Inställningar",
   "Settings_succesfully_changed": "Inställningarna har ändrats.",

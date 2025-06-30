@@ -620,7 +620,7 @@
   "sending_email_confirmation": "отправка подтверждения по электронной почте",
   "Sending_to": "Отправляется",
   "Server": "Сервер",
-  "Server_version": "Рабочая область: {{version}}",
+  "Server_version": "Версия сервера: {{version}}",
   "Set_username_subtitle": "Имя пользователя необходимо для того, чтобы позволить другим упомянуть вас в сообщениях",
   "Settings": "Настройки",
   "Settings_succesfully_changed": "Настройки успешно изменены!",
