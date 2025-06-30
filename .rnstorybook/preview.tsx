@@ -1,13 +1,15 @@
 import React from 'react';
 import type { Preview } from '@storybook/react';
 import { Provider } from 'react-redux';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { themes } from '../app/lib/constants';
 import MessageContext from '../app/containers/message/Context';
 import { selectServerRequest } from '../app/actions/server';
 import { mockedStore as store } from '../app/reducers/mockedStore';
 import { setUser } from '../app/actions/login';
+import { initStore } from '../app/lib/store/auxStore';
+
+initStore(store);
 
 const baseUrl = 'https://open.rocket.chat';
 store.dispatch(selectServerRequest(baseUrl, '7.0.0'));
