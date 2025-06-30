@@ -51,7 +51,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -73,11 +73,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -100,11 +100,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 [
                   {
                     "color": "#EC0D2A",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     {
                       "paddingLeft": 4,
@@ -160,7 +160,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -182,11 +182,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -209,11 +209,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 [
                   {
                     "color": "#EC0D2A",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     {
                       "paddingLeft": 4,
@@ -269,7 +269,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -291,11 +291,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -318,11 +318,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 [
                   {
                     "color": "#EC0D2A",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     {
                       "paddingLeft": 4,
@@ -343,9 +343,12 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
         </View>
         <View
           style={
-            {
-              "paddingLeft": 12,
-            }
+            [
+              {
+                "paddingLeft": 12,
+              },
+              {},
+            ]
           }
         >
           <View
@@ -366,11 +369,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -424,7 +427,7 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -446,11 +449,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -473,11 +476,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 [
                   {
                     "color": "#EC0D2A",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     {
                       "paddingLeft": 4,
@@ -498,9 +501,12 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
         </View>
         <View
           style={
-            {
-              "paddingLeft": 12,
-            }
+            [
+              {
+                "paddingLeft": 12,
+              },
+              {},
+            ]
           }
         >
           <View
@@ -521,11 +527,11 @@ exports[`Story Snapshots: Alert should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -587,7 +593,6 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
     >
       <Text
         accessibilityRole="header"
-        numberOfLines={1}
         style={
           [
             {
@@ -616,7 +621,6 @@ exports[`Story Snapshots: Header should match snapshot 1`] = `
     >
       <Text
         accessibilityRole="header"
-        numberOfLines={1}
         style={
           [
             {
@@ -673,11 +677,11 @@ exports[`Story Snapshots: Icon should match snapshot 1`] = `
           [
             {
               "color": "#2F343D",
-              "fontSize": 48,
+              "fontSize": NaN,
             },
             [
               {
-                "lineHeight": 48,
+                "lineHeight": NaN,
               },
               undefined,
             ],
@@ -798,7 +802,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               },
               undefined,
               {
-                "height": 92,
+                "height": NaN,
               },
             ]
           }
@@ -820,11 +824,11 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               }
             >
               <Text
-                numberOfLines={1}
                 style={
                   [
                     {
                       "backgroundColor": "transparent",
+                      "flex": 1,
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
@@ -932,7 +936,7 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
                 "opacity": 0.3,
               },
               {
-                "height": 92,
+                "height": NaN,
               },
             ]
           }
@@ -954,11 +958,11 @@ exports[`Story Snapshots: Pressable should match snapshot 1`] = `
               }
             >
               <Text
-                numberOfLines={1}
                 style={
                   [
                     {
                       "backgroundColor": "transparent",
+                      "flex": 1,
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
@@ -1075,7 +1079,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1097,11 +1101,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1156,7 +1160,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1178,11 +1182,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1258,7 +1262,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1280,11 +1284,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1339,7 +1343,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1361,11 +1365,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1416,7 +1420,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -1470,7 +1473,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1492,11 +1495,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1551,7 +1554,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1573,11 +1576,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1656,7 +1659,6 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -1710,7 +1712,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1732,11 +1734,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1791,7 +1793,7 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -1813,11 +1815,11 @@ exports[`Story Snapshots: SectionAndInfo should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -1968,7 +1970,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -1990,11 +1992,11 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -2049,7 +2051,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -2071,11 +2073,11 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -2149,7 +2151,7 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -2172,11 +2174,11 @@ exports[`Story Snapshots: TitleAndSubtitle should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -2286,7 +2288,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -2390,7 +2391,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 69,
+                    "height": NaN,
                   },
                 ]
               }
@@ -2420,11 +2421,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -2458,11 +2459,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -2501,9 +2502,12 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -2524,11 +2528,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -2635,7 +2639,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 69,
+                    "height": NaN,
                   },
                 ]
               }
@@ -2665,11 +2669,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -2703,11 +2707,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -2746,9 +2750,12 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -2769,11 +2776,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -2852,7 +2859,6 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -2956,7 +2962,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 69,
+                    "height": NaN,
                   },
                 ]
               }
@@ -2986,11 +2992,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3024,11 +3030,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -3067,9 +3073,12 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -3090,11 +3099,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3201,7 +3210,7 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 69,
+                    "height": NaN,
                   },
                 ]
               }
@@ -3231,11 +3240,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3269,11 +3278,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -3312,9 +3321,12 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -3335,11 +3347,11 @@ exports[`Story Snapshots: WithBiggerFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3460,7 +3472,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -3564,7 +3575,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -3594,11 +3605,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3632,11 +3643,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -3675,9 +3686,12 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -3698,11 +3712,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3809,7 +3823,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -3839,11 +3853,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -3877,11 +3891,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -3920,9 +3934,12 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -3943,11 +3960,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -4026,7 +4043,6 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -4130,7 +4146,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -4160,11 +4176,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -4198,11 +4214,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -4241,9 +4257,12 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -4264,11 +4283,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -4375,7 +4394,7 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -4405,11 +4424,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -4443,11 +4462,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -4486,9 +4505,12 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -4509,11 +4531,11 @@ exports[`Story Snapshots: WithBlackTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -4631,7 +4653,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -4653,11 +4675,11 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -4762,7 +4784,7 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
               },
               undefined,
               {
-                "height": 92,
+                "height": NaN,
               },
             ]
           }
@@ -4784,11 +4806,11 @@ exports[`Story Snapshots: WithCustomColors should match snapshot 1`] = `
               }
             >
               <Text
-                numberOfLines={1}
                 style={
                   [
                     {
                       "backgroundColor": "transparent",
+                      "flex": 1,
                       "flexShrink": 1,
                       "fontFamily": "Inter",
                       "fontSize": 16,
@@ -4880,7 +4902,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -4984,7 +5005,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -5014,11 +5035,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5052,11 +5073,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -5095,9 +5116,12 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -5118,11 +5142,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5229,7 +5253,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -5259,11 +5283,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5297,11 +5321,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -5340,9 +5364,12 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -5363,11 +5390,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5446,7 +5473,6 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -5550,7 +5576,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -5580,11 +5606,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5618,11 +5644,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -5661,9 +5687,12 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -5684,11 +5713,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5795,7 +5824,7 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 92,
+                    "height": NaN,
                   },
                 ]
               }
@@ -5825,11 +5854,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -5863,11 +5892,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -5906,9 +5935,12 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -5929,11 +5961,11 @@ exports[`Story Snapshots: WithDarkTheme should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -6145,7 +6177,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6167,11 +6199,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6232,7 +6264,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6254,11 +6286,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6319,7 +6351,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6341,11 +6373,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6406,7 +6438,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6428,11 +6460,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6493,7 +6525,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6515,11 +6547,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6580,7 +6612,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6602,11 +6634,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6667,7 +6699,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6689,11 +6721,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6754,7 +6786,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6776,11 +6808,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6841,7 +6873,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6863,11 +6895,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -6928,7 +6960,7 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 },
                 undefined,
                 {
-                  "height": 92,
+                  "height": NaN,
                 },
               ]
             }
@@ -6950,11 +6982,11 @@ exports[`Story Snapshots: WithFlatList should match snapshot 1`] = `
                 }
               >
                 <Text
-                  numberOfLines={1}
                   style={
                     [
                       {
                         "backgroundColor": "transparent",
+                        "flex": 1,
                         "flexShrink": 1,
                         "fontFamily": "Inter",
                         "fontSize": 16,
@@ -7068,7 +7100,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -7098,11 +7130,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -7136,11 +7168,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -7195,7 +7227,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -7217,11 +7249,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -7241,9 +7273,12 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </View>
         <View
           style={
-            {
-              "paddingLeft": 12,
-            }
+            [
+              {
+                "paddingLeft": 12,
+              },
+              {},
+            ]
           }
         >
           <View
@@ -7264,11 +7299,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -7322,7 +7357,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -7352,11 +7387,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -7390,11 +7425,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -7433,9 +7468,12 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </View>
         <View
           style={
-            {
-              "paddingLeft": 12,
-            }
+            [
+              {
+                "paddingLeft": 12,
+              },
+              {},
+            ]
           }
         >
           <View
@@ -7456,11 +7494,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -7514,7 +7552,7 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             },
             undefined,
             {
-              "height": 92,
+              "height": NaN,
             },
           ]
         }
@@ -7536,11 +7574,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
             }
           >
             <Text
-              numberOfLines={1}
               style={
                 [
                   {
                     "backgroundColor": "transparent",
+                    "flex": 1,
                     "flexShrink": 1,
                     "fontFamily": "Inter",
                     "fontSize": 16,
@@ -7560,9 +7598,12 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
         </View>
         <View
           style={
-            {
-              "paddingLeft": 12,
-            }
+            [
+              {
+                "paddingLeft": 12,
+              },
+              {},
+            ]
           }
         >
           <View
@@ -7583,11 +7624,11 @@ exports[`Story Snapshots: WithIcon should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": NaN,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": NaN,
                     },
                     undefined,
                   ],
@@ -7677,7 +7718,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -7781,7 +7821,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 36.800000000000004,
+                    "height": NaN,
                   },
                 ]
               }
@@ -7811,11 +7851,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -7849,11 +7889,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -7892,9 +7932,12 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -7915,11 +7958,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -8026,7 +8069,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 36.800000000000004,
+                    "height": NaN,
                   },
                 ]
               }
@@ -8056,11 +8099,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -8094,11 +8137,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -8137,9 +8180,12 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -8160,11 +8206,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -8243,7 +8289,6 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
         >
           <Text
             accessibilityRole="header"
-            numberOfLines={1}
             style={
               [
                 {
@@ -8347,7 +8392,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   },
                   undefined,
                   {
-                    "height": 36.800000000000004,
+                    "height": NaN,
                   },
                 ]
               }
@@ -8377,11 +8422,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -8415,11 +8460,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -8458,9 +8503,12 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -8481,11 +8529,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -8592,7 +8640,7 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                     "opacity": 0.3,
                   },
                   {
-                    "height": 36.800000000000004,
+                    "height": NaN,
                   },
                 ]
               }
@@ -8622,11 +8670,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],
@@ -8660,11 +8708,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                   }
                 >
                   <Text
-                    numberOfLines={1}
                     style={
                       [
                         {
                           "backgroundColor": "transparent",
+                          "flex": 1,
                           "flexShrink": 1,
                           "fontFamily": "Inter",
                           "fontSize": 16,
@@ -8703,9 +8751,12 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
               </View>
               <View
                 style={
-                  {
-                    "paddingLeft": 12,
-                  }
+                  [
+                    {
+                      "paddingLeft": 12,
+                    },
+                    {},
+                  ]
                 }
               >
                 <View
@@ -8726,11 +8777,11 @@ exports[`Story Snapshots: WithSmallFont should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": NaN,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": NaN,
                           },
                           undefined,
                         ],

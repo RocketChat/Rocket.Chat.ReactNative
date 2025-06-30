@@ -156,11 +156,11 @@ exports[`Story Snapshots: ChipText should match snapshot 1`] = `
           [
             {
               "color": "#2F343D",
-              "fontSize": 32,
+              "fontSize": NaN,
             },
             [
               {
-                "lineHeight": 32,
+                "lineHeight": NaN,
               },
               undefined,
             ],
@@ -336,11 +336,11 @@ exports[`Story Snapshots: ChipWithShortText should match snapshot 1`] = `
           [
             {
               "color": "#2F343D",
-              "fontSize": 32,
+              "fontSize": NaN,
             },
             [
               {
-                "lineHeight": 32,
+                "lineHeight": NaN,
               },
               undefined,
             ],
@@ -459,11 +459,11 @@ exports[`Story Snapshots: ChipWithoutAvatar should match snapshot 1`] = `
           [
             {
               "color": "#2F343D",
-              "fontSize": 32,
+              "fontSize": NaN,
             },
             [
               {
-                "lineHeight": 32,
+                "lineHeight": NaN,
               },
               undefined,
             ],
