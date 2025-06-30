@@ -7,6 +7,7 @@ import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import { useTheme } from '../theme';
 import { TThreadModel } from '../definitions/IThread';
+import i18n from '../i18n';
 
 const styles = StyleSheet.create({
 	container: {
@@ -86,7 +87,9 @@ const ThreadDetails = ({ item, user, badgeColor, toggleFollowThread, style }: IT
 			</View>
 			<View style={styles.badgeContainer}>
 				{badgeColor ? <View style={[styles.badge, { backgroundColor: badgeColor }]} /> : null}
-				<Touchable onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
+				<Touchable
+					accessibilityLabel={i18n.t(isFollowing ? 'Unfollow_thread' : 'Follow_thread')}
+					onPress={() => toggleFollowThread?.(isFollowing, item.id)}>
 					<CustomIcon size={24} name={isFollowing ? 'notification' : 'notification-disabled'} />
 				</Touchable>
 			</View>

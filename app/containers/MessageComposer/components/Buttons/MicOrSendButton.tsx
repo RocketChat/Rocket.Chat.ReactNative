@@ -66,7 +66,7 @@ export const MicOrSendButton = (): React.ReactElement | null => {
 			<BaseButton
 				onPress={startRecording}
 				testID='message-composer-send-audio'
-				accessibilityLabel='Send_audio_message'
+				accessibilityLabel='Record_audio_message'
 				icon='microphone'
 			/>
 		);
