@@ -67,7 +67,7 @@ interface IShareViewProps {
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	private messageComposerRef: React.RefObject<IMessageComposerRef>;
+	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
