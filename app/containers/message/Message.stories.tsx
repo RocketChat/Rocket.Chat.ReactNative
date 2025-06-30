@@ -22,6 +22,15 @@ const longNameAuthor = {
 	_id: 'userid',
 	username: 'Long name user looooong name user'
 };
+jest.mock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
+	useResponsiveLayout: () => ({
+		fontScale: 1,
+		fontScaleLimited: 1,
+		isLargeFontScale: false,
+		rowHeight: 75,
+		rowHeightCondensed: 60
+	})
+}));
 
 const baseUrl = 'https://open.rocket.chat';
 const date = new Date(2017, 10, 10, 10);
