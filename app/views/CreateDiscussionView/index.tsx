@@ -68,7 +68,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const name = watch('name');
 
 	const prevLoading = useRef<boolean>(loading);
-	const isValid = channel && channel.rid && channel.rid.trim().length && name?.trim().length;
+	const isValid = channel?.rid?.trim?.().length && name?.trim().length;
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
 	const selectChannel = ({ value }: { value: ISearchLocal }) => {
