@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
-import { sendLoadingEvent } from '../../containers/Loading';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
@@ -13,7 +12,6 @@ import { getUserSelector } from '../../selectors/login';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
 import SafeAreaView from '../../containers/SafeAreaView';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import styles from './styles';
 import SelectUsers from './SelectUsers';
@@ -21,12 +19,13 @@ import SelectChannel from './SelectChannel';
 import { ICreateChannelViewProps, IResult, IError } from './interfaces';
 import { ISearchLocal, ISubscription } from '../../definitions';
 import { E2E_ROOM_TYPES } from '../../lib/constants';
-import { getRoomTitle, showErrorAlert } from '../../lib/methods/helpers';
+import { getRoomTitle } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
 import Button from '../../containers/Button';
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector, usePrevious } from '../../lib/hooks';
 import { useTheme } from '../../theme';
+import handleLoadingChange from './utils/handleLoadingChange';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const { colors } = useTheme();
@@ -67,7 +66,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	});
 	const name = watch('name');
 
-	const prevLoading = useRef<boolean>(loading);
+	const prevLoading = usePrevious(loading);
 	const isValid = channel?.rid?.trim?.().length && name?.trim().length;
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -106,43 +105,20 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		dispatch(createDiscussionRequest(params));
 	};
 
-	const handleLoadingChange = () => {
-		sendLoadingEvent({ visible: loading });
-		if (!loading) {
-			if (failure) {
-				const msg = error.reason || I18n.t('There_was_an_error_while_action', { action: I18n.t('creating_discussion') });
-				showErrorAlert(msg);
-			} else {
-				const { rid, t, prid } = result;
-				const item = {
-					rid,
-					name: getRoomTitle(result),
-					t,
-					prid
-				};
-				goRoom({ item, isMasterDetail, popToRoot: true });
-			}
+	useEffect(() => {
+		if (loading === prevLoading) {
+			return;
 		}
-	};
 
-	const setHeader = () => {
+		handleLoadingChange({ loading, failure, isMasterDetail, error, result });
+	}, [loading]);
+
+	useLayoutEffect(() => {
 		const showCloseModal = route.params?.showCloseModal;
 		navigation.setOptions({
 			title: I18n.t('Create_Discussion'),
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
 		});
-	};
-
-	useEffect(() => {
-		if (loading === prevLoading.current) {
-			return;
-		}
-		handleLoadingChange();
-		prevLoading.current = loading;
-	}, [loading]);
-
-	useEffect(() => {
-		setHeader();
 	}, []);
 
 	return (
