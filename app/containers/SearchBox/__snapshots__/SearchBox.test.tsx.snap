@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Basic should match snapshot 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+    }
+  }
+  testID="searchbox"
+>
+  <View>
+    <View>
+      <View
+        accessibilityLabel=""
+        accessible={true}
+        style={
+          [
+            {
+              "gap": 4,
+              "marginBottom": 10,
+            },
+            {
+              "margin": 16,
+              "marginBottom": 16,
+            },
+          ]
+        }
+      >
+        <View
+          accessible={true}
+          style={
+            {
+              "justifyContent": "center",
+              "position": "relative",
+            }
+          }
+        >
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            blurOnSubmit={true}
+            keyboardAppearance="light"
+            onChangeText={[Function]}
+            placeholder="Search"
+            placeholderTextColor="#9EA2A8"
+            returnKeyType="search"
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                },
+                [
+                  {
+                    "backgroundColor": "transparent",
+                    "borderRadius": 4,
+                    "borderWidth": 1,
+                    "fontFamily": "Inter",
+                    "fontSize": 16,
+                    "fontWeight": "400",
+                    "paddingHorizontal": 16,
+                    "paddingVertical": 14,
+                    "textAlign": "left",
+                  },
+                  undefined,
+                  {
+                    "paddingRight": 45,
+                  },
+                  {
+                    "backgroundColor": "#FFFFFF",
+                    "borderColor": "#9EA2A8",
+                    "color": "#1F2329",
+                  },
+                  {},
+                  undefined,
+                ],
+                {
+                  "textAlign": "auto",
+                },
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value=""
+          />
+          <Text
+            accessible={false}
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#2F343D",
+                  "fontSize": 40,
+                },
+                [
+                  {
+                    "lineHeight": 40,
+                  },
+                  [
+                    {
+                      "position": "absolute",
+                    },
+                    {
+                      "right": 12,
+                    },
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>
+</View>
+`;
