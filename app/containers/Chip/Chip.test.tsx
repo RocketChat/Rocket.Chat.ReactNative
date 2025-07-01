@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import Chip, { IChip } from '.';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 import { mockedStore as store } from '../../reducers/mockedStore';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import * as stories from './Chip.stories';
 
 const onPressMock = jest.fn((item: any) => item);
 
@@ -56,3 +58,5 @@ describe('Chips', () => {
 		expect(onPressMock).toHaveReturnedWith(testChip.item);
 	});
 });
+
+generateSnapshots(stories);
