@@ -47,8 +47,6 @@ const validationSchema = yup.object().shape({
 		.required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
 });
 
-// Passwords do not match
-
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
 const RegisterView = ({ navigation, route }: IProps) => {
