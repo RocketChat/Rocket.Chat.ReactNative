@@ -44,11 +44,11 @@ describe('FormTextInput', () => {
 
 	test('should render the component with error', async () => {
 		const error = {
-			message: 'An error occurred'
+			reason: 'An error occurred'
 		};
 
 		const { findByText } = render(<FormTextInput testID={FormTextInputID} error={error} />);
-		const component = await findByText(error.message);
+		const component = await findByText(error.reason);
 		expect(component).toBeTruthy();
 	});
 });
