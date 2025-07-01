@@ -104,6 +104,17 @@ export const SectionAndInfo = () => (
 	</SafeAreaView>
 );
 
+export const ListItemWithRightContainer = () => (
+	<List.Item
+		title='Chats'
+		subtitle='All'
+		onPress={() => alert('Hi')}
+		left={() => <List.Icon name='emoji' />}
+		right={() => <List.Icon name='emoji' />}
+		rightContainerStyle={{ borderWidth: 2, borderRadius: 4 }}
+	/>
+);
+
 export const WithIcon = () => (
 	<List.Container>
 		<List.Separator />
