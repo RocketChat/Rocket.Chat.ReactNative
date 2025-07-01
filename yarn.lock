@@ -8318,10 +8318,10 @@ expo-haptics@14.1.3:
   resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-14.1.3.tgz#d0d195b7a96d063f1f4d152a191596d2e03a24d9"
   integrity sha512-463Frhn8Lf3qG7I05MjPWRTo0EmcE7GXVzXzv+Mg/pPMo7QQCzzYheSYbrpFzJLfvDIKVqwnHZMauoVMD9/X0A==
 
-expo-image@2.1.6:
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-2.1.6.tgz#f046fa631768e37326cc14c49de9113ceffa9e8b"
-  integrity sha512-AFQxeAI1iTXFZ4dMxUB+SOACGMQxEk+t7PvT3j4mrvffRFoOLfHZ4uJc8SAdDFJak7ByqKhCIPIEhL+1Deq4Sg==
+expo-image@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-2.3.1.tgz#d317a2ff85a462e852d3fbc5aec8847dce45676b"
+  integrity sha512-2QydFyH7fjLeeZvSnEiDCLVJxt+xDMFxPpvx0Xv539UbzJGzV17e5UGMZzQJV1Qc3UdvU6qPXCiuOPt8pGtwlA==
 
 expo-keep-awake@14.1.3:
   version "14.1.3"
