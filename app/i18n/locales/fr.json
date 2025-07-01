@@ -468,6 +468,7 @@
   "Password": "Mot de passe",
   "Password_Tip_Error": "Condition non remplie.",
   "Password_Tip_Success": "Condition remplie.",
+  "Passwords_do_not_match": "Les mots de passe ne correspondent pas.",
   "Pause": "Pause",
   "Permalink_copied_to_clipboard": "Lien permanent copié dans le presse-papiers !",
   "Phone": "Téléphone",

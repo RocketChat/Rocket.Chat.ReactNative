@@ -373,6 +373,7 @@
   "Password": "كلمة المرور",
   "Password_Tip_Error": "الشرط غير محقق.",
   "Password_Tip_Success": "تم استيفاء الشرط.",
+  "Passwords_do_not_match": "كلمات المرور غير متطابقة",
   "Pause": "توقف مؤقت",
   "Permalink_copied_to_clipboard": "تم نسخ الرابط الثابت إلى الحافظة!",
   "Phone": "الهاتف",

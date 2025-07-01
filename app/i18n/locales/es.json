@@ -245,6 +245,7 @@
   "Password": "Contraseña",
   "Password_Tip_Error": "Condición no cumplida.",
   "Password_Tip_Success": "Condición cumplida.",
+  "Passwords_do_not_match": "Las contraseñas no coinciden.",
   "Pause": "Pausa",
   "Permalink_copied_to_clipboard": "¡Enlace permanente copiado al portapapeles!",
   "Pin": "Fijar",

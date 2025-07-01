@@ -36,8 +36,18 @@ const validationSchema = yup.object().shape({
 		.email(I18n.t('Email_must_be_valid'))
 		.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
 	username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
-	password: yup.string().min(1).required()
+	password: yup
+		.string()
+		.min(1)
+		.oneOf([yup.ref('confirmPassword'), null], I18n.t('Passwords_do_not_match'))
+		.required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
+	confirmPassword: yup
+		.string()
+		.oneOf([yup.ref('password'), null], I18n.t('Passwords_do_not_match'))
+		.required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
 });
+
+// Passwords do not match
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 

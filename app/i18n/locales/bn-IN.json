@@ -542,6 +542,7 @@
   "Password": "পাসওয়ার্ড",
   "Password_Tip_Error": "শর্ত পূরণ হয়নি।",
   "Password_Tip_Success": "শর্ত পূরণ হয়েছে।",
+  "Passwords_do_not_match": "পাসওয়ার্ডগুলি মেলে না।",
   "Pause": "থামা",
   "Permalink_copied_to_clipboard": "পারমালিঙ্ক ক্লিপবোর্ডে কপি করা হয়েছে!",
   "Person_or_channel": "ব্যক্তি বা চ্যানেল",

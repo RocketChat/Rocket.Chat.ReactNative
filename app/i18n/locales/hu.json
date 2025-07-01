@@ -543,6 +543,7 @@
   "Password": "Jelszó",
   "Password_Tip_Error": "Feltétel nem teljesült.",
   "Password_Tip_Success": "Feltétel teljesítve.",
+  "Passwords_do_not_match": "A jelszavak nem egyeznek.",
   "Pause": "Szünet",
   "Permalink_copied_to_clipboard": "Permalink a vágólapra másolva!",
   "Person_or_channel": "Személy vagy csatorna",

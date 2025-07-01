@@ -507,6 +507,7 @@
   "Password": "Lösenord",
   "Password_Tip_Error": "Villkor ej uppfyllt.",
   "Password_Tip_Success": "Villkor uppfyllt.",
+  "Passwords_do_not_match": "Lösenorden stämmer inte överens",
   "Pause": "Paus",
   "Permalink_copied_to_clipboard": "Permalänken har kopierats till urklipp.",
   "Phone": "Telefonnummer",

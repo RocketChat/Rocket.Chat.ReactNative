@@ -332,6 +332,7 @@
   "Password": "パスワード",
   "Password_Tip_Error": "条件が満たされていません。",
   "Password_Tip_Success": "条件が満たされました。",
+  "Passwords_do_not_match": "パスワードが一致しません。",
   "Pause": "一時停止",
   "Permalink_copied_to_clipboard": "リンクをクリップボードにコピーしました！",
   "Pin": "ピン留め",

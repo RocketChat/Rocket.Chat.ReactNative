@@ -233,6 +233,7 @@
   "OS": "OS",
   "Owner": "Eier",
   "Password": "Passord",
+  "Passwords_do_not_match": "Passorda stemmer ikkje overeins",
   "Pause": "Pause",
   "Phone": "Telefon",
   "Pin": "Pin",
