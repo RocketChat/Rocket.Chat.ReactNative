@@ -1,42 +1,29 @@
 diff --git a/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt b/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt
-index 1995904..b2ef397 100644
+index 071907c..c4bdbc8 100644
 --- a/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt
 +++ b/node_modules/expo-image/android/src/main/java/expo/modules/image/okhttp/ExpoImageOkHttpClientGlideModule.kt
-@@ -24,17 +24,14 @@ class GlideUrlWithCustomCacheKey(
+@@ -24,6 +24,15 @@ class GlideUrlWithCustomCacheKey(
    headers: Headers?,
    private val cacheKey: String
  ) : GlideUrl(uri, headers) {
--
--  companion object {
--    @JvmStatic
--    var client: OkHttpClient? = null
--
--    @JvmStatic
--    fun setOkHttpClient(okHttpClient: OkHttpClient) {
--      client = okHttpClient
-+    companion object {
-+      @JvmStatic
-+      var client: OkHttpClient? = null
-+      @JvmStatic
-+      fun setOkHttpClient(okHttpClient: OkHttpClient) {
-+        client = okHttpClient
-+      }
-     }
--  }
--
++  companion object {
++    @JvmStatic
++    var client: OkHttpClient? = null
++
++    @JvmStatic
++    fun setOkHttpClient(okHttpClient: OkHttpClient) {
++      client = okHttpClient
++    }
++  }
    /**
     * Cached hash code value
     */
-diff --git a/node_modules/expo-image/ios/ImageModule.swift b/node_modules/expo-image/ios/ImageModule.swift
-index 361c806..efeea75 100644
---- a/node_modules/expo-image/ios/ImageModule.swift
-+++ b/node_modules/expo-image/ios/ImageModule.swift
-@@ -107,7 +107,7 @@ public final class ImageModule: Module {
-         view.autoplay = autoplay ?? true
-       }
- 
--      Prop("useAppleWebpCodec", true) { (view, useAppleWebpCodec: Bool) in
-+      Prop("useAppleWebpCodec") { (view, useAppleWebpCodec: Bool) in
-         view.useAppleWebpCodec = useAppleWebpCodec
-       }
- 
+@@ -71,7 +80,7 @@ data class GlideUrlWrapper(val glideUrl: GlideUrl) {
+ @GlideModule
+ class ExpoImageOkHttpClientGlideModule : LibraryGlideModule() {
+   override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+-    val client = OkHttpClient()
++    val client = GlideUrlWithCustomCacheKey.client ?: OkHttpClient()
+     // We don't use the `GlideUrl` directly but we want to replace the default okhttp loader anyway
+     // to make sure that the app will use only one client.
+     registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(client))
