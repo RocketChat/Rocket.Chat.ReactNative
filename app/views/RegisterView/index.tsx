@@ -180,73 +180,54 @@ const RegisterView = ({ navigation, route }: IProps) => {
 
 				<View style={styles.inputs}>
 					<ControlledFormTextInput
+						required
+						control={control}
 						name='name'
-						control={control}
-						rules={{
-							required: true
+						label={I18n.t('Full_name')}
+						testID='register-view-name'
+						textContentType='name'
+						autoComplete='name'
+						returnKeyType='next'
+						error={errors.name?.message}
+						containerStyle={styles.inputContainer}
+						onSubmitEditing={() => {
+							setFocus('username');
 						}}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-name'
-								textContentType='name'
-								autoComplete='name'
-								returnKeyType='next'
-								required
-								label={I18n.t('Full_name')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => setFocus('username')}
-								containerStyle={styles.inputContainer}
-								error={errors.name}
-							/>
-						)}
 					/>
+
 					<ControlledFormTextInput
+						required
+						control={control}
 						name='username'
-						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-username'
-								textContentType='username'
-								autoComplete='username'
-								returnKeyType='next'
-								required
-								label={I18n.t('Username')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									setFocus('email');
-								}}
-								containerStyle={styles.inputContainer}
-								error={errors.username}
-							/>
-						)}
+						label={I18n.t('Username')}
+						testID='register-view-username'
+						textContentType='username'
+						autoComplete='username'
+						returnKeyType='next'
+						error={errors.username?.message}
+						containerStyle={styles.inputContainer}
+						onSubmitEditing={() => {
+							setFocus('email');
+						}}
 					/>
+
 					<ControlledFormTextInput
-						name='email'
+						required
 						control={control}
-						render={({ field: { onChange, value, ref } }) => (
-							<FormTextInput
-								inputRef={ref}
-								testID='register-view-email'
-								keyboardType='email-address'
-								textContentType='emailAddress'
-								autoComplete='email'
-								returnKeyType='next'
-								required
-								label={I18n.t('Email')}
-								value={value}
-								onChangeText={onChange}
-								onSubmitEditing={() => {
-									setFocus('password');
-								}}
-								containerStyle={styles.inputContainer}
-								error={errors.email}
-							/>
-						)}
+						name='email'
+						label={I18n.t('Email')}
+						testID='register-view-email'
+						keyboardType='email-address'
+						textContentType='emailAddress'
+						autoComplete='email'
+						returnKeyType='next'
+						error={errors.email?.message}
+						containerStyle={styles.inputContainer}
+						onSubmitEditing={() => {
+							setFocus('password');
+						}}
 					/>
+
 					<ControlledFormTextInput
 						name='password'
 						control={control}
