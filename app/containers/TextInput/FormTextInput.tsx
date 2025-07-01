@@ -13,6 +13,11 @@ import { isIOS } from '../../lib/methods/helpers';
 import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const styles = StyleSheet.create({
+	error: {
+		...sharedStyles.textRegular,
+		lineHeight: 20,
+		fontSize: 14
+	},
 	inputContainer: {
 		marginBottom: 10,
 		gap: 4
@@ -145,6 +150,11 @@ export const FormTextInput = ({
 									borderColor: colors.strokeMedium,
 									color: colors.fontTitlesLabels
 								},
+								inputError
+									? {
+											borderColor: colors.buttonBackgroundDangerDefault
+									  }
+									: {},
 								inputStyle
 							]}
 							// @ts-ignore ref error
