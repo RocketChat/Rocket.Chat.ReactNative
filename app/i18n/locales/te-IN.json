@@ -681,7 +681,7 @@
   "sending_email_confirmation": "ఇమెయిల్ ధృవీకరణను పంపబడుతోంది",
   "Sending_to": "పంపిస్తోంది",
   "Server": "పనితనం",
-  "Server_version": "పనితనం వెర్షన్: {{version}}",
+  "Server_version": "పనితనం: {{version}}",
   "Set_username_subtitle": "ఇతరులకు మీరు సందేశాల్లో మీరుని స్మరించడానికి వాడుకరి పేరు ఉపయోగిస్తారు",
   "Settings": "సెట్టింగులు",
   "Settings_succesfully_changed": "సెట్టింగులను విజయవంతంగా మార్చారు!",

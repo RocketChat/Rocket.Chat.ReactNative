@@ -585,7 +585,7 @@
   "sending_email_confirmation": "e-mailbevestiging aan het verzenden",
   "Sending_to": "Verzenden naar",
   "Server": "Server",
-  "Server_version": "Server versie: {{version}}",
+  "Server_version": "Server: {{version}}",
   "Set_username_subtitle": "De gebruikersnaam wordt gebruikt om anderen toe te staan jou in berichten te vermelden",
   "Settings": "Instellingen",
   "Settings_succesfully_changed": "Instellingen succesvol gewijzigd!",

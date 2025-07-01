@@ -315,7 +315,7 @@
   "Send_message": "Enviar mensaje",
   "Send_to": "Enviar a..",
   "Server": "Servidor",
-  "Server_version": "Versión servidor: {{version}}",
+  "Server_version": "Servidor: {{version}}",
   "Set_username_subtitle": "El nombre de usuario se utiliza para permitir que otros le mencionen en los mensajes",
   "Settings": "Configuración",
   "Settings_succesfully_changed": "¡Configuración cambiada correctamente!",

@@ -730,7 +730,7 @@
   "sending_email_confirmation": "zaslání potvrzení e-mailu",
   "Sending_to": "Odesílání do",
   "Server": "Pracovní prostor",
-  "Server_version": "Verze pracovního prostoru: {{version}}",
+  "Server_version": "Pracovní prostor: {{version}}",
   "Set_username_subtitle": "Uživatelské jméno se používá k tomu, aby se o vás ostatní mohli zmínit ve zprávách",
   "Settings": "Nastavení",
   "Settings_succesfully_changed": "Nastavení úspěšně změněno!",

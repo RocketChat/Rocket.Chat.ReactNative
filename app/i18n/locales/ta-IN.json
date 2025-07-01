@@ -682,7 +682,7 @@
   "sending_email_confirmation": "மின்னஞ்சல் உறுதிப்படுத்துகின்றன",
   "Sending_to": "அனுப்பினது",
   "Server": "பணி இடம்",
-  "Server_version": "பணி இடத்தின் பதிப்பு: {{version}}",
+  "Server_version": "பணி இடம்: {{version}}",
   "Set_username_subtitle": "பயனர்கள் உங்களை செய்திகளில் குறிப்பிடுவதற்கு உள்ளனர்",
   "Settings": "அமைப்புகள்",
   "Settings_succesfully_changed": "அமைப்புகள் வெற்றிகரமாக மாற்றப்பட்டன!",

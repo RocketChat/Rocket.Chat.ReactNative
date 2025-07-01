@@ -489,7 +489,7 @@
   "Send_to": "發送到",
   "Sending_to": "正發送到",
   "Server": "伺服器",
-  "Server_version": "伺服器版本: {{version}}",
+  "Server_version": "伺服器: {{version}}",
   "Set_username_subtitle": "使用者名稱是用來讓其他使用者在訊息中提到您",
   "Settings": "設定",
   "Settings_succesfully_changed": "設定更改成功！",
