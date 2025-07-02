@@ -27,7 +27,7 @@ const ActionSheet = React.memo(
 	forwardRef(({ children }: { children: React.ReactElement }, ref) => {
 		const { colors } = useTheme();
 		const { height: windowHeight } = useWindowDimensions();
-		const { bottom } = useSafeAreaInsets();
+		const { bottom, right, left } = useSafeAreaInsets();
 		const { fontScale } = useWindowDimensions();
 		const itemHeight = 48 * fontScale;
 		const bottomSheetRef = useRef<BottomSheet>(null);
@@ -140,7 +140,7 @@ const ActionSheet = React.memo(
 			[]
 		);
 
-		const bottomSheet = isTablet ? styles.bottomSheet : {};
+		const bottomSheet = isTablet ? styles.bottomSheet : { marginRight: right, marginLeft: left };
 
 		// Must need this prop to avoid keyboard dismiss
 		// when is android tablet and the input text is focused
