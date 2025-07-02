@@ -122,10 +122,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	}, [navigation, route]);
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}>
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<StatusBar />
 			<SafeAreaView testID='create-discussion-view'>
 				<ScrollView {...scrollPersistTaps}>
