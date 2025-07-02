@@ -15,7 +15,7 @@ on:
 
 jobs:
   android-build:
-    runs-on: ubuntu-latest-large
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
