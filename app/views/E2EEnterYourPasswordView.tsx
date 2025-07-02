@@ -1,5 +1,5 @@
 import { useIsFocused, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, AccessibilityInfo } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,7 @@ import SafeAreaView from '../containers/SafeAreaView';
 import StatusBar from '../containers/StatusBar';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
-import { useAppSelector, usePrevious } from '../lib/hooks';
+import { useAppSelector } from '../lib/hooks';
 import { events, logEvent } from '../lib/methods/helpers/log';
 import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
 import { useTheme } from '../theme';
@@ -35,7 +35,7 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 	const isFocused = useIsFocused();
 	const dispatch = useDispatch();
 	const { enabled: encryptionEnabled, failure: encryptionFailure } = useAppSelector(state => state.encryption);
-	const prevEncryptionFailure = usePrevious(encryptionFailure);
+	const prevEncryptionFailure = useRef<boolean>(encryptionFailure);
 	const {
 		control,
 		setError,
@@ -79,10 +79,11 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 	}, [navigation]);
 
 	useEffect(() => {
-		if (encryptionFailure !== prevEncryptionFailure && encryptionFailure && password) {
+		if (encryptionFailure !== prevEncryptionFailure.current && encryptionFailure && password) {
 			setError('password', { message: I18n.t('Error_incorrect_password'), type: 'validate' });
 			showErrorAlert(I18n.t('Encryption_error_desc'), I18n.t('Encryption_error_title'));
 			AccessibilityInfo.announceForAccessibility(I18n.t('Invalid_URL'));
+			prevEncryptionFailure.current = encryptionFailure;
 		}
 	}, [encryptionFailure, prevEncryptionFailure]);
 
@@ -119,7 +120,6 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 					<Button
 						onPress={handleSubmit(submit)}
 						title={I18n.t('Confirm')}
-						disabled={!control}
 						testID='e2e-enter-your-password-view-confirm'
 						style={{ marginTop: 36 }}
 					/>
