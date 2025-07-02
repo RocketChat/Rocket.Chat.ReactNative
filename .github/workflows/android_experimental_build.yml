@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Repository 
         uses: actions/checkout@v4
 
       - name: Log the secrets
@@ -94,8 +94,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            app/build
-          key: build-output-${{ hashFiles('app/src/**', '**/*.gradle*') }}
+            android/app/build
+          key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}
           restore-keys: |
             build-output-
 
