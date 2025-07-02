@@ -119,7 +119,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			title: I18n.t('Create_Discussion'),
 			headerLeft: showCloseModal ? () => <HeaderButton.CloseModal navigation={navigation} /> : undefined
 		});
-	}, []);
+	}, [navigation, route]);
 
 	return (
 		<KeyboardView
