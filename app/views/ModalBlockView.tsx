@@ -3,11 +3,9 @@ import { StyleSheet, View } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { connect } from 'react-redux';
-import { KeyboardAwareScrollView } from '@codler/react-native-keyboard-aware-scroll-view';
 
-import { TSupportedThemes, withTheme } from '../theme';
+import { TSupportedThemes } from '../theme';
 import EventEmitter from '../lib/methods/helpers/events';
-import { themes } from '../lib/constants';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { modalBlockWithContext } from '../containers/UIKit/MessageBlock';
 import ActivityIndicator from '../containers/ActivityIndicator';
@@ -17,14 +15,11 @@ import { MasterDetailInsideStackParamList } from '../stacks/MasterDetailStack/ty
 import { ContainerTypes, ModalActions } from '../containers/UIKit/interfaces';
 import { triggerBlockAction, triggerCancel, triggerSubmitView } from '../lib/methods';
 import { IApplicationState } from '../definitions';
+import KeyboardView from '../containers/KeyboardView';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		paddingHorizontal: 16
-	},
 	content: {
-		paddingVertical: 16
+		padding: 16
 	}
 });
 
@@ -90,6 +85,13 @@ const mapElementToState = ({ element, blockId, elements = [] }: { element: any; 
 };
 const reduceState = (obj: any, el: any) =>
 	Array.isArray(el[0]) ? { ...obj, ...Object.fromEntries(el) } : { ...obj, [el[0]]: el[1] };
+
+const LoadingIndicator = ({ loading }: { loading: boolean }) => {
+	if (loading) {
+		return <ActivityIndicator absolute size='large' />;
+	}
+	return null;
+};
 
 class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockViewState> {
 	private submitting: boolean;
@@ -249,15 +251,13 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 
 	render() {
 		const { data, loading, errors } = this.state;
-		const { theme, language } = this.props;
+		const { language } = this.props;
 		const { values } = this;
 		const { view } = data;
 		const { blocks } = view;
 
 		return (
-			<KeyboardAwareScrollView
-				style={[styles.container, { backgroundColor: themes[theme].surfaceHover }]}
-				keyboardShouldPersistTaps='always'>
+			<KeyboardView>
 				<View style={styles.content}>
 					{React.createElement(
 						modalBlockWithContext({
@@ -273,8 +273,8 @@ class ModalBlockView extends React.Component<IModalBlockViewProps, IModalBlockVi
 						}
 					)}
 				</View>
-				{loading ? <ActivityIndicator absolute size='large' /> : null}
-			</KeyboardAwareScrollView>
+				<LoadingIndicator loading={loading} />
+			</KeyboardView>
 		);
 	}
 }
@@ -283,4 +283,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	language: state.login.user.language as string
 });
 
-export default connect(mapStateToProps)(withTheme(ModalBlockView));
+export default connect(mapStateToProps)(ModalBlockView);

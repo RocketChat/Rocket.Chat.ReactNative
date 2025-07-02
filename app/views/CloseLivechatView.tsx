@@ -76,10 +76,7 @@ const CloseLivechatView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={sharedStyles.container}
-			keyboardVerticalOffset={128}>
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} style={styles.container}>
 				<SafeAreaView>
 					<FormTextInput

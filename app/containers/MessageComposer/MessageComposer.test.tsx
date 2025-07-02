@@ -12,6 +12,8 @@ import { IPermissionsState } from '../../reducers/permissions';
 import { IMessage } from '../../definitions';
 import { colors } from '../../lib/constants';
 import { IRoomContext, RoomContext } from '../../views/RoomView/context';
+import * as EmojiKeyboardHook from './hooks/useEmojiKeyboard';
+import { initStore } from '../../lib/store/auxStore';
 
 jest.useFakeTimers();
 
@@ -37,6 +39,7 @@ const initialStoreState = () => {
 	const permissions: IPermissionsState = { 'mobile-upload-file': ['user'] };
 	mockedStore.dispatch(setPermissions(permissions));
 	mockedStore.dispatch(addSettings({ Message_AudioRecorderEnabled: true }));
+	initStore(mockedStore);
 };
 initialStoreState();
 
@@ -60,6 +63,72 @@ const Render = ({ context }: { context?: Partial<IRoomContext> }) => (
 	</Provider>
 );
 
+const sharedValue = {
+	value: false,
+	get: () => sharedValue.value,
+	set: (v: boolean) => {
+		sharedValue.value = v;
+	},
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+	modify: jest.fn()
+};
+
+const sharedValueSearchbar = {
+	value: false,
+	get: () => sharedValueSearchbar.value,
+	set: (v: boolean) => {
+		sharedValueSearchbar.value = v;
+	},
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+	modify: jest.fn()
+};
+
+const keyboardHeightSharedValue = {
+	value: 0,
+	get: () => keyboardHeightSharedValue.value,
+	set: (v: number) => {
+		keyboardHeightSharedValue.value = v;
+	},
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+	modify: jest.fn()
+};
+
+let showEmojiKeyboard = false;
+let showEmojiSearchbar = false;
+
+beforeEach(() => {
+	showEmojiKeyboard = false;
+	showEmojiSearchbar = false;
+	jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
+		showEmojiPickerSharedValue: sharedValue,
+		showEmojiKeyboard,
+		openEmojiKeyboard: jest.fn(),
+		closeEmojiKeyboard: jest.fn(),
+		showEmojiSearchbarSharedValue: sharedValueSearchbar,
+		showEmojiSearchbar,
+		openEmojiSearchbar: jest.fn(),
+		closeEmojiSearchbar: jest.fn(),
+		resetKeyboard: jest.fn(),
+		keyboardHeight: keyboardHeightSharedValue
+	});
+	sharedValue.value = false; // reset before each test
+	sharedValueSearchbar.value = false;
+	keyboardHeightSharedValue.value = 0;
+});
+
+jest.mock('./hooks/useSubscription', () => ({
+	useSubscription: jest.fn().mockReturnValue({
+		t: 'd',
+		rid: 'rid',
+		tmid: undefined,
+		fname: 'Rocket Chat',
+		name: 'Rocket Chat'
+	})
+}));
+
 describe('MessageComposer', () => {
 	describe('Toolbar', () => {
 		test('tap actions', async () => {
@@ -71,10 +140,29 @@ describe('MessageComposer', () => {
 		});
 
 		test('tap emoji', async () => {
-			render(<Render />);
+			const { rerender } = render(<Render />);
 
 			await fireEvent(screen.getByTestId('message-composer-input'), 'focus');
 			await user.press(screen.getByTestId('message-composer-open-emoji'));
+
+			// Simulate the state change that would happen when emoji button is pressed
+			sharedValue.value = true;
+			showEmojiKeyboard = true;
+			jest.spyOn(EmojiKeyboardHook, 'useEmojiKeyboard').mockReturnValue({
+				showEmojiPickerSharedValue: sharedValue,
+				showEmojiKeyboard,
+				openEmojiKeyboard: jest.fn(),
+				closeEmojiKeyboard: jest.fn(),
+				showEmojiSearchbarSharedValue: sharedValueSearchbar,
+				showEmojiSearchbar,
+				openEmojiSearchbar: jest.fn(),
+				closeEmojiSearchbar: jest.fn(),
+				resetKeyboard: jest.fn(),
+				keyboardHeight: keyboardHeightSharedValue
+			});
+
+			rerender(<Render />);
+
 			expect(screen.getByTestId('message-composer-close-emoji')).toBeOnTheScreen();
 			expect(screen.toJSON()).toMatchSnapshot();
 		});
