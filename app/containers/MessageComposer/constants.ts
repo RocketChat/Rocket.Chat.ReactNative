@@ -21,8 +21,6 @@ export const VIDEO_PICKER_CONFIG: Options = {
 	mediaType: 'video'
 };
 
-export const TIMEOUT_CLOSE_EMOJI_KEYBOARD = 300;
-
 export const MIN_HEIGHT = 48;
 export const MAX_HEIGHT = 200;
 
