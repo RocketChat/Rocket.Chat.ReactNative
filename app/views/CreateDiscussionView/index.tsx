@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
@@ -23,7 +23,7 @@ import { getRoomTitle } from '../../lib/methods/helpers';
 import * as List from '../../containers/List';
 import Switch from '../../containers/Switch';
 import Button from '../../containers/Button';
-import { useAppSelector, usePrevious } from '../../lib/hooks';
+import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import handleLoadingChange from './utils/handleLoadingChange';
 
@@ -66,7 +66,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	});
 	const name = watch('name');
 
-	const prevLoading = usePrevious(loading);
+	const prevLoading = useRef<boolean>(loading);
 	const isValid = channel?.rid?.trim?.().length && name?.trim().length;
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -106,7 +106,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	};
 
 	useEffect(() => {
-		if (loading === prevLoading) {
+		if (loading === prevLoading.current) {
 			return;
 		}
 
