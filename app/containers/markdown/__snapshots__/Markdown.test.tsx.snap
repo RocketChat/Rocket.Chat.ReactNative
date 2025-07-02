@@ -59,16 +59,27 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
         <Text
           style={
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             }
           }
         >
           <Text
             accessibilityLabel="This is block quote"
             style={
-              {
-                "color": "#2F343D",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             This is block quote
@@ -97,16 +108,27 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="this is a normal line"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         this is a normal line
@@ -146,16 +168,27 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="This is "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         This is 
@@ -209,16 +242,27 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="Inline "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         Inline 
@@ -253,9 +297,16 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
       <Text
         accessibilityLabel=" has "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          has 
@@ -290,9 +341,16 @@ exports[`Story Snapshots: Code should match snapshot 1`] = `
       <Text
         accessibilityLabel=" it."
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          it.
@@ -367,16 +425,27 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="Unicode: "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         Unicode: 
@@ -460,16 +529,27 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="Shortnames: "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         Shortnames: 
@@ -498,9 +578,16 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -548,16 +635,27 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="Custom emojis: "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         Custom emojis: 
@@ -597,9 +695,16 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -639,9 +744,16 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -792,7 +904,11 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
@@ -818,9 +934,16 @@ exports[`Story Snapshots: Hashtag should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -964,7 +1087,11 @@ exports[`Story Snapshots: Image should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
@@ -1056,7 +1183,11 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
@@ -1083,9 +1214,16 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       <Text
         accessibilityLabel=": "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         : 
@@ -1139,7 +1277,11 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
@@ -1166,9 +1308,16 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       <Text
         accessibilityLabel=": "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         : 
@@ -1222,7 +1371,11 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
@@ -1249,9 +1402,16 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       <Text
         accessibilityLabel=" and the text with default style"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          and the text with default style
@@ -1278,7 +1438,11 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
@@ -1305,9 +1469,16 @@ exports[`Story Snapshots: Links should match snapshot 1`] = `
       <Text
         accessibilityLabel=" and the text with a color specific as fontSecondaryInfo"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          and the text with a color specific as fontSecondaryInfo
@@ -1358,7 +1529,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -1369,16 +1544,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
         <Text
           style={
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             }
           }
         >
           <Text
             accessibilityLabel="Open Source"
             style={
-              {
-                "color": "#2F343D",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             Open Source
@@ -1416,7 +1602,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
         style={
           [
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -1427,7 +1617,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
         <Text
           style={
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             }
           }
         >
@@ -1475,16 +1669,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="  - nodejs"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
           - nodejs
@@ -1511,16 +1716,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="  - ReactNative"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
           - ReactNative
@@ -1572,7 +1788,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               "textAlign": "left",
             },
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -1583,16 +1803,27 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
         <Text
           style={
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             }
           }
         >
           <Text
             accessibilityLabel="Open Source"
             style={
-              {
-                "color": "#2F343D",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             Open Source
@@ -1644,7 +1875,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
               "textAlign": "left",
             },
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             },
             {
               "color": "#2F343D",
@@ -1655,7 +1890,11 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
         <Text
           style={
             {
+              "backgroundColor": "transparent",
               "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
             }
           }
         >
@@ -1678,6 +1917,729 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
             }
           >
             Rocket.Chat
+          </Text>
+        </Text>
+      </Text>
+    </View>
+  </View>
+  <View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "700",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="bold"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              bold
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="italic"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              italic
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "textDecorationLine": "line-through",
+              }
+            }
+          >
+            <Text
+              accessibilityLabel="strikethrough"
+              style={
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
+              }
+            >
+              strikethrough
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold italic"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                bold italic
+              </Text>
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "700",
+                "textAlign": "left",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "textDecorationLine": "line-through",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="bold strikethrough"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                bold strikethrough
+              </Text>
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "textDecorationLine": "line-through",
+                }
+              }
+            >
+              <Text
+                accessibilityLabel="italic strikethrough"
+                style={
+                  [
+                    {
+                      "flexShrink": 1,
+                      "fontSize": 16,
+                      "lineHeight": 22,
+                    },
+                    {
+                      "color": "#2F343D",
+                    },
+                  ]
+                }
+              >
+                italic strikethrough
+              </Text>
+            </Text>
+          </Text>
+          <Text
+            accessibilityLabel=" "
+            style={
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
+            }
+          >
+             
+          </Text>
+        </Text>
+      </Text>
+    </View>
+    <View
+      style={
+        {
+          "flexDirection": "row",
+        }
+      }
+    >
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "400",
+              "lineHeight": 22,
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        • 
+      </Text>
+      <Text
+        style={
+          [
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
+        }
+      >
+        <Text
+          style={
+            {
+              "backgroundColor": "transparent",
+              "flexShrink": 1,
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "textAlign": "left",
+            }
+          }
+        >
+          <Text
+            style={
+              {
+                "fontStyle": "italic",
+              }
+            }
+          >
+            <Text
+              style={
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontWeight": "700",
+                  "textAlign": "left",
+                }
+              }
+            >
+              <Text
+                style={
+                  {
+                    "textDecorationLine": "line-through",
+                  }
+                }
+              >
+                <Text
+                  accessibilityLabel="bold italic strikethrough"
+                  style={
+                    [
+                      {
+                        "flexShrink": 1,
+                        "fontSize": 16,
+                        "lineHeight": 22,
+                      },
+                      {
+                        "color": "#2F343D",
+                      },
+                    ]
+                  }
+                >
+                  bold italic strikethrough
+                </Text>
+              </Text>
+            </Text>
           </Text>
         </Text>
       </Text>
@@ -1717,7 +2679,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
       <Text
         style={
           {
+            "backgroundColor": "transparent",
             "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
           }
         }
       >
@@ -1743,9 +2709,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1772,9 +2745,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1800,9 +2780,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1828,9 +2815,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1876,7 +2870,11 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
       <Text
         style={
           {
+            "backgroundColor": "transparent",
             "flexShrink": 1,
+            "fontFamily": "Inter",
+            "fontWeight": "400",
+            "textAlign": "left",
           }
         }
       >
@@ -1902,9 +2900,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1931,9 +2936,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1959,9 +2971,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -1987,9 +3006,16 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
         <Text
           accessibilityLabel=" "
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
            
@@ -2200,16 +3226,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="This is "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         This is 
@@ -2256,16 +3293,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -2292,16 +3340,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="a"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         a
@@ -2328,16 +3387,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="b"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         b
@@ -2364,16 +3434,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="c"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         c
@@ -2407,16 +3488,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="d"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         d
@@ -2457,16 +3549,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="e"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         e
@@ -2493,16 +3596,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="a       b                                                                             c"
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         a       b                                                                             c
@@ -2529,16 +3643,27 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
     <Text
       style={
         {
+          "backgroundColor": "transparent",
           "flexShrink": 1,
+          "fontFamily": "Inter",
+          "fontWeight": "400",
+          "textAlign": "left",
         }
       }
     >
       <Text
         accessibilityLabel="Emphasis: "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
         Emphasis: 
@@ -2556,9 +3681,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         <Text
           accessibilityLabel="bold"
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           bold
@@ -2567,9 +3699,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -2584,9 +3723,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         <Text
           accessibilityLabel="italic"
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           italic
@@ -2595,9 +3741,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -2612,9 +3765,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
         <Text
           accessibilityLabel="strikethrough"
           style={
-            {
-              "color": "#2F343D",
-            }
+            [
+              {
+                "flexShrink": 1,
+                "fontSize": 16,
+                "lineHeight": 22,
+              },
+              {
+                "color": "#2F343D",
+              },
+            ]
           }
         >
           strikethrough
@@ -2623,9 +3783,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -2650,9 +3817,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
           <Text
             accessibilityLabel="bold with italic"
             style={
-              {
-                "color": "#2F343D",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             bold with italic
@@ -2662,9 +3836,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -2689,9 +3870,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
           <Text
             accessibilityLabel="bold with strike"
             style={
-              {
-                "color": "#2F343D",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             bold with strike
@@ -2701,9 +3889,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -2735,9 +3930,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
             <Text
               accessibilityLabel="bold with italic and strike"
               style={
-                {
-                  "color": "#2F343D",
-                }
+                [
+                  {
+                    "flexShrink": 1,
+                    "fontSize": 16,
+                    "lineHeight": 22,
+                  },
+                  {
+                    "color": "#2F343D",
+                  },
+                ]
               }
             >
               bold with italic and strike
@@ -2748,9 +3950,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
       <Text
         accessibilityLabel=" "
         style={
-          {
-            "color": "#2F343D",
-          }
+          [
+            {
+              "flexShrink": 1,
+              "fontSize": 16,
+              "lineHeight": 22,
+            },
+            {
+              "color": "#2F343D",
+            },
+          ]
         }
       >
          
@@ -2772,9 +3981,16 @@ exports[`Story Snapshots: Text should match snapshot 1`] = `
           <Text
             accessibilityLabel="italic with strike"
             style={
-              {
-                "color": "#2F343D",
-              }
+              [
+                {
+                  "flexShrink": 1,
+                  "fontSize": 16,
+                  "lineHeight": 22,
+                },
+                {
+                  "color": "#2F343D",
+                },
+              ]
             }
           >
             italic with strike
