@@ -11,7 +11,7 @@ interface IHandleLoadingChange {
 	error: IError;
 	result: IResult;
 }
-const handleLoadingChange = ({ loading, failure, isMasterDetail, error, result }: IHandleLoadingChange) => {
+const handleSubmitEvent = ({ loading, failure, isMasterDetail, error, result }: IHandleLoadingChange) => {
 	sendLoadingEvent({ visible: loading });
 	if (!loading) {
 		if (failure) {
@@ -30,4 +30,4 @@ const handleLoadingChange = ({ loading, failure, isMasterDetail, error, result }
 	}
 };
 
-export default handleLoadingChange;
+export default handleSubmitEvent;

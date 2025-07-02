@@ -25,7 +25,7 @@ import Switch from '../../containers/Switch';
 import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
-import handleLoadingChange from './utils/handleLoadingChange';
+import handleSubmitEvent from './utils/handleSubmitEvent';
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const { colors } = useTheme();
@@ -110,7 +110,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 			return;
 		}
 
-		handleLoadingChange({ loading, failure, isMasterDetail, error, result });
+		handleSubmitEvent({ loading, failure, isMasterDetail, error, result });
 	}, [loading]);
 
 	useLayoutEffect(() => {
