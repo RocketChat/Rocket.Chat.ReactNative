@@ -65,8 +65,8 @@ jobs:
           bundler-cache: true
 
       - name: Install Fastlane
+        working-directory: android
         run: |
-          cd android
           bundle install --path gems
 
       - name: Set up Gradle
@@ -112,12 +112,9 @@ jobs:
           fi
 
       - name: Build Android Release AAB 
+        working-directory: android
         run: |
-          cd android
           ./gradlew bundleExperimentalRelease --build-cache
-
-      - name: Find all AAB files
-        run: find android/app/build/outputs -name "*.aab"
 
       - name: Upload sourcemaps/NDK symbols to Bugsnag
         run: |
@@ -125,13 +122,13 @@ jobs:
           yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
 
       - name: Store the google service account key
+        working-directory: android
         run: |
-          cd android
           echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT}}" | base64 --decode > service_account.json
 
       - name: Fastlane Play Store Upload
+        working-directory: android
         run: |
-          cd android
           bundle exec fastlane android internal_app_sharing
 
       - name: Upload APK

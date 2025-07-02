@@ -69,9 +69,8 @@ jobs:
           echo ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
 
       - name: Set bugsnag key
+        working-directory: ios
         run: |
-          cd ios
-
           agvtool new-version -all ${{ github.run_number }}
           if [[ ${{ inputs.type }} == "official" ]]; then
             /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
@@ -88,8 +87,8 @@ jobs:
           fi
 
       - name: Build iOS app
+        working-directory: ios
         run: |
-          cd ios
           if [[ ${{ inputs.type }} == "official" ]]; then
             bundle exec fastlane ios build_official
           else
@@ -104,8 +103,8 @@ jobs:
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
 
       - name: Submit to TestFlight
+        working-directory: ios
         run: |
-          cd ios
           if [[ ${{ inputs.type }} == "official" ]]; then
             echo "Submitting to TestFlight as Official"
             ## bundle exec fastlane ios beta official:true
