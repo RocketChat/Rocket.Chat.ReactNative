@@ -500,7 +500,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
 		this.setState({ encrypted: value });
 	};
-
+	/* 
 	render() {
 		const {
 			name,
@@ -714,10 +714,10 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 				</SafeAreaView>
 			</KeyboardView>
 		);
-	}
+	} */
 }
 
-const mapStateToProps = (state: IApplicationState) => ({
+/* const mapStateToProps = (state: IApplicationState) => ({
 	serverVersion: state.server.version as string,
 	encryptionEnabled: state.encryption.enabled,
 	setReadOnlyPermission: state.permissions['set-readonly'] as string[],
@@ -730,4 +730,4 @@ const mapStateToProps = (state: IApplicationState) => ({
 	isMasterDetail: state.app.isMasterDetail
 });
 
-export default connect(mapStateToProps)(withTheme(RoomInfoEditView));
+export default connect(mapStateToProps)(withTheme(RoomInfoEditView)); */
