@@ -34,7 +34,7 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: 'Rocket.Chat.ipa',
+      ipa: 'ios/Rocket.Chat.ipa',
       app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
       skip_waiting_for_build_processing: true
     )
