@@ -90,6 +90,15 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
+      - name: Cache Android build output
+        uses: actions/cache@v4
+        with:
+          path: |
+            app/build
+          key: build-output-${{ hashFiles('app/src/**', '**/*.gradle*') }}
+          restore-keys: |
+            build-output-
+
       - name: Build Android Release APK
         run: |
           cd android
