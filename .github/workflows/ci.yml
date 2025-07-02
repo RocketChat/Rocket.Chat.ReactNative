@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  run-eslint-and-test:
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/eslint.yml
+
+  android-build-experimental-store:
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }} && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/build-android.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: experimental
+
+  ios-build-experimental-store:
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }} && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/build-ios.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: experimental
+      

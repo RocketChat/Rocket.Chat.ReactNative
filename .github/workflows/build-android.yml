@@ -6,32 +6,20 @@ on:
       type:
         type: string
         required: true
-    secrets:
-      BUGSNAG_KEY:
-        required: true
-      KEYSTORE_EXPERIMENTAL:
-        required: true
-      KEYSTORE_EXPERIMENTAL_BASE64:
-        required: true
-      KEYSTORE_EXPERIMENTAL_PASSWORD:
-        required: true
-      KEYSTORE_EXPERIMENTAL_ALIAS:
-        required: true
-      GOOGLE_SERVICES_ANDROID:
-        required: true
-      FASTLANE_GOOGLE_SERVICE_ACCOUNT:
-        required: true
 
 jobs:
   build-android:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate type input
+        run: |
+          if [[ "${{ inputs.type }}" != "official" && "${{ inputs.type }}" != "experimental" ]]; then
+            echo "❌ Invalid input: 'type' must be 'official' or 'experimental'"
+            exit 1
+          fi
+
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Log the run number
-        run: |
-          echo "Run number: ${{ github.run_number }}"
 
       - name: Log the secrets
         run: |

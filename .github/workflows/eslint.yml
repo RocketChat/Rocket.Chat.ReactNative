@@ -1,16 +1,10 @@
 name: Run ESLint and Test
 
 on:
-  pull_request:
-    branches:
-      - '*'
-  push:
-    branches:
-      - 'master'
+  workflow_call:
 
 jobs:
   run-eslint-and-test:
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -41,33 +35,3 @@ jobs:
 
       - name: Run Tests
         run: yarn test --runInBand
-
-  android-build-experimental-store:
-    uses: ./.github/workflows/build-android.yml
-    needs: run-eslint-and-test
-    secrets:
-      KEYSTORE_EXPERIMENTAL_BASE64: ${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}
-      KEYSTORE_EXPERIMENTAL_PASSWORD: ${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}
-      KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
-      BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
-      KEYSTORE_EXPERIMENTAL: ${{ secrets.KEYSTORE_EXPERIMENTAL }}
-      GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
-      FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-    with:
-      type: experimental
-
-  ios-build-experimental-store:
-    uses: ./.github/workflows/build-ios.yml
-    needs: run-eslint-and-test
-    secrets:
-      APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
-      BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
-      MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
-      MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
-      MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
-      APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
-      FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-    with:
-      type: experimental
-      

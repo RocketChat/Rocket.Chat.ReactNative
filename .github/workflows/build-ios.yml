@@ -6,29 +6,19 @@ on:
       type:
         type: string
         required: true
-    secrets:
-      APP_STORE_CONNECT_API_KEY_BASE64:
-        required: true
-      BUGSNAG_KEY:
-        required: true
-      MATCH_KEYCHAIN_NAME:
-        required: true
-      MATCH_KEYCHAIN_PASSWORD:
-        required: true
-      MATCH_PASSWORD:
-        required: true
-      APP_STORE_CONNECT_API_KEY_ID:
-        required: true
-      APP_STORE_CONNECT_API_KEY_ISSUER_ID:
-        required: true
-      FASTLANE_REPO_PAT:
-        required: true
 
 jobs:
   ios-build:
     runs-on: macos-15
 
     steps:
+      - name: Validate type input
+        run: |
+          if [[ "${{ inputs.type }}" != "official" && "${{ inputs.type }}" != "experimental" ]]; then
+            echo "❌ Invalid input: 'type' must be 'official' or 'experimental'"
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
