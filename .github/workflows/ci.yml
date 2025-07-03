@@ -21,6 +21,14 @@ jobs:
     with:
       type: experimental
 
+  android-upload-experimental-store:
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/upload-android.yml
+    needs: [android-build-experimental-store]
+    secrets: inherit
+    with:
+      type: experimental
+
   ios-build-experimental-store:
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-ios.yml
