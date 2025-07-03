@@ -1,4 +1,4 @@
-name: Build Android
+name: Build Android And Upload
 
 on:
   workflow_call:
@@ -9,6 +9,7 @@ on:
 
 jobs:
   build-android:
+    name: Build Android
     runs-on: ubuntu-latest
     environment: experimental_android_build
     steps:
@@ -126,3 +127,72 @@ jobs:
         with:
           name: android-manifest
           path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
+
+  upload-android:
+    name: Upload Android
+    runs-on: ubuntu-latest
+    environment: upload_official_android
+    steps:
+      - name: Validate type input
+        run: |
+          if [[ "${{ inputs.type }}" != "official" && "${{ inputs.type }}" != "experimental" ]]; then
+            echo "❌ Invalid input: 'type' must be 'official' or 'experimental'"
+            exit 1
+          fi
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Download Experimental AAB
+        if: ${{ inputs.type == 'experimental' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: android-aab
+          path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+
+      - name: Download Official AAB
+        if: ${{ inputs.type == 'official' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: android-aab
+          path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+
+      - name: Download Experimental Manifest
+        if: ${{ inputs.type == 'experimental' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: android-manifest
+          path: android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+
+      - name: Download Official Manifest
+        if: ${{ inputs.type == 'official' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: android-manifest
+          path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
+
+      - name: Set up Ruby and Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.7
+          bundler-cache: true
+
+      - name: Install Fastlane
+        working-directory: android
+        run: |
+          bundle install --path gems
+
+      - name: Upload sourcemaps/NDK symbols to Bugsnag
+        run: |
+          yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+          yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+
+      - name: Store the google service account key
+        working-directory: android
+        run: |
+          echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT}}" | base64 --decode > service_account.json
+
+      - name: Fastlane Play Store Upload
+        working-directory: android
+        run: |
+          bundle exec fastlane android internal_app_sharing

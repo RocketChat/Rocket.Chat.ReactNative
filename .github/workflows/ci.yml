@@ -14,19 +14,9 @@ jobs:
     uses: ./.github/workflows/eslint.yml
 
   android-build-experimental-store:
-    name: Build Android Experimental Store
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
     needs: [run-eslint-and-test]
-    secrets: inherit
-    with:
-      type: experimental
-
-  android-upload-experimental-store:
-    name: Upload Android Experimental Store
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/upload-android.yml
-    needs: [android-build-experimental-store]
     secrets: inherit
     with:
       type: experimental
