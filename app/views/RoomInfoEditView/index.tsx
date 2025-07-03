@@ -1,13 +1,10 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { Q } from '@nozbe/watermelondb';
 import { BlockContext } from '@rocket.chat/ui-kit';
 import { dequal } from 'dequal';
 import { Alert, Keyboard, ScrollView, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 
 import { useAppSelector } from '../../lib/hooks';
-import { deleteRoom } from '../../actions/room';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -16,9 +13,7 @@ import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { IBaseScreen, IRoomSettings, ISubscription, SubscriptionType } from '../../definitions';
-import { ERoomType } from '../../definitions/ERoomType';
 import I18n from '../../i18n';
-import database from '../../lib/database';
 import KeyboardView from '../../containers/KeyboardView';
 import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
@@ -31,18 +26,11 @@ import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import sharedStyles from '../Styles';
 import styles from './styles';
 import SwitchContainer from './SwitchContainer';
-import {
-	getRoomTitle,
-	hasPermission,
-	compareServerVersion,
-	showConfirmationAlert,
-	showErrorAlert,
-	isAndroid,
-	random
-} from '../../lib/methods/helpers';
+import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import Button from '../../containers/Button';
 import useRoomSubscription from './hooks/useSubscription';
+import useDeleteTeamOrRoom from './hooks/useDeleteTeamOrRoom';
 
 interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {}
 
@@ -53,7 +41,6 @@ const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 
 const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const { colors } = useTheme();
-	const dispatch = useDispatch();
 	const {
 		archiveRoomPermission,
 		deleteCPermission,
@@ -75,6 +62,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		deletePPermission: state.permissions['delete-p'] as string[],
 		deleteTeamPermission: state.permissions['delete-team'] as string[]
 	}));
+	const randomValue = random(15);
 	const [t, setT] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const [reactWhenReadOnly, setReactWhenReadOnly] = useState<boolean | undefined>(false);
@@ -89,6 +77,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setFocus,
 		setError,
 		setValue,
+		getValues,
 		formState: { errors, isDirty }
 	} = useForm({
 		defaultValues: {
@@ -101,7 +90,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	});
 
 	const initializeRoomState = (room: ISubscription) => {
-		const randomValue = random(15);
 		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
 		const sysMes = room.sysMes as string[];
 		// fake password just to user knows about it
@@ -118,6 +106,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setEnableSysMes(sysMes && sysMes.length > 0);
 		setEncrypted(encrypted);
 	};
+
 	const { room } = useRoomSubscription({
 		archiveRoomPermission,
 		deleteCPermission,
@@ -130,14 +119,10 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setPermissions,
 		initializeRoomState
 	});
-
-	const reset = () => {
-		logEvent(events.RI_EDIT_RESET);
-		initializeRoomState(room);
-		clearErrors();
-	};
+	const { handleDeleteTeam, handleDeleteRoom } = useDeleteTeamOrRoom({ navigation, room, deleteCPermission, deletePPermission });
 
 	const submit = async () => {
+		const { name, description, topic, announcement, joinCode } = getValues();
 		logEvent(events.RI_EDIT_SAVE);
 		Keyboard.dismiss();
 
@@ -149,7 +134,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			return;
 		}
 
-		// Clear error objects
 		clearErrors();
 
 		const params = {} as IRoomSettings;
@@ -188,7 +172,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Join Code
-		if (room.joinCodeRequired && this.randomValue !== joinCode) {
+		if (room.joinCodeRequired && randomValue !== joinCode) {
 			params.joinCode = joinCode;
 		}
 
@@ -201,7 +185,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			await Services.saveRoomSettings(room.rid, params);
 		} catch (e: any) {
 			if (e.error === 'error-invalid-room-name') {
-				this.setState({ nameError: e });
+				setError('name', { message: e, type: 'validate' });
 			}
 			error = true;
 			log(e);
@@ -216,72 +200,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 				EventEmitter.emit(LISTENER, { message: I18n.t('Settings_succesfully_changed') });
 			}
 		}, 100);
-	};
-
-	const deleteTeam = async () => {
-		try {
-			const db = database.active;
-			const subCollection = db.get('subscriptions');
-			const teamChannels = await subCollection
-				.query(Q.where('team_id', room.teamId as string), Q.where('team_main', Q.notEq(true)))
-				.fetch();
-
-			const teamChannelOwner = [];
-			for (let i = 0; i < teamChannels.length; i += 1) {
-				const permissionType = teamChannels[i].t === 'c' ? deleteCPermission : deletePPermission;
-				// eslint-disable-next-line no-await-in-loop
-				const permissions = await hasPermission([permissionType], teamChannels[i].rid);
-				if (permissions[0]) {
-					teamChannelOwner.push(teamChannels[i]);
-				}
-			}
-
-			if (teamChannelOwner.length) {
-				navigation.navigate('SelectListView', {
-					title: 'Delete_Team',
-					data: teamChannelOwner,
-					infoText: 'Select_channels_to_delete',
-					nextAction: (selected: string[]) => {
-						showConfirmationAlert({
-							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
-							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => deleteRoom(ERoomType.t, room, selected)
-						});
-					}
-				});
-			} else {
-				showConfirmationAlert({
-					message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
-					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => dispatch(deleteRoom(ERoomType.t, room))
-				});
-			}
-		} catch (e: any) {
-			log(e);
-			showErrorAlert(
-				e.data.error ? I18n.t(e.data.error) : I18n.t('There_was_an_error_while_action', { action: I18n.t('deleting_team') }),
-				I18n.t('Cannot_delete')
-			);
-		}
-	};
-
-	const onDelete = () => {
-		Alert.alert(
-			I18n.t('Are_you_sure_question_mark'),
-			I18n.t('Delete_Room_Warning'),
-			[
-				{
-					text: I18n.t('Cancel'),
-					style: 'cancel'
-				},
-				{
-					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(ERoomType.c, room))
-				}
-			],
-			{ cancelable: false }
-		);
 	};
 
 	const toggleArchive = () => {
@@ -338,7 +256,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		return (
 			<MultiSelect
 				options={MESSAGE_TYPE_VALUES}
-				onChange={({ value }) => setState({ systemMessages: value })}
+				onChange={({ value }) => setSystemMessages(value)}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
 				value={values}
 				context={BlockContext.FORM}
@@ -376,6 +294,20 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const toggleEncrypted = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
 		setEncrypted(value);
+	};
+
+	const onResetPress = () => {
+		logEvent(events.RI_EDIT_RESET);
+		initializeRoomState(room);
+		clearErrors();
+	};
+
+	const onDeletePress = () => {
+		if (room.teamMain) {
+			handleDeleteTeam();
+		} else {
+			handleDeleteRoom();
+		}
 	};
 
 	useLayoutEffect(() => {
@@ -541,7 +473,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 					<Button
 						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						title={I18n.t('RESET')}
-						onPress={reset}
+						onPress={onResetPress}
 						disabled={!isDirty}
 						testID='room-info-edit-view-reset'
 					/>
@@ -560,7 +492,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						color={colors.buttonFontSecondaryDanger}
 						backgroundColor={colors.buttonBackgroundSecondaryDefault}
 						title={I18n.t('Delete')}
-						onPress={room.teamMain ? deleteTeam : onDelete}
+						onPress={onDeletePress}
 						disabled={!hasDeletePermission()}
 						testID='room-info-edit-view-delete'
 					/>
