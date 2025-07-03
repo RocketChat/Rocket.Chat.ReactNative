@@ -11,8 +11,11 @@ jobs:
   build-android:
     name: Build
     runs-on: ubuntu-latest
-    environment: build_officia_android
+    environment: build_official_android
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        
       - name: Validate type input
         run: |
           if [[ "${{ inputs.type }}" != "official" && "${{ inputs.type }}" != "experimental" ]]; then
