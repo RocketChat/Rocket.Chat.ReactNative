@@ -7,6 +7,9 @@ inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
     required: true
+  BUGSNAG_KEY:
+    description: 'Bugsnag API key for upload'
+    required: true
   
 runs:
   using: "composite"
@@ -57,6 +60,8 @@ runs:
         yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
         yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
       shell: bash
+      env:
+        BUGSNAG_KEY: ${{ inputs.BUGSNAG_KEY }}
 
     - name: Store the Google service account key
       working-directory: android

@@ -52,9 +52,13 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
       
       - name: Upload Android
         uses: ./.github/actions/upload-android
         with:
           type: experimental
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
