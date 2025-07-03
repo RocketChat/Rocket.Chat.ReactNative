@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-android:
-    name: Build Android
+    name: Build
     runs-on: ubuntu-latest
     environment: experimental_android_build
     steps:
@@ -129,9 +129,10 @@ jobs:
           path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
 
   upload-android:
-    name: Upload Android
+    name: Upload
     runs-on: ubuntu-latest
     environment: upload_official_android
+    needs: build-android
     steps:
       - name: Validate type input
         run: |
