@@ -11,7 +11,7 @@ jobs:
   build-android:
     name: Build
     runs-on: ubuntu-latest
-    environment: build_experimental_android
+    environment: build_officia_android
     steps:
       - name: Validate type input
         run: |
@@ -114,7 +114,7 @@ jobs:
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
-    environment: upload_experimental_android
+    environment: upload_official_android
     needs: build-android
     steps:
       - name: Validate type input
@@ -127,12 +127,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       
-      - name: Download Experimental AAB
-        if: ${{ inputs.type == 'experimental' }}
+      - name: Download Official AAB
+        if: ${{ inputs.type == 'official' }}
         uses: actions/download-artifact@v4
         with:
           name: android-aab
-          path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+          path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
 
       - name: Download Official AAB
         if: ${{ inputs.type == 'official' }}
@@ -141,12 +141,12 @@ jobs:
           name: android-aab
           path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
 
-      - name: Download Experimental Manifest
-        if: ${{ inputs.type == 'experimental' }}
+      - name: Download Official Manifest
+        if: ${{ inputs.type == 'official' }}
         uses: actions/download-artifact@v4
         with:
           name: android-manifest
-          path: android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+          path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
 
       - name: Download Official Manifest
         if: ${{ inputs.type == 'official' }}
