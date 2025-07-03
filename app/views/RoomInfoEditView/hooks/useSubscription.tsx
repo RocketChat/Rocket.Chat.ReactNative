@@ -79,7 +79,6 @@ const useRoomSubscription = ({
 		loadRoom();
 
 		return () => {
-			room.current?.unsubscribe();
 			querySubscription.current?.unsubscribe();
 		};
 	}, []);
