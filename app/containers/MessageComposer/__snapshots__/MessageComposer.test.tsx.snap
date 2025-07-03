@@ -368,7 +368,7 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -807,7 +807,7 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -1428,7 +1428,7 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -1970,7 +1970,7 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -6019,7 +6019,7 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -6626,7 +6626,7 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -7233,7 +7233,7 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -7840,7 +7840,7 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -8447,7 +8447,7 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -9054,7 +9054,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -9661,7 +9661,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -10268,7 +10268,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -10875,7 +10875,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -11482,7 +11482,7 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -12089,7 +12089,7 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -12544,7 +12544,7 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [
@@ -14402,7 +14402,7 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
         onChangeText={[Function]}
         onFocus={[Function]}
         onSelectionChange={[Function]}
-        placeholder=""
+        placeholder="Message @Room Name"
         placeholderTextColor="#9EA2A8"
         style={
           [

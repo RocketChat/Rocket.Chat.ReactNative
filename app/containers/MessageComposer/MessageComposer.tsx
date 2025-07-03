@@ -18,6 +18,7 @@ import { Services } from '../../lib/services';
 import log from '../../lib/methods/helpers/log';
 import { prepareQuoteMessage, insertEmojiAtCursor } from './helpers';
 import useShortnameToUnicode from '../../lib/hooks/useShortnameToUnicode';
+import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboardWhenOrientationChanges';
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
@@ -39,6 +40,7 @@ export const MessageComposer = ({
 		focus: () => {}
 	});
 	const contentHeight = useSharedValue(MIN_HEIGHT);
+	useCloseKeyboardWhenOrientationChanges();
 
 	const { rid, tmid, action, selectedMessages, sharing, editRequest, onSendMessage } = useRoomContext();
 	const alsoSendThreadToChannel = useAlsoSendThreadToChannel();
@@ -164,6 +166,13 @@ export const MessageComposer = ({
 		onKeyboardItemSelected(EventTypes.EMOJI_PRESSED, emoji);
 	};
 
+	const accessibilityFocusOnInput = () => {
+		const node = findNodeHandle(composerInputRef.current);
+		if (node) {
+			AccessibilityInfo.setAccessibilityFocus(node);
+		}
+	};
+
 	const emojiKeyboardStyle = useAnimatedStyle(() => ({
 		height: keyboardHeight.value
 	}));
@@ -172,20 +181,13 @@ export const MessageComposer = ({
 		bottom: keyboardHeight.value + contentHeight.value - 4
 	}));
 
-	const accessibilityFocusOnInput = () => {
-		const node = findNodeHandle(composerInputRef.current);
-		if (node) {
-			AccessibilityInfo.setAccessibilityFocus(node);
-		}
-	};
-
 	return (
 		<MessageInnerContext.Provider
 			value={{
 				sendMessage: handleSendMessage,
 				onEmojiSelected,
 				closeEmojiKeyboardAndAction,
-				focus: composerInputComponentRef.current.focus
+				focus: composerInputComponentRef.current?.focus
 			}}>
 			<MessageComposerContent
 				recordingAudio={recordingAudio}

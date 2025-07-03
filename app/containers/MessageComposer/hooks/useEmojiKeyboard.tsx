@@ -31,7 +31,7 @@ export const EmojiKeyboardProvider = ({ children }: IEmojiKeyboardProvider) => {
 };
 
 const IPAD_TOOLTIP_HEIGHT_OR_HW_KEYBOARD = 70;
-const EMOJI_KEYBOARD_FIXED_HEIGHT = 300;
+const EMOJI_KEYBOARD_FIXED_HEIGHT = 250;
 
 const useKeyboardAnimation = () => {
 	const height = useSharedValue(0);

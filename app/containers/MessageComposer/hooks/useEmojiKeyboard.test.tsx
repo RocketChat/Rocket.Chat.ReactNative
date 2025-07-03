@@ -5,27 +5,6 @@ import { useSharedValue } from 'react-native-reanimated';
 import { EmojiKeyboardProvider, useEmojiKeyboard } from './useEmojiKeyboard';
 import { MessageInnerContext } from '../context';
 
-// Mock react-native-reanimated
-jest.mock('react-native-reanimated', () => ({
-	useSharedValue: jest.fn(),
-	useAnimatedReaction: jest.fn(),
-	runOnJS: jest.fn(fn => fn),
-	withTiming: jest.fn(value => value)
-}));
-
-// Mock react-native-keyboard-controller
-jest.mock('react-native-keyboard-controller', () => ({
-	KeyboardController: {
-		setFocusTo: jest.fn(async () => {})
-	},
-	useKeyboardHandler: jest.fn()
-}));
-
-// Mock react-native-safe-area-context
-jest.mock('react-native-safe-area-context', () => ({
-	useSafeAreaInsets: jest.fn(() => ({ bottom: 20 }))
-}));
-
 describe('useEmojiKeyboard', () => {
 	let mockSharedValue: any;
 	let mockSearchbarSharedValue: any;
