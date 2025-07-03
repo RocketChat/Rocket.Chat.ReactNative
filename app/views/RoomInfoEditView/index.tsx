@@ -29,7 +29,7 @@ import SwitchContainer from './SwitchContainer';
 import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import Button from '../../containers/Button';
-import useRoomSubscription from './hooks/useSubscription';
+import useRoomSubscription from './hooks/useRoomSubscription';
 import useDeleteTeamOrRoom from './hooks/useDeleteTeamOrRoom';
 
 interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {}
