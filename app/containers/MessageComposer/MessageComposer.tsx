@@ -1,5 +1,5 @@
 import React, { ReactElement, useRef, useImperativeHandle } from 'react';
-import { LayoutChangeEvent } from 'react-native';
+import { AccessibilityInfo, findNodeHandle, LayoutChangeEvent } from 'react-native';
 import { useBackHandler } from '@react-native-community/hooks';
 import { Q } from '@nozbe/watermelondb';
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
@@ -172,6 +172,13 @@ export const MessageComposer = ({
 		bottom: keyboardHeight.value + contentHeight.value - 4
 	}));
 
+	const accessibilityFocusOnInput = () => {
+		const node = findNodeHandle(composerInputRef.current);
+		if (node) {
+			AccessibilityInfo.setAccessibilityFocus(node);
+		}
+	};
+
 	return (
 		<MessageInnerContext.Provider
 			value={{
@@ -194,6 +201,7 @@ export const MessageComposer = ({
 			<Autocomplete
 				onPress={item => composerInputComponentRef.current.onAutocompleteItemSelected(item)}
 				style={autocompleteStyle}
+				accessibilityFocusOnInput={accessibilityFocusOnInput}
 			/>
 		</MessageInnerContext.Provider>
 	);

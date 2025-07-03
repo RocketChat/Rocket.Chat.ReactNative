@@ -16,13 +16,16 @@ export const Autocomplete = ({
 }: {
 	onPress: IAutocompleteItemProps['onPress'];
 	style: ViewStyle;
+	accessibilityFocusOnInput: () => void;
 }): ReactElement | null => {
-	const { rid } = useRoomContext();
+	const { rid, updateAutocompleteVisible } = useRoomContext();
 	const { text, type, params } = useAutocompleteParams();
 	const items = useAutocomplete({
 		rid,
 		text,
 		type,
+		updateAutocompleteVisible,
+		accessibilityFocusOnInput,
 		commandParams: params
 	});
 	const [styles, colors] = useStyle();

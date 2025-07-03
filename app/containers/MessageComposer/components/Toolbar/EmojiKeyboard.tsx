@@ -22,7 +22,7 @@ export const EmojiKeyboard = (): ReactElement => {
 			<BaseButton
 				onPress={close}
 				testID='message-composer-close-emoji'
-				accessibilityLabel='Close_emoji_selector'
+				accessibilityLabel='Back_to_keyboard'
 				icon='keyboard'
 			/>
 			<EmptySpace />

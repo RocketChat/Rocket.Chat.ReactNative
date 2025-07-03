@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import MessageComponent from './Message';
 import { E2E_MESSAGE_TYPE, messagesStatus, themes } from '../../lib/constants';
 import MessageSeparator from '../MessageSeparator';
-import MessageContext from './Context';
 
 const _theme = 'light';
 
@@ -44,22 +43,7 @@ export default {
 		(Story: any) => (
 			<NavigationContainer>
 				<ScrollView style={{ backgroundColor: themes[_theme].surfaceRoom }}>
-					<MessageContext.Provider
-						value={{
-							user,
-							baseUrl,
-							onPress: () => {},
-							onLongPress: () => {},
-							reactionInit: () => {},
-							onErrorPress: () => {},
-							replyBroadcast: () => {},
-							onReactionPress: () => {},
-							onDiscussionPress: () => {},
-							onReactionLongPress: () => {},
-							threadBadgeColor: themes.light.fontInfo
-						}}>
-						<Story />
-					</MessageContext.Provider>
+					<Story />
 				</ScrollView>
 			</NavigationContainer>
 		)

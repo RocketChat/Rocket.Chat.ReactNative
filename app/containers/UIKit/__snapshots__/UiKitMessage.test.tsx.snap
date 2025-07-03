@@ -1,0 +1,248 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: ActionButton should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: ActionSelect should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Context should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Fields should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Image should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: Section should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionButton should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionDatePicker should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionImage should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionMarkdownList should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionMultiSelect should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionOverflow should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;
+
+exports[`Story Snapshots: SectionSelect should match snapshot 1`] = `
+<RCTScrollView
+  keyboardShouldPersistTaps="always"
+  style={
+    [
+      {
+        "backgroundColor": "#fff",
+        "flex": 1,
+      },
+      {
+        "paddingHorizontal": 16,
+      },
+    ]
+  }
+>
+  <View />
+</RCTScrollView>
+`;

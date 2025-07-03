@@ -16,7 +16,8 @@ import { useTheme } from '../../theme';
 
 const routes = categories.tabs.map(tab => ({
 	key: tab.category,
-	title: tab.tabLabel
+	title: tab.tabLabel,
+	accessibilityLabel: tab.accessibilityLabel
 }));
 
 const EmojiPicker = ({
@@ -44,6 +45,8 @@ const EmojiPicker = ({
 
 	const renderTabItem = (tab: Route, color: string) => (
 		<CustomIcon
+			accessible
+			accessibilityLabel={tab?.accessibilityLabel}
 			size={24}
 			name={tab.title as TIconsName}
 			color={color}
