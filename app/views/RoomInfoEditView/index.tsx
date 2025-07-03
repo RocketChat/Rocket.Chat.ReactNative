@@ -30,7 +30,7 @@ import { getRoomTitle, compareServerVersion, showErrorAlert, isAndroid, random }
 import { Services } from '../../lib/services';
 import Button from '../../containers/Button';
 import useRoomSubscription from './hooks/useRoomSubscription';
-import useDeleteTeamOrRoom from './hooks/useDeleteTeamOrRoom';
+import useRoomDeletionActions from './hooks/useRoomDeletionActions';
 
 interface IRoomInfoEditViewProps extends IBaseScreen<ChatsStackParamList | ModalStackParamList, 'RoomInfoEditView'> {}
 
@@ -119,7 +119,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setPermissions,
 		initializeRoomState
 	});
-	const { handleDeleteTeam, handleDeleteRoom } = useDeleteTeamOrRoom({ navigation, room, deleteCPermission, deletePPermission });
+	const { handleDeleteTeam, handleDeleteRoom } = useRoomDeletionActions({ navigation, room, deleteCPermission, deletePPermission });
 
 	const submit = async () => {
 		const { name, description, topic, announcement, joinCode } = getValues();

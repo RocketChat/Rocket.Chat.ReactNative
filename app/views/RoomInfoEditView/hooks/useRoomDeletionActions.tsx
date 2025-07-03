@@ -14,14 +14,14 @@ import { deleteRoom } from '../../../actions/room';
 import { ERoomType } from '../../../definitions/ERoomType';
 import { ISubscription, TSubscriptionModel } from '../../../definitions';
 
-interface IUseDeleteTeamOrRoom {
+interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;
 	room: ISubscription;
 	deleteCPermission: string[];
 	deletePPermission: string[];
 }
 
-const useDeleteTeamOrRoom = ({ navigation, room, deleteCPermission, deletePPermission }: IUseDeleteTeamOrRoom) => {
+const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPermission }: IUseRoomDeletionActions) => {
 	const dispatch = useDispatch();
 
 	const handleVerifyTeamChannelOwner = async (teamChannels: TSubscriptionModel[]) => {
@@ -102,4 +102,4 @@ const useDeleteTeamOrRoom = ({ navigation, room, deleteCPermission, deletePPermi
 	};
 };
 
-export default useDeleteTeamOrRoom;
+export default useRoomDeletionActions;
