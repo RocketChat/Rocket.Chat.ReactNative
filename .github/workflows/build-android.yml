@@ -40,7 +40,6 @@ jobs:
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
-    environment: upload_experimental_android
     needs: build-android
     steps:
       - name: Validate type input
