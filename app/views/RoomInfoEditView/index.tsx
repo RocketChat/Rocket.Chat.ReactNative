@@ -119,6 +119,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setPermissions,
 		initializeRoomState
 	});
+
 	const { handleDeleteTeam, handleDeleteRoom } = useRoomDeletionActions({
 		navigation,
 		room,
