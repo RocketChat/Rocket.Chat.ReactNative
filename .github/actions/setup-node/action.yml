@@ -17,4 +17,5 @@ runs:
           ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
 
     - name: Install JS dependencies
+      shell: bash
       run: yarn install --frozen-lockfile
