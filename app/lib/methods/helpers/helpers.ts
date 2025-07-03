@@ -7,8 +7,6 @@ export function isGroupChat(room): boolean {
 	return ((room?.uids && room.uids.length > 2) || (room?.usernames && room.usernames.length > 2)) ?? false;
 }
 
-export const escapeRegExp = (string: string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
 export function getRoomAvatar(room) {
 	if (isGroupChat(room) && room.uids && room.usernames) {
 		return room.uids.length + room.usernames.join();

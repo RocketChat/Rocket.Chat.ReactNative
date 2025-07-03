@@ -17,7 +17,7 @@ import Radio from '../../containers/Radio';
 import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector, usePermissions } from '../../lib/hooks';
-import { compareServerVersion, escapeRegExp, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
+import { compareServerVersion, getRoomTitle, isGroupChat } from '../../lib/methods/helpers';
 import { handleIgnore } from '../../lib/methods/helpers/handleIgnore';
 import { showConfirmationAlert } from '../../lib/methods/helpers/info';
 import log from '../../lib/methods/helpers/log';
@@ -41,6 +41,7 @@ import {
 	TRoomType
 } from './helpers';
 import styles from './styles';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
@@ -380,15 +381,12 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
-		const filteredMembers =
+	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
 			? state.members.filter(m => {
-				const filter = escapeRegExp(state.filter.toLowerCase());
-				return (
-					m.username.toLowerCase().match(filter) ||
-					m.name?.toLowerCase().match(filter)
-				);
-			})
+					const filter = sanitizeLikeString(state.filter.toLowerCase()) ?? '';
+					return m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter);
+			  })
 			: null;
 
 	return (
