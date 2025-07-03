@@ -521,10 +521,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		const { serverVersion, encryptionEnabled, theme } = this.props;
 
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].surfaceRoom }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+			<KeyboardView>
 				<StatusBar />
 				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 					<ScrollView

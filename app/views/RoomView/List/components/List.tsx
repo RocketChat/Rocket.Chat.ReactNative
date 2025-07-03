@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, { runOnJS, useAnimatedScrollHandler } from 'react-native-reanimated';
 
 import { isIOS } from '../../../../lib/methods/helpers';
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	}
 });
 
-export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) => {
+export const List = ({ listRef, jumpToBottom, ...props }: IListProps) => {
 	const [visible, setVisible] = useState(false);
 	const { isAutocompleteVisible } = useRoomContext();
 	const scrollHandler = useAnimatedScrollHandler({
@@ -32,7 +32,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 	});
 
 	return (
-		<>
+		<View style={styles.list}>
 			{/* @ts-ignore */}
 			<Animated.FlatList
 				accessibilityElementsHidden={isAutocompleteVisible}
@@ -53,7 +53,7 @@ export const List = ({ listRef, jumpToBottom, isThread, ...props }: IListProps) 
 				{...props}
 				{...scrollPersistTaps}
 			/>
-			<NavBottomFAB visible={visible} onPress={jumpToBottom} isThread={isThread} />
-		</>
+			<NavBottomFAB visible={visible} onPress={jumpToBottom} />
+		</View>
 	);
 };

@@ -75,10 +75,7 @@ const ForwardMessageView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}>
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<StatusBar />
 			<SafeAreaView testID='forward-message-view' style={styles.container}>
 				<ScrollView {...scrollPersistTaps}>
