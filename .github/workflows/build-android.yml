@@ -11,7 +11,7 @@ jobs:
   build-android:
     name: Build
     runs-on: ubuntu-latest
-    environment: experimental_android_build
+    environment: ${{ inputs.type == 'experimental' && 'build_experimental_android' || 'build_official_android' }}
     steps:
       - name: Validate type input
         run: |
@@ -131,7 +131,7 @@ jobs:
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
-    environment: upload_official_android
+    environment: ${{ inputs.type == 'experimental' && 'upload_experimental_android' || 'upload_official_android' }}
     needs: build-android
     steps:
       - name: Validate type input
