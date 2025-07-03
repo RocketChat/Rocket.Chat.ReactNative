@@ -30,6 +30,12 @@ jobs:
         uses: ./.github/actions/build-android
         with:
           type: 'experimental'
+          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
+          KEYSTORE_EXPERIMENTAL_BASE64: ${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}
+          KEYSTORE_EXPERIMENTAL: ${{ secrets.KEYSTORE_EXPERIMENTAL }}
+          KEYSTORE_EXPERIMENTAL_PASSWORD: ${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}
+          KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
+          GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
 
   upload-android:
     name: Upload
@@ -51,3 +57,4 @@ jobs:
         uses: ./.github/actions/upload-android
         with:
           type: experimental
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}

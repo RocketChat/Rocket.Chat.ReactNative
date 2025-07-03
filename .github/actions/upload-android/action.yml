@@ -4,7 +4,10 @@ inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
-
+  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+    description: 'Google service account key for upload'
+    required: true
+  
 runs:
   using: "composite"
   steps:
@@ -58,7 +61,7 @@ runs:
     - name: Store the Google service account key
       working-directory: android
       run: |
-        echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
+        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
       shell: bash
 
     - name: Fastlane Play Store Upload

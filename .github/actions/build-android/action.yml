@@ -4,6 +4,24 @@ inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
+  BUGSNAG_KEY:
+    description: 'Bugsnag API key for build'
+    required: true
+  KEYSTORE_EXPERIMENTAL_BASE64:
+    description: 'Base64 encoded keystore for experimental build'
+    required: true
+  KEYSTORE_EXPERIMENTAL:
+    description: 'Keystore file name for experimental build'
+    required: true
+  KEYSTORE_EXPERIMENTAL_PASSWORD:
+    description: 'Keystore password for experimental build'
+    required: true
+  KEYSTORE_EXPERIMENTAL_ALIAS:
+    description: 'Keystore alias for experimental build'
+    required: true
+  GOOGLE_SERVICES_ANDROID:
+    description: 'Google services JSON for experimental build'
+    required: true
 
 runs:
   using: "composite"
@@ -35,7 +53,7 @@ runs:
     
     - name: Decode Keystore
       run: |
-        echo "${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ secrets.KEYSTORE_EXPERIMENTAL }}
+        echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ inputs.KEYSTORE_EXPERIMENTAL }}
       shell: bash
 
     - name: Set gradle.properties
@@ -50,18 +68,18 @@ runs:
 
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> android/gradle.properties
-          echo -e "BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }}" >> android/gradle.properties
-          echo -e "KEYSTORE=${{ secrets.KEYSTORE_EXPERIMENTAL }}" >> android/gradle.properties
-          echo -e "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
-          echo -e "KEY_ALIAS=${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> android/gradle.properties
-          echo -e "KEY_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+          echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY }}" >> android/gradle.properties
+          echo -e "KEYSTORE=${{ inputs.KEYSTORE_EXPERIMENTAL }}" >> android/gradle.properties
+          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+          echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> android/gradle.properties
+          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
         fi
       shell: bash
 
     - name: Set Google Services JSON
       run: |
-        if [[ "${{ secrets.GOOGLE_SERVICES_ANDROID }}" ]]; then
-          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 --decode > android/app/google-services.json
+        if [[ "${{ inputs.GOOGLE_SERVICES_ANDROID }}" ]]; then
+          echo "${{ inputs.GOOGLE_SERVICES_ANDROID }}" | base64 --decode > android/app/google-services.json
         fi
       shell: bash
 
