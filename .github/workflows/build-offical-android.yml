@@ -11,7 +11,7 @@ jobs:
   build-android:
     name: Build
     runs-on: ubuntu-latest
-    environment: build_official_android
+    environment: official_android_build
     steps:
       - name: Validate type input
         run: |
