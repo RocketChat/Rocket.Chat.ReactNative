@@ -131,6 +131,16 @@ beforeEach(() => {
 	keyboardHeightSharedValue.value = 0;
 });
 
+jest.mock('./hooks/useSubscription', () => ({
+	useSubscription: jest.fn().mockReturnValue({
+		t: 'd',
+		rid: 'rid',
+		tmid: undefined,
+		fname: 'Rocket Chat',
+		name: 'Rocket Chat'
+	})
+}));
+
 describe('MessageComposer', () => {
 	describe('Toolbar', () => {
 		test('tap actions', async () => {
