@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/eslint.yml
 
   android-build-experimental-store:
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }} && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
     needs: [run-eslint-and-test]
     secrets: inherit
@@ -22,7 +22,7 @@ jobs:
       type: experimental
 
   ios-build-experimental-store:
-    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }} && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-ios.yml
     needs: [run-eslint-and-test]
     secrets: inherit

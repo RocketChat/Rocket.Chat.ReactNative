@@ -10,6 +10,7 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
+    environment: experimental_android_build
     steps:
       - name: Validate type input
         run: |
@@ -20,26 +21,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
-
-      - name: Log the secrets
-        run: |
-          if [ -z "${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}" ]; then
-            echo "❌ KEYSTORE_EXPERIMENTAL_BASE64 is NOT set"
-          else
-            echo "✅ KEYSTORE_EXPERIMENTAL_BASE64 is set"
-          fi
-
-          if [ -z "${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" ]; then
-            echo "❌ KEYSTORE_EXPERIMENTAL_PASSWORD is NOT set"
-          else
-            echo "✅ KEYSTORE_EXPERIMENTAL_PASSWORD is set"
-          fi
-
-          if [ -z "${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}" ]; then
-            echo "❌ KEYSTORE_EXPERIMENTAL_ALIAS is NOT set"
-          else
-            echo "✅ KEYSTORE_EXPERIMENTAL_ALIAS is set"
-          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -114,25 +95,34 @@ jobs:
       - name: Build Android Release AAB 
         working-directory: android
         run: |
-          ./gradlew bundleExperimentalRelease --build-cache
+          if [[ ${{ inputs.type }} == "experimental" ]]; then
+            ./gradlew bundleExperimentalRelease
+          fi
 
-      - name: Upload sourcemaps/NDK symbols to Bugsnag
-        run: |
-          yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
-          yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
-
-      - name: Store the google service account key
-        working-directory: android
-        run: |
-          echo "${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT}}" | base64 --decode > service_account.json
-
-      - name: Fastlane Play Store Upload
-        working-directory: android
-        run: |
-          bundle exec fastlane android internal_app_sharing
-
-      - name: Upload APK
+      - name: Upload Experimental AAB
+        if: ${{ inputs.type == 'experimental' }}
         uses: actions/upload-artifact@v4
         with:
-          name: Android Output
-          path: android/app/build/outputs
+          name: android-aab
+          path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+
+      - name: Upload Experimental Manifest
+        if: ${{ inputs.type == 'experimental' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-manifest
+          path: android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+
+      - name: Upload Official AAB
+        if: ${{ inputs.type == 'official' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+
+      - name: Upload Official Manifest
+        if: ${{ inputs.type == 'official' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-manifest
+          path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml

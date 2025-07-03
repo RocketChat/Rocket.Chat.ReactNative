@@ -10,7 +10,7 @@ on:
 jobs:
   ios-build:
     runs-on: macos-15
-
+    environment: experimental_ios_build
     steps:
       - name: Validate type input
         run: |
