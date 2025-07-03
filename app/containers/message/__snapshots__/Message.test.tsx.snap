@@ -24933,7 +24933,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                       }
                     >
                       <View
-                        onLayout={[Function]}
                         style={
                           {
                             "flexDirection": "row",
@@ -25589,7 +25588,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                       }
                     >
                       <View
-                        onLayout={[Function]}
                         style={
                           {
                             "flexDirection": "row",
@@ -45509,7 +45507,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               >
                 <View
-                  onLayout={[Function]}
                   style={
                     {
                       "flexDirection": "row",
@@ -46004,7 +46001,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               >
                 <View
-                  onLayout={[Function]}
                   style={
                     {
                       "flexDirection": "row",
@@ -46499,7 +46495,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               >
                 <View
-                  onLayout={[Function]}
                   style={
                     {
                       "flexDirection": "row",
