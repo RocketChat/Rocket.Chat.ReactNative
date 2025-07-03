@@ -20,6 +20,9 @@ jobs:
             exit 1
           fi
 
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
