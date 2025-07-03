@@ -1,0 +1,104 @@
+name: 'Build Android'
+description: 'Builds Android app AAB and uploads manifest and AAB'
+inputs:
+  type:
+    description: 'Build type: official or experimental'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Install Fastlane
+      working-directory: android
+      run: |
+        bundle install --path gems
+      shell: bash
+
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@v4
+
+    - name: Cache Gradle
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle
+          android/.gradle
+        key: gradle-${{ hashFiles('android/**.gradle*', 'android/**/gradle-wrapper.properties') }}
+        restore-keys: |
+          gradle-
+    
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ secrets.KEYSTORE_EXPERIMENTAL }}
+      shell: bash
+
+    - name: Set gradle.properties
+      run: |
+        echo " " >> android/gradle.properties
+        echo -e "android.useAndroidX=true" >> android/gradle.properties
+        echo -e "android.enableJetifier=true" >> android/gradle.properties
+        echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> android/gradle.properties
+        echo -e "newArchEnabled=false" >> android/gradle.properties
+        echo -e "hermesEnabled=true" >> android/gradle.properties
+        echo -e "VERSIONCODE=${{ github.run_number }}" >> ./gradle.properties
+
+        if [[ "${{ inputs.type }}" == "experimental" ]]; then
+          echo -e "APPLICATION_ID=chat.rocket.reactnative" >> android/gradle.properties
+          echo -e "BugsnagAPIKey=${{ secrets.BUGSNAG_KEY }}" >> android/gradle.properties
+          echo -e "KEYSTORE=${{ secrets.KEYSTORE_EXPERIMENTAL }}" >> android/gradle.properties
+          echo -e "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+          echo -e "KEY_ALIAS=${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> android/gradle.properties
+          echo -e "KEY_PASSWORD=${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+        fi
+      shell: bash
+
+    - name: Set Google Services JSON
+      run: |
+        if [[ "${{ secrets.GOOGLE_SERVICES_ANDROID }}" ]]; then
+          echo "${{ secrets.GOOGLE_SERVICES_ANDROID }}" | base64 --decode > android/app/google-services.json
+        fi
+      shell: bash
+
+    - name: Build Android Release AAB
+      working-directory: android
+      run: |
+        if [[ "${{ inputs.type }}" == "experimental" ]]; then
+          ./gradlew bundleExperimentalRelease
+        elif [[ "${{ inputs.type }}" == "official" ]]; then
+          ./gradlew bundleOfficialRelease
+        fi
+      shell: bash
+
+    - name: Upload Experimental AAB
+      if: ${{ inputs.type == 'experimental' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab
+        path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+
+    - name: Upload Experimental Manifest
+      if: ${{ inputs.type == 'experimental' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-manifest
+        path: android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+
+    - name: Upload Official AAB
+      if: ${{ inputs.type == 'official' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-aab
+        path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+
+    - name: Upload Official Manifest
+      if: ${{ inputs.type == 'official' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: android-manifest
+        path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml

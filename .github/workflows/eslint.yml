@@ -8,25 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-          
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 'lts/*'
-          cache: 'yarn'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
-      
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
 
       - name: Run ESLint
         run: yarn lint
