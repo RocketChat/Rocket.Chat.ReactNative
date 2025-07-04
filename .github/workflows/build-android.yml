@@ -63,7 +63,7 @@ jobs:
           BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
 
   upload-internal:
-    name: Upload Internal
+    name: Internal Sharing
     runs-on: ubuntu-latest
     needs: build-android
     if: ${{ inputs.type == 'experimental' }}

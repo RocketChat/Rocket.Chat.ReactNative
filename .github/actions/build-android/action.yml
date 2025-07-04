@@ -93,6 +93,18 @@ runs:
         fi
       shell: bash
 
+    - name: Upload sourcemaps/NDK symbols to Bugsnag
+      run: |
+        if [[ "${{ inputs.type }}" == "official" ]]; then
+          yarn bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
+          yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+        fi
+        if [[ "${{ inputs.type }}" == "experimental" ]]; then
+          yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
+          yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+        fi
+      shell: bash
+
     - name: Upload Experimental AAB
       if: ${{ inputs.type == 'experimental' }}
       uses: actions/upload-artifact@v4
@@ -100,23 +112,9 @@ runs:
         name: android-aab
         path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
 
-    - name: Upload Experimental Manifest
-      if: ${{ inputs.type == 'experimental' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-manifest
-        path: android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
-
     - name: Upload Official AAB
       if: ${{ inputs.type == 'official' }}
       uses: actions/upload-artifact@v4
       with:
         name: android-aab
         path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
-
-    - name: Upload Official Manifest
-      if: ${{ inputs.type == 'official' }}
-      uses: actions/upload-artifact@v4
-      with:
-        name: android-manifest
-        path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
