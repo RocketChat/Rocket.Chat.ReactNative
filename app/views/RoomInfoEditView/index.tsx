@@ -37,7 +37,6 @@ const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 	value: m.value,
 	text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 }));
-
 const RANDOM_VALUE = random(15);
 
 const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
