@@ -28,20 +28,6 @@ runs:
         name: android-aab
         path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
 
-    - name: Download Experimental Manifest
-      if: ${{ inputs.type == 'experimental' }}
-      uses: actions/download-artifact@v4
-      with:
-        name: android-manifest
-        path: android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
-
-    - name: Download Official Manifest
-      if: ${{ inputs.type == 'official' }}
-      uses: actions/download-artifact@v4
-      with:
-        name: android-manifest
-        path: android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
-
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1
       with:
@@ -53,15 +39,6 @@ runs:
       run: |
         bundle install --path gems
       shell: bash
-
-    - name: Upload sourcemaps/NDK symbols to Bugsnag (Only for experimental)
-      if: ${{ inputs.type == 'experimental' }}
-      run: |
-        yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
-        yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
-      shell: bash
-      env:
-        BUGSNAG_KEY: ${{ inputs.BUGSNAG_KEY }}
 
     - name: Store the Google service account key
       working-directory: android
