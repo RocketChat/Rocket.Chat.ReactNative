@@ -8,37 +8,36 @@ import { ModalStackParamList } from '../../../stacks/MasterDetailStack/types';
 import { TNavigation } from '../../../stacks/stackType';
 import database from '../../../lib/database';
 import I18n from '../../../i18n';
-import { getRoomTitle, hasPermission, showConfirmationAlert, showErrorAlert } from '../../../lib/methods/helpers';
+import { getRoomTitle, showConfirmationAlert, showErrorAlert } from '../../../lib/methods/helpers';
 import log from '../../../lib/methods/helpers/log';
-import { deleteRoom } from '../../../actions/room';
+import { deleteRoom as actionDeleteRoom } from '../../../actions/room';
 import { ERoomType } from '../../../definitions/ERoomType';
 import { ISubscription, TSubscriptionModel } from '../../../definitions';
 
 interface IUseRoomDeletionActions {
 	navigation: NativeStackNavigationProp<(ChatsStackParamList | ModalStackParamList) & TNavigation, 'RoomInfoEditView'>;
 	room: ISubscription;
-	deleteCPermission: string[];
-	deletePPermission: string[];
+	deleteCPermission: boolean;
+	deletePPermission: boolean;
 }
 
 const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPermission }: IUseRoomDeletionActions) => {
 	const dispatch = useDispatch();
 
-	const handleVerifyTeamChannelOwner = async (teamChannels: TSubscriptionModel[]) => {
-		const permissionChecks = await Promise.allSettled(
-			teamChannels.map(async channel => {
-				const permissionType = channel.t === 'c' ? deleteCPermission : deletePPermission;
-				const permissions = await hasPermission([permissionType], channel.rid);
-				if (permissions[0]) {
-					return channel;
-				}
-			})
-		);
+	const handleVerifyTeamChannelOwner = (teamChannels: TSubscriptionModel[]) => {
+		const permissionChecks = teamChannels.map(channel => {
+			const hasDeletePermission = channel.t === 'c' ? deleteCPermission : deletePPermission;
+			if (hasDeletePermission) {
+				return channel;
+			}
+
+			return false;
+		});
 
 		return permissionChecks.filter(Boolean)?.[0];
 	};
 
-	const handleDeleteTeam = async () => {
+	const deleteTeam = async () => {
 		try {
 			const db = database.active;
 			const subCollection = db.get('subscriptions');
@@ -46,7 +45,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				.query(Q.where('team_id', room.teamId as string), Q.where('team_main', Q.notEq(true)))
 				.fetch();
 
-			const teamChannelOwner = await handleVerifyTeamChannelOwner(teamChannels);
+			const teamChannelOwner = handleVerifyTeamChannelOwner(teamChannels);
 
 			if (teamChannelOwner) {
 				navigation.navigate('SelectListView', {
@@ -57,7 +56,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 						showConfirmationAlert({
 							message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 							confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-							onPress: () => deleteRoom(ERoomType.t, room, selected)
+							onPress: () => actionDeleteRoom(ERoomType.t, room, selected)
 						});
 					}
 				});
@@ -65,7 +64,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				showConfirmationAlert({
 					message: I18n.t('You_are_deleting_the_team', { team: getRoomTitle(room) }),
 					confirmationText: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
-					onPress: () => dispatch(deleteRoom(ERoomType.t, room))
+					onPress: () => dispatch(actionDeleteRoom(ERoomType.t, room))
 				});
 			}
 		} catch (e: any) {
@@ -77,7 +76,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 		}
 	};
 
-	const handleDeleteRoom = () => {
+	const deleteRoom = () => {
 		Alert.alert(
 			I18n.t('Are_you_sure_question_mark'),
 			I18n.t('Delete_Room_Warning'),
@@ -89,7 +88,7 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 				{
 					text: I18n.t('Yes_action_it', { action: I18n.t('delete') }),
 					style: 'destructive',
-					onPress: () => dispatch(deleteRoom(ERoomType.c, room))
+					onPress: () => dispatch(actionDeleteRoom(ERoomType.c, room))
 				}
 			],
 			{ cancelable: false }
@@ -97,8 +96,8 @@ const useRoomDeletionActions = ({ navigation, room, deleteCPermission, deletePPe
 	};
 
 	return {
-		handleDeleteTeam,
-		handleDeleteRoom
+		deleteTeam,
+		deleteRoom
 	};
 };
 
