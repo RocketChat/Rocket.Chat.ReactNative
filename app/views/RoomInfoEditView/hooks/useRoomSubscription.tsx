@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { Subscription } from 'rxjs';
 
 import log from '../../../lib/methods/helpers/log';
 import { ISubscription } from '../../../definitions';
@@ -12,7 +11,6 @@ interface IUserRoomSubscription {
 
 const useRoomSubscription = ({ rid, initializeRoomState }: IUserRoomSubscription) => {
 	const room = useRef<ISubscription>({} as ISubscription);
-	const querySubscription = useRef<Subscription>(null);
 
 	const loadRoom = async () => {
 		if (!rid) {
@@ -21,12 +19,8 @@ const useRoomSubscription = ({ rid, initializeRoomState }: IUserRoomSubscription
 		try {
 			const db = database.active;
 			const sub = await db.get('subscriptions').find(rid);
-			const observable = sub.observe();
-
-			querySubscription.current = observable.subscribe(data => {
-				room.current = data;
-				initializeRoomState(room.current);
-			});
+			room.current = sub;
+			initializeRoomState(room.current);
 		} catch (e) {
 			log(e);
 		}
@@ -34,10 +28,6 @@ const useRoomSubscription = ({ rid, initializeRoomState }: IUserRoomSubscription
 
 	useEffect(() => {
 		loadRoom();
-
-		return () => {
-			querySubscription.current?.unsubscribe();
-		};
 	}, []);
 
 	return {
