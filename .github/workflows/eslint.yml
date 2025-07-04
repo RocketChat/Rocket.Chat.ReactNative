@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-eslint-and-test:
-    name: Run ESLint and Test
+    name: ""
     runs-on: ubuntu-latest
 
     steps:
