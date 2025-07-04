@@ -61,7 +61,7 @@ jobs:
     name: Upload
     runs-on: ubuntu-latest
     environment: upload_official_android
-    needs: [build-android, upload-hold]
+    needs: [upload-hold]
     steps:
       - name: Validate type input
         run: |
