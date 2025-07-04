@@ -4,7 +4,7 @@ import { dequal } from 'dequal';
 import { Alert, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useForm } from 'react-hook-form';
 
-import { useAppSelector } from '../../lib/hooks';
+import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -15,7 +15,6 @@ import { MultiSelect } from '../../containers/UIKit/MultiSelect';
 import { IBaseScreen, IRoomSettings, ISubscription, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import KeyboardView from '../../containers/KeyboardView';
-import { TSupportedPermissions } from '../../reducers/permissions';
 import { ModalStackParamList } from '../../stacks/MasterDetailStack/types';
 import { ChatsStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
@@ -39,30 +38,14 @@ const MESSAGE_TYPE_VALUES = MessageTypeValues.map(m => ({
 	text: { text: I18n.t('Hide_type_messages', { type: I18n.t(m.text) }) }
 }));
 
+const RANDOM_VALUE = random(15);
+
 const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const { colors } = useTheme();
-	const {
-		archiveRoomPermission,
-		deleteCPermission,
-		deletePPermission,
-		deleteTeamPermission,
-		encryptionEnabled,
-		serverVersion,
-		setReactWhenReadOnlyPermission,
-		setReadOnlyPermission,
-		unarchiveRoomPermission
-	} = useAppSelector(state => ({
+	const { encryptionEnabled, serverVersion } = useAppSelector(state => ({
 		serverVersion: state.server.version as string,
-		encryptionEnabled: state.encryption.enabled,
-		setReadOnlyPermission: state.permissions['set-readonly'] as string[],
-		setReactWhenReadOnlyPermission: state.permissions['set-react-when-readonly'] as string[],
-		archiveRoomPermission: state.permissions['archive-room'] as string[],
-		unarchiveRoomPermission: state.permissions['unarchive-room'] as string[],
-		deleteCPermission: state.permissions['delete-c'] as string[],
-		deletePPermission: state.permissions['delete-p'] as string[],
-		deleteTeamPermission: state.permissions['delete-team'] as string[]
+		encryptionEnabled: state.encryption.enabled
 	}));
-	const randomValue = random(15);
 	const [t, setT] = useState(false);
 	const [readOnly, setReadOnly] = useState(false);
 	const [reactWhenReadOnly, setReactWhenReadOnly] = useState<boolean | undefined>(false);
@@ -70,7 +53,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const [systemMessages, setSystemMessages] = useState<string[]>([]);
 	const [enableSysMes, setEnableSysMes] = useState(false);
 	const [encrypted, setEncrypted] = useState<boolean | undefined>(false);
-	const [permissions, setPermissions] = useState<{ [key in TSupportedPermissions]?: boolean }>({});
 	const {
 		control,
 		clearErrors,
@@ -97,7 +79,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setValue('description', description || '');
 		setValue('topic', topic || '');
 		setValue('announcement', announcement || '');
-		setValue('joinCode', joinCodeRequired ? randomValue : '');
+		setValue('joinCode', joinCodeRequired ? RANDOM_VALUE : '');
 		setT(t !== 'p');
 		setReadOnly(ro);
 		setReactWhenReadOnly(reactWhenReadOnly);
@@ -106,21 +88,25 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		setEnableSysMes(sysMes && sysMes.length > 0);
 		setEncrypted(encrypted);
 	};
-
 	const { room } = useRoomSubscription({
-		archiveRoomPermission,
-		deleteCPermission,
-		deletePPermission,
-		deleteTeamPermission,
 		rid: route.params?.rid,
-		setReactWhenReadOnlyPermission,
-		setReadOnlyPermission,
-		unarchiveRoomPermission,
-		setPermissions,
 		initializeRoomState
 	});
 
-	const { handleDeleteTeam, handleDeleteRoom } = useRoomDeletionActions({
+	const [
+		setReadOnlyPermission,
+		setReactWhenReadOnlyPermission,
+		archiveRoomPermission,
+		unarchiveRoomPermission,
+		deleteCPermission,
+		deletePPermission,
+		deleteTeamPermission
+	] = usePermissions(
+		['set-readonly', 'set-react-when-readonly', 'archive-room', 'unarchive-room', 'delete-c', 'delete-p', 'delete-team'],
+		room.id
+	);
+
+	const { deleteTeam, deleteRoom } = useRoomDeletionActions({
 		navigation,
 		room,
 		deleteCPermission,
@@ -178,7 +164,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		}
 
 		// Join Code
-		if (room.joinCodeRequired && randomValue !== joinCode) {
+		if (room.joinCodeRequired && RANDOM_VALUE !== joinCode) {
 			params.joinCode = joinCode;
 		}
 
@@ -240,14 +226,14 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const hasDeletePermission = () => {
 		if (room.teamMain) {
-			return permissions['delete-team'];
+			return deleteTeamPermission;
 		}
 
 		if (room.t === 'p') {
-			return permissions['delete-p'];
+			return deletePPermission;
 		}
 
-		return permissions['delete-c'];
+		return deleteCPermission;
 	};
 
 	const renderSystemMessages = () => {
@@ -310,9 +296,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const onDeletePress = () => {
 		if (room.teamMain) {
-			handleDeleteTeam();
+			deleteTeam();
 		} else {
-			handleDeleteRoom();
+			deleteRoom();
 		}
 	};
 
@@ -424,7 +410,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 									: I18n.t('All_users_in_the_channel_can_write_new_messages')
 							}
 							onValueChange={toggleReadOnly}
-							disabled={!permissions['set-readonly'] || room.broadcast}
+							disabled={!setReadOnlyPermission || room.broadcast}
 							testID='room-info-edit-view-ro'
 						/>
 						{readOnly && !room.broadcast ? (
@@ -433,7 +419,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 								leftLabelPrimary={I18n.t('No_Reactions')}
 								leftLabelSecondary={I18n.t('Reactions_are_disabled')}
 								onValueChange={toggleReactions}
-								disabled={!permissions['set-react-when-readonly']}
+								disabled={!setReactWhenReadOnlyPermission}
 								testID='room-info-edit-view-react-when-ro'
 							/>
 						) : null}
@@ -488,7 +474,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 						color={colors.fontTitlesLabels}
 						title={archived ? I18n.t('UNARCHIVE') : I18n.t('ARCHIVE')}
 						onPress={toggleArchive}
-						disabled={archived ? !permissions['unarchive-room'] : !permissions['archive-room']}
+						disabled={archived ? !unarchiveRoomPermission : !archiveRoomPermission}
 						testID={archived ? 'room-info-edit-view-unarchive' : 'room-info-edit-view-archive'}
 						style={{ marginBottom: 0 }}
 					/>
