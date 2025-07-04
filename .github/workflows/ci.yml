@@ -10,7 +10,6 @@ on:
 
 jobs:
   run-eslint-and-test:
-    name: Run ESLint and Test
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/eslint.yml
 
