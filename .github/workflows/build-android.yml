@@ -47,7 +47,7 @@ jobs:
           GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
 
   upload-hold:
-    name: Hold
+    name: Upload Hold
     runs-on: ubuntu-latest
     environment: experimental_android_build
     needs: build-android

@@ -8,10 +8,20 @@ on:
         required: true
 
 jobs:
+  build-hold:
+    name: Hold
+    runs-on: ubuntu-latest
+    environment: official_android_build
+    steps:
+      - name: Hold
+        run: |
+          echo "Hold"
+
   build-android:
     name: Build
     runs-on: ubuntu-latest
     environment: official_android_build
+    needs: build-hold
     steps:
       - name: Validate type input
         run: |
@@ -37,11 +47,21 @@ jobs:
           KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
           GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
 
+  upload-hold:
+    name: Upload Hold
+    runs-on: ubuntu-latest
+    environment: official_android_build
+    needs: build-android
+    steps:
+      - name: Hold
+        run: |
+          echo "Hold"
+
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
     environment: upload_official_android
-    needs: build-android
+    needs: [build-android, upload-hold]
     steps:
       - name: Validate type input
         run: |
