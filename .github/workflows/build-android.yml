@@ -12,6 +12,10 @@ jobs:
     name: Hold
     runs-on: ubuntu-latest
     environment: experimental_android_build
+    steps:
+      - name: Hold
+        run: |
+          echo "Hold"
 
   build-android:
     name: Build
@@ -47,6 +51,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: experimental_android_build
     needs: build-android
+    steps:
+      - name: Hold
+        run: |
+          echo "Hold"
 
   upload-android:
     name: Upload
