@@ -39,12 +39,12 @@ jobs:
         uses: ./.github/actions/build-android
         with:
           type: official
-          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
-          KEYSTORE_EXPERIMENTAL_BASE64: ${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}
-          KEYSTORE_EXPERIMENTAL: ${{ secrets.KEYSTORE_EXPERIMENTAL }}
-          KEYSTORE_EXPERIMENTAL_PASSWORD: ${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}
-          KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
           GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+          KEYSTORE_OFFICIAL_BASE64: ${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}
+          KEYSTORE_OFFICIAL: ${{ secrets.KEYSTORE_OFFICIAL }}
+          KEYSTORE_OFFICIAL_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
+          KEYSTORE_OFFICIAL_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
+          BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
 
   upload-hold:
     name: Upload Hold
