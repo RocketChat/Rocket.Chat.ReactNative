@@ -47,7 +47,7 @@ runs:
       shell: bash
 
     - name: Fastlane Play Store Upload
-      working-directory: android
       run: |
+        cd android
         bundle exec fastlane android internal_app_sharing
       shell: bash
