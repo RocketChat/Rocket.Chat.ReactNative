@@ -68,7 +68,12 @@ runs:
     
     - name: Decode Keystore
       run: |
-        echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ inputs.KEYSTORE_EXPERIMENTAL }}
+        if [[ "${{ inputs.type }}" == "experimental" ]]; then
+          echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ inputs.KEYSTORE_EXPERIMENTAL }}
+        fi
+        if [[ "${{ inputs.type }}" == "official" ]]; then
+          echo "${{ inputs.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > android/app/${{ inputs.KEYSTORE_OFFICIAL }}
+        fi
       shell: bash
 
     - name: Set gradle.properties
@@ -93,8 +98,7 @@ runs:
         if [[ "${{ inputs.type }}" == "official" ]]; then
           echo -e "APPLICATION_ID=chat.rocket.android" >> android/gradle.properties
           echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> android/gradle.properties
-          echo $KEYSTORE_OFFICIAL_BASE64 | base64 --decode > android/app/$KEYSTORE_OFFICIAL
-          echo -e "KEYSTORE=$KEYSTORE_OFFICIAL" >> android/gradle.properties
+          echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> android/gradle.properties
           echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> android/gradle.properties
           echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" >> android/gradle.properties
           echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> android/gradle.properties
