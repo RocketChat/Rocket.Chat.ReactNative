@@ -19,14 +19,18 @@ runs:
       uses: actions/download-artifact@v4
       with:
         name: android-aab
-        path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
+        path: android/app/build/outputs/bundle/experimentalRelease/
 
     - name: Download Official AAB
       if: ${{ inputs.type == 'official' }}
       uses: actions/download-artifact@v4
       with:
         name: android-aab
-        path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
+        path: android/app/build/outputs/bundle/officialRelease/
+
+    - name: List downloaded files
+      run: ls -R android/app/build/outputs/bundle
+      shell: bash
 
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1
