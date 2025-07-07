@@ -107,10 +107,12 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 	useEffect(() => {
 		if (loading === prevLoading.current) {
+			prevLoading.current = loading;
 			return;
 		}
 
 		handleSubmitEvent({ loading, failure, isMasterDetail, error, result });
+		prevLoading.current = loading;
 	}, [loading]);
 
 	useLayoutEffect(() => {
@@ -122,7 +124,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	}, [navigation, route]);
 
 	return (
-		<KeyboardView backgroundColor={colors.surfaceHover}>
+		<KeyboardView style={styles.container} backgroundColor={colors.surfaceHover}>
 			<StatusBar />
 			<SafeAreaView testID='create-discussion-view'>
 				<ScrollView {...scrollPersistTaps}>
