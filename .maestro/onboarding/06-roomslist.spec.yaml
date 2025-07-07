@@ -1,0 +1,28 @@
+appId: chat.rocket.reactnative
+---
+
+- runFlow: 05-login.spec.yaml
+
+# should have rooms list screen
+- assertVisible:
+     id: "rooms-list-view"
+     
+# 'should have room item'
+- assertVisible:
+      id: "rooms-list-view-item-general"
+# should have create channel button
+- assertVisible:
+      id: "rooms-list-view-create-channel"
+
+# - should have sidebar button
+- assertVisible:
+      id: "rooms-list-view-sidebar"
+# should search room and navigate
+- runFlow: 
+      file: ../helpers/search-room.yaml
+      env:
+        ROOM_NAME: general
+- runFlow:
+      file: ../helpers/logout.yaml
+
+
