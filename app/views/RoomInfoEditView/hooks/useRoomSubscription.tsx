@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 import log from '../../../lib/methods/helpers/log';
-import { ISubscription, TSubscriptionModel } from '../../../definitions';
+import { ISubscription } from '../../../definitions';
 import { getSubscriptionByRoomId } from '../../../lib/database/services/Subscription';
 
 interface IUserRoomSubscription {
@@ -10,30 +10,28 @@ interface IUserRoomSubscription {
 }
 
 const useRoomSubscription = ({ rid, initializeRoomState }: IUserRoomSubscription) => {
-	const room = useRef<TSubscriptionModel>({} as TSubscriptionModel);
-
-	const loadRoom = async () => {
-		if (!rid) {
-			return;
-		}
-		try {
-			const sub = await getSubscriptionByRoomId(rid);
-			if (!sub) {
-				return;
-			}
-			room.current = sub;
-			initializeRoomState(room.current);
-		} catch (e) {
-			log(e);
-		}
-	};
+	const [room, setRoom] = useState<ISubscription>({} as ISubscription);
 
 	useEffect(() => {
+		const loadRoom = async () => {
+			if (!rid) return;
+			try {
+				const sub = await getSubscriptionByRoomId(rid);
+				if (!sub) {
+					return;
+				}
+				initializeRoomState(sub);
+				setRoom(sub);
+			} catch (e) {
+				log(e);
+			}
+		};
+
 		loadRoom();
-	}, []);
+	}, [rid]);
 
 	return {
-		room: room.current
+		room
 	};
 };
 
