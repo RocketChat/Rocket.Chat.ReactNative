@@ -73,7 +73,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 	const initializeRoomState = (room: ISubscription) => {
 		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
 		const sysMes = room.sysMes as string[];
-		// fake password just to user knows about it
 		setValue('name', getRoomTitle(room));
 		setValue('description', description || '');
 		setValue('topic', topic || '');
