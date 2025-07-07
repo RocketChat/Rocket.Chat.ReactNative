@@ -104,7 +104,7 @@ export const SectionAndInfo = () => (
 	</SafeAreaView>
 );
 
-export const ListItemWithRightContainer = () => (
+export const ListItemWithRightContainerStyle = () => (
 	<List.Item
 		title='Chats'
 		subtitle='All'
