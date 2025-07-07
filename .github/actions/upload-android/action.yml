@@ -7,9 +7,6 @@ inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
     required: true
-  BUGSNAG_KEY:
-    description: 'Bugsnag API key for upload'
-    required: true
   
 runs:
   using: "composite"
