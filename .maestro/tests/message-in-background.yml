@@ -1,0 +1,20 @@
+appId: chat.rocket.reactnative
+---
+# Position the app in a room you want to test messages and replace the values below:
+# - HOST: the host of the server
+# - RID: the room id
+
+- evalScript: ${output.counter = 0}
+- repeat:
+    times: 50
+    commands:
+      - tapOn:
+          id: 'com.android.systemui:id/home'
+      - evalScript: ${output.counter = output.counter + 1}
+      - evalScript: ${output.msg = 'test' + output.counter}
+      - runScript:
+          file: ../scripts/send-message.js
+          env:
+            msg: ${output.msg}
+      - openLink: ${'rocketchat://room?host=HOST&rid=RID&messageId=' + output.messageId}
+      - assertVisible: ${output.msg}
