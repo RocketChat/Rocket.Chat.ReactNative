@@ -24,7 +24,7 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	const { fontScale } = useWindowDimensions();
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
-	const fontScaleLimited = isLargeFontScale ? 1.3 : fontScale;
+	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
 	const rowHeight = BASE_ROW_HEIGHT * fontScale;
 	const rowHeightCondensed = BASE_ROW_HEIGHT_CONDENSED * fontScale;
 
