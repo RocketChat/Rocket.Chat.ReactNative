@@ -41,6 +41,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Echo Version Code
+      run: |
+        echo "Version Code: ${{ github.run_number }}"
+      shell: bash
+
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1
       with:
