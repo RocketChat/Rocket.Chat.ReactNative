@@ -54,3 +54,4 @@ runs:
       working-directory: android
       run: |
         bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
+      shell: bash
