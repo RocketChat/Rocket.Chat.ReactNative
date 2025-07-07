@@ -1,0 +1,39 @@
+appId: chat.rocket.reactnative
+---
+# Ensure we are on the rooms list screen
+- assertVisible:
+    id: "rooms-list-view"
+
+# Try to check if the room is already visible (within 2 seconds)
+- extendedWaitUntil:
+    visible:
+      id: "rooms-list-view-item-${ROOM_NAME}"
+    timeout: 2000
+
+- assertVisible:
+    id: "rooms-list-view-item-${ROOM_NAME}"
+
+# If room is not visible in 2 seconds, search for it
+- runFlow:
+    when: 
+       visible:
+          id: "rooms-list-view-item-${ROOM_NAME}"
+    commands:
+       - tapOn:
+          id: "rooms-list-view-search"
+       - tapOn:
+          id: "rooms-list-view-search-input"
+       - inputText:
+            text: " "
+
+       - inputText:
+            text: "${ROOM_NAME}"
+            
+- extendedWaitUntil:
+    visible:
+      id: "rooms-list-view-item-${ROOM_NAME}"
+    timeout: 10000
+
+
+- assertVisible:
+    id: "rooms-list-view-item-${ROOM_NAME}"
