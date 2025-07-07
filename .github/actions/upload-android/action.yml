@@ -53,5 +53,4 @@ runs:
     - name: Fastlane Play Store Upload
       working-directory: android
       run: |
-        bundle exec fastlane android internal_app_sharing
-      shell: bash
+        bundle exec fastlane android beta official:${{ inputs.type == 'official' }}

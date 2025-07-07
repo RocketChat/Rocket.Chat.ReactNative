@@ -100,9 +100,15 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
       
-      - name: Upload Android
+      - name: Upload Internal Sharing
         uses: ./.github/actions/upload-internal-android
         with:
           type: experimental
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
+
+      - name: Upload To Play Store
+        uses: ./.github/actions/upload-android
+        with:
+          type: experimental
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+        
