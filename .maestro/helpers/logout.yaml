@@ -1,0 +1,27 @@
+appId: chat.rocket.reactnative
+---
+
+- runFlow:
+    when: 
+       visible: 
+          id: "rooms-list-view-sidebar"
+    commands:
+        - tapOn:
+           id: "rooms-list-view-sidebar"
+        - assertVisible:
+             id: "sidebar-settings"
+
+        - tapOn:
+            id: "sidebar-settings"
+  
+        - assertVisible:
+              id: "settings-logout"
+
+        - tapOn:
+             id: "settings-logout"   
+- runFlow:
+    when: 
+       visible: "Logout"
+    commands:
+      - tapOn:
+          point: "67%,57%"
