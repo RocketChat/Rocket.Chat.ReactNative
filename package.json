@@ -96,7 +96,7 @@
 		"react-native-bootsplash": "^6.3.8",
 		"react-native-config-reader": "4.1.1",
 		"react-native-console-time-polyfill": "1.2.3",
-		"react-native-device-info": "^11.1.0",
+		"react-native-device-info": "11.1.0",
 		"react-native-easy-grid": "0.2.2",
 		"react-native-easy-toast": "2.3.0",
 		"react-native-file-viewer": "2.1.4",
