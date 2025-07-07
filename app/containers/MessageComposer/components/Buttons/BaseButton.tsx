@@ -14,10 +14,10 @@ export interface IBaseButton {
 }
 
 export const hitSlop = {
-	top: 16,
-	right: 16,
-	bottom: 16,
-	left: 16
+	top: 10,
+	right: 10,
+	bottom: 10,
+	left: 10
 };
 
 export const BaseButton = ({ accessibilityLabel, icon, color, testID, onPress }: IBaseButton) => {
