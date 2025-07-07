@@ -62,10 +62,10 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.infoText = props.route?.params?.infoText ?? '';
+		this.infoText = props.route?.params?.infoText || '';
 		this.nextAction = props.route?.params?.nextAction;
-		this.showAlert = props.route?.params?.showAlert ?? (() => {});
-		this.isSearch = props.route?.params?.isSearch ?? false;
+		this.showAlert = props.route?.params?.showAlert || (() => {});
+		this.isSearch = props.route?.params?.isSearch || false;
 		this.onSearch = props.route?.params?.onSearch;
 		this.isRadio = props.route?.params?.isRadio;
 		this.state = {
