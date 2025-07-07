@@ -45,15 +45,9 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		encryptionEnabled: state.encryption.enabled
 	}));
 	const [randomValue, setRandomValue] = useState<string>('');
-	const [t, setT] = useState(false);
-	const [readOnly, setReadOnly] = useState(false);
-	const [reactWhenReadOnly, setReactWhenReadOnly] = useState<boolean | undefined>(false);
-	const [archived, setArchived] = useState<boolean | undefined>(false);
-	const [systemMessages, setSystemMessages] = useState<string[]>([]);
-	const [enableSysMes, setEnableSysMes] = useState(false);
-	const [encrypted, setEncrypted] = useState<boolean | undefined>(false);
 	const {
 		control,
+		watch,
 		clearErrors,
 		setFocus,
 		setError,
@@ -67,29 +61,36 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 			announcement: '',
 			description: '',
 			joinCode: '',
-			radomValue: ''
+			t: false,
+			ro: false,
+			reactWhenReadOnly: false,
+			readOnly: false,
+			systemMessages: [] as string[],
+			enableSysMes: false,
+			encrypted: false,
+			archived: false
 		}
 	});
 
 	const initializeRoomState = (room: ISubscription) => {
-		const newRandomValue = random(15);
-		setRandomValue(newRandomValue);
-
 		const { description, topic, announcement, t, ro, reactWhenReadOnly, joinCodeRequired, encrypted } = room;
 		const sysMes = room.sysMes as string[];
+		const newRandomValue = random(15);
+
+		setRandomValue(newRandomValue);
+		setValue('archived', room.archived);
 		setValue('name', getRoomTitle(room));
 		setValue('description', description || '');
 		setValue('topic', topic || '');
 		setValue('announcement', announcement || '');
 		setValue('joinCode', joinCodeRequired ? newRandomValue : '');
-		setT(t !== 'p');
-		setReadOnly(ro);
-		setReactWhenReadOnly(reactWhenReadOnly);
-		setArchived(room.archived);
-		setSystemMessages(sysMes);
-		setEnableSysMes(sysMes && sysMes.length > 0);
-		setEncrypted(encrypted);
+		setValue('t', t !== 'p');
+		setValue('readOnly', ro);
+		setValue('systemMessages', sysMes);
+		setValue('reactWhenReadOnly', !!reactWhenReadOnly);
+		setValue('encrypted', !!encrypted);
 	};
+	const { archived, enableSysMes, encrypted, reactWhenReadOnly, readOnly, systemMessages, t } = watch();
 	const { room } = useRoomSubscription({
 		rid: route.params?.rid,
 		initializeRoomState
@@ -250,7 +251,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		return (
 			<MultiSelect
 				options={MESSAGE_TYPE_VALUES}
-				onChange={({ value }) => setSystemMessages(value)}
+				onChange={({ value }) => setValue('systemMessages', value)}
 				placeholder={{ text: I18n.t('Hide_System_Messages') }}
 				value={values}
 				context={BlockContext.FORM}
@@ -265,29 +266,29 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	const toggleRoomType = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ROOM_TYPE);
-		setT(value);
-		setEncrypted(value && encrypted);
+		setValue('t', value);
+		setValue('encrypted', value && encrypted);
 	};
 
 	const toggleReadOnly = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_READ_ONLY);
-		setReadOnly(value);
+		setValue('readOnly', value);
 	};
 
 	const toggleReactions = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_REACTIONS);
-		setReactWhenReadOnly(value);
+		setValue('reactWhenReadOnly', value);
 	};
 
 	const toggleHideSystemMessages = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_SYSTEM_MSG);
-		setEnableSysMes(value);
-		setSystemMessages(value ? systemMessages : []);
+		setValue('enableSysMes', value);
+		setValue('systemMessages', value ? systemMessages : []);
 	};
 
 	const toggleEncrypted = (value: boolean) => {
 		logEvent(events.RI_EDIT_TOGGLE_ENCRYPTED);
-		setEncrypted(value);
+		setValue('encrypted', value);
 	};
 
 	const onResetPress = () => {
