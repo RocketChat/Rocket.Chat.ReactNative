@@ -79,7 +79,6 @@ jobs:
         with:
           type: experimental
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
 
   upload-internal:
     name: Internal Sharing
@@ -105,10 +104,3 @@ jobs:
         with:
           type: experimental
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-
-      - name: Upload To Play Store
-        uses: ./.github/actions/upload-android
-        with:
-          type: experimental
-          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-        
