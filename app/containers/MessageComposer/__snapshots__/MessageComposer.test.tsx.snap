@@ -9458,11 +9458,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#156FF5",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -9552,11 +9552,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -9646,11 +9646,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -9740,11 +9740,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -9834,11 +9834,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -9928,11 +9928,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -10022,11 +10022,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -10116,11 +10116,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -10210,11 +10210,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -10304,11 +10304,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
                     [
                       {
                         "color": "#6C727A",
-                        "fontSize": 48,
+                        "fontSize": NaN,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": NaN,
                         },
                         {
                           "paddingVertical": 4,
@@ -10847,11 +10847,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 48,
+                  "fontSize": NaN,
                 },
                 [
                   {
-                    "lineHeight": 48,
+                    "lineHeight": NaN,
                   },
                   undefined,
                 ],
@@ -10919,11 +10919,11 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 48,
+                  "fontSize": NaN,
                 },
                 [
                   {
-                    "lineHeight": 48,
+                    "lineHeight": NaN,
                   },
                   undefined,
                 ],
