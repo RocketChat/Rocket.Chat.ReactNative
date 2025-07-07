@@ -102,7 +102,7 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 		deleteTeamPermission
 	] = usePermissions(
 		['set-readonly', 'set-react-when-readonly', 'archive-room', 'unarchive-room', 'delete-c', 'delete-p', 'delete-team'],
-		room.id
+		route.params?.rid
 	);
 
 	const { deleteTeam, deleteRoom } = useRoomDeletionActions({
