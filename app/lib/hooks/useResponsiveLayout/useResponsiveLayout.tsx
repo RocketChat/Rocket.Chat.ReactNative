@@ -3,6 +3,8 @@ import { useWindowDimensions } from 'react-native';
 
 interface IResponsiveLayoutContextData {
 	fontScale: number;
+	width: number;
+	height: number;
 	isLargeFontScale: boolean;
 	fontScaleLimited: number;
 	rowHeight: number;
@@ -21,7 +23,7 @@ export const BASE_ROW_HEIGHT_CONDENSED = 60;
 
 const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProps) => {
 	// `fontScale` is the current font scaling value of the device.
-	const { fontScale } = useWindowDimensions();
+	const { fontScale, width, height } = useWindowDimensions();
 	const isLargeFontScale = fontScale > FONT_SCALE_LIMIT;
 	// `fontScaleLimited` applies the `FONT_SCALE_LIMIT` to prevent layout issues on large font sizes.
 	const fontScaleLimited = isLargeFontScale ? FONT_SCALE_LIMIT : fontScale;
@@ -29,7 +31,8 @@ const ResponsiveLayoutProvider = ({ children }: IResponsiveFontScaleProviderProp
 	const rowHeightCondensed = BASE_ROW_HEIGHT_CONDENSED * fontScale;
 
 	return (
-		<ResponsiveLayoutContext.Provider value={{ fontScale, isLargeFontScale, fontScaleLimited, rowHeight, rowHeightCondensed }}>
+		<ResponsiveLayoutContext.Provider
+			value={{ fontScale, width, height, isLargeFontScale, fontScaleLimited, rowHeight, rowHeightCondensed }}>
 			{children}
 		</ResponsiveLayoutContext.Provider>
 	);
