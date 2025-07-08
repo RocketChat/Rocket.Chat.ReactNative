@@ -8310,10 +8310,10 @@ expo-video-thumbnails@9.1.2:
   resolved "https://registry.yarnpkg.com/expo-video-thumbnails/-/expo-video-thumbnails-9.1.2.tgz#43b2b5f972da68be958f961544186e7593e713fc"
   integrity sha512-4D/cu4uM80nO6lOvf4w4VuBHX7gvzbSiRM/mEcGRIe4L18b1ASeDp2jkXSphpk/5rerARa7+y8wq1YQcsiDF7A==
 
-expo-web-browser@14.1.5:
-  version "14.1.5"
-  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-14.1.5.tgz#1f36c3c6d89a51cb669e4597231dc3490cb81dbd"
-  integrity sha512-SNKjWwLzpXLH+JwGyUI0FX5kIdn0vS+taJafRtRIWuFz3lPjQ8xaCI6AXVPhDne8Eb32++RxCZZCKX1dTuM+CA==
+expo-web-browser@14.2.0:
+  version "14.2.0"
+  resolved "https://registry.yarnpkg.com/expo-web-browser/-/expo-web-browser-14.2.0.tgz#d8fb521ae349aebbf5c0ca32448877480124c06c"
+  integrity sha512-6S51d8pVlDRDsgGAp8BPpwnxtyKiMWEFdezNz+5jVIyT+ctReW42uxnjRgtsdn5sXaqzhaX+Tzk/CWaKCyC0hw==
 
 expo@53:
   version "53.0.7"
