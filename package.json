@@ -122,7 +122,7 @@
 		"react-native-reanimated": "^3.17.1",
 		"react-native-restart": "0.0.22",
 		"react-native-safe-area-context": "^5.4.0",
-		"react-native-screens": "^4.9.2",
+		"react-native-screens": "^4.11.1",
 		"react-native-simple-crypto": "RocketChat/react-native-simple-crypto#fix.6.1.0",
 		"react-native-skeleton-placeholder": "5.2.4",
 		"react-native-slowlog": "1.0.2",
