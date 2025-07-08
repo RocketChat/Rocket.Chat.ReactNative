@@ -85,6 +85,7 @@ runs:
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
       env:
         GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      shell: bash
 
     - name: Set gradle.properties
       working-directory: android
