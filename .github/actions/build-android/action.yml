@@ -43,7 +43,7 @@ runs:
   steps:
     - name: Echo Version Code
       run: |
-        echo "Version Code: ${{ github.run_number }}"
+        echo "Version Code: ${{ github.run_id }}"
       shell: bash
 
     - name: Set up Ruby and Bundler
@@ -89,7 +89,7 @@ runs:
         echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> android/gradle.properties
         echo -e "newArchEnabled=false" >> android/gradle.properties
         echo -e "hermesEnabled=true" >> android/gradle.properties
-        echo -e "VERSIONCODE=${{ github.run_number }}" >> android/gradle.properties
+        echo -e "VERSIONCODE=${{ github.run_id }}" >> android/gradle.properties
 
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> android/gradle.properties
