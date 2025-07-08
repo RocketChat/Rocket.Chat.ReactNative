@@ -17,6 +17,10 @@ function replace(name: string, params: any) {
 	navigationRef.current?.dispatch(StackActions.replace(name, params));
 }
 
+function popTo(name: string) {
+	navigationRef.current?.dispatch(StackActions.popTo(name));
+}
+
 function popToTop() {
 	navigationRef.current?.dispatch(StackActions.popToTop());
 }
@@ -38,13 +42,19 @@ function resetTo(screen = 'RoomView') {
 	});
 }
 
+function getCurrentRoute() {
+	return navigationRef.current?.getCurrentRoute();
+}
+
 export default {
 	navigationRef,
 	routeNameRef,
 	navigate,
 	back,
 	replace,
+	popTo,
 	popToTop,
 	dispatch,
-	resetTo
+	resetTo,
+	getCurrentRoute
 };
