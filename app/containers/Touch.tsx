@@ -1,6 +1,6 @@
 import React from 'react';
 import { RectButton, RectButtonProps } from 'react-native-gesture-handler';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 
 import { useTheme } from '../theme';
 
@@ -9,10 +9,11 @@ export interface ITouchProps extends RectButtonProps {
 	accessible?: boolean;
 	accessibilityLabel?: string;
 	testID?: string;
+	rectButtonStyle?: StyleProp<ViewStyle>;
 }
 
 const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>(
-	({ children, onPress, underlayColor, accessible, accessibilityLabel, style, ...props }, ref) => {
+	({ children, onPress, underlayColor, accessible, accessibilityLabel, style, rectButtonStyle, ...props }, ref) => {
 		const { colors } = useTheme();
 		// The background color must be applied to the RectButton, not the View.
 		// If set on the View, the touch opacity animation won't work properly.
@@ -51,7 +52,7 @@ const Touch = React.forwardRef<React.ElementRef<typeof RectButton>, ITouchProps>
 				activeOpacity={1}
 				underlayColor={underlayColor || colors.surfaceNeutral}
 				rippleColor={colors.surfaceNeutral}
-				style={{ ...marginStyles, backgroundColor, borderRadius }}
+				style={[rectButtonStyle, marginStyles, { backgroundColor, borderRadius }]}
 				{...props}>
 				<View accessible={accessible} accessibilityLabel={accessibilityLabel} style={viewStyle}>
 					{children}
