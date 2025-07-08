@@ -9,17 +9,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#158D65",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -42,17 +42,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#D40C26",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -75,17 +75,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#AC892F",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -108,17 +108,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#6C727A",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -141,17 +141,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#F38C39",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -174,17 +174,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#6C727A",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -207,17 +207,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#6C727A",
-          "fontSize": NaN,
+          "fontSize": 32,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 32,
           },
           [
             {
-              "height": 64,
+              "height": 32,
               "textAlignVertical": "center",
-              "width": 64,
+              "width": 32,
             },
             undefined,
           ],
@@ -240,17 +240,17 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
       [
         {
           "color": "#158D65",
-          "fontSize": NaN,
+          "fontSize": 60,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 60,
           },
           [
             {
-              "height": 120,
+              "height": 60,
               "textAlignVertical": "center",
-              "width": 120,
+              "width": 60,
             },
             undefined,
           ],

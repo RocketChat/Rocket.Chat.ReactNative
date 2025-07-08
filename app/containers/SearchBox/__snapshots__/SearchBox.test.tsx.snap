@@ -90,11 +90,11 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": NaN,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": NaN,
+                    "lineHeight": 20,
                   },
                   [
                     {

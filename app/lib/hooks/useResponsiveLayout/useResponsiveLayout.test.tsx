@@ -4,10 +4,7 @@ import { Text, useWindowDimensions } from 'react-native';
 
 import ResponsiveLayoutProvider, { useResponsiveLayout, FONT_SCALE_LIMIT } from './useResponsiveLayout';
 
-jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
-	__esModule: true,
-	default: jest.fn()
-}));
+jest.unmock('./useResponsiveLayout');
 
 describe('ResponsiveLayoutProvider', () => {
 	const renderWithFontScale = (fontScale: number) => {

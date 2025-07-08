@@ -403,17 +403,17 @@ exports[`Story Snapshots: Children should match snapshot 1`] = `
       [
         {
           "color": "#D40C26",
-          "fontSize": NaN,
+          "fontSize": 24,
         },
         [
           {
-            "lineHeight": NaN,
+            "lineHeight": 24,
           },
           [
             {
-              "height": 48,
+              "height": 24,
               "textAlignVertical": "center",
-              "width": 48,
+              "width": 24,
             },
             [
               {

@@ -17833,7 +17833,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -17849,12 +17849,12 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
                 <ViewManagerAdapter_ExpoImage
                   containerViewRef={"[React.ref]"}
@@ -17865,7 +17865,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -17881,12 +17881,12 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
                 <ViewManagerAdapter_ExpoImage
                   containerViewRef={"[React.ref]"}
@@ -17897,7 +17897,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -17913,12 +17913,12 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
               </View>
             </View>
@@ -18201,7 +18201,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -18217,12 +18217,12 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
               </View>
             </View>
@@ -18524,7 +18524,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -18540,12 +18540,12 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
               </View>
             </View>
@@ -19810,7 +19810,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -19826,12 +19826,12 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
                 <ViewManagerAdapter_ExpoImage
                   containerViewRef={"[React.ref]"}
@@ -19842,7 +19842,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -19858,12 +19858,12 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
                 <ViewManagerAdapter_ExpoImage
                   containerViewRef={"[React.ref]"}
@@ -19874,7 +19874,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -19890,12 +19890,12 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
               </View>
             </View>
@@ -20178,7 +20178,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -20194,12 +20194,12 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
               </View>
             </View>
@@ -20501,7 +20501,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={60}
+                  height={30}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -20517,12 +20517,12 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 60,
-                      "width": 60,
+                      "height": 30,
+                      "width": 30,
                     }
                   }
                   transition={null}
-                  width={60}
+                  width={30}
                 />
               </View>
             </View>
@@ -21939,7 +21939,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -22037,7 +22037,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -22158,7 +22158,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -22256,7 +22256,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -25488,7 +25488,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -25586,7 +25586,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -25707,7 +25707,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -25805,7 +25805,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -48153,7 +48153,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             "top": "50%",
                           }
                         }
-                        height={30}
+                        height={15}
                         nativeViewRef={"[React.ref]"}
                         onError={[Function]}
                         onLoad={[Function]}
@@ -48169,12 +48169,12 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         }
                         style={
                           {
-                            "height": 30,
-                            "width": 30,
+                            "height": 15,
+                            "width": 15,
                           }
                         }
                         transition={null}
-                        width={30}
+                        width={15}
                       />
                     </Text>
                   </Text>
@@ -49247,7 +49247,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                               "top": "50%",
                             }
                           }
-                          height={30}
+                          height={15}
                           nativeViewRef={"[React.ref]"}
                           onError={[Function]}
                           onLoad={[Function]}
@@ -49263,12 +49263,12 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                           }
                           style={
                             {
-                              "height": 30,
-                              "width": 30,
+                              "height": 15,
+                              "width": 15,
                             }
                           }
                           transition={null}
-                          width={30}
+                          width={15}
                         />
                         <Text
                           accessibilityLabel=" ?"
@@ -50369,7 +50369,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                             "top": "50%",
                           }
                         }
-                        height={30}
+                        height={15}
                         nativeViewRef={"[React.ref]"}
                         onError={[Function]}
                         onLoad={[Function]}
@@ -50385,12 +50385,12 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         }
                         style={
                           {
-                            "height": 30,
-                            "width": 30,
+                            "height": 15,
+                            "width": 15,
                           }
                         }
                         transition={null}
-                        width={30}
+                        width={15}
                       />
                     </Text>
                   </Text>
@@ -51463,7 +51463,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                               "top": "50%",
                             }
                           }
-                          height={30}
+                          height={15}
                           nativeViewRef={"[React.ref]"}
                           onError={[Function]}
                           onLoad={[Function]}
@@ -51479,12 +51479,12 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                           }
                           style={
                             {
-                              "height": 30,
-                              "width": 30,
+                              "height": 15,
+                              "width": 15,
                             }
                           }
                           transition={null}
-                          width={30}
+                          width={15}
                         />
                         <Text
                           accessibilityLabel=" ?"
@@ -57898,7 +57898,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -57996,7 +57996,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -58117,7 +58117,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -58215,7 +58215,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -58313,7 +58313,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -58727,7 +58727,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -58848,7 +58848,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -58969,7 +58969,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -59090,7 +59090,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -59188,7 +59188,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -59286,7 +59286,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -59384,7 +59384,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -59482,7 +59482,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -59580,7 +59580,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60007,7 +60007,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60105,7 +60105,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60226,7 +60226,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60324,7 +60324,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60422,7 +60422,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60836,7 +60836,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -60957,7 +60957,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61078,7 +61078,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61199,7 +61199,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61297,7 +61297,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61395,7 +61395,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61493,7 +61493,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61591,7 +61591,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#1D74F5",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -61689,7 +61689,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                       },
                       {
                         "borderColor": "#CBCED1",
-                        "height": 56,
+                        "height": 28,
                       },
                     ]
                   }
@@ -82630,7 +82630,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                         "top": "50%",
                       }
                     }
-                    height={30}
+                    height={15}
                     nativeViewRef={"[React.ref]"}
                     onError={[Function]}
                     onLoad={[Function]}
@@ -82646,12 +82646,12 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "height": 30,
-                        "width": 30,
+                        "height": 15,
+                        "width": 15,
                       }
                     }
                     transition={null}
-                    width={30}
+                    width={15}
                   />
                 </Text>
               </Text>
@@ -84407,7 +84407,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                         "top": "50%",
                       }
                     }
-                    height={30}
+                    height={15}
                     nativeViewRef={"[React.ref]"}
                     onError={[Function]}
                     onLoad={[Function]}
@@ -84423,12 +84423,12 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "height": 30,
-                        "width": 30,
+                        "height": 15,
+                        "width": 15,
                       }
                     }
                     transition={null}
-                    width={30}
+                    width={15}
                   />
                 </Text>
               </Text>
@@ -86208,7 +86208,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -86224,12 +86224,12 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -87958,7 +87958,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -87974,12 +87974,12 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -89907,7 +89907,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -89923,12 +89923,12 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -90182,7 +90182,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -90198,12 +90198,12 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -90667,7 +90667,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -90683,12 +90683,12 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -90961,7 +90961,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -90977,12 +90977,12 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -91787,7 +91787,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         "top": "50%",
                       }
                     }
-                    height={30}
+                    height={15}
                     nativeViewRef={"[React.ref]"}
                     onError={[Function]}
                     onLoad={[Function]}
@@ -91803,12 +91803,12 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "height": 30,
-                        "width": 30,
+                        "height": 15,
+                        "width": 15,
                       }
                     }
                     transition={null}
-                    width={30}
+                    width={15}
                   />
                 </Text>
               </Text>
@@ -92282,7 +92282,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         "top": "50%",
                       }
                     }
-                    height={30}
+                    height={15}
                     nativeViewRef={"[React.ref]"}
                     onError={[Function]}
                     onLoad={[Function]}
@@ -92298,12 +92298,12 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "height": 30,
-                        "width": 30,
+                        "height": 15,
+                        "width": 15,
                       }
                     }
                     transition={null}
-                    width={30}
+                    width={15}
                   />
                 </Text>
               </Text>
@@ -93240,7 +93240,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                         "top": "50%",
                       }
                     }
-                    height={30}
+                    height={15}
                     nativeViewRef={"[React.ref]"}
                     onError={[Function]}
                     onLoad={[Function]}
@@ -93256,12 +93256,12 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "height": 30,
-                        "width": 30,
+                        "height": 15,
+                        "width": 15,
                       }
                     }
                     transition={null}
-                    width={30}
+                    width={15}
                   />
                 </Text>
               </Text>
@@ -93735,7 +93735,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                         "top": "50%",
                       }
                     }
-                    height={30}
+                    height={15}
                     nativeViewRef={"[React.ref]"}
                     onError={[Function]}
                     onLoad={[Function]}
@@ -93751,12 +93751,12 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     }
                     style={
                       {
-                        "height": 30,
-                        "width": 30,
+                        "height": 15,
+                        "width": 15,
                       }
                     }
                     transition={null}
-                    width={30}
+                    width={15}
                   />
                 </Text>
               </Text>
@@ -94229,7 +94229,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -94245,12 +94245,12 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>
@@ -95089,7 +95089,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                       "top": "50%",
                     }
                   }
-                  height={30}
+                  height={15}
                   nativeViewRef={"[React.ref]"}
                   onError={[Function]}
                   onLoad={[Function]}
@@ -95105,12 +95105,12 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                   }
                   style={
                     {
-                      "height": 30,
-                      "width": 30,
+                      "height": 15,
+                      "width": 15,
                     }
                   }
                   transition={null}
-                  width={30}
+                  width={15}
                 />
               </Text>
             </Text>

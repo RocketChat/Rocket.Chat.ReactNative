@@ -261,11 +261,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -318,11 +318,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -409,11 +409,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -692,11 +692,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -749,11 +749,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -840,11 +840,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1123,11 +1123,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1180,11 +1180,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1271,11 +1271,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1541,11 +1541,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1598,11 +1598,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1689,11 +1689,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -1976,11 +1976,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2033,11 +2033,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2124,11 +2124,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2391,11 +2391,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2448,11 +2448,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2539,11 +2539,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2806,11 +2806,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2863,11 +2863,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -2954,11 +2954,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3221,11 +3221,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3278,11 +3278,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3369,11 +3369,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3636,11 +3636,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3693,11 +3693,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3784,11 +3784,11 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4087,11 +4087,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4144,11 +4144,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4235,11 +4235,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4505,11 +4505,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4562,11 +4562,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4653,11 +4653,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4923,11 +4923,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4980,11 +4980,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -5071,11 +5071,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": NaN,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": NaN,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],

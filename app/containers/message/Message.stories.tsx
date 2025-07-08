@@ -39,7 +39,9 @@ const responsiveLayoutProviderLargeFontValue = {
 	fontScaleLimited: FONT_SCALE_LIMIT,
 	isLargeFontScale: true,
 	rowHeight: BASE_ROW_HEIGHT * FONT_SCALE_LIMIT,
-	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * FONT_SCALE_LIMIT
+	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * FONT_SCALE_LIMIT,
+	width: 350,
+	height: 800
 };
 
 const getCustomEmoji = (content: string) => {

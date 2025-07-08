@@ -1307,8 +1307,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#9EA2A8",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -1998,8 +1998,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#9EA2A8",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -2689,8 +2689,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F5455C",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -3380,8 +3380,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F38C39",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -4071,8 +4071,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -4762,8 +4762,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F5455C",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -5453,8 +5453,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F38C39",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -6144,8 +6144,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F5455C",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -6835,8 +6835,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#F38C39",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -7526,8 +7526,8 @@ exports[`Story Snapshots: Alerts should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -8861,8 +8861,8 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -9552,8 +9552,8 @@ exports[`Story Snapshots: CondensedRoomItem should match snapshot 1`] = `
                           },
                           {
                             "backgroundColor": "#9EA2A8",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -10864,8 +10864,8 @@ exports[`Story Snapshots: CondensedRoomItemWithoutAvatar should match snapshot 1
                           },
                           {
                             "backgroundColor": "#095AD2",
-                            "borderRadius": 21,
-                            "minWidth": 42,
+                            "borderRadius": 10.5,
+                            "minWidth": 21,
                           },
                           undefined,
                         ]
@@ -12747,8 +12747,8 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         },
                         {
                           "backgroundColor": "#095AD2",
-                          "borderRadius": 21,
-                          "minWidth": 42,
+                          "borderRadius": 10.5,
+                          "minWidth": 21,
                         },
                         undefined,
                       ]
@@ -13428,8 +13428,8 @@ exports[`Story Snapshots: ExpandedRoomItemWithoutAvatar should match snapshot 1`
                         },
                         {
                           "backgroundColor": "#095AD2",
-                          "borderRadius": 21,
-                          "minWidth": 42,
+                          "borderRadius": 10.5,
+                          "minWidth": 21,
                         },
                         undefined,
                       ]
@@ -17464,8 +17464,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         },
                         {
                           "backgroundColor": "#9EA2A8",
-                          "borderRadius": 21,
-                          "minWidth": 42,
+                          "borderRadius": 10.5,
+                          "minWidth": 21,
                         },
                         undefined,
                       ]
@@ -18186,8 +18186,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         },
                         {
                           "backgroundColor": "#9EA2A8",
-                          "borderRadius": 21,
-                          "minWidth": 42,
+                          "borderRadius": 10.5,
+                          "minWidth": 21,
                         },
                         undefined,
                       ]
@@ -18908,8 +18908,8 @@ exports[`Story Snapshots: LastMessage should match snapshot 1`] = `
                         },
                         {
                           "backgroundColor": "#095AD2",
-                          "borderRadius": 21,
-                          "minWidth": 42,
+                          "borderRadius": 10.5,
+                          "minWidth": 21,
                         },
                         undefined,
                       ]
@@ -29268,9 +29268,9 @@ exports[`Story Snapshots: Type should match snapshot 1`] = `
                           },
                           [
                             {
-                              "height": 44,
+                              "height": 22,
                               "textAlignVertical": "center",
-                              "width": 44,
+                              "width": 22,
                             },
                             [
                               {
@@ -33732,9 +33732,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                           },
                           [
                             {
-                              "height": 44,
+                              "height": 22,
                               "textAlignVertical": "center",
-                              "width": 44,
+                              "width": 22,
                             },
                             [
                               {
@@ -34375,9 +34375,9 @@ exports[`Story Snapshots: User should match snapshot 1`] = `
                           },
                           [
                             {
-                              "height": 44,
+                              "height": 22,
                               "textAlignVertical": "center",
-                              "width": 44,
+                              "width": 22,
                             },
                             [
                               {
