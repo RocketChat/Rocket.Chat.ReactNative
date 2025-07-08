@@ -77,6 +77,15 @@ runs:
         fi
       shell: bash
 
+    - name: Generate Version Code
+      id: generate-version-code
+      run: |
+        CIRCLE_CI_OFFSET=68000
+        VERSIONCODE=$((CIRCLE_CI_OFFSET + GITHUB_RUN_NUMBER))
+        echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_RUN_NUMBER: ${{ github.run_number }}
+
     - name: Set gradle.properties
       working-directory: android
       run: |
@@ -86,7 +95,7 @@ runs:
         echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
         echo -e "newArchEnabled=false" >> ./gradle.properties
         echo -e "hermesEnabled=true" >> ./gradle.properties
-        echo -e "VERSIONCODE=${{ github.run_id }}" >> ./gradle.properties
+        echo -e "VERSIONCODE=${{ steps.generate-version-code.outputs.VERSIONCODE }}" >> ./gradle.properties
 
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
