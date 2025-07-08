@@ -70,10 +70,10 @@ runs:
       working-directory: android/app
       run: |
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
-          echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > ${{ inputs.KEYSTORE_EXPERIMENTAL }}
+          echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > "${{ inputs.KEYSTORE_EXPERIMENTAL }}"
         fi
         if [[ "${{ inputs.type }}" == "official" ]]; then
-          echo "${{ inputs.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > ${{ inputs.KEYSTORE_OFFICIAL }}
+          echo "${{ inputs.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > "${{ inputs.KEYSTORE_OFFICIAL }}"
         fi
       shell: bash
 
