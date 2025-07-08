@@ -40,6 +40,12 @@ const navigate = ({
 		...props
 	};
 
+	const currentRoute = Navigation.getCurrentRoute() as any;
+	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid) {
+		Navigation.navigate('RoomView', routeParams);
+		return;
+	}
+
 	if (isMasterDetail) {
 		if (popToRoot) {
 			Navigation.navigate('DrawerNavigator');
