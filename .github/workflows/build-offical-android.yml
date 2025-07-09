@@ -21,14 +21,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: build-hold
+    if: ${{ inputs.type == 'official' }}
     steps:
-      - name: Validate type input
-        run: |
-          if [[ "${{ inputs.type }}" != "official" && "${{ inputs.type }}" != "experimental" ]]; then
-            echo "❌ Invalid input: 'type' must be 'official' or 'experimental'"
-            exit 1
-          fi
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -60,14 +54,8 @@ jobs:
     name: Upload
     runs-on: ubuntu-latest
     needs: [upload-hold]
+    if: ${{ inputs.type == 'official' }}
     steps:
-      - name: Validate type input
-        run: |
-          if [[ "${{ inputs.type }}" != "official" && "${{ inputs.type }}" != "experimental" ]]; then
-            echo "❌ Invalid input: 'type' must be 'official' or 'experimental'"
-            exit 1
-          fi
-
       - name: Checkout Repository
         uses: actions/checkout@v4
       
@@ -76,4 +64,21 @@ jobs:
         with:
           type: official
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
-          
+        
+  upload-internal:
+    name: Internal Sharing
+    runs-on: ubuntu-latest
+    needs: [build-android]
+    if: ${{ inputs.type == 'official' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+      
+      - name: Upload Internal Sharing
+        uses: ./.github/actions/upload-internal-android
+        with:
+          type: experimental
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
