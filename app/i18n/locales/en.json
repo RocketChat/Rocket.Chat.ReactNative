@@ -764,7 +764,7 @@
   "sending_email_confirmation": "sending email confirmation",
   "Sending_to": "Sending to",
   "Server": "Workspace",
-  "Server_version": "Workspace version: {{version}}",
+  "Server_version": "Workspace: {{version}}",
   "Set_username_subtitle": "The username is used to allow others to mention you in messages",
   "Settings": "Settings",
   "Settings_succesfully_changed": "Settings succesfully changed!",

@@ -686,7 +686,7 @@
   "sending_email_confirmation": "ईमेल पुष्टिकरण भेज रहा है",
   "Sending_to": "भेजा जा रहा है",
   "Server": "कार्यस्थान",
-  "Server_version": "कार्यस्थान संस्करण: {{version}}",
+  "Server_version": "कार्यस्थान: {{version}}",
   "Set_username_subtitle": "यह उपयोगकर्ता नाम आपको संदेशों में उल्लेख करने की अनुमति देने के लिए उपयोग किया जाता है",
   "Settings": "सेटिंग्स",
   "Settings_succesfully_changed": "सेटिंग्स सफलतापूर्वक बदल गईं!",

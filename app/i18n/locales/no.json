@@ -727,7 +727,7 @@
   "sending_email_confirmation": "sender e-postbekreftelse",
   "Sending_to": "Sender til",
   "Server": "Arbeidsområde",
-  "Server_version": "Arbeidsområde-versjon: {{version}}",
+  "Server_version": "Arbeidsområde: {{version}}",
   "Set_username_subtitle": "Brukernavnet brukes for å la andre omtale deg i meldinger",
   "Settings": "Innstillinger",
   "Settings_succesfully_changed": "Innstillinger ble endret!",

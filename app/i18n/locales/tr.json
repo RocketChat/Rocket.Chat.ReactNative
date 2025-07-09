@@ -494,7 +494,7 @@
   "Send_to": "Gönderiliyor...",
   "Sending_to": "Gönderiliyor:",
   "Server": "Sunucu",
-  "Server_version": "Sunucu versiyonu: {{version}}",
+  "Server_version": "Sunucu: {{version}}",
   "Set_username_subtitle": "Kullanıcı adı başkalarının iletilerde sizden bahsetmesine izin vermek için kullanılır",
   "Settings": "Ayarlar",
   "Settings_succesfully_changed": "Ayarlar başarıyla değiştirildi!",
