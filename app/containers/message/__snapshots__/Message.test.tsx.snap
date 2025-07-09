@@ -25044,6 +25044,17 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             
                           </Text>
                         </View>
+                        <View
+                          style={
+                            {
+                              "bottom": 8,
+                              "flexDirection": "row",
+                              "gap": 8,
+                              "position": "absolute",
+                              "right": 8,
+                            }
+                          }
+                        />
                       </View>
                     </View>
                   </View>
@@ -25700,6 +25711,17 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                             
                           </Text>
                         </View>
+                        <View
+                          style={
+                            {
+                              "bottom": 8,
+                              "flexDirection": "row",
+                              "gap": 8,
+                              "position": "absolute",
+                              "right": 8,
+                            }
+                          }
+                        />
                       </View>
                     </View>
                   </View>
@@ -45620,6 +45642,17 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                       
                     </Text>
                   </View>
+                  <View
+                    style={
+                      {
+                        "bottom": 8,
+                        "flexDirection": "row",
+                        "gap": 8,
+                        "position": "absolute",
+                        "right": 8,
+                      }
+                    }
+                  />
                 </View>
               </View>
             </View>
@@ -46115,6 +46148,17 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                       
                     </Text>
                   </View>
+                  <View
+                    style={
+                      {
+                        "bottom": 8,
+                        "flexDirection": "row",
+                        "gap": 8,
+                        "position": "absolute",
+                        "right": 8,
+                      }
+                    }
+                  />
                 </View>
               </View>
             </View>
@@ -46597,6 +46641,17 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                       }
                     />
                   </View>
+                  <View
+                    style={
+                      {
+                        "bottom": 8,
+                        "flexDirection": "row",
+                        "gap": 8,
+                        "position": "absolute",
+                        "right": 8,
+                      }
+                    }
+                  />
                 </View>
               </View>
             </View>
