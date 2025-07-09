@@ -151,12 +151,12 @@ runs:
       if: ${{ inputs.type == 'experimental' }}
       uses: actions/upload-artifact@v4
       with:
-        name: android-aab
+        name: android-aab-experimental
         path: android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
 
     - name: Upload Official AAB
       if: ${{ inputs.type == 'official' }}
       uses: actions/upload-artifact@v4
       with:
-        name: android-aab-${{ inputs.type }}
+        name: android-aab-official
         path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab
