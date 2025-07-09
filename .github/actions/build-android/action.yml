@@ -41,11 +41,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Echo Version Code
-      run: |
-        echo "Version Code: ${{ github.run_number }}"
-      shell: bash
-
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1
       with:
@@ -72,48 +67,61 @@ runs:
           gradle-
     
     - name: Decode Keystore
+      working-directory: android/app
       run: |
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
-          echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > android/app/${{ inputs.KEYSTORE_EXPERIMENTAL }}
+          echo "${{ inputs.KEYSTORE_EXPERIMENTAL_BASE64 }}" | base64 -d > "${{ inputs.KEYSTORE_EXPERIMENTAL }}"
         fi
         if [[ "${{ inputs.type }}" == "official" ]]; then
-          echo "${{ inputs.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > android/app/${{ inputs.KEYSTORE_OFFICIAL }}
+          echo "${{ inputs.KEYSTORE_OFFICIAL_BASE64 }}" | base64 -d > "${{ inputs.KEYSTORE_OFFICIAL }}"
         fi
       shell: bash
 
-    - name: Set gradle.properties
+    - name: Generate Version Code
+      id: generate-version-code
       run: |
-        echo " " >> android/gradle.properties
-        echo -e "android.useAndroidX=true" >> android/gradle.properties
-        echo -e "android.enableJetifier=true" >> android/gradle.properties
-        echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> android/gradle.properties
-        echo -e "newArchEnabled=false" >> android/gradle.properties
-        echo -e "hermesEnabled=true" >> android/gradle.properties
-        echo -e "VERSIONCODE=${{ github.run_number }}" >> android/gradle.properties
+        CIRCLE_CI_OFFSET=68000
+        VERSIONCODE=$((CIRCLE_CI_OFFSET + GITHUB_RUN_NUMBER))
+        echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
+      env:
+        GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      shell: bash
+
+    - name: Set gradle.properties
+      working-directory: android
+      run: |
+        echo " " >> ./gradle.properties
+        echo -e "android.useAndroidX=true" >> ./gradle.properties
+        echo -e "android.enableJetifier=true" >> ./gradle.properties
+        echo -e "reactNativeArchitectures=armeabi-v7a,arm64-v8a,x86,x86_64" >> ./gradle.properties
+        echo -e "newArchEnabled=false" >> ./gradle.properties
+        echo -e "hermesEnabled=true" >> ./gradle.properties
+        echo -e "VERSIONCODE=${{ steps.generate-version-code.outputs.VERSIONCODE }}" >> ./gradle.properties
 
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
-          echo -e "APPLICATION_ID=chat.rocket.reactnative" >> android/gradle.properties
-          echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY }}" >> android/gradle.properties
-          echo -e "KEYSTORE=${{ inputs.KEYSTORE_EXPERIMENTAL }}" >> android/gradle.properties
-          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
-          echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> android/gradle.properties
-          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> android/gradle.properties
+          echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
+          echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY }}" >> ./gradle.properties
+          echo -e "KEYSTORE=${{ inputs.KEYSTORE_EXPERIMENTAL }}" >> ./gradle.properties
+          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> ./gradle.properties
+          echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> ./gradle.properties
+          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> ./gradle.properties
         fi
 
         if [[ "${{ inputs.type }}" == "official" ]]; then
-          echo -e "APPLICATION_ID=chat.rocket.android" >> android/gradle.properties
-          echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> android/gradle.properties
-          echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> android/gradle.properties
-          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> android/gradle.properties
-          echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" >> android/gradle.properties
-          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> android/gradle.properties
+          echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
+          echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> ./gradle.properties
+          echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> ./gradle.properties
+          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> ./gradle.properties
+          echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" >> ./gradle.properties
+          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> ./gradle.properties
         fi
       shell: bash
 
     - name: Set Google Services JSON
+      working-directory: android/app
       run: |
         if [[ "${{ inputs.GOOGLE_SERVICES_ANDROID }}" ]]; then
-          echo "${{ inputs.GOOGLE_SERVICES_ANDROID }}" | base64 --decode > android/app/google-services.json
+          echo "${{ inputs.GOOGLE_SERVICES_ANDROID }}" | base64 --decode > google-services.json
         fi
       shell: bash
 
