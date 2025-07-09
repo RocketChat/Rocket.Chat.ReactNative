@@ -468,11 +468,11 @@ async function getLoginServices(server: string) {
 }
 
 function determineAuthType(services: IServices) {
-	const { name, custom, showButton = true, service } = services;
+	const { name, custom, showButton, service } = services;
 
 	const authName = name || service;
 
-	if (custom && showButton) {
+	if (custom && showButton !== false) {
 		return 'oauth_custom';
 	}
 

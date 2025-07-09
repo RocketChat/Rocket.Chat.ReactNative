@@ -110,16 +110,26 @@ const AttachmentView = (): React.ReactElement => {
 		shallowEqual
 	);
 
-	const setHeader = () => {
-		let { title } = attachment;
+	const getTitle = () => {
+		const { image_url, video_url, title_link, title } = attachment;
 
-		try {
-			if (title) {
-				title = decodeURI(title);
+		if (title) {
+			try {
+				return decodeURI(title);
+			} catch {
+				return title;
 			}
-		} catch {
-			// Do nothing
 		}
+
+		const url = image_url ?? video_url ?? title_link;
+		if (!url) return '';
+
+		const parts = url.split('/');
+		return parts.at(-1);
+	};
+
+	const setHeader = () => {
+		const title = getTitle();
 		const options = {
 			title: title || '',
 			headerLeft: () => (

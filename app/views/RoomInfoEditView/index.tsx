@@ -192,7 +192,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			description,
 			topic,
 			announcement,
-			t: t === 'p',
+			t: t !== 'p',
 			ro,
 			reactWhenReadOnly,
 			joinCode: joinCodeRequired ? this.randomValue : '',
@@ -238,7 +238,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			room.topic === topic &&
 			room.announcement === announcement &&
 			(joinCodeRequired ? this.randomValue : '') === joinCode &&
-			(room.t === 'p') === t &&
+			(room.t !== 'p') === t &&
 			room.ro === ro &&
 			room.reactWhenReadOnly === reactWhenReadOnly &&
 			dequal(sysMes, systemMessages) &&
@@ -283,8 +283,8 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 			params.roomAnnouncement = announcement;
 		}
 		// Room Type
-		if ((room.t === SubscriptionType.GROUP) !== t) {
-			params.roomType = t ? ('p' as SubscriptionType) : ('c' as SubscriptionType);
+		if ((room.t === SubscriptionType.CHANNEL) !== t) {
+			params.roomType = t ? ('c' as SubscriptionType) : ('p' as SubscriptionType);
 		}
 		// Read Only
 		if (room.ro !== ro) {
@@ -521,10 +521,7 @@ class RoomInfoEditView extends React.Component<IRoomInfoEditViewProps, IRoomInfo
 		const { serverVersion, encryptionEnabled, theme } = this.props;
 
 		return (
-			<KeyboardView
-				style={{ backgroundColor: themes[theme].surfaceRoom }}
-				contentContainerStyle={sharedStyles.container}
-				keyboardVerticalOffset={128}>
+			<KeyboardView>
 				<StatusBar />
 				<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
 					<ScrollView
