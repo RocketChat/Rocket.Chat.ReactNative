@@ -1,19 +1,21 @@
 // Replace the values below with the actual values for your server
 function postMessage() {
-  const url = 'https://HOST/api/v1/chat.postMessage';
+  const url = 'https://' + host + '/api/v1/chat.postMessage';
   const response = http.post(url, {
     headers: { 
       'Content-Type': 'application/json', 
-      'x-auth-token': 'TOKEN', 
-      'x-user-id': 'USER_ID'
+      'x-auth-token': token, 
+      'x-user-id': userId
     },
     body: JSON.stringify(
       {
-        roomId: "RID",
+        roomId: rid,
         text: msg
       }
     )
   });
+
+  console.log('response', response.body);
 
   output.messageId = JSON.parse(response.body).message._id;
 
