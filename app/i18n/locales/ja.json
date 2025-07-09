@@ -413,7 +413,7 @@
   "Send_message": "メッセージを送信",
   "Send_to": "送信先...",
   "Server": "サーバー",
-  "Server_version": "サーバーバージョン: {{version}}",
+  "Server_version": "サーバー: {{version}}",
   "Set_username_subtitle": "ユーザー名はメッセージ中であなたにメンションするのに使われます。",
   "Settings": "設定",
   "Settings_succesfully_changed": "設定が更新されました！",

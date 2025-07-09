@@ -669,7 +669,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             "top": "50%",
           }
         }
-        height={30}
+        height={15}
         nativeViewRef={"[React.ref]"}
         onError={[Function]}
         onLoad={[Function]}
@@ -685,12 +685,12 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         }
         style={
           {
-            "height": 30,
-            "width": 30,
+            "height": 15,
+            "width": 15,
           }
         }
         transition={null}
-        width={30}
+        width={15}
       />
       <Text
         accessibilityLabel=" "
@@ -718,7 +718,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             "top": "50%",
           }
         }
-        height={30}
+        height={15}
         nativeViewRef={"[React.ref]"}
         onError={[Function]}
         onLoad={[Function]}
@@ -734,12 +734,12 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         }
         style={
           {
-            "height": 30,
-            "width": 30,
+            "height": 15,
+            "width": 15,
           }
         }
         transition={null}
-        width={30}
+        width={15}
       />
       <Text
         accessibilityLabel=" "
@@ -767,7 +767,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             "top": "50%",
           }
         }
-        height={30}
+        height={15}
         nativeViewRef={"[React.ref]"}
         onError={[Function]}
         onLoad={[Function]}
@@ -783,12 +783,12 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
         }
         style={
           {
-            "height": 30,
-            "width": 30,
+            "height": 15,
+            "width": 15,
           }
         }
         transition={null}
-        width={30}
+        width={15}
       />
     </Text>
   </Text>
@@ -847,7 +847,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
           "top": "50%",
         }
       }
-      height={60}
+      height={30}
       nativeViewRef={"[React.ref]"}
       onError={[Function]}
       onLoad={[Function]}
@@ -863,12 +863,12 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
       }
       style={
         {
-          "height": 60,
-          "width": 60,
+          "height": 30,
+          "width": 30,
         }
       }
       transition={null}
-      width={60}
+      width={30}
     />
   </View>
 </View>

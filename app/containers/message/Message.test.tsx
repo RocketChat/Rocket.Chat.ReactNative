@@ -7,4 +7,6 @@ jest.mock('../../lib/methods/handleMediaDownload.ts', () => ({
 	isDownloadActive: jest.fn()
 }));
 
+jest.unmock('../../lib/hooks/useResponsiveLayout/useResponsiveLayout');
+
 generateSnapshots(stories);

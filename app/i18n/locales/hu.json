@@ -685,7 +685,7 @@
   "sending_email_confirmation": "megerősítő email  küldése",
   "Sending_to": "Küldés a",
   "Server": "Munkaterület",
-  "Server_version": "Munkaterület verzió: {{version}}",
+  "Server_version": "Munkaterület: {{version}}",
   "Set_username_subtitle": "A felhasználónév arra szolgál, hogy mások megemlíthessék Önt az üzenetekben.",
   "Settings": "Beállítások",
   "Settings_succesfully_changed": "A beállítások sikeresen megváltoztak!",

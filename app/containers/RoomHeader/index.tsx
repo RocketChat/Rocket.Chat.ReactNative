@@ -2,9 +2,9 @@ import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import { IApplicationState, TUserStatus, IOmnichannelSource, IVisitor } from '../../definitions';
-import { useDimensions } from '../../dimensions';
 import I18n from '../../i18n';
 import RoomHeader from './RoomHeader';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IRoomHeaderContainerProps {
 	title?: string;
@@ -43,7 +43,7 @@ const RoomHeaderContainer = React.memo(
 		let subtitle: string | undefined;
 		let statusVisitor: TUserStatus | undefined;
 		let statusText: string | undefined;
-		const { width, height } = useDimensions();
+		const { width, height } = useResponsiveLayout();
 
 		const connecting = useSelector((state: IApplicationState) => state.meteor.connecting || state.server.loading);
 		const usersTyping = useSelector((state: IApplicationState) => state.usersTyping, shallowEqual);
