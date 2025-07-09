@@ -91,6 +91,7 @@ describe('Create team screen', () => {
 			await waitFor(element(by.id('room-info-edit-view-delete')))
 				.toBeVisible()
 				.withTimeout(2000);
+			await sleep(300);
 			await element(by.id('room-info-edit-view-delete')).tap();
 			await waitFor(element(by[textMatcher]('Yes, delete it!')))
 				.toExist()
