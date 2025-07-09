@@ -158,5 +158,5 @@ runs:
       if: ${{ inputs.type == 'official' }}
       uses: actions/upload-artifact@v4
       with:
-        name: android-aab
+        name: android-aab-${{ inputs.type }}
         path: android/app/build/outputs/bundle/officialRelease/app-official-release.aab

@@ -15,14 +15,14 @@ runs:
       if: ${{ inputs.type == 'experimental' }}
       uses: actions/download-artifact@v4
       with:
-        name: android-aab
+        name: android-aab-experimental
         path: android/app/build/outputs/bundle/experimentalRelease/
 
     - name: Download Official AAB
       if: ${{ inputs.type == 'official' }}
       uses: actions/download-artifact@v4
       with:
-        name: android-aab
+        name: android-aab-official
         path: android/app/build/outputs/bundle/officialRelease/
 
     - name: List downloaded files
