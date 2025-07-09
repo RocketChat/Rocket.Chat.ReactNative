@@ -35,6 +35,9 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Setup tmate
+        uses: mxschmitt/action-tmate@v3
+
       - name: Build Android
         uses: ./.github/actions/build-android
         with:
