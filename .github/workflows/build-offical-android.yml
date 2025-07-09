@@ -76,3 +76,4 @@ jobs:
         with:
           type: official
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          
