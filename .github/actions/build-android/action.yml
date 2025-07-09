@@ -16,9 +16,6 @@ inputs:
   KEYSTORE_EXPERIMENTAL_PASSWORD:
     description: 'Keystore password for experimental build'
     required: true
-  KEYSTORE_EXPERIMENTAL_PASSWORD_BASE64:
-    description: 'Base64 encoded keystore password for experimental build'
-    required: true
   KEYSTORE_EXPERIMENTAL_ALIAS:
     description: 'Keystore alias for experimental build'
     required: true
@@ -34,11 +31,11 @@ inputs:
   KEYSTORE_OFFICIAL:
     description: 'Keystore file name for official build'
     required: true
-  KEYSTORE_OFFICIAL_PASSWORD:
-    description: 'Keystore password for official build'
-    required: true
   KEYSTORE_OFFICIAL_PASSWORD_BASE64:
     description: 'Base64 encoded keystore password for official build'
+    required: true
+  KEYSTORE_OFFICIAL_PASSWORD:
+    description: 'Keystore password for official build'
     required: true
   KEYSTORE_OFFICIAL_ALIAS:
     description: 'Keystore alias for official build'
@@ -108,9 +105,9 @@ runs:
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
           echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY }}" >> ./gradle.properties
           echo -e "KEYSTORE=${{ inputs.KEYSTORE_EXPERIMENTAL }}" >> ./gradle.properties
-          echo -e "KEYSTORE_PASSWORD=$(echo '${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD_BASE64 }}' | base64 -d)" >> ./gradle.properties
+          echo -e 'KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}' >> ./gradle.properties
           echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> ./gradle.properties
-          echo -e "KEY_PASSWORD=$(echo '${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD_BASE64 }}' | base64 -d)" >> ./gradle.properties
+          echo -e 'KEY_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}' >> ./gradle.properties
         fi
 
         if [[ "${{ inputs.type }}" == "official" ]]; then
@@ -118,6 +115,7 @@ runs:
           echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> ./gradle.properties
           echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> ./gradle.properties
           echo -e "KEYSTORE_PASSWORD=$(echo '${{ inputs.KEYSTORE_OFFICIAL_PASSWORD_BASE64 }}' | base64 -d)" >> ./gradle.properties
+          echo -e 'KEYSTORE_PASSWORD_TEST=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}' >> ./gradle.properties
           echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" >> ./gradle.properties
           echo -e "KEY_PASSWORD=$(echo '${{ inputs.KEYSTORE_OFFICIAL_PASSWORD_BASE64 }}' | base64 -d)" >> ./gradle.properties
         fi
