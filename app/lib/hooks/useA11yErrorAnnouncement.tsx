@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { usePrevious } from './usePrevious';
 import { useDebounce } from '../methods/helpers';
 import { textInputDebounceTime } from '../constants';
 
@@ -10,13 +9,13 @@ interface IUseA11yErrorAnnouncement {
 }
 
 const useA11yErrorAnnouncement = ({ error }: IUseA11yErrorAnnouncement) => {
-	const previousMessage = usePrevious(error);
+	const previousMessage = useRef<string>(error);
 	const announced = useRef<boolean>(false);
-	const shouldAnnounce = error && error !== previousMessage && !announced.current;
+	const shouldAnnounce = error && error !== previousMessage.current && !announced.current;
 
 	const handleA11yAnnouncement = useDebounce(() => {
 		if (shouldAnnounce) {
-			const message = error || '';
+			const message = (error || '').trim();
 			if (message) {
 				AccessibilityInfo.announceForAccessibility(message);
 				announced.current = true;
