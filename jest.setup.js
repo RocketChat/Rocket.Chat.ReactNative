@@ -107,7 +107,7 @@ jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
 		rowHeight: 75,
 		rowHeightCondensed: 60
 	})),
-	FONT_SCALE_LIMIT: 1.25
+	FONT_SCALE_LIMIT: 1.3
 }));
 
 jest.mock('./app/containers/CustomIcon', () => {
