@@ -28,6 +28,7 @@ import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
 const schema = yup.object().shape({
 	name: yup.string().email().required()
@@ -118,6 +119,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	};
 
 	// Accessibility: announce field error to screen reader
+	useA11yErrorAnnouncement({ error: errors.name?.message });
 
 	useEffect(() => {
 		if (loading === prevLoading.current) {
