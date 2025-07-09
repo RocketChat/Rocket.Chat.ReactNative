@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
@@ -114,10 +115,12 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
+	const { isLargeFontScale } = useResponsiveLayout();
+
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
+			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
 				{title}
 			</Text>
 		);

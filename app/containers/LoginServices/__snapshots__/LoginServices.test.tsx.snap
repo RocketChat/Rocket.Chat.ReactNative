@@ -321,11 +321,11 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
             [
               {
                 "color": "#2F343D",
-                "fontSize": 48,
+                "fontSize": 24,
               },
               [
                 {
-                  "lineHeight": 48,
+                  "lineHeight": 24,
                 },
                 {
                   "left": 15,
@@ -456,11 +456,11 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
             [
               {
                 "color": "#2F343D",
-                "fontSize": 48,
+                "fontSize": 24,
               },
               [
                 {
-                  "lineHeight": 48,
+                  "lineHeight": 24,
                 },
                 {
                   "left": 15,
@@ -591,11 +591,11 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
             [
               {
                 "color": "#2F343D",
-                "fontSize": 48,
+                "fontSize": 24,
               },
               [
                 {
-                  "lineHeight": 48,
+                  "lineHeight": 24,
                 },
                 {
                   "left": 15,
@@ -726,11 +726,11 @@ exports[`Story Snapshots: ServiceList should match snapshot 1`] = `
             [
               {
                 "color": "#2F343D",
-                "fontSize": 48,
+                "fontSize": 24,
               },
               [
                 {
-                  "lineHeight": 48,
+                  "lineHeight": 24,
                 },
                 {
                   "left": 15,
