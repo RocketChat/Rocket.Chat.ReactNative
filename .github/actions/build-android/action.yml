@@ -102,18 +102,18 @@ runs:
           echo -e "APPLICATION_ID=chat.rocket.reactnative" >> ./gradle.properties
           echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY }}" >> ./gradle.properties
           echo -e "KEYSTORE=${{ inputs.KEYSTORE_EXPERIMENTAL }}" >> ./gradle.properties
-          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> ./gradle.properties
+          echo -e 'KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}' | sed 's/./& /g' >> ./gradle.properties
           echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_EXPERIMENTAL_ALIAS }}" >> ./gradle.properties
-          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}" >> ./gradle.properties
+          echo -e 'KEY_PASSWORD=${{ inputs.KEYSTORE_EXPERIMENTAL_PASSWORD }}' | sed 's/./& /g' >> ./gradle.properties
         fi
 
         if [[ "${{ inputs.type }}" == "official" ]]; then
           echo -e "APPLICATION_ID=chat.rocket.android" >> ./gradle.properties
           echo -e "BugsnagAPIKey=${{ inputs.BUGSNAG_KEY_OFFICIAL }}" >> ./gradle.properties
           echo -e "KEYSTORE=${{ inputs.KEYSTORE_OFFICIAL }}" >> ./gradle.properties
-          echo -e "KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> ./gradle.properties
+          echo -e 'KEYSTORE_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}' | sed 's/./& /g' >> ./gradle.properties
           echo -e "KEY_ALIAS=${{ inputs.KEYSTORE_OFFICIAL_ALIAS }}" >> ./gradle.properties
-          echo -e "KEY_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}" >> ./gradle.properties
+          echo -e 'KEY_PASSWORD=${{ inputs.KEYSTORE_OFFICIAL_PASSWORD }}' | sed 's/./& /g' >> ./gradle.properties
         fi
       shell: bash
 
