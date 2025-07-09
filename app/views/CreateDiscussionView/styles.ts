@@ -4,7 +4,6 @@ import sharedStyles from '../Styles';
 
 export default StyleSheet.create({
 	container: {
-		flex: 1,
 		paddingHorizontal: 16,
 		paddingVertical: 32
 	},
@@ -26,5 +25,9 @@ export default StyleSheet.create({
 	required: {
 		fontSize: 14,
 		...sharedStyles.textMedium
+	},
+	form: {
+		gap: 12,
+		paddingTop: 12
 	}
 });
