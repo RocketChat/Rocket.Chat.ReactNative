@@ -123,9 +123,6 @@ runs:
         fi
       shell: bash
 
-    - name: Setup tmate
-      uses: mxschmitt/action-tmate@v3
-
     - name: Set Google Services JSON
       working-directory: android/app
       run: |
