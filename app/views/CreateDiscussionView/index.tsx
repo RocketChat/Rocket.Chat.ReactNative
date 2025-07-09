@@ -2,6 +2,8 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -26,6 +28,10 @@ import Button from '../../containers/Button';
 import { useAppSelector } from '../../lib/hooks';
 import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
+
+const schema = yup.object().shape({
+	name: yup.string().email().required()
+});
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
 	const { colors } = useTheme();
@@ -59,10 +65,16 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const [users, setUsers] = useState<string[]>([]);
 
 	const message = route.params?.message;
-	const { getValues, watch, control } = useForm({
+	const {
+		getValues,
+		watch,
+		control,
+		formState: { errors }
+	} = useForm({
 		defaultValues: {
 			name: message?.msg || ''
-		}
+		},
+		resolver: yupResolver(schema)
 	});
 	const name = watch('name');
 
@@ -105,6 +117,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		dispatch(createDiscussionRequest(params));
 	};
 
+	// Accessibility: announce field error to screen reader
+
 	useEffect(() => {
 		if (loading === prevLoading.current) {
 			prevLoading.current = loading;
@@ -143,6 +157,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 							control={control}
 							name='name'
 							required
+							error={errors.name?.message}
 							label={I18n.t('Discussion_name')}
 							testID='multi-select-discussion-name'
 							containerStyle={styles.inputStyle}
