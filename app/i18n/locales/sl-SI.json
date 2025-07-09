@@ -601,7 +601,7 @@
   "sending_email_confirmation": "pošiljanje potrditve e -pošte",
   "Sending_to": "Pošiljanje na",
   "Server": "Strežnik",
-  "Server_version": "Različica strežnika: {{version}}",
+  "Server_version": "Strežnik: {{version}}",
   "Set_username_subtitle": "Uporabniško ime se uporablja za to, da vas drugim omenijo v sporočilih",
   "Settings": "Nastavitve",
   "Settings_succesfully_changed": "Nastavitve so se uspešno spremenile!",
