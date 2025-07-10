@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
@@ -87,6 +88,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		setFocus,
 		getValues,
 		setValue,
+		setError,
 		watch,
 		formState: { isDirty, dirtyFields, errors }
 	} = useForm({
@@ -225,6 +227,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
 		} catch (e: any) {
+			if (e?.error === 'error-could-not-save-identity') {
+				setError('username', { message: I18n.t('Username_not_available'), type: 'validate' });
+			}
+
+			if (e?.message.startsWith(email) && e?.error === 'error-field-unavailable') {
+				setError('email', { message: I18n.t('Email_associated_with_another_user'), type: 'validate' });
+			}
+
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
@@ -241,6 +251,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			handleError(e, 'saving_profile');
 		}
 	};
+
+	useA11yErrorAnnouncement({ error: errors.name?.message });
+	useA11yErrorAnnouncement({ error: errors.username?.message });
+	useA11yErrorAnnouncement({ error: errors.email?.message });
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
