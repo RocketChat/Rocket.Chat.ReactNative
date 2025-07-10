@@ -22,6 +22,9 @@ inputs:
   FASTLANE_REPO_PAT:
     description: 'Fastlane Repo PAT'
     required: true
+  APP_STORE_CONNECT_API_KEY_BASE64:
+    description: 'Base64 encoded App Store Connect API Key'
+    required: true
   
 runs:
   using: "composite"
