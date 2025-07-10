@@ -46,9 +46,9 @@ import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
 const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(),
-	email: yup.string().email().required(),
-	username: yup.string().min(1).required()
+	name: yup.string().min(1).required(I18n.t('name_required')),
+	email: yup.string().email().required(I18n.t('email_required')),
+	username: yup.string().min(1).required(I18n.t('username_required'))
 });
 
 interface IProfileViewProps {
@@ -88,7 +88,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		getValues,
 		setValue,
 		watch,
-		formState: { isDirty, dirtyFields }
+		formState: { isDirty, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -298,6 +298,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-name'
+							error={errors.name?.message}
 						/>
 						<ControlledFormTextInput
 							required
@@ -315,6 +316,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-username'
+							error={errors.username?.message}
 						/>
 						<ControlledFormTextInput
 							required
@@ -332,6 +334,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							autoComplete='email'
 							textContentType='emailAddress'
 							importantForAutofill={'yes'}
+							error={errors.email?.message}
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<ControlledFormTextInput
