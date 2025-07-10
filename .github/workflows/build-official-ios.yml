@@ -40,6 +40,7 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
           BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
 
   upload-hold:
     name: Upload Hold
@@ -71,3 +72,4 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
           BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
