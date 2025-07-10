@@ -58,6 +58,11 @@ runs:
         yarn pod-install
       shell: bash
 
+    - name: Decode p8
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+
     - name: Set bugsnag key
       working-directory: ios
       run: |
