@@ -10,7 +10,7 @@ on:
 jobs:
   build-hold:
     name: Hold
-    runs-on: macos-15
+    runs-on: ubuntu-latest
     environment: experimental_ios_build
     steps:
       - name: Hold
@@ -54,7 +54,7 @@ jobs:
 
   upload-ios:
     name: Upload
-    runs-on: ubuntu-latest
+    runs-on: macos-15
     needs: [upload-hold]
     if: ${{ inputs.type == 'experimental' }}
     steps:
