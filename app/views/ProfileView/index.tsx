@@ -47,9 +47,9 @@ import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
 const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(I18n.t('name_required')),
-	email: yup.string().email().required(I18n.t('email_required')),
-	username: yup.string().min(1).required(I18n.t('username_required'))
+	name: yup.string().required(I18n.t('Name_required')),
+	email: yup.string().email().required(I18n.t('Email_required')),
+	username: yup.string().min(1).required(I18n.t('Username_required'))
 });
 
 interface IProfileViewProps {
