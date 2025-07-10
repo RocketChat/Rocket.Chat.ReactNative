@@ -90,6 +90,7 @@
   "Certificate_password": "Varmenteen salasana",
   "Change_Language": "Vaihda kieltä",
   "Change_language_loading": "Vaihdetaan kieltä.",
+  "Change_my_password": "Vaihda salasanani",
   "changed_room_announcement": "vaihtoi huoneen ilmoitukseksi: {{announcement}}",
   "changed_room_description": "vaihtoi huoneen kuvaukseksi: {{description}}",
   "changing_avatar": "vaihtaa avataria",

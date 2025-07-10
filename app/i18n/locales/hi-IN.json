@@ -105,6 +105,7 @@
   "Certificate_password": "प्रमाणपत्र पासवर्ड",
   "Change_Language": "भाषा बदलें",
   "Change_language_loading": "भाषा बदल रहा है।",
+  "Change_my_password": "मेरा पासवर्ड बदलें।",
   "changed_room_announcement": "कमरे का घोषणा पत्र बदल गया है: {{announcement}}",
   "changed_room_description": "कमरे का विवरण बदल गया है: {{description}}",
   "changing_avatar": "अवतार बदल रहा है",

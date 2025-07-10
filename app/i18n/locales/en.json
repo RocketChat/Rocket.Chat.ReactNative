@@ -111,6 +111,7 @@
   "Certificate_password": "Certificate password",
   "Change_Language": "Change language",
   "Change_language_loading": "Changing language.",
+  "Change_my_password": "Change my password",
   "Change_password": "Change password",
   "changed_room_announcement": "changed room announcement to: {{announcement}}",
   "changed_room_description": "changed room description to: {{description}}",

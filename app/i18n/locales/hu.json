@@ -105,6 +105,7 @@
   "Certificate_password": "Tanúsítvány jelszava",
   "Change_Language": "Nyelvváltás",
   "Change_language_loading": "Nyelvváltás.",
+  "Change_my_password": "Jelszó megváltoztatása",
   "changed_room_announcement": "a szoba bejelentését megváltoztattuk: {{announcement}}",
   "changed_room_description": "a szoba leírását megváltoztattam: {{description}}",
   "changing_avatar": "avatar módosítás",

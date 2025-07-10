@@ -105,6 +105,7 @@
   "Certificate_password": "সার্টিফিকেট পাসওয়ার্ড",
   "Change_Language": "ভাষা পরিবর্তন",
   "Change_language_loading": "ভাষা পরিবর্তন করা হচ্ছে।",
+  "Change_my_password": "আমার পাসওয়ার্ড পরিবর্তন করুন।",
   "changed_room_announcement": "রুম ঘোষণা পরিবর্তন করেছে: {{announcement}}",
   "changed_room_description": "রুম বিবরণ পরিবর্তন করেছে: {{description}}",
   "changing_avatar": "অবতার পরিবর্তন হচ্ছে",

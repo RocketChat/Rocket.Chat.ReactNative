@@ -100,6 +100,7 @@
   "Certificate_password": "Zertifikats-Passwort",
   "Change_Language": "Sprache ändern",
   "Change_language_loading": "Ändere Sprache.",
+  "Change_my_password": "Ändere mein Passwort",
   "changed_room_announcement": "hat die Ankündigung des Raumes geändert zu: {{announcement}}",
   "changed_room_description": "hat die Raumbeschreibung geändert zu: {{description}}",
   "changing_avatar": "Avatar wechseln",

@@ -21,7 +21,7 @@ import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion, isAndroid } from '../../lib/methods/helpers';
+import { compareServerVersion } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -37,7 +37,6 @@ import { useAppSelector } from '../../lib/hooks';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
-import PasswordPolicies from '../../containers/PasswordPolicies';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
 import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
@@ -104,7 +103,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		resolver: yupResolver(validationSchema)
 	});
 	const newPassword = watch('newPassword') ?? '';
-	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
+	const { isPasswordValid } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -146,6 +145,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const handleEditAvatar = () => {
 		navigation.navigate('ChangeAvatarView', { context: 'profile' });
+	};
+
+	const navigateToChangePasswordView = () => {
+		navigation.navigate('ChangePasswordView', { updatePassword: true });
 	};
 
 	const deleteOwnAccount = () => {
@@ -361,28 +364,20 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 								containerStyle={styles.inputContainer}
 							/>
 						) : null}
-						<ControlledFormTextInput
-							name='newPassword'
-							control={control}
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
-							onSubmitEditing={focusOnCustomFields}
-							textContentType={isAndroid ? 'newPassword' : undefined}
-							autoComplete={isAndroid ? 'password-new' : undefined}
-							secureTextEntry
-							containerStyle={styles.inputContainer}
-							testID='profile-view-new-password'
-						/>
+
 						<CustomFields
 							customFieldsRef={customFieldsRef}
 							Accounts_CustomFields={Accounts_CustomFields}
 							customFields={customFields}
 							onCustomFieldChange={value => setCustomFields(value)}
 						/>
-						{passwordPolicies && newPassword?.length > 0 ? (
-							<PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} />
+						{Accounts_AllowPasswordChange ? (
+							<Button
+								title={I18n.t('Change_my_password')}
+								type='secondary'
+								onPress={navigateToChangePasswordView}
+								testID='profile-view-logout-other-locations'
+							/>
 						) : null}
 					</View>
 
