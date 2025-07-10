@@ -11,7 +11,7 @@ jobs:
   build-hold:
     name: Hold
     runs-on: macos-15
-    environment: experimental_ios_build
+    environment: official_ios_build
     steps:
       - name: Hold
         run: |
@@ -21,7 +21,7 @@ jobs:
     name: Build
     runs-on: macos-15
     needs: [build-hold]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'official' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -32,19 +32,19 @@ jobs:
       - name: Build iOS
         uses: ./.github/actions/build-ios
         with:
-          type: experimental
+          type: official
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
+          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
 
   upload-hold:
     name: Upload Hold
     runs-on: ubuntu-latest
-    environment: upload_experimental_ios
+    environment: upload_official_ios
     needs: [build-ios]
     steps:
       - name: Hold
@@ -55,7 +55,7 @@ jobs:
     name: Upload
     runs-on: ubuntu-latest
     needs: [upload-hold]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'official' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -63,11 +63,11 @@ jobs:
       - name: Upload iOS
         uses: ./.github/actions/upload-ios
         with:
-          type: experimental
+          type: official
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
-          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
+          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}

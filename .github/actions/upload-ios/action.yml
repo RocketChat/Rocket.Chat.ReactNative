@@ -1,0 +1,69 @@
+name: 'Upload iOS'
+description: 'Downloads IPA, uploads to App Store'
+inputs:
+  type:
+    description: 'Build type: official or experimental'
+    required: true
+  MATCH_KEYCHAIN_NAME:
+    description: 'Match Keychain Name'
+    required: true
+  MATCH_KEYCHAIN_PASSWORD:
+    description: 'Match Keychain Password'
+    required: true
+  MATCH_PASSWORD:
+    description: 'Match Password'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ID:
+    description: 'App Store Connect API Key ID'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+    description: 'App Store Connect API Key Issuer ID'
+    required: true
+  FASTLANE_REPO_PAT:
+    description: 'Fastlane Repo PAT'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Download iOS build
+      uses: actions/download-artifact@v4
+      with:
+        name: ios-build-experimental
+        path: ios/
+
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.2'
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Decode p8
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+
+    - name: Fastlane Submit to TestFlight
+      working-directory: ios
+      run: |
+        if [[ ${{ inputs.type }} == "official" ]]; then
+          echo "Submitting to TestFlight as Official"
+          bundle exec fastlane ios beta official:true
+        fi
+        if [[ ${{ inputs.type }} == "experimental" ]]; then
+          echo "Submitting to TestFlight as Experimental"
+          bundle exec fastlane ios beta official:false
+        fi
+      env:
+        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
+        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
+        MATCH_PASSWORD: ${{ inputs.MATCH_PASSWORD }}
+        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
+      shell: bash

@@ -34,14 +34,14 @@ platform :ios do
       in_house: false
     )
     pilot(
-      ipa: 'ios/Rocket.Chat.ipa',
+      ipa: 'Rocket.Chat.ipa',
       app_identifier: options[:official] ? 'chat.rocket.ios' : 'chat.rocket.reactnative',
       skip_waiting_for_build_processing: true
     )
-    upload_symbols_to_crashlytics(dsym_path: "./ios/Rocket.Chat.app.dSYM.zip")
+    upload_symbols_to_crashlytics(dsym_path: "./Rocket.Chat.app.dSYM.zip")
     upload_symbols_to_bugsnag(
       config_file: "./RocketChatRN/Info.plist",
-      dsym_path: "./ios/Rocket.Chat.app.dSYM.zip",
+      dsym_path: "./Rocket.Chat.app.dSYM.zip",
       api_key: options[:official] ? ENV["BUGSNAG_KEY_OFFICIAL"] : ENV["BUGSNAG_KEY"]
     )
   end

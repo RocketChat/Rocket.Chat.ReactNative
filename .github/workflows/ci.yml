@@ -41,3 +41,11 @@ jobs:
     with:
       type: experimental
       
+  ios-build-official-store:
+    name: Build iOS Official Store
+    if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
+    uses: ./.github/workflows/build-official-ios.yml
+    needs: [run-eslint-and-test]
+    secrets: inherit
+    with:
+      type: official
