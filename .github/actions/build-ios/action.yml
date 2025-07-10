@@ -103,6 +103,14 @@ runs:
       
     - name: Upload IPA artifact
       uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
       with:
-        name: ios-build-${{ inputs.type }}
+        name: ios-build-experimental
+        path: ios/Rocket.Chat.ipa
+
+    - name: Upload IPA artifact
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official
         path: ios/Rocket.Chat.ipa

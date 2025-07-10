@@ -31,8 +31,16 @@ runs:
   steps:
     - name: Download iOS build
       uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
       with:
         name: ios-build-experimental
+        path: ios/
+
+    - name: Download iOS build
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official
         path: ios/
 
     - name: Set up Xcode
