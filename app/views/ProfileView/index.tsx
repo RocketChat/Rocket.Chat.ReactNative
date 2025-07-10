@@ -148,7 +148,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	};
 
 	const navigateToChangePasswordView = () => {
-		navigation.navigate('ChangePasswordView', { updatePassword: true });
+		navigation.navigate('ChangePasswordView', { fromProfileView: true });
 	};
 
 	const deleteOwnAccount = () => {
@@ -376,7 +376,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 								title={I18n.t('Change_my_password')}
 								type='secondary'
 								onPress={navigateToChangePasswordView}
-								testID='profile-view-logout-other-locations'
+								testID='profile-view-change-my-password-button'
 							/>
 						) : null}
 					</View>
