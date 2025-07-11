@@ -86,6 +86,11 @@ runs:
       run: |
         echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
       shell: bash
+    
+    - name: Pod install
+      run: |
+        yarn pod-install
+      shell: bash
 
     - name: Show iOS directory tree
       run: |
