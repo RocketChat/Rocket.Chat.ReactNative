@@ -39,7 +39,6 @@ import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
-import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -86,15 +85,13 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		setFocus,
 		getValues,
 		setValue,
-		watch,
-		formState: { isDirty, dirtyFields }
+		formState: { isDirty }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
 			name: user?.name as string,
 			username: user?.username,
 			email: user?.emails ? user?.emails[0].address : null,
-			newPassword: null,
 			currentPassword: null,
 			bio: user?.bio,
 			nickname: user?.nickname,
@@ -102,8 +99,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const newPassword = watch('newPassword') ?? '';
-	const { isPasswordValid } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -138,9 +133,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	const enableSaveChangesButton = () => {
 		const isFormInfoValid = validateFormInfo();
-		const { newPassword: isNewPasswordDirty } = dirtyFields;
-		const passwordValid = isNewPasswordDirty && newPassword.length > 0 ? isPasswordValid() : true;
-		return isFormInfoValid && isDirty && passwordValid;
+		return isFormInfoValid && isDirty;
 	};
 
 	const handleEditAvatar = () => {
@@ -165,7 +158,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 		setValue('saving', true);
 
-		const { name, username, email, newPassword, currentPassword, bio, nickname } = getValues();
+		const { name, username, email, currentPassword, bio, nickname } = getValues();
 		const params = {} as IProfileParams;
 
 		if (user.name !== name) params.realname = name;
@@ -173,10 +166,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		if (user.emails?.[0].address !== email) params.email = email;
 		if (user.bio !== bio) params.bio = bio;
 		if (user.nickname !== nickname) params.nickname = nickname;
-		if (newPassword) params.newPassword = newPassword;
 		if (currentPassword) params.currentPassword = sha256(currentPassword);
 
-		const requirePassword = !!params.email || newPassword;
+		const requirePassword = !!params.email;
 
 		if (requirePassword && !params.currentPassword) {
 			setValue('saving', false);
@@ -357,9 +349,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 								inputStyle={styles.inputBio}
 								multiline
 								maxLength={MAX_BIO_LENGTH}
-								onSubmitEditing={() => {
-									setFocus('newPassword');
-								}}
+								onSubmitEditing={focusOnCustomFields}
 								testID='profile-view-bio'
 								containerStyle={styles.inputContainer}
 							/>
