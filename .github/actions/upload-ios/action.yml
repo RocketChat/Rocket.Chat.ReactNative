@@ -87,6 +87,12 @@ runs:
         echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
       shell: bash
 
+    - name: Show iOS directory tree
+      run: |
+        brew install tree || true
+        tree -L 2 ios
+      shell: bash
+
     - name: Fastlane Submit to TestFlight
       working-directory: ios
       run: |
