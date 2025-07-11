@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { sha256 } from 'js-sha256';
 
 import { twoFactor } from '../../lib/services/twoFactor';
 import { ProfileStackParamList } from '../../stacks/types';
@@ -97,11 +98,11 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 		try {
 			const { username, emails } = user;
 			if (fromProfileView) {
-				const params = { currentPassword, newPassword, username, email: emails?.[0].address || '' };
+				const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0].address || '' };
 				const twoFactorOptions = currentPassword
-					? { twoFactorCode: currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
+					? { twoFactorCode: params?.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
 					: null;
-
+				console.log(twoFactorOptions, params);
 				const result = await Services.saveUserProfileMethod(params, {}, twoFactorCode || twoFactorOptions);
 
 				if (result) {
@@ -111,6 +112,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 				}
 			}
 		} catch (e: any) {
+			console.log(e);
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
