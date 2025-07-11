@@ -114,3 +114,31 @@ runs:
       with:
         name: ios-build-official
         path: ios/Rocket.Chat.ipa
+
+    - name: Upload Rocket.Chat.app.dSYM.zip
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental-dSYM
+        path: ios/Rocket.Chat.app.dSYM.zip
+
+    - name: Upload Rocket.Chat.app.dSYM.zip
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official-dSYM
+        path: ios/Rocket.Chat.app.dSYM.zip
+
+    - name: Upload RocketChatRN/Info.plist
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental-info-plist
+        path: ios/RocketChatRN/Info.plist
+
+    - name: Upload RocketChatRN/Info.plist
+      uses: actions/upload-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official-info-plist
+        path: ios/RocketChatRN/Info.plist
