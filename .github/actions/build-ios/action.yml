@@ -100,7 +100,14 @@ runs:
         APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
         FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
       shell: bash
-      
+
+    - name: Upload log
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ios-build-log
+        path: /Users/runner/Library/Logs/gym/Rocket.Chat-RocketChat.log
+
     - name: Upload IPA artifact
       uses: actions/upload-artifact@v4
       if: ${{ inputs.type == 'experimental' }}

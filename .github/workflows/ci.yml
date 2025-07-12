@@ -36,6 +36,7 @@ jobs:
     name: Build iOS Experimental Store
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-ios.yml
+    needs: [run-eslint-and-test]
     secrets: inherit
     with:
       type: experimental
