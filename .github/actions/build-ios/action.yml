@@ -28,6 +28,9 @@ inputs:
   FASTLANE_REPO_PAT:
     description: 'Fastlane Repo PAT'
     required: true
+  BUGSNAG_KEY_OFFICIAL:
+    description: 'Bugsnag API Key Official'
+    required: true
 
 runs:
   using: "composite"
@@ -68,15 +71,15 @@ runs:
       run: |
         agvtool new-version -all ${{ github.run_id }}
         if [[ ${{ inputs.type }} == "official" ]]; then
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./RocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey $BUGSNAG_KEY_OFFICIAL" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL YES" ./NotificationService/Info.plist
         fi
         if [[ ${{ inputs.type }} == "experimental" ]]; then
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY}}" ./RocketChatRN/Info.plist
-          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY}}" ./ShareRocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY }}" ./RocketChatRN/Info.plist
+          /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY }}" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
