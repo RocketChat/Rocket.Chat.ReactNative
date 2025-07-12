@@ -6,7 +6,7 @@ import { name as appName } from './app.json';
 import { isAndroid } from './app/lib/methods/helpers';
 
 if (process.env.USE_STORYBOOK) {
-	AppRegistry.registerComponent(appName, () => require('./.storybook/index').default);
+	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
 	if (!__DEV__) {
 		console.log = () => {};

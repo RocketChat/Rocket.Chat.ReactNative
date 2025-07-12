@@ -14,7 +14,7 @@ import RoomItem from '../../containers/RoomItem';
 import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
@@ -53,7 +53,7 @@ import {
 import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import CustomHeader from '../../containers/CustomHeader';
+import Header from '../../containers/Header';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -422,10 +422,20 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		this.setState({ canCreateRoom }, () => this.setHeader());
 	};
 
+	getBadge = () => {
+		const { notificationPresenceCap, supportedVersionsStatus, theme } = this.props;
+		if (supportedVersionsStatus === 'warn') {
+			return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
+		}
+		if (notificationPresenceCap) {
+			return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
+		}
+		return null;
+	};
+
 	getHeader = (): any => {
 		const { searching, canCreateRoom } = this.state;
-		const { navigation, isMasterDetail, notificationPresenceCap, issuesWithNotifications, supportedVersionsStatus, theme, user } =
-			this.props;
+		const { navigation, isMasterDetail, issuesWithNotifications, supportedVersionsStatus, theme, user } = this.props;
 		if (searching) {
 			return {
 				headerLeft: () => (
@@ -437,16 +447,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 				headerRight: () => null
 			};
 		}
-
-		const getBadge = () => {
-			if (supportedVersionsStatus === 'warn') {
-				return <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} />;
-			}
-			if (notificationPresenceCap) {
-				return <HeaderButton.BadgeWarn color={colors[theme].userPresenceDisabled} />;
-			}
-			return null;
-		};
 
 		const disabled = supportedVersionsStatus === 'expired' || user.requirePasswordChange;
 
@@ -461,7 +461,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 							: // @ts-ignore
 							  () => navigation.toggleDrawer()
 					}
-					badge={() => getBadge()}
+					badge={() => this.getBadge()}
 					disabled={disabled}
 				/>
 			),
@@ -479,14 +479,22 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 					{canCreateRoom ? (
 						<HeaderButton.Item
 							iconName='create'
+							accessibilityLabel={I18n.t('Create_new_channel_team_dm_discussion')}
 							onPress={this.goToNewMessage}
 							testID='rooms-list-view-create-channel'
 							disabled={disabled}
 						/>
 					) : null}
-					<HeaderButton.Item iconName='search' onPress={this.initSearching} testID='rooms-list-view-search' disabled={disabled} />
+					<HeaderButton.Item
+						iconName='search'
+						accessibilityLabel={I18n.t('Search')}
+						onPress={this.initSearching}
+						testID='rooms-list-view-search'
+						disabled={disabled}
+					/>
 					<HeaderButton.Item
 						iconName='directory'
+						accessibilityLabel={I18n.t('Directory')}
 						onPress={this.goDirectory}
 						testID='rooms-list-view-directory'
 						disabled={disabled}
@@ -868,7 +876,11 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 	};
 
-	getScrollRef = (ref: FlatList) => (this.scroll = ref);
+	getScrollRef = (ref: FlatList<IRoomItem> | null) => {
+		if (ref) {
+			this.scroll = ref;
+		}
+	};
 
 	renderListHeader = () => {
 		const { searching } = this.state;
@@ -894,7 +906,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		const options = this.getHeader();
-		return <CustomHeader options={options} navigation={this.props.navigation} route={this.props.route} />;
+		return <Header options={options} navigation={this.props.navigation} route={this.props.route} />;
 	};
 
 	renderItem = ({ item }: { item: IRoomItem }) => {

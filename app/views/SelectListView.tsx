@@ -8,7 +8,7 @@ import { ChatsStackParamList } from '../stacks/types';
 import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
@@ -62,10 +62,10 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		super(props);
 		const data = props.route?.params?.data;
 		this.title = props.route?.params?.title;
-		this.infoText = props.route?.params?.infoText ?? '';
+		this.infoText = props.route?.params?.infoText || '';
 		this.nextAction = props.route?.params?.nextAction;
-		this.showAlert = props.route?.params?.showAlert ?? (() => {});
-		this.isSearch = props.route?.params?.isSearch ?? false;
+		this.showAlert = props.route?.params?.showAlert || (() => {});
+		this.isSearch = props.route?.params?.isSearch || false;
 		this.onSearch = props.route?.params?.onSearch;
 		this.isRadio = props.route?.params?.isRadio;
 		this.state = {
@@ -179,7 +179,7 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 			<>
 				<List.Separator />
 				<List.Item
-					title={item.name}
+					title={item.name || ''}
 					translateTitle={false}
 					testID={`select-list-view-item-${item.name}`}
 					onPress={() => (item.alert ? this.showAlert() : this.toggleItem(item.rid))}

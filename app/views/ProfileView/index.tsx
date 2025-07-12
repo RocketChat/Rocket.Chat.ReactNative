@@ -12,7 +12,7 @@ import { useActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
 import StatusBar from '../../containers/StatusBar';
@@ -21,7 +21,7 @@ import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion, isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -267,7 +267,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	}, []);
 
 	return (
-		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
+		<KeyboardView>
 			<StatusBar />
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
@@ -290,6 +290,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
+							autoComplete='name'
+							importantForAutofill={'yes'}
+							textContentType='name'
 							onSubmitEditing={() => {
 								setFocus('username');
 							}}
@@ -304,6 +307,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
+							autoComplete='username'
+							textContentType='username'
+							importantForAutofill={'yes'}
 							onSubmitEditing={() => {
 								setFocus('email');
 							}}
@@ -323,6 +329,9 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-email'
+							autoComplete='email'
+							textContentType='emailAddress'
+							importantForAutofill={'yes'}
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<ControlledFormTextInput
@@ -358,7 +367,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							label={I18n.t('New_Password')}
+							placeholder={I18n.t('New_Password')}
 							onSubmitEditing={focusOnCustomFields}
+							textContentType={isAndroid ? 'newPassword' : undefined}
+							autoComplete={isAndroid ? 'password-new' : undefined}
 							secureTextEntry
 							containerStyle={styles.inputContainer}
 							testID='profile-view-new-password'

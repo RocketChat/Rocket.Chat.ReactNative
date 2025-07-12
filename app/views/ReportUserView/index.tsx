@@ -76,7 +76,7 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={128}>
+		<KeyboardView>
 			<SafeAreaView style={styles.containerView} testID='report-user-view'>
 				<ScrollView contentContainerStyle={styles.scroll}>
 					<StatusBar />
