@@ -48,6 +48,7 @@ jobs:
   upload-ios:
     name: Upload
     runs-on: macos-15
+    needs: [build-ios]
     if: ${{ inputs.type == 'experimental' }}
     steps:
       - name: Checkout Repository
