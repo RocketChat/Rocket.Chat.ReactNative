@@ -68,7 +68,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const message = route.params?.message;
 	const {
 		getValues,
-		watch,
 		control,
 		formState: { errors }
 	} = useForm({
@@ -77,10 +76,8 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		},
 		resolver: yupResolver(schema)
 	});
-	const name = watch('name');
 
 	const prevLoading = useRef<boolean>(loading);
-	const isValid = channel?.rid?.trim?.().length && name?.trim().length;
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
 	const selectChannel = ({ value }: { value: ISearchLocal }) => {
@@ -188,7 +185,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 					<Button
 						testID='create-discussion-submit'
-						disabled={!isValid}
 						style={{ marginTop: 36 }}
 						title={I18n.t('Create_Discussion')}
 						onPress={submit}
