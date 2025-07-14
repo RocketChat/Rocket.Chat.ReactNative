@@ -85,8 +85,7 @@ const QueueListView = React.memo(() => {
 				// we're calling v as visitor on our mergeSubscriptionsRooms
 				visitor: item.v
 			},
-			isMasterDetail,
-			popToRoot: true
+			isMasterDetail
 		});
 	};
 
