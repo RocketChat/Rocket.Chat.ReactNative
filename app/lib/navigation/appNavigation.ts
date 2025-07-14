@@ -46,6 +46,10 @@ function getCurrentRoute() {
 	return navigationRef.current?.getCurrentRoute();
 }
 
+function setParams(params: any) {
+	navigationRef.current?.setParams(params);
+}
+
 export default {
 	navigationRef,
 	routeNameRef,
@@ -56,5 +60,6 @@ export default {
 	popToTop,
 	dispatch,
 	resetTo,
-	getCurrentRoute
+	getCurrentRoute,
+	setParams
 };
