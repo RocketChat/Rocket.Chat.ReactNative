@@ -40,7 +40,6 @@ import {
 } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
 import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;
@@ -230,7 +229,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	};
 
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
-		const { navigation, isMasterDetail } = this.props;
+		const { isMasterDetail } = this.props;
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
@@ -245,11 +244,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			room: this.room as TSubscriptionModel
 		};
 		if ('tmid' in item && item.tmid) {
-			if (isMasterDetail) {
-				Navigation.popTo('DrawerNavigator');
-			} else {
-				navigation.pop();
-			}
+			Navigation.popToRoom(isMasterDetail);
 			params = {
 				...params,
 				tmid: item.tmid,
@@ -258,12 +253,8 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			};
 			Navigation.push('RoomView', params);
 		} else {
-			if (isMasterDetail) {
-				Navigation.popTo('DrawerNavigator');
-				Navigation.setParams(params);
-				return;
-			}
-			goRoom({ item: params, isMasterDetail, jumpToMessageId: params.jumpToMessageId });
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams(params);
 		}
 	};
 
