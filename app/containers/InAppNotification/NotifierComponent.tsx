@@ -93,7 +93,7 @@ const NotifierComponent = React.memo(({ notification, isMasterDetail }: INotifie
 			prid
 		};
 
-		goRoom({ item, isMasterDetail, jumpToMessageId: _id, popToRoot: true });
+		goRoom({ item, isMasterDetail, jumpToMessageId: _id });
 		hideNotification();
 	};
 
