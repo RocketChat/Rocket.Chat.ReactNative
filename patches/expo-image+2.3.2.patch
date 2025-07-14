@@ -1,0 +1,13 @@
+diff --git a/node_modules/expo-image/ios/ImageModule.swift b/node_modules/expo-image/ios/ImageModule.swift
+index 361c806..efeea75 100644
+--- a/node_modules/expo-image/ios/ImageModule.swift
++++ b/node_modules/expo-image/ios/ImageModule.swift
+@@ -107,7 +107,7 @@ public final class ImageModule: Module {
+         view.autoplay = autoplay ?? true
+       }
+ 
+-      Prop("useAppleWebpCodec", true) { (view, useAppleWebpCodec: Bool) in
++      Prop("useAppleWebpCodec") { (view, useAppleWebpCodec: Bool) in
+         view.useAppleWebpCodec = useAppleWebpCodec
+       }
+ 
