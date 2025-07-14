@@ -23,6 +23,7 @@ function popTo(name: string) {
 
 function popToTop(isMasterDetail: boolean) {
 	if (isMasterDetail) {
+		popTo('DrawerNavigator');
 		dispatch(
 			CommonActions.reset({
 				index: 0,
