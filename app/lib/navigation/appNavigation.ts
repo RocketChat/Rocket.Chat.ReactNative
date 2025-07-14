@@ -21,8 +21,17 @@ function popTo(name: string) {
 	navigationRef.current?.dispatch(StackActions.popTo(name));
 }
 
-function popToTop() {
-	navigationRef.current?.dispatch(StackActions.popToTop());
+function popToTop(isMasterDetail: boolean) {
+	if (isMasterDetail) {
+		dispatch(
+			CommonActions.reset({
+				index: 0,
+				routes: [{ name: 'RoomView' }]
+			})
+		);
+	} else {
+		dispatch(StackActions.popToTop());
+	}
 }
 
 function dispatch(params: any) {
