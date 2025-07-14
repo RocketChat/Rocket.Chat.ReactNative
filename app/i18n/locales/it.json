@@ -177,6 +177,7 @@
   "Edit_Status": "Modifica Stato",
   "Email": "Email",
   "Email_associated_with_another_user": "Email associata a un altro utente.",
+  "Email_must_be_a_valid_email": "L'email deve essere un'email valida.",
   "Email_Notification_Mode_All": "Ogni Menzione/Messaggio Privato",
   "Email_Notification_Mode_Disabled": "Disabilitato",
   "Email_required": "Email obbligatorio",

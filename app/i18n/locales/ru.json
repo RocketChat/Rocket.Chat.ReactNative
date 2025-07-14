@@ -223,6 +223,7 @@
   "Edit_Status": "Изменить статус",
   "Email": "электронная почта",
   "Email_associated_with_another_user": "Электронная почта связана с другим пользователем.",
+  "Email_must_be_a_valid_email": "Электронная почта должна быть действительной.",
   "Email_Notification_Mode_All": "Каждое Упоминание/Личное сообщение",
   "Email_Notification_Mode_Disabled": "Отключено",
   "Email_required": "Требуется электронная почта",

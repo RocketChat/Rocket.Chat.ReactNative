@@ -162,6 +162,7 @@
   "Edit_Status": "编辑状态",
   "Email": "电子邮件",
   "Email_associated_with_another_user": "该电子邮件与另一位用户关联",
+  "Email_must_be_a_valid_email": "电子邮件必须是有效的电子邮件。",
   "Email_Notification_Mode_All": "每次被标记或私讯",
   "Email_Notification_Mode_Disabled": "禁用",
   "Email_required": "需要电子邮件地址",

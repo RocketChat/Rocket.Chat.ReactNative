@@ -251,6 +251,7 @@
   "Edit_Status": "स्थिति संपादित करें",
   "Email": "ईमेल",
   "Email_associated_with_another_user": "ईमेल किसी अन्य उपयोगकर्ता से जुड़ा हुआ है।",
+  "Email_must_be_a_valid_email": "ईमेल एक मान्य ईमेल होना चाहिए।",
   "Email_Notification_Mode_All": "हर मेंशन/डीएम",
   "Email_Notification_Mode_Disabled": "अक्षम",
   "Email_required": "ईमेल आवश्यक है।",

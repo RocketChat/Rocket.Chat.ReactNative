@@ -199,6 +199,7 @@
   "Edit_Status": "Modifier le statut",
   "Email": "Courriel",
   "Email_associated_with_another_user": "E-mail associé à un autre utilisateur",
+  "Email_must_be_a_valid_email": "L'adresse e-mail doit être valide.",
   "Email_Notification_Mode_All": "Chaque mention/MD",
   "Email_Notification_Mode_Disabled": "Désactivé",
   "Email_required": "Adresse e-mail requise",

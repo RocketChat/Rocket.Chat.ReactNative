@@ -273,6 +273,7 @@
   "Edit_Status": "Editar status",
   "Email": "E-mail",
   "Email_associated_with_another_user": "E-mail associado a outro usuário",
+  "Email_must_be_a_valid_email": "O e-mail deve ser um e-mail válido.",
   "Email_Notification_Mode_All": "Toda menção / mensagem direta",
   "Email_Notification_Mode_Disabled": "Desativado",
   "Email_required": "E-mail obrigatório",

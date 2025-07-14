@@ -251,6 +251,7 @@
   "Edit_Status": "நிலையை திருத்து",
   "Email": "மின்னஞ்சல்",
   "Email_associated_with_another_user": "வேறொரு பயனருடன் தொடர்புடைய மின்னஞ்சல்.",
+  "Email_must_be_a_valid_email": "மின்னஞ்சல் செல்லுபடியாகும் மின்னஞ்சலாக இருத்தல் வேண்டும்",
   "Email_Notification_Mode_All": "எல்லா குறிபாக / தனிப்பட்டது",
   "Email_Notification_Mode_Disabled": "முடக்கப்பட்டது",
   "Email_required": "மின்னஞ்சல் தேவை",

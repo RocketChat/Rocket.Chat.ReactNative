@@ -168,6 +168,7 @@
   "Edit_Status": "編輯狀態",
   "Email": "電子郵件",
   "Email_associated_with_another_user": "電子郵件已與其他使用者關聯",
+  "Email_must_be_a_valid_email": "電子郵件必須是有效的電子郵件地址。",
   "Email_Notification_Mode_All": "每次被標記或私訊",
   "Email_Notification_Mode_Disabled": "禁用",
   "Email_required": "需要電子郵件地址",

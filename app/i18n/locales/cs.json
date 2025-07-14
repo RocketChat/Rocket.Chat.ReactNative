@@ -269,6 +269,7 @@
   "Edit_Status": "Upravit stav",
   "Email": "E-mail",
   "Email_associated_with_another_user": "E-mail je přiřazen k jinému uživateli.",
+  "Email_must_be_a_valid_email": "E-mail musí být platný e-mail.",
   "Email_Notification_Mode_All": "Každá zmínka/DM",
   "Email_Notification_Mode_Disabled": "Zakázáno",
   "Email_required": "Požadován e-mail.",

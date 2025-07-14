@@ -231,6 +231,7 @@
   "Edit_Status": "Redigera status",
   "Email": "E-post",
   "Email_associated_with_another_user": "E-post kopplad till en annan användare",
+  "Email_must_be_a_valid_email": "E-post måste vara en giltig e-postadress",
   "Email_Notification_Mode_All": "Varje omnämnande/direktmeddelande",
   "Email_Notification_Mode_Disabled": "Inaktiverat",
   "Email_required": "E-post krävs",

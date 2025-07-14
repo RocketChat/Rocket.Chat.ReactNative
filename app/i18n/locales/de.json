@@ -246,6 +246,7 @@
   "Edit_Status": "Status ändern",
   "Email": "E-Mail",
   "Email_associated_with_another_user": "E-Mail mit einem anderen Benutzer verknüpft.",
+  "Email_must_be_a_valid_email": "E-Mail muss eine gültige E-Mail sein.",
   "Email_Notification_Mode_All": "Jede Erwähnung/Direktnachricht",
   "Email_Notification_Mode_Disabled": "Deaktiviert",
   "Email_required": "E-Mail erforderlich",

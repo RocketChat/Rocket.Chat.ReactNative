@@ -166,6 +166,7 @@
   "Edit_Status": "Durumu Düzenle",
   "Email": "E-posta",
   "Email_associated_with_another_user": "Başka bir kullanıcıyla ilişkilendirilmiş e-posta.",
+  "Email_must_be_a_valid_email": "E-posta geçerli bir e-posta olmalıdır.",
   "Email_Notification_Mode_All": "Tüm Bahsetmeler/Özel İletiler",
   "Email_Notification_Mode_Disabled": "Devre Dışı",
   "Email_required": "E-posta gerekli",

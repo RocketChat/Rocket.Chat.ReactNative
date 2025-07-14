@@ -209,6 +209,7 @@
   "Edit_Status": "Uredi stanje",
   "Email": "E-pošta",
   "Email_associated_with_another_user": "E-pošta povezana z drugim uporabnikom",
+  "Email_must_be_a_valid_email": "E-poštni naslov mora biti veljaven e-poštni naslov.",
   "Email_Notification_Mode_All": "Vsaka omemba/neposredno sporočilo",
   "Email_Notification_Mode_Disabled": "Onemogočeno",
   "Email_required": "E-pošta je obvezna",

@@ -279,6 +279,7 @@
   "email": "Email",
   "Email": "Email",
   "Email_associated_with_another_user": "Email associated with another user",
+  "Email_must_be_a_valid_email": "Email must be a valid email",
   "Email_Notification_Mode_All": "Every mention/DM",
   "Email_Notification_Mode_Disabled": "Disabled",
   "Email_required": "Email required",

@@ -199,6 +199,7 @@
   "Edit_Status": "Status bewerken",
   "Email": "E-mail",
   "Email_associated_with_another_user": "E-mail gekoppeld aan een andere gebruiker",
+  "Email_must_be_a_valid_email": "E-mail moet een geldig e-mailadres zijn",
   "Email_Notification_Mode_All": "Elke vermelding/DM",
   "Email_Notification_Mode_Disabled": "Uitgeschakeld",
   "Email_required": "E-mail vereist",

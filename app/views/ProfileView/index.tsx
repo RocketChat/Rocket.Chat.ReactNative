@@ -48,8 +48,8 @@ const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
 const validationSchema = yup.object().shape({
 	name: yup.string().required(I18n.t('Name_required')),
-	email: yup.string().email().required(I18n.t('Email_required')),
-	username: yup.string().min(1).required(I18n.t('Username_required'))
+	email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
+	username: yup.string().required(I18n.t('Username_required'))
 });
 
 interface IProfileViewProps {

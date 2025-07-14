@@ -153,6 +153,7 @@
   "Edit_Status": "تعديل الحالة",
   "Email": "بريد إلكتروني",
   "Email_associated_with_another_user": "البريد الإلكتروني مرتبط بمستخدم آخر.",
+  "Email_must_be_a_valid_email": "يجب أن يكون البريد الإلكتروني بريدًا إلكترونيًا صالحًا",
   "Email_Notification_Mode_All": "لكل إشارة أو رسالة مباشرة",
   "Email_Notification_Mode_Disabled": "معطل",
   "Email_required": "البريد الإلكتروني مطلوب",

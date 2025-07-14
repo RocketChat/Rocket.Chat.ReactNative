@@ -152,6 +152,7 @@
   "Edit_Status": "ステータスを編集する",
   "Email": "メール",
   "Email_associated_with_another_user": "他のユーザーに関連付けられているメールアドレス",
+  "Email_must_be_a_valid_email": "メールは有効なメールである必要があります。",
   "Email_Notification_Mode_All": "すべてのメンション/DM",
   "Email_Notification_Mode_Disabled": "無効",
   "Email_required": "メールアドレスが必要です。",

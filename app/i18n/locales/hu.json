@@ -251,6 +251,7 @@
   "Edit_Status": "Állapot szerkesztése",
   "Email": "E-mail",
   "Email_associated_with_another_user": "Egy másik felhasználóhoz tartozó e-mail cím",
+  "Email_must_be_a_valid_email": "Az emailnek érvényesnek kell lennie.",
   "Email_Notification_Mode_All": "Minden említés/DM ",
   "Email_Notification_Mode_Disabled": "Letiltva",
   "Email_required": "E-mail szükséges",

@@ -114,6 +114,7 @@
   "email": "E-post",
   "Email": "E-post",
   "Email_associated_with_another_user": "E-post knytt til ein annan brukar",
+  "Email_must_be_a_valid_email": "E-post må være ei gyldig e-postadresse",
   "Email_Notification_Mode_Disabled": "Funksjonshemmet",
   "Email_required": "E-post nødvendig",
   "Enable": "Aktiver",

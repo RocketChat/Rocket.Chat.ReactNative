@@ -251,6 +251,7 @@
   "Edit_Status": "স্থিতি সম্পাদনা করুন",
   "Email": "ইমেইল",
   "Email_associated_with_another_user": "অন্য ব্যবহারকারীর সঙ্গে সংশ্লিষ্ট ইমেইল",
+  "Email_must_be_a_valid_email": "ইমেইলটি একটি বৈধ ইমেইল হতে হবে।",
   "Email_Notification_Mode_All": "প্রতি উল্লেখ / ডিএম",
   "Email_Notification_Mode_Disabled": "অক্ষম",
   "Email_required": "ইমেইল প্রয়োজন",

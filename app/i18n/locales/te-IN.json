@@ -250,6 +250,7 @@
   "Edit_Status": "స్థితిని సవరించు",
   "Email": "ईमेल",
   "Email_associated_with_another_user": "अन्य उपयोगकर्ता के साथ संबद्ध ईमेल",
+  "Email_must_be_a_valid_email": "ईमेल एक मान्य ईमेल होना चाहिए।",
   "Email_Notification_Mode_All": "ప్రతి ఉల్లేఖం / DM",
   "Email_Notification_Mode_Disabled": "అచ్చుకోవడం లేదు",
   "Email_required": "ईमेल आवश्यक है।",

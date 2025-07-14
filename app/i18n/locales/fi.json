@@ -231,6 +231,7 @@
   "Edit_Status": "Muokkaa tilaa",
   "Email": "Sähköposti",
   "Email_associated_with_another_user": "Sähköposti on liitetty toiseen käyttäjään.",
+  "Email_must_be_a_valid_email": "Sähköpostin on oltava kelvollinen sähköpostiosoite.",
   "Email_Notification_Mode_All": "Jokainen maininta/SV",
   "Email_Notification_Mode_Disabled": "Ei käytössä",
   "Email_required": "Sähköposti vaaditaan",

@@ -120,6 +120,7 @@
   "Edit_Room_Photo": "Editar Foto de la sala",
   "Email": "E-mail",
   "Email_associated_with_another_user": "Correo electrónico asociado con otro usuario.",
+  "Email_must_be_a_valid_email": "El correo electrónico debe ser un correo electrónico válido.",
   "Email_required": "Correo electrónico obligatorio",
   "Emoji_selector": "Selector de emojis",
   "Enable_Auto_Translate": "Permitir Auto-Translate",
