@@ -40,6 +40,7 @@ import {
 } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const QUERY_SIZE = 50;
 
@@ -251,7 +252,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			};
 			navigation.push('RoomView', params);
 		} else {
-			navigation.navigate('RoomView', params);
+			goRoom({ item: params, isMasterDetail: false, jumpToMessageId: params.jumpToMessageId });
 		}
 	};
 
