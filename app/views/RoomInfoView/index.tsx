@@ -28,6 +28,7 @@ import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
@@ -237,9 +238,10 @@ const RoomInfoView = (): React.ReactElement => {
 		if (r?.rid) {
 			if (r.rid === subscribedRoom) {
 				if (isMasterDetail) {
-					return navigate('DrawerNavigator');
+					Navigation.popTo('DrawerNavigator');
+				} else {
+					popTo('RoomView');
 				}
-				popTo('RoomView');
 				return;
 			}
 			goRoom({ item: params, isMasterDetail });
