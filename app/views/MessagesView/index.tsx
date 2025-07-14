@@ -36,6 +36,7 @@ import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 interface IMessagesViewProps {
 	user: {
@@ -158,7 +159,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			};
 			navigation.push('RoomView', params);
 		} else {
-			navigation.navigate('RoomView', params);
+			goRoom({ item: params, isMasterDetail: false, jumpToMessageId: params.jumpToMessageId });
 		}
 	};
 
