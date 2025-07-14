@@ -36,7 +36,6 @@ import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
 import Navigation from '../../lib/navigation/appNavigation';
 
 interface IMessagesViewProps {
@@ -139,7 +138,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	};
 
 	jumpToMessage = async ({ item }: { item: IMessage }) => {
-		const { navigation, isMasterDetail } = this.props;
+		const { isMasterDetail } = this.props;
 		let params: IParams = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
@@ -147,12 +146,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			room: this.room
 		};
 		if (item.tmid) {
-			if (isMasterDetail) {
-				Navigation.popTo('DrawerNavigator');
-			} else {
-				// FIXME
-				navigation.pop(2);
-			}
+			Navigation.popToRoom(isMasterDetail);
 			params = {
 				...params,
 				tmid: item.tmid,
@@ -161,12 +155,8 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			};
 			Navigation.push('RoomView', params);
 		} else {
-			if (isMasterDetail) {
-				Navigation.popTo('DrawerNavigator');
-				Navigation.setParams(params);
-				return;
-			}
-			goRoom({ item: params, isMasterDetail: false, jumpToMessageId: params.jumpToMessageId });
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams(params);
 		}
 	};
 

@@ -41,6 +41,14 @@ function popToTop(isMasterDetail: boolean) {
 	}
 }
 
+function popToRoom(isMasterDetail: boolean) {
+	if (isMasterDetail) {
+		popTo('DrawerNavigator');
+	} else {
+		popTo('RoomView');
+	}
+}
+
 function dispatch(params: any) {
 	navigationRef.current?.dispatch(params);
 }
@@ -75,6 +83,7 @@ export default {
 	replace,
 	popTo,
 	popToTop,
+	popToRoom,
 	dispatch,
 	resetTo,
 	getCurrentRoute,

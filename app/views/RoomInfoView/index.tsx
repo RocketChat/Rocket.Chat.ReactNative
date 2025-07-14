@@ -41,7 +41,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
-	const { addListener, setOptions, navigate, popTo } = useNavigation<TRoomInfoViewNavigationProp>();
+	const { addListener, setOptions, navigate } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
@@ -237,11 +237,7 @@ const RoomInfoView = (): React.ReactElement => {
 
 		if (r?.rid) {
 			if (r.rid === subscribedRoom) {
-				if (isMasterDetail) {
-					Navigation.popTo('DrawerNavigator');
-				} else {
-					popTo('RoomView');
-				}
+				Navigation.popToRoom(isMasterDetail);
 				return;
 			}
 			goRoom({ item: params, isMasterDetail });

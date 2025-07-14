@@ -391,9 +391,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 		(item: any) => {
 			const { subscription } = this.state;
 			const { isMasterDetail } = this.props;
-			if (isMasterDetail) {
-				Navigation.popTo('DrawerNavigator');
-			}
+			Navigation.popToRoom(isMasterDetail);
 			Navigation.push('RoomView', {
 				rid: item.subscription.id,
 				tmid: item.id,
