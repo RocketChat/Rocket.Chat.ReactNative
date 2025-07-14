@@ -45,18 +45,9 @@ jobs:
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
           VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
 
-  upload-hold:
-    name: Upload Hold
-    runs-on: ubuntu-latest
-    environment: upload_experimental_ios
-    needs: [build-ios]
-    steps:
-      - run: echo "Waiting for manual approval..."
-
   upload-ios:
     name: Upload
     runs-on: macos-15
-    needs: [upload-hold]
     if: ${{ inputs.type == 'experimental' }}
     steps:
       - name: Checkout Repository
