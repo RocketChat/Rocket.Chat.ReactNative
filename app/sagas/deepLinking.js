@@ -74,18 +74,8 @@ const navigate = function* navigate({ params }) {
 				};
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
-				const subscribedRoom = yield select(state => state.room.subscribedRoom);
 				const jumpToMessageId = params.messageId;
 				yield waitForNavigation();
-
-				// if the room is already subscribed, we just set the params to trigger highlight and return
-				if (subscribedRoom === item.rid) {
-					yield Navigation.setParams({
-						jumpToMessageId,
-						jumpToThreadId
-					});
-					return;
-				}
 				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 			}
 		} else {

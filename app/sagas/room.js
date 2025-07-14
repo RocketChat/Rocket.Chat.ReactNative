@@ -67,7 +67,7 @@ const watchUserTyping = function* watchUserTyping({ rid, status }) {
 
 const handleRemovedRoom = function* handleRemovedRoom(roomType, actionType) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	Navigation.popToTop();
+	Navigation.popToTop(isMasterDetail);
 
 	if (actionType === 'leave') {
 		EventEmitter.emit(LISTENER, {
