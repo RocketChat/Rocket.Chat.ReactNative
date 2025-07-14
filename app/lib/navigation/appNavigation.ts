@@ -21,10 +21,12 @@ function replace(name: string, params: any) {
 	navigationRef.current?.dispatch(StackActions.replace(name, params));
 }
 
+// Pops to the first occurrence of the given route name, usually RoomView
 function popTo(name: string) {
 	navigationRef.current?.dispatch(StackActions.popTo(name));
 }
 
+// Removes RoomView from the stack and leaves only RoomsListView open
 function popToTop(isMasterDetail: boolean) {
 	if (isMasterDetail) {
 		popTo('DrawerNavigator');
