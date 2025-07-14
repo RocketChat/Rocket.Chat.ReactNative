@@ -228,7 +228,7 @@ const MessageActions = React.memo(
 								// do nothing
 							}
 						});
-						Navigation.navigate('RoomsListView');
+						Navigation.popToTop();
 					}
 				} catch (e) {
 					logEvent(events.ROOM_MSG_ACTION_UNREAD_F);
