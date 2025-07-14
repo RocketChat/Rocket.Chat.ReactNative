@@ -41,6 +41,7 @@ import {
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
+import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;
 
@@ -76,6 +77,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	};
 	theme: TSupportedThemes;
 	useRealName: boolean;
+	isMasterDetail: boolean;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -228,7 +230,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	};
 
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
-		const { navigation } = this.props;
+		const { navigation, isMasterDetail } = this.props;
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
@@ -243,16 +245,25 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			room: this.room as TSubscriptionModel
 		};
 		if ('tmid' in item && item.tmid) {
-			navigation.pop();
+			if (isMasterDetail) {
+				Navigation.popTo('DrawerNavigator');
+			} else {
+				navigation.pop();
+			}
 			params = {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid as string, item._id),
 				t: SubscriptionType.THREAD
 			};
-			navigation.push('RoomView', params);
+			Navigation.push('RoomView', params);
 		} else {
-			goRoom({ item: params, isMasterDetail: false, jumpToMessageId: params.jumpToMessageId });
+			if (isMasterDetail) {
+				Navigation.popTo('DrawerNavigator');
+				Navigation.setParams(params);
+				return;
+			}
+			goRoom({ item: params, isMasterDetail, jumpToMessageId: params.jumpToMessageId });
 		}
 	};
 
@@ -349,6 +360,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
