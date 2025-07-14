@@ -42,7 +42,7 @@ const navigate = ({
 
 	const currentRoute = Navigation.getCurrentRoute() as any;
 	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid) {
-		Navigation.navigate('RoomView', routeParams);
+		Navigation.setParams(routeParams);
 		return;
 	}
 
