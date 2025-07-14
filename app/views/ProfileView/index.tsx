@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
-import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
@@ -39,6 +38,7 @@ import CustomFields from '../../containers/CustomFields';
 import ListSeparator from '../../containers/List/ListSeparator';
 import handleError from './methods/handleError';
 import logoutOtherLocations from './methods/logoutOtherLocations';
+import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChangeActionSheetContent';
 
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
@@ -174,17 +174,13 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('saving', false);
 			showActionSheet({
 				children: (
-					<ActionSheetContentWithInputAndSubmit
-						title={I18n.t('Please_enter_your_password')}
-						description={I18n.t('For_your_security_you_must_enter_your_current_password_to_continue')}
+					<ConfirmEmailChangeActionSheetContent
 						testID='profile-view-enter-password-sheet'
-						placeholder={I18n.t('Password')}
 						onSubmit={p => {
 							hideActionSheet();
 							setValue('currentPassword', p as any);
 							submit();
 						}}
-						onCancel={hideActionSheet}
 					/>
 				)
 			});
