@@ -86,6 +86,7 @@
   "Code_or_password_invalid": "Código ou senha inválidos",
   "Collaborative": "Colaborativa",
   "Confirm": "Confirmar",
+  "Confirm_password": "Confirmar palavra-passe",
   "Confirm_Password": "Confirme sua senha",
   "Connect": "Ligar",
   "Connect_to_server_as_user": "Ligar a {{serverUrl}} como {{user}}",

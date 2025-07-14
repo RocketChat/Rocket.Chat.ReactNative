@@ -96,6 +96,7 @@
   "Code_or_password_invalid": "Codice o password non validi",
   "Collaborative": "Collaborativo",
   "Confirm": "Conferma",
+  "Confirm_password": "Conferma password",
   "Confirm_Password": "Conferma password",
   "Connect": "Connetti",
   "Connect_to_server_as_user": "Connettiti a {{serverUrl}} come {{user}}",

@@ -89,6 +89,7 @@
   "Code_or_password_invalid": "验证码或密码不正确",
   "Collaborative": "协作",
   "Confirm": "确认",
+  "Confirm_password": "确认密码",
   "Confirm_Password": "确认密码",
   "Connect": "连接",
   "Connect_to_server_as_user": "以{{user}}身份连接到{{serverUrl}}",

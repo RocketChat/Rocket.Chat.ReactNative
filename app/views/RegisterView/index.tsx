@@ -36,15 +36,8 @@ const validationSchema = yup.object().shape({
 		.email(I18n.t('Email_must_be_valid'))
 		.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
 	username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
-	password: yup
-		.string()
-		.min(1)
-		.oneOf([yup.ref('confirmPassword'), null], I18n.t('Passwords_do_not_match'))
-		.required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
-	confirmPassword: yup
-		.string()
-		.oneOf([yup.ref('password'), null], I18n.t('Passwords_do_not_match'))
-		.required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
+	password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
+	confirmPassword: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
 });
 
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
@@ -83,7 +76,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
-	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword);
+	const { passwordPolicies, isPasswordValid } = useVerifyPassword(password, confirmPassword, false);
 	const customFieldsRef = useRef<{ [key: string]: TextInput | undefined }>({});
 
 	const focusOnCustomFields = () => {
@@ -119,7 +112,13 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const onSubmit = async (data: any) => {
 		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 
-		const { name, email, password, username } = data;
+		const { name, email, password, username, confirmPassword } = data;
+
+		if (password !== confirmPassword) {
+			setError('confirmPassword', { message: I18n.t('Passwords_do_not_match'), type: 'validate' });
+			AccessibilityInfo.announceForAccessibility(I18n.t('Passwords_do_not_match'));
+			return;
+		}
 
 		if (!validateDefaultFormInfo()) {
 			return;
@@ -241,7 +240,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						control={control}
 						testID='register-view-password'
 						returnKeyType='next'
-						error={errors.password?.message}
+						error={errors.confirmPassword?.message}
 						required
 						label={I18n.t('Password')}
 						secureTextEntry
@@ -249,6 +248,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						autoComplete={isAndroid ? 'password-new' : undefined}
 						onSubmitEditing={() => setFocus('confirmPassword')}
 						containerStyle={styles.inputContainer}
+						showErrorMessage={false}
 					/>
 					<ControlledFormTextInput
 						name='confirmPassword'
@@ -256,7 +256,6 @@ const RegisterView = ({ navigation, route }: IProps) => {
 						testID='register-view-confirm-password'
 						returnKeyType='done'
 						required
-						label={I18n.t('Confirm_Password')}
 						textContentType={isAndroid ? 'newPassword' : undefined}
 						autoComplete={isAndroid ? 'password-new' : undefined}
 						secureTextEntry

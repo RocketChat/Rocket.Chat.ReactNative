@@ -90,6 +90,7 @@
   "Code_or_password_invalid": "الرمز أو كلمة المرور خاطئة",
   "Collaborative": "تعاونية",
   "Confirm": "تأكيد",
+  "Confirm_password": "تأكيد كلمة المرور",
   "Confirm_Password": "تأكيد كلمة المرور",
   "Connect": "اتصال",
   "Connect_to_server_as_user": "اتصل بـ {{serverUrl}} كـ {{user}}",

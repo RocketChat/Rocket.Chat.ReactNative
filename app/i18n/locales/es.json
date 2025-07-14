@@ -74,6 +74,7 @@
   "Close": "Cerrar",
   "Collaborative": "Colaborativo",
   "Confirm": "Confirmar",
+  "Confirm_password": "Confirmar contraseña",
   "Confirm_Password": "confirmar Contraseña",
   "Connect": "Conectar",
   "Connect_to_server_as_user": "Conéctate a {{serverUrl}} como {{user}}",

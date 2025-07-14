@@ -89,6 +89,7 @@
   "Code_or_password_invalid": "無効なコードまたはパスワード",
   "Collaborative": "コラボ",
   "Confirm": "承認",
+  "Confirm_password": "パスワードを確認",
   "Confirm_Password": "パスワードを認証する",
   "Connect": "接続",
   "Connect_to_server_as_user": "{{user}}として{{serverUrl}}に接続する",
