@@ -9,6 +9,10 @@ function navigate(name: string, params?: any) {
 	navigationRef.current?.navigate(name, params);
 }
 
+function push(name: string, params?: any) {
+	navigationRef.current?.dispatch(StackActions.push(name, params));
+}
+
 function back() {
 	navigationRef.current?.dispatch(CommonActions.goBack());
 }
@@ -64,6 +68,7 @@ export default {
 	navigationRef,
 	routeNameRef,
 	navigate,
+	push,
 	back,
 	replace,
 	popTo,
