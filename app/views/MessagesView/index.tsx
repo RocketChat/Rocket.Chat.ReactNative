@@ -37,6 +37,7 @@ import { TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
+import Navigation from '../../lib/navigation/appNavigation';
 
 interface IMessagesViewProps {
 	user: {
@@ -147,8 +148,9 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 		};
 		if (item.tmid) {
 			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
+				Navigation.popTo('DrawerNavigator');
 			} else {
+				// FIXME
 				navigation.pop(2);
 			}
 			params = {
@@ -157,8 +159,13 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 				name: await getThreadName(this.rid, item.tmid, item._id),
 				t: SubscriptionType.THREAD
 			};
-			navigation.push('RoomView', params);
+			Navigation.push('RoomView', params);
 		} else {
+			if (isMasterDetail) {
+				Navigation.popTo('DrawerNavigator');
+				Navigation.setParams(params);
+				return;
+			}
 			goRoom({ item: params, isMasterDetail: false, jumpToMessageId: params.jumpToMessageId });
 		}
 	};
