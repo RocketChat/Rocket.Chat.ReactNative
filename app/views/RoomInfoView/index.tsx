@@ -40,7 +40,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
-	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
+	const { addListener, setOptions, navigate, popTo } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
@@ -239,12 +239,10 @@ const RoomInfoView = (): React.ReactElement => {
 				if (isMasterDetail) {
 					return navigate('DrawerNavigator');
 				}
-				goBack();
-				goBack();
+				popTo('RoomView');
 				return;
 			}
-			// if it's on master detail layout, we close the modal and replace RoomView
-			goRoom({ item: params, isMasterDetail, popToRoot: true });
+			goRoom({ item: params, isMasterDetail });
 		}
 	};
 
