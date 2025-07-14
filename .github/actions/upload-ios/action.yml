@@ -71,6 +71,16 @@ runs:
         name: ios-build-official-info-plist
         path: ios/RocketChatRN/
 
+    - name: Pod Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pods
+          ios/Pods
+        key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+        restore-keys: |
+          pods-v1-
+
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
