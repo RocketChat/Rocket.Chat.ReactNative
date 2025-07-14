@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: official_ios_build
     steps:
-      - name: Hold
-        run: |
-          echo "Hold"
+      - run: echo "Waiting for manual approval..."
 
   build-ios:
     name: Build
@@ -28,6 +26,10 @@ jobs:
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
+
+      - name: Generate Version Code
+        id: version
+        uses: ./.github/actions/generate-version-code
 
       - name: Build iOS
         uses: ./.github/actions/build-ios
@@ -42,6 +44,7 @@ jobs:
           BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
 
   upload-hold:
     name: Upload Hold
@@ -49,9 +52,7 @@ jobs:
     environment: upload_official_ios
     needs: [build-ios]
     steps:
-      - name: Hold
-        run: |
-          echo "Hold"
+      - run: echo "Waiting for manual approval..."
 
   upload-ios:
     name: Upload

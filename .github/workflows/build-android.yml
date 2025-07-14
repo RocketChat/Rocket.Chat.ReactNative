@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: experimental_android_build
     steps:
-      - name: Hold
-        run: |
-          echo "Hold"
+      - run: echo "Waiting for manual approval..."
 
   build-android:
     name: Build
@@ -28,7 +26,11 @@ jobs:
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
-        
+
+      - name: Generate Version Code
+        id: version
+        uses: ./.github/actions/generate-version-code
+
       - name: Build Android
         uses: ./.github/actions/build-android
         with:
@@ -39,6 +41,7 @@ jobs:
           KEYSTORE_EXPERIMENTAL_PASSWORD: ${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}
           KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
           GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+          VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
 
   upload-hold:
     name: Upload Hold
@@ -46,9 +49,7 @@ jobs:
     needs: [build-android]
     environment: upload_experimental_android
     steps:
-      - name: Hold
-        run: |
-          echo "Hold"
+      - run: echo "Waiting for manual approval..."
 
   upload-android:
     name: Upload

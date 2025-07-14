@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: official_android_build
     steps:
-      - name: Hold
-        run: |
-          echo "Hold"
+      - run: echo "Waiting for manual approval..."
 
   build-android:
     name: Build
@@ -29,6 +27,10 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Generate Version Code
+        id: version
+        uses: ./.github/actions/generate-version-code
+
       - name: Build Android
         uses: ./.github/actions/build-android
         with:
@@ -39,6 +41,7 @@ jobs:
           KEYSTORE_OFFICIAL_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
           KEYSTORE_OFFICIAL_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
 
   upload-hold:
     name: Upload Hold
@@ -46,9 +49,7 @@ jobs:
     environment: upload_official_android
     needs: [build-android]
     steps:
-      - name: Hold
-        run: |
-          echo "Hold"
+      - run: echo "Waiting for manual approval..."
 
   upload-android:
     name: Upload

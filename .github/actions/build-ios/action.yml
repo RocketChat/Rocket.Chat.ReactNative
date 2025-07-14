@@ -4,6 +4,9 @@ inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
+  VERSIONCODE:
+    description: 'Version Code'
+    required: true
   APP_STORE_CONNECT_API_KEY_BASE64:
     description: 'Base64 encoded App Store Connect API Key'
     required: true
@@ -69,7 +72,7 @@ runs:
     - name: Set bugsnag key
       working-directory: ios
       run: |
-        agvtool new-version -all ${{ github.run_id }}
+        agvtool new-version -all ${{ inputs.VERSIONCODE }}
         if [[ ${{ inputs.type }} == "official" ]]; then
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set :bugsnag:apiKey ${{ inputs.BUGSNAG_KEY_OFFICIAL }}" ./ShareRocketChatRN/Info.plist
@@ -103,13 +106,6 @@ runs:
         APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
         FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
       shell: bash
-
-    - name: Upload log
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: ios-build-log
-        path: /Users/runner/Library/Logs/gym/Rocket.Chat-RocketChat.log
 
     - name: Upload IPA artifact
       uses: actions/upload-artifact@v4

@@ -1,0 +1,20 @@
+name: Generate Version Code
+description: Generates version code from GitHub run number
+
+outputs:
+  VERSIONCODE:
+    description: "Generated version code"
+    value: ${{ steps.compute.outputs.VERSIONCODE }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Compute VERSIONCODE
+      id: compute
+      shell: bash
+      env:
+        GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      run: |
+        OFFSET=86700
+        VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
+        echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
