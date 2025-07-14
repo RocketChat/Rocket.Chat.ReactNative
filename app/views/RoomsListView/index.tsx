@@ -961,7 +961,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	renderScroll = () => {
 		const { loading, chats, search, searching } = this.state;
-		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
+		const { theme, refreshing, displayMode, supportedVersionsStatus, user, navigation } = this.props;
 		const fontScale = PixelRatio.getFontScale();
 		const rowHeight = 75 * fontScale;
 		const rowHeightCondensed = 60 * fontScale;
@@ -976,7 +976,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		}
 
 		if (user.requirePasswordChange) {
-			return <ChangePasswordRequired />;
+			return <ChangePasswordRequired navigation={navigation} />;
 		}
 
 		return (

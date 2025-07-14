@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,7 @@ import { twoFactor } from '../../lib/services/twoFactor';
 import { ProfileStackParamList } from '../../stacks/types';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { useAppSelector } from '../../lib/hooks';
-import { isAndroid } from '../../lib/methods/helpers';
+import { isAndroid, showErrorAlert } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import { Services } from '../../lib/services';
@@ -62,8 +62,10 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 	const { fromProfileView } = route.params;
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
-	const { Accounts_AllowPasswordChange, serverURL, user } = useAppSelector(state => ({
+
+	const { Accounts_AllowPasswordChange, Accounts_RequirePasswordConfirmation, serverURL, user } = useAppSelector(state => ({
 		Accounts_AllowPasswordChange: state.settings.Accounts_AllowPasswordChange as boolean,
+		Accounts_RequirePasswordConfirmation: state.settings.Accounts_RequirePasswordConfirmation as boolean,
 		serverURL: state.server.server,
 		user: getUserSelector(state)
 	}));
@@ -73,46 +75,73 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 		control,
 		watch,
 		setValue,
+		setError,
 		getValues,
-		formState: { isDirty }
+		formState: { isDirty, errors }
 	} = useForm({
 		defaultValues: {
 			currentPassword: '',
 			newPassword: '',
-			confirmNewPassword: ''
+			confirmNewPassword: '',
+			saving: false
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const newPassword = watch('newPassword') ?? '';
+	const newPassword = watch('newPassword') || '';
+	const saving = watch('saving');
 	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 
 	const onCancel = () => {
 		navigation.goBack();
 	};
 
-	const onSetNewPassword = async () => {
-		const { currentPassword, confirmNewPassword, newPassword } = getValues();
+	const changePassword = async () => {
+		const { confirmNewPassword } = getValues();
+
+		try {
+			if (newPassword !== confirmNewPassword) {
+				setError('newPassword', { message: 'Passwords must match', type: 'validate' });
+				setError('confirmNewPassword', { message: 'Passwords must match', type: 'validate' });
+				AccessibilityInfo.announceForAccessibility('Passwords must match');
+				return;
+			}
+			setValue('saving', true);
+			await Services.setUserPassword(newPassword);
+			dispatch(setUser({ requirePasswordChange: false }));
+			navigation.goBack();
+		} catch (error: any) {
+			showErrorAlert(error?.reason || error?.message, I18n.t('Oops'));
+		} finally {
+			setValue('saving', false);
+		}
+	};
+
+	const changePasswordFromProfileView = async () => {
+		const { currentPassword, confirmNewPassword } = getValues();
 		if (newPassword !== confirmNewPassword) {
+			setError('newPassword', { message: 'Passwords must match', type: 'validate' });
+			setError('confirmNewPassword', { message: 'Passwords must match', type: 'validate' });
+			AccessibilityInfo.announceForAccessibility('Passwords must match');
 			return;
 		}
 		try {
+			setValue('saving', true);
 			const { username, emails } = user;
 			if (fromProfileView) {
 				const params = { currentPassword: sha256(currentPassword), newPassword, username, email: emails?.[0].address || '' };
 				const twoFactorOptions = currentPassword
 					? { twoFactorCode: params?.currentPassword, twoFactorMethod: TwoFactorMethods.PASSWORD }
 					: null;
-				console.log(twoFactorOptions, params);
 				const result = await Services.saveUserProfileMethod(params, {}, twoFactorCode || twoFactorOptions);
 
 				if (result) {
 					logEvent(events.PROFILE_SAVE_CHANGES);
 					dispatch(setUser({ ...params }));
 					EventEmitter.emit(LISTENER, { message: I18n.t('Profile_saved_successfully') });
+					navigation.goBack();
 				}
 			}
 		} catch (e: any) {
-			console.log(e);
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
@@ -122,10 +151,28 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 					// cancelled twoFactor modal
 				}
 			}
+
+			if (e?.error === 'totp-invalid' && e?.details.method === TwoFactorMethods.PASSWORD) {
+				setError('currentPassword', { message: I18n.t('error-invalid-password'), type: 'validate' });
+				AccessibilityInfo.announceForAccessibility(I18n.t('error-invalid-password'));
+				logEvent(events.PROFILE_SAVE_CHANGES_F);
+				return;
+			}
+
 			logEvent(events.PROFILE_SAVE_CHANGES_F);
 			setValue('currentPassword', '');
 			setTwoFactorCode(null);
 			handleError(e, 'saving_profile');
+		} finally {
+			setValue('saving', false);
+		}
+	};
+
+	const onSetNewPassword = async () => {
+		if (fromProfileView) {
+			await changePasswordFromProfileView();
+		} else {
+			await changePassword();
 		}
 	};
 
@@ -139,31 +186,34 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 	return (
 		<KeyboardView>
 			<StatusBar />
-			<SafeAreaView testID='profile-view'>
+			<SafeAreaView testID='change-password-view'>
 				<ScrollView
 					contentContainerStyle={[
 						sharedStyles.containerScrollView,
 						{ backgroundColor: colors.surfaceTint, paddingTop: 32, gap: 24 }
 					]}
-					testID='profile-view-list'
+					testID='change-password-view-list'
 					{...scrollPersistTaps}>
 					<Text style={styles.createNewPasswordTitle}>Create new password</Text>
 
 					<View style={{ gap: 12 }}>
-						<ControlledFormTextInput
-							name='currentPassword'
-							control={control}
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							label={I18n.t('Current_password')}
-							placeholder={I18n.t('Current_password')}
-							textContentType={isAndroid ? 'password' : undefined}
-							autoComplete={isAndroid ? 'password' : undefined}
-							secureTextEntry
-							required
-							containerStyle={styles.inputContainer}
-							testID='change-password-view-current-password'
-						/>
+						{fromProfileView ? (
+							<ControlledFormTextInput
+								name='currentPassword'
+								control={control}
+								editable={Accounts_AllowPasswordChange}
+								inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+								label={I18n.t('Current_password')}
+								placeholder={I18n.t('Current_password')}
+								textContentType={isAndroid ? 'password' : undefined}
+								autoComplete={isAndroid ? 'password' : undefined}
+								secureTextEntry
+								required
+								containerStyle={styles.inputContainer}
+								testID='change-password-view-current-password'
+								error={errors.currentPassword?.message}
+							/>
+						) : null}
 
 						<ControlledFormTextInput
 							name='newPassword'
@@ -178,20 +228,25 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 							required
 							containerStyle={styles.inputContainer}
 							testID='change-password-view-new-password'
+							error={errors.newPassword?.message}
+							showErrorMessage={false}
 						/>
 
-						<ControlledFormTextInput
-							name='confirmNewPassword'
-							control={control}
-							editable={Accounts_AllowPasswordChange}
-							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
-							textContentType={isAndroid ? 'newPassword' : undefined}
-							autoComplete={isAndroid ? 'password-new' : undefined}
-							secureTextEntry
-							required
-							containerStyle={styles.inputContainer}
-							testID='change-password-view-confirm-new-password'
-						/>
+						{Accounts_RequirePasswordConfirmation ? (
+							<ControlledFormTextInput
+								name='confirmNewPassword'
+								control={control}
+								editable={Accounts_AllowPasswordChange}
+								inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
+								textContentType={isAndroid ? 'newPassword' : undefined}
+								autoComplete={isAndroid ? 'password-new' : undefined}
+								secureTextEntry
+								required
+								containerStyle={styles.inputContainer}
+								testID='change-password-view-confirm-new-password'
+								error={errors.confirmNewPassword?.message}
+							/>
+						) : null}
 					</View>
 
 					{passwordPolicies && newPassword?.length > 0 ? (
@@ -201,6 +256,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 					<View style={{ columnGap: 12 }}>
 						<Button title={I18n.t('Cancel')} type='secondary' onPress={onCancel} testID='change-password-view-cancel-button' />
 						<Button
+							loading={saving}
 							disabled={!isPasswordValid}
 							title={I18n.t('Set_new_password')}
 							type='primary'
