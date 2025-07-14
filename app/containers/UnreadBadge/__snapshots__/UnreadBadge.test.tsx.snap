@@ -20,8 +20,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 32,
+          "borderRadius": 10.5,
+          "minWidth": 16,
         },
         undefined,
       ]
@@ -59,8 +59,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 52,
+          "borderRadius": 10.5,
+          "minWidth": 26,
         },
         undefined,
       ]
@@ -101,8 +101,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -141,8 +141,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -181,8 +181,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -221,8 +221,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -261,8 +261,8 @@ exports[`Story Snapshots: All should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#095AD2",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -315,8 +315,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -355,8 +355,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -395,8 +395,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -435,8 +435,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -475,8 +475,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#095AD2",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -515,8 +515,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F5455C",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -555,8 +555,8 @@ exports[`Story Snapshots: DifferentMentionTypes should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#F38C39",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -609,8 +609,8 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -649,8 +649,8 @@ exports[`Story Snapshots: Normal should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 42,
+          "borderRadius": 10.5,
+          "minWidth": 21,
         },
         undefined,
       ]
@@ -700,8 +700,8 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 32,
+          "borderRadius": 10.5,
+          "minWidth": 16,
         },
         undefined,
       ]
@@ -739,8 +739,8 @@ exports[`Story Snapshots: Small should match snapshot 1`] = `
         },
         {
           "backgroundColor": "#9EA2A8",
-          "borderRadius": 21,
-          "minWidth": 52,
+          "borderRadius": 10.5,
+          "minWidth": 26,
         },
         undefined,
       ]
@@ -796,8 +796,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#9EA2A8",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -836,8 +836,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#F5455C",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -876,8 +876,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#F38C39",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -916,8 +916,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#095AD2",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -967,8 +967,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#9EA2A8",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1007,8 +1007,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#B43C4C",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1047,8 +1047,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#955828",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1087,8 +1087,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#245399",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1138,8 +1138,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#9EA2A8",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1178,8 +1178,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#B43C4C",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1218,8 +1218,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#955828",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
@@ -1258,8 +1258,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           },
           {
             "backgroundColor": "#245399",
-            "borderRadius": 21,
-            "minWidth": 42,
+            "borderRadius": 10.5,
+            "minWidth": 21,
           },
           undefined,
         ]
