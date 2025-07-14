@@ -92,12 +92,6 @@ runs:
         yarn pod-install
       shell: bash
 
-    - name: Show iOS directory tree
-      run: |
-        brew install tree || true
-        tree -L 2 ios
-      shell: bash
-
     - name: Fastlane Submit to TestFlight
       working-directory: ios
       run: |
