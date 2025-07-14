@@ -19,16 +19,7 @@ interface IGoRoomItem {
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
-const navigate = ({
-	item,
-	isMasterDetail,
-	// popToRoot,
-	...props
-}: {
-	item: TGoRoomItem;
-	isMasterDetail: boolean;
-	// popToRoot: boolean;
-}) => {
+const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
 	const routeParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
@@ -47,9 +38,7 @@ const navigate = ({
 	}
 
 	if (isMasterDetail) {
-		// if (popToRoot) {
-		// 	Navigation.navigate('DrawerNavigator');
-		// }
+		Navigation.popTo('DrawerNavigator');
 		return Navigation.dispatch((state: any) => {
 			const routesRoomView = state.routes.filter((r: any) => r.name !== 'RoomView');
 			return CommonActions.reset({
@@ -90,14 +79,12 @@ interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
 export const goRoom = async ({
 	item,
 	isMasterDetail = false,
-	// popToRoot = false,
 	...props
 }: {
 	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
-	// popToRoot?: boolean;
 }): Promise<void> => {
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
@@ -112,7 +99,6 @@ export const goRoom = async ({
 						t: SubscriptionType.DIRECT
 					},
 					isMasterDetail,
-					// popToRoot,
 					...props
 				});
 			}
