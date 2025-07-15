@@ -334,6 +334,7 @@
   "N_people_reacted": "{{n}} kişi tepki verdi",
   "N_users": "{{n}} kullanıcı",
   "Name": "İsim",
+  "Name_is_required": "Adınız gereklidir.",
   "Never": "Asla",
   "New_Message": "Yeni İleti",
   "New_Password": "Yeni Şifre",

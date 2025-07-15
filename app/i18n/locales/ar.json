@@ -320,6 +320,7 @@
   "N_people_reacted": "{{n}} تفاعل الناس",
   "N_users": "{{n}} مستخدمين",
   "Name": "اسم",
+  "Name_is_required": "الاسم مطلوب",
   "Never": "أبداً",
   "New_Message": "رسالة جديدة",
   "New_Password": "كلمة مرور جديدة",

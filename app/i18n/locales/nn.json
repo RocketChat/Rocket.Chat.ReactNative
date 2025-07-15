@@ -209,6 +209,7 @@
   "Mute_someone_in_room": "Stum på noen i rommet",
   "N_users": "{{value}} brukere",
   "Name": "Navn",
+  "Name_is_required": "Namnet er påkrevd",
   "Never": "Aldri",
   "Next": "Neste",
   "Nickname": "Kallenavn",

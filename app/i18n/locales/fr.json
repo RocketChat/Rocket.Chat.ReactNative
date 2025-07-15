@@ -403,6 +403,7 @@
   "N_people_reacted": "{{n}} personnes ont réagi",
   "N_users": "{{n}} utilisateurs",
   "Name": "Nom",
+  "Name_is_required": "Le nom est requis.",
   "Never": "Jamais",
   "New_chat_transfer": "Nouveau transfert de chat : {{agent}} a renvoyé le chat dans la file d'attente",
   "New_Message": "Nouveau message",

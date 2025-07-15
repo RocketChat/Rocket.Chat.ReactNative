@@ -498,6 +498,7 @@
   "N_Selected_members": "{{n}} valgt",
   "N_users": "{{n}} brukere",
   "Name": "Navn",
+  "Name_is_required": "Navn er påkrevd",
   "Never": "Aldri",
   "New_chat_transfer": "Ny chatoverføring: {{agent}} sendte chatten tilbake til køen",
   "New_Message": "Ny melding",

@@ -503,6 +503,7 @@
   "N_Selected_members": "{{n}} vybráno",
   "N_users": "{{n}} uživatelů",
   "Name": "Název",
+  "Name_is_required": "Jméno je povinné.",
   "Never": "Nikdy",
   "New_chat_transfer": "Nový přenos chatu: {{agent}} vrátil chat do fronty",
   "New_Message": "Nová zpráva",

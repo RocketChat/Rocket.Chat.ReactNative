@@ -31,7 +31,7 @@ import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
 const schema = yup.object().shape({
-	name: yup.string().email().required()
+	name: yup.string().required(I18n.t('Name_is_required'))
 });
 
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
@@ -69,6 +69,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const {
 		getValues,
 		control,
+		handleSubmit,
 		formState: { errors }
 	} = useForm({
 		defaultValues: {
@@ -100,6 +101,10 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		const pmid = message?.id;
 		const reply = '';
 		const { name: t_name } = getValues();
+
+		if (!t_name || !channel.prid || !channel.rid) {
+			return;
+		}
 
 		const params: ICreateDiscussionRequestData = {
 			prid: ('prid' in channel && channel.prid) || channel.rid,
@@ -187,7 +192,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 						testID='create-discussion-submit'
 						style={{ marginTop: 36 }}
 						title={I18n.t('Create_Discussion')}
-						onPress={submit}
+						onPress={handleSubmit(submit)}
 					/>
 				</ScrollView>
 			</SafeAreaView>

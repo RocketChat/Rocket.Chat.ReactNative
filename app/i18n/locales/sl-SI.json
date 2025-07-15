@@ -415,6 +415,7 @@
   "N_people_reacted": "{{n}} ljudi je reagiralo",
   "N_users": "{{n}} uporabniki",
   "Name": "Ime",
+  "Name_is_required": "Ime je obvezno.",
   "Never": "Nikoli",
   "New_chat_transfer": "Nov prenos klepeta: {{agent}} je klepet vrnil v čakalno vrsto",
   "New_Message": "Novo sporočilo",

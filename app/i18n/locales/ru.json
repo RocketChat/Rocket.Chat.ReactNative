@@ -432,6 +432,7 @@
   "N_Selected_members": "{{n}} выбрано",
   "N_users": "{{n}} пользователи",
   "Name": "Имя",
+  "Name_is_required": "Требуется имя",
   "Never": "Никогда",
   "New_chat_transfer": "Пересылка нового чата: {{agent}} вернул чат в очередь",
   "New_Message": "Новое сообщение",

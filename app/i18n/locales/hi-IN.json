@@ -469,6 +469,7 @@
   "N_Selected_members": "{{n}} चयनित सदस्य",
   "N_users": "{{n}} उपयोगकर्ता",
   "Name": "नाम",
+  "Name_is_required": "नाम आवश्यक है।",
   "Never": "कभी नहीं",
   "New_chat_transfer": "नई चैट ट्रांसफर: {{agent}} ने चैट को कतार में वापस लौटाया",
   "New_Message": "नया संदेश",

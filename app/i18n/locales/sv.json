@@ -441,6 +441,7 @@
   "N_Selected_members": "{{n}} har valts",
   "N_users": "{{n}} användare",
   "Name": "Namn",
+  "Name_is_required": "Namn krävs",
   "Never": "Aldrig",
   "New_chat_transfer": "Ny chattöverföring: {{agent}} återförde chatten till kön",
   "New_Message": "Nytt meddelande",

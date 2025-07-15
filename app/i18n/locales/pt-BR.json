@@ -514,6 +514,7 @@
   "N_Selected_members": "{{n}} selecionados",
   "N_users": "{{n}} usuários",
   "Name": "Nome",
+  "Name_is_required": "Nome é obrigatório",
   "Never": "Nunca",
   "New_chat_transfer": "Nova transferência de conversa: {{agent}} retornou conversa para a fila",
   "New_Message": "Nova mensagem",

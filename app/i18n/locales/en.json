@@ -526,6 +526,7 @@
   "N_Selected_members": "{{n}} selected",
   "N_users": "{{n}} users",
   "Name": "Name",
+  "Name_is_required": "Name is required",
   "Never": "Never",
   "New_chat_transfer": "New chat transfer: {{agent}} returned the chat to the queue",
   "New_Message": "New message",

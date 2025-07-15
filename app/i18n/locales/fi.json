@@ -442,6 +442,7 @@
   "N_Selected_members": "{{n}} valittu",
   "N_users": "{{n}} käyttäjää",
   "Name": "Nimi",
+  "Name_is_required": "Nimi on pakollinen",
   "Never": "Ei koskaan",
   "New_chat_transfer": "Uuden keskustelun siirto: {{agent}} palautti keskustelun jonoon",
   "New_Message": "Uusi viesti",

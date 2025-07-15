@@ -403,6 +403,7 @@
   "N_people_reacted": "{{n}} mensen hebben gereageerd",
   "N_users": "{{n}} gebruikers",
   "Name": "Naam",
+  "Name_is_required": "Naam is vereist",
   "Never": "Nooit",
   "New_chat_transfer": "Nieuwe chatoverdracht: {{agent}} heeft de chat terug in de wachtrij gezet",
   "New_Message": "Nieuw bericht",

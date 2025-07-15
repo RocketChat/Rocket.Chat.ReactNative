@@ -461,6 +461,7 @@
   "N_Selected_members": "{{n}} ausgewählt",
   "N_users": "{{n}} Benutzer",
   "Name": "Name",
+  "Name_is_required": "Name ist erforderlich",
   "Never": "Niemals",
   "New_chat_transfer": "Neue Chat-Übertragung: {{agent}} hat den Chat an die Warteschlange zurückgegeben",
   "New_Message": "Neue Nachricht",

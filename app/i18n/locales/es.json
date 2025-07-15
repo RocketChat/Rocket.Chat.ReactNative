@@ -217,6 +217,7 @@
   "N_people_reacted": "Han reaccionado {{n}} personas",
   "N_users": "{{n}} usuarios",
   "Name": "Nombre",
+  "Name_is_required": "Nombre es requerido",
   "New_Message": "Nuevo mensaje",
   "New_Password": "Nueva contraseña",
   "Next": "Siguiente",
