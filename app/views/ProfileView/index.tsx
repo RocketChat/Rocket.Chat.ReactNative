@@ -175,7 +175,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			showActionSheet({
 				children: (
 					<ConfirmEmailChangeActionSheetContent
-						testID='profile-view-enter-password-sheet'
 						onSubmit={p => {
 							hideActionSheet();
 							setValue('currentPassword', p as any);

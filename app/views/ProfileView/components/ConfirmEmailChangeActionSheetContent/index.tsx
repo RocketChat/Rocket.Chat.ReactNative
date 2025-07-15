@@ -47,8 +47,7 @@ const FooterButtons = ({
 	confirmTitle = '',
 	disabled = false,
 	cancelBackgroundColor = '',
-	confirmBackgroundColor = '',
-	testID = ''
+	confirmBackgroundColor = ''
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	return (
@@ -61,29 +60,23 @@ const FooterButtons = ({
 				title={cancelTitle}
 				color={colors.buttonFontSecondary}
 				onPress={cancelAction}
-				testID={`${testID}-cancel`}
+				testID='profile-view-enter-password-sheet-cancel'
 			/>
 			<Button
 				style={{ flex: 1, backgroundColor: confirmBackgroundColor || colors.buttonBackgroundDangerDefault }}
 				title={confirmTitle}
 				onPress={confirmAction}
 				disabled={disabled}
-				testID={`${testID}-confirm`}
+				testID='profile-view-enter-password-sheet-confirm'
 			/>
 		</View>
 	);
 };
 
 const ConfirmEmailChangeActionSheetContent = ({
-	onSubmit = () => {},
-	testID = '',
-	confirmTitle
+	onSubmit = () => {}
 }: {
 	onSubmit: (inputValue: string) => void;
-	testID: string;
-	secureTextEntry?: boolean;
-	placeholder?: string;
-	confirmTitle?: string;
 }): React.ReactElement => {
 	const { colors } = useTheme();
 	const {
@@ -100,7 +93,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 	};
 
 	return (
-		<View style={sharedStyles.containerScrollView} testID='action-sheet-content-with-input-and-submit'>
+		<View style={sharedStyles.containerScrollView} testID='profile-view-enter-password-sheet'>
 			<View accessible accessibilityLabel={I18n.t('Please_enter_your_password')} style={styles.titleContainer}>
 				<Text style={[styles.titleContainerText, { color: colors.fontDefault }]}>{I18n.t('Please_enter_your_password')}</Text>
 			</View>
@@ -113,7 +106,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 				onSubmitEditing={onConfirm}
 				accessibilityLabel={I18n.t('Password')}
 				autoComplete='password'
-				testID='profile-view-delete-account-sheet-input'
+				testID='profile-view-enter-password-sheet-input'
 				secureTextEntry
 				bottomSheet={isIOS}
 				containerStyle={styles.inputContainer}
@@ -124,8 +117,7 @@ const ConfirmEmailChangeActionSheetContent = ({
 				cancelAction={hideActionSheet}
 				confirmAction={onConfirm}
 				cancelTitle={I18n.t('Cancel')}
-				confirmTitle={confirmTitle || I18n.t('Save')}
-				testID={testID}
+				confirmTitle={I18n.t('Save')}
 			/>
 		</View>
 	);
