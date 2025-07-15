@@ -21,5 +21,9 @@ runs:
         VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
 
-        echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
-        echo "\`VERSIONCODE=$VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY
+        SUMMARY_FILE="$GITHUB_STEP_SUMMARY"
+
+        if ! grep -q "VERSIONCODE=$VERSIONCODE" "$SUMMARY_FILE"; then
+          echo "### 📦 Version Code Generated" >> "$SUMMARY_FILE"
+          echo "\`VERSIONCODE=$VERSIONCODE\`" >> "$SUMMARY_FILE"
+        fi
