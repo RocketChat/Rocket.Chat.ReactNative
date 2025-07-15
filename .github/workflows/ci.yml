@@ -26,7 +26,7 @@ jobs:
   android-build-official-store:
     name: Android Official
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
-    uses: ./.github/workflows/build-offical-android.yml
+    uses: ./.github/workflows/build-official-android.yml
     needs: [run-eslint-and-test]
     secrets: inherit
     with:
