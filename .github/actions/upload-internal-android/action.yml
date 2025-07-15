@@ -50,7 +50,7 @@ runs:
       working-directory: android
       run: |
         set -o pipefail
-        output=$(bundle exec fastlane android internal_app_sharing 2>&1)
+        output=$(bundle exec fastlane android internal_app_sharing 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
 
         echo "$output"
 
@@ -62,8 +62,10 @@ runs:
         fi
 
         gradle_file="app/build.gradle"
+        gradle_props="gradle.properties"
+
         version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
-        version_code=$(grep versionCode $gradle_file | head -n 1 | sed -E 's/.*versionCode[[:space:]]+([0-9]+).*/\1/')
+        version_code=$(grep '^VERSIONCODE=' "$gradle_props" | sed -E 's/VERSIONCODE=(.*)/\1/')
 
         echo "Parsed URL: $url"
         echo "versionName: $version_name"
@@ -85,7 +87,7 @@ runs:
           exit 1
         fi
 
-        version_info="versionName: \`$VERSION_NAME\` | versionCode: \`$VERSION_CODE\`"
+        version_info="Version Name: \`$VERSION_NAME\` | Version Code: \`$VERSION_CODE\`"
 
         if [[ "$BUILD_TYPE" == "official" ]]; then
           message="**Android Internal App Sharing (Official Build)**"$'\n\n'"Download here: $INTERNAL_SHARING_URL"$'\n\n'"$version_info"
