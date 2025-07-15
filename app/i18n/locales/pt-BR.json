@@ -491,6 +491,7 @@
   "Message_removed": "mensagem removida",
   "Message_Reported": "Mensagem reportada",
   "Message_starred": "Mensagem adicionada aos favoritos",
+  "Message_translated_into_idiom": "Mensagem traduzida para {{idioma}}",
   "Message_unstarred": "Mensagem removida dos favoritos",
   "Message_was_not_read": "Mensagem não foi lida",
   "Message_was_read": "Mensagem foi lida",

@@ -92,7 +92,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessageTouchable & IMessage) => {
+const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslateLanguage?: string }) => {
 	const handleMentionsOnAccessibilityLabel = (label: string) => {
 		const { mentions = [], channels = [] } = props;
 
@@ -115,6 +115,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	const accessibilityLabel = useMemo(() => {
 		let label = '';
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+
 		if (props.isThreadReply) {
 			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
 		}
@@ -130,13 +131,14 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		}
 		label = handleMentionsOnAccessibilityLabel(label);
 
+		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: props?.autoTranslateLanguage }) : '';
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		const readOrUnreadLabel =
 			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
-		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+		return `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	}, [
 		props.msg,
 		props.tmid,
@@ -149,7 +151,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		props.author,
 		props.mentions,
 		props.channels,
-		props.unread
+		props.unread,
+		props.isTranslated
 	]);
 
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
@@ -199,7 +202,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+const MessageTouchable = React.memo((props: IMessageTouchable & IMessage & { autoTranslateLanguage?: string }) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 

@@ -77,7 +77,7 @@ function waitForNotVisible(id: string) {
 }
 
 // Skipped until we fix join code backend
-describe.skip('Auto Translate', () => {
+describe('Auto Translate', () => {
 	let textMatcher: TTextMatcher;
 
 	const languages = {
@@ -129,12 +129,13 @@ describe.skip('Auto Translate', () => {
 
 		await waitForVisible('room-actions-view');
 		await element(by.id('room-actions-view')).swipe('up');
-
+		await sleep(300);
 		await waitForVisible('room-actions-auto-translate');
 		await element(by.id('room-actions-auto-translate')).tap();
 
 		await waitForVisible('auto-translate-view-switch');
 		await element(by.id('auto-translate-view-switch')).tap();
+		await sleep(300);
 
 		// verify default language is checked
 		await waitFor(element(by.id(`auto-translate-view-${languages.default}`)))
@@ -142,7 +143,10 @@ describe.skip('Auto Translate', () => {
 			.whileElement(by.id('auto-translate-view'))
 			.scroll(750, 'down');
 		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
+		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
+		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
 		await waitForVisible(`auto-translate-view-${languages.default}-check`);
+		await sleep(300);
 
 		// enable translated language
 		await waitFor(element(by.id(`auto-translate-view-${languages.translated}`)))
@@ -173,6 +177,7 @@ describe.skip('Auto Translate', () => {
 	it('should see new message translated', async () => {
 		const randomMatcher = random();
 		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		await sleep(500);
 		await searchMessage(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher); // will scroll the messages list to the last one
 		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 		await deleteMessageOnTranslationTestRoom(data);

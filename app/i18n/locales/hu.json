@@ -449,6 +449,7 @@
   "Message_removed": "üzenet eltávolítva",
   "Message_Reported": "Üzenet jelentve",
   "Message_starred": "Üzenet csillagozva",
+  "Message_translated_into_idiom": "Üzenet fordítva {{idiom}} nyelvre.",
   "Message_unstarred": "Üzenet csillagozásának megszüntetése",
   "Message_was_not_read": "Az üzenet nem lett elolvasva.",
   "Message_was_read": "Az üzenet elolvasva.",
