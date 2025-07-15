@@ -20,3 +20,6 @@ runs:
         OFFSET=87500
         VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
+
+        echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
+        echo "\`VERSIONCODE=$VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY

@@ -25,6 +25,9 @@ inputs:
   APP_STORE_CONNECT_API_KEY_BASE64:
     description: 'Base64 encoded App Store Connect API Key'
     required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
   
 runs:
   using: "composite"
@@ -120,4 +123,33 @@ runs:
         APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
         APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
         FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
+      shell: bash
+
+    - name: Extract version info from Info.plist
+      id: extract_ios_version
+      run: |
+        plist="ios/RocketChatRN/Info.plist"
+
+        version_name=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$plist")
+        version_code=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$plist")
+
+        echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
+        echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Comment on PR with TestFlight Info
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_TYPE: ${{ inputs.type }}
+      run: |
+        if [[ "$BUILD_TYPE" == "official" ]]; then
+          app_name="Rocket.Chat"
+        else
+          app_name="Rocket.Chat Experimental"
+        fi
+
+        message="🚀 **New TestFlight build available**: \`$app_name $VERSION_NAME.$VERSION_CODE\`"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
       shell: bash

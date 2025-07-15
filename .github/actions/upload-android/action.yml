@@ -1,5 +1,5 @@
 name: 'Upload Android'
-description: 'Downloads AAB + Manifest, uploads to Play Store, and handles Bugsnag'
+description: 'Downloads AAB + Manifest, uploads to Play Store'
 inputs:
   type:
     description: 'Build type: official or experimental'
@@ -24,10 +24,6 @@ runs:
       with:
         name: android-aab-official
         path: android/app/build/outputs/bundle/officialRelease/
-
-    - name: List downloaded files
-      run: ls -R android/app/build/outputs/bundle
-      shell: bash
 
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1

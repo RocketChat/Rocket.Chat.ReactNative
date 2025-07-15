@@ -69,7 +69,7 @@ runs:
         echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
       shell: bash
 
-    - name: Set bugsnag key
+    - name: Configure Info.plist and build version
       working-directory: ios
       run: |
         agvtool new-version -all ${{ inputs.VERSIONCODE }}

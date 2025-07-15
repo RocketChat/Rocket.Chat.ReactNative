@@ -1,11 +1,14 @@
 name: 'Upload Android'
-description: 'Downloads AAB + Manifest, uploads to Play Store, and handles Bugsnag'
+description: 'Downloads AAB + Manifest, uploads to Play Store'
 inputs:
   type:
     description: 'Build type: official or experimental'
     required: true
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
+    required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
     required: true
     
 runs:
@@ -24,10 +27,6 @@ runs:
       with:
         name: android-aab-official
         path: android/app/build/outputs/bundle/officialRelease/
-
-    - name: List downloaded files
-      run: ls -R android/app/build/outputs/bundle
-      shell: bash
 
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1
@@ -48,7 +47,51 @@ runs:
       shell: bash
 
     - name: Fastlane Play Store Upload
+      working-directory: android
       run: |
-        cd android
-        bundle exec fastlane android internal_app_sharing
+        set -o pipefail
+        output=$(bundle exec fastlane android internal_app_sharing 2>&1)
+
+        echo "$output"
+
+        url=$(echo "$output" | grep -o 'https://play\.google\.com/apps/test/[^ ]*' | head -n 1)
+
+        if [[ -z "$url" ]]; then
+          echo "❌ Could not find internal sharing URL."
+          exit 1
+        fi
+
+        gradle_file="app/build.gradle"
+        version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
+        version_code=$(grep versionCode $gradle_file | head -n 1 | sed -E 's/.*versionCode[[:space:]]+([0-9]+).*/\1/')
+
+        echo "Parsed URL: $url"
+        echo "versionName: $version_name"
+        echo "versionCode: $version_code"
+
+        echo "INTERNAL_SHARING_URL=$url" >> $GITHUB_ENV
+        echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
+        echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Share Internal App Sharing Link
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_TYPE: ${{ inputs.type }}
+      run: |
+        if [[ -z "$INTERNAL_SHARING_URL" ]]; then
+          echo "No internal sharing URL found in env"
+          exit 1
+        fi
+
+        version_info="versionName: \`$VERSION_NAME\` | versionCode: \`$VERSION_CODE\`"
+
+        if [[ "$BUILD_TYPE" == "official" ]]; then
+          message="**Android Internal App Sharing (Official Build)**"$'\n\n'"Download here: $INTERNAL_SHARING_URL"$'\n\n'"$version_info"
+        else
+          message="**Android Internal App Sharing (Experimental Build)**"$'\n\n'"Download here: $INTERNAL_SHARING_URL"$'\n\n'"$version_info"
+        fi
+
+        gh pr comment "$PR_NUMBER" --body "$message"
       shell: bash
