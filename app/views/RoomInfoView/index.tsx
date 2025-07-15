@@ -81,7 +81,7 @@ const RoomInfoView = (): React.ReactElement => {
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
 	useLayoutEffect(() => {
 		setHeader(false);
-	});
+	}, []);
 
 	useEffect(() => {
 		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
