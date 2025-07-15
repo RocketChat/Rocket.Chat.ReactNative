@@ -37,8 +37,8 @@ const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMas
 		return;
 	}
 
+	Navigation.popTo('DrawerNavigator');
 	if (isMasterDetail) {
-		Navigation.popTo('DrawerNavigator');
 		return Navigation.dispatch((state: any) => {
 			const routesRoomView = state.routes.filter((r: any) => r.name !== 'RoomView');
 			return CommonActions.reset({
