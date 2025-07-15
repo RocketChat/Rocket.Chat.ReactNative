@@ -15,6 +15,6 @@ runs:
       env:
         GITHUB_RUN_NUMBER: ${{ github.run_number }}
       run: |
-        OFFSET=87000
+        OFFSET=87500
         VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
