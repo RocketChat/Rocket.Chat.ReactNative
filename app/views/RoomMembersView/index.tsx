@@ -381,10 +381,10 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
+	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
 			? state.members.filter(m => {
-					const filter = sanitizeLikeString(state.filter.toLowerCase()) ?? '';
 					return m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter);
 			  })
 			: null;
