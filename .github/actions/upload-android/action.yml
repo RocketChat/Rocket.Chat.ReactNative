@@ -7,6 +7,12 @@ inputs:
   FASTLANE_GOOGLE_SERVICE_ACCOUNT:
     description: 'Google service account key for upload'
     required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
+  VERSIONCODE:
+    description: 'Version code for build'
+    required: true
   
 runs:
   using: "composite"
@@ -47,4 +53,24 @@ runs:
       working-directory: android
       run: |
         bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
+      shell: bash
+    
+    - name: Leave a comment on PR
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_TYPE: ${{ inputs.type }}
+        VERSION_CODE: ${{ inputs.VERSIONCODE }}
+      run: |
+        if [[ "$BUILD_TYPE" == "official" ]]; then
+          app_name="Rocket.Chat"
+        else
+          app_name="Rocket.Chat Experimental"
+        fi
+
+        version_info="$app_name $BUILD_TYPE $VERSION_NAME.$VERSION_CODE"
+
+        message="**Android Build Available**"$'\n\n'"$version_info"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
       shell: bash
