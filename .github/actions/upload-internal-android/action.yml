@@ -65,7 +65,6 @@ runs:
         fi
 
         gradle_file="app/build.gradle"
-
         version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
 
         echo "Parsed URL: $url"
@@ -93,7 +92,7 @@ runs:
           app_name="Rocket.Chat Experimental"
         fi
 
-        version_info="$app_name $BUILD_TYPE $VERSION_NAME.$VERSION_CODE"
+        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
 
         message="**Android Build Available**"$'\n\n'"$version_info"$'\n\n'"Internal App Sharing: $INTERNAL_SHARING_URL"
 
