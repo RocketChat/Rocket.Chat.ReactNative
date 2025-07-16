@@ -65,7 +65,7 @@ runs:
         gradle_props="gradle.properties"
 
         version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
-        version_code=$(grep '^VERSIONCODE=' "$gradle_props" | sed -E 's/VERSIONCODE=(.*)/\1/')
+        version_code=$(grep -oP '`Version Code: \K[0-9]+(?=`)' $GITHUB_STEP_SUMMARY)
 
         echo "Parsed URL: $url"
         echo "versionName: $version_name"
