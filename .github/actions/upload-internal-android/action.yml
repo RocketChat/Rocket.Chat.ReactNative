@@ -10,6 +10,9 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub token for commenting'
     required: true
+  VERSIONCODE:
+    description: 'Version code for build'
+    required: true
     
 runs:
   using: "composite"
@@ -62,18 +65,14 @@ runs:
         fi
 
         gradle_file="app/build.gradle"
-        gradle_props="gradle.properties"
 
         version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
-        version_code=$(grep -oP '`Version Code: \K[0-9]+(?=`)' $GITHUB_STEP_SUMMARY)
 
         echo "Parsed URL: $url"
         echo "versionName: $version_name"
-        echo "versionCode: $version_code"
 
         echo "INTERNAL_SHARING_URL=$url" >> $GITHUB_ENV
         echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
-        echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
       shell: bash
 
     - name: Share Internal App Sharing Link
@@ -81,6 +80,7 @@ runs:
         GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}
         BUILD_TYPE: ${{ inputs.type }}
+        VERSION_CODE: ${{ inputs.VERSIONCODE }}
       run: |
         if [[ -z "$INTERNAL_SHARING_URL" ]]; then
           echo "No internal sharing URL found in env"
