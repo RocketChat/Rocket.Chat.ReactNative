@@ -87,13 +87,15 @@ runs:
           exit 1
         fi
 
-        version_info="Version Name: \`$VERSION_NAME\` | Version Code: \`$VERSION_CODE\`"
-
         if [[ "$BUILD_TYPE" == "official" ]]; then
-          message="**Android Internal App Sharing (Official Build)**"$'\n\n'"Download here: $INTERNAL_SHARING_URL"$'\n\n'"$version_info"
+          app_name="Rocket.Chat"
         else
-          message="**Android Internal App Sharing (Experimental Build)**"$'\n\n'"Download here: $INTERNAL_SHARING_URL"$'\n\n'"$version_info"
+          app_name="Rocket.Chat Experimental"
         fi
+
+        version_info="$app_name $BUILD_TYPE $VERSION_NAME.$VERSION_CODE"
+
+        message="**Android Build Available**"$'\n\n'"$version_info"$'\n\n'"Internal App Sharing: $INTERNAL_SHARING_URL"
 
         gh pr comment "$PR_NUMBER" --body "$message"
       shell: bash

@@ -149,7 +149,7 @@ runs:
           app_name="Rocket.Chat Experimental"
         fi
 
-        message="🚀 **New TestFlight build available**: \`$app_name $VERSION_NAME.$VERSION_CODE\`"
+        message="**iOS Build Available**"$'\n\n'"$app_name $VERSION_NAME.$VERSION_CODE"
 
         gh pr comment "$PR_NUMBER" --body "$message"
       shell: bash

@@ -1,4 +1,4 @@
-name: CI
+name: Build CI
 
 permissions:
   contents: read
@@ -8,9 +8,6 @@ on:
   pull_request:
     branches:
       - '*'
-  push:
-    branches:
-      - 'master'
 
 jobs:
   run-eslint-and-test:
@@ -19,7 +16,7 @@ jobs:
     uses: ./.github/workflows/eslint.yml
 
   android-build-experimental-store:
-    name: Android Experimental
+    name: Build Android Experimental
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
     needs: [run-eslint-and-test]
@@ -28,7 +25,7 @@ jobs:
       type: experimental
 
   android-build-official-store:
-    name: Android Official
+    name: Build Android Official
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-official-android.yml
     needs: [run-eslint-and-test]
@@ -37,7 +34,7 @@ jobs:
       type: official
 
   ios-build-experimental-store:
-    name: Build iOS Experimental Store
+    name: Build iOS Experimental
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-ios.yml
     needs: [run-eslint-and-test]
@@ -46,7 +43,7 @@ jobs:
       type: experimental
       
   ios-build-official-store:
-    name: Build iOS Official Store
+    name: Build iOS Official
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-official-ios.yml
     needs: [run-eslint-and-test]

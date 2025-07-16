@@ -1,5 +1,5 @@
-name: Setup Node and Cache Node Modules
-description: Initial Setup
+name: Setup Node
+description: Setup node and cache node_modules
 runs:
   using: "composite"
   steps:
