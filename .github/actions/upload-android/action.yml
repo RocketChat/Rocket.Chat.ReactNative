@@ -68,7 +68,7 @@ runs:
           app_name="Rocket.Chat Experimental"
         fi
 
-        gradle_file="app/build.gradle"
+        gradle_file="android/app/build.gradle"
         VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
 
         version_info="$app_name $VERSION_NAME.$VERSION_CODE"
