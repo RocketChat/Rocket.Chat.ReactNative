@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TextInputProps, View } from 'react-native';
+import { Control } from 'react-hook-form';
 
 import { useTheme } from '../../../../theme';
-import { FormTextInput } from '../../../../containers/TextInput';
+import { ControlledFormTextInput } from '../../../../containers/TextInput';
 import { TServerHistoryModel } from '../../../../definitions';
 import I18n from '../../../../i18n';
 import { CustomIcon } from '../../../../containers/CustomIcon';
@@ -13,23 +14,22 @@ import { ServersHistoryActionSheetContent } from '../ServersHistoryActionSheetCo
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
-		alignItems: 'flex-end',
+		alignItems: 'center',
 		gap: 4
 	},
 	inputContainer: {
 		flex: 1
-	},
-	input: {
-		marginTop: 0,
-		marginBottom: 0
-	},
-	serversHistoryButton: {
-		paddingVertical: 9
 	}
 });
 
 interface IServerInput extends TextInputProps {
-	text: string;
+	error?: string;
+	control: Control<
+		{
+			workspaceUrl: string;
+		},
+		any
+	>;
 	serversHistory: TServerHistoryModel[];
 	onSubmit(): void;
 	onDelete(item: TServerHistoryModel): void;
@@ -37,14 +37,18 @@ interface IServerInput extends TextInputProps {
 }
 
 const ServerInput = ({
-	text,
+	error,
+	control,
 	serversHistory,
 	onChangeText,
 	onSubmit,
 	onDelete,
 	onPressServerHistory
 }: IServerInput): JSX.Element => {
+	const [focused, setFocused] = useState(false);
 	const { colors } = useTheme();
+
+	const historyButtonMarginBottom = error ? 15 : -15;
 
 	const handleDeleteServerHistory = (item: TServerHistoryModel) => {
 		onDelete(item);
@@ -71,23 +75,27 @@ const ServerInput = ({
 	return (
 		<View style={styles.container}>
 			<View style={styles.inputContainer}>
-				<FormTextInput
+				<ControlledFormTextInput
+					name='workspaceUrl'
+					control={control}
 					label={I18n.t('Workspace_URL')}
-					containerStyle={styles.input}
-					value={text}
+					containerStyle={styles.inputContainer}
+					inputStyle={error && !focused ? { borderColor: colors.fontDanger } : {}}
 					returnKeyType='send'
-					onChangeText={onChangeText}
 					testID='new-server-view-input'
 					onSubmitEditing={onSubmit}
 					clearButtonMode='while-editing'
 					keyboardType='url'
 					textContentType='URL'
 					required
+					onChangeText={onChangeText}
+					onFocus={() => setFocused(true)}
+					onBlur={() => setFocused(false)}
+					error={error}
 				/>
 			</View>
-
 			{serversHistory?.length > 0 ? (
-				<View style={styles.serversHistoryButton}>
+				<View style={{ marginBottom: historyButtonMarginBottom }}>
 					<Touch
 						accessible
 						accessibilityLabel={I18n.t('Open_servers_history')}

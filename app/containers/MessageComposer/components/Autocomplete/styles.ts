@@ -8,8 +8,6 @@ export const useStyle = () => {
 	const styles = {
 		root: {
 			maxHeight: MAX_HEIGHT,
-			left: 8,
-			right: 8,
 			backgroundColor: colors.surfaceNeutral,
 			position: 'absolute',
 			borderRadius: 4,
