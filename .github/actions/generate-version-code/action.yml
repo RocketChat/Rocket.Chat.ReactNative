@@ -17,7 +17,7 @@ runs:
       run: |
         # This offset is from CircleCI after we migrated to Github Actions in order to have sequential builds
         
-        OFFSET=87500
+        OFFSET=87700
         VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
 
