@@ -68,7 +68,10 @@ runs:
           app_name="Rocket.Chat Experimental"
         fi
 
-        version_info="$app_name $BUILD_TYPE $VERSION_NAME.$VERSION_CODE"
+        gradle_file="app/build.gradle"
+        VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
+
+        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
 
         message="**Android Build Available**"$'\n\n'"$version_info"
 
