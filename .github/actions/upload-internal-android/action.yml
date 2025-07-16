@@ -53,7 +53,7 @@ runs:
       working-directory: android
       run: |
         set -o pipefail
-        output=$(bundle exec fastlane android internal_app_sharing 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
+        output=$(bundle exec fastlane android internal_app_sharing official:${{ inputs.type == 'official' }} 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
 
         echo "$output"
 
