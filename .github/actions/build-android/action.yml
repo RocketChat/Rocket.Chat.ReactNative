@@ -120,6 +120,7 @@ runs:
       shell: bash
 
     - name: Build Android Release AAB
+      timeout-minutes: 40
       working-directory: android
       run: |
         if [[ "${{ inputs.type }}" == "experimental" ]]; then
