@@ -111,9 +111,10 @@ describe('Profile screen', () => {
 				.toBeVisible()
 				.withTimeout(10000);
 			await element(by.id('profile-view-enter-password-sheet-input')).replaceText(`${user.password}`);
-			await element(by[textMatcher]('Save').withAncestor(by.id('action-sheet-content-with-input-and-submit')))
-				.atIndex(0)
-				.tap();
+			await waitFor(element(by.id('profile-view-enter-password-sheet-confirm')))
+				.toBeVisible()
+				.withTimeout(2000);
+			await element(by.id('profile-view-enter-password-sheet-confirm')).tap();
 			await waitForToast();
 		});
 	});
