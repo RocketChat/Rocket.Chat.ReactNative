@@ -10,7 +10,8 @@ import {
 	tapAndWaitFor,
 	navigateToRoom,
 	mockMessage,
-	tryTapping
+	tryTapping,
+	checkRoomTitle
 } from '../../helpers/app';
 import { createRandomRoom, createRandomUser } from '../../helpers/data_setup';
 
@@ -178,14 +179,10 @@ describe('Threads', () => {
 					.withTimeout(5000);
 				await expect(element(by.id(`room-view-title-${thread}`))).toExist();
 				await tapBack();
-				await waitFor(element(by.id('thread-messages-view')))
-					.toExist()
-					.withTimeout(5000);
-				await expect(element(by.id('thread-messages-view'))).toExist();
-				await tapBack();
 			});
 
 			it('should draft thread message', async () => {
+				await checkRoomTitle(room);
 				await element(by.id(`message-thread-button-${thread}`)).tap();
 				await waitFor(element(by.id(`room-view-title-${thread}`)))
 					.toExist()

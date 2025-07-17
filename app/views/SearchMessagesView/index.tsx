@@ -40,6 +40,7 @@ import {
 } from '../../definitions';
 import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
+import Navigation from '../../lib/navigation/appNavigation';
 
 const QUERY_SIZE = 50;
 
@@ -75,6 +76,7 @@ interface ISearchMessagesViewProps extends INavigationOption {
 	};
 	theme: TSupportedThemes;
 	useRealName: boolean;
+	isMasterDetail: boolean;
 }
 class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISearchMessagesViewState> {
 	private offset: number;
@@ -227,7 +229,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 	};
 
 	jumpToMessage = async ({ item }: { item: IMessageFromServer | TMessageModel }) => {
-		const { navigation } = this.props;
+		const { isMasterDetail } = this.props;
 		let params: {
 			rid: string;
 			jumpToMessageId: string;
@@ -242,16 +244,17 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 			room: this.room as TSubscriptionModel
 		};
 		if ('tmid' in item && item.tmid) {
-			navigation.pop();
+			Navigation.popToRoom(isMasterDetail);
 			params = {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid as string, item._id),
 				t: SubscriptionType.THREAD
 			};
-			navigation.push('RoomView', params);
+			Navigation.push('RoomView', params);
 		} else {
-			navigation.navigate('RoomView', params);
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams(params);
 		}
 	};
 
@@ -348,6 +351,7 @@ class SearchMessagesView extends React.Component<ISearchMessagesViewProps, ISear
 
 const mapStateToProps = (state: any) => ({
 	serverVersion: state.server.version,
+	isMasterDetail: state.app.isMasterDetail,
 	baseUrl: state.server.server,
 	user: getUserSelector(state),
 	useRealName: state.settings.UI_Use_Real_Name,
