@@ -90,7 +90,6 @@ runs:
       shell: bash
 
     - name: Build iOS app
-      timeout-minutes: 40
       working-directory: ios
       run: |
         if [[ ${{ inputs.type }} == "official" ]]; then
