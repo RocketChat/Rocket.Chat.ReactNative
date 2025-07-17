@@ -56,7 +56,7 @@ jobs:
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
-    needs: [upload-hold]
+    needs: [upload-hold, build-android]
     if: ${{ inputs.type == 'official' }}
     steps:
       - name: Checkout Repository
