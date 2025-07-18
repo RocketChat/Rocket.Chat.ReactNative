@@ -1,0 +1,91 @@
+name: Build Android And Upload
+
+on:
+  workflow_call:
+    inputs:
+      type:
+        type: string
+        required: true
+
+jobs:
+  build-hold:
+    name: Hold
+    runs-on: ubuntu-latest
+    environment: official_android_build
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  build-android:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: build-hold
+    if: ${{ inputs.type == 'official' }}
+    outputs:
+      VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Generate Version Code
+        id: version
+        uses: ./.github/actions/generate-version-code
+
+      - name: Build Android
+        uses: ./.github/actions/build-android
+        with:
+          type: official
+          GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+          KEYSTORE_OFFICIAL_BASE64: ${{ secrets.KEYSTORE_OFFICIAL_BASE64 }}
+          KEYSTORE_OFFICIAL: ${{ secrets.KEYSTORE_OFFICIAL }}
+          KEYSTORE_OFFICIAL_PASSWORD: ${{ secrets.KEYSTORE_OFFICIAL_PASSWORD }}
+          KEYSTORE_OFFICIAL_ALIAS: ${{ secrets.KEYSTORE_OFFICIAL_ALIAS }}
+          BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
+          VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
+
+  upload-hold:
+    name: Upload Hold
+    runs-on: ubuntu-latest
+    environment: upload_official_android
+    needs: [build-android]
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  upload-android:
+    name: Upload
+    runs-on: ubuntu-latest
+    needs: [upload-hold]
+    if: ${{ inputs.type == 'official' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Upload Android
+        uses: ./.github/actions/upload-android
+        with:
+          type: official
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
+        
+  upload-internal:
+    name: Internal Sharing
+    runs-on: ubuntu-latest
+    needs: [build-android]
+    if: ${{ inputs.type == 'official' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+      
+      - name: Upload Internal Sharing
+        uses: ./.github/actions/upload-internal-android
+        with:
+          type: official
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
