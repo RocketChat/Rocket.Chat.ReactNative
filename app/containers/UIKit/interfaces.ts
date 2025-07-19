@@ -77,7 +77,7 @@ export interface IElement {
 	options?: Option[];
 	text?: IText;
 	value?: string;
-	initial_date?: any;
+	initialDate?: any;
 	imageUrl?: string;
 	appId?: string;
 	blockId?: string;

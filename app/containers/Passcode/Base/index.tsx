@@ -14,7 +14,7 @@ import { useTheme } from '../../../theme';
 import LockIcon from './LockIcon';
 import Title from './Title';
 import Subtitle from './Subtitle';
-import { useDimensions } from '../../../dimensions';
+import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 interface IPasscodeBase {
 	type: string;
@@ -36,7 +36,7 @@ export interface IBase {
 const Base = forwardRef<IBase, IPasscodeBase>(
 	({ type, onEndProcess, previousPasscode, title, subtitle, onError, showBiometry, onBiometryPress }, ref) => {
 		const { colors } = useTheme();
-		const { height } = useDimensions();
+		const { height } = useResponsiveLayout();
 
 		// 206 is the height of the header calculating the margins, icon size height, title font size and subtitle height.
 		// 56 is a fixed number to decrease the height of button numbers.

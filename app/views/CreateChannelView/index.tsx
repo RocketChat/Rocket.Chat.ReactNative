@@ -25,9 +25,6 @@ import { RoomSettings } from './RoomSettings';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	containerTextInput: {
 		paddingHorizontal: 16,
 		marginTop: 32
@@ -140,10 +137,7 @@ const CreateChannelView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceRoom }}
-			contentContainerStyle={[sharedStyles.container, styles.container]}
-			keyboardVerticalOffset={128}>
+		<KeyboardView>
 			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>

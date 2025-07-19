@@ -27,6 +27,7 @@ export interface IComposerInput {
 	getSelection: () => IInputSelection;
 	setInput: TSetInput;
 	onAutocompleteItemSelected: (item: TAutocompleteItem) => void;
+	focus: () => void;
 }
 
 export interface IComposerInputProps {
@@ -34,11 +35,6 @@ export interface IComposerInputProps {
 }
 
 export type TMarkdownStyle = 'bold' | 'italic' | 'strike' | 'code' | 'code-block';
-
-export interface ITrackingView {
-	resetTracking: () => void;
-	getNativeProps: () => any;
-}
 
 export type TAutocompleteType = '@' | '#' | '!' | ':' | '/' | '/preview' | 'loading' | null;
 
