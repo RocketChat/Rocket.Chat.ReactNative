@@ -354,7 +354,7 @@ commands:
           name: Fastlane Tesflight Upload
           command: |
             echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-            bundle exec fastlane ios beta official:<< parameters.official >>
+            bundle exec fastlane ios beta_circle_ci official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
 
