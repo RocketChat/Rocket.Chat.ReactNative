@@ -33,6 +33,29 @@ platform :android do
     end
   end
 
+  desc "Upload App to Internal App Sharing (Circle CI)"
+  lane :internal_app_sharing_circle_ci do |options|
+    if options[:official]
+      upload_to_play_store_internal_app_sharing(
+        package_name: 'chat.rocket.android',
+        aab: 'android/app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      )
+    else
+      upload_to_play_store_internal_app_sharing(
+        package_name: 'chat.rocket.reactnative',
+        aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      )
+    end
+  end
+
+  desc "Upload App to Internal App Sharing (Circle CI)"
+  lane :internal_app_sharing_circle_ci do
+    upload_to_play_store_internal_app_sharing(
+      package_name: 'chat.rocket.reactnative',
+      aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+    )
+  end
+
   desc "Upload App to Internal App Sharing"
   lane :internal_app_sharing do |options|
     if options[:official]
@@ -46,6 +69,15 @@ platform :android do
         aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
       )
     end
+  end
+
+  desc "Upload App to Play Store Production (Circle CI)"
+  lane :production_circle_ci do |options|
+    upload_to_play_store(
+      package_name: 'chat.rocket.reactnative',
+      track: 'production',
+      aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+    )
   end
 
   desc "Upload App to Play Store Production"

@@ -297,7 +297,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android beta official:<< parameters.official >>
+          command: bundle exec fastlane android beta_circle_ci official:<< parameters.official >>
           working_directory: android
 
   # EXPERIMENTAL ONLY
@@ -314,7 +314,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android internal_app_sharing
+          command: bundle exec fastlane android internal_app_sharing_circle_ci
           working_directory: android
 
   # EXPERIMENTAL ONLY
@@ -332,7 +332,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android production
+          command: bundle exec fastlane android production_circle_ci
           working_directory: android
 
   upload-to-testflight:
