@@ -5,6 +5,8 @@ import { createStore } from 'redux';
 
 import ReactionsList from './index';
 import { IReaction } from '../../definitions';
+import { generateSnapshots } from '../../../.rnstorybook/generateSnapshots';
+import * as stories from './ReactionsList.stories';
 
 // Mock i18n
 jest.mock('../../i18n', () => ({
@@ -232,3 +234,5 @@ describe('ReactionsList Integration Tests', () => {
 		expect(screen.getByText('1 person reacted')).toBeOnTheScreen();
 	});
 });
+
+generateSnapshots(stories);

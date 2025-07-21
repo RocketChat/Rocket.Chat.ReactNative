@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 
 import database from '../../lib/database';
+import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
 import I18n from '../../i18n';
 import log, { logEvent } from '../../lib/methods/helpers/log';
 import Navigation from '../../lib/navigation/appNavigation';
@@ -219,8 +220,11 @@ const MessageActions = React.memo(
 					const db = database.active;
 					const result = await Services.markAsUnread({ messageId });
 					if (result.success) {
-						const subCollection = db.get('subscriptions');
-						const subRecord = await subCollection.find(rid);
+						const subRecord = await getSubscriptionByRoomId(rid);
+						if (!subRecord) {
+							return;
+						}
+
 						await db.write(async () => {
 							try {
 								await subRecord.update(sub => (sub.lastOpen = ts as Date)); // TODO: reevaluate IMessage
@@ -228,11 +232,11 @@ const MessageActions = React.memo(
 								// do nothing
 							}
 						});
-						Navigation.navigate('RoomsListView');
 					}
 				} catch (e) {
-					logEvent(events.ROOM_MSG_ACTION_UNREAD_F);
 					log(e);
+				} finally {
+					Navigation.popToTop(isMasterDetail);
 				}
 			};
 

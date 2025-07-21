@@ -39,8 +39,8 @@ const appSchemeURL = (url: string, browser: string): string => {
 };
 
 const openLink = async (url: string, theme: TSupportedThemes = 'light'): Promise<void> => {
-	const telRegExp = new RegExp(/^(tel:)/);
-	if (telRegExp.test(url)) {
+	const phoneOrEmailRegExp = new RegExp(/^(tel:|mailto:)/);
+	if (phoneOrEmailRegExp.test(url)) {
 		try {
 			await Linking.openURL(url);
 			return;

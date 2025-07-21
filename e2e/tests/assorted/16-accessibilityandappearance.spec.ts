@@ -52,12 +52,16 @@ describe('Accessibility and Appearance', () => {
 			await expect(element(by.id('accessibility-display-button'))).toBeVisible();
 		});
 
+		it('should have rooms with hashtag symbol switch', async () => {
+			await expect(element(by.id('accessibility-rooms-with-hashtag-symbol-switch'))).toBeVisible();
+		});
+
 		it('should have mentions with at symbol switch', async () => {
 			await expect(element(by.id('accessibility-mentions-with-at-symbol-switch'))).toBeVisible();
 		});
 
-		it('should have rooms with hashtag symbol switch', async () => {
-			await expect(element(by.id('accessibility-rooms-with-hashtag-symbol-switch'))).toBeVisible();
+		it('should have autoplay gifs switch', async () => {
+			await expect(element(by.id('accessibility-autoplay-gifs-switch'))).toBeVisible();
 		});
 	});
 
