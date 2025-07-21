@@ -75,9 +75,8 @@ const navigate = function* navigate({ params }) {
 
 				const isMasterDetail = yield select(state => state.app.isMasterDetail);
 				const jumpToMessageId = params.messageId;
-
 				yield waitForNavigation();
-				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId, popToRoot: true });
+				yield goRoom({ item, isMasterDetail, jumpToMessageId, jumpToThreadId });
 			}
 		} else {
 			yield handleInviteLink({ params });
@@ -220,7 +219,7 @@ const handleNavigateCallRoom = function* handleNavigateCallRoom({ params }) {
 		const room = yield subsCollection.find(params.rid);
 		if (room) {
 			const isMasterDetail = yield select(state => state.app.isMasterDetail);
-			yield navigateToRoom({ item: room, isMasterDetail, popToRoot: true });
+			yield navigateToRoom({ item: room, isMasterDetail });
 			const uid = params.caller._id;
 			const { rid, callId, event } = params;
 			if (event === 'accept') {

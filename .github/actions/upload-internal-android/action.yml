@@ -1,0 +1,100 @@
+name: 'Upload Android'
+description: 'Downloads AAB + Manifest, uploads to Play Store'
+inputs:
+  type:
+    description: 'Build type: official or experimental'
+    required: true
+  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+    description: 'Google service account key for upload'
+    required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
+  VERSIONCODE:
+    description: 'Version code for build'
+    required: true
+    
+runs:
+  using: "composite"
+  steps:
+    - name: Download Experimental AAB
+      if: ${{ inputs.type == 'experimental' }}
+      uses: actions/download-artifact@v4
+      with:
+        name: android-aab-experimental
+        path: android/app/build/outputs/bundle/experimentalRelease/
+
+    - name: Download Official AAB
+      if: ${{ inputs.type == 'official' }}
+      uses: actions/download-artifact@v4
+      with:
+        name: android-aab-official
+        path: android/app/build/outputs/bundle/officialRelease/
+
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Install Fastlane
+      working-directory: android
+      run: |
+        bundle install --path gems
+      shell: bash
+
+    - name: Store the Google service account key
+      working-directory: android
+      run: |
+        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
+      shell: bash
+
+    - name: Fastlane Play Store Upload
+      working-directory: android
+      run: |
+        set -o pipefail
+        output=$(bundle exec fastlane android internal_app_sharing official:${{ inputs.type == 'official' }} 2>&1 | sed -r "s/\x1B\[[0-9;]*[mK]//g")
+
+        echo "$output"
+
+        url=$(echo "$output" | grep -o 'https://play\.google\.com/apps/test/[^ ]*' | head -n 1)
+
+        if [[ -z "$url" ]]; then
+          echo "❌ Could not find internal sharing URL."
+          exit 1
+        fi
+
+        gradle_file="app/build.gradle"
+        version_name=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
+
+        echo "Parsed URL: $url"
+        echo "versionName: $version_name"
+
+        echo "INTERNAL_SHARING_URL=$url" >> $GITHUB_ENV
+        echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Share Internal App Sharing Link
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_TYPE: ${{ inputs.type }}
+        VERSION_CODE: ${{ inputs.VERSIONCODE }}
+      run: |
+        if [[ -z "$INTERNAL_SHARING_URL" ]]; then
+          echo "No internal sharing URL found in env"
+          exit 1
+        fi
+
+        if [[ "$BUILD_TYPE" == "official" ]]; then
+          app_name="Rocket.Chat"
+        else
+          app_name="Rocket.Chat Experimental"
+        fi
+
+        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
+
+        message="**Android Build Available**"$'\n\n'"$version_info"$'\n\n'"Internal App Sharing: $INTERNAL_SHARING_URL"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
+      shell: bash

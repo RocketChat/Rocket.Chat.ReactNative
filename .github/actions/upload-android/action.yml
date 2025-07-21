@@ -1,0 +1,79 @@
+name: 'Upload Android'
+description: 'Downloads AAB + Manifest, uploads to Play Store'
+inputs:
+  type:
+    description: 'Build type: official or experimental'
+    required: true
+  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+    description: 'Google service account key for upload'
+    required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
+  VERSIONCODE:
+    description: 'Version code for build'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Download Experimental AAB
+      if: ${{ inputs.type == 'experimental' }}
+      uses: actions/download-artifact@v4
+      with:
+        name: android-aab-experimental
+        path: android/app/build/outputs/bundle/experimentalRelease/
+
+    - name: Download Official AAB
+      if: ${{ inputs.type == 'official' }}
+      uses: actions/download-artifact@v4
+      with:
+        name: android-aab-official
+        path: android/app/build/outputs/bundle/officialRelease/
+
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Install Fastlane
+      working-directory: android
+      run: |
+        bundle install --path gems
+      shell: bash
+
+    - name: Store the Google service account key
+      working-directory: android
+      run: |
+        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
+      shell: bash
+
+    - name: Fastlane Play Store Upload
+      working-directory: android
+      run: |
+        bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
+      shell: bash
+    
+    - name: Leave a comment on PR
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_TYPE: ${{ inputs.type }}
+        VERSION_CODE: ${{ inputs.VERSIONCODE }}
+      run: |
+        if [[ "$BUILD_TYPE" == "official" ]]; then
+          app_name="Rocket.Chat"
+        else
+          app_name="Rocket.Chat Experimental"
+        fi
+
+        gradle_file="android/app/build.gradle"
+        VERSION_NAME=$(grep versionName $gradle_file | head -n 1 | sed -E 's/.*versionName[[:space:]]+"([^"]+)".*/\1/')
+
+        version_info="$app_name $VERSION_NAME.$VERSION_CODE"
+
+        message="**Android Build Available**"$'\n\n'"$version_info"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
+      shell: bash
