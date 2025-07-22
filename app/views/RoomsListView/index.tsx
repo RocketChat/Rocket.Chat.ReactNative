@@ -1,57 +1,16 @@
 import React, { memo, useEffect } from 'react';
-import { BackHandler, FlatList, Keyboard, NativeEventSubscription, PixelRatio, RefreshControl, Text, View } from 'react-native';
-import { connect, useSelector } from 'react-redux';
-import { dequal } from 'dequal';
-import { Q } from '@nozbe/watermelondb';
-import { useSafeAreaFrame, withSafeAreaInsets } from 'react-native-safe-area-context';
-import { Subscription } from 'rxjs';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
-import { Dispatch } from 'redux';
+import { FlatList, PixelRatio } from 'react-native';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
 
-import database from '../../lib/database';
 import RoomItem from '../../containers/RoomItem';
-import log, { logEvent, events } from '../../lib/methods/helpers/log';
-import I18n from '../../i18n';
-import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
-import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import ActivityIndicator from '../../containers/ActivityIndicator';
-import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
-import { TSupportedThemes, useTheme, withTheme } from '../../theme';
+import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import { goRoom } from '../../lib/methods/helpers/goRoom';
-import { withDimensions } from '../../dimensions';
-import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
-import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
+import { ISubscription } from '../../definitions';
 import styles from './styles';
-import ListHeader, { TEncryptionBanner } from './components/ListHeader';
-import RoomsListHeaderView from './components/Header';
-import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
-import { RoomTypes, search } from '../../lib/methods';
-import {
-	getRoomAvatar,
-	getRoomTitle,
-	getUidDirectMessage,
-	hasPermission,
-	isRead,
-	debounce,
-	isIOS,
-	isTablet,
-	compareServerVersion
-} from '../../lib/methods/helpers';
-import {
-	E2E_BANNER_TYPE,
-	DisplayMode,
-	SortBy,
-	MAX_SIDEBAR_WIDTH,
-	themes,
-	colors,
-	textInputDebounceTime
-} from '../../lib/constants';
-import { Services } from '../../lib/services';
-import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
-import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
-import Header from '../../containers/Header';
+import ListHeader from './components/ListHeader';
+import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isRead, isIOS, isTablet } from '../../lib/methods/helpers';
+import { DisplayMode, MAX_SIDEBAR_WIDTH } from '../../lib/constants';
 import Container from './components/Container';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';

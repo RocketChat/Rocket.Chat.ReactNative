@@ -1,7 +1,7 @@
 import { useCallback, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { useAppSelector } from '../../../lib/hooks';
+import { useAppSelector, usePermissions } from '../../../lib/hooks';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
 import { getUserSelector } from '../../../selectors/login';
 import RoomsListHeaderView from '../components/Header';
@@ -32,6 +32,21 @@ export const useHeader = () => {
 	const issuesWithNotifications = useAppSelector(state => state.troubleshootingNotification.issuesWithNotifications);
 	const notificationPresenceCap = useAppSelector(state => state.app.notificationPresenceCap);
 	const { colors } = useTheme();
+	const [
+		createPublicChannelPermission,
+		createPrivateChannelPermission,
+		createTeamPermission,
+		createDirectMessagePermission,
+		createDiscussionPermission
+	] = usePermissions(['create-c', 'create-p', 'create-team', 'create-d', 'start-discussion']);
+	const canCreateRoom =
+		[
+			createPublicChannelPermission,
+			createPrivateChannelPermission,
+			createTeamPermission,
+			createDirectMessagePermission,
+			createDiscussionPermission
+		].filter((r: boolean) => r === true).length > 0;
 
 	const disabled = supportedVersionsStatus === 'expired' || requirePasswordChange;
 
@@ -62,6 +77,16 @@ export const useHeader = () => {
 		}
 	}, [isMasterDetail, navigation]);
 
+	const goToNewMessage = useCallback(() => {
+		logEvent(events.RL_GO_NEW_MSG);
+
+		if (isMasterDetail) {
+			navigation.navigate('ModalStackNavigator', { screen: 'NewMessageView' });
+		} else {
+			navigation.navigate('NewMessageStackNavigator');
+		}
+	}, [isMasterDetail, navigation]);
+
 	useLayoutEffect(() => {
 		console.count(`useHeader.useLayoutEffect calls`);
 		const options = {
@@ -89,15 +114,15 @@ export const useHeader = () => {
 							color={colors.fontDanger}
 						/>
 					) : null}
-					{/* {canCreateRoom ? (
+					{canCreateRoom ? (
 						<HeaderButton.Item
 							iconName='create'
-							accessibilityLabel={I18n.t('Create_new_channel_team_dm_discussion')}
-							onPress={this.goToNewMessage}
+							accessibilityLabel={i18n.t('Create_new_channel_team_dm_discussion')}
+							onPress={goToNewMessage}
 							testID='rooms-list-view-create-channel'
 							disabled={disabled}
 						/>
-					) : null} */}
+					) : null}
 					{/* <HeaderButton.Item
 						iconName='search'
 						accessibilityLabel={i18n.t('Search')}
@@ -128,9 +153,11 @@ export const useHeader = () => {
 		navigation,
 		isMasterDetail,
 		colors,
+		canCreateRoom,
 		goDirectory,
 		navigateToPushTroubleshootView,
-		getBadge
+		getBadge,
+		goToNewMessage
 	]);
 
 	return null;
