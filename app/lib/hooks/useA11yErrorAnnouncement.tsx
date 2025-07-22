@@ -1,25 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useRef } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
+import { useDebounce } from '../methods/helpers';
+import { textInputDebounceTime } from '../constants';
+
 interface IUseA11yErrorAnnouncement {
-	errorMessage: string | undefined;
+	error: string | undefined;
 }
 
-const useA11yErrorAnnouncement = ({ errorMessage }: IUseA11yErrorAnnouncement) => {
-	const [errorAnnounced, setErrorAnnounced] = useState(false);
+const useA11yErrorAnnouncement = ({ error }: IUseA11yErrorAnnouncement) => {
+	const previousMessage = useRef<string>(error);
+	const announced = useRef<boolean>(false);
+	const shouldAnnounce = error && error !== previousMessage.current && !announced.current;
 
-	useEffect(() => {
-		if (errorMessage && !errorAnnounced) {
-			const message = errorMessage ?? '';
+	const handleA11yAnnouncement = useDebounce(() => {
+		if (shouldAnnounce) {
+			const message = (error || '').trim();
 			if (message) {
-				console.log('ANNOUNCED');
 				AccessibilityInfo.announceForAccessibility(message);
-				setErrorAnnounced(true);
+				announced.current = true;
 			}
-		} else if (!errorMessage && errorAnnounced) {
-			setErrorAnnounced(false);
+		} else if (!error) {
+			announced.current = false;
 		}
-	}, [errorMessage]);
+	}, textInputDebounceTime);
+
+	handleA11yAnnouncement();
 };
 
 export default useA11yErrorAnnouncement;
