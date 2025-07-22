@@ -55,6 +55,7 @@ import Header from '../../containers/Header';
 import Container from './components/Container';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
+import { useHeader } from './hooks/useHeader';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -62,6 +63,7 @@ const RoomsListView = memo(() => {
 	console.count(`RoomsListView.render calls`);
 	// const { loading, chats, search, searching } = this.state;
 	// const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
+	useHeader();
 	const searching = false;
 	const search = [];
 	const { colors } = useTheme();
@@ -93,9 +95,12 @@ const RoomsListView = memo(() => {
 	// 	);
 	// }
 
-	useEffect(() => {
-		console.count(`RoomsListView.render calls`);
-	}, []);
+	useEffect(
+		() => () => {
+			console.countReset(`RoomsListView.render calls`);
+		},
+		[]
+	);
 
 	const renderItem = ({ item }: { item: ISubscription }) => {
 		// if (item.separator) {
