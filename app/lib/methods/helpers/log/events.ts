@@ -215,7 +215,6 @@ export default {
 	ROOM_MSG_ACTION_PERMALINK_F: 'room_msg_action_permalink_f',
 	ROOM_MSG_ACTION_DISCUSSION: 'room_msg_action_discussion',
 	ROOM_MSG_ACTION_UNREAD: 'room_msg_action_unread',
-	ROOM_MSG_ACTION_UNREAD_F: 'room_msg_action_unread_f',
 	ROOM_MSG_ACTION_COPY: 'room_msg_action_copy',
 	ROOM_MSG_ACTION_SHARE: 'room_msg_action_share',
 	ROOM_MSG_ACTION_SHARE_F: 'room_msg_action_share_f',

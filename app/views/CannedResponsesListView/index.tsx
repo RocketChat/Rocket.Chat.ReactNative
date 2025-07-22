@@ -102,7 +102,7 @@ const CannedResponsesListView = ({ navigation, route }: ICannedResponsesListView
 
 	const navigateToRoom = (item: ICannedResponse) => {
 		if (room?.rid) {
-			goRoom({ item: room, isMasterDetail, popToRoot: true, usedCannedResponse: item.text });
+			goRoom({ item: room, isMasterDetail, usedCannedResponse: item.text });
 		}
 	};
 

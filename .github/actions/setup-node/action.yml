@@ -1,0 +1,21 @@
+name: Setup Node
+description: Setup node and cache node_modules
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        cache: 'yarn'
+
+    - name: Cache node_modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules-${{ hashFiles('**/yarn.lock') }}
+
+    - name: Install JS dependencies
+      shell: bash
+      run: yarn install --frozen-lockfile
