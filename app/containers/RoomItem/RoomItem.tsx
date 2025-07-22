@@ -15,6 +15,7 @@ import { DisplayMode } from '../../lib/constants';
 import { IRoomItemProps } from './interfaces';
 import { formatLastMessage } from '../../lib/methods/formatLastMessage';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const RoomItem = ({
 	rid,
@@ -57,6 +58,7 @@ const RoomItem = ({
 	hideMentionStatus,
 	accessibilityDate
 }: IRoomItemProps) => {
+	const { isLargeFontScale } = useResponsiveLayout();
 	const memoizedMessage = useMemo(
 		() => formatLastMessage({ lastMessage, username, useRealName, showLastMessage, alert, type }),
 		[lastMessage, username, useRealName, showLastMessage, alert, type]
@@ -118,7 +120,7 @@ const RoomItem = ({
 							) : null}
 							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
 							{autoJoin ? <Tag testID='auto-join-tag' name={I18n.t('Auto-join')} /> : null}
-							<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
 						</View>
 						<View style={styles.row} testID='room-item-last-message-container'>
 							<LastMessage
@@ -140,36 +142,41 @@ const RoomItem = ({
 								hideUnreadStatus={hideUnreadStatus}
 							/>
 						</View>
+						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
 					</>
 				) : (
-					<View style={[styles.titleContainer, styles.flex]}>
-						<TypeIcon
-							userId={userId}
-							type={type}
-							prid={prid}
-							status={status}
-							isGroupChat={isGroupChat}
-							teamMain={teamMain}
-							size={22}
-							style={{ marginRight: 8 }}
-							sourceType={sourceType}
-						/>
-						<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-						{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
-						<View style={styles.wrapUpdatedAndBadge}>
-							<UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />
-							<UnreadBadge
-								unread={unread}
-								userMentions={userMentions}
-								groupMentions={groupMentions}
-								tunread={tunread}
-								tunreadUser={tunreadUser}
-								tunreadGroup={tunreadGroup}
-								hideMentionStatus={hideMentionStatus}
-								hideUnreadStatus={hideUnreadStatus}
+					<>
+						<View style={[styles.titleContainer, styles.flex]}>
+							<TypeIcon
+								userId={userId}
+								type={type}
+								prid={prid}
+								status={status}
+								isGroupChat={isGroupChat}
+								teamMain={teamMain}
+								size={22}
+								style={{ marginRight: 8 }}
+								sourceType={sourceType}
 							/>
+							<Title name={name} hideUnreadStatus={hideUnreadStatus} alert={alert} />
+							{autoJoin ? <Tag name={I18n.t('Auto-join')} /> : null}
+
+							<View style={styles.wrapUpdatedAndBadge}>
+								{isLargeFontScale ? null : <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} />}
+								<UnreadBadge
+									unread={unread}
+									userMentions={userMentions}
+									groupMentions={groupMentions}
+									tunread={tunread}
+									tunreadUser={tunreadUser}
+									tunreadGroup={tunreadGroup}
+									hideMentionStatus={hideMentionStatus}
+									hideUnreadStatus={hideUnreadStatus}
+								/>
+							</View>
 						</View>
-					</View>
+						{isLargeFontScale ? <UpdatedAt date={date} hideUnreadStatus={hideUnreadStatus} alert={alert} /> : null}
+					</>
 				)}
 			</Wrapper>
 		</Touchable>

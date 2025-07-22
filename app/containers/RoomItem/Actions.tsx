@@ -17,7 +17,7 @@ import styles, { ACTION_WIDTH, LONG_SWIPE } from './styles';
 import { ILeftActionsProps, IRightActionsProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
-import { useRowHeight } from '../../lib/hooks/useRowHeight';
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
 const CONDENSED_ICON_SIZE = 24;
 const EXPANDED_ICON_SIZE = 28;
@@ -25,7 +25,7 @@ const EXPANDED_ICON_SIZE = 28;
 export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPress, displayMode }: ILeftActionsProps) => {
 	const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [{ translateX: transX.value }]
@@ -64,7 +64,7 @@ export const LeftActions = React.memo(({ transX, isRead, width, onToggleReadPres
 export const RightActions = React.memo(({ transX, favorite, width, toggleFav, onHidePress, displayMode }: IRightActionsProps) => {
 	const { colors } = useTheme();
 
-	const { rowHeight, rowHeightCondensed } = useRowHeight();
+	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();
 
 	const animatedFavStyles = useAnimatedStyle(() => ({ transform: [{ translateX: transX.value }] }));
 
