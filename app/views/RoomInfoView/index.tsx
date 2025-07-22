@@ -28,6 +28,7 @@ import RoomInfoViewBody from './components/RoomInfoViewBody';
 import RoomInfoViewTitle from './components/RoomInfoViewTitle';
 import styles from './styles';
 import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErrorCreateDirectMessage';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TRoomInfoViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomInfoView'>,
@@ -40,7 +41,7 @@ const RoomInfoView = (): React.ReactElement => {
 	const {
 		params: { rid, t, fromRid, member, room: roomParam, showCloseModal, itsMe }
 	} = useRoute<TRoomInfoViewRouteProp>();
-	const { addListener, setOptions, navigate, goBack } = useNavigation<TRoomInfoViewNavigationProp>();
+	const { addListener, setOptions, navigate } = useNavigation<TRoomInfoViewNavigationProp>();
 
 	const [room, setRoom] = useState(roomParam || ({ rid, t } as ISubscription));
 	const [roomFromRid, setRoomFromRid] = useState<ISubscription | undefined>();
@@ -80,7 +81,7 @@ const RoomInfoView = (): React.ReactElement => {
 	// Prevents from flashing RoomInfoView on the header title before fetching actual room data
 	useLayoutEffect(() => {
 		setHeader(false);
-	});
+	}, []);
 
 	useEffect(() => {
 		const listener = addListener('focus', () => (isLivechat ? loadVisitor() : null));
@@ -236,15 +237,10 @@ const RoomInfoView = (): React.ReactElement => {
 
 		if (r?.rid) {
 			if (r.rid === subscribedRoom) {
-				if (isMasterDetail) {
-					return navigate('DrawerNavigator');
-				}
-				goBack();
-				goBack();
+				Navigation.popToRoom(isMasterDetail);
 				return;
 			}
-			// if it's on master detail layout, we close the modal and replace RoomView
-			goRoom({ item: params, isMasterDetail, popToRoot: true });
+			goRoom({ item: params, isMasterDetail });
 		}
 	};
 
