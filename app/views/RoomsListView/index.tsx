@@ -947,7 +947,8 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		);
 	};
 
-	renderScroll = () => {
+	render = () => {
+		console.count(`${this.constructor.name}.render calls`);
 		const { loading, chats, search, searching } = this.state;
 		const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
 		const fontScale = PixelRatio.getFontScale();
@@ -956,44 +957,53 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
 
 		if (loading) {
-			return <ActivityIndicator />;
+			return (
+				<Container>
+					<ActivityIndicator />
+				</Container>
+			);
 		}
 
 		if (supportedVersionsStatus === 'expired') {
-			return <SupportedVersionsExpired />;
+			return (
+				<Container>
+					<SupportedVersionsExpired />
+				</Container>
+			);
 		}
 
 		if (user.requirePasswordChange) {
-			return <ChangePasswordRequired />;
+			return (
+				<Container>
+					<ChangePasswordRequired />
+				</Container>
+			);
 		}
 
 		return (
-			<FlatList
-				ref={this.getScrollRef}
-				data={searching ? search : chats}
-				extraData={searching ? search : chats}
-				keyExtractor={item => keyExtractor(item, searching)}
-				style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
-				renderItem={this.renderItem}
-				ListHeaderComponent={this.renderListHeader}
-				getItemLayout={(data, index) => getItemLayout(data, index, height)}
-				removeClippedSubviews={isIOS}
-				keyboardShouldPersistTaps='always'
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
-				refreshControl={
-					<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
-				}
-				windowSize={9}
-				onEndReached={this.onEndReached}
-				onEndReachedThreshold={0.5}
-				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
-			/>
+			<Container>
+				<FlatList
+					ref={this.getScrollRef}
+					data={searching ? search : chats}
+					extraData={searching ? search : chats}
+					keyExtractor={item => keyExtractor(item, searching)}
+					style={[styles.list, { backgroundColor: themes[theme].surfaceRoom }]}
+					renderItem={this.renderItem}
+					ListHeaderComponent={this.renderListHeader}
+					getItemLayout={(data, index) => getItemLayout(data, index, height)}
+					removeClippedSubviews={isIOS}
+					keyboardShouldPersistTaps='always'
+					initialNumToRender={INITIAL_NUM_TO_RENDER}
+					refreshControl={
+						<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
+					}
+					windowSize={9}
+					onEndReached={this.onEndReached}
+					onEndReachedThreshold={0.5}
+					keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+				/>
+			</Container>
 		);
-	};
-
-	render = () => {
-		console.count(`${this.constructor.name}.render calls`);
-		return <Container>{this.renderScroll()}</Container>;
 	};
 }
 
