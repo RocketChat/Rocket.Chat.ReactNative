@@ -12,11 +12,12 @@ export const useSubscriptions = ({ isGrouping, sortBy }: { isGrouping: boolean; 
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const subscriptionRef = useRef<Subscription>(null);
 	const [subscriptions, setSubscriptions] = useState<TSubscriptionModel[]>([]);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const getSubscriptions = async () => {
+			setLoading(true);
 			const db = database.active;
-
 			const whereClause = [Q.where('archived', false), Q.where('open', true)] as (Q.WhereDescription | Q.SortBy)[];
 
 			if (sortBy === SortBy.Alphabetical) {
@@ -34,6 +35,7 @@ export const useSubscriptions = ({ isGrouping, sortBy }: { isGrouping: boolean; 
 
 			subscriptionRef.current = observable.subscribe(data => {
 				setSubscriptions(data);
+				setLoading(false);
 			});
 		};
 
@@ -46,6 +48,7 @@ export const useSubscriptions = ({ isGrouping, sortBy }: { isGrouping: boolean; 
 	}, [isGrouping, sortBy, useRealName]);
 
 	return {
-		subscriptions
+		subscriptions,
+		loading
 	};
 };

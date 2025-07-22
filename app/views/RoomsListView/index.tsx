@@ -74,16 +74,8 @@ const RoomsListView = memo(() => {
 	const fontScale = PixelRatio.getFontScale();
 	const rowHeight = 75 * fontScale;
 	const rowHeightCondensed = 60 * fontScale;
-	const { subscriptions } = useSubscriptions({ isGrouping: false, sortBy });
 	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
-
-	// if (loading) {
-	// 	return (
-	// 		<Container>
-	// 			<ActivityIndicator />
-	// 		</Container>
-	// 	);
-	// }
+	const { subscriptions, loading } = useSubscriptions({ isGrouping: false, sortBy });
 
 	// if (supportedVersionsStatus === 'expired') {
 	// 	return (
@@ -145,6 +137,14 @@ const RoomsListView = memo(() => {
 			/>
 		);
 	};
+
+	if (loading) {
+		return (
+			<Container>
+				<ActivityIndicator />
+			</Container>
+		);
+	}
 
 	return (
 		<Container>
