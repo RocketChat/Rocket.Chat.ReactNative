@@ -56,6 +56,8 @@ import Container from './components/Container';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
+const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
+
 const RoomsListView = memo(() => {
 	console.count(`RoomsListView.render calls`);
 	// const { loading, chats, search, searching } = this.state;
@@ -66,13 +68,14 @@ const RoomsListView = memo(() => {
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
+	const { sortBy, displayMode, showAvatar } = useAppSelector(state => state.sortPreferences);
 	const isMasterDetail = false;
 	const { width } = useSafeAreaFrame();
 	const fontScale = PixelRatio.getFontScale();
 	const rowHeight = 75 * fontScale;
 	const rowHeightCondensed = 60 * fontScale;
-	const { subscriptions } = useSubscriptions({ isGrouping: false, sortBy: SortBy.Alphabetical });
-	// const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
+	const { subscriptions } = useSubscriptions({ isGrouping: false, sortBy });
+	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
 
 	// if (loading) {
 	// 	return (
@@ -137,11 +140,17 @@ const RoomsListView = memo(() => {
 				getIsRead={isRead}
 				// isFocused={currentItem?.rid === item.rid}
 				swipeEnabled={swipeEnabled}
-				// showAvatar={showAvatar}
-				// displayMode={displayMode}
+				showAvatar={showAvatar}
+				displayMode={displayMode}
 			/>
 		);
 	};
+
+	// const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
+	// 	length: height,
+	// 	offset: height * index,
+	// 	index
+	// });
 
 	return (
 		<Container>
@@ -149,18 +158,22 @@ const RoomsListView = memo(() => {
 				// ref={this.getScrollRef}
 				data={searching ? search : subscriptions}
 				extraData={searching ? search : subscriptions}
-				keyExtractor={(item: ISubscription) => `${item.rid}-${search}`}
+				keyExtractor={item => `${item.rid}-${searching}`}
 				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 				renderItem={renderItem}
 				// ListHeaderComponent={this.renderListHeader}
-				// getItemLayout={(data, index) => getItemLayout(data, index, height)}
+				getItemLayout={(_, index) => ({
+					length: height,
+					offset: height * index,
+					index
+				})}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
-				// initialNumToRender={INITIAL_NUM_TO_RENDER}
+				initialNumToRender={INITIAL_NUM_TO_RENDER}
 				// refreshControl={
 				// 	<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
 				// }
-				// windowSize={9}
+				windowSize={9}
 				// onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
