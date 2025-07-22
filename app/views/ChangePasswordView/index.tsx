@@ -194,7 +194,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 					]}
 					testID='change-password-view-list'
 					{...scrollPersistTaps}>
-					<Text style={styles.createNewPasswordTitle}>Create new password</Text>
+					<Text style={{ ...styles.createNewPasswordTitle, color: colors.fontTitlesLabels }}>Create new password</Text>
 
 					<View style={{ gap: 12 }}>
 						{fromProfileView ? (
