@@ -540,7 +540,7 @@
   "Read_Only": "Vain luku",
   "Read_only_hint": "Vain kanavanomistajat voivat lähettää uusia viestejä",
   "Read_Receipt": "Lukukuittaus",
-  "Reason_required": "Vaaditaan syy",
+  "Report_reason_required": "Vaaditaan syy",
   "Receive_Group_Mentions": "Vastaanota ryhmämainintoja",
   "Receive_Group_Mentions_Info": "Vastaanota @all- ja @here-maininnat",
   "Receive_Notification": "Vastaanota ilmoitus",

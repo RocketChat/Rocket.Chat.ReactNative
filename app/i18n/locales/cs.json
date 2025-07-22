@@ -620,7 +620,7 @@
   "Read_Only": "Pouze ke čtení",
   "Read_only_hint": "Pouze majitelé kanálů mohou odesílat nové zprávy",
   "Read_Receipt": "Potvrzení o přečtení",
-  "Reason_required": "Vyžadován důvod.",
+  "Report_reason_required": "Vyžadován důvod.",
   "Receive_Group_Mentions": "Přijímat zmínky o skupině",
   "Receive_Group_Mentions_Info": "Přijímat @všechny a @zde zmínky",
   "Receive_Notification": "Přijmout oznámení",

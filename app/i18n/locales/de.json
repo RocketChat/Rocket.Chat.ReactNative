@@ -565,7 +565,7 @@
   "Read_Only": "Schreibgeschützt",
   "Read_only_hint": "Nur Kanalbesitzer können neue Nachrichten senden",
   "Read_Receipt": "Lesebestätigung",
-  "Reason_required": "Grund erforderlich",
+  "Report_reason_required": "Grund erforderlich",
   "Receive_Group_Mentions": "Gruppen-Benachrichtigungen erhalten",
   "Receive_Group_Mentions_Info": "@all- und @here-Erwähnungen empfangen",
   "Receive_Notification": "Benachrichtigungen erhalten",

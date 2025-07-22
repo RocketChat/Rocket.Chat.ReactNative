@@ -35,7 +35,7 @@ interface ISubmit {
 }
 
 const schema = yup.object().shape({
-	description: yup.string().trim().required(I18n.t('Reason_required'))
+	description: yup.string().trim().required(I18n.t('Report_reason_required'))
 });
 
 const ReportUserView = () => {
@@ -56,7 +56,6 @@ const ReportUserView = () => {
 		defaultValues: { description: '' }
 	});
 
-	// Accessibility: announce field error to screen reader
 	useA11yErrorAnnouncement({ error: errors.description?.message });
 
 	useLayoutEffect(() => {
