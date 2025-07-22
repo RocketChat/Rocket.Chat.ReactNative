@@ -68,14 +68,14 @@ const RoomsListView = memo(() => {
 	const { username } = useAppSelector(state => getUserSelector(state));
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
-	const { sortBy, displayMode, showAvatar } = useAppSelector(state => state.sortPreferences);
+	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences);
 	const isMasterDetail = false;
 	const { width } = useSafeAreaFrame();
 	const fontScale = PixelRatio.getFontScale();
 	const rowHeight = 75 * fontScale;
 	const rowHeightCondensed = 60 * fontScale;
 	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
-	const { subscriptions, loading } = useSubscriptions({ isGrouping: false, sortBy });
+	const { subscriptions, loading } = useSubscriptions();
 
 	// if (supportedVersionsStatus === 'expired') {
 	// 	return (

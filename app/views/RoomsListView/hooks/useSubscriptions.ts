@@ -6,13 +6,43 @@ import { SortBy } from '../../../lib/constants';
 import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks';
 import { TSubscriptionModel } from '../../../definitions';
+import { getUserSelector } from '../../../selectors/login';
 
-export const useSubscriptions = ({ isGrouping, sortBy }: { isGrouping: boolean; sortBy: SortBy }) => {
+const CHATS_HEADER = 'Chats';
+const UNREAD_HEADER = 'Unread';
+const FAVORITES_HEADER = 'Favorites';
+const DISCUSSIONS_HEADER = 'Discussions';
+const TEAMS_HEADER = 'Teams';
+const CHANNELS_HEADER = 'Channels';
+const DM_HEADER = 'Direct_Messages';
+const OMNICHANNEL_HEADER_IN_PROGRESS = 'Open_Livechats';
+const OMNICHANNEL_HEADER_ON_HOLD = 'On_hold_Livechats';
+
+const filterIsUnread = (s: TSubscriptionModel) => (s.alert || s.unread) && !s.hideUnreadStatus;
+const filterIsFavorite = (s: TSubscriptionModel) => s.f;
+const filterIsOmnichannel = (s: TSubscriptionModel) => s.t === 'l';
+const filterIsTeam = (s: TSubscriptionModel) => s.teamMain;
+const filterIsDiscussion = (s: TSubscriptionModel) => s.prid;
+
+const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSubscriptionModel[]) => {
+	if (data.length > 0) {
+		if (header) {
+			allData.push({ rid: header, separator: true } as TSubscriptionModel);
+		}
+		allData = allData.concat(data);
+	}
+	return allData;
+};
+
+export const useSubscriptions = () => {
 	console.count(`${useSubscriptions.name}.render calls`);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const subscriptionRef = useRef<Subscription>(null);
 	const [subscriptions, setSubscriptions] = useState<TSubscriptionModel[]>([]);
 	const [loading, setLoading] = useState(true);
+	const { roles } = useAppSelector(state => getUserSelector(state));
+	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences);
+	const isGrouping = showUnread || showFavorites || groupByType;
 
 	useEffect(() => {
 		const getSubscriptions = async () => {
@@ -34,7 +64,54 @@ export const useSubscriptions = ({ isGrouping, sortBy }: { isGrouping: boolean; 
 				.observeWithColumns(observeWithColumns);
 
 			subscriptionRef.current = observable.subscribe(data => {
-				setSubscriptions(data);
+				let tempChats = [] as TSubscriptionModel[];
+				let chats = data;
+
+				// let omnichannelsUpdate: string[] = [];
+				const isOmnichannelAgent = roles?.includes('livechat-agent');
+				if (isOmnichannelAgent) {
+					const omnichannel = chats.filter(s => filterIsOmnichannel(s));
+					const omnichannelInProgress = omnichannel.filter(s => !s.onHold);
+					const omnichannelOnHold = omnichannel.filter(s => s.onHold);
+					chats = chats.filter(s => !filterIsOmnichannel(s));
+					// omnichannelsUpdate = omnichannelInProgress.map(s => s.rid);
+					tempChats = addRoomsGroup(omnichannelInProgress, OMNICHANNEL_HEADER_IN_PROGRESS, tempChats);
+					tempChats = addRoomsGroup(omnichannelOnHold, OMNICHANNEL_HEADER_ON_HOLD, tempChats);
+				}
+
+				// unread
+				if (showUnread) {
+					const unread = chats.filter(s => filterIsUnread(s));
+					chats = chats.filter(s => !filterIsUnread(s));
+					tempChats = addRoomsGroup(unread, UNREAD_HEADER, tempChats);
+				}
+
+				// favorites
+				if (showFavorites) {
+					const favorites = chats.filter(s => filterIsFavorite(s));
+					chats = chats.filter(s => !filterIsFavorite(s));
+					tempChats = addRoomsGroup(favorites, FAVORITES_HEADER, tempChats);
+				}
+
+				// type
+				if (groupByType) {
+					const teams = chats.filter(s => filterIsTeam(s));
+					const discussions = chats.filter(s => filterIsDiscussion(s));
+					const channels = chats.filter(s => (s.t === 'c' || s.t === 'p') && !filterIsDiscussion(s) && !filterIsTeam(s));
+					const direct = chats.filter(s => s.t === 'd' && !filterIsDiscussion(s) && !filterIsTeam(s));
+					tempChats = addRoomsGroup(teams, TEAMS_HEADER, tempChats);
+					tempChats = addRoomsGroup(discussions, DISCUSSIONS_HEADER, tempChats);
+					tempChats = addRoomsGroup(channels, CHANNELS_HEADER, tempChats);
+					tempChats = addRoomsGroup(direct, DM_HEADER, tempChats);
+				} else if (showUnread || showFavorites || isOmnichannelAgent) {
+					tempChats = addRoomsGroup(chats, CHATS_HEADER, tempChats);
+				} else {
+					tempChats = chats;
+				}
+
+				// const chatsUpdate = tempChats.map(item => item.rid);
+
+				setSubscriptions(tempChats);
 				setLoading(false);
 			});
 		};
@@ -45,7 +122,7 @@ export const useSubscriptions = ({ isGrouping, sortBy }: { isGrouping: boolean; 
 			console.countReset(`${useSubscriptions.name}.render calls`);
 			subscriptionRef.current?.unsubscribe();
 		};
-	}, [isGrouping, sortBy, useRealName]);
+	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles]);
 
 	return {
 		subscriptions,
