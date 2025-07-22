@@ -6,6 +6,10 @@ on:
       type:
         type: string
         required: true
+      trigger:
+        type: string
+        required: false
+        default: pr
 
 jobs:
   build-hold:
@@ -70,6 +74,7 @@ jobs:
         uses: ./.github/actions/upload-android
         with:
           type: experimental
+          trigger: ${{ inputs.trigger }}
           FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}

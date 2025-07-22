@@ -6,6 +6,10 @@ on:
       type:
         type: string
         required: true
+      trigger:
+        type: string
+        required: false
+        default: pr
 
 jobs:
   build-hold:
@@ -71,6 +75,7 @@ jobs:
         uses: ./.github/actions/upload-ios
         with:
           type: official
+          trigger: ${{ inputs.trigger }}
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}

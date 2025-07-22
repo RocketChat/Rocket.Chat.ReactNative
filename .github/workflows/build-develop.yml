@@ -22,7 +22,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
-      isDevelopSync: true
+      trigger: push
 
   android-build-official-store:
     name: Build Android Official
@@ -32,6 +32,7 @@ jobs:
     secrets: inherit
     with:
       type: official
+      trigger: push
 
   ios-build-experimental-store:
     name: Build iOS Experimental
@@ -41,6 +42,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
+      trigger: push
       
   ios-build-official-store:
     name: Build iOS Official
@@ -50,3 +52,4 @@ jobs:
     secrets: inherit
     with:
       type: official
+      trigger: push
