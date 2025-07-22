@@ -2,10 +2,10 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
-import { setSearch } from '../../../actions/rooms';
+import { setSearch } from '../../../../actions/rooms';
 import Header from './Header';
-import { IApplicationState } from '../../../definitions';
-import { showActionSheetRef } from '../../../containers/ActionSheet';
+import { IApplicationState } from '../../../../definitions';
+import { showActionSheetRef } from '../../../../containers/ActionSheet';
 import ServersList from '../ServersList';
 
 interface IRoomsListHeaderViewProps {

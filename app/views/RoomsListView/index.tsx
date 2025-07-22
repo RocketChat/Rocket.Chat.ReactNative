@@ -26,8 +26,8 @@ import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import styles from './styles';
-import ListHeader, { TEncryptionBanner } from './ListHeader';
-import RoomsListHeaderView from './Header';
+import ListHeader, { TEncryptionBanner } from './components/ListHeader';
+import RoomsListHeaderView from './components/Header';
 import { ChatsStackParamList, DrawerParamList } from '../../stacks/types';
 import { RoomTypes, search } from '../../lib/methods';
 import {

@@ -3,11 +3,11 @@ import { StyleSheet, Text, TextInputProps, View, useWindowDimensions } from 'rea
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { type TouchableOpacityProps } from 'react-native-gesture-handler';
 
-import I18n from '../../../i18n';
-import sharedStyles from '../../Styles';
-import { useTheme } from '../../../theme';
-import SearchHeader from '../../../containers/SearchHeader';
-import { useAppSelector } from '../../../lib/hooks';
+import I18n from '../../../../i18n';
+import sharedStyles from '../../../Styles';
+import { useTheme } from '../../../../theme';
+import SearchHeader from '../../../../containers/SearchHeader';
+import { useAppSelector } from '../../../../lib/hooks';
 
 const styles = StyleSheet.create({
 	container: {
