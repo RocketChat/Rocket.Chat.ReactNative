@@ -6,6 +6,7 @@ import styles, { SCANNER_SIZE } from './styles';
 import { CustomIcon } from '../../containers/CustomIcon';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
+import { sendScannedQRCode } from '../../lib/services/restApi';
 
 const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const { colors } = useTheme();
@@ -96,9 +97,11 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	}, [navigation]);
 
 	const handleBarcodeScanned = useCallback(
-		(scanningResult: ScanningResult) => {
+		async (scanningResult: ScanningResult) => {
 			const now = Date.now();
 			console.debug(scanningResult);
+			const response = await sendScannedQRCode(scanningResult.data);
+			console.debug('sendScannedQRCode response', response);
 			if (now - lastScanTime < SCAN_COOLDOWN) {
 				return;
 			}
