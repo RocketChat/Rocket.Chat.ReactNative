@@ -16,6 +16,23 @@
 default_platform(:android)
 
 platform :android do
+  desc "Upload App to Play Store Internal (Circle CI)"
+  lane :beta_circle_ci do |options|
+    if options[:official]
+      upload_to_play_store(
+        package_name: 'chat.rocket.android',
+        track: 'internal',
+        aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      )
+    else
+      upload_to_play_store(
+        package_name: 'chat.rocket.reactnative',
+        track: 'internal',
+        aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      )
+    end
+  end
+
   desc "Upload App to Play Store Internal"
   lane :beta do |options|
     if options[:official]
