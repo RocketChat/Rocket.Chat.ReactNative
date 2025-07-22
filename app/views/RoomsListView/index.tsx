@@ -15,13 +15,11 @@ import log, { logEvent, events } from '../../lib/methods/helpers/log';
 import I18n from '../../i18n';
 import { closeSearchHeader, openSearchHeader, roomsRequest } from '../../actions/rooms';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { animateNextTransition } from '../../lib/methods/helpers/layoutAnimation';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
-import SafeAreaView from '../../containers/SafeAreaView';
 import { withDimensions } from '../../dimensions';
 import { getInquiryQueueSelector } from '../../ee/omnichannel/selectors/inquiry';
 import { IApplicationState, ISubscription, IUser, TSVStatus, SubscriptionType, TSubscriptionModel } from '../../definitions';
@@ -54,6 +52,7 @@ import { Services } from '../../lib/services';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 import Header from '../../containers/Header';
+import Container from './components/Container';
 
 type TNavigation = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
@@ -898,17 +897,6 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 		);
 	};
 
-	renderHeader = () => {
-		const { isMasterDetail } = this.props;
-
-		if (!isMasterDetail) {
-			return null;
-		}
-
-		const options = this.getHeader();
-		return <Header options={options} navigation={this.props.navigation} route={this.props.route} />;
-	};
-
 	renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return this.renderSectionHeader(item.rid);
@@ -1005,15 +993,7 @@ class RoomsListView extends React.Component<IRoomsListViewProps, IRoomsListViewS
 
 	render = () => {
 		console.count(`${this.constructor.name}.render calls`);
-		const { theme } = this.props;
-
-		return (
-			<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: themes[theme].surfaceRoom }}>
-				<StatusBar />
-				{this.renderHeader()}
-				{this.renderScroll()}
-			</SafeAreaView>
-		);
+		return <Container>{this.renderScroll()}</Container>;
 	};
 }
 
