@@ -1,59 +1,65 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '../../../../theme';
 import * as List from '../../../../containers/List';
 import OmnichannelStatus from '../../../../ee/omnichannel/containers/OmnichannelHeader';
-import { IUser } from '../../../../definitions';
 import { E2E_BANNER_TYPE, themes } from '../../../../lib/constants';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { events, logEvent } from '../../../../lib/methods/helpers/log';
 
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
 interface IRoomListHeader {
 	searching: boolean;
-	goEncryption: () => void;
-	goQueue: () => void;
-	queueSize: number;
-	inquiryEnabled: boolean;
-	encryptionBanner: TEncryptionBanner;
-	user: IUser;
 }
 
-const ListHeader = React.memo(
-	({ searching, goEncryption, goQueue, queueSize, inquiryEnabled, encryptionBanner, user }: IRoomListHeader) => {
-		const { theme } = useTheme();
+const ListHeader = React.memo(({ searching }: IRoomListHeader) => {
+	const { theme } = useTheme();
+	const encryptionBanner = useAppSelector(state => state.encryption.banner);
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const navigation = useNavigation<any>();
 
-		if (searching) {
-			return null;
-		}
-
-		return (
-			<>
-				{encryptionBanner ? (
-					<>
-						<List.Item
-							title={
-								encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD ? 'Enter_E2EE_Password' : 'Save_Your_Encryption_Password'
-							}
-							left={() => <List.Icon name='encrypted' color={themes[theme].fontWhite} />}
-							underlayColor={themes[theme].strokeHighlight}
-							backgroundColor={themes[theme].strokeHighlight}
-							color={themes[theme].fontWhite}
-							onPress={goEncryption}
-							testID='listheader-encryption'
-						/>
-						<List.Separator />
-					</>
-				) : null}
-				<OmnichannelStatus
-					searching={searching}
-					goQueue={goQueue}
-					inquiryEnabled={inquiryEnabled}
-					queueSize={queueSize}
-					user={user}
-				/>
-			</>
-		);
+	if (searching) {
+		return null;
 	}
-);
+
+	const goEncryption = () => {
+		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
+
+		const isSavePassword = encryptionBanner === E2E_BANNER_TYPE.SAVE_PASSWORD;
+		if (isMasterDetail) {
+			const screen = isSavePassword ? 'E2ESaveYourPasswordView' : 'E2EEnterYourPasswordView';
+			navigation.navigate('ModalStackNavigator', { screen });
+		} else {
+			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
+			// @ts-ignore
+			navigation.navigate(screen);
+		}
+	};
+
+	return (
+		<>
+			{encryptionBanner ? (
+				<>
+					<List.Item
+						title={
+							encryptionBanner === E2E_BANNER_TYPE.REQUEST_PASSWORD ? 'Enter_E2EE_Password' : 'Save_Your_Encryption_Password'
+						}
+						left={() => <List.Icon name='encrypted' color={themes[theme].fontWhite} />}
+						underlayColor={themes[theme].strokeHighlight}
+						backgroundColor={themes[theme].strokeHighlight}
+						color={themes[theme].fontWhite}
+						onPress={goEncryption}
+						testID='listheader-encryption'
+					/>
+					<List.Separator />
+				</>
+			) : null}
+			{/* TODO: searching as context */}
+			<OmnichannelStatus searching={searching} />
+		</>
+	);
+});
 
 export default ListHeader;

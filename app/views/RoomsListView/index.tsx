@@ -65,7 +65,7 @@ const RoomsListView = memo(() => {
 	const searching = false;
 	const search = [];
 	const { colors } = useTheme();
-	const username = useAppSelector(state => getUserSelector(state).username);
+	const { username } = useAppSelector(state => getUserSelector(state));
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
 	const { sortBy, displayMode, showAvatar } = useAppSelector(state => state.sortPreferences);
@@ -146,12 +146,6 @@ const RoomsListView = memo(() => {
 		);
 	};
 
-	// const getItemLayout = (data: ArrayLike<ISubscription> | null | undefined, index: number, height: number) => ({
-	// 	length: height,
-	// 	offset: height * index,
-	// 	index
-	// });
-
 	return (
 		<Container>
 			<FlatList
@@ -161,7 +155,7 @@ const RoomsListView = memo(() => {
 				keyExtractor={item => `${item.rid}-${searching}`}
 				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 				renderItem={renderItem}
-				// ListHeaderComponent={this.renderListHeader}
+				ListHeaderComponent={() => <ListHeader searching={searching} />}
 				getItemLayout={(_, index) => ({
 					length: height,
 					offset: height * index,
