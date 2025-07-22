@@ -1,11 +1,12 @@
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useFocusEffect } from '@react-navigation/native';
 
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
@@ -88,6 +89,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		setFocus,
 		getValues,
 		setValue,
+		reset,
 		setError,
 		watch,
 		formState: { isDirty, dirtyFields, errors }
@@ -279,6 +281,12 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 		navigation.setOptions(options);
 	}, []);
+
+	useFocusEffect(
+		useCallback(() => {
+			reset();
+		}, [])
+	);
 
 	return (
 		<KeyboardView>
