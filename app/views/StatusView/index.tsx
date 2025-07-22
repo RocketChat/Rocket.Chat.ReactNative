@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
-import { AccessibilityInfo, FlatList, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
@@ -113,16 +114,16 @@ const StatusView = (): React.ReactElement => {
 	const {
 		control,
 		watch,
+		setValue,
 		formState: { errors, isValid }
 	} = useForm({
 		mode: 'onChange',
-		defaultValues: { statusText: user.statusText || '' },
+		defaultValues: { statusText: user.statusText || '', status: user.status },
 
 		resolver: yupResolver(validationSchema)
 	});
 	const statusText = watch('statusText');
-	const [status, setStatus] = useState(user.status);
-	const [errorAnnounced, setErrorAnnounced] = useState(false);
+	const status = watch('status');
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
@@ -136,17 +137,7 @@ const StatusView = (): React.ReactElement => {
 		goBack();
 	};
 
-	useEffect(() => {
-		if (errors.statusText && !errorAnnounced) {
-			const message = errors.statusText.message?.toString() || '';
-			if (message) {
-				AccessibilityInfo.announceForAccessibility(message);
-				setErrorAnnounced(true);
-			}
-		} else if (!errors.statusText && errorAnnounced) {
-			setErrorAnnounced(false);
-		}
-	}, [errors.statusText]);
+	useA11yErrorAnnouncement({ error: errors.statusText?.message });
 
 	useEffect(() => {
 		const setHeader = () => {
@@ -157,6 +148,10 @@ const StatusView = (): React.ReactElement => {
 		};
 		setHeader();
 	}, [statusText, status]);
+
+	const setStatus = (updatedStatus: TUserStatus) => {
+		setValue('status', updatedStatus);
+	};
 
 	const setCustomStatus = async (status: TUserStatus, statusText: string) => {
 		sendLoadingEvent({ visible: true });
