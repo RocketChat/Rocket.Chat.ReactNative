@@ -1,73 +1,76 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { View, Text, Animated, TouchableOpacity, Alert, Vibration, BackHandler } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity, Alert, Vibration, BackHandler } from 'react-native';
 import { CameraView, ScanningResult } from 'expo-camera';
+import Animated, {
+	useSharedValue,
+	useAnimatedStyle,
+	withTiming,
+	withRepeat,
+	withSequence
+} from 'react-native-reanimated';
 
-import styles, { SCANNER_SIZE } from './styles';
+import { createDynamicStyles } from './styles';
 import { CustomIcon } from '../../containers/CustomIcon';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { sendScannedQRCode } from '../../lib/services/restApi';
+import { useResponsiveScannerSize } from './useResponsiveLayout';
 
+const SCAN_COOLDOWN = 2000;
 const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const { colors } = useTheme();
-	const scanLineAnim = useRef(new Animated.Value(0)).current;
-	const cornerAnim = useRef(new Animated.Value(1)).current;
-	const fadeAnim = useRef(new Animated.Value(0)).current;
 
 	const [flashMode, setFlashMode] = useState<boolean>(false);
 	const [isScanning, setIsScanning] = useState(true);
 	const [lastScanTime, setLastScanTime] = useState(0);
 	const [isActive, setIsActive] = useState(true);
+	const SCANNER_SIZE = useResponsiveScannerSize();
+	const styles = createDynamicStyles(SCANNER_SIZE);
 
-	const SCAN_COOLDOWN = 2000;
+	const fadeAnim = useSharedValue(0);
+	const scanLineAnim = useSharedValue(0);
+	const cornerAnim = useSharedValue(1);
+
 
 	useEffect(() => {
-		Animated.timing(fadeAnim, {
-			toValue: 1,
-			duration: 300,
-			useNativeDriver: true
-		}).start();
-
-		const scanAnimation = Animated.loop(
-			Animated.sequence([
-				Animated.timing(scanLineAnim, {
-					toValue: 1,
-					duration: 2000,
-					useNativeDriver: true
-				}),
-				Animated.timing(scanLineAnim, {
-					toValue: 0,
-					duration: 2000,
-					useNativeDriver: true
-				})
-			])
-		);
-
-		const cornerAnimation = Animated.loop(
-			Animated.sequence([
-				Animated.timing(cornerAnim, {
-					toValue: 0.6,
-					duration: 1500,
-					useNativeDriver: true
-				}),
-				Animated.timing(cornerAnim, {
-					toValue: 1,
-					duration: 1500,
-					useNativeDriver: true
-				})
-			])
-		);
+		fadeAnim.value = withTiming(1, { duration: 300 });
 
 		if (isScanning) {
-			scanAnimation.start();
-			cornerAnimation.start();
-		}
+			scanLineAnim.value = withRepeat(
+				withSequence(
+					withTiming(1, { duration: 2000 }),
+					withTiming(0, { duration: 2000 })
+				),
+				-1,
+				true
+			);
 
-		return () => {
-			scanAnimation.stop();
-			cornerAnimation.stop();
-		};
-	}, [isScanning, scanLineAnim, cornerAnim, fadeAnim]);
+			cornerAnim.value = withRepeat(
+				withSequence(
+					withTiming(0.6, { duration: 1500 }),
+					withTiming(1, { duration: 1500 })
+				),
+				-1,
+				true
+			);
+		}
+	}, [cornerAnim, fadeAnim, isScanning, scanLineAnim]);
+
+	const fadeStyle = useAnimatedStyle(() => ({
+		opacity: fadeAnim.value,
+		backgroundColor: colors.surfaceRoom
+	}));
+
+	const scanLineStyle = useAnimatedStyle(() => ({
+		transform: [{ translateY: scanLineAnim.value * (SCANNER_SIZE - 4) }],
+		opacity: isScanning ? 1 : 0,
+		backgroundColor: colors.badgeBackgroundLevel4,
+		shadowColor: colors.badgeBackgroundLevel4
+	}));
+
+	const cornerStyle = useAnimatedStyle(() => ({
+		opacity: cornerAnim.value
+	}));
 
 	const handleClose = useCallback(() => {
 		navigation.goBack();
@@ -96,22 +99,18 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 		};
 	}, [navigation]);
 
-	const handleBarcodeScanned = useCallback(
+	const handleBarcodeScanned =
 		async (scanningResult: ScanningResult) => {
 			const now = Date.now();
-			console.debug(scanningResult);
 			const response = await sendScannedQRCode(scanningResult.data);
-			console.debug('sendScannedQRCode response', response);
-			if (now - lastScanTime < SCAN_COOLDOWN) {
-				return;
-			}
+			console.debug('QR Code Scanned Response:', response);
+
+			if (now - lastScanTime < SCAN_COOLDOWN) return;
 
 			setLastScanTime(now);
 			setIsScanning(false);
 
-			if (Vibration) {
-				Vibration.vibrate(100);
-			}
+			if (Vibration) Vibration.vibrate(100);
 
 			const { data } = scanningResult;
 
@@ -126,28 +125,19 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 				{ text: 'Scan Again', onPress: () => setIsScanning(true) },
 				{ text: i18n.t('Close'), onPress: handleClose }
 			]);
-		},
-		[lastScanTime, handleClose]
-	);
+		};
 
-	const toggleFlash = useCallback(() => {
+	const toggleFlash = () => {
 		setFlashMode(current => !current);
-	}, []);
-
-	const scanLineTranslateY = scanLineAnim.interpolate({
-		inputRange: [0, 1],
-		outputRange: [0, SCANNER_SIZE - 4]
-	});
+	};
 
 	return (
-		<Animated.View style={[styles.container, { opacity: fadeAnim, backgroundColor: colors.surfaceRoom }]}>
+		<Animated.View style={[styles.container, fadeStyle]}>
 			<CameraView
 				style={styles.camera}
 				facing='back'
 				onBarcodeScanned={isScanning ? handleBarcodeScanned : undefined}
-				barcodeScannerSettings={{
-					barcodeTypes: ['qr']
-				}}
+				barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
 				active={isActive}
 				enableTorch={flashMode}
 			/>
@@ -188,7 +178,7 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 					{ position: styles.bottomLeft, name: 'bottomLeft' },
 					{ position: styles.bottomRight, name: 'bottomRight' }
 				].map(({ position, name }) => (
-					<Animated.View key={name} style={[styles.corner, position, { opacity: cornerAnim }]}>
+					<Animated.View key={name} style={[styles.corner, position, cornerStyle]}>
 						<View
 							style={[
 								styles.cornerHorizontal,
@@ -210,17 +200,7 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 					</Animated.View>
 				))}
 
-				<Animated.View
-					style={[
-						styles.scanLine,
-						{
-							transform: [{ translateY: scanLineTranslateY }],
-							opacity: isScanning ? 1 : 0,
-							backgroundColor: colors.badgeBackgroundLevel4,
-							shadowColor: colors.badgeBackgroundLevel4
-						}
-					]}
-				/>
+				<Animated.View style={[styles.scanLine, scanLineStyle]} />
 			</View>
 
 			<View style={styles.footer}>
