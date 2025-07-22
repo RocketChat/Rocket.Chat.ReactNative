@@ -48,14 +48,6 @@ platform :android do
     end
   end
 
-  desc "Upload App to Internal App Sharing (Circle CI)"
-  lane :internal_app_sharing_circle_ci do
-    upload_to_play_store_internal_app_sharing(
-      package_name: 'chat.rocket.reactnative',
-      aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
-    )
-  end
-
   desc "Upload App to Internal App Sharing"
   lane :internal_app_sharing do |options|
     if options[:official]
