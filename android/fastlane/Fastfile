@@ -22,13 +22,13 @@ platform :android do
       upload_to_play_store(
         package_name: 'chat.rocket.android',
         track: 'internal',
-        aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
+        aab: 'android/app/build/outputs/bundle/officialRelease/app-official-release.aab'
       )
     else
       upload_to_play_store(
         package_name: 'chat.rocket.reactnative',
         track: 'internal',
-        aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+        aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
       )
     end
   end
