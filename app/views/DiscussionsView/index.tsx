@@ -20,6 +20,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
 
@@ -142,11 +143,14 @@ const DiscussionsView = () => {
 
 	const onDiscussionPress = (item: TThreadModel) => {
 		if (item.drid && item.t) {
-			navigation.push('RoomView', {
-				rid: item.drid,
-				prid: item.rid,
-				name: item.msg,
-				t
+			goRoom({
+				item: {
+					rid: item.drid,
+					prid: item.rid,
+					name: item.msg,
+					t
+				},
+				isMasterDetail
 			});
 		}
 	};
