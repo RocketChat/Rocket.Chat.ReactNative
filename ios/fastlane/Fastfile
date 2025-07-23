@@ -38,7 +38,7 @@ platform :ios do
     )
 
     UI.message("Latest version: #{latest_version}")
-    puts latest_version
+    puts "VERSIONCODE=#{latest_version}"
   end
 
   desc "Submit a new Beta Build to Apple TestFlight (Circle CI)"

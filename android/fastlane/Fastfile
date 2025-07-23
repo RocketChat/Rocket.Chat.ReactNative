@@ -73,7 +73,7 @@ platform :android do
     UI.success("Highest: #{highest_version}")
     UI.success("Highest + 1: #{highest_version + 1}")
 
-    puts highest_version
+    puts "VERSIONCODE=#{highest_version}"
   end
 
   desc "Upload App to Play Store Internal (Circle CI)"
