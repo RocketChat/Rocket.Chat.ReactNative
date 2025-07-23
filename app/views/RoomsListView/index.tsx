@@ -36,8 +36,8 @@ const RoomsListView = memo(() => {
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
-	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
-	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
+	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name) as boolean;
+	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message) as boolean;
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation();
