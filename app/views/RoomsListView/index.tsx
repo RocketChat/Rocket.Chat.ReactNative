@@ -1,6 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { FlatList, PixelRatio } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { shallowEqual } from 'react-redux';
 
 import RoomItem from '../../containers/RoomItem';
 import ActivityIndicator from '../../containers/ActivityIndicator';
@@ -26,10 +27,10 @@ const RoomsListView = memo(() => {
 	const searching = false;
 	const search = [];
 	const { colors } = useTheme();
-	const { username } = useAppSelector(state => getUserSelector(state));
+	const username = useAppSelector(state => getUserSelector(state).username);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
-	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences);
+	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const isMasterDetail = false;
 	const { width } = useSafeAreaFrame();
 	const fontScale = PixelRatio.getFontScale();

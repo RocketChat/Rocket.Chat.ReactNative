@@ -33,11 +33,14 @@ const AvatarContainer = ({
 		shallowEqual
 	);
 
-	const { avatarExternalProviderUrl, roomAvatarExternalProviderUrl, cdnPrefix } = useSelector((state: IApplicationState) => ({
-		avatarExternalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string,
-		roomAvatarExternalProviderUrl: state.settings.Accounts_RoomAvatarExternalProviderUrl as string,
-		cdnPrefix: state.settings.CDN_PREFIX as string
-	}));
+	const { avatarExternalProviderUrl, roomAvatarExternalProviderUrl, cdnPrefix } = useSelector(
+		(state: IApplicationState) => ({
+			avatarExternalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string,
+			roomAvatarExternalProviderUrl: state.settings.Accounts_RoomAvatarExternalProviderUrl as string,
+			cdnPrefix: state.settings.CDN_PREFIX as string
+		}),
+		shallowEqual
+	);
 	const blockUnauthenticatedAccess = useSelector(
 		(state: IApplicationState) => state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
 	) as boolean;

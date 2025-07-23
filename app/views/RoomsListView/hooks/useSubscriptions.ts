@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { shallowEqual } from 'react-redux';
 import { Q } from '@nozbe/watermelondb';
 import { Subscription } from 'rxjs';
 
@@ -40,8 +41,8 @@ export const useSubscriptions = () => {
 	const subscriptionRef = useRef<Subscription>(null);
 	const [subscriptions, setSubscriptions] = useState<TSubscriptionModel[]>([]);
 	const [loading, setLoading] = useState(true);
-	const { roles } = useAppSelector(state => getUserSelector(state));
-	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences);
+	const roles = useAppSelector(state => getUserSelector(state).roles, shallowEqual);
+	const { sortBy, showUnread, showFavorites, groupByType } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const isGrouping = showUnread || showFavorites || groupByType;
 
 	useEffect(() => {
