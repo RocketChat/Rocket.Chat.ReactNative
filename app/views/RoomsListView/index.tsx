@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import { FlatList } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -40,6 +40,7 @@ const RoomsListView = memo(() => {
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const scrollRef = useRef<FlatList<ISubscription>>(null);
 
 	// if (supportedVersionsStatus === 'expired') {
 	// 	return (
@@ -120,7 +121,7 @@ const RoomsListView = memo(() => {
 	return (
 		<Container>
 			<FlatList
-				// ref={this.getScrollRef}
+				ref={scrollRef}
 				data={searching ? search : subscriptions}
 				extraData={searching ? search : subscriptions}
 				keyExtractor={item => `${item.rid}-${searching}`}
