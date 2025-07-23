@@ -1,5 +1,5 @@
 import React, { memo, useEffect } from 'react';
-import { FlatList, PixelRatio } from 'react-native';
+import { FlatList } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
@@ -12,7 +12,7 @@ import { ISubscription } from '../../definitions';
 import styles from './styles';
 import ListHeader from './components/ListHeader';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isRead, isIOS, isTablet } from '../../lib/methods/helpers';
-import { DisplayMode, MAX_SIDEBAR_WIDTH } from '../../lib/constants';
+import { MAX_SIDEBAR_WIDTH } from '../../lib/constants';
 import Container from './components/Container';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
@@ -20,13 +20,12 @@ import { useHeader } from './hooks/useHeader';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { SectionHeader } from './components/SectionHeader';
+import { useGetItemLayout } from './hooks/useGetItemLayout';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(() => {
 	console.count(`RoomsListView.render calls`);
-	// const { loading, chats, search, searching } = this.state;
-	// const { theme, refreshing, displayMode, supportedVersionsStatus, user } = this.props;
 	useHeader();
 	const searching = false;
 	const search = [];
@@ -38,10 +37,7 @@ const RoomsListView = memo(() => {
 	const isMasterDetail = false;
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
-	const fontScale = PixelRatio.getFontScale();
-	const rowHeight = 75 * fontScale;
-	const rowHeightCondensed = 60 * fontScale;
-	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
+	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 
@@ -131,11 +127,7 @@ const RoomsListView = memo(() => {
 				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 				renderItem={renderItem}
 				ListHeaderComponent={() => <ListHeader searching={searching} />}
-				getItemLayout={(_, index) => ({
-					length: height,
-					offset: height * index,
-					index
-				})}
+				getItemLayout={getItemLayout}
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
