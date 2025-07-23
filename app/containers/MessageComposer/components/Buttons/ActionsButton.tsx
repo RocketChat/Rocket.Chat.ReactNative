@@ -9,6 +9,7 @@ import Navigation from '../../../../lib/navigation/appNavigation';
 import { useAppSelector, usePermissions } from '../../../../lib/hooks';
 import { useCanUploadFile, useChooseMedia } from '../../hooks';
 import { useRoomContext } from '../../../../views/RoomView/context';
+import { useTimestampPicker } from '../../hooks/useTimestampPicker';
 
 export const ActionsButton = () => {
 	const { rid, tmid, t } = useRoomContext();
@@ -22,6 +23,7 @@ export const ActionsButton = () => {
 	});
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
+	const { openTimestampPicker } = useTimestampPicker();
 
 	const createDiscussion = async () => {
 		if (!rid) return;
@@ -85,6 +87,12 @@ export const ActionsButton = () => {
 				}
 			);
 		}
+
+		options.push({
+			title: I18n.t('Add_Date_And_Time'),
+			icon: 'clock',
+			onPress: () => openTimestampPicker()
+		});
 
 		options.push({
 			title: I18n.t('Create_Discussion'),
