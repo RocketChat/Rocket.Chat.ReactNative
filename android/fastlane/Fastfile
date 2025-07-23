@@ -102,7 +102,7 @@ platform :android do
   lane :official_open_testing do |options|
     upload_to_play_store(
       package_name: 'chat.rocket.reactnative',
-      track: 'open',
+      track: 'beta',
       aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
     )
   end
