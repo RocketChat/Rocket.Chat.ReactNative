@@ -59,7 +59,7 @@ jobs:
     name: Upload
     runs-on: macos-15
     needs: [build-ios]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-ios.result == 'success')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

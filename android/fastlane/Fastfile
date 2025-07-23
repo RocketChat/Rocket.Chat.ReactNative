@@ -20,21 +20,25 @@ platform :android do
   lane :version_code do |options|
     production_versions = google_play_track_version_codes(
       package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'service_account.json',
       track: 'production'
     )
 
     beta_versions = google_play_track_version_codes(
       package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'service_account.json',
       track: 'beta'
     )
 
     alpha_versions = google_play_track_version_codes(
       package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'service_account.json',
       track: 'alpha'
     )
 
     internal_versions = google_play_track_version_codes(
       package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'service_account.json',
       track: 'internal'
     )
 
