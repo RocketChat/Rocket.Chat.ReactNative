@@ -1,41 +1,86 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { View, Text, TouchableOpacity, Alert, Vibration, BackHandler } from 'react-native';
-import { CameraView, ScanningResult } from 'expo-camera';
+import { BarcodeScanningResult, CameraView, useCameraPermissions } from 'expo-camera';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import Animated, {
 	useSharedValue,
 	useAnimatedStyle,
 	withTiming,
 	withRepeat,
-	withSequence
+	withSequence,
+	cancelAnimation
 } from 'react-native-reanimated';
 
-import { createDynamicStyles } from './styles';
+import { styles, SCANNER_SIZE } from './styles';
 import { CustomIcon } from '../../containers/CustomIcon';
 import i18n from '../../i18n';
 import { useTheme } from '../../theme';
 import { sendScannedQRCode } from '../../lib/services/restApi';
-import { useResponsiveScannerSize } from './useResponsiveLayout';
 
-const SCAN_COOLDOWN = 2000;
+const SCAN_COOLDOWN = 5000;
+
 const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const { colors } = useTheme();
+	const [permission, requestPermission] = useCameraPermissions();
+	const isFocused = useIsFocused();
 
-	const [flashMode, setFlashMode] = useState<boolean>(false);
+	const [flashMode, setFlashMode] = useState(false);
 	const [isScanning, setIsScanning] = useState(true);
 	const [lastScanTime, setLastScanTime] = useState(0);
-	const [isActive, setIsActive] = useState(true);
-	const SCANNER_SIZE = useResponsiveScannerSize();
-	const styles = createDynamicStyles(SCANNER_SIZE);
+	const [showCamera, setShowCamera] = useState(false);
+
+	const isMounted = useRef(true);
 
 	const fadeAnim = useSharedValue(0);
 	const scanLineAnim = useSharedValue(0);
 	const cornerAnim = useSharedValue(1);
 
+	useEffect(() => {
+		if (isFocused && permission?.granted) {
+			const timer = setTimeout(() => {
+				if (isMounted.current) {
+					setShowCamera(true);
+				}
+			}, 100);
+			return () => clearTimeout(timer);
+		} else
+			// eslint-disable-next-line no-else-return
+			setShowCamera(false);
+
+	}, [isFocused, permission?.granted]);
+
+	useFocusEffect(
+		useCallback(() => {
+			isMounted.current = true;
+
+			setFlashMode(false);
+			setLastScanTime(0);
+			setIsScanning(true);
+
+			cancelAnimation(fadeAnim);
+			cancelAnimation(scanLineAnim);
+			cancelAnimation(cornerAnim);
+
+			fadeAnim.value = 0;
+			scanLineAnim.value = 0;
+			cornerAnim.value = 1;
+
+			fadeAnim.value = withTiming(1, { duration: 300 });
+
+			return () => {
+				isMounted.current = false;
+				setShowCamera(false);
+				setIsScanning(false);
+
+				cancelAnimation(fadeAnim);
+				cancelAnimation(scanLineAnim);
+				cancelAnimation(cornerAnim);
+			};
+		}, [fadeAnim, scanLineAnim, cornerAnim])
+	);
 
 	useEffect(() => {
-		fadeAnim.value = withTiming(1, { duration: 300 });
-
-		if (isScanning) {
+		if (isScanning && showCamera) {
 			scanLineAnim.value = withRepeat(
 				withSequence(
 					withTiming(1, { duration: 2000 }),
@@ -53,8 +98,21 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 				-1,
 				true
 			);
+		} else {
+			cancelAnimation(scanLineAnim);
+			cancelAnimation(cornerAnim);
 		}
-	}, [cornerAnim, fadeAnim, isScanning, scanLineAnim]);
+	}, [isScanning, showCamera, scanLineAnim, cornerAnim]);
+
+	// eslint-disable-next-line arrow-body-style
+	useEffect(() => {
+		return () => {
+			isMounted.current = false;
+			cancelAnimation(fadeAnim);
+			cancelAnimation(scanLineAnim);
+			cancelAnimation(cornerAnim);
+		};
+	}, []);
 
 	const fadeStyle = useAnimatedStyle(() => ({
 		opacity: fadeAnim.value,
@@ -73,7 +131,7 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	}));
 
 	const handleClose = useCallback(() => {
-		navigation.goBack();
+		navigation?.goBack();
 		return true;
 	}, [navigation]);
 
@@ -82,65 +140,110 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 		return () => backHandler.remove();
 	}, [handleClose]);
 
-	useEffect(() => {
-		const unsubscribeFocus = navigation?.addListener('focus', () => {
-			setIsActive(true);
-			setIsScanning(true);
-		});
+	const handleBarcodeScanned = async (scanningResult: BarcodeScanningResult) => {
+		if (!isMounted.current) return;
 
-		const unsubscribeBlur = navigation?.addListener('blur', () => {
-			setIsActive(false);
-			setIsScanning(false);
-		});
+		const now = Date.now();
 
-		return () => {
-			unsubscribeFocus?.();
-			unsubscribeBlur?.();
-		};
-	}, [navigation]);
+		if (now - lastScanTime < SCAN_COOLDOWN || !isScanning) {
+			return;
+		}
 
-	const handleBarcodeScanned =
-		async (scanningResult: ScanningResult) => {
-			const now = Date.now();
-			const response = await sendScannedQRCode(scanningResult.data);
-			console.debug('QR Code Scanned Response:', response);
+		console.log('QR Code Scanned:', scanningResult.data);
+		setLastScanTime(now);
+		setIsScanning(false);
 
-			if (now - lastScanTime < SCAN_COOLDOWN) return;
+		Vibration?.vibrate(100);
 
-			setLastScanTime(now);
-			setIsScanning(false);
+		const { data } = scanningResult;
 
-			if (Vibration) Vibration.vibrate(100);
+		if (!data?.trim()) {
+			Alert.alert(
+				i18n.t('Error'),
+				i18n.t('QR_Code_Invalid'),
+				[{ text: i18n.t('Try_Again'), onPress: () => setIsScanning(true) }]
+			);
+			return;
+		}
 
-			const { data } = scanningResult;
+		try {
+			await sendScannedQRCode(data);
 
-			if (!data || data.trim() === '') {
-				Alert.alert(i18n.t('Error'), i18n.t('QR_Code_Invalid'), [
-					{ text: i18n.t('Try_Again'), onPress: () => setIsScanning(true) }
-				]);
-				return;
-			}
+			console.log('Success - navigate to success screen');
+			// navigation.navigate('QRSuccess', { data });
+		} catch (error) {
+			console.log('Error sending QR code:', error);
 
-			Alert.alert('Scanned Result', data, [
-				{ text: 'Scan Again', onPress: () => setIsScanning(true) },
-				{ text: i18n.t('Close'), onPress: handleClose }
-			]);
-		};
-
-	const toggleFlash = () => {
-		setFlashMode(current => !current);
+			console.log('Error - navigate to error screen');
+			// navigation.navigate('QRError', { error });
+		}
 	};
+
+	const toggleFlash = useCallback(() => {
+		setFlashMode(prev => !prev);
+	}, []);
+
+	const retryScan = useCallback(() => {
+		setIsScanning(true);
+		setLastScanTime(0);
+	}, []);
+
+	if (!permission) {
+		return (
+			<View style={[styles.container, { backgroundColor: colors.surfaceRoom, justifyContent: 'center', alignItems: 'center' }]}>
+				<Text style={[styles.loadingText, { color: colors.fontTitlesLabels }]}>
+					Loading camera...
+				</Text>
+			</View>
+		);
+	}
+
+	if (!permission.granted) {
+		return (
+			<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
+				<View style={styles.permissionContainer}>
+					<CustomIcon name='camera' size={64} color={colors.fontTitlesLabels} />
+					<Text style={[styles.permissionTitle, { color: colors.fontTitlesLabels }]}>
+						Camera Permission Required
+					</Text>
+					<Text style={[styles.permissionText, { color: colors.fontAnnotation }]}>
+						We need access to your camera to scan QR codes
+					</Text>
+					<TouchableOpacity
+						style={[styles.permissionButton, { backgroundColor: colors.badgeBackgroundLevel4 }]}
+						onPress={requestPermission}
+					>
+						<Text style={[styles.permissionButtonText, { color: '#000' }]}>
+							Grant Permission
+						</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={handleClose}>
+						<Text style={[styles.closeButtonText, { color: colors.fontAnnotation }]}>
+							Close
+						</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+		);
+	}
 
 	return (
 		<Animated.View style={[styles.container, fadeStyle]}>
-			<CameraView
-				style={styles.camera}
-				facing='back'
-				onBarcodeScanned={isScanning ? handleBarcodeScanned : undefined}
-				barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
-				active={isActive}
-				enableTorch={flashMode}
-			/>
+			{showCamera && isFocused ? (
+				<CameraView
+					style={styles.camera}
+					facing='back'
+					onBarcodeScanned={isScanning ? handleBarcodeScanned : undefined}
+					barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+					enableTorch={flashMode}
+				/>
+			) : (
+				<View style={[styles.camera, { backgroundColor: colors.surfaceRoom, justifyContent: 'center', alignItems: 'center' }]}>
+					<Text style={[styles.loadingText, { color: colors.fontTitlesLabels }]}>
+						{isFocused ? 'Initializing camera...' : 'Camera paused'}
+					</Text>
+				</View>
+			)}
 
 			<View style={styles.overlay}>
 				<View style={[styles.topOverlay, { backgroundColor: colors.overlayBackground }]} />
@@ -154,20 +257,19 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 
 			<View style={styles.header}>
 				<TouchableOpacity
-					style={[
-						styles.closeButton,
-						{
-							backgroundColor: colors.surfaceNeutral,
-							borderColor: colors.strokeLight
-						}
-					]}
-					onPress={handleClose}>
+					style={[styles.closeButton, { backgroundColor: colors.surfaceNeutral, borderColor: colors.strokeLight }]}
+					onPress={handleClose}
+				>
 					<CustomIcon name='close' size={24} color='#fff' />
 				</TouchableOpacity>
 
 				<View style={styles.instructionContainer}>
-					<Text style={[styles.instructionText, { color: colors.fontTitlesLabels }]}>{i18n.t('QR_Login')}</Text>
-					<Text style={[styles.subInstructionText, { color: colors.fontAnnotation }]}>{i18n.t('QR_Login_Description')}</Text>
+					<Text style={[styles.instructionText, { color: colors.fontTitlesLabels }]}>
+						{i18n.t('QR_Login')}
+					</Text>
+					<Text style={[styles.subInstructionText, { color: colors.fontAnnotation }]}>
+						{i18n.t('QR_Login_Description')}
+					</Text>
 				</View>
 			</View>
 
@@ -179,28 +281,12 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 					{ position: styles.bottomRight, name: 'bottomRight' }
 				].map(({ position, name }) => (
 					<Animated.View key={name} style={[styles.corner, position, cornerStyle]}>
-						<View
-							style={[
-								styles.cornerHorizontal,
-								{
-									backgroundColor: colors.badgeBackgroundLevel4,
-									shadowColor: colors.badgeBackgroundLevel4
-								}
-							]}
-						/>
-						<View
-							style={[
-								styles.cornerVertical,
-								{
-									backgroundColor: colors.badgeBackgroundLevel4,
-									shadowColor: colors.badgeBackgroundLevel4
-								}
-							]}
-						/>
+						<View style={[styles.cornerHorizontal, { backgroundColor: colors.badgeBackgroundLevel4, shadowColor: colors.badgeBackgroundLevel4 }]} />
+						<View style={[styles.cornerVertical, { backgroundColor: colors.badgeBackgroundLevel4, shadowColor: colors.badgeBackgroundLevel4 }]} />
 					</Animated.View>
 				))}
 
-				<Animated.View style={[styles.scanLine, scanLineStyle]} />
+				{showCamera && <Animated.View style={[styles.scanLine, scanLineStyle]} />}
 			</View>
 
 			<View style={styles.footer}>
@@ -210,23 +296,21 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 							styles.controlButton,
 							{
 								backgroundColor: flashMode ? colors.badgeBackgroundLevel4 : colors.surfaceNeutral,
-								borderColor: flashMode ? colors.badgeBackgroundLevel4 : colors.strokeLight
+								borderColor: flashMode ? colors.badgeBackgroundLevel4 : colors.strokeLight,
+								opacity: showCamera ? 1 : 0.5
 							}
 						]}
-						onPress={toggleFlash}>
-						<CustomIcon name={'record'} size={24} color={flashMode ? '#000' : '#fff'} />
+						onPress={toggleFlash}
+						disabled={!showCamera}
+					>
+						<CustomIcon name='record' size={24} color={flashMode ? '#000' : '#fff'} />
 					</TouchableOpacity>
 
-					{!isScanning && (
+					{!isScanning && showCamera && (
 						<TouchableOpacity
-							style={[
-								styles.controlButton,
-								{
-									backgroundColor: colors.surfaceNeutral,
-									borderColor: colors.strokeLight
-								}
-							]}
-							onPress={() => setIsScanning(true)}>
+							style={[styles.controlButton, { backgroundColor: colors.surfaceNeutral, borderColor: colors.strokeLight }]}
+							onPress={retryScan}
+						>
 							<CustomIcon name='refresh' size={24} color='#fff' />
 						</TouchableOpacity>
 					)}
