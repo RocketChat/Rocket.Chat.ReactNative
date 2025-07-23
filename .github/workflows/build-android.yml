@@ -15,7 +15,7 @@ jobs:
   build-hold:
     name: Hold
     runs-on: ubuntu-latest
-    if: ${{ inputs.trigger != 'develop' }}
+    if: ${{ inputs.trigger == 'pr' }}
     environment: experimental_android_build
     steps:
       - run: echo "Waiting for manual approval..."
@@ -24,7 +24,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     needs: [build-hold]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     outputs:
       VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
     steps:
