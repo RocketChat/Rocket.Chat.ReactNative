@@ -1,58 +1,42 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { setSearch } from '../../../../actions/rooms';
 import Header from './Header';
-import { IApplicationState } from '../../../../definitions';
 import { showActionSheetRef } from '../../../../containers/ActionSheet';
 import ServersList from '../ServersList';
+import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
+import { useDebounce } from '../../../../lib/methods/helpers/debounce';
 
-interface IRoomsListHeaderViewProps {
-	showSearchHeader: boolean;
-	serverName: string;
-	connecting: boolean;
-	connected: boolean;
-	isFetching: boolean;
-	server: string;
-	dispatch: Dispatch;
-}
+const RoomsListHeaderView = () => {
+	const dispatch = useDispatch();
+	const showSearchHeader = useAppSelector(state => state.rooms.showSearchHeader);
+	const connecting = useAppSelector(state => state.meteor.connecting || state.server.loading);
+	const connected = useAppSelector(state => state.meteor.connected);
+	const isFetching = useAppSelector(state => state.rooms.isFetching);
+	const serverName = useAppSelector(state => state.settings.Site_Name as string);
+	const server = useAppSelector(state => state.server.server);
 
-class RoomsListHeaderView extends PureComponent<IRoomsListHeaderViewProps, any> {
-	onSearchChangeText = (text: string) => {
-		const { dispatch } = this.props;
+	const onSearchChangeText = useDebounce((text: string) => {
 		dispatch(setSearch(text.trim()));
-	};
+	}, 500);
 
-	onPress = () => {
+	const onPress = () => {
 		showActionSheetRef({ children: <ServersList />, enableContentPanningGesture: false });
 	};
 
-	render() {
-		const { serverName, showSearchHeader, connecting, connected, isFetching, server } = this.props;
+	return (
+		<Header
+			serverName={serverName}
+			server={server}
+			showSearchHeader={showSearchHeader}
+			connecting={connecting}
+			connected={connected}
+			isFetching={isFetching}
+			onPress={onPress}
+			onSearchChangeText={onSearchChangeText}
+		/>
+	);
+};
 
-		return (
-			<Header
-				serverName={serverName}
-				server={server}
-				showSearchHeader={showSearchHeader}
-				connecting={connecting}
-				connected={connected}
-				isFetching={isFetching}
-				onPress={this.onPress}
-				onSearchChangeText={this.onSearchChangeText}
-			/>
-		);
-	}
-}
-
-const mapStateToProps = (state: IApplicationState) => ({
-	showSearchHeader: state.rooms.showSearchHeader,
-	connecting: state.meteor.connecting || state.server.loading,
-	connected: state.meteor.connected,
-	isFetching: state.rooms.isFetching,
-	serverName: state.settings.Site_Name as string,
-	server: state.server.server
-});
-
-export default connect(mapStateToProps)(RoomsListHeaderView);
+export default RoomsListHeaderView;
