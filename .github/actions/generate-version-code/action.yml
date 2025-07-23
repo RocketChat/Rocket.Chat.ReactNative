@@ -53,14 +53,14 @@ runs:
       if: ${{ inputs.os == 'ios' }}
       shell: bash
       run: |
-        fastlane ios get_testflight_version
+        bundle exec fastlane ios get_testflight_version
       working-directory: ios
 
     - name: Compute VERSIONCODE (Android)
       if: ${{ inputs.os == 'android' }}
       shell: bash
       run: |
-        fastlane android version_code
+        bundle exec fastlane android version_code
       working-directory: android
 
     - name: Compute VERSIONCODE
