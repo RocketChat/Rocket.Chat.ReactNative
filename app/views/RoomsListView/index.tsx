@@ -19,6 +19,7 @@ import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useHeader } from './hooks/useHeader';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
+import { SectionHeader } from './components/SectionHeader';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -82,20 +83,10 @@ const RoomsListView = memo(() => {
 	};
 
 	const renderItem = ({ item }: { item: ISubscription }) => {
-		// if (item.separator) {
-		// 	return this.renderSectionHeader(item.rid);
-		// }
+		if (item.separator) {
+			return <SectionHeader header={item.rid} />;
+		}
 
-		// const { item: currentItem } = this.state;
-		// const {
-		// 	user: { username },
-		// 	StoreLastMessage,
-		// 	useRealName,
-		// 	isMasterDetail,
-		// 	width,
-		// 	showAvatar,
-		// 	displayMode
-		// } = this.props;
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
 		const swipeEnabled = false; // this.isSwipeEnabled(item);
 
@@ -114,7 +105,7 @@ const RoomsListView = memo(() => {
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
 				getIsRead={isRead}
-				// isFocused={currentItem?.rid === item.rid}
+				isFocused={subscribedRoom === item.rid}
 				swipeEnabled={swipeEnabled}
 				showAvatar={showAvatar}
 				displayMode={displayMode}
