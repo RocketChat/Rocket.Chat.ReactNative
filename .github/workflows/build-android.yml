@@ -55,6 +55,7 @@ jobs:
     name: Upload Hold
     runs-on: ubuntu-latest
     needs: [build-android]
+    if: ${{ inputs.trigger == 'pr' }}
     environment: upload_experimental_android
     steps:
       - run: echo "Waiting for manual approval..."

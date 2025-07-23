@@ -15,6 +15,7 @@ jobs:
   build-hold:
     name: Hold
     runs-on: ubuntu-latest
+    if: ${{ inputs.trigger == 'pr' }}
     environment: experimental_ios_build
     steps:
       - run: echo "Waiting for manual approval..."
