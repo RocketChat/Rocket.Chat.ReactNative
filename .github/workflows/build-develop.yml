@@ -8,6 +8,10 @@ on:
     branches:
       - 'chore.gh-build-patch'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run-eslint-and-test:
     name: ESLint and Test
