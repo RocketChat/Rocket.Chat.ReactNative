@@ -101,9 +101,12 @@ runs:
     - name: Compute VERSIONCODE
       id: compute
       shell: bash
-      env:
-        LATEST_VERSIONCODE: ${{ steps.compute-versioncode-ios.outputs.LATEST_VERSIONCODE }} || ${{ steps.compute-versioncode-android.outputs.LATEST_VERSIONCODE }}
       run: |
+        VERSION_IOS="${{ steps.compute-versioncode-ios.outputs.LATEST_VERSIONCODE }}"
+        VERSION_ANDROID="${{ steps.compute-versioncode-android.outputs.LATEST_VERSIONCODE }}"
+        
+        LATEST_VERSIONCODE="${VERSION_IOS:-$VERSION_ANDROID}"
+
         VERSIONCODE=$((LATEST_VERSIONCODE + 1))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
 
