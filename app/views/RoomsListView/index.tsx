@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
@@ -21,6 +21,7 @@ import { events, logEvent } from '../../lib/methods/helpers/log';
 import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { SectionHeader } from './components/SectionHeader';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
+import { useRefresh } from './hooks/useRefresh';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -41,6 +42,7 @@ const RoomsListView = memo(() => {
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 	const scrollRef = useRef<FlatList<ISubscription>>(null);
+	const { refreshing, onRefresh } = useRefresh({ searching });
 
 	// if (supportedVersionsStatus === 'expired') {
 	// 	return (
@@ -132,11 +134,8 @@ const RoomsListView = memo(() => {
 				removeClippedSubviews={isIOS}
 				keyboardShouldPersistTaps='always'
 				initialNumToRender={INITIAL_NUM_TO_RENDER}
-				// refreshControl={
-				// 	<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} tintColor={themes[theme].fontSecondaryInfo} />
-				// }
+				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
 				windowSize={9}
-				// onEndReached={this.onEndReached}
 				onEndReachedThreshold={0.5}
 				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
 			/>
