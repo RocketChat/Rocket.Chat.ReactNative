@@ -111,39 +111,35 @@ const RoomsListView = memo(() => {
 	};
 
 	if (loading) {
-		return (
-			<Container>
-				<ActivityIndicator />
-			</Container>
-		);
+		return <ActivityIndicator />;
 	}
 
 	return (
-		<Container>
-			<FlatList
-				ref={scrollRef}
-				data={searching ? searchResults : subscriptions}
-				extraData={searching ? searchResults : subscriptions}
-				keyExtractor={item => `${item.rid}-${searching}`}
-				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
-				renderItem={renderItem}
-				ListHeaderComponent={() => <ListHeader searching={searching} />}
-				getItemLayout={getItemLayout}
-				removeClippedSubviews={isIOS}
-				keyboardShouldPersistTaps='always'
-				initialNumToRender={INITIAL_NUM_TO_RENDER}
-				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
-				windowSize={9}
-				onEndReachedThreshold={0.5}
-				keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
-			/>
-		</Container>
+		<FlatList
+			ref={scrollRef}
+			data={searching ? searchResults : subscriptions}
+			extraData={searching ? searchResults : subscriptions}
+			keyExtractor={item => `${item.rid}-${searching}`}
+			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
+			renderItem={renderItem}
+			ListHeaderComponent={() => <ListHeader searching={searching} />}
+			getItemLayout={getItemLayout}
+			removeClippedSubviews={isIOS}
+			keyboardShouldPersistTaps='always'
+			initialNumToRender={INITIAL_NUM_TO_RENDER}
+			refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.fontSecondaryInfo} />}
+			windowSize={9}
+			onEndReachedThreshold={0.5}
+			keyboardDismissMode={isIOS ? 'on-drag' : 'none'}
+		/>
 	);
 });
 
 const RoomsListViewWithProvider = memo(() => (
 	<RoomsProvider>
-		<RoomsListView />
+		<Container>
+			<RoomsListView />
+		</Container>
 	</RoomsProvider>
 ));
 
