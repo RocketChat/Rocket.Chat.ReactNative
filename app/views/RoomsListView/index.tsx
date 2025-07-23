@@ -24,6 +24,8 @@ import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useRefresh } from './hooks/useRefresh';
 import { RoomsProvider, RoomsContext } from './RoomsSearchProvider';
 import { IRoomItem } from './definitions';
+import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
+import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -33,6 +35,7 @@ const RoomsListView = memo(() => {
 	const { searching, searchResults, stopSearch } = useContext(RoomsContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
+	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
@@ -44,22 +47,7 @@ const RoomsListView = memo(() => {
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 	const scrollRef = useRef<FlatList<ISubscription>>(null);
 	const { refreshing, onRefresh } = useRefresh({ searching });
-
-	// if (supportedVersionsStatus === 'expired') {
-	// 	return (
-	// 		<Container>
-	// 			<SupportedVersionsExpired />
-	// 		</Container>
-	// 	);
-	// }
-
-	// if (user.requirePasswordChange) {
-	// 	return (
-	// 		<Container>
-	// 			<ChangePasswordRequired />
-	// 		</Container>
-	// 	);
-	// }
+	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 
 	useEffect(
 		() => () => {
@@ -97,6 +85,7 @@ const RoomsListView = memo(() => {
 				username={username}
 				showLastMessage={showLastMessage}
 				onPress={onPressItem}
+				// TODO: move to RoomItem
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				useRealName={useRealName}
 				getRoomTitle={getRoomTitle}
@@ -112,6 +101,14 @@ const RoomsListView = memo(() => {
 
 	if (loading) {
 		return <ActivityIndicator />;
+	}
+
+	if (supportedVersionsStatus === 'expired') {
+		return <SupportedVersionsExpired />;
+	}
+
+	if (requirePasswordChange) {
+		return <ChangePasswordRequired />;
 	}
 
 	return (
