@@ -1,6 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { FlatList, PixelRatio } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { shallowEqual } from 'react-redux';
 
 import RoomItem from '../../containers/RoomItem';
@@ -16,6 +17,8 @@ import Container from './components/Container';
 import { useSubscriptions } from './hooks/useSubscriptions';
 import { useAppSelector } from '../../lib/hooks/useAppSelector';
 import { useHeader } from './hooks/useHeader';
+import { events, logEvent } from '../../lib/methods/helpers/log';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -32,12 +35,14 @@ const RoomsListView = memo(() => {
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
 	const isMasterDetail = false;
+	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
 	const fontScale = PixelRatio.getFontScale();
 	const rowHeight = 75 * fontScale;
 	const rowHeightCondensed = 60 * fontScale;
 	const height = displayMode === DisplayMode.Condensed ? rowHeightCondensed : rowHeight;
 	const { subscriptions, loading } = useSubscriptions();
+	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 
 	// if (supportedVersionsStatus === 'expired') {
 	// 	return (
@@ -61,6 +66,20 @@ const RoomsListView = memo(() => {
 		},
 		[]
 	);
+
+	const onPressItem = (item = {} as ISubscription) => {
+		if (!navigation.isFocused()) {
+			return;
+		}
+		if (item.rid === subscribedRoom) {
+			return;
+		}
+
+		logEvent(events.RL_GO_ROOM);
+
+		// this.cancelSearch();
+		goRoom({ item, isMasterDetail });
+	};
 
 	const renderItem = ({ item }: { item: ISubscription }) => {
 		// if (item.separator) {
@@ -86,7 +105,7 @@ const RoomsListView = memo(() => {
 				id={id}
 				username={username}
 				showLastMessage={showLastMessage}
-				// onPress={this.onPressItem}
+				onPress={onPressItem}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
 				// toggleFav={this.toggleFav}
 				// toggleRead={this.toggleRead}
