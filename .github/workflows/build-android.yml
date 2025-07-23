@@ -89,7 +89,7 @@ jobs:
     name: Internal Sharing
     runs-on: ubuntu-latest
     needs: [build-android]
-    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-android.result == 'success')) }}
+    if: ${{ inputs.type == 'experimental' && inputs.trigger == 'pr' }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
