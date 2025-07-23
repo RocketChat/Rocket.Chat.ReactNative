@@ -23,7 +23,7 @@ jobs:
     name: Build
     runs-on: macos-15
     needs: [build-hold]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

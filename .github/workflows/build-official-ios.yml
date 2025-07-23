@@ -23,7 +23,7 @@ jobs:
     name: Build
     runs-on: macos-15
     needs: [build-hold]
-    if: ${{ inputs.type == 'official' }}
+    if: ${{ inputs.type == 'official' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -63,7 +63,7 @@ jobs:
     name: Upload
     runs-on: macos-15
     needs: [upload-hold]
-    if: ${{ inputs.type == 'official' }}
+    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
