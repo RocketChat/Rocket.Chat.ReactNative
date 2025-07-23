@@ -36,7 +36,7 @@ const RoomsListView = memo(() => {
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const showLastMessage = useAppSelector(state => state.settings.Store_Last_Message);
 	const { displayMode, showAvatar } = useAppSelector(state => state.sortPreferences, shallowEqual);
-	const isMasterDetail = false;
+	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation();
 	const { width } = useSafeAreaFrame();
 	const getItemLayout = useGetItemLayout();
@@ -122,7 +122,7 @@ const RoomsListView = memo(() => {
 			keyExtractor={item => `${item.rid}-${searching}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 			renderItem={renderItem}
-			ListHeaderComponent={() => <ListHeader searching={searching} />}
+			ListHeaderComponent={ListHeader}
 			getItemLayout={getItemLayout}
 			removeClippedSubviews={isIOS}
 			keyboardShouldPersistTaps='always'

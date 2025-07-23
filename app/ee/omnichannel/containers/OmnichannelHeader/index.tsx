@@ -16,11 +16,7 @@ import { getUserSelector } from '../../../../selectors/login';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
 import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
-interface IOmnichannelStatus {
-	searching: boolean;
-}
-
-const OmnichannelStatus = memo(({ searching }: IOmnichannelStatus) => {
+const OmnichannelStatus = memo(() => {
 	const { colors } = useTheme();
 	const { roles, statusLivechat } = useAppSelector(state => getUserSelector(state));
 	const [status, setStatus] = useState(isOmnichannelStatusAvailable(statusLivechat));
@@ -33,7 +29,7 @@ const OmnichannelStatus = memo(({ searching }: IOmnichannelStatus) => {
 		setStatus(isOmnichannelStatusAvailable(statusLivechat));
 	}, [statusLivechat]);
 
-	if (searching || !(isOmnichannelModuleAvailable() && roles?.includes('livechat-agent'))) {
+	if (!(isOmnichannelModuleAvailable() && roles?.includes('livechat-agent'))) {
 		return null;
 	}
 

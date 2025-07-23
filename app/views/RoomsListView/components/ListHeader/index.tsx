@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { useTheme } from '../../../../theme';
@@ -7,15 +7,13 @@ import OmnichannelStatus from '../../../../ee/omnichannel/containers/Omnichannel
 import { E2E_BANNER_TYPE, themes } from '../../../../lib/constants';
 import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
 import { events, logEvent } from '../../../../lib/methods/helpers/log';
+import { RoomsContext } from '../../RoomsSearchProvider';
 
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
-interface IRoomListHeader {
-	searching: boolean;
-}
-
-const ListHeader = React.memo(({ searching }: IRoomListHeader) => {
+const ListHeader = React.memo(() => {
 	const { theme } = useTheme();
+	const { searching } = useContext(RoomsContext);
 	const encryptionBanner = useAppSelector(state => state.encryption.banner);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation<any>();
@@ -56,8 +54,7 @@ const ListHeader = React.memo(({ searching }: IRoomListHeader) => {
 					<List.Separator />
 				</>
 			) : null}
-			{/* TODO: searching as context */}
-			<OmnichannelStatus searching={searching} />
+			<OmnichannelStatus />
 		</>
 	);
 });
