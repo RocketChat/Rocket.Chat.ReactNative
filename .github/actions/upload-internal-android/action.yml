@@ -17,7 +17,7 @@ inputs:
     description: 'Trigger for build'
     required: false
     default: pr
-    
+
 runs:
   using: "composite"
   steps:
