@@ -23,6 +23,12 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Set up Xcode
+      if: ${{ inputs.os == 'ios' }}
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.2'
+
     - name: Set up Ruby and Bundler
       uses: ruby/setup-ruby@v1
       with:
