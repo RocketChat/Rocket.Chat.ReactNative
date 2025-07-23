@@ -15,7 +15,7 @@ jobs:
   build-hold:
     name: Hold
     runs-on: ubuntu-latest
-    if: ${{ inputs.type != 'develop' }}
+    if: ${{ inputs.trigger != 'develop' }}
     environment: experimental_android_build
     steps:
       - run: echo "Waiting for manual approval..."
