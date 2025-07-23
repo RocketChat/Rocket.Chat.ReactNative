@@ -74,10 +74,12 @@ runs:
       shell: bash
 
     - name: Compute VERSIONCODE (iOS)
+      id: compute-versioncode-ios
       if: ${{ inputs.os == 'ios' }}
       shell: bash
       run: |
-        bundle exec fastlane ios get_testflight_version
+        VERSIONCODE=$(bundle exec fastlane ios get_testflight_version | tail -n1)
+        echo "LATEST_VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
       working-directory: ios
       env:
         MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
@@ -88,22 +90,21 @@ runs:
         FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
 
     - name: Compute VERSIONCODE (Android)
+      id: compute-versioncode-android
       if: ${{ inputs.os == 'android' }}
       shell: bash
       run: |
-        bundle exec fastlane android version_code
+        VERSIONCODE=$(bundle exec fastlane android version_code | tail -n1)
+        echo "LATEST_VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
       working-directory: android
 
     - name: Compute VERSIONCODE
       id: compute
       shell: bash
       env:
-        GITHUB_RUN_NUMBER: ${{ github.run_number }}
+        LATEST_VERSIONCODE: ${{ steps.compute-versioncode-ios.outputs.LATEST_VERSIONCODE }} || ${{ steps.compute-versioncode-android.outputs.LATEST_VERSIONCODE }}
       run: |
-        # This offset is from CircleCI after we migrated to Github Actions in order to have sequential builds
-        
-        OFFSET=92000
-        VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
+        VERSIONCODE=$((LATEST_VERSIONCODE + 1))
         echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
 
         echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
