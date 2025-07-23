@@ -23,6 +23,7 @@ import { SectionHeader } from './components/SectionHeader';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useRefresh } from './hooks/useRefresh';
 import { RoomsProvider, RoomsContext } from './RoomsSearchProvider';
+import { IRoomItem } from './definitions';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -67,7 +68,7 @@ const RoomsListView = memo(() => {
 		[]
 	);
 
-	const onPressItem = (item = {} as ISubscription) => {
+	const onPressItem = (item = {} as IRoomItem) => {
 		if (!navigation.isFocused()) {
 			return;
 		}
@@ -80,13 +81,14 @@ const RoomsListView = memo(() => {
 		goRoom({ item, isMasterDetail });
 	};
 
-	const renderItem = ({ item }: { item: ISubscription }) => {
+	const renderItem = ({ item }: { item: IRoomItem }) => {
 		if (item.separator) {
 			return <SectionHeader header={item.rid} />;
 		}
 
 		const id = item.search && item.t === 'd' ? item._id : getUidDirectMessage(item);
-		const swipeEnabled = false; // this.isSwipeEnabled(item);
+		// TODO: move to RoomItem
+		const swipeEnabled = !(item?.search || item?.joinCodeRequired || item?.outside);
 
 		return (
 			<RoomItem
@@ -96,9 +98,6 @@ const RoomsListView = memo(() => {
 				showLastMessage={showLastMessage}
 				onPress={onPressItem}
 				width={isMasterDetail ? MAX_SIDEBAR_WIDTH : width}
-				// toggleFav={this.toggleFav}
-				// toggleRead={this.toggleRead}
-				// hideChannel={this.hideChannel}
 				useRealName={useRealName}
 				getRoomTitle={getRoomTitle}
 				getRoomAvatar={getRoomAvatar}
