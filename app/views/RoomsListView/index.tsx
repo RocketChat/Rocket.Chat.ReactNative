@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef } from 'react';
+import React, { memo, useContext, useEffect, useRef } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -22,14 +22,14 @@ import { goRoom } from '../../lib/methods/helpers/goRoom';
 import { SectionHeader } from './components/SectionHeader';
 import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useRefresh } from './hooks/useRefresh';
+import { RoomsProvider, RoomsContext } from './RoomsSearchProvider';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(() => {
 	console.count(`RoomsListView.render calls`);
 	useHeader();
-	const searching = false;
-	const search = [];
+	const { searching, searchResults, stopSearch } = useContext(RoomsContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
@@ -76,8 +76,7 @@ const RoomsListView = memo(() => {
 		}
 
 		logEvent(events.RL_GO_ROOM);
-
-		// this.cancelSearch();
+		stopSearch();
 		goRoom({ item, isMasterDetail });
 	};
 
@@ -124,8 +123,8 @@ const RoomsListView = memo(() => {
 		<Container>
 			<FlatList
 				ref={scrollRef}
-				data={searching ? search : subscriptions}
-				extraData={searching ? search : subscriptions}
+				data={searching ? searchResults : subscriptions}
+				extraData={searching ? searchResults : subscriptions}
 				keyExtractor={item => `${item.rid}-${searching}`}
 				style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 				renderItem={renderItem}
@@ -143,4 +142,10 @@ const RoomsListView = memo(() => {
 	);
 });
 
-export default RoomsListView;
+const RoomsListViewWithProvider = memo(() => (
+	<RoomsProvider>
+		<RoomsListView />
+	</RoomsProvider>
+));
+
+export default RoomsListViewWithProvider;

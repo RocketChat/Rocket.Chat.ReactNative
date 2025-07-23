@@ -13,7 +13,7 @@ export const useRefresh = ({ searching }: { searching: boolean }) => {
 			return;
 		}
 		dispatch(roomsRequest({ allData: true }));
-	}, [searching]);
+	}, [searching, dispatch]);
 
 	return {
 		refreshing,

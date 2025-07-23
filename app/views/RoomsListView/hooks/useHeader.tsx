@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect } from 'react';
+import { useCallback, useContext, useLayoutEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { useAppSelector, usePermissions } from '../../../lib/hooks';
@@ -8,22 +8,10 @@ import RoomsListHeaderView from '../components/Header';
 import { useTheme } from '../../../theme';
 import i18n from '../../../i18n';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { RoomsContext } from '../RoomsSearchProvider';
 
 export const useHeader = () => {
-	// const { searching, canCreateRoom } = this.state;
-	// // const { navigation, isMasterDetail, issuesWithNotifications, supportedVersionsStatus, theme, user } = this.props;
-
-	// if (searching) {
-	// 	return {
-	// 		headerLeft: () => (
-	// 			<HeaderButton.Container style={{ marginLeft: 1 }} left>
-	// 				<HeaderButton.Item iconName='close' onPress={this.cancelSearch} />
-	// 			</HeaderButton.Container>
-	// 		),
-	// 		headerTitle: () => <RoomsListHeaderView />,
-	// 		headerRight: () => null
-	// 	};
-	// }
+	const { searching, startSearch, stopSearch } = useContext(RoomsContext);
 
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
@@ -89,6 +77,21 @@ export const useHeader = () => {
 
 	useLayoutEffect(() => {
 		console.count(`useHeader.useLayoutEffect calls`);
+
+		if (searching) {
+			const searchOptions = {
+				headerLeft: () => (
+					<HeaderButton.Container style={{ marginLeft: 1 }} left>
+						<HeaderButton.Item iconName='close' onPress={stopSearch} />
+					</HeaderButton.Container>
+				),
+				headerTitle: () => <RoomsListHeaderView />,
+				headerRight: () => null
+			};
+			navigation.setOptions(searchOptions);
+			return;
+		}
+
 		const options = {
 			headerLeft: () => (
 				<HeaderButton.Drawer
@@ -123,13 +126,13 @@ export const useHeader = () => {
 							disabled={disabled}
 						/>
 					) : null}
-					{/* <HeaderButton.Item
+					<HeaderButton.Item
 						iconName='search'
 						accessibilityLabel={i18n.t('Search')}
-						onPress={this.initSearching}
+						onPress={startSearch}
 						testID='rooms-list-view-search'
 						disabled={disabled}
-					/> */}
+					/>
 					<HeaderButton.Item
 						iconName='directory'
 						accessibilityLabel={i18n.t('Directory')}
@@ -157,7 +160,10 @@ export const useHeader = () => {
 		goDirectory,
 		navigateToPushTroubleshootView,
 		getBadge,
-		goToNewMessage
+		goToNewMessage,
+		searching,
+		startSearch,
+		stopSearch
 	]);
 
 	return null;
