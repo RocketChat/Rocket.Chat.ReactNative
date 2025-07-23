@@ -59,10 +59,10 @@ runs:
         if [[ ${{ inputs.trigger }} == "pr" ]]; then
           bundle exec fastlane android beta official:${{ inputs.type == 'official' }}
         fi
-        if [[ ${{ inputs.trigger }} == "push" ]] && [[ ${{ inputs.type }} == 'experimental' ]]; then
+        if [[ ${{ inputs.trigger }} == "develop" ]] && [[ ${{ inputs.type }} == 'experimental' ]]; then
           bundle exec fastlane android experimental_production
         fi
-        if [[ ${{ inputs.trigger }} == "push" ]] && [[ ${{ inputs.type }} == 'official' ]]; then
+        if [[ ${{ inputs.trigger }} == "develop" ]] && [[ ${{ inputs.type }} == 'official' ]]; then
           bundle exec fastlane android official_open_testing
         fi
           

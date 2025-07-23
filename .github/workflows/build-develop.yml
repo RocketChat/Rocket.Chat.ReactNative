@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - 'develop'
+      - 'chore.gh-build-patch'
 
 jobs:
   run-eslint-and-test:
@@ -22,7 +22,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
-      trigger: push
+      trigger: develop
 
   android-build-official-store:
     name: Build Android Official
@@ -32,7 +32,7 @@ jobs:
     secrets: inherit
     with:
       type: official
-      trigger: push
+      trigger: develop
 
   ios-build-experimental-store:
     name: Build iOS Experimental
@@ -42,7 +42,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
-      trigger: push
+      trigger: develop
       
   ios-build-official-store:
     name: Build iOS Official
@@ -52,4 +52,4 @@ jobs:
     secrets: inherit
     with:
       type: official
-      trigger: push
+      trigger: develop
