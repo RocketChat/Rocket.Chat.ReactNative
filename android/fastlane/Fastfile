@@ -16,31 +16,55 @@
 default_platform(:android)
 
 platform :android do
+  def with_retries(times: 3, sleep_time: 10)
+    tries = 0
+    begin
+      yield
+    rescue => e
+      tries += 1
+      if tries < times
+        UI.error("Retrying due to error: #{e}")
+        sleep(sleep_time)
+        retry
+      else
+        raise
+      end
+    end
+  end
+
   desc 'Get the highest version code from all tracks'
   lane :version_code do |options|
-    production_versions = google_play_track_version_codes(
-      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
-      json_key: 'service_account.json',
-      track: 'production'
-    )
+    production_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'production'
+      )
+    end
 
-    beta_versions = google_play_track_version_codes(
-      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
-      json_key: 'service_account.json',
-      track: 'beta'
-    )
+    beta_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'beta'
+      )
+    end
 
-    alpha_versions = google_play_track_version_codes(
-      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
-      json_key: 'service_account.json',
-      track: 'alpha'
-    )
+    alpha_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'alpha'
+      )
+    end
 
-    internal_versions = google_play_track_version_codes(
-      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
-      json_key: 'service_account.json',
-      track: 'internal'
-    )
+    internal_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'internal'
+      )
+    end
 
     all_versions = production_versions + beta_versions + alpha_versions + internal_versions
     highest_version = all_versions.max
@@ -50,7 +74,6 @@ platform :android do
     UI.success("Highest + 1: #{highest_version + 1}")
 
     next_version = highest_version + 1
-
     puts next_version
   end
 
