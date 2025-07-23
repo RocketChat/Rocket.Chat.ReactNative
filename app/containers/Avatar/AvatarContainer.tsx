@@ -1,11 +1,11 @@
 import React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 
-import { IApplicationState } from '../../definitions';
 import { getUserSelector } from '../../selectors/login';
 import Avatar from './Avatar';
 import { IAvatar } from './interfaces';
 import { useAvatarETag } from './useAvatarETag';
+import { useAppSelector } from '../../lib/hooks';
 
 const AvatarContainer = ({
 	style,
@@ -22,10 +22,10 @@ const AvatarContainer = ({
 	rid,
 	accessibilityLabel
 }: IAvatar): React.ReactElement => {
-	const server = useSelector((state: IApplicationState) => state.server.server);
-	const serverVersion = useSelector((state: IApplicationState) => state.server.version);
-	const { id, token, username } = useSelector(
-		(state: IApplicationState) => ({
+	const server = useAppSelector(state => state.server.server);
+	const serverVersion = useAppSelector(state => state.server.version);
+	const { id, token, username } = useAppSelector(
+		state => ({
 			id: getUserSelector(state).id,
 			token: getUserSelector(state).token,
 			username: getUserSelector(state).username
@@ -33,16 +33,16 @@ const AvatarContainer = ({
 		shallowEqual
 	);
 
-	const { avatarExternalProviderUrl, roomAvatarExternalProviderUrl, cdnPrefix } = useSelector(
-		(state: IApplicationState) => ({
+	const { avatarExternalProviderUrl, roomAvatarExternalProviderUrl, cdnPrefix } = useAppSelector(
+		state => ({
 			avatarExternalProviderUrl: state.settings.Accounts_AvatarExternalProviderUrl as string,
 			roomAvatarExternalProviderUrl: state.settings.Accounts_RoomAvatarExternalProviderUrl as string,
 			cdnPrefix: state.settings.CDN_PREFIX as string
 		}),
 		shallowEqual
 	);
-	const blockUnauthenticatedAccess = useSelector(
-		(state: IApplicationState) => state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
+	const blockUnauthenticatedAccess = useAppSelector(
+		state => state.settings.Accounts_AvatarBlockUnauthenticatedAccess ?? true
 	) as boolean;
 
 	const { avatarETag } = useAvatarETag({ username, text, type, rid, id });
