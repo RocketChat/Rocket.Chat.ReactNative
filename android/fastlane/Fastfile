@@ -17,7 +17,7 @@ default_platform(:android)
 
 platform :android do
   desc 'Get the highest version code from all tracks'
-  lane :version_code |options|
+  lane :version_code do |options|
     production_versions = google_play_track_version_codes(
       package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
       json_key: 'fastlane/play_store.json',
