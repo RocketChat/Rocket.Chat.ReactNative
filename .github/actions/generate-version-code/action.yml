@@ -14,6 +14,24 @@ inputs:
   APP_STORE_CONNECT_API_KEY_BASE64:
     type: string
     required: true
+  MATCH_KEYCHAIN_NAME:
+    type: string
+    required: false
+  MATCH_KEYCHAIN_PASSWORD:
+    type: string
+    required: false
+  MATCH_PASSWORD:
+    type: string
+    required: false
+  APP_STORE_CONNECT_API_KEY_ID:
+    type: string
+    required: false
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+    type: string
+    required: false
+  FASTLANE_REPO_PAT:
+    type: string
+    required: false
 
 outputs:
   VERSIONCODE:
@@ -61,6 +79,13 @@ runs:
       run: |
         bundle exec fastlane ios get_testflight_version
       working-directory: ios
+      env:
+        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
+        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
+        MATCH_PASSWORD: ${{ inputs.MATCH_PASSWORD }}
+        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
 
     - name: Compute VERSIONCODE (Android)
       if: ${{ inputs.os == 'android' }}
