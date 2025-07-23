@@ -35,6 +35,10 @@ jobs:
       - name: Generate Version Code
         id: version
         uses: ./.github/actions/generate-version-code
+        with:
+          official: false
+          os: ios
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
 
       - name: Build iOS
         uses: ./.github/actions/build-ios

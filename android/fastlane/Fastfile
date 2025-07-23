@@ -16,6 +16,44 @@
 default_platform(:android)
 
 platform :android do
+  desc 'Get the highest version code from all tracks'
+  lane :version_code |options|
+    production_versions = google_play_track_version_codes(
+      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'fastlane/play_store.json',
+      track: 'production'
+    )
+
+    beta_versions = google_play_track_version_codes(
+      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'fastlane/play_store.json',
+      track: 'beta'
+    )
+
+    alpha_versions = google_play_track_version_codes(
+      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'fastlane/play_store.json',
+      track: 'alpha'
+    )
+
+    internal_versions = google_play_track_version_codes(
+      package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+      json_key: 'fastlane/play_store.json',
+      track: 'internal'
+    )
+
+    all_versions = production_versions + beta_versions + alpha_versions + internal_versions
+    highest_version = all_versions.max
+
+    UI.message("All: #{all_versions}")
+    UI.success("Highest: #{highest_version}")
+    UI.success("Highest + 1: #{highest_version + 1}")
+
+    next_version = highest_version + 1
+
+    puts next_version
+  end
+
   desc "Upload App to Play Store Internal (Circle CI)"
   lane :beta_circle_ci do |options|
     if options[:official]

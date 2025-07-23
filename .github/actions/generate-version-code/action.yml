@@ -1,6 +1,20 @@
 name: Generate Version Code
 description: Generates version code from GitHub run number
 
+inputs:
+  official:
+    type: boolean
+    required: true
+  os:
+    type: string
+    required: true
+  FASTLANE_GOOGLE_SERVICE_ACCOUNT:
+    type: string
+    required: true
+  APP_STORE_CONNECT_API_KEY_BASE64:
+    type: string
+    required: true
+
 outputs:
   VERSIONCODE:
     description: "Generated version code"
@@ -9,6 +23,46 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Set up Ruby and Bundler
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Install Fastlane
+      if: ${{ inputs.os == 'android' }}
+      working-directory: android
+      run: |
+        bundle install --path gems
+      shell: bash
+
+    - name: Store the Google service account key
+      if: ${{ inputs.os == 'android' }}
+      working-directory: android
+      run: |
+        echo "${{ inputs.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}" | base64 --decode > service_account.json
+      shell: bash
+
+    - name: Decode p8
+      if: ${{ inputs.os == 'ios' }}
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+
+    - name: Compute VERSIONCODE (iOS)
+      if: ${{ inputs.os == 'ios' }}
+      shell: bash
+      run: |
+        fastlane ios get_testflight_version
+      working-directory: ios
+
+    - name: Compute VERSIONCODE (Android)
+      if: ${{ inputs.os == 'android' }}
+      shell: bash
+      run: |
+        fastlane android version_code
+      working-directory: android
+
     - name: Compute VERSIONCODE
       id: compute
       shell: bash
