@@ -1,6 +1,7 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { shallowEqual } from 'react-redux';
 
 import * as List from '../../../../containers/List';
 import styles from './styles';
@@ -18,16 +19,11 @@ import { getInquiryQueueSelector } from '../../selectors/inquiry';
 
 const OmnichannelStatus = memo(() => {
 	const { colors } = useTheme();
-	const { roles, statusLivechat } = useAppSelector(state => getUserSelector(state));
-	const [status, setStatus] = useState(isOmnichannelStatusAvailable(statusLivechat));
+	const { roles, statusLivechat } = useAppSelector(state => getUserSelector(state), shallowEqual);
 	const inquiryEnabled = useAppSelector(state => state.inquiry.enabled);
 	const queueSize = useAppSelector(state => getInquiryQueueSelector(state).length);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation<any>();
-
-	useEffect(() => {
-		setStatus(isOmnichannelStatusAvailable(statusLivechat));
-	}, [statusLivechat]);
 
 	if (!(isOmnichannelModuleAvailable() && roles?.includes('livechat-agent'))) {
 		return null;
@@ -48,10 +44,9 @@ const OmnichannelStatus = memo(() => {
 			});
 		} else {
 			try {
-				setStatus(v => !v);
 				await changeLivechatStatus();
 			} catch {
-				setStatus(v => !v);
+				// Do nothing
 			}
 		}
 	};
@@ -76,15 +71,15 @@ const OmnichannelStatus = memo(() => {
 				title='Omnichannel'
 				color={colors.fontDefault}
 				onPress={toggleLivechat}
-				additionalAcessibilityLabel={status}
+				additionalAcessibilityLabel={statusLivechat}
 				right={() => (
 					<View style={styles.omnichannelRightContainer}>
-						<Switch value={status} onValueChange={toggleLivechat} />
+						<Switch value={isOmnichannelStatusAvailable(statusLivechat)} onValueChange={toggleLivechat} />
 					</View>
 				)}
 			/>
 			<List.Separator />
-			{status ? <OmnichannelQueue queueSize={queueSize} onPress={goQueue} /> : null}
+			{isOmnichannelStatusAvailable(statusLivechat) ? <OmnichannelQueue queueSize={queueSize} onPress={goQueue} /> : null}
 		</>
 	);
 });

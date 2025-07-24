@@ -11,7 +11,7 @@ const handleRequest = function* handleRequest() {
 		const routingConfig = yield Services.getRoutingConfig();
 		const user = yield select(state => state.login.user);
 		// if routingConfig showQueue is enabled and omnichannel is enabled
-		const showQueue = routingConfig.showQueue && isOmnichannelStatusAvailable(user);
+		const showQueue = routingConfig.showQueue && isOmnichannelStatusAvailable(user.statusLivechat);
 
 		if (showQueue) {
 			const serverVersion = yield select(state => state.server.version);
