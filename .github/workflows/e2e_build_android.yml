@@ -57,10 +57,7 @@ jobs:
           echo "KEYSTORE_PASSWORD=${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" >> android/gradle.properties
           echo "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> android/gradle.properties
           echo "KEY_PASSWORD=${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" >> android/gradle.properties
-          echo "org.gradle.caching=true" >> android/gradle.properties
-          echo "org.gradle.configuration-cache=true" >> android/gradle.properties
-          echo "org.gradle.parallel=true" >> android/gradle.properties
-
+          
       - name: Build Android Release APK
         working-directory: android
         run: ./gradlew assembleExperimentalRelease
