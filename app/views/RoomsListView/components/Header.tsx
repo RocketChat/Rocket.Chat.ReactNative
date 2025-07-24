@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -83,4 +83,4 @@ const RoomsListHeaderView = ({ search, searchEnabled }: { search: (text: string)
 	);
 };
 
-export default RoomsListHeaderView;
+export default memo(RoomsListHeaderView);
