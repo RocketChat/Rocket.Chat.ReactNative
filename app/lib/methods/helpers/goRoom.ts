@@ -19,16 +19,7 @@ interface IGoRoomItem {
 
 export type TGoRoomItem = IGoRoomItem | TSubscriptionModel | ISubscription | IOmnichannelRoomVisitor;
 
-const navigate = ({
-	item,
-	isMasterDetail,
-	popToRoot,
-	...props
-}: {
-	item: TGoRoomItem;
-	isMasterDetail: boolean;
-	popToRoot: boolean;
-}) => {
+const navigate = ({ item, isMasterDetail, ...props }: { item: TGoRoomItem; isMasterDetail: boolean }) => {
 	const routeParams = {
 		rid: item.rid,
 		name: getRoomTitle(item),
@@ -40,10 +31,14 @@ const navigate = ({
 		...props
 	};
 
+	const currentRoute = Navigation.getCurrentRoute() as any;
+	if (currentRoute?.name === 'RoomView' && currentRoute?.params?.rid === item.rid) {
+		Navigation.setParams(routeParams);
+		return;
+	}
+
+	Navigation.popTo('DrawerNavigator');
 	if (isMasterDetail) {
-		if (popToRoot) {
-			Navigation.navigate('DrawerNavigator');
-		}
 		return Navigation.dispatch((state: any) => {
 			const routesRoomView = state.routes.filter((r: any) => r.name !== 'RoomView');
 			return CommonActions.reset({
@@ -60,10 +55,6 @@ const navigate = ({
 		});
 	}
 
-	if (popToRoot) {
-		Navigation.popToTop();
-		Navigation.back();
-	}
 	return Navigation.dispatch((state: any) => {
 		const routesRoomsListView = state.routes.filter((r: any) => r.name === 'RoomsListView');
 		return CommonActions.reset({
@@ -88,14 +79,12 @@ interface IOmnichannelRoomVisitor extends IOmnichannelRoom {
 export const goRoom = async ({
 	item,
 	isMasterDetail = false,
-	popToRoot = false,
 	...props
 }: {
 	item: TGoRoomItem;
 	isMasterDetail: boolean;
 	jumpToMessageId?: string;
 	usedCannedResponse?: string;
-	popToRoot?: boolean;
 }): Promise<void> => {
 	if (!('id' in item) && item.t === SubscriptionType.DIRECT && item?.search) {
 		// if user is using the search we need first to join/create room
@@ -110,7 +99,6 @@ export const goRoom = async ({
 						t: SubscriptionType.DIRECT
 					},
 					isMasterDetail,
-					popToRoot,
 					...props
 				});
 			}
@@ -132,7 +120,7 @@ export const goRoom = async ({
 		}
 	}
 
-	return navigate({ item: _item, isMasterDetail, popToRoot, ...props });
+	return navigate({ item: _item, isMasterDetail, ...props });
 };
 
 export const navigateToRoom = navigate;

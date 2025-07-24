@@ -1,0 +1,25 @@
+name: Generate Version Code
+description: Generates version code from GitHub run number
+
+outputs:
+  VERSIONCODE:
+    description: "Generated version code"
+    value: ${{ steps.compute.outputs.VERSIONCODE }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Compute VERSIONCODE
+      id: compute
+      shell: bash
+      env:
+        GITHUB_RUN_NUMBER: ${{ github.run_number }}
+      run: |
+        # This offset is from CircleCI after we migrated to Github Actions in order to have sequential builds
+        
+        OFFSET=87750
+        VERSIONCODE=$((OFFSET + GITHUB_RUN_NUMBER))
+        echo "VERSIONCODE=$VERSIONCODE" >> $GITHUB_OUTPUT
+
+        echo "### 📦 Version Code Generated" >> $GITHUB_STEP_SUMMARY
+        echo "\`Version Code: $VERSIONCODE\`" >> $GITHUB_STEP_SUMMARY

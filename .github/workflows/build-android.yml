@@ -1,0 +1,94 @@
+name: Build Android And Upload
+
+on:
+  workflow_call:
+    inputs:
+      type:
+        type: string
+        required: true
+
+jobs:
+  build-hold:
+    name: Hold
+    runs-on: ubuntu-latest
+    environment: experimental_android_build
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  build-android:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [build-hold]
+    if: ${{ inputs.type == 'experimental' }}
+    outputs:
+      VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+
+      - name: Generate Version Code
+        id: version
+        uses: ./.github/actions/generate-version-code
+
+      - name: Build Android
+        uses: ./.github/actions/build-android
+        with:
+          type: 'experimental'
+          BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY }}
+          KEYSTORE_EXPERIMENTAL_BASE64: ${{ secrets.KEYSTORE_EXPERIMENTAL_BASE64 }}
+          KEYSTORE_EXPERIMENTAL: ${{ secrets.KEYSTORE_EXPERIMENTAL }}
+          KEYSTORE_EXPERIMENTAL_PASSWORD: ${{ secrets.KEYSTORE_EXPERIMENTAL_PASSWORD }}
+          KEYSTORE_EXPERIMENTAL_ALIAS: ${{ secrets.KEYSTORE_EXPERIMENTAL_ALIAS }}
+          GOOGLE_SERVICES_ANDROID: ${{ secrets.GOOGLE_SERVICES_ANDROID }}
+          VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
+
+  upload-hold:
+    name: Upload Hold
+    runs-on: ubuntu-latest
+    needs: [build-android]
+    environment: upload_experimental_android
+    steps:
+      - run: echo "Waiting for manual approval..."
+
+  upload-android:
+    name: Upload
+    runs-on: ubuntu-latest
+    needs: [upload-hold]
+    if: ${{ inputs.type == 'experimental' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+      
+      - name: Upload Android
+        uses: ./.github/actions/upload-android
+        with:
+          type: experimental
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
+
+  upload-internal:
+    name: Internal Sharing
+    runs-on: ubuntu-latest
+    needs: [build-android]
+    if: ${{ inputs.type == 'experimental' }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Checkout and Setup Node
+        uses: ./.github/actions/setup-node
+      
+      - name: Upload Internal Sharing
+        uses: ./.github/actions/upload-internal-android
+        with:
+          type: experimental
+          FASTLANE_GOOGLE_SERVICE_ACCOUNT: ${{ secrets.FASTLANE_GOOGLE_SERVICE_ACCOUNT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSIONCODE: ${{ needs.build-android.outputs.VERSIONCODE }}
