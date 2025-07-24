@@ -5,11 +5,13 @@ import { useSearch } from './hooks/useSearch';
 
 export const RoomsContext = createContext<{
 	searching: boolean;
+	searchEnabled: boolean;
 	searchResults: IRoomItem[];
 	startSearch: () => void;
 	stopSearch: () => void;
 }>({
 	searching: false,
+	searchEnabled: false,
 	searchResults: [],
 	startSearch: () => {},
 	stopSearch: () => {}
@@ -20,7 +22,11 @@ interface RoomsProviderProps {
 }
 
 export const RoomsProvider = memo(({ children }: RoomsProviderProps) => {
-	const { searching, searchResults, startSearch, stopSearch } = useSearch();
+	const { searching, searchEnabled, searchResults, startSearch, stopSearch } = useSearch();
 
-	return <RoomsContext.Provider value={{ searching, searchResults, startSearch, stopSearch }}>{children}</RoomsContext.Provider>;
+	return (
+		<RoomsContext.Provider value={{ searching, searchEnabled, searchResults, startSearch, stopSearch }}>
+			{children}
+		</RoomsContext.Provider>
+	);
 });

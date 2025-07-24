@@ -11,7 +11,7 @@ import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { RoomsContext } from '../RoomsSearchProvider';
 
 export const useHeader = () => {
-	const { searching, startSearch, stopSearch } = useContext(RoomsContext);
+	const { searchEnabled, startSearch, stopSearch } = useContext(RoomsContext);
 
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
@@ -78,7 +78,7 @@ export const useHeader = () => {
 	useLayoutEffect(() => {
 		console.count(`useHeader.useLayoutEffect calls`);
 
-		if (searching) {
+		if (searchEnabled) {
 			const searchOptions = {
 				headerLeft: () => (
 					<HeaderButton.Container style={{ marginLeft: 1 }} left>
@@ -157,11 +157,11 @@ export const useHeader = () => {
 		isMasterDetail,
 		colors,
 		canCreateRoom,
+		searchEnabled,
 		goDirectory,
 		navigateToPushTroubleshootView,
 		getBadge,
 		goToNewMessage,
-		searching,
 		startSearch,
 		stopSearch
 	]);

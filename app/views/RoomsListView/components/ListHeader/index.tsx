@@ -13,12 +13,12 @@ export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
 const ListHeader = React.memo(() => {
 	const { theme } = useTheme();
-	const { searching } = useContext(RoomsContext);
+	const { searchEnabled } = useContext(RoomsContext);
 	const encryptionBanner = useAppSelector(state => state.encryption.banner);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 	const navigation = useNavigation<any>();
 
-	if (searching) {
+	if (searchEnabled) {
 		return null;
 	}
 

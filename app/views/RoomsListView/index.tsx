@@ -32,7 +32,7 @@ const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 const RoomsListView = memo(() => {
 	console.count(`RoomsListView.render calls`);
 	useHeader();
-	const { searching, searchResults, stopSearch } = useContext(RoomsContext);
+	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
@@ -99,7 +99,7 @@ const RoomsListView = memo(() => {
 		);
 	};
 
-	if (loading) {
+	if (loading || searching) {
 		return <ActivityIndicator />;
 	}
 
@@ -114,9 +114,9 @@ const RoomsListView = memo(() => {
 	return (
 		<FlatList
 			ref={scrollRef}
-			data={searching ? searchResults : subscriptions}
-			extraData={searching ? searchResults : subscriptions}
-			keyExtractor={item => `${item.rid}-${searching}`}
+			data={searchEnabled ? searchResults : subscriptions}
+			extraData={searchEnabled ? searchResults : subscriptions}
+			keyExtractor={item => `${item.rid}-${searchEnabled}`}
 			style={[styles.list, { backgroundColor: colors.surfaceRoom }]}
 			renderItem={renderItem}
 			ListHeaderComponent={ListHeader}
