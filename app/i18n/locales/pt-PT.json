@@ -313,6 +313,7 @@
   "No_Reactions": "Nenhuma reação",
   "No_Read_Receipts": "Sem recibos de leitura",
   "No_results_found": "Nenhum resultado encontrado",
+  "No_rooms_found": "Nenhuma sala encontrada",
   "No_starred_messages": "Nenhuma mensagem marcada com estrela",
   "Not_RC_Server": "Contacte o administrador do seu espaço de trabalho ou procure na sua caixa de entrada um convite para o espaço de trabalho Rocket.Chat.",
   "Nothing": "Nada",
@@ -477,6 +478,5 @@
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
-  "Your_Password_Must_Have": "Sua senha deve ter:",
-  "No_rooms_found": "Nenhuma sala encontrada"
+  "Your_Password_Must_Have": "Sua senha deve ter:"
 }

@@ -492,6 +492,7 @@
   "No_Reactions": "Nincs reakció",
   "No_Read_Receipts": "Nincsenek olvasási bizonylatok",
   "No_results_found": "Nincsenek találatok",
+  "No_rooms_found": "Nem találhatók szobák",
   "No_starred_messages": "Nincsenek csillagos üzenetek",
   "No_threads": "Nincsenek szálak",
   "No_threads_following": "Nem követ egyetlen szálat sem",
@@ -863,6 +864,5 @@
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
   "Your_Password_Must_Have": "A jelszavának rendelkeznie kell:",
-  "Your_workspace": "Az Ön munkaterülete",
-  "No_rooms_found": "Nem találhatók szobák"
+  "Your_workspace": "Az Ön munkaterülete"
 }

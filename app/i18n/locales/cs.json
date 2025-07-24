@@ -526,6 +526,7 @@
   "No_Reactions": "Žádné reakce",
   "No_Read_Receipts": "Žádné potvrzení o přečtení",
   "No_results_found": "Nebyly nalezeny žádné výsledky",
+  "No_rooms_found": "Žádné místnosti nenalezeny",
   "No_starred_messages": "Žádné zprávy označené hvězdičkou",
   "No_threads": "Neexistují žádná vlákna",
   "No_threads_following": "Nesledujete žádná vlákna",
@@ -935,6 +936,5 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor",
-  "No_rooms_found": "Žádné místnosti nenalezeny"
+  "Your_workspace": "Váš pracovní prostor"
 }

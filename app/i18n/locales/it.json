@@ -366,6 +366,7 @@
   "No_Reactions": "Nessuna reazione",
   "No_Read_Receipts": "Nessuna conferma di lettura",
   "No_results_found": "Nessun risultato",
+  "No_rooms_found": "Nessuna stanza trovata",
   "No_starred_messages": "Nessun messaggio preferito",
   "No_threads": "Non ci sono thread",
   "No_threads_following": "Non stai seguendo alcun thread",
@@ -646,6 +647,5 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace",
-  "No_rooms_found": "Nessuna stanza trovata"
+  "Your_workspace": "Il tuo workspace"
 }

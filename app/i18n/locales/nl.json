@@ -422,6 +422,7 @@
   "No_Reactions": "Geen reacties",
   "No_Read_Receipts": "Geen leesbevestigingen",
   "No_results_found": "Geen resultaten gevonden",
+  "No_rooms_found": "Geen kamers gevonden",
   "No_starred_messages": "Geen berichten met ster gemarkeerd",
   "No_threads": "Er zijn geen draden",
   "No_threads_following": "Je volgt geen draden",
@@ -743,6 +744,5 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte",
-  "No_rooms_found": "Geen kamers gevonden"
+  "Your_workspace": "Jouw werkruimte"
 }

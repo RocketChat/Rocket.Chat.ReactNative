@@ -313,6 +313,7 @@
   "No_Reactions": "リアクションなし",
   "No_Read_Receipts": "未読通知はありません",
   "No_results_found": "結果なし",
+  "No_rooms_found": "ルームが見つかりません",
   "No_starred_messages": "お気に入りされたメッセージはありません",
   "Not_RC_Server": "ワークスペース管理者に連絡するか、メールの受信トレイでRocket.Chatワークスペース招待を検索してください。",
   "Nothing": "何もなし",
@@ -516,6 +517,5 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
-  "No_rooms_found": "ルームが見つかりません"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
 }
