@@ -1,0 +1,64 @@
+name: Simulator Test
+
+on:
+  workflow_call:
+
+jobs:
+  install-app:
+    runs-on: macos-15
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Download App
+        uses: actions/download-artifact@v4
+        with:
+          name: ios-simulator-app
+          path: ios-simulator-app
+
+      - name: List Folder
+        run: ls -la
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+          mkdir recording
+
+      - name: List Simulators
+        run: xcrun simctl list devices
+
+      - name: Boot Simulator
+        run: |
+          xcrun simctl boot "iPhone 16 Pro Max"
+          xcrun simctl list devices | grep Booted
+
+      - name: Get Simulator UDID 
+        id: booted-sim
+        run: |
+          UDID=$(xcrun simctl list devices | grep "iPhone 16 Pro Max (" | grep "(Booted)" | grep -oE '[A-F0-9-]{36}' | head -n1)
+          echo "UDID=$UDID"
+          echo "UDID=$UDID" >> $GITHUB_ENV
+
+      - name: Install App
+        run: |
+          xcrun simctl install $UDID "ios-simulator-app"
+
+      - name: Run Tests
+        run: |
+          maestro test .maestro/login.yml --format junit --output maestro-report.xml
+
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Report
+          path: maestro-report.xml
+
+      - name: Upload Recordings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Recordings
+          path: recording/
