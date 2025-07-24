@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-import { useTheme } from '../../../../theme';
-import * as List from '../../../../containers/List';
-import OmnichannelStatus from '../../../../ee/omnichannel/containers/OmnichannelHeader';
-import { E2E_BANNER_TYPE, themes } from '../../../../lib/constants';
-import { useAppSelector } from '../../../../lib/hooks/useAppSelector';
-import { events, logEvent } from '../../../../lib/methods/helpers/log';
-import { RoomsContext } from '../../RoomsSearchProvider';
+import { useTheme } from '../../../theme';
+import * as List from '../../../containers/List';
+import OmnichannelStatus from '../../../ee/omnichannel/containers/OmnichannelHeader';
+import { E2E_BANNER_TYPE, themes } from '../../../lib/constants';
+import { useAppSelector } from '../../../lib/hooks/useAppSelector';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { RoomsContext } from '../RoomsSearchProvider';
 
 export type TEncryptionBanner = 'REQUEST_PASSWORD' | 'SAVE_PASSWORD';
 
@@ -24,7 +24,6 @@ const ListHeader = React.memo(() => {
 
 	const goEncryption = () => {
 		logEvent(events.RL_GO_E2E_SAVE_PASSWORD);
-
 		const isSavePassword = encryptionBanner === E2E_BANNER_TYPE.SAVE_PASSWORD;
 		if (isMasterDetail) {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordView' : 'E2EEnterYourPasswordView';
