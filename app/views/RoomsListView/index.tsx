@@ -31,7 +31,6 @@ import i18n from '../../i18n';
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
-	console.count(`RoomsListView.render calls`);
 	useHeader();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsContext);
 	const { colors } = useTheme();
@@ -49,13 +48,6 @@ const RoomsListView = memo(function RoomsListView() {
 	const changingServer = useAppSelector(state => state.server.changingServer);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
-
-	useEffect(
-		() => () => {
-			console.countReset(`RoomsListView.render calls`);
-		},
-		[]
-	);
 
 	const onPressItem = (item = {} as IRoomItem) => {
 		if (!navigation.isFocused()) {

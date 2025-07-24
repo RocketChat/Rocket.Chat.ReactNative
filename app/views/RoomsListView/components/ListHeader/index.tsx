@@ -31,7 +31,6 @@ const ListHeader = React.memo(() => {
 			navigation.navigate('ModalStackNavigator', { screen });
 		} else {
 			const screen = isSavePassword ? 'E2ESaveYourPasswordStackNavigator' : 'E2EEnterYourPasswordStackNavigator';
-			// @ts-ignore
 			navigation.navigate(screen);
 		}
 	};

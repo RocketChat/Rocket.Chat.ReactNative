@@ -36,7 +36,6 @@ const addRoomsGroup = (data: TSubscriptionModel[], header: string, allData: TSub
 };
 
 export const useSubscriptions = () => {
-	console.count(`${useSubscriptions.name}.render calls`);
 	const useRealName = useAppSelector(state => state.settings.UI_Use_Real_Name);
 	const server = useAppSelector(state => state.server);
 	const subscriptionRef = useRef<Subscription>(null);
@@ -121,7 +120,6 @@ export const useSubscriptions = () => {
 		getSubscriptions();
 
 		return () => {
-			console.countReset(`${useSubscriptions.name}.render calls`);
 			subscriptionRef.current?.unsubscribe();
 		};
 	}, [isGrouping, sortBy, useRealName, showUnread, showFavorites, groupByType, roles, server]);

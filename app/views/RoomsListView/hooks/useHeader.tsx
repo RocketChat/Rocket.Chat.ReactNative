@@ -77,8 +77,6 @@ export const useHeader = () => {
 	}, [isMasterDetail, navigation]);
 
 	useLayoutEffect(() => {
-		console.count(`useHeader.useLayoutEffect calls`);
-
 		if (searchEnabled) {
 			const searchOptions = {
 				headerLeft: () => (
@@ -152,11 +150,6 @@ export const useHeader = () => {
 		if (isTablet) {
 			setOptions(options);
 		}
-
-		return () => {
-			// TODO: Remove this
-			console.countReset(`useHeader.useLayoutEffect calls`);
-		};
 	}, [
 		disabled,
 		issuesWithNotifications,
