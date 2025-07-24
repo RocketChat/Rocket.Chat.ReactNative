@@ -78,7 +78,9 @@ const ServersList = () => {
 	const addServer = () => {
 		logEvent(events.RL_ADD_SERVER);
 		close();
-		navToNewServer(server);
+		setTimeout(() => {
+			navToNewServer(server);
+		}, 300);
 	};
 
 	const select = async (serverParam: string, version: string) => {
