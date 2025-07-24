@@ -491,6 +491,7 @@
   "No_Reactions": "कोई प्रतिक्रिया नहीं",
   "No_Read_Receipts": "कोई पठित मान्यता नहीं",
   "No_results_found": "कोई परिणाम नहीं मिला",
+  "No_rooms_found": "कोई रूम नहीं मिला",
   "No_starred_messages": "कोई स्टार दिए गए संदेश नहीं",
   "No_threads": "कोई थ्रेड नहीं है",
   "No_threads_following": "आप किसी भी थ्रेड का अनुसरण नहीं कर रहे हैं",
@@ -860,6 +861,5 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान",
-  "No_rooms_found": "कोई रूम नहीं मिला"
+  "Your_workspace": "आपका कार्यस्थान"
 }

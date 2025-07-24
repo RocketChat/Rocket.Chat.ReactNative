@@ -491,6 +491,7 @@
   "No_Reactions": "কোনও প্রতিক্রিয়া নেই",
   "No_Read_Receipts": "কোনও পড়া স্বীকৃতি নেই",
   "No_results_found": "কোনও ফলাফল পাওয়া যায়নি",
+  "No_rooms_found": "কোনো রুম পাওয়া যায়নি",
   "No_starred_messages": "কোনও তারকা বার্তা নেই",
   "No_threads": "কোনও থ্রেড নেই",
   "No_threads_following": "আপনি কোনও থ্রেড অনুসরণ করছেন না",
@@ -860,6 +861,5 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস",
-  "No_rooms_found": "কোনো রুম পাওয়া যায়নি"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস"
 }

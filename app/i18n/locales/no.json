@@ -521,6 +521,7 @@
   "No_Reactions": "Ingen reaksjoner",
   "No_Read_Receipts": "Ingen lesekvitteringer",
   "No_results_found": "Ingen resultater funnet",
+  "No_rooms_found": "Ingen rom funnet",
   "No_starred_messages": "Ingen stjernemerkede meldinger",
   "No_threads": "Det er ingen tråder",
   "No_threads_following": "Du følger ingen tråder",
@@ -915,6 +916,5 @@
   "Your_invite_link_will_never_expire": "Invitasjonslenken din vil aldri utløpe.",
   "Your_password_is": "Passordet ditt er",
   "Your_Password_Must_Have": "Passordet ditt må inneholde:",
-  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter",
-  "No_rooms_found": "Ingen rom funnet"
+  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter"
 }

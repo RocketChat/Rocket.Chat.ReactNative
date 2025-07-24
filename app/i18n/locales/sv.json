@@ -461,6 +461,7 @@
   "No_Reactions": "Inga reaktioner",
   "No_Read_Receipts": "Inga läskvitton",
   "No_results_found": "Inga resultat hittades",
+  "No_rooms_found": "Inga rum hittades",
   "No_starred_messages": "Inga stjärnmarkerade meddelanden",
   "No_threads": "Det finns inga trådar",
   "No_threads_following": "Du följer inte några trådar",
@@ -820,6 +821,5 @@
   "Your_invite_link_will_never_expire": "Inbjudningslänken upphör aldrig att gälla.",
   "Your_password_is": "Ditt lösenord är",
   "Your_Password_Must_Have": "Ditt lösenord måste ha:",
-  "Your_workspace": "Din arbetsyta",
-  "No_rooms_found": "Inga rum hittades"
+  "Your_workspace": "Din arbetsyta"
 }

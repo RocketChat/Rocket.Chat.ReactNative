@@ -422,6 +422,7 @@
   "No_Reactions": "Aucune réaction",
   "No_Read_Receipts": "Aucun accusé de lecture",
   "No_results_found": "Aucun résultat trouvé",
+  "No_rooms_found": "Aucune salle trouvée",
   "No_starred_messages": "Aucun message suivi",
   "No_threads": "Il n'y a pas de fils",
   "No_threads_following": "Vous ne suivez aucun fil de discussion",
@@ -743,6 +744,5 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail",
-  "No_rooms_found": "Aucune salle trouvée"
+  "Your_workspace": "Votre espace de travail"
 }

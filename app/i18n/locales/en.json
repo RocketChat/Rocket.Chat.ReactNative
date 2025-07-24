@@ -549,6 +549,7 @@
   "No_Reactions": "No reactions",
   "No_Read_Receipts": "No read receipts",
   "No_results_found": "No results found",
+  "No_rooms_found": "No rooms found",
   "No_starred_messages": "No starred messages",
   "No_threads": "There are no threads",
   "No_threads_following": "You are not following any threads",
@@ -964,6 +965,5 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
-  "No_rooms_found": "No rooms found"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
 }

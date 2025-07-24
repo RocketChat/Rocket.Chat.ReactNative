@@ -490,6 +490,7 @@
   "No_Reactions": "ప్రతిక్రియలేవు",
   "No_Read_Receipts": "చదవడానికి సాక్షాత్కారాలేవు",
   "No_results_found": "ఫలితాలు దొరకలేదు",
+  "No_rooms_found": "గదులు కనుగొనబడలేదు",
   "No_starred_messages": "నకిలీయం చేసిన సందేశాలు లేవు",
   "No_threads": "ఏ థ్రెడ్స్ లేవు",
   "No_threads_following": "మీరు అనుసరిస్తున్న ఎవరూ లేవు",
@@ -859,6 +860,5 @@
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
   "Your_Password_Must_Have": "మీ పాస్‌వర్డ్ తప్పనిసరిగా ఉండాలి:",
-  "Your_workspace": "మీ వర్క్‌స్పేస్",
-  "No_rooms_found": "గదులు కనుగొనబడలేదు"
+  "Your_workspace": "మీ వర్క్‌స్పేస్"
 }
