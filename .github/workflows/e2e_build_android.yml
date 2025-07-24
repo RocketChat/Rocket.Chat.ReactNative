@@ -45,7 +45,7 @@ jobs:
           key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}-${{ hashFiles('android') }}
           restore-keys: |
             build-output-
-        
+
       - name: Decode Keystore
         run: |
           echo "${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
