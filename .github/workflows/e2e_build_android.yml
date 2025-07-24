@@ -24,6 +24,20 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Cache Android SDK
+        uses: actions/cache@v4
+        with:
+          path: |
+            $HOME/Android/Sdk
+          key: android-sdk-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            android-sdk-${{ runner.os }}-
+
+      - name: Install Required Android SDK Packages
+        run: |
+          yes | sdkmanager --licenses
+          sdkmanager "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393"
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -33,20 +47,10 @@ jobs:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
+            ~/.gradle/build-cache-1
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
- 
-      - name: Cache SDK
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ github.workspace }}/.opt/cache/gradle/wrapper
-            ${{ github.workspace }}/.opt/cache/gradle/caches
-            ${{ github.workspace }}/.opt/sdk
-          key: ${{ runner.os }}-android-sdk-${{ hashFiles('**/wrapper/gradle-wrapper.properties', '**/build.gradle') }}
-          restore-keys: |
-            ${{ runner.os }}-android-sdk-
 
       - name: Cache Android build output 
         uses: actions/cache@v4
@@ -73,7 +77,7 @@ jobs:
           
       - name: Build Android Release APK
         working-directory: android
-        run: ./gradlew assembleExperimentalRelease
+        run: ./gradlew assembleExperimentalRelease --build-cache --configuration-cache --parallel --max-workers=2
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
