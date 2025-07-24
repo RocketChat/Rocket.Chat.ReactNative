@@ -1,41 +1,38 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { useAppSelector } from '../../../lib/hooks';
-import { closeSearchHeader, openSearchHeader, setSearch } from '../../../actions/rooms';
-import { search } from '../../../lib/methods';
+import { closeSearchHeader, openSearchHeader } from '../../../actions/rooms';
+import { search as searchLib } from '../../../lib/methods';
 import { IRoomItem } from '../definitions';
+import { useDebounce } from '../../../lib/methods/helpers/debounce';
 
 export const useSearch = () => {
-	const searchText = useAppSelector(state => state.rooms.searchText);
 	const dispatch = useDispatch();
 	const [searchEnabled, setSearchEnabled] = useState(false);
 	const [searching, setSearching] = useState(false);
 	const [searchResults, setSearchResults] = useState<IRoomItem[]>([]);
 
-	useEffect(() => {
-		const handleSearch = async () => {
-			if (!searchEnabled) return;
-
-			setSearching(true);
-			const result = await search({ text: searchText });
-			setSearchResults(result as IRoomItem[]);
-			setSearching(false);
-		};
-		handleSearch();
-	}, [searchText, searchEnabled]);
+	const search = useDebounce(async (text: string) => {
+		console.log('search', text);
+		if (!searchEnabled) return;
+		setSearching(true);
+		const result = await searchLib({ text });
+		setSearchResults(result as IRoomItem[]);
+		setSearching(false);
+	}, 500);
 
 	const startSearch = useCallback(() => {
 		setSearchEnabled(true);
+		setSearching(true);
+		search('');
 		dispatch(openSearchHeader());
-	}, [dispatch]);
+	}, [dispatch, search]);
 
 	const stopSearch = useCallback(() => {
 		setSearchEnabled(false);
 		setSearching(false);
 		setSearchResults([]);
 		dispatch(closeSearchHeader());
-		dispatch(setSearch(''));
 	}, [dispatch]);
 
 	return {
@@ -43,6 +40,7 @@ export const useSearch = () => {
 		searchEnabled,
 		searchResults,
 		startSearch,
-		stopSearch
+		stopSearch,
+		search
 	};
 };

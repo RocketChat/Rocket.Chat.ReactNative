@@ -11,7 +11,7 @@ import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { RoomsContext } from '../RoomsSearchProvider';
 
 export const useHeader = () => {
-	const { searchEnabled, startSearch, stopSearch } = useContext(RoomsContext);
+	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsContext);
 
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
@@ -85,7 +85,7 @@ export const useHeader = () => {
 						<HeaderButton.Item iconName='close' onPress={stopSearch} />
 					</HeaderButton.Container>
 				),
-				headerTitle: () => <RoomsListHeaderView />,
+				headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
 				headerRight: () => null
 			};
 			navigation.setOptions(searchOptions);
@@ -106,7 +106,7 @@ export const useHeader = () => {
 					disabled={disabled}
 				/>
 			),
-			headerTitle: () => <RoomsListHeaderView />,
+			headerTitle: () => <RoomsListHeaderView search={search} searchEnabled={searchEnabled} />,
 			headerRight: () => (
 				<HeaderButton.Container>
 					{issuesWithNotifications ? (

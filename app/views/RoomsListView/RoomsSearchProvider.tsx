@@ -9,12 +9,14 @@ export const RoomsContext = createContext<{
 	searchResults: IRoomItem[];
 	startSearch: () => void;
 	stopSearch: () => void;
+	search: (text: string) => void;
 }>({
 	searching: false,
 	searchEnabled: false,
 	searchResults: [],
 	startSearch: () => {},
-	stopSearch: () => {}
+	stopSearch: () => {},
+	search: () => {}
 });
 
 interface RoomsProviderProps {
@@ -22,10 +24,10 @@ interface RoomsProviderProps {
 }
 
 export const RoomsProvider = memo(({ children }: RoomsProviderProps) => {
-	const { searching, searchEnabled, searchResults, startSearch, stopSearch } = useSearch();
+	const { searching, searchEnabled, searchResults, startSearch, stopSearch, search } = useSearch();
 
 	return (
-		<RoomsContext.Provider value={{ searching, searchEnabled, searchResults, startSearch, stopSearch }}>
+		<RoomsContext.Provider value={{ searching, searchEnabled, searchResults, startSearch, stopSearch, search }}>
 			{children}
 		</RoomsContext.Provider>
 	);

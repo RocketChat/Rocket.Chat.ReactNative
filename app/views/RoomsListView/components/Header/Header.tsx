@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInputProps, View, useWindowDimensions } from 'react-native';
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { type TouchableOpacityProps } from 'react-native-gesture-handler';
 
@@ -35,30 +35,21 @@ interface IRoomHeader {
 	isFetching: boolean;
 	serverName: string;
 	server: string;
-	showSearchHeader: boolean;
-	onSearchChangeText: TextInputProps['onChangeText'];
 	onPress: TouchableOpacityProps['onPress'];
+	search: (text: string) => void;
+	searchEnabled: boolean;
 }
 
 const Header = React.memo(
-	({
-		connecting,
-		connected,
-		isFetching,
-		serverName = 'Rocket.Chat',
-		server,
-		showSearchHeader,
-		onSearchChangeText,
-		onPress
-	}: IRoomHeader) => {
+	({ connecting, connected, isFetching, serverName = 'Rocket.Chat', server, onPress, search, searchEnabled }: IRoomHeader) => {
 		const { status: supportedVersionsStatus } = useAppSelector(state => state.supportedVersions);
 		const { colors } = useTheme();
 		const { fontScale } = useWindowDimensions();
 
-		if (showSearchHeader) {
+		if (searchEnabled) {
 			// This value is necessary to keep the alignment in MasterDetail.
 			const height = 37 * fontScale;
-			return <SearchHeader onSearchChangeText={onSearchChangeText} testID='rooms-list-view-search-input' style={{ height }} />;
+			return <SearchHeader onSearchChangeText={search} testID='rooms-list-view-search-input' style={{ height }} />;
 		}
 		let subtitle;
 		if (supportedVersionsStatus === 'expired') {
