@@ -1,4 +1,4 @@
-import { useCallback, useContext, useLayoutEffect } from 'react';
+import { useCallback, useContext, useLayoutEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import { useAppSelector, usePermissions } from '../../../lib/hooks';
@@ -9,10 +9,11 @@ import { useTheme } from '../../../theme';
 import i18n from '../../../i18n';
 import { events, logEvent } from '../../../lib/methods/helpers/log';
 import { RoomsContext } from '../RoomsSearchProvider';
+import { isTablet } from '../../../lib/methods/helpers';
 
 export const useHeader = () => {
 	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsContext);
-
+	const [options, setOptions] = useState<any>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
@@ -89,6 +90,9 @@ export const useHeader = () => {
 				headerRight: () => null
 			};
 			navigation.setOptions(searchOptions);
+			if (isTablet) {
+				setOptions(searchOptions);
+			}
 			return;
 		}
 
@@ -145,6 +149,9 @@ export const useHeader = () => {
 		};
 
 		navigation.setOptions(options);
+		if (isTablet) {
+			setOptions(options);
+		}
 
 		return () => {
 			// TODO: Remove this
@@ -167,5 +174,5 @@ export const useHeader = () => {
 		search
 	]);
 
-	return null;
+	return { options };
 };
