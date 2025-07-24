@@ -1,0 +1,155 @@
+name: 'Upload iOS'
+description: 'Downloads IPA, uploads to App Store'
+inputs:
+  type:
+    description: 'Build type: official or experimental'
+    required: true
+  MATCH_KEYCHAIN_NAME:
+    description: 'Match Keychain Name'
+    required: true
+  MATCH_KEYCHAIN_PASSWORD:
+    description: 'Match Keychain Password'
+    required: true
+  MATCH_PASSWORD:
+    description: 'Match Password'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ID:
+    description: 'App Store Connect API Key ID'
+    required: true
+  APP_STORE_CONNECT_API_KEY_ISSUER_ID:
+    description: 'App Store Connect API Key Issuer ID'
+    required: true
+  FASTLANE_REPO_PAT:
+    description: 'Fastlane Repo PAT'
+    required: true
+  APP_STORE_CONNECT_API_KEY_BASE64:
+    description: 'Base64 encoded App Store Connect API Key'
+    required: true
+  GITHUB_TOKEN:
+    description: 'GitHub token for commenting'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Download iOS build
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental
+        path: ios/
+
+    - name: Download iOS build
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official
+        path: ios/
+
+    - name: Download dSYM
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental-dSYM
+        path: ios/
+
+    - name: Download dSYM
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official-dSYM
+        path: ios/
+
+    - name: Download Info.plist
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'experimental' }}
+      with:
+        name: ios-build-experimental-info-plist
+        path: ios/RocketChatRN/
+
+    - name: Download Info.plist
+      uses: actions/download-artifact@v4
+      if: ${{ inputs.type == 'official' }}
+      with:
+        name: ios-build-official-info-plist
+        path: ios/RocketChatRN/
+
+    - name: Pod Cache
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.pods
+          ios/Pods
+        key: pods-v1-{{ checksum "ios/Podfile.lock" }}
+        restore-keys: |
+          pods-v1-
+
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.2'
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.7
+        bundler-cache: true
+
+    - name: Decode p8
+      run: |
+        echo ${{ inputs.APP_STORE_CONNECT_API_KEY_BASE64 }} | base64 --decode > ./ios/fastlane/app_store_connect_api_key.p8
+      shell: bash
+    
+    - name: Pod install
+      run: |
+        yarn pod-install
+      shell: bash
+
+    - name: Fastlane Submit to TestFlight
+      working-directory: ios
+      run: |
+        if [[ ${{ inputs.type }} == "official" ]]; then
+          echo "Submitting to TestFlight as Official"
+          bundle exec fastlane ios beta official:true
+        fi
+        if [[ ${{ inputs.type }} == "experimental" ]]; then
+          echo "Submitting to TestFlight as Experimental"
+          bundle exec fastlane ios beta official:false
+        fi
+      env:
+        MATCH_KEYCHAIN_NAME: ${{ inputs.MATCH_KEYCHAIN_NAME }}
+        MATCH_KEYCHAIN_PASSWORD: ${{ inputs.MATCH_KEYCHAIN_PASSWORD }}
+        MATCH_PASSWORD: ${{ inputs.MATCH_PASSWORD }}
+        APP_STORE_CONNECT_API_KEY_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ID }}
+        APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ inputs.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+        FASTLANE_REPO_PAT: ${{ inputs.FASTLANE_REPO_PAT }}
+      shell: bash
+
+    - name: Extract version info from Info.plist
+      id: extract_ios_version
+      run: |
+        plist="ios/RocketChatRN/Info.plist"
+
+        version_name=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$plist")
+        version_code=$(/usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "$plist")
+
+        echo "VERSION_NAME=$version_name" >> $GITHUB_ENV
+        echo "VERSION_CODE=$version_code" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Comment on PR with TestFlight Info
+      env:
+        GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        BUILD_TYPE: ${{ inputs.type }}
+      run: |
+        if [[ "$BUILD_TYPE" == "official" ]]; then
+          app_name="Rocket.Chat"
+        else
+          app_name="Rocket.Chat Experimental"
+        fi
+
+        message="**iOS Build Available**"$'\n\n'"$app_name $VERSION_NAME.$VERSION_CODE"
+
+        gh pr comment "$PR_NUMBER" --body "$message"
+      shell: bash
