@@ -37,13 +37,16 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
  
-      - name: Cache Android SDK
+      - name: Cache SDK
         uses: actions/cache@v4
         with:
-          path: ~/.android
-          key: android-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          path: |
+            ${{ github.workspace }}/.opt/cache/gradle/wrapper
+            ${{ github.workspace }}/.opt/cache/gradle/caches
+            ${{ github.workspace }}/.opt/sdk
+          key: ${{ runner.os }}-android-sdk-${{ hashFiles('**/wrapper/gradle-wrapper.properties', '**/build.gradle') }}
           restore-keys: |
-            android-${{ runner.os }}-
+            ${{ runner.os }}-android-sdk-
 
       - name: Cache Android build output 
         uses: actions/cache@v4
