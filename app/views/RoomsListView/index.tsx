@@ -29,7 +29,7 @@ import BackgroundContainer from '../../containers/BackgroundContainer';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
-const RoomsListView = memo(() => {
+const RoomsListView = memo(function RoomsListView() {
 	console.count(`RoomsListView.render calls`);
 	useHeader();
 	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsContext);
@@ -140,12 +140,12 @@ const RoomsListView = memo(() => {
 	);
 });
 
-const RoomsListViewWithProvider = memo(() => (
+const RoomsListViewWithProvider = () => (
 	<RoomsProvider>
 		<Container>
 			<RoomsListView />
 		</Container>
 	</RoomsProvider>
-));
+);
 
-export default RoomsListViewWithProvider;
+export default memo(RoomsListViewWithProvider);
