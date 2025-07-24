@@ -635,6 +635,7 @@
   "Read_Only": "Somente leitura",
   "Read_only_hint": "Somente os proprietários do canal podem enviar novas mensagens",
   "Read_Receipt": "Lida por",
+  "Report_reason_required": "Motivo necessário",
   "Receive_Group_Mentions": "Receber menções de grupo",
   "Receive_Group_Mentions_Info": "Receber menções @all e @here",
   "Receive_Notification": "Receber notificação",
