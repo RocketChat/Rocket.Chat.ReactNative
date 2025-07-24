@@ -56,7 +56,7 @@ const ReportUserView = () => {
 		defaultValues: { description: '' }
 	});
 
-	useA11yErrorAnnouncement({ error: errors.description?.message });
+	useA11yErrorAnnouncement({ errors });
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({

@@ -254,9 +254,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 	};
 
-	useA11yErrorAnnouncement({ error: errors.name?.message });
-	useA11yErrorAnnouncement({ error: errors.username?.message });
-	useA11yErrorAnnouncement({ error: errors.email?.message });
+	useA11yErrorAnnouncement({ errors });
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
