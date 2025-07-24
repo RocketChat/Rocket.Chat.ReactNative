@@ -26,6 +26,7 @@ import { RoomsProvider, RoomsContext } from './RoomsSearchProvider';
 import { IRoomItem } from './definitions';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
+import BackgroundContainer from '../../containers/BackgroundContainer';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -99,7 +100,16 @@ const RoomsListView = memo(() => {
 		);
 	};
 
-	if (loading || searching) {
+	if (searchEnabled) {
+		if (searching) {
+			return <ActivityIndicator />;
+		}
+		if (searchResults.length === 0) {
+			return <BackgroundContainer text={'No rooms found'} />; // TODO: translate
+		}
+	}
+
+	if (loading) {
 		return <ActivityIndicator />;
 	}
 
