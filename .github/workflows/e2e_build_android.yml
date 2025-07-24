@@ -23,22 +23,7 @@ jobs:
 
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
-        
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
 
-      - name: Set gradle.properties
-        run: |
-          echo " " >> android/gradle.properties
-          echo "KEYSTORE=release.keystore" >> android/gradle.properties
-          echo "KEYSTORE_PASSWORD=${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" >> android/gradle.properties
-          echo "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> android/gradle.properties
-          echo "KEY_PASSWORD=${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" >> android/gradle.properties
-          echo "org.gradle.caching=true" >> android/gradle.properties
-          echo "org.gradle.configuration-cache=true" >> android/gradle.properties
-          echo "org.gradle.parallel=true" >> android/gradle.properties
-      
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -56,10 +41,25 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            android/app/build
-          key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}
+            android
+          key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}-${{ hashFiles('android') }}
           restore-keys: |
             build-output-
+        
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.EXPERIMENTAL_KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
+      - name: Set gradle.properties
+        run: |
+          echo " " >> android/gradle.properties
+          echo "KEYSTORE=release.keystore" >> android/gradle.properties
+          echo "KEYSTORE_PASSWORD=${{ secrets.EXPERIMENTAL_KEYSTORE_PASSWORD }}" >> android/gradle.properties
+          echo "KEY_ALIAS=${{ secrets.EXPERIMENTAL_KEY_ALIAS }}" >> android/gradle.properties
+          echo "KEY_PASSWORD=${{ secrets.EXPERIMENTAL_KEY_PASSWORD }}" >> android/gradle.properties
+          echo "org.gradle.caching=true" >> android/gradle.properties
+          echo "org.gradle.configuration-cache=true" >> android/gradle.properties
+          echo "org.gradle.parallel=true" >> android/gradle.properties
 
       - name: Build Android Release APK
         working-directory: android
