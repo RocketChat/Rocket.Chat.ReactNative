@@ -1,4 +1,4 @@
-import React, { memo, useContext, useEffect, useRef } from 'react';
+import React, { memo, useContext, useEffect } from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { useSafeAreaFrame } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,6 @@ import RoomItem from '../../containers/RoomItem';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
-import { ISubscription } from '../../definitions';
 import styles from './styles';
 import ListHeader from './components/ListHeader';
 import { getRoomAvatar, getRoomTitle, getUidDirectMessage, isRead, isIOS, isTablet } from '../../lib/methods/helpers';
@@ -47,7 +46,6 @@ const RoomsListView = memo(() => {
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
 	const changingServer = useAppSelector(state => state.server.changingServer);
-	const scrollRef = useRef<FlatList<ISubscription>>(null);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 
@@ -124,7 +122,6 @@ const RoomsListView = memo(() => {
 
 	return (
 		<FlatList
-			ref={scrollRef}
 			data={searchEnabled ? searchResults : subscriptions}
 			extraData={searchEnabled ? searchResults : subscriptions}
 			keyExtractor={item => `${item.rid}-${searchEnabled}`}
