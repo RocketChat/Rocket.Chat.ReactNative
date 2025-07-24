@@ -820,5 +820,6 @@
   "Your_invite_link_will_never_expire": "Inbjudningslänken upphör aldrig att gälla.",
   "Your_password_is": "Ditt lösenord är",
   "Your_Password_Must_Have": "Ditt lösenord måste ha:",
-  "Your_workspace": "Din arbetsyta"
+  "Your_workspace": "Din arbetsyta",
+  "No_rooms_found": "Inga rum hittades"
 }

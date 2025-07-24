@@ -860,5 +860,6 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान"
+  "Your_workspace": "आपका कार्यस्थान",
+  "No_rooms_found": "कोई रूम नहीं मिला"
 }

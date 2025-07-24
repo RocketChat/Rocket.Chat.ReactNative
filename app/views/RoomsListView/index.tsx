@@ -26,6 +26,7 @@ import { IRoomItem } from './definitions';
 import { SupportedVersionsExpired } from '../../containers/SupportedVersions';
 import { ChangePasswordRequired } from '../../containers/ChangePasswordRequired';
 import BackgroundContainer from '../../containers/BackgroundContainer';
+import i18n from '../../i18n';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
@@ -104,7 +105,7 @@ const RoomsListView = memo(function RoomsListView() {
 			return <ActivityIndicator />;
 		}
 		if (searchResults.length === 0) {
-			return <BackgroundContainer text={'No rooms found'} />; // TODO: translate
+			return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
 		}
 	}
 

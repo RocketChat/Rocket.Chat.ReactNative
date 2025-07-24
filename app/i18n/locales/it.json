@@ -646,5 +646,6 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace"
+  "Your_workspace": "Il tuo workspace",
+  "No_rooms_found": "Nessuna stanza trovata"
 }

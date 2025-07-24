@@ -860,5 +860,6 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস",
+  "No_rooms_found": "কোনো রুম পাওয়া যায়নি"
 }

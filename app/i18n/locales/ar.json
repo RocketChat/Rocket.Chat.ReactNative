@@ -597,5 +597,6 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك"
+  "Your_workspace": "مساحة عملك",
+  "No_rooms_found": "لم يتم العثور على غرف"
 }

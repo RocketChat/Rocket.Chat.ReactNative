@@ -758,5 +758,6 @@
   "Your_invite_link_will_never_expire": "Vaša povezava za povabilo ne bo nikoli potekala.",
   "Your_password_is": "Vaše geslo je",
   "Your_Password_Must_Have": "Vaše geslo mora imeti:",
-  "Your_workspace": "Vaš delovni prostor"
+  "Your_workspace": "Vaš delovni prostor",
+  "No_rooms_found": "Ni najdenih sob"
 }
