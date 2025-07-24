@@ -46,6 +46,7 @@ const RoomsListView = memo(() => {
 	const getItemLayout = useGetItemLayout();
 	const { subscriptions, loading } = useSubscriptions();
 	const subscribedRoom = useAppSelector(state => state.room.subscribedRoom);
+	const changingServer = useAppSelector(state => state.server.changingServer);
 	const scrollRef = useRef<FlatList<ISubscription>>(null);
 	const { refreshing, onRefresh } = useRefresh({ searching });
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
@@ -109,7 +110,7 @@ const RoomsListView = memo(() => {
 		}
 	}
 
-	if (loading) {
+	if (loading || changingServer) {
 		return <ActivityIndicator />;
 	}
 
