@@ -74,8 +74,8 @@ jobs:
   upload-ios:
     name: Upload
     runs-on: macos-15
-    needs: [upload-hold, build-ios]
-    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') && (needs.build-ios.result == 'success')) }}
+    needs: [upload-hold]
+    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4

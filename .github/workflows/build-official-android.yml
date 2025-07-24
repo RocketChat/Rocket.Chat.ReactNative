@@ -67,8 +67,8 @@ jobs:
   upload-android:
     name: Upload
     runs-on: ubuntu-latest
-    needs: [upload-hold, build-android]
-    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped') && needs.build-android.result == 'success') }}
+    needs: [upload-hold]
+    if: ${{ inputs.type == 'official' && (always() && (needs.upload-hold.result == 'success' || needs.upload-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
