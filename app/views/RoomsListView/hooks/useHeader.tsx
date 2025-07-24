@@ -163,7 +163,8 @@ export const useHeader = () => {
 		getBadge,
 		goToNewMessage,
 		startSearch,
-		stopSearch
+		stopSearch,
+		search
 	]);
 
 	return null;
