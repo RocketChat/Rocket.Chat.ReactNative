@@ -107,8 +107,7 @@ const CreateChannelView = () => {
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 
-	// Accessibility: announce field error to screen reader
-	useA11yErrorAnnouncement({ errorMessage: errors.channelName?.message });
+	useA11yErrorAnnouncement({ error: errors.channelName?.message });
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: isFetching });
