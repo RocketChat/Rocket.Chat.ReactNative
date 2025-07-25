@@ -1,0 +1,46 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.12.0
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:debug:20170905':
+    - react-native > connect > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > express-session > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > finalhandler > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > morgan > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > serve-index > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > body-parser > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > compression > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > connect-timeout > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - react-native > connect > serve-static > send > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+    - realm > extract-zip > debug:
+        patched: '2017-09-29T23:29:20.238Z'
+  'npm:lodash:20180130':
+    - react-native > plist > xmlbuilder > lodash:
+        patched: '2018-07-02T23:20:39.933Z'
+  'npm:hoek:20180212':
+    - realm > node-pre-gyp > hawk > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > hawk > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > hawk > sntp > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > sntp > hoek:
+        patched: '2018-06-22T03:39:40.096Z'
+    - realm > node-pre-gyp > request > hawk > cryptiles > boom > hoek:
+        patched: '2018-06-22T03:39:40.096Z'

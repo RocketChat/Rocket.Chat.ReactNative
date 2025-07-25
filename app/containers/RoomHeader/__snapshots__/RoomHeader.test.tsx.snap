@@ -1,0 +1,3654 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Story Snapshots: Icons should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel private channel ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="private channel"
+          >
+            private channel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="public channel public channel ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="public channel"
+          >
+            public channel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="Discussion discussion ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            accessibilityLabel="discussion"
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "400",
+                  "lineHeight": 22,
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#2F343D",
+                  "lineHeight": undefined,
+                },
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="discussion"
+          >
+            discussion
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="Omnichannel omnichannel ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#6C727A",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="omnichannel"
+          >
+            omnichannel
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private team private team ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="private team"
+          >
+            private team
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="Team public team ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="public team"
+          >
+            public team
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="Message group dm ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="group dm"
+          >
+            group dm
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel online dm ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="online dm"
+          >
+            online dm
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel away dm ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="away dm"
+          >
+            away dm
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel busy dm ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="busy dm"
+          >
+            busy dm
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel loading dm ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="loading dm"
+          >
+            loading dm
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel offline dm ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="offline dm"
+          >
+            offline dm
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Themes should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          accessibilityLabel="subtitle"
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+                "lineHeight": undefined,
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+          testID="markdown-preview-subtitle"
+        >
+          subtitle
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#2D3039",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#F2F3F5",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          accessibilityLabel="subtitle"
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#E4E7EA",
+                "lineHeight": undefined,
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#9EA2A8",
+                "fontSize": 12,
+              },
+            ]
+          }
+          testID="markdown-preview-subtitle"
+        >
+          subtitle
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#16181a",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#F2F3F5",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#F2F3F5",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          accessibilityLabel="subtitle"
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#E4E7EA",
+                "lineHeight": undefined,
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#9EA2A8",
+                "fontSize": 12,
+              },
+            ]
+          }
+          testID="markdown-preview-subtitle"
+        >
+          subtitle
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Thread should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title parent title."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            parent title
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel markdown
+preview
+#3
+4
+5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="markdown
+preview
+#3
+4
+5"
+          >
+            markdown
+preview
+#3
+4
+5
+          </Text>
+        </View>
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#6C727A",
+                },
+              ]
+            }
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: TitleSubtitle should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="title"
+          >
+            title
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title subtitle."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          accessibilityLabel="subtitle"
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+                "lineHeight": undefined,
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+          testID="markdown-preview-subtitle"
+        >
+          subtitle
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+                "lineHeight": undefined,
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+          testID="markdown-preview-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+            testID="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          >
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+          </Text>
+        </View>
+        <Text
+          accessibilityLabel="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontSize": 16,
+                "fontWeight": "400",
+                "lineHeight": 22,
+                "textAlign": "left",
+              },
+              {
+                "color": "#2F343D",
+                "lineHeight": undefined,
+              },
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+          testID="markdown-preview-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+        >
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
+
+exports[`Story Snapshots: Typing should match snapshot 1`] = `
+[
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            user 1
+             
+          </Text>
+          is typing
+          ...
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            user 1 and user 2
+             
+          </Text>
+          are typing
+          ...
+        </Text>
+      </View>
+    </View>
+  </View>,
+  <View
+    style={
+      {
+        "backgroundColor": "#E4E7EA",
+        "flex": 1,
+        "maxHeight": 48,
+      }
+    }
+  >
+    <View
+      accessibilityLabel="private channel title ."
+      accessibilityRole="header"
+      accessible={true}
+      style={
+        [
+          {
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          {
+            "height": 36.9,
+            "opacity": 1,
+          },
+        ]
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        hitSlop={
+          {
+            "bottom": 5,
+            "left": 5,
+            "right": 5,
+            "top": 5,
+          }
+        }
+        onBlur={[Function]}
+        onClick={[Function]}
+        onFocus={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        testID="room-header"
+      >
+        <View
+          style={
+            {
+              "alignItems": "center",
+              "flexDirection": "row",
+            }
+          }
+        >
+          <Text
+            allowFontScaling={false}
+            selectable={false}
+            style={
+              [
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+                [
+                  {
+                    "lineHeight": 16,
+                  },
+                  [
+                    {
+                      "marginRight": 4,
+                    },
+                    undefined,
+                  ],
+                ],
+                {
+                  "fontFamily": "custom",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            numberOfLines={1}
+            style={
+              [
+                {
+                  "backgroundColor": "transparent",
+                  "flexShrink": 1,
+                  "fontFamily": "Inter",
+                  "fontWeight": "600",
+                  "textAlign": "left",
+                },
+                {
+                  "color": "#1F2329",
+                  "fontSize": 16,
+                },
+              ]
+            }
+          >
+            title
+          </Text>
+        </View>
+        <Text
+          numberOfLines={1}
+          style={
+            [
+              {
+                "backgroundColor": "transparent",
+                "flexShrink": 1,
+                "fontFamily": "Inter",
+                "fontWeight": "400",
+                "textAlign": "left",
+              },
+              {
+                "color": "#6C727A",
+                "fontSize": 12,
+              },
+            ]
+          }
+        >
+          <Text
+            style={
+              {
+                "backgroundColor": "transparent",
+                "fontFamily": "Inter",
+                "fontWeight": "600",
+                "textAlign": "left",
+              }
+            }
+          >
+            user 1, user 2, user 3, user 4, user 5
+             
+          </Text>
+          are typing
+          ...
+        </Text>
+      </View>
+    </View>
+  </View>,
+]
+`;
