@@ -439,6 +439,7 @@
   "Read_Only": "Sola lettura",
   "Read_only_hint": "Solo i proprietari di canali possono inviare nuovi messaggi",
   "Read_Receipt": "Conferma di lettura",
+  "Report_reason_required": "Motivo richiesto",
   "Receive_Group_Mentions": "Ricevi menzioni di gruppo",
   "Receive_Group_Mentions_Info": "Ricevi menzioni @all e @here",
   "Receive_Notification": "Ricevi notifiche",
