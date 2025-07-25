@@ -1,7 +1,7 @@
 import { useCallback, useReducer } from 'react';
 
+import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
 import { search as searchLib } from '../../../lib/methods';
-import { IRoomItem } from '../definitions';
 import { useDebounce } from '../../../lib/methods/helpers/debounce';
 
 interface SearchState {

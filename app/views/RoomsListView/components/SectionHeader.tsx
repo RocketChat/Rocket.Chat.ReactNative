@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native';
+import { memo } from 'react';
+import { Text, View } from 'react-native';
 
+import i18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import styles from '../styles';
-import i18n from '../../../i18n';
 
-export const SectionHeader = ({ header }: { header: string }) => {
+const SectionHeader = ({ header }: { header: string }) => {
 	const { colors } = useTheme();
 	return (
 		<View style={[styles.groupTitleContainer, { backgroundColor: colors.surfaceRoom }]}>
@@ -12,3 +13,5 @@ export const SectionHeader = ({ header }: { header: string }) => {
 		</View>
 	);
 };
+
+export default memo(SectionHeader);

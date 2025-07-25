@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { shallowEqual } from 'react-redux';
 
+import { DisplayMode } from '../../../lib/constants';
 import { useAppSelector } from '../../../lib/hooks';
 import { useResponsiveLayout } from '../../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
-import { DisplayMode } from '../../../lib/constants';
 
 export const useGetItemLayout = () => {
 	const { rowHeight, rowHeightCondensed } = useResponsiveLayout();

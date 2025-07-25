@@ -5,7 +5,7 @@ import SafeAreaView from '../../../containers/SafeAreaView';
 import { useTheme } from '../../../theme';
 import TabletHeader from './TabletHeader';
 
-const Container = memo(({ children }: { children: ReactElement }) => {
+const Container = ({ children }: { children: ReactElement }) => {
 	const { colors } = useTheme();
 	return (
 		<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
@@ -14,6 +14,6 @@ const Container = memo(({ children }: { children: ReactElement }) => {
 			{children}
 		</SafeAreaView>
 	);
-});
+};
 
-export default Container;
+export default memo(Container);

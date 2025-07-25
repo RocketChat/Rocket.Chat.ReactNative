@@ -1,7 +1,7 @@
-import { createContext, memo, ReactNode } from 'react';
+import { createContext, memo, ReactElement } from 'react';
 
-import { IRoomItem } from './definitions';
-import { useSearch } from './hooks/useSearch';
+import { type IRoomItem } from '../../../containers/RoomItem/interfaces';
+import { useSearch } from '../hooks/useSearch';
 
 export const RoomsSearchContext = createContext<{
 	searching: boolean;
@@ -20,10 +20,10 @@ export const RoomsSearchContext = createContext<{
 });
 
 interface RoomsSearchProviderProps {
-	children: ReactNode;
+	children: ReactElement;
 }
 
-export const RoomsSearchProvider = memo(({ children }: RoomsSearchProviderProps) => {
+const RoomsSearchProvider = ({ children }: RoomsSearchProviderProps) => {
 	const { searching, searchEnabled, searchResults, startSearch, stopSearch, search } = useSearch();
 
 	return (
@@ -31,4 +31,6 @@ export const RoomsSearchProvider = memo(({ children }: RoomsSearchProviderProps)
 			{children}
 		</RoomsSearchContext.Provider>
 	);
-});
+};
+
+export default memo(RoomsSearchProvider);

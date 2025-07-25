@@ -1,18 +1,18 @@
-import { useCallback, useContext, useLayoutEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useCallback, useContext, useLayoutEffect, useState } from 'react';
 
-import { useAppSelector, usePermissions } from '../../../lib/hooks';
 import * as HeaderButton from '../../../containers/Header/components/HeaderButton';
-import { getUserSelector } from '../../../selectors/login';
-import RoomsListHeaderView from '../components/Header';
-import { useTheme } from '../../../theme';
 import i18n from '../../../i18n';
-import { events, logEvent } from '../../../lib/methods/helpers/log';
-import { RoomsContext } from '../RoomsSearchProvider';
+import { useAppSelector, usePermissions } from '../../../lib/hooks';
 import { isTablet } from '../../../lib/methods/helpers';
+import { events, logEvent } from '../../../lib/methods/helpers/log';
+import { getUserSelector } from '../../../selectors/login';
+import { useTheme } from '../../../theme';
+import RoomsListHeaderView from '../components/Header';
+import { RoomsSearchContext } from '../contexts/RoomsSearchProvider';
 
 export const useHeader = () => {
-	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsContext);
+	const { searchEnabled, search, startSearch, stopSearch } = useContext(RoomsSearchContext);
 	const [options, setOptions] = useState<any>(null);
 	const supportedVersionsStatus = useAppSelector(state => state.supportedVersions.status);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);

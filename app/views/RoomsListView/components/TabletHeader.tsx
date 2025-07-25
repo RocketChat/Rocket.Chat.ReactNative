@@ -1,4 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { memo } from 'react';
 
 import Header from '../../../containers/Header';
 import { useAppSelector } from '../../../lib/hooks';
@@ -17,4 +18,4 @@ const TabletHeader = () => {
 	return <Header options={options} navigation={navigation} route={route} />;
 };
 
-export default TabletHeader;
+export default memo(TabletHeader);

@@ -1,29 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Linking } from 'react-native';
+import React, { memo, useEffect, useRef, useState } from 'react';
+import { FlatList, Linking, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { batch, useDispatch } from 'react-redux';
 import { Subscription } from 'rxjs';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import * as List from '../../../containers/List';
-import Button from '../../../containers/Button';
-import { hideActionSheetRef } from '../../../containers/ActionSheet';
-import { selectServerRequest, serverInitAdd } from '../../../actions/server';
 import { appStart } from '../../../actions/app';
-import I18n from '../../../i18n';
-import EventEmitter from '../../../lib/methods/helpers/events';
+import { selectServerRequest, serverInitAdd } from '../../../actions/server';
+import { hideActionSheetRef } from '../../../containers/ActionSheet';
+import Button from '../../../containers/Button';
+import * as List from '../../../containers/List';
 import ServerItem from '../../../containers/ServerItem';
-import database from '../../../lib/database';
-import { TOKEN_KEY } from '../../../lib/constants';
-import { useTheme } from '../../../theme';
-import { localAuthenticate } from '../../../lib/methods/helpers/localAuthentication';
-import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
-import log, { events, logEvent } from '../../../lib/methods/helpers/log';
-import { goRoom } from '../../../lib/methods/helpers/goRoom';
-import UserPreferences from '../../../lib/methods/userPreferences';
 import { RootEnum, TServerModel } from '../../../definitions';
-import styles from '../styles';
-import { removeServer } from '../../../lib/methods';
+import I18n from '../../../i18n';
+import { TOKEN_KEY } from '../../../lib/constants';
+import database from '../../../lib/database';
 import { useAppSelector } from '../../../lib/hooks';
+import { removeServer } from '../../../lib/methods';
+import EventEmitter from '../../../lib/methods/helpers/events';
+import { goRoom } from '../../../lib/methods/helpers/goRoom';
+import { showConfirmationAlert } from '../../../lib/methods/helpers/info';
+import { localAuthenticate } from '../../../lib/methods/helpers/localAuthentication';
+import log, { events, logEvent } from '../../../lib/methods/helpers/log';
+import UserPreferences from '../../../lib/methods/userPreferences';
+import { useTheme } from '../../../theme';
+import styles from '../styles';
 
 const ROW_HEIGHT = 68;
 const MAX_ROWS = 4.5;
@@ -164,4 +164,4 @@ const ServersList = () => {
 	);
 };
 
-export default ServersList;
+export default memo(ServersList);
