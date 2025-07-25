@@ -178,7 +178,7 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 
 	goRoom = (item: TGoRoomItem) => {
 		const { isMasterDetail } = this.props;
-		goRoom({ item, isMasterDetail, popToRoot: true });
+		goRoom({ item, isMasterDetail });
 	};
 
 	onPressItem = async (item: IServerRoom) => {

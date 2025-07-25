@@ -16,8 +16,68 @@
 default_platform(:android)
 
 platform :android do
-  desc "Upload App to Play Store Internal"
-  lane :beta do |options|
+  def with_retries(times: 3, sleep_time: 10)
+    tries = 0
+    begin
+      yield
+    rescue => e
+      tries += 1
+      if tries < times
+        UI.error("Retrying due to error: #{e}")
+        sleep(sleep_time)
+        retry
+      else
+        raise
+      end
+    end
+  end
+
+  desc 'Get the highest version code from all tracks'
+  lane :version_code do |options|
+    production_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'production'
+      )
+    end
+
+    beta_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'beta'
+      )
+    end
+
+    alpha_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'alpha'
+      )
+    end
+
+    internal_versions = with_retries do
+      google_play_track_version_codes(
+        package_name: options[:official] ? 'chat.rocket.android' : 'chat.rocket.reactnative',
+        json_key: 'service_account.json',
+        track: 'internal'
+      )
+    end
+
+    all_versions = production_versions + beta_versions + alpha_versions + internal_versions
+    highest_version = all_versions.max
+
+    UI.message("All: #{all_versions}")
+    UI.success("Highest: #{highest_version}")
+    UI.success("Highest + 1: #{highest_version + 1}")
+
+    puts "VERSIONCODE=#{highest_version}"
+  end
+
+  desc "Upload App to Play Store Internal (Circle CI)"
+  lane :beta_circle_ci do |options|
     if options[:official]
       upload_to_play_store(
         package_name: 'chat.rocket.android',
@@ -33,20 +93,77 @@ platform :android do
     end
   end
 
+  desc "Upload App to Play Store Internal"
+  lane :beta do |options|
+    if options[:official]
+      upload_to_play_store(
+        package_name: 'chat.rocket.android',
+        track: 'internal',
+        aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      )
+    else
+      upload_to_play_store(
+        package_name: 'chat.rocket.reactnative',
+        track: 'internal',
+        aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      )
+    end
+  end
+
+  desc "Upload App to Internal App Sharing (Circle CI)"
+  lane :internal_app_sharing_circle_ci do |options|
+    if options[:official]
+      upload_to_play_store_internal_app_sharing(
+        package_name: 'chat.rocket.android',
+        aab: 'android/app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      )
+    else
+      upload_to_play_store_internal_app_sharing(
+        package_name: 'chat.rocket.reactnative',
+        aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      )
+    end
+  end
+
   desc "Upload App to Internal App Sharing"
-  lane :internal_app_sharing do
-    upload_to_play_store_internal_app_sharing(
+  lane :internal_app_sharing do |options|
+    if options[:official]
+      upload_to_play_store_internal_app_sharing(
+        package_name: 'chat.rocket.android',
+        aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
+      )
+    else
+      upload_to_play_store_internal_app_sharing(
+        package_name: 'chat.rocket.reactnative',
+        aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      )
+    end
+  end
+
+  desc "Upload App to Play Store Production (Circle CI)"
+  lane :production_circle_ci do |options|
+    upload_to_play_store(
       package_name: 'chat.rocket.reactnative',
+      track: 'production',
       aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
     )
   end
 
   desc "Upload App to Play Store Production"
-  lane :production do |options|
+  lane :experimental_production do
     upload_to_play_store(
       package_name: 'chat.rocket.reactnative',
       track: 'production',
-      aab: 'android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+      aab: 'app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab'
+    )
+  end
+
+  desc "Upload App to Play Store Open Testing"
+  lane :official_open_testing do
+    upload_to_play_store(
+      package_name: 'chat.rocket.android',
+      track: 'beta',
+      aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
     )
   end
 end
