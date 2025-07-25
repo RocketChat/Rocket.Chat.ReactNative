@@ -13,18 +13,19 @@ function getIndex() {
 	return 0;
 }
 
-const sendMessageOnTranslationTestRoom = async (msg: string): Promise<{ user: ITestUser; msgId: string }> => {
+const sendMessageOnTranslationTestRoom = async (text: string): Promise<{ user: ITestUser; msgId: string }> => {
 	const user = await createRandomUser();
 	const api = await initApi(user.username, user.password);
 
-	const msgId = random();
-
 	await api.post('channels.join', { roomId, joinCode: null });
-	await api.post('chat.sendMessage', {
-		message: { _id: msgId, rid: roomId, msg, tshow: false }
+	console.log('joined channel');
+	const message = await api.post('chat.postMessage', {
+		roomId,
+		text
 	});
-
-	return { user, msgId };
+	console.log(message.data.message._id || 'OOPS', 'success');
+	await sleep(5000);
+	return { user, msgId: message.data.message._id };
 };
 
 const deleteMessageOnTranslationTestRoom = async ({ user, msgId }: { user: ITestUser; msgId: string }): Promise<void> => {
@@ -44,16 +45,26 @@ async function navigateToRoom(roomName: string) {
 }
 
 async function searchMessage(msg: string, textMatcher: TTextMatcher) {
-	await sleep(1000); // wait for proper load the room
+	await sleep(10000); // wait for proper load the room
+	await waitFor(element(by.id('room-view-search')))
+		.toBeVisible()
+		.withTimeout(5000);
+
 	await element(by.id('room-view-search')).tap();
+	await sleep(4000); // wait for proper load the room
+
 	await waitFor(element(by.id('search-messages-view')))
 		.toExist()
 		.withTimeout(5000);
+	await sleep(4000); // wait for proper load the room
+
 	await element(by.id('search-message-view-input')).replaceText(msg);
+	await sleep(4000); // wait for proper load the room
+
 	await waitFor(element(by[textMatcher](msg)).atIndex(getIndex()))
 		.toExist()
 		.withTimeout(30000);
-	await sleep(1000);
+	await sleep(4000);
 	await element(by[textMatcher](msg)).atIndex(getIndex()).tap();
 	await sleep(10000);
 }
@@ -77,7 +88,7 @@ function waitForNotVisible(id: string) {
 }
 
 // Skipped until we fix join code backend
-describe.skip('Auto Translate', () => {
+describe('Auto Translate', () => {
 	let textMatcher: TTextMatcher;
 
 	const languages = {
@@ -129,12 +140,13 @@ describe.skip('Auto Translate', () => {
 
 		await waitForVisible('room-actions-view');
 		await element(by.id('room-actions-view')).swipe('up');
-
+		await sleep(300);
 		await waitForVisible('room-actions-auto-translate');
 		await element(by.id('room-actions-auto-translate')).tap();
 
 		await waitForVisible('auto-translate-view-switch');
 		await element(by.id('auto-translate-view-switch')).tap();
+		await sleep(300);
 
 		// verify default language is checked
 		await waitFor(element(by.id(`auto-translate-view-${languages.default}`)))
@@ -142,7 +154,10 @@ describe.skip('Auto Translate', () => {
 			.whileElement(by.id('auto-translate-view'))
 			.scroll(750, 'down');
 		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
+		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
+		await element(by.id('auto-translate-view')).swipe('up', 'slow', 0.5);
 		await waitForVisible(`auto-translate-view-${languages.default}-check`);
+		await sleep(300);
 
 		// enable translated language
 		await waitFor(element(by.id(`auto-translate-view-${languages.translated}`)))
@@ -172,8 +187,13 @@ describe.skip('Auto Translate', () => {
 
 	it('should see new message translated', async () => {
 		const randomMatcher = random();
+		await tapBack();
 		const data = await sendMessageOnTranslationTestRoom(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		await navigateToRoom('translation-test');
+		console.log('MESSAGE SENT');
 		await searchMessage(`${newMessage[languages.default]}. Rc${randomMatcher}`, textMatcher); // will scroll the messages list to the last one
+		console.log(`${newMessage[languages.default]}. Rc${randomMatcher}`);
+		console.log(`${newMessage[languages.translated]}. Rc${randomMatcher}`);
 		await waitForVisibleTextMatcher(`${newMessage[languages.translated]}. Rc${randomMatcher}`, textMatcher);
 		await deleteMessageOnTranslationTestRoom(data);
 	});

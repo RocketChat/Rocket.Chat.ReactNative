@@ -24,6 +24,8 @@ import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { A11yContainer, A11yElement } from '../A11yFlow';
+import normalizeToBCP47 from '../../views/AutoTranslateView/utils/normalizeToBCP47ByName';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -92,7 +94,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 });
 MessageInner.displayName = 'MessageInner';
 
-const Message = React.memo((props: IMessageTouchable & IMessage) => {
+const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslateLanguage?: string }) => {
 	const handleMentionsOnAccessibilityLabel = (label: string) => {
 		const { mentions = [], channels = [] } = props;
 
@@ -115,6 +117,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	const accessibilityLabel = useMemo(() => {
 		let label = '';
 		label = props.isInfo ? (props.msg as string) : `${props.tmid ? `thread message ${props.msg}` : props.msg}`;
+
 		if (props.isThreadReply) {
 			label = `replying to ${props.tmid ? `thread message ${props.msg}` : props}`;
 		}
@@ -130,13 +133,16 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		}
 		label = handleMentionsOnAccessibilityLabel(label);
 
+		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: props?.autoTranslateLanguage }) : '';
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		const readOrUnreadLabel =
 			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
-		return `${user} ${hour} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+		return props.isTranslated
+			? `${user} ${hour} ${translated}`
+			: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	}, [
 		props.msg,
 		props.tmid,
@@ -149,9 +155,16 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		props.author,
 		props.mentions,
 		props.channels,
-		props.unread
+		props.unread,
+		props.isTranslated,
+		props?.autoTranslateLanguage
 	]);
+	const readOrUnreadLabel = !props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
+	const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
+	const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
+	const a11yLanguage = normalizeToBCP47(props?.autoTranslateLanguage || 'en-US');
 
+	const translatedEncryptedAndReadReceipt = `${encryptedMessageLabel} ${readReceipt}`;
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -176,30 +189,34 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 
 	return (
 		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
-			<View style={styles.flex}>
-				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
-					<MessageInner {...props} />
+			<A11yElement accessibilityLabel={props.msg} accessibilityLanguage={a11yLanguage} accessible={props.isTranslated} order={2}>
+				<View style={styles.flex}>
+					<MessageAvatar {...props} />
+					<A11yElement accessible={props.isTranslated} accessibilityLabel={translatedEncryptedAndReadReceipt} order={3}>
+						<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+							<MessageInner {...props} />
+						</View>
+					</A11yElement>
+					{!props.isHeader ? (
+						<RightIcons
+							type={props.type}
+							msg={props.msg}
+							isEdited={props.isEdited}
+							hasError={props.hasError}
+							isReadReceiptEnabled={props.isReadReceiptEnabled}
+							unread={props.unread}
+							pinned={props.pinned}
+							isTranslated={props.isTranslated}
+						/>
+					) : null}
 				</View>
-				{!props.isHeader ? (
-					<RightIcons
-						type={props.type}
-						msg={props.msg}
-						isEdited={props.isEdited}
-						hasError={props.hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled}
-						unread={props.unread}
-						pinned={props.pinned}
-						isTranslated={props.isTranslated}
-					/>
-				) : null}
-			</View>
+			</A11yElement>
 		</View>
 	);
 });
 Message.displayName = 'Message';
 
-const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
+const MessageTouchable = React.memo((props: IMessageTouchable & IMessage & { autoTranslateLanguage?: string }) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
 	const { theme } = useTheme();
 
@@ -220,13 +237,19 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<Touchable
-			onLongPress={onLongPress}
-			onPress={onPress}
-			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}>
-			<Message {...props} />
-		</Touchable>
+		<A11yContainer disableOrder={!props.isTranslated}>
+			<A11yElement order={1}>
+				<Touchable
+					onLongPress={onLongPress}
+					onPress={onPress}
+					disabled={
+						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
+					}
+					style={{ backgroundColor }}>
+					<Message {...props} />
+				</Touchable>
+			</A11yElement>
+		</A11yContainer>
 	);
 });
 

@@ -14,11 +14,12 @@ interface IAccessibilityContextData {
 interface IAccessibilityOrderProviderProps {
 	children: React.ReactNode;
 	containerRef: React.RefObject<View | null>;
+	disableOrder?: boolean;
 }
 
 export const AccessibilityOrderContext = createContext({} as IAccessibilityContextData);
 
-function AccessibilityOrderProvider({ children, containerRef }: IAccessibilityOrderProviderProps) {
+function AccessibilityOrderProvider({ children, containerRef, disableOrder = false }: IAccessibilityOrderProviderProps) {
 	const [elements, setElements] = useState<IElement[]>([]);
 
 	const sortElements = (elementsList: IElement[]) => elementsList.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
@@ -38,8 +39,11 @@ function AccessibilityOrderProvider({ children, containerRef }: IAccessibilityOr
 	};
 
 	useEffect(() => {
+		if (disableOrder) {
+			return;
+		}
 		updateAccessibilityOrder();
-	}, [elements]);
+	}, [elements, disableOrder]);
 
 	return <AccessibilityOrderContext.Provider value={{ updateElementsList }}>{children}</AccessibilityOrderContext.Provider>;
 }
