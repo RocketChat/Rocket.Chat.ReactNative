@@ -11,12 +11,12 @@ import { ISubmitParams } from '../definitions';
 import basicAuth from '../methods/basicAuth';
 
 type TUseNewServerProps = {
-	text: string;
+	workspaceUrl: string;
 	certificate: string | null;
 	previousServer: string | null;
 };
 
-const useConnectServer = ({ text, certificate, previousServer }: TUseNewServerProps) => {
+const useConnectServer = ({ workspaceUrl, certificate, previousServer }: TUseNewServerProps) => {
 	const dispatch = useDispatch();
 
 	const submit = ({ fromServerHistory = false, username, serverUrl }: ISubmitParams = {}) => {
@@ -27,9 +27,9 @@ const useConnectServer = ({ text, certificate, previousServer }: TUseNewServerPr
 			sdk.disconnect();
 			dispatch(selectServerClear());
 		}
-		if (text || serverUrl) {
+		if (workspaceUrl || serverUrl) {
 			Keyboard.dismiss();
-			const server = completeUrl(serverUrl ?? text);
+			const server = completeUrl(serverUrl ?? workspaceUrl);
 
 			// Save info - SSL Pinning
 			if (certificate) {
@@ -37,7 +37,7 @@ const useConnectServer = ({ text, certificate, previousServer }: TUseNewServerPr
 			}
 
 			// Save info - HTTP Basic Authentication
-			basicAuth(server, serverUrl ?? text);
+			basicAuth(server, serverUrl ?? workspaceUrl);
 
 			if (fromServerHistory) {
 				dispatch(serverRequest(server, username, true));
