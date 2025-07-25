@@ -162,7 +162,7 @@ platform :android do
   lane :official_open_testing do
     upload_to_play_store(
       package_name: 'chat.rocket.android',
-      track: 'open',
+      track: 'beta',
       aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
     )
   end
