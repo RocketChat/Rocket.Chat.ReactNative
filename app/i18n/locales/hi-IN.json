@@ -578,6 +578,7 @@
   "Read_Only": "केवल पठन",
   "Read_only_hint": "केवल चैनल के मालिक केवल नए संदेश भेज सकते हैं",
   "Read_Receipt": "पठन प्राप्ति",
+  "Report_reason_required": "कारण आवश्यक है।",
   "Receive_Group_Mentions": "समूह उल्लेख प्राप्त करें",
   "Receive_Group_Mentions_Info": "@all और @here उल्लेख प्राप्त करें",
   "Receive_Notification": "सूचना प्राप्त करें",
