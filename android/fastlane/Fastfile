@@ -150,7 +150,7 @@ platform :android do
   end
 
   desc "Upload App to Play Store Production"
-  lane :experimental_production
+  lane :experimental_production do
     upload_to_play_store(
       package_name: 'chat.rocket.reactnative',
       track: 'production',
@@ -159,7 +159,7 @@ platform :android do
   end
 
   desc "Upload App to Play Store Open Testing"
-  lane :official_open_testing
+  lane :official_open_testing do
     upload_to_play_store(
       package_name: 'chat.rocket.android',
       track: 'open',
