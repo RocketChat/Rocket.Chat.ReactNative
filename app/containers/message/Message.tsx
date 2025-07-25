@@ -163,7 +163,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 	const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 	const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 	const a11yLanguage = normalizeToBCP47(props?.autoTranslateLanguage || 'en-US');
-	console.log(a11yLanguage, props.isTranslated, props?.msg);
+
 	const translatedEncryptedAndReadReceipt = `${encryptedMessageLabel} ${readReceipt}`;
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
@@ -189,7 +189,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 
 	return (
 		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
-			<A11yElement accessible={props.isTranslated} accessibilityLabel={props.msg} accessibilityLanguage={a11yLanguage} order={2}>
+			<A11yElement accessibilityLabel={props.msg} accessibilityLanguage={a11yLanguage} accessible={props.isTranslated} order={2}>
 				<View style={styles.flex}>
 					<MessageAvatar {...props} />
 					<A11yElement accessible={props.isTranslated} accessibilityLabel={translatedEncryptedAndReadReceipt} order={3}>
@@ -237,7 +237,7 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage & { aut
 	}
 
 	return (
-		<A11yContainer>
+		<A11yContainer disableOrder={!props.isTranslated}>
 			<A11yElement order={1}>
 				<Touchable
 					onLongPress={onLongPress}
