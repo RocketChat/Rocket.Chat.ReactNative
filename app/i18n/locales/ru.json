@@ -411,7 +411,7 @@
   "Message_removed": "Сообщение удалено",
   "Message_Reported": "Сообщение отправлено",
   "Message_starred": "Сообщение отмечено звездой",
-  "Message_translated_into_idiom": "Перевод сообщения на {{язык}}",
+  "Message_translated_into_idiom": "Перевод сообщения на {{idiom}}",
   "Message_unstarred": "Отметка сообщения звездой удалена",
   "Message_was_not_read": "Сообщение не было прочитано.",
   "Message_was_read": "Сообщение было прочитано.",

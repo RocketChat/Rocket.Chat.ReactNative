@@ -25,6 +25,7 @@ import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { A11yContainer, A11yElement } from '../A11yFlow';
+import normalizeToBCP47 from '../../views/AutoTranslateView/utils/normalizeToBCP47ByName';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -155,12 +156,14 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 		props.mentions,
 		props.channels,
 		props.unread,
-		props.isTranslated
+		props.isTranslated,
+		props?.autoTranslateLanguage
 	]);
 	const readOrUnreadLabel = !props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 	const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
 	const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
-
+	const a11yLanguage = normalizeToBCP47(props?.autoTranslateLanguage || 'en-US');
+	console.log(a11yLanguage, props.isTranslated, props?.msg);
 	const translatedEncryptedAndReadReceipt = `${encryptedMessageLabel} ${readReceipt}`;
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
@@ -186,8 +189,8 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 
 	return (
 		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
-			<A11yElement order={2}>
-				<View accessible={props.isTranslated} accessibilityLabel={props.msg} accessibilityLanguage='en-US' style={styles.flex}>
+			<A11yElement accessible={props.isTranslated} accessibilityLabel={props.msg} accessibilityLanguage={a11yLanguage} order={2}>
+				<View style={styles.flex}>
 					<MessageAvatar {...props} />
 					<A11yElement accessible={props.isTranslated} accessibilityLabel={translatedEncryptedAndReadReceipt} order={3}>
 						<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
