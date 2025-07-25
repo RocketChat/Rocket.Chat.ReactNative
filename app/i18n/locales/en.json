@@ -644,6 +644,7 @@
   "Read_Only": "Read only",
   "Read_only_hint": "Only channel owners can send new messages",
   "Read_Receipt": "Read receipt",
+  "Report_reason_required": "Reason required",
   "Receive_Group_Mentions": "Receive group mentions",
   "Receive_Group_Mentions_Info": "Receive @all and @here mentions",
   "Receive_Notification": "Receive notification",
