@@ -406,6 +406,7 @@
   "Read_Only": "只读",
   "Read_only_hint": "只有频道所有者可以发送新消息",
   "Read_Receipt": "查看已读人员",
+  "Report_reason_required": "原因必填",
   "Receive_Group_Mentions": "接收群组提及",
   "Receive_Group_Mentions_Info": "接收@all和@here提及",
   "Receive_Notification": "接收通知",

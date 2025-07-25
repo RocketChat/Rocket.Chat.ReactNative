@@ -423,6 +423,7 @@
   "Read_Only": "Yazma Kısıtlı",
   "Read_only_hint": "Yalnızca kanal sahipleri yeni mesajlar gönderebilir",
   "Read_Receipt": "Okundu Bilgisi",
+  "Report_reason_required": "Gerekçesi gerekiyor",
   "Receive_Group_Mentions": "Grup Bahsetmelerini Al",
   "Receive_Group_Mentions_Info": "Grup bahsetmelerini al",
   "Receive_Notification": "Bildirim Al",
