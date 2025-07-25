@@ -25,14 +25,14 @@ import { useGetItemLayout } from './hooks/useGetItemLayout';
 import { useHeader } from './hooks/useHeader';
 import { useRefresh } from './hooks/useRefresh';
 import { useSubscriptions } from './hooks/useSubscriptions';
-import { RoomsContext, RoomsProvider } from './RoomsSearchProvider';
+import { RoomsSearchContext, RoomsSearchProvider } from './RoomsSearchProvider';
 import styles from './styles';
 
 const INITIAL_NUM_TO_RENDER = isTablet ? 20 : 12;
 
 const RoomsListView = memo(function RoomsListView() {
 	useHeader();
-	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsContext);
+	const { searching, searchEnabled, searchResults, stopSearch } = useContext(RoomsSearchContext);
 	const { colors } = useTheme();
 	const username = useAppSelector(state => getUserSelector(state).username);
 	const requirePasswordChange = useAppSelector(state => getUserSelector(state).requirePasswordChange);
@@ -134,11 +134,11 @@ const RoomsListView = memo(function RoomsListView() {
 });
 
 const RoomsListViewWithProvider = () => (
-	<RoomsProvider>
+	<RoomsSearchProvider>
 		<Container>
 			<RoomsListView />
 		</Container>
-	</RoomsProvider>
+	</RoomsSearchProvider>
 );
 
 export default memo(RoomsListViewWithProvider);
