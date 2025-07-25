@@ -6,11 +6,16 @@ on:
       type:
         type: string
         required: true
+      trigger:
+        type: string
+        required: false
+        default: pr
 
 jobs:
   build-hold:
     name: Hold
     runs-on: ubuntu-latest
+    if: ${{ inputs.trigger == 'pr' }}
     environment: experimental_ios_build
     steps:
       - run: echo "Waiting for manual approval..."
@@ -19,7 +24,7 @@ jobs:
     name: Build
     runs-on: macos-15
     needs: [build-hold]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-hold.result == 'success' || needs.build-hold.result == 'skipped')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -30,9 +35,20 @@ jobs:
       - name: Generate Version Code
         id: version
         uses: ./.github/actions/generate-version-code
+        with:
+          official: false
+          os: ios
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
+          MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_REPO_PAT: ${{ secrets.FASTLANE_REPO_PAT }}
 
       - name: Build iOS
         uses: ./.github/actions/build-ios
+        timeout-minutes: 40
         with:
           type: experimental
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
@@ -49,7 +65,7 @@ jobs:
     name: Upload
     runs-on: macos-15
     needs: [build-ios]
-    if: ${{ inputs.type == 'experimental' }}
+    if: ${{ inputs.type == 'experimental' && (always() && (needs.build-ios.result == 'success')) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -61,6 +77,7 @@ jobs:
         uses: ./.github/actions/upload-ios
         with:
           type: experimental
+          trigger: ${{ inputs.trigger }}
           MATCH_KEYCHAIN_NAME: ${{ secrets.MATCH_KEYCHAIN_NAME }}
           MATCH_KEYCHAIN_PASSWORD: ${{ secrets.MATCH_KEYCHAIN_PASSWORD }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
