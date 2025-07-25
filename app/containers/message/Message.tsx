@@ -24,6 +24,7 @@ import i18n from '../../i18n';
 import { getInfoMessage } from './utils';
 import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { A11yContainer, A11yElement } from '../A11yFlow';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -138,7 +139,9 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 			!props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
 		const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 		const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
-		return `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
+		return props.isTranslated
+			? `${user} ${hour} ${translated}`
+			: `${user} ${hour} ${translated} ${label}. ${encryptedMessageLabel} ${readReceipt}`;
 	}, [
 		props.msg,
 		props.tmid,
@@ -154,7 +157,11 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 		props.unread,
 		props.isTranslated
 	]);
+	const readOrUnreadLabel = !props.unread && props.unread !== null ? i18n.t('Message_was_read') : i18n.t('Message_was_not_read');
+	const encryptedMessageLabel = props.isEncrypted ? i18n.t('Encrypted_message') : '';
+	const readReceipt = props.isReadReceiptEnabled && !props.isInfo ? readOrUnreadLabel : '';
 
+	const translatedEncryptedAndReadReceipt = `${encryptedMessageLabel} ${readReceipt}`;
 	if (props.isThreadReply || props.isThreadSequential || props.isInfo || props.isIgnored) {
 		const thread = props.isThreadReply ? <RepliedThread {...props} /> : null;
 		// Prevent misalignment of info when the font size is increased.
@@ -179,24 +186,28 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 
 	return (
 		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
-			<View style={styles.flex}>
-				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
-					<MessageInner {...props} />
+			<A11yElement order={2}>
+				<View accessible={props.isTranslated} accessibilityLabel={props.msg} accessibilityLanguage='en-US' style={styles.flex}>
+					<MessageAvatar {...props} />
+					<A11yElement accessible={props.isTranslated} accessibilityLabel={translatedEncryptedAndReadReceipt} order={3}>
+						<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+							<MessageInner {...props} />
+						</View>
+					</A11yElement>
+					{!props.isHeader ? (
+						<RightIcons
+							type={props.type}
+							msg={props.msg}
+							isEdited={props.isEdited}
+							hasError={props.hasError}
+							isReadReceiptEnabled={props.isReadReceiptEnabled}
+							unread={props.unread}
+							pinned={props.pinned}
+							isTranslated={props.isTranslated}
+						/>
+					) : null}
 				</View>
-				{!props.isHeader ? (
-					<RightIcons
-						type={props.type}
-						msg={props.msg}
-						isEdited={props.isEdited}
-						hasError={props.hasError}
-						isReadReceiptEnabled={props.isReadReceiptEnabled}
-						unread={props.unread}
-						pinned={props.pinned}
-						isTranslated={props.isTranslated}
-					/>
-				) : null}
-			</View>
+			</A11yElement>
 		</View>
 	);
 });
@@ -223,13 +234,19 @@ const MessageTouchable = React.memo((props: IMessageTouchable & IMessage & { aut
 	}
 
 	return (
-		<Touchable
-			onLongPress={onLongPress}
-			onPress={onPress}
-			disabled={(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'}
-			style={{ backgroundColor }}>
-			<Message {...props} />
-		</Touchable>
+		<A11yContainer>
+			<A11yElement order={1}>
+				<Touchable
+					onLongPress={onLongPress}
+					onPress={onPress}
+					disabled={
+						(props.isInfo && !props.isThreadReply) || props.archived || props.isTemp || props.type === 'jitsi_call_started'
+					}
+					style={{ backgroundColor }}>
+					<Message {...props} />
+				</Touchable>
+			</A11yElement>
+		</A11yContainer>
 	);
 });
 
