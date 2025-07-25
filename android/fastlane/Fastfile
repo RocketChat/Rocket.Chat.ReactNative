@@ -150,7 +150,7 @@ platform :android do
   end
 
   desc "Upload App to Play Store Production"
-  lane :experimental_production do |options|
+  lane :experimental_production
     upload_to_play_store(
       package_name: 'chat.rocket.reactnative',
       track: 'production',
@@ -159,10 +159,10 @@ platform :android do
   end
 
   desc "Upload App to Play Store Open Testing"
-  lane :official_open_testing do |options|
+  lane :official_open_testing
     upload_to_play_store(
-      package_name: 'chat.rocket.reactnative',
-      track: 'internal',
+      package_name: 'chat.rocket.android',
+      track: 'open',
       aab: 'app/build/outputs/bundle/officialRelease/app-official-release.aab'
     )
   end
