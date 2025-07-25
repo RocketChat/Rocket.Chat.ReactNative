@@ -6,7 +6,7 @@ permissions:
 on:
   push:
     branches:
-      - 'chore.gh-build-patch'
+      - 'develop'
 
 jobs:
   run-eslint-and-test:
