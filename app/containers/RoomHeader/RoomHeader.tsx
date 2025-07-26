@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import PlatformPressable from '../../lib/PlatformPressable'; 
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
 import RoomTypeIcon from '../RoomTypeIcon';
+import HeaderTitle from "../Header/components/HeaderTitle/index"; 
 import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
@@ -52,14 +52,6 @@ type TRoomHeaderSubTitle = {
 	scale: number;
 };
 
-type TRoomHeaderHeaderTitle = {
-	title?: string;
-	tmid?: string;
-	prid?: string;
-	scale: number;
-	testID?: string;
-};
-
 interface IRoomHeader {
 	title?: string;
 	subtitle?: string;
@@ -75,6 +67,7 @@ interface IRoomHeader {
 	isGroupChat?: boolean;
 	parentTitle?: string;
 	onPress: Function;
+	onTitlePress?: Function; 
 	testID?: string;
 	sourceType?: IOmnichannelSource;
 	disabled?: boolean;
@@ -100,33 +93,15 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 		);
 	}
 
-	// renderFunc
 	if (renderFunc) {
 		return renderFunc();
 	}
 
-	// subtitle
 	if (subtitle) {
 		return <MarkdownPreview msg={subtitle} style={[styles.subtitle, { fontSize, color: colors.fontSecondaryInfo }]} />;
 	}
 
 	return null;
-});
-
-const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
-	const { colors } = useTheme();
-	const { isLargeFontScale } = useResponsiveLayout();
-
-	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
-	if (!tmid && !prid) {
-		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
-				{title}
-			</Text>
-		);
-	}
-
-	return <MarkdownPreview msg={title} style={[styles.title, titleStyle]} testID={testID} />;
 });
 
 const Header = React.memo(
@@ -142,6 +117,7 @@ const Header = React.memo(
 		prid,
 		tmid,
 		onPress,
+		onTitlePress, 
 		isGroupChat,
 		teamMain,
 		testID,
@@ -189,7 +165,16 @@ const Header = React.memo(
 			);
 		}
 
-		const handleOnPress = useCallback(() => onPress(), []);
+		const handleOnPress = useCallback(() => onPress(), [onPress]);
+		const handleTitlePress = useCallback(() => onTitlePress && onTitlePress(), [onTitlePress]);
+
+		const titleStyle = { 
+			fontSize: TITLE_SIZE * scale, 
+			color: colors.fontTitlesLabels 
+		};
+
+		const formattedTitle = (!tmid && !prid) ? title : undefined;
+		const markdownTitle = (tmid || prid) ? title : undefined;
 
 		return (
 			<View
@@ -197,7 +182,11 @@ const Header = React.memo(
 				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
-				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>
+				<PlatformPressable 
+					testID='room-header' 
+					onPress={handleOnPress} 
+					disabled={disabled} 
+					hitSlop={HIT_SLOP}>
 					<View style={styles.titleContainer}>
 						{tmid ? null : (
 							<RoomTypeIcon
@@ -209,10 +198,27 @@ const Header = React.memo(
 								sourceType={sourceType}
 							/>
 						)}
-						<HeaderTitle title={title} tmid={tmid} prid={prid} scale={scale} testID={testID} />
+						
+						{formattedTitle && (
+							<HeaderTitle
+								headerTitle={formattedTitle}
+								onPress={onTitlePress ? handleTitlePress : undefined}
+								disabled={disabled}
+								testID={testID}
+								hitSlop={HIT_SLOP}
+							/>
+						)}
+						
+						{markdownTitle && (
+							<MarkdownPreview 
+								msg={markdownTitle} 
+								style={[styles.title, titleStyle]} 
+								testID={testID} 
+							/>
+						)}
 					</View>
 					<SubTitle usersTyping={tmid ? [] : usersTyping} subtitle={subtitle} renderFunc={renderFunc} scale={scale} />
-				</TouchableOpacity>
+				</PlatformPressable>
 			</View>
 		);
 	}
