@@ -4,7 +4,7 @@ onFlowStart:
   - runScript: '../scripts/setup.js'
 
 ---
-- startRecording
+- startRecording: recording
 - runFlow: ../helpers/relaunch-app.yaml
 - extendedWaitUntil:
     visible: 'Add Workspace'
