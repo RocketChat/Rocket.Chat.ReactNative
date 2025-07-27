@@ -53,3 +53,53 @@ jobs:
         with:
           name: Android Test Report
           path: maestro-report.xml
+
+  android-test-mac:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download APK
+        uses: actions/download-artifact@v4
+        with:
+          name: Android Experimental APK
+
+      - name: Install Maestro
+        run: |
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> $GITHUB_PATH
+        
+      - name: Enable KVM group permissions
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Start Android Emulator and Run Maestro Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          disk-size: 4096M
+          arch: x86_64
+          target: google_apis
+          profile: pixel_7_pro
+          script: |
+            mkdir recording
+            adb install app-experimental-release.apk
+            maestro test .maestro --format junit --output maestro-report.xml
+
+      - name: Upload Recordings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Recordings
+          path: recording/
+
+      - name: Upload Test Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Test Report
+          path: maestro-report.xml
