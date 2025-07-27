@@ -19,3 +19,5 @@ executionOrder:
     - onboarding/register/username_used.yaml
     - onboarding/register/create_account.yaml
     - onboarding/forgot_password.yaml
+    - onboarding/roomslist.yaml
+    - onboarding/server_history.yaml
