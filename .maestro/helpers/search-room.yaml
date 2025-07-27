@@ -1,4 +1,6 @@
 appId: chat.rocket.reactnative
+tags:
+  - 'skip'
 ---
 # Ensure we are on the rooms list screen
 - assertVisible:

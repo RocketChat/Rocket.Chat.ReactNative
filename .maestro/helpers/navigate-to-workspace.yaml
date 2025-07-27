@@ -1,5 +1,7 @@
 appId: chat.rocket.reactnative
 jsEngine: graaljs
+tags:
+  - 'skip'
 env:
   URL: mobile.rocket.chat
   ALT_URL: stable.rocket.chat
