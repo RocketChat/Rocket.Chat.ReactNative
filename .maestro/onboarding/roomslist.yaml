@@ -3,7 +3,6 @@ tags:
   - 'skip'
 ---
 - runFlow: ../helpers/launch-app.yaml
-- runFlow: ../helpers/register.yaml
 - runFlow: ../helpers/login.yaml
 
 - assertVisible:
