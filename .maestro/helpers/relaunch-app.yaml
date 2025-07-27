@@ -5,7 +5,3 @@ appId: chat.rocket.reactnative
     clearState: true
     permissions:
       all: allow
-
-
-   
-
