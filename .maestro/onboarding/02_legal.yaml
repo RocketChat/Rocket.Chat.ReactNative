@@ -12,6 +12,9 @@ appId: chat.rocket.reactnative
     id: 'legal-view'
 - tapOn:
     id: 'custom-header-back'
+- scrollUntilVisible:
+    element:
+      text: 'Create an account'
 - tapOn: 'Create an account'
 - assertVisible:
     id: 'register-view-more'
@@ -21,5 +24,3 @@ appId: chat.rocket.reactnative
     id: 'legal-view'
 - assertVisible:
     id: 'legal-privacy-button'
-- tapOn:
-    id: 'custom-header-back'
