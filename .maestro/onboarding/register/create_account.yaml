@@ -7,8 +7,7 @@ onFlowStart:
   
 ---
 - runFlow: ../../helpers/launch-app.yaml
-- runFlow:
-    file: ../../helpers/navigate-to-register.yaml
+- runFlow: ../../helpers/navigate-to-register.yaml
 - tapOn: Full name. Required.
 - inputText: ${output.user.name}
 - pressKey: enter

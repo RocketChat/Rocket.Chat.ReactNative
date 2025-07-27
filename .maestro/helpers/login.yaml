@@ -1,34 +1,17 @@
 appId: chat.rocket.reactnative
 tags:
-  - 'skip'
+  - 'utill'
 ---
-- runFlow:
-    when:
-      visible:
-        id: 'rooms-list-view-sidebar'
-    commands:
-      - runFlow: logout.yaml
-      - runFlow: navigate-to-workspace.yaml
-# IF not login just go back to login
+- runFlow: launch-app.yaml
+- runFlow: navigate-to-login.yaml
 - tapOn:
-    text: 'Username or email  . Error: '
-- inputText:
-    text: ${USERNAME}
-
+    id: "login-view-email"
+- inputText: working@rocket.chat
 - tapOn:
-    text: 'Password  . Error: '
-- inputText:
-    text: ${PASSWORD}
-
-- waitForAnimationToEnd:
-    timeout: 2000
+    id: "login-view-password"
+- inputText: working@rocket.chat
+- hideKeyboard
+- tapOn:
+    id: login-view-submit
 - assertVisible:
-    id: 'login-view-submit'
-- tapOn:
-    id: 'login-view-submit'
-
-- runFlow:
-    when:
-      visible: 'OK'
-    commands:
-      - tapOn: 'OK'
+    id: rooms-list-view
