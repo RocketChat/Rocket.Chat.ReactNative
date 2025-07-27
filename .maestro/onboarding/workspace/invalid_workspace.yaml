@@ -1,0 +1,16 @@
+appId: chat.rocket.reactnative
+name: Invalid Workspace
+jsEngine: graaljs
+
+---
+- runFlow: ../../helpers/launch-app.yaml
+- extendedWaitUntil:
+    visible: 'Add Workspace'
+    timeout: 60000
+- tapOn:
+    text: 'Workspace URL. Required.'
+- inputText:
+    id: 'new-server-view-input'
+    text: 'https://invalid.workspace.url'
+- tapOn: 'Connect'
+- assertVisible: 'Invalid URL'

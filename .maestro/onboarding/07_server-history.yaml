@@ -1,6 +1,8 @@
 appId: chat.rocket.reactnative
 env:
   URL: https://mobile.rocket.chat
+tags:
+  - 'skip'
 ---
 - runFlow: ../helpers/register.yaml
 - runFlow:

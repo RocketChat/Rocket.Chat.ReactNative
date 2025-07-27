@@ -1,5 +1,21 @@
 appId: chat.rocket.reactnative
 flows:
   - onboarding/*
+  - onboarding/login/*
+  - onboarding/register/*
+  - onboarding/workspace/*
 excludeTags:
   - 'skip'
+  - 'utill'
+executionOrder:
+  continueOnFailure: true
+  flowsOrder:
+    - onboarding/workspace/valid_workspace.yaml
+    - onboarding/workspace/invalid_workspace.yaml
+    - onboarding/legal.yaml
+    - onboarding/login/login.yaml
+    - onboarding/login/invalid_credentials.yaml
+    - onboarding/register/email_used.yaml
+    - onboarding/register/username_used.yaml
+    - onboarding/register/create_account.yaml
+    - onboarding/forgot_password.yaml

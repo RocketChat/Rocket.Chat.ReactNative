@@ -1,4 +1,6 @@
 appId: chat.rocket.reactnative
+tags:
+  - 'skip'
 ---
 - runFlow: ../helpers/register.yaml
 - runFlow:

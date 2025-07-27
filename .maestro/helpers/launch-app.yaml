@@ -1,0 +1,8 @@
+appId: chat.rocket.reactnative
+tags:
+  - 'utill'
+---
+- launchApp:
+    clearState: true
+    permissions:
+      all: allow

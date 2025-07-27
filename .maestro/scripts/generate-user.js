@@ -1,6 +1,5 @@
-// Random function that generates a random string
 function random(length) {
-	length = length || 10; // Default to 10 if length is not provided
+	length = length || 10;
 	var text = '';
 	var possible = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 	for (var i = 0; i < length; i++) {
@@ -8,7 +7,7 @@ function random(length) {
 	}
 	return text;
 }
-// Data object with server info and random user generation logic
+
 var data = {
 	server: 'https://mobile.rocket.chat',
 	alternateServer: 'https://stable.rocket.chat',
@@ -21,7 +20,6 @@ var data = {
 			joinCode: '123'
 		}
 	},
-	// Function to create a random user
 	randomUser: function () {
 		var randomVal = random();
 		return {
@@ -32,11 +30,6 @@ var data = {
 		};
 	}
 };
-// Generate random user
 var user = data.randomUser();
-// This will output the generated user object
 output.user = user;
-
-output.server = data.server
-
-console.log( output.server)
+output.server = data.server;
