@@ -1,27 +1,25 @@
 appId: chat.rocket.reactnative
 ---
-
 - runFlow: ../helpers/navigate-to-workspace.yaml
 
 # should insert wrong password and get error
 - tapOn:
-      text: "Username or email  . Error: "
+    text: 'Username or email  . Error: '
 - inputText:
-       text: "someusername"
+    text: 'someusername'
 - tapOn:
-      text: "Password  . Error: "
+    text: 'Password  . Error: '
 - inputText:
-       text: "NotMyActualPassword"
+    text: 'NotMyActualPassword'
 - tapOn:
-      id: "login-view-submit"
+    id: 'login-view-submit'
 - assertVisible:
-        text: "Your credentials were rejected! Please try again."
-- tapOn: "OK"
-
+    text: 'Your credentials were rejected! Please try again.'
+- tapOn: 'OK'
 
 - runFlow: ../helpers/register.yaml
-- runFlow: 
-      file: ../helpers/login.yaml
-      env: 
-        USERNAME: ${output.user.username}
-        PASSWORD: ${output.user.password}
+- runFlow:
+    file: ../helpers/login.yaml
+    env:
+      USERNAME: ${output.user.username}
+      PASSWORD: ${output.user.password}

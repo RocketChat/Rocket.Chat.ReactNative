@@ -6,29 +6,26 @@ env:
 ---
 - runFlow: relaunch-app.yaml
 - extendedWaitUntil:
-    visible: "Add Workspace"
+    visible: 'Add Workspace'
     timeout: 60000
 - tapOn:
-      text: "Workspace URL , Required . Error: "
+    text: 'Workspace URL , Required . Error: '
 - inputText: ${URL}
-- tapOn: "Connect"
-
+- tapOn: 'Connect'
 
 - waitForAnimationToEnd:
     timeout: 6000
 
 - runFlow:
     when:
-      visible: "Invalid workspace URL"
+      visible: 'Invalid workspace URL'
     commands:
-      
-        - runFlow: relaunch-app.yaml
-        - tapOn:
-             text: "Workspace URL , Required . Error: "
-        - inputText: ${ALT_URL}
-        - tapOn: "Connect"
+      - runFlow: relaunch-app.yaml
+      - tapOn:
+          text: 'Workspace URL , Required . Error: '
+      - inputText: ${ALT_URL}
+      - tapOn: 'Connect'
 
-        
 - assertVisible:
-      id: "workspace-view"
-- tapOn: "Login"
+    id: 'workspace-view'
+- tapOn: 'Login'

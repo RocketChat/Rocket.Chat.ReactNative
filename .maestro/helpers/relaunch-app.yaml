@@ -1,11 +1,7 @@
 appId: chat.rocket.reactnative
 ---
 - launchApp:
-   label: 'Launch app'
-   clearState: true
-   permissions:
-     all: allow
-
-
-   
-
+    label: 'Launch app'
+    clearState: true
+    permissions:
+      all: allow
