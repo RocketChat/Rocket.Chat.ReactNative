@@ -37,7 +37,6 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const [flashMode, setFlashMode] = useState(false);
 	const [isScanning, setIsScanning] = useState(true);
 	const [isProcessing, setIsProcessing] = useState(false);
-	const [lastScanTime, setLastScanTime] = useState(0);
 	const [showCamera, setShowCamera] = useState(false);
 
 	const isMounted = useRef(true);
@@ -78,7 +77,6 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 		useCallback(() => {
 			isMounted.current = true;
 			setFlashMode(false);
-			setLastScanTime(0);
 			setIsScanning(true);
 			setIsProcessing(false);
 
@@ -167,11 +165,8 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 	const handleBarcodeScanned = async (scanningResult: BarcodeScanningResult) => {
 		if (!isMounted.current || isProcessing) return;
 
-		const now = Date.now();
+		if (!isScanning) return;
 
-		if (now - lastScanTime < 3000 || !isScanning) return;
-
-		setLastScanTime(now);
 		setIsScanning(false);
 		setIsProcessing(true);
 
