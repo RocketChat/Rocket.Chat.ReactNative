@@ -24,6 +24,15 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -37,9 +46,12 @@ jobs:
             android/.gradle
             android/app/build/intermediates
             android/app/build/generated
-          key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}
+            android/build
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: android-build-${{ runner.os }}-${{ hashFiles('android/**/*.gradle*', 'android/**/gradle-wrapper.properties') }}
           restore-keys: |
-            build-output-
+            android-build-${{ runner.os }}-
 
       - name: Decode Keystore
         run: |
