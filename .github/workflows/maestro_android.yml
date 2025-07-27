@@ -54,6 +54,13 @@ jobs:
           name: Android Test Report
           path: maestro-report.xml
 
+      - name: Upload Maestro Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Maestro Logs
+          path: ~/.maestro/tests/
+
   android-test-mac:
     runs-on: macos-latest
 
@@ -97,3 +104,4 @@ jobs:
         with:
           name: Android Test Report
           path: maestro-report.xml
+

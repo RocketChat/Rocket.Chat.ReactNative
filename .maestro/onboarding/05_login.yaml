@@ -1,8 +1,6 @@
 appId: chat.rocket.reactnative
 ---
 - runFlow: ../helpers/navigate-to-workspace.yaml
-
-# should insert wrong password and get error
 - tapOn:
     text: 'Username or email  . Error: '
 - inputText:

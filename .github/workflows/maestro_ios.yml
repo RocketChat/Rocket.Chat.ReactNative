@@ -62,3 +62,10 @@ jobs:
         with:
           name: Test Recordings
           path: recording/
+
+      - name: Upload Maestro Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android Maestro Logs
+          path: ~/.maestro/tests/
