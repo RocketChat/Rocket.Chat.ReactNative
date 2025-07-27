@@ -1,6 +1,6 @@
 appId: chat.rocket.reactnative
 tags:
-  
+
 ---
 - runFlow: navigate-to-register.yaml
 - runScript: ../scripts/generate-user.js
