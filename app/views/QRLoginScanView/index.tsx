@@ -201,13 +201,13 @@ const QRLoginScanView = ({ navigation }: { navigation?: any }) => {
 				if (navigation && navigation.navigate) {
 					navigation.navigate('ChatsStackNavigator');
 				}
-			} else throw new Error(i18n.t('error-qr-scan-description'));
+			} else throw new Error(i18n.t('QR_Verification_Error_Description'));
 		} catch (error: any) {
 			console.log('Error sending QR code:', error);
 			setIsProcessing(false);
 			Alert.alert(
-				i18n.t('error-qr-scan'),
-				error?.data?.message ?? i18n.t('error-qr-scan-description'),
+				i18n.t('QR_Verification_Error'),
+				error?.data?.message ?? i18n.t('QR_Verification_Error_Description'),
 				[
 					{
 						text: i18n.t('Try_again'),
