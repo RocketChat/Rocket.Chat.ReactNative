@@ -32,6 +32,7 @@ jobs:
         with:
           api-level: 34
           disk-size: 4096M
+          arch: x86_64
           target: google_apis
           profile: pixel_7_pro
           script: |
