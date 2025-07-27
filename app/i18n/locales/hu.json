@@ -865,5 +865,7 @@
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
   "Your_Password_Must_Have": "A jelszavának rendelkeznie kell:",
-  "Your_workspace": "Az Ön munkaterülete"
+  "Your_workspace": "Az Ön munkaterülete",
+  "error-qr-scan": "Hiba a QR-kód beolvasásakor",
+  "error-qr-scan-description": "A QR-kód olvasása nem sikerült. Kérjük, próbálja újra, vagy ellenőrizze, hogy a kód érvényes-e."
 }

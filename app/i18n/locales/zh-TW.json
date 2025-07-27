@@ -620,5 +620,7 @@
   "Your_invite_link_will_never_expire": "您的邀請連結永久有效。",
   "Your_password_is": "您的密碼",
   "Your_Password_Must_Have": "您的密碼必須具有：",
-  "Your_workspace": "您的工作區"
+  "Your_workspace": "您的工作區",
+  "error-qr-scan": "掃描二維碼時出錯",
+  "error-qr-scan-description": "無法讀取二維碼。請重試或檢查二維碼是否有效。"
 }

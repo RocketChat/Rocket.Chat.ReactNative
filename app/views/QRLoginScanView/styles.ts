@@ -1,12 +1,10 @@
-import { Dimensions, StyleSheet, Platform } from 'react-native';
-
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+import { StyleSheet, Platform } from 'react-native';
 
 const CORNER_SIZE = 24;
 const CORNER_THICKNESS = 4;
 export const SCANNER_SIZE = 280;
 
-export const styles = StyleSheet.create({
+export const staticStyles = StyleSheet.create({
 	container: {
 		flex: 1
 	},
@@ -20,18 +18,12 @@ export const styles = StyleSheet.create({
 		right: 0,
 		bottom: 0
 	},
-	topOverlay: {
-		height: (screenHeight - SCANNER_SIZE) / 2
-	},
 	bottomOverlay: {
 		flex: 1
 	},
 	middleSection: {
 		flexDirection: 'row',
 		height: SCANNER_SIZE
-	},
-	sideOverlay: {
-		width: (screenWidth - SCANNER_SIZE) / 2
 	},
 	scannerArea: {
 		width: SCANNER_SIZE,
@@ -79,37 +71,15 @@ export const styles = StyleSheet.create({
 		lineHeight: 22,
 		marginBottom: 4
 	},
-	scannerFrame: {
-		position: 'absolute',
-		top: (screenHeight - SCANNER_SIZE) / 2,
-		left: (screenWidth - SCANNER_SIZE) / 2,
-		width: SCANNER_SIZE,
-		height: SCANNER_SIZE
-	},
 	corner: {
 		position: 'absolute',
 		width: CORNER_SIZE,
 		height: CORNER_SIZE
 	},
-	topLeft: {
-		top: -2,
-		left: -2
-	},
-	topRight: {
-		top: -2,
-		right: -2,
-		transform: [{ rotate: '90deg' }]
-	},
-	bottomLeft: {
-		bottom: -2,
-		left: -2,
-		transform: [{ rotate: '270deg' }]
-	},
-	bottomRight: {
-		bottom: -2,
-		right: -2,
-		transform: [{ rotate: '180deg' }]
-	},
+	topLeft: { top: -2, left: -2 },
+	topRight: { top: -2, right: -2, transform: [{ rotate: '90deg' }] },
+	bottomLeft: { bottom: -2, left: -2, transform: [{ rotate: '270deg' }] },
+	bottomRight: { bottom: -2, right: -2, transform: [{ rotate: '180deg' }] },
 	cornerHorizontal: {
 		position: 'absolute',
 		height: CORNER_THICKNESS,

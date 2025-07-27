@@ -328,6 +328,8 @@
   "error-team-creation": "Error team creation",
   "error-too-many-requests": "Error, too many requests. Please slow down. You must wait {{seconds}} seconds before trying again.",
   "error-you-are-last-owner": "You are the last owner. Please set new owner before leaving the room.",
+  "error-qr-scan": "Error scanning QR code",
+  "error-qr-scan-description": "Invalid QR code. Please try again. If the problem persists, contact your workspace administrator.",
   "Everyone_can_access_this_channel": "Everyone can access this channel",
   "Everyone_can_access_this_team": "Everyone can access this team",
   "Expanded": "Expanded",

@@ -745,5 +745,7 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte"
+  "Your_workspace": "Jouw werkruimte",
+  "error-qr-scan": "QR-code scannen mislukt",
+  "error-qr-scan-description": "QR-code kon niet worden gelezen. Probeer het opnieuw of controleer of de code geldig is."
 }

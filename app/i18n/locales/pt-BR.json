@@ -949,5 +949,7 @@
   "Your_password_is": "Sua senha é",
   "Your_Password_Must_Have": "Sua senha deve conter:",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace"
+  "Your_workspace": "Sua workspace",
+  "error-qr-scan": "Erro ao escanear o código QR",
+  "error-qr-scan-description": "Não foi possível ler o código QR. Por favor, tente novamente ou verifique se o código é válido."
 }

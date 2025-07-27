@@ -591,5 +591,7 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区"
+  "Your_workspace": "您的工作区",
+  "error-qr-scan": "扫描二维码时出错",
+  "error-qr-scan-description": "无法读取二维码。请重试或检查二维码是否有效。"
 }

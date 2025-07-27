@@ -792,5 +792,7 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер"
+  "Your_workspace": "Ваш сервер",
+  "error-qr-scan": "Ошибка при сканировании QR-кода",
+  "error-qr-scan-description": "Не удалось прочитать QR-код. Пожалуйста, попробуйте еще раз или проверьте, действителен ли код."
 }

@@ -861,5 +861,7 @@
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
   "Your_Password_Must_Have": "మీ పాస్‌వర్డ్ తప్పనిసరిగా ఉండాలి:",
-  "Your_workspace": "మీ వర్క్‌స్పేస్"
+  "Your_workspace": "మీ వర్క్‌స్పేస్",
+  "error-qr-scan": "QR కోడ్ స్కాన్ చేయడంలో లోపం",
+  "error-qr-scan-description": "మీ QR కోడ్ స్కాన్ చేయడంలో లోపం జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి."
 }

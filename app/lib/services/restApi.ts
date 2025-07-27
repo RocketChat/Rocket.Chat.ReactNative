@@ -1092,5 +1092,5 @@ export const getSupportedVersionsCloud = (uniqueId?: string, domain?: string) =>
 
 export const setUserPassword = (password: string) => sdk.methodCall('setUserPassword', password);
 
-export const sendScannedQRCode = (code: string) => sdk.post('oauth-apps.qrcode-verify', { code });
+export const sendScannedQRCode = (code: string) => sdk.post('qrcode.verify', { code });
 

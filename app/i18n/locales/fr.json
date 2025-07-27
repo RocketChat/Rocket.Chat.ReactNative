@@ -745,5 +745,7 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail"
+  "Your_workspace": "Votre espace de travail",
+  "error-qr-scan": "Erreur lors de la lecture du code QR",
+  "error-qr-scan-description": "Impossible de lire le code QR. Veuillez réessayer ou vérifier que le code est valide."
 }

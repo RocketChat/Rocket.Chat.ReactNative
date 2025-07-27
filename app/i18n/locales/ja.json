@@ -518,5 +518,7 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
+  "error-qr-scan": "QRコードの読み取りエラー",
+  "error-qr-scan-description": "QRコードを読み取れませんでした。もう一度お試しください、またはコードが有効か確認してください。"
 }
