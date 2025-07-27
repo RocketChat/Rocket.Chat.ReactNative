@@ -9,7 +9,7 @@ env:
     visible: 'Add Workspace'
     timeout: 60000
 - tapOn:
-    text: 'Workspace URL , Required . Error: '
+    text: 'Workspace URL. Required.'
 - inputText: ${URL}
 - tapOn: 'Connect'
 
@@ -22,7 +22,7 @@ env:
     commands:
       - runFlow: relaunch-app.yaml
       - tapOn:
-          text: 'Workspace URL , Required . Error: '
+          text: 'Workspace URL. Required.'
       - inputText: ${ALT_URL}
       - tapOn: 'Connect'
 

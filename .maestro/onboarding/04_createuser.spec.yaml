@@ -1,0 +1,4 @@
+appId: chat.rocket.reactnative
+---
+
+- runFlow: ../helpers/register.yaml
