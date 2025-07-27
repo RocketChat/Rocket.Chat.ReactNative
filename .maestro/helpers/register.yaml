@@ -5,21 +5,25 @@ tags:
 - runFlow: navigate-to-register.yaml
 - runScript: ../scripts/generate-user.js
 - tapOn:
-    text: 'Full name , Required . Error: '
+    text: 'Full name. Required.'
 - inputText:
     text: ${output.user.username}
+- pressKey: 'enter'
 - tapOn:
-    text: 'Username , Required . Error: '
+    text: 'Username. Required.'
 - inputText:
     text: ${output.user.username}
+- pressKey: 'enter'
 - tapOn:
-    text: 'Email , Required . Error: '
+    text: 'Email. Required.'
 - inputText:
     text: ${output.user.email}
+- pressKey: 'enter'
 - tapOn:
-    text: 'Password , Required . Error: '
+    text: 'Password. Required.'
 - inputText:
     text: ${output.user.password}
+- pressKey: 'enter'
 
 # For Android
 - runFlow:
@@ -34,16 +38,15 @@ tags:
     when:
       platform: iOS
     commands:
-      - tapOn: 'Confirm Password , Required . Error: '
+      - tapOn: 'Confirm Password. Required.'
       - inputText:
           text: ${output.user.password}
 
-#  Normal scrolling for reducing Platform specific scroll issue
-- scroll
-
+- scrollUntilVisible:
+    element:
+      text: 'Register'
 - tapOn: 'Register'
 
-#  Useful to get rid of `Too many requests` alert on register
 - runFlow:
     when:
       visible:

@@ -3,7 +3,6 @@ tags:
   - 'skip'
 ---
 - launchApp:
-    label: 'Launch app'
     clearState: true
     permissions:
       all: allow

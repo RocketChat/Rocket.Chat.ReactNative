@@ -6,7 +6,7 @@ env:
 
 ---
 - runFlow: navigate-to-workspace.yaml
-
+- scrollUntilVisible:
+    element:
+      text: 'Create an account'
 - tapOn: 'Create an account'
-- assertVisible:
-    id: 'register-view-more'
