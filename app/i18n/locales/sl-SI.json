@@ -239,6 +239,8 @@
   "error-invalid-room-name": "{{room_name}} ni veljavno ime sobe",
   "error-not-allowed": "Ni dovoljeno",
   "error-not-permission-to-upload-file": "Nimate pooblastil za nalaganje datotek",
+  "error-qr-scan": "Napaka pri skeniranju QR kode",
+  "error-qr-scan-description": "QR koda ni bila prebrana. Prosimo, poskusite znova ali preverite veljavnost kode.",
   "error-save-image": "Napaka pri shranjevanju slike",
   "error-save-video": "Napaka pri shranjevanju videa",
   "error-team-creation": "Napaka pri ustvarjanje ekipe",
@@ -760,7 +762,5 @@
   "Your_invite_link_will_never_expire": "Vaša povezava za povabilo ne bo nikoli potekala.",
   "Your_password_is": "Vaše geslo je",
   "Your_Password_Must_Have": "Vaše geslo mora imeti:",
-  "Your_workspace": "Vaš delovni prostor",
-  "error-qr-scan": "Napaka pri skeniranju QR kode",
-  "error-qr-scan-description": "QR koda ni bila prebrana. Prosimo, poskusite znova ali preverite veljavnost kode."
+  "Your_workspace": "Vaš delovni prostor"
 }

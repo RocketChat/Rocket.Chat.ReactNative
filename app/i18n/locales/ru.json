@@ -253,6 +253,8 @@
   "error-invalid-room-name": "{{room_name}} не является допустимым именем чата",
   "error-not-allowed": "Не допускается",
   "error-not-permission-to-upload-file": "У вас нет разрешения на загрузку файлов",
+  "error-qr-scan": "Ошибка при сканировании QR-кода",
+  "error-qr-scan-description": "Не удалось прочитать QR-код. Пожалуйста, попробуйте еще раз или проверьте, действителен ли код.",
   "error-save-image": "Ошибка при попытке сохранить изображение",
   "error-save-video": "Ошибка при попытке сохранить видео",
   "error-team-creation": "Ошибка создания Команды",
@@ -792,7 +794,5 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер",
-  "error-qr-scan": "Ошибка при сканировании QR-кода",
-  "error-qr-scan-description": "Не удалось прочитать QR-код. Пожалуйста, попробуйте еще раз или проверьте, действителен ли код."
+  "Your_workspace": "Ваш сервер"
 }

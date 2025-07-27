@@ -262,6 +262,8 @@
   "error-invalid-room-name": "{{room_name}} ei ole kelvollinen huoneen nimi",
   "error-not-allowed": "Ei sallittu",
   "error-not-permission-to-upload-file": "Sinulla ei ole oikeutta ladata tiedostoja",
+  "error-qr-scan": "QR-koodin skannauksessa tapahtui virhe",
+  "error-qr-scan-description": "QR-koodia ei voitu lukea. Yritä uudelleen tai tarkista, onko koodi voimassa.",
   "error-save-image": "Virhe tallennettaessa kuvaa",
   "error-save-video": "Virhe tallennettaessa videota",
   "error-team-creation": "Tiimin luontivirhe",
@@ -824,7 +826,5 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi",
-  "error-qr-scan": "QR-koodin skannauksessa tapahtui virhe",
-  "error-qr-scan-description": "QR-koodia ei voitu lukea. Yritä uudelleen tai tarkista, onko koodi voimassa."
+  "Your_workspace": "Työtilasi"
 }

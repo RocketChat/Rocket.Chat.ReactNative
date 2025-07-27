@@ -187,6 +187,8 @@
   "error-invalid-password": "无效的密码",
   "error-invalid-room-name": "{{room_name}} 不是合法的聊天室名称",
   "error-not-allowed": "不允许",
+  "error-qr-scan": "扫描二维码时出错",
+  "error-qr-scan-description": "无法读取二维码。请重试或检查二维码是否有效。",
   "error-save-image": "错误，无法保存图片",
   "error-save-video": "错误，无法保存視頻",
   "error-too-many-requests": "错误，请求太多。请慢一点。在再次尝试之前，必须等待{{seconds}}秒。",
@@ -591,7 +593,5 @@
   "Your_invite_link_will_never_expire": "您的邀请链接永久有效。",
   "Your_password_is": "您的密码",
   "Your_Password_Must_Have": "您的密码必须具有：",
-  "Your_workspace": "您的工作区",
-  "error-qr-scan": "扫描二维码时出错",
-  "error-qr-scan-description": "无法读取二维码。请重试或检查二维码是否有效。"
+  "Your_workspace": "您的工作区"
 }

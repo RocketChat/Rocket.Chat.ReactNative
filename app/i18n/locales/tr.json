@@ -191,6 +191,8 @@
   "error-invalid-password": "Geçersiz şifre!",
   "error-invalid-room-name": "{{room_name}}, geçerli bir oda adı değil!",
   "error-not-allowed": "İzin verilmedi",
+  "error-qr-scan": "QR kodu tarama hatası",
+  "error-qr-scan-description": "QR kodu okunamadı. Lütfen tekrar deneyin veya kodun geçerli olduğunu kontrol edin.",
   "error-save-image": "Görüntüyü kaydederken hata oluştu!",
   "error-save-video": "Videoyu kaydederken hata oluştu!",
   "error-too-many-requests": "Hata, çok fazla istek. Lütfen yavaşla. Tekrar denemeden önce {{seconds}} saniye beklemelisiniz.",
@@ -631,7 +633,5 @@
   "Your_invite_link_will_never_expire": "Davet bağlantınızın geçerlilik süresi asla dolmayacak.",
   "Your_password_is": "Şifreniz",
   "Your_Password_Must_Have": "Şifreniz:",
-  "Your_workspace": "Çalışma alanınız",
-  "error-qr-scan": "QR kodu tarama hatası",
-  "error-qr-scan-description": "QR kodu okunamadı. Lütfen tekrar deneyin veya kodun geçerli olduğunu kontrol edin."
+  "Your_workspace": "Çalışma alanınız"
 }

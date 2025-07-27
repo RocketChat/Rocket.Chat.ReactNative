@@ -228,6 +228,8 @@
   "error-invalid-room-name": "{{room_name}} is geen geldige kamernaam",
   "error-not-allowed": "Niet toegestaan",
   "error-not-permission-to-upload-file": "Je hebt geen toestemming om bestanden up te loaden",
+  "error-qr-scan": "QR-code scannen mislukt",
+  "error-qr-scan-description": "QR-code kon niet worden gelezen. Probeer het opnieuw of controleer of de code geldig is.",
   "error-save-image": "Fout bij het opslaan van afbeelding",
   "error-save-video": "Fout bij het opslaan van video",
   "error-team-creation": "Fout bij het aanmaken van team",
@@ -745,7 +747,5 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte",
-  "error-qr-scan": "QR-code scannen mislukt",
-  "error-qr-scan-description": "QR-code kon niet worden gelezen. Probeer het opnieuw of controleer of de code geldig is."
+  "Your_workspace": "Jouw werkruimte"
 }

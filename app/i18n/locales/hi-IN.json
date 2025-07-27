@@ -283,6 +283,8 @@
   "error-invalid-room-name": "{{room_name}} एक वैध कमरा नाम नहीं है",
   "error-not-allowed": "अनुमति नहीं है",
   "error-not-permission-to-upload-file": "आपको फ़ाइल अपलोड करने की अनुमति नहीं है",
+  "error-qr-scan": "QR कोड स्कैन करने में त्रुटि",
+  "error-qr-scan-description": "QR कोड को पढ़ा नहीं जा सका। कृपया पुनः प्रयास करें या कोड की वैधता की जांच करें।",
   "error-save-image": "छवि सहेजते समय त्रुटि",
   "error-save-video": "वीडियो सहेजते समय त्रुटि",
   "error-team-creation": "टीम बनाने में त्रुटि",
@@ -862,7 +864,5 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान",
-  "error-qr-scan": "QR कोड स्कैन करने में त्रुटि",
-  "error-qr-scan-description": "QR कोड को पढ़ा नहीं जा सका। कृपया पुनः प्रयास करें या कोड की वैधता की जांच करें।"
+  "Your_workspace": "आपका कार्यस्थान"
 }

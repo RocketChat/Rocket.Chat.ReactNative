@@ -136,6 +136,8 @@
   "error-invalid-password": "La contraseña no es correcta",
   "error-invalid-room-name": "No se puede asignar el nombre {{room_name}} a una sala.",
   "error-not-allowed": "No permitido",
+  "error-qr-scan": "Error al escanear el código QR",
+  "error-qr-scan-description": "No se pudo leer el código QR. Por favor, inténtalo de nuevo o verifica que el código sea válido.",
   "error-too-many-requests": "Error, demasiadas peticiones. Debes esperar {{seconds}} segundos antes de continuar. Por favor, sé paciente.",
   "error-you-are-last-owner": "Eres el único propietario existente. Debes establecer un nuevo propietario antes de abandonar la sala.",
   "Everyone_can_access_this_channel": "Todos los usuarios pueden acceder a este canal",
@@ -410,7 +412,5 @@
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
   "Your_certificate": "Tu certificado",
-  "Your_Password_Must_Have": "Su contraseña debe tener:",
-  "error-qr-scan": "Error al escanear el código QR",
-  "error-qr-scan-description": "No se pudo leer el código QR. Por favor, inténtalo de nuevo o verifica que el código sea válido."
+  "Your_Password_Must_Have": "Su contraseña debe tener:"
 }

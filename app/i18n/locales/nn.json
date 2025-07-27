@@ -135,6 +135,8 @@
   "error-invalid-password": "Ugyldig passord",
   "error-no-tokens-for-this-user": "Det er ingen tokens for denne brukeren",
   "error-not-allowed": "Ikke tillatt",
+  "error-qr-scan": "Feil ved skanning av QR-kode",
+  "error-qr-scan-description": "QR-koden kunne ikke leses. Vennligst prøv igjen eller sjekk om koden er gyldig.",
   "error-too-many-requests": "Feil, for mange forespørsler. Vennligst senke farten. Du må vente {{seconds}} sekunder før du prøver igjen.",
   "error-you-are-last-owner": "Du er den siste eieren. Vennligst sett inn ny eier før du forlater rommet.",
   "Everyone_can_access_this_channel": "Alle kan få tilgang til denne kanalen",
@@ -364,7 +366,5 @@
   "You_will_not_be_able_to_recover_this_message": "Du vil ikke kunne gjenopprette denne meldingen!",
   "Your_invite_link_will_expire_after__usesLeft__uses": "Invitasjonslenken din utløper etter {{usesLeft}} anvendelser.",
   "Your_invite_link_will_expire_on__date__": "Invitasjonslenken din utløper {{date}}.",
-  "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser.",
-  "error-qr-scan": "Feil ved skanning av QR-kode",
-  "error-qr-scan-description": "QR-koden kunne ikke leses. Vennligst prøv igjen eller sjekk om koden er gyldig."
+  "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "Invitasjonskoblingen din utløper {{date}} eller etter  {{usesLeft}} anvendelser."
 }

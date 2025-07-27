@@ -203,6 +203,8 @@
   "error-invalid-room-name": "{{room_name}} non è un nome di stanza valido",
   "error-not-allowed": "Non permesso",
   "error-not-permission-to-upload-file": "Non hai l'autorizzazione per caricare file",
+  "error-qr-scan": "Errore durante la scansione del codice QR",
+  "error-qr-scan-description": "Impossibile leggere il codice QR. Riprova o verifica che il codice sia valido.",
   "error-save-image": "Errore nel salvataggio dell'immagine",
   "error-save-video": "Errore nel salvataggio del video",
   "error-too-many-requests": "Errore, troppe richieste effettuate. Rallenta. Devi attendere {{seconds}} secondi prima di riprovare.",
@@ -648,7 +650,5 @@
   "Your_invite_link_will_never_expire": "Il tuo link di invito non scadrà mai.",
   "Your_password_is": "La tua password è",
   "Your_Password_Must_Have": "La tua password deve avere:",
-  "Your_workspace": "Il tuo workspace",
-  "error-qr-scan": "Errore durante la scansione del codice QR",
-  "error-qr-scan-description": "Impossibile leggere il codice QR. Riprova o verifica che il codice sia valido."
+  "Your_workspace": "Il tuo workspace"
 }

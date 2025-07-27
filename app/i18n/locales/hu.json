@@ -283,6 +283,8 @@
   "error-invalid-room-name": "{{room_name}} nem érvényes szobanév",
   "error-not-allowed": "Nem engedélyezett",
   "error-not-permission-to-upload-file": "Nincs jogosultsága fájlok feltöltéséhez",
+  "error-qr-scan": "Hiba a QR-kód beolvasásakor",
+  "error-qr-scan-description": "A QR-kód olvasása nem sikerült. Kérjük, próbálja újra, vagy ellenőrizze, hogy a kód érvényes-e.",
   "error-save-image": "Hiba a kép mentése közben",
   "error-save-video": "Hiba a videó mentése közben",
   "error-team-creation": "Hiba csapat létrehozásakor",
@@ -865,7 +867,5 @@
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
   "Your_Password_Must_Have": "A jelszavának rendelkeznie kell:",
-  "Your_workspace": "Az Ön munkaterülete",
-  "error-qr-scan": "Hiba a QR-kód beolvasásakor",
-  "error-qr-scan-description": "A QR-kód olvasása nem sikerült. Kérjük, próbálja újra, vagy ellenőrizze, hogy a kód érvényes-e."
+  "Your_workspace": "Az Ön munkaterülete"
 }

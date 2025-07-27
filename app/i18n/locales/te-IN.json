@@ -282,6 +282,8 @@
   "error-invalid-room-name": "{{room_name}} చెల్లని కొరకు పేరు",
   "error-not-allowed": "అనుమతి లేదు",
   "error-not-permission-to-upload-file": "మీకు ఫైలులను అప్‌లోడ్ చేయడానికి అనుమతి లేదు",
+  "error-qr-scan": "QR కోడ్ స్కాన్ చేయడంలో లోపం",
+  "error-qr-scan-description": "మీ QR కోడ్ స్కాన్ చేయడంలో లోపం జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.",
   "error-save-image": "చిత్రం సేవ్ చేయడంలో లోపం",
   "error-save-video": "వీడియోను సేవ్ చేయడంలో లోపం",
   "error-team-creation": "తప్పిదమైన టీమ్ సృష్టి",
@@ -861,7 +863,5 @@
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
   "Your_Password_Must_Have": "మీ పాస్‌వర్డ్ తప్పనిసరిగా ఉండాలి:",
-  "Your_workspace": "మీ వర్క్‌స్పేస్",
-  "error-qr-scan": "QR కోడ్ స్కాన్ చేయడంలో లోపం",
-  "error-qr-scan-description": "మీ QR కోడ్ స్కాన్ చేయడంలో లోపం జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి."
+  "Your_workspace": "మీ వర్క్‌స్పేస్"
 }

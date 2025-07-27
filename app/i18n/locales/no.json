@@ -309,6 +309,8 @@
   "error-no-tokens-for-this-user": "Det er ingen tokens for denne brukeren",
   "error-not-allowed": "Ikke tillatt",
   "error-not-permission-to-upload-file": "Du har ikke tillatelse til å laste opp filer",
+  "error-qr-scan": "Feil ved skanning av QR-kode",
+  "error-qr-scan-description": "QR-koden kunne ikke leses. Vennligst prøv igjen eller sjekk om koden er gyldig.",
   "error-save-image": "Feil med lagring av bilde",
   "error-save-video": "Feil med lagring av video",
   "error-team-creation": "Feil ved opprettelse av arbeidsområde",
@@ -915,7 +917,5 @@
   "Your_invite_link_will_never_expire": "Invitasjonslenken din vil aldri utløpe.",
   "Your_password_is": "Passordet ditt er",
   "Your_Password_Must_Have": "Passordet ditt må inneholde:",
-  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter",
-  "error-qr-scan": "Feil ved skanning av QR-kode",
-  "error-qr-scan-description": "QR-koden kunne ikke leses. Vennligst prøv igjen eller sjekk om koden er gyldig."
+  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter"
 }

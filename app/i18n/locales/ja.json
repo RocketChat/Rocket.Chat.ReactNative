@@ -178,6 +178,8 @@
   "error-invalid-room-name": "{{room_name}}は正しいルーム名ではありません。",
   "error-not-allowed": "許可されていません。",
   "error-not-permission-to-upload-file": "ファイルをアップロードする権限がありません",
+  "error-qr-scan": "QRコードの読み取りエラー",
+  "error-qr-scan-description": "QRコードを読み取れませんでした。もう一度お試しください、またはコードが有効か確認してください。",
   "error-save-image": "画像の保存に失敗しました。",
   "error-save-video": "動画の保存中にエラーが発生しました",
   "error-too-many-requests": "エラーです。リクエストが多すぎます。リクエストの頻度を落としてください。{{seconds}} 秒以上待ってから再度お試しください。",
@@ -518,7 +520,5 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
-  "error-qr-scan": "QRコードの読み取りエラー",
-  "error-qr-scan-description": "QRコードを読み取れませんでした。もう一度お試しください、またはコードが有効か確認してください。"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
 }

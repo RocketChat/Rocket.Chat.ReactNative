@@ -173,6 +173,8 @@
   "error-invalid-password": "Palavra-passe inválida",
   "error-invalid-room-name": "{{room_name}} não é um nome de sala válido",
   "error-not-allowed": "Não permitido",
+  "error-qr-scan": "Erro ao escanear o QR Code",
+  "error-qr-scan-description": "Por favor, tente novamente. Se o problema persistir, verifique se o seu dispositivo está conectado à internet.",
   "error-save-image": "Erro ao salvar imagem",
   "error-save-video": "Erro ao salvar vídeo",
   "error-too-many-requests": "Erro, demasiados pedidos. Por favor, diminua a velocidade. Você deve esperar {{seconds}} segundos antes de tentar novamente.",
@@ -479,7 +481,5 @@
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
-  "Your_Password_Must_Have": "Sua senha deve ter:",
-  "error-qr-scan":"Erro ao escanear o QR Code",
-  "error-qr-scan-description":"Por favor, tente novamente. Se o problema persistir, verifique se o seu dispositivo está conectado à internet."
+  "Your_Password_Must_Have": "Sua senha deve ter:"
 }

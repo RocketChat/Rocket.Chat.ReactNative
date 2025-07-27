@@ -283,6 +283,8 @@
   "error-invalid-room-name": "{{room_name}} একটি বৈধ রুম নয়",
   "error-not-allowed": "অনুমোদিত নয়",
   "error-not-permission-to-upload-file": "আপলোড করতে আপনার অনুমতি নেই",
+  "error-qr-scan": "QR কোড স্ক্যান করার সময় ত্রুটি",
+  "error-qr-scan-description": "QR কোডটি পড়া যায়নি। দয়া করে আবার চেষ্টা করুন বা কোডটি বৈধ কিনা তা পরীক্ষা করুন।",
   "error-save-image": "ছবি সংরক্ষণে সমস্যা হয়েছে",
   "error-save-video": "ভিডিও সংরক্ষণে সমস্যা হয়েছে",
   "error-team-creation": "দল তৈরি সময় ত্রুটি",
@@ -862,7 +864,5 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস",
-  "error-qr-scan": "QR কোড স্ক্যান করার সময় ত্রুটি",
-  "error-qr-scan-description": "QR কোডটি পড়া যায়নি। দয়া করে আবার চেষ্টা করুন বা কোডটি বৈধ কিনা তা পরীক্ষা করুন।"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস"
 }

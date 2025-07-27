@@ -228,6 +228,8 @@
   "error-invalid-room-name": "{{room_name}} n'est pas un nom de salon valide",
   "error-not-allowed": "Interdit",
   "error-not-permission-to-upload-file": "Vous n'êtes pas autorisé à envoyer des fichiers",
+  "error-qr-scan": "Erreur lors de la lecture du code QR",
+  "error-qr-scan-description": "Impossible de lire le code QR. Veuillez réessayer ou vérifier que le code est valide.",
   "error-save-image": "Erreur lors de l'enregistrement de l'image",
   "error-save-video": "Erreur en sauvegardant la vidéo",
   "error-team-creation": "Erreur de création d'équipe",
@@ -745,7 +747,5 @@
   "Your_invite_link_will_never_expire": "Votre lien d'invitation n'expirera jamais.",
   "Your_password_is": "Votre mot de passe est",
   "Your_Password_Must_Have": "Votre mot de passe doit avoir:",
-  "Your_workspace": "Votre espace de travail",
-  "error-qr-scan": "Erreur lors de la lecture du code QR",
-  "error-qr-scan-description": "Impossible de lire le code QR. Veuillez réessayer ou vérifier que le code est valide."
+  "Your_workspace": "Votre espace de travail"
 }

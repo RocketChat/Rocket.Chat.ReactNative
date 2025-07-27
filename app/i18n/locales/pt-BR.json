@@ -313,6 +313,8 @@
   "error-no-tokens-for-this-user": "Não existem tokens para este usuário",
   "error-not-allowed": "Não permitido",
   "error-not-permission-to-upload-file": "Você não tem permissão para enviar arquivos",
+  "error-qr-scan": "Erro ao escanear o código QR",
+  "error-qr-scan-description": "Não foi possível ler o código QR. Por favor, tente novamente ou verifique se o código é válido.",
   "error-save-image": "Erro ao salvar imagem",
   "error-save-video": "Erro ao salvar vídeo",
   "error-team-creation": "Erro na criação do time",
@@ -949,7 +951,5 @@
   "Your_password_is": "Sua senha é",
   "Your_Password_Must_Have": "Sua senha deve conter:",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace",
-  "error-qr-scan": "Erro ao escanear o código QR",
-  "error-qr-scan-description": "Não foi possível ler o código QR. Por favor, tente novamente ou verifique se o código é válido."
+  "Your_workspace": "Sua workspace"
 }

@@ -262,6 +262,8 @@
   "error-invalid-room-name": "{{room_name}} är inte ett giltigt rumsnamn",
   "error-not-allowed": "Tillåts inte",
   "error-not-permission-to-upload-file": "Du har inte behörighet att ladda upp filer",
+  "error-qr-scan": "Fel vid skanning av QR-kod",
+  "error-qr-scan-description": "QR-koden kunde inte läsas. Vänligen försök igen eller kontrollera om koden är giltig.",
   "error-save-image": "Fel när bilden skulle sparas",
   "error-save-video": "Fel när videon skulle sparas",
   "error-team-creation": "Ett fel inträffade när teamet skulle skapas",
@@ -822,7 +824,5 @@
   "Your_invite_link_will_never_expire": "Inbjudningslänken upphör aldrig att gälla.",
   "Your_password_is": "Ditt lösenord är",
   "Your_Password_Must_Have": "Ditt lösenord måste ha:",
-  "Your_workspace": "Din arbetsyta",
-  "error-qr-scan": "Fel vid skanning av QR-kod",
-  "error-qr-scan-description": "QR-koden kunde inte läsas. Vänligen försök igen eller kontrollera om koden är giltig."
+  "Your_workspace": "Din arbetsyta"
 }

@@ -277,6 +277,8 @@
   "error-invalid-room-name": "{{room_name}} ist kein gültiger Room-Name",
   "error-not-allowed": "Nicht erlaubt",
   "error-not-permission-to-upload-file": "Sie haben keine Berechtigung zum Hochladen von Dateien",
+  "error-qr-scan": "Fehler beim Scannen des QR-Codes",
+  "error-qr-scan-description": "QR-Code konnte nicht gelesen werden. Bitte versuchen Sie es erneut oder überprüfen Sie, ob der Code gültig ist.",
   "error-save-image": "Fehler beim Speichern des Bildes",
   "error-save-video": "Fehler beim Speichern des Videos",
   "error-team-creation": "Fehler bei der Erstellung des Teams",
@@ -852,7 +854,5 @@
   "Your_invite_link_will_never_expire": "Ihr Einladungs-Link wird niemals ablaufen.",
   "Your_password_is": "Ihr Passwort lautet",
   "Your_Password_Must_Have": "Ihr Passwort muss:",
-  "Your_workspace": "Ihr Arbeitsbereich",
-  "error-qr-scan": "Fehler beim Scannen des QR-Codes",
-  "error-qr-scan-description": "QR-Code konnte nicht gelesen werden. Bitte versuchen Sie es erneut oder überprüfen Sie, ob der Code gültig ist."
+  "Your_workspace": "Ihr Arbeitsbereich"
 }
