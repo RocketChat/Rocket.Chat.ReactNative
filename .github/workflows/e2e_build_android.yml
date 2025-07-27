@@ -24,36 +24,11 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Cache Android SDK
-        uses: actions/cache@v4
-        with:
-          path: |
-            $HOME/Android/Sdk
-          key: android-sdk-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            android-sdk-${{ runner.os }}-
-
-      - name: Install Required Android SDK Packages
-        run: |
-          yes | sdkmanager --licenses
-          sdkmanager "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393"
-
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
-
-      - name: Cache Gradle Caches
-        uses: actions/cache@v4
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-            ~/.gradle/build-cache-1
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            gradle-${{ runner.os }}-
+          gradle-version: wrapper
+          cache-read-only: false
 
       - name: Cache Android build output 
         uses: actions/cache@v4
@@ -62,7 +37,7 @@ jobs:
             android/.gradle
             android/app/build/intermediates
             android/app/build/generated
-          key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}-${{ hashFiles('android') }}
+          key: build-output-${{ hashFiles('android/app/src/**', '**/*.gradle*') }}
           restore-keys: |
             build-output-
 
@@ -80,7 +55,7 @@ jobs:
           
       - name: Build Android Release APK
         working-directory: android
-        run: ./gradlew assembleExperimentalRelease --build-cache --configuration-cache --parallel --max-workers=2
+        run: ./gradlew assembleExperimentalRelease --build-cache --configuration-cache --parallel --max-workers=4
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
