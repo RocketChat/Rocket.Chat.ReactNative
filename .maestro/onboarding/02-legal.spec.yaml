@@ -1,0 +1,25 @@
+appId: chat.rocket.reactnative
+---
+- runFlow:
+    file: ../helpers/navigate-to-workspace.yaml
+    env:
+      URL: open.rocket.chat
+- assertVisible:
+      id: "login-view-more"
+- tapOn:
+    id: "login-view-more"
+- assertVisible:
+      id: "legal-view"
+- tapOn:
+      id: "custom-header-back"
+- tapOn: "Create an account"
+- assertVisible:
+      id: "register-view-more"
+- tapOn:
+    id: "register-view-more"
+- assertVisible:
+      id: "legal-view"
+- assertVisible:
+    id: "legal-privacy-button"
+- tapOn:
+      id: "custom-header-back"

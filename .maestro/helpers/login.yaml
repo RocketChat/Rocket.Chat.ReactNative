@@ -1,0 +1,34 @@
+appId: chat.rocket.reactnative
+---
+#  IF login then logout
+- runFlow:
+    when: 
+       visible: 
+          id: "rooms-list-view-sidebar"
+    commands:
+        - runFlow: logout.yaml
+        - runFlow: navigate-to-workspace.yaml
+# IF not login just go back to login 
+- tapOn:
+      text: "Username or email  . Error: "
+- inputText:
+       text: ${USERNAME}
+
+- tapOn:
+      text: "Password  . Error: "
+- inputText:
+       text: ${PASSWORD}
+
+
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible:
+      id: "login-view-submit"
+- tapOn:
+      id: "login-view-submit"
+
+- runFlow:
+    when:
+      visible: "OK"
+    commands:
+       - tapOn: "OK"
