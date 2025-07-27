@@ -81,6 +81,6 @@ e2e/docker/data/db
 e2e/e2e_account.js
 e2e/e2e_account.ts
 **/e2e_account.js
-
+**/e2e_account.ts
 
 *.p8

@@ -1,7 +1,6 @@
 const data = {
 	server: 'https://mobile.rocket.chat',
 	alternateServer: 'https://stable.rocket.chat',
-	...account,
 	channels: {
 		detoxpublic: {
 			name: 'detox-public'
@@ -22,4 +21,4 @@ const data = {
 	}
 };
 
-export default data;
+output.data = data;

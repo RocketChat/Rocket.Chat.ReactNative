@@ -1,21 +1,33 @@
 appId: chat.rocket.reactnative
+jsEngine: graaljs
+onFlowStart:
+  - runScript: "../scripts/setup.js"
 
 ---
 - runFlow: ../helpers/relaunch-app.yaml
 - extendedWaitUntil:
     visible: 'Add Workspace'
-    timeout: 60000  
+    timeout: 60000
 - tapOn:
     text: 'Workspace URL. Required.'
 - inputText:
     id: 'new-server-view-input'
-    text: 'invalidtest'
+    text: 'https://invalid.workspace.url'
 - tapOn: 'Connect'
 - assertVisible: 'Invalid URL'
 
+- runFlow: ../helpers/relaunch-app.yaml
+- extendedWaitUntil:
+    visible: 'Add Workspace'
+    timeout: 60000
 - tapOn:
     text: 'Workspace URL. Required.'
 - inputText:
-    id: 'new-server-view-input'
-    text: 
-- tapOn: 'Connect' 
+    text: ${output.data.server}
+- tapOn: 'Connect'
+- extendedWaitUntil:
+    visible: 'Login'
+    timeout: 60000
+- extendedWaitUntil:
+    visible: 'Create an account'
+    timeout: 60000
