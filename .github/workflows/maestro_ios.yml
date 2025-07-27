@@ -47,7 +47,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          maestro test .maestro/config.yml --format junit --output maestro-report.xml
+          maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Test Report
         if: always()
