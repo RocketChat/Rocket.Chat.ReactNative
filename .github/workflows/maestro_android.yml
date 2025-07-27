@@ -42,12 +42,14 @@ jobs:
             maestro test .maestro --format junit --output maestro-report.xml
 
       - name: Upload Recordings
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test Recordings
           path: recording/
 
       - name: Upload Test Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Android Test Report

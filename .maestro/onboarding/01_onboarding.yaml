@@ -4,6 +4,7 @@ onFlowStart:
   - runScript: '../scripts/setup.js'
 
 ---
+- startRecording
 - runFlow: ../helpers/relaunch-app.yaml
 - extendedWaitUntil:
     visible: 'Add Workspace'
@@ -31,3 +32,4 @@ onFlowStart:
 - extendedWaitUntil:
     visible: 'Create an account'
     timeout: 60000
+- stopRecording
