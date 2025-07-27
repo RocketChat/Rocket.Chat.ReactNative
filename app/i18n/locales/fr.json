@@ -500,6 +500,7 @@
   "Read_Only": "Lecture seule",
   "Read_only_hint": "Seuls les propriétaires de canaux peuvent envoyer de nouveaux messages",
   "Read_Receipt": "Accusé de réception",
+  "Report_reason_required": "Raison requise",
   "Receive_Group_Mentions": "Recevoir des mentions de groupe",
   "Receive_Group_Mentions_Info": "Recevoir des mentions @all et @here",
   "Receive_Notification": "Recevoir une notification",

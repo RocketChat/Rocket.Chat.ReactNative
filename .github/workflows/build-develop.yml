@@ -1,17 +1,12 @@
-name: Build PR
+name: Build Develop
 
 permissions:
   contents: read
-  pull-requests: write
 
 on:
-  pull_request:
+  push:
     branches:
-      - '*'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+      - 'develop'
 
 jobs:
   run-eslint-and-test:
@@ -27,7 +22,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
-      trigger: "pr"
+      trigger: develop
 
   android-build-official-store:
     name: Build Android Official
@@ -37,7 +32,7 @@ jobs:
     secrets: inherit
     with:
       type: official
-      trigger: "pr"
+      trigger: develop
 
   ios-build-experimental-store:
     name: Build iOS Experimental
@@ -47,7 +42,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
-      trigger: "pr"
+      trigger: develop
       
   ios-build-official-store:
     name: Build iOS Official
@@ -57,4 +52,4 @@ jobs:
     secrets: inherit
     with:
       type: official
-      trigger: "pr"
+      trigger: develop
