@@ -1,7 +1,7 @@
 appId: chat.rocket.reactnative
 jsEngine: graaljs
 onFlowStart:
-  - runScript: "../scripts/setup.js"
+  - runScript: '../scripts/setup.js'
 
 ---
 - runFlow: ../helpers/relaunch-app.yaml
