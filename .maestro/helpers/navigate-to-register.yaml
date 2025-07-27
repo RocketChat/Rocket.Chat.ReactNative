@@ -1,11 +1,10 @@
 appId: chat.rocket.reactnative
 env:
   URL: open.rocket.chat
-  
 
 ---
 - runFlow: navigate-to-workspace.yaml
 
-- tapOn: "Create an account"
+- tapOn: 'Create an account'
 - assertVisible:
-      id: "register-view-more"
+    id: 'register-view-more'
