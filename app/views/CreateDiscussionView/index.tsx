@@ -120,7 +120,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		dispatch(createDiscussionRequest(params));
 	};
 
-	// Accessibility: announce field error to screen reader
 	useA11yErrorAnnouncement({ error: errors.name?.message });
 
 	useEffect(() => {
