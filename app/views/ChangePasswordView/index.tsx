@@ -184,7 +184,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 	}, [navigation, serverURL]);
 
 	return (
-		<KeyboardView>
+		<KeyboardView backgroundColor={colors.surfaceTint}>
 			<StatusBar />
 			<SafeAreaView testID='change-password-view'>
 				<ScrollView
@@ -249,9 +249,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 						) : null}
 					</View>
 
-					{passwordPolicies && newPassword?.length > 0 ? (
-						<PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} />
-					) : null}
+					{passwordPolicies ? <PasswordPolicies isDirty={isDirty} password={newPassword} policies={passwordPolicies} /> : null}
 
 					<View style={{ columnGap: 12 }}>
 						<Button title={I18n.t('Cancel')} type='secondary' onPress={onCancel} testID='change-password-view-cancel-button' />
