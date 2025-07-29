@@ -1,5 +1,8 @@
 {
   "1_person_reacted": "تفاعل شخص واحد",
+  "A11y_appearance_dialog_require_manual_dismissal": "يتطلب إنهاء يدويًا",
+  "A11y_appearance_dialogs": "حوارات",
+  "A11y_appearance_toasts": "نخب",
   "Accessibility": "إمكانية الوصول",
   "Accessibility_and_Appearance": "إمكانية الوصول والمظهر",
   "Accessibility_statement": "بيان الوصول",
