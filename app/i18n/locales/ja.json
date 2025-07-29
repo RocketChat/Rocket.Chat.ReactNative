@@ -1,5 +1,8 @@
 {
   "1_person_reacted": "1人がリアクション",
+  "A11y_appearance_dialog_require_manual_dismissal": "手動での解除が必要です。",
+  "A11y_appearance_dialogs": "ダイアログ",
+  "A11y_appearance_toasts": "トースト",
   "Accessibility": "アクセシビリティ",
   "Accessibility_and_Appearance": "アクセシビリティと外観",
   "Accessibility_statement": "アクセシビリティ声明",
