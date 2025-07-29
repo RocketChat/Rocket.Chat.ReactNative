@@ -12,8 +12,14 @@ interface IUseA11yErrorAnnouncement {
 const useA11yErrorAnnouncement = ({ errors }: IUseA11yErrorAnnouncement) => {
 	const previousMessages = useRef<FieldErrorsImpl<any>>(errors);
 	const announced = useRef<Record<string, boolean>>({});
-
 	const handleA11yAnnouncement = useDebounce(() => {
+		const hasError = Object.keys(errors).length;
+		if (!hasError) {
+			announced.current = {};
+			previousMessages.current = {};
+			return;
+		}
+
 		Object.entries(errors).forEach(([fieldName, error]: [string, any]) => {
 			const message = error?.message?.trim();
 
