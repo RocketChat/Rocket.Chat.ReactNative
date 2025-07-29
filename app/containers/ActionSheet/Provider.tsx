@@ -6,6 +6,7 @@ import ActionSheet from './ActionSheet';
 
 export type TActionSheetOptionsItem = {
 	title: string;
+	subtitle?: string;
 	icon?: TIconsName;
 	danger?: boolean;
 	testID?: string;
