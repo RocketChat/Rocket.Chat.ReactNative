@@ -12,6 +12,7 @@ import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';
 import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY, AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
+import ListPicker from './components/ListPicker';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
@@ -47,6 +48,7 @@ const AccessibilityAndAppearanceView = () => {
 				: () => <HeaderButton.Drawer navigation={navigation} testID='accessibility-view-drawer' />
 		});
 	}, []);
+
 	return (
 		<SafeAreaView>
 			<StatusBar />
@@ -93,6 +95,11 @@ const AccessibilityAndAppearanceView = () => {
 						right={renderRoomsWithHashTagSwitch}
 						onPress={toggleRoomsWithHashTag}
 					/>
+					<List.Separator />
+				</List.Section>
+				<List.Section>
+					<List.Separator />
+					<ListPicker onChangeValue={() => {}} title='Show alert' value='Toasts' />
 					<List.Separator />
 				</List.Section>
 			</List.Container>

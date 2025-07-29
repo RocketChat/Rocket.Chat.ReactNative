@@ -45,6 +45,11 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 					<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
 						{item.title}
 					</Text>
+					{item?.subtitle ? (
+						<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
+							{item.subtitle}
+						</Text>
+					) : null}
 				</View>
 				{item.right ? <View style={styles.rightContainer}>{item.right ? item.right() : null}</View> : null}
 			</Touch>
