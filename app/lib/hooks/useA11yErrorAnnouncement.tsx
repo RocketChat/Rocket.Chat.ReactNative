@@ -5,17 +5,17 @@ import { FieldErrorsImpl } from 'react-hook-form';
 import { useDebounce } from '../methods/helpers';
 import { accessibilityErrorAnnouncementDebounceTime } from '../constants';
 
-type TFormValues = {
+type TInputValues = {
 	[key: string]: any;
 };
 
 interface IUseA11yErrorAnnouncement {
 	errors: FieldErrorsImpl<any>;
-	inputValues: TFormValues;
+	inputValues: TInputValues;
 }
 
 const useA11yErrorAnnouncement = ({ errors, inputValues }: IUseA11yErrorAnnouncement) => {
-	const previousInputValues = useRef<TFormValues>(inputValues);
+	const previousInputValues = useRef<TInputValues>(inputValues);
 
 	const handleA11yAnnouncement = useDebounce(() => {
 		const hasError = Object.keys(errors).length;
