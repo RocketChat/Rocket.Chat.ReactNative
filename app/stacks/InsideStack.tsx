@@ -36,6 +36,7 @@ import CannedResponseDetail from '../views/CannedResponseDetail';
 import ProfileView from '../views/ProfileView';
 import UserPreferencesView from '../views/UserPreferencesView';
 import UserNotificationPrefView from '../views/UserNotificationPreferencesView';
+import ChangePasswordView from '../views/ChangePasswordView';
 // Display Preferences View
 import DisplayPrefsView from '../views/DisplayPrefsView';
 // Settings Stack
@@ -162,6 +163,7 @@ const ProfileStackNavigator = () => {
 	return (
 		<ProfileStack.Navigator screenOptions={{ ...defaultHeader, ...themedHeader(theme) }}>
 			<ProfileStack.Screen name='ProfileView' component={ProfileView} />
+			<ProfileStack.Screen name='ChangePasswordView' component={ChangePasswordView} />
 			<ProfileStack.Screen name='UserPreferencesView' component={UserPreferencesView} />
 			<ProfileStack.Screen name='ChangeAvatarView' component={ChangeAvatarView} />
 			<ProfileStack.Screen name='UserNotificationPrefView' component={UserNotificationPrefView} />
