@@ -108,7 +108,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const newPassword = watch('newPassword') ?? '';
+	const inputValues = watch();
+	const newPassword = inputValues.newPassword || '';
 	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
@@ -255,7 +256,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 	};
 
-	useA11yErrorAnnouncement({ errors });
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {

@@ -5,34 +5,34 @@ import { FieldErrorsImpl } from 'react-hook-form';
 import { useDebounce } from '../methods/helpers';
 import { accessibilityErrorAnnouncementDebounceTime } from '../constants';
 
+type TFormValues = {
+	[key: string]: any;
+};
+
 interface IUseA11yErrorAnnouncement {
 	errors: FieldErrorsImpl<any>;
+	inputValues: TFormValues;
 }
 
-const useA11yErrorAnnouncement = ({ errors }: IUseA11yErrorAnnouncement) => {
-	const previousMessages = useRef<FieldErrorsImpl<any>>(errors);
-	const announced = useRef<Record<string, boolean>>({});
+const useA11yErrorAnnouncement = ({ errors, inputValues }: IUseA11yErrorAnnouncement) => {
+	const previousInputValues = useRef<TFormValues>(inputValues);
+
 	const handleA11yAnnouncement = useDebounce(() => {
 		const hasError = Object.keys(errors).length;
+
 		if (!hasError) {
-			announced.current = {};
-			previousMessages.current = {};
+			previousInputValues.current = inputValues;
 			return;
 		}
 
 		Object.entries(errors).forEach(([fieldName, error]: [string, any]) => {
 			const message = error?.message?.trim();
-
-			if (message && message !== previousMessages.current[fieldName] && !announced.current[fieldName]) {
+			if (message && inputValues[fieldName] !== previousInputValues.current[fieldName]) {
 				AccessibilityInfo.announceForAccessibility(message);
-				announced.current[fieldName] = true;
-				previousMessages.current[fieldName] = message;
-			}
-			if (!message) {
-				announced.current[fieldName] = false;
-				delete previousMessages.current[fieldName];
 			}
 		});
+
+		previousInputValues.current = inputValues;
 	}, accessibilityErrorAnnouncementDebounceTime);
 
 	handleA11yAnnouncement();
