@@ -186,7 +186,7 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 	return (
 		<KeyboardView backgroundColor={colors.surfaceTint}>
 			<StatusBar />
-			<SafeAreaView testID='change-password-view'>
+			<SafeAreaView style={{ backgroundColor: colors.surfaceTint }} testID='change-password-view'>
 				<ScrollView
 					contentContainerStyle={[
 						sharedStyles.containerScrollView,
@@ -204,7 +204,6 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 								editable={Accounts_AllowPasswordChange}
 								inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 								label={I18n.t('Current_password')}
-								placeholder={I18n.t('Current_password')}
 								textContentType={isAndroid ? 'password' : undefined}
 								autoComplete={isAndroid ? 'password' : undefined}
 								secureTextEntry
@@ -221,7 +220,6 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							label={I18n.t('New_Password')}
-							placeholder={I18n.t('New_Password')}
 							textContentType={isAndroid ? 'newPassword' : undefined}
 							autoComplete={isAndroid ? 'password-new' : undefined}
 							secureTextEntry
