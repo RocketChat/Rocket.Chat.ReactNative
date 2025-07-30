@@ -156,7 +156,7 @@
 		"@babel/core": "^7.25.2",
 		"@babel/eslint-parser": "^7.24.1",
 		"@babel/eslint-plugin": "^7.23.5",
-		"@babel/plugin-proposal-decorators": "^7.24.1",
+		"@babel/plugin-proposal-decorators": "^7.28.0",
 		"@babel/plugin-transform-named-capturing-groups-regex": "^7.22.5",
 		"@babel/preset-env": "^7.25.3",
 		"@babel/runtime": "^7.25.0",
