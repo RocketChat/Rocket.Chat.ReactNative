@@ -34,6 +34,12 @@ inputs:
   BUGSNAG_KEY_OFFICIAL:
     description: 'Bugsnag API Key Official'
     required: true
+  GOOGLE_SERVICES_IOS:
+    description: 'Google service file for official version'
+    required: true
+  GOOGLE_SERVICES_IOS_EXPERIMENTAL:
+    description: 'Googlr service file for experimental version'
+    required: true
 
 runs:
   using: "composite"
@@ -86,6 +92,18 @@ runs:
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./RocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./ShareRocketChatRN/Info.plist
           /usr/libexec/PlistBuddy -c "Set IS_OFFICIAL NO" ./NotificationService/Info.plist
+        fi
+      shell: bash
+
+    - name: SetGoogle Services
+      working-directory: ios
+      run: |
+        if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
+          if [[ ${{ inputs.type }}  == "official" ]]; then
+            echo ${{ inputs.GOOGLE_SERVICES_IOS }} | base64 --decode > GoogleService-Info.plist
+          else 
+            echo ${{ inputs.GOOGLE_SERVICES_IOS_EXPERIMENTAL }} | base64 --decode > GoogleService-Info.plist
+          fi
         fi
       shell: bash
 
