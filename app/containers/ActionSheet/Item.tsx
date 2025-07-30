@@ -46,7 +46,9 @@ export const Item = React.memo(({ item, hide }: IActionSheetItem) => {
 						{item.title}
 					</Text>
 					{item?.subtitle ? (
-						<Text numberOfLines={1} style={[styles.title, { color, marginLeft: item.icon ? 16 : 0 }]}>
+						<Text
+							numberOfLines={1}
+							style={[styles.subtitle, { color: colors.fontSecondaryInfo, marginLeft: item.icon ? 16 : 0 }]}>
 							{item.subtitle}
 						</Text>
 					) : null}
