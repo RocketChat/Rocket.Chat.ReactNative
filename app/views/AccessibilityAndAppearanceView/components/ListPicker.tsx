@@ -7,6 +7,7 @@ import * as List from '../../../containers/List';
 import I18n from '../../../i18n';
 import { useTheme } from '../../../theme';
 import sharedStyles from '../../Styles';
+import { TAlertDisplayType } from '..';
 
 const styles = StyleSheet.create({
 	leftTitleContainer: {
@@ -34,22 +35,24 @@ const styles = StyleSheet.create({
 	}
 });
 
-type TOPTIONS = { label: string; description: string | null }[];
+type TOPTIONS = { label: string; value: TAlertDisplayType; description: string | null }[];
 
 const OPTIONS: TOPTIONS = [
 	{
 		label: I18n.t('A11y_appearance_toasts'),
+		value: 'TOAST',
 		description: null
 	},
 	{
 		label: I18n.t('A11y_appearance_dialogs'),
+		value: 'DIALOG',
 		description: I18n.t('A11y_appearance_dialog_require_manual_dismissal')
 	}
 ];
 
 interface IBaseParams {
 	value: string;
-	onChangeValue: (value: string) => void;
+	onChangeValue: (value: TAlertDisplayType) => void;
 }
 
 const ListPicker = ({
@@ -61,7 +64,7 @@ const ListPicker = ({
 } & IBaseParams) => {
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
-	const option = OPTIONS.find(option => option.label === value) || OPTIONS[2];
+	const option = OPTIONS.find(option => option.value === value) || OPTIONS[2];
 
 	const getOptions = (): TActionSheetOptionsItem[] =>
 		OPTIONS.map(i => ({
@@ -69,9 +72,9 @@ const ListPicker = ({
 			subtitle: i?.description || undefined,
 			onPress: () => {
 				hideActionSheet();
-				onChangeValue(i.label as string);
+				onChangeValue(i.value);
 			},
-			right: option?.label === i.label ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
+			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.strokeHighlight} /> : undefined
 		}));
 
 	return (

@@ -20,8 +20,14 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	title: {
-		fontSize: 16,
+		fontSize: 18,
+		lineHeight: 26,
 		...sharedStyles.textMedium
+	},
+	subtitle: {
+		fontSize: 14,
+		lineHeight: 20,
+		...sharedStyles.textRegular
 	},
 	handle: {
 		justifyContent: 'center',
