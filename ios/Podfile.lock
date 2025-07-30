@@ -53,7 +53,7 @@ PODS:
     - ExpoModulesCore
   - ExpoHaptics (14.1.3):
     - ExpoModulesCore
-  - ExpoImage (2.1.6):
+  - ExpoImage (2.3.2):
     - ExpoModulesCore
     - libavif/libdav1d
     - SDWebImage (~> 5.21.0)
@@ -89,6 +89,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - ExpoSystemUI (5.0.7):
+    - ExpoModulesCore
   - ExpoVideoThumbnails (9.1.2):
     - ExpoModulesCore
   - ExpoWebBrowser (14.1.5):
@@ -1566,6 +1568,30 @@ PODS:
     - Yoga
   - react-native-cookies (6.2.1):
     - React-Core
+  - react-native-keyboard-controller (1.17.1):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-mmkv-storage (0.11.2):
     - DoubleConversion
     - glog
@@ -1951,8 +1977,6 @@ PODS:
     - React-logger (= 0.79.4)
     - React-perflogger (= 0.79.4)
     - React-utils (= 0.79.4)
-  - ReactNativeUiLib (3.0.4):
-    - React
   - RNBootSplash (6.3.8):
     - React-Core
   - RNCAsyncStorage (1.22.3):
@@ -2193,8 +2217,6 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNRootView (1.0.3):
-    - React
   - RNScreens (4.9.2):
     - DoubleConversion
     - glog
@@ -2267,6 +2289,7 @@ DEPENDENCIES:
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoVideoThumbnails (from `../node_modules/expo-video-thumbnails/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - fast_float (from `../node_modules/react-native/third-party-podspecs/fast_float.podspec`)
@@ -2310,6 +2333,7 @@ DEPENDENCIES:
   - react-native-background-timer (from `../node_modules/react-native-background-timer`)
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
+  - react-native-keyboard-controller (from `../node_modules/react-native-keyboard-controller`)
   - react-native-mmkv-storage (from `../node_modules/react-native-mmkv-storage`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
@@ -2349,7 +2373,6 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - ReactNativeUiLib (from `../node_modules/react-native-ui-lib`)
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-clipboard/clipboard`)"
@@ -2368,7 +2391,6 @@ DEPENDENCIES:
   - RNLocalize (from `../node_modules/react-native-localize`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
-  - RNRootView (from `../node_modules/rn-root-view`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -2444,6 +2466,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoSystemUI:
+    :path: "../node_modules/expo-system-ui/ios"
   ExpoVideoThumbnails:
     :path: "../node_modules/expo-video-thumbnails/ios"
   ExpoWebBrowser:
@@ -2527,6 +2551,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
+  react-native-keyboard-controller:
+    :path: "../node_modules/react-native-keyboard-controller"
   react-native-mmkv-storage:
     :path: "../node_modules/react-native-mmkv-storage"
   react-native-netinfo:
@@ -2605,8 +2631,6 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  ReactNativeUiLib:
-    :path: "../node_modules/react-native-ui-lib"
   RNBootSplash:
     :path: "../node_modules/react-native-bootsplash"
   RNCAsyncStorage:
@@ -2643,8 +2667,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@notifee/react-native"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
-  RNRootView:
-    :path: "../node_modules/rn-root-view"
   RNScreens:
     :path: "../node_modules/react-native-screens"
   RNSVG:
@@ -2673,10 +2695,11 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 175267faf2b38511b01ac110243b13754dac57d3
   ExpoFont: abbb91a911eb961652c2b0a22eef801860425ed6
   ExpoHaptics: 0700bdb80e99deb606561698e79041a0d61d724e
-  ExpoImage: ef73e2ed551133a5fab8693a2ea1ea1dc4da2542
+  ExpoImage: 785f7673cfecd97045cf333fd6486b57ccab4b71
   ExpoKeepAwake: 213acedecafb6fda8c0ffedad22ee9e2903400c5
   ExpoLocalAuthentication: f69863a1822e42db67a311ce839ecbac70e7fa65
   ExpoModulesCore: 92329f3b150939f631068bf4fa54331e55b09244
+  ExpoSystemUI: 82c970cf8495449698e7343b4f78a0d04bcec9ee
   ExpoVideoThumbnails: 2a448a23eb4eeb860d92ded372fec6e6a7a0cdcb
   ExpoWebBrowser: d81a92137919312afc5628d47951dc7a35554f90
   fast_float: 06eeec4fe712a76acc9376682e4808b05ce978b6
@@ -2739,6 +2762,7 @@ SPEC CHECKSUMS:
   react-native-background-timer: 4638ae3bee00320753647900b21260b10587b6f7
   react-native-cameraroll: 95908ff3754b6d4adbdef02bee268f742ca3973b
   react-native-cookies: d648ab7025833b977c0b19e142503034f5f29411
+  react-native-keyboard-controller: 3fa890cbbc508b09b895781ff3d8ee1b5c96d97d
   react-native-mmkv-storage: b7eee9d281f4ec2108510548959b207a91854494
   react-native-netinfo: 2e3c27627db7d49ba412bfab25834e679db41e21
   react-native-notifications: 3bafa1237ae8a47569a84801f17d80242fe9f6a5
@@ -2778,7 +2802,6 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: bf62814e0fde923f73fc64b7e82d76c63c284da9
   ReactCodegen: c51a63d05629675dd61caf58d1a093c4457972c0
   ReactCommon: 177fca841e97b2c0e288e86097b8be04c6e7ae36
-  ReactNativeUiLib: 37b124b70e30ab204f667fada75d849597b71366
   RNBootSplash: efd6dbf15b2579fb86bc575b8b676d1c5ac5709f
   RNCAsyncStorage: 9350c2956f996b3ff1ac7cfdb50901c113a27640
   RNCClipboard: 4abb037e8fe3b98a952564c9e0474f91c492df6d
@@ -2797,7 +2820,6 @@ SPEC CHECKSUMS:
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNNotifee: 8768d065bf1e2f9f8f347b4bd79147431c7eacd6
   RNReanimated: 5088b0601d96ffe35d18700b97bc1feb3f6105d4
-  RNRootView: a7f81642ec948a3fb21135568c59c9f62033fddd
   RNScreens: 896fe2f0c448a63265c5e2d17817a0a6b4237e54
   RNSVG: ab84f2de7dd4f2c86d01825b8a65e0ef712fc36b
   RNVectorIcons: 5784330be9dddb5474e8b378d5f6947996c84e55
