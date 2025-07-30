@@ -170,9 +170,7 @@ const SettingsView = (): React.ReactElement => {
 				{isMasterDetail ? (
 					<>
 						<List.Section>
-							<List.Separator />
-							<SidebarView />
-							<List.Separator />
+							<SidebarView navigation={navigation as any} />
 						</List.Section>
 						<List.Section>
 							<List.Separator />
@@ -232,6 +230,7 @@ const SettingsView = (): React.ReactElement => {
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
 					<List.Item
 						title='Get_help'
 						left={() => <List.Icon name='support' />}
