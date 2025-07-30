@@ -49,6 +49,7 @@ const ReportUserView = () => {
 	const {
 		control,
 		handleSubmit,
+		watch,
 		formState: { errors }
 	} = useForm<ISubmit>({
 		mode: 'onChange',
@@ -56,7 +57,9 @@ const ReportUserView = () => {
 		defaultValues: { description: '' }
 	});
 
-	useA11yErrorAnnouncement({ errors });
+	const inputValues = watch();
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
