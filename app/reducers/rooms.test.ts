@@ -1,12 +1,4 @@
-import {
-	closeSearchHeader,
-	openSearchHeader,
-	roomsFailure,
-	roomsRefresh,
-	roomsRequest,
-	roomsSuccess,
-	setSearch
-} from '../actions/rooms';
+import { roomsFailure, roomsRefresh, roomsRequest, roomsSuccess } from '../actions/rooms';
 import { mockedStore } from './mockedStore';
 import { initialState } from './rooms';
 
@@ -35,24 +27,6 @@ describe('test selectedUsers reducer', () => {
 		const state = mockedStore.getState().rooms;
 		const manipulated = { ...initialState, isFetching: true, refreshing: true };
 		expect(state).toEqual(manipulated);
-	});
-
-	it('should return modified store after call setSearch', () => {
-		mockedStore.dispatch(setSearch('dog'));
-		const state = mockedStore.getState().rooms;
-		expect(state.searchText).toEqual('dog');
-	});
-
-	it('should return modified store after call openSearchHeader', () => {
-		mockedStore.dispatch(openSearchHeader());
-		const state = mockedStore.getState().rooms;
-		expect(state.showSearchHeader).toEqual(true);
-	});
-
-	it('should return modified store after call closeSearchHeader', () => {
-		mockedStore.dispatch(closeSearchHeader());
-		const state = mockedStore.getState().rooms;
-		expect(state.showSearchHeader).toEqual(false);
 	});
 
 	it('should return modified store after call roomsFailure', () => {
