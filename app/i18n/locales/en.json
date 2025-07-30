@@ -969,5 +969,12 @@
   "Date": "Date",
   "Time": "Time", 
   "Format": "Format",
-  "Preview": "Preview"
+  "Preview": "Preview",
+  "Timestamp_Format_Short_Time": "Short time (12:00 AM)",
+  "Timestamp_Format_Long_Time": "Long time (12:00:00 AM)", 
+  "Timestamp_Format_Short_Date": "Short date (12/31/2020)",
+  "Timestamp_Format_Long_Date": "Long date (12/31/2020, 12:00 AM)",
+  "Timestamp_Format_Full_Date_Time": "Full date and time (December 31, 2020 at 12:00:00 AM)",
+  "Timestamp_Format_Full_Date_Time_Long": "Full date and time (long) (Thursday, December 31, 2020 12:00:00 AM)",
+  "Timestamp_Format_Relative_Time": "Relative time (1 year ago)"
 }

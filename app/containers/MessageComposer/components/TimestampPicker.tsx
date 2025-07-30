@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, Modal, Platform, ScrollView, SafeAreaView } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Touchable from 'react-native-platform-touchable';
 
 import { useTheme } from '../../../theme';
 import I18n from '../../../i18n';
 import Button from '../../Button';
-import Touch from '../../Touch';
 import sharedStyles from '../../../views/Styles';
 import { themes } from '../../../lib/constants';
 import { TIMESTAMP_FORMATS, formatTimestamp, createTimestampString, ITimestampFormat } from '../../../lib/helpers/timestampUtils';
@@ -121,7 +121,10 @@ export const TimestampPicker = ({ onInsert, onClose }: ITimestampPickerProps) =>
                     </Text>
                 </View>
 
-                <ScrollView style={[sharedStyles.containerScrollView, { paddingHorizontal: 16 }]}>
+                <ScrollView 
+                    style={[sharedStyles.containerScrollView, { paddingHorizontal: 16 }]}
+                    keyboardShouldPersistTaps='always'
+                >
                     <View style={{ marginTop: 16 }}>
                         <Text style={[
                             sharedStyles.textMedium,
@@ -143,7 +146,7 @@ export const TimestampPicker = ({ onInsert, onClose }: ITimestampPickerProps) =>
                                     display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                                     onChange={handleDateChange}
                                     textColor={themes[theme].fontTitlesLabels}
-                                    style={Platform.OS === 'ios' ? { height: 180, alignSelf: 'center', width: '100%' } : undefined} // 确保在iOS上居中且宽度填充
+                                    style={Platform.OS === 'ios' ? { height: 180, alignSelf: 'center', width: '100%' } : undefined}
                                 />
                             </View>
                         )}
@@ -202,9 +205,13 @@ export const TimestampPicker = ({ onInsert, onClose }: ITimestampPickerProps) =>
                                 borderColor: themes[theme].strokeLight,
                                 maxHeight: 200
                             }}>
-                                <ScrollView bounces={false}>
+                                <ScrollView 
+                                    bounces={false}
+                                    keyboardShouldPersistTaps='always'
+                                    nestedScrollEnabled={true}
+                                >
                                     {TIMESTAMP_FORMATS.map((format, index) => (
-                                        <Touch 
+                                        <Touchable 
                                             key={index}
                                             onPress={() => selectFormat(format)}
                                             style={{
@@ -223,7 +230,7 @@ export const TimestampPicker = ({ onInsert, onClose }: ITimestampPickerProps) =>
                                             }}>
                                                 {format.label}
                                             </Text>
-                                        </Touch>
+                                        </Touchable>
                                     ))}
                                 </ScrollView>
                             </View>

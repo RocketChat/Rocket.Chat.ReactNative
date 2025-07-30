@@ -1,5 +1,7 @@
 import moment from 'moment';
 
+import I18n from '../../i18n';
+
 export interface ITimestampFormat {
   label: string;
   value: string;
@@ -8,37 +10,37 @@ export interface ITimestampFormat {
 
 export const TIMESTAMP_FORMATS: ITimestampFormat[] = [
 	{ 
-		label: 'Short time (12:00 AM)', 
+		label: I18n.t('Timestamp_Format_Short_Time'), 
 		value: 't',
 		momentFormat: 'LT' 
 	},
 	{ 
-		label: 'Long time (12:00:00 AM)', 
+		label: I18n.t('Timestamp_Format_Long_Time'), 
 		value: 'T',
 		momentFormat: 'LTS'
 	},
 	{ 
-		label: 'Short date (12/31/2020)', 
+		label: I18n.t('Timestamp_Format_Short_Date'), 
 		value: 'd',
 		momentFormat: 'L' 
 	},
 	{ 
-		label: 'Long date (12/31/2020, 12:00 AM)', 
+		label: I18n.t('Timestamp_Format_Long_Date'), 
 		value: 'D',
-		momentFormat: 'LL, LT' 
+		momentFormat: 'L, LT' 
 	},
 	{ 
-		label: 'Full date and time (December 31, 2020 at 12:00:00 AM)', 
+		label: I18n.t('Timestamp_Format_Full_Date_Time'), 
 		value: 'f',
 		momentFormat: 'LLL' 
 	},
 	{ 
-		label: 'Full date and time (long) (Thursday, December 31, 2020 12:00:00 AM)', 
+		label: I18n.t('Timestamp_Format_Full_Date_Time_Long'), 
 		value: 'F',
 		momentFormat: 'LLLL'
 	},
 	{ 
-		label: 'Relative time (1 year ago)', 
+		label: I18n.t('Timestamp_Format_Relative_Time'), 
 		value: 'R',
 		momentFormat: 'fromNow'
 	}
