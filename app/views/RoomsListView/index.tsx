@@ -98,7 +98,6 @@ const RoomsListView = memo(function RoomsListView() {
 		}
 		if (searchResults.length === 0) {
 			return <BackgroundContainer text={i18n.t('No_rooms_found')} />;
-
 		}
 	}
 
