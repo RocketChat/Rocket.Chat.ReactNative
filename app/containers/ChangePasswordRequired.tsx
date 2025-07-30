@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { CompositeNavigationProp } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NavigationProp, NavigationState } from '@react-navigation/native';
 
 import { logout } from '../actions/login';
 import I18n from '../i18n';
@@ -10,13 +9,11 @@ import { useTheme } from '../theme';
 import sharedStyles from '../views/Styles';
 import Button from './Button';
 import { CustomIcon } from './CustomIcon';
-import { ChatsStackParamList, DrawerParamList } from '../stacks/types';
 
 interface IChangePasswordRequired {
-	navigation: CompositeNavigationProp<
-		NativeStackNavigationProp<ChatsStackParamList, 'RoomsListView'>,
-		CompositeNavigationProp<NativeStackNavigationProp<ChatsStackParamList>, NativeStackNavigationProp<DrawerParamList>>
-	>;
+	navigation: Omit<NavigationProp<any>, 'getState'> & {
+		getState(): NavigationState | undefined;
+	};
 }
 
 export const ChangePasswordRequired = ({ navigation }: IChangePasswordRequired) => {
