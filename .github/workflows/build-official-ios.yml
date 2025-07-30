@@ -60,6 +60,8 @@ jobs:
           BUGSNAG_KEY: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           BUGSNAG_KEY_OFFICIAL: ${{ secrets.BUGSNAG_KEY_OFFICIAL }}
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          GOOGLE_SERVICES_IOS: ${{ secrets.GOOGLE_SERVICES_IOS }}
+          GOOGLE_SERVICES_IOS_EXPERIMENTAL: ${{ secrets.GOOGLE_SERVICES_IOS_EXPERIMENTAL }}
           VERSIONCODE: ${{ steps.version.outputs.VERSIONCODE }}
 
   upload-hold:
