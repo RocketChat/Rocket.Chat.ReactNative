@@ -103,11 +103,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 40,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 40,
+                    "lineHeight": 20,
                   },
                   [
                     {
@@ -227,11 +227,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 40,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 40,
+                    "lineHeight": 20,
                   },
                   [
                     {
@@ -353,11 +353,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               [
                 {
                   "color": "#6C727A",
-                  "fontSize": 40,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 40,
+                    "lineHeight": 20,
                   },
                   [
                     {
@@ -387,11 +387,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
               [
                 {
                   "color": "#2F343D",
-                  "fontSize": 40,
+                  "fontSize": 20,
                 },
                 [
                   {
-                    "lineHeight": 40,
+                    "lineHeight": 20,
                   },
                   [
                     {
@@ -548,11 +548,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 40,
+                    "fontSize": 20,
                   },
                   [
                     {
-                      "lineHeight": 40,
+                      "lineHeight": 20,
                     },
                     undefined,
                   ],
@@ -1123,11 +1123,11 @@ exports[`Story Snapshots: SecureTextEntry should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 40,
+                      "fontSize": 20,
                     },
                     [
                       {
-                        "lineHeight": 40,
+                        "lineHeight": 20,
                       },
                       undefined,
                     ],

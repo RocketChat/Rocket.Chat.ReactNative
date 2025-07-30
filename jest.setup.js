@@ -21,7 +21,16 @@ getSizeMock.mockImplementation(() => {});
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
-jest.mock('react-native-reanimated', () => require('react-native-reanimated/mock'));
+jest.mock('react-native-reanimated', () => {
+	const actual = jest.requireActual('react-native-reanimated/mock');
+	return {
+		...actual,
+		useSharedValue: jest.fn(init => ({ value: init })),
+		useAnimatedReaction: jest.fn(),
+		runOnJS: jest.fn(fn => fn),
+		withTiming: jest.fn(value => value)
+	};
+});
 
 jest.mock('@react-native-clipboard/clipboard', () => mockClipboard);
 
@@ -68,8 +77,6 @@ jest.mock('./app/lib/database', () => ({
 	}
 }));
 
-jest.mock('./app/containers/MessageComposer/components/EmojiKeyboard', () => jest.fn(() => null));
-
 jest.mock('./app/lib/hooks/useFrequentlyUsedEmoji', () => ({
 	useFrequentlyUsedEmoji: () => ({
 		frequentlyUsed: [],
@@ -83,6 +90,24 @@ jest.mock('./app/lib/database/services/Message', () => ({
 		rid: 'rid',
 		msg: `Message ${messageId}`
 	})
+}));
+
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: jest.fn(() => ({
+		fontScale: 1
+	}))
+}));
+
+jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
+	useResponsiveLayout: jest.fn(() => ({
+		fontScale: 1,
+		isLargeFontScale: false,
+		fontScaleLimited: 1,
+		rowHeight: 75,
+		rowHeightCondensed: 60
+	})),
+	FONT_SCALE_LIMIT: 1.3
 }));
 
 jest.mock('./app/containers/CustomIcon', () => {
@@ -147,13 +172,4 @@ jest.mock('react-native-math-view', () => {
 	};
 });
 
-jest.mock('react-native-ui-lib/keyboard', () => {
-	const react = jest.requireActual('react');
-	return {
-		__esModule: true,
-		KeyboardAccessoryView: react.forwardRef((props, ref) => {
-			const MockName = 'keyboard-accessory-view-mock';
-			return <MockName>{props.renderContent()}</MockName>;
-		})
-	};
-});
+jest.mock('react-native-keyboard-controller');

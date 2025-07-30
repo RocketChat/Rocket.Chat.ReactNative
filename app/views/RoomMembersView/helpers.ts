@@ -17,7 +17,7 @@ import { emitErrorCreateDirectMessage } from '../../lib/methods/helpers/emitErro
 export type TRoomType = SubscriptionType.CHANNEL | SubscriptionType.GROUP | SubscriptionType.OMNICHANNEL;
 
 const handleGoRoom = (item: TGoRoomItem, isMasterDetail: boolean): void => {
-	goRoom({ item, isMasterDetail, popToRoot: true });
+	goRoom({ item, isMasterDetail });
 };
 
 export const fetchRole = (role: string, selectedUser: TUserModel, roomRoles?: IGetRoomRoles[]): boolean => {
