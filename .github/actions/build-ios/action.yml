@@ -95,7 +95,7 @@ runs:
         fi
       shell: bash
 
-    - name: SetGoogle Services
+    - name: Set Google Services
       working-directory: ios
       run: |
         if [[ $APP_STORE_CONNECT_API_KEY_BASE64 ]]; then
