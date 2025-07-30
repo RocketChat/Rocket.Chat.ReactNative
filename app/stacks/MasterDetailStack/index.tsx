@@ -93,9 +93,7 @@ const Drawer = createDrawerNavigator<MasterDetailDrawerParamList>();
 const DrawerNavigator = React.memo(() => (
 	<Drawer.Navigator
 		screenOptions={{ drawerType: 'permanent', headerShown: false, drawerStyle: { ...drawerStyle } }}
-		drawerContent={({ navigation, state }) => (
-			<RoomsListView navigation={navigation} route={{ name: 'RoomsListView' }} state={state} />
-		)}>
+		drawerContent={() => <RoomsListView />}>
 		<Drawer.Screen name='ChatsStackNavigator' component={ChatsStackNavigator} />
 	</Drawer.Navigator>
 ));
