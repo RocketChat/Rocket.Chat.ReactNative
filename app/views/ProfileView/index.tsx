@@ -47,16 +47,17 @@ import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
-const validationSchema = yup.object().shape({
-	name: yup.string().required(I18n.t('Name_required')),
-	email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
-	username: yup.string().required(I18n.t('Username_required'))
-});
 
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
+	const validationSchema = yup.object().shape({
+		name: yup.string().required(I18n.t('Name_required')),
+		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
+		username: yup.string().required(I18n.t('Username_required'))
+	});
+
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
