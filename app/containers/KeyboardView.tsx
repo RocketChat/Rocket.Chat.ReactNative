@@ -1,24 +1,22 @@
 import React from 'react';
-import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from '@codler/react-native-keyboard-aware-scroll-view';
+import { KeyboardAvoidingView } from 'react-native-keyboard-controller';
+import { StyleProp, ViewStyle } from 'react-native';
 
-import scrollPersistTaps from '../lib/methods/helpers/scrollPersistTaps';
+import { useTheme } from '../theme';
 
-interface IKeyboardViewProps extends KeyboardAwareScrollViewProps {
-	keyboardVerticalOffset?: number;
-	scrollEnabled?: boolean;
+interface IKeyboardViewProps {
+	backgroundColor?: string;
 	children: React.ReactElement[] | React.ReactElement;
+	style?: StyleProp<ViewStyle>;
 }
 
-const KeyboardView = ({ style, contentContainerStyle, scrollEnabled, keyboardVerticalOffset, children }: IKeyboardViewProps) => (
-	<KeyboardAwareScrollView
-		{...scrollPersistTaps}
-		style={style}
-		contentContainerStyle={contentContainerStyle}
-		scrollEnabled={scrollEnabled}
-		alwaysBounceVertical={false}
-		extraHeight={keyboardVerticalOffset}>
-		{children}
-	</KeyboardAwareScrollView>
-);
+const KeyboardView = ({ backgroundColor, children, style }: IKeyboardViewProps) => {
+	const { colors } = useTheme();
+	return (
+		<KeyboardAvoidingView style={[{ flex: 1, backgroundColor: backgroundColor || colors.surfaceRoom }, style]} behavior='padding'>
+			{children}
+		</KeyboardAvoidingView>
+	);
+};
 
 export default KeyboardView;
