@@ -3,7 +3,7 @@ import { AccessibilityInfo } from 'react-native';
 import { FieldErrorsImpl } from 'react-hook-form';
 
 import { useDebounce } from '../methods/helpers';
-import { textInputDebounceTime } from '../constants';
+import { accessibilityErrorAnnouncementDebounceTime } from '../constants';
 
 interface IUseA11yErrorAnnouncement {
 	errors: FieldErrorsImpl<any>;
@@ -33,7 +33,7 @@ const useA11yErrorAnnouncement = ({ errors }: IUseA11yErrorAnnouncement) => {
 				delete previousMessages.current[fieldName];
 			}
 		});
-	}, textInputDebounceTime);
+	}, accessibilityErrorAnnouncementDebounceTime);
 
 	handleA11yAnnouncement();
 };
