@@ -205,7 +205,7 @@ const fetchEnterpriseModulesFork = function* fetchEnterpriseModulesFork({ user }
 	try {
 		yield getEnterpriseModules();
 
-		if (isOmnichannelStatusAvailable(user) && isOmnichannelModuleAvailable()) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat) && isOmnichannelModuleAvailable()) {
 			yield put(inquiryRequest());
 		}
 	} catch (e) {
@@ -369,7 +369,7 @@ const handleSetUser = function* handleSetUser({ user }) {
 	setLanguage(user?.language);
 
 	if (user?.statusLivechat && isOmnichannelModuleAvailable()) {
-		if (isOmnichannelStatusAvailable(user)) {
+		if (isOmnichannelStatusAvailable(user.statusLivechat)) {
 			yield put(inquiryRequest());
 		} else {
 			yield put(inquiryReset());
