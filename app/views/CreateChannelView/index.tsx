@@ -66,11 +66,11 @@ export interface IFormData {
 	broadcast: boolean;
 }
 
-const schema = yup.object().shape({
-	channelName: yup.string().trim().required(I18n.t('Channel_name_required'))
-});
-
 const CreateChannelView = () => {
+	const schema = yup.object().shape({
+		channelName: yup.string().trim().required(I18n.t('Channel_name_required'))
+	});
+
 	const [createChannelPermission, createPrivateChannelPermission] = usePermissions(['create-c', 'create-p']);
 
 	const { isFetching, useRealName, users, e2eEnabledDefaultPrivateRooms } = useAppSelector(
