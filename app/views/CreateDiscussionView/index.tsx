@@ -67,9 +67,9 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 	const message = route.params?.message;
 	const {
-		getValues,
 		control,
 		handleSubmit,
+		watch,
 		formState: { errors }
 	} = useForm({
 		defaultValues: {
@@ -78,6 +78,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		resolver: yupResolver(schema)
 	});
 
+	const inputValues = watch();
 	const prevLoading = useRef<boolean>(loading);
 	const isEncryptionEnabled = encryptionEnabled && E2E_ROOM_TYPES[channel?.t];
 
@@ -100,7 +101,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 	const submit = () => {
 		const pmid = message?.id;
 		const reply = '';
-		const { name: t_name } = getValues();
+		const { name: t_name } = inputValues;
 
 		if (!t_name || !channel.prid || !channel.rid) {
 			return;
@@ -120,7 +121,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		dispatch(createDiscussionRequest(params));
 	};
 
-	useA11yErrorAnnouncement({ error: errors.name?.message });
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		if (loading === prevLoading.current) {
