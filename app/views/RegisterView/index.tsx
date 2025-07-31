@@ -29,20 +29,20 @@ import CustomFields from '../../containers/CustomFields';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
 import styles from './styles';
 
-const validationSchema = yup.object().shape({
-	name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
-	email: yup
-		.string()
-		.email(I18n.t('Email_must_be_valid'))
-		.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
-	username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
-	password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
-	confirmPassword: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
-});
-
 interface IProps extends IBaseScreen<OutsideParamList, 'RegisterView'> {}
 
 const RegisterView = ({ navigation, route }: IProps) => {
+	const validationSchema = yup.object().shape({
+		name: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Full_name') })}`),
+		email: yup
+			.string()
+			.email(I18n.t('Email_must_be_valid'))
+			.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
+		username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
+		password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
+		confirmPassword: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
+	});
+
 	const dispatch = useDispatch();
 	const { colors } = useTheme();
 	const { Accounts_CustomFields, Site_Url, Accounts_EmailVerification, Accounts_ManuallyApproveNewUsers, showLoginButton } =
@@ -71,8 +71,8 @@ const RegisterView = ({ navigation, route }: IProps) => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const password = watch('password');
-	const confirmPassword = watch('confirmPassword');
+	const inputValues = watch();
+	const { password, confirmPassword } = inputValues;
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(getCustomFields(parsedCustomFields));
 	const [saving, setSaving] = useState(false);
