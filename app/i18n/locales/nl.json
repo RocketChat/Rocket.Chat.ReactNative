@@ -166,6 +166,7 @@
   "Directory": "Map",
   "Discussion_Desc": "Discussies maken afzonderlijke gesprekken mogelijk rond een specifiek onderwerp binnen een kanaal of team, waar elk lid van de werkruimte kan worden toegevoegd.",
   "Discussion_name": "Discussienaam",
+  "Discussion_name_required": "Naam voor discussie vereist",
   "Discussions": "Discussies",
   "Display": "Weergave",
   "Displays_action_text": "Geeft actietekst weer",

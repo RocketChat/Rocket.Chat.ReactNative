@@ -103,6 +103,7 @@
   "Discussion": "Diskusjon",
   "Discussion_Desc": "Hjelp til å holde oversikt over hva som skjer! Ved å opprette en diskusjon opprettes en underkanal til kanalen du valgte og begge kobles sammen.",
   "Discussion_name": "Diskusjonsnavn",
+  "Discussion_name_required": "Diskusjonsnamn påkrevd",
   "Discussions": "Totalt antall diskusjoner",
   "Display": "Utstilling",
   "Displays_action_text": "Viser handlingstekst",

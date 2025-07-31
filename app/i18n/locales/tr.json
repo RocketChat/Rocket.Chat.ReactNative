@@ -135,6 +135,7 @@
   "Directory": "Dizin",
   "Discussion_Desc": "Tartışmalar, bir kanalda veya ekipte belirli bir konu etrafında ayrı sohbetler yapılmasına olanak tanır ve herhangi bir çalışma alanı üyesi eklenebilir.",
   "Discussion_name": "Tartışma adı",
+  "Discussion_name_required": "Tartışma adı gerekli",
   "Discussions": "Tartışmalar",
   "Displays_action_text": "Görüntüler aksiyon metni",
   "Do_you_have_a_certificate": "Bu çalışma alanı için bir sertifikanız var mı?",
