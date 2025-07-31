@@ -67,12 +67,6 @@ const styles = StyleSheet.create({
 	}
 });
 
-const validationSchema = yup.object().shape({
-	statusText: yup
-		.string()
-		.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))
-});
-
 const Status = ({
 	statusType,
 	status,
@@ -105,6 +99,12 @@ const Status = ({
 };
 
 const StatusView = (): React.ReactElement => {
+	const validationSchema = yup.object().shape({
+		statusText: yup
+			.string()
+			.max(USER_STATUS_TEXT_MAX_LENGTH, I18n.t('Status_text_limit_exceeded', { limit: USER_STATUS_TEXT_MAX_LENGTH }))
+	});
+
 	const user = useSelector((state: IApplicationState) => getUserSelector(state));
 	const isMasterDetail = useSelector((state: IApplicationState) => state.app.isMasterDetail);
 	const Accounts_AllowInvisibleStatusOption = useSelector(
