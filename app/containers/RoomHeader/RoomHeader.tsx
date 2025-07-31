@@ -11,6 +11,7 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
+import { IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 type TRoomHeaderSubTitle = {
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	subtitle?: string;
 	renderFunc?: () => React.ReactElement;
 	scale: number;
@@ -71,7 +72,7 @@ interface IRoomHeader {
 	tmid?: string;
 	teamMain?: boolean;
 	status?: TUserStatus;
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	isGroupChat?: boolean;
 	parentTitle?: string;
 	onPress: Function;
