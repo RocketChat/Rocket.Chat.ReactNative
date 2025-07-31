@@ -30,11 +30,10 @@ import { useTheme } from '../../theme';
 import handleSubmitEvent from './utils/handleSubmitEvent';
 import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 
-const schema = yup.object().shape({
-	name: yup.string().required(I18n.t('Discussion_name_required'))
-});
-
 const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) => {
+	const schema = yup.object().shape({
+		name: yup.string().required(I18n.t('Discussion_name_required'))
+	});
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
 	const {
