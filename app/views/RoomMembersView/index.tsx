@@ -41,6 +41,7 @@ import {
 	TRoomType
 } from './helpers';
 import styles from './styles';
+import { sanitizeLikeString } from '../../lib/database/utils';
 
 const PAGE_SIZE = 25;
 
@@ -380,12 +381,10 @@ const RoomMembersView = (): React.ReactElement => {
 		}
 	};
 
+	const filter = sanitizeLikeString(state.filter.toLowerCase()) || '';
 	const filteredMembers =
 		state.members && state.members.length > 0 && state.filter
-			? state.members.filter(
-					m =>
-						m.username.toLowerCase().match(state.filter.toLowerCase()) || m.name?.toLowerCase().match(state.filter.toLowerCase())
-			  )
+			? state.members.filter(m => m.username.toLowerCase().match(filter) || m.name?.toLowerCase().match(filter))
 			: null;
 
 	return (
