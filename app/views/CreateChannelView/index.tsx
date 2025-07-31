@@ -87,6 +87,7 @@ const CreateChannelView = () => {
 		control,
 		handleSubmit,
 		setValue,
+		watch,
 		formState: { errors }
 	} = useForm<IFormData>({
 		defaultValues: {
@@ -106,8 +107,9 @@ const CreateChannelView = () => {
 	const teamId = params?.teamId;
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
+	const inputValues = watch();
 
-	useA11yErrorAnnouncement({ error: errors.channelName?.message });
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		sendLoadingEvent({ visible: isFetching });
