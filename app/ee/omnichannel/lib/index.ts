@@ -1,10 +1,9 @@
 import sdk from '../../../lib/services/sdk';
-import { IUser } from '../../../definitions';
 import { compareServerVersion } from '../../../lib/methods/helpers';
 import EventEmitter from '../../../lib/methods/helpers/events';
 import subscribeInquiry from './subscriptions/inquiry';
 
-export const isOmnichannelStatusAvailable = (user: IUser): boolean => user?.statusLivechat === 'available';
+export const isOmnichannelStatusAvailable = (statusLivechat: string | undefined): boolean => statusLivechat === 'available';
 
 // RC 0.26.0
 export const changeLivechatStatus = () => sdk.methodCallWrapper('livechat:changeLivechatStatus');
