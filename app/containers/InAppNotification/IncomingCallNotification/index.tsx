@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { AccessibilityInfo, findNodeHandle, Text, View } from 'react-native';
 import Touchable from 'react-native-platform-touchable';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
@@ -33,6 +33,7 @@ const BUTTON_HIT_SLOP = { top: 12, right: 12, bottom: 12, left: 12 };
 
 const IncomingCallHeader = React.memo(
 	({ uid, callId, avatar, roomName }: { callId: string; avatar: string; uid: string; roomName: string }) => {
+		const componentRef = useRef<View>(null);
 		const [mic, setMic] = useState(true);
 		const [cam, setCam] = useState(false);
 		const [audio, setAudio] = useState(true);
@@ -41,8 +42,40 @@ const IncomingCallHeader = React.memo(
 		const styles = useStyle();
 		const insets = useSafeAreaInsets();
 
+		useEffect(() => {
+			setTimeout(() => {
+				const node = findNodeHandle(componentRef.current);
+				if (node) {
+					AccessibilityInfo.setAccessibilityFocus(node);
+				}
+			}, 300);
+		}, [uid, callId, avatar, roomName]);
+
 		return (
 			<View
+				ref={componentRef}
+				accessible={true}
+				accessibilityRole='button'
+				accessibilityLabel={`${i18n.t('Incoming_call_from')} ${roomName}`}
+				accessibilityHint={i18n.t('A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline')}
+				accessibilityActions={[
+					{ name: 'increment', label: i18n.t('accept') },
+					{ name: 'decrement', label: i18n.t('decline') }
+				]}
+				onAccessibilityAction={event => {
+					switch (event.nativeEvent.actionName) {
+						case 'increment':
+							setAudio(!audio);
+							hideNotification();
+							dispatch(acceptCall({ callId }));
+							break;
+						case 'decrement':
+							setAudio(!audio);
+							hideNotification();
+							dispatch(cancelCall({ callId }));
+							break;
+					}
+				}}
 				style={[
 					styles.container,
 					isMasterDetail && styles.small,
@@ -103,6 +136,7 @@ const IncomingCallNotification = ({
 }: {
 	notification: { rid: string; callId: string };
 }): React.ReactElement | null => {
+	console.log('aquiii');
 	const { result } = useEndpointData('video-conference.info', { callId });
 
 	const user = useUserData(rid);
