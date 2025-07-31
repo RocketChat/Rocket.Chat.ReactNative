@@ -70,6 +70,7 @@
   "changing_avatar": "تغيير الصورة الرمزية",
   "Channel_hint_private": "لا يمكن للناس الانضمام إلا من خلال دعوتهم",
   "Channel_Name": "اسم القناة",
+  "Channel_name_required": "اسم القناة مطلوب",
   "Channel_Read_Only_Hint": "يمكن لمالكي القنوات فقط إرسال رسائل جديدة",
   "Channels": "قنوات",
   "Chat_closed_by_agent": "المندوب أغلق المحادثة",
