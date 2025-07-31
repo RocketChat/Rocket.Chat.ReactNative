@@ -83,7 +83,7 @@ export const ComposerInput = memo(
 			}
 			if (sharing) return;
 			if (usedCannedResponse) setInput(usedCannedResponse);
-		}, [action, rid, tmid, usedCannedResponse, firstRender.current]);
+		}, [action, rid, tmid, usedCannedResponse]);
 
 		// Edit/quote
 		useEffect(() => {

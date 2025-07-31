@@ -955,7 +955,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
-				await new Promise(res => setTimeout(res, 300));
+				// Synchronization needed for Fabric to work
+				await new Promise(res => setTimeout(res, 100));
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
