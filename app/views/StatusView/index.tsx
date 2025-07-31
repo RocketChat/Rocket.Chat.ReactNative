@@ -115,6 +115,7 @@ const StatusView = (): React.ReactElement => {
 		control,
 		watch,
 		setValue,
+
 		formState: { errors, isValid }
 	} = useForm({
 		mode: 'onChange',
@@ -123,13 +124,14 @@ const StatusView = (): React.ReactElement => {
 		resolver: yupResolver(validationSchema)
 	});
 	const statusText = watch('statusText');
-	const status = watch('status');
+	const inputValues = watch();
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
 	const { colors } = useTheme();
 
 	const submit = async () => {
+		const { status } = inputValues;
 		logEvent(events.STATUS_DONE);
 		if (statusText !== user.statusText || status !== user.status) {
 			await setCustomStatus(status, statusText);
@@ -137,7 +139,7 @@ const StatusView = (): React.ReactElement => {
 		goBack();
 	};
 
-	useA11yErrorAnnouncement({ error: errors.statusText?.message });
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useEffect(() => {
 		const setHeader = () => {
@@ -194,7 +196,7 @@ const StatusView = (): React.ReactElement => {
 			<FlatList
 				data={statusType}
 				keyExtractor={item => item.id}
-				renderItem={({ item }) => <Status statusType={item} status={status} setStatus={setStatus} />}
+				renderItem={({ item }) => <Status statusType={item} status={inputValues.status} setStatus={setStatus} />}
 				ListHeaderComponent={
 					<>
 						<ControlledFormTextInput
