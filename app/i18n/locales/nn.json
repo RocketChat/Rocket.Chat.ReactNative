@@ -1,4 +1,6 @@
 {
+  "A11y_in_app_notification": "Ny melding frå {{name}}: {{message}}",
+  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "Sveip opp eller ned for å velje accept eller decline",
   "accept": "Aksepter",
   "Accessibility": "Tilgjengelighet",
   "Accessibility_and_Appearance": "Tilgjengelighet og utseende",
@@ -157,6 +159,8 @@
   "Hide_room": "Skjul rom",
   "Hide_System_Messages": "Skjul systemmeldinger",
   "Ignore": "Overse",
+  "In_App_Alert_info": "Desse varsla blir levert til deg når appen er open",
+  "In_App_Notification": "Varsel i appen",
   "Incoming_call_from": "Innkommende anrop fra",
   "Inline_code": "Innline-kode",
   "Invalid_or_expired_invite_token": "Ugyldig eller utløpt invitasjonstoken",

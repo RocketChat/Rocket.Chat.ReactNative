@@ -1,5 +1,7 @@
 {
   "1_person_reacted": "1 persona reaccionó",
+  "A11y_in_app_notification": "Nuevo mensaje de {{name}}: {{message}}",
+  "A11y_incoming_call_swipe_up_or_down_to_choose_accept_or_decline": "Desliza hacia arriba o hacia abajo para elegir aceptar o rechazar.",
   "Accessibility": "Accesibilidad",
   "Accessibility_and_Appearance": "Accesibilidad y apariencia",
   "Accessibility_statement": "Declaración de accesibilidad",
@@ -162,8 +164,10 @@
   "Hide": "Ocultar",
   "Hide_Password": "Ocultar contraseña",
   "Hide_room": "Ocultar",
+  "In_App_Alert_info": "Estas notificaciones se te entregan cuando la aplicación está abierta.",
   "In_App_And_Desktop": "En la aplicación y en el escritorio",
   "In_App_and_Desktop_Alert_info": "Muestra un banner en la parte superior de la pantalla cuando la aplicación esté abierta y muestra una notificación en el escritorio",
+  "In_App_Notification": "Notificación en la aplicación",
   "Invalid_server_version": "El servidor que intentas conectar está usando una versión que ya no está soportada por la aplicación : {{currentVersion}}. Se requiere una versión {{minVersion}}.",
   "Invalid_URL": "URL no válida",
   "Invalid_workspace_URL": "URL del espacio de trabajo no válida",
