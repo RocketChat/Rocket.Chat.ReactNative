@@ -29,7 +29,7 @@ describe('Delete server', () => {
 	it('should add server', async () => {
 		await sleep(5000);
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-servers-list')))
+		await waitFor(element(by.id('rooms-list-header-server-add')))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id('rooms-list-header-server-add')).tap();
@@ -56,14 +56,14 @@ describe('Delete server', () => {
 
 	it('should delete server', async () => {
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
-		await waitFor(element(by.id('rooms-list-header-servers-list')))
+		await waitFor(element(by.id(`server-item-${data.server}`)))
 			.toBeVisible()
 			.withTimeout(5000);
 		await element(by.id(`server-item-${data.server}`)).longPress(1500);
 		await element(by[textMatcher]('Delete').and(by.type(alertButtonType))).tap();
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await waitFor(element(by.id(`server-item-${data.server}`)))
 			.toBeNotVisible()

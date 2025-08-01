@@ -30,7 +30,7 @@ export const useAutoSaveDraft = (text = '') => {
 				saveDraftMessage({ rid, tmid, draftMessage });
 			}
 		},
-		[action, rid, tmid, text, selectedMessages?.length, route.name]
+		[action, rid, tmid, text, selectedMessages, route.name]
 	);
 
 	// if focused on composer input, saves every N seconds
@@ -38,6 +38,7 @@ export const useAutoSaveDraft = (text = '') => {
 		if (focused) {
 			intervalRef.current = setInterval(saveMessageDraft, 3000) as any;
 		} else if (intervalRef.current) {
+			saveMessageDraft();
 			clearInterval(intervalRef.current);
 		}
 

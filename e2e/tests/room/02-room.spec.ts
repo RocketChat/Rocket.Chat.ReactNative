@@ -533,6 +533,9 @@ describe('Room screen', () => {
 				.withTimeout(2000);
 			await element(by[textMatcher]('Choose from library')).atIndex(0).tap();
 			await sleep(500); // wait for animation
+			await waitFor(element(by.id('message-composer-input-share')))
+				.toHaveText(draftShareMessage + originalMessage)
+				.withTimeout(2000);
 			await waitFor(element(by.id(`markdown-preview-${originalMessage}`)).atIndex(0))
 				.toExist()
 				.withTimeout(20000);

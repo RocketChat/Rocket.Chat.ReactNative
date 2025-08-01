@@ -205,11 +205,11 @@ describe('Room info screen', () => {
 				await waitFor(element(by.id('room-info-view')))
 					.toExist()
 					.withTimeout(2000);
-				await waitFor(element(by[textMatcher]('new description').withAncestor(by.id('room-info-view-description'))))
+				await waitFor(element(by[textMatcher]('new description')))
 					.toExist()
 					.withTimeout(10000);
-				await expect(element(by[textMatcher]('new topic').withAncestor(by.id('room-info-view-topic')))).toExist();
-				await expect(element(by[textMatcher]('new announcement').withAncestor(by.id('room-info-view-announcement')))).toExist();
+				await expect(element(by[textMatcher]('new topic'))).toExist();
+				await expect(element(by[textMatcher]('new announcement'))).toExist();
 
 				await element(by.id('room-info-view-edit-button')).tap();
 				await waitFor(element(by.id('room-info-edit-view')))

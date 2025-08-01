@@ -102,6 +102,7 @@ import UserPreferences from '../../lib/methods/userPreferences';
 import { IRoomViewProps, IRoomViewState } from './definitions';
 import { roomAttrsUpdate, stateAttrsUpdate } from './constants';
 import { EncryptedRoom, MissingRoomE2EEKey } from './components';
+import { EmojiKeyboardProvider } from '../../containers/MessageComposer/hooks/useEmojiKeyboard';
 
 class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 	private rid?: string;
@@ -953,6 +954,8 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				if (message.fromServer && !message.tmid && this.rid) {
 					await loadSurroundingMessages({ messageId, rid: this.rid });
 				}
+				// Synchronization needed for Fabric to work
+				await new Promise(res => setTimeout(res, 100));
 				await Promise.race([this.list.current?.jumpToMessage(message.id), new Promise(res => setTimeout(res, 5000))]);
 				this.cancelJumpToMessage();
 			}
@@ -1131,7 +1134,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				name = item.tmsg ?? '';
 				jumpToMessageId = item.id;
 			}
-			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
+			// sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			const threadRecord = await getThreadById(item.tmid);
 			if (threadRecord?.t === 'rm') {
 				name = I18n.t('Thread');
@@ -1140,7 +1143,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
 				if (!result) {
-					sendLoadingEvent({ visible: false });
+					// sendLoadingEvent({ visible: false });
 					return;
 				}
 				name = result;
@@ -1150,9 +1153,10 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (!jumpToMessageId) {
 				setTimeout(() => {
-					sendLoadingEvent({ visible: false });
+					// sendLoadingEvent({ visible: false });
 				}, 300);
 			}
+			console.log('navToThread', item.tmid, jumpToMessageId);
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.tmid,
@@ -1517,49 +1521,51 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 		}
 
 		return (
-			<RoomContext.Provider
-				value={{
-					rid,
-					t,
-					tmid: this.tmid,
-					sharing: false,
-					action,
-					selectedMessages,
-					onRemoveQuoteMessage: this.onRemoveQuoteMessage,
-					editCancel: this.onEditCancel,
-					editRequest: this.onEditRequest,
-					onSendMessage: this.handleSendMessage,
-					setQuotesAndText: this.setQuotesAndText,
-					getText: this.getText,
-					updateAutocompleteVisible: this.updateAutocompleteVisible,
-					isAutocompleteVisible
-				}}>
-				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					{!this.tmid ? (
-						<Banner
-							title={I18n.t('Announcement')}
-							text={announcement}
-							bannerClosed={bannerClosed}
-							closeBanner={this.closeBanner}
+			<EmojiKeyboardProvider>
+				<RoomContext.Provider
+					value={{
+						rid,
+						t,
+						tmid: this.tmid,
+						sharing: false,
+						action,
+						selectedMessages,
+						updateAutocompleteVisible: this.updateAutocompleteVisible,
+						isAutocompleteVisible,
+						onRemoveQuoteMessage: this.onRemoveQuoteMessage,
+						editCancel: this.onEditCancel,
+						editRequest: this.onEditRequest,
+						onSendMessage: this.handleSendMessage,
+						setQuotesAndText: this.setQuotesAndText,
+						getText: this.getText
+					}}>
+					<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
+						{!this.tmid ? (
+							<Banner
+								title={I18n.t('Announcement')}
+								text={announcement}
+								bannerClosed={bannerClosed}
+								closeBanner={this.closeBanner}
+							/>
+						) : null}
+						<List
+							ref={this.list}
+							listRef={this.flatList}
+							rid={rid}
+							tmid={this.tmid}
+							renderRow={this.renderItem}
+							loading={loading}
+							hideSystemMessages={this.hideSystemMessages}
+							showMessageInMainThread={user.showMessageInMainThread ?? false}
+							serverVersion={serverVersion}
 						/>
-					) : null}
-					<List
-						ref={this.list}
-						listRef={this.flatList}
-						rid={rid}
-						tmid={this.tmid}
-						renderRow={this.renderItem}
-						loading={loading}
-						hideSystemMessages={this.hideSystemMessages}
-						showMessageInMainThread={user.showMessageInMainThread ?? false}
-						serverVersion={serverVersion}
-					/>
-					{this.renderFooter()}
-					{this.renderActions()}
-					<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
-					<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
-				</SafeAreaView>
-			</RoomContext.Provider>
+						{this.renderFooter()}
+						{this.renderActions()}
+						<UploadProgress rid={rid} user={user} baseUrl={baseUrl} width={width} />
+						<JoinCode ref={this.joinCode} onJoin={this.onJoin} rid={rid} t={t} theme={theme} />
+					</SafeAreaView>
+				</RoomContext.Provider>
+			</EmojiKeyboardProvider>
 		);
 	}
 }

@@ -2,7 +2,6 @@ import React, { createContext, ReactElement, useContext, useMemo, useReducer } f
 
 import { IEmoji } from '../../definitions';
 import { IAutocompleteBase, TMicOrSend } from './interfaces';
-import { animateNextTransition } from '../../lib/methods/helpers';
 
 type TMessageComposerContextApi = {
 	setFocused(focused: boolean): void;
@@ -66,17 +65,14 @@ type Actions =
 const reducer = (state: State, action: Actions): State => {
 	switch (action.type) {
 		case 'updateFocused':
-			animateNextTransition();
 			return { ...state, focused: action.focused };
 		case 'setMicOrSend':
 			return { ...state, micOrSend: action.micOrSend };
 		case 'setMarkdownToolbar':
-			animateNextTransition();
 			return { ...state, showMarkdownToolbar: action.showMarkdownToolbar };
 		case 'setAlsoSendThreadToChannel':
 			return { ...state, alsoSendThreadToChannel: action.alsoSendThreadToChannel };
 		case 'setRecordingAudio':
-			animateNextTransition();
 			return { ...state, recordingAudio: action.recordingAudio };
 		case 'setAutocompleteParams':
 			return { ...state, autocompleteParams: action.params };

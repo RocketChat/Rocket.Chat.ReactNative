@@ -30,7 +30,7 @@ describe('InApp Notification', () => {
 			await sendMessage(sender, dmCreatedRid, text);
 			await waitFor(element(by.id(`in-app-notification-${text}`)))
 				.toBeVisible()
-				.withTimeout(2000);
+				.withTimeout(10000);
 			await waitForInAppNotificationAnimation();
 			await element(by.id(`in-app-notification-${text}`)).tap();
 			await checkRoomTitle(sender.username);

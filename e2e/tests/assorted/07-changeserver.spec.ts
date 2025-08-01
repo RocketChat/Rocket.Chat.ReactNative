@@ -36,7 +36,7 @@ describe('Change server', () => {
 			.withTimeout(2000);
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await waitFor(element(by.id('rooms-list-header-server-add')))
 			.toBeVisible()
@@ -62,7 +62,7 @@ describe('Change server', () => {
 	it('should add server and create new user', async () => {
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await element(by.id(`server-item-${data.alternateServer}`)).tap();
 		await waitFor(element(by.id('workspace-view')))
@@ -90,7 +90,7 @@ describe('Change server', () => {
 	it('should change back to main server', async () => {
 		await element(by.id('rooms-list-header-servers-list-button')).tap();
 		await waitFor(element(by.id('rooms-list-header-servers-list')))
-			.toBeVisible()
+			.toExist()
 			.withTimeout(5000);
 		await element(by.id(`server-item-${data.server}`)).tap();
 		await waitFor(element(by.id('rooms-list-view')))

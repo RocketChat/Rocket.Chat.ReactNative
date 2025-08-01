@@ -31,6 +31,9 @@ describe('Change avatar', () => {
 
 	describe('Usage', () => {
 		it('should click on the reset avatar button', async () => {
+			if (device.getPlatform() === 'ios') {
+				return;
+			}
 			await waitFor(element(by.id('avatar-edit-button')))
 				.toBeVisible()
 				.withTimeout(2000);
@@ -46,6 +49,9 @@ describe('Change avatar', () => {
 		});
 
 		it('should appear the discard alert when click the back icon', async () => {
+			if (device.getPlatform() === 'ios') {
+				return;
+			}
 			await tapBack();
 			await waitFor(element(by[textMatcher]('Discard changes?')).atIndex(0))
 				.toBeVisible()

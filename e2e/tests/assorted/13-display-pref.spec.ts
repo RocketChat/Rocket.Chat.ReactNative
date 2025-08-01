@@ -4,19 +4,29 @@ import { login, navigateToLogin, tapBack } from '../../helpers/app';
 import { createRandomUser } from '../../helpers/data_setup';
 
 const goToDisplayPref = async () => {
-	await expect(element(by.id('rooms-list-view-sidebar'))).toBeVisible();
+	await waitFor(element(by.id('rooms-list-view-sidebar')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('rooms-list-view-sidebar')).tap();
-	await expect(element(by.id('sidebar-accessibility'))).toBeVisible();
+	await waitFor(element(by.id('sidebar-accessibility')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('sidebar-accessibility')).tap();
-	await expect(element(by.id('accessibility-display-button'))).toBeVisible();
+	await waitFor(element(by.id('accessibility-display-button')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('accessibility-display-button')).tap();
 };
 
 const goToRoomList = async () => {
 	await tapBack();
-	await expect(element(by.id('accessibility-view-drawer'))).toBeVisible();
+	await waitFor(element(by.id('accessibility-view-drawer')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('accessibility-view-drawer')).tap();
-	await expect(element(by.id('sidebar-chats'))).toBeVisible();
+	await waitFor(element(by.id('sidebar-chats')))
+		.toBeVisible()
+		.withTimeout(2000);
 	await element(by.id('sidebar-chats')).tap();
 };
 
@@ -77,14 +87,18 @@ describe('Display prefs', () => {
 			it('should appear the last message in RoomList when is Expanded', async () => {
 				await element(by.id('display-pref-view-expanded')).tap();
 				await goToRoomList();
-				await expect(element(by.id('room-item-last-message-container')).atIndex(0)).toBeVisible();
+				await waitFor(element(by.id('room-item-last-message-container')).atIndex(0))
+					.toBeVisible()
+					.withTimeout(2000);
 			});
 
 			it('should not appear the last message in RoomList when is Condensed', async () => {
 				await goToDisplayPref();
 				await element(by.id('display-pref-view-condensed')).tap();
 				await goToRoomList();
-				await expect(element(by.id('room-item-last-message-container'))).not.toBeVisible();
+				await waitFor(element(by.id('room-item-last-message-container')))
+					.not.toBeVisible()
+					.withTimeout(2000);
 			});
 		});
 

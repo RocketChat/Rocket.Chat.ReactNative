@@ -81,8 +81,7 @@ export default StyleSheet.create({
 				fontWeight: '400'
 			},
 			android: {
-				fontFamily: 'Inter-Regular',
-				letterSpacing: 0.01
+				fontFamily: 'Inter-Regular'
 			}
 		})
 	},
