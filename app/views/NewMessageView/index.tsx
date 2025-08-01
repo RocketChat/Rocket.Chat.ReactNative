@@ -8,7 +8,6 @@ import { useNavigation } from '@react-navigation/native';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ISearch, TSubscriptionModel } from '../../definitions';
 import I18n from '../../i18n';
 import database from '../../lib/database';
@@ -82,7 +81,6 @@ const NewMessageView = () => {
 
 	return (
 		<SafeAreaView testID='new-message-view'>
-			<StatusBar />
 			<FlatList
 				data={search.length > 0 ? search : chats}
 				keyExtractor={item => item._id || item.rid}
