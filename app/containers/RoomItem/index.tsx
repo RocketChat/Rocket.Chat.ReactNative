@@ -15,9 +15,6 @@ const RoomItemContainer = React.memo(
 		onPress,
 		onLongPress,
 		width,
-		toggleFav,
-		toggleRead,
-		hideChannel,
 		isFocused,
 		showLastMessage,
 		username,
@@ -73,9 +70,6 @@ const RoomItemContainer = React.memo(
 				favorite={item.f}
 				rid={item.rid}
 				userId={userId}
-				toggleFav={toggleFav}
-				toggleRead={toggleRead}
-				hideChannel={hideChannel}
 				testID={testID}
 				type={item.t}
 				isFocused={isFocused}

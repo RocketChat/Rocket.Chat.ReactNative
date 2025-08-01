@@ -20,6 +20,10 @@ import { LeftActions, RightActions } from './Actions';
 import { ITouchableProps } from './interfaces';
 import { useTheme } from '../../theme';
 import I18n from '../../i18n';
+import { toggleFav } from '../../lib/methods/toggleFav';
+import { toggleRead } from '../../lib/methods/toggleRead';
+import { hideRoom } from '../../lib/methods/hideRoom';
+import { useAppSelector } from '../../lib/hooks/useAppSelector';
 
 const Touchable = ({
 	children,
@@ -31,15 +35,12 @@ const Touchable = ({
 	favorite,
 	isRead,
 	rid,
-	toggleFav,
-	toggleRead,
-	hideChannel,
 	isFocused,
 	swipeEnabled,
 	displayMode
 }: ITouchableProps): React.ReactElement => {
 	const { colors } = useTheme();
-
+	const serverVersion = useAppSelector(state => state.server.version);
 	const rowOffSet = useSharedValue(0);
 	const transX = useSharedValue(0);
 	const rowState = useSharedValue(0); // 0: closed, 1: right opened, -1: left opened
@@ -52,22 +53,16 @@ const Touchable = ({
 	};
 
 	const handleToggleFav = () => {
-		if (toggleFav) {
-			toggleFav(rid, favorite);
-		}
+		toggleFav(rid, favorite);
 		close();
 	};
 
 	const handleToggleRead = () => {
-		if (toggleRead) {
-			toggleRead(rid, isRead);
-		}
+		toggleRead(rid, isRead, serverVersion);
 	};
 
 	const handleHideChannel = () => {
-		if (hideChannel) {
-			hideChannel(rid, type);
-		}
+		hideRoom(rid, type);
 	};
 
 	const onToggleReadPress = () => {
