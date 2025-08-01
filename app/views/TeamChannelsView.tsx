@@ -13,7 +13,6 @@ import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import RoomHeader from '../containers/RoomHeader';
 import SafeAreaView from '../containers/SafeAreaView';
 import SearchHeader from '../containers/SearchHeader';
-import StatusBar from '../containers/StatusBar';
 import { IApplicationState, IBaseScreen, TSubscriptionModel } from '../definitions';
 import { ERoomType } from '../definitions/ERoomType';
 import { withDimensions } from '../dimensions';
@@ -571,12 +570,7 @@ class TeamChannelsView extends React.Component<ITeamChannelsViewProps, ITeamChan
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		return (
-			<SafeAreaView testID='team-channels-view'>
-				<StatusBar />
-				{this.renderScroll()}
-			</SafeAreaView>
-		);
+		return <SafeAreaView testID='team-channels-view'>{this.renderScroll()}</SafeAreaView>;
 	}
 }
 
