@@ -4,14 +4,11 @@ tags:
 ---
 - runFlow: launch-app.yaml
 - runFlow: navigate-to-login.yaml
-- tapOn:
-    id: 'login-view-email'
+- tapOn: 'Username or email.'
 - inputText: working@rocket.chat
-- tapOn:
-    id: 'login-view-password'
+- tapOn: 'Password.'
 - inputText: working@rocket.chat
 - hideKeyboard
-- tapOn:
-    id: login-view-submit
+- tapOn: 'Login'
 - assertVisible:
     id: rooms-list-view
