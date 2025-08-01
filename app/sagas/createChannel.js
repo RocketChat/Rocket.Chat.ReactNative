@@ -82,7 +82,7 @@ const handleRequest = function* handleRequest({ data }) {
 
 const handleSuccess = function* handleSuccess({ data }) {
 	const isMasterDetail = yield select(state => state.app.isMasterDetail);
-	goRoom({ item: data, isMasterDetail, popToRoot: true });
+	goRoom({ item: data, isMasterDetail });
 };
 
 const handleFailure = function handleFailure({ err, isTeam }) {

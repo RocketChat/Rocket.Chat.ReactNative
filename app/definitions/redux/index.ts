@@ -44,6 +44,10 @@ import { ITroubleshootingNotification } from '../../reducers/troubleshootingNoti
 import { TActionTroubleshootingNotification } from '../../actions/troubleshootingNotification';
 import { ISupportedVersionsState } from '../../reducers/supportedVersions';
 import { IInAppFeedbackState } from '../../reducers/inAppFeedback';
+import { IRooms } from '../../reducers/rooms';
+import { IPreferences } from '../IPreferences';
+import { ICustomEmojis } from '../IEmoji';
+import { IUsersTyping } from '../../reducers/usersTyping';
 
 export interface IApplicationState {
 	settings: TSettingsState;
@@ -54,12 +58,12 @@ export interface IApplicationState {
 	app: IApp;
 	createChannel: ICreateChannel;
 	room: IRoom;
-	rooms: any;
-	sortPreferences: any;
+	rooms: IRooms;
+	sortPreferences: IPreferences;
 	share: IShare;
-	customEmojis: any;
+	customEmojis: ICustomEmojis;
 	activeUsers: IActiveUsers;
-	usersTyping: any;
+	usersTyping: IUsersTyping;
 	inviteLinks: IInviteLinks;
 	createDiscussion: ICreateDiscussion;
 	inquiry: IInquiry;

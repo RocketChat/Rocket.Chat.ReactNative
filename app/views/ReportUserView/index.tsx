@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -34,14 +35,13 @@ interface ISubmit {
 }
 
 const schema = yup.object().shape({
-	description: yup.string().trim().required()
+	description: yup.string().trim().required(I18n.t('Report_reason_required'))
 });
 
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
 	const navigation = useNavigation<TReportUserViewNavigationProp>();
 	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
-
 	const {
 		params: { username, userId, name }
 	} = useRoute<TReportUserViewRouteProp>();
@@ -49,8 +49,17 @@ const ReportUserView = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { isValid }
-	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema), defaultValues: { description: '' } });
+		watch,
+		formState: { errors }
+	} = useForm<ISubmit>({
+		mode: 'onChange',
+		resolver: yupResolver(schema),
+		defaultValues: { description: '' }
+	});
+
+	const inputValues = watch();
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
@@ -85,6 +94,7 @@ const ReportUserView = () => {
 						name='description'
 						control={control}
 						label={I18n.t('Why_do_you_want_to_report')}
+						error={errors.description?.message}
 						multiline
 						inputStyle={styles.textInput}
 						testID='report-user-view-input'
@@ -93,7 +103,6 @@ const ReportUserView = () => {
 					<Button
 						title={I18n.t('Report')}
 						type='primary'
-						disabled={!isValid}
 						onPress={handleSubmit(submit)}
 						testID='report-user-view-submit'
 						loading={loading}

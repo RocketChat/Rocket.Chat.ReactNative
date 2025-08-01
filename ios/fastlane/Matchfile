@@ -1,4 +1,4 @@
-git_url("https://github.com/RocketChat/Rocket.Chat.Cordova.Fastlane")
+git_url("https://#{ENV['FASTLANE_REPO_PAT']}@github.com/RocketChat/Rocket.Chat.Cordova.Fastlane")
 
 type("development") # The default type, can be: appstore, adhoc, enterprise or development
 
