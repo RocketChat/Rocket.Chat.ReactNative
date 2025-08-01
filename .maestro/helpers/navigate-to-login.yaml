@@ -8,4 +8,6 @@ env:
 - tapOn: Workspace URL. Required.
 - inputText: https://mobile.rocket.chat
 - tapOn: Connect
+- assertVisible:
+    text: 'Login'
 - tapOn: Login
