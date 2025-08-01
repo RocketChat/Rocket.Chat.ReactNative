@@ -29,6 +29,10 @@ jobs:
       - name: List Simulators
         run: xcrun simctl list devices
 
+      - name: Enable Software Keyboard
+        run: |
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
+
       - name: Boot Simulator
         run: |
           xcrun simctl boot "iPhone 16 Pro Max"
