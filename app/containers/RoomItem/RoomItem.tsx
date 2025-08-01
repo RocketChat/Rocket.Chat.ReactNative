@@ -47,9 +47,6 @@ const RoomItem = ({
 	swipeEnabled = true,
 	onPress,
 	onLongPress,
-	toggleFav,
-	toggleRead,
-	hideChannel,
 	teamMain,
 	autoJoin,
 	showAvatar,
@@ -80,11 +77,8 @@ const RoomItem = ({
 			onLongPress={onLongPress}
 			width={width}
 			favorite={favorite}
-			toggleFav={toggleFav}
 			isRead={isRead}
 			rid={rid}
-			toggleRead={toggleRead}
-			hideChannel={hideChannel}
 			testID={testID}
 			type={type}
 			isFocused={!!isFocused}

@@ -22,6 +22,7 @@ import { useCloseKeyboardWhenOrientationChanges } from './hooks/useCloseKeyboard
 import { useEmojiKeyboard } from './hooks/useEmojiKeyboard';
 import EmojiPicker from '../EmojiPicker';
 import { MessageComposerContent } from './components/MessageComposerContent';
+import { useTheme } from '../../theme';
 
 export const MessageComposer = ({
 	forwardedRef,
@@ -47,6 +48,7 @@ export const MessageComposer = ({
 	const { setAlsoSendThreadToChannel, setAutocompleteParams } = useMessageComposerApi();
 	const recordingAudio = useRecordingAudio();
 	const { formatShortnameToUnicode } = useShortnameToUnicode();
+	const { colors } = useTheme();
 
 	useImperativeHandle(forwardedRef, () => ({
 		closeEmojiKeyboardAndAction,
@@ -196,7 +198,7 @@ export const MessageComposer = ({
 				onLayout={handleLayout}>
 				{children}
 			</MessageComposerContent>
-			<Animated.View style={emojiKeyboardStyle}>
+			<Animated.View style={[emojiKeyboardStyle, { backgroundColor: colors.surfaceLight }]}>
 				{showEmojiKeyboard && !showEmojiSearchbar ? <EmojiPicker onItemClicked={onKeyboardItemSelected} isEmojiKeyboard /> : null}
 			</Animated.View>
 			<Autocomplete

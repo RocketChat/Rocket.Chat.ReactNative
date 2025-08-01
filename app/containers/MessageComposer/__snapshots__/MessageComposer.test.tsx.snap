@@ -246,9 +246,14 @@ exports[`MessageComposer Audio tap record 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -685,9 +690,14 @@ exports[`MessageComposer Quote Add quote \`abc\` 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -1306,9 +1316,14 @@ exports[`MessageComposer Quote Add quote \`def\` 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -1927,9 +1942,14 @@ exports[`MessageComposer Quote Remove a quote 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -2534,9 +2554,14 @@ exports[`MessageComposer Toolbar Markdown tap bold 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -3141,9 +3166,14 @@ exports[`MessageComposer Toolbar Markdown tap code 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -3748,9 +3778,14 @@ exports[`MessageComposer Toolbar Markdown tap code-block 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -4355,9 +4390,14 @@ exports[`MessageComposer Toolbar Markdown tap italic 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -4962,9 +5002,14 @@ exports[`MessageComposer Toolbar Markdown tap markdown 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -5569,9 +5614,14 @@ exports[`MessageComposer Toolbar Markdown tap strike 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -6176,9 +6226,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap bold 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -6783,9 +6838,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -7390,9 +7450,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap code-block 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -7997,9 +8062,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap italic 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -8604,9 +8674,14 @@ exports[`MessageComposer Toolbar Markdown type test and tap strike 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -9059,9 +9134,14 @@ exports[`MessageComposer Toolbar tap actions 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]
@@ -9362,9 +9442,14 @@ exports[`MessageComposer Toolbar tap emoji 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   >
     <View
@@ -11392,9 +11477,14 @@ exports[`MessageComposer Toolbar tap mention 1`] = `
   </View>,
   <View
     style={
-      {
-        "height": 0,
-      }
+      [
+        {
+          "height": 0,
+        },
+        {
+          "backgroundColor": "#FFFFFF",
+        },
+      ]
     }
   />,
 ]

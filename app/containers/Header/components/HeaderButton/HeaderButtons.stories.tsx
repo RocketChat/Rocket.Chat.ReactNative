@@ -1,8 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Header, HeaderBackground } from '@react-navigation/elements';
+import { Header, HeaderBackground, SafeAreaProviderCompat } from '@react-navigation/elements';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import * as HeaderButton from '.';
 import { TColors, ThemeContext, TSupportedThemes } from '../../../../theme';
@@ -20,9 +19,9 @@ export default {
 	decorators: [
 		(Story: any) => (
 			<NavigationContainer>
-				<SafeAreaProvider>
+				<SafeAreaProviderCompat>
 					<Story />
-				</SafeAreaProvider>
+				</SafeAreaProviderCompat>
 			</NavigationContainer>
 		)
 	]

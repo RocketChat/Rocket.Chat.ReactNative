@@ -30,7 +30,7 @@ const JitsiMeetView = (): React.ReactElement => {
 		const date = new Date();
 		date.setDate(date.getDate() + 1);
 		const expires = date.toISOString();
-		const domain = serverUrl.replace(/^https?:\/\//, '');
+		const domain = serverUrl.replace(/^https?:\/\//, '').split(':')[0]; // remove the ":<port>"
 		const ck = { domain, version: '1', expires };
 
 		await CookieManager.set(serverUrl, {

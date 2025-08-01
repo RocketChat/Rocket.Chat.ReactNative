@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 export const EmptyRoom = React.memo(({ length, rid }: { length: number; rid: string }) => {
 	const { theme } = useTheme();
 	if (length === 0 || !rid) {
-		return <ImageBackground source={{ uri: `message_empty_${theme}` }} style={styles.image} />;
+		return <ImageBackground source={{ uri: `message_empty_${theme === 'dark' ? 'black' : theme}` }} style={styles.image} />;
 	}
 	return null;
 });

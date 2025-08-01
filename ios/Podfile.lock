@@ -53,7 +53,7 @@ PODS:
     - ExpoModulesCore
   - ExpoHaptics (14.1.3):
     - ExpoModulesCore
-  - ExpoImage (2.1.6):
+  - ExpoImage (2.3.2):
     - ExpoModulesCore
     - libavif/libdav1d
     - SDWebImage (~> 5.21.0)
@@ -2217,7 +2217,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (4.9.2):
+  - RNScreens (4.13.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -2695,7 +2695,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 175267faf2b38511b01ac110243b13754dac57d3
   ExpoFont: abbb91a911eb961652c2b0a22eef801860425ed6
   ExpoHaptics: 0700bdb80e99deb606561698e79041a0d61d724e
-  ExpoImage: ef73e2ed551133a5fab8693a2ea1ea1dc4da2542
+  ExpoImage: 785f7673cfecd97045cf333fd6486b57ccab4b71
   ExpoKeepAwake: 213acedecafb6fda8c0ffedad22ee9e2903400c5
   ExpoLocalAuthentication: f69863a1822e42db67a311ce839ecbac70e7fa65
   ExpoModulesCore: 92329f3b150939f631068bf4fa54331e55b09244
@@ -2820,7 +2820,7 @@ SPEC CHECKSUMS:
   RNLocalize: ca86348d88b9a89da0e700af58d428ab3f343c4e
   RNNotifee: 8768d065bf1e2f9f8f347b4bd79147431c7eacd6
   RNReanimated: 5088b0601d96ffe35d18700b97bc1feb3f6105d4
-  RNScreens: 896fe2f0c448a63265c5e2d17817a0a6b4237e54
+  RNScreens: 48d705e4f7a2e66c08cf552a4c57714d4a44d6f9
   RNSVG: ab84f2de7dd4f2c86d01825b8a65e0ef712fc36b
   RNVectorIcons: 5784330be9dddb5474e8b378d5f6947996c84e55
   SDWebImage: f84b0feeb08d2d11e6a9b843cb06d75ebf5b8868

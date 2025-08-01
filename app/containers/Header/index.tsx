@@ -26,7 +26,8 @@ const Header = ({ options, navigation, route }: IHeader) => {
 		route.name === 'RoomsListView' ||
 		route.name === 'ShareListView' ||
 		route.name === 'ShareView' ||
-		route.name === 'AttachmentView';
+		route.name === 'AttachmentView' ||
+		route.name === 'DrawerNavigator';
 
 	const handleOnLayout = ({
 		nativeEvent: {
