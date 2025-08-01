@@ -136,7 +136,6 @@ const IncomingCallNotification = ({
 }: {
 	notification: { rid: string; callId: string };
 }): React.ReactElement | null => {
-	console.log('aquiii');
 	const { result } = useEndpointData('video-conference.info', { callId });
 
 	const user = useUserData(rid);
