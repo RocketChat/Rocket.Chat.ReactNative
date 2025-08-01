@@ -1,0 +1,11 @@
+appId: chat.rocket.reactnative
+tags:
+  - 'skip'
+---
+- runFlow:
+    when:
+      visible:
+        id: 'custom-header-back'
+    commands:
+      - tapOn:
+          id: 'custom-header-back'

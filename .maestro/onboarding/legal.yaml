@@ -1,0 +1,24 @@
+appId: chat.rocket.reactnative
+name: Legal
+---
+- runFlow: ../helpers/navigate-to-workspace.yaml
+- assertVisible:
+    id: 'login-view-more'
+- tapOn:
+    id: 'login-view-more'
+- assertVisible:
+    id: 'legal-view'
+- tapOn:
+    id: 'custom-header-back'
+- scrollUntilVisible:
+    element:
+      text: 'Create an account'
+- tapOn: 'Create an account'
+- assertVisible:
+    id: 'register-view-more'
+- tapOn:
+    id: 'register-view-more'
+- assertVisible:
+    id: 'legal-view'
+- assertVisible:
+    id: 'legal-privacy-button'
