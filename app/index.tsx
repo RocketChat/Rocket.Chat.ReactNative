@@ -37,6 +37,7 @@ import { initStore } from './lib/store/auxStore';
 import { TSupportedThemes, ThemeContext } from './theme';
 import ChangePasscodeView from './views/ChangePasscodeView';
 import ScreenLockedView from './views/ScreenLockedView';
+import StatusBar from './containers/StatusBar';
 
 enableScreens();
 initStore(store);
@@ -227,6 +228,7 @@ export default class Root extends React.Component<{}, IState> {
 								<GestureHandlerRootView>
 									<KeyboardProvider>
 										<ActionSheetProvider>
+											<StatusBar />
 											<AppContainer />
 											<TwoFactor />
 											<ScreenLockedView />

@@ -5,7 +5,6 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import I18n from '../i18n';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import Button from '../containers/Button';
 import { TSupportedThemes, useTheme } from '../theme';
 import { goRoom } from '../lib/methods/helpers/goRoom';
@@ -111,7 +110,6 @@ const CannedResponseDetail = (): JSX.Element => {
 	return (
 		<SafeAreaView>
 			<ScrollView contentContainerStyle={[styles.scroll, { backgroundColor: themes[theme].surfaceTint }]}>
-				<StatusBar />
 				<View style={styles.container}>
 					<Item label={I18n.t('Shortcut')} content={`!${cannedResponse?.shortcut}`} theme={theme} />
 					<Item label={I18n.t('Content')} content={cannedResponse?.text} theme={theme} />

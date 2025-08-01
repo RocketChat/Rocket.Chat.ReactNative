@@ -9,7 +9,6 @@ import log from '../lib/methods/helpers/log';
 import * as List from '../containers/List';
 import I18n from '../i18n';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
-import StatusBar from '../containers/StatusBar';
 import { themes } from '../lib/constants';
 import { TSupportedThemes, withTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -197,7 +196,6 @@ class SelectListView extends React.Component<ISelectListViewProps, ISelectListVi
 		const { theme } = this.props;
 		return (
 			<SafeAreaView testID='select-list-view'>
-				<StatusBar />
 				<FlatList
 					data={!isSearching ? data : dataFiltered}
 					extraData={this.state}

@@ -8,7 +8,6 @@ import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
 import { isIOS, useDebounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -171,7 +170,6 @@ const DiscussionsView = () => {
 
 	return (
 		<SafeAreaView testID='discussions-view'>
-			<StatusBar />
 			<FlatList
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}
