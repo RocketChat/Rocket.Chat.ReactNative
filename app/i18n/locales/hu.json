@@ -6,7 +6,7 @@
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Az új tulajdonos automatikus hozzárendelésre kerül {{count}} szobához.",
   "A11y_appearance_dialog_require_manual_dismissal": "Kézi elutasítást igényel",
   "A11y_appearance_dialogs": "Párbeszédek",
-  "A11y_appearance_show_alert_as": "Riasztás megjelenítése:",
+  "A11y_appearance_show_alerts_as": "Figyelmeztetések megjelenítése mint",
   "A11y_appearance_toasts": "Pirítósok",
   "accept": "Elfogadom",
   "Accessibility": "Akadálymentesség",

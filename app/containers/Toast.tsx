@@ -29,7 +29,6 @@ let toast: EasyToast | null | undefined;
 const Toast = (): React.ReactElement => {
 	const { colors, theme } = useTheme();
 	const [alertDisplayType] = useUserPreferences<TAlertDisplayType>(ALERT_DISPLAY_TYPE_PREFERENCES_KEY, 'TOAST');
-	console.log('here', alertDisplayType);
 
 	useEffect(() => {
 		listener = EventEmitter.addEventListener(LISTENER, showToast);

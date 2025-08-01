@@ -70,6 +70,9 @@ const ListPicker = ({
 		OPTIONS.map(i => ({
 			title: i.label,
 			subtitle: i?.description || undefined,
+			accessibilityLabel: `${i.label}. ${i?.description || ''}. ${
+				option?.value === i.value ? I18n.t('Checked') : I18n.t('Unchecked')
+			}`,
 			onPress: () => {
 				hideActionSheet();
 				onChangeValue(i.value);
@@ -79,6 +82,7 @@ const ListPicker = ({
 
 	return (
 		<List.Item
+			accessibilityLabel={`${title}. ${option?.label}`}
 			onPress={() => showActionSheet({ options: getOptions() })}
 			title={() => (
 				<View style={styles.leftTitleContainer}>
