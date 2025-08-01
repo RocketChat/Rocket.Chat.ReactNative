@@ -20,7 +20,7 @@ export interface INotifierComponent {
 		payload: {
 			sender: { username: string };
 			type: SubscriptionType;
-			message?: { message: string; t?: string };
+			message?: { message?: string; msg?: string; t?: string };
 		} & Pick<ISubscription, '_id' | 'name' | 'rid' | 'prid'>;
 		title: string;
 		avatar: string;

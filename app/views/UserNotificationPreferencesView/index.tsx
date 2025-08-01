@@ -89,7 +89,7 @@ const UserNotificationPreferencesView = () => {
 					<ActivityIndicator />
 				) : (
 					<>
-						<List.Section title='Desktop_Notifications'>
+						<List.Section title='In_App_Notification'>
 							<List.Separator />
 							<ListPicker
 								onChangeValue={onValueChangePicker}
@@ -99,7 +99,7 @@ const UserNotificationPreferencesView = () => {
 								value={preferences.desktopNotifications}
 							/>
 							<List.Separator />
-							<List.Info info='Desktop_Alert_info' />
+							<List.Info info='In_App_Alert_info' />
 						</List.Section>
 
 						<List.Section title='Push_Notifications'>
