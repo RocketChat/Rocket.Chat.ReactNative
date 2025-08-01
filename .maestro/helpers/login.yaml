@@ -9,6 +9,7 @@ tags:
 - tapOn: 'Password.'
 - inputText: working@rocket.chat
 - hideKeyboard
-- tapOn: 'Login'
+- tapOn:
+    id: login-view-submit
 - assertVisible:
     id: rooms-list-view

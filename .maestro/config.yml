@@ -1,6 +1,9 @@
 appId: chat.rocket.reactnative
 flows:
-  - onboarding/workspace/invalid_workspace.yaml
+  - onboarding/*
+  - onboarding/login/*
+  - onboarding/register/*
+  - onboarding/workspace/*
 excludeTags:
   - 'skip'
   - 'utill'

@@ -129,7 +129,7 @@ export const FormTextInput = ({
 	return (
 		<A11yContainer>
 			<A11yElement order={1}>
-				<View accessible accessibilityLabel={accessibilityLabelText} style={[styles.inputContainer, containerStyle]}>
+				<View style={[styles.inputContainer, containerStyle]}>
 					{label ? (
 						<Text style={[styles.label, { color: colors.fontTitlesLabels }]}>
 							{label}{' '}
@@ -141,6 +141,8 @@ export const FormTextInput = ({
 
 					<View accessible style={styles.wrap}>
 						<Input
+							accessible
+							accessibilityLabel={accessibilityLabelText}
 							style={[
 								styles.input,
 								iconLeft && styles.inputIconLeft,

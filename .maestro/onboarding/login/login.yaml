@@ -8,10 +8,13 @@ onFlowStart:
 ---
 - runFlow: ../../helpers/launch-app.yaml
 - runFlow: ../../helpers/navigate-to-login.yaml
-- tapOn: 'Username or email.'
+- tapOn:
+    id: 'login-view-email'
 - inputText: working@rocket.chat
-- tapOn: 'Password'
+- tapOn:
+    id: 'login-view-password'
 - inputText: working@rocket.chat
+- hideKeyboard
 - tapOn:
     id: login-view-submit
 - assertVisible:
