@@ -11,7 +11,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
 import SearchBox from '../../containers/SearchBox';
-import StatusBar from '../../containers/StatusBar';
 import UserItem from '../../containers/UserItem';
 import Radio from '../../containers/Radio';
 import { IGetRoomRoles, TSubscriptionModel, TUserModel } from '../../definitions';
@@ -389,7 +388,6 @@ const RoomMembersView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView testID='room-members-view'>
-			<StatusBar />
 			<FlatList
 				data={filteredMembers || state.members}
 				renderItem={({ item }) => (

@@ -9,7 +9,6 @@ import { DisplayMode, SortBy } from '../lib/constants';
 import * as List from '../containers/List';
 import { ICON_SIZE } from '../containers/List/constants';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import Radio from '../containers/Radio';
 import { IPreferences } from '../definitions';
 import I18n from '../i18n';
@@ -91,7 +90,6 @@ const DisplayPrefsView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='display-view-list'>
 				<List.Section title='Display'>
 					<List.Separator />

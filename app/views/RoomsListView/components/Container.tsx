@@ -9,7 +9,6 @@ const Container = ({ children }: { children: ReactElement }) => {
 	const { colors } = useTheme();
 	return (
 		<SafeAreaView testID='rooms-list-view' style={{ backgroundColor: colors.surfaceRoom }}>
-			<StatusBar />
 			<TabletHeader />
 			{children}
 		</SafeAreaView>
