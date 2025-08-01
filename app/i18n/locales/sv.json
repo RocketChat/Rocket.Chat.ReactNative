@@ -78,6 +78,7 @@
   "Call_already_ended": "Samtalet är redan avslutat.",
   "Call_ended": "Samtal avslutat",
   "Call_room_name": "Ring {{roomName}}",
+  "Call_was_canceled_before_being_answered": "Samtalet avbröts innan det besvarades",
   "Call_was_not_answered": "Samtalet besvarades inte",
   "Calling": "Ringer upp",
   "Cancel": "Avbryt",

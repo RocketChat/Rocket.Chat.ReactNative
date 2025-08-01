@@ -78,6 +78,7 @@
   "Call_already_ended": "Puhelu on jo päättynyt!",
   "Call_ended": "Puhelu päättyi",
   "Call_room_name": "Kutsu {{roomName}}",
+  "Call_was_canceled_before_being_answered": "Puhelu peruttiin ennen kuin siihen vastattiin",
   "Call_was_not_answered": "Puheluun ei vastattu",
   "Calling": "Soitetaan",
   "Cancel": "Peruuta",

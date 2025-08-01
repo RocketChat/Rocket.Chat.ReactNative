@@ -93,6 +93,7 @@
   "Call_ongoing": "Samtale pågår",
   "Call_rejected": "Anrop avvist",
   "Call_started": "Samtalen startet",
+  "Call_was_canceled_before_being_answered": "Samtalen ble avbrutt før den ble besvart",
   "Call_was_not_answered": "Anropet ble ikke besvart",
   "Calling": "Ringer",
   "Cancel": "Avbryt",

@@ -60,6 +60,7 @@
   "Busy": "忙碌",
   "Call_already_ended": "通話已經結束！",
   "Call_room_name": "呼叫{{roomName}}",
+  "Call_was_canceled_before_being_answered": "通話在接聽前被取消",
   "Cancel": "取消",
   "Cancel_and_delete_recording": "取消並刪除錄音",
   "Cancel_editing": "取消編輯",

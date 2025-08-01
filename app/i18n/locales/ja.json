@@ -60,6 +60,7 @@
   "Busy": "取り込み中",
   "Call_already_ended": "通話は終了しています。",
   "Call_room_name": "{{roomName}}を呼び出す",
+  "Call_was_canceled_before_being_answered": "応答される前に通話がキャンセルされました。",
   "Cancel": "キャンセル",
   "Cancel_and_delete_recording": "録音をキャンセルして削除",
   "Cancel_editing": "編集をキャンセル",

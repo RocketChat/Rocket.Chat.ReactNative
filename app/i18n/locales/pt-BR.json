@@ -97,6 +97,7 @@
   "Call_rejected": "Chamada rejeitada",
   "Call_room_name": "Chamar {{roomName}}",
   "Call_started": "Chamada Iniciada",
+  "Call_was_canceled_before_being_answered": "A chamada foi cancelada antes de ser atendida.",
   "Call_was_not_answered": "A chamada não foi atendida",
   "Calling": "Chamando",
   "Cancel": "Cancelar",

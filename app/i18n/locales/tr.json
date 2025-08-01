@@ -60,6 +60,7 @@
   "Busy": "Meşgul",
   "Call_already_ended": "Çağrı sona erdi!",
   "Call_room_name": "{{roomName}} araması yap",
+  "Call_was_canceled_before_being_answered": "Çağrı, cevaplanmadan önce iptal edildi",
   "Cancel": "İptal et",
   "Cancel_and_delete_recording": "Kaydı iptal et ve sil",
   "Cancel_editing": "Düzenlemeyi iptal et",

@@ -93,6 +93,7 @@
   "Call_rejected": "குறைந்தது",
   "Call_room_name": "{{roomName}} அழைக்கவும்",
   "Call_started": "கால் ஆரம்பம்",
+  "Call_was_canceled_before_being_answered": "அழைப்பு பதிலளிக்கப்படுவதற்கு முன்பு ரத்து செய்யப்பட்டது",
   "Call_was_not_answered": "அழிந்தது",
   "Calling": "அழைப்பதில்",
   "Cancel": "ரத்து செய்",

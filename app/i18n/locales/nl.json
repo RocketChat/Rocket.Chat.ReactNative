@@ -66,6 +66,7 @@
   "Busy": "Bezig",
   "Call_already_ended": "Gesprek al beeïndigd!",
   "Call_room_name": "Bel {{roomName}}",
+  "Call_was_canceled_before_being_answered": "Oproep werd geannuleerd voordat deze werd beantwoord",
   "Cancel": "Annuleren",
   "Cancel_and_delete_recording": "Annuleer en verwijder opname",
   "Cancel_editing": "Bewerken annuleren",

@@ -61,6 +61,7 @@
   "Busy": "مشغول",
   "Call_already_ended": "تم انهاء المكالمة بالفعل !",
   "Call_room_name": "اتصل بـ {{roomName}}",
+  "Call_was_canceled_before_being_answered": "تم إلغاء المكالمة قبل الرد عليها",
   "Cancel": "إلغاء",
   "Cancel_and_delete_recording": "إلغاء وحذف التسجيل",
   "Cancel_editing": "إلغاء التعديل",

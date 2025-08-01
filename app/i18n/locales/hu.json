@@ -93,6 +93,7 @@
   "Call_rejected": "Hívás elutasítva",
   "Call_room_name": "Hívd a(z) {{roomName}}-t!",
   "Call_started": "Hívás elindítva",
+  "Call_was_canceled_before_being_answered": "A hívást megszakították, mielőtt fogadták volna.",
   "Call_was_not_answered": "A hívás nem lett fogadva",
   "Calling": "Hívás",
   "Cancel": " Mégse",

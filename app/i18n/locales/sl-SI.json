@@ -70,6 +70,7 @@
   "Busy": "Zaseden",
   "Call_already_ended": "Klic je že končan!",
   "Call_room_name": "Pokliči {{roomName}}",
+  "Call_was_canceled_before_being_answered": "Klic je bil preklican, preden je bil sprejet.",
   "Cancel": "Prekliči",
   "Cancel_and_delete_recording": "Prekliči in izbriši posnetek",
   "Cancel_editing": "Prekliči urejanje",

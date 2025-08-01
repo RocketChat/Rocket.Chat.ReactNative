@@ -42,6 +42,7 @@
   "Call_ended": "Anrop avsluttet",
   "Call_ongoing": "Samtale pågår",
   "Call_started": "Samtale startet",
+  "Call_was_canceled_before_being_answered": "Samtalen blei avlyst før ho blei svart",
   "Call_was_not_answered": "Anropet ble ikke besvart",
   "Calling": "Ringer",
   "Cancel": "Avbryt",

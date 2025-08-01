@@ -76,6 +76,7 @@
   "Call_already_ended": "Вызов уже завершен!",
   "Call_ended": "Звонок завершен",
   "Call_room_name": "Вызвать {{roomName}}",
+  "Call_was_canceled_before_being_answered": "Вызов был отменён до ответа.",
   "Call_was_not_answered": "Звонок не был отвечен",
   "Calling": "Идет вызов",
   "Cancel": "Отмена",

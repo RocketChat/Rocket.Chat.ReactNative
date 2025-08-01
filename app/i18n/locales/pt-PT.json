@@ -59,6 +59,7 @@
   "Busy": "Ocupado",
   "Call_already_ended": "Chamada já terminada!",
   "Call_room_name": "Ligar para {{roomName}}",
+  "Call_was_canceled_before_being_answered": "A chamada foi cancelada antes de ser atendida.",
   "Cancel": "Cancelar",
   "Cancel_and_delete_recording": "Cancelar e eliminar gravação",
   "Cancel_editing": "Cancelar edição",

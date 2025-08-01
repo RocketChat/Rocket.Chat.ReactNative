@@ -93,6 +93,7 @@
   "Call_rejected": "कॉल अस्वीकृत",
   "Call_room_name": "{{roomName}} को कॉल करें",
   "Call_started": "कॉल शुरू हुई",
+  "Call_was_canceled_before_being_answered": "उत्तर देने से पहले कॉल रद्द कर दी गई थी।",
   "Call_was_not_answered": "कॉल का जवाब नहीं दिया गया था",
   "Calling": "कॉलिंग",
   "Cancel": "रद्द करें",
