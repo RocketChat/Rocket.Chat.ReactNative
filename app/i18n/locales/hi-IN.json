@@ -871,5 +871,14 @@
   "Your_invite_link_will_never_expire": "आपका आमंत्रण लिंक कभी समाप्त नहीं होगा।",
   "Your_password_is": "आपका पासवर्ड है",
   "Your_Password_Must_Have": "आपका पासवर्ड होना चाहिए:",
-  "Your_workspace": "आपका कार्यस्थान"
+  "Your_workspace": "आपका कार्यस्थान",
+  "QR_Loading_Camera": "कैमरा लोड हो रहा है...",
+  "QR_Camera_Permission_Required": "कैमरा अनुमति आवश्यक है",
+  "QR_Camera_Permission_Required_Description": "QR कोड स्कैन करने के लिए Rocket.Chat को आपके कैमरे तक पहुंच की आवश्यकता है।",
+  "Grant_Permission": "अनुमति दें",
+  "Initializing_Camera": "कैमरा प्रारंभ हो रहा है...",
+  "Camera_Paused": "कैमरा रुका हुआ है",
+  "Camera_Initialization_Failed": "कैमरा प्रारंभ करने में विफल",
+  "QR_Code_Verifying": "QR कोड सत्यापित हो रहा है...",
+  "QR_Code_Verification_Wait": "कृपया प्रतीक्षा करें, हम आपके कोड को सत्यापित कर रहे हैं..."
 }

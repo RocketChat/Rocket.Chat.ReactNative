@@ -958,5 +958,14 @@
   "Your_password_is": "Sua senha é",
   "Your_Password_Must_Have": "Sua senha deve conter:",
   "Your_push_was_sent_to_s_devices": "A sua notificação foi enviada para {{s}} dispositivos",
-  "Your_workspace": "Sua workspace"
+  "Your_workspace": "Sua workspace",
+  "QR_Loading_Camera": "Carregando câmera...",
+  "QR_Camera_Permission_Required": "Permissão de câmera necessária",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat precisa acessar sua câmera para escanear códigos QR.",
+  "Grant_Permission": "Conceder permissão",
+  "Initializing_Camera": "Inicializando câmera...",
+  "Camera_Paused": "Câmera pausada",
+  "Camera_Initialization_Failed": "Falha na inicialização da câmera",
+  "QR_Code_Verifying": "Verificando QR code...",
+  "QR_Code_Verification_Wait":"Por favor, aguarde enquanto verificamos seu código..."
 }

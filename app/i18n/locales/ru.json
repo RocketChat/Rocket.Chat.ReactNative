@@ -801,5 +801,14 @@
   "Your_invite_link_will_never_expire": "Ваша ссылка-приглашение никогда не будет просроченной.",
   "Your_password_is": "Ваш пароль",
   "Your_Password_Must_Have": "Ваш пароль должен иметь:",
-  "Your_workspace": "Ваш сервер"
+  "Your_workspace": "Ваш сервер",
+  "QR_Loading_Camera": "Загрузка камеры...",
+  "QR_Camera_Permission_Required": "Требуется разрешение на доступ к камере",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat необходимо получить доступ к вашей камере для сканирования QR-кодов.",
+  "Grant_Permission": "Предоставить разрешение",
+  "Initializing_Camera": "Инициализация камеры...",
+  "Camera_Paused": "Камера приостановлена",
+  "Camera_Initialization_Failed": "Не удалось инициализировать камеру",
+  "QR_Code_Verifying": "Проверка QR-кода...",
+  "QR_Code_Verification_Wait":"Пожалуйста, подождите, пока мы проверим ваш код..."
 }

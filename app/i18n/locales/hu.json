@@ -874,5 +874,14 @@
   "Your_invite_link_will_never_expire": "A meghívási hivatkozása sosem jár le.",
   "Your_password_is": "A jelszava a következő",
   "Your_Password_Must_Have": "A jelszavának rendelkeznie kell:",
-  "Your_workspace": "Az Ön munkaterülete"
+  "Your_workspace": "Az Ön munkaterülete",
+  "QR_Loading_Camera": "Kamera betöltése...",
+  "QR_Camera_Permission_Required": "Kamera engedély szükséges",
+  "QR_Camera_Permission_Required_Description": "A Rocket.Chat-nek hozzáférésre van szüksége a kamerához a QR-kódok beolvasásához.",
+  "Grant_Permission": "Engedély megadása",
+  "Initializing_Camera": "Kamera inicializálása...",
+  "Camera_Paused": "Kamera szüneteltetve van",
+  "Camera_Initialization_Failed": "A kamera inicializálása sikertelen",
+  "QR_Code_Verifying": "QR-kód ellenőrzése...",
+  "QR_Code_Verification_Wait":"Kérjük, várjon, amíg ellenőrizzük a kódját..."
 }

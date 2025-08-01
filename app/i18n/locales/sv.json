@@ -831,5 +831,13 @@
   "Your_invite_link_will_never_expire": "Inbjudningslänken upphör aldrig att gälla.",
   "Your_password_is": "Ditt lösenord är",
   "Your_Password_Must_Have": "Ditt lösenord måste ha:",
-  "Your_workspace": "Din arbetsyta"
+  "QR_Loading_Camera": "Laddar kamera...",
+  "QR_Camera_Permission_Required": "Kamerabehörighet krävs",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat behöver åtkomst till din kamera för att skanna QR-koder.",
+  "Grant_Permission": "Ge behörighet",
+  "Initializing_Camera": "Initierar kamera...",
+  "Camera_Paused": "Kameran är pausad",
+  "Camera_Initialization_Failed": "Kamerainitialisering misslyckades",
+  "QR_Code_Verifying": "Verifierar QR-kod...",
+  "QR_Code_Verification_Wait": "Vänligen vänta medan vi verifierar din kod..."
 }

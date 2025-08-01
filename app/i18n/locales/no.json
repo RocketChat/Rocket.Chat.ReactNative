@@ -924,5 +924,14 @@
   "Your_invite_link_will_never_expire": "Invitasjonslenken din vil aldri utløpe.",
   "Your_password_is": "Passordet ditt er",
   "Your_Password_Must_Have": "Passordet ditt må inneholde:",
-  "Your_push_was_sent_to_s_devices": "Din push ble sendt til {{s}} enheter"
+  "Your_push_was_sent_to_s_devices": "Push-varslingen din ble sendt til {{s}} enheter.",
+  "QR_Loading_Camera": "Laster kamera...",
+  "QR_Camera_Permission_Required": "Kameratilgang kreves",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat trenger tilgang til kameraet ditt for å skanne QR-koder.",
+  "Grant_Permission": "Gi tillatelse",
+  "Initializing_Camera": "Initialiserer kamera...",
+  "Camera_Paused": "Kameraet er satt på pause",
+  "Camera_Initialization_Failed": "Kamerainitialisering mislyktes",
+  "QR_Code_Verifying": "Verifiserer QR-kode...",
+  "QR_Code_Verification_Wait": "Vennligst vent mens vi verifiserer koden din..."
 }

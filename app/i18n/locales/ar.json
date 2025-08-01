@@ -608,5 +608,15 @@
   "Your_invite_link_will_never_expire": "لن تنتهي صلاحية رابط الدعوة الخاص بك",
   "Your_password_is": "كلمة المرور الخاصة بك هي",
   "Your_Password_Must_Have": "يجب أن تحتوي كلمة المرور الخاصة بك على:",
-  "Your_workspace": "مساحة عملك"
+  "Your_workspace": "مساحة عملك",
+  "QR_Loading": "جار تحميل QR...",
+  "QR_Loading_Camera": "جار تحميل الكاميرا...",
+  "QR_Camera_Permission_Required": "إذن الكاميرا مطلوب",
+  "QR_Camera_Permission_Required_Description": "يحتاج Rocket.Chat للوصول إلى الكاميرا الخاصة بك لمسح رموز QR.",
+  "Grant_Permission": "منح الإذن",
+  "Initializing_Camera": "جار تهيئة الكاميرا...",
+  "Camera_Paused": "تم إيقاف الكاميرا",
+  "Camera_Initialization_Failed": "فشل تهيئة الكاميرا",
+  "QR_Code_Verifying": "جار التحقق من رمز QR...",
+  "QR_Code_Verification_Wait":"يرجى الانتظار بينما نقوم بالتحقق من الرمز الخاص بك..."
 }

@@ -833,5 +833,14 @@
   "Your_invite_link_will_never_expire": "Kutsulinkkisi ei vanhene.",
   "Your_password_is": "Salasanasi on",
   "Your_Password_Must_Have": "Salasanasi on oltava:",
-  "Your_workspace": "Työtilasi"
+  "Your_workspace": "Työtilasi",
+  "QR_Loading_Camera": "Kameraa ladataan...",
+  "QR_Camera_Permission_Required": "Kameran käyttöoikeus vaaditaan",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat tarvitsee pääsyn kameraasi QR-koodien skannaamista varten.",
+  "Grant_Permission": "Myönnä käyttöoikeus",
+  "Initializing_Camera": "Kamera alustetaan...",
+  "Camera_Paused": "Kamera on keskeytetty",
+  "Camera_Initialization_Failed": "Kameran alustus epäonnistui",
+  "QR_Code_Verifying": "Tarkistetaan QR-koodia...",
+  "QR_Code_Verification_Wait": "Odota hetki, tarkistamme koodisi..."
 }

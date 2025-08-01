@@ -527,5 +527,14 @@
   "Your_invite_link_will_expire_on__date__": "招待リンクは{{date}}に使用できなくなります。",
   "Your_invite_link_will_expire_on__date__or_after__usesLeft__uses": "招待リンクは{{date}}までか、あと{{usesLeft}}回で使用できなくなります。",
   "Your_invite_link_will_never_expire": "招待リンクはずっと有効です。",
-  "Your_Password_Must_Have": "パスワードには次のことが必要です。"
+  "Your_Password_Must_Have": "パスワードには次のことが必要です。",
+  "QR_Loading_Camera": "カメラを読み込んでいます...",
+  "QR_Camera_Permission_Required": "カメラの権限が必要です",
+  "QR_Camera_Permission_Required_Description": "Rocket.ChatはQRコードをスキャンするためにカメラへのアクセスが必要です。",
+  "Grant_Permission": "権限を付与",
+  "Initializing_Camera": "カメラを初期化しています...",
+  "Camera_Paused": "カメラが一時停止しました",
+  "Camera_Initialization_Failed": "カメラの初期化に失敗しました",
+  "QR_Code_Verifying": "QRコードを確認しています...",
+  "QR_Code_Verification_Wait":"確認中です。しばらくお待ちください..."
 }

@@ -871,5 +871,14 @@
   "Your_invite_link_will_never_expire": "உங்கள் அழைத்துக்கொள்ளும் இணைய கணக்கு எப்போதும் காலாவதியாகின்றதுமில்லை.",
   "Your_password_is": "உங்கள் கடவுச்சொல் உள்ளது",
   "Your_Password_Must_Have": "உங்கள் கடவுச்சொல் இருக்க வேண்டும்:",
-  "Your_workspace": "உங்கள் பணிகள்"
+  "Your_workspace": "உங்கள் பணிகள்",
+  "QR_Loading_Camera": "கேமரா ஏற்றுகிறது...",
+  "QR_Camera_Permission_Required": "கேமரா அனுமதி தேவை",
+  "QR_Camera_Permission_Required_Description": "QR குறியீடுகளை ஸ்கேன் செய்ய Rocket.Chat உங்கள் கேமராவை அணுக வேண்டும்.",
+  "Grant_Permission": "அனுமதி வழங்கவும்",
+  "Initializing_Camera": "கேமரா தொடங்குகிறது...",
+  "Camera_Paused": "கேமரா நிறுத்தப்பட்டது",
+  "Camera_Initialization_Failed": "கேமரா தொடக்கத்தில் தோல்வி",
+  "QR_Code_Verifying": "QR குறியீட்டை சரிபார்க்கிறது...",
+  "QR_Code_Verification_Wait": "உங்கள் குறியீட்டை சரிபார்க்க காத்திருக்கவும்..."
 }

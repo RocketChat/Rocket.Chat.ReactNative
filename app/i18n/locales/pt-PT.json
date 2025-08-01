@@ -488,5 +488,14 @@
   "You_dont_have_account": "Não tem uma conta?",
   "you_were_mentioned": "você foi mencionado",
   "You_will_not_be_able_to_recover_this_message": "Você será incapaz de recuperar esta mensagem!",
-  "Your_Password_Must_Have": "Sua senha deve ter:"
+  "Your_Password_Must_Have": "Sua senha deve ter:",
+  "QR_Loading_Camera": "A carregar a câmara...",
+  "QR_Camera_Permission_Required": "Permissão para a câmara necessária",
+  "QR_Camera_Permission_Required_Description": "O Rocket.Chat precisa de aceder à sua câmara para digitalizar códigos QR.",
+  "Grant_Permission": "Conceder permissão",
+  "Initializing_Camera": "A inicializar a câmara...",
+  "Camera_Paused": "Câmara pausada",
+  "Camera_Initialization_Failed": "Falha na inicialização da câmera",
+  "QR_Code_Verifying": "Verificando QR code...",
+  "QR_Code_Verification_Wait":"Por favor, aguarde enquanto verificamos seu código..."
 }

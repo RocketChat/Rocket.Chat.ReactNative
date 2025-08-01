@@ -975,5 +975,14 @@
   "Your_invite_link_will_never_expire": "Your invite link will never expire.",
   "Your_password_is": "Your password is",
   "Your_Password_Must_Have": "Your password must have:",
-  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices"
+  "Your_push_was_sent_to_s_devices": "Your push was sent to {{s}} devices",
+  "QR_Loading_Camera": "Loading camera...",
+  "QR_Camera_Permission_Required": "Camera permission required",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat needs to access your camera to scan QR codes.",
+  "Grant_Permission": "Grant permission",
+  "Initializing_Camera": "Initializing camera...",
+  "Camera_Paused": "Camera paused",
+  "Camera_Initialization_Failed": "Camera initialization failed",
+  "QR_Code_Verifying": "Verifying QR code...",
+  "QR_Code_Verification_Wait":"Please wait while we verify your code..."
 }

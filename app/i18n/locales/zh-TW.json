@@ -629,5 +629,14 @@
   "Your_invite_link_will_never_expire": "您的邀請連結永久有效。",
   "Your_password_is": "您的密碼",
   "Your_Password_Must_Have": "您的密碼必須具有：",
-  "Your_workspace": "您的工作區"
+  "Your_workspace": "您的工作區",
+  "QR_Loading_Camera": "加載相機...",
+  "QR_Camera_Permission_Required": "需要相機權限",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat 需要訪問您的相機以掃描 QR 代碼。",
+  "Grant_Permission": "授予權限",
+  "Initializing_Camera": "正在初始化相機...",
+  "Camera_Paused": "相機已暫停",
+  "Camera_Initialization_Failed": "相機初始化失敗",
+  "QR_Code_Verifying": "正在驗證 QR 代碼...",
+  "QR_Code_Verification_Wait":"請稍等，我們正在驗證您的代碼..."
 }

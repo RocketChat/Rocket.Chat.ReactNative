@@ -870,5 +870,14 @@
   "Your_invite_link_will_never_expire": "మీ ఆహ్వాన లింక్ ఎప్పుడూ కనబడదు.",
   "Your_password_is": "మీ సంకేతపదం",
   "Your_Password_Must_Have": "మీ పాస్‌వర్డ్ తప్పనిసరిగా ఉండాలి:",
-  "Your_workspace": "మీ వర్క్‌స్పేస్"
+  "Your_workspace": "మీ వర్క్‌స్పేస్",
+  "QR_Loading_Camera": "కెమెరా లోడ్ అవుతోంది...",
+  "QR_Camera_Permission_Required": "కెమెరా అనుమతి అవసరం",
+  "QR_Camera_Permission_Required_Description": "QR కోడ్స్‌ను స్కాన్ చేయడానికి Rocket.Chat మీ కెమెరాను యాక్సెస్ చేయాలి.",
+  "Grant_Permission": "అనుమతి ఇవ్వండి",
+  "Initializing_Camera": "కెమెరా ప్రారంభించబడుతోంది...",
+  "Camera_Paused": "కెమెరా నిలిపివేయబడింది",
+  "Camera_Initialization_Failed": "కెమెరా ప్రారంభంలో విఫలమైంది",
+  "QR_Code_Verifying": "QR కోడ్‌ను ధృవీకరించడం...",
+  "QR_Code_Verification_Wait": "మీ కోడ్‌ను ధృవీకరించడానికి కాస్త వేచి ఉండండి..."
 }

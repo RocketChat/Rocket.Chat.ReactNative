@@ -754,5 +754,14 @@
   "Your_invite_link_will_never_expire": "Je uitnodigingslink zal nooit verlopen.",
   "Your_password_is": "Jouw wachtwoord is",
   "Your_Password_Must_Have": "Uw wachtwoord moet hebben:",
-  "Your_workspace": "Jouw werkruimte"
+  "Your_workspace": "Jouw werkruimte",
+  "QR_Loading_Camera": "Camera laden...",
+  "QR_Camera_Permission_Required": "Camera toestemming vereist",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat heeft toegang nodig tot je camera om QR-codes te scannen.",
+  "Grant_Permission": "Toestemming verlenen",
+  "Initializing_Camera": "Camera initialiseren...",
+  "Camera_Paused": "Camera gepauzeerd",
+  "Camera_Initialization_Failed": "Camera-initialisatie is mislukt",
+  "QR_Code_Verifying": "QR-code verifiëren...",
+  "QR_Code_Verification_Wait":"Even geduld terwijl we je code verifiëren..."
 }

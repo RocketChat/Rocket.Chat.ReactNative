@@ -861,5 +861,14 @@
   "Your_invite_link_will_never_expire": "Ihr Einladungs-Link wird niemals ablaufen.",
   "Your_password_is": "Ihr Passwort lautet",
   "Your_Password_Must_Have": "Ihr Passwort muss:",
-  "Your_workspace": "Ihr Arbeitsbereich"
+  "Your_workspace": "Ihr Arbeitsbereich",
+  "QR_Loading_Camera": "Kamera wird geladen...",
+  "QR_Camera_Permission_Required": "Kamerazugriff erforderlich",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat benötigt Zugriff auf Ihre Kamera, um QR-Codes zu scannen.",
+  "Grant_Permission": "Berechtigung erteilen",
+  "Initializing_Camera": "Kamera wird initialisiert...",
+  "Camera_Paused": "Kamera pausiert",
+  "Camera_Initialization_Failed": "Kamerainitialisierung fehlgeschlagen",
+  "QR_Code_Verifying": "QR-Code wird überprüft...",
+  "QR_Code_Verification_Wait":"Bitte warten Sie, während wir Ihren Code überprüfen..."
 }

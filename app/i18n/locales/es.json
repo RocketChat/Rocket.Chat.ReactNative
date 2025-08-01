@@ -419,5 +419,14 @@
   "you_were_mentioned": "has sido mencionado",
   "You_will_not_be_able_to_recover_this_message": "¡No podrás recuperar este mensaje!",
   "Your_certificate": "Tu certificado",
-  "Your_Password_Must_Have": "Su contraseña debe tener:"
+  "Your_Password_Must_Have": "Su contraseña debe tener:",
+  "QR_Loading_Camera": "Cargando cámara...",
+  "QR_Camera_Permission_Required": "Se requiere permiso de cámara",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat necesita acceder a tu cámara para escanear códigos QR.",
+  "Grant_Permission": "Conceder permiso",
+  "Initializing_Camera": "Inicializando cámara...",
+  "Camera_Paused": "Cámara pausada",
+  "Camera_Initialization_Failed": "Error en la inicialización de la cámara",
+  "QR_Code_Verifying": "verificando código QR...",
+  "QR_Code_Verification_Wait": "Por favor espera mientras verificamos tu código..."
 }

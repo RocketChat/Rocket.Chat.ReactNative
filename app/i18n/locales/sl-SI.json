@@ -769,5 +769,14 @@
   "Your_invite_link_will_never_expire": "Vaša povezava za povabilo ne bo nikoli potekala.",
   "Your_password_is": "Vaše geslo je",
   "Your_Password_Must_Have": "Vaše geslo mora imeti:",
-  "Your_workspace": "Vaš delovni prostor"
+  "Your_workspace": "Vaš delovni prostor",
+  "QR_Loading_Camera": "Nalaganje kamere...",
+  "QR_Camera_Permission_Required": "Potrebno dovoljenje za kamero",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat potrebuje dostop do vaše kamere za skeniranje QR kod.",
+  "Grant_Permission": "Dodeli dovoljenje",
+  "Initializing_Camera": "Inicializacija kamere...",
+  "Camera_Paused": "Kamera je ustavljena",
+  "Camera_Initialization_Failed": "Inicializacija kamere ni uspela",
+  "QR_Code_Verifying": "Preverjanje QR kode...",
+  "QR_Code_Verification_Wait": "Prosimo, počakajte, medtem ko preverjamo vašo kodo..."
 }

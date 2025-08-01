@@ -946,5 +946,14 @@
   "Your_password_is": "Vaše heslo je",
   "Your_Password_Must_Have": "Vaše heslo musí mít:",
   "Your_push_was_sent_to_s_devices": "Vaše push byla odeslána do {{s}} zařízení",
-  "Your_workspace": "Váš pracovní prostor"
+  "Your_workspace": "Váš pracovní prostor",
+  "QR_Loading_Camera": "Načítání kamery...",
+  "QR_Camera_Permission_Required": "Požadováno povolení kamery",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat potřebuje přístup k vaší kameře pro skenování QR kódů.",
+  "Grant_Permission": "Udělte povolení",
+  "Initializing_Camera": "Inicializace kamery...",
+  "Camera_Paused": "Kamera pozastavena",
+  "Camera_Initialization_Failed": "Inicializace kamery selhala",
+  "QR_Code_Verifying": "Ověřování QR kódu...",
+  "QR_Code_Verification_Wait":"Prosím čekejte, zatímco ověřujeme váš kód..."
 }

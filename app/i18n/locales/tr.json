@@ -640,5 +640,14 @@
   "Your_invite_link_will_never_expire": "Davet bağlantınızın geçerlilik süresi asla dolmayacak.",
   "Your_password_is": "Şifreniz",
   "Your_Password_Must_Have": "Şifreniz:",
-  "Your_workspace": "Çalışma alanınız"
+  "Your_workspace": "Çalışma alanınız",
+  "QR_Loading_Camera": "Kamera yükleniyor...",
+  "QR_Camera_Permission_Required": "Kamera izni gerekli",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat, QR kodlarını taramak için kameranıza erişim sağlamalıdır.",
+  "Grant_Permission": "İzni ver",
+  "Initializing_Camera": "Kamera başlatılıyor...",
+  "Camera_Paused": "Kamera duraklatıldı",
+  "Camera_Initialization_Failed": "Kamera başlatılamadı",
+  "QR_Code_Verifying": "QR kodu doğrulanıyor...",
+  "QR_Code_Verification_Wait":"Lütfen kodunuzu doğrularken bekleyin..."
 }

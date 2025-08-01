@@ -871,5 +871,14 @@
   "Your_invite_link_will_never_expire": "আপনার আমন্ত্রণ লিঙ্কটি কখনও মেয়াদ শেষ হবে না।",
   "Your_password_is": "আপনার পাসওয়ার্ড হল",
   "Your_Password_Must_Have": "আপনার পাসওয়ার্ড থাকতে হবে:",
-  "Your_workspace": "আপনার ওয়ার্কস্পেস"
+  "Your_workspace": "আপনার ওয়ার্কস্পেস",
+  "QR_Loading_Camera": "কামরা লোড হচ্ছে...",
+  "QR_Camera_Permission_Required": "কামরা অনুমতি প্রয়োজন",
+  "QR_Camera_Permission_Required_Description": "Rocket.Chat QR কোড স্ক্যান করতে আপনার ক্যামেরায় অ্যাক্সেস করতে হবে।",
+  "Grant_Permission": "অনুমতি দিন",
+  "Initializing_Camera": "কামরা ইনিশিয়ালাইজ হচ্ছে...",
+  "Camera_Paused": "কামরা স্থগিত",
+  "Camera_Initialization_Failed": "কামরা ইনিশিয়ালাইজেশন ব্যর্থ হয়েছে",
+  "QR_Code_Verifying": "QR কোড যাচাই করা হচ্ছে...",
+  "QR_Code_Verification_Wait":"দয়া করে অপেক্ষা করুন যতক্ষণ না আমরা আপনার কোডটি যাচাই করি..."
 }
