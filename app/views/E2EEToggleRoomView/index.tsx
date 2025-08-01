@@ -3,7 +3,6 @@ import React, { useLayoutEffect } from 'react';
 
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import Switch from '../../containers/Switch';
 import I18n from '../../i18n';
 import { useIsMissingRoomE2EEKey } from '../../lib/encryption/helpers/hooks';
@@ -46,7 +45,6 @@ const E2EEToggleRoomView = ({ navigation }: { navigation: any }) => {
 
 	return (
 		<SafeAreaView testID='e2ee-toggle-room-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />
