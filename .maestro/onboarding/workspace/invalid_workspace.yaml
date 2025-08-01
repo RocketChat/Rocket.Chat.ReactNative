@@ -13,4 +13,4 @@ jsEngine: graaljs
     id: 'new-server-view-input'
     text: 'https://invalid.workspace.url'
 - tapOn: 'Connect'
-- assertVisible: 'Invalid URL'
+- assertVisible: .*Invalid URL.*
