@@ -6,7 +6,7 @@
   "A_new_owner_will_be_assigned_automatically_to__count__rooms": "Uusi omistaja liitetään automaattisesti {{count}} huoneeseen.",
   "A11y_appearance_dialog_require_manual_dismissal": "Vaatii manuaalista hylkäämistä",
   "A11y_appearance_dialogs": "Dialogit",
-  "A11y_appearance_show_alert_as": "Näytä varoitus muodossa",
+  "A11y_appearance_show_alerts_as": "Näytä hälytykset muodossa",
   "A11y_appearance_toasts": "Paahteet",
   "Accessibility": "Saavutettavuus",
   "Accessibility_and_Appearance": "Saavutettavuus ja ulkonäkö",
