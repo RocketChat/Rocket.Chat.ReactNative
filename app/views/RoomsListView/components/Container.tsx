@@ -1,7 +1,7 @@
 import { memo, ReactElement } from 'react';
-import { StatusBar } from 'react-native';
 
 import SafeAreaView from '../../../containers/SafeAreaView';
+import StatusBar from '../../../containers/StatusBar';
 import { useTheme } from '../../../theme';
 import TabletHeader from './TabletHeader';
 
