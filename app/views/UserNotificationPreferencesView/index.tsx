@@ -2,7 +2,6 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -85,7 +84,6 @@ const UserNotificationPreferencesView = () => {
 
 	return (
 		<SafeAreaView testID='user-notification-preference-view'>
-			<StatusBar />
 			<List.Container>
 				{loading ? (
 					<ActivityIndicator />

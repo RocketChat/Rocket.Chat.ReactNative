@@ -7,7 +7,6 @@ import { TActionSheetOptionsItem, useActionSheet } from '../../containers/Action
 import { CustomIcon } from '../../containers/CustomIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { IRoomNotifications, TRoomNotificationsModel } from '../../definitions';
 import I18n from '../../i18n';
 import { useAppSelector } from '../../lib/hooks';
@@ -134,7 +133,6 @@ const NotificationPreferencesView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView testID='notification-preference-view'>
-			<StatusBar />
 			<List.Container testID='notification-preference-view-list'>
 				<List.Section>
 					<List.Separator />
