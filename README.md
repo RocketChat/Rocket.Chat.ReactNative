@@ -26,7 +26,7 @@ Also check the [#react-native](https://open.rocket.chat/channel/react-native) co
 Are you a dev and would like to help? Found a bug that you would like to report or a missing feature that you would like to work on? Great! We have written down a [Contribution guide](https://github.com/RocketChat/Rocket.Chat.ReactNative/blob/develop/CONTRIBUTING.md) so you can start easily.
 
 ## Whitelabel
-Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/mobile-app/mobile-app-white-labelling)
+Do you want to make the app run on your own server only? [Follow our whitelabel documentation.](https://developer.rocket.chat/docs/mobile-app-white-labeling)
 
 ## Engage with us
 ### Share your story
