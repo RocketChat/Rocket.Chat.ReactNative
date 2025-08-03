@@ -23,7 +23,7 @@ jobs:
     name: Build Android Experimental
     if: ${{ github.repository == 'RocketChat/Rocket.Chat.ReactNative' }}
     uses: ./.github/workflows/build-android.yml
-    needs: [run-eslint-and-test]
+    needs: []
     secrets: inherit
     with:
       type: experimental
