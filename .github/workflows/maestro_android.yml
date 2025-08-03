@@ -16,6 +16,11 @@ jobs:
         with:
           name: Android Experimental APK
 
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
+
       - name: Install Maestro
         run: |
           curl -fsSL "https://get.maestro.mobile.dev" | bash

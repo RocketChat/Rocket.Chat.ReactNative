@@ -17,17 +17,16 @@ jobs:
           name: ios-simulator-app
           path: ios-simulator-app
 
-      - name: List Folder
-        run: ls -la
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
 
       - name: Install Maestro
         run: |
           curl -fsSL "https://get.maestro.mobile.dev" | bash
           echo "$HOME/.maestro/bin" >> $GITHUB_PATH
           mkdir recording
-
-      - name: List Simulators
-        run: xcrun simctl list devices
 
       - name: Enable Software Keyboard
         run: |
@@ -71,5 +70,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Android Maestro Logs
+          name: iOS Maestro Logs
           path: ~/.maestro/tests/
