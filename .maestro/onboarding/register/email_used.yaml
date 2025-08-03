@@ -3,7 +3,7 @@ name: Create Account (Email Already Used)
 jsEngine: graaljs
 onFlowStart:
   - runScript: '../../scripts/setup.js'
-  - runScript: '../../scripts/generate-user.js'
+  - runScript: '../../scripts/setup.js'
 
 ---
 - runFlow: ../../helpers/launch-app.yaml

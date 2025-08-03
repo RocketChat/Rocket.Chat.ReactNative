@@ -1,6 +1,8 @@
 const data = {
 	server: 'https://mobile.rocket.chat',
 	alternateServer: 'https://stable.rocket.chat',
+	...output.account,
+    accounts: [],
 	channels: {
 		detoxpublic: {
 			name: 'detox-public'

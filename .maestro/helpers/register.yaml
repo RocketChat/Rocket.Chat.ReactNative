@@ -3,7 +3,7 @@ tags:
 
 ---
 - runFlow: navigate-to-register.yaml
-- runScript: ../scripts/generate-user.js
+- runScript: ../scripts/setup.js
 - tapOn:
     text: 'Full name. Required.'
 - inputText:

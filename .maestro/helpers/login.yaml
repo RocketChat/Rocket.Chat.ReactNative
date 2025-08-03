@@ -1,6 +1,12 @@
 appId: chat.rocket.reactnative
 tags:
   - 'utill'
+jsEngine: graaljs
+onFlowStart:
+  - runFlow: setup.yaml
+  - evalScript: ${output.utils.createUser()}
+onFlowComplete:
+  - evalScript: ${output.utils.deleteCreatedUsers()}
 ---
 - runFlow: navigate-to-login.yaml
 - tapOn:
