@@ -1,6 +1,6 @@
 appId: chat.rocket.reactnative
 tags:
-  - 'skip'
+  - 'utill'
 ---
 - launchApp:
     clearState: true

@@ -1,9 +1,9 @@
 appId: chat.rocket.reactnative
 tags:
+  - 'utill'
 
 ---
 - runFlow: navigate-to-register.yaml
-- runScript: ../scripts/setup.js
 - tapOn:
     text: 'Full name. Required.'
 - inputText:

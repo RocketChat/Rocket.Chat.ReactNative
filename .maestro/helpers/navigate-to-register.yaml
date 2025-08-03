@@ -1,11 +1,8 @@
 appId: chat.rocket.reactnative
 tags:
-  - 'skip'
-env:
-  URL: open.rocket.chat
-
+  - 'utill'
 ---
 - tapOn: Workspace URL. Required.
-- inputText: https://mobile.rocket.chat
+- inputText: ${output.data.server}
 - tapOn: Connect
 - tapOn: Create an account

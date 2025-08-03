@@ -7,4 +7,14 @@ function random(length = 10) {
 	return text;
 }
 
+const randomUser = () => {
+    const randomVal = random();
+    return {
+        username: 'user' + randomVal,
+        name: 'user' + randomVal,
+        password: 'Password1@' + randomVal,
+        email: 'mobile+' + randomVal + '@rocket.chat'
+    };
+}
 output.random = random;
+output.randomUser = randomUser;

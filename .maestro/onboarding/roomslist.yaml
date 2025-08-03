@@ -1,5 +1,6 @@
 appId: chat.rocket.reactnative
 name: Rooms List
+jsEngine: graaljs
 ---
 - runFlow: ../helpers/launch-app.yaml
 - runFlow: ../helpers/login.yaml

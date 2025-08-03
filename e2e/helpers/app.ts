@@ -54,7 +54,7 @@ async function navigateToRegister(server?: string) {
 }
 
 async function signup(): Promise<string> {
-	const randomUser = data.randomUser();
+	const randomUser = data.user;
 	await waitFor(element(by.id('register-view-name')))
 		.toBeVisible()
 		.withTimeout(2000);

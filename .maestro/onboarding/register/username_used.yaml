@@ -2,8 +2,7 @@ appId: chat.rocket.reactnative
 name: Create Account (Username Already Used)
 jsEngine: graaljs
 onFlowStart:
-  - runScript: '../../scripts/setup.js'
-  - runScript: '../../scripts/setup.js'
+  - runFlow: '../../helpers/setup.yaml'
 
 ---
 - runFlow: ../../helpers/launch-app.yaml

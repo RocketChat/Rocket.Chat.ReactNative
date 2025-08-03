@@ -1,5 +1,6 @@
 appId: chat.rocket.reactnative
 name: Server History
+jsEngine: graaljs
 ---
 - runFlow: ../helpers/launch-app.yaml
 - runFlow: ../helpers/login.yaml
@@ -15,10 +16,10 @@ name: Server History
     id: 'servers-history-https://mobile.rocket.chat'
 
 # should tap on a server history and navigate to login
-- tapOn: 'Connect to https://mobile.rocket.chat as working.account'
+- tapOn: 'Connect to https://mobile.rocket.chat as ${output.user.username}'
 - assertVisible:
     id: 'login-view-submit'
-- assertVisible: 'working.account'
+- assertVisible: ${output.user.username}
 
 # should delete server from history
 - runFlow: ../helpers/go-back.yaml

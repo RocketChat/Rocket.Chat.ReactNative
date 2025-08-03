@@ -39,7 +39,7 @@ export interface ITestUser {
 export const createRandomUser = async (customProps?: Object): Promise<ITestUser> => {
 	try {
 		await login(data.adminUser, data.adminPassword);
-		const user = data.randomUser();
+		const user = data.user
 		console.log(`Creating user ${user.username}`);
 		await rocketchat.post('users.create', {
 			username: user.username,

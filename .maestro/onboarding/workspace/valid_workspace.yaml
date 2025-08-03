@@ -2,7 +2,7 @@ appId: chat.rocket.reactnative
 name: Valid Workspace
 jsEngine: graaljs
 onFlowStart:
-  - runScript: '../../scripts/setup.js'
+  - runFlow: '../../helpers/setup.yaml'
 
 ---
 - runFlow: ../../helpers/launch-app.yaml

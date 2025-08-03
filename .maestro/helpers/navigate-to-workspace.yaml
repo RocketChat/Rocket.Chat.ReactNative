@@ -1,32 +1,19 @@
 appId: chat.rocket.reactnative
 jsEngine: graaljs
 tags:
-  - 'skip'
-env:
-  URL: mobile.rocket.chat
-  ALT_URL: stable.rocket.chat
+  - 'utill'
+
 ---
-- runFlow: relaunch-app.yaml
 - extendedWaitUntil:
     visible: 'Add Workspace'
     timeout: 60000
 - tapOn:
     text: 'Workspace URL. Required.'
-- inputText: ${URL}
+- inputText: ${output.data.server}
 - tapOn: 'Connect'
 
 - waitForAnimationToEnd:
     timeout: 6000
-
-- runFlow:
-    when:
-      visible: 'Invalid workspace URL'
-    commands:
-      - runFlow: relaunch-app.yaml
-      - tapOn:
-          text: 'Workspace URL. Required.'
-      - inputText: ${ALT_URL}
-      - tapOn: 'Connect'
 
 - assertVisible:
     id: 'workspace-view'
