@@ -32,6 +32,9 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Fetch supported versions from Cloud
+        uses: ./.github/actions/fetch-supported-versions
+
       - name: Generate Version Code
         id: version
         uses: ./.github/actions/generate-version-code

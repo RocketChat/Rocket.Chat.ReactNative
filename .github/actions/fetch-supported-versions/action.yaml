@@ -1,0 +1,8 @@
+name: Fetch supported versions
+description: Fetch supported versions from Cloud
+runs:
+  using: "composite"
+  steps:
+    - name: Fetch supported versions from Cloud
+      shell: bash
+      run: sh ./scripts/fetch-supported-versions.sh
