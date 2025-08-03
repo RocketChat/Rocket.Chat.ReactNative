@@ -24,6 +24,11 @@ jobs:
       - name: Checkout and Setup Node
         uses: ./.github/actions/setup-node
 
+      - name: Setup E2E Account
+        uses: ./.github/actions/e2e-account
+        with:
+          E2E_ACCOUNT: ${{ secrets.E2E_ACCOUNT }}
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
