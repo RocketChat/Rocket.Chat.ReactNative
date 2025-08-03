@@ -11,5 +11,5 @@ runs:
     - name: Setup Account
       shell: bash
       run: |
-        echo "${{ inputs.E2E_ACCOUNT }}" | base64 --decode | tee .maestro/scripts/e2e_account.js > /dev/null && \
-        sed -i '' '$s/.*/output.account = account;/' .maestro/scripts/e2e_account.js
+        echo "${{ inputs.E2E_ACCOUNT }}" | base64 --decode | tee .maestro/scripts/e2e_account.js > /dev/null
+        sed '$s/.*/output.account = account;/' .maestro/scripts/e2e_account.js > tmp && mv tmp .maestro/scripts/e2e_account.js
