@@ -6,3 +6,10 @@ runs:
     - name: Fetch supported versions from Cloud
       shell: bash
       run: sh ./scripts/fetch-supported-versions.sh
+    
+    - name: Update supported versions
+      uses: actions/upload-artifact@v4
+      with:
+        name: supported-versions
+        path: ./app-supportedversions.json
+      
