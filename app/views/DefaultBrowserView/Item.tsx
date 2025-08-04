@@ -20,15 +20,18 @@ const Item = ({ title, value, browser, changeDefaultBrowser }: IRenderItem) => {
 		isSelected = browser === value;
 	}
 
+	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = isSelected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+
 	return (
 		<List.Item
 			title={I18n.t(title, { defaultValue: title })}
 			onPress={() => changeDefaultBrowser(value)}
 			testID={`default-browser-view-${title}`}
-			right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
+			right={() => <List.Icon name={iconName} color={iconColor} />}
 			translateTitle={false}
-			additionalAcessibilityLabel={isSelected}
-			additionalAcessibilityLabelCheck
+			additionalAcessibilityLabel={isSelected ? I18n.t('Selected') : I18n.t('Unselected')}
+			accessibilityRole='radio'
 		/>
 	);
 };

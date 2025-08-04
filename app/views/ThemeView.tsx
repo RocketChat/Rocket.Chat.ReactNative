@@ -68,15 +68,19 @@ const Item = ({
 	isSelected: boolean;
 }) => {
 	const { colors } = useTheme();
+	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = isSelected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+	const accessibilityLabel = isSelected ? I18n.t('Selected') : I18n.t('Unselected');
+
 	return (
 		<>
 			<List.Item
 				title={label}
 				onPress={onPress}
 				testID={`theme-view-${value}`}
-				right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
-				additionalAcessibilityLabel={isSelected}
-				additionalAcessibilityLabelCheck
+				right={() => <List.Icon name={iconName} color={iconColor} />}
+				additionalAcessibilityLabel={accessibilityLabel}
+				accessibilityRole='radio'
 			/>
 			<List.Separator />
 		</>

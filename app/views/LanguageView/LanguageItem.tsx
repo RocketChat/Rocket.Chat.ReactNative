@@ -18,14 +18,18 @@ const LanguageItem = ({
 	const { value, label } = item;
 	const isSelected = language === value;
 
+	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = isSelected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+
 	return (
 		<List.Item
 			title={label}
 			onPress={() => submit(value)}
 			testID={`language-view-${value}`}
-			right={() => (isSelected ? <List.Icon name='check' color={colors.badgeBackgroundLevel2} /> : null)}
+			right={() => <List.Icon name={iconName} color={iconColor} />}
 			translateTitle={false}
-			additionalAcessibilityLabel={isSelected ? i18n.t('Checked') : i18n.t('Unchecked')}
+			additionalAcessibilityLabel={isSelected ? i18n.t('Selected') : i18n.t('Unselected')}
+			accessibilityRole='radio'
 		/>
 	);
 };
