@@ -31,7 +31,7 @@ function getEmojiToken(block: EmojiProps, isAvatar: boolean) {
 	return block?.shortCode ? `:${block.shortCode}:` : `:${block.value?.value}:`;
 }
 
-const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false}: IEmojiProps) => {
+const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false }: IEmojiProps) => {
 	const { colors } = useTheme();
 	const { getCustomEmoji } = useContext(MarkdownContext);
 	const { fontScale } = useWindowDimensions();
@@ -62,7 +62,12 @@ const Emoji = ({ block, isBigEmoji, style = {}, index, isAvatar = false}: IEmoji
 	}
 	return (
 		<Text
-			style={[{ color: colors.fontDefault }, (isBigEmoji || isAvatar) && emojiToken !== emojiUnicode ? styles.textBig : styles.text, style, isAvatar && { lineHeight: 35 }]}>
+			style={[
+				{ color: colors.fontDefault },
+				(isBigEmoji || isAvatar) && emojiToken !== emojiUnicode ? styles.textBig : styles.text,
+				style,
+				isAvatar && { lineHeight: 35 }
+			]}>
 			{spaceLeft}
 			{displayAsciiEmoji ? <Plain value={block.value!.value} /> : emojiUnicode}
 		</Text>
