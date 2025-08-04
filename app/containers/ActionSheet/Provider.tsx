@@ -1,5 +1,6 @@
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import React, { createRef, ForwardedRef, forwardRef, useContext } from 'react';
+import { AccessibilityRole } from 'react-native';
 
 import { TIconsName } from '../CustomIcon';
 import ActionSheet from './ActionSheet';
@@ -12,6 +13,7 @@ export type TActionSheetOptionsItem = {
 	onPress: () => void;
 	right?: () => React.ReactElement;
 	enabled?: boolean;
+	accessibilityRole?: AccessibilityRole;
 };
 
 export type TActionSheetOptions = {
