@@ -21,7 +21,7 @@ export const WidthAwareView = ({ children }: { children: ReactElement }) => {
 				}
 			});
 		}
-	}, []);
+	}, [viewRef]);
 
 	return (
 		<View ref={viewRef} style={styles.container}>
