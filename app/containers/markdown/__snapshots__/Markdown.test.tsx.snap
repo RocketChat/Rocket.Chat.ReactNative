@@ -569,6 +569,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               "textAlign": "left",
             },
             {},
+            false,
           ]
         }
       >
@@ -607,6 +608,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
               "textAlign": "left",
             },
             {},
+            false,
           ]
         }
       >
@@ -833,6 +835,7 @@ exports[`Story Snapshots: Emoji should match snapshot 1`] = `
             "textAlign": "left",
           },
           {},
+          false,
         ]
       }
     >
