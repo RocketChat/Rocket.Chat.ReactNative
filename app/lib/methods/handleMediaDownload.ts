@@ -202,26 +202,28 @@ export async function cancelDownload(messageUrl: string): Promise<void> {
 const mapAttachments = ({
 	attachments,
 	uri,
-	encryption
+	encryption,
+	downloadUrl
 }: {
 	attachments?: IAttachment[];
 	uri: string;
 	encryption: boolean;
+	downloadUrl: string;
 }): TMessageModel['attachments'] =>
 	attachments?.map(att => ({
 		...att,
-		title_link: uri,
+		title_link: att.image_url && downloadUrl.includes(att.image_url) ? uri : att.title_link,
 		e2e: encryption ? 'done' : undefined
 	}));
 
-const persistMessage = async (messageId: string, uri: string, encryption: boolean) => {
+const persistMessage = async (messageId: string, uri: string, encryption: boolean, downloadUrl: string) => {
 	const db = database.active;
 	const batch: Model[] = [];
 	const messageRecord = await getMessageById(messageId);
 	if (messageRecord) {
 		batch.push(
 			messageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
 			})
 		);
 	}
@@ -229,7 +231,7 @@ const persistMessage = async (messageId: string, uri: string, encryption: boolea
 	if (threadRecord) {
 		batch.push(
 			threadRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
 			})
 		);
 	}
@@ -237,7 +239,7 @@ const persistMessage = async (messageId: string, uri: string, encryption: boolea
 	if (threadMessageRecord) {
 		batch.push(
 			threadMessageRecord.prepareUpdate(m => {
-				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption });
+				m.attachments = mapAttachments({ attachments: m.attachments, uri, encryption, downloadUrl });
 			})
 		);
 	}
@@ -282,7 +284,7 @@ export function downloadMediaFile({
 				await Encryption.addFileToDecryptFileQueue(messageId, result.uri, encryption, originalChecksum);
 			}
 
-			await persistMessage(messageId, result.uri, !!encryption);
+			await persistMessage(messageId, result.uri, !!encryption, downloadUrl);
 
 			emitter.emit(`downloadMedia${downloadUrl}`, result.uri);
 			return resolve(result.uri);
