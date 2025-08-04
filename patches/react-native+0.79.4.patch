@@ -1,0 +1,32 @@
+diff --git a/node_modules/react-native/React/Views/RCTViewManager.m b/node_modules/react-native/React/Views/RCTViewManager.m
+index f017cb8..f6aaafb 100644
+--- a/node_modules/react-native/React/Views/RCTViewManager.m
++++ b/node_modules/react-native/React/Views/RCTViewManager.m
+@@ -225,7 +225,9 @@ RCT_CUSTOM_VIEW_PROPERTY(accessibilityRole, UIAccessibilityTraits, RCTView)
+ {
+   UIAccessibilityTraits accessibilityRoleTraits =
+       json ? [RCTConvert UIAccessibilityTraits:json] : UIAccessibilityTraitNone;
+-  if (view.reactAccessibilityElement.accessibilityRoleTraits != accessibilityRoleTraits) {
++    NSString *roleString = json ? [RCTConvert NSString:json] : nil;
++    if (view.reactAccessibilityElement.accessibilityRoleTraits != accessibilityRoleTraits || view.reactAccessibilityElement.accessibilityRole != roleString) {
++
+     view.accessibilityRoleTraits = accessibilityRoleTraits;
+     view.reactAccessibilityElement.accessibilityRole = json ? [RCTConvert NSString:json] : nil;
+     [self updateAccessibilityTraitsForRole:view withDefaultView:defaultView];
+@@ -235,7 +237,8 @@ RCT_CUSTOM_VIEW_PROPERTY(accessibilityRole, UIAccessibilityTraits, RCTView)
+ RCT_CUSTOM_VIEW_PROPERTY(role, UIAccessibilityTraits, RCTView)
+ {
+   UIAccessibilityTraits roleTraits = json ? [RCTConvert UIAccessibilityTraits:json] : UIAccessibilityTraitNone;
+-  if (view.reactAccessibilityElement.roleTraits != roleTraits) {
++    NSString *roleString = json ? [RCTConvert NSString:json] : nil;
++    if (view.reactAccessibilityElement.roleTraits != roleTraits || view.reactAccessibilityElement.role != roleString) {
+     view.roleTraits = roleTraits;
+     view.reactAccessibilityElement.role = json ? [RCTConvert NSString:json] : nil;
+     [self updateAccessibilityTraitsForRole:view withDefaultView:defaultView];
+diff --git a/node_modules/react-native/scripts/.packager.env b/node_modules/react-native/scripts/.packager.env
+new file mode 100644
+index 0000000..361f5fb
+--- /dev/null
++++ b/node_modules/react-native/scripts/.packager.env
+@@ -0,0 +1 @@
++export RCT_METRO_PORT=8081
