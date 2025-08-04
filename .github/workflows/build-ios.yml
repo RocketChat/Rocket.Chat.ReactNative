@@ -35,7 +35,7 @@ jobs:
       - name: Fetch supported versions from Cloud
         uses: ./.github/actions/fetch-supported-versions
         with:
-          name: 'ios-experimental'
+          build_name: 'ios-experimental'
 
       - name: Generate Version Code
         id: version
