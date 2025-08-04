@@ -1,5 +1,10 @@
 name: Fetch supported versions
 description: Fetch supported versions from Cloud
+inputs:
+  build_name:
+    description: Name of the build
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -10,6 +15,6 @@ runs:
     - name: Update supported versions
       uses: actions/upload-artifact@v4
       with:
-        name: supported-versions-${{ github.job }}
+        name: supported-versions-${{ inputs.build_name }}
         path: ./app-supportedversions.json
       

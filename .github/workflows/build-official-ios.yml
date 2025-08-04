@@ -34,6 +34,8 @@ jobs:
 
       - name: Fetch supported versions from Cloud
         uses: ./.github/actions/fetch-supported-versions
+        with:
+          name: 'ios-official'
 
       - name: Generate Version Code
         id: version
