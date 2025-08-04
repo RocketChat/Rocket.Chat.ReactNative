@@ -28,6 +28,10 @@ inputs:
   GITHUB_TOKEN:
     description: 'GitHub token for commenting'
     required: true
+  trigger:
+    description: 'Trigger for build'
+    required: false
+    default: pr
   
 runs:
   using: "composite"
@@ -138,6 +142,7 @@ runs:
       shell: bash
 
     - name: Comment on PR with TestFlight Info
+      if: ${{ inputs.trigger == 'pr' }}
       env:
         GH_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         PR_NUMBER: ${{ github.event.pull_request.number }}

@@ -9,6 +9,10 @@ on:
     branches:
       - '*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   run-eslint-and-test:
     name: ESLint and Test
@@ -23,6 +27,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
+      trigger: "pr"
 
   android-build-official-store:
     name: Build Android Official
@@ -32,6 +37,7 @@ jobs:
     secrets: inherit
     with:
       type: official
+      trigger: "pr"
 
   ios-build-experimental-store:
     name: Build iOS Experimental
@@ -41,6 +47,7 @@ jobs:
     secrets: inherit
     with:
       type: experimental
+      trigger: "pr"
       
   ios-build-official-store:
     name: Build iOS Official
@@ -50,3 +57,4 @@ jobs:
     secrets: inherit
     with:
       type: official
+      trigger: "pr"

@@ -11,7 +11,6 @@ import I18n from '../../i18n';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import SearchBox from '../../containers/SearchBox';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { sendLoadingEvent } from '../../containers/Loading';
@@ -153,7 +152,6 @@ const AddExistingChannelView = () => {
 
 	return (
 		<SafeAreaView testID='add-existing-channel-view'>
-			<StatusBar />
 			<FlatList
 				data={channels}
 				extraData={channels}

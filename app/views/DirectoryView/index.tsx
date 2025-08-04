@@ -12,7 +12,6 @@ import DirectoryItem from '../../containers/DirectoryItem';
 import sharedStyles from '../Styles';
 import I18n from '../../i18n';
 import SearchBox from '../../containers/SearchBox';
-import StatusBar from '../../containers/StatusBar';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { debounce } from '../../lib/methods/helpers';
@@ -287,7 +286,6 @@ class DirectoryView extends React.Component<IDirectoryViewProps, IDirectoryViewS
 		const { theme } = this.props;
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='directory-view'>
-				<StatusBar />
 				<FlatList
 					data={data}
 					style={styles.list}

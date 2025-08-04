@@ -20,7 +20,6 @@ import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import EventEmitter from '../../lib/methods/helpers/events';
 import I18n from '../../i18n';
 import RoomHeader from '../../containers/RoomHeader';
-import StatusBar from '../../containers/StatusBar';
 import ReactionsList from '../../containers/ReactionsList';
 import { LISTENER } from '../../containers/Toast';
 import { getBadgeColor, isBlocked, makeThreadName } from '../../lib/methods/helpers/room';
@@ -1536,7 +1535,6 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 					isAutocompleteVisible
 				}}>
 				<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='room-view'>
-					<StatusBar />
 					{!this.tmid ? (
 						<Banner
 							title={I18n.t('Announcement')}

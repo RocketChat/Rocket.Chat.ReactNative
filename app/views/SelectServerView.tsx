@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 
 import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
 import ServerItem, { ROW_HEIGHT } from '../containers/ServerItem';
 import database from '../lib/database';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -51,7 +50,6 @@ const SelectServerView = () => {
 
 	return (
 		<SafeAreaView testID='select-server-view'>
-			<StatusBar />
 			<FlatList
 				data={servers}
 				renderItem={({ item }: { item: TServerModel }) => (
