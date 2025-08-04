@@ -108,7 +108,6 @@ const AutoTranslateView = (): React.ReactElement => {
 			additionalAcessibilityLabelCheck
 		/>
 	));
-
 	return (
 		<SafeAreaView>
 			<FlatList
