@@ -1,7 +1,6 @@
 import { memo, ReactElement } from 'react';
 
 import SafeAreaView from '../../../containers/SafeAreaView';
-import StatusBar from '../../../containers/StatusBar';
 import { useTheme } from '../../../theme';
 import TabletHeader from './TabletHeader';
 
