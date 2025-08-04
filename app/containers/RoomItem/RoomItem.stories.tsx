@@ -1,7 +1,12 @@
 import React from 'react';
 import { Dimensions } from 'react-native';
 
-import { longText } from '../../../.storybook/utils';
+import {
+	BASE_ROW_HEIGHT,
+	BASE_ROW_HEIGHT_CONDENSED,
+	ResponsiveLayoutContext
+} from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
+import { longText } from '../../../.rnstorybook/utils';
 import { DisplayMode } from '../../lib/constants';
 import RoomItemComponent from './RoomItem';
 
@@ -17,18 +22,30 @@ const updatedAt = {
 	date: '10:00'
 };
 
+const responsiveLayoutProviderValue = {
+	fontScale: 1,
+	fontScaleLimited: 1,
+	isLargeFontScale: false,
+	rowHeight: BASE_ROW_HEIGHT,
+	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED,
+	width: 300,
+	height: 800
+};
+
 const RoomItem = (props: any) => (
-	<RoomItemComponent
-		type='d'
-		name='rocket.cat'
-		avatar='rocket.cat'
-		width={width}
-		theme={_theme}
-		showAvatar
-		displayMode={DisplayMode.Expanded}
-		{...updatedAt}
-		{...props}
-	/>
+	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderValue}>
+		<RoomItemComponent
+			type='d'
+			name='rocket.cat'
+			avatar='rocket.cat'
+			width={width}
+			theme={_theme}
+			showAvatar
+			displayMode={DisplayMode.Expanded}
+			{...updatedAt}
+			{...props}
+		/>
+	</ResponsiveLayoutContext.Provider>
 );
 
 export default {

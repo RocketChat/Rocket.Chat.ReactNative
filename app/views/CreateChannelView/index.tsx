@@ -12,7 +12,6 @@ import { removeUser as removeUserAction } from '../../actions/selectedUsers';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import { useTheme } from '../../theme';
 import { Review } from '../../lib/methods/helpers/review';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -25,9 +24,6 @@ import { RoomSettings } from './RoomSettings';
 import { ISelectedUser } from '../../reducers/selectedUsers';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1
-	},
 	containerTextInput: {
 		paddingHorizontal: 16,
 		marginTop: 32
@@ -140,11 +136,7 @@ const CreateChannelView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceRoom }}
-			contentContainerStyle={[sharedStyles.container, styles.container]}
-			keyboardVerticalOffset={128}>
-			<StatusBar />
+		<KeyboardView>
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='create-channel-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<View style={[styles.containerTextInput, { borderColor: colors.strokeLight }]}>

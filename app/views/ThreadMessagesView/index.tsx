@@ -12,7 +12,6 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
@@ -35,6 +34,7 @@ import { IApplicationState, IBaseScreen, IMessage, SubscriptionType, TSubscripti
 import { getUidDirectMessage, debounce, isIOS } from '../../lib/methods/helpers';
 import { Services } from '../../lib/services';
 import UserPreferences from '../../lib/methods/userPreferences';
+import Navigation from '../../lib/navigation/appNavigation';
 
 const API_FETCH_COUNT = 50;
 const THREADS_FILTER = 'threadsFilter';
@@ -129,13 +129,19 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 			headerRight: () => (
 				<HeaderButton.Container>
 					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Filter')}
 						iconName='filter'
 						onPress={this.showFilters}
 						badge={() =>
 							currentFilter !== Filter.All ? <HeaderButton.BadgeWarn color={colors[theme].buttonBackgroundDangerDefault} /> : null
 						}
 					/>
-					<HeaderButton.Item iconName='search' onPress={this.onSearchPress} testID='thread-messages-view-search-icon' />
+					<HeaderButton.Item
+						accessibilityLabel={I18n.t('Search')}
+						iconName='search'
+						onPress={this.onSearchPress}
+						testID='thread-messages-view-search-icon'
+					/>
 				</HeaderButton.Container>
 			)
 		};
@@ -383,11 +389,9 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 	onThreadPress = debounce(
 		(item: any) => {
 			const { subscription } = this.state;
-			const { navigation, isMasterDetail } = this.props;
-			if (isMasterDetail) {
-				navigation.pop();
-			}
-			navigation.push('RoomView', {
+			const { isMasterDetail } = this.props;
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.push('RoomView', {
 				rid: item.subscription.id,
 				tmid: item.id,
 				name: makeThreadName(item),
@@ -513,12 +517,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		return (
-			<SafeAreaView testID='thread-messages-view'>
-				<StatusBar />
-				{this.renderContent()}
-			</SafeAreaView>
-		);
+		return <SafeAreaView testID='thread-messages-view'>{this.renderContent()}</SafeAreaView>;
 	}
 }
 

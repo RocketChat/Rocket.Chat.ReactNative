@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import I18n from '../../i18n';
 import sharedStyles from '../../views/Styles';
 import { MarkdownPreview } from '../markdown';
@@ -10,6 +11,7 @@ import { TUserStatus, IOmnichannelSource } from '../../definitions';
 import { useTheme } from '../../theme';
 import { useAppSelector } from '../../lib/hooks';
 import useStatusAccessibilityLabel from '../../lib/hooks/useStatusAccessibilityLabel';
+import { IUsersTyping } from '../../reducers/usersTyping';
 
 const HIT_SLOP = {
 	top: 5,
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 type TRoomHeaderSubTitle = {
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	subtitle?: string;
 	renderFunc?: () => React.ReactElement;
 	scale: number;
@@ -70,7 +72,7 @@ interface IRoomHeader {
 	tmid?: string;
 	teamMain?: boolean;
 	status?: TUserStatus;
-	usersTyping: [];
+	usersTyping: IUsersTyping;
 	isGroupChat?: boolean;
 	parentTitle?: string;
 	onPress: Function;
@@ -114,10 +116,12 @@ const SubTitle = React.memo(({ usersTyping, subtitle, renderFunc, scale }: TRoom
 
 const HeaderTitle = React.memo(({ title, tmid, prid, scale, testID }: TRoomHeaderHeaderTitle) => {
 	const { colors } = useTheme();
+	const { isLargeFontScale } = useResponsiveLayout();
+
 	const titleStyle = { fontSize: TITLE_SIZE * scale, color: colors.fontTitlesLabels };
 	if (!tmid && !prid) {
 		return (
-			<Text style={[styles.title, titleStyle]} numberOfLines={1} testID={testID}>
+			<Text style={[styles.title, titleStyle]} numberOfLines={isLargeFontScale ? 2 : 1} testID={testID}>
 				{title}
 			</Text>
 		);
@@ -160,7 +164,7 @@ const Header = React.memo(
 		let scale = 1;
 		const isMasterDetail = useAppSelector(state => state.app.isMasterDetail);
 		const subtitleAccessibilityLabel = tmid ? parentTitle : subtitle;
-		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel}.`;
+		const accessibilityLabel = `${statusAccessibilityLabel} ${title} ${subtitleAccessibilityLabel || ''}.`;
 
 		if (!portrait && !tmid && !isMasterDetail) {
 			if (usersTyping.length > 0 || subtitle) {
@@ -191,6 +195,7 @@ const Header = React.memo(
 		return (
 			<View
 				style={[styles.container, { opacity: disabled ? 0.5 : 1, height: 36.9 * fontScale }]}
+				accessible
 				accessibilityLabel={accessibilityLabel}
 				accessibilityRole='header'>
 				<TouchableOpacity testID='room-header' onPress={handleOnPress} disabled={disabled} hitSlop={HIT_SLOP}>

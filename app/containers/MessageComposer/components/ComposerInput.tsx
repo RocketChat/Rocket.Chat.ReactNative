@@ -151,7 +151,8 @@ export const ComposerInput = memo(
 			getText: () => textRef.current,
 			getSelection: () => selectionRef.current,
 			setInput,
-			onAutocompleteItemSelected
+			onAutocompleteItemSelected,
+			focus
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
@@ -350,7 +351,9 @@ export const ComposerInput = memo(
 				style={[styles.textInput, { color: colors.fontDefault }]}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
-				ref={component => (inputRef.current = component)}
+				ref={component => {
+					inputRef.current = component;
+				}}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}
 				onSelectionChange={onSelectionChange}
@@ -359,6 +362,7 @@ export const ComposerInput = memo(
 				underlineColorAndroid='transparent'
 				defaultValue=''
 				multiline
+				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
 				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 				// eslint-disable-next-line no-nested-ternary
 				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}

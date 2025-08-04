@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 
-import { longText } from '../../../../.storybook/utils';
+import { longText } from '../../../../.rnstorybook/utils';
 import { ThemeContext, TSupportedThemes } from '../../../theme';
 import { Message } from '../../../containers/message/Message.stories';
 import { MessageTypeLoad, themes } from '../../../lib/constants';

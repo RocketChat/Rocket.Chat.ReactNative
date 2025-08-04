@@ -1,23 +1,23 @@
 import React, { useLayoutEffect } from 'react';
-import { Switch } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
+import Switch from '../../containers/Switch';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { AccessibilityStackParamList } from '../../stacks/types';
 import { useAppSelector } from '../../lib/hooks';
 import { useUserPreferences } from '../../lib/methods';
-import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY } from '../../lib/constants';
+import { USER_MENTIONS_PREFERENCES_KEY, ROOM_MENTIONS_PREFERENCES_KEY, AUTOPLAY_GIFS_PREFERENCES_KEY } from '../../lib/constants';
 
 const AccessibilityAndAppearanceView = () => {
 	const navigation = useNavigation<NativeStackNavigationProp<AccessibilityStackParamList>>();
 	const isMasterDetail = useAppSelector(state => state.app.isMasterDetail as boolean);
 	const [mentionsWithAtSymbol, setMentionsWithAtSymbol] = useUserPreferences<boolean>(USER_MENTIONS_PREFERENCES_KEY);
 	const [roomsWithHashTagSymbol, setRoomsWithHashTagSymbol] = useUserPreferences<boolean>(ROOM_MENTIONS_PREFERENCES_KEY);
+	const [autoplayGifs, setAutoplayGifs] = useUserPreferences<boolean>(AUTOPLAY_GIFS_PREFERENCES_KEY, true);
 
 	const toggleMentionsWithAtSymbol = () => {
 		setMentionsWithAtSymbol(!mentionsWithAtSymbol);
@@ -27,10 +27,16 @@ const AccessibilityAndAppearanceView = () => {
 		setRoomsWithHashTagSymbol(!roomsWithHashTagSymbol);
 	};
 
+	const toggleAutoplayGifs = () => {
+		setAutoplayGifs(!autoplayGifs);
+	};
+
 	const renderMentionsWithAtSymbolSwitch = () => (
 		<Switch value={mentionsWithAtSymbol} onValueChange={toggleMentionsWithAtSymbol} />
 	);
 	const renderRoomsWithHashTagSwitch = () => <Switch value={roomsWithHashTagSymbol} onValueChange={toggleRoomsWithHashTag} />;
+
+	const renderAutoplayGifs = () => <Switch value={autoplayGifs} onValueChange={toggleAutoplayGifs} />;
 
 	useLayoutEffect(() => {
 		navigation.setOptions({
@@ -42,7 +48,6 @@ const AccessibilityAndAppearanceView = () => {
 	}, []);
 	return (
 		<SafeAreaView>
-			<StatusBar />
 			<List.Container testID='accessibility-view-list'>
 				<List.Section>
 					<List.Separator />
@@ -65,6 +70,13 @@ const AccessibilityAndAppearanceView = () => {
 				</List.Section>
 
 				<List.Section>
+					<List.Separator />
+					<List.Item
+						testID='accessibility-autoplay-gifs-switch'
+						title='Autoplay_gifs'
+						right={renderAutoplayGifs}
+						onPress={toggleAutoplayGifs}
+					/>
 					<List.Separator />
 					<List.Item
 						testID='accessibility-mentions-with-at-symbol-switch'

@@ -174,7 +174,10 @@ public class CustomPushNotification extends PushNotification {
     }
 
     private void notifyReceivedToJS() {
-        mJsIOHelper.sendEventToJS(NOTIFICATION_RECEIVED_EVENT_NAME, mNotificationProps.asBundle(), mAppLifecycleFacade.getRunningReactContext());
+        boolean isReactInitialized = mAppLifecycleFacade.isReactInitialized();
+        if (isReactInitialized) {
+            mJsIOHelper.sendEventToJS(NOTIFICATION_RECEIVED_EVENT_NAME, mNotificationProps.asBundle(), mAppLifecycleFacade.getRunningReactContext());
+        }
     }
 
     private Bitmap getAvatar(String uri) {

@@ -1,27 +1,22 @@
 import React from 'react';
-import { StatusBar as StatusBarRN } from 'react-native';
+import { StatusBar as StatusBarRN } from 'expo-status-bar';
 
 import { useTheme } from '../theme';
 
-const supportedStyles = {
-	'light-content': 'light-content',
-	'dark-content': 'dark-content'
-};
-
 interface IStatusBar {
-	barStyle?: keyof typeof supportedStyles;
+	barStyle?: 'light' | 'dark';
 	backgroundColor?: string;
 }
 
 const StatusBar = ({ barStyle, backgroundColor }: IStatusBar) => {
 	const { theme, colors } = useTheme();
 	if (!barStyle) {
-		barStyle = 'light-content';
+		barStyle = 'light';
 		if (theme === 'light') {
-			barStyle = 'dark-content';
+			barStyle = 'dark';
 		}
 	}
-	return <StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} barStyle={barStyle} animated />;
+	return <StatusBarRN backgroundColor={backgroundColor ?? colors.surfaceNeutral} animated style={barStyle} />;
 };
 
 export default StatusBar;
