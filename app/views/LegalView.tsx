@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import I18n from '../i18n';
-import StatusBar from '../containers/StatusBar';
 import openLink from '../lib/methods/helpers/openLink';
 import { useTheme } from '../theme';
 import SafeAreaView from '../containers/SafeAreaView';
@@ -33,7 +32,6 @@ const LegalView = () => {
 
 	return (
 		<SafeAreaView testID='legal-view'>
-			<StatusBar />
 			<List.Container>
 				<List.Section>
 					<List.Separator />
