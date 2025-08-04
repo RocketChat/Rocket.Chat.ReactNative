@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import ListRadio from '../../containers/List/ListRadio';
 import { useAppSelector } from '../../lib/hooks';
 import { appStart } from '../../actions/app';
 import { setUser } from '../../actions/login';
@@ -18,7 +19,6 @@ import { SettingsStackParamList } from '../../stacks/types';
 import { showErrorAlert } from '../../lib/methods/helpers/info';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { Services } from '../../lib/services';
-import LanguageItem from './LanguageItem';
 
 const LanguageView = () => {
 	const { languageDefault, id } = useAppSelector(state => ({
@@ -96,7 +96,9 @@ const LanguageView = () => {
 				ListHeaderComponent={List.Separator}
 				ListFooterComponent={List.Separator}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
-				renderItem={({ item }) => <LanguageItem item={item} language={language} submit={submit} />}
+				renderItem={({ item }) => (
+					<ListRadio testId='language-view' item={item} isSelected={item.value === language} onChange={submit} />
+				)}
 				ItemSeparatorComponent={List.Separator}
 			/>
 		</SafeAreaView>

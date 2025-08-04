@@ -1,32 +1,34 @@
 import React from 'react';
 
-import * as List from '../../containers/List';
-import { useTheme } from '../../theme';
 import i18n from '../../i18n';
+import ListItem from './ListItem';
+import ListIcon from './ListIcon';
+import { useTheme } from '../../theme';
 
-const LanguageItem = ({
+const ListRadio = ({
 	item,
-	language,
-	submit
+	testId,
+	isSelected,
+	onChange
 }: {
-	item: { value: string; label: string };
-	language: string;
-	submit: (language: string) => Promise<void>;
+	item: { value: any; label: string };
+	testId: string;
+	isSelected: boolean;
+	onChange: (value: any) => void | Promise<void>;
 }) => {
 	const { colors } = useTheme();
 
 	const { value, label } = item;
-	const isSelected = language === value;
 
 	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
 	const iconColor = isSelected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 
 	return (
-		<List.Item
+		<ListItem
 			title={label}
-			onPress={() => submit(value)}
-			testID={`language-view-${value}`}
-			right={() => <List.Icon name={iconName} color={iconColor} />}
+			onPress={() => onChange(value)}
+			testID={`${testId}-${value}`}
+			right={() => <ListIcon name={iconName} color={iconColor} />}
 			translateTitle={false}
 			additionalAcessibilityLabel={isSelected ? i18n.t('Selected') : i18n.t('Unselected')}
 			accessibilityRole='radio'
@@ -34,4 +36,4 @@ const LanguageItem = ({
 	);
 };
 
-export default LanguageItem;
+export default ListRadio;

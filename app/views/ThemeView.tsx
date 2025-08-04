@@ -56,36 +56,12 @@ interface ITheme {
 	group: string;
 }
 
-const Item = ({
-	onPress,
-	label,
-	value,
-	isSelected
-}: {
-	onPress: () => void;
-	label: string;
-	value: string;
-	isSelected: boolean;
-}) => {
-	const { colors } = useTheme();
-	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
-	const iconColor = isSelected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
-	const accessibilityLabel = isSelected ? I18n.t('Selected') : I18n.t('Unselected');
-
-	return (
-		<>
-			<List.Item
-				title={label}
-				onPress={onPress}
-				testID={`theme-view-${value}`}
-				right={() => <List.Icon name={iconName} color={iconColor} />}
-				additionalAcessibilityLabel={accessibilityLabel}
-				accessibilityRole='radio'
-			/>
-			<List.Separator />
-		</>
-	);
-};
+const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme; isSelected: boolean }) => (
+	<>
+		<List.Radio isSelected={isSelected} item={item} onChange={onPress} testId='theme-view' />
+		<List.Separator />
+	</>
+);
 
 const ThemeView = (): React.ReactElement => {
 	const { themePreferences, setTheme } = useTheme();
@@ -138,13 +114,7 @@ const ThemeView = (): React.ReactElement => {
 					<List.Separator />
 					<>
 						{themeGroup.map(theme => (
-							<Item
-								onPress={() => onClick(theme)}
-								label={theme.label}
-								value={theme.value}
-								isSelected={!!isSelected(theme)}
-								key={theme.label}
-							/>
+							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
 						))}
 					</>
 				</List.Section>
@@ -152,13 +122,7 @@ const ThemeView = (): React.ReactElement => {
 					<List.Separator />
 					<>
 						{darkGroup.map(theme => (
-							<Item
-								onPress={() => onClick(theme)}
-								label={theme.label}
-								value={theme.value}
-								isSelected={!!isSelected(theme)}
-								key={theme.label}
-							/>
+							<Item onPress={() => onClick(theme)} item={theme} isSelected={!!isSelected(theme)} key={theme.label} />
 						))}
 					</>
 				</List.Section>
