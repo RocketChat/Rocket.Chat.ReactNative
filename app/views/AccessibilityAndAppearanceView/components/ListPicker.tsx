@@ -41,7 +41,7 @@ const OPTIONS: TOPTIONS = [
 	{
 		label: I18n.t('A11y_appearance_toasts'),
 		value: 'TOAST',
-		description: null
+		description: I18n.t('A11y_appearance_toast_dismissed_automatically')
 	},
 	{
 		label: I18n.t('A11y_appearance_dialogs'),
