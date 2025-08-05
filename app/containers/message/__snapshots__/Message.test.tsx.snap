@@ -48671,9 +48671,10 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                       }
                     >
                       <View
+                        onLayout={[Function]}
                         style={
                           {
-                            "flexDirection": "row",
+                            "flex": 1,
                           }
                         }
                       >
@@ -49337,9 +49338,10 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                       }
                     >
                       <View
+                        onLayout={[Function]}
                         style={
                           {
-                            "flexDirection": "row",
+                            "flex": 1,
                           }
                         }
                       >
@@ -50907,9 +50909,10 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                       }
                     >
                       <View
+                        onLayout={[Function]}
                         style={
                           {
-                            "flexDirection": "row",
+                            "flex": 1,
                           }
                         }
                       >
@@ -51573,9 +51576,10 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                       }
                     >
                       <View
+                        onLayout={[Function]}
                         style={
                           {
-                            "flexDirection": "row",
+                            "flex": 1,
                           }
                         }
                       >
@@ -91395,9 +91399,10 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               >
                 <View
+                  onLayout={[Function]}
                   style={
                     {
-                      "flexDirection": "row",
+                      "flex": 1,
                     }
                   }
                 >
@@ -91900,9 +91905,10 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               >
                 <View
+                  onLayout={[Function]}
                   style={
                     {
-                      "flexDirection": "row",
+                      "flex": 1,
                     }
                   }
                 >
@@ -92405,9 +92411,10 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                 }
               >
                 <View
+                  onLayout={[Function]}
                   style={
                     {
-                      "flexDirection": "row",
+                      "flex": 1,
                     }
                   }
                 >
@@ -92878,9 +92885,10 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
+                  onLayout={[Function]}
                   style={
                     {
-                      "flexDirection": "row",
+                      "flex": 1,
                     }
                   }
                 >
@@ -93383,9 +93391,10 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
+                  onLayout={[Function]}
                   style={
                     {
-                      "flexDirection": "row",
+                      "flex": 1,
                     }
                   }
                 >
@@ -93888,9 +93897,10 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                 }
               >
                 <View
+                  onLayout={[Function]}
                   style={
                     {
-                      "flexDirection": "row",
+                      "flex": 1,
                     }
                   }
                 >
