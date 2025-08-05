@@ -44,6 +44,10 @@ const styles = StyleSheet.create({
 		...sharedStyles.textBold,
 		lineHeight: 36,
 		fontSize: 24
+	},
+	containerScrollView: {
+		paddingTop: 32,
+		gap: 24
 	}
 });
 
@@ -190,7 +194,8 @@ const ChangePasswordView = ({ navigation, route }: IChangePasswordViewProps) => 
 				<ScrollView
 					contentContainerStyle={[
 						sharedStyles.containerScrollView,
-						{ backgroundColor: colors.surfaceTint, paddingTop: 32, gap: 24 }
+						styles.containerScrollView,
+						{ backgroundColor: colors.surfaceTint }
 					]}
 					testID='change-password-view-list'
 					{...scrollPersistTaps}>

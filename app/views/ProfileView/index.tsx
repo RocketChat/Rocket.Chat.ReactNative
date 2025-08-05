@@ -104,7 +104,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-
 	const inputValues = watch();
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
