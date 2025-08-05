@@ -58,7 +58,13 @@ interface ITheme {
 
 const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme; isSelected: boolean }) => (
 	<>
-		<List.Radio isSelected={isSelected} item={item} onChange={onPress} testId='theme-view' />
+		<List.Radio
+			isSelected={isSelected}
+			label={item.label}
+			value={item.value}
+			onChange={onPress}
+			testId={`theme-view-${item.value}`}
+		/>
 		<List.Separator />
 	</>
 );

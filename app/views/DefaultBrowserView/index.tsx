@@ -91,9 +91,10 @@ const DefaultBrowserView = () => {
 				renderItem={({ item }) => (
 					<List.Radio
 						isSelected={item.value === browser}
-						item={item as any}
+						label={item.title}
+						value={item.value}
 						onChange={changeDefaultBrowser}
-						testId='default-browser-view'
+						testId={`default-browser-view-${item.value}`}
 					/>
 				)}
 				ListHeaderComponent={

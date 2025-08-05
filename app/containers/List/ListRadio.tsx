@@ -6,19 +6,19 @@ import ListIcon from './ListIcon';
 import { useTheme } from '../../theme';
 
 const ListRadio = ({
-	item,
+	label,
+	value,
 	testId,
 	isSelected,
 	onChange
 }: {
-	item: { value: any; label: string };
+	value: any;
+	label: string;
 	testId: string;
 	isSelected: boolean;
 	onChange: (value: any) => void | Promise<void>;
 }) => {
 	const { colors } = useTheme();
-
-	const { value, label } = item;
 
 	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
 	const iconColor = isSelected ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
@@ -27,7 +27,7 @@ const ListRadio = ({
 		<ListItem
 			title={label}
 			onPress={() => onChange(value)}
-			testID={`${testId}-${value}`}
+			testID={testId}
 			right={() => <ListIcon name={iconName} color={iconColor} />}
 			translateTitle={false}
 			additionalAcessibilityLabel={isSelected ? i18n.t('Selected') : i18n.t('Unselected')}
