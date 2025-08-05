@@ -12,7 +12,6 @@ import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
 import database from '../../lib/database';
 import { sanitizeLikeString } from '../../lib/database/utils';
-import StatusBar from '../../containers/StatusBar';
 import buildMessage from '../../lib/methods/helpers/buildMessage';
 import log from '../../lib/methods/helpers/log';
 import protectedFunction from '../../lib/methods/helpers/protectedFunction';
@@ -518,12 +517,7 @@ class ThreadMessagesView extends React.Component<IThreadMessagesViewProps, IThre
 
 	render() {
 		console.count(`${this.constructor.name}.render calls`);
-		return (
-			<SafeAreaView testID='thread-messages-view'>
-				<StatusBar />
-				{this.renderContent()}
-			</SafeAreaView>
-		);
+		return <SafeAreaView testID='thread-messages-view'>{this.renderContent()}</SafeAreaView>;
 	}
 }
 

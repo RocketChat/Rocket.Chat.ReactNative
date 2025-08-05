@@ -1989,7 +1989,7 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.17.8":
+"@babel/runtime@^7.17.8", "@babel/runtime@^7.27.6":
   version "7.27.6"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.27.6.tgz#ec4070a04d76bae8ddbb10770ba55714a417b7c6"
   integrity sha512-vbavdySgbTTrmFE+EsiqUTzlOr5bzlnJtUv9PynGCAKvfQqjIXbvFdumPM/GxMDfyuGMJaJAU6TO4zc1Jf1i8Q==
@@ -3733,10 +3733,10 @@
   dependencies:
     merge-options "^3.0.4"
 
-"@react-native-camera-roll/camera-roll@^7.5.0":
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-7.5.0.tgz#e6571b74c7fa32227963a9e73fe7def9d256c752"
-  integrity sha512-7mSJgDc880L/e4r+LxyjDzXUr/qooRPR5iZHpTva4TxZ7E45mG3W6fuTGVBIDi4+7dStrZW4a6Zm2lI/sKxJJw==
+"@react-native-camera-roll/camera-roll@^7.10.0":
+  version "7.10.0"
+  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-7.10.0.tgz#5e9518d78a9cd87ddc8e68d03e31a608df5033ab"
+  integrity sha512-Zm1yHxxTQS2APsnnxUFoLnK+DMMTPqmIQ2z2pGtNyHRXAG40Nt4MLVB3tDJTWnuJLAG87BpTCEvpz49+u0YkUw==
 
 "@react-native-clipboard/clipboard@^1.13.2":
   version "1.13.2"
@@ -4397,6 +4397,17 @@
   dependencies:
     glob "^7.1.1"
     hermes-parser "0.25.1"
+    invariant "^2.2.4"
+    nullthrows "^1.1.1"
+    yargs "^17.6.2"
+
+"@react-native/codegen@^0.80.0":
+  version "0.80.1"
+  resolved "https://registry.yarnpkg.com/@react-native/codegen/-/codegen-0.80.1.tgz#dc98039da45828abfc0fa974719e5d0ff0aa0a86"
+  integrity sha512-CFhOYkXmExOeZDZnd0UJCK9A4AOSAyFBoVgmFZsf+fv8JqnwIx/SD6RxY1+Jzz9EWPQcH2v+WgwPP/4qVmjtKw==
+  dependencies:
+    glob "^7.1.1"
+    hermes-parser "0.28.1"
     invariant "^2.2.4"
     nullthrows "^1.1.1"
     yargs "^17.6.2"
@@ -5116,13 +5127,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-test-renderer@^19.0.0":
-  version "19.1.0"
-  resolved "https://registry.yarnpkg.com/@types/react-test-renderer/-/react-test-renderer-19.1.0.tgz#1d0af8f2e1b5931e245b8b5b234d1502b854dc10"
-  integrity sha512-XD0WZrHqjNrxA/MaR9O22w/RNidWR9YZmBdRGI7wcnWGrv/3dA8wKCJ8m63Sn+tLJhcjmuhOi629N66W6kgWzQ==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react@*":
   version "18.2.66"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.66.tgz#d2eafc8c4e70939c5432221adb23d32d76bfe451"
@@ -5489,11 +5493,12 @@
   resolved "https://registry.yarnpkg.com/@vscode/sudo-prompt/-/sudo-prompt-9.3.1.tgz#c562334bc6647733649fd42afc96c0eea8de3b65"
   integrity sha512-9ORTwwS74VaTn38tNbQhsA5U44zkJfcb0BdTSyyG6frP4e8KMtHuTXYmwefe5dpL8XB1aGSIVTaLjD3BbWb5iA==
 
-"@wix-pilot/core@^3.2.2":
-  version "3.2.2"
-  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.2.2.tgz#77d950ecc4704d8fec99df500a517d8b244e1140"
-  integrity sha512-E/IFiv4cyIcxmIGxiDwObPCE7JGzelbQTZ9Y8hwsHhw+yyOjVj3a7yvNN5TRvvR8wo3AuDTSj0a09wdrk2bCfA==
+"@wix-pilot/core@^3.3.0":
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.3.4.tgz#c235f3a94fe6acf64a4c1b6b83d6f2d41bb1c9d1"
+  integrity sha512-4U0rDYU94g1f7MxpU9/rLg/4q/tSn2vFcb9ya8Ati1DGruJsRd+HnoZym59ELBVDyM4y0BdPjxQSdiIT1/3jLQ==
   dependencies:
+    chalk "^4.1.0"
     pngjs "^7.0.0"
     winston "^3.17.0"
 
@@ -7272,12 +7277,12 @@ detect-newline@^3.0.0:
   resolved "https://registry.yarnpkg.com/detect-newline/-/detect-newline-3.1.0.tgz#576f5dfc63ae1a192ff192d8ad3af6308991b651"
   integrity sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==
 
-detox@20.36.4:
-  version "20.36.4"
-  resolved "https://registry.yarnpkg.com/detox/-/detox-20.36.4.tgz#7ac3da7717bd688c46a7c9c61d2e1cb69f8bc909"
-  integrity sha512-2BZdxCXOJu0TzrxGKHZFRmPy7vNBQCOF9hhr0C+8BmaBBfRwWqpj5hvZD3AM1yTx89gR8iEj6j90MTDgT6EehQ==
+detox@^20.39.0:
+  version "20.39.0"
+  resolved "https://registry.yarnpkg.com/detox/-/detox-20.39.0.tgz#4340720b0a088ef3534ef15aff1c3ecbade1bff4"
+  integrity sha512-EPqtBQ1Yw7KAdQykDur203FVRYh8rhlB4GfcjOzFx0LN8Xfo0kE5ZwmumRWnaQZGRj+XpOj66d4bQnsvFyqlTQ==
   dependencies:
-    "@wix-pilot/core" "^3.2.2"
+    "@wix-pilot/core" "^3.3.0"
     "@wix-pilot/detox" "^1.0.11"
     ajv "^8.6.3"
     bunyan "^1.8.12"
@@ -12727,10 +12732,11 @@ react-native-screens@^4.13.1:
     react-native-is-edge-to-edge "^1.2.1"
     warn-once "^0.1.0"
 
-react-native-simple-crypto@RocketChat/react-native-simple-crypto#fix.6.1.0:
-  version "0.6.1"
-  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/467905c61df8132e2257b6408a072521fc5a3d27"
+react-native-simple-crypto@RocketChat/react-native-simple-crypto#chore.support-new-arch:
+  version "0.6.2"
+  resolved "https://codeload.github.com/RocketChat/react-native-simple-crypto/tar.gz/72d3f8a81af1a45ffbcf507bfc0733ca6c8ce190"
   dependencies:
+    "@babel/runtime" "^7.27.6"
     base64-js "^1.3.0"
     hex-lite "^1.5.0"
 
