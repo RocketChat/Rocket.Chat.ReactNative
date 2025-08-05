@@ -1,12 +1,14 @@
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useFocusEffect } from '@react-navigation/native';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
 import { AvatarWithEdit } from '../../containers/Avatar';
@@ -14,7 +16,6 @@ import Button from '../../containers/Button';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
@@ -43,16 +44,17 @@ import ConfirmEmailChangeActionSheetContent from './components/ConfirmEmailChang
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
-const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(),
-	email: yup.string().email().required(),
-	username: yup.string().min(1).required()
-});
 
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
+	const validationSchema = yup.object().shape({
+		name: yup.string().required(I18n.t('Name_required')),
+		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
+		username: yup.string().required(I18n.t('Username_required'))
+	});
+
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
@@ -85,7 +87,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		setFocus,
 		getValues,
 		setValue,
-		formState: { isDirty }
+		reset,
+		setError,
+		watch,
+		formState: { isDirty, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -99,6 +104,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
+
+	const inputValues = watch();
+	const newPassword = inputValues.newPassword || '';
+	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
@@ -215,6 +224,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
 		} catch (e: any) {
+			if (e?.error === 'error-could-not-save-identity') {
+				setError('username', { message: I18n.t('Username_not_available'), type: 'validate' });
+			}
+
+			if (e?.message.startsWith(email) && e?.error === 'error-field-unavailable') {
+				setError('email', { message: I18n.t('Email_associated_with_another_user'), type: 'validate' });
+			}
+
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
@@ -231,6 +248,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			handleError(e, 'saving_profile');
 		}
 	};
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
@@ -256,9 +275,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		navigation.setOptions(options);
 	}, []);
 
+	useFocusEffect(
+		useCallback(() => {
+			reset();
+		}, [])
+	);
+
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
 					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: colors.surfaceTint, paddingTop: 32 }]}
@@ -288,6 +312,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-name'
+							error={errors.name?.message}
 						/>
 						<ControlledFormTextInput
 							required
@@ -305,6 +330,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-username'
+							error={errors.username?.message}
 						/>
 						<ControlledFormTextInput
 							required
@@ -322,6 +348,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							autoComplete='email'
 							textContentType='emailAddress'
 							importantForAutofill={'yes'}
+							error={errors.email?.message}
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<ControlledFormTextInput

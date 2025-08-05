@@ -16,7 +16,6 @@ import { MarkdownPreview } from '../../containers/markdown';
 import RoomTypeIcon from '../../containers/RoomTypeIcon';
 import SafeAreaView from '../../containers/SafeAreaView';
 import Status from '../../containers/Status';
-import StatusBar from '../../containers/StatusBar';
 import { IApplicationState, IBaseScreen, ISubscription, IUser, SubscriptionType, TSubscriptionModel } from '../../definitions';
 import { withDimensions } from '../../dimensions';
 import I18n from '../../i18n';
@@ -1066,7 +1065,6 @@ class RoomActionsView extends React.Component<IRoomActionsViewProps, IRoomAction
 
 		return (
 			<SafeAreaView testID='room-actions-view'>
-				<StatusBar />
 				<List.Container testID='room-actions-scrollview'>
 					{this.renderRoomInfo()}
 					<CallSection rid={rid} disabled={hasE2EEWarning} />

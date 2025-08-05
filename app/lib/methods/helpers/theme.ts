@@ -57,7 +57,7 @@ export const setNativeTheme = (themePreferences: IThemePreference) => {
 			// Do nothing
 		}
 	}
-	SystemUI.setBackgroundColorAsync(themes[theme].surfaceLight);
+	SystemUI.setBackgroundColorAsync(themes[theme].surfaceNeutral);
 };
 
 export const unsubscribeTheme = () => {
