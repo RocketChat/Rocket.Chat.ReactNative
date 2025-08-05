@@ -48674,7 +48674,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         onLayout={[Function]}
                         style={
                           {
-                            "flex": 1,
+                            "flexDirection": "row",
                           }
                         }
                       >
@@ -49341,7 +49341,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         onLayout={[Function]}
                         style={
                           {
-                            "flex": 1,
+                            "flexDirection": "row",
                           }
                         }
                       >
@@ -50912,7 +50912,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         onLayout={[Function]}
                         style={
                           {
-                            "flex": 1,
+                            "flexDirection": "row",
                           }
                         }
                       >
@@ -51579,7 +51579,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                         onLayout={[Function]}
                         style={
                           {
-                            "flex": 1,
+                            "flexDirection": "row",
                           }
                         }
                       >
@@ -91402,7 +91402,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                   onLayout={[Function]}
                   style={
                     {
-                      "flex": 1,
+                      "flexDirection": "row",
                     }
                   }
                 >
@@ -91908,7 +91908,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                   onLayout={[Function]}
                   style={
                     {
-                      "flex": 1,
+                      "flexDirection": "row",
                     }
                   }
                 >
@@ -92414,7 +92414,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                   onLayout={[Function]}
                   style={
                     {
-                      "flex": 1,
+                      "flexDirection": "row",
                     }
                   }
                 >
@@ -92888,7 +92888,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   onLayout={[Function]}
                   style={
                     {
-                      "flex": 1,
+                      "flexDirection": "row",
                     }
                   }
                 >
@@ -93394,7 +93394,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   onLayout={[Function]}
                   style={
                     {
-                      "flex": 1,
+                      "flexDirection": "row",
                     }
                   }
                 >
@@ -93900,7 +93900,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                   onLayout={[Function]}
                   style={
                     {
-                      "flex": 1,
+                      "flexDirection": "row",
                     }
                   }
                 >
