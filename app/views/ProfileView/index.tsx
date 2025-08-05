@@ -17,7 +17,6 @@ import Button from '../../containers/Button';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
@@ -290,7 +289,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
 					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: colors.surfaceTint, paddingTop: 32 }]}

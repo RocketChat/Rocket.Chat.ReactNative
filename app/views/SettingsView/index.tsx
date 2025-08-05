@@ -14,7 +14,6 @@ import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import NewWindowIcon from '../../containers/NewWindowIcon';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { LISTENER } from '../../containers/Toast';
 import { RootEnum } from '../../definitions';
 import I18n from '../../i18n';
@@ -165,7 +164,6 @@ const SettingsView = (): React.ReactElement => {
 
 	return (
 		<SafeAreaView testID='settings-view'>
-			<StatusBar />
 			<List.Container>
 				{isMasterDetail ? (
 					<>
