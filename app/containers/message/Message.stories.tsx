@@ -34,15 +34,15 @@ const date = new Date(2017, 10, 10, 10);
 const longText =
 	'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 
-const responsiveLayoutProviderLargeFontValue = {
-	fontScale: FONT_SCALE_LIMIT,
-	fontScaleLimited: FONT_SCALE_LIMIT,
-	isLargeFontScale: true,
-	rowHeight: BASE_ROW_HEIGHT * FONT_SCALE_LIMIT,
-	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * FONT_SCALE_LIMIT,
+const responsiveLayoutProviderLargeFontValue = (fontScale: number) => ({
+	fontScale,
+	fontScaleLimited: fontScale,
+	isLargeFontScale: fontScale > 1,
+	rowHeight: BASE_ROW_HEIGHT * fontScale,
+	rowHeightCondensed: BASE_ROW_HEIGHT_CONDENSED * fontScale,
 	width: 350,
 	height: 800
-};
+});
 
 const getCustomEmoji = (content: string) => {
 	const customEmoji = {
@@ -67,22 +67,24 @@ export default {
 };
 
 export const Message = (props: any) => (
-	<MessageComponent
-		baseUrl={baseUrl}
-		user={user}
-		author={author}
-		ts={date}
-		timeFormat='LT'
-		isHeader
-		getCustomEmoji={getCustomEmoji}
-		theme={_theme}
-		{...props}
-	/>
+	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(1)}>
+		<MessageComponent
+			baseUrl={baseUrl}
+			user={user}
+			author={author}
+			ts={date}
+			timeFormat='LT'
+			isHeader
+			getCustomEmoji={getCustomEmoji}
+			theme={_theme}
+			{...props}
+		/>
+	</ResponsiveLayoutContext.Provider>
 );
 
 // The large font components are not perfect because the text's font scale increases only with the device's font size setting.
-export const MessageLargeFont = (props: any) => (
-	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue}>
+const MessageLargeFont = (props: any) => (
+	<ResponsiveLayoutContext.Provider value={responsiveLayoutProviderLargeFontValue(FONT_SCALE_LIMIT)}>
 		<MessageComponent
 			baseUrl={baseUrl}
 			user={user}
