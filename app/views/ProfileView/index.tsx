@@ -90,7 +90,7 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		reset,
 		setError,
 		watch,
-		formState: { isDirty, dirtyFields, errors }
+		formState: { isDirty, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -106,8 +106,6 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 	});
 
 	const inputValues = watch();
-	const newPassword = inputValues.newPassword || '';
-	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
 	const [twoFactorCode, setTwoFactorCode] = useState<{ twoFactorCode: string; twoFactorMethod: TwoFactorMethods } | null>(null);
