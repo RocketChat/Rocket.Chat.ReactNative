@@ -9,7 +9,6 @@ import UAParser from 'ua-parser-js';
 
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ISubscription, IUser, SubscriptionType } from '../../definitions';
 import I18n from '../../i18n';
 import { getSubscriptionByRoomId } from '../../lib/database/services/Subscription';
@@ -286,7 +285,6 @@ const RoomInfoView = (): React.ReactElement => {
 
 	return (
 		<ScrollView style={[styles.scroll, { backgroundColor: colors.surfaceRoom }]}>
-			<StatusBar />
 			<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='room-info-view'>
 				<View style={[styles.avatarContainer, { backgroundColor: colors.surfaceHover }]}>
 					<RoomInfoViewAvatar

@@ -9,7 +9,6 @@ import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
 import * as HeaderButton from '../../containers/Header/components/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
 import { getUserSelector } from '../../selectors/login';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { createDiscussionRequest, ICreateDiscussionRequestData } from '../../actions/createDiscussion';
@@ -142,7 +141,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 
 	return (
 		<KeyboardView style={styles.container} backgroundColor={colors.surfaceHover}>
-			<StatusBar />
 			<SafeAreaView testID='create-discussion-view'>
 				<ScrollView {...scrollPersistTaps}>
 					<Text style={[styles.description, { color: colors.fontDefault }]}>{I18n.t('Discussion_Desc')}</Text>
