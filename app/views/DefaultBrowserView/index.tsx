@@ -93,8 +93,8 @@ const DefaultBrowserView = () => {
 						isSelected={item.value === browser}
 						title={item.title}
 						value={item.value}
-						onChange={changeDefaultBrowser}
-						testId={`default-browser-view-${item.value}`}
+						onPress={changeDefaultBrowser}
+						testID={`default-browser-view-${item.value}`}
 					/>
 				)}
 				ListHeaderComponent={

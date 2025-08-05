@@ -62,8 +62,8 @@ const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme
 			isSelected={isSelected}
 			title={item.label}
 			value={item.value}
-			onChange={onPress}
-			testId={`theme-view-${item.value}`}
+			onPress={onPress}
+			testID={`theme-view-${item.value}`}
 		/>
 		<List.Separator />
 	</>

@@ -98,11 +98,11 @@ const LanguageView = () => {
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
 					<ListRadio
-						testId={`language-view-${item.value}`}
+						testID={`language-view-${item.value}`}
 						title={item.label}
 						value={item.value}
 						isSelected={item.value === language}
-						onChange={submit}
+						onPress={submit}
 					/>
 				)}
 				ItemSeparatorComponent={List.Separator}
