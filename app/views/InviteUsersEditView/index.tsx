@@ -8,7 +8,6 @@ import { inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import * as List from '../../containers/List';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import I18n from '../../i18n';
 import { ChatsStackParamList } from '../../stacks/types';
 import { events, logEvent } from '../../lib/methods/helpers/log';
@@ -35,7 +34,6 @@ const InviteUsersEditView = () => {
 	return (
 		<SafeAreaView>
 			<List.Container>
-				<StatusBar />
 				<List.Section>
 					<List.Separator />
 					<List.Item title='Expiration_Days' right={() => <Picker param={'days'} first={'Never'} />} />

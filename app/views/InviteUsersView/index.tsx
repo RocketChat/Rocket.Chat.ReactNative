@@ -7,7 +7,6 @@ import { inviteLinksClear, inviteLinksCreate } from '../../actions/inviteLinks';
 import Button from '../../containers/Button';
 import Markdown from '../../containers/markdown';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { FormTextInput } from '../../containers/TextInput';
 import { IApplicationState, IBaseScreen } from '../../definitions';
 import I18n from '../../i18n';
@@ -87,7 +86,6 @@ const InviteUsersView = ({ route, navigation }: IInviteUsersViewProps): React.Re
 	return (
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }}>
 			<ScrollView {...scrollPersistTaps} style={{ backgroundColor: colors.surfaceHover }} showsVerticalScrollIndicator={false}>
-				<StatusBar />
 				<View style={styles.innerContainer}>
 					<FormTextInput label={I18n.t('Invite_Link')} value={invite && invite.url} editable={false} />
 					{renderExpiration()}

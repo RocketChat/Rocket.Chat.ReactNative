@@ -9,7 +9,6 @@ import Button from '../containers/Button';
 import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import KeyboardView from '../containers/KeyboardView';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import I18n from '../i18n';
 import { useAppSelector } from '../lib/hooks';
@@ -94,7 +93,6 @@ const E2EEnterYourPasswordView = (): React.ReactElement => {
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<ScrollView
 				{...scrollPersistTaps}
 				style={sharedStyles.container}
