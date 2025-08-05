@@ -10,7 +10,6 @@ import { useAppSelector, usePermissions } from '../../lib/hooks';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import { sendLoadingEvent } from '../../containers/Loading';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { MultiSelect } from '../../containers/UIKit/MultiSelect';
@@ -329,7 +328,6 @@ const RoomInfoEditView = ({ navigation, route }: IRoomInfoEditViewProps) => {
 
 	return (
 		<KeyboardView>
-			<StatusBar />
 			<SafeAreaView testID='room-info-edit-view' style={{ backgroundColor: colors.surfaceRoom }}>
 				<ScrollView
 					contentContainerStyle={sharedStyles.containerScrollView}
