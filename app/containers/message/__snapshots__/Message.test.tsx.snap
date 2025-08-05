@@ -720,8 +720,8 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": NaN,
-                  "width": NaN,
+                  "height": 36,
+                  "width": 36,
                 },
                 {
                   "marginTop": 4,
@@ -775,7 +775,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={NaN}
+                height={36}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -789,19 +789,19 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/no.avatar?format=png&size=NaN",
+                      "uri": "https://open.rocket.chat/avatar/no.avatar?format=png&size=72",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": NaN,
-                    "width": NaN,
+                    "height": 36,
+                    "width": 36,
                   }
                 }
                 transition={null}
-                width={NaN}
+                width={36}
               />
             </View>
           </View>
@@ -1031,8 +1031,8 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": NaN,
-                  "width": NaN,
+                  "height": 36,
+                  "width": 36,
                 },
                 {
                   "marginTop": 4,
@@ -1086,7 +1086,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={NaN}
+                height={36}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -1100,19 +1100,19 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                       "headers": {
                         "User-Agent": "RC Mobile; ios unknown; vunknown (unknown)",
                       },
-                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=NaN",
+                      "uri": "https://open.rocket.chat/avatar/diego.mello?format=png&size=72",
                     },
                   ]
                 }
                 style={
                   {
                     "borderRadius": 4,
-                    "height": NaN,
-                    "width": NaN,
+                    "height": 36,
+                    "width": 36,
                   }
                 }
                 transition={null}
-                width={NaN}
+                width={36}
               />
             </View>
           </View>
@@ -1342,8 +1342,8 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": NaN,
-                  "width": NaN,
+                  "height": 36,
+                  "width": 36,
                 },
                 {
                   "marginTop": 4,
@@ -1403,8 +1403,8 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     },
                     {
                       "borderRadius": 4,
-                      "height": NaN,
-                      "width": NaN,
+                      "height": 36,
+                      "width": 36,
                     },
                     {
                       "lineHeight": 35,
@@ -1642,8 +1642,8 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": NaN,
-                  "width": NaN,
+                  "height": 36,
+                  "width": 36,
                 },
                 {
                   "marginTop": 4,
@@ -1697,7 +1697,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={NaN}
+                height={36}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -1714,12 +1714,12 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 style={
                   {
                     "borderRadius": 4,
-                    "height": NaN,
-                    "width": NaN,
+                    "height": 36,
+                    "width": 36,
                   }
                 }
                 transition={null}
-                width={NaN}
+                width={36}
               />
             </View>
           </View>
@@ -1949,8 +1949,8 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
               [
                 {
                   "borderRadius": 4,
-                  "height": NaN,
-                  "width": NaN,
+                  "height": 36,
+                  "width": 36,
                 },
                 {
                   "marginTop": 4,
@@ -2004,7 +2004,7 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                     "top": "50%",
                   }
                 }
-                height={NaN}
+                height={36}
                 nativeViewRef={"[React.ref]"}
                 onError={[Function]}
                 onLoad={[Function]}
@@ -2021,12 +2021,12 @@ exports[`Story Snapshots: Avatar should match snapshot 1`] = `
                 style={
                   {
                     "borderRadius": 4,
-                    "height": NaN,
-                    "width": NaN,
+                    "height": 36,
+                    "width": 36,
                   }
                 }
                 transition={null}
-                width={NaN}
+                width={36}
               />
             </View>
           </View>
