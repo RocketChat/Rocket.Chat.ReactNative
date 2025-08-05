@@ -222,7 +222,7 @@ describe('Deep linking', () => {
 					.toBeVisible()
 					.withTimeout(2000);
 				await element(by.id('rooms-list-header-servers-list-button')).tap();
-				await waitFor(element(by.id('rooms-list-header-servers-list')))
+				await waitFor(element(by.id(`server-item-${data.alternateServer}`)))
 					.toBeVisible()
 					.withTimeout(5000);
 				await element(by.id(`server-item-${data.alternateServer}`)).tap();
@@ -288,9 +288,9 @@ describe('Deep linking', () => {
 				.toBeVisible()
 				.withTimeout(10000);
 			await element(by.id('rooms-list-header-servers-list-button')).tap();
-			await waitFor(element(by.id('rooms-list-header-servers-list')))
+			await waitFor(element(by.id(`server-item-${data.alternateServer}`)))
 				.toBeVisible()
-				.withTimeout(5000);
+				.withTimeout(2000);
 			await element(by.id(`server-item-${data.alternateServer}`)).tap();
 			await checkServer(data.alternateServer);
 
