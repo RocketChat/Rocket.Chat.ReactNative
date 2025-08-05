@@ -8197,10 +8197,10 @@ expo-asset@~11.1.5:
     "@expo/image-utils" "^0.7.4"
     expo-constants "~17.1.5"
 
-expo-av@15.1.3:
-  version "15.1.3"
-  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-15.1.3.tgz#ce6e714f0d468b27306b488ce4bebd17dad6c2b3"
-  integrity sha512-yixS8y2xlvOzXHVKGX0i7nIt+XgE59eghsZ5umBBPPheppkwDh9Uk/oF1SPWTffxFb1wDIZQCazBRLyX9G5GgA==
+expo-av@15.1.7:
+  version "15.1.7"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-15.1.7.tgz#a8422646eca9250c842e8a44fccccb1a4b070a05"
+  integrity sha512-NC+JR+65sxXfQN1mOHp3QBaXTL2J+BzNwVO27XgUEc5s9NaoBTdHWElYXrfxvik6xwytZ+a7abrqfNNgsbQzsA==
 
 expo-camera@16.1.5:
   version "16.1.5"
