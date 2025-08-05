@@ -1134,7 +1134,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				name = item.tmsg ?? '';
 				jumpToMessageId = item.id;
 			}
-			// sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
+			sendLoadingEvent({ visible: true, onCancel: this.cancelJumpToMessage });
 			const threadRecord = await getThreadById(item.tmid);
 			if (threadRecord?.t === 'rm') {
 				name = I18n.t('Thread');
@@ -1143,7 +1143,7 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 				const result = await this.getThreadName(item.tmid, jumpToMessageId);
 				// test if there isn't a thread
 				if (!result) {
-					// sendLoadingEvent({ visible: false });
+					sendLoadingEvent({ visible: false });
 					return;
 				}
 				name = result;
@@ -1153,10 +1153,9 @@ class RoomView extends React.Component<IRoomViewProps, IRoomViewState> {
 			}
 			if (!jumpToMessageId) {
 				setTimeout(() => {
-					// sendLoadingEvent({ visible: false });
+					sendLoadingEvent({ visible: false });
 				}, 300);
 			}
-			console.log('navToThread', item.tmid, jumpToMessageId);
 			return navigation.push('RoomView', {
 				rid: this.rid,
 				tmid: item.tmid,
