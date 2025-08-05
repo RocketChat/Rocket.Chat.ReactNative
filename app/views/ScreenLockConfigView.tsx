@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 
 import I18n from '../i18n';
 import { TSupportedThemes, withTheme } from '../theme';
-import StatusBar from '../containers/StatusBar';
 import * as List from '../containers/List';
 import database from '../lib/database';
 import {
@@ -265,7 +264,6 @@ class ScreenLockConfigView extends React.Component<IScreenLockConfigViewProps, I
 		const { autoLock } = this.state;
 		return (
 			<SafeAreaView>
-				<StatusBar />
 				<List.Container>
 					<List.Section>
 						<List.Separator />
