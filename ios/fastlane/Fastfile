@@ -153,12 +153,13 @@ platform :ios do
     gym(
       scheme: "RocketChatRN",
       workspace: "RocketChatRN.xcworkspace",
-      destination: "platform=iOS Simulator,name=iPhone 16 Pro Max,OS=latest",
+      destination: "generic/platform=iOS Simulator",
       skip_package_ipa: true,
       output_directory: "./fastlane/output",
       build_path: "./fastlane/build",
-      configuration: "Debug",
-      xcargs: "-parallelizeTargets -jobs 8"
+      configuration: "Release",
+      derived_data_path: "./fastlane/derived_data",
+      xcargs: "-parallelizeTargets -jobs 4"
     )
   end
 
