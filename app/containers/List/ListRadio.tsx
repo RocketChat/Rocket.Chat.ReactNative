@@ -7,12 +7,10 @@ import { useTheme } from '../../theme';
 
 interface IListRadio extends IListItem {
 	value: any;
-	testId: string;
 	isSelected: boolean;
-	onChange: (value: any) => void | Promise<void>;
 }
 
-const ListRadio = ({ value, testId, isSelected, onChange, ...rest }: IListRadio) => {
+const ListRadio = ({ value, isSelected, ...rest }: IListRadio) => {
 	const { colors } = useTheme();
 
 	const iconName = isSelected ? 'radio-checked' : 'radio-unchecked';
@@ -21,7 +19,6 @@ const ListRadio = ({ value, testId, isSelected, onChange, ...rest }: IListRadio)
 	return (
 		<ListItem
 			{...rest}
-			onPress={() => onChange(value)}
 			right={() => <ListIcon name={iconName} color={iconColor} />}
 			additionalAcessibilityLabel={isSelected ? i18n.t('Selected') : i18n.t('Unselected')}
 			accessibilityRole='radio'

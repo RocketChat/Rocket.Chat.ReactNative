@@ -70,26 +70,24 @@ const Status = ({
 	status: TUserStatus;
 	setStatus: (status: TUserStatus) => void;
 }) => {
-	const { colors } = useTheme();
 	const { id, name } = statusType;
-	const iconName = status === id ? 'radio-checked' : 'radio-unchecked';
-	const iconColor = status === id ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 
 	return (
 		<>
-			<List.Item
+			<List.Radio
+				isSelected={status === id}
 				additionalAcessibilityLabel={`${status === id ? I18n.t('Current_Status') : ''}`}
 				title={name}
 				onPress={() => {
-					const key = `STATUS_${statusType.id.toUpperCase()}` as keyof typeof events;
+					const key = `STATUS_${id.toUpperCase()}` as keyof typeof events;
 					logEvent(events[key]);
-					if (status !== statusType.id) {
-						setStatus(statusType.id);
+					if (status !== id) {
+						setStatus(id);
 					}
 				}}
 				testID={`status-view-${id}`}
+				value={statusType.id}
 				left={() => <StatusIcon size={24} status={statusType.id} />}
-				right={() => <List.Icon name={iconName} color={iconColor} />}
 			/>
 			<List.Separator />
 		</>
