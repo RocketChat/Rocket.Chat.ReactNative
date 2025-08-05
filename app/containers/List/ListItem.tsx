@@ -200,7 +200,7 @@ const Button = React.memo(({ onPress, backgroundColor, underlayColor, ...props }
 	);
 });
 
-interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
+export interface IListItem extends Omit<IListItemContent, 'theme'>, Omit<IListItemButton, 'theme'> {
 	backgroundColor?: string;
 	onPress?: Function;
 }

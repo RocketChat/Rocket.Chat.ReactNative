@@ -60,7 +60,7 @@ const Item = ({ onPress, item, isSelected }: { onPress: () => void; item: ITheme
 	<>
 		<List.Radio
 			isSelected={isSelected}
-			label={item.label}
+			title={item.label}
 			value={item.value}
 			onChange={onPress}
 			testId={`theme-view-${item.value}`}

@@ -99,7 +99,7 @@ const LanguageView = () => {
 				renderItem={({ item }) => (
 					<ListRadio
 						testId={`language-view-${item.value}`}
-						label={item.label}
+						title={item.label}
 						value={item.value}
 						isSelected={item.value === language}
 						onChange={submit}
