@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Touch from '../../containers/Touch';
 import { CustomIcon, TIconsName } from '../../containers/CustomIcon';
-import Check from '../../containers/Check';
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
 import styles from './styles';
@@ -42,12 +41,16 @@ const DirectoryOptions = ({
 			icon = 'teams';
 		}
 
+		const iconName = propType === itemType ? 'radio-checked' : 'radio-unchecked';
+		const iconColor = propType === itemType ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+
 		return (
 			<Touch onPress={() => changeType(itemType)} style={styles.filterItemButton} accessibilityLabel={I18n.t(text)} accessible>
 				<View style={styles.filterItemContainer}>
 					<CustomIcon name={icon} size={22} color={colors.fontDefault} style={styles.filterItemIcon} />
 					<Text style={[styles.filterItemText, { color: colors.fontDefault }]}>{I18n.t(text)}</Text>
-					{propType === itemType ? <Check /> : null}
+
+					<List.Icon name={iconName} color={iconColor} />
 				</View>
 			</Touch>
 		);
