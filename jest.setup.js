@@ -1,7 +1,7 @@
 import React from 'react';
 import mockClipboard from '@react-native-clipboard/clipboard/jest/clipboard-mock.js';
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
@@ -16,8 +16,8 @@ jest.mock('react-native-safe-area-context', () => {
 	};
 });
 
-const getSizeMock = jest.spyOn(Image, 'getSize');
-getSizeMock.mockImplementation(() => {});
+const loadAsyncMock = jest.spyOn(Image, 'loadAsync');
+loadAsyncMock.mockImplementation(() => Promise.resolve({ width: 200, height: 300 }));
 
 // @ts-ignore
 global.__reanimatedWorkletInit = () => {};
@@ -90,6 +90,24 @@ jest.mock('./app/lib/database/services/Message', () => ({
 		rid: 'rid',
 		msg: `Message ${messageId}`
 	})
+}));
+
+jest.mock('react-native/Libraries/Utilities/useWindowDimensions', () => ({
+	__esModule: true,
+	default: jest.fn(() => ({
+		fontScale: 1
+	}))
+}));
+
+jest.mock('./app/lib/hooks/useResponsiveLayout/useResponsiveLayout', () => ({
+	useResponsiveLayout: jest.fn(() => ({
+		fontScale: 1,
+		isLargeFontScale: false,
+		fontScaleLimited: 1,
+		rowHeight: 75,
+		rowHeightCondensed: 60
+	})),
+	FONT_SCALE_LIMIT: 1.3
 }));
 
 jest.mock('./app/containers/CustomIcon', () => {

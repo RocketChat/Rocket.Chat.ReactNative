@@ -25,7 +25,7 @@ const handleSubmitEvent = ({ loading, failure, isMasterDetail, error, result }: 
 				t,
 				prid
 			};
-			goRoom({ item, isMasterDetail, popToRoot: true });
+			goRoom({ item, isMasterDetail });
 		}
 	}
 };

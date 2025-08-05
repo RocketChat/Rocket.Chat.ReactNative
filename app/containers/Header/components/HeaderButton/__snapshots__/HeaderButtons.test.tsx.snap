@@ -157,11 +157,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -185,8 +185,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "backgroundColor": "#095AD2",
-                    "borderRadius": 21,
-                    "minWidth": 32,
+                    "borderRadius": 10.5,
+                    "minWidth": 16,
                   },
                   {
                     "alignItems": "center",
@@ -267,11 +267,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -295,8 +295,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "backgroundColor": "#F5455C",
-                    "borderRadius": 21,
-                    "minWidth": 32,
+                    "borderRadius": 10.5,
+                    "minWidth": 16,
                   },
                   {
                     "alignItems": "center",
@@ -377,11 +377,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                 [
                   {
                     "color": "#2F343D",
-                    "fontSize": 48,
+                    "fontSize": 24,
                   },
                   [
                     {
-                      "lineHeight": 48,
+                      "lineHeight": 24,
                     },
                     undefined,
                   ],
@@ -405,8 +405,8 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   },
                   {
                     "backgroundColor": "#F38C39",
-                    "borderRadius": 21,
-                    "minWidth": 32,
+                    "borderRadius": 10.5,
+                    "minWidth": 16,
                   },
                   {
                     "alignItems": "center",
@@ -505,11 +505,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -568,11 +568,11 @@ exports[`Story Snapshots: Badge should match snapshot 1`] = `
       }
     >
       <Text
-        accessibilityRole="header"
         aria-level="1"
         collapsable={false}
         numberOfLines={1}
         onLayout={[Function]}
+        role="heading"
         style={
           [
             {
@@ -775,11 +775,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -817,11 +817,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -1020,11 +1020,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -1062,11 +1062,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -1297,11 +1297,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -1459,11 +1459,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -1559,11 +1559,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -1701,11 +1701,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -1801,11 +1801,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -1943,11 +1943,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -2043,11 +2043,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -2185,11 +2185,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -2287,11 +2287,11 @@ exports[`Story Snapshots: Common should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -2473,11 +2473,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -2515,11 +2515,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -2615,11 +2615,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -2796,11 +2796,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -2859,11 +2859,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -2901,11 +2901,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -3001,11 +3001,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -3064,11 +3064,11 @@ exports[`Story Snapshots: Icons should match snapshot 1`] = `
                   [
                     {
                       "color": "#2F343D",
-                      "fontSize": 48,
+                      "fontSize": 24,
                     },
                     [
                       {
-                        "lineHeight": 48,
+                        "lineHeight": 24,
                       },
                       undefined,
                     ],
@@ -3275,11 +3275,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       [
                         {
                           "color": "#2F343D",
-                          "fontSize": 48,
+                          "fontSize": 24,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": 24,
                           },
                           undefined,
                         ],
@@ -3359,11 +3359,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": 48,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3401,11 +3401,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         >
           <Text
-            accessibilityRole="header"
             aria-level="1"
             collapsable={false}
             numberOfLines={1}
             onLayout={[Function]}
+            role="heading"
             style={
               [
                 {
@@ -3556,11 +3556,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#2F343D",
-                        "fontSize": 48,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3584,8 +3584,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "#095AD2",
-                        "borderRadius": 21,
-                        "minWidth": 32,
+                        "borderRadius": 10.5,
+                        "minWidth": 16,
                       },
                       {
                         "alignItems": "center",
@@ -3810,11 +3810,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": 24,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": 24,
                           },
                           undefined,
                         ],
@@ -3894,11 +3894,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": 48,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -3936,11 +3936,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         >
           <Text
-            accessibilityRole="header"
             aria-level="1"
             collapsable={false}
             numberOfLines={1}
             onLayout={[Function]}
+            role="heading"
             style={
               [
                 {
@@ -4091,11 +4091,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": 48,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4119,8 +4119,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "#245399",
-                        "borderRadius": 21,
-                        "minWidth": 32,
+                        "borderRadius": 10.5,
+                        "minWidth": 16,
                       },
                       {
                         "alignItems": "center",
@@ -4345,11 +4345,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       [
                         {
                           "color": "#E4E7EA",
-                          "fontSize": 48,
+                          "fontSize": 24,
                         },
                         [
                           {
-                            "lineHeight": 48,
+                            "lineHeight": 24,
                           },
                           undefined,
                         ],
@@ -4429,11 +4429,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": 48,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4471,11 +4471,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           }
         >
           <Text
-            accessibilityRole="header"
             aria-level="1"
             collapsable={false}
             numberOfLines={1}
             onLayout={[Function]}
+            role="heading"
             style={
               [
                 {
@@ -4626,11 +4626,11 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                     [
                       {
                         "color": "#E4E7EA",
-                        "fontSize": 48,
+                        "fontSize": 24,
                       },
                       [
                         {
-                          "lineHeight": 48,
+                          "lineHeight": 24,
                         },
                         undefined,
                       ],
@@ -4654,8 +4654,8 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
                       },
                       {
                         "backgroundColor": "#245399",
-                        "borderRadius": 21,
-                        "minWidth": 32,
+                        "borderRadius": 10.5,
+                        "minWidth": 16,
                       },
                       {
                         "alignItems": "center",
@@ -4894,11 +4894,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {
@@ -5256,11 +5256,11 @@ exports[`Story Snapshots: Title should match snapshot 1`] = `
         }
       >
         <Text
-          accessibilityRole="header"
           aria-level="1"
           collapsable={false}
           numberOfLines={1}
           onLayout={[Function]}
+          role="heading"
           style={
             [
               {

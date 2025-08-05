@@ -3,7 +3,6 @@ import { FlatList, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import * as List from '../../containers/List';
 import { DEFAULT_BROWSER_KEY } from '../../lib/methods/helpers/openLink';
 import { isIOS } from '../../lib/methods/helpers';
@@ -86,7 +85,6 @@ const DefaultBrowserView = () => {
 
 	return (
 		<SafeAreaView testID='default-browser-view'>
-			<StatusBar />
 			<FlatList
 				data={DEFAULT_BROWSERS.concat(supported)}
 				keyExtractor={item => item.value}
