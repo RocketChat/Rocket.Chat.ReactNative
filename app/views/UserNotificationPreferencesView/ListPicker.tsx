@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { AccessibilityRole, StyleSheet, Text } from 'react-native';
 
 import * as List from '../../containers/List';
 import I18n from '../../i18n';
@@ -40,12 +40,19 @@ const ListPicker = ({
 
 	const getOptions = () =>
 		OPTIONS[preference].map(i => ({
+			accessibilityRole: 'radio' as AccessibilityRole,
 			title: I18n.t(i.label, { defaultValue: i.label }),
 			onPress: () => {
 				hideActionSheet();
 				onChangeValue({ [preference]: i.value.toString() });
 			},
-			right: option?.value === i.value ? () => <CustomIcon name={'check'} size={20} color={colors.fontHint} /> : undefined
+			right: () => (
+				<CustomIcon
+					name={option?.value === i.value ? 'radio-checked' : 'radio-unchecked'}
+					size={20}
+					color={option?.value === i.value ? colors.badgeBackgroundLevel2 : colors.strokeMedium}
+				/>
+			)
 		}));
 
 	const label = option?.label ? I18n.t(option?.label, { defaultValue: option?.label }) : option?.label;

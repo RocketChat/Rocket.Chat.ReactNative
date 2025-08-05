@@ -19,7 +19,6 @@ import { showErrorAlert } from '../../lib/methods/helpers';
 import log, { events, logEvent } from '../../lib/methods/helpers/log';
 import { useTheme } from '../../theme';
 import Button from '../../containers/Button';
-import Check from '../../containers/Check';
 
 interface IStatus {
 	id: TUserStatus;
@@ -71,7 +70,11 @@ const Status = ({
 	status: TUserStatus;
 	setStatus: (status: TUserStatus) => void;
 }) => {
+	const { colors } = useTheme();
 	const { id, name } = statusType;
+	const iconName = status === id ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = status === id ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
+
 	return (
 		<>
 			<List.Item
@@ -86,7 +89,7 @@ const Status = ({
 				}}
 				testID={`status-view-${id}`}
 				left={() => <StatusIcon size={24} status={statusType.id} />}
-				right={() => (status === id ? <Check /> : null)}
+				right={() => <List.Icon name={iconName} color={iconColor} />}
 			/>
 			<List.Separator />
 		</>

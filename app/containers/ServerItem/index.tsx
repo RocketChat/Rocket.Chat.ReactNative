@@ -2,9 +2,8 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
-import Check from '../Check';
+import * as List from '../List/index';
 import styles, { ROW_HEIGHT } from './styles';
-import { themes } from '../../lib/constants';
 import { isIOS } from '../../lib/methods/helpers';
 import { useTheme } from '../../theme';
 
@@ -25,15 +24,19 @@ export interface IServerItem {
 const defaultLogo = require('../../static/images/logo.png');
 
 const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServerItem) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
+
+	const iconName = hasCheck ? 'radio-checked' : 'radio-unchecked';
+	const iconColor = hasCheck ? colors.badgeBackgroundLevel2 : colors.strokeMedium;
 	return (
 		<Pressable
+			accessibilityRole='radio'
 			onPress={onPress}
 			onLongPress={() => onLongPress?.()}
 			testID={`server-item-${item.id}`}
-			android_ripple={{ color: themes[theme].surfaceNeutral }}
+			android_ripple={{ color: colors.surfaceNeutral }}
 			style={({ pressed }: { pressed: boolean }) => ({
-				backgroundColor: isIOS && pressed ? themes[theme].surfaceNeutral : themes[theme].surfaceRoom
+				backgroundColor: isIOS && pressed ? colors.surfaceNeutral : colors.surfaceRoom
 			})}>
 			<View style={styles.serverItemContainer}>
 				{item.iconURL ? (
@@ -50,14 +53,15 @@ const ServerItem = React.memo(({ item, onPress, onLongPress, hasCheck }: IServer
 					<Image source={defaultLogo} style={styles.serverIcon} contentFit='contain' />
 				)}
 				<View style={styles.serverTextContainer}>
-					<Text numberOfLines={1} style={[styles.serverName, { color: themes[theme].fontTitlesLabels }]}>
+					<Text numberOfLines={1} style={[styles.serverName, { color: colors.fontTitlesLabels }]}>
 						{item.name || item.id}
 					</Text>
-					<Text numberOfLines={1} style={[styles.serverUrl, { color: themes[theme].fontSecondaryInfo }]}>
+					<Text numberOfLines={1} style={[styles.serverUrl, { color: colors.fontSecondaryInfo }]}>
 						{item.id}
 					</Text>
 				</View>
-				{hasCheck ? <Check /> : null}
+
+				<List.Icon name={iconName} color={iconColor} />
 			</View>
 		</Pressable>
 	);

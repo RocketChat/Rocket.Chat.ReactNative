@@ -9,7 +9,6 @@ import { isIOS } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
 import UserPreferences from '../../lib/methods/userPreferences';
 import { events, logEvent } from '../../lib/methods/helpers/log';
-import Item from './Item';
 
 export type TValue = 'inApp' | 'systemDefault:' | 'googlechrome:' | 'firefox:' | 'brave:';
 
@@ -90,7 +89,12 @@ const DefaultBrowserView = () => {
 				keyExtractor={item => item.value}
 				contentContainerStyle={List.styles.contentContainerStyleFlatList}
 				renderItem={({ item }) => (
-					<Item browser={browser} changeDefaultBrowser={changeDefaultBrowser} title={item.title} value={item.value} />
+					<List.Radio
+						isSelected={item.value === browser}
+						item={item as any}
+						onChange={changeDefaultBrowser}
+						testId='default-browser-view'
+					/>
 				)}
 				ListHeaderComponent={
 					<>

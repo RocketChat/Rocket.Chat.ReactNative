@@ -116,7 +116,7 @@ export const MultiSelect = React.memo(
 		};
 
 		let button = multiselect ? (
-			<Button title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
+			<Button accessibilityRole='combobox' title={`${selected.length} selecteds`} onPress={onShow} loading={loading} />
 		) : (
 			<Input onPress={onShow} loading={loading} disabled={disabled} inputStyle={inputStyle} innerInputStyle={innerInputStyle}>
 				<Text style={[styles.pickerText, { color: currentValue ? colors.fontTitlesLabels : colors.fontSecondaryInfo }]}>
