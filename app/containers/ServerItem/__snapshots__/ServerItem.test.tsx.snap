@@ -3,6 +3,7 @@
 exports[`Story Snapshots: Content should match snapshot 1`] = `
 [
   <View
+    accessibilityRole="radio"
     accessibilityState={
       {
         "busy": undefined,
@@ -138,35 +139,48 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           https://open.rocket.chat/
         </Text>
       </View>
-      <Text
-        allowFontScaling={false}
-        selectable={false}
+      <View
         style={
           [
             {
-              "color": "#095AD2",
-              "fontSize": 22,
+              "alignItems": "center",
+              "justifyContent": "center",
             },
-            [
-              {
-                "lineHeight": 22,
-              },
-              undefined,
-            ],
-            {
-              "fontFamily": "custom",
-              "fontStyle": "normal",
-              "fontWeight": "normal",
-            },
-            {},
+            undefined,
           ]
         }
       >
-        
-      </Text>
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#1D74F5",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>,
   <View
+    accessibilityRole="radio"
     accessibilityState={
       {
         "busy": undefined,
@@ -302,9 +316,48 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           https://superlongservername.tologintoasuperlongservername/
         </Text>
       </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#9EA2A8",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>,
   <View
+    accessibilityRole="radio"
     accessibilityState={
       {
         "busy": undefined,
@@ -440,6 +493,44 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
           https://stable.rocket.chat/
         </Text>
       </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#9EA2A8",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>,
 ]
@@ -448,6 +539,7 @@ exports[`Story Snapshots: Content should match snapshot 1`] = `
 exports[`Story Snapshots: Themes should match snapshot 1`] = `
 [
   <View
+    accessibilityRole="radio"
     accessibilityState={
       {
         "busy": undefined,
@@ -583,9 +675,48 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           https://open.rocket.chat/
         </Text>
       </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#9EA2A8",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>,
   <View
+    accessibilityRole="radio"
     accessibilityState={
       {
         "busy": undefined,
@@ -721,9 +852,48 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           https://open.rocket.chat/
         </Text>
       </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#404754",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>,
   <View
+    accessibilityRole="radio"
     accessibilityState={
       {
         "busy": undefined,
@@ -859,6 +1029,44 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
           https://open.rocket.chat/
         </Text>
       </View>
+      <View
+        style={
+          [
+            {
+              "alignItems": "center",
+              "justifyContent": "center",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          selectable={false}
+          style={
+            [
+              {
+                "color": "#404754",
+                "fontSize": 24,
+              },
+              [
+                {
+                  "lineHeight": 24,
+                },
+                undefined,
+              ],
+              {
+                "fontFamily": "custom",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
     </View>
   </View>,
 ]
@@ -866,6 +1074,7 @@ exports[`Story Snapshots: Themes should match snapshot 1`] = `
 
 exports[`Story Snapshots: Touchable should match snapshot 1`] = `
 <View
+  accessibilityRole="radio"
   accessibilityState={
     {
       "busy": undefined,
@@ -999,6 +1208,44 @@ exports[`Story Snapshots: Touchable should match snapshot 1`] = `
         }
       >
         https://open.rocket.chat/
+      </Text>
+    </View>
+    <View
+      style={
+        [
+          {
+            "alignItems": "center",
+            "justifyContent": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          [
+            {
+              "color": "#9EA2A8",
+              "fontSize": 24,
+            },
+            [
+              {
+                "lineHeight": 24,
+              },
+              undefined,
+            ],
+            {
+              "fontFamily": "custom",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            {},
+          ]
+        }
+      >
+        
       </Text>
     </View>
   </View>
