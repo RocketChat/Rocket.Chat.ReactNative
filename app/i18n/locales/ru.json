@@ -665,6 +665,7 @@
   "Started_call": "Звонок, начат {{userBy}}",
   "Started_discussion": "Началось обсуждение:",
   "Status_saved_successfully": "Статус установлен успешно!",
+  "Status_text_limit_exceeded": "Превышен предел в {{limit}} символов.",
   "Symbols": "Символы",
   "Table": "Таблица",
   "Tags": "Тэги",

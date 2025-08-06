@@ -526,6 +526,7 @@
   "Started_call": "Arama {{userBy}} tarafından başlatıldı",
   "Started_discussion": "Bir tartışma başlattı:",
   "Status_saved_successfully": "Durum başarıyla kaydedildi!",
+  "Status_text_limit_exceeded": "{{limit}} karakter sınırı aşıldı",
   "Symbols": "Semboller",
   "Table": "Tablo",
   "Tags": "Etiketler",
