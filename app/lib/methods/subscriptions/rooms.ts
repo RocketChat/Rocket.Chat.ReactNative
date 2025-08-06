@@ -92,6 +92,7 @@ const createOrUpdateSubscription = async (subscription: ISubscription, room: ISe
 					jitsiTimeout: s.jitsiTimeout,
 					autoTranslate: s.autoTranslate,
 					autoTranslateLanguage: s.autoTranslateLanguage,
+					autoTranslateLanguageLabel: s.autoTranslateLanguageLabel,
 					lastMessage: s.lastMessage,
 					roles: s.roles,
 					usernames: s.usernames,

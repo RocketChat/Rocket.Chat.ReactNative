@@ -83,6 +83,7 @@ export interface ISubscription {
 	jitsiTimeout?: Date;
 	autoTranslate?: boolean;
 	autoTranslateLanguage?: string;
+	autoTranslateLanguageLabel?: string;
 	lastMessage?: ILastMessage | null; // TODO: we need to use IMessage here
 	hideUnreadStatus?: boolean;
 	sysMes?: string[] | boolean;
@@ -175,6 +176,7 @@ export interface IServerSubscription extends IRocketChatRecord {
 	blocker?: unknown;
 	autoTranslate?: unknown;
 	autoTranslateLanguage?: unknown;
+	autoTranslateLanguageLabel?: unknown;
 	disableNotifications?: unknown;
 	muteGroupMentions?: unknown;
 	ignored?: unknown;

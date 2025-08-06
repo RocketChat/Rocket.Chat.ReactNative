@@ -28,7 +28,11 @@ const AutoTranslateView = (): React.ReactElement => {
 
 	const [languages, setLanguages] = useState<{ language: string; name: string }[]>([]);
 	const [selectedLanguage, setSelectedLanguage] = useState<string | undefined>(room?.autoTranslateLanguage);
+	const [selectedAutoTranslateLanguageLabel, setSelectedAutoTranslateLanguageLabel] = useState<string | undefined>(
+		room?.autoTranslateLanguageLabel
+	);
 	const [enableAutoTranslate, setEnableAutoTranslate] = useState<boolean | undefined>(room?.autoTranslate);
+
 	const subscription = useRef<Subscription | null>(null);
 
 	useLayoutEffect(() => {
@@ -51,6 +55,8 @@ const AutoTranslateView = (): React.ReactElement => {
 	useEffect(() => {
 		let letSelectedLanguage = selectedLanguage;
 		let letAutoTranslate = enableAutoTranslate;
+		let letAutoTranslateMessage = selectedAutoTranslateLanguageLabel;
+
 		subscription.current = room.observe().subscribe((changes: ISubscription) => {
 			if (letSelectedLanguage !== changes.autoTranslateLanguage) {
 				setSelectedLanguage(changes.autoTranslateLanguage);
@@ -59,6 +65,10 @@ const AutoTranslateView = (): React.ReactElement => {
 			if (letAutoTranslate !== changes.autoTranslate) {
 				setEnableAutoTranslate(changes.autoTranslate);
 				letAutoTranslate = changes.autoTranslate;
+			}
+			if (letAutoTranslateMessage !== changes.autoTranslate) {
+				setSelectedAutoTranslateLanguageLabel(changes.autoTranslateLanguageLabel);
+				letAutoTranslateMessage = changes?.autoTranslateLanguageLabel;
 			}
 		});
 		return () => subscription.current?.unsubscribe && subscription.current.unsubscribe();

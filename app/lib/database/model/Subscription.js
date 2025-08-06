@@ -195,6 +195,7 @@ export default class Subscription extends Model {
 			jitsiTimeout: this.jitsiTimeout,
 			autoTranslate: this.autoTranslate,
 			autoTranslateLanguage: this.autoTranslateLanguage,
+			autoTranslateLanguageLabel: this.autoTranslateLanguageLabel,
 			lastMessage: this.lastMessage,
 			hideUnreadStatus: this.hideUnreadStatus,
 			hideMentionStatus: this.hideMentionStatus,
