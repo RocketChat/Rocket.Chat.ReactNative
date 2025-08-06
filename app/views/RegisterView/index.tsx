@@ -40,7 +40,10 @@ const RegisterView = ({ navigation, route }: IProps) => {
 			.required(`${I18n.t('Field_is_required', { field: I18n.t('Email') })}`),
 		username: yup.string().required(`${I18n.t('Field_is_required', { field: I18n.t('Username') })}`),
 		password: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Password') })),
-		confirmPassword: yup.string().required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
+		confirmPassword: yup
+			.string()
+			.oneOf([yup.ref('password'), null], I18n.t('Passwords_do_not_match'))
+			.required(I18n.t('Field_is_required', { field: I18n.t('Confirm_password') }))
 	});
 
 	const dispatch = useDispatch();
@@ -112,13 +115,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 	const onSubmit = async (data: any) => {
 		logEvent(events.REGISTER_DEFAULT_SIGN_UP);
 
-		const { name, email, password, username, confirmPassword } = data;
-
-		if (password !== confirmPassword) {
-			setError('confirmPassword', { message: I18n.t('Passwords_do_not_match'), type: 'validate' });
-			AccessibilityInfo.announceForAccessibility(I18n.t('Passwords_do_not_match'));
-			return;
-		}
+		const { name, email, password, username } = data;
 
 		if (!validateDefaultFormInfo()) {
 			return;
@@ -153,7 +150,7 @@ const RegisterView = ({ navigation, route }: IProps) => {
 
 			if (error.data.error === 'Username is already in use') {
 				setError('username', { message: `${I18n.t('Username_is_already_in_use')}`, type: 'validate' });
-				AccessibilityInfo.announceForAccessibility('Username is alredy in use');
+				AccessibilityInfo.announceForAccessibility(I18n.t('Username_is_already_in_use'));
 				return;
 			}
 
