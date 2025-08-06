@@ -213,6 +213,7 @@
   "Discussion": "Diskussion",
   "Discussion_Desc": "Diskussionen ermöglichen separate Unterhaltungen zu einem bestimmten Thema innerhalb eines Kanals oder Teams, in die jedes Arbeitsbereichsmitglied hinzugefügt werden kann.",
   "Discussion_name": "Diskussions-Name",
+  "Discussion_name_required": "Diskussionsname erforderlich",
   "Discussions": "Diskussionen",
   "Display": "Anzeige",
   "Displays_action_text": "Zeigt den Aktionstext",
