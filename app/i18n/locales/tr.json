@@ -69,6 +69,7 @@
   "changing_avatar": "profil fotoğrafı değiştirme",
   "Channel_hint_private": "İnsanlar sadece davet edilerek katılabilir",
   "Channel_Name": "Kanal Adı",
+  "Channel_name_required": "Kanal adı gerekli.",
   "Channel_Read_Only_Hint": "Yalnızca kanal sahipleri yeni mesajlar gönderebilir",
   "Channels": "Kanallar",
   "Chat_closed_by_agent": "Sohbet temsilci tarafından kapatıldı",
