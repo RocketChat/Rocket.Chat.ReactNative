@@ -499,6 +499,7 @@
   "Started_call": "{{userBy}} 开始的通话",
   "Started_discussion": "已开始的讨论",
   "Status_saved_successfully": "状态储存成功",
+  "Status_text_limit_exceeded": "字符限制超出",
   "Symbols": "符号",
   "Table": "表格",
   "Tags": "标签",

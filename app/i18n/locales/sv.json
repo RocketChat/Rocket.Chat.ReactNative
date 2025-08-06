@@ -687,6 +687,7 @@
   "Started_call": "Samtalet startades av {{userBy}}",
   "Started_discussion": "Startade en diskussion:",
   "Status_saved_successfully": "Statusen har sparats.",
+  "Status_text_limit_exceeded": "{{gräns}} teckengräns överskriden",
   "Symbols": "Symboler",
   "Table": "Tabell",
   "Tags": "Taggar",

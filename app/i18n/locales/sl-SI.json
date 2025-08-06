@@ -640,6 +640,7 @@
   "Started_call": "Klic, ki ga je začel {{userBy}}",
   "Started_discussion": "Začel razpravo:",
   "Status_saved_successfully": "Status je uspešno shranjen!",
+  "Status_text_limit_exceeded": "Dovoljena dolžina {{limit}} znakov je presežena.",
   "Symbols": "Simboli",
   "Table": "Miza",
   "Tags": "Oznake",
