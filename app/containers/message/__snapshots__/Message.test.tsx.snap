@@ -213,6 +213,7 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -247,7 +248,6 @@ exports[`Story Snapshots: Archived should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -537,6 +537,7 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -580,7 +581,6 @@ exports[`Story Snapshots: ArchivedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -861,6 +861,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -895,7 +896,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -1172,6 +1172,7 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -1206,7 +1207,6 @@ exports[`Story Snapshots: Basic should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -1496,6 +1496,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -1539,7 +1540,6 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -1807,6 +1807,7 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -1850,7 +1851,6 @@ exports[`Story Snapshots: BasicLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -2131,6 +2131,7 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -2165,7 +2166,6 @@ exports[`Story Snapshots: BlockQuote should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -2474,6 +2474,7 @@ Testing block quote.  "
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -2508,7 +2509,6 @@ Testing block quote.  "
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -2876,6 +2876,7 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -2919,7 +2920,6 @@ exports[`Story Snapshots: BlockQuoteLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -3219,6 +3219,7 @@ Testing block quote.  "
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -3262,7 +3263,6 @@ Testing block quote.  "
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -3621,6 +3621,7 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -3655,7 +3656,6 @@ exports[`Story Snapshots: Broadcast should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -4052,6 +4052,7 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -4095,7 +4096,6 @@ exports[`Story Snapshots: BroadcastLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -4483,6 +4483,7 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -4517,7 +4518,6 @@ exports[`Story Snapshots: ColoredAttachments should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -5490,6 +5490,7 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -5533,7 +5534,6 @@ exports[`Story Snapshots: ColoredAttachmentsLargeFont should match snapshot 1`] 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -6497,6 +6497,7 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -6531,7 +6532,6 @@ exports[`Story Snapshots: CustomFields should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -7369,6 +7369,7 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -7412,7 +7413,6 @@ exports[`Story Snapshots: CustomFieldsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -8245,6 +8245,7 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -8279,7 +8280,6 @@ exports[`Story Snapshots: CustomStyle should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -8573,6 +8573,7 @@ exports[`Story Snapshots: CustomStyleLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -8616,7 +8617,6 @@ exports[`Story Snapshots: CustomStyleLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -8897,6 +8897,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -8931,7 +8932,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -9272,6 +9272,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -9306,7 +9307,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -9757,6 +9757,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -9791,7 +9792,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -10127,6 +10127,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -10161,7 +10162,6 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -10451,6 +10451,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -10494,7 +10495,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -10826,6 +10826,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -10869,7 +10870,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -11055,7 +11055,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -11330,6 +11329,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -11373,7 +11373,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -11700,6 +11699,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -11743,7 +11743,6 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -12024,6 +12023,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -12058,7 +12058,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -12229,7 +12228,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -12447,6 +12445,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -12481,7 +12480,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -12652,7 +12650,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -12872,6 +12869,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -12906,7 +12904,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -13077,7 +13074,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -13297,6 +13293,7 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -13331,7 +13328,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -13502,7 +13498,6 @@ exports[`Story Snapshots: Discussion should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -13735,6 +13730,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -13778,7 +13774,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -13940,7 +13935,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -14158,6 +14152,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -14201,7 +14196,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -14363,7 +14357,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -14583,6 +14576,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -14626,7 +14620,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -14788,7 +14781,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -15008,6 +15000,7 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -15051,7 +15044,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -15213,7 +15205,6 @@ exports[`Story Snapshots: DiscussionLargeFont should match snapshot 1`] = `
                       "fontFamily": "Inter",
                       "fontSize": 13,
                       "fontWeight": "400",
-                      "marginLeft": 8,
                       "textAlign": "left",
                     },
                     {
@@ -15446,6 +15437,7 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -15480,7 +15472,6 @@ exports[`Story Snapshots: Edited should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -15970,6 +15961,7 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -16049,7 +16041,6 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -16189,7 +16180,6 @@ exports[`Story Snapshots: EditedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -16513,6 +16503,7 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -16547,7 +16538,6 @@ exports[`Story Snapshots: Editing should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -16837,6 +16827,7 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -16880,7 +16871,6 @@ exports[`Story Snapshots: EditingLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -17161,6 +17151,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -17195,7 +17186,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -17471,6 +17461,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -17505,7 +17496,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -17762,6 +17752,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -17796,7 +17787,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -18130,6 +18120,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -18164,7 +18155,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -18434,6 +18424,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -18468,7 +18459,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -18757,6 +18747,7 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -18791,7 +18782,6 @@ exports[`Story Snapshots: Emojis should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -19138,6 +19128,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -19181,7 +19172,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -19448,6 +19438,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -19491,7 +19482,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -19739,6 +19729,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -19782,7 +19773,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -20107,6 +20097,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -20150,7 +20141,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -20411,6 +20401,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -20454,7 +20445,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -20734,6 +20724,7 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -20777,7 +20768,6 @@ exports[`Story Snapshots: EmojisLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -21115,6 +21105,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -21149,7 +21140,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -21696,6 +21686,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -21730,7 +21721,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -22803,6 +22793,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -22837,7 +22828,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -23191,6 +23181,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -23225,7 +23216,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -23539,6 +23529,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -23573,7 +23564,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -23991,6 +23981,7 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -24025,7 +24016,6 @@ exports[`Story Snapshots: Encrypted should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -24645,6 +24635,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -24759,7 +24750,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -24899,7 +24889,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -25245,6 +25234,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -25359,7 +25349,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -26352,6 +26341,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -26466,7 +26456,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -26740,6 +26729,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -26854,7 +26844,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -27088,6 +27077,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -27272,7 +27262,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -27540,6 +27529,7 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -27684,7 +27674,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -27824,7 +27813,6 @@ exports[`Story Snapshots: EncryptedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -28179,6 +28167,7 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -28213,7 +28202,6 @@ exports[`Story Snapshots: Error should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -28705,6 +28693,7 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -28819,7 +28808,6 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -28925,7 +28913,6 @@ exports[`Story Snapshots: ErrorLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -29284,6 +29271,7 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -29318,7 +29306,6 @@ exports[`Story Snapshots: FullName should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -29608,6 +29595,7 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -29651,7 +29639,6 @@ exports[`Story Snapshots: FullNameLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -29932,6 +29919,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -29966,7 +29954,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -30243,6 +30230,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -30277,7 +30265,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -30810,6 +30797,7 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -30844,7 +30832,6 @@ exports[`Story Snapshots: GroupedMessages should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -31134,6 +31121,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -31177,7 +31165,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -31445,6 +31432,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -31488,7 +31476,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -31628,7 +31615,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -31775,7 +31761,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -32050,6 +32035,7 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -32093,7 +32079,6 @@ exports[`Story Snapshots: GroupedMessagesLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -32778,6 +32763,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -32812,7 +32798,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -33212,6 +33197,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -33246,7 +33232,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -33612,6 +33597,7 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -33646,7 +33632,6 @@ exports[`Story Snapshots: Lists should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -34150,6 +34135,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -34193,7 +34179,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -34584,6 +34569,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -34627,7 +34613,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -34984,6 +34969,7 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -35027,7 +35013,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -35209,7 +35194,6 @@ exports[`Story Snapshots: ListsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -35539,6 +35523,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -35573,7 +35558,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -35850,6 +35834,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -35884,7 +35869,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -36197,6 +36181,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -36231,7 +36216,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -36543,6 +36527,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -36577,7 +36562,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -36891,6 +36875,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -36925,7 +36910,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -37273,6 +37257,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -37307,7 +37292,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -37615,6 +37599,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -37649,7 +37634,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -37993,6 +37977,7 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -38027,7 +38012,6 @@ exports[`Story Snapshots: LongNameUser should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -39225,6 +39209,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -39268,7 +39253,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -39536,6 +39520,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -39615,7 +39600,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -39883,6 +39867,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -39961,7 +39946,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -40229,6 +40213,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -40343,7 +40328,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -40577,6 +40561,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -40691,7 +40676,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -40959,6 +40943,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -41033,7 +41018,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -41301,6 +41285,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -41445,7 +41430,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -41679,6 +41663,7 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -41962,7 +41947,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -42068,7 +42052,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -42421,7 +42404,6 @@ exports[`Story Snapshots: LongNameUserLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -42949,6 +42931,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -42983,7 +42966,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -43404,6 +43386,7 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -43438,7 +43421,6 @@ exports[`Story Snapshots: Mentions should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -43889,6 +43871,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -43932,7 +43915,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -44344,6 +44326,7 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -44387,7 +44370,6 @@ exports[`Story Snapshots: MentionsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -44829,6 +44811,7 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -44863,7 +44846,6 @@ exports[`Story Snapshots: Message should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -45105,6 +45087,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -45139,7 +45122,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -45606,6 +45588,7 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -45640,7 +45623,6 @@ exports[`Story Snapshots: MessageWithReadReceipt should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -46120,6 +46102,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -46194,7 +46177,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -46334,7 +46316,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -46640,6 +46621,7 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -46714,7 +46696,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -46854,7 +46835,6 @@ exports[`Story Snapshots: MessageWithReadReceiptLargeFont should match snapshot 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -47173,6 +47153,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -47207,7 +47188,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -47627,6 +47607,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -47661,7 +47642,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -48113,6 +48093,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -48147,7 +48128,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -48731,6 +48711,7 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -48765,7 +48746,6 @@ exports[`Story Snapshots: MessageWithReply should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -49411,6 +49391,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -49454,7 +49435,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -49865,6 +49845,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -49908,7 +49889,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -50351,6 +50331,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -50394,7 +50375,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -50969,6 +50949,7 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -51012,7 +50993,6 @@ exports[`Story Snapshots: MessageWithReplyLargeFont should match snapshot 1`] = 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -51649,6 +51629,7 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -51683,7 +51664,6 @@ exports[`Story Snapshots: MessageWithThread should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -54050,6 +54030,7 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -54093,7 +54074,6 @@ exports[`Story Snapshots: MessageWithThreadLargeFont should match snapshot 1`] =
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -56451,6 +56431,7 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -56485,7 +56466,6 @@ exports[`Story Snapshots: Pinned should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -56963,6 +56943,7 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -57036,7 +57017,6 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -57176,7 +57156,6 @@ exports[`Story Snapshots: PinnedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -57494,6 +57473,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -57528,7 +57508,6 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -58323,6 +58302,7 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -58357,7 +58337,6 @@ exports[`Story Snapshots: Reactions should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -59603,6 +59582,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -59646,7 +59626,6 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -60432,6 +60411,7 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -60475,7 +60455,6 @@ exports[`Story Snapshots: ReactionsLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -61712,6 +61691,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -61746,7 +61726,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButton should m
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -62862,6 +62841,7 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -62905,7 +62885,6 @@ exports[`Story Snapshots: SequentialThreadMessagesFollowingThreadButtonLargeFont
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -65758,6 +65737,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -65792,7 +65772,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -66130,6 +66109,7 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -66164,7 +66144,6 @@ exports[`Story Snapshots: ShowButtonAsAttachment should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -66679,6 +66658,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -66722,7 +66702,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -67051,6 +67030,7 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -67094,7 +67074,6 @@ exports[`Story Snapshots: ShowButtonAsAttachmentLargeFont should match snapshot 
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -67600,6 +67579,7 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -67634,7 +67614,6 @@ exports[`Story Snapshots: StaticAvatar should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -67924,6 +67903,7 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -67967,7 +67947,6 @@ exports[`Story Snapshots: StaticAvatarLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -77064,6 +77043,7 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -77098,7 +77078,6 @@ exports[`Story Snapshots: Temp should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -77394,6 +77373,7 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -77437,7 +77417,6 @@ exports[`Story Snapshots: TempLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -77724,6 +77703,7 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -77758,7 +77738,6 @@ exports[`Story Snapshots: ThumbnailFromServer should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -78231,6 +78210,7 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -78274,7 +78254,6 @@ exports[`Story Snapshots: ThumbnailFromServerLargeFont should match snapshot 1`]
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -78738,6 +78717,7 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -78772,7 +78752,6 @@ exports[`Story Snapshots: TimeFormat should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -79062,6 +79041,7 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -79105,7 +79085,6 @@ exports[`Story Snapshots: TimeFormatLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -79386,6 +79365,7 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -79420,7 +79400,6 @@ exports[`Story Snapshots: Translated should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -79745,6 +79724,7 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -79823,7 +79803,6 @@ exports[`Story Snapshots: TranslatedLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -80104,6 +80083,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -80138,7 +80118,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdown should match snapshot
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -81065,6 +81044,7 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -81108,7 +81088,6 @@ exports[`Story Snapshots: TwoShortCustomFieldsWithMarkdownLargeFont should match
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -82026,6 +82005,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -82060,7 +82040,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -82289,6 +82268,7 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -82323,7 +82303,6 @@ exports[`Story Snapshots: URL should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -82725,6 +82704,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -82759,7 +82739,6 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -82988,6 +82967,7 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -83022,7 +83002,6 @@ exports[`Story Snapshots: URLImagePreview should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -83264,6 +83243,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -83307,7 +83287,6 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -83527,6 +83506,7 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -83570,7 +83550,6 @@ exports[`Story Snapshots: URLImagePreviewLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -83803,6 +83782,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -83846,7 +83826,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -84066,6 +84045,7 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -84109,7 +84089,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -84281,7 +84260,6 @@ exports[`Story Snapshots: URLLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -84521,6 +84499,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -84574,7 +84553,6 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -84851,6 +84829,7 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -84904,7 +84883,6 @@ exports[`Story Snapshots: WithAlias should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -85194,6 +85172,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -85256,7 +85235,6 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -85524,6 +85502,7 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -85586,7 +85565,6 @@ exports[`Story Snapshots: WithAliasLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -85867,6 +85845,7 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -85901,7 +85880,6 @@ exports[`Story Snapshots: WithAudio should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -87617,6 +87595,7 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -87660,7 +87639,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -88076,7 +88054,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -88223,7 +88200,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -88614,7 +88590,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -88958,7 +88933,6 @@ exports[`Story Snapshots: WithAudioLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -89443,6 +89417,7 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -89477,7 +89452,6 @@ exports[`Story Snapshots: WithFile should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -90203,6 +90177,7 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -90246,7 +90221,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -90540,7 +90514,6 @@ exports[`Story Snapshots: WithFileLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -90982,6 +90955,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -91016,7 +90990,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -91456,6 +91429,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -91490,7 +91464,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -91962,6 +91935,7 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -91996,7 +91970,6 @@ exports[`Story Snapshots: WithImage should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -92468,6 +92441,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -92511,7 +92485,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -92942,6 +92915,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -92985,7 +92959,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -93448,6 +93421,7 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -93491,7 +93465,6 @@ exports[`Story Snapshots: WithImageLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -93954,6 +93927,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -93988,7 +93962,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -94417,6 +94390,7 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -94451,7 +94425,6 @@ exports[`Story Snapshots: WithVideo should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -94814,6 +94787,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -94857,7 +94831,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -95277,6 +95250,7 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -95320,7 +95294,6 @@ exports[`Story Snapshots: WithVideoLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {
@@ -95687,7 +95660,6 @@ exports[`Story Snapshots: WithoutHeaderLargeFont should match snapshot 1`] = `
                     "fontFamily": "Inter",
                     "fontSize": 13,
                     "fontWeight": "400",
-                    "marginLeft": 8,
                     "textAlign": "left",
                   },
                   {

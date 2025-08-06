@@ -618,6 +618,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -652,7 +653,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -1351,6 +1351,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -1385,7 +1386,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -1918,6 +1918,7 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -1952,7 +1953,6 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -2325,6 +2325,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -2359,7 +2360,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -3058,6 +3058,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -3092,7 +3093,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -3625,6 +3625,7 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -3659,7 +3660,6 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -4032,6 +4032,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -4066,7 +4067,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -4765,6 +4765,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -4799,7 +4800,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {
@@ -5332,6 +5332,7 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                     "alignItems": "center",
                     "flexDirection": "row",
                     "flexShrink": 1,
+                    "gap": 4,
                     "opacity": 1,
                   }
                 }
@@ -5366,7 +5367,6 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
                         "fontFamily": "Inter",
                         "fontSize": 13,
                         "fontWeight": "400",
-                        "marginLeft": 8,
                         "textAlign": "left",
                       },
                       {

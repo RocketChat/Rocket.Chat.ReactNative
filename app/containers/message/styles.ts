@@ -121,7 +121,6 @@ export default StyleSheet.create({
 	},
 	time: {
 		fontSize: 13,
-		marginLeft: 8,
 		...sharedStyles.textRegular
 	},
 	repliedThread: {
