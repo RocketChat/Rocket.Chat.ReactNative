@@ -115,7 +115,6 @@ const StatusView = (): React.ReactElement => {
 		control,
 		watch,
 		setValue,
-
 		formState: { errors, isValid }
 	} = useForm({
 		mode: 'onChange',
@@ -123,8 +122,8 @@ const StatusView = (): React.ReactElement => {
 
 		resolver: yupResolver(validationSchema)
 	});
-	const statusText = watch('statusText');
 	const inputValues = watch();
+	const { statusText } = inputValues;
 
 	const dispatch = useDispatch();
 	const { setOptions, goBack } = useNavigation();
@@ -149,7 +148,7 @@ const StatusView = (): React.ReactElement => {
 			});
 		};
 		setHeader();
-	}, [statusText, status]);
+	}, [isMasterDetail]);
 
 	const setStatus = (updatedStatus: TUserStatus) => {
 		setValue('status', updatedStatus);
@@ -177,6 +176,7 @@ const StatusView = (): React.ReactElement => {
 	const statusType = Accounts_AllowInvisibleStatusOption ? STATUS : STATUS.filter(s => s.id !== 'offline');
 
 	const isStatusChanged = () => {
+		const { status } = inputValues;
 		if (!isValid) {
 			return true;
 		}
