@@ -101,7 +101,7 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		const reply = '';
 		const { name: t_name } = inputValues;
 
-		if (!t_name || !channel.prid || !channel.rid) {
+		if (!t_name || (!channel.prid && !channel.rid)) {
 			return;
 		}
 
@@ -115,7 +115,6 @@ const CreateDiscussionView = ({ route, navigation }: ICreateChannelViewProps) =>
 		if (isEncryptionEnabled) {
 			params.encrypted = encrypted ?? false;
 		}
-
 		dispatch(createDiscussionRequest(params));
 	};
 
