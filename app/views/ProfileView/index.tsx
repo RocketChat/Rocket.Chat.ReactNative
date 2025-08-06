@@ -32,7 +32,7 @@ import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
