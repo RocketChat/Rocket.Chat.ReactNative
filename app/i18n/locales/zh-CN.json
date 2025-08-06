@@ -69,6 +69,7 @@
   "changing_avatar": "更改头像",
   "Channel_hint_private": "人们只能被邀请加入",
   "Channel_Name": "频道名",
+  "Channel_name_required": "需要频道名称",
   "Channel_Read_Only_Hint": "只有频道所有者可以发送新消息",
   "Channels": "频道",
   "Chat_closed_by_agent": "聊天已被客服关闭",
