@@ -177,6 +177,7 @@
   "Directory": "Imenik",
   "Discussion_Desc": "Razprave omogočajo ločene pogovore o določeni temi znotraj kanala ali ekipe, kjer se lahko doda kateri koli član delovnega prostora.",
   "Discussion_name": "Ime razprave",
+  "Discussion_name_required": "Zahtevano ime razprave",
   "Discussions": "Razprave",
   "Display": "Prikaz",
   "Displays_action_text": "Prikaže ukazno besedilo",

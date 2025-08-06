@@ -135,6 +135,7 @@
   "Directory": "ディレクトリ",
   "Discussion_Desc": "ディスカッションでは、チャンネルやチーム内で特定のトピックに関する個別の会話を行うことができ、ワークスペースのメンバーを追加することができます。",
   "Discussion_name": "ディスカッション名",
+  "Discussion_name_required": "ディスカッション名が必要です",
   "Discussions": "ディスカッション",
   "Displays_action_text": "アクションテキストを表示",
   "Do_you_have_a_certificate": "このワークスペースの証明書をお持ちですか？",

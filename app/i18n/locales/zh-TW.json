@@ -138,6 +138,7 @@
   "Directory": "目錄",
   "Discussion_Desc": "討論允許在特定主題下於頻道或團隊內進行獨立的對話，其中可以新增任何工作區成員。",
   "Discussion_name": "討論區名稱",
+  "Discussion_name_required": "需要討論名稱",
   "Discussions": "討論區",
   "Displays_action_text": "顯示文字行動",
   "Do_you_have_a_certificate": "您有此工作區的證書嗎？",

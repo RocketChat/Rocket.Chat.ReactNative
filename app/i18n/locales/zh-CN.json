@@ -133,6 +133,7 @@
   "Directory": "目录",
   "Discussion_Desc": "讨论允许在频道或团队内围绕特定主题进行单独的对话，可以添加任何工作区成员。",
   "Discussion_name": "讨论区名称",
+  "Discussion_name_required": "需要讨论名称",
   "Discussions": "讨论区",
   "Do_you_have_a_certificate": "您有此工作区的证书吗？",
   "Do_you_have_an_account": "是否拥有帐号?",

@@ -167,6 +167,7 @@
   "Directory": "Répertoire",
   "Discussion_Desc": "Les discussions permettent d'avoir des conversations distinctes autour d'un sujet spécifique à l'intérieur d'un canal ou d'une équipe, où tout membre de l'espace de travail peut être ajouté.",
   "Discussion_name": "Nom de la discussion",
+  "Discussion_name_required": "Nom de la discussion requis",
   "Discussions": "Discussions",
   "Display": "Affichage",
   "Displays_action_text": "Affiche le texte d'action",

@@ -240,6 +240,7 @@
   "Discussion": "Discussão",
   "Discussion_Desc": "As discussões permitem conversas separadas sobre um tópico específico dentro de um canal ou equipe, onde qualquer membro do espaço de trabalho pode ser adicionado.",
   "Discussion_name": "Nome da discussão",
+  "Discussion_name_required": "Nome da discussão obrigatório",
   "Discussions": "Discussões",
   "Display": "Display",
   "Displays_action_text": "Exibe texto da ação",

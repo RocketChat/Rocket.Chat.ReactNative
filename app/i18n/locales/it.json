@@ -147,6 +147,7 @@
   "Directory": "Rubrica",
   "Discussion_Desc": "Le discussioni consentono conversazioni separate su un argomento specifico all'interno di un canale o team, dove può essere aggiunto qualsiasi membro dello spazio di lavoro.",
   "Discussion_name": "Nome della discussione",
+  "Discussion_name_required": "Nome della discussione richiesto",
   "Discussions": "Discussioni",
   "Displays_action_text": "Mostra il testo di azione",
   "Do_you_have_a_certificate": "Hai un certificato per questo spazio di lavoro?",

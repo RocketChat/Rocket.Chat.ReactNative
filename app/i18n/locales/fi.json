@@ -199,6 +199,7 @@
   "Discussion": "Keskustelu",
   "Discussion_Desc": "Keskustelut mahdollistavat erilliset keskustelut tietyn aiheen ympärillä kanavassa tai tiimissä, johon voidaan lisätä mikä tahansa työtilan jäsen.",
   "Discussion_name": "Keskustelun nimi",
+  "Discussion_name_required": "Keskustelun nimi vaaditaan",
   "Discussions": "Keskustelut",
   "Display": "Näytä",
   "Displays_action_text": "Näyttää toimintotekstin",

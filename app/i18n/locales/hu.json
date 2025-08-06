@@ -220,6 +220,7 @@
   "Discussion": "Megbeszélés",
   "Discussion_Desc": "A megbeszélések lehetővé teszik, hogy egy adott témáról külön beszélgetések folytatódjanak egy csatornán vagy csapatban, ahová bármelyik munkaterületi tagot hozzá lehet adni.",
   "Discussion_name": "Megbeszélés neve",
+  "Discussion_name_required": "Beszélgetés neve szükséges",
   "Discussions": "Megbeszélések",
   "Display": "Megjelenítés",
   "Do_you_have_a_certificate": "Van tanúsítványa ehhez a munkaterülethez?",

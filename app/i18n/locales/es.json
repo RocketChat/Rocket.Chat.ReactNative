@@ -111,6 +111,7 @@
   "Direct_Messages": "Mensajes directos",
   "Directory": "Directorio",
   "Discussion_Desc": "Las discusiones permiten conversaciones separadas sobre un tema específico dentro de un canal o equipo donde se puede añadir a cualquier miembro del espacio de trabajo.",
+  "Discussion_name_required": "Se requiere nombre para la discusión",
   "Discussions": "Conversaciones",
   "Displays_action_text": "Mostrar texto de acción",
   "Do_you_have_a_certificate": "¿Tienes un certificado para este espacio de trabajo?",

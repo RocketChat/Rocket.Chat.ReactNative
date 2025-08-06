@@ -131,6 +131,7 @@
   "Directory": "Directório",
   "Discussion_Desc": "As discussões permitem conversas separadas sobre um tópico específico dentro de um canal ou equipa, onde qualquer membro do espaço de trabalho pode ser adicionado.",
   "Discussion_name": "Nome da discussão",
+  "Discussion_name_required": "Nome da discussão necessário",
   "Discussions": "Discussões",
   "Displays_action_text": "Exibe texto da acção",
   "Do_you_have_a_certificate": "Tem um certificado para este espaço de trabalho?",

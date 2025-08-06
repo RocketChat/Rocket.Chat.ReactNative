@@ -243,6 +243,7 @@
   "Discussion": "Discussion",
   "Discussion_Desc": "Discussions allow separate conversations around a specific topic inside a channel or team where any workspace member can be added.",
   "Discussion_name": "Discussion name",
+  "Discussion_name_required": "Discussion name required",
   "Discussions": "Discussions",
   "Display": "Display",
   "Displays_action_text": "Displays action text",
