@@ -38,7 +38,7 @@ inputs:
     description: 'Google service file for official version'
     required: true
   GOOGLE_SERVICES_IOS_EXPERIMENTAL:
-    description: 'Googlr service file for experimental version'
+    description: 'Google service file for experimental version'
     required: true
 
 runs:
