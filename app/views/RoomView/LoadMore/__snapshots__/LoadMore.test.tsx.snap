@@ -580,108 +580,108 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#F2F3F5",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -1370,108 +1370,108 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#F2F3F5",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -1994,108 +1994,108 @@ exports[`Story Snapshots: BlackTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#F2F3F5",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -2420,108 +2420,108 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#F2F3F5",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -3210,108 +3210,108 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#F2F3F5",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -3834,108 +3834,108 @@ exports[`Story Snapshots: DarkTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#F2F3F5",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#F2F3F5",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#9EA2A8",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#9EA2A8",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -4260,108 +4260,108 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -5050,108 +5050,108 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={
@@ -5674,108 +5674,108 @@ exports[`Story Snapshots: LightTheme should match snapshot 1`] = `
             <View
               style={
                 {
-                  "gap": 4,
+                  "alignItems": "center",
+                  "flex": 1,
+                  "flexDirection": "row",
+                  "justifyContent": "space-between",
                 }
               }
             >
               <View
+                accessibilityState={
+                  {
+                    "busy": undefined,
+                    "checked": undefined,
+                    "disabled": undefined,
+                    "expanded": undefined,
+                    "selected": undefined,
+                  }
+                }
+                accessibilityValue={
+                  {
+                    "max": undefined,
+                    "min": undefined,
+                    "now": undefined,
+                    "text": undefined,
+                  }
+                }
+                accessible={true}
+                collapsable={false}
+                focusable={true}
+                onClick={[Function]}
+                onResponderGrant={[Function]}
+                onResponderMove={[Function]}
+                onResponderRelease={[Function]}
+                onResponderTerminate={[Function]}
+                onResponderTerminationRequest={[Function]}
+                onStartShouldSetResponder={[Function]}
                 style={
                   {
                     "alignItems": "center",
-                    "flex": 1,
                     "flexDirection": "row",
-                    "justifyContent": "space-between",
+                    "flexShrink": 1,
+                    "gap": 4,
+                    "opacity": 1,
                   }
                 }
+                testID="username-header-diego.mello"
               >
-                <View
-                  accessibilityState={
-                    {
-                      "busy": undefined,
-                      "checked": undefined,
-                      "disabled": undefined,
-                      "expanded": undefined,
-                      "selected": undefined,
-                    }
-                  }
-                  accessibilityValue={
-                    {
-                      "max": undefined,
-                      "min": undefined,
-                      "now": undefined,
-                      "text": undefined,
-                    }
-                  }
-                  accessible={true}
-                  collapsable={false}
-                  focusable={true}
-                  onClick={[Function]}
-                  onResponderGrant={[Function]}
-                  onResponderMove={[Function]}
-                  onResponderRelease={[Function]}
-                  onResponderTerminate={[Function]}
-                  onResponderTerminationRequest={[Function]}
-                  onStartShouldSetResponder={[Function]}
+                <Text
+                  numberOfLines={1}
                   style={
-                    {
-                      "alignItems": "center",
-                      "flexDirection": "row",
-                      "flexShrink": 1,
-                      "gap": 4,
-                      "opacity": 1,
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "flexShrink": 1,
+                        "fontFamily": "Inter",
+                        "fontSize": 16,
+                        "fontWeight": "600",
+                        "lineHeight": 22,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#1F2329",
+                      },
+                    ]
                   }
-                  testID="username-header-diego.mello"
                 >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "flexShrink": 1,
-                          "fontFamily": "Inter",
-                          "fontSize": 16,
-                          "fontWeight": "600",
-                          "lineHeight": 22,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#1F2329",
-                        },
-                      ]
-                    }
-                  >
-                    diego.mello
-                  </Text>
-                  <Text
-                    style={
-                      [
-                        {
-                          "backgroundColor": "transparent",
-                          "fontFamily": "Inter",
-                          "fontSize": 13,
-                          "fontWeight": "400",
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        {
-                          "color": "#6C727A",
-                        },
-                      ]
-                    }
-                  >
-                    10:00 AM
-                  </Text>
-                </View>
-                <View
+                  diego.mello
+                </Text>
+                <Text
                   style={
-                    {
-                      "flexDirection": "row",
-                    }
+                    [
+                      {
+                        "backgroundColor": "transparent",
+                        "fontFamily": "Inter",
+                        "fontSize": 13,
+                        "fontWeight": "400",
+                        "lineHeight": 18,
+                        "textAlign": "left",
+                      },
+                      {
+                        "color": "#6C727A",
+                      },
+                    ]
                   }
-                />
+                >
+                  10:00 AM
+                </Text>
               </View>
+              <View
+                style={
+                  {
+                    "flexDirection": "row",
+                  }
+                }
+              />
+            </View>
+            <View
+              style={
+                {
+                  "gap": 4,
+                }
+              }
+            >
               <View>
                 <View
                   style={

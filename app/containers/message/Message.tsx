@@ -76,16 +76,18 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	return (
-		<View style={{ gap: 4 }}>
+		<>
 			<User {...props} />
 			{showTimeLarge ? <MessageTime {...props} /> : null}
-			<Content {...props} />
-			<Attachments {...props} />
-			<Urls {...props} />
-			<Thread {...props} />
-			<Reactions {...props} />
-			<Broadcast {...props} />
-		</View>
+			<View style={{ gap: 4 }}>
+				<Content {...props} />
+				<Attachments {...props} />
+				<Urls {...props} />
+				<Thread {...props} />
+				<Reactions {...props} />
+				<Broadcast {...props} />
+			</View>
+		</>
 	);
 });
 MessageInner.displayName = 'MessageInner';
@@ -155,7 +157,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		// Prevent misalignment of info when the font size is increased.
 		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
-			<View style={styles.container}>
+			<View style={[styles.container, { marginTop: 4 }]}>
 				{thread}
 				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
