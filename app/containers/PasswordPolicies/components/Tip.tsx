@@ -41,11 +41,9 @@ const Tip = ({ iconType, description }: ITipProps) => {
 	}
 
 	return (
-		<View style={styles.container}>
+		<View accessible accessibilityLabel={`${accessibilityLabel}${description}.`} style={styles.container}>
 			<CustomIcon color={color} name={icon} size={16} />
-			<Text style={{ ...styles.text, color }} accessible accessibilityLabel={`${accessibilityLabel}${description}`}>
-				{description}
-			</Text>
+			<Text style={{ ...styles.text, color }}>{description}</Text>
 		</View>
 	);
 };

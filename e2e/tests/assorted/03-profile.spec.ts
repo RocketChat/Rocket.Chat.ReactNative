@@ -12,9 +12,9 @@ async function waitForToast() {
 
 async function dismissKeyboardAndScrollUp() {
 	await element(by.id('profile-view-list')).swipe('down', 'fast', 0.5);
-	await sleep(300);
-	await element(by.id('profile-view-list')).swipe('up', 'fast', 0.5);
-	await sleep(300);
+	await sleep(500);
+	await element(by.id('profile-view-list')).swipe('up', 'fast', 1);
+	await sleep(500);
 }
 
 describe('Profile screen', () => {
@@ -64,7 +64,7 @@ describe('Profile screen', () => {
 		});
 
 		it('should have new password', async () => {
-			await expect(element(by.id('profile-view-new-password'))).toExist();
+			await expect(element(by.id('profile-view-change-my-password-button'))).toExist();
 		});
 
 		it('should have submit button', async () => {
@@ -92,7 +92,7 @@ describe('Profile screen', () => {
 			await waitForToast();
 		});
 
-		it('should change email and password', async () => {
+		it('should change email', async () => {
 			await element(by.id('profile-view-list')).swipe('down', 'fast', 0.5);
 			await sleep(300);
 			await waitFor(element(by.id('profile-view-email')))
@@ -100,7 +100,6 @@ describe('Profile screen', () => {
 				.withTimeout(10000);
 			await element(by.id('profile-view-email')).replaceText(`mobile+profileChangesNew${random()}@rocket.chat`);
 			await dismissKeyboardAndScrollUp();
-			await element(by.id('profile-view-new-password')).replaceText(`${user.password}new`);
 			await waitFor(element(by.id('profile-view-submit')))
 				.toExist()
 				.withTimeout(10000);
@@ -114,6 +113,18 @@ describe('Profile screen', () => {
 				.withTimeout(2000);
 			await element(by.id('profile-view-enter-password-sheet-confirm')).tap();
 			await waitForToast();
+		});
+
+		it('should change password', async () => {
+			await element(by.id('profile-view-change-my-password-button')).tap();
+			await sleep(500);
+			await element(by.id('change-password-view-current-password')).replaceText(`${user.password}`);
+			await element(by.id('change-password-view-new-password')).replaceText(`${user.password}new`);
+			await element(by.id('change-password-view-confirm-new-password')).replaceText(`${user.password}new`);
+			await element(by.id('change-password-view-list')).swipe('down', 'fast', 0.5);
+			await sleep(60000);
+			await element(by.id('change-password-view-set-new-password-button')).tap();
+			await expect(element(by.id('profile-view'))).toBeVisible();
 		});
 	});
 });
