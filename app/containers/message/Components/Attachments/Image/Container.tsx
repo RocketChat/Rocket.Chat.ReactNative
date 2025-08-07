@@ -33,7 +33,7 @@ const ImageContainer = ({
 
 	if (msg) {
 		return (
-			<View>
+			<View style={{ gap: 4 }}>
 				<Markdown msg={msg} style={[isReply && style]} username={user.username} getCustomEmoji={getCustomEmoji} />
 				{image}
 			</View>

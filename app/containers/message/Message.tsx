@@ -16,7 +16,6 @@ import Broadcast from './Broadcast';
 import Discussion from './Discussion';
 import Content from './Content';
 import CallButton from './CallButton';
-import { themes } from '../../lib/constants';
 import { IMessage, IMessageInner, IMessageTouchable } from './interfaces';
 import { useTheme } from '../../theme';
 import RightIcons from './Components/RightIcons';
@@ -27,12 +26,13 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
+	const showTimeLarge = isLargeFontScale && props.isHeader;
 
 	if (props.isPreview) {
 		return (
 			<>
 				<User {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<>
 					<Content {...props} />
 					<Attachments {...props} />
@@ -46,7 +46,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 		return (
 			<>
 				<User {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 				<Discussion {...props} />
 			</>
 		);
@@ -58,7 +58,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<User {...props} />
 				<Content {...props} isInfo />
 				<CallButton {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
@@ -70,24 +70,22 @@ const MessageInner = React.memo((props: IMessageInner) => {
 				<Blocks {...props} />
 				<Thread {...props} />
 				<Reactions {...props} />
-				{isLargeFontScale ? <MessageTime {...props} /> : null}
+				{showTimeLarge ? <MessageTime {...props} /> : null}
 			</>
 		);
 	}
 
 	return (
-		<>
+		<View style={{ gap: 2 }}>
 			<User {...props} />
-			{isLargeFontScale ? <MessageTime {...props} /> : null}
-			<>
-				<Content {...props} />
-				<Attachments {...props} />
-			</>
+			{showTimeLarge ? <MessageTime {...props} /> : null}
+			<Content {...props} />
+			<Attachments {...props} />
 			<Urls {...props} />
 			<Thread {...props} />
 			<Reactions {...props} />
 			<Broadcast {...props} />
-		</>
+		</View>
 	);
 });
 MessageInner.displayName = 'MessageInner';
@@ -201,14 +199,14 @@ Message.displayName = 'Message';
 
 const MessageTouchable = React.memo((props: IMessageTouchable & IMessage) => {
 	const { onPress, onLongPress } = useContext(MessageContext);
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 
 	let backgroundColor = undefined;
 	if (props.isBeingEdited) {
-		backgroundColor = themes[theme].statusBackgroundWarning2;
+		backgroundColor = colors.statusBackgroundWarning2;
 	}
 	if (props.highlighted) {
-		backgroundColor = themes[theme].surfaceNeutral;
+		backgroundColor = colors.surfaceNeutral;
 	}
 
 	if (props.hasError || props.isInfo) {

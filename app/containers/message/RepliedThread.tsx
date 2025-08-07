@@ -8,6 +8,7 @@ import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
 import { IMessageRepliedThread } from './interfaces';
 import { useTheme } from '../../theme';
+import { AvatarContainer } from './MessageAvatar';
 
 const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
 	const { theme } = useTheme();
@@ -34,7 +35,9 @@ const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncry
 
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${msg}`}>
-			<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].fontInfo} />
+			<AvatarContainer>
+				<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].fontInfo} />
+			</AvatarContainer>
 			<MarkdownPreview msg={msg} style={[styles.repliedThreadName, { color: themes[theme].fontInfo }]} />
 			<View style={styles.repliedThreadDisclosure}>
 				<CustomIcon name='chevron-right' color={themes[theme].fontSecondaryInfo} size={20} />

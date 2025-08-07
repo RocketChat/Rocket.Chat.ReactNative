@@ -1,5 +1,5 @@
 import React from 'react';
-import { Keyboard, ViewStyle } from 'react-native';
+import { Keyboard } from 'react-native';
 
 import Message from './Message';
 import MessageContext from './Context';
@@ -22,7 +22,7 @@ interface IMessageContainerProps {
 	msg?: string;
 	rid: string;
 	timeFormat?: string;
-	style?: ViewStyle;
+	// style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
 	previousItem?: TAnyMessageModel;
@@ -356,7 +356,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const {
 			item,
 			user,
-			style,
+			// style,
 			archived,
 			baseUrl,
 			useRealName,
@@ -469,7 +469,7 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					avatar={avatar}
 					emoji={emoji}
 					timeFormat={timeFormat}
-					style={style}
+					// style={style}
 					archived={archived}
 					broadcast={broadcast}
 					useRealName={useRealName}

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import { View } from 'react-native';
 
 import Avatar from '../Avatar';
@@ -8,11 +8,19 @@ import { IMessageAvatar } from './interfaces';
 import { SubscriptionType } from '../../definitions';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 
+const AVATAR_BASE_SIZE = 36;
+
+export const AvatarContainer = ({ children }: { children?: ReactElement | null }) => {
+	const { fontScaleLimited } = useResponsiveLayout();
+	const width = AVATAR_BASE_SIZE * fontScaleLimited;
+	return <View style={{ width, alignItems: 'flex-end' }}>{children}</View>;
+};
+
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
 	const { fontScaleLimited } = useResponsiveLayout();
 	const smallSize = 20 * fontScaleLimited;
-	const normalSize = 36 * fontScaleLimited;
+	const normalSize = AVATAR_BASE_SIZE * fontScaleLimited;
 	const size = small ? smallSize : normalSize;
 
 	if (isHeader && author) {
@@ -24,19 +32,21 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 			});
 
 		return (
-			<Avatar
-				style={small ? styles.avatarSmall : styles.avatar}
-				text={avatar ? '' : author.username}
-				size={size}
-				borderRadius={4}
-				onPress={onPress}
-				getCustomEmoji={getCustomEmoji}
-				avatar={avatar}
-				emoji={emoji}
-			/>
+			<AvatarContainer>
+				<Avatar
+					style={small ? styles.avatarSmall : styles.avatar}
+					text={avatar ? '' : author.username}
+					size={size}
+					borderRadius={4}
+					onPress={onPress}
+					getCustomEmoji={getCustomEmoji}
+					avatar={avatar}
+					emoji={emoji}
+				/>
+			</AvatarContainer>
 		);
 	}
-	return <View style={[small ? styles.avatarSmall : styles.avatar, { width: size, height: size }]} />;
+	return <AvatarContainer />;
 });
 
 MessageAvatar.displayName = 'MessageAvatar';

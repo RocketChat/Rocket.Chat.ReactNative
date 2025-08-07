@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { dequal } from 'dequal';
+import { View } from 'react-native';
 
 import Image from './Image';
 import Audio from './Audio';
@@ -20,6 +21,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			return null;
 		}
 
+		// TODO: memo?
 		const attachmentsElements = attachments.map((file: IAttachment, index: number) => {
 			const msg = getMessageFromAttachment(file, translateLanguage);
 			if (file && file.image_url) {
@@ -80,7 +82,6 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 			return (
 				<Reply
 					key={index}
-					index={index}
 					attachment={file}
 					timeFormat={timeFormat}
 					getCustomEmoji={getCustomEmoji}
@@ -89,7 +90,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				/>
 			);
 		});
-		return <>{attachmentsElements}</>;
+		return <View style={{ gap: 4 }}>{attachmentsElements}</View>;
 	},
 	(prevProps, nextProps) => dequal(prevProps.attachments, nextProps.attachments)
 );
