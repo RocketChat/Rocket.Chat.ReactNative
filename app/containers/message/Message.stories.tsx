@@ -727,6 +727,10 @@ export const WithImage = () => (
 					title: 'This is a title',
 					description: 'This is a description :nyan_rocket:',
 					image_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					image_url: '/dummypath'
 				}
 			]}
 		/>
@@ -789,6 +793,11 @@ export const WithVideo = () => (
 			attachments={[
 				{
 					title: 'This is a title',
+					video_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
 					video_url: '/dummypath'
 				},
 				{
@@ -858,6 +867,15 @@ export const WithAudio = () => (
 				{
 					title: 'This is a title',
 					audio_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					description: 'This is a description :nyan_rocket:',
+					audio_url: '/dummypath'
+				},
+				{
+					title: 'This is a title',
+					audio_url: '/dummypath'
 				}
 			]}
 			isHeader={false}
@@ -920,6 +938,10 @@ export const WithFile = () => (
 		/>
 		<Message
 			attachments={[
+				{
+					text: 'File.pdf',
+					description: 'This is a description :nyan_rocket:'
+				},
 				{
 					text: 'File.pdf',
 					description: 'This is a description :nyan_rocket:'

@@ -12,6 +12,7 @@ import { formatDateThreads } from '../../lib/methods/helpers/room';
 import { IMessage } from '../../definitions';
 import { useTheme } from '../../theme';
 
+// TODO: Create a reusable button component for message
 const Discussion = React.memo(
 	({ msg, dcount, dlm }: Pick<IMessage, 'msg' | 'dcount' | 'dlm'>) => {
 		const { colors } = useTheme();
@@ -25,8 +26,7 @@ const Discussion = React.memo(
 			<View style={{ gap: 4 }}>
 				<Text style={[styles.startedDiscussion, { color: colors.fontSecondaryInfo }]}>{I18n.t('Started_discussion')}</Text>
 				<Text style={[styles.discussionText, { color: colors.fontDefault }]}>{msg}</Text>
-				<View style={styles.buttonContainer}>
-					{/* TODO: Create a reusable button component for message */}
+				<View style={[styles.buttonContainer, { gap: 8 }]}>
 					<Touchable
 						onPress={onDiscussionPress}
 						background={Touchable.Ripple(colors.surfaceNeutral)}
