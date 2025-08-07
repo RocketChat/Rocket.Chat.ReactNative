@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-import 'react-native-console-time-polyfill';
 import { AppRegistry, LogBox } from 'react-native';
 
 import { name as appName } from './app.json';
@@ -8,7 +7,10 @@ import { isAndroid } from './app/lib/methods/helpers';
 if (process.env.USE_STORYBOOK) {
 	AppRegistry.registerComponent(appName, () => require('./.rnstorybook/index').default);
 } else {
-	if (!__DEV__) {
+	if (__DEV__) {
+		require('react-native-console-time-polyfill');
+		require('react-native-get-random-values');
+	} else {
 		console.log = () => {};
 		console.time = () => {};
 		console.timeLog = () => {};

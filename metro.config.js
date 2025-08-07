@@ -1,6 +1,10 @@
 const path = require('path');
 const withStorybook = require('@storybook/react-native/metro/withStorybook');
 const defaultSourceExts = require('metro-config/src/defaults/defaults').sourceExts;
+const { withRozenite } = require('@rozenite/metro');
+const { withRozeniteReduxDevTools } = require('@rozenite/redux-devtools-plugin/metro');
+const { withRozeniteExpoAtlasPlugin } = require('@rozenite/expo-atlas-plugin');
+
 // eslint-disable-next-line import/no-unresolved
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 const { wrapWithReanimatedMetroConfig } = require('react-native-reanimated/metro-config');
@@ -28,4 +32,6 @@ const storybookOptions = {
 	onDisabledRemoveStorybook: true
 };
 
-module.exports = withStorybook(finalConfig, storybookOptions);
+module.exports = withRozenite(
+	withRozeniteExpoAtlasPlugin(withRozeniteReduxDevTools(withStorybook(finalConfig, storybookOptions)))
+);
