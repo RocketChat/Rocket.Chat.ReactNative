@@ -155,7 +155,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		// Prevent misalignment of info when the font size is increased.
 		const infoStyle: ViewStyle = props.isInfo ? { alignItems: 'center' } : {};
 		return (
-			<View style={[styles.container, props.style]}>
+			<View style={styles.container}>
 				{thread}
 				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
@@ -173,7 +173,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 	}
 
 	return (
-		<View accessible accessibilityLabel={accessibilityLabel} style={[styles.container, props.style]}>
+		<View accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
 				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
