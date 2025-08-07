@@ -10982,9 +10982,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 4,
-          "marginHorizontal": 14,
-          "marginTop": 8,
+          "margin": 12,
         }
       }
     >
@@ -11376,9 +11374,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 4,
-          "marginHorizontal": 14,
-          "marginTop": 8,
+          "margin": 12,
         }
       }
     >
@@ -11899,9 +11895,7 @@ exports[`Story Snapshots: DateAndUnreadSeparators should match snapshot 1`] = `
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 4,
-          "marginHorizontal": 14,
-          "marginTop": 8,
+          "margin": 12,
         }
       }
     >
@@ -12631,9 +12625,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 4,
-          "marginHorizontal": 14,
-          "marginTop": 8,
+          "margin": 12,
         }
       }
     >
@@ -13025,9 +13017,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 4,
-          "marginHorizontal": 14,
-          "marginTop": 8,
+          "margin": 12,
         }
       }
     >
@@ -13548,9 +13538,7 @@ exports[`Story Snapshots: DateAndUnreadSeparatorsLargeFont should match snapshot
         {
           "alignItems": "center",
           "flexDirection": "row",
-          "marginBottom": 4,
-          "marginHorizontal": 14,
-          "marginTop": 8,
+          "margin": 12,
         }
       }
     >
