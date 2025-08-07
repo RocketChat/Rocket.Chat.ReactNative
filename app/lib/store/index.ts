@@ -1,11 +1,11 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { rozeniteDevToolsEnhancer } from '@rozenite/redux-devtools-plugin';
 
 import reducers from '../../reducers';
 import sagas from '../../sagas';
 import applyAppStateMiddleware from './appStateMiddleware';
 import applyInternetStateMiddleware from './internetStateMiddleware';
-import { logger } from './reduxLogger';
 
 let sagaMiddleware;
 let enhancers;
@@ -19,7 +19,7 @@ if (__DEV__) {
 		applyInternetStateMiddleware(),
 		applyMiddleware(reduxImmutableStateInvariant),
 		applyMiddleware(sagaMiddleware),
-		applyMiddleware(logger)
+		rozeniteDevToolsEnhancer()
 	);
 } else {
 	sagaMiddleware = createSagaMiddleware();

@@ -2,6 +2,7 @@ import React, { useContext, memo, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { connect } from 'react-redux';
+import { useNetworkActivityDevTools } from '@rozenite/network-activity-plugin';
 
 import { SetUsernameStackParamList, StackParamList } from './definitions/navigationTypes';
 import Navigation from './lib/navigation/appNavigation';
@@ -34,6 +35,7 @@ const SetUsernameStack = () => (
 const Stack = createStackNavigator<StackParamList>();
 const App = memo(({ root, isMasterDetail }: { root: string; isMasterDetail: boolean }) => {
 	const { theme } = useContext(ThemeContext);
+	useNetworkActivityDevTools();
 	useEffect(() => {
 		if (root) {
 			const state = Navigation.navigationRef.current?.getRootState();
