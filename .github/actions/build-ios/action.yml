@@ -117,7 +117,7 @@ runs:
       working-directory: ios
       run: |
         if [[ ${{ inputs.type }} == "official" ]]; then
-          bundle exec fastlane ios build_official --verbose
+          bundle exec fastlane ios build_official
         fi
         if [[ ${{ inputs.type }} == "experimental" ]]; then
           bundle exec fastlane ios build_experimental
