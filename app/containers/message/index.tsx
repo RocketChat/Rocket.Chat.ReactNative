@@ -22,7 +22,6 @@ interface IMessageContainerProps {
 	msg?: string;
 	rid: string;
 	timeFormat?: string;
-	// style?: ViewStyle;
 	archived?: boolean;
 	broadcast?: boolean;
 	previousItem?: TAnyMessageModel;
@@ -356,7 +355,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 		const {
 			item,
 			user,
-			// style,
 			archived,
 			baseUrl,
 			useRealName,

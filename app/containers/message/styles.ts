@@ -19,13 +19,6 @@ export default StyleSheet.create({
 	},
 	messageContent: {
 		flex: 1
-		// marginLeft: 46
-	},
-	messageContentWithHeader: {
-		// marginLeft: 10
-	},
-	messageContentWithError: {
-		marginLeft: 0
 	},
 	flex: {
 		flexDirection: 'row',
@@ -53,30 +46,22 @@ export default StyleSheet.create({
 	reactionCount: {
 		fontSize: 14,
 		lineHeight: 18,
-		// marginLeft: 3,
-		// marginRight: 8.5,
 		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
 		fontSize: 13,
-		// marginLeft: 7,
 		color: '#ffffff'
 	},
 	reactionCustomEmoji: {
 		width: 19,
 		height: 19
-		// marginLeft: 7
 	},
 	avatar: {
 		marginTop: 4
 	},
-	avatarSmall: {
-		// marginLeft: 16
-	},
 	buttonContainer: {
 		flexDirection: 'row',
 		alignItems: 'center'
-		// gap: 8
 	},
 	button: {
 		paddingHorizontal: 12,
@@ -99,14 +84,12 @@ export default StyleSheet.create({
 	imageContainer: {
 		flexDirection: 'column',
 		borderRadius: 4
-		// marginTop: 4
 	},
 	image: {
 		width: '100%',
 		minHeight: isTablet ? 300 : 200,
 		borderRadius: 4,
 		overflow: 'hidden'
-		// marginTop: 4
 	},
 	discussionText: {
 		fontSize: 16,
@@ -132,12 +115,6 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		gap: 10
-		// marginTop: 6,
-		// marginBottom: 12
-	},
-	repliedThreadIcon: {
-		// marginRight: 10
-		// marginLeft: 16
 	},
 	repliedThreadName: {
 		fontSize: 16,

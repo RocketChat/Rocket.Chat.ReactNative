@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		alignItems: 'center',
-		// marginVertical: 4,
 		alignSelf: 'flex-start',
 		borderLeftWidth: 2
 	},
@@ -61,7 +60,6 @@ const styles = StyleSheet.create({
 	},
 	fieldContainer: {
 		flexDirection: 'column'
-		// padding: 4
 	},
 	fieldTitle: {
 		fontSize: 14,

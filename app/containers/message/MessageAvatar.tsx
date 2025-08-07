@@ -34,7 +34,7 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 		return (
 			<AvatarContainer>
 				<Avatar
-					style={small ? styles.avatarSmall : styles.avatar}
+					style={small ? undefined : styles.avatar}
 					text={avatar ? '' : author.username}
 					size={size}
 					borderRadius={4}

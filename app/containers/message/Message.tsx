@@ -159,7 +159,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 				{thread}
 				<View accessible accessibilityLabel={accessibilityLabel} style={[styles.flex, infoStyle]}>
 					<MessageAvatar small {...props} />
-					<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+					<View style={styles.messageContent}>
 						<Content {...props} />
 						{props.isInfo && props.type === 'message_pinned' ? (
 							<View pointerEvents='none'>
@@ -176,7 +176,7 @@ const Message = React.memo((props: IMessageTouchable & IMessage) => {
 		<View accessible accessibilityLabel={accessibilityLabel} style={styles.container}>
 			<View style={styles.flex}>
 				<MessageAvatar {...props} />
-				<View style={[styles.messageContent, props.isHeader && styles.messageContentWithHeader]}>
+				<View style={styles.messageContent}>
 					<MessageInner {...props} />
 				</View>
 				{!props.isHeader ? (

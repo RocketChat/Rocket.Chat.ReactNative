@@ -3,7 +3,6 @@ import { View } from 'react-native';
 
 import { CustomIcon } from '../CustomIcon';
 import styles from './styles';
-import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { MarkdownPreview } from '../markdown';
 import { IMessageRepliedThread } from './interfaces';
@@ -11,7 +10,7 @@ import { useTheme } from '../../theme';
 import { AvatarContainer } from './MessageAvatar';
 
 const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncrypted }: IMessageRepliedThread) => {
-	const { theme } = useTheme();
+	const { colors } = useTheme();
 	const [msg, setMsg] = useState(isEncrypted ? I18n.t('Encrypted_message') : tmsg);
 
 	useEffect(() => {
@@ -36,11 +35,11 @@ const RepliedThread = memo(({ tmid, tmsg, isHeader, fetchThreadName, id, isEncry
 	return (
 		<View style={styles.repliedThread} testID={`message-thread-replied-on-${msg}`}>
 			<AvatarContainer>
-				<CustomIcon name='threads' size={20} style={styles.repliedThreadIcon} color={themes[theme].fontInfo} />
+				<CustomIcon name='threads' size={20} color={colors.fontInfo} />
 			</AvatarContainer>
-			<MarkdownPreview msg={msg} style={[styles.repliedThreadName, { color: themes[theme].fontInfo }]} />
+			<MarkdownPreview msg={msg} style={[styles.repliedThreadName, { color: colors.fontInfo }]} />
 			<View style={styles.repliedThreadDisclosure}>
-				<CustomIcon name='chevron-right' color={themes[theme].fontSecondaryInfo} size={20} />
+				<CustomIcon name='chevron-right' color={colors.fontSecondaryInfo} size={20} />
 			</View>
 		</View>
 	);
