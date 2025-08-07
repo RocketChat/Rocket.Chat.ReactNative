@@ -45,7 +45,6 @@ export default async function findSubscriptionsRooms(subscriptions: IServerSubsc
 			jitsiTimeout: s.jitsiTimeout,
 			autoTranslate: s.autoTranslate,
 			autoTranslateLanguage: s.autoTranslateLanguage,
-			autoTranslateLanguageLabel: s.autoTranslateLanguageLabel,
 			lastMessage: s.lastMessage,
 			usernames: s.usernames,
 			uids: s.uids,

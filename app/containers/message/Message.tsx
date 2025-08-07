@@ -26,6 +26,7 @@ import MessageTime from './Time';
 import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResponsiveLayout';
 import { A11yContainer, A11yElement } from '../A11yFlow';
 import normalizeToBCP47 from '../../views/AutoTranslateView/utils/normalizeToBCP47ByName';
+import translationLanguages from '../../lib/constants/translationLanguages';
 
 const MessageInner = React.memo((props: IMessageInner) => {
 	const { isLargeFontScale } = useResponsiveLayout();
@@ -132,8 +133,9 @@ const Message = React.memo((props: IMessageTouchable & IMessage & { autoTranslat
 			label = getInfoMessage({ ...props });
 		}
 		label = handleMentionsOnAccessibilityLabel(label);
+		const translatedLanguage = translationLanguages[props?.autoTranslateLanguage || 'en'];
 
-		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: props?.autoTranslateLanguage }) : '';
+		const translated = props.isTranslated ? i18n.t('Message_translated_into_idiom', { idiom: translatedLanguage }) : '';
 		const hour = props.ts ? new Date(props.ts).toLocaleTimeString() : '';
 		const user = props.useRealName ? props.author?.name : props.author?.username || '';
 		const readOrUnreadLabel =

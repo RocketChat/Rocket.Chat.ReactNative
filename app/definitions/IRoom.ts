@@ -197,7 +197,6 @@ export interface IServerRoom extends IRocketChatRecord {
 	teamId?: string;
 	teamDefault?: boolean;
 	open?: boolean;
-	autoTranslateLanguageLabel?: string;
 	autoTranslateLanguage: string;
 	autoTranslate?: boolean;
 	unread?: number;
