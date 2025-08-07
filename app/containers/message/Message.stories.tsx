@@ -1657,9 +1657,9 @@ export const Temp = () => <Message msg='Temp message' status={messagesStatus.TEM
 
 export const TempLargeFont = () => <MessageLargeFont msg='Temp message' status={messagesStatus.TEMP} isTemp />;
 
-export const Editing = () => <Message msg='Message being edited' editing />;
+export const Editing = () => <Message msg='Message being edited' isBeingEdited />;
 
-export const EditingLargeFont = () => <MessageLargeFont msg='Message being edited' editing />;
+export const EditingLargeFont = () => <MessageLargeFont msg='Message being edited' isBeingEdited />;
 
 export const SystemMessages = () => (
 	<>

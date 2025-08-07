@@ -469,7 +469,6 @@ class MessageContainer extends React.Component<IMessageContainerProps, IMessageC
 					avatar={avatar}
 					emoji={emoji}
 					timeFormat={timeFormat}
-					// style={style}
 					archived={archived}
 					broadcast={broadcast}
 					useRealName={useRealName}
