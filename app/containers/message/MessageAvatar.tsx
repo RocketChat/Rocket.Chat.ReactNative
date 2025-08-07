@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { View } from 'react-native';
 
 import Avatar from '../Avatar';
 import styles from './styles';
@@ -10,6 +11,10 @@ import { useResponsiveLayout } from '../../lib/hooks/useResponsiveLayout/useResp
 const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomInfo, emoji, getCustomEmoji }: IMessageAvatar) => {
 	const { user } = useContext(MessageContext);
 	const { fontScaleLimited } = useResponsiveLayout();
+	const smallSize = 20 * fontScaleLimited;
+	const normalSize = 36 * fontScaleLimited;
+	const size = small ? smallSize : normalSize;
+
 	if (isHeader && author) {
 		const onPress = () =>
 			navToRoomInfo({
@@ -18,9 +23,6 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 				itsMe: author._id === user.id
 			});
 
-		const smallSize = 20 * fontScaleLimited;
-		const normalSize = 36 * fontScaleLimited;
-		const size = small ? smallSize : normalSize;
 		return (
 			<Avatar
 				style={small ? styles.avatarSmall : styles.avatar}
@@ -34,7 +36,7 @@ const MessageAvatar = React.memo(({ isHeader, avatar, author, small, navToRoomIn
 			/>
 		);
 	}
-	return null;
+	return <View style={[small ? styles.avatarSmall : styles.avatar, { width: size, height: size }]} />;
 });
 
 MessageAvatar.displayName = 'MessageAvatar';

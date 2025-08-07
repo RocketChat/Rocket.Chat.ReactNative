@@ -17,8 +17,8 @@ export default StyleSheet.create({
 		flex: 1
 	},
 	messageContent: {
-		flex: 1,
-		marginLeft: 46
+		flex: 1
+		// marginLeft: 46
 	},
 	messageContentWithHeader: {
 		marginLeft: 10
