@@ -44,6 +44,12 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Remove simulator and its cache
+      run : |
+        xcrun simctl delete all
+        sudo rm -rf ~/Library/Developer/CoreSimulator/Caches/*
+      shell: bash
+
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1
       with:
