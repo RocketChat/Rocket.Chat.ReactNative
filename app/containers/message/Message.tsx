@@ -76,7 +76,7 @@ const MessageInner = React.memo((props: IMessageInner) => {
 	}
 
 	return (
-		<View style={{ gap: 2 }}>
+		<View style={{ gap: 4 }}>
 			<User {...props} />
 			{showTimeLarge ? <MessageTime {...props} /> : null}
 			<Content {...props} />

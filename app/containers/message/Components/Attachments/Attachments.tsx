@@ -74,9 +74,7 @@ const Attachments: React.FC<IMessageAttachments> = React.memo(
 				return <AttachedActions attachment={file} getCustomEmoji={getCustomEmoji} />;
 			}
 			if (typeof file.collapsed === 'boolean') {
-				return (
-					<CollapsibleQuote key={index} index={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />
-				);
+				return <CollapsibleQuote key={index} attachment={file} timeFormat={timeFormat} getCustomEmoji={getCustomEmoji} />;
 			}
 
 			return (

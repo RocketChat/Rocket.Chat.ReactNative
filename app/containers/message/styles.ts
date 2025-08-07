@@ -32,17 +32,12 @@ export default StyleSheet.create({
 		gap: 10
 	},
 	temp: { opacity: 0.3 },
-	marginTop: {
-		// marginTop: 6
-	},
 	reactionsContainer: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
-		// marginTop: 8
+		flexWrap: 'wrap',
+		gap: 4
 	},
 	reactionButton: {
-		// marginRight: 8,
-		// marginBottom: 8,
 		borderRadius: 4
 	},
 	reactionContainer: {
@@ -51,23 +46,26 @@ export default StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 4,
 		borderWidth: 1,
-		minWidth: 46.3
+		minWidth: 46.3,
+		gap: 4,
+		paddingHorizontal: 4
 	},
 	reactionCount: {
 		fontSize: 14,
+		lineHeight: 18,
 		// marginLeft: 3,
 		// marginRight: 8.5,
 		...sharedStyles.textSemibold
 	},
 	reactionEmoji: {
 		fontSize: 13,
-		marginLeft: 7,
+		// marginLeft: 7,
 		color: '#ffffff'
 	},
 	reactionCustomEmoji: {
 		width: 19,
-		height: 19,
-		marginLeft: 7
+		height: 19
+		// marginLeft: 7
 	},
 	avatar: {
 		marginTop: 4
@@ -77,8 +75,8 @@ export default StyleSheet.create({
 	},
 	buttonContainer: {
 		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 8
+		alignItems: 'center'
+		// gap: 8
 	},
 	button: {
 		paddingHorizontal: 12,
