@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TextStyle } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { parse } from '@rocket.chat/message-parser';
 import type { Root } from '@rocket.chat/message-parser';
 import isEmpty from 'lodash/isEmpty';
@@ -65,47 +65,49 @@ const Markdown: React.FC<IMarkdownProps> = ({
 
 	if (isEmpty(tokens)) return null;
 	return (
-		<MarkdownContext.Provider
-			value={{
-				mentions,
-				channels,
-				useRealName,
-				username,
-				navToRoomInfo,
-				getCustomEmoji,
-				onLinkPress
-			}}>
-			{tokens?.map(block => {
-				switch (block.type) {
-					case 'BIG_EMOJI':
-						return <BigEmoji value={block.value} />;
-					case 'UNORDERED_LIST':
-						return <UnorderedList value={block.value} />;
-					case 'ORDERED_LIST':
-						return <OrderedList value={block.value} />;
-					case 'TASKS':
-						return <TaskList value={block.value} />;
-					case 'QUOTE':
-						return <Quote value={block.value} />;
-					case 'PARAGRAPH':
-						return <Paragraph value={block.value} />;
-					case 'CODE':
-						return <Code value={block.value} />;
-					case 'HEADING':
-						return <Heading value={block.value} level={block.level} />;
-					case 'LINE_BREAK':
-						return <LineBreak />;
-					// This prop exists, but not even on the web it is treated, so...
-					// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
-					// case 'LIST_ITEM':
-					// 	return <View />;
-					case 'KATEX':
-						return <KaTeX value={block.value} />;
-					default:
-						return null;
-				}
-			})}
-		</MarkdownContext.Provider>
+		<View style={{ gap: 2 }}>
+			<MarkdownContext.Provider
+				value={{
+					mentions,
+					channels,
+					useRealName,
+					username,
+					navToRoomInfo,
+					getCustomEmoji,
+					onLinkPress
+				}}>
+				{tokens?.map(block => {
+					switch (block.type) {
+						case 'BIG_EMOJI':
+							return <BigEmoji value={block.value} />;
+						case 'UNORDERED_LIST':
+							return <UnorderedList value={block.value} />;
+						case 'ORDERED_LIST':
+							return <OrderedList value={block.value} />;
+						case 'TASKS':
+							return <TaskList value={block.value} />;
+						case 'QUOTE':
+							return <Quote value={block.value} />;
+						case 'PARAGRAPH':
+							return <Paragraph value={block.value} />;
+						case 'CODE':
+							return <Code value={block.value} />;
+						case 'HEADING':
+							return <Heading value={block.value} level={block.level} />;
+						case 'LINE_BREAK':
+							return <LineBreak />;
+						// This prop exists, but not even on the web it is treated, so...
+						// https://github.com/RocketChat/Rocket.Chat/blob/develop/packages/gazzodown/src/Markup.tsx
+						// case 'LIST_ITEM':
+						// 	return <View />;
+						case 'KATEX':
+							return <KaTeX value={block.value} />;
+						default:
+							return null;
+					}
+				})}
+			</MarkdownContext.Provider>
+		</View>
 	);
 };
 
