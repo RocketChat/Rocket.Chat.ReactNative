@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
 	authorContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center'
+		alignItems: 'center',
+		gap: 4
 	},
 	titleAndDescriptionContainer: {
 		flexDirection: 'column',
@@ -231,7 +232,7 @@ const Reply = React.memo(
 		}
 
 		return (
-			<View style={{ gap: 10 }}>
+			<View style={{ gap: 0 }}>
 				<Touchable
 					testID={`reply-${attachment?.author_name}-${attachment?.text}`}
 					onPress={onPress}
