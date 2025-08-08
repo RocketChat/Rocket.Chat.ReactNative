@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { themes } from '../lib/constants';
 import sharedStyles from '../views/Styles';
 import { getReadableVersion } from '../lib/methods/helpers';
 import I18n from '../i18n';
-import { TSupportedThemes } from '../theme';
+import { useTheme } from '../theme';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,13 +20,16 @@ const styles = StyleSheet.create({
 	}
 });
 
-const AppVersion = React.memo(({ theme }: { theme: TSupportedThemes }) => (
-	<View style={styles.container}>
-		<Text style={[styles.text, { color: themes[theme].fontSecondaryInfo }]}>
-			{I18n.t('Version_no', { version: '' })}
-			<Text style={styles.bold}>{getReadableVersion}</Text>
-		</Text>
-	</View>
-));
+const AppVersion = React.memo(() => {
+	const { colors } = useTheme();
+	return (
+		<View style={styles.container}>
+			<Text style={[styles.text, { color: colors.fontSecondaryInfo }]}>
+				{I18n.t('Version_no', { version: '' })}
+				<Text style={styles.bold}>{getReadableVersion}</Text>
+			</Text>
+		</View>
+	);
+});
 
 export default AppVersion;

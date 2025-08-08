@@ -43,7 +43,7 @@ export const ComposerInput = memo(
 		const { setFocused, setMicOrSend, setAutocompleteParams } = useMessageComposerApi();
 		const autocompleteType = useAutocompleteParams()?.type;
 		const textRef = React.useRef('');
-		const firstRender = React.useRef(false);
+		const firstRender = React.useRef(true);
 		const selectionRef = React.useRef<IInputSelection>(defaultSelection);
 		const dispatch = useDispatch();
 		const subscription = useSubscription(rid);
@@ -77,13 +77,13 @@ export const ComposerInput = memo(
 				}
 			};
 
-			if (sharing) return;
-			if (usedCannedResponse) setInput(usedCannedResponse);
-			if (action !== 'edit' && !firstRender.current) {
-				firstRender.current = true;
+			if (action !== 'edit' && firstRender.current) {
+				firstRender.current = false;
 				setDraftMessage();
 			}
-		}, [action, rid, tmid, usedCannedResponse, firstRender.current]);
+			if (sharing) return;
+			if (usedCannedResponse) setInput(usedCannedResponse);
+		}, [action, rid, tmid, usedCannedResponse]);
 
 		// Edit/quote
 		useEffect(() => {
@@ -151,7 +151,8 @@ export const ComposerInput = memo(
 			getText: () => textRef.current,
 			getSelection: () => selectionRef.current,
 			setInput,
-			onAutocompleteItemSelected
+			onAutocompleteItemSelected,
+			focus
 		}));
 
 		const setInput: TSetInput = (text, selection, forceUpdateDraftMessage) => {
@@ -350,7 +351,9 @@ export const ComposerInput = memo(
 				style={[styles.textInput, { color: colors.fontDefault }]}
 				placeholder={placeholder}
 				placeholderTextColor={colors.fontAnnotation}
-				ref={component => (inputRef.current = component)}
+				ref={component => {
+					inputRef.current = component;
+				}}
 				blurOnSubmit={false}
 				onChangeText={onChangeText}
 				onSelectionChange={onSelectionChange}
@@ -359,6 +362,7 @@ export const ComposerInput = memo(
 				underlineColorAndroid='transparent'
 				defaultValue=''
 				multiline
+				{...(autocompleteType ? { autoComplete: 'off', autoCorrect: false, autoCapitalize: 'none' } : {})}
 				keyboardAppearance={theme === 'light' ? 'light' : 'dark'}
 				// eslint-disable-next-line no-nested-ternary
 				testID={`message-composer-input${tmid ? '-thread' : sharing ? '-share' : ''}`}

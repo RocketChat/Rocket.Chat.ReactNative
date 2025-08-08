@@ -12,13 +12,7 @@ function createRequestTypes(base = {}, types = defaultTypes): Record<string, str
 export const LOGIN = createRequestTypes('LOGIN', [...defaultTypes, 'SET_SERVICES', 'SET_PREFERENCE', 'SET_LOCAL_AUTHENTICATED']);
 export const SHARE = createRequestTypes('SHARE', ['SET_PARAMS']);
 export const USER = createRequestTypes('USER', ['SET', 'CLEAR']);
-export const ROOMS = createRequestTypes('ROOMS', [
-	...defaultTypes,
-	'REFRESH',
-	'SET_SEARCH',
-	'OPEN_SEARCH_HEADER',
-	'CLOSE_SEARCH_HEADER'
-]);
+export const ROOMS = createRequestTypes('ROOMS', [...defaultTypes, 'REFRESH']);
 export const ROOM = createRequestTypes('ROOM', [
 	'SUBSCRIBE',
 	'UNSUBSCRIBE',
@@ -53,9 +47,11 @@ export const CREATE_DISCUSSION = createRequestTypes('CREATE_DISCUSSION', [...def
 export const SELECTED_USERS = createRequestTypes('SELECTED_USERS', ['ADD_USER', 'REMOVE_USER', 'RESET', 'SET_LOADING']);
 export const SERVER = createRequestTypes('SERVER', [
 	...defaultTypes,
+	'CLEAR',
 	'SELECT_SUCCESS',
 	'SELECT_REQUEST',
 	'SELECT_FAILURE',
+	'SELECT_CANCEL',
 	'INIT_ADD',
 	'FINISH_ADD'
 ]);

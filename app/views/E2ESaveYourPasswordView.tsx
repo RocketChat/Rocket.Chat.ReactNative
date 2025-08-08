@@ -7,9 +7,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { encryptionSetBanner } from '../actions/encryption';
 import Button from '../containers/Button';
-import * as HeaderButton from '../containers/HeaderButton';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import { LISTENER } from '../containers/Toast';
 import I18n from '../i18n';
 import { E2E_RANDOM_PASSWORD_KEY } from '../lib/constants';
@@ -102,7 +101,6 @@ const E2ESaveYourPasswordView = () => {
 
 	return (
 		<SafeAreaView style={{ backgroundColor: colors.surfaceRoom }} testID='e2e-save-password-view'>
-			<StatusBar />
 			<ScrollView {...scrollPersistTaps} style={sharedStyles.container} contentContainerStyle={sharedStyles.containerScrollView}>
 				<View style={[styles.container, { backgroundColor: colors.surfaceRoom }]}>
 					<Text style={[styles.warning, { color: colors.fontDanger }]}>{I18n.t('Save_Your_Encryption_Password_warning')}</Text>

@@ -2,7 +2,7 @@ import React, { useEffect, useReducer, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
 import { isGroupChat } from '../../lib/methods/helpers';
-import { formatDate } from '../../lib/methods/helpers/room';
+import { formatDate, formatDateAccessibility } from '../../lib/methods/helpers/room';
 import { IRoomItemContainerProps } from './interfaces';
 import RoomItem from './RoomItem';
 
@@ -15,9 +15,6 @@ const RoomItemContainer = React.memo(
 		onPress,
 		onLongPress,
 		width,
-		toggleFav,
-		toggleRead,
-		hideChannel,
 		isFocused,
 		showLastMessage,
 		username,
@@ -39,6 +36,7 @@ const RoomItemContainer = React.memo(
 		const [_, forceUpdate] = useReducer(x => x + 1, 1);
 		const roomSubscription = useRef<Subscription | null>(null);
 		const userId = item.t === 'd' && id && !isGroupChat(item) ? id : null;
+		const accessibilityDate = formatDateAccessibility(item.roomUpdatedAt);
 
 		useEffect(() => {
 			const init = () => {
@@ -67,13 +65,11 @@ const RoomItemContainer = React.memo(
 				onPress={handleOnPress}
 				onLongPress={handleOnLongPress}
 				date={date}
+				accessibilityDate={accessibilityDate}
 				width={width}
 				favorite={item.f}
 				rid={item.rid}
 				userId={userId}
-				toggleFav={toggleFav}
-				toggleRead={toggleRead}
-				hideChannel={hideChannel}
 				testID={testID}
 				type={item.t}
 				isFocused={isFocused}

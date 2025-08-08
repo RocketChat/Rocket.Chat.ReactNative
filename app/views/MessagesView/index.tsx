@@ -9,7 +9,6 @@ import { MasterDetailInsideStackParamList } from '../../stacks/MasterDetailStack
 import Message from '../../containers/message';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import getFileUrlAndTypeFromMessage from './getFileUrlAndTypeFromMessage';
 import { themes } from '../../lib/constants';
 import { TSupportedThemes, withTheme } from '../../theme';
@@ -36,6 +35,7 @@ import { Services } from '../../lib/services';
 import { TNavigation } from '../../stacks/stackType';
 import AudioManager from '../../lib/methods/AudioManager';
 import { Encryption } from '../../lib/encryption';
+import Navigation from '../../lib/navigation/appNavigation';
 
 interface IMessagesViewProps {
 	user: {
@@ -137,7 +137,7 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 	};
 
 	jumpToMessage = async ({ item }: { item: IMessage }) => {
-		const { navigation, isMasterDetail } = this.props;
+		const { isMasterDetail } = this.props;
 		let params: IParams = {
 			rid: this.rid,
 			jumpToMessageId: item._id,
@@ -145,20 +145,17 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 			room: this.room
 		};
 		if (item.tmid) {
-			if (isMasterDetail) {
-				navigation.navigate('DrawerNavigator');
-			} else {
-				navigation.pop(2);
-			}
+			Navigation.popToRoom(isMasterDetail);
 			params = {
 				...params,
 				tmid: item.tmid,
 				name: await getThreadName(this.rid, item.tmid, item._id),
 				t: SubscriptionType.THREAD
 			};
-			navigation.push('RoomView', params);
+			Navigation.push('RoomView', params);
 		} else {
-			navigation.navigate('RoomView', params);
+			Navigation.popToRoom(isMasterDetail);
+			Navigation.setParams(params);
 		}
 	};
 
@@ -368,7 +365,6 @@ class MessagesView extends React.Component<IMessagesViewProps, IMessagesViewStat
 
 		return (
 			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID={this.content.testID}>
-				<StatusBar />
 				<FlatList
 					data={messages}
 					renderItem={this.renderItem}

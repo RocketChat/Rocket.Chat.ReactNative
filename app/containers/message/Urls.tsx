@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import { Image as ExpoImage } from 'expo-image';
+import { Image } from 'expo-image';
 import { dequal } from 'dequal';
 import axios from 'axios';
 
@@ -72,15 +72,13 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	useEffect(() => {
 		if (image) {
-			Image.getSize(
-				image,
-				(width, height) => {
-					setImageDimensions({ width, height });
-				},
-				() => {
+			Image.loadAsync(image, {
+				onError: () => {
 					setImageLoadedState('error');
 				}
-			);
+			}).then(image => {
+				setImageDimensions({ width: image.width, height: image.height });
+			});
 		}
 	}, [image]);
 
@@ -113,7 +111,7 @@ const UrlImage = ({ image, hasContent }: { image: string; hasContent: boolean })
 
 	return (
 		<View style={containerStyle}>
-			<ExpoImage
+			<Image
 				source={{ uri: image }}
 				style={[imageStyle, imageLoadedState === 'loading' && styles.loading]}
 				contentFit='contain'
@@ -136,7 +134,7 @@ const Url = ({ url }: { url: IUrl }) => {
 		const verifyUrlIsImage = async () => {
 			try {
 				const imageUrl = getImageUrl();
-				if (!imageUrl) return;
+				if (!imageUrl || !API_Embed) return;
 
 				const response = await axios.head(imageUrl);
 				const contentType = response.headers['content-type'];
@@ -148,7 +146,7 @@ const Url = ({ url }: { url: IUrl }) => {
 			}
 		};
 		verifyUrlIsImage();
-	}, [url.image, url.url]);
+	}, [url.image, url.url, API_Embed]);
 
 	const getImageUrl = () => {
 		const _imageUrl = url.image || url.url;

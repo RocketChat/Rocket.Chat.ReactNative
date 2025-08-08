@@ -51,11 +51,11 @@ save-npm-cache-mac: &save-npm-cache-mac
 
 restore-gems-cache: &restore-gems-cache
   name: Restore gems cache
-  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  key: bundle-v1-{{ checksum "Gemfile.lock" }}
 
 save-gems-cache: &save-gems-cache
   name: Save gems cache
-  key: bundle-v1-{{ checksum "ios/Gemfile.lock" }}
+  key: bundle-v1-{{ checksum "Gemfile.lock" }}
   paths:
     - vendor/bundle
 
@@ -113,8 +113,7 @@ commands:
       - run:
           name: Install pods libs
           command: |
-            bundle exec pod install --deployment
-          working_directory: ios
+            yarn pod-install
       - save_cache:
           name: Save pods specs and pods cache
           key: pods-v1-{{ checksum "ios/Podfile.lock" }}
@@ -196,11 +195,11 @@ commands:
           name: Upload sourcemaps/NDK symbols to Bugsnag
           command: |
             if [[ $CIRCLE_JOB == "android-build-official" ]]; then
-              yarn bugsnag:upload-android --variant officialRelease
+              yarn bugsnag:upload-android --variant officialRelease --app-manifest android/app/build/intermediates/merged_manifests/officialRelease/processOfficialReleaseManifest/AndroidManifest.xml
               yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/officialRelease/app-official-release.aab
             fi
             if [[ $CIRCLE_JOB == "android-build-experimental" || "android-automatic-build-experimental" ]]; then
-              yarn bugsnag:upload-android --variant experimentalRelease
+              yarn bugsnag:upload-android --variant experimentalRelease --app-manifest android/app/build/intermediates/merged_manifests/experimentalRelease/processExperimentalReleaseManifest/AndroidManifest.xml
               yarn bugsnag-cli upload android-aab android/app/build/outputs/bundle/experimentalRelease/app-experimental-release.aab
             fi
 
@@ -298,7 +297,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android beta official:<< parameters.official >>
+          command: bundle exec fastlane android beta_circle_ci official:<< parameters.official >>
           working_directory: android
 
   # EXPERIMENTAL ONLY
@@ -315,7 +314,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android internal_app_sharing
+          command: bundle exec fastlane android internal_app_sharing_circle_ci
           working_directory: android
 
   # EXPERIMENTAL ONLY
@@ -333,7 +332,7 @@ commands:
       - run: *update-fastlane-android
       - run:
           name: Fastlane Play Store Upload
-          command: bundle exec fastlane android production
+          command: bundle exec fastlane android production_circle_ci
           working_directory: android
 
   upload-to-testflight:
@@ -355,7 +354,7 @@ commands:
           name: Fastlane Tesflight Upload
           command: |
             echo $APP_STORE_CONNECT_API_KEY_BASE64 | base64 --decode > ./fastlane/app_store_connect_api_key.p8
-            bundle exec fastlane ios beta official:<< parameters.official >>
+            bundle exec fastlane ios beta_circle_ci official:<< parameters.official >>
           working_directory: ios
       - save_cache: *save-gems-cache
 
@@ -523,7 +522,6 @@ jobs:
       - restore_cache: *restore-npm-cache-linux
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-linux
-      - run: mkdir ~/junit
       - create-e2e-account-file
       - android/create-avd:
           avd-name: Pixel_API_31_AOSP
@@ -538,17 +536,10 @@ jobs:
       - run:
           name: Run Detox Tests
           command: |
-            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
             yarn e2e:android-test $TEST
       - store_artifacts:
           path: artifacts
-      - run:
-          command: cp junit.xml ~/junit/
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
 
   # iOS builds
   ios-build-experimental:
@@ -613,7 +604,6 @@ jobs:
       - restore_cache: *restore-npm-cache-mac
       - run: *install-npm-modules
       - save_cache: *save-npm-cache-mac
-      - run: mkdir ~/junit
       - run:
           name: Configure Detox
           command: |
@@ -624,17 +614,10 @@ jobs:
       - run:
           name: Run tests
           command: |
-            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "e2e/tests/**/*.ts" | circleci tests split)
             yarn e2e:ios-test $TEST
       - store_artifacts:
           path: artifacts
-      - run:
-          command: cp junit.xml ~/junit/
-          when: always
-      - store_test_results:
-          path: ~/junit
-      - store_artifacts:
-          path: ~/junit
 
 workflows:
   build-and-test:
@@ -731,14 +714,4 @@ workflows:
           requires:
             - android-hold-google-play-beta-official
 
-      # Android Automatic Experimental
-      - android-automatic-build-experimental:
-          filters:
-            branches:
-              only:
-                - develop
-          requires:
-            - lint-testunit
-      - android-google-play-production-experimental:
-          requires:
-            - android-automatic-build-experimental
+

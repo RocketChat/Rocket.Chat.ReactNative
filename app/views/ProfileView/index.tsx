@@ -1,27 +1,28 @@
 import { NativeStackNavigationOptions, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { sha256 } from 'js-sha256';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Keyboard, ScrollView, View, TextInput } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { useFocusEffect } from '@react-navigation/native';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import { setUser } from '../../actions/login';
 import { useActionSheet } from '../../containers/ActionSheet';
 import ActionSheetContentWithInputAndSubmit from '../../containers/ActionSheet/ActionSheetContentWithInputAndSubmit';
 import { AvatarWithEdit } from '../../containers/Avatar';
 import Button from '../../containers/Button';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import KeyboardView from '../../containers/KeyboardView';
 import SafeAreaView from '../../containers/SafeAreaView';
-import StatusBar from '../../containers/StatusBar';
 import { ControlledFormTextInput } from '../../containers/TextInput';
 import { LISTENER } from '../../containers/Toast';
 import { IProfileParams } from '../../definitions';
 import { TwoFactorMethods } from '../../definitions/ITotp';
 import I18n from '../../i18n';
-import { compareServerVersion } from '../../lib/methods/helpers';
+import { compareServerVersion, isAndroid } from '../../lib/methods/helpers';
 import EventEmitter from '../../lib/methods/helpers/events';
 import { events, logEvent } from '../../lib/methods/helpers/log';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
@@ -31,7 +32,7 @@ import { getUserSelector } from '../../selectors/login';
 import { ProfileStackParamList } from '../../stacks/types';
 import { useTheme } from '../../theme';
 import sharedStyles from '../Styles';
-import { DeleteAccountActionSheetContent } from './components/DeleteAccountActionSheetContent';
+import DeleteAccountActionSheetContent from './components/DeleteAccountActionSheetContent';
 import styles from './styles';
 import { useAppSelector } from '../../lib/hooks';
 import useParsedCustomFields from '../../lib/hooks/useParsedCustomFields';
@@ -45,16 +46,17 @@ import useVerifyPassword from '../../lib/hooks/useVerifyPassword';
 // https://github.com/RocketChat/Rocket.Chat/blob/174c28d40b3d5a52023ee2dca2e81dd77ff33fa5/apps/meteor/app/lib/server/functions/saveUser.js#L24-L25
 const MAX_BIO_LENGTH = 260;
 const MAX_NICKNAME_LENGTH = 120;
-const validationSchema = yup.object().shape({
-	name: yup.string().min(1).required(),
-	email: yup.string().email().required(),
-	username: yup.string().min(1).required()
-});
 
 interface IProfileViewProps {
 	navigation: NativeStackNavigationProp<ProfileStackParamList, 'ProfileView'>;
 }
 const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
+	const validationSchema = yup.object().shape({
+		name: yup.string().required(I18n.t('Name_required')),
+		email: yup.string().email(I18n.t('Email_must_be_a_valid_email')).required(I18n.t('Email_required')),
+		username: yup.string().required(I18n.t('Username_required'))
+	});
+
 	const { showActionSheet, hideActionSheet } = useActionSheet();
 	const { colors } = useTheme();
 	const dispatch = useDispatch();
@@ -87,8 +89,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		setFocus,
 		getValues,
 		setValue,
+		reset,
+		setError,
 		watch,
-		formState: { isDirty, dirtyFields }
+		formState: { isDirty, dirtyFields, errors }
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: {
@@ -103,7 +107,8 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		},
 		resolver: yupResolver(validationSchema)
 	});
-	const newPassword = watch('newPassword') ?? '';
+	const inputValues = watch();
+	const newPassword = inputValues.newPassword || '';
 	const { isPasswordValid, passwordPolicies } = useVerifyPassword(newPassword, newPassword);
 	const { parsedCustomFields } = useParsedCustomFields(Accounts_CustomFields);
 	const [customFields, setCustomFields] = useState(user?.customFields ?? {});
@@ -225,6 +230,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 			setValue('currentPassword', null);
 			setTwoFactorCode(null);
 		} catch (e: any) {
+			if (e?.error === 'error-could-not-save-identity') {
+				setError('username', { message: I18n.t('Username_not_available'), type: 'validate' });
+			}
+
+			if (e?.message.startsWith(email) && e?.error === 'error-field-unavailable') {
+				setError('email', { message: I18n.t('Email_associated_with_another_user'), type: 'validate' });
+			}
+
 			if (e?.error === 'totp-invalid' && e?.details.method !== TwoFactorMethods.PASSWORD) {
 				try {
 					const code = await twoFactor({ method: e.details.method, invalid: e?.error === 'totp-invalid' && !!twoFactorCode });
@@ -242,12 +255,20 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		}
 	};
 
+	useA11yErrorAnnouncement({ errors, inputValues });
+
 	useLayoutEffect(() => {
 		const options: NativeStackNavigationOptions = {
 			title: I18n.t('Profile')
 		};
 		if (!isMasterDetail) {
-			options.headerLeft = () => <HeaderButton.Drawer accessibilityLabel={I18n.t('Open_sidebar')} navigation={navigation} />;
+			options.headerLeft = () => (
+				<HeaderButton.Drawer
+					testID='profile-view-open-sidebar'
+					accessibilityLabel={I18n.t('Open_sidebar')}
+					navigation={navigation}
+				/>
+			);
 		}
 		options.headerRight = () => (
 			<HeaderButton.Preferences
@@ -260,9 +281,14 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 		navigation.setOptions(options);
 	}, []);
 
+	useFocusEffect(
+		useCallback(() => {
+			reset();
+		}, [])
+	);
+
 	return (
-		<KeyboardView contentContainerStyle={sharedStyles.container} keyboardVerticalOffset={128}>
-			<StatusBar />
+		<KeyboardView>
 			<SafeAreaView testID='profile-view'>
 				<ScrollView
 					contentContainerStyle={[sharedStyles.containerScrollView, { backgroundColor: colors.surfaceTint, paddingTop: 32 }]}
@@ -284,11 +310,15 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							inputStyle={[!Accounts_AllowRealNameChange && styles.disabled]}
 							label={I18n.t('Name')}
 							placeholder={I18n.t('Name')}
+							autoComplete='name'
+							importantForAutofill={'yes'}
+							textContentType='name'
 							onSubmitEditing={() => {
 								setFocus('username');
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-name'
+							error={errors.name?.message}
 						/>
 						<ControlledFormTextInput
 							required
@@ -298,11 +328,15 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							inputStyle={[!Accounts_AllowUsernameChange && styles.disabled]}
 							label={I18n.t('Username')}
 							placeholder={I18n.t('Username')}
+							autoComplete='username'
+							textContentType='username'
+							importantForAutofill={'yes'}
 							onSubmitEditing={() => {
 								setFocus('email');
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-username'
+							error={errors.username?.message}
 						/>
 						<ControlledFormTextInput
 							required
@@ -317,6 +351,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							}}
 							containerStyle={styles.inputContainer}
 							testID='profile-view-email'
+							autoComplete='email'
+							textContentType='emailAddress'
+							importantForAutofill={'yes'}
+							error={errors.email?.message}
 						/>
 						{compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '3.5.0') ? (
 							<ControlledFormTextInput
@@ -352,7 +390,10 @@ const ProfileView = ({ navigation }: IProfileViewProps): React.ReactElement => {
 							editable={Accounts_AllowPasswordChange}
 							inputStyle={[!Accounts_AllowPasswordChange && styles.disabled]}
 							label={I18n.t('New_Password')}
+							placeholder={I18n.t('New_Password')}
 							onSubmitEditing={focusOnCustomFields}
+							textContentType={isAndroid ? 'newPassword' : undefined}
+							autoComplete={isAndroid ? 'password-new' : undefined}
 							secureTextEntry
 							containerStyle={styles.inputContainer}
 							testID='profile-view-new-password'

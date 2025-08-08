@@ -1,4 +1,4 @@
-import { Camera } from 'expo-camera';
+import { useCameraPermissions } from 'expo-camera';
 import React, { useMemo } from 'react';
 
 import { useActionSheet } from '../../../containers/ActionSheet';
@@ -33,7 +33,7 @@ export const useVideoConf = (
 
 	const { callEnabled, disabledTooltip, roomType } = useVideoConfCall(rid);
 
-	const [permission, requestPermission] = Camera.useCameraPermissions();
+	const [permission, requestPermission] = useCameraPermissions();
 	const { showActionSheet } = useActionSheet();
 
 	const isServer5OrNewer = useMemo(() => compareServerVersion(serverVersion, 'greaterThanOrEqualTo', '5.0.0'), [serverVersion]);

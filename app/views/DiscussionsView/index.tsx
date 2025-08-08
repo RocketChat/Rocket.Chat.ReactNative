@@ -8,11 +8,10 @@ import { IMessageFromServer, TThreadModel } from '../../definitions';
 import { ChatsStackParamList } from '../../stacks/types';
 import ActivityIndicator from '../../containers/ActivityIndicator';
 import I18n from '../../i18n';
-import StatusBar from '../../containers/StatusBar';
 import log from '../../lib/methods/helpers/log';
 import { isIOS, useDebounce } from '../../lib/methods/helpers';
 import SafeAreaView from '../../containers/SafeAreaView';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import * as List from '../../containers/List';
 import BackgroundContainer from '../../containers/BackgroundContainer';
 import { useTheme } from '../../theme';
@@ -20,6 +19,7 @@ import SearchHeader from '../../containers/SearchHeader';
 import Item from './Item';
 import { Services } from '../../lib/services';
 import { useAppSelector } from '../../lib/hooks';
+import { goRoom } from '../../lib/methods/helpers/goRoom';
 
 const API_FETCH_COUNT = 50;
 
@@ -142,11 +142,14 @@ const DiscussionsView = () => {
 
 	const onDiscussionPress = (item: TThreadModel) => {
 		if (item.drid && item.t) {
-			navigation.push('RoomView', {
-				rid: item.drid,
-				prid: item.rid,
-				name: item.msg,
-				t
+			goRoom({
+				item: {
+					rid: item.drid,
+					prid: item.rid,
+					name: item.msg,
+					t
+				},
+				isMasterDetail
 			});
 		}
 	};
@@ -167,7 +170,6 @@ const DiscussionsView = () => {
 
 	return (
 		<SafeAreaView testID='discussions-view'>
-			<StatusBar />
 			<FlatList
 				data={isSearching ? search : discussions}
 				renderItem={renderItem}

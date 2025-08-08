@@ -25,7 +25,7 @@ import i18n from '../../../../i18n';
 
 export const RecordAudio = (): ReactElement | null => {
 	const [styles, colors] = useStyle();
-	const recordingRef = useRef<Audio.Recording>();
+	const recordingRef = useRef<Audio.Recording | null>(null);
 	const durationRef = useRef<IDurationRef>({} as IDurationRef);
 	const numberOfTriesRef = useRef(0);
 	const [status, setStatus] = React.useState<'recording' | 'reviewing'>('recording');
@@ -48,7 +48,7 @@ export const RecordAudio = (): ReactElement | null => {
 				// error only occurs on iOS devices
 				if (error?.code === 'E_AUDIO_RECORDERNOTCREATED') {
 					if (numberOfTriesRef.current <= 5) {
-						recordingRef.current = undefined;
+						recordingRef.current = null;
 						numberOfTriesRef.current += 1;
 						setTimeout(() => {
 							record();
@@ -132,7 +132,7 @@ export const RecordAudio = (): ReactElement | null => {
 					<BaseButton
 						onPress={sendAudio}
 						testID='message-composer-send'
-						accessibilityLabel='Send_message'
+						accessibilityLabel='Send_audio_message'
 						icon='send-filled'
 						color={colors.buttonBackgroundPrimaryDefault}
 					/>
@@ -148,8 +148,8 @@ export const RecordAudio = (): ReactElement | null => {
 				<Duration ref={durationRef} />
 			</View>
 			<View style={styles.buttons}>
-				<CancelButton onPress={cancelRecording} />
-				<View style={styles.recordingNote}>
+				<CancelButton onPress={cancelRecording} cancelAndDelete />
+				<View accessible accessibilityLabel={i18n.t('Recording_audio_in_progress')} style={styles.recordingNote}>
 					<Text style={styles.recordingNoteText}>{i18n.t('Recording_audio_in_progress')}</Text>
 				</View>
 				<ReviewButton onPress={goReview} />

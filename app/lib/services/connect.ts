@@ -50,10 +50,6 @@ let logoutListener: any;
 
 function connect({ server, logoutOnError = false }: { server: string; logoutOnError?: boolean }): Promise<void> {
 	return new Promise<void>(resolve => {
-		if (sdk.current?.client?.host === server) {
-			return resolve();
-		}
-
 		// Check for running requests and abort them before connecting to the server
 		abort();
 
@@ -468,11 +464,11 @@ async function getLoginServices(server: string) {
 }
 
 function determineAuthType(services: IServices) {
-	const { name, custom, showButton = true, service } = services;
+	const { name, custom, showButton, service } = services;
 
 	const authName = name || service;
 
-	if (custom && showButton) {
+	if (custom && showButton !== false) {
 		return 'oauth_custom';
 	}
 

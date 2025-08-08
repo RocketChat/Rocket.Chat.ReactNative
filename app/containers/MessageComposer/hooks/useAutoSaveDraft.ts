@@ -10,7 +10,7 @@ export const useAutoSaveDraft = (text = '') => {
 	const { rid, tmid, action, selectedMessages } = useRoomContext();
 	const focused = useFocused();
 	const oldText = useRef('');
-	const intervalRef = useRef();
+	const intervalRef = useRef<number | null>(null);
 
 	const mounted = useRef(true);
 
@@ -30,19 +30,22 @@ export const useAutoSaveDraft = (text = '') => {
 				saveDraftMessage({ rid, tmid, draftMessage });
 			}
 		},
-		[action, rid, tmid, text, selectedMessages?.length, route.name]
+		[action, rid, tmid, text, selectedMessages, route.name]
 	);
 
 	// if focused on composer input, saves every N seconds
 	useEffect(() => {
 		if (focused) {
 			intervalRef.current = setInterval(saveMessageDraft, 3000) as any;
-		} else {
+		} else if (intervalRef.current) {
+			saveMessageDraft();
 			clearInterval(intervalRef.current);
 		}
 
 		return () => {
-			clearInterval(intervalRef.current);
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
 		};
 	}, [focused, saveMessageDraft]);
 

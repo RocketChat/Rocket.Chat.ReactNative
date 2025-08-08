@@ -7,8 +7,7 @@ import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes';
 import parse from 'url-parse';
 
 import ActivityIndicator from '../containers/ActivityIndicator';
-import * as HeaderButton from '../containers/HeaderButton';
-import StatusBar from '../containers/StatusBar';
+import * as HeaderButton from '../containers/Header/components/HeaderButton';
 import { ICredentials } from '../definitions';
 import { userAgent } from '../lib/constants';
 import { useAppSelector } from '../lib/hooks';
@@ -142,7 +141,6 @@ const AuthenticationWebView = () => {
 
 	return (
 		<>
-			<StatusBar />
 			<WebView
 				source={{ uri: url }}
 				userAgent={userAgent}

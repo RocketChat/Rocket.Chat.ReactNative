@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loginRequest } from '../actions/login';
 import Button from '../containers/Button';
 import SafeAreaView from '../containers/SafeAreaView';
-import StatusBar from '../containers/StatusBar';
 import { ControlledFormTextInput } from '../containers/TextInput';
 import { SetUsernameStackParamList } from '../definitions/navigationTypes';
 import I18n from '../i18n';
@@ -92,8 +91,7 @@ const SetUsernameView = () => {
 	};
 
 	return (
-		<KeyboardView style={{ backgroundColor: colors.surfaceHover }} contentContainerStyle={sharedStyles.container}>
-			<StatusBar />
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<ScrollView {...scrollPersistTaps} contentContainerStyle={sharedStyles.containerScrollView}>
 				<SafeAreaView testID='set-username-view'>
 					<Text style={[sharedStyles.loginTitle, sharedStyles.textBold, styles.loginTitle, { color: colors.fontTitlesLabels }]}>

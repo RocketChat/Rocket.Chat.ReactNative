@@ -8,6 +8,7 @@ export interface IRoomContext {
 	tmid?: string;
 	sharing?: boolean;
 	action?: TMessageAction;
+	isAutocompleteVisible?: boolean;
 	selectedMessages: string[];
 	editCancel?: () => void;
 	editRequest?: (message: any) => void;
@@ -15,6 +16,7 @@ export interface IRoomContext {
 	onSendMessage?: Function;
 	setQuotesAndText?: (text: string, quotes: string[]) => void;
 	getText?: () => string | undefined;
+	updateAutocompleteVisible?: (updatedAutocompleteVisible: boolean) => void;
 }
 
 export const RoomContext = createContext<IRoomContext>({} as IRoomContext);

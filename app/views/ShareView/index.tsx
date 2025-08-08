@@ -12,7 +12,7 @@ import { themes } from '../../lib/constants';
 import I18n from '../../i18n';
 import { prepareQuoteMessage } from '../../containers/MessageComposer/helpers';
 import { sendLoadingEvent } from '../../containers/Loading';
-import * as HeaderButton from '../../containers/HeaderButton';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { TSupportedThemes, withTheme } from '../../theme';
 import { FormTextInput } from '../../containers/TextInput';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -67,7 +67,7 @@ interface IShareViewProps {
 }
 
 class ShareView extends Component<IShareViewProps, IShareViewState> {
-	private messageComposerRef: React.RefObject<IMessageComposerRef>;
+	private messageComposerRef: React.RefObject<IMessageComposerRef | null>;
 	private files: any[];
 	private isShareExtension: boolean;
 	private serverInfo: IServer;
@@ -136,7 +136,6 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 
 		// if is share extension show default back button
 		if (!this.isShareExtension) {
-			options.headerBackVisible = false;
 			options.headerLeft = () => (
 				<HeaderButton.CloseModal navigation={navigation} color={themes[theme].fontDefault} testID='share-view-close' />
 			);
@@ -223,10 +222,12 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 		};
 	};
 
-	startShareView = () => {
+	startShareView = async () => {
 		const startShareView = this.props.route.params?.startShareView;
 		if (startShareView) {
 			const { selectedMessages, text } = startShareView();
+			// Synchronization needed for Fabric to work
+			await new Promise(resolve => setTimeout(resolve, 100));
 			this.messageComposerRef.current?.setInput(text);
 			this.setState({ selectedMessages });
 		}
@@ -423,7 +424,7 @@ class ShareView extends Component<IShareViewProps, IShareViewState> {
 			);
 		}
 		return (
-			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceNeutral }} testID='share-view'>
+			<SafeAreaView style={{ backgroundColor: themes[theme].surfaceRoom }} testID='share-view'>
 				{this.renderContent()}
 			</SafeAreaView>
 		);

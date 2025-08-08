@@ -1,11 +1,12 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { ScrollView, StatusBar } from 'react-native';
+import { ScrollView } from 'react-native';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import useA11yErrorAnnouncement from '../../lib/hooks/useA11yErrorAnnouncement';
 import log from '../../lib/methods/helpers/log';
 import SafeAreaView from '../../containers/SafeAreaView';
 import { ChatsStackParamList } from '../../stacks/types';
@@ -20,6 +21,7 @@ import EventEmitter from '../../lib/methods/helpers/events';
 import { LISTENER } from '../../containers/Toast';
 import { Services } from '../../lib/services';
 import KeyboardView from '../../containers/KeyboardView';
+import Navigation from '../../lib/navigation/appNavigation';
 
 type TReportUserViewNavigationProp = CompositeNavigationProp<
 	NativeStackNavigationProp<ChatsStackParamList, 'ReportUserView'>,
@@ -33,14 +35,13 @@ interface ISubmit {
 }
 
 const schema = yup.object().shape({
-	description: yup.string().trim().required()
+	description: yup.string().trim().required(I18n.t('Report_reason_required'))
 });
 
 const ReportUserView = () => {
 	const [loading, setLoading] = useState(false);
 	const navigation = useNavigation<TReportUserViewNavigationProp>();
 	const { isMasterDetail } = useAppSelector(state => ({ isMasterDetail: state.app.isMasterDetail }));
-
 	const {
 		params: { username, userId, name }
 	} = useRoute<TReportUserViewRouteProp>();
@@ -48,8 +49,17 @@ const ReportUserView = () => {
 	const {
 		control,
 		handleSubmit,
-		formState: { isValid }
-	} = useForm<ISubmit>({ mode: 'onChange', resolver: yupResolver(schema), defaultValues: { description: '' } });
+		watch,
+		formState: { errors }
+	} = useForm<ISubmit>({
+		mode: 'onChange',
+		resolver: yupResolver(schema),
+		defaultValues: { description: '' }
+	});
+
+	const inputValues = watch();
+
+	useA11yErrorAnnouncement({ errors, inputValues });
 
 	useLayoutEffect(() => {
 		navigation?.setOptions({
@@ -67,7 +77,7 @@ const ReportUserView = () => {
 				navigation.navigate('DrawerNavigator');
 				return;
 			}
-			navigation.navigate('RoomView');
+			Navigation.resetTo();
 		} catch (e) {
 			log(e);
 			setLoading(false);
@@ -75,15 +85,15 @@ const ReportUserView = () => {
 	};
 
 	return (
-		<KeyboardView contentContainerStyle={styles.container} keyboardVerticalOffset={128}>
+		<KeyboardView>
 			<SafeAreaView style={styles.containerView} testID='report-user-view'>
 				<ScrollView contentContainerStyle={styles.scroll}>
-					<StatusBar />
 					<UserInfo username={username} name={name} />
 					<ControlledFormTextInput
 						name='description'
 						control={control}
 						label={I18n.t('Why_do_you_want_to_report')}
+						error={errors.description?.message}
 						multiline
 						inputStyle={styles.textInput}
 						testID='report-user-view-input'
@@ -92,7 +102,6 @@ const ReportUserView = () => {
 					<Button
 						title={I18n.t('Report')}
 						type='primary'
-						disabled={!isValid}
 						onPress={handleSubmit(submit)}
 						testID='report-user-view-submit'
 						loading={loading}

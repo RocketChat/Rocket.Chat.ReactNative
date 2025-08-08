@@ -131,7 +131,7 @@ describe('Join public room', () => {
 		});
 
 		it('should send message', async () => {
-			await mockMessage(`${random()}message`);
+			await mockMessage(random(5));
 		});
 
 		it('should have notifications and leave channel', async () => {

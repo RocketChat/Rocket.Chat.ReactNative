@@ -6,8 +6,7 @@ import { getPermalinkMessage } from '../../lib/methods';
 import KeyboardView from '../../containers/KeyboardView';
 import scrollPersistTaps from '../../lib/methods/helpers/scrollPersistTaps';
 import I18n from '../../i18n';
-import * as HeaderButton from '../../containers/HeaderButton';
-import StatusBar from '../../containers/StatusBar';
+import * as HeaderButton from '../../containers/Header/components/HeaderButton';
 import { useTheme } from '../../theme';
 import { getUserSelector } from '../../selectors/login';
 import SafeAreaView from '../../containers/SafeAreaView';
@@ -75,11 +74,7 @@ const ForwardMessageView = () => {
 	};
 
 	return (
-		<KeyboardView
-			style={{ backgroundColor: colors.surfaceHover }}
-			contentContainerStyle={styles.container}
-			keyboardVerticalOffset={128}>
-			<StatusBar />
+		<KeyboardView backgroundColor={colors.surfaceHover}>
 			<SafeAreaView testID='forward-message-view' style={styles.container}>
 				<ScrollView {...scrollPersistTaps}>
 					<SelectPersonOrChannel

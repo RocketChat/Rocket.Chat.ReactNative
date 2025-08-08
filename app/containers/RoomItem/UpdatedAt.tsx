@@ -17,7 +17,7 @@ const UpdatedAt = React.memo(({ date, hideUnreadStatus, alert }: IUpdatedAtProps
 			style={[
 				styles.date,
 				{
-					color: colors.fontSecondaryInfo
+					color: colors.fontDefault
 				},
 				alert &&
 					!hideUnreadStatus && [
