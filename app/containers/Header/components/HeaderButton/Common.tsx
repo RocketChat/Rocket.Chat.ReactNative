@@ -94,4 +94,3 @@ export const Share = React.memo(({ onPress, testID, ...props }: IHeaderButtonCom
 		<Item iconName='share' onPress={onPress} testID={testID} {...props} />
 	</Container>
 ));
-	
