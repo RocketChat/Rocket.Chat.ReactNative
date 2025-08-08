@@ -19,7 +19,7 @@ on:
         required: true
       FASTLANE_REPO_PAT:
         required: true
- 
+
 jobs:
   ios-build:
     runs-on: macos-15
